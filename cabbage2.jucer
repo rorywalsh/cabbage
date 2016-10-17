@@ -33,6 +33,8 @@
               file="Source/Application/CabbageNewProjectWindow.h"/>
         <FILE id="yKQiG7" name="CabbageOutputConsoleComponent.h" compile="0"
               resource="0" file="Source/Application/CabbageOutputConsoleComponent.h"/>
+        <FILE id="aqq1xN" name="CabbagePluginHolder.h" compile="0" resource="0"
+              file="Source/Application/CabbagePluginHolder.h"/>
         <FILE id="rpOZ3J" name="CabbageSettings.cpp" compile="1" resource="0"
               file="Source/Application/CabbageSettings.cpp"/>
         <FILE id="rDsL0Z" name="CabbageSettings.h" compile="0" resource="0"
@@ -50,6 +52,16 @@
         <FILE id="l9HoHb" name="CabbageBinaryData.h" compile="0" resource="0"
               file="Source/BinaryData/CabbageBinaryData.h"/>
       </GROUP>
+      <GROUP id="{49C8D4CB-E16D-C8F0-5F68-0A1511E25584}" name="Plugin">
+        <FILE id="Azg70M" name="CsoundPluginEditor.cpp" compile="1" resource="0"
+              file="Source/Plugin/CsoundPluginEditor.cpp"/>
+        <FILE id="rXz91d" name="CsoundPluginEditor.h" compile="0" resource="0"
+              file="Source/Plugin/CsoundPluginEditor.h"/>
+        <FILE id="dimqQj" name="CsoundPluginProcessor.cpp" compile="1" resource="0"
+              file="Source/Plugin/CsoundPluginProcessor.cpp"/>
+        <FILE id="ZzMcZq" name="CsoundPluginProcessor.h" compile="0" resource="0"
+              file="Source/Plugin/CsoundPluginProcessor.h"/>
+      </GROUP>
       <GROUP id="{24B339DA-0A5C-EE13-6A1A-0F900F6940B9}" name="Utilities">
         <FILE id="euzp83" name="CabbageColourPropertyComponent.h" compile="0"
               resource="0" file="Source/Utilities/CabbageColourPropertyComponent.h"/>
@@ -59,7 +71,7 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"/>
@@ -78,6 +90,7 @@
         <MODULEPATH id="juce_audio_devices" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>
@@ -86,6 +99,7 @@
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
