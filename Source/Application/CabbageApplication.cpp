@@ -436,7 +436,7 @@ void CabbageApplication::createNewProject()
 
     DialogWindow::LaunchOptions o;
     o.content.setOwned(new CabbageProjectWindow(cabbageSettings->getValueTree()));
-    o.content->setSize(500, 350);
+    o.content->setSize(650, 350);
 
     o.dialogTitle = TRANS("Select new project type");
     o.dialogBackgroundColour = Colour(0xfff0f0f0);

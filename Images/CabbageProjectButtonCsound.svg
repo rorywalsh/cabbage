@@ -13,7 +13,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="CabbageProjectButtonEffect.svg"
+   sodipodi:docname="CabbageProjectButtonCsound.svg"
    inkscape:export-filename="/home/rory/sourcecode/Cabbage2/Images/CabbageProjectButtonInstrument.png"
    inkscape:export-xdpi="165.8"
    inkscape:export-ydpi="165.8">
@@ -25,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,22 +55,30 @@
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.87999849;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
      d="m -113.13705,71.753032 c 0,0 -5.374,-46.386178 29.13279,-46.66902 34.506797,-0.282843 27.435732,46.103335 27.435732,46.103335"
      id="path5595"
-     inkscape:connector-curvature="0" />
+     inkscape:connector-curvature="0"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165" />
   <path
      style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:2.87999845;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m -106.91451,59.518726 0.28284,22.061716 0,0 c 0,0 -5.37401,3.676958 -10.74802,-0.28284 -5.37401,-3.959798 -3.95979,-17.819081 -3.95979,-17.819081 0,0 1.13137,-5.374008 14.42497,-3.959795 z"
      id="path5591"
-     inkscape:connector-curvature="0" />
+     inkscape:connector-curvature="0"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165" />
   <path
      inkscape:connector-curvature="0"
      id="path5593"
      d="m -62.63248,59.801569 -0.28284,22.061716 0,0 c 0,0 5.37401,3.676958 10.74802,-0.28284 5.37401,-3.959798 3.95979,-17.819081 3.95979,-17.819081 0,0 -1.13137,-5.374008 -14.42497,-3.959795 z"
-     style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:2.87999845;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+     style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:2.87999845;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165" />
   <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.87999849;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
      d="m -57.417055,83.632416 c 0,0 -4.525482,12.445073 -17.819083,12.162233 -13.2936,-0.28284 -13.2936,-0.28284 -13.2936,-0.28284"
      id="path5599"
-     inkscape:connector-curvature="0" />
+     inkscape:connector-curvature="0"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165" />
   <rect
      style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.87999845;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
      id="rect5597"
@@ -78,5 +86,7 @@
      height="6.5053787"
      x="-91.358162"
      y="92.68338"
-     rx="3.5223982" />
+     rx="3.5223982"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165" />
 </svg>
