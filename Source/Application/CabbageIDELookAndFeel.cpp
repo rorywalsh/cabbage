@@ -25,7 +25,7 @@ void CabbageIDELookAndFeel::refreshLookAndFeel(ValueTree valueTree)
 //======== Menubar background ======================================================================
 void CabbageIDELookAndFeel::drawMenuBarBackground(Graphics &g, int width, int height, bool isMouseOverBar, MenuBarComponent &menuBar)
 {
-    const Colour bgColour(CabbageSettings::getColourFromValueTree(colourTree, ColourIds::menuBarBackground, Colours::grey));
+    const Colour bgColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::menuBarBackground, Colours::grey));
     g.setColour (bgColour);
     g.fillAll();
 }
@@ -33,7 +33,7 @@ void CabbageIDELookAndFeel::drawMenuBarBackground(Graphics &g, int width, int he
 //======== drawPopupMenuBackground ======================================================================
 void CabbageIDELookAndFeel::drawPopupMenuBackground (Graphics& g, int width, int height)
 {
-    const Colour backgroundColour(CabbageSettings::getColourFromValueTree(colourTree, ColourIds::popupMenuBackground, Colours::grey.darker()));
+    const Colour backgroundColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuBackground, Colours::grey.darker()));
     g.fillAll (backgroundColour);
 
 }
@@ -58,7 +58,7 @@ void CabbageIDELookAndFeel::drawPopupMenuItem (Graphics& g, const Rectangle<int>
     }
     else
     {
-        Colour textColour (CabbageSettings::getColourFromValueTree(colourTree, ColourIds::popupMenuText, Colours::white));
+        Colour textColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuText, Colours::white));
 
         if (textColourToUse != nullptr)
             textColour = *textColourToUse;
@@ -67,10 +67,10 @@ void CabbageIDELookAndFeel::drawPopupMenuItem (Graphics& g, const Rectangle<int>
 
         if (isHighlighted)
         {
-            g.setColour (CabbageSettings::getColourFromValueTree(colourTree, ColourIds::popupMenuMouseOverBackground, Colours::grey));
+            g.setColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuMouseOverBackground, Colours::grey));
             g.fillRect (r);
 
-            g.setColour (CabbageSettings::getColourFromValueTree(colourTree, ColourIds::popupMenuHighlightedText, Colours::grey));
+            g.setColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuHighlightedText, Colours::grey));
         }
         else
         {
@@ -139,8 +139,8 @@ void CabbageIDELookAndFeel::drawMenuBarItem(Graphics & g, int width, int height,
         MenuBarComponent &menuBar)
 {
 
-    const Colour textColour(CabbageSettings::getColourFromValueTree(colourTree, ColourIds::menuBarText, Colours::white));
-    const Colour itemColour(CabbageSettings::getColourFromValueTree(colourTree, ColourIds::menuBarMouseOverBackground, Colours::grey));
+    const Colour textColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::menuBarText, Colours::white));
+    const Colour itemColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::menuBarMouseOverBackground, Colours::grey));
 
     if ((isMouseOverItem == true) || (isMenuOpen == true))
     {
@@ -152,3 +152,45 @@ void CabbageIDELookAndFeel::drawMenuBarItem(Graphics & g, int width, int height,
     g.setFont (getMenuBarFont (menuBar, itemIndex, itemText));
     g.drawFittedText (itemText, 0, 0, width, height, Justification::centred, 1);
 }
+
+void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
+                                       AlertWindow& alert,
+                                       const Rectangle<int>& textArea,
+                                       TextLayout& textLayout)
+{
+    g.fillAll (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::alertWindowBackground, Colour(250,250,250)));
+
+    int iconSpaceUsed = 160;
+
+    if (alert.getAlertType() != AlertWindow::NoIcon)
+    {
+        Path icon;
+        uint32 colour;
+        char character;
+
+        if (alert.getAlertType() == AlertWindow::WarningIcon)
+        {
+			Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed).toFloat());
+			const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+			g.drawImage(warningImage, rect.reduced(20));
+        }
+        if (alert.getAlertType() == AlertWindow::QuestionIcon)
+        {
+			Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
+			const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+			g.drawImage(warningImage, rect.reduced(25));
+        }
+
+    }
+
+    g.setColour (alert.findColour (AlertWindow::textColourId));
+
+    textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed-50,
+                                        textArea.getY(),
+                                        textArea.getWidth() - iconSpaceUsed-40,
+                                        textArea.getHeight()).toFloat());
+
+    g.setColour (alert.findColour (AlertWindow::outlineColourId));
+    g.drawRect (0, 0, alert.getWidth(), alert.getHeight());
+}
+

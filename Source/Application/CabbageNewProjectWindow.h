@@ -13,8 +13,11 @@
 #define CABBAGENEWPROJECTWINDOW_H_INCLUDED
 
 #include "../BinaryData/CabbageBinaryData.h"
+#include "CabbageIDELookAndFeel.h"
 
-class CabbageProjectWindow : public Component
+class CabbageApplication;
+
+class CabbageProjectWindow : public Component, public Button::Listener
 {
 		class SimpleImageButton : public ImageButton
 		{
@@ -48,43 +51,15 @@ class CabbageProjectWindow : public Component
 			
 		};
 public:
-    CabbageProjectWindow(ValueTree valueTree):valueTree(valueTree),
-        newInstrumentButton("newInstrument", this), 
-		newEffectButton("newEffect", this), 
-		newCsoundFileButton("newCsound", this)
-    {
-		
-		CabbageUtilities::debug(Desktop::getInstance().getDisplays().getMainDisplay().dpi);
-		addAndMakeVisible(newCsoundFileButton);
-		addAndMakeVisible(newInstrumentButton);
-		addAndMakeVisible(newEffectButton);
-		
-		//Image instrumentImage = ImageFileFormat::loadFrom(File("Normal.png"));
-        const Image instrumentImage = ImageCache::getFromMemory (CabbageBinaryData::CabbageInstrumentButtonNormal_png, CabbageBinaryData::CabbageInstrumentButtonNormal_pngSize);
-        newInstrumentButton.setImages(true, true, true, instrumentImage, 1, Colours::transparentBlack, instrumentImage,
-                         1, Colours::transparentBlack, instrumentImage, .8, Colours::transparentBlack, 0);
-		newInstrumentButton.setTooltip("New Plugin Instrument");
-
-        const Image effectImage = ImageCache::getFromMemory (CabbageBinaryData::CabbageEffectButtonNormal_png, CabbageBinaryData::CabbageEffectButtonNormal_pngSize);
-        newEffectButton.setImages(true, true, true, effectImage, 1, Colours::transparentBlack, effectImage,
-                         1, Colours::transparentBlack, effectImage, .8, Colours::transparentBlack, 0);
-		newEffectButton.setTooltip("New Plugin Effect");
-						 
-		const Image csoundImage = ImageCache::getFromMemory (CabbageBinaryData::CabbageCsoundButtonNormal_png, CabbageBinaryData::CabbageCsoundButtonNormal_pngSize);
-        newCsoundFileButton.setImages(true, true, true, csoundImage, 1, Colours::transparentBlack, csoundImage,
-                         1, Colours::transparentBlack, csoundImage, .8, Colours::transparentBlack, 0);
-		newCsoundFileButton.setTooltip("New Csound file");
-
-    }
-
-	
+    CabbageProjectWindow(CabbageApplication* owner, ValueTree valueTree);
     ~CabbageProjectWindow() {}
 	
 	void setInformationString(String informationStr)
 	{
-			information = informationStr;
+		information = informationStr;
 	}
-	
+
+	void buttonClicked(Button* button);
 	
 	void paint(Graphics& g)
 	{
@@ -108,6 +83,7 @@ private:
     ValueTree valueTree;
 	String information;
     SimpleImageButton newInstrumentButton, newEffectButton, newCsoundFileButton;
+	CabbageApplication* owner;
 
 
 };

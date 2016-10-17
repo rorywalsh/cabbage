@@ -104,7 +104,7 @@ const Identifier class_ ("class");
 };
 
 // Handy list of static Identifiers..
-namespace ColourIds
+namespace CabbageColourIds
 {
 static const Identifier menuBarBackground = "MenuBarBackground";
 static const Identifier menuBarText = "MenuBarText";
@@ -131,6 +131,7 @@ static const Identifier operatorLiteral = "Operator";
 static const Identifier keyword = "Keyword";
 static const Identifier comment = "Comment";
 static const Identifier error = "Error";
+static const Identifier alertWindowBackground = "AlartWindowBackground";
 }
 
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

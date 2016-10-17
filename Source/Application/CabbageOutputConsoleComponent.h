@@ -11,12 +11,13 @@
 #ifndef CABBAGEOUTPUCONSOLECOMPONENT_H_INCLUDED
 #define CABBAGEOUTPUCONSOLECOMPONENT_H_INCLUDED
 
+#include "CabbageIds.h"
 
 class CabbageOutputConsoleComponent : public Component
 {
     ScopedPointer<TextEditor> textEditor;
 public:
-    CabbageOutputConsoleComponent(): Component()
+    CabbageOutputConsoleComponent(ValueTree valueTree): Component()
     {
         addAndMakeVisible(textEditor = new TextEditor(), true);
         textEditor->setColour(Label::outlineColourId, Colours::white);

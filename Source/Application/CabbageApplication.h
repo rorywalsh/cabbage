@@ -15,7 +15,9 @@
 #include "CabbageSettings.h"
 #include "CabbageIDELookAndFeel.h"
 #include "CabbageSettingsWindow.h"
-#include "CabbageNewProjectWindow.h"
+
+class CabbageProjectWindow;
+class CabbageMainDocumentWindow;
 
 //==============================================================================
 class CabbageApplication  : public JUCEApplication, public ChangeListener
@@ -64,6 +66,7 @@ public:
     void createNewProject();
     void askUserToOpenFile();
     bool openFile (const File&);
+	void newFile (String type);
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
     PropertySet* getDefaultSettings();

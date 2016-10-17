@@ -12,6 +12,7 @@
 #include "CabbageMainDocumentWindow.h"
 #include "CabbageApplication.h"
 #include "../Utilities/CabbageUtilities.h"
+#include "CabbageNewProjectWindow.h"
 
 //#include "CabbageSettings.cpp"
 //#include "CabbageAppearanceSettings.cpp"
@@ -197,9 +198,10 @@ void CabbageApplication::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (commandManager, CommandIDs::open);
 
-    PopupMenu recentFiles;
-//    settings->recentFiles.createPopupMenuItems (recentFiles, recentProjectsBaseID, true, true);
-//    menu.addSubMenu ("Open Recent", recentFiles);
+    PopupMenu recentFilesMenu;
+	cabbageSettings->updateRecentFilesList();
+    cabbageSettings->recentFiles.createPopupMenuItems (recentFilesMenu, recentProjectsBaseID, true, true);
+    menu.addSubMenu ("Open Recent", recentFilesMenu);
 
     menu.addSeparator();
     menu.addCommandItem (commandManager, CommandIDs::closeDocument);
@@ -324,7 +326,7 @@ void CabbageApplication::handleMainMenuCommand (int menuItemID)
     if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
     {
         // open a file from the "recent files" menu
-//        openFile (settings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
+        openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
     }
     else if (menuItemID >= activeDocumentsBaseID && menuItemID < activeDocumentsBaseID + 200)
     {
@@ -435,7 +437,7 @@ void CabbageApplication::createNewProject()
     //cabbageSettings->set("Colours", ColourIds::popupMenuBackground, Colours::red.toString());
 
     DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageProjectWindow(cabbageSettings->getValueTree()));
+    o.content.setOwned(new CabbageProjectWindow(this, cabbageSettings->getValueTree()));
     o.content->setSize(650, 350);
 
     o.dialogTitle = TRANS("Select new project type");
@@ -445,6 +447,8 @@ void CabbageApplication::createNewProject()
     o.resizable = false;
 
     o.launchAsync();
+
+	
     /*
     DialogWindow::LaunchOptions o;
     o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree()));
@@ -479,8 +483,15 @@ void CabbageApplication::askUserToOpenFile()
 
 bool CabbageApplication::openFile (const File& file)
 {
-    //return mainWindowList.openFile (file);
+    cabbageMainDocumentWindow->getMainContentComponent()->openFile(file);
+	cabbageSettings->updateRecentFilesList(file);
+
     return true;
+}
+
+void CabbageApplication::newFile (String type)
+{
+
 }
 
 bool CabbageApplication::closeAllDocuments (bool askUserToSave)

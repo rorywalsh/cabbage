@@ -27,6 +27,8 @@
               resource="0" file="Source/Application/CabbageMainDocumentWindow.cpp"/>
         <FILE id="qNGpCW" name="CabbageMainDocumentWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageMainDocumentWindow.h"/>
+        <FILE id="kEBTzn" name="CabbageNewProjectWindow.cpp" compile="1" resource="0"
+              file="Source/Application/CabbageNewProjectWindow.cpp"/>
         <FILE id="sOovf8" name="CabbageNewProjectWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageNewProjectWindow.h"/>
         <FILE id="yKQiG7" name="CabbageOutputConsoleComponent.h" compile="0"

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="200"
+   height="200"
+   viewBox="0 0 159.99989 159.99991"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="CabbageProjectButtonCsound.svg"
+   inkscape:export-filename="/home/rory/sourcecode/Cabbage2/Images/CabbageProjectButtonInstrument.png"
+   inkscape:export-xdpi="165.8"
+   inkscape:export-ydpi="165.8">
+  <metadata
+     id="metadata9">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs7" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     id="namedview5"
+     showgrid="true"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="-38.834919"
+     inkscape:cy="83.160876"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2">
+    <inkscape:grid
+       type="xygrid"
+       id="grid5622" />
+  </sodipodi:namedview>
+  <rect
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.87999845;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="rect5620"
+     width="59.962624"
+     height="79.761597"
+     x="-18.384779"
+     y="22.538429"
+     rx="3.5223982"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.26310873px;line-height:125%;font-family:Courier;-inkscape-font-specification:Courier;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="-13.515528"
+     y="34.766781"
+     id="text5634"
+     sodipodi:linespacing="125%"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165"><tspan
+       sodipodi:role="line"
+       id="tspan5636"
+       x="-13.515528"
+       y="34.766781"
+       style="font-weight:normal"><tspan
+   style="font-weight:bold"
+   id="tspan5660">instr</tspan> 1</tspan><tspan
+       sodipodi:role="line"
+       x="-13.515528"
+       y="41.641716"
+       id="tspan5644"
+       style="font-weight:normal">a1 <tspan
+   style="font-weight:bold"
+   id="tspan5662">oscili</tspan> 1, 100</tspan><tspan
+       sodipodi:role="line"
+       x="-13.515528"
+       y="48.516651"
+       id="tspan5638"
+       style="font-weight:normal">a2 <tspan
+   style="font-weight:bold"
+   id="tspan5664">oscili</tspan> a1,200</tspan><tspan
+       sodipodi:role="line"
+       x="-13.515528"
+       y="55.391586"
+       id="tspan5640"
+       style="font-weight:normal"><tspan
+   style="font-weight:bold"
+   id="tspan5666">outs</tspan> a2</tspan><tspan
+       sodipodi:role="line"
+       x="-13.515528"
+       y="62.266525"
+       id="tspan5642"
+       style="font-weight:normal"><tspan
+         style="font-weight:bold"
+         id="tspan5668">endin</tspan></tspan></text>
+  <rect
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.87999845;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="rect5646"
+     width="78.343719"
+     height="23.143133"
+     x="-28.444828"
+     y="70.083809"
+     rx="2.8745615"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.70859146px;line-height:125%;font-family:Courier;-inkscape-font-specification:Courier;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.07999996;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     x="-24.86764"
+     y="83.581627"
+     id="text5628"
+     sodipodi:linespacing="125%"
+     transform="scale(0.95804508,1.0437922)"
+     inkscape:export-xdpi="165"
+     inkscape:export-ydpi="165"><tspan
+       sodipodi:role="line"
+       id="tspan5630"
+       x="-24.86764"
+       y="83.581627"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Courier;-inkscape-font-specification:Courier">Csound</tspan></text>
+</svg>

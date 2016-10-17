@@ -63,31 +63,32 @@ void CabbageSettings::setDefaultSettings()
     defaultValueTree.getChildWithName("Misc").setProperty("windowY", 100, 0);
 
     defaultValueTree.addChild(ValueTree("Colours"), -1, 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::menuBarBackground,  "FF29292A", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::menuBarText,  "FFFFFFFF", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::menuBarBackground,  "FF29292A", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::menuBarMouseOverBackground,  "FF29292A", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::popupMenuBackground,  "FFFFFFFF", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::popupMenuMouseOverBackground,  "FFFFFFFF", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::popupMenuText,  "FFFF0000", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::popupMenuHighlightedText,  "FFFFFF00", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::codeBackground,  "FF222222", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::lineNumberBackground,  "44C1C1C1", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::lineNumbers,  "E9B2B2B2", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::plainText,  "FFCECECE", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::selectTextBackground,  "FF2859AC", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::caret,  "FFFFFFFF", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::preprocessor,  "FFF8F631", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::punctuation,  "FFCFBEFF", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::bracket,  "FF058202", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::stringLiteral,  "FFBC45DD", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::bracket,  "ff885500", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::integerLiteral,  "FF42C8C4", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::identifierLiteral,  "FFCFCFCF", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::operatorLiteral,  "FFC4EB19", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::keyword,  "FFEE6F6F", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::comment,  "FF72D20C", 0);
-    defaultValueTree.getChildWithName("Colours").setProperty(ColourIds::error,  "FFE60000", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::menuBarBackground,  "FF29292A", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::menuBarText,  "FFFFFFFF", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::menuBarBackground,  "FF29292A", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::menuBarMouseOverBackground,  "FF29292A", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::popupMenuBackground,  "FFFFFFFF", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::popupMenuMouseOverBackground,  "FFFFFFFF", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::popupMenuText,  "FFFF0000", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::popupMenuHighlightedText,  "FFFFFF00", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::codeBackground,  "FF222222", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::lineNumberBackground,  "44C1C1C1", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::lineNumbers,  "E9B2B2B2", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::plainText,  "FFCECECE", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::selectTextBackground,  "FF2859AC", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::caret,  "FFFFFFFF", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::preprocessor,  "FFF8F631", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::punctuation,  "FFCFBEFF", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::bracket,  "FF058202", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::stringLiteral,  "FFBC45DD", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::bracket,  "ff885500", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::integerLiteral,  "FF42C8C4", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::identifierLiteral,  "FFCFCFCF", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::operatorLiteral,  "FFC4EB19", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::keyword,  "FFEE6F6F", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::comment,  "FF72D20C", 0);
+    defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::error,  "FFE60000", 0);
+	defaultValueTree.getChildWithName("Colours").setProperty(CabbageColourIds::alertWindowBackground, Colour(147,210,0).toString(), 0);
 
 
     //write properties to settings file..
@@ -172,5 +173,18 @@ XmlElement* CabbageSettings::getXML(String identifier)
 int CabbageSettings::getIndexOfProperty(String child, String identifier)
 {
     return valueTree.indexOf(valueTree.getChildWithName(child));
+}
+
+void CabbageSettings::updateRecentFilesList(File file)
+{
+    recentFiles.restoreFromString (getUserSettings()->getValue ("recentlyOpenedFiles"));
+    recentFiles.addFile (file);
+    getUserSettings()->setValue ("recentlyOpenedFiles", recentFiles.toString());	
+}
+
+void CabbageSettings::updateRecentFilesList()
+{
+    recentFiles.restoreFromString (getUserSettings()->getValue ("recentlyOpenedFiles"));
+    getUserSettings()->setValue ("recentlyOpenedFiles", recentFiles.toString());	
 }
 

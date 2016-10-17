@@ -12,6 +12,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "CabbageCodeEditor.h"
 #include "CabbageOutputConsoleComponent.h"
+#include "../Utilities/CabbageUtilities.h"
 
 //==============================================================================
 /*
@@ -27,6 +28,9 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
+	Image createBackground();
+	
+	void openFile(File file);
 
     ScopedPointer<CabbageCodeEditorComponent> editor;
     ScopedPointer<CabbageOutputConsoleComponent> outputConsole;
@@ -34,6 +38,7 @@ public:
     CsoundTokeniser csoundTokeniser;
 
 private:
+	Image bgImage;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

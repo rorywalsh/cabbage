@@ -82,27 +82,33 @@ public:
 
     }
 
-    static Image drawSVGImageFromFilePath(String path, String type, AffineTransform affine)
+    static void showMessage(String title, String message, LookAndFeel* feel)
     {
-        String svgFileName = File(path).existsAsFile()? path : path+"/"+String(type)+".svg";
-        Image svgImg;
-        File svgFile(svgFileName);
-        ScopedPointer<XmlElement> svg (XmlDocument::parse(svgFile.loadFileAsString()));
-		svgImg = Image(Image::ARGB, 80, 80, true);
-		ScopedPointer<Drawable> drawable;
-		
-        if (svgFile.exists())
-        {
-			Graphics graph(svgImg);
-            if (svg != nullptr)
-            {
-                drawable = Drawable::createFromSVG (*svg);
-                drawable->draw(graph, 1.f, affine);
-                return svgImg;
-            }
-		}
-		else return Image::null;
-	}
+        AlertWindow alert(title, message, AlertWindow::WarningIcon);
+        alert.setLookAndFeel(feel);
+        alert.addButton("Ok", 1);
+#if !defined(AndroidBuild)
+        alert.runModalLoop();
+#else
+        alert.showMessageBoxAsync(AlertWindow::WarningIcon, "Cabbage Message" , message, "Ok");
+#endif
+    }
+	
+    static int showYesNoMessage(String message, LookAndFeel* feel, int cancel=0)
+    {
+        AlertWindow alert("Cabbage Message", message, AlertWindow::QuestionIcon, 0);
+        alert.setLookAndFeel(feel);
+        alert.addButton("Yes", 0);
+        alert.addButton("No", 1);
+        if(cancel==1)
+            alert.addButton("Cancel", 2);
+#if !defined(AndroidBuild)
+        int result = alert.runModalLoop();
+#else
+        int result = alert.showYesNoCancelBox(AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
+#endif
+        return result;
+    }	
 };
 
 

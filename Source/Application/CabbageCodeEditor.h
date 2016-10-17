@@ -19,9 +19,9 @@ class CabbageCodeEditorComponent : public CodeEditorComponent
 public:
 
     CodeDocument::Position positionInCode;
-    CabbageCodeEditorComponent(CodeDocument &document, CodeTokeniser *codeTokeniser);
+    CabbageCodeEditorComponent(ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
     ~CabbageCodeEditorComponent() {};
-
+	ValueTree valueTree;
 };
 
 

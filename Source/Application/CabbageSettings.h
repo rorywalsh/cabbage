@@ -27,6 +27,8 @@ public:
     static Colour getColourFromValueTree(ValueTree valueTree, int index, Colour defaultColour);
     static void set(ValueTree tree, String child, Identifier identifier, var value);
     static String get(ValueTree tree, String child, String identifier);
+	void updateRecentFilesList();
+	void updateRecentFilesList(File file);
     int getIndexOfProperty(String child, String identifier);
     ValueTree getValueTree();
     XmlElement* getXML(String identifier);
@@ -34,8 +36,10 @@ public:
     void setDefaultColourSettings();
 
     ValueTree valueTree;
-
+	RecentlyOpenedFilesList recentFiles;
 private:
+
+
 
     void changed()
     {
