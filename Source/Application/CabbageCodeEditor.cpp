@@ -17,4 +17,5 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(ValueTree valueTree, Code
 {
 	this->setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
 	this->setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
+	setFont(Font(String("Droid Sans Mono"), 15, 1));
 }

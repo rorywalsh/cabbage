@@ -48,7 +48,7 @@ void CabbageApplication::initialise (const String& commandLine)
     cabbageSettings->setDefaultSettings();
     lookAndFeel.setColour(2, Colours::red);
 
-    cabbageMainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings->getValueTree());
+    cabbageMainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings);
     cabbageMainDocumentWindow->setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
     initialiseLogger ("IDE_Log_");
     Logger::writeToLog (SystemStats::getOperatingSystemName());
@@ -420,7 +420,7 @@ bool CabbageApplication::perform (const InvocationInfo& info)
         closeAllDocuments (true);
         break;
     case CommandIDs::showGlobalPreferences:
-        int i;
+        cabbageMainDocumentWindow->showAudioSettings();
         break;
     default:
         return JUCEApplication::perform (info);

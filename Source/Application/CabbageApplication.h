@@ -62,7 +62,7 @@ public:
     void getAllCommands (Array<CommandID>&) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo&) override;
     bool perform (const InvocationInfo&) override;
-
+	void showAudioSettings();
     void createNewProject();
     void askUserToOpenFile();
     bool openFile (const File&);

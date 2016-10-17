@@ -9,18 +9,22 @@
 */
 
 #include "CabbageMainDocumentWindow.h"
+#include "CabbageSettings.h"
 
 
-
-CabbageMainDocumentWindow::CabbageMainDocumentWindow (String name, ValueTree settings)  : DocumentWindow(name,
+CabbageMainDocumentWindow::CabbageMainDocumentWindow (String name, CabbageSettings* settings)  : DocumentWindow(name,
             Colours::lightgrey,
             DocumentWindow::allButtons)
 {
     setUsingNativeTitleBar (true);
-    setContentOwned (mainContentComponent = new MainContentComponent(settings), true);
+    setContentOwned (mainContentComponent = new MainContentComponent(settings->getValueTree()), true);
     this->setResizable(true, true);
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
+	
+	pluginWindow = new PluginWindow("CsoundPlugin", Colours::black);
+	pluginHolder = new CabbagePluginHolder(settings->getUserSettings(), false);
+	
 }
 
 MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()

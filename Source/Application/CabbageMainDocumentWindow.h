@@ -10,6 +10,9 @@
 #ifndef CABBAGEMAINWINDOW_H_INCLUDED
 #define CABBAGEMAINWINDOW_H_INCLUDED
 #include "CabbageMainComponent.h"
+#include "CabbagePluginHolder.h"
+
+class CabbageSettings;
 
 //==============================================================================
 /*
@@ -17,28 +20,75 @@
     our MainContentComponent class.
 */
 class CabbageMainDocumentWindow    : public DocumentWindow
-{
+{	
 public:
-    CabbageMainDocumentWindow (String name, ValueTree settings);
+
+	class PluginWindow :public DocumentWindow
+	{
+		public:
+			PluginWindow(String title, Colour backgroundColour):DocumentWindow(title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton){}
+			~PluginWindow(){}
+		
+	};
+
+
+
+    CabbageMainDocumentWindow (String name, CabbageSettings* settings);
+	~CabbageMainDocumentWindow()
+	{
+		pluginHolder->stopPlaying();
+		deleteEditorComp();
+		pluginHolder = nullptr;
+	}
 
     void closeButtonPressed() override
     {
-        // This is called when the user tries to close this window. Here, we'll just
-        // ask the app to quit when this happens, but you can change this to do
-        // whatever you need.
         JUCEApplication::getInstance()->systemRequestedQuit();
     }
+	
+	AudioProcessor* getAudioProcessor() const noexcept { return pluginHolder->processor; }
+	AudioDeviceManager& getDeviceManager() const noexcept { return pluginHolder->deviceManager; }
 
-    /* Note: Be careful if you override any DocumentWindow methods - the base
-       class uses a lot of them, so by overriding you might break its functionality.
-       It's best to do all your work in your content component instead, but if
-       you really have to override any DocumentWindow methods, make sure your
-       subclass also calls the superclass's method.
-    */
+	void showAudioSettings()
+	{
+		pluginHolder->showAudioSettingsDialog();
+	}
+	
+	void createEditorComp()
+	{
+		pluginWindow->setContentOwned(getAudioProcessor()->createEditorIfNeeded(), true);
+	}
+
+	void deleteEditorComp()
+	{
+		if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
+		{
+			pluginHolder->processor->editorBeingDeleted(ed);
+			clearContentComponent();
+		}
+	}
+
+	/** Deletes and re-creates the plugin, resetting it to its default state. */
+	void resetToDefaultState()
+	{
+		pluginHolder->stopPlaying();
+		deleteEditorComp();
+		pluginHolder->deletePlugin();
+
+		if (PropertySet* props = pluginHolder->settings)
+			props->removeValue("filterState");
+
+		pluginHolder->createPlugin();
+		createEditorComp();
+		pluginHolder->startPlaying();
+	}
+	
 	
 	MainContentComponent* getMainContentComponent();
-
+	ScopedPointer<CabbagePluginHolder> pluginHolder;
 	ScopedPointer<MainContentComponent> mainContentComponent;
+	ScopedPointer<PluginWindow> pluginWindow;
+
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainDocumentWindow)
