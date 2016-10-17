@@ -1,0 +1,88 @@
+/*
+  ==============================================================================
+
+    CabbageUtilities.h
+    Created: 14 Oct 2016 11:40:29am
+    Author:  rory
+
+  ==============================================================================
+*/
+
+#ifndef CABBAGEUTILITIES_H_INCLUDED
+#define CABBAGEUTILITIES_H_INCLUDED
+
+#include "../JuceLibraryCode/JuceHeader.h"
+
+
+
+class CabbageUtilities
+{
+public:
+    CabbageUtilities() {};
+    ~CabbageUtilities() {};
+
+    static void debug(String message)
+    {
+#ifdef DEBUG
+        Logger::writeToLog(message);
+#endif
+    }
+
+    static void debug(float value)
+    {
+#ifdef DEBUG
+        Logger::writeToLog(String(value));
+#endif
+    }
+
+    static void debug(String message, double value)
+    {
+#ifdef DEBUG
+        Logger::writeToLog(message+":"+String(value));
+#endif
+    }
+
+    static void debug(float val, String value)
+    {
+#ifdef DEBUG
+        Logger::writeToLog(String(val)+":"+value);
+#endif
+    }
+
+    static void debug(float val, float value)
+    {
+#ifdef DEBUG
+        Logger::writeToLog(String(val)+":"+String(value));
+#endif
+    }
+
+    static void debug(String message, String value)
+    {
+#ifdef DEBUG
+        Logger::writeToLog(message+":"+value);
+#endif
+    }
+
+    static void showMessage(String message)
+    {
+        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
+                                          "Cabbage Message",
+                                          message,
+                                          "Ok");
+
+    }
+
+    static void showMessage(String title, String message)
+    {
+        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
+                                          title,
+                                          message,
+                                          "Ok");
+
+    }
+		
+	
+};
+
+
+#endif  // CABBAGEUTILITIES_H_INCLUDED
