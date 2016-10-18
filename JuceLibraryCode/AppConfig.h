@@ -39,7 +39,7 @@
  #define JucePlugin_Build_AAX              0
 #endif
 #ifndef  JucePlugin_Build_STANDALONE
- #define JucePlugin_Build_STANDALONE       0
+ #define JucePlugin_Build_STANDALONE       1
 #endif
 #ifndef  JucePlugin_Name
  #define JucePlugin_Name                   "GenericCsoundPlugin"
@@ -50,20 +50,6 @@
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "cabbageaudio"
 #endif
-
-
-#ifndef  JucePlugin_MaxNumInputChannels
-#define JucePlugin_MaxNumInputChannels    2
-#endif
-#ifndef  JucePlugin_MaxNumOutputChannels
-#define JucePlugin_MaxNumOutputChannels   2
-#endif
-#ifndef  JucePlugin_PreferredChannelConfigurations
-#define JucePlugin_PreferredChannelConfigurations { 1,1 }, { 2,2 }
-#endif
-
-
-
 #ifndef  JucePlugin_ManufacturerWebsite
  #define JucePlugin_ManufacturerWebsite    ""
 #endif
@@ -74,10 +60,10 @@
  #define JucePlugin_ManufacturerCode       0x4d616e75 // 'Manu'
 #endif
 #ifndef  JucePlugin_PluginCode
- #define JucePlugin_PluginCode             0x59727871 // 'Yrxq'
+ #define JucePlugin_PluginCode             0x506e656f // 'Pneo'
 #endif
 #ifndef  JucePlugin_IsSynth
- #define JucePlugin_IsSynth                0
+ #define JucePlugin_IsSynth                1
 #endif
 #ifndef  JucePlugin_WantsMidiInput
  #define JucePlugin_WantsMidiInput         0
@@ -113,7 +99,7 @@
  #define JucePlugin_AUSubType              JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_AUExportPrefix
- #define JucePlugin_AUExportPrefix         TestPluginAU
+ #define JucePlugin_AUExportPrefix         GenericCsoundPluginAU
 #endif
 #ifndef  JucePlugin_AUExportPrefixQuoted
  #define JucePlugin_AUExportPrefixQuoted   "GenericCsoundPlugin"

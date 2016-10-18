@@ -420,7 +420,7 @@ bool CabbageApplication::perform (const InvocationInfo& info)
         closeAllDocuments (true);
         break;
     case CommandIDs::showGlobalPreferences:
-        cabbageMainDocumentWindow->showAudioSettings();
+        cabbageMainDocumentWindow->pluginWindow->showAudioSettings();
         break;
     default:
         return JUCEApplication::perform (info);

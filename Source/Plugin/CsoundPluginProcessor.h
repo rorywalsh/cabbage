@@ -29,7 +29,7 @@ public:
     void releaseResources() override;
 
    #ifndef JucePlugin_PreferredChannelConfigurations
-    bool setPreferredBusArrangement (bool isInput, int bus, const AudioChannelSet& preferredSet) override;
+    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
     void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
@@ -55,52 +55,10 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
-	//midi class stuff....
-	class MIDIClass
-	{
-		int channel, xPos, yPos;
-
-	public:
-		MIDIClass() {}
-		~MIDIClass() {}
-
-		void setXY(int x, int y)
-		{
-			xPos = x;
-			yPos = y;
-		}
-
-		void setMIDIChannel(int newChannelNumber)
-		{
-			channel = newChannelNumber;
-		}
-
-	};
-	OwnedArray<MIDIClass> midiClassVector;
-
-	void addMIDIClass(int x, int y)
-	{
-		MIDIClass* midiClass = new MIDIClass();
-		midiClass->setMIDIChannel(1);
-		midiClass->setXY(x, y);
-		midiClassVector.add(midiClass);
-	}
-
-	void setDeviceManager(AudioDeviceManager* dev)
-	{
-		devManager = dev;
-	}
-
-	MidiBuffer midiBuffer;
-
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundAudioProcessor)
-	//this will hold an instance of our device manager so that we can pass
-	//MIDI events from our processor to our main application
-	AudioDeviceManager* devManager;
-	MidiOutput* midiOut;
+	
 };
 
 

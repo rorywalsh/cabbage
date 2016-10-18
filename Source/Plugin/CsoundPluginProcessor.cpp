@@ -14,7 +14,18 @@
 
 //==============================================================================
 CsoundAudioProcessor::CsoundAudioProcessor()
+#ifndef JucePlugin_PreferredChannelConfigurations
+     : AudioProcessor (BusesProperties()
+                     #if ! JucePlugin_IsMidiEffect
+                      #if ! JucePlugin_IsSynth
+                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
+                      #endif
+                       .withOutput ("Output", AudioChannelSet::stereo(), true)
+                     #endif
+                       )
+#endif
 {
+
 }
 
 CsoundAudioProcessor::~CsoundAudioProcessor()
@@ -88,48 +99,31 @@ void CsoundAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool CsoundAudioProcessor::setPreferredBusArrangement (bool isInput, int bus, const AudioChannelSet& preferredSet)
+bool CsoundAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-    // Reject any bus arrangements that are not compatible with your plugin
-
-    const int numChannels = preferredSet.size();
-
-   #if JucePlugin_IsMidiEffect
-    if (numChannels != 0)
-        return false;
-   #elif JucePlugin_IsSynth
-    if (isInput || (numChannels != 1 && numChannels != 2))
-        return false;
-   #else
-    if (numChannels != 1 && numChannels != 2)
+  #if JucePlugin_IsMidiEffect
+    ignoreUnused (layouts);
+    return true;
+  #else
+    // This is the place where you check if the layout is supported.
+    // In this template code we only support mono or stereo.
+    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
+     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
 
-    if (! AudioProcessor::setPreferredBusArrangement (! isInput, bus, preferredSet))
+    // This checks if the input layout matches the output layout
+   #if ! JucePlugin_IsSynth
+    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
    #endif
 
-    return AudioProcessor::setPreferredBusArrangement (isInput, bus, preferredSet);
+    return true;
+  #endif
 }
 #endif
 
 void CsoundAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-	if (devManager) {
-		midiOut = devManager->getDefaultMidiOutput();
-		if (midiOut)
-			midiOut->startBackgroundThread();
-	}
-
-	if (midiOut != nullptr) {
-		midiOut->sendBlockOfMessages(
-			midiBuffer,
-			Time::getMillisecondCounter(),
-			this->getSampleRate()
-			);
-	}
-
-	//clear midi buffer
-	midiBuffer.clear();
 
     const int totalNumInputChannels  = getTotalNumInputChannels();
     const int totalNumOutputChannels = getTotalNumOutputChannels();
@@ -177,6 +171,8 @@ void CsoundAudioProcessor::setStateInformation (const void* data, int sizeInByte
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }
+
+
 
 
 

@@ -35,6 +35,9 @@ void CabbageSettings::setDefaultSettings()
 #else
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
 #endif
+
+	
+
     ValueTree defaultValueTree("Settings");
     defaultValueTree.addChild(ValueTree("Misc"), -1, 0);
     defaultValueTree.getChildWithName("Misc").setProperty("CsoundHelpDir", manualPath, 0);
@@ -110,7 +113,9 @@ void CabbageSettings::setDefaultSettings()
     //}
 
     //defaultPropSet->setValue("PROJECT_DEFAULT_SETTINGS", data);
-    //getUserSettings()->setFallbackPropertySet(defaultPropSet);
+	defaultPropSet->setValue("windowX", 100);
+    defaultPropSet->setValue("windowY", 100);
+    getUserSettings()->setFallbackPropertySet(defaultPropSet);
     //XmlElement* xmlData = getUserSettings()->createXml("Settings");
     //valueTree.fromXml(*xmlData);
 

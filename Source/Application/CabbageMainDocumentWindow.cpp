@@ -11,6 +11,8 @@
 #include "CabbageMainDocumentWindow.h"
 #include "CabbageSettings.h"
 
+	
+
 
 CabbageMainDocumentWindow::CabbageMainDocumentWindow (String name, CabbageSettings* settings)  : DocumentWindow(name,
             Colours::lightgrey,
@@ -21,9 +23,15 @@ CabbageMainDocumentWindow::CabbageMainDocumentWindow (String name, CabbageSettin
     this->setResizable(true, true);
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
+
 	
-	pluginWindow = new PluginWindow("CsoundPlugin", Colours::black);
-	pluginHolder = new CabbagePluginHolder(settings->getUserSettings(), false);
+	pluginWindow = new StandaloneFilterWindow("CsoundPlugin",
+			Colours::black,
+			settings->getUserSettings(),
+			false);
+	
+	pluginWindow->setVisible(true);
+	//pluginHolder = new CabbagePluginHolder(settings->getUserSettings(), false);
 	
 }
 
