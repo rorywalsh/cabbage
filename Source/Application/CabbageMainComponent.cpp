@@ -16,7 +16,7 @@ MainContentComponent::MainContentComponent(ValueTree settings)
     addAndMakeVisible(editor = new CabbageCodeEditorComponent(settings, csoundDocument, &csoundTokeniser));
     addAndMakeVisible(outputConsole = new CabbageOutputConsoleComponent(settings));
     editor->setLineNumbersShown(true);
-    editor->setFont(Font(14));
+    editor->setFont(Font(String("DejaVu Sans Mono"), 17, 0));
     editor->setVisible(false);
 	outputConsole->setVisible(false);
 	

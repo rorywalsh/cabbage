@@ -49,7 +49,7 @@ public:
     }
 
     //==============================================================================
-    void createPlugin()
+    virtual void createPlugin()
     {
 
       #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
@@ -61,20 +61,11 @@ public:
       #endif
         jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
-        // try to disable sidechain and aux buses
-        const int numInBuses  = processor->busArrangement.inputBuses. size();
-        const int numOutBuses = processor->busArrangement.outputBuses.size();
-
-        for (int busIdx = 1; busIdx < numInBuses; ++busIdx)
-            processor->setPreferredBusArrangement (true, busIdx, AudioChannelSet::disabled());
-
-        for (int busIdx = 1; busIdx < numOutBuses; ++busIdx)
-            processor->setPreferredBusArrangement (false, busIdx, AudioChannelSet::disabled());
-
+        processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails(44100, 512);
     }
 
-    void deletePlugin()
+    virtual void deletePlugin()
     {
         stopPlaying();
         processor = nullptr;
@@ -244,6 +235,10 @@ public:
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
 
+   #if JUCE_IOS || JUCE_ANDROID
+    StringArray lastMidiDevices;
+   #endif
+
 private:
     void setupAudioDevices (const String& preferredDefaultDeviceName,
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
@@ -261,6 +256,44 @@ private:
         deviceManager.removeMidiInputCallback (String(), &player);
         deviceManager.removeAudioCallback (&player);
     }
+
+   #if JUCE_IOS || JUCE_ANDROID
+    void timerCallback() override
+    {
+        StringArray midiInputDevices = MidiInput::getDevices();
+        if (midiInputDevices != lastMidiDevices)
+        {
+            {
+                const int n = lastMidiDevices.size();
+                for (int i = 0; i < n; ++i)
+                {
+                    const String& oldDevice = lastMidiDevices[i];
+
+                    if (! midiInputDevices.contains (oldDevice))
+                    {
+                        deviceManager.setMidiInputEnabled (oldDevice, false);
+                        deviceManager.removeMidiInputCallback (oldDevice, &player);
+                    }
+                }
+            }
+
+            {
+                const int n = midiInputDevices.size();
+                for (int i = 0; i < n; ++i)
+                {
+                    const String& newDevice = midiInputDevices[i];
+
+                    if (! lastMidiDevices.contains (newDevice))
+                    {
+                        deviceManager.addMidiInputCallback (newDevice, &player);
+                        deviceManager.setMidiInputEnabled (newDevice, true);
+                    }
+                }
+            }
+        }
+    }
+   #endif
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginHolder)
 };
