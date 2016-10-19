@@ -28,6 +28,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "CsoundPluginEditor.h"
 #include "CsoundPluginProcessor.h"
+#include "../Application/CabbageSettings.h"
 
 
 extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
@@ -67,7 +68,7 @@ public:
 
         In all instances, the settingsToUse will take precedence over the "preferred" options if not null.
     */
-    StandalonePluginHolder (PropertySet* settingsToUse,
+    StandalonePluginHolder (ValueTree settingsToUse,
                             bool takeOwnershipOfSettings = true,
                             const String& preferredDefaultDeviceName = String(),
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr)
@@ -76,12 +77,8 @@ public:
     {
         createPlugin();
         setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
-        reloadPluginState();
         startPlaying();
 
-       #if JUCE_IOS || JUCE_ANDROID
-        startTimer (500);
-       #endif
     }
 
     virtual ~StandalonePluginHolder()
@@ -115,82 +112,6 @@ public:
     {
         stopPlaying();
         processor = nullptr;
-    }
-
-    static String getFilePatterns (const String& fileSuffix)
-    {
-        if (fileSuffix.isEmpty())
-            return String();
-
-        return (fileSuffix.startsWithChar ('.') ? "*" : "*.") + fileSuffix;
-    }
-
-
-    //==============================================================================
-    File getLastFile() const
-    {
-        File f;
-
-        if (settings != nullptr)
-            f = File (settings->getValue ("lastStateFile"));
-
-        if (f == File())
-            f = File::getSpecialLocation (File::userDocumentsDirectory);
-
-        return f;
-    }
-
-    void setLastFile (const FileChooser& fc)
-    {
-        if (settings != nullptr)
-            settings->setValue ("lastStateFile", fc.getResult().getFullPathName());
-    }
-
-    /** Pops up a dialog letting the user save the processor's state to a file. */
-    void askUserToSaveState (const String& fileSuffix = String())
-    {
-       #if JUCE_MODAL_LOOPS_PERMITTED
-        FileChooser fc (TRANS("Save current state"), getLastFile(), getFilePatterns (fileSuffix));
-
-        if (fc.browseForFileToSave (true))
-        {
-            setLastFile (fc);
-
-            MemoryBlock data;
-            processor->getStateInformation (data);
-
-            if (! fc.getResult().replaceWithData (data.getData(), data.getSize()))
-                AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-                                                  TRANS("Error whilst saving"),
-                                                  TRANS("Couldn't write to the specified file!"));
-        }
-       #else
-        ignoreUnused (fileSuffix);
-       #endif
-    }
-
-    /** Pops up a dialog letting the user re-load the processor's state from a file. */
-    void askUserToLoadState (const String& fileSuffix = String())
-    {
-       #if JUCE_MODAL_LOOPS_PERMITTED
-        FileChooser fc (TRANS("Load a saved state"), getLastFile(), getFilePatterns (fileSuffix));
-
-        if (fc.browseForFileToOpen())
-        {
-            setLastFile (fc);
-
-            MemoryBlock data;
-
-            if (fc.getResult().loadFileAsData (data))
-                processor->setStateInformation (data.getData(), (int) data.getSize());
-            else
-                AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-                                                  TRANS("Error whilst loading"),
-                                                  TRANS("Couldn't read from the specified file!"));
-        }
-       #else
-        ignoreUnused (fileSuffix);
-       #endif
     }
 
     //==============================================================================
@@ -229,20 +150,18 @@ public:
 
     void saveAudioDeviceState()
     {
-        if (settings != nullptr)
-        {
-            ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
-            settings->setValue ("audioSetup", xml);
-        }
+         ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
+         CabbageSettings::set(settings, "AudioSettings", "audioSetup", xml->createDocument(""));
     }
 
     void reloadAudioDeviceState (const String& preferredDefaultDeviceName,
                                  const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
     {
         ScopedPointer<XmlElement> savedState;
+		
+		String xmlAudioState = CabbageSettings::get(settings, "AudioSettings", "audioSetup");
 
-        if (settings != nullptr)
-            savedState = settings->getXmlValue ("audioSetup");
+		savedState = XmlDocument::parse(xmlAudioState);//settings->getXmlValue ("audioSetup");
 
         deviceManager.initialise (processor->getTotalNumInputChannels(),
                                   processor->getTotalNumOutputChannels(),
@@ -253,30 +172,7 @@ public:
     }
 
     //==============================================================================
-    void savePluginState()
-    {
-        if (settings != nullptr && processor != nullptr)
-        {
-            MemoryBlock data;
-            processor->getStateInformation (data);
-
-            settings->setValue ("filterState", data.toBase64Encoding());
-        }
-    }
-
-    void reloadPluginState()
-    {
-        if (settings != nullptr)
-        {
-            MemoryBlock data;
-
-            if (data.fromBase64Encoding (settings->getValue ("filterState")) && data.getSize() > 0)
-                processor->setStateInformation (data.getData(), (int) data.getSize());
-        }
-    }
-
-    //==============================================================================
-    PropertySet* settings;
+    ValueTree settings;
     ScopedPointer<AudioProcessor> processor;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
@@ -352,7 +248,7 @@ public:
     //==============================================================================
     StandaloneFilterWindow (const String& title,
                             Colour backgroundColour,
-                            PropertySet* settingsToUse,
+                            ValueTree settings,
                             bool takeOwnershipOfSettings,
                             const String& preferredDefaultDeviceName = String(),
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr)
@@ -365,34 +261,26 @@ public:
         optionsButton.addListener (this);
         optionsButton.setTriggeredOnMouseDown (true);
 
-        pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings,
+        pluginHolder = new StandalonePluginHolder (settings, takeOwnershipOfSettings,
                                                    preferredDefaultDeviceName, preferredSetupOptions);
 
         createEditorComp();
 
-        if (PropertySet* props = pluginHolder->settings)
-        {
-            const int x = props->getIntValue ("windowX", -100);
-            const int y = props->getIntValue ("windowY", -100);
+		const int x = CabbageSettings::get(settings, "Misc", "windowX").getIntValue();
+		const int y = CabbageSettings::get(settings, "Misc", "windowY").getIntValue();
+
 
             if (x != -100 && y != -100)
                 setBoundsConstrained (juce::Rectangle<int> (x, y, getWidth(), getHeight()));
             else
                 centreWithSize (getWidth(), getHeight());
-        }
-        else
-        {
-            centreWithSize (getWidth(), getHeight());
-        }
     }
 
     ~StandaloneFilterWindow()
     {
-        if (PropertySet* props = pluginHolder->settings)
-        {
-        //    props->setValue ("windowX", 0);
-        //    props->setValue ("windowY", 0);
-        }
+		CabbageSettings::set(pluginHolder->settings, "Misc", "windowX", getX());
+		CabbageSettings::set(pluginHolder->settings, "Misc", "windowY", getY());
+
 
         pluginHolder->stopPlaying();
         deleteEditorComp();
@@ -424,9 +312,6 @@ public:
         deleteEditorComp();
         pluginHolder->deletePlugin();
 
-        if (PropertySet* props = pluginHolder->settings)
-            props->removeValue ("filterState");
-
         pluginHolder->createPlugin();
         createEditorComp();
         pluginHolder->startPlaying();
@@ -457,8 +342,6 @@ public:
         switch (result)
         {
             case 1:  pluginHolder->showAudioSettingsDialog(); break;
-            case 2:  pluginHolder->askUserToSaveState(); break;
-            case 3:  pluginHolder->askUserToLoadState(); break;
             case 4:  resetToDefaultState(); break;
             default: break;
         }

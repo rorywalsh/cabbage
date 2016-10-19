@@ -70,6 +70,8 @@ void CabbageApplication::initialise (const String& commandLine)
         quit();
         return;
     }
+	
+	createGenericCsoundPluginHolder();
 
 
     initCommandManager();
@@ -420,7 +422,7 @@ bool CabbageApplication::perform (const InvocationInfo& info)
         closeAllDocuments (true);
         break;
     case CommandIDs::showGlobalPreferences:
-        cabbageMainDocumentWindow->pluginWindow->showAudioSettings();
+        pluginHolder->showAudioSettingsDialog();
         break;
     default:
         return JUCEApplication::perform (info);
@@ -481,12 +483,25 @@ void CabbageApplication::askUserToOpenFile()
         openFile (fc.getResult());
 }
 
-bool CabbageApplication::openFile (const File& file)
+bool CabbageApplication::openFile (const File& file, String type)
 {
     cabbageMainDocumentWindow->getMainContentComponent()->openFile(file);
 	cabbageSettings->updateRecentFilesList(file);
-
+	
+	if(type=="Csound")
+	{		
+		
+	}
+	
     return true;
+}
+
+void CabbageApplication::createGenericCsoundPluginHolder()
+{
+	if(!pluginHolder)
+	{
+		pluginHolder = new StandalonePluginHolder(cabbageSettings->getValueTree(), false);
+	}
 }
 
 void CabbageApplication::newFile (String type)

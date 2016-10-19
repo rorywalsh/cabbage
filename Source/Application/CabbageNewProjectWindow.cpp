@@ -62,7 +62,7 @@ void CabbageProjectWindow::buttonClicked(Button* button)
 					if(result==0)
 					{	
 						fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-						owner->openFile (fc.getResult());
+						owner->openFile (fc.getResult(), "Csound");
 						delete this->getParentComponent();
 					}
 				}		

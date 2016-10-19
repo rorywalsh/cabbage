@@ -13,11 +13,11 @@
 
 #include "CabbageIds.h"
 
-class CabbageOutputConsoleComponent : public Component
+class CabbageOutputConsole : public Component
 {
     ScopedPointer<TextEditor> textEditor;
 public:
-    CabbageOutputConsoleComponent(ValueTree valueTree): Component()
+    CabbageOutputConsole(ValueTree valueTree): Component()
     {
         addAndMakeVisible(textEditor = new TextEditor(), true);
         textEditor->setColour(Label::outlineColourId, Colours::white);
@@ -34,7 +34,7 @@ public:
         setText(initString);
     };
 
-    ~CabbageOutputConsoleComponent() {};
+    ~CabbageOutputConsole() {};
 
 
     void setText(String text)

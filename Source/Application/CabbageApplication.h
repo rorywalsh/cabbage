@@ -15,6 +15,7 @@
 #include "CabbageSettings.h"
 #include "CabbageIDELookAndFeel.h"
 #include "CabbageSettingsWindow.h"
+#include "../Plugin/StandaloneFilterWindow.h"
 
 class CabbageProjectWindow;
 class CabbageMainDocumentWindow;
@@ -65,11 +66,12 @@ public:
 	void showAudioSettings();
     void createNewProject();
     void askUserToOpenFile();
-    bool openFile (const File&);
+    bool openFile (const File&, String type="");
 	void newFile (String type);
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
     PropertySet* getDefaultSettings();
+	void createGenericCsoundPluginHolder();
     ScopedPointer<ApplicationCommandManager> commandManager;
 
     ScopedPointer<CabbageSettings> cabbageSettings;
@@ -124,6 +126,7 @@ public:
         }
     };
     ScopedPointer<MainMenuModel> menuModel;
+	ScopedPointer<StandalonePluginHolder> pluginHolder;
 
 private:
     ScopedPointer<CabbageMainDocumentWindow> cabbageMainDocumentWindow;

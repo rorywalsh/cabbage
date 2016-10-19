@@ -9,11 +9,44 @@
 */
 #ifndef CABBAGEMAINWINDOW_H_INCLUDED
 #define CABBAGEMAINWINDOW_H_INCLUDED
-#include "CabbageMainComponent.h"
 
-#include "../Plugin/StandaloneFilterWindow.h"
+#include "../JuceLibraryCode/JuceHeader.h"
+#include "CabbageCodeEditor.h"
+#include "CabbageOutputConsole.h"
+#include "../BinaryData/CabbageBinaryData.h"
 
 class CabbageSettings;
+
+
+//==============================================================================
+/*
+    This component lives inside our window, and this is where you should put all
+    your controls and content.
+*/
+class MainContentComponent   : public Component
+{
+public:
+    //==============================================================================
+    MainContentComponent(ValueTree settings);
+    ~MainContentComponent();
+
+    void paint (Graphics&) override;
+    void resized() override;
+	Image createBackground();
+	
+	void openFile(File file);
+
+    ScopedPointer<CabbageCodeEditorComponent> editor;
+    ScopedPointer<CabbageOutputConsole> outputConsole;
+    CodeDocument csoundDocument;
+    CsoundTokeniser csoundTokeniser;
+
+private:
+	Image bgImage;
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
+};
+
 
 //==============================================================================
 /*
@@ -23,17 +56,6 @@ class CabbageSettings;
 class CabbageMainDocumentWindow    : public DocumentWindow
 {	
 public:
-
-	class PluginWindow :public DocumentWindow
-	{
-		public:
-			PluginWindow(String title, Colour backgroundColour):DocumentWindow(title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton){}
-			~PluginWindow(){}
-		
-	};
-
-
-
     CabbageMainDocumentWindow (String name, CabbageSettings* settings);
 	~CabbageMainDocumentWindow()
 	{
@@ -46,9 +68,8 @@ public:
 	}
 	
 	MainContentComponent* getMainContentComponent();
-	//ScopedPointer<StandalonePluginHolder> pluginHolder;
 	ScopedPointer<MainContentComponent> mainContentComponent;
-	ScopedPointer<StandaloneFilterWindow> pluginWindow;
+
 
 
 private:
