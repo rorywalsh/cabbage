@@ -19,10 +19,6 @@
         <FILE id="W39dhF" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
               file="Source/Application/CabbageIDELookAndFeel.h"/>
         <FILE id="zbF8ak" name="CabbageIds.h" compile="0" resource="0" file="Source/Application/CabbageIds.h"/>
-        <FILE id="bYmwrx" name="CabbageMainComponent.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageMainComponent.cpp"/>
-        <FILE id="FY7Yks" name="CabbageMainComponent.h" compile="0" resource="0"
-              file="Source/Application/CabbageMainComponent.h"/>
         <FILE id="CZ0NrV" name="CabbageMainDocumentWindow.cpp" compile="1"
               resource="0" file="Source/Application/CabbageMainDocumentWindow.cpp"/>
         <FILE id="qNGpCW" name="CabbageMainDocumentWindow.h" compile="0" resource="0"
@@ -31,8 +27,8 @@
               file="Source/Application/CabbageNewProjectWindow.cpp"/>
         <FILE id="sOovf8" name="CabbageNewProjectWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageNewProjectWindow.h"/>
-        <FILE id="yKQiG7" name="CabbageOutputConsoleComponent.h" compile="0"
-              resource="0" file="Source/Application/CabbageOutputConsoleComponent.h"/>
+        <FILE id="z0jw2E" name="CabbageOutputConsole.h" compile="0" resource="0"
+              file="Source/Application/CabbageOutputConsole.h"/>
         <FILE id="aqq1xN" name="CabbagePluginHolder.h" compile="0" resource="0"
               file="Source/Application/CabbagePluginHolder.h"/>
         <FILE id="rpOZ3J" name="CabbageSettings.cpp" compile="1" resource="0"
@@ -110,5 +106,5 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS/>
+  <JUCEOPTIONS JUCE_ALSA="enabled" JUCE_JACK="enabled"/>
 </JUCERPROJECT>

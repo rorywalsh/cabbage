@@ -71,6 +71,7 @@ void CabbageApplication::initialise (const String& commandLine)
         return;
     }
 	
+
 	createGenericCsoundPluginHolder();
 
 
@@ -88,9 +89,12 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
 {
     if(CabbageSettings* settings = dynamic_cast<CabbageSettings*>(source))
     {
-
         lookAndFeel.refreshLookAndFeel(cabbageSettings->getValueTree());
         cabbageMainDocumentWindow->lookAndFeelChanged();
+    }
+	else if(StandalonePluginHolder* pluginHolder = dynamic_cast<StandalonePluginHolder*>(source))
+    {
+
     }
 }
 
@@ -213,6 +217,8 @@ void CabbageApplication::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (commandManager, CommandIDs::closeProject);
     menu.addCommandItem (commandManager, CommandIDs::saveProject);
+    menu.addSeparator();
+    menu.addCommandItem (commandManager, CommandIDs::settings);
     menu.addSeparator();
 
 #if ! JUCE_MAC
@@ -356,6 +362,7 @@ void CabbageApplication::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::open,
                               CommandIDs::closeAllDocuments,
                               CommandIDs::saveAll,
+							  CommandIDs::settings,
                               CommandIDs::showGlobalPreferences
                             };
 
@@ -375,6 +382,10 @@ void CabbageApplication::getCommandInfo (CommandID commandID, ApplicationCommand
     case CommandIDs::open:
         result.setInfo ("Open...", "Opens a Jucer project", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
+        break;
+		
+    case CommandIDs::settings:
+        result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
         break;
 
     case CommandIDs::showGlobalPreferences:
@@ -421,6 +432,9 @@ bool CabbageApplication::perform (const InvocationInfo& info)
     case CommandIDs::closeAllDocuments:
         closeAllDocuments (true);
         break;
+	case CommandIDs::settings:
+		showSettingsDialog();
+		break;
     case CommandIDs::showGlobalPreferences:
         pluginHolder->showAudioSettingsDialog();
         break;
@@ -431,6 +445,21 @@ bool CabbageApplication::perform (const InvocationInfo& info)
     return true;
 }
 
+void CabbageApplication::showSettingsDialog()
+{
+	DialogWindow::LaunchOptions o;
+    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), pluginHolder->getAudioDeviceSelector()));
+    o.content->setSize(500, 450);
+
+    o.dialogTitle = TRANS("Cabbage Settings");
+    o.dialogBackgroundColour = Colour(0xfff0f0f0);
+    o.escapeKeyTriggersCloseButton = true;
+    o.useNativeTitleBar = true;
+    o.resizable = false;
+
+    o.launchAsync();
+    
+}
 //==============================================================================
 void CabbageApplication::createNewProject()
 {
@@ -496,6 +525,7 @@ bool CabbageApplication::openFile (const File& file, String type)
     return true;
 }
 
+
 void CabbageApplication::createGenericCsoundPluginHolder()
 {
 	if(!pluginHolder)
@@ -524,19 +554,22 @@ bool CabbageApplication::closeAllMainWindows()
 //==============================================================================
 void CabbageApplication::shutdown()
 {
+	
+	CabbageUtilities::debug(pluginHolder->getDeviceManagerSettings());
+	cabbageSettings->setProperty("audioSetup", pluginHolder->getDeviceManagerSettings());
+	
+	
     cabbageMainDocumentWindow->setMenuBar(nullptr);
-
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
-
     menuModel = nullptr;
     commandManager = nullptr;
-    cabbageSettings->closeFiles();
-    cabbageSettings = nullptr;
     appearanceEditorWindow = nullptr;
     globalPreferencesWindow = nullptr;
-
+	pluginHolder = nullptr;
+    cabbageSettings->closeFiles();
+	cabbageSettings = nullptr;
     LookAndFeel::setDefaultLookAndFeel (nullptr);
 
     if (! isRunningCommandLine)

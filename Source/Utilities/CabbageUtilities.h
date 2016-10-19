@@ -109,6 +109,12 @@ public:
 #endif
         return result;
     }	
+	
+	static void setImagesForButton(ImageButton* button, const Image image)
+	{
+	button->setImages(true, true, true, image, 1, Colours::transparentBlack, image,
+					 1, Colours::transparentBlack, image, .8, Colours::transparentBlack, 0);
+	}
 };
 
 

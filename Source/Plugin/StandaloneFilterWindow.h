@@ -43,8 +43,9 @@ extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 */
 class StandalonePluginHolder
    #if JUCE_IOS || JUCE_ANDROID
-    : private Timer
+    , private Timer
    #endif
+   
 {
 public:
 
@@ -148,11 +149,22 @@ public:
         o.launchAsync();
     }
 
-    void saveAudioDeviceState()
-    {
-         ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
-         CabbageSettings::set(settings, "AudioSettings", "audioSetup", xml->createDocument(""));
-    }
+	AudioDeviceSelectorComponent* getAudioDeviceSelector()
+	{
+		return new AudioDeviceSelectorComponent (deviceManager,
+                                                              processor->getTotalNumInputChannels(),
+                                                              processor->getTotalNumInputChannels(),
+                                                              processor->getTotalNumOutputChannels(),
+                                                              processor->getTotalNumOutputChannels(),
+                                                              true, false,
+                                                              true, false);
+	}
+	
+
+	void setAudioSettingsXMLStartup(String xmlSettingsString)
+	{
+		xmlSettings = xmlSettingsString;
+	}
 
     void reloadAudioDeviceState (const String& preferredDefaultDeviceName,
                                  const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
@@ -171,11 +183,19 @@ public:
                                   preferredSetupOptions);
     }
 
+
+	String getDeviceManagerSettings()
+	{
+		ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
+		return xml->createDocument("");
+	}
+	
     //==============================================================================
     ValueTree settings;
     ScopedPointer<AudioProcessor> processor;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
+	String xmlSettings;
 
    #if JUCE_IOS || JUCE_ANDROID
     StringArray lastMidiDevices;
@@ -193,8 +213,6 @@ private:
 
     void shutDownAudioDevices()
     {
-        saveAudioDeviceState();
-
         deviceManager.removeMidiInputCallback (String(), &player);
         deviceManager.removeAudioCallback (&player);
     }

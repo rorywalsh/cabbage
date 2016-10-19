@@ -27,6 +27,7 @@ public:
     static Colour getColourFromValueTree(ValueTree valueTree, int index, Colour defaultColour);
     static void set(ValueTree tree, String child, Identifier identifier, var value);
     static String get(ValueTree tree, String child, String identifier);
+	void setProperty(String child, var value);
 	void updateRecentFilesList();
 	void updateRecentFilesList(File file);
     int getIndexOfProperty(String child, String identifier);
@@ -34,7 +35,8 @@ public:
     XmlElement* getXML(String identifier);
     void setDefaultSettings();
     void setDefaultColourSettings();
-
+	ScopedPointer<PropertySet> defaultPropSet;
+	
     ValueTree valueTree;
 	RecentlyOpenedFilesList recentFiles;
 private:
@@ -52,10 +54,8 @@ private:
     }
 
     //==============================================================================
-    void valueTreePropertyChanged (ValueTree&, const Identifier&) override
-    {
-        changed();
-    }
+    void valueTreePropertyChanged (ValueTree&, const Identifier&) override;
+	
     void valueTreeChildAdded (ValueTree&, ValueTree&) override
     {
         changed();

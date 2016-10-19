@@ -70,10 +70,11 @@ public:
 	void newFile (String type);
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
+	void showSettingsDialog();
     PropertySet* getDefaultSettings();
 	void createGenericCsoundPluginHolder();
     ScopedPointer<ApplicationCommandManager> commandManager;
-
+	ScopedPointer<StandalonePluginHolder> pluginHolder;
     ScopedPointer<CabbageSettings> cabbageSettings;
     ScopedPointer<FileLogger> logger;
     PropertiesFile::Options getPropertyFileOptionsFor (const String& filename);
@@ -126,7 +127,7 @@ public:
         }
     };
     ScopedPointer<MainMenuModel> menuModel;
-	ScopedPointer<StandalonePluginHolder> pluginHolder;
+	
 
 private:
     ScopedPointer<CabbageMainDocumentWindow> cabbageMainDocumentWindow;

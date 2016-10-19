@@ -48,6 +48,38 @@ public:
 										"</CsoundSynthesizer>";
 		return newCsoundFile;
 	}
+	
+	static const StringArray getColourIDStrings()
+	{
+			StringArray colours;
+			colours.add("MenuBarBackground");
+			colours.add("MenuBarText");
+			colours.add("MenuBarMouseOverBackground");
+			colours.add("PopupMenuMouseOverBackground");
+			colours.add("PopupMenuBackground");
+			colours.add("PopupMenuText");
+			colours.add("PopupMenuHighlightedText");
+			colours.add("MainBackground");
+			colours.add("CodeBackground");
+			colours.add("LineNumberBackground");
+			colours.add("LineNumbers");
+			colours.add("PlainText");
+			colours.add("SelectTextBackground");
+			colours.add("Caret");
+			colours.add("Preprocessor");
+			colours.add("Punctuation");
+			colours.add("Bracket");
+			colours.add("String");
+			colours.add("Float");
+			colours.add("Integer");
+			colours.add("Identifier");
+			colours.add("Operator");
+			colours.add("Keyword");
+			colours.add("Comment");
+			colours.add("Error");
+			colours.add("AlartWindowBackground");
+			return colours;
+	}
 };
 
 

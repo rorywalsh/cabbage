@@ -17,27 +17,27 @@
 #include "../Utilities/CabbageUtilities.h"
 
 
-class CabbageSettingsWindow : public Component
+class CabbageSettingsWindow : public Component, public Button::Listener
 {
 
 public:
-    CabbageSettingsWindow(ValueTree valueTree);
-    ~CabbageSettingsWindow() {};
+    CabbageSettingsWindow(ValueTree valueTree, AudioDeviceSelectorComponent* audioDevice);
+    ~CabbageSettingsWindow()
+	{
+		audioDeviceSelector = nullptr;
+	
+	};
 
     void addColourProperties();
-
-    void resized() override
-    {
-        Rectangle<int> r (getLocalBounds());
-        panel.setBounds (r.removeFromTop (getHeight() - 28).reduced (4, 2));
-        loadButton.setBounds (r.removeFromLeft (getWidth() / 2).reduced (10, 4));
-        saveButton.setBounds (r.reduced (10, 3));
-    }
-
+    void resized();
+	void buttonClicked(Button* button);
+	void paint(Graphics& g);
 private:
-    PropertyPanel panel;
+    PropertyPanel colourPanel, miscPanel;
+	ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
     TextButton loadButton, saveButton;
+	ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
 
 
 };
