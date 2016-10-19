@@ -35,14 +35,19 @@ public:
     XmlElement* getXML(String identifier);
     void setDefaultSettings();
     void setDefaultColourSettings();
-	ScopedPointer<PropertySet> defaultPropSet;
-	
+	ScopedPointer<PropertySet> defaultPropSet;	
     ValueTree valueTree;
 	RecentlyOpenedFilesList recentFiles;
+	
+	String getAudioSettingsXml()
+	{
+		return audioSettingsXml;
+	}
+	
 private:
 
 
-
+	String audioSettingsXml;
     void changed()
     {
         ScopedPointer<XmlElement> data (valueTree.createXml());

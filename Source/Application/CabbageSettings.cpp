@@ -105,7 +105,7 @@ void CabbageSettings::setDefaultSettings()
 	}
 	
 	
-	//audioSettingsXml= getUserSettings()->getValue("audioSetup").replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
+	audioSettingsXml = getUserSettings()->getValue("audioSetup").replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
 
 }
 

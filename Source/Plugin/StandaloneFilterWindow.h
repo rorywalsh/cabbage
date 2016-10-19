@@ -77,8 +77,6 @@ public:
         : settings (settingsToUse)
     {
         createPlugin();
-        setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
-        startPlaying();
 
     }
 
@@ -161,9 +159,11 @@ public:
 	}
 	
 
-	void setAudioSettingsXMLStartup(String xmlSettingsString)
+	void setXmlAudioSettings(XmlElement* xmlSettingsString)
 	{
 		xmlSettings = xmlSettingsString;
+		setupAudioDevices ( String(), nullptr);
+        startPlaying();
 	}
 
     void reloadAudioDeviceState (const String& preferredDefaultDeviceName,
@@ -171,9 +171,11 @@ public:
     {
         ScopedPointer<XmlElement> savedState;
 		
-		String xmlAudioState = CabbageSettings::get(settings, "AudioSettings", "audioSetup");
+		//String xmlAudioState = CabbageSettings::get(settings, "AudioSettings", "audioSetup");
 
-		savedState = XmlDocument::parse(xmlAudioState);//settings->getXmlValue ("audioSetup");
+		
+
+		savedState = xmlSettings;
 
         deviceManager.initialise (processor->getTotalNumInputChannels(),
                                   processor->getTotalNumOutputChannels(),
@@ -183,7 +185,14 @@ public:
                                   preferredSetupOptions);
     }
 
-
+    void setupAudioDevices (const String& preferredDefaultDeviceName,
+                            const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
+    {
+        deviceManager.addAudioCallback (&player);
+        deviceManager.addMidiInputCallback (String(), &player);
+        reloadAudioDeviceState (preferredDefaultDeviceName, preferredSetupOptions);
+    }
+	
 	String getDeviceManagerSettings()
 	{
 		ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
@@ -195,21 +204,14 @@ public:
     ScopedPointer<AudioProcessor> processor;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
-	String xmlSettings;
+	ScopedPointer<XmlElement> xmlSettings;
 
    #if JUCE_IOS || JUCE_ANDROID
     StringArray lastMidiDevices;
    #endif
 
 private:
-    void setupAudioDevices (const String& preferredDefaultDeviceName,
-                            const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
-    {
-        deviceManager.addAudioCallback (&player);
-        deviceManager.addMidiInputCallback (String(), &player);
 
-        reloadAudioDeviceState (preferredDefaultDeviceName, preferredSetupOptions);
-    }
 
     void shutDownAudioDevices()
     {

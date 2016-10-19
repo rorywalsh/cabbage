@@ -531,6 +531,7 @@ void CabbageApplication::createGenericCsoundPluginHolder()
 	if(!pluginHolder)
 	{
 		pluginHolder = new StandalonePluginHolder(cabbageSettings->getValueTree(), false);
+		pluginHolder->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
 	}
 }
 
