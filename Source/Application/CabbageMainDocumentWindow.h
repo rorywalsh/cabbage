@@ -67,6 +67,8 @@ public:
 		JUCEApplicationBase::quit();
 	}
 	
+	void updateEditorColourScheme();
+	
 	MainContentComponent* getMainContentComponent();
 	ScopedPointer<MainContentComponent> mainContentComponent;
 

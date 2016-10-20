@@ -20,6 +20,7 @@ public:
 
     CodeDocument::Position positionInCode;
     CabbageCodeEditorComponent(ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
+	void updateColourScheme();
     ~CabbageCodeEditorComponent() {};
 	ValueTree valueTree;
 };

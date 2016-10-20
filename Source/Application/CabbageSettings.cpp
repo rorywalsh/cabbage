@@ -67,31 +67,27 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("windowY", 100);
 	defaultPropSet->setValue("audioSetup", "");
 
-	defaultPropSet->setValue("Colours"+CabbageColourIds::menuBarBackground,  "ff636363");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::menuBarText,  "FFFFFFFF");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::menuBarMouseOverBackground,  "ff9a9a9a");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::popupMenuBackground,  "fff5f5f5");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::popupMenuMouseOverBackground,  "ffa4a4a4");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::popupMenuText,  "ff484848");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::popupMenuHighlightedText,  "ff000000");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::codeBackground,  "FF222222");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::lineNumberBackground,  "44C1C1C1");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::lineNumbers,  "E9B2B2B2");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::plainText,  "FFCECECE");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::selectTextBackground,  "FF2859AC");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::caret,  "FFFFFFFF");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::preprocessor,  "FFF8F631");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::punctuation,  "FFCFBEFF");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::bracket,  "FF058202");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::stringLiteral,  "FFBC45DD");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::bracket,  "ff885500");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::integerLiteral,  "FF42C8C4");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::identifierLiteral,  "FFCFCFCF");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::operatorLiteral,  "FFC4EB19");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::keyword,  "FFEE6F6F");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::comment,  "FF72D20C");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::error,  "FFE60000");
-	defaultPropSet->setValue("Colours"+CabbageColourIds::alertWindowBackground, Colour(147, 210,0).toString());
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarBackground,  "ff636363");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarText,  "FFFFFFFF");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarMouseOverBackground,  "ff9a9a9a");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuBackground,  "fff5f5f5");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuMouseOverBackground,  "ffa4a4a4");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuText,  "ff484848");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuHighlightedText,  "ff000000");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::alertWindowBackground, Colour(147, 210,0).toString());
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::codeBackground,  "FF222222");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumberBackground,  "44C1C1C1");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumbers,  "E9B2B2B2");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::plainText,  "FFCECECE");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::selectTextBackground,  "FF2859AC");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::caret,  "FFFFFFFF");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::identifierLiteral,  "FFCFCFCF");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::operatorLiteral,  "FFC4EB19");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::keyword,  "FFEE6F6F");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::comment,  "FF72D20C");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::error,  "FFE60000");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::csdtags, "FFE60034");
+	
 
     getUserSettings()->setFallbackPropertySet(defaultPropSet);
 
@@ -101,7 +97,7 @@ void CabbageSettings::setDefaultSettings()
 	for(int i=0;i<colourIDStrings.size();i++)
 	{
 		valueTree.getChildWithName("Colours").setProperty(colourIDStrings[i],  
-												getUserSettings()->getValue("Colours"+colourIDStrings[i]), 0);
+												getUserSettings()->getValue("Colours_"+colourIDStrings[i]), 0);
 	}
 	
 	
@@ -176,7 +172,7 @@ void CabbageSettings::valueTreePropertyChanged (ValueTree& tree, const Identifie
 {
 	CabbageUtilities::debug(value.toString());
 	if(valueTree.getChildWithName("Colours").getProperty(value).toString().isNotEmpty())
-		getUserSettings()->setValue("Colours"+value.toString(), valueTree.getChildWithName("Colours").getProperty(value).toString());
+		getUserSettings()->setValue("Colours_"+value.toString(), valueTree.getChildWithName("Colours").getProperty(value).toString());
 
 	sendChangeMessage();
 }

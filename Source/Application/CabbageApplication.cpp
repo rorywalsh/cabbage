@@ -91,6 +91,7 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
     {
         lookAndFeel.refreshLookAndFeel(cabbageSettings->getValueTree());
         cabbageMainDocumentWindow->lookAndFeelChanged();
+		cabbageMainDocumentWindow->updateEditorColourScheme();
     }
 	else if(StandalonePluginHolder* pluginHolder = dynamic_cast<StandalonePluginHolder*>(source))
     {

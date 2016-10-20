@@ -107,32 +107,27 @@ const Identifier class_ ("class");
 // Handy list of static Identifiers..
 namespace CabbageColourIds
 {
-static const Identifier menuBarBackground = "MenuBarBackground";
-static const Identifier menuBarText = "MenuBarText";
-static const Identifier menuBarMouseOverBackground = "MenuBarMouseOverBackground";
-static const Identifier popupMenuMouseOverBackground = "PopupMenuMouseOverBackground";
-static const Identifier popupMenuBackground = "PopupMenuBackground";
-static const Identifier popupMenuText = "PopupMenuText";
-static const Identifier popupMenuHighlightedText = "PopupMenuHighlightedText";
-static const Identifier mainBackground = "MainBackground";
-static const Identifier codeBackground = "CodeBackground";
-static const Identifier lineNumberBackground = "LineNumberBackground";
-static const Identifier lineNumbers = "LineNumbers";
-static const Identifier plainText = "PlainText";
-static const Identifier selectTextBackground = "SelectTextBackground";
-static const Identifier caret = "Caret";
-static const Identifier preprocessor = "Preprocessor";
-static const Identifier punctuation = "Punctuation";
-static const Identifier bracket = "Bracket";
-static const Identifier stringLiteral = "String";
-static const Identifier floatLiteral = "Float";
-static const Identifier integerLiteral = "Integer";
-static const Identifier identifierLiteral = "Identifier";
-static const Identifier operatorLiteral = "Operator";
-static const Identifier keyword = "Keyword";
-static const Identifier comment = "Comment";
-static const Identifier error = "Error";
-static const Identifier alertWindowBackground = "AlartWindowBackground";
+static const Identifier menuBarBackground = "Interface - MenuBar Background";
+static const Identifier menuBarText = "Interface - MenuBarText";
+static const Identifier menuBarMouseOverBackground = "Interface - MenuBar MouseOver Background";
+static const Identifier popupMenuMouseOverBackground = "Interface - PopupMenu MouseOver Background";
+static const Identifier popupMenuBackground = "Interface - PopupMenu Background";
+static const Identifier popupMenuText = "Interface - PopupMenu Text";
+static const Identifier popupMenuHighlightedText = "Interface - PopupMenu Highlighted Text";
+static const Identifier mainBackground = "Interface - Main Background";
+static const Identifier alertWindowBackground = "Editor - Alart Window Background";
+static const Identifier codeBackground = "Editor - Code Background";
+static const Identifier lineNumberBackground = "Editor - Line Numbers Background";
+static const Identifier lineNumbers = "Editor - Line Numbers";
+static const Identifier plainText = "Editor - PlainText";
+static const Identifier selectTextBackground = "Editor - Selected Text Background";
+static const Identifier caret = "Editor - Caret";
+static const Identifier identifierLiteral = "Editor - Identifier";
+static const Identifier operatorLiteral = "Editor - Operator";
+static const Identifier keyword = "Editor - Keyword";
+static const Identifier comment = "Editor - Comment";
+static const Identifier error = "Editor - Error";
+static const Identifier csdtags = "Editor - Csd Tags";
 }
 
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

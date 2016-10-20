@@ -195,8 +195,12 @@ public:
 	
 	String getDeviceManagerSettings()
 	{
-		ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
-		return xml->createDocument("");
+		if(deviceManager.getCurrentAudioDevice())
+		{
+			ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
+			return xml->createDocument("");
+		}
+		else return String::empty;
 	}
 	
     //==============================================================================
