@@ -18,6 +18,7 @@
 class CabbageSettings;
 
 
+
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -26,6 +27,56 @@ class CabbageSettings;
 class MainContentComponent   : public Component
 {
 public:
+
+	class HorizontalResizerBar : public Component
+	{
+		public:
+			HorizontalResizerBar(MainContentComponent* parent, ValueTree valueTree)
+			:Component("HorizontalResizerBar"), 
+			owner(parent),
+			valueTree(valueTree)
+			{
+				setSize(owner->getWidth(), 25);
+			}
+			
+			void mouseExit(const MouseEvent& e)
+			{		
+				isActive = false;
+				setMouseCursor(MouseCursor::NormalCursor);
+				repaint();
+			}
+			
+			void mouseEnter(const MouseEvent& e)
+			{
+				isActive = true;
+				setMouseCursor(MouseCursor::UpDownResizeCursor);
+				startingYPos = getPosition().getY();
+				repaint();
+			}
+			
+			void mouseDrag(const MouseEvent& e)
+			{
+				setBounds(getPosition().getX(), startingYPos+e.getDistanceFromDragStartY(), getWidth(), getHeight());
+				owner->resized();
+			}
+			
+			
+			void paint(Graphics &g)
+			{
+				if(isActive)
+					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleoutline, Colours::grey).contrasting(.4));
+				else
+					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleoutline, Colours::grey));
+
+			}
+			
+	private:
+		MainContentComponent* owner;
+		ValueTree valueTree;
+		int startingYPos;
+		bool isActive = false;
+	};
+
     //==============================================================================
     MainContentComponent(ValueTree settings);
     ~MainContentComponent();
@@ -38,11 +89,13 @@ public:
 
     ScopedPointer<CabbageCodeEditorComponent> editor;
     ScopedPointer<CabbageOutputConsole> outputConsole;
+	HorizontalResizerBar horizontalResizerBar;
     CodeDocument csoundDocument;
     CsoundTokeniser csoundTokeniser;
 
 private:
 	Image bgImage;
+	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

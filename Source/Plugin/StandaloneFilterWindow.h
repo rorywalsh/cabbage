@@ -50,9 +50,9 @@ class StandalonePluginHolder
 public:
 
 		// This creates new instances of the plugin..
-	AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+	CsoundAudioProcessor* JUCE_CALLTYPE createCsoundPluginFilter(File inputFile)
 	{
-		return new CsoundAudioProcessor();
+		return new CsoundAudioProcessor(inputFile);
 	}
 
     /** Creates an instance of the default plugin.
@@ -76,7 +76,7 @@ public:
 
         : settings (settingsToUse)
     {
-        createPlugin();
+        createPlugin(File());
 
     }
 
@@ -91,21 +91,23 @@ public:
     }
 
     //==============================================================================
-    virtual void createPlugin()
+    virtual void createPlugin(File inputFile)
     {
 
-      #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
-        processor = ::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone);
-      #else
-        AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-        processor = createPluginFilter();
-        AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
-      #endif
+		AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
+		processor = createCsoundPluginFilter(inputFile);			
+		AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
+				
         jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails(44100, 512);
     }
+
+	String getCsoundOutput()
+	{
+		return processor->getCsoundOutput();
+	}
 
     virtual void deletePlugin()
     {
@@ -193,6 +195,11 @@ public:
         reloadAudioDeviceState (preferredDefaultDeviceName, preferredSetupOptions);
     }
 	
+	bool isAudioDeviceOk()
+	{
+		return (deviceManager.getCurrentAudioDevice() ? true : false);
+	}
+	
 	String getDeviceManagerSettings()
 	{
 		if(deviceManager.getCurrentAudioDevice())
@@ -203,9 +210,17 @@ public:
 		else return String::empty;
 	}
 	
+	void restartPlugin(File inputFile)
+	{
+        stopPlaying();
+        deletePlugin();
+        createPlugin(inputFile);
+        startPlaying();
+	}
+	
     //==============================================================================
     ValueTree settings;
-    ScopedPointer<AudioProcessor> processor;
+    ScopedPointer<CsoundAudioProcessor> processor;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
 	ScopedPointer<XmlElement> xmlSettings;
@@ -332,13 +347,13 @@ public:
     /** Deletes and re-creates the plugin, resetting it to its default state. */
     void resetToDefaultState()
     {
-        pluginHolder->stopPlaying();
-        deleteEditorComp();
-        pluginHolder->deletePlugin();
-
-        pluginHolder->createPlugin();
-        createEditorComp();
-        pluginHolder->startPlaying();
+//        pluginHolder->stopPlaying();
+//        deleteEditorComp();
+//        pluginHolder->deletePlugin();
+//
+//        pluginHolder->createPlugin();
+//        createEditorComp();
+//        pluginHolder->startPlaying();
     }
 
     //==============================================================================

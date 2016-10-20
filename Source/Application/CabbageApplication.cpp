@@ -48,8 +48,8 @@ void CabbageApplication::initialise (const String& commandLine)
     cabbageSettings->setDefaultSettings();
     lookAndFeel.setColour(2, Colours::red);
 
-    cabbageMainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings);
-    cabbageMainDocumentWindow->setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
+    mainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings);
+    mainDocumentWindow->setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
     initialiseLogger ("IDE_Log_");
     Logger::writeToLog (SystemStats::getOperatingSystemName());
     Logger::writeToLog ("CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
@@ -77,7 +77,7 @@ void CabbageApplication::initialise (const String& commandLine)
 
     initCommandManager();
     menuModel = new MainMenuModel();
-    cabbageMainDocumentWindow->setMenuBar(menuModel, 24);
+    mainDocumentWindow->setMenuBar(menuModel, 24);
 
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (menuModel, nullptr, "Open Recent");
@@ -90,8 +90,8 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
     if(CabbageSettings* settings = dynamic_cast<CabbageSettings*>(source))
     {
         lookAndFeel.refreshLookAndFeel(cabbageSettings->getValueTree());
-        cabbageMainDocumentWindow->lookAndFeelChanged();
-		cabbageMainDocumentWindow->updateEditorColourScheme();
+        mainDocumentWindow->lookAndFeelChanged();
+		mainDocumentWindow->updateEditorColourScheme();
     }
 	else if(StandalonePluginHolder* pluginHolder = dynamic_cast<StandalonePluginHolder*>(source))
     {
@@ -182,7 +182,7 @@ MenuBarModel* CabbageApplication::getMenuModel()
 //==============================================================================
 StringArray CabbageApplication::getMenuNames()
 {
-    const char* const names[] = { "File", "Edit", "View", "Build", "Window", "Tools", nullptr };
+    const char* const names[] = { "File", "Edit", "Tools", "View", nullptr };
     return StringArray (names);
 }
 
@@ -250,11 +250,7 @@ void CabbageApplication::createEditMenu (PopupMenu& menu)
 //==============================================================================
 void CabbageApplication::createViewMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (commandManager, CommandIDs::showFilePanel);
-    menu.addCommandItem (commandManager, CommandIDs::showConfigPanel);
-    menu.addCommandItem (commandManager, CommandIDs::showBuildTab);
-    menu.addCommandItem (commandManager, CommandIDs::showProjectSettings);
-    menu.addCommandItem (commandManager, CommandIDs::showProjectModules);
+
     menu.addSeparator();
     createColourSchemeItems (menu);
 }
@@ -320,13 +316,12 @@ void CabbageApplication::createWindowMenu (PopupMenu& menu)
 //==============================================================================
 void CabbageApplication::createToolsMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (commandManager, CommandIDs::showGlobalPreferences);
+    menu.addCommandItem (commandManager, CommandIDs::runCode);
     menu.addSeparator();
-    menu.addCommandItem (commandManager, CommandIDs::showUTF8Tool);
-    menu.addCommandItem (commandManager, CommandIDs::showSVGPathTool);
-    menu.addCommandItem (commandManager, CommandIDs::showTranslationTool);
+    menu.addCommandItem (commandManager, CommandIDs::exportAsSynth);
+    menu.addCommandItem (commandManager, CommandIDs::exportAsEffect);
+    menu.addCommandItem (commandManager, CommandIDs::exportAsFMODSoundPlugin);
     menu.addSeparator();
-    menu.addCommandItem (commandManager, CommandIDs::loginLogout);
 }
 
 //==============================================================================
@@ -362,9 +357,13 @@ void CabbageApplication::getAllCommands (Array <CommandID>& commands)
     const CommandID ids[] = { CommandIDs::newProject,
                               CommandIDs::open,
                               CommandIDs::closeAllDocuments,
-                              CommandIDs::saveAll,
+                              CommandIDs::saveDocument,
 							  CommandIDs::settings,
-                              CommandIDs::showGlobalPreferences
+                              CommandIDs::runCode,
+							  CommandIDs::stopCode,							  
+							  CommandIDs::exportAsSynth,
+							  CommandIDs::exportAsEffect,
+							  CommandIDs::exportAsFMODSoundPlugin
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -384,15 +383,38 @@ void CabbageApplication::getCommandInfo (CommandID commandID, ApplicationCommand
         result.setInfo ("Open...", "Opens a Jucer project", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
         break;
-		
+	
+    case CommandIDs::saveDocument:
+        result.setInfo ("Save file...", "Save a document", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+        break;
+	
     case CommandIDs::settings:
         result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
         break;
 
-    case CommandIDs::showGlobalPreferences:
-        result.setInfo ("Global Preferences...", "Shows the global preferences window.", CommandCategories::general, 0);
+    case CommandIDs::runCode:
+        result.setInfo ("Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+		result.defaultKeypresses.add(KeyPress(KeyPress::F5Key, ModifierKeys::noModifiers, 0));
         break;
 
+    case CommandIDs::stopCode:
+        result.setInfo ("Cancel Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+		result.defaultKeypresses.add(KeyPress(KeyPress::escapeKey, ModifierKeys::noModifiers, 0));
+        break;	
+	
+    case CommandIDs::exportAsSynth:
+        result.setInfo ("Export as Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+        break;
+
+    case CommandIDs::exportAsEffect:
+        result.setInfo ("Export as Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+        break;	
+		
+    case CommandIDs::exportAsFMODSoundPlugin:
+        result.setInfo ("Export as FMOD Sound Plugin", "Exports as plugin", CommandCategories::general, 0);
+		break;
+		
     case CommandIDs::closeAllDocuments:
         result.setInfo ("Close All Documents", "Closes all open documents", CommandCategories::general, 0);
 //        result.setActive (openDocumentManager.getNumOpenDocuments() > 0);
@@ -401,14 +423,6 @@ void CabbageApplication::getCommandInfo (CommandID commandID, ApplicationCommand
     case CommandIDs::saveAll:
         result.setInfo ("Save All", "Saves all open documents", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
-        break;
-
-    case CommandIDs::showUTF8Tool:
-        result.setInfo ("UTF-8 String-Literal Helper", "Shows the UTF-8 string literal utility", CommandCategories::general, 0);
-        break;
-
-    case CommandIDs::showSVGPathTool:
-        result.setInfo ("SVG Path Helper", "Shows the SVG->Path data conversion utility", CommandCategories::general, 0);
         break;
 
     default:
@@ -428,7 +442,8 @@ bool CabbageApplication::perform (const InvocationInfo& info)
     case CommandIDs::open:
         askUserToOpenFile();
         break;
-    case CommandIDs::saveAll:
+    case CommandIDs::saveDocument:
+		saveDocument();
         break;
     case CommandIDs::closeAllDocuments:
         closeAllDocuments (true);
@@ -436,8 +451,20 @@ bool CabbageApplication::perform (const InvocationInfo& info)
 	case CommandIDs::settings:
 		showSettingsDialog();
 		break;
-    case CommandIDs::showGlobalPreferences:
-        pluginHolder->showAudioSettingsDialog();
+    case CommandIDs::runCode:
+        runCode();
+        break;
+    case CommandIDs::stopCode:
+        stopCode();
+        break;
+    case CommandIDs::exportAsEffect:
+        int test2;
+        break;
+    case CommandIDs::exportAsSynth:
+        int test3;
+        break;
+    case CommandIDs::exportAsFMODSoundPlugin:
+        int test4;
         break;
     default:
         return JUCEApplication::perform (info);
@@ -445,7 +472,7 @@ bool CabbageApplication::perform (const InvocationInfo& info)
 
     return true;
 }
-
+//==============================================================================
 void CabbageApplication::showSettingsDialog()
 {
 	DialogWindow::LaunchOptions o;
@@ -460,6 +487,16 @@ void CabbageApplication::showSettingsDialog()
 
     o.launchAsync();
     
+}
+//==============================================================================
+CodeEditorComponent* CabbageApplication::getEditor()
+{
+	return mainDocumentWindow->getMainContentComponent()->editor;
+}
+//==============================================================================
+CabbageOutputConsole* CabbageApplication::getOutputConsole()
+{
+	return mainDocumentWindow->getMainContentComponent()->outputConsole;
 }
 //==============================================================================
 void CabbageApplication::createNewProject()
@@ -504,7 +541,7 @@ void CabbageApplication::createNewProject()
     //mw->showNewProjectWizard();
     //mainWindowList.avoidSuperimposedWindows (mw);
 }
-
+//==============================================================================
 void CabbageApplication::askUserToOpenFile()
 {
     FileChooser fc ("Open File");
@@ -512,12 +549,16 @@ void CabbageApplication::askUserToOpenFile()
     if (fc.browseForFileToOpen())
         openFile (fc.getResult());
 }
-
+//==============================================================================
 bool CabbageApplication::openFile (const File& file, String type)
 {
-    cabbageMainDocumentWindow->getMainContentComponent()->openFile(file);
+    mainDocumentWindow->getMainContentComponent()->openFile(file);
 	cabbageSettings->updateRecentFilesList(file);
-	
+	//commandManager->registerAllCommandsForTarget (mainDocumentWindow);
+	mainDocumentWindow->addKeyListener(getCommandManager().getKeyMappings());
+	mainDocumentWindow->setName("Cabbage " + file.getFullPathName());
+	currentCsdFile = File(file.getFullPathName());
+
 	if(type=="Csound")
 	{		
 		
@@ -525,22 +566,64 @@ bool CabbageApplication::openFile (const File& file, String type)
 	
     return true;
 }
-
-
+//==============================================================================
+void CabbageApplication::saveDocument()
+{
+	//CabbageUtilities::debug(getEditor()->getDocument().getAllContent());
+	currentCsdFile.replaceWithText(getEditor()->getDocument().getAllContent());
+}
+//==============================================================================
 void CabbageApplication::createGenericCsoundPluginHolder()
 {
 	if(!pluginHolder)
 	{
 		pluginHolder = new StandalonePluginHolder(cabbageSettings->getValueTree(), false);
 		pluginHolder->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+		if(pluginHolder->isAudioDeviceOk()==false)
+            CabbageUtilities::showMessage("Warning", "Cabbage could not initialise the selected audio device. Please select a valid audio device in Audio Settings", &lookAndFeel);
 	}
 }
 
+void CabbageApplication::timerCallback()
+{
+    if(currentCsdFile.existsAsFile())
+    {        
+        const String csoundOutputString = pluginHolder->getCsoundOutput();
+        consoleMessages+=csoundOutputString;
+        if(csoundOutputString.length()>0)
+        {
+            getOutputConsole()->setText(csoundOutputString);
+        }
+    }	
+}
+//==============================================================================
+void CabbageApplication::runCode()
+{
+	if(currentCsdFile.existsAsFile())
+	{
+		startTimer(100);
+		createGenericCsoundPluginHolder();
+		pluginHolder->restartPlugin(currentCsdFile);
+		//pluginHolder->createPlugin(currentCsdFile);
+	}
+	else
+		CabbageUtilities::showMessage("Warning", "Please open a file first", &lookAndFeel);
+}
+//==============================================================================
+void CabbageApplication::stopCode()
+{
+	if(currentCsdFile.existsAsFile())
+	{
+		stopTimer();
+		pluginHolder->stopPlaying();
+	}
+}
+//==============================================================================
 void CabbageApplication::newFile (String type)
 {
 
 }
-
+//==============================================================================
 bool CabbageApplication::closeAllDocuments (bool askUserToSave)
 {
     // return openDocumentManager.closeAll (askUserToSave);
@@ -552,16 +635,15 @@ bool CabbageApplication::closeAllMainWindows()
     //return server != nullptr || mainWindowList.askAllWindowsToClose();
     return true;
 }
-
 //==============================================================================
 void CabbageApplication::shutdown()
 {
 	
-	CabbageUtilities::debug(pluginHolder->getDeviceManagerSettings());
+	//CabbageUtilities::debug(pluginHolder->getDeviceManagerSettings());
 	cabbageSettings->setProperty("audioSetup", pluginHolder->getDeviceManagerSettings());
 	
 	
-    cabbageMainDocumentWindow->setMenuBar(nullptr);
+    mainDocumentWindow->setMenuBar(nullptr);
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif

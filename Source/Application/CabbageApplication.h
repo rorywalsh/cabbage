@@ -16,12 +16,13 @@
 #include "CabbageIDELookAndFeel.h"
 #include "CabbageSettingsWindow.h"
 #include "../Plugin/StandaloneFilterWindow.h"
+#include "CabbageOutputConsole.h"
 
 class CabbageProjectWindow;
 class CabbageMainDocumentWindow;
 
 //==============================================================================
-class CabbageApplication  : public JUCEApplication, public ChangeListener
+class CabbageApplication  : public JUCEApplication, public ChangeListener, public Timer
 {
 public:
     //==============================================================================
@@ -43,6 +44,7 @@ public:
         return true;
     }
 
+	void timerCallback();
     void initialiseBasics();
     bool initialiseLogger (const char* filePrefix);
     void initCommandManager();
@@ -71,6 +73,9 @@ public:
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
 	void showSettingsDialog();
+	void saveDocument();
+	void runCode();
+	void stopCode();
     PropertySet* getDefaultSettings();
 	void createGenericCsoundPluginHolder();
     ScopedPointer<ApplicationCommandManager> commandManager;
@@ -81,10 +86,9 @@ public:
     ScopedPointer<Component> appearanceEditorWindow, globalPreferencesWindow;
     CabbageIDELookAndFeel lookAndFeel;
     bool isRunningCommandLine;
-
+	CodeEditorComponent* getEditor();
+	CabbageOutputConsole* getOutputConsole();
     //==============================================================================
-
-
     void initialise (const String& commandLine) override;
 
     //==============================================================================
@@ -127,10 +131,12 @@ public:
         }
     };
     ScopedPointer<MainMenuModel> menuModel;
+	File currentCsdFile;
 	
 
 private:
-    ScopedPointer<CabbageMainDocumentWindow> cabbageMainDocumentWindow;
+	String consoleMessages;
+    ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;
 };
 
 

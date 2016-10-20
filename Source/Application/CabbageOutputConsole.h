@@ -26,14 +26,14 @@ public:
 		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consolebackground, Colours::grey.darker()));
         textEditor->setMultiLine(true);
         textEditor->setReadOnly(true);
-        textEditor->setFont(Font("Arial", 18, 0));
+        textEditor->setFont(Font("Arial", 12, 1));
 
 
         String initString = (SystemStats::getOperatingSystemName() +
                              "CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
                              + "MHz  Cores: " + String (SystemStats::getNumCpus())
                              + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
-        setText(initString);
+        setText("Cabbage Csound IDE\n"+initString);
     };
 
     ~CabbageOutputConsole() {};
@@ -66,12 +66,12 @@ public:
     void resized()
     {
         Rectangle<int> area (getLocalBounds());
-        textEditor->setBounds(area.reduced(4));
+        textEditor->setBounds(area.reduced(4).withY(0));
     }
 
     void paint(Graphics& g)
     {
-        g.fillAll(Colours::grey);
+        g.fillAll(CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleoutline, Colours::grey.darker()));
 //        g.setColour(Colours::white);
 //        g.drawRoundedRectangle(getLocalBounds().toFloat(), 2, 2);
 //        g.drawFittedText("Csound output", getLocalBounds().withHeight(18), Justification::centred, 1, 1.f);

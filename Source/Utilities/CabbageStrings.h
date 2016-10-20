@@ -74,6 +74,8 @@ public:
 			colours.add("Editor - Csd Tags");
 			colours.add("Console - Text");
 			colours.add("Console - Background");
+			colours.add("Console - Outline");
+			
 			return colours;
 	}
 };

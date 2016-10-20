@@ -31,11 +31,11 @@ enum
     saveAndOpenInIDE        = 0x200073,
     createNewExporter       = 0x20007d,
 
-    showUTF8Tool            = 0x200076,
-    showGlobalPreferences   = 0x200077,
-    showConfigPanel         = 0x200074,
-    showFilePanel           = 0x200078,
-    showTranslationTool     = 0x200079,
+    runCode		            = 0x200076,
+    exportAsSynth   		= 0x200077,
+    exportAsEffect          = 0x200074,
+    exportAsFMODSoundPlugin = 0x200078,
+    stopCode			    = 0x200079,
     showProjectSettings     = 0x20007a,
     showProjectModules      = 0x20007b,
     showSVGPathTool         = 0x20007c,
@@ -129,6 +129,7 @@ static const Identifier numbers = "Editor - Numbers";
 static const Identifier csdtags = "Editor - Csd Tags";
 static const Identifier consoletext = "Console - Text";
 static const Identifier consolebackground = "Console - Background";
+static const Identifier consoleoutline = "Console - Outline";
 }
 
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

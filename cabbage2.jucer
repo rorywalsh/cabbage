@@ -49,6 +49,7 @@
               file="Source/BinaryData/CabbageBinaryData.h"/>
       </GROUP>
       <GROUP id="{49C8D4CB-E16D-C8F0-5F68-0A1511E25584}" name="Plugin">
+        <FILE id="gTqFCj" name="CabbageCsound.h" compile="0" resource="0" file="Source/Plugin/CabbageCsound.h"/>
         <FILE id="Azg70M" name="CsoundPluginEditor.cpp" compile="1" resource="0"
               file="Source/Plugin/CsoundPluginEditor.cpp"/>
         <FILE id="rXz91d" name="CsoundPluginEditor.h" compile="0" resource="0"
@@ -67,10 +68,12 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="" externalLibraries="csound64&#10;sndfile">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
+                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
+                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
