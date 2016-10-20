@@ -12,16 +12,18 @@
 #define CABBAGEOUTPUCONSOLECOMPONENT_H_INCLUDED
 
 #include "CabbageIds.h"
+#include "CabbageSettings.h"
 
 class CabbageOutputConsole : public Component
 {
     ScopedPointer<TextEditor> textEditor;
 public:
-    CabbageOutputConsole(ValueTree valueTree): Component()
+    CabbageOutputConsole(ValueTree valueTree): Component(), value(valueTree)
     {
         addAndMakeVisible(textEditor = new TextEditor(), true);
         textEditor->setColour(Label::outlineColourId, Colours::white);
-        textEditor->setColour(TextEditor::textColourId, Colours::cornflowerblue);
+        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoletext, Colours::grey.darker()));
+		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consolebackground, Colours::grey.darker()));
         textEditor->setMultiLine(true);
         textEditor->setReadOnly(true);
         textEditor->setFont(Font("Arial", 18, 0));
@@ -49,6 +51,13 @@ public:
         return textEditor->getText();
     }
 
+	void updateColourScheme()
+	{
+        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoletext, Colours::grey.darker()));
+		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consolebackground, Colours::grey.darker()));	
+		repaint();	
+	}
+
     void setFontSize(int size)
     {
         textEditor->setFont(Font("Arial", size, 0));
@@ -67,6 +76,9 @@ public:
 //        g.drawRoundedRectangle(getLocalBounds().toFloat(), 2, 2);
 //        g.drawFittedText("Csound output", getLocalBounds().withHeight(18), Justification::centred, 1, 1.f);
     }
+
+private:
+	ValueTree value;
 
 };
 

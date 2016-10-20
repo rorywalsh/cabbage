@@ -97,4 +97,7 @@ MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()
 void CabbageMainDocumentWindow::updateEditorColourScheme()
 {
 	mainContentComponent->editor->updateColourScheme();
+	mainContentComponent->outputConsole->updateColourScheme();
+	
+	
 }

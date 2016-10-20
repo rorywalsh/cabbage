@@ -64,15 +64,16 @@ public:
 			colours.add("Editor - Code Background");
 			colours.add("Editor - Line Numbers Background");
 			colours.add("Editor - Line Numbers");
-			colours.add("Editor - Plain Text");
 			colours.add("Editor - Selected Text Background");
 			colours.add("Editor - Caret");
 			colours.add("Editor - Identifier");
 			colours.add("Editor - Operator");
 			colours.add("Editor - Keyword");
 			colours.add("Editor - Comment");
-			colours.add("Editor - Error");
+			colours.add("Editor - Numbers");
 			colours.add("Editor - Csd Tags");
+			colours.add("Console - Text");
+			colours.add("Console - Background");
 			return colours;
 	}
 };

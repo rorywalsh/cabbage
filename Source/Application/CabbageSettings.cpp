@@ -78,15 +78,16 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("Colours_"+CabbageColourIds::codeBackground,  "FF222222");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumberBackground,  "44C1C1C1");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumbers,  "E9B2B2B2");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::plainText,  "FFCECECE");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::selectTextBackground,  "FF2859AC");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::caret,  "FFFFFFFF");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::identifierLiteral,  "FFCFCFCF");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::operatorLiteral,  "FFC4EB19");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::keyword,  "FFEE6F6F");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::comment,  "FF72D20C");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::error,  "FFE60000");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::numbers,  "FFE60000");
 	defaultPropSet->setValue("Colours_"+CabbageColourIds::csdtags, "FFE60034");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::consoletext, "FFFFFFFF");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::consolebackground, "FF000000");
 	
 
     getUserSettings()->setFallbackPropertySet(defaultPropSet);

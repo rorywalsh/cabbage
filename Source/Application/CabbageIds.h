@@ -119,15 +119,16 @@ static const Identifier alertWindowBackground = "Editor - Alart Window Backgroun
 static const Identifier codeBackground = "Editor - Code Background";
 static const Identifier lineNumberBackground = "Editor - Line Numbers Background";
 static const Identifier lineNumbers = "Editor - Line Numbers";
-static const Identifier plainText = "Editor - PlainText";
 static const Identifier selectTextBackground = "Editor - Selected Text Background";
 static const Identifier caret = "Editor - Caret";
 static const Identifier identifierLiteral = "Editor - Identifier";
 static const Identifier operatorLiteral = "Editor - Operator";
 static const Identifier keyword = "Editor - Keyword";
 static const Identifier comment = "Editor - Comment";
-static const Identifier error = "Editor - Error";
+static const Identifier numbers = "Editor - Numbers";
 static const Identifier csdtags = "Editor - Csd Tags";
+static const Identifier consoletext = "Console - Text";
+static const Identifier consolebackground = "Console - Background";
 }
 
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED
