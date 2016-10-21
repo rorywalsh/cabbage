@@ -127,28 +127,6 @@ public:
     }
 
     //==============================================================================
-    /** Shows an audio properties dialog box modally. */
-    void showAudioSettingsDialog()
-    {
-        DialogWindow::LaunchOptions o;
-        o.content.setOwned (new AudioDeviceSelectorComponent (deviceManager,
-                                                              processor->getTotalNumInputChannels(),
-                                                              processor->getTotalNumInputChannels(),
-                                                              processor->getTotalNumOutputChannels(),
-                                                              processor->getTotalNumOutputChannels(),
-                                                              true, false,
-                                                              true, false));
-        o.content->setSize (500, 450);
-
-        o.dialogTitle                   = TRANS("Audio Settings");
-        o.dialogBackgroundColour        = Colour (0xfff0f0f0);
-        o.escapeKeyTriggersCloseButton  = true;
-        o.useNativeTitleBar             = true;
-        o.resizable                     = false;
-
-        o.launchAsync();
-    }
-
 	AudioDeviceSelectorComponent* getAudioDeviceSelector()
 	{
 		return new AudioDeviceSelectorComponent (deviceManager,
@@ -380,7 +358,7 @@ public:
     {
         switch (result)
         {
-            case 1:  pluginHolder->showAudioSettingsDialog(); break;
+           // case 1:  pluginHolder->showAudioSettingsDialog(); break;
             case 4:  resetToDefaultState(); break;
             default: break;
         }
@@ -388,7 +366,7 @@ public:
 
 	void showAudioSettings()
 	{
-		pluginHolder->showAudioSettingsDialog();
+		//pluginHolder->showAudioSettingsDialog();
 	}
 
     static void menuCallback (int result, StandaloneFilterWindow* button)
