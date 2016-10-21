@@ -13,7 +13,7 @@
 
 
 //==============================================================================
-CsoundAudioProcessorEditor::CsoundAudioProcessorEditor (CsoundAudioProcessor& p)
+CsoundPluginEditor::CsoundPluginEditor (CsoundPluginProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
     // Make sure that before the constructor has finished, you've set the
@@ -21,18 +21,18 @@ CsoundAudioProcessorEditor::CsoundAudioProcessorEditor (CsoundAudioProcessor& p)
     setSize (400, 300);
 }
 
-CsoundAudioProcessorEditor::~CsoundAudioProcessorEditor()
+CsoundPluginEditor::~CsoundPluginEditor()
 {
 }
 
 //==============================================================================
-void CsoundAudioProcessorEditor::paint (Graphics& g)
+void CsoundPluginEditor::paint (Graphics& g)
 {
     g.fillAll (Colours::white);
 
 }
 
-void CsoundAudioProcessorEditor::resized()
+void CsoundPluginEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..

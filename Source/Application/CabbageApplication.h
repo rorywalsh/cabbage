@@ -136,6 +136,7 @@ public:
 
 private:
 	String consoleMessages;
+	Identifier pluginType;
     ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;
 };
 

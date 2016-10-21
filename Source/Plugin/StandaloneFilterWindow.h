@@ -28,6 +28,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "CsoundPluginEditor.h"
 #include "CsoundPluginProcessor.h"
+#include "GenericCabbagePluginProcessor.h"
 #include "../Application/CabbageSettings.h"
 
 
@@ -49,10 +50,10 @@ class StandalonePluginHolder
 {
 public:
 
-		// This creates new instances of the plugin..
-	CsoundAudioProcessor* JUCE_CALLTYPE createCsoundPluginFilter(File inputFile)
+	// This creates new instances of the plugin..
+	GenericCabbagePluginProcessor* JUCE_CALLTYPE createCsoundPluginFilter(File inputFile)
 	{
-		return new CsoundAudioProcessor(inputFile);
+		return new GenericCabbagePluginProcessor(inputFile);
 	}
 
     /** Creates an instance of the default plugin.
@@ -77,7 +78,6 @@ public:
         : settings (settingsToUse)
     {
         createPlugin(File());
-
     }
 
     virtual ~StandalonePluginHolder()
@@ -199,7 +199,7 @@ public:
 	
     //==============================================================================
     ValueTree settings;
-    ScopedPointer<CsoundAudioProcessor> processor;
+    ScopedPointer<GenericCabbagePluginProcessor> processor;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
 	ScopedPointer<XmlElement> xmlSettings;

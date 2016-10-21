@@ -14,7 +14,7 @@
 
 
 //==============================================================================
-CsoundAudioProcessor::CsoundAudioProcessor(File csdFile)
+CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -65,7 +65,7 @@ CsoundAudioProcessor::CsoundAudioProcessor(File csdFile)
 		
 }
 
-CsoundAudioProcessor::~CsoundAudioProcessor()
+CsoundPluginProcessor::~CsoundPluginProcessor()
 {
 	CabbageUtilities::debug("Plugin destructor");
 	if(csound)
@@ -78,7 +78,7 @@ CsoundAudioProcessor::~CsoundAudioProcessor()
 }
 
 //==============================================================================
-String CsoundAudioProcessor::getCsoundOutput()
+String CsoundPluginProcessor::getCsoundOutput()
 {
     const int messageCnt = csound->GetMessageCnt();
     csoundOutput = "";
@@ -95,12 +95,12 @@ String CsoundAudioProcessor::getCsoundOutput()
 }
 
 //==============================================================================
-const String CsoundAudioProcessor::getName() const
+const String CsoundPluginProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool CsoundAudioProcessor::acceptsMidi() const
+bool CsoundPluginProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -109,7 +109,7 @@ bool CsoundAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool CsoundAudioProcessor::producesMidi() const
+bool CsoundPluginProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -118,50 +118,50 @@ bool CsoundAudioProcessor::producesMidi() const
    #endif
 }
 
-double CsoundAudioProcessor::getTailLengthSeconds() const
+double CsoundPluginProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int CsoundAudioProcessor::getNumPrograms()
+int CsoundPluginProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int CsoundAudioProcessor::getCurrentProgram()
+int CsoundPluginProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void CsoundAudioProcessor::setCurrentProgram (int index)
+void CsoundPluginProcessor::setCurrentProgram (int index)
 {
 }
 
-const String CsoundAudioProcessor::getProgramName (int index)
+const String CsoundPluginProcessor::getProgramName (int index)
 {
     return String();
 }
 
-void CsoundAudioProcessor::changeProgramName (int index, const String& newName)
+void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 {
 }
 
 //==============================================================================
-void CsoundAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
 
-void CsoundAudioProcessor::releaseResources()
+void CsoundPluginProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool CsoundAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     ignoreUnused (layouts);
@@ -184,7 +184,7 @@ bool CsoundAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) c
 }
 #endif
 
-void CsoundAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
     float** audioBuffers = buffer.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
@@ -262,32 +262,32 @@ void CsoundAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
 
 //==============================================================================
-bool CsoundAudioProcessor::hasEditor() const
+bool CsoundPluginProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* CsoundAudioProcessor::createEditor()
+AudioProcessorEditor* CsoundPluginProcessor::createEditor()
 {
-    return new CsoundAudioProcessorEditor (*this);
+    return new CsoundPluginEditor (*this);
 }
 
 //==============================================================================
-void CsoundAudioProcessor::getStateInformation (MemoryBlock& destData)
+void CsoundPluginProcessor::getStateInformation (MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void CsoundAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void CsoundPluginProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }
 
 //======================== CSOUND MIDI FUNCTIONS ================================
-int CsoundAudioProcessor::OpenMidiInputDevice(CSOUND * csound, void **userData, const char* /*devName*/)
+int CsoundPluginProcessor::OpenMidiInputDevice(CSOUND * csound, void **userData, const char* /*devName*/)
 {
     *userData = csoundGetHostData(csound);
     if(!userData)
@@ -298,10 +298,10 @@ int CsoundAudioProcessor::OpenMidiInputDevice(CSOUND * csound, void **userData, 
 //==============================================================================
 // Reads MIDI input data from host, gets called every time there is MIDI input to our plugin
 //==============================================================================
-int CsoundAudioProcessor::ReadMidiData(CSOUND* /*csound*/, void *userData,
+int CsoundPluginProcessor::ReadMidiData(CSOUND* /*csound*/, void *userData,
         unsigned char *mbuf, int nbytes)
 {
-    CsoundAudioProcessor *midiData = (CsoundAudioProcessor *)userData;
+    CsoundPluginProcessor *midiData = (CsoundPluginProcessor *)userData;
     if(!userData)
     {
         CabbageUtilities::debug("\nInvalid");
@@ -337,7 +337,7 @@ int CsoundAudioProcessor::ReadMidiData(CSOUND* /*csound*/, void *userData,
 // Opens MIDI output device, adding -QN to your CsOptions will causes this method to be called
 // as soon as your plugin loads
 //==============================================================================
-int CsoundAudioProcessor::OpenMidiOutputDevice(CSOUND * csound, void **userData, const char* /*devName*/)
+int CsoundPluginProcessor::OpenMidiOutputDevice(CSOUND * csound, void **userData, const char* /*devName*/)
 {
 #if !defined(AndroidBuild)
     *userData = csoundGetHostData(csound);
@@ -351,10 +351,10 @@ int CsoundAudioProcessor::OpenMidiOutputDevice(CSOUND * csound, void **userData,
 // Write MIDI data to plugin's MIDI output. Each time Csound outputs a midi message this
 // method should be called. Note: you must have -Q set in your CsOptions
 //==============================================================================
-int CsoundAudioProcessor::WriteMidiData(CSOUND* /*csound*/, void *_userData,
+int CsoundPluginProcessor::WriteMidiData(CSOUND* /*csound*/, void *_userData,
         const unsigned char *mbuf, int nbytes)
 {
-    CsoundAudioProcessor *userData = (CsoundAudioProcessor *)_userData;
+    CsoundPluginProcessor *userData = (CsoundPluginProcessor *)_userData;
     if(!userData)
     {
         CabbageUtilities::debug("\n\nInvalid");
@@ -371,26 +371,26 @@ int CsoundAudioProcessor::WriteMidiData(CSOUND* /*csound*/, void *_userData,
 // graphing functions...
 //===========================================================================================
 
-void CsoundAudioProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, const char * /*name*/)
+void CsoundPluginProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, const char * /*name*/)
 {
-    CsoundAudioProcessor *ud = (CsoundAudioProcessor *) csoundGetHostData(csound);
+    CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
 }
 
-void CsoundAudioProcessor::drawGraphCallback(CSOUND *csound, WINDAT *windat)
+void CsoundPluginProcessor::drawGraphCallback(CSOUND *csound, WINDAT *windat)
 {
-    CsoundAudioProcessor *ud = (CsoundAudioProcessor *) csoundGetHostData(csound);
+    CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
 
 }
 
-void CsoundAudioProcessor::killGraphCallback(CSOUND *csound, WINDAT *windat)
+void CsoundPluginProcessor::killGraphCallback(CSOUND *csound, WINDAT *windat)
 {
-    CsoundAudioProcessor *udata = (CsoundAudioProcessor *) csoundGetHostData(csound);
+    CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
     CabbageUtilities::debug("killGraphCallback");
 }
 
-int CsoundAudioProcessor::exitGraphCallback(CSOUND *csound)
+int CsoundPluginProcessor::exitGraphCallback(CSOUND *csound)
 {
-    CsoundAudioProcessor *udata = (CsoundAudioProcessor *) csoundGetHostData(csound);
+    CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
     CabbageUtilities::debug("exitGraphCallback");
     return 0;
 }

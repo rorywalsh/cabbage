@@ -13,16 +13,17 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <csound.hpp>
+#include "../Utilities/CabbageUtilities.h"
 
 //==============================================================================
 /**
 */
-class CsoundAudioProcessor  : public AudioProcessor
+class CsoundPluginProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
-    CsoundAudioProcessor(File csoundInputFile);
-    ~CsoundAudioProcessor();
+    CsoundPluginProcessor(File csoundInputFile);
+    ~CsoundPluginProcessor();
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -32,10 +33,10 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
-    void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+    virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
 
     //==============================================================================
-    AudioProcessorEditor* createEditor() override;
+    virtual AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
 
     //==============================================================================
@@ -82,7 +83,15 @@ public:
 		return csCompileResult==0 ? true : false;	
 	}
 
+	Csound* getCsound()
+	{
+		return csound;
+	}
 	
+	CSOUND* getCsoundStruct()
+	{
+		return csound->GetCsound();
+	}
 	
 private:
     //==============================================================================
@@ -97,7 +106,7 @@ private:
     int csndIndex;                         
     int csdKsmps;
 	ScopedPointer<Csound> csound;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginProcessor)
 	
 };
 

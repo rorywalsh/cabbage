@@ -18,11 +18,11 @@
 //==============================================================================
 /**
 */
-class CsoundAudioProcessorEditor  : public AudioProcessorEditor
+class CsoundPluginEditor  : public AudioProcessorEditor
 {
 public:
-    CsoundAudioProcessorEditor (CsoundAudioProcessor&);
-    ~CsoundAudioProcessorEditor();
+    CsoundPluginEditor (CsoundPluginProcessor&);
+    ~CsoundPluginEditor();
 
     //==============================================================================
     void paint (Graphics&) override;
@@ -30,9 +30,9 @@ public:
 
 private:
 
-    CsoundAudioProcessor& processor;
+    CsoundPluginProcessor& processor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginEditor)
 };
 
 

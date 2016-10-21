@@ -48,8 +48,12 @@
         <FILE id="l9HoHb" name="CabbageBinaryData.h" compile="0" resource="0"
               file="Source/BinaryData/CabbageBinaryData.h"/>
       </GROUP>
+      <GROUP id="{555D2546-CA5D-5562-B703-B06F5A8D0C5A}" name="Parser">
+        <FILE id="UmPnUP" name="CabbageWidget.cpp" compile="1" resource="0"
+              file="Source/Parser/CabbageWidget.cpp"/>
+        <FILE id="ZFaiEc" name="CabbageWidget.h" compile="0" resource="0" file="Source/Parser/CabbageWidget.h"/>
+      </GROUP>
       <GROUP id="{49C8D4CB-E16D-C8F0-5F68-0A1511E25584}" name="Plugin">
-        <FILE id="gTqFCj" name="CabbageCsound.h" compile="0" resource="0" file="Source/Plugin/CabbageCsound.h"/>
         <FILE id="Azg70M" name="CsoundPluginEditor.cpp" compile="1" resource="0"
               file="Source/Plugin/CsoundPluginEditor.cpp"/>
         <FILE id="rXz91d" name="CsoundPluginEditor.h" compile="0" resource="0"
@@ -58,6 +62,10 @@
               file="Source/Plugin/CsoundPluginProcessor.cpp"/>
         <FILE id="ZzMcZq" name="CsoundPluginProcessor.h" compile="0" resource="0"
               file="Source/Plugin/CsoundPluginProcessor.h"/>
+        <FILE id="uQ8D6U" name="GenericCabbagePluginProcessor.cpp" compile="1"
+              resource="0" file="Source/Plugin/GenericCabbagePluginProcessor.cpp"/>
+        <FILE id="GE7D04" name="GenericCabbagePluginProcessor.h" compile="0"
+              resource="0" file="Source/Plugin/GenericCabbagePluginProcessor.h"/>
       </GROUP>
       <GROUP id="{24B339DA-0A5C-EE13-6A1A-0F900F6940B9}" name="Utilities">
         <FILE id="euzp83" name="CabbageColourPropertyComponent.h" compile="0"

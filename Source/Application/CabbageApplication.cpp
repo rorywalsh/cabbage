@@ -317,6 +317,7 @@ void CabbageApplication::createWindowMenu (PopupMenu& menu)
 void CabbageApplication::createToolsMenu (PopupMenu& menu)
 {
     menu.addCommandItem (commandManager, CommandIDs::runCode);
+	menu.addCommandItem (commandManager, CommandIDs::stopCode);
     menu.addSeparator();
     menu.addCommandItem (commandManager, CommandIDs::exportAsSynth);
     menu.addCommandItem (commandManager, CommandIDs::exportAsEffect);
@@ -554,15 +555,11 @@ bool CabbageApplication::openFile (const File& file, String type)
 {
     mainDocumentWindow->getMainContentComponent()->openFile(file);
 	cabbageSettings->updateRecentFilesList(file);
-	//commandManager->registerAllCommandsForTarget (mainDocumentWindow);
+	
 	mainDocumentWindow->addKeyListener(getCommandManager().getKeyMappings());
 	mainDocumentWindow->setName("Cabbage " + file.getFullPathName());
 	currentCsdFile = File(file.getFullPathName());
 
-	if(type=="Csound")
-	{		
-		
-	}
 	
     return true;
 }
