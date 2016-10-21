@@ -11,8 +11,8 @@
 #define CABBAGEMAINWINDOW_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "CabbageCodeEditor.h"
-#include "CabbageOutputConsole.h"
+#include "./CodeEditor/CabbageCodeEditor.h"
+#include "./CodeEditor/CabbageOutputConsole.h"
 #include "../BinaryData/CabbageBinaryData.h"
 
 class CabbageSettings;

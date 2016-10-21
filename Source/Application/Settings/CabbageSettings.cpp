@@ -9,8 +9,8 @@
 */
 
 #include "CabbageSettings.h"
-#include "../Utilities/CabbageUtilities.h"
-#include "../Utilities/CabbageStrings.h"
+#include "../../Utilities/CabbageUtilities.h"
+#include "../../Utilities/CabbageStrings.h"
 //==============================================================================
 
 CabbageSettings::CabbageSettings():

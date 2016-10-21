@@ -9,7 +9,7 @@
 */
 
 #include "CabbageCodeEditor.h"
-#include "CabbageSettings.h"
+#include "../Settings/CabbageSettings.h"
 
 //==============================================================================
 CabbageCodeEditorComponent::CabbageCodeEditorComponent(ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)

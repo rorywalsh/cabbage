@@ -12,7 +12,7 @@
 #define CABBAGEIDELOOKANDFEEL_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "CabbageSettings.h"
+#include "./Settings/CabbageSettings.h"
 #include "CabbageIds.h"
 #include "../Utilities/CabbageUtilities.h"
 #include "../BinaryData/CabbageBinaryData.h"

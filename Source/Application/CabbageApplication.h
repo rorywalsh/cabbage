@@ -12,11 +12,11 @@
 #define CABBAGEAPPLICATION_H_INCLUDED
 
 #include "CabbageIds.h"
-#include "CabbageSettings.h"
+#include "./Settings/CabbageSettings.h"
 #include "CabbageIDELookAndFeel.h"
-#include "CabbageSettingsWindow.h"
-#include "../Plugin/StandaloneFilterWindow.h"
-#include "CabbageOutputConsole.h"
+#include "./Settings/CabbageSettingsWindow.h"
+#include "../Plugin/CabbagePluginWrapper.h"
+#include "./CodeEditor/CabbageOutputConsole.h"
 
 class CabbageProjectWindow;
 class CabbageMainDocumentWindow;
@@ -93,9 +93,9 @@ public:
 	void runCode();
 	void stopCode();
     PropertySet* getDefaultSettings();
-	void createGenericCsoundPluginHolder();
+	void createGenericCsoundPluginWrapper();
     ScopedPointer<ApplicationCommandManager> commandManager;
-	ScopedPointer<StandalonePluginHolder> pluginHolder;
+	ScopedPointer<CabbagePluginWrapper> pluginWrapper;
     ScopedPointer<CabbageSettings> cabbageSettings;
     ScopedPointer<FileLogger> logger;
     PropertiesFile::Options getPropertyFileOptionsFor (const String& filename);

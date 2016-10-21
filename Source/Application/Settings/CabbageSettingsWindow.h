@@ -11,10 +11,10 @@
 #ifndef CABBAGESETTINGSWINDOW_H_INCLUDED
 #define CABBAGESETTINGSWINDOW_H_INCLUDED
 
-#include "CabbageIds.h"
+#include "../CabbageIds.h"
 #include "CabbageSettings.h"
-#include "../Utilities/CabbageColourPropertyComponent.h"
-#include "../Utilities/CabbageUtilities.h"
+#include "../../Utilities/CabbageColourPropertyComponent.h"
+#include "../../Utilities/CabbageUtilities.h"
 
 
 class CabbageSettingsWindow : public Component, public Button::Listener

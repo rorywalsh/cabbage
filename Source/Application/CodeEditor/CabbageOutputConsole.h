@@ -11,8 +11,8 @@
 #ifndef CABBAGEOUTPUCONSOLECOMPONENT_H_INCLUDED
 #define CABBAGEOUTPUCONSOLECOMPONENT_H_INCLUDED
 
-#include "CabbageIds.h"
-#include "CabbageSettings.h"
+#include "../CabbageIds.h"
+#include "../Settings/CabbageSettings.h"
 
 class CabbageOutputConsole : public Component
 {

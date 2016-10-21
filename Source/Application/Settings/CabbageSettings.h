@@ -12,7 +12,7 @@
 #define CABBAGESETTINGS_H_INCLUDED
 
 
-#include "CabbageIds.h"
+#include "../CabbageIds.h"
 
 class CabbageSettings : public ApplicationProperties, public ValueTree::Listener, public ChangeBroadcaster
 {

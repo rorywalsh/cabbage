@@ -11,7 +11,7 @@
 #ifndef CABBAGECODEEDITOR_H_INCLUDED
 #define CABBAGECODEEDITOR_H_INCLUDED
 
-#include "CabbageIds.h"
+#include "../CabbageIds.h"
 #include "CsoundTokeniser.h"
 
 class CabbageCodeEditorComponent : public CodeEditorComponent

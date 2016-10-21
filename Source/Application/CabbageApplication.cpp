@@ -72,7 +72,7 @@ void CabbageApplication::initialise (const String& commandLine)
     }
 	
 
-	createGenericCsoundPluginHolder();
+	createGenericCsoundPluginWrapper();
 
 
     initCommandManager();
@@ -93,7 +93,7 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
         mainDocumentWindow->lookAndFeelChanged();
 		mainDocumentWindow->updateEditorColourScheme();
     }
-	else if(StandalonePluginHolder* pluginHolder = dynamic_cast<StandalonePluginHolder*>(source))
+	else if(CabbagePluginWrapper* pluginWrapper = dynamic_cast<CabbagePluginWrapper*>(source))
     {
 
     }
@@ -477,7 +477,7 @@ bool CabbageApplication::perform (const InvocationInfo& info)
 void CabbageApplication::showSettingsDialog()
 {
 	DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), pluginHolder->getAudioDeviceSelector()));
+    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), pluginWrapper->getAudioDeviceSelector()));
     o.content->setSize(500, 450);
 
     o.dialogTitle = TRANS("Cabbage Settings");
@@ -570,13 +570,13 @@ void CabbageApplication::saveDocument()
 	currentCsdFile.replaceWithText(getEditor()->getDocument().getAllContent());
 }
 //==============================================================================
-void CabbageApplication::createGenericCsoundPluginHolder()
+void CabbageApplication::createGenericCsoundPluginWrapper()
 {
-	if(!pluginHolder)
+	if(!pluginWrapper)
 	{
-		pluginHolder = new StandalonePluginHolder(cabbageSettings->getValueTree(), false);
-		pluginHolder->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
-		if(pluginHolder->isAudioDeviceOk()==false)
+		pluginWrapper = new CabbagePluginWrapper(cabbageSettings->getValueTree(), false);
+		pluginWrapper->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+		if(pluginWrapper->isAudioDeviceOk()==false)
             CabbageUtilities::showMessage("Warning", "Cabbage could not initialise the selected audio device. Please select a valid audio device in Audio Settings", &lookAndFeel);
 	}
 }
@@ -585,7 +585,7 @@ void CabbageApplication::timerCallback()
 {
     if(currentCsdFile.existsAsFile())
     {        
-        const String csoundOutputString = pluginHolder->getCsoundOutput();
+        const String csoundOutputString = pluginWrapper->getCsoundOutput();
         consoleMessages+=csoundOutputString;
         if(csoundOutputString.length()>0)
         {
@@ -599,8 +599,8 @@ void CabbageApplication::runCode()
 	if(currentCsdFile.existsAsFile())
 	{
 		startTimer(100);
-		createGenericCsoundPluginHolder();
-		pluginHolder->restartPlugin(currentCsdFile);
+		createGenericCsoundPluginWrapper();
+		pluginWrapper->restartPlugin(currentCsdFile);
 		
 		bool shouldLaunchEditor = true;
 		if(shouldLaunchEditor)
@@ -611,7 +611,7 @@ void CabbageApplication::runCode()
 				pluginWindow->setVisible(true);
 			}
 			
-			pluginWindow->setContentOwned(pluginHolder->getProcessor()->createEditorIfNeeded(), true);
+			pluginWindow->setContentOwned(pluginWrapper->getProcessor()->createEditorIfNeeded(), true);
 			
 //			o.content->setSize(500, 500);
 //			o.dialogTitle = TRANS("Plugin Interface");
@@ -621,7 +621,7 @@ void CabbageApplication::runCode()
 //			o.resizable = false;
 		}	
 
-		//pluginHolder->createPlugin(currentCsdFile);
+		//pluginWrapper->createPlugin(currentCsdFile);
 	}
 	else
 		CabbageUtilities::showMessage("Warning", "Please open a file first", &lookAndFeel);
@@ -632,7 +632,7 @@ void CabbageApplication::stopCode()
 	if(currentCsdFile.existsAsFile())
 	{
 		stopTimer();
-		pluginHolder->stopPlaying();
+		pluginWrapper->stopPlaying();
 	}
 }
 //==============================================================================
@@ -656,8 +656,8 @@ bool CabbageApplication::closeAllMainWindows()
 void CabbageApplication::shutdown()
 {
 	
-	//CabbageUtilities::debug(pluginHolder->getDeviceManagerSettings());
-	cabbageSettings->setProperty("audioSetup", pluginHolder->getDeviceManagerSettings());
+	//CabbageUtilities::debug(pluginWrapper->getDeviceManagerSettings());
+	cabbageSettings->setProperty("audioSetup", pluginWrapper->getDeviceManagerSettings());
 	
 	
     mainDocumentWindow->setMenuBar(nullptr);
@@ -668,7 +668,7 @@ void CabbageApplication::shutdown()
     commandManager = nullptr;
     appearanceEditorWindow = nullptr;
     globalPreferencesWindow = nullptr;
-	pluginHolder = nullptr;
+	pluginWrapper = nullptr;
     cabbageSettings->closeFiles();
 	cabbageSettings = nullptr;
     LookAndFeel::setDefaultLookAndFeel (nullptr);

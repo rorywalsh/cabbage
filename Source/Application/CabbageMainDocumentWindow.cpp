@@ -9,7 +9,7 @@
 */
 
 #include "CabbageMainDocumentWindow.h"
-#include "CabbageSettings.h"
+#include "./Settings/CabbageSettings.h"
 
 	
 //==============================================================================
