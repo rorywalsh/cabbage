@@ -127,15 +127,13 @@ public:
     }
 
     //==============================================================================
+
 	AudioDeviceSelectorComponent* getAudioDeviceSelector()
 	{
 		return new AudioDeviceSelectorComponent (deviceManager,
-                                                              processor->getTotalNumInputChannels(),
-                                                              processor->getTotalNumInputChannels(),
-                                                              processor->getTotalNumOutputChannels(),
-                                                              processor->getTotalNumOutputChannels(),
-                                                              true, false,
-                                                              true, false);
+												0, 256,
+                                                0, 256,
+                                                true, true, true, false);
 	}
 	
 
@@ -358,7 +356,7 @@ public:
     {
         switch (result)
         {
-           // case 1:  pluginHolder->showAudioSettingsDialog(); break;
+            //case 1:  pluginHolder->showAudioSettingsDialog(); break;
             case 4:  resetToDefaultState(); break;
             default: break;
         }
