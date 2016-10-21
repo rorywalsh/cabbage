@@ -131,9 +131,12 @@ public:
 	AudioDeviceSelectorComponent* getAudioDeviceSelector()
 	{
 		return new AudioDeviceSelectorComponent (deviceManager,
-												0, 256,
-                                                0, 256,
-                                                true, true, true, false);
+                                                              processor->getTotalNumInputChannels(),
+                                                              processor->getTotalNumInputChannels(),
+                                                              processor->getTotalNumOutputChannels(),
+                                                              processor->getTotalNumOutputChannels(),
+                                                              true, false,
+                                                              true, false);
 	}
 	
 

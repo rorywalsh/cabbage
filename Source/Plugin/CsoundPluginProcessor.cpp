@@ -19,15 +19,15 @@ CsoundAudioProcessor::CsoundAudioProcessor(File csdFile)
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  AudioChannelSet::octagonal(), true)
+                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
                       #endif
-                       .withOutput ("Output", AudioChannelSet::octagonal(), true)
+                       .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        )
 #endif
 {
 	CabbageUtilities::debug("Plugin constructor");
-	csound = new CabbageCsound();
+	csound = new Csound();
 
     csound->SetHostImplementedMIDIIO(true);
     csound->SetHostData(this);
@@ -45,12 +45,12 @@ CsoundAudioProcessor::CsoundAudioProcessor(File csdFile)
     csound->SetOption((char*)"-n");
     csound->SetOption((char*)"-d");
 
-    csound->compileCsdFile(csdFile);
+    compileCsdFile(csdFile);
     numCsoundChannels = csound->GetNchnls();
 
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
 	
-    if(csound->compiledWithoutError())
+    if(csdCompiledWithoutError())
     {	
 		csdKsmps = csound->GetKsmps();
         if(csound->GetSpout()==nullptr);
@@ -203,7 +203,7 @@ void CsoundAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         if(getTotalNumInputChannels()==0)
             buffer.clear();
 
-        if(csound->compiledWithoutError())
+        if(csdCompiledWithoutError())
         {
             keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
             midiBuffer = midiMessages;

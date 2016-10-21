@@ -12,7 +12,7 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "CabbageCsound.h"
+#include <csound.hpp>
 
 //==============================================================================
 /**
@@ -71,9 +71,20 @@ public:
 	
 	//=============================================================================
 	String getCsoundOutput();
+
+	void compileCsdFile(File csdFile)
+	{
+		csCompileResult = csound->Compile(const_cast<char*>(csdFile.getFullPathName().toUTF8().getAddress()));
+	}
+	
+	bool csdCompiledWithoutError()
+	{
+		return csCompileResult==0 ? true : false;	
+	}
+
+	
 	
 private:
-
     //==============================================================================
 	MidiBuffer midiOutputBuffer;
 	MidiBuffer midiBuffer;
@@ -81,11 +92,11 @@ private:
 	ScopedPointer<CSOUND_PARAMS> csoundParams;
 	int csCompileResult, numCsoundChannels, pos;
 	MidiKeyboardState keyboardState;
-    MYFLT cs_scale;
+	MYFLT cs_scale;
     MYFLT *CSspin, *CSspout;       
     int csndIndex;                         
     int csdKsmps;
-	ScopedPointer<CabbageCsound> csound;
+	ScopedPointer<Csound> csound;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundAudioProcessor)
 	
 };
