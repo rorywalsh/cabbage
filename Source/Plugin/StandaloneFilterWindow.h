@@ -112,6 +112,7 @@ public:
     virtual void deletePlugin()
     {
         stopPlaying();
+		processor->editorBeingDeleted(processor->getActiveEditor());
         processor = nullptr;
     }
 
@@ -187,6 +188,11 @@ public:
 			return xml->createDocument("");
 		}
 		else return String::empty;
+	}
+	
+	AudioProcessor* getProcessor()
+	{
+		return processor;
 	}
 	
 	void restartPlugin(File inputFile)

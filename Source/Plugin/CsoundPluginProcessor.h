@@ -20,7 +20,8 @@
 */
 class CsoundPluginProcessor  : public AudioProcessor
 {
-public:
+	
+public:	
     //==============================================================================
     CsoundPluginProcessor(File csoundInputFile);
     ~CsoundPluginProcessor();
@@ -37,7 +38,7 @@ public:
 
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+    virtual bool hasEditor() const override;
 
     //==============================================================================
     const String getName() const override;
@@ -70,6 +71,8 @@ public:
     static void killGraphCallback(CSOUND *csound, WINDAT *windat);
     static int exitGraphCallback(CSOUND *csound);
 	
+	
+	virtual void sendChannelDataToCsound(){};
 	//=============================================================================
 	String getCsoundOutput();
 

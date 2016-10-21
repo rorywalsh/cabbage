@@ -227,6 +227,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                         this->suspendProcessing(true);
 
                     csndIndex = 0;
+					sendChannelDataToCsound();
                 }
                 if(result==0)
                 {

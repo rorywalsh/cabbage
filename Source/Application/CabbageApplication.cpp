@@ -601,6 +601,26 @@ void CabbageApplication::runCode()
 		startTimer(100);
 		createGenericCsoundPluginHolder();
 		pluginHolder->restartPlugin(currentCsdFile);
+		
+		bool shouldLaunchEditor = true;
+		if(shouldLaunchEditor)
+		{ 
+			if(pluginWindow==nullptr)
+			{
+				pluginWindow = new PluginWindow("Plugin Interface", CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::genericPluginInterface, Colours::grey));
+				pluginWindow->setVisible(true);
+			}
+			
+			pluginWindow->setContentOwned(pluginHolder->getProcessor()->createEditorIfNeeded(), true);
+			
+//			o.content->setSize(500, 500);
+//			o.dialogTitle = TRANS("Plugin Interface");
+//			o.dialogBackgroundColour = Colour(0xfff0f0f0);
+//			o.escapeKeyTriggersCloseButton = true;
+//			o.useNativeTitleBar = true;
+//			o.resizable = false;
+		}	
+
 		//pluginHolder->createPlugin(currentCsdFile);
 	}
 	else

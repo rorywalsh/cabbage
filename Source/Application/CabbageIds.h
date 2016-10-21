@@ -134,9 +134,10 @@ static const Identifier keyword = "Editor - Keyword";
 static const Identifier comment = "Editor - Comment";
 static const Identifier numbers = "Editor - Numbers";
 static const Identifier csdtags = "Editor - Csd Tags";
-static const Identifier consoletext = "Console - Text";
-static const Identifier consolebackground = "Console - Background";
-static const Identifier consoleoutline = "Console - Outline";
+static const Identifier consoleText = "Console - Text";
+static const Identifier consoleBackground = "Console - Background";
+static const Identifier consoleOutline = "Console - Outline";
+static const Identifier genericPluginInterface = "Generic Plugin - Background";
 }
 
 // this array holds the names of all widgets taht can be controlled via a host and plugin editor GUI

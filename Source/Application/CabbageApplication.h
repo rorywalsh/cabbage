@@ -25,6 +25,22 @@ class CabbageMainDocumentWindow;
 class CabbageApplication  : public JUCEApplication, public ChangeListener, public Timer
 {
 public:
+	//==============================================================================
+	class PluginWindow    : public DocumentWindow
+	{
+	public:
+		PluginWindow(String title, Colour bgColour):DocumentWindow (title, bgColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton)
+		{
+			setAlwaysOnTop(true);
+		}
+		
+		void closeButtonPressed()
+		{
+			this->setVisible(false);
+		}
+	};
+
+
     //==============================================================================
     CabbageApplication();
 
@@ -137,6 +153,7 @@ public:
 private:
 	String consoleMessages;
 	Identifier pluginType;
+	ScopedPointer<PluginWindow> pluginWindow;
     ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;
 };
 

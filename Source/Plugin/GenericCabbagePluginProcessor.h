@@ -21,6 +21,14 @@ public:
 	~GenericCabbagePluginProcessor();	
 	
 	controlChannelInfo_s* csoundChanList;
+	
+	OwnedArray<AudioParameterFloat> parameters;
+	
+	void sendChannelDataToCsound();
+
+	//==============================================================================
+    AudioProcessorEditor* createEditor() override;
+    bool hasEditor() const override;
 };
 
 

@@ -22,8 +22,8 @@ public:
     {
         addAndMakeVisible(textEditor = new TextEditor(), true);
         textEditor->setColour(Label::outlineColourId, Colours::white);
-        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoletext, Colours::grey.darker()));
-		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consolebackground, Colours::grey.darker()));
+        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleText, Colours::grey.darker()));
+		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
         textEditor->setMultiLine(true);
         textEditor->setReadOnly(true);
         textEditor->setFont(Font("Arial", 12, 1));
@@ -53,8 +53,8 @@ public:
 
 	void updateColourScheme()
 	{
-        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoletext, Colours::grey.darker()));
-		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consolebackground, Colours::grey.darker()));	
+        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleText, Colours::grey.darker()));
+		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleBackground, Colours::grey.darker()));	
 		repaint();	
 	}
 
@@ -71,7 +71,7 @@ public:
 
     void paint(Graphics& g)
     {
-        g.fillAll(CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleoutline, Colours::grey.darker()));
+        g.fillAll(CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleOutline, Colours::grey.darker()));
 //        g.setColour(Colours::white);
 //        g.drawRoundedRectangle(getLocalBounds().toFloat(), 2, 2);
 //        g.drawFittedText("Csound output", getLocalBounds().withHeight(18), Justification::centred, 1, 1.f);

@@ -86,9 +86,10 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("Colours_"+CabbageColourIds::comment,  "FF72D20C");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::numbers,  "FFE60000");
 	defaultPropSet->setValue("Colours_"+CabbageColourIds::csdtags, "FFE60034");
-	defaultPropSet->setValue("Colours_"+CabbageColourIds::consoletext, "FFFFFFFF");
-	defaultPropSet->setValue("Colours_"+CabbageColourIds::consolebackground, "FF000000");
-	defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleoutline, "FF000000");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleText, "FFFFFFFF");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleBackground, "FF000000");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleOutline, "FF000000");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::genericPluginInterface, "FF666666");
 	
 
     getUserSettings()->setFallbackPropertySet(defaultPropSet);

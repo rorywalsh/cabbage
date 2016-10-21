@@ -9,6 +9,7 @@
 */
 
 #include "GenericCabbagePluginProcessor.h"
+#include "GenericCabbageEditor.h"
 
 
 GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
@@ -17,17 +18,42 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
 	
 	csoundChanList = NULL;
 	int numberOfChannels = csoundListChannels(getCsoundStruct(), &csoundChanList);
-	if(numberOfChannels>0)
+	for(int i = 0; i < numberOfChannels; i++ )
 	{
-		CabbageUtilities::debug(csoundChanList[0].name);
-		CabbageUtilities::debug(csoundChanList[0].hints.min);
-		CabbageUtilities::debug(csoundChanList[0].hints.max);
-		CabbageUtilities::debug(csoundChanList[0].hints.dflt);
+		const float min = csoundChanList[i].hints.min;
+		const float max = csoundChanList[i].hints.max;
+		const float defaultValue = csoundChanList[i].hints.dflt;
+		const String channel = csoundChanList[i].name;
+		NormalisableRange<float> range(min, max);
+		AudioParameterFloat* param = new AudioParameterFloat(channel, channel, range, defaultValue);
+		addParameter(param);
+		parameters.add(param);		
 	}
+	
+	CabbageUtilities::debug(getParameters().size());
 	
 }
 
 GenericCabbagePluginProcessor::~GenericCabbagePluginProcessor()
 {
 	getCsound()->DeleteChannelList(csoundChanList);
+	editorBeingDeleted (this->getActiveEditor());
 }
+
+//==============================================================================
+bool GenericCabbagePluginProcessor::hasEditor() const
+{
+    return true; // (change this to false if you choose to not supply an editor)
+}
+
+AudioProcessorEditor* GenericCabbagePluginProcessor::createEditor()
+{
+    return new GenericCabbageEditor(*this);
+}
+
+void GenericCabbagePluginProcessor::sendChannelDataToCsound()
+{
+	for(int i=0;i<parameters.size();i++)
+		getCsound()->SetChannel(parameters[i]->name.toUTF8(), *parameters[i]);
+}
+

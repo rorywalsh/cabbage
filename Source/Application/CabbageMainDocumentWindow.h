@@ -64,9 +64,9 @@ public:
 			void paint(Graphics &g)
 			{
 				if(isActive)
-					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleoutline, Colours::grey).contrasting(.4));
+					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleOutline, Colours::grey).contrasting(.4));
 				else
-					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleoutline, Colours::grey));
+					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleOutline, Colours::grey));
 
 			}
 			
