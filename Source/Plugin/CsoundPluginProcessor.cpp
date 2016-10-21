@@ -70,10 +70,8 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
 	CabbageUtilities::debug("Plugin destructor");
 	if(csound)
     {
-        this->getCallbackLock().enter();
-        Logger::writeToLog("about to cleanup Csound");
         csound = nullptr;
-        Logger::writeToLog("Csound cleaned up");
+		editorBeingDeleted (this->getActiveEditor());
     }
 }
 

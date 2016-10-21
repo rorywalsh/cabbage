@@ -599,7 +599,9 @@ void CabbageApplication::runCode()
 	if(currentCsdFile.existsAsFile())
 	{
 		startTimer(100);
+
 		createGenericCsoundPluginWrapper();
+		
 		pluginWrapper->restartPlugin(currentCsdFile);
 		
 		bool shouldLaunchEditor = true;
@@ -668,9 +670,10 @@ void CabbageApplication::shutdown()
     commandManager = nullptr;
     appearanceEditorWindow = nullptr;
     globalPreferencesWindow = nullptr;
-	pluginWrapper = nullptr;
-    cabbageSettings->closeFiles();
+	cabbageSettings->closeFiles();
 	cabbageSettings = nullptr;
+	pluginWrapper = nullptr;
+
     LookAndFeel::setDefaultLookAndFeel (nullptr);
 
     if (! isRunningCommandLine)

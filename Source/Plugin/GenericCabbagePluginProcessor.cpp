@@ -25,9 +25,7 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
 		const float defaultValue = csoundChanList[i].hints.dflt;
 		const String channel = csoundChanList[i].name;
 		NormalisableRange<float> range(min, max);
-		AudioParameterFloat* param = new AudioParameterFloat(channel, channel, range, defaultValue);
-		addParameter(param);
-		parameters.add(param);		
+		addParameter(new AudioParameterFloat(channel, channel, range, defaultValue));		
 	}
 	
 	CabbageUtilities::debug(getParameters().size());
@@ -36,8 +34,7 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
 
 GenericCabbagePluginProcessor::~GenericCabbagePluginProcessor()
 {
-	getCsound()->DeleteChannelList(csoundChanList);
-	editorBeingDeleted (this->getActiveEditor());
+	getCsound()->DeleteChannelList(csoundChanList);	
 }
 
 //==============================================================================
@@ -53,7 +50,11 @@ AudioProcessorEditor* GenericCabbagePluginProcessor::createEditor()
 
 void GenericCabbagePluginProcessor::sendChannelDataToCsound()
 {
-	for(int i=0;i<parameters.size();i++)
-		getCsound()->SetChannel(parameters[i]->name.toUTF8(), *parameters[i]);
+	const OwnedArray<AudioProcessorParameter>& params = getParameters();
+	for(int i=0;i<params.size();i++)
+	{
+		AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]);
+		getCsound()->SetChannel(param->name.toUTF8(), *param);
+	}
 }
 
