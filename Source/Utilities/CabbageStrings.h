@@ -60,6 +60,8 @@ public:
 			colours.add("Interface - PopupMenu Text");
 			colours.add("Interface - PopupMenu Highlighted Text");
 			colours.add("Interface - Main Background");
+			colours.add("Interface - Status Bar");
+			colours.add("Interface - Status Bar Text");
 			colours.add("Interface - Alart Window Background");
 			colours.add("Editor - Code Background");
 			colours.add("Editor - Line Numbers Background");
@@ -74,8 +76,7 @@ public:
 			colours.add("Editor - Csd Tags");
 			colours.add("Console - Text");
 			colours.add("Console - Background");
-			colours.add("Console - Outline");
-			
+			colours.add("Console - Outline");			
 			return colours;
 	}
 };

@@ -32,6 +32,8 @@ CabbageApplication::CabbageApplication()
 //==============================================================================
 void CabbageApplication::initialise (const String& commandLine)
 {
+	
+	
     PropertiesFile::Options options;
     options.applicationName     = "Cabbage2";
     options.filenameSuffix      = "settings";
@@ -42,9 +44,21 @@ void CabbageApplication::initialise (const String& commandLine)
     options.folderName          = "Cabbage2";
 #endif
 
+	//filterGraph.
+	testWidget = CabbageWidget("rslider channel(\"chan1\")", -1);
     cabbageSettings = new CabbageSettings();
     cabbageSettings->addChangeListener(this);
     cabbageSettings->setStorageParameters (options);
+	
+	
+
+
+	cabbageWidgets = ValueTree("CabbageWidgets");
+	cabbageWidgets.addListener(this);
+	
+	cabbageWidgets.addChild(testWidget, -1, 0);
+	
+	
     //cabbageSettings->setDefaultColourSettings();
     cabbageSettings->setDefaultSettings();
     lookAndFeel.setColour(2, Colours::red);
@@ -91,6 +105,7 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
         lookAndFeel.refreshLookAndFeel(cabbageSettings->getValueTree());
         mainDocumentWindow->lookAndFeelChanged();
 		mainDocumentWindow->updateEditorColourScheme();
+		
     }
 }
 
@@ -624,7 +639,9 @@ bool CabbageApplication::openFile (const File& file, String type)
 //==============================================================================
 void CabbageApplication::saveDocument()
 {
-	currentCsdFile.replaceWithText(getEditor()->getDocument().getAllContent());
+	testWidget.setStringProp(CabbageIdentifierIds::text, "HelloText");
+	if(currentCsdFile.existsAsFile())
+		currentCsdFile.replaceWithText(getEditor()->getDocument().getAllContent());
 }
 
 void CabbageApplication::timerCallback()

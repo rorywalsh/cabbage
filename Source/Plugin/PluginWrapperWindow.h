@@ -46,16 +46,20 @@ public:
                             const String& preferredDefaultDeviceName = String(),
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr)
 
-        : settings (settingsToUse, takeOwnershipOfSettings)
+        : settings (settingsToUse, takeOwnershipOfSettings), graph()
     {
+		graph.prepareToPlay(44100, 512);
+		graph.setPlayConfigDetails(2, 2, 44100, 512);
         createPlugin(inputFile);
         setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
         reloadPluginState();
         startPlaying();
-
+		
+		bool connection1 = graph.addConnection(1, 0, 2, 0);			
+		bool connection2 = graph.addConnection(1, 1, 2, 1);	
     }
 
-    virtual ~PluginWrapper()
+    ~PluginWrapper()
     {
         deletePlugin();
         shutDownAudioDevices();
@@ -64,6 +68,9 @@ public:
     //==============================================================================
     virtual void createPlugin(File inputFile)
     {
+		AudioProcessorGraph::AudioGraphIOProcessor* outNode;
+		outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+		AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, 2);
 
       #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
         processor = ::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone);
@@ -76,11 +83,16 @@ public:
 
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails(44100, 512);
+		
+		AudioProcessorGraph::Node* processorNode = graph.addNode(processor, 1);
+		
+
     }
 
     virtual void deletePlugin()
     {
         stopPlaying();
+		graph.clear();
         processor = nullptr;
     }
 
@@ -123,7 +135,7 @@ public:
     //==============================================================================
     void startPlaying()
     {
-        player.setProcessor (processor);
+        player.setProcessor (&graph);
     }
 
     void stopPlaying()
@@ -183,14 +195,11 @@ public:
 
     //==============================================================================
     OptionalScopedPointer<PropertySet> settings;
-    ScopedPointer<AudioProcessor> processor;
-    AudioDeviceManager deviceManager;
+    AudioProcessor* processor;
+    AudioProcessorGraph graph;
+	AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
 	ScopedPointer<XmlElement> xmlSettings;
-
-   #if JUCE_IOS || JUCE_ANDROID
-    StringArray lastMidiDevices;
-   #endif
 
 private:
     void setupAudioDevices (const String& preferredDefaultDeviceName,
@@ -231,8 +240,7 @@ public:
                             const String& preferredDefaultDeviceName = String(),
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr)
         : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton)
-    {
-        setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
+    {        setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
 
         pluginHolder = new PluginWrapper (settingsToUse, inputFile, takeOwnershipOfSettings,
                                                    preferredDefaultDeviceName, preferredSetupOptions);
@@ -327,6 +335,7 @@ public:
 private:
     //==============================================================================
     TextButton optionsButton;
+	
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginWrapperWindow)
 };

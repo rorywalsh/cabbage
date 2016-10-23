@@ -29,154 +29,155 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
     left(0),
     top(0),
     refreshFromDisk(false),
-    warningMessages("")
+    warningMessages(""),
+	ValueTree("CabbageWidgetTree")
 {
 //Default values are assigned to all attributres
 //before parsing begins
-    cabbageIdentifiers.set("scalex", 1);
-    cabbageIdentifiers.set("scaley", 1);
-    cabbageIdentifiers.set("resize", 0);
-    cabbageIdentifiers.set(CabbageIdentifierIds::active, 1);
-    cabbageIdentifiers.set(CabbageIdentifierIds::parentdir, "");
-    cabbageIdentifiers.set(CabbageIdentifierIds::svgdebug, 0);
+    setWidgetProperty("scalex", 1);
+    setWidgetProperty("scaley", 1);
+    setWidgetProperty("resize", 0);
+    setWidgetProperty(CabbageIdentifierIds::active, 1);
+    setWidgetProperty(CabbageIdentifierIds::parentdir, "");
+    setWidgetProperty(CabbageIdentifierIds::svgdebug, 0);
 
     StringArray strTokens;
     strTokens.addTokens(compStr, " ", "\"");
 
-    cabbageIdentifiers.set(CabbageIdentifierIds::channelarray, "");
+    setWidgetProperty(CabbageIdentifierIds::channelarray, "");
     //===============sliders==================//
     if(strTokens[0].trim() == "hslider" || strTokens[0].trim() == "hslider2" || strTokens[0].trim() == "hslider3")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "interactive");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 150);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 50);
+        setWidgetProperty(CabbageIdentifierIds::basetype, "interactive");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 150);
+        setWidgetProperty(CabbageIdentifierIds::height, 50);
         var channels;
         channels.append("hslider");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::min, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::max, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::textbox, 0.f);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderskew, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, .001);
-        cabbageIdentifiers.set(CabbageIdentifierIds::velocity, 0);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::min, 0);
+        setWidgetProperty(CabbageIdentifierIds::max, 1);
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::textbox, 0.f);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::sliderskew, 1);
+        setWidgetProperty(CabbageIdentifierIds::sliderincr, .001);
+        setWidgetProperty(CabbageIdentifierIds::velocity, 0);
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::midichan, -99);
-        cabbageIdentifiers.set(CabbageIdentifierIds::midictrl, -99);
+        setWidgetProperty(CabbageIdentifierIds::midichan, -99);
+        setWidgetProperty(CabbageIdentifierIds::midictrl, -99);
         //these don't appear in the props dialog
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "hslider");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, cabbageIdentifiers.getWithDefault("name", "").toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::name, "hslider");
+        setWidgetProperty(CabbageIdentifierIds::type, getWidgetPropertyWithDefault("name", "").toString());
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
         if(strTokens[0].trim() == "hslider2")
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "horizontal2");
+            setWidgetProperty(CabbageIdentifierIds::kind, "horizontal2");
         else if(strTokens[0].trim() == "hslider3")
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "horizontal3");
+            setWidgetProperty(CabbageIdentifierIds::kind, "horizontal3");
         else
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "horizontal");
-        cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackerthickness, .1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::gradient, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgslider, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgsliderbg, "");
+            setWidgetProperty(CabbageIdentifierIds::kind, "horizontal");
+        setWidgetProperty(CabbageIdentifierIds::decimalplaces, 1);
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::trackerthickness, .1);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::gradient, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgslider, "");
+        setWidgetProperty(CabbageIdentifierIds::svgsliderbg, "");
 
 
     }
     else if(strTokens[0].trim() == "socketsend" || strTokens[0].trim() == "socketreceive")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::socketaddress, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::socketport, 0);
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::socketaddress, "");
+        setWidgetProperty(CabbageIdentifierIds::socketport, 0);
     }
     else if(strTokens[0].trim() == "vslider" || strTokens[0].trim() == "vslider2" ||  strTokens[0].trim() == "vslider3")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "interactive");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 50);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 150);
+        setWidgetProperty(CabbageIdentifierIds::basetype, "interactive");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 50);
+        setWidgetProperty(CabbageIdentifierIds::height, 150);
         var channels;
         channels.append("vslider");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::min, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::max, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::textbox, 0.f);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderskew, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, .001);
-        cabbageIdentifiers.set(CabbageIdentifierIds::velocity, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::midichan, -99);
-        cabbageIdentifiers.set(CabbageIdentifierIds::midictrl, -99);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::min, 0);
+        setWidgetProperty(CabbageIdentifierIds::max, 1);
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::textbox, 0.f);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::sliderskew, 1);
+        setWidgetProperty(CabbageIdentifierIds::sliderincr, .001);
+        setWidgetProperty(CabbageIdentifierIds::velocity, 0);
+        setWidgetProperty(CabbageIdentifierIds::midichan, -99);
+        setWidgetProperty(CabbageIdentifierIds::midictrl, -99);
         //these don't appear in the props dialog
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "vslider");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, cabbageIdentifiers.getWithDefault("name", "").toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::name, "vslider");
+        setWidgetProperty(CabbageIdentifierIds::type, getWidgetPropertyWithDefault("name", "").toString());
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
         if(strTokens[0].trim() == "vslider2")
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "vertical2");
+            setWidgetProperty(CabbageIdentifierIds::kind, "vertical2");
         else if(strTokens[0].trim() == "vslider3")
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "vertical3");
+            setWidgetProperty(CabbageIdentifierIds::kind, "vertical3");
         else
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "vertical");
+            setWidgetProperty(CabbageIdentifierIds::kind, "vertical");
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackerthickness, .1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgslider, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgsliderbg, "");
+        setWidgetProperty(CabbageIdentifierIds::decimalplaces, 1);
+        setWidgetProperty(CabbageIdentifierIds::trackerthickness, .1);
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgslider, "");
+        setWidgetProperty(CabbageIdentifierIds::svgsliderbg, "");
     }
     else if(strTokens[0].trim() == "rslider")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "interactive");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 60);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 60);
+        setWidgetProperty(CabbageIdentifierIds::basetype, "interactive");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 60);
+        setWidgetProperty(CabbageIdentifierIds::height, 60);
         var channels;
         channels.append("rslider");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::min, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::max, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderskew, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, .001);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::textbox, 0.f);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::outlinecolour, Colours::black.brighter(.3f).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::midichan, -99);
-        cabbageIdentifiers.set(CabbageIdentifierIds::midictrl, -99);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::min, 0);
+        setWidgetProperty(CabbageIdentifierIds::max, 1);
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::sliderskew, 1);
+        setWidgetProperty(CabbageIdentifierIds::sliderincr, .001);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::textbox, 0.f);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
+        setWidgetProperty(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::outlinecolour, Colours::black.brighter(.3f).toString());
+        setWidgetProperty(CabbageIdentifierIds::midichan, -99);
+        setWidgetProperty(CabbageIdentifierIds::midictrl, -99);
         //these don't appear in the props dialog
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "rslider");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, cabbageIdentifiers.getWithDefault("name", "").toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::kind, "rotary");
-        cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::velocity, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackerthickness, .7);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgslider, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgsliderbg, "");
+        setWidgetProperty(CabbageIdentifierIds::name, "rslider");
+        setWidgetProperty(CabbageIdentifierIds::type, getWidgetPropertyWithDefault("name", "").toString());
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::kind, "rotary");
+        setWidgetProperty(CabbageIdentifierIds::decimalplaces, 1);
+        setWidgetProperty(CabbageIdentifierIds::velocity, 0);
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::trackerthickness, .7);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgslider, "");
+        setWidgetProperty(CabbageIdentifierIds::svgsliderbg, "");
     }
 
     else if((strTokens[0].trim() == "sourcebutton")||(strTokens[0].trim() == "loadbutton"))
@@ -186,57 +187,57 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         width = 600;
         height = 440;
         //name.append(String(ID), 1024);
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 40);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::oncolour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, strTokens[0].trim());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, strTokens[0].trim());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonon, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonoff, "");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 40);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::oncolour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, strTokens[0].trim());
+        setWidgetProperty(CabbageIdentifierIds::name, strTokens[0].trim());
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonon, "");
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonoff, "");
     }
 
     //===============info button==================//
     else if(strTokens[0].trim() == "infobutton")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 600;
         height = 440;
         //name.append(String(ID), 1024);
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 40);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::oncolour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "infobutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "infobutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonon, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonoff, "");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 40);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::oncolour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "infobutton");
+        setWidgetProperty(CabbageIdentifierIds::name, "infobutton");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonon, "");
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonoff, "");
     }
 
     //===============directory list==================//
     else if(strTokens[0].trim() == "directorylist")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         /*
                   top = 10;
                   left = 10;
@@ -255,7 +256,7 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
     //===============record button==================//
     else if(strTokens[0].trim() == "recordbutton")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 80;
@@ -265,37 +266,37 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         array.append("Record");
 
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 40);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 40);
         var channels;
         channels.append("recordbutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, array);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::oncolour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "recordbutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "recordbutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::mode, "file");
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set("name", cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::value, 1);
+        setWidgetProperty(CabbageIdentifierIds::text, array);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::oncolour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "recordbutton");
+        setWidgetProperty(CabbageIdentifierIds::name, "recordbutton");
+        setWidgetProperty(CabbageIdentifierIds::mode, "file");
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty("name", getWidgetPropertyWithDefault("name", "").toString()+String(ID));
         var populate;
         populate.append("");
         populate.append("");
-        cabbageIdentifiers.set("populate", populate);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonon, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonoff, "");
+        setWidgetProperty("populate", populate);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonon, "");
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonoff, "");
     }
     //===============file button==================//
     else if(strTokens[0].trim() == "filebutton")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 80;
@@ -305,39 +306,39 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         array.append("Open file");
 
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 40);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 40);
         var channels;
         channels.append("filebutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, array);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::oncolour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "filebutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "filebutton");
-        cabbageIdentifiers.set(CabbageIdentifierIds::mode, "file");
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set("name", cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::value, 1);
+        setWidgetProperty(CabbageIdentifierIds::text, array);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::oncolour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "filebutton");
+        setWidgetProperty(CabbageIdentifierIds::name, "filebutton");
+        setWidgetProperty(CabbageIdentifierIds::mode, "file");
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty("name", getWidgetPropertyWithDefault("name", "").toString()+String(ID));
         var populate;
         populate.append("");
         populate.append("");
-        cabbageIdentifiers.set("populate", populate);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::filetype, "*");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonon, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonoff, "");
+        setWidgetProperty("populate", populate);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::filetype, "*");
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonon, "");
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonoff, "");
     }
 
     //===============button==================//
     else if(strTokens[0].trim() == "button")
     {
-        cabbageIdentifiers.set("basetype", "interactive");
+        setWidgetProperty("basetype", "interactive");
         top = 10;
         left = 10;
         width = 80;
@@ -346,92 +347,92 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         array.append("Push me");
         array.append("Push me");
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 40);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 40);
         var channels;
         channels.append("buttonchan");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, array);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::oncolour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::latched, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "button");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "button");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::radiogroup, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonon, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonoff, "");
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::text, array);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::oncolour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::latched, 1);
+        setWidgetProperty(CabbageIdentifierIds::type, "button");
+        setWidgetProperty(CabbageIdentifierIds::name, "button");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::radiogroup, 0);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonon, "");
+        setWidgetProperty(CabbageIdentifierIds::svgbuttonoff, "");
 
     }
 
     //===============checkbox==================//
     else if(strTokens[0].trim() == "checkbox")
     {
-        cabbageIdentifiers.set("basetype", "interactive");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 100);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 22);
+        setWidgetProperty("basetype", "interactive");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 100);
+        setWidgetProperty(CabbageIdentifierIds::height, 22);
         var channels;
         channels.append("checkchan");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::shape, "square");
-        cabbageIdentifiers.set(CabbageIdentifierIds::corners, 2);
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "checkbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::oncolour, Colours::lime.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "checkbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::radiogroup, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::shape, "square");
+        setWidgetProperty(CabbageIdentifierIds::corners, 2);
+        setWidgetProperty(CabbageIdentifierIds::type, "checkbox");
+        setWidgetProperty(CabbageIdentifierIds::oncolour, Colours::lime.toString());
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::name, "checkbox");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::radiogroup, 0);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============numberbox==================//
     else if(strTokens[0].trim() == "numberbox")
     {
-        cabbageIdentifiers.set("basetype", "interactive");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 100);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 22);
+        setWidgetProperty("basetype", "interactive");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 100);
+        setWidgetProperty(CabbageIdentifierIds::height, 22);
         var channels;
         channels.append("numberbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::min, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::max, 100);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 50);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderskew, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, .01);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "numberbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, CabbageUtilities::getDarkerBackgroundSkin().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::whitesmoke.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "numberbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::velocity, 80);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::min, 0);
+        setWidgetProperty(CabbageIdentifierIds::max, 100);
+        setWidgetProperty(CabbageIdentifierIds::value, 50);
+        setWidgetProperty(CabbageIdentifierIds::sliderskew, 1);
+        setWidgetProperty(CabbageIdentifierIds::sliderincr, .01);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::type, "numberbox");
+        setWidgetProperty(CabbageIdentifierIds::colour, CabbageUtilities::getDarkerBackgroundSkin().toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::whitesmoke.toString());
+        setWidgetProperty(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::name, "numberbox");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::velocity, 80);
     }
     //===============popupmenu==================//
     else if(strTokens[0].trim() == "popupmenu")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
 
         var array;
         array.append("Item 1");
@@ -439,34 +440,34 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         array.append("Item 3");
         array.append("Item 4");
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 20);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 20);
         var channels;
         channels.append("popupchan");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::channeltype, "number");
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, array);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 1);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::channeltype, "number");
+        setWidgetProperty(CabbageIdentifierIds::text, array);
+        setWidgetProperty(CabbageIdentifierIds::value, 1);
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "popupmenu");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "popupmenu");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "popupmenu");
+        setWidgetProperty(CabbageIdentifierIds::name, "popupmenu");
 
         var populate;
         populate.append("");
         populate.append("");
-        cabbageIdentifiers.set(CabbageIdentifierIds::populate, populate);
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::populate, populate);
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
     //===============combobox==================//
     else if(strTokens[0].trim() == "combobox")
     {
-        cabbageIdentifiers.set("basetype", "interactive");
+        setWidgetProperty("basetype", "interactive");
 
         top = 10;
         left = 10;
@@ -478,39 +479,39 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         array.append("Item 2");
         array.append("Item 3");
         array.append("Item 4");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 20);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 20);
         var channels;
         channels.append("combochan");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::channeltype, "number");
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, array);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::currenttext, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "combobox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "combobox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::comborange, 4);
-        cabbageIdentifiers.set(CabbageIdentifierIds::file, "");
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::channeltype, "number");
+        setWidgetProperty(CabbageIdentifierIds::text, array);
+        setWidgetProperty(CabbageIdentifierIds::value, 1);
+        setWidgetProperty(CabbageIdentifierIds::currenttext, "");
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "combobox");
+        setWidgetProperty(CabbageIdentifierIds::name, "combobox");
+        setWidgetProperty(CabbageIdentifierIds::comborange, 4);
+        setWidgetProperty(CabbageIdentifierIds::file, "");
         var populate;
         populate.append("");
         populate.append("");
-        cabbageIdentifiers.set(CabbageIdentifierIds::populate, populate);
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::workingdir, "");
+        setWidgetProperty(CabbageIdentifierIds::populate, populate);
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::workingdir, "");
 
     }
 
     //===============combobox==================//
     else if(strTokens[0].trim() == "listbox")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
 
         top = 10;
         left = 10;
@@ -522,63 +523,63 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         array.append("Item 2");
         array.append("Item 3");
         array.append("Item 4");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 20);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 20);
         var channels;
         channels.append("listbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::channeltype, "number");
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, array);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::highlightcolour, Colours::black.contrasting().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "listbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "listbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::comborange, 4);
-        cabbageIdentifiers.set(CabbageIdentifierIds::file, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::align, "centre");
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::channeltype, "number");
+        setWidgetProperty(CabbageIdentifierIds::text, array);
+        setWidgetProperty(CabbageIdentifierIds::value, 1);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::highlightcolour, Colours::black.contrasting().toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "listbox");
+        setWidgetProperty(CabbageIdentifierIds::name, "listbox");
+        setWidgetProperty(CabbageIdentifierIds::comborange, 4);
+        setWidgetProperty(CabbageIdentifierIds::file, "");
+        setWidgetProperty(CabbageIdentifierIds::align, "centre");
         var populate;
         populate.append("");
         populate.append("");
-        cabbageIdentifiers.set(CabbageIdentifierIds::populate, populate);
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::workingdir, "");
+        setWidgetProperty(CabbageIdentifierIds::populate, populate);
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::workingdir, "");
 
     }
     //===============label==================//
     else if(strTokens[0].trim() == "label")
     {
-        cabbageIdentifiers.set("basetype", "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 16);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "hello");
-        cabbageIdentifiers.set(CabbageIdentifierIds::min, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "label");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "label");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, cabbageIdentifiers.getWithDefault("name", "").toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::transparentBlack.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::align, "centre");
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::corners, 3);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty("basetype", "layout");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 16);
+        setWidgetProperty(CabbageIdentifierIds::text, "hello");
+        setWidgetProperty(CabbageIdentifierIds::min, 1);
+        setWidgetProperty(CabbageIdentifierIds::name, "label");
+        setWidgetProperty(CabbageIdentifierIds::type, "label");
+        setWidgetProperty(CabbageIdentifierIds::type, getWidgetPropertyWithDefault("name", "").toString());
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::transparentBlack.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::align, "centre");
+        setWidgetProperty(CabbageIdentifierIds::fontstyle, 1);
+        setWidgetProperty(CabbageIdentifierIds::channel, "");
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::corners, 3);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
     //===============multitab==================//
     else if(strTokens[0].trim() == "multitab")
     {
         /*
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 100;
@@ -595,37 +596,37 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
     //===============soundfiler==================//
     else if(strTokens[0].trim() == "soundfiler")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 300;
         height = 200;
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 300);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 200);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 300);
+        setWidgetProperty(CabbageIdentifierIds::height, 200);
         var channels;
         //channels.append("pos");
         //channels.append("end");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "soundfiler");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "soundfiler");
-        cabbageIdentifiers.set(CabbageIdentifierIds::file, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::scrubberposition, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::zoom, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::startpos, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablenumber, -1);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "soundfiler");
+        setWidgetProperty(CabbageIdentifierIds::name, "soundfiler");
+        setWidgetProperty(CabbageIdentifierIds::file, "");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::scrubberposition, 0);
+        setWidgetProperty(CabbageIdentifierIds::zoom, 0);
+        setWidgetProperty(CabbageIdentifierIds::startpos, 0);
+        setWidgetProperty(CabbageIdentifierIds::tablenumber, -1);
     }
     //===============gentable==================//
     else if(strTokens[0].trim() == "gentable")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 300;
@@ -644,216 +645,216 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         tableColours.append("darkgreen");
         tableColours.append("lightgreen");
         tableColours.append("mango");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 300);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 200);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 300);
+        setWidgetProperty(CabbageIdentifierIds::height, 200);
         var channels;
         channels.append("pos");
         channels.append("end");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "gentable");
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablecolour, tableColours);
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "gentable");
-        cabbageIdentifiers.set(CabbageIdentifierIds::amprange, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::drawmode, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::file, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::active, 0);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "gentable");
+        setWidgetProperty(CabbageIdentifierIds::tablecolour, tableColours);
+        setWidgetProperty(CabbageIdentifierIds::name, "gentable");
+        setWidgetProperty(CabbageIdentifierIds::amprange, 0);
+        setWidgetProperty(CabbageIdentifierIds::drawmode, "");
+        setWidgetProperty(CabbageIdentifierIds::file, "");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::active, 0);
 
         var tables;
         tables.append(0);
         tables.append(0);
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::scrubberposition, tables);
-        cabbageIdentifiers.set(CabbageIdentifierIds::zoom, -1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::startpos, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablenumber, -1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::outlinethickness, 1.f);
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablebackgroundcolour, Colour(15, 15, 15).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablegridcolour, Colour(45, 45, 45).toString());
+        setWidgetProperty(CabbageIdentifierIds::scrubberposition, tables);
+        setWidgetProperty(CabbageIdentifierIds::zoom, -1);
+        setWidgetProperty(CabbageIdentifierIds::startpos, 0);
+        setWidgetProperty(CabbageIdentifierIds::tablenumber, -1);
+        setWidgetProperty(CabbageIdentifierIds::outlinethickness, 1.f);
+        setWidgetProperty(CabbageIdentifierIds::tablebackgroundcolour, Colour(15, 15, 15).toString());
+        setWidgetProperty(CabbageIdentifierIds::tablegridcolour, Colour(45, 45, 45).toString());
     }
 
     //===============image==================//
     else if(strTokens[0].trim() == "image")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 160;
         height = 120;
 
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 160);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 120);
-        cabbageIdentifiers.set(CabbageIdentifierIds::shape, "rounded");
-        cabbageIdentifiers.set(CabbageIdentifierIds::corners, 5);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::outlinecolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::outlinethickness, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::popup, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::plant, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "image");
-        cabbageIdentifiers.set(CabbageIdentifierIds::file, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "image");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 160);
+        setWidgetProperty(CabbageIdentifierIds::height, 120);
+        setWidgetProperty(CabbageIdentifierIds::shape, "rounded");
+        setWidgetProperty(CabbageIdentifierIds::corners, 5);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::outlinecolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::outlinethickness, 0);
+        setWidgetProperty(CabbageIdentifierIds::popup, 0);
+        setWidgetProperty(CabbageIdentifierIds::plant, "");
+        setWidgetProperty(CabbageIdentifierIds::type, "image");
+        setWidgetProperty(CabbageIdentifierIds::file, "");
+        setWidgetProperty(CabbageIdentifierIds::name, "image");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============image==================//
     else if(strTokens[0].trim() == "encoder")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "interactive");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 60);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 60);
+        setWidgetProperty(CabbageIdentifierIds::basetype, "interactive");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 60);
+        setWidgetProperty(CabbageIdentifierIds::height, 60);
         var channels;
         channels.append("encoder");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, .001);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::textbox, 0.f);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::outlinecolour, Colours::black.brighter(.3f).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::midichan, -99);
-        cabbageIdentifiers.set(CabbageIdentifierIds::midictrl, -99);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::sliderincr, .001);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::textbox, 0.f);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
+        setWidgetProperty(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::outlinecolour, Colours::black.brighter(.3f).toString());
+        setWidgetProperty(CabbageIdentifierIds::midichan, -99);
+        setWidgetProperty(CabbageIdentifierIds::midictrl, -99);
         //these don't appear in the props dialog
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "encoder");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, cabbageIdentifiers.getWithDefault("name", "").toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackerthickness, .05);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::minenabled, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::maxenabled, 0);
+        setWidgetProperty(CabbageIdentifierIds::name, "encoder");
+        setWidgetProperty(CabbageIdentifierIds::type, getWidgetPropertyWithDefault("name", "").toString());
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::decimalplaces, 1);
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::trackerthickness, .05);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::minenabled, 0);
+        setWidgetProperty(CabbageIdentifierIds::maxenabled, 0);
     }
 
     //===============groupbox==================//
     else if(strTokens[0].trim() == "groupbox")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 80);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 22);
-        cabbageIdentifiers.set(CabbageIdentifierIds::corners, 5);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colour(35, 35, 35).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::popup, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::plant, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::child, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::linethickness, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "groupbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "groupbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svggroupbox, "");
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 80);
+        setWidgetProperty(CabbageIdentifierIds::height, 22);
+        setWidgetProperty(CabbageIdentifierIds::corners, 5);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colour(35, 35, 35).toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::popup, 0);
+        setWidgetProperty(CabbageIdentifierIds::plant, "");
+        setWidgetProperty(CabbageIdentifierIds::child, 0);
+        setWidgetProperty(CabbageIdentifierIds::linethickness, 1);
+        setWidgetProperty(CabbageIdentifierIds::type, "groupbox");
+        setWidgetProperty(CabbageIdentifierIds::name, "groupbox");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svggroupbox, "");
 
     }
     //===============line==================//
     else if(strTokens[0].trim() == "line")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 180;
         height = 2;
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 160);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 2);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "line");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "line");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 160);
+        setWidgetProperty(CabbageIdentifierIds::height, 2);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "line");
+        setWidgetProperty(CabbageIdentifierIds::name, "line");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============csoundoutput==================//
     else if(strTokens[0].trim() == "csoundoutput")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 400;
         height = 200;
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 400);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "Csound output");
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "csoundoutput");
-        cabbageIdentifiers.set(CabbageIdentifierIds::wrap, 0);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 400);
+        setWidgetProperty(CabbageIdentifierIds::text, "Csound output");
+        setWidgetProperty(CabbageIdentifierIds::height, 200);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
+        setWidgetProperty(CabbageIdentifierIds::name, "csoundoutput");
+        setWidgetProperty(CabbageIdentifierIds::wrap, 0);
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "csoundoutput");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::type, "csoundoutput");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
     //===============textbox==================//
     else if(strTokens[0].trim() == "textbox")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 400;
         height = 200;
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 400);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "textbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "textbox");
-        cabbageIdentifiers.set(CabbageIdentifierIds::wrap, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::file, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 400);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::height, 200);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::name, "textbox");
+        setWidgetProperty(CabbageIdentifierIds::type, "textbox");
+        setWidgetProperty(CabbageIdentifierIds::wrap, 0);
+        setWidgetProperty(CabbageIdentifierIds::file, "");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============textbox==================//
     else if(strTokens[0].trim() == "texteditor")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 400;
         height = 200;
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 400);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, "texteditor");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::black.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "texteditor");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "texteditor");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 400);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::height, 200);
+        setWidgetProperty(CabbageIdentifierIds::channel, "texteditor");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::black.toString());
+        setWidgetProperty(CabbageIdentifierIds::name, "texteditor");
+        setWidgetProperty(CabbageIdentifierIds::type, "texteditor");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
 
@@ -861,7 +862,7 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
     else if(strTokens[0].trim() == "vumeter")
     {
         /*
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 400;
@@ -876,7 +877,7 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
     //===============table==================//
     else if(strTokens[0].trim() == "table")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 400;
@@ -890,27 +891,27 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         tableColours.append("green");
         tableColours.append("pink");
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 400);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablenumber, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::drawmode, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::resizemode, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::readonly, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablecolour, tableColours);
-        cabbageIdentifiers.set(CabbageIdentifierIds::amprange, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "table");
-        cabbageIdentifiers.set(CabbageIdentifierIds::stack, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 400);
+        setWidgetProperty(CabbageIdentifierIds::height, 200);
+        setWidgetProperty(CabbageIdentifierIds::tablenumber, 1);
+        setWidgetProperty(CabbageIdentifierIds::drawmode, "");
+        setWidgetProperty(CabbageIdentifierIds::resizemode, 0);
+        setWidgetProperty(CabbageIdentifierIds::readonly, 0);
+        setWidgetProperty(CabbageIdentifierIds::tablecolour, tableColours);
+        setWidgetProperty(CabbageIdentifierIds::amprange, 0);
+        setWidgetProperty(CabbageIdentifierIds::type, "table");
+        setWidgetProperty(CabbageIdentifierIds::stack, 0);
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============xypad==================//
     else if(strTokens[0].trim() == "xypad")
     {
-        cabbageIdentifiers.set("basetype", "interactive");
+        setWidgetProperty("basetype", "interactive");
         top = 10;
         left = 10;
         width = 200;
@@ -919,118 +920,118 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         var channels;
         channels.append("xChan");
         channels.append("yChan");
-        cabbageIdentifiers.set(CabbageIdentifierIds::xyautoindex, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::xchannel, channels[0]);
-        cabbageIdentifiers.set(CabbageIdentifierIds::ychannel, channels[1]);
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::minx, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::maxx, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::miny, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::maxy, 200);
-        cabbageIdentifiers.set(CabbageIdentifierIds::valuex, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::valuey, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::lime.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, Colours::cornflowerblue.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "xypad");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "xypad");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::xyautoindex, 0);
+        setWidgetProperty(CabbageIdentifierIds::xchannel, channels[0]);
+        setWidgetProperty(CabbageIdentifierIds::ychannel, channels[1]);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::width, 200);
+        setWidgetProperty(CabbageIdentifierIds::height, 200);
+        setWidgetProperty(CabbageIdentifierIds::minx, 0);
+        setWidgetProperty(CabbageIdentifierIds::maxx, 200);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::miny, 0);
+        setWidgetProperty(CabbageIdentifierIds::maxy, 200);
+        setWidgetProperty(CabbageIdentifierIds::valuex, 0);
+        setWidgetProperty(CabbageIdentifierIds::valuey, 0);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::lime.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
+        setWidgetProperty(CabbageIdentifierIds::textcolour, Colours::cornflowerblue.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "xypad");
+        setWidgetProperty(CabbageIdentifierIds::name, "xypad");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
     //===============keyboard==================//
     else if(strTokens[0].trim() == "keyboard")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 400;
         height = 100;
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 400);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 100);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 60);
-        cabbageIdentifiers.set(CabbageIdentifierIds::middlec, 3);
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "keyboard");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "keyboard");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::keywidth, 16);
-        cabbageIdentifiers.set(CabbageIdentifierIds::scrollbars, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 400);
+        setWidgetProperty(CabbageIdentifierIds::height, 100);
+        setWidgetProperty(CabbageIdentifierIds::value, 60);
+        setWidgetProperty(CabbageIdentifierIds::middlec, 3);
+        setWidgetProperty(CabbageIdentifierIds::type, "keyboard");
+        setWidgetProperty(CabbageIdentifierIds::name, "keyboard");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::keywidth, 16);
+        setWidgetProperty(CabbageIdentifierIds::scrollbars, 1);
 
     }
     //===============form==================//
     else if(strTokens[0].trim() == "form")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 600);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 300);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "form");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "form");
-        cabbageIdentifiers.set(CabbageIdentifierIds::guirefresh, 100);
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::scrollbars, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::titlebarcolour, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, "");
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 600);
+        setWidgetProperty(CabbageIdentifierIds::height, 300);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::name, "form");
+        setWidgetProperty(CabbageIdentifierIds::type, "form");
+        setWidgetProperty(CabbageIdentifierIds::guirefresh, 100);
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::scrollbars, 1);
+        setWidgetProperty(CabbageIdentifierIds::titlebarcolour, "");
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, "");
     }
 
     //===============rangeslider===============//
     else if(strTokens[0].trim() == "hrange" || strTokens[0].trim() == "vrange")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "interactive");
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 50);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 150);
+        setWidgetProperty(CabbageIdentifierIds::basetype, "interactive");
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 50);
+        setWidgetProperty(CabbageIdentifierIds::height, 150);
         var channels;
         channels.append("rangeslider");
-        cabbageIdentifiers.set(CabbageIdentifierIds::channel, channels);
-        cabbageIdentifiers.set(CabbageIdentifierIds::min, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::max, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::value, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::text, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::textbox, 0.f);
-        cabbageIdentifiers.set(CabbageIdentifierIds::caption, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderskew, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, .001);
-        cabbageIdentifiers.set(CabbageIdentifierIds::midichan, -99);
-        cabbageIdentifiers.set(CabbageIdentifierIds::midictrl, -99);
+        setWidgetProperty(CabbageIdentifierIds::channel, channels);
+        setWidgetProperty(CabbageIdentifierIds::min, 0);
+        setWidgetProperty(CabbageIdentifierIds::max, 1);
+        setWidgetProperty(CabbageIdentifierIds::value, 0);
+        setWidgetProperty(CabbageIdentifierIds::text, "");
+        setWidgetProperty(CabbageIdentifierIds::textbox, 0.f);
+        setWidgetProperty(CabbageIdentifierIds::caption, "");
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+        setWidgetProperty(CabbageIdentifierIds::sliderskew, 1);
+        setWidgetProperty(CabbageIdentifierIds::sliderincr, .001);
+        setWidgetProperty(CabbageIdentifierIds::midichan, -99);
+        setWidgetProperty(CabbageIdentifierIds::midictrl, -99);
         //these don't appear in the props dialog
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, strTokens[0].trim());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, cabbageIdentifiers.getWithDefault("name", "").toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::name, strTokens[0].trim());
+        setWidgetProperty(CabbageIdentifierIds::type, getWidgetPropertyWithDefault("name", "").toString());
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
         if(strTokens[0].trim() == "hrange")
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "horizontal");
+            setWidgetProperty(CabbageIdentifierIds::kind, "horizontal");
         else
-            cabbageIdentifiers.set(CabbageIdentifierIds::kind, "vertical");
+            setWidgetProperty(CabbageIdentifierIds::kind, "vertical");
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::trackerthickness, .1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgslider, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::svgsliderbg, "");
+        setWidgetProperty(CabbageIdentifierIds::decimalplaces, 1);
+        setWidgetProperty(CabbageIdentifierIds::trackerthickness, .1);
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::svgslider, "");
+        setWidgetProperty(CabbageIdentifierIds::svgsliderbg, "");
     }
 
     //===============signaldisplay==================//
     else if(strTokens[0].trim() == "signaldisplay" || strTokens[0].trim() == "fftdisplay")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 180;
@@ -1039,111 +1040,111 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         var signalVariables;
         signalVariables.append("");
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 260);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 100);
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablecolour, Colours::lime.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::tablebackgroundcolour, Colour(30, 30, 38).toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "signaldisplay");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "signaldisplay");
-        cabbageIdentifiers.set(CabbageIdentifierIds::min, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::max, 2048);
-        cabbageIdentifiers.set(CabbageIdentifierIds::updaterate, 100);
-        cabbageIdentifiers.set(CabbageIdentifierIds::signalvariable, signalVariables);
-        cabbageIdentifiers.set(CabbageIdentifierIds::outlinethickness, 1);
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::displaytype, "spectroscope");
-        cabbageIdentifiers.set(CabbageIdentifierIds::zoom, 0);
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 260);
+        setWidgetProperty(CabbageIdentifierIds::height, 100);
+        setWidgetProperty(CabbageIdentifierIds::tablecolour, Colours::lime.toString());
+        setWidgetProperty(CabbageIdentifierIds::fontcolour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::tablebackgroundcolour, Colour(30, 30, 38).toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "signaldisplay");
+        setWidgetProperty(CabbageIdentifierIds::name, "signaldisplay");
+        setWidgetProperty(CabbageIdentifierIds::min, 0);
+        setWidgetProperty(CabbageIdentifierIds::max, 2048);
+        setWidgetProperty(CabbageIdentifierIds::updaterate, 100);
+        setWidgetProperty(CabbageIdentifierIds::signalvariable, signalVariables);
+        setWidgetProperty(CabbageIdentifierIds::outlinethickness, 1);
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::displaytype, "spectroscope");
+        setWidgetProperty(CabbageIdentifierIds::zoom, 0);
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============stepper==================//
     else if(strTokens[0].trim() == "scope")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 180;
         height = 2;
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 160);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 2);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "scope");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "scope");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 160);
+        setWidgetProperty(CabbageIdentifierIds::height, 2);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "scope");
+        setWidgetProperty(CabbageIdentifierIds::name, "scope");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============stepper==================//
     else if(strTokens[0].trim() == "stepper")
     {
-        cabbageIdentifiers.set("basetype", "layout");
+        setWidgetProperty("basetype", "layout");
         top = 10;
         left = 10;
         width = 180;
         height = 2;
 
-        cabbageIdentifiers.set(CabbageIdentifierIds::top, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::left, 10);
-        cabbageIdentifiers.set(CabbageIdentifierIds::width, 160);
-        cabbageIdentifiers.set(CabbageIdentifierIds::height, 2);
-        cabbageIdentifiers.set(CabbageIdentifierIds::colour, Colours::white.toString());
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "stepper");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "stepper");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, "");
-        cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
+        setWidgetProperty(CabbageIdentifierIds::top, 10);
+        setWidgetProperty(CabbageIdentifierIds::left, 10);
+        setWidgetProperty(CabbageIdentifierIds::width, 160);
+        setWidgetProperty(CabbageIdentifierIds::height, 2);
+        setWidgetProperty(CabbageIdentifierIds::colour, Colours::white.toString());
+        setWidgetProperty(CabbageIdentifierIds::type, "stepper");
+        setWidgetProperty(CabbageIdentifierIds::name, "stepper");
+        setWidgetProperty(CabbageIdentifierIds::name, getWidgetPropertyWithDefault("name", "").toString()+String(ID));
+        setWidgetProperty(CabbageIdentifierIds::identchannel, "");
+        setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
     //===============non-GUI host widgets==================//
     else if(strTokens[0].trim() == "hostbpm")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "hostbpm");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "hostbpm");
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::name, "hostbpm");
+        setWidgetProperty(CabbageIdentifierIds::type, "hostbpm");
     }
 
     else if(strTokens[0].trim() == "hostppqpos")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "hostppqpos");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "hostppqpos");
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::name, "hostppqpos");
+        setWidgetProperty(CabbageIdentifierIds::type, "hostppqpos");
     }
 
     else if(strTokens[0].trim() == "hostplaying")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "hostplaying");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "hostplaying");
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::name, "hostplaying");
+        setWidgetProperty(CabbageIdentifierIds::type, "hostplaying");
     }
 
     else if(strTokens[0].trim() == "hostrecording")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "hostrecording");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "hostrecording");
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::name, "hostrecording");
+        setWidgetProperty(CabbageIdentifierIds::type, "hostrecording");
     }
 
     else if(strTokens[0].trim() == "hosttime")
     {
-        cabbageIdentifiers.set(CabbageIdentifierIds::basetype, "layout");
-        cabbageIdentifiers.set(CabbageIdentifierIds::name, "hosttime");
-        cabbageIdentifiers.set(CabbageIdentifierIds::type, "hosttime");
+        setWidgetProperty(CabbageIdentifierIds::basetype, "layout");
+        setWidgetProperty(CabbageIdentifierIds::name, "hosttime");
+        setWidgetProperty(CabbageIdentifierIds::type, "hosttime");
     }
 
-    cabbageIdentifiers.set(CabbageIdentifierIds::popuptext, "");
-    cabbageIdentifiers.set(CabbageIdentifierIds::alpha, 1);
-    cabbageIdentifiers.set(CabbageIdentifierIds::visible, 1);
-    cabbageIdentifiers.set(CabbageIdentifierIds::rotate, 0.f);
-    cabbageIdentifiers.set(CabbageIdentifierIds::pivotx, 0.f);
-    cabbageIdentifiers.set(CabbageIdentifierIds::pivoty, 0.f);
+    setWidgetProperty(CabbageIdentifierIds::popuptext, "");
+    setWidgetProperty(CabbageIdentifierIds::alpha, 1);
+    setWidgetProperty(CabbageIdentifierIds::visible, 1);
+    setWidgetProperty(CabbageIdentifierIds::rotate, 0.f);
+    setWidgetProperty(CabbageIdentifierIds::pivotx, 0.f);
+    setWidgetProperty(CabbageIdentifierIds::pivoty, 0.f);
 
 
 	//parse the text now that all default values ahve been assigned
@@ -1214,15 +1215,15 @@ void CabbageWidget::parse(String inStr, String identifier)
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             if(identArray[indx].equalsIgnoreCase("name"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::name, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::name, strTokens[0].trim());
             }
             else if(identArray[indx].equalsIgnoreCase("plant"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::plant, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::plant, strTokens[0].trim());
             }
             else if(identArray[indx].equalsIgnoreCase("caption"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::caption, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::caption, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("signalvariable"))
@@ -1233,7 +1234,7 @@ void CabbageWidget::parse(String inStr, String identifier)
                 {
                     array.append(strTokens[i].trim());
                 }
-                cabbageIdentifiers.set(CabbageIdentifierIds::signalvariable, array);
+                setWidgetProperty(CabbageIdentifierIds::signalvariable, array);
             }
 
 
@@ -1246,8 +1247,8 @@ void CabbageWidget::parse(String inStr, String identifier)
                 array.append(strTokens[0].trim());
                 if(str.containsIgnoreCase("xypad"))
                 {
-                    cabbageIdentifiers.set(CabbageIdentifierIds::xchannel, strTokens[0].trim());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::ychannel, strTokens[1].trim());
+                    setWidgetProperty(CabbageIdentifierIds::xchannel, strTokens[0].trim());
+                    setWidgetProperty(CabbageIdentifierIds::ychannel, strTokens[1].trim());
                 }
                 else if(str.containsIgnoreCase("vumeter"))
                 {
@@ -1278,12 +1279,12 @@ void CabbageWidget::parse(String inStr, String identifier)
                     {
                         array.append(strTokens[0]+String(i+1));
                     }
-                    cabbageIdentifiers.set(CabbageIdentifierIds::channel, array);
+                    setWidgetProperty(CabbageIdentifierIds::channel, array);
                     //identifiers that appear more than once need to use indx-- so we can check for another instance
                     indx--;
                 }
 
-                cabbageIdentifiers.set(CabbageIdentifierIds::channel, array);
+                setWidgetProperty(CabbageIdentifierIds::channel, array);
                 if(identArray[indx].equalsIgnoreCase("widgetarray"))
                 {
                     var channelArray, identChannelArray;
@@ -1294,15 +1295,15 @@ void CabbageWidget::parse(String inStr, String identifier)
                         identChannelArray.append(String(strTokens[0])+String("_ident")+String(i+1));
 
                     }
-                    cabbageIdentifiers.set(CabbageIdentifierIds::channelarray, channelArray);
-                    cabbageIdentifiers.set(CabbageIdentifierIds::identchannelarray, identChannelArray);
+                    setWidgetProperty(CabbageIdentifierIds::channelarray, channelArray);
+                    setWidgetProperty(CabbageIdentifierIds::identchannelarray, identChannelArray);
                 }
             }
 
             else if(identArray[indx].equalsIgnoreCase("colour:0")||
                     identArray[indx].equalsIgnoreCase("colours("))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::colour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::colour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("colour:1") ||
@@ -1310,39 +1311,39 @@ void CabbageWidget::parse(String inStr, String identifier)
             {
                 if(typeOfWidget.contains("checkbox") || typeOfWidget.contains("button"))
                 {
-                    cabbageIdentifiers.set(CabbageIdentifierIds::oncolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                    setWidgetProperty(CabbageIdentifierIds::oncolour, getColourFromText(strTokens.joinIntoString(",")).toString());
                 }
                 else
-                    cabbageIdentifiers.set(CabbageIdentifierIds::colour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                    setWidgetProperty(CabbageIdentifierIds::colour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("fontcolour")||
                     identArray[indx].equalsIgnoreCase("fontcolour:1"))
             {
                 if(typeOfWidget.contains("button"))
-                    cabbageIdentifiers.set(CabbageIdentifierIds::onfontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                    setWidgetProperty(CabbageIdentifierIds::onfontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
                 else
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                    setWidgetProperty(CabbageIdentifierIds::fontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
 
             }
             else if(identArray[indx].equalsIgnoreCase("fontcolour:0"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::fontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::fontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("tablebackgroundcolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::tablebackgroundcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::tablebackgroundcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("backgroundcolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::backgroundcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::backgroundcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("tablegridcolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::tablegridcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::tablegridcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("tablecolour") ||
@@ -1354,56 +1355,56 @@ void CabbageWidget::parse(String inStr, String identifier)
                     colours.append(strTokens[i].trim());
                     //Logger::writeToLog(strTokens[i].trim());
                 }
-                cabbageIdentifiers.set(CabbageIdentifierIds::tablecolour, colours);
+                setWidgetProperty(CabbageIdentifierIds::tablecolour, colours);
             }
 
             else if(identArray[indx].equalsIgnoreCase("trackercolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::trackercolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::trackercolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("highlightcolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::highlightcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::highlightcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("titlebarcolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::titlebarcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::titlebarcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("kind"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::kind, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::kind, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("file"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::file, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::file, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("svgpath"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::svgpath, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::svgpath, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("svgfile"))
             {
                 if(typeOfWidget=="groupbox")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::svggroupbox, strTokens[0].trim());
+                    setWidgetProperty(CabbageIdentifierIds::svggroupbox, strTokens[0].trim());
                 else if(typeOfWidget.contains("slider"))
                 {
                     if(strTokens[0].trim().contains("background"))
-                        cabbageIdentifiers.set(CabbageIdentifierIds::svgsliderbg, strTokens[1].trim());
+                        setWidgetProperty(CabbageIdentifierIds::svgsliderbg, strTokens[1].trim());
                     else
-                        cabbageIdentifiers.set(CabbageIdentifierIds::svgslider, strTokens[1].trim());
+                        setWidgetProperty(CabbageIdentifierIds::svgslider, strTokens[1].trim());
                 }
                 else if(typeOfWidget.contains("button"))
                 {
                     if(strTokens[0].trim().contains("off"))
-                        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonoff, strTokens[1].trim());
+                        setWidgetProperty(CabbageIdentifierIds::svgbuttonoff, strTokens[1].trim());
                     else
-                        cabbageIdentifiers.set(CabbageIdentifierIds::svgbuttonon, strTokens[1].trim());
+                        setWidgetProperty(CabbageIdentifierIds::svgbuttonon, strTokens[1].trim());
                 }
                 //identifiers that appear more than once need to use indx-- so we can check for another instance
                 indx--;
@@ -1411,30 +1412,30 @@ void CabbageWidget::parse(String inStr, String identifier)
 
             else if(identArray[indx].equalsIgnoreCase("fillcolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::fillcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::fillcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("shape"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::shape, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::shape, strTokens[0].trim());
             }
             else if(identArray[indx].equalsIgnoreCase("outlinecolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::outlinecolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::outlinecolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
             else if(identArray[indx].equalsIgnoreCase("textcolour"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::textcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                setWidgetProperty(CabbageIdentifierIds::textcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
             else if(identArray[indx].equalsIgnoreCase("pluginid"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::pluginid, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::pluginid, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("popuptext"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::popuptext, strTokens[0]);
+                setWidgetProperty(CabbageIdentifierIds::popuptext, strTokens[0]);
             }
 
             else if(identArray[indx].equalsIgnoreCase("items")||
@@ -1462,8 +1463,8 @@ void CabbageWidget::parse(String inStr, String identifier)
                     //Logger::writeToLog(strTokens[0].trim());
                 }
 
-                cabbageIdentifiers.set(CabbageIdentifierIds::text, value);
-                cabbageIdentifiers.set(CabbageIdentifierIds::comborange, comboRange);
+                setWidgetProperty(CabbageIdentifierIds::text, value);
+                setWidgetProperty(CabbageIdentifierIds::comborange, comboRange);
             }
 
 
@@ -1475,43 +1476,43 @@ void CabbageWidget::parse(String inStr, String identifier)
             else if(identArray[indx].equalsIgnoreCase("mode") ||
                     identArray[indx].equalsIgnoreCase(",mode"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::mode, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::mode, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("native"))
             {
-                cabbageIdentifiers.set("native", strTokens[0].trim());
+                setWidgetProperty("native", strTokens[0].trim());
             }
 
 
             else if(identArray[indx].equalsIgnoreCase("channeltype"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::channeltype, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::channeltype, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("identchannel"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::identchannel, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::identchannel, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("populate"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::filetype, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::filetype, strTokens[0].trim());
 
                 if(strTokens.size()>1)
                 {
-                    cabbageIdentifiers.set(CabbageIdentifierIds::workingdir, strTokens[1].trim());
+                    setWidgetProperty(CabbageIdentifierIds::workingdir, strTokens[1].trim());
                 }
             }
 
             else if(identArray[indx].equalsIgnoreCase("author"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::author, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::author, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("align"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::align, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::align, strTokens[0].trim());
             }
 
 
@@ -1522,17 +1523,17 @@ void CabbageWidget::parse(String inStr, String identifier)
                 {
                     value.append(strTokens[i].trim());
                 }
-                cabbageIdentifiers.set(CabbageIdentifierIds::tabs, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::tabs, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("tabpage"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::tabpage, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::tabpage, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("displaytype"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::displaytype, strTokens[0].trim());
+                setWidgetProperty(CabbageIdentifierIds::displaytype, strTokens[0].trim());
             }
 
             else if(identArray[indx].equalsIgnoreCase("include"))
@@ -1543,7 +1544,7 @@ void CabbageWidget::parse(String inStr, String identifier)
                     array.append(strTokens[i].trim());
                 }
 
-                cabbageIdentifiers.set(CabbageIdentifierIds::include, array);
+                setWidgetProperty(CabbageIdentifierIds::include, array);
             }
 
             else if(identArray[indx].equalsIgnoreCase("drawmode"))
@@ -1554,7 +1555,7 @@ void CabbageWidget::parse(String inStr, String identifier)
                     {
                         value.append(strTokens[i].trim());
                     }
-                cabbageIdentifiers.set(CabbageIdentifierIds::drawmode, value);
+                setWidgetProperty(CabbageIdentifierIds::drawmode, value);
             }
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             //numeric paramters
@@ -1566,8 +1567,8 @@ void CabbageWidget::parse(String inStr, String identifier)
                     //sizeText = identArray.getReference(indx)+tstr+")";
                     String address = strTokens[0].trim();
                     int port = strTokens[1].trim().getIntValue();
-                    cabbageIdentifiers.set(CabbageIdentifierIds::socketaddress, address);
-                    cabbageIdentifiers.set(CabbageIdentifierIds::socketport, port);
+                    setWidgetProperty(CabbageIdentifierIds::socketaddress, address);
+                    setWidgetProperty(CabbageIdentifierIds::socketport, port);
                 }
             }
 
@@ -1578,8 +1579,8 @@ void CabbageWidget::parse(String inStr, String identifier)
                     //sizeText = identArray.getReference(indx)+tstr+")";
                     width = strTokens[0].trim().getFloatValue();
                     height = strTokens[1].trim().getFloatValue();
-                    cabbageIdentifiers.set(CabbageIdentifierIds::width, strTokens[0].trim().getFloatValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::height, strTokens[1].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::width, strTokens[0].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::height, strTokens[1].trim().getFloatValue());
                 }
                 else
                     warningMessages+="size() does not have enough parameters\n";
@@ -1600,15 +1601,15 @@ void CabbageWidget::parse(String inStr, String identifier)
                     if(strTokens.size()==3)
                     {
                         height = width;
-                        cabbageIdentifiers.set(CabbageIdentifierIds::height, width);
+                        setWidgetProperty(CabbageIdentifierIds::height, width);
                     }
                     else
                     {
                         height = strTokens[3].trim().getFloatValue();
-                        cabbageIdentifiers.set(CabbageIdentifierIds::left, strTokens[0].trim().getFloatValue());
-                        cabbageIdentifiers.set(CabbageIdentifierIds::top, strTokens[1].trim().getFloatValue());
-                        cabbageIdentifiers.set(CabbageIdentifierIds::width, strTokens[2].trim().getFloatValue());
-                        cabbageIdentifiers.set(CabbageIdentifierIds::height, strTokens[3].trim().getFloatValue());
+                        setWidgetProperty(CabbageIdentifierIds::left, strTokens[0].trim().getFloatValue());
+                        setWidgetProperty(CabbageIdentifierIds::top, strTokens[1].trim().getFloatValue());
+                        setWidgetProperty(CabbageIdentifierIds::width, strTokens[2].trim().getFloatValue());
+                        setWidgetProperty(CabbageIdentifierIds::height, strTokens[3].trim().getFloatValue());
                     }
 
                 }
@@ -1633,8 +1634,8 @@ void CabbageWidget::parse(String inStr, String identifier)
                 {
                     left = strTokens[0].trim().getFloatValue();
                     top = strTokens[1].trim().getFloatValue();
-                    cabbageIdentifiers.set(CabbageIdentifierIds::left, strTokens[0].trim().getFloatValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::top, strTokens[1].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::left, strTokens[0].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::top, strTokens[1].trim().getFloatValue());
                 }
             }
 
@@ -1649,8 +1650,8 @@ void CabbageWidget::parse(String inStr, String identifier)
                     StringArray tempArray;
                     double min = strTokens[0].trim().getDoubleValue();// getFloatValue();
                     double max = strTokens[1].trim().getDoubleValue();//.getFloatValue();
-                    cabbageIdentifiers.set(CabbageIdentifierIds::min, strTokens[0].trim().getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::max, strTokens[1].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::min, strTokens[0].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::max, strTokens[1].trim().getDoubleValue());
                     tempArray.add(strTokens[0].trim());
                     tempArray.add(strTokens[1].trim());
                     if(strTokens.size()>2)
@@ -1662,13 +1663,13 @@ void CabbageWidget::parse(String inStr, String identifier)
                             values.addTokens(strTokens[2], ":", "");
                             if(values.size()==2)
                             {
-                                cabbageIdentifiers.set(CabbageIdentifierIds::minvalue, values[0].trim().getFloatValue());
-                                cabbageIdentifiers.set(CabbageIdentifierIds::maxvalue, values[1].trim().getFloatValue());
+                                setWidgetProperty(CabbageIdentifierIds::minvalue, values[0].trim().getFloatValue());
+                                setWidgetProperty(CabbageIdentifierIds::maxvalue, values[1].trim().getFloatValue());
                             }
                         }
                         else
                         {
-                            cabbageIdentifiers.set(CabbageIdentifierIds::value, strTokens[2].trim().getDoubleValue() < min ? min : strTokens[2].trim().getDoubleValue());
+                            setWidgetProperty(CabbageIdentifierIds::value, strTokens[2].trim().getDoubleValue() < min ? min : strTokens[2].trim().getDoubleValue());
                             tempArray.add(strTokens[2].trim());
                         }
                     }
@@ -1676,14 +1677,14 @@ void CabbageWidget::parse(String inStr, String identifier)
 
                     if(strTokens.size()>3)
                     {
-                        cabbageIdentifiers.set(CabbageIdentifierIds::sliderskew, strTokens[3].trim().getDoubleValue());
+                        setWidgetProperty(CabbageIdentifierIds::sliderskew, strTokens[3].trim().getDoubleValue());
                         tempArray.add(strTokens[3].trim());
                     }
 
                     if(strTokens.size()>4)
                     {
                         tempArray.add(strTokens[4].trim());
-                        cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, strTokens[4].trim().getDoubleValue());
+                        setWidgetProperty(CabbageIdentifierIds::sliderincr, strTokens[4].trim().getDoubleValue());
                     }
 
                     double sliderRange = max-min;
@@ -1692,8 +1693,8 @@ void CabbageWidget::parse(String inStr, String identifier)
                         decimalPlaces = 2;
                     else
                         decimalPlaces = getNumberOfDecimalPlaces(tempArray);
-                    cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, decimalPlaces);
-                    cabbageIdentifiers.set(CabbageIdentifierIds::range, sliderRange);
+                    setWidgetProperty(CabbageIdentifierIds::decimalplaces, decimalPlaces);
+                    setWidgetProperty(CabbageIdentifierIds::range, sliderRange);
 
                 }
             }
@@ -1708,12 +1709,12 @@ void CabbageWidget::parse(String inStr, String identifier)
                     float minX = strTokens[0].removeCharacters("()").trim().getFloatValue();
                     float maxX = strTokens[1].removeCharacters("()").trim().getFloatValue();
 
-                    cabbageIdentifiers.set(CabbageIdentifierIds::minx, strTokens[0].trim().getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::maxx, strTokens[1].getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::valuex, strTokens[2].getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::rangex, maxX-minX);
+                    setWidgetProperty(CabbageIdentifierIds::minx, strTokens[0].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::maxx, strTokens[1].getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::valuex, strTokens[2].getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::rangex, maxX-minX);
 
-                    cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, strTokens[3].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::decimalplaces, strTokens[3].trim().getDoubleValue());
                 }
             }
             else if(identArray[indx].equalsIgnoreCase("rangey"))
@@ -1727,67 +1728,67 @@ void CabbageWidget::parse(String inStr, String identifier)
                     float minY = strTokens[0].trim().getFloatValue();
                     float maxY = strTokens[1].trim().getFloatValue();
 
-                    cabbageIdentifiers.set(CabbageIdentifierIds::miny, strTokens[0].trim().getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::maxy, strTokens[1].trim().getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::valuey, strTokens[2].trim().getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::rangey, maxY-minY);
-                    cabbageIdentifiers.set(CabbageIdentifierIds::decimalplaces, strTokens[3].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::miny, strTokens[0].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::maxy, strTokens[1].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::valuey, strTokens[2].trim().getDoubleValue());
+                    setWidgetProperty(CabbageIdentifierIds::rangey, maxY-minY);
+                    setWidgetProperty(CabbageIdentifierIds::decimalplaces, strTokens[3].trim().getDoubleValue());
                 }
             }
             else if(identArray[indx].equalsIgnoreCase("min"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::minenabled, 1);
-                cabbageIdentifiers.set(CabbageIdentifierIds::minvalue, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::minenabled, 1);
+                setWidgetProperty(CabbageIdentifierIds::minvalue, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("svgdebug"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::svgdebug, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::svgdebug, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("middlec"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::middlec, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::middlec, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("fill"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::fill, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::fill, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("updaterate"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::updaterate, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::updaterate, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("keywidth"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::keywidth, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::keywidth, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("rotate"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::rotate, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::rotate, strTokens[0].trim().getFloatValue());
                 if(strTokens.size()==3)
                 {
-                    cabbageIdentifiers.set(CabbageIdentifierIds::pivotx, strTokens[1].trim().getFloatValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::pivoty, strTokens[2].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::pivotx, strTokens[1].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::pivoty, strTokens[2].trim().getFloatValue());
                 }
             }
 
             else if(identArray[indx].equalsIgnoreCase("pivoty"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::pivoty, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::pivoty, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("ffttablenumber"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::ffttablenumber, strTokens[0].trim().getFloatValue()-1);
+                setWidgetProperty(CabbageIdentifierIds::ffttablenumber, strTokens[0].trim().getFloatValue()-1);
             }
 
             else if(identArray[indx].equalsIgnoreCase("pivotx"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::pivotx, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::pivotx, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("midictrl"))
@@ -1798,104 +1799,104 @@ void CabbageWidget::parse(String inStr, String identifier)
                 }
                 else
                 {
-                    cabbageIdentifiers.set(CabbageIdentifierIds::midichan, strTokens[0].trim().getFloatValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::midictrl, strTokens[0].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::midichan, strTokens[0].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::midictrl, strTokens[0].trim().getFloatValue());
                 }
             }
             else if(identArray[indx].equalsIgnoreCase("max"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::maxenabled, 1);
-                cabbageIdentifiers.set(CabbageIdentifierIds::maxvalue, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::maxenabled, 1);
+                setWidgetProperty(CabbageIdentifierIds::maxvalue, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("sliderincr"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::sliderincr, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::sliderincr, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("sliderskew"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::sliderskew, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::sliderskew, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("visible"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::visible, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::visible, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("active"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::active, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::active, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("stack"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::stack, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::stack, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("tab"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::tabbed, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::tabbed, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("latched"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::latched, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::latched, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("alpha"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::alpha, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::alpha, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("corners"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::corners, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::corners, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("radiogroup"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::radiogroup, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::radiogroup, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("guirefresh"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::guirefresh, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::guirefresh, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("fontstyle"))
             {
                 if(strTokens[0].trim()=="bold")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 1);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 1);
                 else if(strTokens[0].trim()=="italic")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 2);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 2);
                 else if(strTokens[0].trim()=="bold italic")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 3);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 3);
                 else if(strTokens[0].trim()=="underlined")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 4);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 4);
                 else if(strTokens[0].trim()=="bold underlined")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 5);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 5);
                 else if(strTokens[0].trim()=="italic underlined")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 6);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 6);
                 else if(strTokens[0].trim()=="bold italic underlined")
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 7);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 7);
                 else
-                    cabbageIdentifiers.set(CabbageIdentifierIds::fontstyle, 0);
+                    setWidgetProperty(CabbageIdentifierIds::fontstyle, 0);
             }
 
             else if(identArray[indx].equalsIgnoreCase("textbox"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::textbox, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::textbox, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("velocity"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::velocity, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::velocity, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("gradient"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::gradient, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::gradient, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("scrubberposition"))
@@ -1905,54 +1906,54 @@ void CabbageWidget::parse(String inStr, String identifier)
                 for(int i=1; i<strTokens.size(); i++)
                 {
                     scrubberInfo.append(strTokens[i].trim().getDoubleValue());
-                    cabbageIdentifiers.set(CabbageIdentifierIds::scrubberposition, scrubberInfo);
+                    setWidgetProperty(CabbageIdentifierIds::scrubberposition, scrubberInfo);
                 }
 
-                cabbageIdentifiers.set(CabbageIdentifierIds::scrubberposition, scrubberInfo);
+                setWidgetProperty(CabbageIdentifierIds::scrubberposition, scrubberInfo);
 
             }
 
             else if(identArray[indx].equalsIgnoreCase("logger"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::logger, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::logger, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("child"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::child, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::child, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("show"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::show, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::show, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("zoom"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::zoom, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::zoom, strTokens[0].trim().getFloatValue());
                 if(strTokens.size()>1)
-                    cabbageIdentifiers.set(CabbageIdentifierIds::startpos, strTokens[1].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::startpos, strTokens[1].trim().getFloatValue());
                 else
-                    cabbageIdentifiers.set(CabbageIdentifierIds::startpos, -1);
+                    setWidgetProperty(CabbageIdentifierIds::startpos, -1);
             }
 
             else if(identArray[indx].equalsIgnoreCase("samplerange"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::startpos, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::startpos, strTokens[0].trim().getFloatValue());
                 if(strTokens.size()>1)
-                    cabbageIdentifiers.set(CabbageIdentifierIds::endpos, strTokens[1].trim().getFloatValue());
+                    setWidgetProperty(CabbageIdentifierIds::endpos, strTokens[1].trim().getFloatValue());
                 else
-                    cabbageIdentifiers.set(CabbageIdentifierIds::endpos, -1);
+                    setWidgetProperty(CabbageIdentifierIds::endpos, -1);
             }
 
             else if(identArray[indx].equalsIgnoreCase("wrap"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::wrap, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::wrap, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("readonly"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::readonly, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::readonly, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("tablenum")||
@@ -1992,28 +1993,28 @@ void CabbageWidget::parse(String inStr, String identifier)
                     }
                 }
 
-                cabbageIdentifiers.set(CabbageIdentifierIds::tableconfig, tableConfig);
-                cabbageIdentifiers.set(CabbageIdentifierIds::tablenumber, value);
+                setWidgetProperty(CabbageIdentifierIds::tableconfig, tableConfig);
+                setWidgetProperty(CabbageIdentifierIds::tablenumber, value);
             }
             else if(identArray[indx].equalsIgnoreCase("popup"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::popup, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::popup, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("resize"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::popup, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::popup, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("resize"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::popup, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::popup, strTokens[0].trim().getIntValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("rescale"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::scalex, strTokens[0].trim().getFloatValue());
-                cabbageIdentifiers.set(CabbageIdentifierIds::scaley, strTokens[1].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::scalex, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::scaley, strTokens[1].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("resizemode"))
@@ -2025,7 +2026,7 @@ void CabbageWidget::parse(String inStr, String identifier)
                         //add table modes to val array
                         value.append(strTokens[i].trim().getFloatValue());
                     }
-                cabbageIdentifiers.set(CabbageIdentifierIds::resizemode, value);
+                setWidgetProperty(CabbageIdentifierIds::resizemode, value);
             }
 
             else if(identArray[indx].equalsIgnoreCase("amprange"))
@@ -2034,7 +2035,7 @@ void CabbageWidget::parse(String inStr, String identifier)
                     warningMessages+="Not enough paramters passed to amprange(): usage amprange(min, max, tablenumber, quantise\")\n";
 
                 var value;
-                var temp = cabbageIdentifiers.getWithDefault(CabbageIdentifierIds::amprange, "");
+                var temp = getWidgetPropertyWithDefault(CabbageIdentifierIds::amprange, "");
 
                 for(int i=0; i<temp.size(); i++)
                     value.append(temp[i]);
@@ -2048,37 +2049,37 @@ void CabbageWidget::parse(String inStr, String identifier)
                 if(strTokens.size()==3)
                     value.append(0.01);
 
-                cabbageIdentifiers.set(CabbageIdentifierIds::amprange, value);
+                setWidgetProperty(CabbageIdentifierIds::amprange, value);
                 //identifiers that appear more than once need to use indx-- so we can check for another instance
                 indx--;
             }
 
             else if(identArray[indx].equalsIgnoreCase("outlinethickness"))
             {
-                //cabbageIdentifiers.set("line", strTokens[0].trim().getFloatValue());
-                cabbageIdentifiers.set(CabbageIdentifierIds::outlinethickness, strTokens[0].trim().getFloatValue());
+                //setWidgetProperty("line", strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::outlinethickness, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("linethickness"))
             {
-                //cabbageIdentifiers.set("line", strTokens[0].trim().getFloatValue());
-                cabbageIdentifiers.set(CabbageIdentifierIds::linethickness, strTokens[0].trim().getFloatValue());
+                //setWidgetProperty("line", strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::linethickness, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("trackerthickness"))
             {
-                //cabbageIdentifiers.set("line", strTokens[0].trim().getFloatValue());
-                cabbageIdentifiers.set(CabbageIdentifierIds::trackerthickness, strTokens[0].trim().getFloatValue());
+                //setWidgetProperty("line", strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::trackerthickness, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("value"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::value, strTokens[0].trim().getFloatValue());
+                setWidgetProperty(CabbageIdentifierIds::value, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("scrollbars"))
             {
-                cabbageIdentifiers.set(CabbageIdentifierIds::scrollbars, strTokens[0].trim().getIntValue());
+                setWidgetProperty(CabbageIdentifierIds::scrollbars, strTokens[0].trim().getIntValue());
             }
 
             //============================================
@@ -2086,12 +2087,12 @@ void CabbageWidget::parse(String inStr, String identifier)
             //============================================
             else if(identArray[indx].equalsIgnoreCase("numberofsteps"))
             {
-                cabbageIdentifiers.set("numberofsteps", strTokens[0].trim().getFloatValue());
+                setWidgetProperty("numberofsteps", strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("stepbpm"))
             {
-                cabbageIdentifiers.set("stepbpm", strTokens[0].trim().getIntValue());
+                setWidgetProperty("stepbpm", strTokens[0].trim().getIntValue());
             }
 
 
@@ -2103,11 +2104,11 @@ void CabbageWidget::parse(String inStr, String identifier)
 //retrieve numerical attributes
 float CabbageWidget::getNumProp(Identifier prop)
 {
-    var props = cabbageIdentifiers.getWithDefault(prop, -9999);
+    var props = getWidgetPropertyWithDefault(prop, -9999);
     if(props.size()>0)
         return props[0];
     else
-        return cabbageIdentifiers.getWithDefault(prop, -9999);
+        return getWidgetPropertyWithDefault(prop, -9999);
 }
 
 //================================================================================================
@@ -2206,7 +2207,7 @@ float CabbageWidget::getSkewFromText(String text)
 //set numerical attributes
 void CabbageWidget::setNumProp(Identifier prop, float val)
 {
-    cabbageIdentifiers.set(prop, val);
+    setWidgetProperty(prop, val);
 }
 //===================================================================
 float CabbageWidget::getTableChannelValues(int index)
@@ -2249,7 +2250,7 @@ Rectangle<int> CabbageWidget::getComponentBounds()
 //===================================================================
 String CabbageWidget::getStringProp(Identifier prop)
 {
-    var strings = cabbageIdentifiers.getWithDefault(prop, "");
+    var strings = getWidgetPropertyWithDefault(prop, "");
 
 
     if(strings.size()>0)
@@ -2269,7 +2270,7 @@ String CabbageWidget::getStringProp(Identifier prop)
 StringArray CabbageWidget::getStringArrayProp(Identifier prop)
 {
     StringArray returnArray;
-    var strings = cabbageIdentifiers.getWithDefault(prop, "");
+    var strings = getWidgetPropertyWithDefault(prop, "");
     for(int i=0; i<strings.size(); i++)
         returnArray.add(strings[i].toString());
     return returnArray;
@@ -2278,7 +2279,7 @@ StringArray CabbageWidget::getStringArrayProp(Identifier prop)
 String CabbageWidget::getStringArrayPropValue(Identifier prop, int index)
 {
     StringArray returnArray;
-    var strings = cabbageIdentifiers.getWithDefault(prop, "");
+    var strings = getWidgetPropertyWithDefault(prop, "");
     //Logger::writeToLog(String(strings.size()));
     for(int i=0; i<strings.size(); i++)
         returnArray.add(strings[i].toString());
@@ -2290,19 +2291,18 @@ String CabbageWidget::getStringArrayPropValue(Identifier prop, int index)
 //===================================================================
 void CabbageWidget::setStringArrayProp(Identifier prop, var value)
 {
-    cabbageIdentifiers.remove(prop);
-    cabbageIdentifiers.set(prop, value);
-    //cabbageIdentifiers.set(prop, value);
+    this->removeProperty(prop, 0);
+    setWidgetProperty(prop, value);
 }
 //===================================================================
 void CabbageWidget::setStringArrayPropValue(Identifier prop, int index, String value)
 {
-    var strings = cabbageIdentifiers.getWithDefault(prop, "");
+    var strings = getWidgetPropertyWithDefault(prop, "");
     if(strings.size()>0)
         if(isPositiveAndBelow(index,strings.size()))
         {
             strings.getArray()->set(index, value);
-            cabbageIdentifiers.set(prop, strings);
+            setWidgetProperty(prop, strings);
         }
 
 }
@@ -2310,7 +2310,7 @@ void CabbageWidget::setStringArrayPropValue(Identifier prop, int index, String v
 Array<int> CabbageWidget::getIntArrayProp(Identifier prop)
 {
     Array<int> returnArray;
-    var ints = cabbageIdentifiers.getWithDefault(prop, "");
+    var ints = getWidgetPropertyWithDefault(prop, "");
     for(int i=0; i<ints.size(); i++)
         returnArray.add(ints[i]);
     return returnArray;
@@ -2318,13 +2318,13 @@ Array<int> CabbageWidget::getIntArrayProp(Identifier prop)
 //===================================================================
 var CabbageWidget::getVarArrayProp(Identifier prop)
 {
-    return cabbageIdentifiers.getWithDefault(prop, "");
+    return getWidgetPropertyWithDefault(prop, "");
 }
 //===================================================================
 int CabbageWidget::getIntArrayPropValue(Identifier prop, int index)
 {
     Array<int> returnArray;
-    var ints = cabbageIdentifiers.getWithDefault(prop, "");
+    var ints = getWidgetPropertyWithDefault(prop, "");
     for(int i=0; i<ints.size(); i++)
         returnArray.add(ints[i]);
     if(isPositiveAndBelow(index,ints.size()))
@@ -2338,7 +2338,7 @@ int CabbageWidget::getIntArrayPropValue(Identifier prop, int index)
 Array<float> CabbageWidget::getFloatArrayProp(Identifier prop)
 {
     Array<float> returnArray;
-    var ints = cabbageIdentifiers.getWithDefault(prop, "");
+    var ints = getWidgetPropertyWithDefault(prop, "");
     for(int i=0; i<ints.size(); i++)
         returnArray.add(ints[i]);
     return returnArray;
@@ -2347,7 +2347,7 @@ Array<float> CabbageWidget::getFloatArrayProp(Identifier prop)
 float CabbageWidget::getFloatArrayPropValue(Identifier prop, int index)
 {
     Array<float> returnArray;
-    var ints = cabbageIdentifiers.getWithDefault(prop, "");
+    var ints = getWidgetPropertyWithDefault(prop, "");
     for(int i=0; i<ints.size(); i++)
         returnArray.add(ints[i]);
     if(isPositiveAndBelow(index,ints.size()))
@@ -2363,15 +2363,15 @@ void CabbageWidget::setStringProp(Identifier prop, int index, String value)
 //===================================================================
 void CabbageWidget::scaleWidget(Point<float> scale)
 {
-    Rectangle<int> rect(cabbageIdentifiers.getWithDefault("left", 0),
-                        cabbageIdentifiers.getWithDefault("top", 0),
-                        cabbageIdentifiers.getWithDefault("width", 10),
-                        cabbageIdentifiers.getWithDefault("height", 10));
+    Rectangle<int> rect(getWidgetPropertyWithDefault("left", 0),
+                        getWidgetPropertyWithDefault("top", 0),
+                        getWidgetPropertyWithDefault("width", 10),
+                        getWidgetPropertyWithDefault("height", 10));
 
-    cabbageIdentifiers.set(CabbageIdentifierIds::left, rect.getX()*scale.x);
-    cabbageIdentifiers.set(CabbageIdentifierIds::top, rect.getY()*scale.y);
-    cabbageIdentifiers.set(CabbageIdentifierIds::width, rect.getWidth()*scale.x);
-    cabbageIdentifiers.set(CabbageIdentifierIds::height, rect.getHeight()*scale.y);	;
+    setWidgetProperty(CabbageIdentifierIds::left, rect.getX()*scale.x);
+    setWidgetProperty(CabbageIdentifierIds::top, rect.getY()*scale.y);
+    setWidgetProperty(CabbageIdentifierIds::width, rect.getWidth()*scale.x);
+    setWidgetProperty(CabbageIdentifierIds::height, rect.getHeight()*scale.y);	;
 }
 //===================================================================
 void CabbageWidget::setStringProp(Identifier prop, String val)
@@ -2379,7 +2379,7 @@ void CabbageWidget::setStringProp(Identifier prop, String val)
 //	CabbageUtilities::debug(prop.toString());
 //	CabbageUtilities::debug(val);
 
-    cabbageIdentifiers.set(prop, val);
+    setWidgetProperty(prop, val);
 }
 //===================================================================
 String CabbageWidget::getColourProp(Identifier prop)

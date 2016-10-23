@@ -74,6 +74,9 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuMouseOverBackground,  "ffa4a4a4");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuText,  "ff484848");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuHighlightedText,  "ff000000");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::mainBackground, "ff000000");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::statusBar, "ff000000");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::statusBarText, "ffffffff");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::alertWindowBackground, Colour(147, 210,0).toString());
     defaultPropSet->setValue("Colours_"+CabbageColourIds::codeBackground,  "FF222222");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumberBackground,  "44C1C1C1");

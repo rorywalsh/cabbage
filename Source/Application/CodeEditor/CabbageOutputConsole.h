@@ -28,12 +28,7 @@ public:
         textEditor->setReadOnly(true);
         textEditor->setFont(Font("Arial", 12, 1));
 
-
-        String initString = (SystemStats::getOperatingSystemName() +
-                             "CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
-                             + "MHz  Cores: " + String (SystemStats::getNumCpus())
-                             + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
-        setText("Cabbage Csound IDE\n"+initString);
+        setText("Cabbage Csound IDE\n");
     };
 
     ~CabbageOutputConsole() {};
@@ -66,7 +61,7 @@ public:
     void resized()
     {
         Rectangle<int> area (getLocalBounds());
-        textEditor->setBounds(area.reduced(4).withY(0));
+        textEditor->setBounds(area.reduced(3).withY(0));
     }
 
     void paint(Graphics& g)

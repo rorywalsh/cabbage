@@ -10,11 +10,22 @@
 
 #include "CabbageCodeEditor.h"
 #include "../Settings/CabbageSettings.h"
+#include "../../Utilities/CabbageUtilities.h"
+#include "../CabbageMainDocumentWindow.h"
 
 //==============================================================================
-CabbageCodeEditorComponent::CabbageCodeEditorComponent(ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
-    : CodeEditorComponent(document, codeTokeniser), valueTree(valueTree)
+CabbageCodeEditorComponent::CabbageCodeEditorComponent(Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
+    : CodeEditorComponent(document, codeTokeniser), valueTree(valueTree), statusBar(statusBar)
 {
+	
+    String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
+    opcodeFile += "/opcodes.txt";
+    Logger::writeToLog(opcodeFile);
+
+    if(File(opcodeFile).existsAsFile())
+        setOpcodeStrings(File(opcodeFile).loadFileAsString());	
+	
+	document.addListener(this);
 	this->setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
 	this->setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
 }
@@ -55,4 +66,40 @@ void CabbageCodeEditorComponent::updateColourScheme()
 		cs.set (types[i].name, Colour (types[i].colour));
 
 	this->setColourScheme(cs);
+}
+
+void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text,int)
+{
+    const String lineFromCsd = getDocument().getLine(getDocument().findWordBreakBefore(getCaretPos()).getLineNumber());
+    displayOpcodeHelpInStatusBar(lineFromCsd);
+}
+
+//==============================================================================
+void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd)
+{
+    String opcodeHelpString;
+    StringArray syntaxTokens, csdLineTokens;
+    csdLineTokens.clear();
+    csdLineTokens.addTokens(lineFromCsd, " ,\t", "");
+
+    for(int i=0; i<opcodeStrings.size(); i++)
+    {
+        opcodeHelpString = opcodeStrings[i];
+        syntaxTokens.clear();
+        syntaxTokens.addTokens(opcodeHelpString, ";", "\"");
+        if(syntaxTokens.size()>3)
+            for(int x=0; x<csdLineTokens.size(); x++)
+            {
+                if(syntaxTokens[0].removeCharacters("\"")==csdLineTokens[x].trim())
+                {
+                    if(syntaxTokens[0].length()>3)
+                    {
+						if(MainContentComponent::StatusBar* bar = dynamic_cast<MainContentComponent::StatusBar*>(statusBar))
+							bar->setText(syntaxTokens[2]+syntaxTokens[3]);
+                        x=csdLineTokens.size();
+                        i=opcodeStrings.size();
+                    }
+                }
+            }
+    }
 }

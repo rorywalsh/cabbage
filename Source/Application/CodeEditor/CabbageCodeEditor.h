@@ -14,15 +14,26 @@
 #include "../CabbageIds.h"
 #include "CsoundTokeniser.h"
 
-class CabbageCodeEditorComponent : public CodeEditorComponent
+
+class CabbageCodeEditorComponent : public CodeEditorComponent, public CodeDocument::Listener
 {
 public:
-
-    CodeDocument::Position positionInCode;
-    CabbageCodeEditorComponent(ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
+    CabbageCodeEditorComponent(Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
+    ~CabbageCodeEditorComponent(){};
 	void updateColourScheme();
-    ~CabbageCodeEditorComponent() {};
+    CodeDocument::Position positionInCode;
 	ValueTree valueTree;
+	void codeDocumentTextDeleted(int,int){};
+    void codeDocumentTextInserted(const juce::String &,int);
+	void displayOpcodeHelpInStatusBar(String lineFromCsd);
+	
+	void setOpcodeStrings(String opcodes)
+    {
+        opcodeStrings.addLines(opcodes);
+    }
+private:
+	Component* statusBar;
+	StringArray opcodeStrings;
 };
 
 

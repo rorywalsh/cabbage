@@ -18,12 +18,14 @@
 #include "./CodeEditor/CabbageOutputConsole.h"
 #include "../Plugin/PluginWrapperWindow.h"
 #include "../Utilities/CabbageProgressWindow.h"
+#include "../Parser/CabbageWidget.h"
+
 
 class CabbageProjectWindow;
 class CabbageMainDocumentWindow;
 
 //==============================================================================
-class CabbageApplication  : public JUCEApplication, public ChangeListener, public Timer
+class CabbageApplication  : public JUCEApplication, public ChangeListener, public Timer, public ValueTree::Listener
 {
 public:
 	//==============================================================================
@@ -160,11 +162,40 @@ public:
     ScopedPointer<MainMenuModel> menuModel;
 	File currentCsdFile;
 	
+	//==============================================================================
+    void changed()
+    {
 
+    }
+
+    //==============================================================================
+    void valueTreePropertyChanged (ValueTree& tree, const Identifier& identifier) override
+	{
+		CabbageUtilities::debug(identifier.toString(), tree.getProperty(identifier).toString());
+	}
+	
+    void valueTreeChildAdded (ValueTree&, ValueTree&) override
+    {
+        changed();
+    }
+    void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override
+    {
+        changed();
+    }
+    void valueTreeChildOrderChanged (ValueTree&, int, int) override
+    {
+        changed();
+    }
+    void valueTreeParentChanged (ValueTree&) override
+    {
+        changed();
+    }
 private:
+	CabbageWidget testWidget;
 	ScopedPointer<DemoBackgroundThread> progressWindow;
 	String consoleMessages;
 	Identifier pluginType;
+	ValueTree cabbageWidgets;
 	Identifier currentInterfaceMode;
 	ScopedPointer<PluginWrapperWindow> pluginWindow;
     ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;

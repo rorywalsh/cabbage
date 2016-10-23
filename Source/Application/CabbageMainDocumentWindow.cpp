@@ -11,13 +11,16 @@
 #include "CabbageMainDocumentWindow.h"
 #include "./Settings/CabbageSettings.h"
 
+
 	
 //==============================================================================
 MainContentComponent::MainContentComponent(ValueTree settings)
-: horizontalResizerBar(this, settings)
+: horizontalResizerBar(this, settings),
+statusBar(settings)
 {
 	addAndMakeVisible(horizontalResizerBar);
-    addAndMakeVisible(editor = new CabbageCodeEditorComponent(settings, csoundDocument, &csoundTokeniser));
+	addAndMakeVisible(statusBar);
+    addAndMakeVisible(editor = new CabbageCodeEditorComponent(&statusBar, settings, csoundDocument, &csoundTokeniser));
     addAndMakeVisible(outputConsole = new CabbageOutputConsole(settings));
     editor->setLineNumbersShown(true);
     editor->setFont(Font(String("DejaVu Sans Mono"), 17, 0));
@@ -25,10 +28,8 @@ MainContentComponent::MainContentComponent(ValueTree settings)
 	outputConsole->setVisible(false);
 	horizontalResizerBar.setVisible(false);
 	setSize (1200, 800);
-	horizontalResizerBar.setBounds(0, getHeight()*.75, getWidth(), getHeight()*.01);
-	
-	bgImage = createBackground();
-	
+	horizontalResizerBar.setBounds(0, getHeight()*.75, getWidth(), getHeight()*.01);	
+	bgImage = createBackground();	
 }
 
 MainContentComponent::~MainContentComponent()
@@ -79,9 +80,10 @@ void MainContentComponent::resized()
 {
 	editor->setBounds(0, 0, getWidth(), horizontalResizerBar.getY());
 	//horizontalResizerBar.setBounds(0, getHeight()*.75, getWidth(), getHeight()*.01);
-	const int consoleY = horizontalResizerBar.getY()+getHeight()*.01;
-	const int consoleHeight = getHeight()-consoleY;
-    outputConsole->setBounds(0, consoleY, getWidth(), consoleHeight);    
+	const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
+	const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
+    outputConsole->setBounds(0, consoleY, getWidth(), consoleHeight);
+	statusBar.setBounds(0, getHeight()-30, getWidth(), 30);    
 }
 
 //=================================================================================================================
@@ -105,7 +107,6 @@ void CabbageMainDocumentWindow::updateEditorColourScheme()
 {
 	mainContentComponent->editor->updateColourScheme();
 	mainContentComponent->outputConsole->updateColourScheme();
-	mainContentComponent->horizontalResizerBar.repaint();
-	
-	
+	mainContentComponent->horizontalResizerBar.repaint();	
+	mainContentComponent->statusBar.repaint();	
 }

@@ -24,7 +24,7 @@
 #include "../Utilities/CabbageUtilities.h"
 #include "../Application/CabbageIds.h"
 
-class CabbageWidget : public CabbageUtilities
+class CabbageWidget : public ValueTree, public CabbageUtilities
 {
     double width, height, top, left;
     Array<int> vuConfig;
@@ -38,7 +38,7 @@ public:
     {
         return warningMessages;
     };
-    NamedValueSet cabbageIdentifiers;
+
     CabbageWidget(String str, int ID);
     CabbageWidget() {};
     ~CabbageWidget(){};
@@ -59,6 +59,16 @@ public:
     void setNumPropVal(Identifier prop, float val);
     static String getCabbageCodeFromIdentifiers(NamedValueSet props);
     static String getStringForIdentifier(var props, String identifier, String type);
+
+	void setWidgetProperty(Identifier name, const var &value)
+	{
+		setProperty(name, value, 0);
+	}
+	
+	var getWidgetPropertyWithDefault(Identifier name, const var &value)
+	{
+		return getProperty(name, value);
+	}	
 
     Rectangle<int> getBounds()
     {

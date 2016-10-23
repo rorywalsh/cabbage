@@ -14,6 +14,7 @@
 #include "./CodeEditor/CabbageCodeEditor.h"
 #include "./CodeEditor/CabbageOutputConsole.h"
 #include "../BinaryData/CabbageBinaryData.h"
+#include "CabbageIds.h"
 
 class CabbageSettings;
 
@@ -27,6 +28,42 @@ class CabbageSettings;
 class MainContentComponent   : public Component
 {
 public:
+
+	class StatusBar : public Component
+	{
+	public:
+		StatusBar(ValueTree valueTree):Component("StatusBar"), valueTree(valueTree)
+		{
+			String initString = (SystemStats::getOperatingSystemName() +
+                             "CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
+                             + "MHz  Cores: " + String (SystemStats::getNumCpus())
+                             + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
+			setText(initString);
+		}
+		
+		void paint(Graphics &g)
+		{
+			const Colour background = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBar, Colours::black);
+			const Colour text = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBarText, Colours::black);
+			g.setColour(background);
+			g.fillAll();
+
+			g.setColour(background.darker(.7));
+			g.drawRect(0, 0, getWidth(), getHeight(), 2);
+			g.setColour(text);
+			g.drawFittedText (statusText, getLocalBounds().withX(10), Justification::left, 2);
+		}
+		
+		void setText(String text)
+		{
+			statusText = text;
+			repaint();
+		}
+		
+	private:
+		ValueTree valueTree;
+		String statusText;
+	};
 
 	class HorizontalResizerBar : public Component
 	{
@@ -58,6 +95,7 @@ public:
 			{
 				setBounds(getPosition().getX(), startingYPos+e.getDistanceFromDragStartY(), getWidth(), getHeight());
 				owner->resized();
+				repaint();
 			}
 			
 			
@@ -83,18 +121,18 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
-	Image createBackground();
-	
+	Image createBackground();	
 	void openFile(File file);
-
     ScopedPointer<CabbageCodeEditorComponent> editor;
     ScopedPointer<CabbageOutputConsole> outputConsole;
 	HorizontalResizerBar horizontalResizerBar;
+	StatusBar statusBar;
     CodeDocument csoundDocument;
     CsoundTokeniser csoundTokeniser;
 
 private:
 	Image bgImage;
+	const int statusBarHeight = 25;
 	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
@@ -124,8 +162,6 @@ public:
 	
 	MainContentComponent* getMainContentComponent();
 	ScopedPointer<MainContentComponent> mainContentComponent;
-
-
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainDocumentWindow)
