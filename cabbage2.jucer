@@ -56,10 +56,8 @@
         <FILE id="ZFaiEc" name="CabbageWidget.h" compile="0" resource="0" file="Source/Parser/CabbageWidget.h"/>
       </GROUP>
       <GROUP id="{49C8D4CB-E16D-C8F0-5F68-0A1511E25584}" name="Plugin">
-        <FILE id="ZAQTkU" name="CabbagePluginWrapper.cpp" compile="1" resource="0"
-              file="Source/Plugin/CabbagePluginWrapper.cpp"/>
-        <FILE id="c9oYPa" name="CabbagePluginWrapper.h" compile="0" resource="0"
-              file="Source/Plugin/CabbagePluginWrapper.h"/>
+        <FILE id="Onpw2e" name="PluginWrapperWindow.h" compile="0" resource="0"
+              file="Source/Plugin/PluginWrapperWindow.h"/>
         <FILE id="N58uig" name="GenericCabbageEditor.cpp" compile="1" resource="0"
               file="Source/Plugin/GenericCabbageEditor.cpp"/>
         <FILE id="MhyRAc" name="GenericCabbageEditor.h" compile="0" resource="0"

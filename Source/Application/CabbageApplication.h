@@ -15,8 +15,9 @@
 #include "./Settings/CabbageSettings.h"
 #include "CabbageIDELookAndFeel.h"
 #include "./Settings/CabbageSettingsWindow.h"
-#include "../Plugin/CabbagePluginWrapper.h"
 #include "./CodeEditor/CabbageOutputConsole.h"
+#include "../Plugin/PluginWrapperWindow.h"
+#include "../Utilities/CabbageProgressWindow.h"
 
 class CabbageProjectWindow;
 class CabbageMainDocumentWindow;
@@ -34,9 +35,10 @@ public:
 			setAlwaysOnTop(true);
 		}
 		
+		
 		void closeButtonPressed()
 		{
-			this->setVisible(false);
+			delete this;
 		}
 	};
 
@@ -92,18 +94,27 @@ public:
 	void saveDocument();
 	void runCode();
 	void stopCode();
+	void showGenericWidgetWindow();
+	void hideGenericWidgetWindow(bool freeContent=false);
+	Identifier getCurrentInterfaceMode();
+	void setCurrentInterfaceMode(Identifier mode);
     PropertySet* getDefaultSettings();
 	void createGenericCsoundPluginWrapper();
     ScopedPointer<ApplicationCommandManager> commandManager;
-	ScopedPointer<CabbagePluginWrapper> pluginWrapper;
     ScopedPointer<CabbageSettings> cabbageSettings;
     ScopedPointer<FileLogger> logger;
     PropertiesFile::Options getPropertyFileOptionsFor (const String& filename);
-    ScopedPointer<Component> appearanceEditorWindow, globalPreferencesWindow;
     CabbageIDELookAndFeel lookAndFeel;
     bool isRunningCommandLine;
 	CodeEditorComponent* getEditor();
 	CabbageOutputConsole* getOutputConsole();
+	void createPluginWrapperAndWindow(bool show=true);
+	void showGenericWidgetWindow(bool show);
+	
+	PluginWrapper* getPluginWrapper()
+	{
+		return pluginWindow->getPluginWrapper();
+	}
     //==============================================================================
     void initialise (const String& commandLine) override;
 
@@ -151,9 +162,11 @@ public:
 	
 
 private:
+	ScopedPointer<DemoBackgroundThread> progressWindow;
 	String consoleMessages;
 	Identifier pluginType;
-	ScopedPointer<PluginWindow> pluginWindow;
+	Identifier currentInterfaceMode;
+	ScopedPointer<PluginWrapperWindow> pluginWindow;
     ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;
 };
 

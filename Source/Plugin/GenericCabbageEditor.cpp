@@ -11,9 +11,9 @@ Author:  rory
 #include "GenericCabbageEditor.h"
 #include "GenericCabbagePluginProcessor.h"
 
-GenericCabbageEditor::GenericCabbageEditor(GenericCabbagePluginProcessor& parent)
+GenericCabbageEditor::GenericCabbageEditor(AudioProcessor& parent)
 : AudioProcessorEditor (parent),
-noParameterLabel ("noparam", "No parameters available")
+noParameterLabel ("noparam", "No Csound channels found in orchestra. Please delcare using the chn, or chnexport opecodes.")
 {
 	const OwnedArray<AudioProcessorParameter>& params = parent.getParameters();
 	
@@ -22,12 +22,11 @@ noParameterLabel ("noparam", "No parameters available")
 		if (const AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]))
 		{
 			Slider* aSlider;
-
 			paramSliders.add (aSlider = new Slider (param->name));
 			aSlider->setRange (param->range.start, param->range.end);
 			aSlider->setSliderStyle (Slider::LinearHorizontal);
 			aSlider->setValue (*param);
-
+			aSlider->setColour(Slider::ColourIds::rotarySliderFillColourId, Colour(221, 147,0));
 			aSlider->addListener (this);
 			addAndMakeVisible (aSlider);
 
@@ -59,12 +58,13 @@ noParameterLabel ("noparam", "No parameters available")
 
 	if (paramSliders.size() == 0)
 		addAndMakeVisible (noParameterLabel);
-	else
-		startTimer (100);        
+	//else
+		//startTimer (100);        
 }
 
 GenericCabbageEditor::~GenericCabbageEditor()
 {
+
 }
 
 void GenericCabbageEditor::resized()

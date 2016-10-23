@@ -29,8 +29,8 @@ class GenericCabbagePluginProcessor;
 
 class GenericCabbageEditor : public AudioProcessorEditor,
                       public Slider::Listener,
-                      public Button::Listener, // [11]
-                      private Timer
+                      public Button::Listener//, // [11]
+                      //private Timer
 {
 public:
     enum
@@ -41,7 +41,7 @@ public:
     };
 
 
-    GenericCabbageEditor (GenericCabbagePluginProcessor& parent);
+    GenericCabbageEditor (AudioProcessor& parent);
     ~GenericCabbageEditor();
 
     void resized() override;
@@ -84,24 +84,24 @@ public:
     }
 
 private:
-    void timerCallback() override
-    {
-        const OwnedArray<AudioProcessorParameter>& params = getAudioProcessor()->getParameters();
-        
-        for (int i = 0; i < controls.size(); ++i)
-        {
-            if (Slider* slider = dynamic_cast<Slider*> (controls[i]))
-            {
-                AudioParameterFloat* param = static_cast<AudioParameterFloat*> (params[i]);
-                slider->setValue ((double) *param, dontSendNotification);
-            }
-            else if (Button* button = dynamic_cast<Button*> (controls[i]))
-            {
-                AudioParameterBool* param = static_cast<AudioParameterBool*> (params[i]);
-                button->setToggleState (*param, dontSendNotification);
-            }
-        }
-    }
+//    void timerCallback() override
+//    {
+//        const OwnedArray<AudioProcessorParameter>& params = getAudioProcessor()->getParameters();
+//        
+//        for (int i = 0; i < controls.size(); ++i)
+//        {
+//            if (Slider* slider = dynamic_cast<Slider*> (controls[i]))
+//            {
+//                AudioParameterFloat* param = static_cast<AudioParameterFloat*> (params[i]);
+//                slider->setValue ((double) *param, dontSendNotification);
+//            }
+//            else if (Button* button = dynamic_cast<Button*> (controls[i]))
+//            {
+//                AudioParameterBool* param = static_cast<AudioParameterBool*> (params[i]);
+//                button->setToggleState (*param, dontSendNotification);
+//            }
+//        }
+//    }
 
     AudioParameterFloat* getParameterForSlider (Slider* slider)
     {

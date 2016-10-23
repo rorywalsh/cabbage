@@ -13,6 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../BinaryData/CabbageBinaryData.h"
+#include "../Application/CabbageIds.h"
 
 
 
@@ -119,9 +120,14 @@ public:
 	}
 	
 	
-	bool getInterfaceType(File inputFile)
+	Identifier getInterfaceTypeFromFile(File inputFile)
 	{
-
+		StringArray stringArray;
+		stringArray.addLines(inputFile.loadFileAsString());
+		//if(stringArray.contains("<Cabbage>") && stringArray.contains("</Cabbage>"))
+			return CabbageInterfaceModes::cabbage;
+		//else
+		//	stringArray.contains("chn_k")
 	}
 	
 	

@@ -13,6 +13,7 @@
 #include "CabbageApplication.h"
 #include "../Utilities/CabbageUtilities.h"
 #include "CabbageNewProjectWindow.h"
+#include "../Plugin/PluginWrapperWindow.h"
 
 //#include "CabbageSettings.cpp"
 //#include "CabbageAppearanceSettings.cpp"
@@ -71,9 +72,7 @@ void CabbageApplication::initialise (const String& commandLine)
         return;
     }
 	
-
-	createGenericCsoundPluginWrapper();
-
+	createPluginWrapperAndWindow(false);
 
     initCommandManager();
     menuModel = new MainMenuModel();
@@ -93,10 +92,6 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
         mainDocumentWindow->lookAndFeelChanged();
 		mainDocumentWindow->updateEditorColourScheme();
     }
-	else if(CabbagePluginWrapper* pluginWrapper = dynamic_cast<CabbagePluginWrapper*>(source))
-    {
-
-    }
 }
 
 //==============================================================================
@@ -104,14 +99,6 @@ void CabbageApplication::initCommandManager()
 {
     commandManager = new ApplicationCommandManager();
     commandManager->registerAllCommandsForTarget (this);
-
-//    {
-//        CodeDocument doc;
-//        CppCodeEditorComponent ed (File(), doc);
-//        commandManager->registerAllCommandsForTarget (&ed);
-//    }
-
-//    registerGUIEditorCommands();
 }
 
 //==============================================================================
@@ -231,16 +218,24 @@ void CabbageApplication::createFileMenu (PopupMenu& menu)
 //==============================================================================
 void CabbageApplication::createEditMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::undo);
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::redo);
+	PopupMenu subMenu;
+    menu.addCommandItem (commandManager, CommandIDs::undo);
+    menu.addCommandItem (commandManager, CommandIDs::redo);
     menu.addSeparator();
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::cut);
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::copy);
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::paste);
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::del);
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::selectAll);
-    menu.addCommandItem (commandManager, StandardApplicationCommandIDs::deselectAll);
+    menu.addCommandItem (commandManager, CommandIDs::cut);
+    menu.addCommandItem (commandManager, CommandIDs::copy);
+    menu.addCommandItem (commandManager, CommandIDs::paste);
+	menu.addSeparator();
+	subMenu.addCommandItem(commandManager, CommandIDs::cabbageMode);
+	subMenu.addCommandItem(commandManager, CommandIDs::genericMode);
+	subMenu.addCommandItem(commandManager, CommandIDs::csoundMode);
+	menu.addSubMenu("Interface Mode", subMenu, (getEditor()->isVisible()?true:false));
+	
+    menu.addCommandItem (commandManager, CommandIDs::del);
+    menu.addCommandItem (commandManager, CommandIDs::selectAll);
+    menu.addCommandItem (commandManager, CommandIDs::deselectAll);
     menu.addSeparator();
+	
     menu.addCommandItem (commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (commandManager, CommandIDs::findSelection);
     menu.addCommandItem (commandManager, CommandIDs::findNext);
@@ -252,6 +247,7 @@ void CabbageApplication::createViewMenu (PopupMenu& menu)
 {
 
     menu.addSeparator();
+	menu.addCommandItem (commandManager, CommandIDs::showGenericWidgetWindow);
     createColourSchemeItems (menu);
 }
 
@@ -277,17 +273,7 @@ void CabbageApplication::createBuildMenu (PopupMenu& menu)
 //==============================================================================
 void CabbageApplication::createColourSchemeItems (PopupMenu& menu)
 {
-//   const StringArray presetSchemes (settings->appearance.getPresetSchemes());
-//
-//    if (presetSchemes.size() > 0)
-//    {
-//        PopupMenu schemes;
-//
-//        for (int i = 0; i < presetSchemes.size(); ++i)
-//            schemes.addItem (colourSchemeBaseID + i, presetSchemes[i]);
-//
-//        menu.addSubMenu ("Colour Scheme", schemes);
-//    }
+
 }
 
 //==============================================================================
@@ -300,15 +286,6 @@ void CabbageApplication::createWindowMenu (PopupMenu& menu)
     menu.addCommandItem (commandManager, CommandIDs::goToNextDoc);
     menu.addCommandItem (commandManager, CommandIDs::goToCounterpart);
     menu.addSeparator();
-
-//    const int numDocs = jmin (50, openDocumentManager.getNumOpenDocuments());
-//
-//    for (int i = 0; i < numDocs; ++i)
-//    {
-//        OpenDocumentManager::Document* doc = openDocumentManager.getOpenDocument(i);
-//        menu.addItem (activeDocumentsBaseID + i, doc->getName());
-//    }
-
     menu.addSeparator();
     menu.addCommandItem (commandManager, CommandIDs::closeAllDocuments);
 }
@@ -330,23 +307,7 @@ void CabbageApplication::handleMainMenuCommand (int menuItemID)
 {
     if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
     {
-        // open a file from the "recent files" menu
         openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
-    }
-    else if (menuItemID >= activeDocumentsBaseID && menuItemID < activeDocumentsBaseID + 200)
-    {
-//        if (OpenDocumentManager::Document* doc = openDocumentManager.getOpenDocument (menuItemID - activeDocumentsBaseID))
-//            mainWindowList.openDocument (doc, true);
-//        else
-//            jassertfalse;
-    }
-    else if (menuItemID >= colourSchemeBaseID && menuItemID < colourSchemeBaseID + 200)
-    {
-//        settings->appearance.selectPresetScheme (menuItemID - colourSchemeBaseID);
-    }
-    else
-    {
-//        handleGUIEditorMenuCommand (menuItemID);
     }
 }
 
@@ -364,7 +325,20 @@ void CabbageApplication::getAllCommands (Array <CommandID>& commands)
 							  CommandIDs::stopCode,							  
 							  CommandIDs::exportAsSynth,
 							  CommandIDs::exportAsEffect,
-							  CommandIDs::exportAsFMODSoundPlugin
+							  CommandIDs::exportAsFMODSoundPlugin,
+							  CommandIDs::copy,
+							  CommandIDs::cut,
+							  CommandIDs::paste,
+							  CommandIDs::undo,
+							  CommandIDs::redo,
+							  //CommandIDs::selectAll,
+							  //CommandIDs::del,
+							  //CommandIDs::findNext,
+							  //CommandIDs::findPrevious,
+							  CommandIDs::genericMode,
+							  CommandIDs::csoundMode,
+							  CommandIDs::cabbageMode,
+							  CommandIDs::showGenericWidgetWindow
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -426,6 +400,78 @@ void CabbageApplication::getCommandInfo (CommandID commandID, ApplicationCommand
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
         break;
 
+
+   //edit commands
+    case CommandIDs::undo:
+        result.setInfo (String("Undo"), String("Undo last action"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('z', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::redo:
+        result.setInfo (String("Redo"), String("Redo last action"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('z', ModifierKeys::shiftModifier | ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::cut:
+        result.setInfo (String("Cut"), String("Cut selection"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('x', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::copy:
+        result.setInfo (String("Copy"), String("Copy selection"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('c', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::paste:
+        result.setInfo (String("Paste"), String("Paste selection"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('v', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::columnEdit:
+        result.setInfo (String("Column Edit mode"), String("Column Edit"), CommandCategories::edit, 0);
+        //result.setTicked(isColumnModeEnabled);
+        result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::toggleComments:
+        result.setInfo (String("Toggle comments"), String("Toggle comments"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('/', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::searchReplace:
+        result.setInfo(String("Search or Replace"), String("Search Replace"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('f', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::zoomIn:
+        result.setInfo (String("Zoom in"), String("Zoom in"), CommandCategories::edit, 0);
+        result.addDefaultKeypress('[', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::zoomOut:
+        result.setInfo (String("Zoom out"), String("Zoom out"), CommandCategories::edit, 0);
+        result.addDefaultKeypress (']', ModifierKeys::commandModifier);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::csoundMode:
+        result.setInfo (String("Csound mode"), String("Csound only mode"), CommandCategories::edit, 0);
+        result.setTicked(getCurrentInterfaceMode()==CabbageInterfaceModes::csound);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::genericMode:
+        result.setInfo (String("Generic mode"), String("Generic interface mode"), CommandCategories::edit, 0);
+        result.setTicked(getCurrentInterfaceMode()==CabbageInterfaceModes::generic);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::cabbageMode:
+        result.setInfo (String("Cabbage mode"), String("Normal Cabbage mode"), CommandCategories::edit, 0);
+        result.setTicked(getCurrentInterfaceMode()==CabbageInterfaceModes::cabbage);
+		result.setActive((getEditor()->isVisible() ? true : false));
+        break;
+    case CommandIDs::showGenericWidgetWindow:
+        result.setInfo (String("Show Generic Widget Window"), String("Show genric channel based widgets"), CommandCategories::general, 0);
+		//result.setActive((getEditor()->isVisible() ? true : false));
+        break;
     default:
         JUCEApplication::getCommandInfo (commandID, result);
         break;
@@ -459,13 +505,34 @@ bool CabbageApplication::perform (const InvocationInfo& info)
         stopCode();
         break;
     case CommandIDs::exportAsEffect:
-        int test2;
+        
         break;
     case CommandIDs::exportAsSynth:
-        int test3;
+        
         break;
     case CommandIDs::exportAsFMODSoundPlugin:
-        int test4;
+        
+        break;
+	case CommandIDs::undo:
+        
+        break;
+    case CommandIDs::redo:
+        
+        break;
+    case CommandIDs::paste:
+        
+        break;
+    case CommandIDs::genericMode:
+        setCurrentInterfaceMode(CabbageInterfaceModes::generic);
+        break;
+    case CommandIDs::csoundMode:
+        setCurrentInterfaceMode(CabbageInterfaceModes::csound);
+        break;
+    case CommandIDs::cabbageMode:
+        setCurrentInterfaceMode(CabbageInterfaceModes::cabbage);
+        break;
+    case CommandIDs::showGenericWidgetWindow:
+        showGenericWidgetWindow(true);
         break;
     default:
         return JUCEApplication::perform (info);
@@ -473,19 +540,34 @@ bool CabbageApplication::perform (const InvocationInfo& info)
 
     return true;
 }
+
+Identifier CabbageApplication::getCurrentInterfaceMode()
+{
+	return currentInterfaceMode;
+}
+
+void CabbageApplication::setCurrentInterfaceMode(Identifier mode)
+{
+	currentInterfaceMode=mode;
+}
+
 //==============================================================================
+void CabbageApplication::showGenericWidgetWindow(bool show)
+{
+	if(pluginWindow)
+		pluginWindow->setVisible(show);
+}
+
 void CabbageApplication::showSettingsDialog()
 {
 	DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), pluginWrapper->getAudioDeviceSelector()));
+    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), getPluginWrapper()->getAudioDeviceSelector()));
     o.content->setSize(500, 450);
-
     o.dialogTitle = TRANS("Cabbage Settings");
     o.dialogBackgroundColour = Colour(0xfff0f0f0);
     o.escapeKeyTriggersCloseButton = true;
     o.useNativeTitleBar = true;
     o.resizable = false;
-
     o.launchAsync();
     
 }
@@ -517,30 +599,6 @@ void CabbageApplication::createNewProject()
     o.resizable = false;
 
     o.launchAsync();
-
-	
-    /*
-    DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree()));
-    o.content->setSize(500, 450);
-
-    o.dialogTitle = TRANS("Cabbage Settings");
-    o.dialogBackgroundColour = Colour(0xfff0f0f0);
-    o.escapeKeyTriggersCloseButton = true;
-    o.useNativeTitleBar = true;
-    o.resizable = false;
-
-    o.launchAsync();
-    */
-
-//	XmlElement* el = cabbageSettings->getValueTree().createXml();
-//	ValueTree values = ValueTree::fromXml(*el);
-//	String test = values.getChildWithName("Colours").getProperty("MainBackground").toString();
-//	delete el;
-//
-    //MainWindow* mw = mainWindowList.getOrCreateEmptyWindow();
-    //mw->showNewProjectWizard();
-    //mainWindowList.avoidSuperimposedWindows (mw);
 }
 //==============================================================================
 void CabbageApplication::askUserToOpenFile()
@@ -553,39 +611,27 @@ void CabbageApplication::askUserToOpenFile()
 //==============================================================================
 bool CabbageApplication::openFile (const File& file, String type)
 {
+	stopTimer();
+	stopCode();
+	showGenericWidgetWindow(false);
     mainDocumentWindow->getMainContentComponent()->openFile(file);
 	cabbageSettings->updateRecentFilesList(file);
-	
 	mainDocumentWindow->addKeyListener(getCommandManager().getKeyMappings());
 	mainDocumentWindow->setName("Cabbage " + file.getFullPathName());
-	currentCsdFile = File(file.getFullPathName());
-
-	
+	currentCsdFile = File(file.getFullPathName());	
     return true;
 }
 //==============================================================================
 void CabbageApplication::saveDocument()
 {
-	//CabbageUtilities::debug(getEditor()->getDocument().getAllContent());
 	currentCsdFile.replaceWithText(getEditor()->getDocument().getAllContent());
-}
-//==============================================================================
-void CabbageApplication::createGenericCsoundPluginWrapper()
-{
-	if(!pluginWrapper)
-	{
-		pluginWrapper = new CabbagePluginWrapper(cabbageSettings->getValueTree(), false);
-		pluginWrapper->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
-		if(pluginWrapper->isAudioDeviceOk()==false)
-            CabbageUtilities::showMessage("Warning", "Cabbage could not initialise the selected audio device. Please select a valid audio device in Audio Settings", &lookAndFeel);
-	}
 }
 
 void CabbageApplication::timerCallback()
 {
     if(currentCsdFile.existsAsFile())
     {        
-        const String csoundOutputString = pluginWrapper->getCsoundOutput();
+        const String csoundOutputString = getPluginWrapper()->getCsoundOutput();
         consoleMessages+=csoundOutputString;
         if(csoundOutputString.length()>0)
         {
@@ -598,32 +644,8 @@ void CabbageApplication::runCode()
 {
 	if(currentCsdFile.existsAsFile())
 	{
+		createPluginWrapperAndWindow();
 		startTimer(100);
-
-		createGenericCsoundPluginWrapper();
-		
-		pluginWrapper->restartPlugin(currentCsdFile);
-		
-		bool shouldLaunchEditor = true;
-		if(shouldLaunchEditor)
-		{ 
-			if(pluginWindow==nullptr)
-			{
-				pluginWindow = new PluginWindow("Plugin Interface", CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::genericPluginInterface, Colours::grey));
-				pluginWindow->setVisible(true);
-			}
-			
-			pluginWindow->setContentOwned(pluginWrapper->getProcessor()->createEditorIfNeeded(), true);
-			
-//			o.content->setSize(500, 500);
-//			o.dialogTitle = TRANS("Plugin Interface");
-//			o.dialogBackgroundColour = Colour(0xfff0f0f0);
-//			o.escapeKeyTriggersCloseButton = true;
-//			o.useNativeTitleBar = true;
-//			o.resizable = false;
-		}	
-
-		//pluginWrapper->createPlugin(currentCsdFile);
 	}
 	else
 		CabbageUtilities::showMessage("Warning", "Please open a file first", &lookAndFeel);
@@ -634,8 +656,19 @@ void CabbageApplication::stopCode()
 	if(currentCsdFile.existsAsFile())
 	{
 		stopTimer();
-		pluginWrapper->stopPlaying();
+		getPluginWrapper()->stopPlaying();
 	}
+}
+
+//==============================================================================
+void CabbageApplication::createPluginWrapperAndWindow(bool show)
+{
+	//pluginWindow = nullptr;
+	pluginWindow = new PluginWrapperWindow("Interface", currentCsdFile, Colours::white, cabbageSettings->getUserSettings(), false);
+	pluginWindow->getPluginWrapper()->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+	const bool numParameters = pluginWindow->getNumberOfParameters();
+	pluginWindow->setVisible( numParameters>0 ? show : false);
+	CabbageUtilities::debug("finished setting up");
 }
 //==============================================================================
 void CabbageApplication::newFile (String type)
@@ -657,23 +690,19 @@ bool CabbageApplication::closeAllMainWindows()
 //==============================================================================
 void CabbageApplication::shutdown()
 {
-	
-	//CabbageUtilities::debug(pluginWrapper->getDeviceManagerSettings());
-	cabbageSettings->setProperty("audioSetup", pluginWrapper->getDeviceManagerSettings());
-	
-	
+	cabbageSettings->setProperty("audioSetup", getPluginWrapper()->getDeviceManagerSettings());	
     mainDocumentWindow->setMenuBar(nullptr);
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
     menuModel = nullptr;
     commandManager = nullptr;
-    appearanceEditorWindow = nullptr;
-    globalPreferencesWindow = nullptr;
 	cabbageSettings->closeFiles();
 	cabbageSettings = nullptr;
-	pluginWrapper = nullptr;
 
+	pluginWindow = nullptr;
+	//pluginWrapper->deletePlugin();
+	//pluginWrapper = nullptr;	
     LookAndFeel::setDefaultLookAndFeel (nullptr);
 
     if (! isRunningCommandLine)

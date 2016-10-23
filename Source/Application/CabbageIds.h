@@ -74,6 +74,31 @@ enum
 
     loginLogout             = 0x4100c1,
 
+	undo			= 0x512011,
+	redo			= 0x512012,
+	cut				= 0x512013,
+	copy			= 0x512014,
+	paste			= 0x512015,
+	searchReplace	= 0x512080,
+	columnEdit		= 0x512082,
+	interfaceMode		= 0x512083,
+	csoundMode			= 0x512084,
+	genericMode			= 0x512085,
+	cabbageMode			= 0x512086,
+	whiteBackground		= 0x512018,
+	blackBackground		= 0x512019,
+	toggleComments		= 0x512020,
+	insertFromRepo		= 0x512021,
+	addFromRepo			= 0x512022,
+	insertRecentEvent	= 0x512023,
+	openPythonEditor	= 0x512024,
+	fontType			= 0x512025,
+	del					= 0x512026,
+	selectAll			= 0x512027,
+	deselectAll			= 0x512028,
+	
+	showGenericWidgetWindow	= 0x612000,
+
     lastCommandIDEntry
 };
 }
@@ -83,6 +108,7 @@ namespace CommandCategories
 static const char* const general       = "General";
 static const char* const editing       = "Editing";
 static const char* const view          = "View";
+static const char* const edit          = "Edit";
 static const char* const windows       = "Windows";
 }
 
@@ -104,11 +130,11 @@ const Identifier class_ ("class");
 #undef DECLARE_ID
 };
 
-namespace CabbageGUIInterface
+namespace CabbageInterfaceModes
 {
-	static const Identifier csound = "csound";
-	static const Identifier generic = "generic";
-	static const Identifier normal = "cabbage";
+	static const Identifier csound("csound");
+	static const Identifier generic("generic");
+	static const Identifier cabbage("cabbage");
 };
 
 // Handy list of static Identifiers..
