@@ -5,82 +5,82 @@
               jucerVersion="4.2.4">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
-      <GROUP id="{BA047647-0D41-109B-2B17-7090652A3EA1}" name="Application">
-        <GROUP id="{EEA7F17A-2E45-95B6-3442-506DF1142E69}" name="CodeEditor">
-          <FILE id="rf5pBS" name="CabbageCodeEditor.cpp" compile="1" resource="0"
-                file="Source/Application/CodeEditor/CabbageCodeEditor.cpp"/>
-          <FILE id="Jl2UoN" name="CabbageCodeEditor.h" compile="0" resource="0"
-                file="Source/Application/CodeEditor/CabbageCodeEditor.h"/>
-          <FILE id="SCEGcu" name="CabbageOutputConsole.h" compile="0" resource="0"
-                file="Source/Application/CodeEditor/CabbageOutputConsole.h"/>
-          <FILE id="hsx2Qy" name="CsoundTokeniser.h" compile="0" resource="0"
-                file="Source/Application/CodeEditor/CsoundTokeniser.h"/>
-        </GROUP>
-        <GROUP id="{E157783E-0AB9-E5E0-F97B-5C25E49D9DE1}" name="Settings">
-          <FILE id="PishXd" name="CabbageSettings.cpp" compile="1" resource="0"
-                file="Source/Application/Settings/CabbageSettings.cpp"/>
-          <FILE id="M21xHO" name="CabbageSettings.h" compile="0" resource="0"
-                file="Source/Application/Settings/CabbageSettings.h"/>
-          <FILE id="kdd8Nn" name="CabbageSettingsWindow.cpp" compile="1" resource="0"
-                file="Source/Application/Settings/CabbageSettingsWindow.cpp"/>
-          <FILE id="yvSuPG" name="CabbageSettingsWindow.h" compile="0" resource="0"
-                file="Source/Application/Settings/CabbageSettingsWindow.h"/>
-        </GROUP>
-        <FILE id="wYDNE0" name="CabbageApplication.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageApplication.cpp"/>
-        <FILE id="Lvh6mZ" name="CabbageApplication.h" compile="0" resource="0"
-              file="Source/Application/CabbageApplication.h"/>
-        <FILE id="EYzOgg" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageIDELookAndFeel.cpp"/>
-        <FILE id="SkFna5" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
-              file="Source/Application/CabbageIDELookAndFeel.h"/>
-        <FILE id="E3RdVa" name="CabbageIds.h" compile="0" resource="0" file="Source/Application/CabbageIds.h"/>
-        <FILE id="ILDoiA" name="CabbageMainDocumentWindow.cpp" compile="1"
-              resource="0" file="Source/Application/CabbageMainDocumentWindow.cpp"/>
-        <FILE id="VZqMMN" name="CabbageMainDocumentWindow.h" compile="0" resource="0"
-              file="Source/Application/CabbageMainDocumentWindow.h"/>
-        <FILE id="QPkRHQ" name="CabbageNewProjectWindow.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageNewProjectWindow.cpp"/>
-        <FILE id="llEt5j" name="CabbageNewProjectWindow.h" compile="0" resource="0"
-              file="Source/Application/CabbageNewProjectWindow.h"/>
+      <GROUP id="{EB136361-308D-2BF3-81D4-1AA2879ED095}" name="Audio">
+        <FILE id="QaIyg5" name="CsoundPluginEditor.cpp" compile="1" resource="0"
+              file="Source/Audio/CsoundPluginEditor.cpp"/>
+        <FILE id="NjGU1G" name="CsoundPluginEditor.h" compile="0" resource="0"
+              file="Source/Audio/CsoundPluginEditor.h"/>
+        <FILE id="pyYcPa" name="CsoundPluginProcessor.cpp" compile="1" resource="0"
+              file="Source/Audio/CsoundPluginProcessor.cpp"/>
+        <FILE id="b0P3nW" name="CsoundPluginProcessor.h" compile="0" resource="0"
+              file="Source/Audio/CsoundPluginProcessor.h"/>
+        <FILE id="R9cgv5" name="GenericCabbageEditor.cpp" compile="1" resource="0"
+              file="Source/Audio/GenericCabbageEditor.cpp"/>
+        <FILE id="bXNzmH" name="GenericCabbageEditor.h" compile="0" resource="0"
+              file="Source/Audio/GenericCabbageEditor.h"/>
+        <FILE id="KYl4UO" name="GenericCabbagePluginProcessor.cpp" compile="1"
+              resource="0" file="Source/Audio/GenericCabbagePluginProcessor.cpp"/>
+        <FILE id="VaDx4k" name="GenericCabbagePluginProcessor.h" compile="0"
+              resource="0" file="Source/Audio/GenericCabbagePluginProcessor.h"/>
+        <FILE id="H8mmIG" name="PluginWrapperWindow.h" compile="0" resource="0"
+              file="Source/Audio/PluginWrapperWindow.h"/>
       </GROUP>
-      <GROUP id="{39185BD7-7B2D-151A-CB61-FF58F13F56DB}" name="BinaryData">
-        <FILE id="lonVgj" name="CabbageBinaryData.cpp" compile="1" resource="0"
+      <GROUP id="{B48E4B97-DA60-C27A-EE4F-8EF2E625FEE7}" name="BinaryData">
+        <FILE id="kAMPTV" name="CabbageBinaryData.cpp" compile="1" resource="0"
               file="Source/BinaryData/CabbageBinaryData.cpp"/>
-        <FILE id="l9HoHb" name="CabbageBinaryData.h" compile="0" resource="0"
+        <FILE id="rrCHz6" name="CabbageBinaryData.h" compile="0" resource="0"
               file="Source/BinaryData/CabbageBinaryData.h"/>
       </GROUP>
-      <GROUP id="{555D2546-CA5D-5562-B703-B06F5A8D0C5A}" name="Parser">
-        <FILE id="UmPnUP" name="CabbageWidget.cpp" compile="1" resource="0"
+      <GROUP id="{F27C0207-D3B6-ECB6-006E-27E9BD0894A1}" name="CodeEditor">
+        <FILE id="oP3yA7" name="CabbageCodeEditor.cpp" compile="1" resource="0"
+              file="Source/CodeEditor/CabbageCodeEditor.cpp"/>
+        <FILE id="xxewc1" name="CabbageCodeEditor.h" compile="0" resource="0"
+              file="Source/CodeEditor/CabbageCodeEditor.h"/>
+        <FILE id="fiK2Jh" name="CabbageOutputConsole.h" compile="0" resource="0"
+              file="Source/CodeEditor/CabbageOutputConsole.h"/>
+        <FILE id="dr4ldU" name="CsoundTokeniser.h" compile="0" resource="0"
+              file="Source/CodeEditor/CsoundTokeniser.h"/>
+      </GROUP>
+      <GROUP id="{001DF774-FA24-9AED-A51C-C21B7BA52528}" name="Parser">
+        <FILE id="muD0re" name="CabbageWidget.cpp" compile="1" resource="0"
               file="Source/Parser/CabbageWidget.cpp"/>
-        <FILE id="ZFaiEc" name="CabbageWidget.h" compile="0" resource="0" file="Source/Parser/CabbageWidget.h"/>
+        <FILE id="KYBH7p" name="CabbageWidget.h" compile="0" resource="0" file="Source/Parser/CabbageWidget.h"/>
       </GROUP>
-      <GROUP id="{49C8D4CB-E16D-C8F0-5F68-0A1511E25584}" name="Plugin">
-        <FILE id="Onpw2e" name="PluginWrapperWindow.h" compile="0" resource="0"
-              file="Source/Plugin/PluginWrapperWindow.h"/>
-        <FILE id="N58uig" name="GenericCabbageEditor.cpp" compile="1" resource="0"
-              file="Source/Plugin/GenericCabbageEditor.cpp"/>
-        <FILE id="MhyRAc" name="GenericCabbageEditor.h" compile="0" resource="0"
-              file="Source/Plugin/GenericCabbageEditor.h"/>
-        <FILE id="Azg70M" name="CsoundPluginEditor.cpp" compile="1" resource="0"
-              file="Source/Plugin/CsoundPluginEditor.cpp"/>
-        <FILE id="rXz91d" name="CsoundPluginEditor.h" compile="0" resource="0"
-              file="Source/Plugin/CsoundPluginEditor.h"/>
-        <FILE id="dimqQj" name="CsoundPluginProcessor.cpp" compile="1" resource="0"
-              file="Source/Plugin/CsoundPluginProcessor.cpp"/>
-        <FILE id="ZzMcZq" name="CsoundPluginProcessor.h" compile="0" resource="0"
-              file="Source/Plugin/CsoundPluginProcessor.h"/>
-        <FILE id="uQ8D6U" name="GenericCabbagePluginProcessor.cpp" compile="1"
-              resource="0" file="Source/Plugin/GenericCabbagePluginProcessor.cpp"/>
-        <FILE id="GE7D04" name="GenericCabbagePluginProcessor.h" compile="0"
-              resource="0" file="Source/Plugin/GenericCabbagePluginProcessor.h"/>
+      <GROUP id="{F4F34E72-D219-D192-4409-1AE6D27702A9}" name="Settings">
+        <FILE id="kaYddO" name="CabbageSettings.cpp" compile="1" resource="0"
+              file="Source/Settings/CabbageSettings.cpp"/>
+        <FILE id="liAiXX" name="CabbageSettings.h" compile="0" resource="0"
+              file="Source/Settings/CabbageSettings.h"/>
+        <FILE id="mREdg5" name="CabbageSettingsWindow.cpp" compile="1" resource="0"
+              file="Source/Settings/CabbageSettingsWindow.cpp"/>
+        <FILE id="lJfO78" name="CabbageSettingsWindow.h" compile="0" resource="0"
+              file="Source/Settings/CabbageSettingsWindow.h"/>
       </GROUP>
-      <GROUP id="{24B339DA-0A5C-EE13-6A1A-0F900F6940B9}" name="Utilities">
-        <FILE id="euzp83" name="CabbageColourPropertyComponent.h" compile="0"
+      <GROUP id="{6FF43C31-CBF2-3857-A380-C64DF78B8E1C}" name="Utilities">
+        <FILE id="ACuqLo" name="CabbageColourPropertyComponent.h" compile="0"
               resource="0" file="Source/Utilities/CabbageColourPropertyComponent.h"/>
-        <FILE id="uNXjsA" name="CabbageUtilities.h" compile="0" resource="0"
+        <FILE id="UCauAg" name="CabbageStrings.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageStrings.h"/>
+        <FILE id="mqt4AB" name="CabbageUtilities.h" compile="0" resource="0"
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
+      <FILE id="YpL4FP" name="CabbageApplication.cpp" compile="1" resource="0"
+            file="Source/CabbageApplication.cpp"/>
+      <FILE id="CZh4V3" name="CabbageApplication.h" compile="0" resource="0"
+            file="Source/CabbageApplication.h"/>
+      <FILE id="i5ulr7" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
+            file="Source/CabbageIDELookAndFeel.cpp"/>
+      <FILE id="Fb0BYn" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
+            file="Source/CabbageIDELookAndFeel.h"/>
+      <FILE id="mykxYG" name="CabbageIds.h" compile="0" resource="0" file="Source/CabbageIds.h"/>
+      <FILE id="YLWgve" name="CabbageMainDocumentWindow.cpp" compile="1"
+            resource="0" file="Source/CabbageMainDocumentWindow.cpp"/>
+      <FILE id="rZs7Gj" name="CabbageMainDocumentWindow.h" compile="0" resource="0"
+            file="Source/CabbageMainDocumentWindow.h"/>
+      <FILE id="vNuaAQ" name="CabbageNewProjectWindow.cpp" compile="1" resource="0"
+            file="Source/CabbageNewProjectWindow.cpp"/>
+      <FILE id="QTgvns" name="CabbageNewProjectWindow.h" compile="0" resource="0"
+            file="Source/CabbageNewProjectWindow.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

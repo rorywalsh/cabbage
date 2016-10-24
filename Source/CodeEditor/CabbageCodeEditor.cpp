@@ -10,7 +10,7 @@
 
 #include "CabbageCodeEditor.h"
 #include "../Settings/CabbageSettings.h"
-#include "../../Utilities/CabbageUtilities.h"
+#include "../Utilities/CabbageUtilities.h"
 #include "../CabbageMainDocumentWindow.h"
 
 //==============================================================================

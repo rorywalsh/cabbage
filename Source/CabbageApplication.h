@@ -16,9 +16,8 @@
 #include "CabbageIDELookAndFeel.h"
 #include "./Settings/CabbageSettingsWindow.h"
 #include "./CodeEditor/CabbageOutputConsole.h"
-#include "../Plugin/PluginWrapperWindow.h"
-#include "../Utilities/CabbageProgressWindow.h"
-#include "../Parser/CabbageWidget.h"
+#include "Audio/PluginWrapperWindow.h"
+#include "Parser/CabbageWidget.h"
 
 
 class CabbageProjectWindow;
@@ -192,7 +191,6 @@ public:
     }
 private:
 	CabbageWidget testWidget;
-	ScopedPointer<DemoBackgroundThread> progressWindow;
 	String consoleMessages;
 	Identifier pluginType;
 	ValueTree cabbageWidgets;

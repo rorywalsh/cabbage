@@ -10,8 +10,8 @@
 
 #include "CabbageNewProjectWindow.h"
 #include "CabbageApplication.h"
-#include "../Utilities/CabbageStrings.h"
-#include "../Utilities/CabbageUtilities.h"
+#include "Utilities/CabbageStrings.h"
+#include "Utilities/CabbageUtilities.h"
 
 
 CabbageProjectWindow::CabbageProjectWindow(CabbageApplication* owner, ValueTree valueTree):

@@ -11,12 +11,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "CabbageMainDocumentWindow.h"
 #include "CabbageApplication.h"
-#include "../Utilities/CabbageUtilities.h"
+#include "Utilities/CabbageUtilities.h"
 #include "CabbageNewProjectWindow.h"
-#include "../Plugin/PluginWrapperWindow.h"
+#include "Audio/PluginWrapperWindow.h"
 
-//#include "CabbageSettings.cpp"
-//#include "CabbageAppearanceSettings.cpp"
 //==============================================================================
 enum
 {

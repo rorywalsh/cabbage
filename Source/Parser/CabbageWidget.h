@@ -22,7 +22,7 @@
 
 
 #include "../Utilities/CabbageUtilities.h"
-#include "../Application/CabbageIds.h"
+#include "../CabbageIds.h"
 
 class CabbageWidget : public ValueTree, public CabbageUtilities
 {

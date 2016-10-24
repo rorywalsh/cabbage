@@ -12,7 +12,7 @@
 #ifndef CABBAGENEWPROJECTWINDOW_H_INCLUDED
 #define CABBAGENEWPROJECTWINDOW_H_INCLUDED
 
-#include "../BinaryData/CabbageBinaryData.h"
+#include "BinaryData/CabbageBinaryData.h"
 #include "CabbageIDELookAndFeel.h"
 
 class CabbageApplication;

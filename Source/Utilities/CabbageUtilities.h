@@ -13,7 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../BinaryData/CabbageBinaryData.h"
-#include "../Application/CabbageIds.h"
+#include "../CabbageIds.h"
 
 
 

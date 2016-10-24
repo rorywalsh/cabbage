@@ -25,7 +25,7 @@
 #ifndef CABBAGECOLOURPROPERTYCOMPONENT_H_INCLUDED
 #define CABBAGECOLOURPROPERTYCOMPONENT_H_INCLUDED
 
-#include "../Application/CabbageIds.h"
+#include "../CabbageIds.h"
 
 class ColourPropertyComponent : public PropertyComponent, public ChangeListener, public ActionBroadcaster
 {

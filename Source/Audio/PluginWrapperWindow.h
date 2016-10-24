@@ -29,7 +29,54 @@
 #include "CsoundPluginEditor.h"
 #include "CsoundPluginProcessor.h"
 #include "GenericCabbagePluginProcessor.h"
-#include "../Application/Settings/CabbageSettings.h"
+#include "../Settings/CabbageSettings.h"
+
+class PluginWindow;
+static Array <PluginWindow*> activePluginWindows;
+
+PluginWindow::PluginWindow (Component* const pluginEditor,
+                            AudioProcessorGraph::Node* const o,
+                            WindowFormatType t,
+                            AudioProcessorGraph& audioGraph)
+    : DocumentWindow (pluginEditor->getName(), Colours::lightblue,
+                      DocumentWindow::minimiseButton | DocumentWindow::closeButton),
+      graph (audioGraph),
+      owner (o),
+      type (t)
+{
+    setSize (400, 300);
+
+    setContentOwned (pluginEditor, true);
+
+    setTopLeftPosition (owner->properties.getWithDefault (getLastXProp (type), Random::getSystemRandom().nextInt (500)),
+                        owner->properties.getWithDefault (getLastYProp (type), Random::getSystemRandom().nextInt (500)));
+
+    owner->properties.set (getOpenProp (type), true);
+
+    setVisible (true);
+
+    activePluginWindows.add (this);
+}
+
+void PluginWindow::closeCurrentlyOpenWindowsFor (const uint32 nodeId)
+{
+    for (int i = activePluginWindows.size(); --i >= 0;)
+        if (activePluginWindows.getUnchecked(i)->owner->nodeId == nodeId)
+            delete activePluginWindows.getUnchecked (i);
+}
+
+void PluginWindow::closeAllCurrentlyOpenWindows()
+{
+    if (activePluginWindows.size() > 0)
+    {
+        for (int i = activePluginWindows.size(); --i >= 0;)
+            delete activePluginWindows.getUnchecked (i);
+
+        Component dummyModalComp;
+        dummyModalComp.enterModalState();
+        MessageManager::getInstance()->runDispatchLoopUntil (50);
+    }
+}
 
 class PluginWrapper
 {

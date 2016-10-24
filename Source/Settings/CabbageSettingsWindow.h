@@ -13,8 +13,8 @@
 
 #include "../CabbageIds.h"
 #include "CabbageSettings.h"
-#include "../../Utilities/CabbageColourPropertyComponent.h"
-#include "../../Utilities/CabbageUtilities.h"
+#include "../Utilities/CabbageColourPropertyComponent.h"
+#include "../Utilities/CabbageUtilities.h"
 
 
 class CabbageSettingsWindow : public Component, public Button::Listener
