@@ -234,24 +234,6 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         setWidgetProperty(CabbageIdentifierIds::svgbuttonoff, "");
     }
 
-    //===============directory list==================//
-    else if(strTokens[0].trim() == "directorylist")
-    {
-        setWidgetProperty("basetype", "layout");
-        /*
-                  top = 10;
-                  left = 10;
-                  width = 600;
-                  height = 440;
-                  channel = "";
-                  name = "directorylist";
-        		  caption = "";
-        		  type = name;
-                  //name.append(String(ID), 1024);
-
-        	 */
-    }
-
 
     //===============record button==================//
     else if(strTokens[0].trim() == "recordbutton")
@@ -575,24 +557,7 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         setWidgetProperty(CabbageIdentifierIds::corners, 3);
         setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
-    //===============multitab==================//
-    else if(strTokens[0].trim() == "multitab")
-    {
-        /*
-        setWidgetProperty("basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 100;
-        height = 16;
-        channel = "multitab";
-        colour = CabbageUtilities::getComponentFontColour();
-        fontcolour = CabbageUtilities::getComponentFontColour();
-        items.add("Tab 1");
-        name = "multitab";
-        type = name;
-        name.append(String(ID), 1024);
-         */
-    }
+
     //===============soundfiler==================//
     else if(strTokens[0].trim() == "soundfiler")
     {
@@ -857,23 +822,6 @@ CabbageWidget::CabbageWidget(String compStr, int ID):
         setWidgetProperty(CabbageIdentifierIds::visible, 1);
     }
 
-
-    //===============vemeter==================//
-    else if(strTokens[0].trim() == "vumeter")
-    {
-        /*
-        setWidgetProperty("basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 400;
-        height = 200;
-        vuConfig.clear();
-        colour = Colours::white;
-        name = "vumeter";
-        type = name;
-        name.append(String(ID), 1024);
-         */
-    }
     //===============table==================//
     else if(strTokens[0].trim() == "table")
     {
@@ -1193,6 +1141,10 @@ void CabbageWidget::parse(String inStr, String identifier)
         int identPos = str.toLowerCase().indexOf(" "+identArray[indx]+"(");
         if(identPos<0)
             identPos = str.toLowerCase().indexOf(","+identArray[indx]+"(");
+		if(identPos<0)
+			identPos = str.toLowerCase().indexOf(" "+identArray[indx]+" (");
+		if(identPos<0)
+			identPos = str.toLowerCase().indexOf(","+identArray[indx]+" (");
         if(identPos>-1)
         {
             String newString = str.substring(identPos+identArray[indx].length());

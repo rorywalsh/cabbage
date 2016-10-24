@@ -1,36 +1,40 @@
 /*
   ==============================================================================
 
-    GenericCabbagePluginProcessor.h
-    Created: 21 Oct 2016 10:50:44am
+    CabbagePluginProcessor.h
+    Created: 24 Oct 2016 6:38:24pm
     Author:  rory
 
   ==============================================================================
 */
 
-
-
-#ifndef GENERICCABBAGEPLUGINPROCESSOR_H_INCLUDED
-#define GENERICCABBAGEPLUGINPROCESSOR_H_INCLUDED
+#ifndef CABBAGEPLUGINPROCESSOR_H_INCLUDED
+#define CABBAGEPLUGINPROCESSOR_H_INCLUDED
 
 #include "CsoundPluginProcessor.h"
+#include "../Parser/CabbageWidget.h"
+#include "../CabbageIds.h"
 
-class GenericCabbagePluginProcessor  : public CsoundPluginProcessor
+class CabbagePluginProcessor  : public CsoundPluginProcessor
 {
 public:
-	GenericCabbagePluginProcessor(File inputFile);
-	~GenericCabbagePluginProcessor();	
+	CabbagePluginProcessor(File inputFile);
+	~CabbagePluginProcessor();	
 	
-	controlChannelInfo_s* csoundChanList;
+	ValueTree cabbageWidgets;
 	
 	OwnedArray<AudioParameterFloat> parameters;
 	
 	void sendChannelDataToCsound();
+	void parseCsdFile();
 
 	//==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
+private:
+	File csdFile;
 };
 
 
-#endif  // GENERICCABBAGEPLUGINPROCESSOR_H_INCLUDED
+
+#endif  // CABBAGEPLUGINPROCESSOR_H_INCLUDED

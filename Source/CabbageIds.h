@@ -169,10 +169,10 @@ static const Identifier genericPluginInterface = "Generic Plugin - Background";
 }
 
 // this array holds the names of all widgets taht can be controlled via a host and plugin editor GUI
-class CabbageWidgetStrings : public StringArray
+class CabbageControlWidgetStrings : public StringArray
 {
 public:
-    CabbageWidgetStrings()
+    CabbageControlWidgetStrings()
     {
         add("hslider");
         add("hslider2");
@@ -191,7 +191,7 @@ public:
         add("button");
     }
 
-    ~CabbageWidgetStrings() {}
+    ~CabbageControlWidgetStrings() {}
 };
 
 // this array holds the names of all widgets that can only be controlled via the plugin editor GUI

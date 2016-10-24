@@ -729,7 +729,9 @@ bool CabbageApplication::closeAllMainWindows()
 //==============================================================================
 void CabbageApplication::shutdown()
 {
-	cabbageSettings->setProperty("audioSetup", audioGraph->getDeviceManagerSettings());	
+	if(audioGraph->getDeviceManagerSettings().isNotEmpty())
+		cabbageSettings->setProperty("audioSetup", audioGraph->getDeviceManagerSettings());	
+		
     mainDocumentWindow->setMenuBar(nullptr);
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);

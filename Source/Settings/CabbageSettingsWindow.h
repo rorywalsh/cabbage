@@ -15,6 +15,7 @@
 #include "CabbageSettings.h"
 #include "../Utilities/CabbageColourPropertyComponent.h"
 #include "../Utilities/CabbageUtilities.h"
+#include "../BinaryData/CabbageBinaryData.h"
 
 
 class CabbageSettingsWindow : public Component, public Button::Listener

@@ -39,7 +39,7 @@ public:
         return warningMessages;
     };
 
-    CabbageWidget(String str, int ID);
+    CabbageWidget(String str, int ID=0);
     CabbageWidget() {};
     ~CabbageWidget(){};
     void parse(String str, String identifier);
@@ -62,8 +62,20 @@ public:
 
 	void setWidgetProperty(Identifier name, const var &value)
 	{
-		setProperty(name, value, 0);
+		const Array<var>* array = value.getArray();
+		const ReferenceCountedObject* valueObject = value.getObject();
+
+		if(array || valueObject)
+		{
+			addChild(ValueTree(name.toString()), -1, 0);
+			for( int i = 0; i < array->size() ; i++)
+				getChildWithName(name.toString()).setProperty(name.toString()+"_"+String(i), array->getReference(i).toString(), 0);		
+		}
+		else		
+			setProperty(name, value, 0);
+		
 	}
+	
 	
 	var getWidgetPropertyWithDefault(Identifier name, const var &value)
 	{
@@ -75,7 +87,19 @@ public:
         Rectangle<int> bounds(left, top, width, height);
         return bounds;
     }
+	
 
+//	for(int i=0;i<cabbageWidgets.getNumChildren();i++)
+//	{
+//		const ValueTree valueTree = cabbageWidgets.getChild(i);
+//		CabbageUtilities::debug(valueTree.getProperty(CabbageIdentifierIds::name).toString());
+//		for( int y=0;y< valueTree.getChildWithName("channel").getNumProperties();y++)
+//		{
+//			const String name = valueTree.getChildWithName("channel").getPropertyName(y).toString();
+//			CabbageUtilities::debug(valueTree.getChildWithName("channel").getProperty(name).toString());
+//		}		
+//	}
+//	
     //static methods used for updating look and pos of GUI controls
     static Rectangle<int> getBoundsFromText(String text);
     static Colour getColourFromText(String text);

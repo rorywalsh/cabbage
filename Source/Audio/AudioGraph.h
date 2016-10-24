@@ -29,6 +29,7 @@
 #include "CsoundPluginEditor.h"
 #include "CsoundPluginProcessor.h"
 #include "GenericCabbagePluginProcessor.h"
+#include "CabbagePluginProcessor.h"
 #include "../Settings/CabbageSettings.h"
 
 class PluginWindow  : public DocumentWindow
@@ -70,9 +71,9 @@ class AudioGraph
 {
 public:
 	// This creates new instances of the plugin..
-	GenericCabbagePluginProcessor* JUCE_CALLTYPE createCsoundPluginFilter(File inputFile)
+	CabbagePluginProcessor* JUCE_CALLTYPE createCsoundPluginFilter(File inputFile)
 	{
-		return new GenericCabbagePluginProcessor(inputFile);
+		return new CabbagePluginProcessor(inputFile.getFullPathName());
 	}
 
 
@@ -169,7 +170,10 @@ public:
 		if(deviceManager.getCurrentAudioDevice())
 		{
 			ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
-			return xml->createDocument("");
+			if(xml==nullptr)
+				return String::empty;
+			else
+				return xml->createDocument("");
 		}
 		else return String::empty;
 	}
@@ -204,7 +208,7 @@ public:
     //==============================================================================
 	String getCsoundOutput()
 	{
-		return dynamic_cast<GenericCabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+		return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
 	}
 
     //==============================================================================
