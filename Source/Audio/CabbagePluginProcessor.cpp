@@ -27,6 +27,7 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 
 }
 
+//==============================================================================
 void CabbagePluginProcessor::parseCsdFile()
 {
 	StringArray linesFromCsd;
@@ -42,6 +43,10 @@ void CabbagePluginProcessor::parseCsdFile()
 			cabbageWidgets.addChild(singleWidget, -1, 0);			
 	}
 	
+	for(int widgets=0;widgets<cabbageWidgets.getNumChildren();widgets++)
+	{
+		CabbageUtilities::debug(cabbageWidgets.getChild(widgets).getProperty(CabbageIdentifierIds::type).toString());
+	}
 
 
 	CabbageUtilities::writeValueTreeToFile(cabbageWidgets, "/home/rory/Desktop/test.xml");	
