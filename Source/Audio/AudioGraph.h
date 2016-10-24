@@ -31,54 +31,42 @@
 #include "GenericCabbagePluginProcessor.h"
 #include "../Settings/CabbageSettings.h"
 
-class PluginWindow;
-static Array <PluginWindow*> activePluginWindows;
-
-PluginWindow::PluginWindow (Component* const pluginEditor,
-                            AudioProcessorGraph::Node* const o,
-                            WindowFormatType t,
-                            AudioProcessorGraph& audioGraph)
-    : DocumentWindow (pluginEditor->getName(), Colours::lightblue,
-                      DocumentWindow::minimiseButton | DocumentWindow::closeButton),
-      graph (audioGraph),
-      owner (o),
-      type (t)
+class PluginWindow  : public DocumentWindow
 {
-    setSize (400, 300);
-
-    setContentOwned (pluginEditor, true);
-
-    setTopLeftPosition (owner->properties.getWithDefault (getLastXProp (type), Random::getSystemRandom().nextInt (500)),
-                        owner->properties.getWithDefault (getLastYProp (type), Random::getSystemRandom().nextInt (500)));
-
-    owner->properties.set (getOpenProp (type), true);
-
-    setVisible (true);
-
-    activePluginWindows.add (this);
-}
-
-void PluginWindow::closeCurrentlyOpenWindowsFor (const uint32 nodeId)
-{
-    for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked(i)->owner->nodeId == nodeId)
-            delete activePluginWindows.getUnchecked (i);
-}
-
-void PluginWindow::closeAllCurrentlyOpenWindows()
-{
-    if (activePluginWindows.size() > 0)
+public:
+    enum WindowFormatType
     {
-        for (int i = activePluginWindows.size(); --i >= 0;)
-            delete activePluginWindows.getUnchecked (i);
+        Normal = 0,
+        Generic,
+        Programs,
+        Parameters,
+        AudioIO,
+        NumTypes
+    };
 
-        Component dummyModalComp;
-        dummyModalComp.enterModalState();
-        MessageManager::getInstance()->runDispatchLoopUntil (50);
-    }
-}
+    PluginWindow (Component* pluginEditor, AudioProcessorGraph::Node*, WindowFormatType, AudioProcessorGraph&);
+    ~PluginWindow();
 
-class PluginWrapper
+    static PluginWindow* getWindowFor (AudioProcessorGraph::Node*, WindowFormatType, AudioProcessorGraph&);
+
+    static void closeCurrentlyOpenWindowsFor (const uint32 nodeId);
+    static void closeAllCurrentlyOpenWindows();
+
+    void moved() override;
+    void closeButtonPressed() override;
+
+private:
+    AudioProcessorGraph& graph;
+    AudioProcessorGraph::Node* owner;
+    WindowFormatType type;
+
+    float getDesktopScaleFactor() const override     { return 1.0f; }
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginWindow)
+};
+
+
+class AudioGraph
 {
 public:
 	// This creates new instances of the plugin..
@@ -88,7 +76,7 @@ public:
 	}
 
 
-    PluginWrapper (PropertySet* settingsToUse, File inputFile,
+    AudioGraph (PropertySet* settingsToUse, File inputFile,
                             bool takeOwnershipOfSettings = true,
                             const String& preferredDefaultDeviceName = String(),
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr)
@@ -106,7 +94,7 @@ public:
 		bool connection2 = graph.addConnection(1, 1, 2, 1);	
     }
 
-    ~PluginWrapper()
+    ~AudioGraph()
     {
         deletePlugin();
         shutDownAudioDevices();
@@ -128,6 +116,7 @@ public:
       #endif
         jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
+		
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails(44100, 512);
 		
@@ -135,9 +124,15 @@ public:
 		
 
     }
+	
+	int getNumberOfParameters()
+	{
+		return getProcessor()->getParameters().size();
+	}	
 
     virtual void deletePlugin()
     {
+		PluginWindow::closeAllCurrentlyOpenWindows();
         stopPlaying();
 		graph.clear();
         processor = nullptr;
@@ -264,10 +259,21 @@ private:
         deviceManager.removeAudioCallback (&player);
     }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginWrapper)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioGraph)
 };
 
 
+inline String toString (PluginWindow::WindowFormatType type)
+{
+    switch (type)
+    {
+        case PluginWindow::Normal:     return "Normal";
+        case PluginWindow::Generic:    return "Generic";
+        case PluginWindow::Programs:   return "Programs";
+        case PluginWindow::Parameters: return "Parameters";
+        default:                       return String();
+    }
+};
 //==============================================================================
 /**
     A class that can be used to run a simple standalone application containing your filter.
@@ -275,7 +281,7 @@ private:
     Just create one of these objects in your JUCEApplicationBase::initialise() method, and
     let it do its work. It will create your filter object using the same createPluginFilter() function
     that the other plugin wrappers use.
-*/
+
 class PluginWrapperWindow    : public DocumentWindow
 {
 public:
@@ -348,7 +354,7 @@ public:
         }
     }
 
-    /** Deletes and re-creates the plugin, resetting it to its default state. */
+    // Deletes and re-creates the plugin, resetting it to its default state. 
     void resetToDefaultState(File inputFile)
     {
         pluginHolder->stopPlaying();
@@ -386,6 +392,6 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginWrapperWindow)
 };
-
+*/
 
 #endif   // JUCE_PluginWrapperWindow_H_INCLUDED

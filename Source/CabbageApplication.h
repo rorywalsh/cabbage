@@ -16,7 +16,7 @@
 #include "CabbageIDELookAndFeel.h"
 #include "./Settings/CabbageSettingsWindow.h"
 #include "./CodeEditor/CabbageOutputConsole.h"
-#include "Audio/PluginWrapperWindow.h"
+#include "Audio/AudioGraph.h"
 #include "Parser/CabbageWidget.h"
 
 
@@ -27,23 +27,6 @@ class CabbageMainDocumentWindow;
 class CabbageApplication  : public JUCEApplication, public ChangeListener, public Timer, public ValueTree::Listener
 {
 public:
-	//==============================================================================
-	class PluginWindow    : public DocumentWindow
-	{
-	public:
-		PluginWindow(String title, Colour bgColour):DocumentWindow (title, bgColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton)
-		{
-			setAlwaysOnTop(true);
-		}
-		
-		
-		void closeButtonPressed()
-		{
-			delete this;
-		}
-	};
-
-
     //==============================================================================
     CabbageApplication();
 
@@ -109,13 +92,14 @@ public:
     bool isRunningCommandLine;
 	CodeEditorComponent* getEditor();
 	CabbageOutputConsole* getOutputConsole();
-	void createPluginWrapperAndWindow(bool show=true);
+	void createEditorForAudioGraphNode();
+	void createAudioGraph();
 	void showGenericWidgetWindow(bool show);
 	
-	PluginWrapper* getPluginWrapper()
-	{
-		return pluginWindow->getPluginWrapper();
-	}
+//	AudioGraph* getPluginWrapper()
+//	{
+//		return pluginWindow->getPluginWrapper();
+//	}
     //==============================================================================
     void initialise (const String& commandLine) override;
 
@@ -195,7 +179,7 @@ private:
 	Identifier pluginType;
 	ValueTree cabbageWidgets;
 	Identifier currentInterfaceMode;
-	ScopedPointer<PluginWrapperWindow> pluginWindow;
+	ScopedPointer<AudioGraph> audioGraph;
     ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;
 };
 

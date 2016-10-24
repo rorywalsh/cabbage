@@ -6,6 +6,7 @@
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EB136361-308D-2BF3-81D4-1AA2879ED095}" name="Audio">
+        <FILE id="ueHBZV" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/AudioGraph.cpp"/>
         <FILE id="QaIyg5" name="CsoundPluginEditor.cpp" compile="1" resource="0"
               file="Source/Audio/CsoundPluginEditor.cpp"/>
         <FILE id="NjGU1G" name="CsoundPluginEditor.h" compile="0" resource="0"
@@ -22,8 +23,7 @@
               resource="0" file="Source/Audio/GenericCabbagePluginProcessor.cpp"/>
         <FILE id="VaDx4k" name="GenericCabbagePluginProcessor.h" compile="0"
               resource="0" file="Source/Audio/GenericCabbagePluginProcessor.h"/>
-        <FILE id="H8mmIG" name="PluginWrapperWindow.h" compile="0" resource="0"
-              file="Source/Audio/PluginWrapperWindow.h"/>
+        <FILE id="H8mmIG" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/AudioGraph.h"/>
       </GROUP>
       <GROUP id="{B48E4B97-DA60-C27A-EE4F-8EF2E625FEE7}" name="BinaryData">
         <FILE id="kAMPTV" name="CabbageBinaryData.cpp" compile="1" resource="0"

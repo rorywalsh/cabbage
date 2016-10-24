@@ -13,7 +13,7 @@
 #include "CabbageApplication.h"
 #include "Utilities/CabbageUtilities.h"
 #include "CabbageNewProjectWindow.h"
-#include "Audio/PluginWrapperWindow.h"
+#include "Audio/AudioGraph.h"
 
 //==============================================================================
 enum
@@ -84,7 +84,7 @@ void CabbageApplication::initialise (const String& commandLine)
         return;
     }
 	
-	createPluginWrapperAndWindow(false);
+	createAudioGraph();
 
     initCommandManager();
     menuModel = new MainMenuModel();
@@ -567,14 +567,14 @@ void CabbageApplication::setCurrentInterfaceMode(Identifier mode)
 //==============================================================================
 void CabbageApplication::showGenericWidgetWindow(bool show)
 {
-	if(pluginWindow)
-		pluginWindow->setVisible(show);
+//	if(pluginWindow)
+//		pluginWindow->setVisible(show);
 }
 
 void CabbageApplication::showSettingsDialog()
 {
 	DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), getPluginWrapper()->getAudioDeviceSelector()));
+    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), audioGraph->getAudioDeviceSelector()));
     o.content->setSize(500, 450);
     o.dialogTitle = TRANS("Cabbage Settings");
     o.dialogBackgroundColour = Colour(0xfff0f0f0);
@@ -626,7 +626,9 @@ bool CabbageApplication::openFile (const File& file, String type)
 {
 	stopTimer();
 	stopCode();
-	showGenericWidgetWindow(false);
+
+	PluginWindow::closeAllCurrentlyOpenWindows();
+
     mainDocumentWindow->getMainContentComponent()->openFile(file);
 	cabbageSettings->updateRecentFilesList(file);
 	mainDocumentWindow->addKeyListener(getCommandManager().getKeyMappings());
@@ -646,7 +648,7 @@ void CabbageApplication::timerCallback()
 {
     if(currentCsdFile.existsAsFile())
     {        
-        const String csoundOutputString = getPluginWrapper()->getCsoundOutput();
+        const String csoundOutputString = audioGraph->getCsoundOutput();
         consoleMessages+=csoundOutputString;
         if(csoundOutputString.length()>0)
         {
@@ -659,7 +661,9 @@ void CabbageApplication::runCode()
 {
 	if(currentCsdFile.existsAsFile())
 	{
-		createPluginWrapperAndWindow();
+		PluginWindow::closeAllCurrentlyOpenWindows();
+		//this is overkill, in future we can simple edit the node in question and leave the graph
+		createAudioGraph();
 		startTimer(100);
 	}
 	else
@@ -671,24 +675,44 @@ void CabbageApplication::stopCode()
 	if(currentCsdFile.existsAsFile())
 	{
 		stopTimer();
-		getPluginWrapper()->stopPlaying();
+		audioGraph->stopPlaying();
 	}
 }
 
 //==============================================================================
-void CabbageApplication::createPluginWrapperAndWindow(bool show)
+void CabbageApplication::createAudioGraph()
 {
 	//pluginWindow = nullptr;
-	pluginWindow = new PluginWrapperWindow("Interface", currentCsdFile, Colours::white, cabbageSettings->getUserSettings(), false);
-	pluginWindow->getPluginWrapper()->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
-	const bool numParameters = pluginWindow->getNumberOfParameters();
-	pluginWindow->setVisible( numParameters>0 ? show : false);
+	audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
+	audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+	
+	createEditorForAudioGraphNode();
+
+
+	//pluginWindow->setVisible( numParameters>0 ? show : false);
 	CabbageUtilities::debug("finished setting up");
 }
 //==============================================================================
 void CabbageApplication::newFile (String type)
 {
 
+}
+
+void CabbageApplication::createEditorForAudioGraphNode()
+{
+	const bool numParameters = audioGraph->getNumberOfParameters();
+	if(numParameters>0)
+		if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
+		{
+			AudioProcessor* const processor = f->getProcessor();
+		
+			PluginWindow::WindowFormatType type = audioGraph->getProcessor()->hasEditor() ? PluginWindow::Normal
+																	 : PluginWindow::Generic;
+
+			if (PluginWindow* const w = PluginWindow::getWindowFor(f, type, audioGraph->graph))
+			w->toFront (false);
+		}
+		
 }
 //==============================================================================
 bool CabbageApplication::closeAllDocuments (bool askUserToSave)
@@ -705,7 +729,7 @@ bool CabbageApplication::closeAllMainWindows()
 //==============================================================================
 void CabbageApplication::shutdown()
 {
-	cabbageSettings->setProperty("audioSetup", getPluginWrapper()->getDeviceManagerSettings());	
+	cabbageSettings->setProperty("audioSetup", audioGraph->getDeviceManagerSettings());	
     mainDocumentWindow->setMenuBar(nullptr);
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
@@ -715,7 +739,7 @@ void CabbageApplication::shutdown()
 	cabbageSettings->closeFiles();
 	cabbageSettings = nullptr;
 
-	pluginWindow = nullptr;
+	audioGraph = nullptr;
 	//pluginWrapper->deletePlugin();
 	//pluginWrapper = nullptr;	
     LookAndFeel::setDefaultLookAndFeel (nullptr);
