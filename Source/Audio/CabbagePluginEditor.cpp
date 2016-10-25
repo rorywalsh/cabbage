@@ -53,8 +53,6 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 		else if(widgetType==CabbageIdentifierIds::checkbox)
 			InsertCheckbox(widgets.getChild(widget));		
 	}
-	
-	
 }
 
 void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
@@ -72,12 +70,25 @@ void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
 void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 {
 	CabbageCheckbox* checkbox = new CabbageCheckbox(cabbageWidgetData);
+	checkbox->widget.addListener(this);
 	addAndMakeVisible(checkbox);
 	components.add(checkbox);
 }
 
 
-
+void CabbagePluginEditor::buttonClicked(Button* button)
+{	
+	for(int i=0;i<getWidgetData().getNumChildren();i++)
+	{
+		if(button->getName()==getWidgetData().getChild(i).getProperty(CabbageIdentifierIds::name).toString())
+		{
+			const String channel = CabbageWidget::getStringProp(getWidgetData().getChild(i), CabbageIdentifierIds::channel); 
+			CabbageUtilities::debug(channel);
+			
+			getWidgetData().getChild(i).setProperty(CabbageIdentifierIds::colour, Colours::red.toString(), 0);
+		}
+	}
+}
 
 
 

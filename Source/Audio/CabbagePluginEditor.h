@@ -17,13 +17,12 @@
 #include "../Widgets/CabbageCheckbox.h"
 
 
-class CabbagePluginEditor  : public AudioProcessorEditor
+class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
     ~CabbagePluginEditor();
 
-	ValueTree cabbageWidgets;	
 	void createEditorInterface(ValueTree widgets);
     //==============================================================================
     void paint (Graphics&) override;
@@ -31,7 +30,6 @@ public:
 	
     OwnedArray<Component> components;
     OwnedArray<Component> layoutComps;
-
 	CabbageLookAndFeel lookAndFeel;
 
 	//==============================================================================
@@ -69,6 +67,14 @@ public:
     void InsertSignalDisplay(ValueTree cabbageWidgetData){};
     void InsertStepper(ValueTree cabbageWidgetData){};
     void InsertNumberBox(ValueTree cabbageWidgetData){};
+
+	//=============================================================================
+	void buttonClicked(Button *button);
+
+	ValueTree getWidgetData()
+	{
+		return processor.cabbageWidgets;
+	}
 
 	Colour backgroundColour;
 private:

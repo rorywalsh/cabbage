@@ -34,8 +34,9 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
     void resized();
 
+	ValueTree widgetData;
 	GroupComponent groupbox;
-    ToggleButton button;
+    ToggleButton widget;
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);
 };
