@@ -11,7 +11,7 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
 
-//   You should have received a copy of the GNU Lesser General Public
+   You should have received a copy of the GNU Lesser General Public
   License along with Csound; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
@@ -32,15 +32,10 @@ class CabbageWidget : public CabbageUtilities
     bool refreshFromDisk;
 
 public:
-    CabbageWidget(String compStr, int ID);
+    CabbageWidget(){};
     ~CabbageWidget(){};
 	static void setWidgetState(ValueTree widgetData, String lineFromCsd, int ID);
 	static void setCustomWidgetState(ValueTree widgetData, String lineFromCsd, String identifier=String::empty);
-	
-	
-	
-	
-    void parse(String str, String identifier){};
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);
     void setTableChannelValues(int index, float val);
@@ -48,8 +43,8 @@ public:
     void addTableChannelValues();
     static void setStringProp(ValueTree widgetData, Identifier prop, String val);
     static void setStringProp(ValueTree widgetData, Identifier prop, int index, String value);
-    static String getStringProp(ValueTree widgetData, Identifier prop);
-
+    static String getStringProp(ValueTree widgetData, Identifier prop, int index=0);
+	static Rectangle<int> getBounds(ValueTree widgetData);
     static String getPropsString();
     static String getColourProp(ValueTree widgetData, Identifier prop);
     static float getNumPropVal(ValueTree widgetData, Identifier prop);
@@ -85,18 +80,7 @@ public:
 		return widgetData.getProperty(name);
 	}		
 
-//	for(int i=0;i<cabbageWidgets.getNumChildren();i++)
-//	{
-//		const ValueTree valueTree = cabbageWidgets.getChild(i);
-//		CabbageUtilities::debug(valueTree.getProperty(CabbageIdentifierIds::name).toString());
-//		for( int y=0;y< valueTree.getChildWithName("channel").getNumProperties();y++)
-//		{
-//			const String name = valueTree.getChildWithName("channel").getPropertyName(y).toString();
-//			CabbageUtilities::debug(valueTree.getChildWithName("channel").getProperty(name).toString());
-//		}		
-//	}
-//	
-    //static methods used for updating look and pos of GUI controls
+
     static Rectangle<int> getBoundsFromText(String text);
     static Colour getColourFromText(String text);
     static String getTextFromText(String text);

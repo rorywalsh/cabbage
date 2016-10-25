@@ -10,12 +10,14 @@
 
 #include "CabbagePluginEditor.h"
 
+class CabbageCheckbox;
 
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    : AudioProcessorEditor (&p), processor (p), lookAndFeel()
 {
     setSize (400, 300);
+	setLookAndFeel(&lookAndFeel);
 	createEditorInterface(processor.cabbageWidgets);
 }
 
@@ -37,6 +39,9 @@ void CabbagePluginEditor::resized()
 //==============================================================================
 void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 {
+	
+	CabbageUtilities::writeValueTreeToFile(processor.cabbageWidgets, "/home/rory/Desktop/test.xml");
+	
 	for(int widget=0;widget<widgets.getNumChildren();widget++)
 	{
 		const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();
@@ -45,8 +50,11 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 			SetupWindow(widgets.getChild(widget));
 		else if(widgetType==CabbageIdentifierIds::rslider)
 			InsertSlider(widgets.getChild(widget));
-		
+		else if(widgetType==CabbageIdentifierIds::checkbox)
+			InsertCheckbox(widgets.getChild(widget));		
 	}
+	
+	
 }
 
 void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
@@ -61,9 +69,11 @@ void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
 	repaint();
 }
 
-void CabbagePluginEditor::InsertSlider(ValueTree cabbageWidgetData)
+void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 {
-	
+	CabbageCheckbox* checkbox = new CabbageCheckbox(cabbageWidgetData);
+	addAndMakeVisible(checkbox);
+	components.add(checkbox);
 }
 
 

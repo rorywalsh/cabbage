@@ -24,10 +24,6 @@
 // Main Cabbage abstract GUI class
 //===============================================================================
 
-CabbageWidget::CabbageWidget(String compStr, int ID):
-    refreshFromDisk(false),
-    warningMessages("")
-{}
 
 void CabbageWidget::setWidgetState(ValueTree widgetData, String lineFromCsd, int ID)
 {
@@ -1176,11 +1172,13 @@ void CabbageWidget::setCustomWidgetState(ValueTree widgetData, String inStr, Str
 					
 					const Array<var>* valueArray = widgetData.getProperty(CabbageIdentifierIds::channel).getArray();
 					
-                    for(int i=0; i<valueArray->size(); i++)
+					if(valueArray)
 					{
+						for(int i=0; i<valueArray->size(); i++)
+						{
                         array.append(valueArray[i]);						
+						}
 					}
-
                     var channelArray, identChannelArray;
                     int size = strTokens[1].getIntValue();
                     for(int i=0; i<size; i++)
@@ -2015,6 +2013,15 @@ Rectangle<int> CabbageWidget::getBoundsFromText(String text)
     return Rectangle<int>(strTokens[0].getIntValue(), strTokens[1].getIntValue(), strTokens[2].getIntValue(), strTokens[3].getIntValue());
 }
 
+Rectangle<int> CabbageWidget::getBounds(ValueTree widgetData)
+{
+	Rectangle<int> rect(getProperty(widgetData, CabbageIdentifierIds::left),
+						getProperty(widgetData, CabbageIdentifierIds::top),
+						getProperty(widgetData, CabbageIdentifierIds::width),
+						getProperty(widgetData, CabbageIdentifierIds::height));
+	return rect;
+}
+
 //===================================================================
 Colour CabbageWidget::getColourFromText(String text)
 {
@@ -2124,23 +2131,25 @@ void CabbageWidget::setTableChannelValues(int index, float val)
 
 
 //===================================================================
-String CabbageWidget::getStringProp(ValueTree widgetData, Identifier prop)
+String CabbageWidget::getStringProp(ValueTree widgetData, Identifier prop, int index)
 {
-    var strings = getProperty(widgetData, prop);
+	var array;
+	if(widgetData.getChildWithName(prop).isValid())
+	{
+		const int numberOfItemsInChild = widgetData.getChildWithName(prop).getNumProperties();
 
+		for(int i=0; i<numberOfItemsInChild; i++)
+		{
+			const Identifier name = widgetData.getChildWithName(prop).getPropertyName(i);
+			array.append(widgetData.getChildWithName(prop).getProperty(name));						
+		}
+			
+		return array[index];
 
-    if(strings.size()>0)
-    {
-        //Logger::writeToLog(prop+":"+strings[0].toString());
-        return strings[0].toString();
-    }
-    else
-    {
-        //Logger::writeToLog(prop+":"+strings.toString());
-        //Logger::writeToLog(prop+":"+strings.toString());
-        return strings.toString();
-    }
-    return String::empty;
+	}
+	else
+		return getProperty(widgetData, prop);
+
 }
 //===================================================================
 StringArray CabbageWidget::getStringArrayProp(Identifier prop)
@@ -2151,20 +2160,6 @@ StringArray CabbageWidget::getStringArrayProp(Identifier prop)
 //    for(int i=0; i<strings.size(); i++)
 //        returnArray.add(strings[i].toString());
 //    return returnArray;
-}
-//===================================================================
-String CabbageWidget::getStringArrayPropValue(Identifier prop, int index)
-{
-		jassert(false);
-//    StringArray returnArray;
-//    var strings = getWidgetPropertyWithDefault(prop, "");
-//    //Logger::writeToLog(String(strings.size()));
-//    for(int i=0; i<strings.size(); i++)
-//        returnArray.add(strings[i].toString());
-//    if(isPositiveAndBelow(index,strings.size()))
-//        return returnArray[index];
-//    else
-//        return returnArray[strings.size()-1];
 }
 //===================================================================
 void CabbageWidget::setStringArrayProp(Identifier prop, var value)

@@ -11,13 +11,11 @@
 #ifndef CABBAGEAPPLICATION_H_INCLUDED
 #define CABBAGEAPPLICATION_H_INCLUDED
 
-#include "CabbageIds.h"
-#include "./Settings/CabbageSettings.h"
-#include "CabbageIDELookAndFeel.h"
+#include "CabbageCommonHeaders.h"
 #include "./Settings/CabbageSettingsWindow.h"
 #include "./CodeEditor/CabbageOutputConsole.h"
 #include "Audio/AudioGraph.h"
-#include "Parser/CabbageWidget.h"
+
 
 
 class CabbageProjectWindow;

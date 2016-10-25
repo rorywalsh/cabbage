@@ -49,10 +49,12 @@
         <FILE id="kXNadf" name="CsoundTokeniser.h" compile="0" resource="0"
               file="Source/CodeEditor/CsoundTokeniser.h"/>
       </GROUP>
-      <GROUP id="{378A7704-7ECD-541D-9FA1-61464E408481}" name="Parser">
-        <FILE id="fHuIqf" name="CabbageWidget.cpp" compile="1" resource="0"
-              file="Source/Parser/CabbageWidget.cpp"/>
-        <FILE id="X9O0hG" name="CabbageWidget.h" compile="0" resource="0" file="Source/Parser/CabbageWidget.h"/>
+      <GROUP id="{378A7704-7ECD-541D-9FA1-61464E408481}" name="Widgets">
+        <FILE id="q5uPrc" name="CabbageCheckbox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageCheckbox.cpp"/>
+        <FILE id="tS5Nx9" name="CabbageWidget.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageWidget.cpp"/>
+        <FILE id="VOA68X" name="CabbageWidget.h" compile="0" resource="0" file="Source/Widgets/CabbageWidget.h"/>
       </GROUP>
       <GROUP id="{88DDDA67-DB94-00A2-43A4-1894BE7EB2A3}" name="Settings">
         <FILE id="a25NH9" name="CabbageSettings.cpp" compile="1" resource="0"

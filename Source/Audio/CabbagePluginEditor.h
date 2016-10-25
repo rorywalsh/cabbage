@@ -14,6 +14,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "CabbagePluginProcessor.h"
 
+#include "../Widgets/CabbageCheckbox.h"
+
+
 class CabbagePluginEditor  : public AudioProcessorEditor
 {
 public:
@@ -25,10 +28,15 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
+	
+    OwnedArray<Component> components;
+    OwnedArray<Component> layoutComps;
+
+	CabbageLookAndFeel lookAndFeel;
 
 	//==============================================================================
 	void SetupWindow(ValueTree cabbageWidgetData);
-	void InsertSlider(ValueTree cabbageWidgetData);
+	void InsertSlider(ValueTree cabbageWidgetData){};
     void InsertGroupBox(ValueTree cabbageWidgetData){};
     void InsertComboBox(ValueTree cabbageWidgetData){};
     void InsertSoundfiler(ValueTree cabbageWidgetData){};
@@ -36,7 +44,7 @@ public:
     void InsertDirectoryList(ValueTree cabbageWidgetData){};
     void InsertTextEditor(ValueTree cabbageWidgetData){};
     void InsertButton(ValueTree cabbageWidgetData){};
-    void InsertCheckBox(ValueTree cabbageWidgetData){};
+    void InsertCheckbox(ValueTree cabbageWidgetData);
     void InsertCsoundOutput(ValueTree cabbageWidgetData){};
     void InsertMIDIKeyboard(ValueTree cabbageWidgetData){};
     void InsertXYPad(ValueTree cabbageWidgetData){};
