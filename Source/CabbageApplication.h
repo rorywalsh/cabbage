@@ -94,7 +94,6 @@ public:
 	CabbageOutputConsole* getOutputConsole();
 	void createEditorForAudioGraphNode();
 	void createAudioGraph();
-	void showGenericWidgetWindow(bool show);
 	
 //	AudioGraph* getPluginWrapper()
 //	{
@@ -174,7 +173,7 @@ public:
         changed();
     }
 private:
-	CabbageWidget testWidget;
+
 	String consoleMessages;
 	Identifier pluginType;
 	ValueTree cabbageWidgets;

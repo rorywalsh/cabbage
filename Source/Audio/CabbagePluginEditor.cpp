@@ -15,9 +15,8 @@
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
     setSize (400, 300);
+	createEditorInterface(processor.cabbageWidgets);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -27,7 +26,7 @@ CabbagePluginEditor::~CabbagePluginEditor()
 //==============================================================================
 void CabbagePluginEditor::paint (Graphics& g)
 {
-    g.fillAll (Colours::white);
+    g.fillAll (backgroundColour);
 }
 
 void CabbagePluginEditor::resized()
@@ -35,3 +34,41 @@ void CabbagePluginEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }
+//==============================================================================
+void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
+{
+	for(int widget=0;widget<widgets.getNumChildren();widget++)
+	{
+		const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();
+
+		if(widgetType==CabbageIdentifierIds::form)
+			SetupWindow(widgets.getChild(widget));
+		else if(widgetType==CabbageIdentifierIds::rslider)
+			InsertSlider(widgets.getChild(widget));
+		
+	}
+}
+
+void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
+{
+	const String name = CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::caption);
+	setName(CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::caption));
+	const int width = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::width);
+    const int height = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::height);
+	const String backgroundColourString = CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::colour);
+	backgroundColour = Colour::fromString(backgroundColourString);	
+	setSize(width, height);	
+	repaint();
+}
+
+void CabbagePluginEditor::InsertSlider(ValueTree cabbageWidgetData)
+{
+	
+}
+
+
+
+
+
+
+

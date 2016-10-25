@@ -38,18 +38,25 @@ void CabbagePluginProcessor::parseCsdFile()
 		if(linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
 			lineNumber = linesFromCsd.size()+1;
 		
-		CabbageWidget singleWidget(linesFromCsd[lineNumber], lineNumber);
-		if(singleWidget.getProperty(CabbageIdentifierIds::basetype).toString().isNotEmpty())
-			cabbageWidgets.addChild(singleWidget, -1, 0);			
+		const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
+		ValueTree temp(widgetTreeIdentifier);
+		CabbageWidget::setWidgetState(temp, linesFromCsd[lineNumber], lineNumber);
+		
+		if(CabbageWidget::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="interactive" ||
+			CabbageWidget::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
+		{
+			cabbageWidgets.addChild(temp, -1, 0);
+		}
+
+		//if(singleWidget.getProperty(CabbageIdentifierIds::basetype).toString().isNotEmpty())
+		//	cabbageWidgets.addChild(singleWidget.getValueTree(), -1, 0);			
 	}
 	
-	for(int widgets=0;widgets<cabbageWidgets.getNumChildren();widgets++)
-	{
-		CabbageUtilities::debug(cabbageWidgets.getChild(widgets).getProperty(CabbageIdentifierIds::type).toString());
-	}
+	
+	CabbageUtilities::writeValueTreeToFile(cabbageWidgets, "/home/rory/Desktop/test.xml");
+	//CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(this->createEditorIfNeeded());
 
-
-	CabbageUtilities::writeValueTreeToFile(cabbageWidgets, "/home/rory/Desktop/test.xml");	
+	
 }
 
 //==============================================================================

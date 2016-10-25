@@ -43,18 +43,12 @@ void CabbageApplication::initialise (const String& commandLine)
 #endif
 
 	//filterGraph.
-	testWidget = CabbageWidget("rslider channel(\"chan1\")", -1);
+
     cabbageSettings = new CabbageSettings();
     cabbageSettings->addChangeListener(this);
     cabbageSettings->setStorageParameters (options);
 	
-	
 
-
-	cabbageWidgets = ValueTree("CabbageWidgets");
-	cabbageWidgets.addListener(this);
-	
-	cabbageWidgets.addChild(testWidget, -1, 0);
 	
 	
     //cabbageSettings->setDefaultColourSettings();
@@ -545,7 +539,7 @@ bool CabbageApplication::perform (const InvocationInfo& info)
         setCurrentInterfaceMode(CabbageInterfaceModes::cabbage);
         break;
     case CommandIDs::showGenericWidgetWindow:
-        showGenericWidgetWindow(true);
+        //showGenericWidgetWindow(true);
         break;
     default:
         return JUCEApplication::perform (info);
@@ -562,13 +556,6 @@ Identifier CabbageApplication::getCurrentInterfaceMode()
 void CabbageApplication::setCurrentInterfaceMode(Identifier mode)
 {
 	currentInterfaceMode=mode;
-}
-
-//==============================================================================
-void CabbageApplication::showGenericWidgetWindow(bool show)
-{
-//	if(pluginWindow)
-//		pluginWindow->setVisible(show);
 }
 
 void CabbageApplication::showSettingsDialog()
@@ -639,7 +626,6 @@ bool CabbageApplication::openFile (const File& file, String type)
 //==============================================================================
 void CabbageApplication::saveDocument()
 {
-	testWidget.setStringProp(CabbageIdentifierIds::text, "HelloText");
 	if(currentCsdFile.existsAsFile())
 		currentCsdFile.replaceWithText(getEditor()->getDocument().getAllContent());
 }
@@ -692,16 +678,11 @@ void CabbageApplication::createAudioGraph()
 	//pluginWindow->setVisible( numParameters>0 ? show : false);
 	CabbageUtilities::debug("finished setting up");
 }
-//==============================================================================
-void CabbageApplication::newFile (String type)
-{
-
-}
 
 void CabbageApplication::createEditorForAudioGraphNode()
 {
-	const bool numParameters = audioGraph->getNumberOfParameters();
-	if(numParameters>0)
+	//const bool numParameters = audioGraph->getNumberOfParameters();
+	//if(numParameters>0)
 		if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
 		{
 			AudioProcessor* const processor = f->getProcessor();
@@ -710,11 +691,16 @@ void CabbageApplication::createEditorForAudioGraphNode()
 																	 : PluginWindow::Generic;
 
 			if (PluginWindow* const w = PluginWindow::getWindowFor(f, type, audioGraph->graph))
-			w->toFront (false);
+			w->toFront (true);
 		}
 		
 }
 //==============================================================================
+void CabbageApplication::newFile (String type)
+{
+
+}
+
 bool CabbageApplication::closeAllDocuments (bool askUserToSave)
 {
     // return openDocumentManager.closeAll (askUserToSave);

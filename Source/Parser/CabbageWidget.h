@@ -24,70 +24,66 @@
 #include "../Utilities/CabbageUtilities.h"
 #include "../CabbageIds.h"
 
-class CabbageWidget : public ValueTree, public CabbageUtilities
+class CabbageWidget : public CabbageUtilities
 {
-    double width, height, top, left;
-    Array<int> vuConfig;
-    Array<int> tableNumbers;
-    Array<float> tableChannelValues;
+//    Array<int> tableNumbers;
+//    Array<float> tableChannelValues;
     String warningMessages;
     bool refreshFromDisk;
 
 public:
-    String getWarningMessages()
-    {
-        return warningMessages;
-    };
-
-    CabbageWidget(String str, int ID=0);
-    CabbageWidget() {};
+    CabbageWidget(String compStr, int ID);
     ~CabbageWidget(){};
-    void parse(String str, String identifier);
-    float getNumProp(Identifier prop);
-    void setNumProp(Identifier prop, float val);
+	static void setWidgetState(ValueTree widgetData, String lineFromCsd, int ID);
+	static void setCustomWidgetState(ValueTree widgetData, String lineFromCsd, String identifier=String::empty);
+	
+	
+	
+	
+    void parse(String str, String identifier){};
+    static float getNumProp(ValueTree widgetData, Identifier prop);
+    static void setNumProp(ValueTree widgetData, Identifier prop, float val);
     void setTableChannelValues(int index, float val);
     float getTableChannelValues(int index);
     void addTableChannelValues();
-    void setStringProp(Identifier prop, String val);
-    void setStringProp(Identifier prop, int index, String value);
-    String getStringProp(Identifier prop);
-    String getStringProp(Identifier prop, int index);
-    String getPropsString();
-    String getColourProp(Identifier prop);
-    float getNumPropVal(Identifier prop);
+    static void setStringProp(ValueTree widgetData, Identifier prop, String val);
+    static void setStringProp(ValueTree widgetData, Identifier prop, int index, String value);
+    static String getStringProp(ValueTree widgetData, Identifier prop);
+
+    static String getPropsString();
+    static String getColourProp(ValueTree widgetData, Identifier prop);
+    static float getNumPropVal(ValueTree widgetData, Identifier prop);
     void scaleWidget(Point<float> scale);
     void setNumPropVal(Identifier prop, float val);
     static String getCabbageCodeFromIdentifiers(NamedValueSet props);
     static String getStringForIdentifier(var props, String identifier, String type);
 
-	void setWidgetProperty(Identifier name, const var &value)
+	static void setProperty(ValueTree widgetData, Identifier name, const var &value)
 	{
 		const Array<var>* array = value.getArray();
 		const ReferenceCountedObject* valueObject = value.getObject();
 
 		if(array || valueObject)
 		{
-			addChild(ValueTree(name.toString()), -1, 0);
+			widgetData.addChild(ValueTree(name.toString()), -1, 0);
 			for( int i = 0; i < array->size() ; i++)
-				getChildWithName(name.toString()).setProperty(name.toString()+"_"+String(i), array->getReference(i).toString(), 0);		
+				widgetData.getChildWithName(name.toString()).setProperty(name.toString()+"_"+String(i), array->getReference(i).toString(), 0);		
 		}
 		else		
-			setProperty(name, value, 0);
-		
+			widgetData.setProperty(name, value, 0);		
 	}
 	
+	//ValueTree getValueTree()	{	return widgetData;	}
 	
-	var getWidgetPropertyWithDefault(Identifier name, const var &value)
+	static var getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value)
 	{
-		return getProperty(name, value);
+		return widgetData.getProperty(name, value);
 	}	
 
-    Rectangle<int> getBounds()
-    {
-        Rectangle<int> bounds(left, top, width, height);
-        return bounds;
-    }
-	
+	static var getProperty(ValueTree widgetData, Identifier name)
+	{
+		return widgetData.getProperty(name);
+	}		
 
 //	for(int i=0;i<cabbageWidgets.getNumChildren();i++)
 //	{
@@ -109,21 +105,13 @@ public:
     static float getSkewFromText(String text);
     static var getVarArrayFromText(String text);
 
-    void setBounds(Rectangle<int> bounds)
-    {
-        left = bounds.getX();
-        top = bounds.getY();
-        width = bounds.getWidth();
-        height = bounds.getHeight();
-    }
-
     static StringArray getIdentifiers()
     {
         StringArray test;
         return test;
     }
 
-    Rectangle<int> getComponentBounds();
+
     StringArray getStringArrayProp(Identifier prop);
     String getStringArrayPropValue(Identifier prop, int index);
     int getIntArrayPropValue(Identifier prop, int index);

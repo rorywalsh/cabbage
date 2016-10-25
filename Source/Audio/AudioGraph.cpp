@@ -27,6 +27,198 @@
 
 //==============================================================================
 class PluginWindow;
+
+
+AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
+						bool takeOwnershipOfSettings,
+						const String& preferredDefaultDeviceName,
+						const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
+
+	: settings (settingsToUse, takeOwnershipOfSettings), graph()
+{
+	graph.prepareToPlay(44100, 512);
+	graph.setPlayConfigDetails(2, 2, 44100, 512);
+	createPlugin(inputFile);
+	setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
+	reloadPluginState();
+	startPlaying();
+	
+	bool connection1 = graph.addConnection(1, 0, 2, 0);			
+	bool connection2 = graph.addConnection(1, 1, 2, 1);	
+}
+
+AudioGraph::~AudioGraph()
+{
+	deletePlugin();
+	shutDownAudioDevices();
+}
+
+//==============================================================================
+void AudioGraph::createPlugin(File inputFile)
+{
+	AudioProcessorGraph::AudioGraphIOProcessor* outNode;
+	outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+	AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, 2);
+
+  #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
+	processor = ::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone);
+  #else
+	AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
+	processor = createCabbagePluginFilter(inputFile);	
+	AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
+  #endif
+	jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
+
+	
+	processor->disableNonMainBuses();
+	processor->setRateAndBufferSizeDetails(44100, 512);
+	
+	updateBusLayout(processor);
+	
+	AudioProcessorGraph::Node* processorNode = graph.addNode(processor, 1);
+	
+
+}
+
+
+void AudioGraph::updateBusLayout(AudioProcessor* selectedProcessor)
+{
+		if (AudioProcessor* filter = selectedProcessor)
+		{
+			if (AudioProcessor::Bus* bus = filter->getBus (isInput, currentBus))
+			{
+				bool test = bus->setNumberOfChannels(8);
+			}
+		}
+}	
+
+int AudioGraph::getNumberOfParameters()
+{
+	return getProcessor()->getParameters().size();
+}	
+
+void AudioGraph::deletePlugin()
+{
+	PluginWindow::closeAllCurrentlyOpenWindows();
+	stopPlaying();
+	graph.clear();
+	processor = nullptr;
+}
+
+String AudioGraph::getFilePatterns (const String& fileSuffix)
+{
+	if (fileSuffix.isEmpty())
+		return String();
+
+	return (fileSuffix.startsWithChar ('.') ? "*" : "*.") + fileSuffix;
+}
+
+void AudioGraph::setXmlAudioSettings(XmlElement* xmlSettingsString)
+{
+	xmlSettings = xmlSettingsString;
+	setupAudioDevices ( String(), nullptr);
+	startPlaying();
+}
+
+AudioDeviceSelectorComponent* AudioGraph::getAudioDeviceSelector()
+{
+	return new AudioDeviceSelectorComponent (deviceManager,
+														  processor->getTotalNumInputChannels(),
+														  processor->getTotalNumInputChannels(),
+														  processor->getTotalNumOutputChannels(),
+														  processor->getTotalNumOutputChannels(),
+														  true, false,
+														  true, false);
+}
+
+String AudioGraph::getDeviceManagerSettings()
+{
+	if(deviceManager.getCurrentAudioDevice())
+	{
+		ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
+		if(xml==nullptr)
+			return String::empty;
+		else
+			return xml->createDocument("");
+	}
+	else return String::empty;
+}
+
+//==============================================================================
+void AudioGraph::startPlaying()
+{
+	player.setProcessor (&graph);
+}
+
+void AudioGraph::stopPlaying()
+{
+	player.setProcessor (nullptr);
+}
+
+void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceName,
+							 const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
+{
+	ScopedPointer<XmlElement> savedState;
+
+	if (settings != nullptr)
+		savedState = settings->getXmlValue ("audioSetup");
+
+	deviceManager.initialise (256,
+							  256,
+							  savedState,
+							  true,
+							  preferredDefaultDeviceName,
+							  preferredSetupOptions);
+}
+
+//==============================================================================
+String AudioGraph::getCsoundOutput()
+{
+	return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+}
+
+//==============================================================================
+void AudioGraph::savePluginState()
+{
+	if (settings != nullptr && processor != nullptr)
+	{
+		MemoryBlock data;
+		processor->getStateInformation (data);
+
+		settings->setValue ("filterState", data.toBase64Encoding());
+	}
+}
+
+void AudioGraph::reloadPluginState()
+{
+	if (settings != nullptr)
+	{
+		MemoryBlock data;
+
+		if (data.fromBase64Encoding (settings->getValue ("filterState")) && data.getSize() > 0)
+			processor->setStateInformation (data.getData(), (int) data.getSize());
+	}
+}
+
+AudioProcessor* AudioGraph::getProcessor()
+{
+	return processor;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 static Array <PluginWindow*> activePluginWindows;
 
 PluginWindow::PluginWindow (Component* const pluginEditor,
