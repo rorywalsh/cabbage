@@ -5,6 +5,8 @@
               jucerVersion="4.2.4">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
+      <FILE id="vTucdw" name="CabbageCommonHeaders.h" compile="0" resource="0"
+            file="Source/CabbageCommonHeaders.h"/>
       <GROUP id="{483B4F8C-49DC-42A3-7D35-A5D10994CBD3}" name="Audio">
         <FILE id="SAlk4D" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/AudioGraph.cpp"/>
         <FILE id="GbpMeU" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/AudioGraph.h"/>
@@ -52,6 +54,8 @@
       <GROUP id="{378A7704-7ECD-541D-9FA1-61464E408481}" name="Widgets">
         <FILE id="q5uPrc" name="CabbageCheckbox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageCheckbox.cpp"/>
+        <FILE id="rZOSEy" name="CabbageCheckbox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageCheckbox.h"/>
         <FILE id="tS5Nx9" name="CabbageWidget.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageWidget.cpp"/>
         <FILE id="VOA68X" name="CabbageWidget.h" compile="0" resource="0" file="Source/Widgets/CabbageWidget.h"/>
