@@ -1999,6 +1999,45 @@ float CabbageWidget::getNumProp(ValueTree widgetData, Identifier prop)
         return getProperty(widgetData, prop);
 }
 
+//===================================================================
+void CabbageWidget::setProperty(ValueTree widgetData, Identifier name, const var &value)
+{
+	const Array<var>* array = value.getArray();
+	const ReferenceCountedObject* valueObject = value.getObject();
+
+	if(array || valueObject)
+	{
+		widgetData.addChild(ValueTree(name.toString()), -1, 0);
+		for( int i = 0; i < array->size() ; i++)
+			widgetData.getChildWithName(name.toString()).setProperty(name.toString()+"_"+String(i), array->getReference(i).toString(), 0);		
+	}
+	else		
+		widgetData.setProperty(name, value, 0);		
+}
+
+var CabbageWidget::getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value)
+{
+	return widgetData.getProperty(name, value);
+}	
+
+var CabbageWidget::getProperty(ValueTree widgetData, Identifier name)
+{
+	return widgetData.getProperty(name);
+}
+
+ValueTree CabbageWidget::getValueTreeForComponent(ValueTree widgetData, String name)
+{
+	for(int i=0;i<widgetData.getNumChildren();i++)
+	{
+		if(name==widgetData.getChild(i).getProperty(CabbageIdentifierIds::name).toString())
+		{
+			return widgetData.getChild(i);
+		}
+	}
+	 
+	return ValueTree(""); 
+}
+
 //================================================================================================
 // these mthods can be used to find the values of indentifiers
 // by passing a single line of text to them.

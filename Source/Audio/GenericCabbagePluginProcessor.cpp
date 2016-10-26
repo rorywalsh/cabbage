@@ -11,12 +11,12 @@
 #include "GenericCabbagePluginProcessor.h"
 #include "GenericCabbageEditor.h"
 
-
 GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
 :CsoundPluginProcessor(intputFile)
 {	
 	
 	csoundChanList = NULL;
+	
 	int numberOfChannels = csoundListChannels(getCsoundStruct(), &csoundChanList);
 	for(int i = 0; i < numberOfChannels; i++ )
 	{
@@ -51,6 +51,7 @@ AudioProcessorEditor* GenericCabbagePluginProcessor::createEditor()
 void GenericCabbagePluginProcessor::sendChannelDataToCsound()
 {
 	const OwnedArray<AudioProcessorParameter>& params = getParameters();
+	
 	for(int i=0;i<params.size();i++)
 	{
 		AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]);

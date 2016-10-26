@@ -36,15 +36,24 @@ public:
     ~CabbageWidget(){};
 	static void setWidgetState(ValueTree widgetData, String lineFromCsd, int ID);
 	static void setCustomWidgetState(ValueTree widgetData, String lineFromCsd, String identifier=String::empty);
+	//============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);
-    void setTableChannelValues(int index, float val);
-    float getTableChannelValues(int index);
-    void addTableChannelValues();
     static void setStringProp(ValueTree widgetData, Identifier prop, String val);
     static void setStringProp(ValueTree widgetData, Identifier prop, int index, String value);
     static String getStringProp(ValueTree widgetData, Identifier prop, int index=0);
 	static Rectangle<int> getBounds(ValueTree widgetData);
+	static void setProperty(ValueTree widgetData, Identifier name, const var &value);
+	static var getProperty(ValueTree widgetData, Identifier name);
+	//============================================================================
+
+	static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);
+
+
+    void setTableChannelValues(int index, float val);
+    float getTableChannelValues(int index);
+    void addTableChannelValues();
+
     static String getPropsString();
     static String getColourProp(ValueTree widgetData, Identifier prop);
     static float getNumPropVal(ValueTree widgetData, Identifier prop);
@@ -53,34 +62,7 @@ public:
     static String getCabbageCodeFromIdentifiers(NamedValueSet props);
     static String getStringForIdentifier(var props, String identifier, String type);
 
-	static void setProperty(ValueTree widgetData, Identifier name, const var &value)
-	{
-		const Array<var>* array = value.getArray();
-		const ReferenceCountedObject* valueObject = value.getObject();
-
-		if(array || valueObject)
-		{
-			widgetData.addChild(ValueTree(name.toString()), -1, 0);
-			for( int i = 0; i < array->size() ; i++)
-				widgetData.getChildWithName(name.toString()).setProperty(name.toString()+"_"+String(i), array->getReference(i).toString(), 0);		
-		}
-		else		
-			widgetData.setProperty(name, value, 0);		
-	}
-	
-	//ValueTree getValueTree()	{	return widgetData;	}
-	
-	static var getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value)
-	{
-		return widgetData.getProperty(name, value);
-	}	
-
-	static var getProperty(ValueTree widgetData, Identifier name)
-	{
-		return widgetData.getProperty(name);
-	}		
-
-
+	static var getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value);
     static Rectangle<int> getBoundsFromText(String text);
     static Colour getColourFromText(String text);
     static String getTextFromText(String text);
@@ -88,14 +70,6 @@ public:
     static Point<int> getPosFromText(String text);
     static float getSkewFromText(String text);
     static var getVarArrayFromText(String text);
-
-    static StringArray getIdentifiers()
-    {
-        StringArray test;
-        return test;
-    }
-
-
     StringArray getStringArrayProp(Identifier prop);
     String getStringArrayPropValue(Identifier prop, int index);
     int getIntArrayPropValue(Identifier prop, int index);

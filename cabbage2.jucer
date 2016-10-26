@@ -10,6 +10,8 @@
       <GROUP id="{483B4F8C-49DC-42A3-7D35-A5D10994CBD3}" name="Audio">
         <FILE id="SAlk4D" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/AudioGraph.cpp"/>
         <FILE id="GbpMeU" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/AudioGraph.h"/>
+        <FILE id="rIbNOT" name="CabbageAudioParameter.h" compile="0" resource="0"
+              file="Source/Audio/CabbageAudioParameter.h"/>
         <FILE id="RL2jbW" name="CabbagePluginEditor.cpp" compile="1" resource="0"
               file="Source/Audio/CabbagePluginEditor.cpp"/>
         <FILE id="YIdEPh" name="CabbagePluginEditor.h" compile="0" resource="0"

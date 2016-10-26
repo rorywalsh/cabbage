@@ -13,6 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "CabbagePluginProcessor.h"
+#include "CabbageAudioParameter.h"
 
 #include "../Widgets/CabbageCheckbox.h"
 
@@ -28,8 +29,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 	
-    OwnedArray<Component> components;
-    OwnedArray<Component> layoutComps;
+	OwnedArray<Component> components;				//an array housing child components attached to listeners.
+	
 	CabbageLookAndFeel lookAndFeel;
 
 	//==============================================================================
@@ -70,12 +71,13 @@ public:
 
 	//=============================================================================
 	void buttonClicked(Button *button);
-
-	ValueTree getWidgetData()
-	{
-		return processor.cabbageWidgets;
-	}
-
+	
+    CabbageAudioParameter* getParameterForButton (Button* button)
+    {
+        const OwnedArray<AudioProcessorParameter>& params = processor.getParameters();
+        return dynamic_cast<CabbageAudioParameter*> (params[components.indexOf (button)]);
+    }
+	
 	Colour backgroundColour;
 private:
 

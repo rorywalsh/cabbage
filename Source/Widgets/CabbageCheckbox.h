@@ -15,7 +15,7 @@
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================
-class CabbageCheckbox : public Component, public ValueTree::Listener
+class CabbageCheckbox : public ToggleButton, public ValueTree::Listener
 {
     int offX, offY, offWidth, offHeight, pivotx, pivoty, corners;
     float rotate;
@@ -36,7 +36,6 @@ public:
 
 	ValueTree widgetData;
 	GroupComponent groupbox;
-    ToggleButton widget;
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);
 };

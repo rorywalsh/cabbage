@@ -23,6 +23,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
 CabbagePluginEditor::~CabbagePluginEditor()
 {
+
 }
 
 //==============================================================================
@@ -69,27 +70,23 @@ void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
 
 void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 {
-	CabbageCheckbox* checkbox = new CabbageCheckbox(cabbageWidgetData);
-	checkbox->widget.addListener(this);
+	CabbageCheckbox* checkbox;
+	components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
+	checkbox->addListener(this);
 	addAndMakeVisible(checkbox);
-	components.add(checkbox);
 }
-
 
 void CabbagePluginEditor::buttonClicked(Button* button)
 {	
-	for(int i=0;i<getWidgetData().getNumChildren();i++)
+	ValueTree widgetData = CabbageWidget::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
+	
+	if (CabbageAudioParameter* param = getParameterForButton (button))
 	{
-		if(button->getName()==getWidgetData().getChild(i).getProperty(CabbageIdentifierIds::name).toString())
-		{
-			const String channel = CabbageWidget::getStringProp(getWidgetData().getChild(i), CabbageIdentifierIds::channel); 
-			CabbageUtilities::debug(channel);
-			
-			getWidgetData().getChild(i).setProperty(CabbageIdentifierIds::colour, Colours::red.toString(), 0);
-		}
-	}
+		param->beginChangeGesture();
+		param->setValue(button->getToggleState()==true ? 1.f : 0.f);
+		param->endChangeGesture();
+	}	
 }
-
 
 
 

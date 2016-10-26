@@ -27,7 +27,7 @@ pivoty(CabbageWidget::getNumProp(wData, CabbageIdentifierIds::pivoty)),
 tooltipText(String::empty),
 corners(CabbageWidget::getNumProp(wData, CabbageIdentifierIds::corners)),
 groupbox(String("groupbox_")+name),
-widget(name),
+ToggleButton(""),
 widgetData(wData)
 {
 	widgetData.addListener(this);
@@ -40,16 +40,15 @@ widgetData(wData)
     const float height = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::height);
 
 
-	widget.getProperties().set("svgpath", CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::svgpath));
+	getProperties().set("svgpath", CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::svgpath));
 	addAndMakeVisible(groupbox);
-	addAndMakeVisible(widget);
 	groupbox.setVisible(false);
 	groupbox.getProperties().set("groupLine", var(1));
 	groupbox.setColour(GroupComponent::textColourId, Colour::fromString(fontcolour));
 	groupbox.setColour(TextButton::buttonColourId, CabbageUtilities::getComponentSkin());
 
-	widget.setButtonText(buttonText);
-	widget.getProperties().set("cornersize", corners);
+	setButtonText(buttonText);
+	getProperties().set("cornersize", corners);
 	
 	if(!CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::visible))
         this->setVisible(false);
@@ -67,25 +66,25 @@ widgetData(wData)
 	if(CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::popuptext).isNotEmpty())
 	{
 		tooltipText = CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::popuptext);
-		widget.setTooltip(tooltipText);
+		setTooltip(tooltipText);
 	}
 
-	widget.getProperties().set("isRect", isRect);
+	getProperties().set("isRect", isRect);
 
 	if(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::radiogroup)!=0)
-		widget.setRadioGroupId(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::radiogroup));
+		setRadioGroupId(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::radiogroup));
 
-	widget.setColour(ToggleButton::textColourId, Colour::fromString(fontcolour));
-	widget.setColour(TextButton::buttonOnColourId, Colour::fromString(oncolour));
-	widget.setColour(TextButton::buttonColourId, Colour::fromString(colour));
-	widget.setButtonText(buttonText);
+	setColour(ToggleButton::textColourId, Colour::fromString(fontcolour));
+	setColour(TextButton::buttonOnColourId, Colour::fromString(oncolour));
+	setColour(TextButton::buttonColourId, Colour::fromString(colour));
+	setButtonText(buttonText);
 	setAlpha(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::alpha));
 
 	//set initial value if given
 	if(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::value)==1)
-		widget.setToggleState(true, dontSendNotification);
+		setToggleState(true, dontSendNotification);
 	else
-		widget.setToggleState(false, dontSendNotification);
+		setToggleState(false, dontSendNotification);
 
 	this->setWantsKeyboardFocus(false);
 		
@@ -95,12 +94,13 @@ widgetData(wData)
 //==============================================================================
 void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)
 {
+	CabbageUtilities::debug(valueTree.getType().toString());
 	const MessageManagerLock mmLock;
-	widget.setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-	widget.setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+	setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+	setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
 	setBounds(CabbageWidget::getBounds(valueTree));
-	widget.getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
-	widget.setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
+	getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
+	setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
 	setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));
 	if(rotate!=CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate))
 	{
@@ -128,7 +128,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 	if(tooltipText!=CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
 	{
 		tooltipText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
-		widget.setTooltip(tooltipText);
+		setTooltip(tooltipText);
 	}
 	repaint();		
 }
@@ -137,7 +137,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 void CabbageCheckbox::resized()
 {
 	groupbox.setBounds(0, 0, getWidth(), getHeight());
-	widget.setBounds(offX, offY, getWidth()+offWidth, getHeight()+offHeight);
+	//setBounds(offX, offY, getWidth()+offWidth, getHeight()+offHeight);
 	if(rotate!=0)
 		setTransform(AffineTransform::rotation(rotate, getX()+pivotx, pivoty+getY()));
 	this->setWantsKeyboardFocus(false);

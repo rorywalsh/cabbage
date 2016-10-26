@@ -18,7 +18,10 @@ cabbageWidgets("CabbageWidgetData")
 {	
 	
 	if(inputFile.existsAsFile())
+	{
 		parseCsdFile();
+		createParameters();
+	}
 
 }
 
@@ -56,7 +59,24 @@ void CabbagePluginProcessor::parseCsdFile()
 	CabbageUtilities::writeValueTreeToFile(cabbageWidgets, "/home/rory/Desktop/test.xml");
 	//CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(this->createEditorIfNeeded());
 
-	
+}
+
+void CabbagePluginProcessor::createParameters()
+{
+	for(int i = 0; i < cabbageWidgets.getNumChildren(); i++)
+	{
+		const String typeOfWidget = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+		CabbageControlWidgetStrings controlWidgetTypes;
+		if(controlWidgetTypes.contains(typeOfWidget))
+		{
+			const String name = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
+			const String channel = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+			const int value = CabbageWidget::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+			
+			if(typeOfWidget==CabbageIdentifierIds::checkbox)
+				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));	
+		}
+	}	
 }
 
 //==============================================================================
@@ -72,11 +92,15 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor()
 
 void CabbagePluginProcessor::sendChannelDataToCsound()
 {
-	const OwnedArray<AudioProcessorParameter>& params = getParameters();
-	for(int i=0;i<params.size();i++)
-	{
-		AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]);
-		getCsound()->SetChannel(param->name.toUTF8(), *param);
-	}
+//	const OwnedArray<AudioProcessorParameter>& params = getParameters();
+//	for(int i=0;i<params.size();i++)
+//	{
+//		AudioParameterFloat* floatParam = dynamic_cast<AudioParameterFloat*> (params[i]);
+//		if(param)
+//			getCsound()->SetChannel(param->name.toUTF8(), *param);
+//
+//		AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]);
+//
+//	}
 }
 
