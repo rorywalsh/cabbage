@@ -101,18 +101,11 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 		this->setToggleState(state, dontSendNotification);
 	}
 
-//change this so we only update each value as it happens, not the entire thing...
-	else if(prop==CabbageIdentifierIds::left || prop==CabbageIdentifierIds::top || prop==CabbageIdentifierIds::width || prop==CabbageIdentifierIds::height)
-		setBounds(CabbageWidget::getBounds(valueTree));
-	
-
-	else if(prop==CabbageIdentifierIds::identchannel)
+	else
 	{
-		CabbageUtilities::debug(valueTree.getType().toString());
-		const MessageManagerLock mmLock;
+		setBounds(CabbageWidget::getBounds(valueTree));
 		setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 		setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-		setBounds(CabbageWidget::getBounds(valueTree));
 		getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
 		setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
 		setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));

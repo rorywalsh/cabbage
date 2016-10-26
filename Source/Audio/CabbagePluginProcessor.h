@@ -34,11 +34,6 @@ public:
 	
 private:
 	File csdFile;
-	String channelTmp;
-	float valueTmp;
-	String identChannelTmp;
-	String identChannelMessageTmp;
-
 
 };
 

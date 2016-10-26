@@ -98,18 +98,18 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 
 	for( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
 	{
-		channelTmp = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-		valueTmp = CabbageWidget::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
-		identChannelTmp = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
-		identChannelMessageTmp = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannelmessage);
+		const String channel = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+		const float value = CabbageWidget::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+		const String identChannel = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
+		const String identChannelMessage = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannelmessage);
 		
-		if(getCsound()->GetChannel(channelTmp.toUTF8())!=valueTmp)
-			CabbageWidget::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value, getCsound()->GetChannel(channelTmp.toUTF8()));		
+		if(getCsound()->GetChannel(channel.toUTF8())!=value)
+			CabbageWidget::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value, getCsound()->GetChannel(channel.toUTF8()));			
 		
-		if(identChannelTmp.isNotEmpty())
+		if(identChannel.isNotEmpty())
 		{	
-			getCsound()->GetStringChannel(identChannelTmp.toUTF8(), tmp_string);
-			if(String(tmp_string)!=identChannelMessageTmp)
+			getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
+			if(String(tmp_string)!=identChannelMessage)
 			{
 				CabbageWidget::setCustomWidgetState(cabbageWidgets.getChild(i), " "+String(tmp_string));
 			}	

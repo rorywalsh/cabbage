@@ -20,6 +20,10 @@
               file="Source/Audio/CabbagePluginProcessor.cpp"/>
         <FILE id="LUwEJP" name="CabbagePluginProcessor.h" compile="0" resource="0"
               file="Source/Audio/CabbagePluginProcessor.h"/>
+        <FILE id="fiKm99" name="ComponentLayoutEditor.cpp" compile="1" resource="0"
+              file="Source/Audio/ComponentLayoutEditor.cpp"/>
+        <FILE id="E0rWei" name="ComponentLayoutEditor.h" compile="0" resource="0"
+              file="Source/Audio/ComponentLayoutEditor.h"/>
         <FILE id="ED6wOz" name="CsoundPluginEditor.cpp" compile="1" resource="0"
               file="Source/Audio/CsoundPluginEditor.cpp"/>
         <FILE id="pn4gF6" name="CsoundPluginEditor.h" compile="0" resource="0"
