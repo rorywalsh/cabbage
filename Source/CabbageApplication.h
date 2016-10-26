@@ -92,6 +92,7 @@ public:
 	CabbageOutputConsole* getOutputConsole();
 	void createEditorForAudioGraphNode();
 	void createAudioGraph();
+	void enableEditMode(bool enable);
 	
 //	AudioGraph* getPluginWrapper()
 //	{
@@ -103,17 +104,10 @@ public:
     //==============================================================================
     void systemRequestedQuit() override
     {
-        // This is called when the app is being asked to quit: you can ignore this
-        // request and let the app carry on running, or call quit() to allow the app to close.
         quit();
     }
 
-    void anotherInstanceStarted (const String& commandLine) override
-    {
-        // When another instance of the app is launched while this one is running,
-        // this method is invoked, and the commandLine parameter tells you what
-        // the other instance's command-line arguments were.
-    }
+    void anotherInstanceStarted (const String& commandLine) override  {}
 
     struct MainMenuModel  : public MenuBarModel
     {
@@ -171,7 +165,7 @@ public:
         changed();
     }
 private:
-
+	bool isGUIEnabled = false;
 	String consoleMessages;
 	Identifier pluginType;
 	ValueTree cabbageWidgets;

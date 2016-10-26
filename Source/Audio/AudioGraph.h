@@ -30,6 +30,7 @@
 #include "CsoundPluginProcessor.h"
 #include "GenericCabbagePluginProcessor.h"
 #include "CabbagePluginProcessor.h"
+#include "CabbagePluginEditor.h"
 #include "../Settings/CabbageSettings.h"
 
 

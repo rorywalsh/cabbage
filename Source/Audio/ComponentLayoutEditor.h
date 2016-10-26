@@ -43,16 +43,17 @@ class ChildAlias   :   public Component
 		void mouseDown (const MouseEvent& e);
 		void mouseUp (const MouseEvent& e);
 		void mouseDrag (const MouseEvent& e);
+		
     private:
 		CriticalSection bounds;
-		ComponentBoundsConstrainer*  constrainer;
+		ScopedPointer<ComponentBoundsConstrainer>  constrainer;
     	ComponentDragger dragger;
-	SafePointer<Component> target;
-	bool interest;
-	bool userAdjusting;
-	Rectangle<int> startBounds;
-	ComponentBoundsConstrainer* resizeContainer; //added resizeContainer to limit resizing sizes
-	ResizableBorderComponent* resizer;
+		SafePointer<Component> target;
+		bool interest;
+		bool userAdjusting;
+		Rectangle<int> startBounds;
+		ScopedPointer<ComponentBoundsConstrainer> resizeContainer; //added resizeContainer to limit resizing sizes
+		ResizableBorderComponent* resizer;
 };
 //=============================================================================
 class ComponentLayoutEditor   :   public Component

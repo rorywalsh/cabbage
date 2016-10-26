@@ -16,6 +16,7 @@
 #include "CabbageAudioParameter.h"
 
 #include "../Widgets/CabbageCheckbox.h"
+#include "ComponentLayoutEditor.h"
 
 
 class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener
@@ -30,7 +31,7 @@ public:
     void resized() override;
 	
 	OwnedArray<Component> components;				//an array housing child components attached to listeners.
-	
+	Component pluginInterface;
 	CabbageLookAndFeel lookAndFeel;
 
 	//==============================================================================
@@ -70,6 +71,8 @@ public:
     void InsertNumberBox(ValueTree cabbageWidgetData){};
 
 	//=============================================================================
+	void enableGUIEditor(bool enable);
+	//=============================================================================
 	void buttonClicked(Button *button);
 	
     CabbageAudioParameter* getParameterForButton (Button* button)
@@ -82,6 +85,7 @@ public:
 private:
 
     CabbagePluginProcessor& processor;
+	ComponentLayoutEditor layoutEditor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)
 };

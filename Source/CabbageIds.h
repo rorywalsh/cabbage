@@ -96,6 +96,7 @@ enum
 	del					= 0x512026,
 	selectAll			= 0x512027,
 	deselectAll			= 0x512028,
+	editMode			= 0x512029,
 	
 	showGenericWidgetWindow	= 0x612000,
 

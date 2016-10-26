@@ -237,12 +237,13 @@ void CabbageApplication::createEditMenu (PopupMenu& menu)
 	subMenu.addCommandItem(commandManager, CommandIDs::genericMode);
 	subMenu.addCommandItem(commandManager, CommandIDs::csoundMode);
 	menu.addSubMenu("Interface Mode", subMenu, (getEditor()->isVisible()?true:false));
-	
+	menu.addSeparator();
     menu.addCommandItem (commandManager, CommandIDs::del);
     menu.addCommandItem (commandManager, CommandIDs::selectAll);
     menu.addCommandItem (commandManager, CommandIDs::deselectAll);
     menu.addSeparator();
-	
+	menu.addCommandItem (commandManager, CommandIDs::editMode);
+	menu.addSeparator();
     menu.addCommandItem (commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (commandManager, CommandIDs::findSelection);
     menu.addCommandItem (commandManager, CommandIDs::findNext);
@@ -338,6 +339,7 @@ void CabbageApplication::getAllCommands (Array <CommandID>& commands)
 							  CommandIDs::paste,
 							  CommandIDs::undo,
 							  CommandIDs::redo,
+							  CommandIDs::editMode,
 							  //CommandIDs::selectAll,
 							  //CommandIDs::del,
 							  //CommandIDs::findNext,
@@ -479,6 +481,10 @@ void CabbageApplication::getCommandInfo (CommandID commandID, ApplicationCommand
         result.setInfo (String("Show Generic Widget Window"), String("Show genric channel based widgets"), CommandCategories::general, 0);
 		//result.setActive((getEditor()->isVisible() ? true : false));
         break;
+    case CommandIDs::editMode:
+        result.setInfo (String("Edit Mode"), String("Edit Mode"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
+		break;
     default:
         JUCEApplication::getCommandInfo (commandID, result);
         break;
@@ -529,6 +535,10 @@ bool CabbageApplication::perform (const InvocationInfo& info)
     case CommandIDs::paste:
         
         break;
+    case CommandIDs::editMode:
+		isGUIEnabled=!isGUIEnabled;
+        enableEditMode(isGUIEnabled);
+        break;
     case CommandIDs::genericMode:
         setCurrentInterfaceMode(CabbageInterfaceModes::generic);
         break;
@@ -551,6 +561,20 @@ bool CabbageApplication::perform (const InvocationInfo& info)
 Identifier CabbageApplication::getCurrentInterfaceMode()
 {
 	return currentInterfaceMode;
+}
+
+void CabbageApplication::enableEditMode(bool enable)
+{
+	if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
+	{
+		AudioProcessor* const processor = f->getProcessor();
+		//need to check what kind of processor we are dealing with!
+		CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(processor->getActiveEditor());
+		if(editor)
+		{
+			editor->enableGUIEditor(enable);
+		}
+	}
 }
 
 void CabbageApplication::setCurrentInterfaceMode(Identifier mode)

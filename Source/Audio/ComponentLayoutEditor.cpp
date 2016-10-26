@@ -117,7 +117,7 @@ void ChildAlias::mouseDown (const MouseEvent& e)
 	{
 		//added a constrainer so that components can't be dragged off-screen
 		constrainer->setMinimumOnscreenAmounts(getHeight(), getWidth(), getHeight(), getWidth());
-		dragger.startDraggingComponent (this,constrainer);
+		dragger.startDraggingComponent(this, e);
 	}
 	userAdjusting = true;
 	startBounds = getBounds ();
@@ -147,7 +147,7 @@ void ChildAlias::mouseDrag (const MouseEvent& e)
 	{
 		if (!e.mouseWasClicked ())
 		{
-			dragger.dragComponent (this,e);
+			dragger.dragComponent(this,e, constrainer);
 			applyToTarget ();
 		}
 	}
@@ -175,7 +175,8 @@ ComponentLayoutEditor::ComponentLayoutEditor ()
 
 ComponentLayoutEditor::~ComponentLayoutEditor ()
 {
-	if (target != getTopLevelComponent()->getChildComponent(0) ){deleteAndZero(target);} //added this to make sure we dont remove our background component
+	target = nullptr;
+	//if (target != getTopLevelComponent()->getChildComponent(0) ){deleteAndZero(target);} //added this to make sure we dont remove our background component
 	//if (target) { deleteAndZero (target); } //original
 }
 
