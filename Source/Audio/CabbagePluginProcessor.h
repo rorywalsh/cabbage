@@ -23,7 +23,8 @@ public:
 	~CabbagePluginProcessor();	
 	
 	ValueTree cabbageWidgets;	
-	void sendChannelDataToCsound();
+
+	void receiveChannelDataFromCsound();
 	void parseCsdFile();
 	void createParameters();
 
@@ -33,6 +34,12 @@ public:
 	
 private:
 	File csdFile;
+	String channelTmp;
+	float valueTmp;
+	String identChannelTmp;
+	String identChannelMessageTmp;
+
+
 };
 
 

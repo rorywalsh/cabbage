@@ -18,7 +18,7 @@
 //==============================================================================
 /**
 */
-class CsoundPluginProcessor  : public AudioProcessor
+class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 {
 	
 public:	
@@ -72,7 +72,15 @@ public:
     static int exitGraphCallback(CSOUND *csound);
 	
 	
+	void handleAsyncUpdate();
+	//=============================================================================
+	//Implement these to send and receive channel data to Csound. Typically used when 
+	//a component is updated and its value is sent to Csound, or when a Csound channel
+	//is updated in the Csound orchestra and we need to update the Cabbage components.
+	//Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
+	//as is done in CabbagePluginprocessor. 
 	virtual void sendChannelDataToCsound(){};
+	virtual void receiveChannelDataFromCsound(){};
 	//=============================================================================
 	String getCsoundOutput();
 
@@ -96,9 +104,16 @@ public:
 		return csound->GetCsound();
 	}
 	
+	int setGUIRefreshRate(int rate)
+	{
+		guiRefreshRate = rate;
+	}
+	
 private:
     //==============================================================================
 	MidiBuffer midiOutputBuffer;
+	int guiCycles = 0;
+	int guiRefreshRate = 50;
 	MidiBuffer midiBuffer;
 	String csoundOutput;
 	ScopedPointer<CSOUND_PARAMS> csoundParams;

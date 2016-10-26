@@ -11,6 +11,11 @@
 #include "CabbagePluginProcessor.h"
 #include "CabbagePluginEditor.h"
 
+
+char tmp_string[4096] = {0};
+char channelMessage[4096] = {0};
+
+
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile)
 :CsoundPluginProcessor(inputFile), 
 csdFile(inputFile),
@@ -50,17 +55,14 @@ void CabbagePluginProcessor::parseCsdFile()
 		{
 			cabbageWidgets.addChild(temp, -1, 0);
 		}
-
-		//if(singleWidget.getProperty(CabbageIdentifierIds::basetype).toString().isNotEmpty())
-		//	cabbageWidgets.addChild(singleWidget.getValueTree(), -1, 0);			
+		
 	}
 	
-	
 	CabbageUtilities::writeValueTreeToFile(cabbageWidgets, "/home/rory/Desktop/test.xml");
-	//CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(this->createEditorIfNeeded());
 
 }
 
+//==============================================================================
 void CabbagePluginProcessor::createParameters()
 {
 	for(int i = 0; i < cabbageWidgets.getNumChildren(); i++)
@@ -80,7 +82,7 @@ void CabbagePluginProcessor::createParameters()
 }
 
 //==============================================================================
-bool CabbagePluginProcessor::hasEditor() const
+bool CabbagePluginProcessor::hasEditor() const	
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
@@ -90,17 +92,29 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor()
     return new CabbagePluginEditor(*this);
 }
 
-void CabbagePluginProcessor::sendChannelDataToCsound()
+//==============================================================================
+void CabbagePluginProcessor::receiveChannelDataFromCsound()
 {
-//	const OwnedArray<AudioProcessorParameter>& params = getParameters();
-//	for(int i=0;i<params.size();i++)
-//	{
-//		AudioParameterFloat* floatParam = dynamic_cast<AudioParameterFloat*> (params[i]);
-//		if(param)
-//			getCsound()->SetChannel(param->name.toUTF8(), *param);
-//
-//		AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]);
-//
-//	}
+
+	for( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
+	{
+		channelTmp = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+		valueTmp = CabbageWidget::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+		identChannelTmp = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
+		identChannelMessageTmp = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannelmessage);
+		
+		if(getCsound()->GetChannel(channelTmp.toUTF8())!=valueTmp)
+			CabbageWidget::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value, getCsound()->GetChannel(channelTmp.toUTF8()));		
+		
+		if(identChannelTmp.isNotEmpty())
+		{	
+			getCsound()->GetStringChannel(identChannelTmp.toUTF8(), tmp_string);
+			if(String(tmp_string)!=identChannelMessageTmp)
+			{
+				CabbageWidget::setCustomWidgetState(cabbageWidgets.getChild(i), " "+String(tmp_string));
+			}	
+		}
+				
+	}
 }
 

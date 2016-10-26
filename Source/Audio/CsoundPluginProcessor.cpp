@@ -182,6 +182,12 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 }
 #endif
 
+
+void CsoundPluginProcessor::handleAsyncUpdate()
+{
+	receiveChannelDataFromCsound();
+}
+
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
     float** audioBuffers = buffer.getArrayOfWritePointers();
@@ -225,6 +231,17 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                         this->suspendProcessing(true);
 
                     csndIndex = 0;
+					
+					//slow down calls to these functions, no need for them to be firing at k-rate
+                    if (guiCycles>guiRefreshRate)
+                    {
+                        guiCycles = 0;
+						triggerAsyncUpdate();	
+
+                    }
+                    else
+                        ++guiCycles;
+					
 					sendChannelDataToCsound();
                 }
                 if(result==0)

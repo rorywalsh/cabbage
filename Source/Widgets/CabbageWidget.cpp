@@ -33,6 +33,7 @@ void CabbageWidget::setWidgetState(ValueTree widgetData, String lineFromCsd, int
     setProperty(widgetData, CabbageIdentifierIds::active, 1);
     setProperty(widgetData, CabbageIdentifierIds::parentdir, "");
     setProperty(widgetData, CabbageIdentifierIds::svgdebug, 0);
+	setProperty(widgetData, CabbageIdentifierIds::identchannelmessage, "");
 
 
 	int top, left, width, height;

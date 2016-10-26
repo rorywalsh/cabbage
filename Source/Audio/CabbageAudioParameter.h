@@ -25,7 +25,7 @@ public:
 	
 	float getValue() const override
 	{
-
+		
 	}
 	
 	void setValue (float newValue) override

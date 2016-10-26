@@ -92,43 +92,58 @@ widgetData(wData)
 }
 
 //==============================================================================
-void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)
+void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	CabbageUtilities::debug(valueTree.getType().toString());
-	const MessageManagerLock mmLock;
-	setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-	setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-	setBounds(CabbageWidget::getBounds(valueTree));
-	getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
-	setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
-	setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));
-	if(rotate!=CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate))
+	
+	if(prop==CabbageIdentifierIds::value)
 	{
-		rotate = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate);
-		setTransform(AffineTransform::rotation(rotate, getX()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivotx), getY()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivoty)));
+		bool state = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
+		this->setToggleState(state, dontSendNotification);
 	}
-	if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::visible))
+
+//change this so we only update each value as it happens, not the entire thing...
+	else if(prop==CabbageIdentifierIds::left || prop==CabbageIdentifierIds::top || prop==CabbageIdentifierIds::width || prop==CabbageIdentifierIds::height)
+		setBounds(CabbageWidget::getBounds(valueTree));
+	
+
+	else if(prop==CabbageIdentifierIds::identchannel)
 	{
-		setVisible(false);
-		setEnabled(false);
-	}
-	else
-	{
-		setVisible(true);
-		setEnabled(true);
-	}
-	if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::active))
-	{
-		setEnabled(false);
-	}
-	else
-	{
-		setEnabled(true);
-	}
-	if(tooltipText!=CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
-	{
-		tooltipText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
-		setTooltip(tooltipText);
+		CabbageUtilities::debug(valueTree.getType().toString());
+		const MessageManagerLock mmLock;
+		setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+		setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+		setBounds(CabbageWidget::getBounds(valueTree));
+		getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
+		setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
+		setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));
+		if(rotate!=CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate))
+		{
+			rotate = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate);
+			setTransform(AffineTransform::rotation(rotate, getX()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivotx), getY()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivoty)));
+		}
+		if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::visible))
+		{
+			setVisible(false);
+			setEnabled(false);
+		}
+		else
+		{
+			setVisible(true);
+			setEnabled(true);
+		}
+		if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::active))
+		{
+			setEnabled(false);
+		}
+		else
+		{
+			setEnabled(true);
+		}
+		if(tooltipText!=CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
+		{
+			tooltipText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+			setTooltip(tooltipText);
+		}
 	}
 	repaint();		
 }
