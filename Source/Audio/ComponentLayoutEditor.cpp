@@ -16,9 +16,22 @@
  *  
  *  Original written by Haydxn
  *  Modified by Jordan Hochenbaum on 10/25/10.
+ *  Further modified by Rory Walsh 2016
  *  http://www.rawmaterialsoftware.com/viewtopic.php?f=6&t=2635
  *
  */
+ 
+ //this get populated whenever we select multiple objects..
+void SelectedComponents::itemSelected (ChildAlias* item)
+{
+    item->repaint ();
+}
+
+void SelectedComponents::itemDeselected (ChildAlias* item)
+{
+    item->repaint ();
+}
+
 #include "ComponentLayoutEditor.h"
 ChildAlias::ChildAlias (Component* targetChild)
 :   target (targetChild)
@@ -192,6 +205,110 @@ void ComponentLayoutEditor::paint (Graphics& g)
 {
 }
 
+//==================================================================================================================
+void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
+{
+    for(int i=0; i<selectedFilters.getNumSelected(); i++)
+    {
+		if(ChildAlias* child = dynamic_cast<ChildAlias*>(selectedFilters.getSelectedItem(i)))
+		{
+			child->setInterest(true);
+			child->repaint();
+		}
+        selectedCompsOrigCoordinates.add(selectedFilters.getSelectedItem(i)->getBounds());
+		//should I get line numbers from here?
+        selectedLineNumbers.add(selectedFilters.getSelectedItem(i)->getProperties().getWithDefault(CabbageIdentifierIds::lineNumber, -99));
+    }
+    lassoComp.endLasso();
+    removeChildComponent (&lassoComp);
+}
+
+void ComponentLayoutEditor::mouseDrag (const MouseEvent& e)
+{
+    selectedFilters.deselectAll();
+    lassoComp.toFront (false);
+    lassoComp.dragLasso (e);
+    //currentEvent = "mouseDragLayoutEditor";
+    //sendChangeMessage();
+}
+
+void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
+{
+    selectedFilters.deselectAll();
+    boundsForDuplicatedCtrls.clear();
+    for(int i=0; i<getNumChildComponents(); i++)
+    {
+        if(ChildAlias* child = dynamic_cast<ChildAlias*>(getChildComponent(i)))
+		{
+			child->setInterest(false);
+			child->repaint();
+		}
+		//->getProperties().set("interest", "none");
+        //getChildComponent(i)->repaint();
+    }
+
+    selectedCompsOrigCoordinates.clear();
+    selectedLineNumbers.clear();
+
+    if(e.mods.isPopupMenu())
+    {
+        currentMouseCoors = e.getPosition();
+        //currentEvent = "triggerPopupMenu";
+        //sendChangeMessage();
+    }
+    else
+    {
+        addChildComponent (&lassoComp);
+        lassoComp.beginLasso (e, this);
+    }
+
+}
+
+//==================================================================================================================
+void ComponentLayoutEditor::findLassoItemsInArea (Array <ChildAlias*>& results, const Rectangle<int>& area)
+{
+    const Rectangle<int> lasso (area);
+
+    for (int i = 0; i < getNumChildComponents()-1; i++)
+    {
+        ChildAlias* c = (ChildAlias*)getChildComponent(i);
+        if (c->getBounds().intersects (lasso))
+        {
+            results.addIfNotAlreadyThere(c);
+            selectedFilters.addToSelection(c);
+            //Logger::writeToLog(c->getName());
+        }
+        else
+            selectedFilters.deselect(c);
+    }
+}
+
+SelectedItemSet <ChildAlias*>& ComponentLayoutEditor::getLassoSelection()
+{
+    return selectedFilters;
+}
+
+
+Rectangle<int> ComponentLayoutEditor::getLassoRect(SelectedItemSet <ChildAlias*> children)
+{
+    Rectangle<int> bounds(9999, 9999, -9999, -9999);
+    for(int i=0; i<children.getItemArray().size(); i++)
+        bounds.setX(children.getSelectedItem(i)->getX()<bounds.getX() ? children.getSelectedItem(i)->getX() : bounds.getX());
+    for(int i=0; i<children.getItemArray().size(); i++)
+        bounds.setY(children.getSelectedItem(i)->getY()<bounds.getY() ? children.getSelectedItem(i)->getY() : bounds.getY());
+    for(int i=0; i<children.getItemArray().size(); i++)
+        bounds.setY(children.getSelectedItem(i)->getY()<bounds.getY() ? children.getSelectedItem(i)->getY() : bounds.getY());
+    for(int i=0; i<children.getItemArray().size(); i++)
+        if(children.getSelectedItem(i)->getWidth()+children.getSelectedItem(i)->getX()>bounds.getX()+bounds.getWidth())
+            bounds.setWidth(children.getSelectedItem(i)->getWidth()+children.getSelectedItem(i)->getX()-bounds.getX());
+    for(int i=0; i<children.getItemArray().size(); i++)
+        if(children.getSelectedItem(i)->getHeight()+children.getSelectedItem(i)->getY()>bounds.getY()+bounds.getHeight())
+            bounds.setHeight(children.getSelectedItem(i)->getHeight()+children.getSelectedItem(i)->getY()-bounds.getY());
+
+    return bounds;
+}
+
+//==================================================================================================================
 void ComponentLayoutEditor::setTargetComponent (Component* targetComp)
 {
 	jassert (targetComp);

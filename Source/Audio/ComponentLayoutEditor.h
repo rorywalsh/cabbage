@@ -22,10 +22,20 @@
  */
 
 #include "../CabbageCommonHeaders.h"
- 
+
+class ChildAlias;
+
+//=============================================================================
+class SelectedComponents   : public SelectedItemSet<ChildAlias*>
+{
+public:
+    void itemSelected (ChildAlias* item);
+    void itemDeselected (ChildAlias* item);
+};
+
 //=============================================================================
 class ChildAlias   :   public Component
-    {
+{
     public:
 		ChildAlias (Component* targetChild);
 		~ChildAlias ();
@@ -44,6 +54,11 @@ class ChildAlias   :   public Component
 		void mouseUp (const MouseEvent& e);
 		void mouseDrag (const MouseEvent& e);
 		
+		void setInterest(bool isInteresting)
+		{
+			interest = isInteresting;
+		}
+		
     private:
 		CriticalSection bounds;
 		ScopedPointer<ComponentBoundsConstrainer>  constrainer;
@@ -52,34 +67,50 @@ class ChildAlias   :   public Component
 		bool interest;
 		bool userAdjusting;
 		Rectangle<int> startBounds;
-		ScopedPointer<ComponentBoundsConstrainer> resizeContainer; //added resizeContainer to limit resizing sizes
+		ScopedPointer<ComponentBoundsConstrainer> resizeContainer; 
 		ResizableBorderComponent* resizer;
 };
 //=============================================================================
-class ComponentLayoutEditor   :   public Component
-    {
+class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAlias*>
+{
     public:
 		enum ColourIds
 		{
 			aliasIdleColour,
 			aliasHoverColour
 		};
+		
 		ComponentLayoutEditor ();
 		~ComponentLayoutEditor ();
+	
 		void resized ();
 		void paint (Graphics& g);
 		void setTargetComponent (Component* target);
 		void bindWithTarget ();
 		void updateFrames ();
     	void enablementChanged ();
-	const Component* getTarget ();
+		void mouseUp(const MouseEvent& e);
+		void mouseDrag(const MouseEvent& e);
+		void mouseDown(const MouseEvent& e);
+		const Component* getTarget();
 	
-private:
+		void findLassoItemsInArea (Array <ChildAlias*>& results, const juce::Rectangle<int>& area);
+		Rectangle<int> getLassoRect(SelectedItemSet <ChildAlias*>);
+		SelectedItemSet <ChildAlias*>& getLassoSelection();
+	    LassoComponent <ChildAlias*> lassoComp;
+		SelectedComponents selectedFilters;	
+		
+		Array<int> selectedLineNumbers;
+		Array<Rectangle<int>> selectedCompsOrigCoordinates;
+		Array<Rectangle<int>> selectedCompsNewCoordinates;
+		Array<juce::Rectangle <int> > boundsForDuplicatedCtrls;
+		Point<int> currentMouseCoors;
 	
-	virtual ChildAlias* createAlias (Component* child);
+	private:
 	
-	SafePointer<Component> target;
-	OwnedArray<ChildAlias> frames;
+		virtual ChildAlias* createAlias (Component* child);		
+		SafePointer<Component> target;
+		OwnedArray<ChildAlias> frames;
 	
 };
 

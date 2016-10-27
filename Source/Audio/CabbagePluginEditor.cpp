@@ -31,6 +31,7 @@ pluginInterface()
 	layoutEditor.updateFrames();
 	layoutEditor.setEnabled(false);
     layoutEditor.toFront(false);
+	layoutEditor.setInterceptsMouseClicks(true, true);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
