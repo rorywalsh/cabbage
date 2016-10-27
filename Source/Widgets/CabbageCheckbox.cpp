@@ -95,8 +95,7 @@ widgetData(wData)
 //==============================================================================
 void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	if(getPluginEditor(this)->inGUIEditMode() == false)
-	{
+	
 		if(prop==CabbageIdentifierIds::value)
 		{
 			bool state = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
@@ -105,7 +104,9 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
 		else
 		{
-			setBounds(CabbageWidget::getBounds(valueTree));
+			if(getPluginEditor(this)->inGUIEditMode() == false)
+				setBounds(CabbageWidget::getBounds(valueTree));
+				
 			setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 			setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
 			getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
@@ -140,8 +141,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 				setTooltip(tooltipText);
 			}
 		}
-		repaint();
-	}	
+		repaint();	
 
 }
 
