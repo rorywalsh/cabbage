@@ -13,7 +13,7 @@
 
 #include "../CabbageIds.h"
 #include "CabbageSettings.h"
-#include "../Utilities/CabbageColourPropertyComponent.h"
+#include "CabbageSettingsColourProperty.h"
 #include "../Utilities/CabbageUtilities.h"
 #include "../BinaryData/CabbageBinaryData.h"
 

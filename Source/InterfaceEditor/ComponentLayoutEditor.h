@@ -24,7 +24,8 @@
 #include "../CabbageCommonHeaders.h"
 
 class ChildAlias;
-
+class CabbagePluginEditor;
+class ComponentLayoutEditor;
 //=============================================================================
 class SelectedComponents   : public SelectedItemSet<ChildAlias*>
 {
@@ -59,6 +60,8 @@ class ChildAlias   :   public Component
 			interest = isInteresting;
 		}
 		
+		ComponentLayoutEditor* getComponentLayoutEditor();
+		CabbagePluginEditor* getPluginEditor();
     private:
 		CriticalSection bounds;
 		ScopedPointer<ComponentBoundsConstrainer>  constrainer;

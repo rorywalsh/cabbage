@@ -16,10 +16,11 @@
 #include "CabbageAudioParameter.h"
 
 #include "../Widgets/CabbageCheckbox.h"
-#include "ComponentLayoutEditor.h"
+#include "../InterfaceEditor/ComponentLayoutEditor.h"
 
 
-class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener
+class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener,
+							 public ChangeBroadcaster
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
@@ -31,7 +32,7 @@ public:
     void resized() override;
 	
 	OwnedArray<Component> components;				//an array housing child components attached to listeners.
-	Component pluginInterface;
+	Component mainComponent;
 	CabbageLookAndFeel lookAndFeel;
 
 	//==============================================================================
@@ -72,6 +73,8 @@ public:
 
 	//=============================================================================
 	void enableGUIEditor(bool enable);
+	void setCurrentlySelectedComponent(String componentName);
+	ValueTree getCurrentlySelectedComponent();
 	//=============================================================================
 	void buttonClicked(Button *button);
 	
@@ -86,6 +89,7 @@ private:
 
     CabbagePluginProcessor& processor;
 	ComponentLayoutEditor layoutEditor;
+	String currentlySelectedComponentName;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)
 };

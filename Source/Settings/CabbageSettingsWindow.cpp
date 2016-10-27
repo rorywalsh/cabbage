@@ -45,7 +45,7 @@ void CabbageSettingsWindow::addColourProperties()
     Array<PropertyComponent*> props;
 
     for (int index = 0; index < valueTree.getChildWithName("Colours").getNumProperties(); ++index)
-        props.add (new ColourPropertyComponent(valueTree, index));
+        props.add (new ColourSettingsPropertyComponent(valueTree, index));
 
     colourPanel.clear();
     colourPanel.addProperties (props);

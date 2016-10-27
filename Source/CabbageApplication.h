@@ -15,6 +15,7 @@
 #include "./Settings/CabbageSettingsWindow.h"
 #include "./CodeEditor/CabbageOutputConsole.h"
 #include "Audio/AudioGraph.h"
+#include "InterfaceEditor/CabbagePropertiesPanel.h"
 
 
 
@@ -25,6 +26,25 @@ class CabbageMainDocumentWindow;
 class CabbageApplication  : public JUCEApplication, public ChangeListener, public Timer, public ValueTree::Listener
 {
 public:
+
+
+	class TempPropsWindow : public DocumentWindow
+	{
+		
+	public: 
+		TempPropsWindow():DocumentWindow("Tester",
+            Colours::lightgrey,
+            DocumentWindow::allButtons)
+			{
+					setSize(300, 500);
+			}
+			
+			~TempPropsWindow()
+			{
+				clearContentComponent();
+			}
+	};
+
     //==============================================================================
     CabbageApplication();
 
@@ -172,6 +192,7 @@ private:
 	Identifier currentInterfaceMode;
 	ScopedPointer<AudioGraph> audioGraph;
     ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;
+	ScopedPointer<TempPropsWindow> propsWindow;
 };
 
 

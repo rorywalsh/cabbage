@@ -9,7 +9,7 @@
 */
 
 #include "ComponentLayoutEditor.h"
-
+#include "../Audio/CabbagePluginEditor.h"
 
 /*
  *  ComponentLayoutEditor.cpp
@@ -123,6 +123,7 @@ bool ChildAlias::boundsChangedSinceStart ()
 void ChildAlias::mouseDown (const MouseEvent& e)
 {
 	toFront (true);
+	
 	if (e.eventComponent == resizer)
 	{
 	}
@@ -134,7 +135,27 @@ void ChildAlias::mouseDown (const MouseEvent& e)
 	}
 	userAdjusting = true;
 	startBounds = getBounds ();
-	userStartedChangingBounds ();
+	userStartedChangingBounds ();	
+	const String componentName = target.getComponent()->getName();
+	getPluginEditor()->setCurrentlySelectedComponent(componentName);
+	getPluginEditor()->sendChangeMessage();
+	
+}
+
+CabbagePluginEditor* ChildAlias::getPluginEditor()
+{
+	if(CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
+		return c;
+	else
+		return nullptr;
+}
+
+ComponentLayoutEditor* ChildAlias::getComponentLayoutEditor()
+{
+	if(ComponentLayoutEditor* c = dynamic_cast <ComponentLayoutEditor*> (getParentComponent()))
+		return c;
+	else
+		return nullptr;
 }
 
 void ChildAlias::mouseUp (const MouseEvent& e)
@@ -189,8 +210,7 @@ ComponentLayoutEditor::ComponentLayoutEditor ()
 ComponentLayoutEditor::~ComponentLayoutEditor ()
 {
 	target = nullptr;
-	//if (target != getTopLevelComponent()->getChildComponent(0) ){deleteAndZero(target);} //added this to make sure we dont remove our background component
-	//if (target) { deleteAndZero (target); } //original
+
 }
 
 void ComponentLayoutEditor::resized ()

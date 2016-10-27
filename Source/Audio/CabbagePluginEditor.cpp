@@ -18,16 +18,15 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 processor (p), 
 lookAndFeel(), 
 layoutEditor(),
-pluginInterface()
+mainComponent()
 {
 	setName("PluginEditor");
     setSize (400, 300);
 	setLookAndFeel(&lookAndFeel);
-	createEditorInterface(processor.cabbageWidgets);
-	
+	createEditorInterface(processor.cabbageWidgets);	
 	addAndMakeVisible(layoutEditor);
-	addAndMakeVisible(pluginInterface);
-	layoutEditor.setTargetComponent(&pluginInterface);
+	addAndMakeVisible(mainComponent);
+	layoutEditor.setTargetComponent(&mainComponent);
 	layoutEditor.updateFrames();
 	layoutEditor.setEnabled(false);
     layoutEditor.toFront(false);
@@ -48,7 +47,7 @@ void CabbagePluginEditor::paint (Graphics& g)
 void CabbagePluginEditor::resized()
 {
 	layoutEditor.setBounds(getLocalBounds());
-	pluginInterface.setBounds(getLocalBounds());
+	mainComponent.setBounds(getLocalBounds());
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }
@@ -88,7 +87,7 @@ void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 	CabbageCheckbox* checkbox;
 	components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
 	checkbox->addListener(this);
-	pluginInterface.addAndMakeVisible(checkbox);
+	mainComponent.addAndMakeVisible(checkbox);
 }
 
 void CabbagePluginEditor::buttonClicked(Button* button)
@@ -108,7 +107,16 @@ void CabbagePluginEditor::enableGUIEditor(bool enable)
 {
 	layoutEditor.setEnabled(enable);
 	layoutEditor.toFront(false);
-	
+}
+
+void CabbagePluginEditor::setCurrentlySelectedComponent(String componentName)
+{
+	currentlySelectedComponentName = componentName;
+}
+
+ValueTree CabbagePluginEditor::getCurrentlySelectedComponent()
+{
+	return CabbageWidget::getValueTreeForComponent(processor.cabbageWidgets, currentlySelectedComponentName);
 }
 
 

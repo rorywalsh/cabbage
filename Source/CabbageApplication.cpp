@@ -48,7 +48,8 @@ void CabbageApplication::initialise (const String& commandLine)
     cabbageSettings->addChangeListener(this);
     cabbageSettings->setStorageParameters (options);
 	
-
+	propsWindow = new TempPropsWindow();
+	propsWindow->setVisible(true);
 	
 	
     //cabbageSettings->setDefaultColourSettings();
@@ -96,8 +97,12 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
     {
         lookAndFeel.refreshLookAndFeel(cabbageSettings->getValueTree());
         mainDocumentWindow->lookAndFeelChanged();
-		mainDocumentWindow->updateEditorColourScheme();
-		
+		mainDocumentWindow->updateEditorColourScheme();		
+    }
+    if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source))
+    {
+		propsWindow->setContentOwned(new CabbagePropertiesPanel(editor->getCurrentlySelectedComponent()), true);
+	
     }
 }
 
@@ -572,9 +577,12 @@ void CabbageApplication::enableEditMode(bool enable)
 		CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(processor->getActiveEditor());
 		if(editor)
 		{
+			editor->addChangeListener(this);
 			editor->enableGUIEditor(enable);
 		}
+	
 	}
+
 }
 
 void CabbageApplication::setCurrentInterfaceMode(Identifier mode)
