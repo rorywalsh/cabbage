@@ -9,6 +9,7 @@
 */
 
 #include "CabbageCheckbox.h"
+#include "../Audio/CabbagePluginEditor.h"
 
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
@@ -94,51 +95,54 @@ widgetData(wData)
 //==============================================================================
 void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	
-	if(prop==CabbageIdentifierIds::value)
+	if(getPluginEditor(this)->inGUIEditMode() == false)
 	{
-		bool state = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
-		this->setToggleState(state, dontSendNotification);
-	}
+		if(prop==CabbageIdentifierIds::value)
+		{
+			bool state = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
+			this->setToggleState(state, dontSendNotification);
+		}
 
-	else
-	{
-		setBounds(CabbageWidget::getBounds(valueTree));
-		setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-		setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-		getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
-		setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
-		setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));
-		if(rotate!=CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate))
-		{
-			rotate = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate);
-			setTransform(AffineTransform::rotation(rotate, getX()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivotx), getY()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivoty)));
-		}
-		if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::visible))
-		{
-			setVisible(false);
-			setEnabled(false);
-		}
 		else
 		{
-			setVisible(true);
-			setEnabled(true);
+			setBounds(CabbageWidget::getBounds(valueTree));
+			setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+			setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+			getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
+			setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
+			setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));
+			if(rotate!=CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate))
+			{
+				rotate = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate);
+				setTransform(AffineTransform::rotation(rotate, getX()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivotx), getY()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivoty)));
+			}
+			if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::visible))
+			{
+				setVisible(false);
+				setEnabled(false);
+			}
+			else
+			{
+				setVisible(true);
+				setEnabled(true);
+			}
+			if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::active))
+			{
+				setEnabled(false);
+			}
+			else
+			{
+				setEnabled(true);
+			}
+			if(tooltipText!=CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
+			{
+				tooltipText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+				setTooltip(tooltipText);
+			}
 		}
-		if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::active))
-		{
-			setEnabled(false);
-		}
-		else
-		{
-			setEnabled(true);
-		}
-		if(tooltipText!=CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
-		{
-			tooltipText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
-			setTooltip(tooltipText);
-		}
-	}
-	repaint();		
+		repaint();
+	}	
+
 }
 
 //---------------------------------------------
@@ -150,3 +154,4 @@ void CabbageCheckbox::resized()
 		setTransform(AffineTransform::rotation(rotate, getX()+pivotx, pivoty+getY()));
 	this->setWantsKeyboardFocus(false);
 }
+

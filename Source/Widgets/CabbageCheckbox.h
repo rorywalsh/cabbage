@@ -12,6 +12,8 @@
 #define CABBAGECHECKBOX_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
+
+class CabbagePluginEditor;
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================

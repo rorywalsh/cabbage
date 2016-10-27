@@ -167,6 +167,7 @@ void ChildAlias::mouseUp (const MouseEvent& e)
 	{
 		//add this to reset MainComponent to have keyboard focus so that keyboard shortcuts (eg. lock/unlock) still work / intercept the messages
 		getTopLevelComponent()->getChildComponent(0)->grabKeyboardFocus(); 
+
 	}
 	if (userAdjusting) userStoppedChangingBounds ();
 	userAdjusting = false;
@@ -183,6 +184,13 @@ void ChildAlias::mouseDrag (const MouseEvent& e)
 		{
 			dragger.dragComponent(this,e, constrainer);
 			applyToTarget ();
+//			getComponentLayoutEditor()->sendChangeMessage();
+//			CabbageUtilities::debug(target.getComponent()->getName());
+//			ValueTree valueTree = CabbageWidget::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
+//			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
+//			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
+//			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::width, target.getComponent()->getWidth());
+//			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
 		}
 	}
 }
@@ -199,8 +207,8 @@ void ChildAlias::mouseExit (const MouseEvent& e)
 	repaint ();
 }
 //=============================================================================
-ComponentLayoutEditor::ComponentLayoutEditor ()
-:   target (0)
+ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)
+:   target (0), widgetData(valueTree)
 {
 	setColour (ComponentLayoutEditor::aliasIdleColour,Colours::lightgrey.withAlpha(0.2f));
 	setColour (ComponentLayoutEditor::aliasHoverColour,Colours::white.withAlpha(0.5f));

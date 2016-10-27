@@ -22,10 +22,7 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 	
-	void textPropertyComponentChanged (TextPropertyComponent * comp)
-	{
-		CabbageUtilities::debug(comp->getName());
-	}
+	void textPropertyComponentChanged (TextPropertyComponent * comp);
 
 private:
     PropertyPanel propertyPanel;

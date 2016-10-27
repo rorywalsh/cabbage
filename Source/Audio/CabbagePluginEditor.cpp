@@ -17,7 +17,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 : AudioProcessorEditor (&p),
 processor (p), 
 lookAndFeel(), 
-layoutEditor(),
+layoutEditor(processor.cabbageWidgets),
 mainComponent()
 {
 	setName("PluginEditor");
@@ -86,6 +86,7 @@ void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 {
 	CabbageCheckbox* checkbox;
 	components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
+	checkbox->addComponentListener(this);
 	checkbox->addListener(this);
 	mainComponent.addAndMakeVisible(checkbox);
 }
@@ -106,6 +107,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 void CabbagePluginEditor::enableGUIEditor(bool enable)
 {
 	layoutEditor.setEnabled(enable);
+	isGUIEnabled = enable;
 	layoutEditor.toFront(false);
 }
 
@@ -119,4 +121,19 @@ ValueTree CabbagePluginEditor::getCurrentlySelectedComponent()
 	return CabbageWidget::getValueTreeForComponent(processor.cabbageWidgets, currentlySelectedComponentName);
 }
 
+void CabbagePluginEditor::updateLayoutEditorFrames()
+{
+	if(isGUIEnabled)
+		layoutEditor.updateFrames();
+}
+
+void CabbagePluginEditor::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
+{
+//	CabbageUtilities::debug(component.getName());
+//	ValueTree valueTree = CabbageWidget::getValueTreeForComponent(processor.cabbageWidgets, component.getName());
+//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::left, component.getX());
+//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::top, component.getY());
+//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::width, component.getWidth());
+//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::height, component.getHeight());
+}
 

@@ -83,9 +83,9 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 			aliasHoverColour
 		};
 		
-		ComponentLayoutEditor ();
+		ComponentLayoutEditor (ValueTree valueTree);
 		~ComponentLayoutEditor ();
-	
+		ValueTree widgetData;
 		void resized ();
 		void paint (Graphics& g);
 		void setTargetComponent (Component* target);
@@ -108,12 +108,14 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 		Array<Rectangle<int>> selectedCompsNewCoordinates;
 		Array<juce::Rectangle <int> > boundsForDuplicatedCtrls;
 		Point<int> currentMouseCoors;
+		
 	
 	private:
 	
 		virtual ChildAlias* createAlias (Component* child);		
 		SafePointer<Component> target;
 		OwnedArray<ChildAlias> frames;
+
 	
 };
 

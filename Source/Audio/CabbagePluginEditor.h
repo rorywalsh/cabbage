@@ -18,22 +18,32 @@
 #include "../Widgets/CabbageCheckbox.h"
 #include "../InterfaceEditor/ComponentLayoutEditor.h"
 
+//==============================================================================
+static CabbagePluginEditor* getPluginEditor(Component* child)
+{
+	if(CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
+		return c;
+	else
+		return nullptr;
+}
 
+
+//==============================================================================
 class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener,
-							 public ChangeBroadcaster
+							 public ChangeBroadcaster, public ComponentListener
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
     ~CabbagePluginEditor();
 
-	void createEditorInterface(ValueTree widgets);
+	void createEditorInterface(ValueTree widgets);	
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
 	
-	OwnedArray<Component> components;				//an array housing child components attached to listeners.
-	Component mainComponent;
-	CabbageLookAndFeel lookAndFeel;
+	OwnedArray<Component> components;				
+	Component mainComponent;						
+	CabbageLookAndFeel lookAndFeel;					
 
 	//==============================================================================
 	void SetupWindow(ValueTree cabbageWidgetData);
@@ -75,6 +85,8 @@ public:
 	void enableGUIEditor(bool enable);
 	void setCurrentlySelectedComponent(String componentName);
 	ValueTree getCurrentlySelectedComponent();
+	void updateLayoutEditorFrames();
+	void componentMovedOrResized (Component &component, bool wasMoved, bool wasResized);
 	//=============================================================================
 	void buttonClicked(Button *button);
 	
@@ -84,11 +96,21 @@ public:
         return dynamic_cast<CabbageAudioParameter*> (params[components.indexOf (button)]);
     }
 	
+	ComponentLayoutEditor& getLayoutEditor()
+	{
+		return layoutEditor;
+	}
+	
+	bool inGUIEditMode()
+	{
+		return isGUIEnabled;
+	}
+	
 	Colour backgroundColour;
 private:
-
+	bool isGUIEnabled=false;
     CabbagePluginProcessor& processor;
-	ComponentLayoutEditor layoutEditor;
+	ComponentLayoutEditor layoutEditor;			
 	String currentlySelectedComponentName;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)

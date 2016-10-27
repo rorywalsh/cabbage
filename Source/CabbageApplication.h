@@ -108,12 +108,12 @@ public:
     PropertiesFile::Options getPropertyFileOptionsFor (const String& filename);
     CabbageIDELookAndFeel lookAndFeel;
     bool isRunningCommandLine;
-	CodeEditorComponent* getEditor();
+	CodeEditorComponent* getCodeEditor();
 	CabbageOutputConsole* getOutputConsole();
 	void createEditorForAudioGraphNode();
 	void createAudioGraph();
 	void enableEditMode(bool enable);
-	
+	CabbagePluginEditor* getPluginEditor();
 //	AudioGraph* getPluginWrapper()
 //	{
 //		return pluginWindow->getPluginWrapper();

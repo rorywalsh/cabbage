@@ -10,6 +10,7 @@
 
 #include "CabbagePropertiesPanel.h"
 
+//==============================================================================
 static void addListener(Array<PropertyComponent*> comps, CabbagePropertiesPanel* owner)
 {
 	for( int i = 0; i < comps.size(); i++)
@@ -17,8 +18,7 @@ static void addListener(Array<PropertyComponent*> comps, CabbagePropertiesPanel*
 		if(TextPropertyComponent* textProperty = dynamic_cast<TextPropertyComponent*>(comps[i]))
 		{
 			textProperty->addListener(owner);
-		}
-			
+		}			
 	}
 }
 //==============================================================================
@@ -76,10 +76,9 @@ static Array<PropertyComponent*> createColourChoosers (ValueTree valueTree)
 	
 	comps.add (new ColourPropertyComponent("Test Colour", 0));
 	return comps;
-
 }
 
-
+//==============================================================================
 static Array<PropertyComponent*> createButtons (int howMany)
 {
     Array<PropertyComponent*> comps;
@@ -89,7 +88,7 @@ static Array<PropertyComponent*> createButtons (int howMany)
 
     return comps;
 }
-
+//==============================================================================
 static Array<PropertyComponent*> createChoices (int howMany)
 {
     Array<PropertyComponent*> comps;
@@ -108,6 +107,9 @@ static Array<PropertyComponent*> createChoices (int howMany)
     return comps;
 }
 
+//==============================================================================
+// Property Panel for editing widgets
+//==============================================================================
 CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 :widgetData(widgetData)
 {
@@ -133,3 +135,9 @@ void CabbagePropertiesPanel::resized()
 	propertyPanel.setBounds (getLocalBounds().reduced (4));
 }
 
+void CabbagePropertiesPanel::textPropertyComponentChanged(TextPropertyComponent *comp)
+{
+	//CabbageUtilities::debug(comp->getName());
+	//ValueTree tree = CabbageWidget::getValueTreeForComponent(widgetData, comp->getName());
+	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::left, comp->getText().getIntValue());	
+}
