@@ -915,6 +915,9 @@ void CabbageLookAndFeel::drawToggleButton (Graphics &g, ToggleButton &button, bo
     float corner = button.getProperties().getWithDefault("cornersize", 5);
 
     //----- Creating the image
+	
+	//CabbageUtilities::debug(button.findColour(TextButton::buttonColourId).toString());
+	
     Image newButton;
     if(!button.getToggleState())
         newButton = CabbageUtilities::drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonColourId), isRECT, svgPath, corner);

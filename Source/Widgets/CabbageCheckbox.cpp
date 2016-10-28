@@ -106,7 +106,9 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 		else
 		{
 			CabbageWidgetUtilities::handleBoundsUpdate(this, valueTree);
-				
+			
+			
+			//CabbageUtilities::debug(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour));
 			setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 			setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
 			getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));

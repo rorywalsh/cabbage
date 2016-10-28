@@ -2001,6 +2001,51 @@ float CabbageWidget::getNumProp(ValueTree widgetData, Identifier prop)
         return getProperty(widgetData, prop);
 }
 
+void CabbageWidget::setStringProp(ValueTree widgetData, Identifier prop, String val, int index)
+{
+	var array;
+	if(widgetData.getChildWithName(prop).isValid())
+	{
+		const int numberOfItemsInChild = widgetData.getChildWithName(prop).getNumProperties();
+
+		for(int i=0; i<numberOfItemsInChild; i++)
+		{
+			const Identifier name = widgetData.getChildWithName(prop).getPropertyName(i);
+			array.append(widgetData.getChildWithName(prop).getProperty(name));						
+		}
+			
+		array[index] = val;
+		setProperty(widgetData, prop, array);
+	}
+	else	
+		setProperty(widgetData, prop, val);
+}
+
+String CabbageWidget::getStringProp(ValueTree widgetData, Identifier prop, int index)
+{
+	var array;
+	if(widgetData.getChildWithName(prop).isValid())
+	{
+		const int numberOfItemsInChild = widgetData.getChildWithName(prop).getNumProperties();
+
+		for(int i=0; i<numberOfItemsInChild; i++)
+		{
+			const Identifier name = widgetData.getChildWithName(prop).getPropertyName(i);
+			array.append(widgetData.getChildWithName(prop).getProperty(name));						
+		}
+			
+		return array[index];
+
+	}
+	else
+		return getProperty(widgetData, prop);
+
+}
+
+void CabbageWidget::setNumProp(ValueTree widgetData, Identifier prop, float val)
+{
+    setProperty(widgetData, prop, val);
+}
 //===================================================================
 void CabbageWidget::setProperty(ValueTree widgetData, Identifier name, const var &value)
 {
@@ -2141,12 +2186,7 @@ float CabbageWidget::getSkewFromText(String text)
     return subString.getFloatValue();
 }
 
-//===================================================================
-//set numerical attributes
-void CabbageWidget::setNumProp(ValueTree widgetData, Identifier prop, float val)
-{
-    setProperty(widgetData, prop, val);
-}
+
 //===================================================================
 float CabbageWidget::getTableChannelValues(int index)
 {
@@ -2171,27 +2211,7 @@ void CabbageWidget::setTableChannelValues(int index, float val)
 }
 
 
-//===================================================================
-String CabbageWidget::getStringProp(ValueTree widgetData, Identifier prop, int index)
-{
-	var array;
-	if(widgetData.getChildWithName(prop).isValid())
-	{
-		const int numberOfItemsInChild = widgetData.getChildWithName(prop).getNumProperties();
 
-		for(int i=0; i<numberOfItemsInChild; i++)
-		{
-			const Identifier name = widgetData.getChildWithName(prop).getPropertyName(i);
-			array.append(widgetData.getChildWithName(prop).getProperty(name));						
-		}
-			
-		return array[index];
-
-	}
-	else
-		return getProperty(widgetData, prop);
-
-}
 //===================================================================
 StringArray CabbageWidget::getStringArrayProp(Identifier prop)
 {
@@ -2276,11 +2296,7 @@ float CabbageWidget::getFloatArrayPropValue(Identifier prop, int index)
 //    else
 //        return returnArray[ints.size()-1];
 }
-//===================================================================
-void CabbageWidget::setStringProp(ValueTree cabbageWidget, Identifier prop, int index, String value)
-{
-	jassert(false);
-}
+
 //===================================================================
 void CabbageWidget::scaleWidget(Point<float> scale)
 {
@@ -2296,14 +2312,7 @@ void CabbageWidget::scaleWidget(Point<float> scale)
 //    setProperty(CabbageIdentifierIds::height, rect.getHeight()*scale.y);	;
 }
 //===================================================================
-void CabbageWidget::setStringProp(ValueTree cabbageWidget, Identifier prop, String val)
-{
-		jassert(false);
-//	CabbageUtilities::debug(prop.toString());
-//	CabbageUtilities::debug(val);
 
-    setProperty(cabbageWidget, prop, val);
-}
 
 //===================================================================
 String CabbageWidget::getStringForIdentifier(var propsArray, String identifier, String type)

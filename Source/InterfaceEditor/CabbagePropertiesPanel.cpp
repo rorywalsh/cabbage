@@ -18,6 +18,10 @@ static void addListener(Array<PropertyComponent*> comps, CabbagePropertiesPanel*
 		if(TextPropertyComponent* textProperty = dynamic_cast<TextPropertyComponent*>(comps[i]))
 		{
 			textProperty->addListener(owner);
+		}	
+		else if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(comps[i]))
+		{
+			colourProperty->addChangeListener(owner);
 		}			
 	}
 }
@@ -35,7 +39,7 @@ static Array<PropertyComponent*> createPositionEditors(CabbagePropertiesPanel* o
 }
 
 //==============================================================================
-static Array<PropertyComponent*> createValueEditors(ValueTree valueTree)
+static Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
 	
@@ -46,35 +50,54 @@ static Array<PropertyComponent*> createValueEditors(ValueTree valueTree)
 		const float max = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::max);
 		const float skew = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::sliderskew);
 		const float incr = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::sliderincr);
-		comps.add(new TextPropertyComponent(Value (var (min)), "Min", 200, false));
-		comps.add(new TextPropertyComponent(Value (var (max)), "Max", 200, false));
+		comps.add(new TextPropertyComponent(Value (var (min)), "Minimum", 200, false));
+		comps.add(new TextPropertyComponent(Value (var (max)), "Maximum", 200, false));
 		comps.add(new TextPropertyComponent(Value (var (skew)), "Skew", 200, false));
-		comps.add(new TextPropertyComponent(Value (var (incr)), "Increment", 200, false));
-		
+		comps.add(new TextPropertyComponent(Value (var (incr)), "Increment", 200, false));	
 	}
 	
 	const float value = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::value);
-	comps.add(new TextPropertyComponent(Value (var (value)), "Init. Value", 200, false));
+	comps.add(new TextPropertyComponent(Value (var (value)), "Value", 200, false));
+	
+	addListener(comps, owner);
 	
 	return comps;
 }
 //==============================================================================
-static Array<PropertyComponent*> createChannelEditors(ValueTree valueTree)
+static Array<PropertyComponent*> createChannelEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
 	const String channel = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::channel);
 	const String identChannel = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::identchannel);
     comps.add (new TextPropertyComponent(Value (var (channel)), "Channel", 200, false));
 	comps.add (new TextPropertyComponent(Value (var (identChannel)), "Ident Channel", 100, false));
+	addListener(comps, owner);
 	return comps;
 }
 
 //==============================================================================
-static Array<PropertyComponent*> createColourChoosers (ValueTree valueTree)
+static Array<PropertyComponent*> createTextEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
+{
+    Array<PropertyComponent*> comps;
+	const String text = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text);
+	const String popupText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+    comps.add (new TextPropertyComponent(Value (var (text)), "Text", 200, false));
+	comps.add (new TextPropertyComponent(Value (var (popupText)), "popup Text", 100, false));
+	addListener(comps, owner);
+	return comps;
+}
+//==============================================================================
+static Array<PropertyComponent*> createColourChoosers (CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
 	
-	comps.add (new ColourPropertyComponent("Test Colour", 0));
+	const String colourString = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour);
+	const String onColourString = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::oncolour);
+	const String fontColourString = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+	comps.add(new ColourPropertyComponent("Colour: Off", colourString));
+	comps.add(new ColourPropertyComponent("Colour: On", onColourString));
+	comps.add(new ColourPropertyComponent("Font Colour", fontColourString));
+	addListener(comps, owner);
 	return comps;
 }
 
@@ -116,10 +139,11 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 	setOpaque (true);
 	setSize(300, 500);
 	addAndMakeVisible (propertyPanel);
-	propertyPanel.addSection ("Dimensions", createPositionEditors(this, widgetData));
-	propertyPanel.addSection ("Channels", createChannelEditors(widgetData));
-	propertyPanel.addSection ("Values", createValueEditors(widgetData));
-	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
+	propertyPanel.addSection ("Bounds", createPositionEditors(this, widgetData));
+	propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
+	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
+	propertyPanel.addSection ("Text", createTextEditors(this, widgetData));
+	propertyPanel.addSection ("Colours", createColourChoosers(this, widgetData));
 
 	//ropertyPanel.addSection ("Channels", createChoices (16));
 	//propertyPanel.addSection ("Buttons & Toggles", createButtons (20));
@@ -135,11 +159,31 @@ void CabbagePropertiesPanel::resized()
 	propertyPanel.setBounds (getLocalBounds().reduced (4));
 }
 
+//==============================================================================
+void CabbagePropertiesPanel::setPropertyByName(ValueTree widgetData, String name, var value)
+{
+	CabbageIdentifierPropertyStringPairs propertyStringPairs;
+	const String identifier = propertyStringPairs.getValue(name, "");
+
+	if(identifier.isNotEmpty())
+	{
+		//CabbageUtilities::debug(value.toString());
+		CabbageWidget::setStringProp(widgetData, identifier, value);
+	}
+}
+
+void CabbagePropertiesPanel::changeListenerCallback(ChangeBroadcaster *source)
+{
+	if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(source))
+	{
+		setPropertyByName(widgetData, colourProperty->getName(), colourProperty->getCurrentColourString());
+	}	
+}
+
 void CabbagePropertiesPanel::textPropertyComponentChanged(TextPropertyComponent *comp)
 {
-	//CabbageUtilities::debug(comp->getName());
-	//ValueTree tree = CabbageWidget::getValueTreeForComponent(widgetData, comp->getName());
+	//when in edit mode, direct bounds updating is only permitted from properties dialogue
 	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::allowboundsupdate, 1);
-	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::left, comp->getText().getIntValue());
+	setPropertyByName(widgetData, comp->getName(), comp->getValue());
 	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::allowboundsupdate, 0);	
 }

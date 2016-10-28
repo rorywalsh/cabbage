@@ -55,8 +55,6 @@ void CabbagePluginEditor::resized()
 void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 {
 	
-	CabbageUtilities::writeValueTreeToFile(processor.cabbageWidgets, "/home/rory/Desktop/test.xml");
-	
 	for(int widget=0;widget<widgets.getNumChildren();widget++)
 	{
 		const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();

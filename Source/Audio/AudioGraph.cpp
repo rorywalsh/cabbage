@@ -60,13 +60,17 @@ void AudioGraph::createPlugin(File inputFile)
 	outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
 	AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, 2);
 
-  #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
-	processor = ::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone);
-  #else
+
 	AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-	processor = createCabbagePluginFilter(inputFile);	
+	bool isCabbageFile = CabbageUtilities::hasCabbageTags(inputFile);
+	if(isCabbageFile)
+		processor = createCabbagePluginFilter(inputFile);
+	else
+		processor = createGenericPluginFilter(inputFile);
+
 	AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
-  #endif
+
+
 	jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
 	

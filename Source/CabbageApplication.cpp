@@ -84,6 +84,14 @@ void CabbageApplication::initialise (const String& commandLine)
     initCommandManager();
     menuModel = new MainMenuModel();
     mainDocumentWindow->setMenuBar(menuModel, 24);
+	
+	
+	if(cabbageSettings->getUserSettings()->getIntValue("OpenMostRecentFileOnStartup")==1)
+	{
+		cabbageSettings->updateRecentFilesList();
+		openFile(cabbageSettings->getMostRecentFile());
+	}
+	
 
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (menuModel, nullptr, "Open Recent");
@@ -609,7 +617,7 @@ void CabbageApplication::setCurrentInterfaceMode(Identifier mode)
 void CabbageApplication::showSettingsDialog()
 {
 	DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSettingsWindow(cabbageSettings->getValueTree(), audioGraph->getAudioDeviceSelector()));
+    o.content.setOwned(new CabbageSettingsWindow(*cabbageSettings, audioGraph->getAudioDeviceSelector()));
     o.content->setSize(500, 450);
     o.dialogTitle = TRANS("Cabbage Settings");
     o.dialogBackgroundColour = Colour(0xfff0f0f0);
@@ -729,8 +737,9 @@ void CabbageApplication::createAudioGraph()
 
 void CabbageApplication::createEditorForAudioGraphNode()
 {
-	//const bool numParameters = audioGraph->getNumberOfParameters();
-	//if(numParameters>0)
+	const bool numParameters = audioGraph->getNumberOfParameters();
+	if(numParameters>0)
+	{
 		if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
 		{
 			AudioProcessor* const processor = f->getProcessor();
@@ -741,6 +750,7 @@ void CabbageApplication::createEditorForAudioGraphNode()
 			if (PluginWindow* const w = PluginWindow::getWindowFor(f, type, audioGraph->graph))
 			w->toFront (true);
 		}
+	}
 		
 }
 //==============================================================================

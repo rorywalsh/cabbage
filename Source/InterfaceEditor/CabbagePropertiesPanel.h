@@ -15,14 +15,19 @@
 #include "CabbageColourProperty.h"
 
 //==============================================================================
-class CabbagePropertiesPanel   : public Component, public ChangeBroadcaster, public TextPropertyComponent::Listener
+class CabbagePropertiesPanel   : 
+public Component, 
+public ChangeBroadcaster, 
+public TextPropertyComponent::Listener,
+public ChangeListener
 {
 public:
     CabbagePropertiesPanel(ValueTree widgetData);
     void paint (Graphics& g) override;
     void resized() override;
-	
+	void setPropertyByName(ValueTree widgetData, String name, var value);
 	void textPropertyComponentChanged (TextPropertyComponent * comp);
+	void changeListenerCallback(juce::ChangeBroadcaster *source);
 
 private:
     PropertyPanel propertyPanel;

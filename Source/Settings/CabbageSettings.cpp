@@ -50,12 +50,15 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("ShowEditorConsole", 1);
     defaultPropSet->setValue("ExternalEditor", 0);
     defaultPropSet->setValue("UseCabbageIO", 1);
+	defaultPropSet->setValue("OpenMostRecentFileOnStartup", 0);
+
     defaultPropSet->setValue("ShowConsoleWithEditor", 1);
     defaultPropSet->setValue("UsingCabbageCsound", 1);
     defaultPropSet->setValue("AudioEnabled", 1);
     defaultPropSet->setValue("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue("SetAlwaysOnTop", 1);
     defaultPropSet->setValue("GridSize", 4);
+	defaultPropSet->setValue("CompileOnSave", 4);
     defaultPropSet->setValue("PlantRepository", xml);
     defaultPropSet->setValue("EditorColourScheme", 0);
     defaultPropSet->setValue("showTabs", 1);
@@ -205,4 +208,12 @@ void CabbageSettings::updateRecentFilesList()
     recentFiles.restoreFromString (getUserSettings()->getValue ("recentlyOpenedFiles"));
     getUserSettings()->setValue ("recentlyOpenedFiles", recentFiles.toString());	
 }
+
+File CabbageSettings::getMostRecentFile()
+{
+    recentFiles.restoreFromString (getUserSettings()->getValue ("recentlyOpenedFiles"));
+    return recentFiles.getFile(0);	
+}
+
+
 

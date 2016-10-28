@@ -14,32 +14,43 @@
 #include "../CabbageIds.h"
 #include "CabbageSettings.h"
 #include "CabbageSettingsColourProperty.h"
+#include "CabbageFilePropertyComponent.h"
 #include "../Utilities/CabbageUtilities.h"
 #include "../BinaryData/CabbageBinaryData.h"
 
 
-class CabbageSettingsWindow : public Component, public Button::Listener
+class CabbageSettingsWindow : 
+public Component, 
+public Button::Listener, 
+public Value::Listener,
+public FilenameComponentListener
 {
 
 public:
-    CabbageSettingsWindow(ValueTree valueTree, AudioDeviceSelectorComponent* audioDevice);
+    CabbageSettingsWindow(CabbageSettings &settings, AudioDeviceSelectorComponent* audioDevice);
     ~CabbageSettingsWindow()
 	{
-		audioDeviceSelector = nullptr;
-	
+		audioDeviceSelector = nullptr;	
 	};
 
+
     void addColourProperties();
+	void addMiscProperties();
     void resized();
 	void buttonClicked(Button* button);
 	void paint(Graphics& g);
+	void valueChanged(Value& value);
+    void filenameComponentChanged (FilenameComponent*);
+
+	
 private:
     PropertyPanel colourPanel, miscPanel;
 	ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
     TextButton loadButton, saveButton;
 	ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
-
+	CabbageSettings &settings;
+	Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue;
 
 };
 

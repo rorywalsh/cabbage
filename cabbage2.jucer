@@ -66,6 +66,8 @@
               file="Source/InterfaceEditor/ComponentLayoutEditor.h"/>
       </GROUP>
       <GROUP id="{10AEF015-C406-46E8-94CB-8FF90F96FA62}" name="Settings">
+        <FILE id="X0pbXr" name="CabbageFilePropertyComponent.h" compile="0"
+              resource="0" file="Source/Settings/CabbageFilePropertyComponent.h"/>
         <FILE id="EdZRqv" name="CabbageSettings.cpp" compile="1" resource="0"
               file="Source/Settings/CabbageSettings.cpp"/>
         <FILE id="i6shPS" name="CabbageSettings.h" compile="0" resource="0"

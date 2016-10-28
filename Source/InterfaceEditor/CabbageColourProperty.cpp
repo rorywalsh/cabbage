@@ -12,27 +12,36 @@
 
 
 //======= ColourPropertyComponent =======
-ColourPropertyComponent::ColourPropertyComponent(String name, int index):
-PropertyComponent(name, 18)
+ColourPropertyComponent::ColourPropertyComponent(String name, String colourString):
+PropertyComponent(name, 25)
 {
 	this->setName(name);
-	//colour = Colour::fromString(colourString);
+	colour = Colour::fromString(colourString);
 	setSize(100, 30);
 }
 
 
 void ColourPropertyComponent::paint(Graphics &g)
 {
-	g.fillAll(colour);
-	g.setColour(Colours::white);
-	//float borderWidth = 10;
-	//g.fillRoundedRectangle(0.f, 0.f, getWidth()-borderWidth, getHeight()-borderWidth,  getHeight()*0.1);
+	g.setColour(getLookAndFeel().findColour(PropertyComponent::ColourIds::backgroundColourId));
+	g.fillRect(getLocalBounds().reduced(1));
+
+	g.setColour (getLookAndFeel().findColour(PropertyComponent::ColourIds::labelTextColourId));
+    g.setFont (getHeight()*.6);
+
+
+    const int textW = 200;
+    Rectangle<int> compRect(textW, 1, getWidth() - textW - 1, getHeight() - 3);
+	
+    const Rectangle<int> r (compRect);
+
+    g.drawFittedText (getName(),
+                      3, r.getY(), r.getX() - 5, r.getHeight(),
+                      Justification::centredLeft, 2);	
+					  
 	g.setColour(colour);
-	//g.fillRoundedRectangle(2.f, 2.f, getWidth()-borderWidth-2, getHeight()-borderWidth-2,  getHeight()*0.1);
-	g.setColour (colour.contrasting());
-	g.setFont (Font(18));
-	const juce::Rectangle<int> r (5, 0, getWidth()-1, getHeight()+1);
-	g.drawFittedText(name, r, Justification::centred, 2);
+	g.fillRect(r.getWidth() + 3 , r.getY(), getWidth(), r.getHeight());
+
 }
 
 void ColourPropertyComponent::mouseDown(const MouseEvent& e)
@@ -52,5 +61,10 @@ void ColourPropertyComponent::changeListenerCallback(juce::ChangeBroadcaster *so
 	if(cs->getNameOfParent()==name)
 		colour = cs->getCurrentColour();
 	repaint();
-   
-};
+	sendChangeMessage();
+}
+
+String ColourPropertyComponent::getCurrentColourString()
+{
+	return colour.toString();
+}

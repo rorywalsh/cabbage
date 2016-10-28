@@ -556,4 +556,39 @@ static const String fftdisplay = "fftdisplay";
 static const String signaldisplay = "signaldisplay";
 };
 
+class CabbageIdentifierPropertyStringPairs : public StringPairArray
+{
+	
+	public:
+	CabbageIdentifierPropertyStringPairs()
+	{
+        set("X Position", CabbageIdentifierIds::left.toString());
+		set("Y Position", CabbageIdentifierIds::top.toString());
+		set("Width", CabbageIdentifierIds::width.toString());
+		set("Height", CabbageIdentifierIds::height.toString());
+		
+		set("Channel", CabbageIdentifierIds::channel.toString());
+		set("Ident Channel", CabbageIdentifierIds::identchannel.toString());
+		
+		set("Minimum.", CabbageIdentifierIds::min.toString());
+		set("Maximum.", CabbageIdentifierIds::max.toString());
+		set("Skew", CabbageIdentifierIds::sliderskew.toString());
+		set("Incremenet", CabbageIdentifierIds::sliderincr.toString());
+		set("Value", CabbageIdentifierIds::value.toString());
+		
+		set("Text", CabbageIdentifierIds::text.toString());
+		set("Popup Text", CabbageIdentifierIds::popuptext.toString());
+		//set text for on and off in butttons...
+		
+		
+		set("Font Colour: On", CabbageIdentifierIds::onfontcolour.toString());
+		set("Font Colour: Off", CabbageIdentifierIds::fontcolour.toString());
+		set("Colour: Off", CabbageIdentifierIds::colour.toString());
+		set("Colour: On", CabbageIdentifierIds::oncolour.toString());
+		//set("Popup Text", CabbageIdentifierIds::.toString());
+		
+	}
+};
+
+
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

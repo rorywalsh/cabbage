@@ -25,9 +25,9 @@
 #ifndef CABBAGECOLOURPROPERTYCOMPONENT_H_INCLUDED
 #define CABBAGECOLOURPROPERTYCOMPONENT_H_INCLUDED
 
-#include "../CabbageIds.h"
+#include "../CabbageCommonHeaders.h"
 
-class ColourPropertyComponent : public PropertyComponent, public ChangeListener, public ActionBroadcaster
+class ColourPropertyComponent : public PropertyComponent, public ChangeListener, public ChangeBroadcaster
 {
 
 public :
@@ -80,12 +80,13 @@ public :
     };
 
     //======= ColourPropertyComponent =======
-    ColourPropertyComponent(String name, int index);
+    ColourPropertyComponent(String name, String colourString);
     ~ColourPropertyComponent() {}
     void paint(Graphics &g);
     void mouseDown(const MouseEvent& e);
     void changeListenerCallback(juce::ChangeBroadcaster *source);
     void refresh() override {}
+	String getCurrentColourString();
     Colour colour;
     String name;
 

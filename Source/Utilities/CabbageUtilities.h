@@ -921,7 +921,15 @@ public:
     {
         appPrefs->getUserSettings()->setValue(pref, var(value));
     }
-
+//====================================================================================================
+    static bool hasCabbageTags(File inputFile)
+    {
+		const String csdFile = inputFile.loadFileAsString();
+		if(csdFile.contains("<Cabbage>") && csdFile.contains("</Cabbage>"))
+			return true;
+		else 
+			return false;
+    }
 //====================================================================================
     static int getSVGWidth(String svgContents)
     {
