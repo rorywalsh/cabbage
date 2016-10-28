@@ -36,9 +36,13 @@ public:
             Colours::lightgrey,
             DocumentWindow::allButtons)
 			{
-					setSize(300, 500);
+				setSize(300, 500);
 			}
 			
+			void closeButtonPressed()
+			{
+				this->setVisible(false);
+			}
 			~TempPropsWindow()
 			{
 				clearContentComponent();

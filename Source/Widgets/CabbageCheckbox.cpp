@@ -10,6 +10,7 @@
 
 #include "CabbageCheckbox.h"
 #include "../Audio/CabbagePluginEditor.h"
+#include "CabbageCustomWidgets.h"
 
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
@@ -104,8 +105,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
 		else
 		{
-			if(getPluginEditor(this)->inGUIEditMode() == false)
-				setBounds(CabbageWidget::getBounds(valueTree));
+			CabbageWidgetUtilities::handleBoundsUpdate(this, valueTree);
 				
 			setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 			setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
@@ -141,6 +141,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 				setTooltip(tooltipText);
 			}
 		}
+		
 		repaint();	
 
 }

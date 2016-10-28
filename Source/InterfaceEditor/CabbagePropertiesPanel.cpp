@@ -139,5 +139,7 @@ void CabbagePropertiesPanel::textPropertyComponentChanged(TextPropertyComponent 
 {
 	//CabbageUtilities::debug(comp->getName());
 	//ValueTree tree = CabbageWidget::getValueTreeForComponent(widgetData, comp->getName());
-	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::left, comp->getText().getIntValue());	
+	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::allowboundsupdate, 1);
+	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::left, comp->getText().getIntValue());
+	CabbageWidget::setNumProp(widgetData, CabbageIdentifierIds::allowboundsupdate, 0);	
 }

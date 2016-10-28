@@ -184,15 +184,9 @@ void ChildAlias::mouseDrag (const MouseEvent& e)
 		{
 			dragger.dragComponent(this,e, constrainer);
 			applyToTarget ();
-//			getComponentLayoutEditor()->sendChangeMessage();
-			CabbageUtilities::debug(target.getComponent()->getName());
-			ValueTree valueTree = CabbageWidget::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
-			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
-			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
-			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::width, target.getComponent()->getWidth());
-			CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
 		}
 	}
+	updateBoundsDataForTarget();	
 }
 
 void ChildAlias::mouseEnter (const MouseEvent& e)
@@ -205,6 +199,17 @@ void ChildAlias::mouseExit (const MouseEvent& e)
 {
 	interest = false;
 	repaint ();
+}
+
+void ChildAlias::updateBoundsDataForTarget()
+{
+	CabbageUtilities::debug(target.getComponent()->getName());
+	ValueTree valueTree = CabbageWidget::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
+	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
+	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
+	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::width, target.getComponent()->getWidth());
+	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
+	getPluginEditor()->sendChangeMessage();
 }
 //=============================================================================
 ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)

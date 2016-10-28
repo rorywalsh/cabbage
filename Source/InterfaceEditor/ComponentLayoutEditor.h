@@ -62,6 +62,8 @@ class ChildAlias   :   public Component
 		
 		ComponentLayoutEditor* getComponentLayoutEditor();
 		CabbagePluginEditor* getPluginEditor();
+		void updateBoundsDataForTarget();
+		
     private:
 		CriticalSection bounds;
 		ScopedPointer<ComponentBoundsConstrainer>  constrainer;

@@ -88,6 +88,10 @@
               file="Source/Widgets/CabbageCheckbox.cpp"/>
         <FILE id="L6gD9W" name="CabbageCheckbox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageCheckbox.h"/>
+        <FILE id="t6oUb8" name="CabbageCustomWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageCustomWidgets.cpp"/>
+        <FILE id="OHCaSs" name="CabbageCustomWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageCustomWidgets.h"/>
         <FILE id="LNEFa8" name="CabbageWidget.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageWidget.cpp"/>
         <FILE id="Jqsfnh" name="CabbageWidget.h" compile="0" resource="0" file="Source/Widgets/CabbageWidget.h"/>

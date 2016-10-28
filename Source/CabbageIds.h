@@ -397,6 +397,7 @@ static const Identifier backgroundcolour = "backgroundcolour";
 static const Identifier items = "items";
 static const Identifier text = "text";
 static const Identifier popuptext = "popuptext";
+static const Identifier allowboundsupdate = "allowboundsupdate";
 static const Identifier range = "range";
 static const Identifier sliderrange = "sliderrange";
 static const Identifier amprange = "amprange";

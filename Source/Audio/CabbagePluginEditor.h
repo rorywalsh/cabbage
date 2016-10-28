@@ -17,6 +17,9 @@
 
 #include "../Widgets/CabbageCheckbox.h"
 #include "../InterfaceEditor/ComponentLayoutEditor.h"
+#include "../Widgets/CabbageCustomWidgets.h"
+
+class CabbagePluginEditor;
 
 //==============================================================================
 static CabbagePluginEditor* getPluginEditor(Component* child)
@@ -26,7 +29,6 @@ static CabbagePluginEditor* getPluginEditor(Component* child)
 	else
 		return nullptr;
 }
-
 
 //==============================================================================
 class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener,
