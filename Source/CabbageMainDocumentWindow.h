@@ -11,9 +11,9 @@
 #define CABBAGEMAINWINDOW_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "CodeEditor/CabbageCodeEditor.h"
-#include "CodeEditor/CabbageOutputConsole.h"
+#include "CodeEditor/EditorAndConsoleContentComponent.h"
 #include "BinaryData/CabbageBinaryData.h"
+#include "InterfaceEditor/CabbagePropertiesPanel.h"
 #include "CabbageIds.h"
 
 class CabbageSettings;
@@ -29,92 +29,6 @@ class MainContentComponent   : public Component
 {
 public:
 
-	class StatusBar : public Component
-	{
-	public:
-		StatusBar(ValueTree valueTree):Component("StatusBar"), valueTree(valueTree)
-		{
-			String initString = (SystemStats::getOperatingSystemName() +
-                             "CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
-                             + "MHz  Cores: " + String (SystemStats::getNumCpus())
-                             + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
-			setText(initString);
-		}
-		
-		void paint(Graphics &g)
-		{
-			const Colour background = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBar, Colours::black);
-			const Colour text = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBarText, Colours::black);
-			g.setColour(background);
-			g.fillAll();
-
-			g.setColour(background.darker(.7));
-			g.drawRect(0, 0, getWidth(), getHeight(), 2);
-			g.setColour(text);
-			g.drawFittedText (statusText, getLocalBounds().withX(10), Justification::left, 2);
-		}
-		
-		void setText(String text)
-		{
-			statusText = text;
-			repaint();
-		}
-		
-	private:
-		ValueTree valueTree;
-		String statusText;
-	};
-
-	class HorizontalResizerBar : public Component
-	{
-		public:
-			HorizontalResizerBar(MainContentComponent* parent, ValueTree valueTree)
-			:Component("HorizontalResizerBar"), 
-			owner(parent),
-			valueTree(valueTree)
-			{
-				setSize(owner->getWidth(), 25);
-			}
-			
-			void mouseExit(const MouseEvent& e)
-			{		
-				isActive = false;
-				setMouseCursor(MouseCursor::NormalCursor);
-				repaint();
-			}
-			
-			void mouseEnter(const MouseEvent& e)
-			{
-				isActive = true;
-				setMouseCursor(MouseCursor::UpDownResizeCursor);
-				startingYPos = getPosition().getY();
-				repaint();
-			}
-			
-			void mouseDrag(const MouseEvent& e)
-			{
-				setBounds(getPosition().getX(), startingYPos+e.getDistanceFromDragStartY(), getWidth(), getHeight());
-				owner->resized();
-				repaint();
-			}
-			
-			
-			void paint(Graphics &g)
-			{
-				if(isActive)
-					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleOutline, Colours::grey).contrasting(.4));
-				else
-					g.fillAll(CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleOutline, Colours::grey));
-
-			}
-			
-	private:
-		MainContentComponent* owner;
-		ValueTree valueTree;
-		int startingYPos;
-		bool isActive = false;
-	};
-
     //==============================================================================
     MainContentComponent(ValueTree settings);
     ~MainContentComponent();
@@ -123,12 +37,8 @@ public:
     void resized() override;
 	Image createBackground();	
 	void openFile(File file);
-    ScopedPointer<CabbageCodeEditorComponent> editor;
-    ScopedPointer<CabbageOutputConsole> outputConsole;
-	HorizontalResizerBar horizontalResizerBar;
-	StatusBar statusBar;
-    CodeDocument csoundDocument;
-    CsoundTokeniser csoundTokeniser;
+    ScopedPointer<EditorAndConsoleContentComponent> editorAndConsole;
+	ScopedPointer<CabbagePropertiesPanel> propertyPanel;
 
 private:
 	Image bgImage;

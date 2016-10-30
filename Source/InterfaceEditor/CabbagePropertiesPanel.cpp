@@ -149,6 +149,16 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 	//propertyPanel.addSection ("Buttons & Toggles", createButtons (20));
 }
 
+void CabbagePropertiesPanel::updateProperties(ValueTree widgetData)
+{
+	propertyPanel.clear();
+	propertyPanel.addSection ("Bounds", createPositionEditors(this, widgetData));
+	propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
+	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
+	propertyPanel.addSection ("Text", createTextEditors(this, widgetData));
+	propertyPanel.addSection ("Colours", createColourChoosers(this, widgetData));
+	this->setVisible(true);
+}
 void CabbagePropertiesPanel::paint (Graphics& g)
 {
 	g.fillAll (Colour::greyLevel (0.8f));

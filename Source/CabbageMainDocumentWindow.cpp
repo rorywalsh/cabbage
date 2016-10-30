@@ -12,30 +12,21 @@
 #include "./Settings/CabbageSettings.h"
 
 
+
 	
 //==============================================================================
 MainContentComponent::MainContentComponent(ValueTree settings)
-: horizontalResizerBar(this, settings),
-statusBar(settings)
 {
-	addAndMakeVisible(horizontalResizerBar);
-	addAndMakeVisible(statusBar);
-    addAndMakeVisible(editor = new CabbageCodeEditorComponent(&statusBar, settings, csoundDocument, &csoundTokeniser));
-    addAndMakeVisible(outputConsole = new CabbageOutputConsole(settings));
-    editor->setLineNumbersShown(true);
-    editor->setFont(Font(String("DejaVu Sans Mono"), 17, 0));
-    editor->setVisible(false);
-	outputConsole->setVisible(false);
-	horizontalResizerBar.setVisible(false);
-	setSize (1200, 800);
-	horizontalResizerBar.setBounds(0, getHeight()*.75, getWidth(), getHeight()*.01);	
+    addAndMakeVisible(editorAndConsole = new EditorAndConsoleContentComponent(settings));
+	addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(settings));
+	propertyPanel->setVisible(false);
+ 	setSize (1200, 800);
 	bgImage = createBackground();	
 }
 
 MainContentComponent::~MainContentComponent()
 {
-    editor = nullptr;
-    outputConsole = nullptr;
+    editorAndConsole = nullptr;
 }
 
 Image MainContentComponent::createBackground()
@@ -65,10 +56,8 @@ Image MainContentComponent::createBackground()
 
 void MainContentComponent::openFile(File file)
 {
-	editor->setVisible(true);
-	outputConsole->setVisible(true);
-	horizontalResizerBar.setVisible(true);
-	editor->loadContent(file.loadFileAsString());
+	editorAndConsole->setVisible(true);
+	editorAndConsole->editor->loadContent(file.loadFileAsString());
 }
 
 void MainContentComponent::paint (Graphics& g)
@@ -78,12 +67,8 @@ void MainContentComponent::paint (Graphics& g)
 
 void MainContentComponent::resized()
 {
-	editor->setBounds(0, 0, getWidth(), horizontalResizerBar.getY());
-	//horizontalResizerBar.setBounds(0, getHeight()*.75, getWidth(), getHeight()*.01);
-	const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
-	const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
-    outputConsole->setBounds(0, consoleY, getWidth(), consoleHeight);
-	statusBar.setBounds(0, getHeight()-30, getWidth(), 30);    
+	propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
+	editorAndConsole->setBounds(0, 0, getWidth(), getHeight());    
 }
 
 //=================================================================================================================
@@ -105,8 +90,8 @@ MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()
 
 void CabbageMainDocumentWindow::updateEditorColourScheme()
 {
-	mainContentComponent->editor->updateColourScheme();
-	mainContentComponent->outputConsole->updateColourScheme();
-	mainContentComponent->horizontalResizerBar.repaint();	
-	mainContentComponent->statusBar.repaint();	
+	mainContentComponent->editorAndConsole->editor->updateColourScheme();
+	mainContentComponent->editorAndConsole->outputConsole->updateColourScheme();
+	mainContentComponent->editorAndConsole->horizontalResizerBar.repaint();	
+	mainContentComponent->editorAndConsole->statusBar.repaint();	
 }

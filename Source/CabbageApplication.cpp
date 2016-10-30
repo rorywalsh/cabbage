@@ -47,10 +47,7 @@ void CabbageApplication::initialise (const String& commandLine)
     cabbageSettings = new CabbageSettings();
     cabbageSettings->addChangeListener(this);
     cabbageSettings->setStorageParameters (options);
-	
-	propsWindow = new TempPropsWindow();
-	propsWindow->setVisible(true);
-	
+
 	
     //cabbageSettings->setDefaultColourSettings();
     cabbageSettings->setDefaultSettings();
@@ -109,7 +106,7 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
     }
     if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source))
     {
-		propsWindow->setContentOwned(new CabbagePropertiesPanel(editor->getCurrentlySelectedComponent()), true);
+		mainDocumentWindow->mainContentComponent->propertyPanel->updateProperties(editor->getCurrentlySelectedComponent());
     }
     if(ComponentLayoutEditor* layoutEditor = dynamic_cast<ComponentLayoutEditor*>(source))
     {
@@ -630,12 +627,12 @@ void CabbageApplication::showSettingsDialog()
 //==============================================================================
 CodeEditorComponent* CabbageApplication::getCodeEditor()
 {
-	return mainDocumentWindow->getMainContentComponent()->editor;
+	return mainDocumentWindow->getMainContentComponent()->editorAndConsole->editor;
 }
 //==============================================================================
 CabbageOutputConsole* CabbageApplication::getOutputConsole()
 {
-	return mainDocumentWindow->getMainContentComponent()->outputConsole;
+	return mainDocumentWindow->getMainContentComponent()->editorAndConsole->outputConsole;
 }
 //==============================================================================
 void CabbageApplication::createNewProject()

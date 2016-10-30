@@ -50,6 +50,10 @@
               file="Source/CodeEditor/CabbageOutputConsole.h"/>
         <FILE id="WH7oa0" name="CsoundTokeniser.h" compile="0" resource="0"
               file="Source/CodeEditor/CsoundTokeniser.h"/>
+        <FILE id="Cl3RdD" name="EditorAndConsoleContentComponent.cpp" compile="1"
+              resource="0" file="Source/CodeEditor/EditorAndConsoleContentComponent.cpp"/>
+        <FILE id="WcfFQQ" name="EditorAndConsoleContentComponent.h" compile="0"
+              resource="0" file="Source/CodeEditor/EditorAndConsoleContentComponent.h"/>
       </GROUP>
       <GROUP id="{1A1257B6-B1E8-079D-2270-265305781989}" name="InterfaceEditor">
         <FILE id="Lexmpm" name="CabbageColourProperty.cpp" compile="1" resource="0"

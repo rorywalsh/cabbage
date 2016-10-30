@@ -15,7 +15,6 @@
 #include "./Settings/CabbageSettingsWindow.h"
 #include "./CodeEditor/CabbageOutputConsole.h"
 #include "Audio/AudioGraph.h"
-#include "InterfaceEditor/CabbagePropertiesPanel.h"
 
 
 

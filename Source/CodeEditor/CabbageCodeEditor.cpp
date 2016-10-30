@@ -94,7 +94,7 @@ void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd
                 {
                     if(syntaxTokens[0].length()>3)
                     {
-						if(MainContentComponent::StatusBar* bar = dynamic_cast<MainContentComponent::StatusBar*>(statusBar))
+						if(EditorAndConsoleContentComponent::StatusBar* bar = dynamic_cast<EditorAndConsoleContentComponent::StatusBar*>(statusBar))
 							bar->setText(syntaxTokens[2]+syntaxTokens[3]);
                         x=csdLineTokens.size();
                         i=opcodeStrings.size();

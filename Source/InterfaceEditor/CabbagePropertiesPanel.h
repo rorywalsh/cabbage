@@ -28,6 +28,7 @@ public:
 	void setPropertyByName(ValueTree widgetData, String name, var value);
 	void textPropertyComponentChanged (TextPropertyComponent * comp);
 	void changeListenerCallback(juce::ChangeBroadcaster *source);
+	void updateProperties(ValueTree widgetData);
 
 private:
     PropertyPanel propertyPanel;
