@@ -17,6 +17,17 @@ static void addFilenameComponentListener(FilenameComponentListener* parent, Prop
 		
 }
 
+static void addColourListener(Array<PropertyComponent*> comps, CabbageSettingsWindow* owner)
+{
+	for( int i = 0; i < comps.size(); i++)
+	{
+		if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(comps[i]))
+		{
+			colourProperty->addChangeListener(owner);
+		}			
+	}
+}
+
 CabbageSettingsWindow::CabbageSettingsWindow(CabbageSettings &settings, AudioDeviceSelectorComponent* audioDevice): 
 Component(""), 
 settings(settings),
@@ -53,13 +64,28 @@ audioDeviceSelector(audioDevice)
 
 void CabbageSettingsWindow::addColourProperties()
 {
-    Array<PropertyComponent*> props;
+    Array<PropertyComponent*> editorProps, interfaceProps, consoleProps;
 
     for (int index = 0; index < valueTree.getChildWithName("Colours").getNumProperties(); ++index)
-        props.add (new ColourSettingsPropertyComponent(valueTree, index));
-
+	{
+		const String name = CabbageSettings::getColourPropertyName(valueTree, index);
+        const Colour colour = CabbageSettings::getColourFromValueTree(valueTree, index, Colours::red);
+		if(name.contains("Editor -"))
+			editorProps.add (new ColourPropertyComponent(name, colour.toString()));
+		else if(name.contains("Console -"))
+			consoleProps.add (new ColourPropertyComponent(name, colour.toString()));
+		else if(name.contains("Interface -"))
+			interfaceProps.add (new ColourPropertyComponent(name, colour.toString()));
+	}
     colourPanel.clear();
-    colourPanel.addProperties (props);
+	addColourListener(interfaceProps, this);
+	addColourListener(editorProps, this);
+	addColourListener(consoleProps, this);
+	
+    colourPanel.addSection("Interface", interfaceProps);
+	colourPanel.addSection("Editor", editorProps);
+	colourPanel.addSection("Console", consoleProps);
+	
 }
 
 void CabbageSettingsWindow::addMiscProperties()
@@ -144,4 +170,12 @@ void CabbageSettingsWindow::buttonClicked(Button* button)
 		miscPanel.setVisible(true);			
 	}
 	
+}
+
+void CabbageSettingsWindow::changeListenerCallback(ChangeBroadcaster *source)
+{
+	if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(source))
+	{
+		CabbageSettings::set(settings.getValueTree(), "Colours", colourProperty->getName(), colourProperty->getCurrentColourString());
+	}	
 }

@@ -13,7 +13,7 @@
 
 #include "../CabbageIds.h"
 #include "CabbageSettings.h"
-#include "CabbageSettingsColourProperty.h"
+#include "../Utilities/CabbageColourProperty.h"
 #include "CabbageFilePropertyComponent.h"
 #include "../Utilities/CabbageUtilities.h"
 #include "../BinaryData/CabbageBinaryData.h"
@@ -23,7 +23,8 @@ class CabbageSettingsWindow :
 public Component, 
 public Button::Listener, 
 public Value::Listener,
-public FilenameComponentListener
+public FilenameComponentListener,
+public ChangeListener
 {
 
 public:
@@ -33,7 +34,7 @@ public:
 		audioDeviceSelector = nullptr;	
 	};
 
-
+	void changeListenerCallback(ChangeBroadcaster *source);
     void addColourProperties();
 	void addMiscProperties();
     void resized();

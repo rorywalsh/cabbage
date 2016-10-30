@@ -70,7 +70,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("windowY", 100);
 	defaultPropSet->setValue("audioSetup", "");
 
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarBackground,  "ff636363");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarBackground,  "ffada9a9");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarText,  "FFFFFFFF");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarMouseOverBackground,  "ff9a9a9a");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuBackground,  "fff5f5f5");
@@ -87,7 +87,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("Colours_"+CabbageColourIds::selectTextBackground,  "FF2859AC");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::caret,  "FFFFFFFF");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::identifierLiteral,  "FFCFCFCF");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::operatorLiteral,  "FFC4EB19");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::stringLiteral,  "FFEE6F6F");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::keyword,  "FFEE6F6F");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::comment,  "FF72D20C");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::numbers,  "FFE60000");

@@ -69,7 +69,7 @@ public:
 			colours.add("Editor - Selected Text Background");
 			colours.add("Editor - Caret");
 			colours.add("Editor - Identifier");
-			colours.add("Editor - Operator");
+			colours.add("Editor - Strings");
 			colours.add("Editor - Keyword");
 			colours.add("Editor - Comment");
 			colours.add("Editor - Numbers");
