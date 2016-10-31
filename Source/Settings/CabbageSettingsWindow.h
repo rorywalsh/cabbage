@@ -14,7 +14,7 @@
 #include "../CabbageIds.h"
 #include "CabbageSettings.h"
 #include "../Utilities/CabbageColourProperty.h"
-#include "CabbageFilePropertyComponent.h"
+#include "../Utilities/CabbageFilePropertyComponent.h"
 #include "../Utilities/CabbageUtilities.h"
 #include "../BinaryData/CabbageBinaryData.h"
 

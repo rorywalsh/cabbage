@@ -87,6 +87,8 @@
               file="Source/Settings/CabbageSettingsWindow.h"/>
       </GROUP>
       <GROUP id="{2C2A32C6-E13A-7BC4-A171-768E567F5DC8}" name="Utilities">
+        <FILE id="EtY8PE" name="CabbageBooleanPropertyComponent.h" compile="0"
+              resource="0" file="Source/Utilities/CabbageBooleanPropertyComponent.h"/>
         <FILE id="vxcVak" name="CabbageColourProperty.cpp" compile="1" resource="0"
               file="Source/Utilities/CabbageColourProperty.cpp"/>
         <FILE id="VubSCR" name="CabbageColourProperty.h" compile="0" resource="0"
@@ -107,9 +109,10 @@
               file="Source/Widgets/CabbageCustomWidgets.cpp"/>
         <FILE id="xAcNBq" name="CabbageCustomWidgets.h" compile="0" resource="0"
               file="Source/Widgets/CabbageCustomWidgets.h"/>
-        <FILE id="vl8ejG" name="CabbageWidget.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageWidget.cpp"/>
-        <FILE id="NnJN57" name="CabbageWidget.h" compile="0" resource="0" file="Source/Widgets/CabbageWidget.h"/>
+        <FILE id="vl8ejG" name="CabbageWidgetData.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageWidgetData.cpp"/>
+        <FILE id="NnJN57" name="CabbageWidgetData.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageWidgetData.h"/>
       </GROUP>
       <FILE id="tVTcFf" name="CabbageApplication.cpp" compile="1" resource="0"
             file="Source/CabbageApplication.cpp"/>
@@ -141,7 +144,8 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="" externalLibraries="csound64&#10;sndfile">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="" externalLibraries="csound64&#10;sndfile"
+                cppLanguageStandard="-std=c++14">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>

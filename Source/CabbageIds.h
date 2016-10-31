@@ -582,8 +582,9 @@ class CabbageIdentifierPropertyStringPairs : public StringPairArray
 		
 		set("Text", CabbageIdentifierIds::text.toString());
 		set("Popup Text", CabbageIdentifierIds::popuptext.toString());
-		//set text for on and off in butttons...
-		
+
+		set("Active", CabbageIdentifierIds::active.toString());
+		set("Visible", CabbageIdentifierIds::visible.toString());		
 		
 		set("Font Colour: On", CabbageIdentifierIds::onfontcolour.toString());
 		set("Font Colour: Off", CabbageIdentifierIds::fontcolour.toString());

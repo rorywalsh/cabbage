@@ -12,7 +12,7 @@
 #define CABBAGEPLUGINPROCESSOR_H_INCLUDED
 
 #include "CsoundPluginProcessor.h"
-#include "../Widgets/CabbageWidget.h"
+#include "../Widgets/CabbageWidgetData.h"
 #include "../CabbageIds.h"
 #include "CabbageAudioParameter.h"
 

@@ -24,7 +24,7 @@
 #include "../Utilities/CabbageUtilities.h"
 #include "../CabbageIds.h"
 
-class CabbageWidget : public CabbageUtilities
+class CabbageWidgetData : public CabbageUtilities
 {
 //    Array<int> tableNumbers;
 //    Array<float> tableChannelValues;
@@ -32,8 +32,8 @@ class CabbageWidget : public CabbageUtilities
     bool refreshFromDisk;
 
 public:
-    CabbageWidget(){};
-    ~CabbageWidget(){};
+    CabbageWidgetData(){};
+    ~CabbageWidgetData(){};
 	static void setWidgetState(ValueTree widgetData, String lineFromCsd, int ID);
 	static void setCustomWidgetState(ValueTree widgetData, String lineFromCsd, String identifier=String::empty);
 	//============================================================================

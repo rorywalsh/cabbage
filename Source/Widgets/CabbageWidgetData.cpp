@@ -19,13 +19,13 @@
 */
 
 
-#include "CabbageWidget.h"
+#include "CabbageWidgetData.h"
 //===============================================================================
 // Main Cabbage abstract GUI class
 //===============================================================================
 
 
-void CabbageWidget::setWidgetState(ValueTree widgetData, String lineFromCsd, int ID)
+void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd, int ID)
 {
     setProperty(widgetData, "scalex", 1);
     setProperty(widgetData, "scaley", 1);
@@ -35,6 +35,12 @@ void CabbageWidget::setWidgetState(ValueTree widgetData, String lineFromCsd, int
     setProperty(widgetData, CabbageIdentifierIds::svgdebug, 0);
 	setProperty(widgetData, CabbageIdentifierIds::allowboundsupdate, 0);
 	setProperty(widgetData, CabbageIdentifierIds::identchannelmessage, "");
+    setProperty(widgetData, CabbageIdentifierIds::popuptext, "");
+    setProperty(widgetData, CabbageIdentifierIds::alpha, 1);
+    setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty(widgetData, CabbageIdentifierIds::rotate, 0.f);
+    setProperty(widgetData, CabbageIdentifierIds::pivotx, 0.f);
+    setProperty(widgetData, CabbageIdentifierIds::pivoty, 0.f);
 
 
 	int top, left, width, height;
@@ -1040,14 +1046,6 @@ void CabbageWidget::setWidgetState(ValueTree widgetData, String lineFromCsd, int
         setProperty(widgetData, CabbageIdentifierIds::type, "hosttime");
     }
 
-    setProperty(widgetData, CabbageIdentifierIds::popuptext, "");
-    setProperty(widgetData, CabbageIdentifierIds::alpha, 1);
-    setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-    setProperty(widgetData, CabbageIdentifierIds::rotate, 0.f);
-    setProperty(widgetData, CabbageIdentifierIds::pivotx, 0.f);
-    setProperty(widgetData, CabbageIdentifierIds::pivoty, 0.f);
-
-
 	//parse the text now that all default values ahve been assigned
     setCustomWidgetState(widgetData, lineFromCsd, "");
 }
@@ -1055,7 +1053,7 @@ void CabbageWidget::setWidgetState(ValueTree widgetData, String lineFromCsd, int
 //===========================================================================================
 // this method parsing the Cabbage text and set each of the Cabbage indentifers
 //===========================================================================================
-void CabbageWidget::setCustomWidgetState(ValueTree widgetData, String inStr, String identifier)
+void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr, String identifier)
 {
     //Logger::writeToLog(str);
     //remove any text after a semicolon and take out tabs..
@@ -1992,7 +1990,7 @@ void CabbageWidget::setCustomWidgetState(ValueTree widgetData, String inStr, Str
 }
 //=========================================================================
 //retrieve numerical attributes
-float CabbageWidget::getNumProp(ValueTree widgetData, Identifier prop)
+float CabbageWidgetData::getNumProp(ValueTree widgetData, Identifier prop)
 {
     var props = getProperty(widgetData, prop);
     if(props.size()>0)
@@ -2001,7 +1999,7 @@ float CabbageWidget::getNumProp(ValueTree widgetData, Identifier prop)
         return getProperty(widgetData, prop);
 }
 
-void CabbageWidget::setStringProp(ValueTree widgetData, Identifier prop, String val, int index)
+void CabbageWidgetData::setStringProp(ValueTree widgetData, Identifier prop, String val, int index)
 {
 	var array;
 	if(widgetData.getChildWithName(prop).isValid())
@@ -2021,7 +2019,7 @@ void CabbageWidget::setStringProp(ValueTree widgetData, Identifier prop, String 
 		setProperty(widgetData, prop, val);
 }
 
-String CabbageWidget::getStringProp(ValueTree widgetData, Identifier prop, int index)
+String CabbageWidgetData::getStringProp(ValueTree widgetData, Identifier prop, int index)
 {
 	var array;
 	if(widgetData.getChildWithName(prop).isValid())
@@ -2042,12 +2040,12 @@ String CabbageWidget::getStringProp(ValueTree widgetData, Identifier prop, int i
 
 }
 
-void CabbageWidget::setNumProp(ValueTree widgetData, Identifier prop, float val)
+void CabbageWidgetData::setNumProp(ValueTree widgetData, Identifier prop, float val)
 {
     setProperty(widgetData, prop, val);
 }
 //===================================================================
-void CabbageWidget::setProperty(ValueTree widgetData, Identifier name, const var &value)
+void CabbageWidgetData::setProperty(ValueTree widgetData, Identifier name, const var &value)
 {
 	const Array<var>* array = value.getArray();
 	const ReferenceCountedObject* valueObject = value.getObject();
@@ -2062,17 +2060,17 @@ void CabbageWidget::setProperty(ValueTree widgetData, Identifier name, const var
 		widgetData.setProperty(name, value, 0);		
 }
 
-var CabbageWidget::getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value)
+var CabbageWidgetData::getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value)
 {
 	return widgetData.getProperty(name, value);
 }	
 
-var CabbageWidget::getProperty(ValueTree widgetData, Identifier name)
+var CabbageWidgetData::getProperty(ValueTree widgetData, Identifier name)
 {
 	return widgetData.getProperty(name);
 }
 
-ValueTree CabbageWidget::getValueTreeForComponent(ValueTree widgetData, String name)
+ValueTree CabbageWidgetData::getValueTreeForComponent(ValueTree widgetData, String name)
 {
 	for(int i=0;i<widgetData.getNumChildren();i++)
 	{
@@ -2089,7 +2087,7 @@ ValueTree CabbageWidget::getValueTreeForComponent(ValueTree widgetData, String n
 // these mthods can be used to find the values of indentifiers
 // by passing a single line of text to them.
 //================================================================================================
-Rectangle<int> CabbageWidget::getBoundsFromText(String text)
+Rectangle<int> CabbageWidgetData::getBoundsFromText(String text)
 {
     text = " "+text;
     String subString = text.substring(text.indexOfWholeWord("bounds"));
@@ -2099,7 +2097,7 @@ Rectangle<int> CabbageWidget::getBoundsFromText(String text)
     return Rectangle<int>(strTokens[0].getIntValue(), strTokens[1].getIntValue(), strTokens[2].getIntValue(), strTokens[3].getIntValue());
 }
 
-Rectangle<int> CabbageWidget::getBounds(ValueTree widgetData)
+Rectangle<int> CabbageWidgetData::getBounds(ValueTree widgetData)
 {
 	Rectangle<int> rect(getProperty(widgetData, CabbageIdentifierIds::left),
 						getProperty(widgetData, CabbageIdentifierIds::top),
@@ -2109,7 +2107,7 @@ Rectangle<int> CabbageWidget::getBounds(ValueTree widgetData)
 }
 
 //===================================================================
-Colour CabbageWidget::getColourFromText(String text)
+Colour CabbageWidgetData::getColourFromText(String text)
 {
     StringArray strTokens;
     strTokens.addTokens(text, ",", "");
@@ -2137,7 +2135,7 @@ Colour CabbageWidget::getColourFromText(String text)
     return colour;
 }
 //==================================================================
-String CabbageWidget::getTextFromText(String text)
+String CabbageWidgetData::getTextFromText(String text)
 {
     text = " "+text;
     String subString = text.substring(text.indexOfWholeWord("text"));
@@ -2145,7 +2143,7 @@ String CabbageWidget::getTextFromText(String text)
     return subString;
 }
 //==================================================================
-var CabbageWidget::getVarArrayFromText(String text)
+var CabbageWidgetData::getVarArrayFromText(String text)
 {
     text = " "+text.replace("\"", "");
     String subString = text.substring(text.indexOfWholeWord("text"));
@@ -2158,7 +2156,7 @@ var CabbageWidget::getVarArrayFromText(String text)
     return varArray;
 }
 //==================================================================
-Point<int> CabbageWidget::getPosFromText(String text)
+Point<int> CabbageWidgetData::getPosFromText(String text)
 {
     text = " "+text;
     String subString = text.substring(text.indexOfWholeWord("pos"));
@@ -2168,7 +2166,7 @@ Point<int> CabbageWidget::getPosFromText(String text)
     return Point<int>(strTokens[0].getIntValue(), strTokens[1].getIntValue());
 }
 //==================================================================
-Point<int> CabbageWidget::getSizeFromText(String text)
+Point<int> CabbageWidgetData::getSizeFromText(String text)
 {
     text = " "+text;
     String subString = text.substring(text.indexOfWholeWord("size"));
@@ -2178,7 +2176,7 @@ Point<int> CabbageWidget::getSizeFromText(String text)
     return Point<int>(strTokens[0].getIntValue(), strTokens[1].getIntValue());
 }
 //==================================================================
-float CabbageWidget::getSkewFromText(String text)
+float CabbageWidgetData::getSkewFromText(String text)
 {
     text = " "+text;
     String subString = text.substring(text.indexOfWholeWord("sliderskew"));
@@ -2188,7 +2186,7 @@ float CabbageWidget::getSkewFromText(String text)
 
 
 //===================================================================
-float CabbageWidget::getTableChannelValues(int index)
+float CabbageWidgetData::getTableChannelValues(int index)
 {
 		jassert(false);
 //    if(index<tableChannelValues.size())
@@ -2197,13 +2195,13 @@ float CabbageWidget::getTableChannelValues(int index)
 //        return 0.f;
 }
 //===================================================================
-void CabbageWidget::addTableChannelValues()
+void CabbageWidgetData::addTableChannelValues()
 {
 		jassert(false);
 //    tableChannelValues.add(-1.f);
 }
 //===================================================================
-void CabbageWidget::setTableChannelValues(int index, float val)
+void CabbageWidgetData::setTableChannelValues(int index, float val)
 {
 		jassert(false);
 //    if(index<tableChannelValues.size())
@@ -2213,7 +2211,7 @@ void CabbageWidget::setTableChannelValues(int index, float val)
 
 
 //===================================================================
-StringArray CabbageWidget::getStringArrayProp(Identifier prop)
+StringArray CabbageWidgetData::getStringArrayProp(Identifier prop)
 {
 		jassert(false);
 //    StringArray returnArray;
@@ -2223,14 +2221,14 @@ StringArray CabbageWidget::getStringArrayProp(Identifier prop)
 //    return returnArray;
 }
 //===================================================================
-void CabbageWidget::setStringArrayProp(Identifier prop, var value)
+void CabbageWidgetData::setStringArrayProp(Identifier prop, var value)
 {
 		jassert(false);
     //this->removeProperty(prop, 0);
 //    setProperty(prop, value);
 }
 //===================================================================
-void CabbageWidget::setStringArrayPropValue(Identifier prop, int index, String value)
+void CabbageWidgetData::setStringArrayPropValue(Identifier prop, int index, String value)
 {
 		jassert(false);
 //    var strings = getWidgetPropertyWithDefault(prop, "");
@@ -2243,7 +2241,7 @@ void CabbageWidget::setStringArrayPropValue(Identifier prop, int index, String v
 
 }
 //===================================================================
-Array<int> CabbageWidget::getIntArrayProp(Identifier prop)
+Array<int> CabbageWidgetData::getIntArrayProp(Identifier prop)
 {
 		jassert(false);
 //    Array<int> returnArray;
@@ -2253,13 +2251,13 @@ Array<int> CabbageWidget::getIntArrayProp(Identifier prop)
 //    return returnArray;
 }
 //===================================================================
-var CabbageWidget::getVarArrayProp(Identifier prop)
+var CabbageWidgetData::getVarArrayProp(Identifier prop)
 {
 		jassert(false);
 //    return getWidgetPropertyWithDefault(prop, "");
 }
 //===================================================================
-int CabbageWidget::getIntArrayPropValue(Identifier prop, int index)
+int CabbageWidgetData::getIntArrayPropValue(Identifier prop, int index)
 {
 		jassert(false);
 //    Array<int> returnArray;
@@ -2274,7 +2272,7 @@ int CabbageWidget::getIntArrayPropValue(Identifier prop, int index)
 //    return 0;
 }
 //===================================================================
-Array<float> CabbageWidget::getFloatArrayProp(Identifier prop)
+Array<float> CabbageWidgetData::getFloatArrayProp(Identifier prop)
 {
 		jassert(false);
 //    Array<float> returnArray;
@@ -2284,7 +2282,7 @@ Array<float> CabbageWidget::getFloatArrayProp(Identifier prop)
 //    return returnArray;
 }
 //===================================================================
-float CabbageWidget::getFloatArrayPropValue(Identifier prop, int index)
+float CabbageWidgetData::getFloatArrayPropValue(Identifier prop, int index)
 {
 		jassert(false);
 //    Array<float> returnArray;
@@ -2298,7 +2296,7 @@ float CabbageWidget::getFloatArrayPropValue(Identifier prop, int index)
 }
 
 //===================================================================
-void CabbageWidget::scaleWidget(Point<float> scale)
+void CabbageWidgetData::scaleWidget(Point<float> scale)
 {
 		jassert(false);
 //    Rectangle<int> rect(getWidgetPropertyWithDefault("left", 0),
@@ -2315,7 +2313,7 @@ void CabbageWidget::scaleWidget(Point<float> scale)
 
 
 //===================================================================
-String CabbageWidget::getStringForIdentifier(var propsArray, String identifier, String type)
+String CabbageWidgetData::getStringForIdentifier(var propsArray, String identifier, String type)
 {
     String str;
     if(type=="number")
@@ -2351,7 +2349,7 @@ String CabbageWidget::getStringForIdentifier(var propsArray, String identifier, 
         return "";
 }
 //===================================================================
-String CabbageWidget::getCabbageCodeFromIdentifiers(NamedValueSet props)
+String CabbageWidgetData::getCabbageCodeFromIdentifiers(NamedValueSet props)
 {
 		jassert(false);
 //    //Logger::writeToLog("::::getCabbageCodeFromIdentifiers::::");

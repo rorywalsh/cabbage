@@ -70,11 +70,11 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 
 void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
 {
-	const String name = CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::caption);
-	setName(CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::caption));
-	const int width = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::width);
-    const int height = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::height);
-	const String backgroundColourString = CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::colour);
+	const String name = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::caption);
+	setName(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::caption));
+	const int width = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::width);
+    const int height = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::height);
+	const String backgroundColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour);
 	backgroundColour = Colour::fromString(backgroundColourString);	
 	setSize(width, height);	
 	repaint();
@@ -91,7 +91,7 @@ void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 
 void CabbagePluginEditor::buttonClicked(Button* button)
 {	
-	ValueTree widgetData = CabbageWidget::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
+	ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
 	
 	if (CabbageAudioParameter* param = getParameterForButton (button))
 	{
@@ -116,7 +116,7 @@ void CabbagePluginEditor::setCurrentlySelectedComponent(String componentName)
 
 ValueTree CabbagePluginEditor::getCurrentlySelectedComponent()
 {
-	return CabbageWidget::getValueTreeForComponent(processor.cabbageWidgets, currentlySelectedComponentName);
+	return CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, currentlySelectedComponentName);
 }
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
@@ -128,10 +128,10 @@ void CabbagePluginEditor::updateLayoutEditorFrames()
 void CabbagePluginEditor::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
 //	CabbageUtilities::debug(component.getName());
-//	ValueTree valueTree = CabbageWidget::getValueTreeForComponent(processor.cabbageWidgets, component.getName());
-//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::left, component.getX());
-//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::top, component.getY());
-//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::width, component.getWidth());
-//	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::height, component.getHeight());
+//	ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, component.getName());
+//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, component.getX());
+//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, component.getY());
+//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, component.getWidth());
+//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, component.getHeight());
 }
 

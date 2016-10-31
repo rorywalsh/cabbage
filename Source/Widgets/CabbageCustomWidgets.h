@@ -13,17 +13,9 @@
 
 #include "../CabbageCommonHeaders.h"
 
-//simple class for taking care of some widget housekeeping
-class CabbageWidgetUtilities
-{
-public:
-	CabbageWidgetUtilities(){}
-	~CabbageWidgetUtilities(){}
-	
-	static void handleBoundsUpdate(Component* child, ValueTree data);
-};
-
-//simple class for taking care of some widget housekeeping
+// Simple base class for taking care of some widget housekeeping
+// Each cabbage widget should inherit from this class so initialiseCommonAttributes()
+// can be called in its valueTreePropertyChanged() method.  
 class CabbageWidgetBase
 {
 public:
@@ -35,19 +27,39 @@ public:
 	
 	void initialiseCommonAttributes(ValueTree valueTree)
 	{
-		rotate = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate);
-		pivotx = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivotx);
-		pivoty = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivoty);
-		visible = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::visible);
-		active = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::active);		
+		rotate = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::rotate);
+		pivotx = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::pivotx);
+		pivoty = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::pivoty);
+		visible = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::visible);
+		active = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::active);		
 	}
 	
 	void handleCommonUpdates(Component* child, ValueTree data);
 
 };
 
-//add any new custom widgets here to avoid having to eidt makefiles and projects
+// Add any new custom widgets here to avoid having to edit makefiles and projects
+// Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
+class DemoCabbageWidget : public Component, public ValueTree::Listener, public CabbageWidgetBase
+{
+public:
 
+    DemoCabbageWidget(ValueTree widgetData){};
+    ~DemoCabbageWidget(){};
+	
+	//VlaueTree::Listener virtual methods....
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&){};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
+    void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
+    void valueTreeParentChanged (ValueTree&) override {};
+    void resized();
+
+	ValueTree widgetData;
+
+	
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoCabbageWidget);
+};
 
 
 #endif  // CABBAGECUSTOMWIDGETS_H_INCLUDED

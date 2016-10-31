@@ -20,11 +20,10 @@ class CabbagePluginEditor;
 //==============================================================================
 class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public CabbageWidgetBase
 {
-    int offX, offY, offWidth, offHeight, pivotx, pivoty, corners;
-    float rotate;
+    int corners;
 
     bool isRect;
-    String name, caption, tooltipText, buttonText, colour, fontcolour, oncolour;
+    String name, tooltipText, buttonText, colour, fontcolour, oncolour;
 
 public:
 
@@ -38,7 +37,6 @@ public:
     void resized();
 
 	ValueTree widgetData;
-	GroupComponent groupbox;
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);
 };

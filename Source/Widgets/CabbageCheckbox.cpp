@@ -16,74 +16,56 @@
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================
 CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
-name(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::name)),
-caption(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::caption)),
-buttonText(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::text)),
-colour(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::colour)),
-fontcolour(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
-oncolour(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::oncolour)),
-isRect(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square")),
-rotate(CabbageWidget::getNumProp(wData, CabbageIdentifierIds::rotate)),
-pivotx(CabbageWidget::getNumProp(wData, CabbageIdentifierIds::pivotx)),
-pivoty(CabbageWidget::getNumProp(wData, CabbageIdentifierIds::pivoty)),
+name(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
+buttonText(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)),
+colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
+fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
+oncolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)),
+isRect(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square")),
 tooltipText(String::empty),
-corners(CabbageWidget::getNumProp(wData, CabbageIdentifierIds::corners)),
-groupbox(String("groupbox_")+name),
+corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
 ToggleButton(""),
 widgetData(wData)
 {
 	widgetData.addListener(this);
 	setName(name);
-	offX=offY=offWidth=offHeight=0;
 
-    const float left = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::left);
-    const float top = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::top);
-    const float width = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::width);
-    const float height = CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::height);
+	//initialiseCommonAttributes(wData);
+
+    const float left = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::left);
+    const float top = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::top);
+    const float width = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::width);
+    const float height = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::height);
 
 
-	getProperties().set("svgpath", CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::svgpath));
-	addAndMakeVisible(groupbox);
-	groupbox.setVisible(false);
-	groupbox.getProperties().set("groupLine", var(1));
-	groupbox.setColour(GroupComponent::textColourId, Colour::fromString(fontcolour));
-	groupbox.setColour(TextButton::buttonColourId, CabbageUtilities::getComponentSkin());
+	getProperties().set("svgpath", CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::svgpath));
 
 	setButtonText(buttonText);
 	getProperties().set("cornersize", corners);
 	
-	if(!CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::visible))
+	if(!CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::visible))
         this->setVisible(false);
-	
-	if(caption.length()>0)
-	{
-		offX=10;
-		offY=20;
-		offWidth=-20;
-		offHeight=-30;
-		groupbox.setVisible(true);
-		groupbox.setText(caption);
-	}
 
-	if(CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::popuptext).isNotEmpty())
+
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext).isNotEmpty())
 	{
-		tooltipText = CabbageWidget::getStringProp(widgetData, CabbageIdentifierIds::popuptext);
+		tooltipText = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext);
 		setTooltip(tooltipText);
 	}
 
 	getProperties().set("isRect", isRect);
 
-	if(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::radiogroup)!=0)
-		setRadioGroupId(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::radiogroup));
+	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup)!=0)
+		setRadioGroupId(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup));
 
 	setColour(ToggleButton::textColourId, Colour::fromString(fontcolour));
 	setColour(TextButton::buttonOnColourId, Colour::fromString(oncolour));
 	setColour(TextButton::buttonColourId, Colour::fromString(colour));
 	setButtonText(buttonText);
-	setAlpha(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::alpha));
+	setAlpha(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::alpha));
 
 	//set initial value if given
-	if(CabbageWidget::getNumProp(widgetData, CabbageIdentifierIds::value)==1)
+	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)==1)
 		setToggleState(true, dontSendNotification);
 	else
 		setToggleState(false, dontSendNotification);
@@ -91,49 +73,47 @@ widgetData(wData)
 	this->setWantsKeyboardFocus(false);
 		
 	setBounds(left, top, width, height);
+	
+	initialiseCommonAttributes(wData);
 }
 
 //==============================================================================
 void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 	
-		if(prop==CabbageIdentifierIds::value)
-		{
-			bool state = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
-			this->setToggleState(state, dontSendNotification);
-		}
+	if(prop==CabbageIdentifierIds::value)
+	{
+		bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
+		this->setToggleState(state, dontSendNotification);
+	}
 
-		else
-		{
-			handleCommonUpdates(this, valueTree);
-			
-			
-			//CabbageUtilities::debug(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour));
-			setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-			setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-			getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
-			setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
-			
-			setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));
-
-			if(tooltipText!=CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
-			{
-				tooltipText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
-				setTooltip(tooltipText);
-			}
-		}
+	else
+	{
+		handleCommonUpdates(this, valueTree);		
 		
-		repaint();	
+		//CabbageUtilities::debug(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
+		setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+		setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+		getProperties().set("isRect", CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
+		setButtonText(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text));
+		
+		setAlpha(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
+
+		if(tooltipText!=CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
+		{
+			tooltipText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+			setTooltip(tooltipText);
+		}
+	}
+	
+	repaint();	
 
 }
 
 //---------------------------------------------
 void CabbageCheckbox::resized()
 {
-	groupbox.setBounds(0, 0, getWidth(), getHeight());
 	//setBounds(offX, offY, getWidth()+offWidth, getHeight()+offHeight);
-	if(rotate!=0)
-		setTransform(AffineTransform::rotation(rotate, getX()+pivotx, pivoty+getY()));
 	this->setWantsKeyboardFocus(false);
 }
 

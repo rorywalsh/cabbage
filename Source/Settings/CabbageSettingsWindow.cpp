@@ -136,11 +136,11 @@ void CabbageSettingsWindow::paint(Graphics& g)
 //=====================================================================	
 void CabbageSettingsWindow::valueChanged(Value& value)
 {
-	if(value == showLastOpenedFileValue)
+	if(value.refersToSameSourceAs(showLastOpenedFileValue))
 		settings.getUserSettings()->setValue("OpenMostRecentFileOnStartup", value.getValue().toString());
-	else if(value == alwaysOnTopValue)
+	else if(value.refersToSameSourceAs(alwaysOnTopValue))
 		settings.getUserSettings()->setValue("SetAlwaysOnTop", value.getValue().toString());
-	else if(value == compileOnSaveValue)
+	else if(value.refersToSameSourceAs(compileOnSaveValue))
 		settings.getUserSettings()->setValue("CompileOnSave", value.getValue().toString());
 }
 

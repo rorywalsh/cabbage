@@ -48,10 +48,10 @@ void CabbagePluginProcessor::parseCsdFile()
 		
 		const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
 		ValueTree temp(widgetTreeIdentifier);
-		CabbageWidget::setWidgetState(temp, linesFromCsd[lineNumber], lineNumber);
+		CabbageWidgetData::setWidgetState(temp, linesFromCsd[lineNumber], lineNumber);
 		
-		if(CabbageWidget::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="interactive" ||
-			CabbageWidget::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
+		if(CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="interactive" ||
+			CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
 		{
 			cabbageWidgets.addChild(temp, -1, 0);
 		}
@@ -67,13 +67,13 @@ void CabbagePluginProcessor::createParameters()
 {
 	for(int i = 0; i < cabbageWidgets.getNumChildren(); i++)
 	{
-		const String typeOfWidget = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+		const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
 		CabbageControlWidgetStrings controlWidgetTypes;
 		if(controlWidgetTypes.contains(typeOfWidget))
 		{
-			const String name = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
-			const String channel = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-			const int value = CabbageWidget::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+			const String name = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
+			const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+			const int value = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
 			
 			if(typeOfWidget==CabbageIdentifierIds::checkbox)
 				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));	
@@ -98,20 +98,20 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 
 	for( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
 	{
-		const String channel = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-		const float value = CabbageWidget::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
-		const String identChannel = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
-		const String identChannelMessage = CabbageWidget::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannelmessage);
+		const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+		const float value = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+		const String identChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
+		const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannelmessage);
 		
 		if(getCsound()->GetChannel(channel.toUTF8())!=value)
-			CabbageWidget::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value, getCsound()->GetChannel(channel.toUTF8()));			
+			CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value, getCsound()->GetChannel(channel.toUTF8()));			
 		
 		if(identChannel.isNotEmpty())
 		{	
 			getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
 			if(String(tmp_string)!=identChannelMessage)
 			{
-				CabbageWidget::setCustomWidgetState(cabbageWidgets.getChild(i), " "+String(tmp_string));
+				CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " "+String(tmp_string));
 			}	
 		}
 				

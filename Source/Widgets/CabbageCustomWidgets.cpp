@@ -16,33 +16,33 @@
 void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data)
 {
 	if(getPluginEditor(child)->inGUIEditMode() == false)
-		child->setBounds(CabbageWidget::getBounds(data));
+		child->setBounds(CabbageWidgetData::getBounds(data));
 		
-	else if(CabbageWidget::getNumProp(data, CabbageIdentifierIds::allowboundsupdate)==1)
+	else if(CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::allowboundsupdate)==1)
 	{
-		child->setBounds(CabbageWidget::getBounds(data));
+		child->setBounds(CabbageWidgetData::getBounds(data));
 		getPluginEditor(child)->updateLayoutEditorFrames();
 	}
 	
-	if(rotate!=CabbageWidget::getNumProp(data, CabbageIdentifierIds::rotate))
+	if(rotate!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate))
 	{
-		rotate = CabbageWidget::getNumProp(data, CabbageIdentifierIds::rotate);
-		child->setTransform(AffineTransform::rotation(rotate, child->getX()+CabbageWidget::getNumProp(data, 
+		rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
+		child->setTransform(AffineTransform::rotation(rotate, child->getX()+CabbageWidgetData::getNumProp(data, 
 													  CabbageIdentifierIds::pivotx), 
-													  child->getY()+CabbageWidget::getNumProp(data, CabbageIdentifierIds::pivoty)));
+													  child->getY()+CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty)));
 	}
 	
-	if(visible != CabbageWidget::getNumProp(data, CabbageIdentifierIds::visible))
+	if(visible != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible))
 	{
-		visible = CabbageWidget::getNumProp(data, CabbageIdentifierIds::visible);
+		visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
 		child->setVisible(visible==1 ? true : false);
 		child->setEnabled(visible==1 ? true : false);
 	}
 
-	if(active != CabbageWidget::getNumProp(data, CabbageIdentifierIds::active))
+	if(active != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active))
 	{
-		active = CabbageWidget::getNumProp(data, CabbageIdentifierIds::active);
-		child->setEnabled(visible==1 ? true : false);
+		active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
+		child->setEnabled(active==1 ? true : false);
 	}
 	
 }

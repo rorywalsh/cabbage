@@ -14,7 +14,7 @@
 #include "./Settings/CabbageSettings.h"
 #include "CabbageIDELookAndFeel.h"
 #include "CabbageLookAndFeel.h"
-#include "Widgets/CabbageWidget.h"
+#include "Widgets/CabbageWidgetData.h"
 
 
 

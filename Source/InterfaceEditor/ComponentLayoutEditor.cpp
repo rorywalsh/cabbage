@@ -204,11 +204,11 @@ void ChildAlias::mouseExit (const MouseEvent& e)
 void ChildAlias::updateBoundsDataForTarget()
 {
 	CabbageUtilities::debug(target.getComponent()->getName());
-	ValueTree valueTree = CabbageWidget::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
-	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
-	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
-	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::width, target.getComponent()->getWidth());
-	CabbageWidget::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
+	ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
+	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
+	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
+	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, target.getComponent()->getWidth());
+	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
 	getPluginEditor()->sendChangeMessage();
 }
 //=============================================================================
