@@ -37,6 +37,8 @@ public:
 	static void setWidgetState(ValueTree widgetData, String lineFromCsd, int ID);
 	static void setCustomWidgetState(ValueTree widgetData, String lineFromCsd, String identifier=String::empty);
 	//============================================================================
+	static void setCheckBoxProperties(ValueTree widgetData, int ID);
+	//============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);
     static void setStringProp(ValueTree widgetData, Identifier prop, String val, int index=0);
@@ -46,6 +48,8 @@ public:
 	static var getProperty(ValueTree widgetData, Identifier name);
 	static String getBoundsText(Rectangle<int> rect);
 	static String getChannelText(StringArray channels);
+	static String getColoursText(ValueTree widgetData);
+	
 	static StringArray getStringArrayProp(ValueTree widgetData, Identifier prop);
 	static void setStringArrayProp(ValueTree widgetData, Identifier prop);
 

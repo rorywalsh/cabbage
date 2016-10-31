@@ -117,6 +117,7 @@ public:
 	void createAudioGraph();
 	void enableEditMode(bool enable);
 	CabbagePluginEditor* getPluginEditor();
+	
 //	AudioGraph* getPluginWrapper()
 //	{
 //		return pluginWindow->getPluginWrapper();

@@ -362,29 +362,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     //===============checkbox==================//
     else if(strTokens[0].trim() == "checkbox")
     {
-        setProperty(widgetData, "basetype", "interactive");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 100);
-        setProperty(widgetData, CabbageIdentifierIds::height, 22);
-        var channels;
-        channels.append("checkchan");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::value, 0);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::shape, "square");
-        setProperty(widgetData, CabbageIdentifierIds::corners, 2);
-        setProperty(widgetData, CabbageIdentifierIds::type, "checkbox");
-        setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::lime.toString());
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::onfontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::name, "checkbox");
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::radiogroup, 0);
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+		setCheckBoxProperties(widgetData, ID);
     }
 
     //===============numberbox==================//
@@ -1052,6 +1030,33 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     setCustomWidgetState(widgetData, lineFromCsd, "");
 }
 
+//===========================================================================================
+void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, "basetype", "interactive");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 100);
+	setProperty(widgetData, CabbageIdentifierIds::height, 22);
+	var channels;
+	channels.append("checkchan");
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::text, "");
+	setProperty(widgetData, CabbageIdentifierIds::value, 0);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::shape, "square");
+	setProperty(widgetData, CabbageIdentifierIds::corners, 2);
+	setProperty(widgetData, CabbageIdentifierIds::type, "checkbox");
+	setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::lime.toString());
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+	setProperty(widgetData, CabbageIdentifierIds::onfontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::name, "checkbox");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::radiogroup, 0);
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);		
+}
 //===========================================================================================
 // this method parsing the Cabbage text and set each of the Cabbage indentifers
 //===========================================================================================
@@ -2402,13 +2407,49 @@ String CabbageWidgetData::getChannelText(StringArray channels)
 	else 
 		return "channel("+channels[0]+"\"), ";
 }
+
+//===================================================================
+String CabbageWidgetData::getColoursText(ValueTree widgetData)
+{
+	ValueTree tempData("tempTree");
+	//tempData = widgetData.createCopy();
+	const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+	CabbageWidgetData::setWidgetState(tempData, type, -99);
+	String colourString;
+	
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::colour))
+	{
+		const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
+		colourString = colourString << "colour:0(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+	}
+	
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::oncolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::oncolour))
+	{
+		const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::oncolour));
+		colourString = colourString << "colour:1(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";		
+	}
+
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::fontcolour))
+	{
+		const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour));
+		colourString = colourString << "fontcolour:0(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";		
+	}
+	
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::onfontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::onfontcolour))
+	{
+		const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::onfontcolour));
+		colourString = colourString << "fontcolour:1(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";		
+	}
+	
+	return colourString;
+}
 //===================================================================
 String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
 {
 	StringArray listOfChannels = CabbageWidgetData::getStringArrayProp(widgetData, CabbageIdentifierIds::channel);
-	CabbageUtilities::debug(listOfChannels.joinIntoString("\n"));
+	//CabbageUtilities::debug(listOfChannels.joinIntoString("\n"));
 	String cabbageCode = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type) + " " +
 						 CabbageWidgetData::getBoundsText(CabbageWidgetData::getBounds(widgetData)) +	
-						 getChannelText(listOfChannels);
+						 getChannelText(listOfChannels)+getColoursText(widgetData);
 	return cabbageCode;
 }

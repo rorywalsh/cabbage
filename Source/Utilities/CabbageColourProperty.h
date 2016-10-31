@@ -40,6 +40,7 @@ public :
         {
             setColour(ColourSelector::backgroundColourId, Colours::black);
             setColour(ColourSelector::labelTextColourId, Colours::white);
+
         };
 
         ~ColourPallete()     {     this->removeAllChangeListeners();      };

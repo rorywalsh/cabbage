@@ -14,7 +14,6 @@ EditorAndConsoleContentComponent::EditorAndConsoleContentComponent(ValueTree set
 : horizontalResizerBar(this, settings), settings(settings),
 statusBar(settings)
 {
-	
 	addAndMakeVisible(horizontalResizerBar);
 	addAndMakeVisible(statusBar);
 	addAndMakeVisible(editor = new CabbageCodeEditorComponent(&statusBar, settings, csoundDocument, &csoundTokeniser));
@@ -24,12 +23,12 @@ statusBar(settings)
 	editor->setVisible(true);
 	outputConsole->setVisible(true);
 	horizontalResizerBar.setVisible(true);	
-	setSize(1000, 800);	
+	setSize(500, 500);	
 	const int width = settings.getChildWithName("General").getProperty("LastKnownWidth");	
 	const int height = settings.getChildWithName("General").getProperty("LastKnownHeight");	
 	horizontalBarPosition = settings.getChildWithName("General").getProperty("HorizontalBarLastPosition");
 	editor->setBounds(0, 0, getWidth(), 500);	
-	horizontalResizerBar.setBounds(0, 500, getWidth(), getHeight()*.01);			
+	horizontalResizerBar.setBounds(0, 500, 4000, getHeight()*.01);			
 }
 
 EditorAndConsoleContentComponent::~EditorAndConsoleContentComponent()
@@ -50,8 +49,9 @@ void EditorAndConsoleContentComponent::resized()
 	editor->setBounds(0, 0, getWidth(), horizontalResizerBar.getY());
 	const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
 	const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
-	outputConsole->setBounds(0, consoleY, getWidth(), consoleHeight);
-	statusBar.setBounds(0, getHeight()-30, getWidth(), 30); 			
+	statusBar.setBounds(0, consoleY, getWidth(), 28); 
+	outputConsole->setBounds(0, consoleY+28, getWidth(), consoleHeight+2);
+		
 }
 
 void EditorAndConsoleContentComponent::updateEditorColourScheme()

@@ -28,23 +28,51 @@ public:
 								 "CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
 								 + "MHz  Cores: " + String (SystemStats::getNumCpus())
 								 + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
-				setText(initString);
+				setText(StringArray(initString));
 			}
 			
 			void paint(Graphics &g)
 			{
 				const Colour background = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBar, Colours::black);
 				const Colour text = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBarText, Colours::black);
-				g.setColour(background);
-				g.fillAll();
+				const Colour outline = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleOutline, Colours::black);
+				const Colour opcodeColour = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::keyword, Colours::black);
+				const Colour syntaxColour = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::numbers, Colours::black);
+				const Colour commmentColour = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::comment, Colours::black);
+				
+				g.fillAll(outline);
 
+				g.setColour(background.withAlpha(1.f));
 				g.setColour(background.darker(.7));
-				g.drawRect(0, 0, getWidth(), getHeight(), 2);
+				g.fillRect(2, 2, getWidth()-4, getHeight()-4);
 				g.setColour(text);
-				g.drawFittedText (statusText, getLocalBounds().withX(10), Justification::left, 2);
+				g.setFont(Font(14));
+				Rectangle<int> area (getLocalBounds());
+				
+				if(statusText.size()==1)
+				{
+					g.setColour(syntaxColour);
+					g.drawFittedText (statusText[0], getLocalBounds().withLeft(25), Justification::left, 2);
+				}
+				else
+				{					
+					g.setColour(opcodeColour);
+					g.setFont(Font(14, Font::bold));
+					const String opcodeText = statusText[0].replace("\"", "");
+					g.drawFittedText (opcodeText, getLocalBounds().withLeft(25), Justification::left, 2);
+					g.setColour(syntaxColour);
+					const int opcodeTextWidth = Font(14).getStringWidth(opcodeText)+10;
+					const String opcodeSyntaxText = statusText[3].replaceSection(0, 1, "").replaceSection(statusText[3].length()-2, 1, "");
+					g.drawFittedText(opcodeSyntaxText, area.withLeft(opcodeTextWidth+30), Justification::left, 2);
+					const int opcodeSyntaxWidth = Font(14).getStringWidth(opcodeSyntaxText)+10;
+					g.setFont(Font(14, Font::italic));
+					const String descriptionText = "; "+statusText[2];			
+					g.setColour(commmentColour);
+					g.drawFittedText (descriptionText, getLocalBounds().withLeft(opcodeTextWidth+opcodeSyntaxWidth+50), Justification::left, 2);
+				}
 			}
 			
-			void setText(String text)
+			void setText(StringArray text)
 			{
 				statusText = text;
 				repaint();
@@ -52,7 +80,7 @@ public:
 			
 		private:
 			ValueTree valueTree;
-			String statusText;
+			StringArray statusText;
 		};
 		//-------------------------------------------------------------
 		class HorizontalResizerBar : public Component
@@ -83,7 +111,7 @@ public:
 				
 				void mouseDrag(const MouseEvent& e)
 				{
-					setBounds(getPosition().getX(), startingYPos+e.getDistanceFromDragStartY(), getWidth(), getHeight());
+					setBounds(getPosition().getX(), startingYPos+e.getDistanceFromDragStartY(), owner->getWidth(), getHeight());
 					owner->resized();
 					repaint();
 				}

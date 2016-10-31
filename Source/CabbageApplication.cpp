@@ -42,18 +42,14 @@ void CabbageApplication::initialise (const String& commandLine)
     options.folderName          = "Cabbage2";
 #endif
 
-	//filterGraph.
-
     cabbageSettings = new CabbageSettings();
     cabbageSettings->addChangeListener(this);
     cabbageSettings->setStorageParameters (options);
-
-	
-    //cabbageSettings->setDefaultColourSettings();
     cabbageSettings->setDefaultSettings();
     lookAndFeel.setColour(2, Colours::red);
 	
 	lookAndFeel.setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
+	lookAndFeel.setColour(ScrollBar::backgroundColourId, Colour(70, 70, 70));
 
     mainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings);
 	mainDocumentWindow->mainContentComponent->propertyPanel->addChangeListener(this);
@@ -101,33 +97,30 @@ void CabbageApplication::initialise (const String& commandLine)
 //==============================================================================
 void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
 {
-    if(CabbageSettings* settings = dynamic_cast<CabbageSettings*>(source))
+    if(CabbageSettings* settings = dynamic_cast<CabbageSettings*>(source)) // update lookandfeel whenever a user changes colour settings
     {
         lookAndFeel.refreshLookAndFeel(cabbageSettings->getValueTree());
         mainDocumentWindow->lookAndFeelChanged();
 		mainDocumentWindow->updateEditorColourScheme();		
     }
-    if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source))
+	
+    else if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source)) // update Cabbage code when user drags a widget around
     {
 		mainDocumentWindow->mainContentComponent->propertyPanel->updateProperties(editor->getCurrentlySelectedComponent());
-		//CabbageUtilities::debug(CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent()));
-		
 		const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
 		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
 		mainDocumentWindow->mainContentComponent->editorAndConsole->editor->insertCodeAndHighlightLine(lineNumber, newText);
     }
-    if(ComponentLayoutEditor* layoutEditor = dynamic_cast<ComponentLayoutEditor*>(source))
-    {
-		//getPluginEditor()->getLayoutEditor().updateFrames();
-    }
-    if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(panel))
+
+    else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(panel)) // update Cabbage syntax when a user changes a property
     {
 		if(CabbagePluginEditor* editor = this->getPluginEditor())
 		{
 			const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
-			const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
-			mainDocumentWindow->mainContentComponent->editorAndConsole->editor->insertCodeAndHighlightLine(lineNumber, newText);
 			
+			const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
+			
+			mainDocumentWindow->mainContentComponent->editorAndConsole->editor->insertCodeAndHighlightLine(lineNumber, newText);
 		}
     }
 }

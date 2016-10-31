@@ -194,3 +194,26 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
     g.drawRect (0, 0, alert.getWidth(), alert.getHeight());
 }
 
+//======== Scrollbars ==============================================================================
+void CabbageIDELookAndFeel::drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
+                                        int height,
+                                        bool isScrollbarVertical,
+                                        int thumbStartPosition,
+                                        int thumbSize,
+                                        bool isMouseOver,
+                                        bool isMouseDown)
+{
+    g.setColour (Colours::transparentBlack);
+    g.fillAll();
+
+    g.setColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::codeBackground, Colour(250,250,250)).contrasting(.5f));
+    g.drawRect (x, y, width, height);
+
+    if (isScrollbarVertical == false) //horizontal
+        g.fillRoundedRectangle (thumbStartPosition+3, 3, jmax(0, thumbSize-6), height-6, 5);
+    else //vertical
+        g.fillRoundedRectangle (3, thumbStartPosition+3, width-6, jmax(1, thumbSize-6), 5);
+
+}
+
+

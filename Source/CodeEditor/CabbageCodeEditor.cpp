@@ -95,7 +95,7 @@ void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd
                     if(syntaxTokens[0].length()>3)
                     {
 						if(EditorAndConsoleContentComponent::StatusBar* bar = dynamic_cast<EditorAndConsoleContentComponent::StatusBar*>(statusBar))
-							bar->setText(syntaxTokens[2]+syntaxTokens[3]);
+							bar->setText(syntaxTokens);
                         x=csdLineTokens.size();
                         i=opcodeStrings.size();
                     }
@@ -104,6 +104,58 @@ void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd
     }
 }
 
+bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key)
+{
+    //Logger::writeToLog(String(key.getKeyCode()));
+    if (key.getTextDescription().contains("cursor up") || key.getTextDescription().contains("cursor down"))
+    {
+  
+    }
+
+    this->getParentComponent()->repaint();
+
+    if (key == KeyPress ('z', ModifierKeys::commandModifier, 0))
+        undoText();
+
+    if (! TextEditorKeyMapper<CodeEditorComponent>::invokeKeyFunction (*this, key))
+    {
+
+        if (key == KeyPress::returnKey)
+            handleReturnKey();
+
+        else if (key == KeyPress::escapeKey)
+            handleEscapeKey();
+        //else if (key == KeyPress (']', ModifierKeys::commandModifier, 0))   indentSelection();
+        else if (key.getTextCharacter() >= ' ')
+        {
+            insertTextAtCaret (String::charToString (key.getTextCharacter()));
+            scrollToKeepCaretOnScreen();
+        }
+        else if(key.getKeyCode() ==  KeyPress::tabKey && key.getModifiers().isShiftDown())
+            handleTabKey("backwards");
+        else if(key ==  KeyPress::tabKey)
+            handleTabKey("forwards");
+
+        else
+            return false;
+    }
+    //handleUpdateNowIfNeeded();
+    return true;
+}
+//==============================================================================
+void CabbageCodeEditorComponent::handleTabKey(String direction)
+{
+
+ 
+
+}
+//==============================================================================
+void CabbageCodeEditorComponent::undoText()
+{
+    CodeDocument::Position startPos = getCaretPos();
+    //getDocument().undo();
+    moveCaretTo(startPos, false);
+}
 //==============================================================================
 String CabbageCodeEditorComponent::getLineText()
 {

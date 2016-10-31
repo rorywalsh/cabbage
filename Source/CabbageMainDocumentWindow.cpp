@@ -61,14 +61,17 @@ void MainContentComponent::openFile(File file)
 }
 
 void MainContentComponent::paint (Graphics& g)
-{
-	g.drawImage(bgImage, getLocalBounds().toFloat());
+{	
+	if(!editorAndConsole->isVisible())
+		g.drawImage(bgImage, getLocalBounds().toFloat());
+	else
+		g.fillAll(Colours::transparentBlack);
 }
 
 void MainContentComponent::resized()
 {
 	propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
-	editorAndConsole->setBounds(0, 0, getWidth(), getHeight());    
+	editorAndConsole->setBounds(0, 0, getWidth()-propertyPanel->getWidth(), getHeight());    
 }
 
 //=================================================================================================================

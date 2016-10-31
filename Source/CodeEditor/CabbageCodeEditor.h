@@ -28,7 +28,9 @@ public:
 	void displayOpcodeHelpInStatusBar(String lineFromCsd);
 	void insertCodeAndHighlightLine(int lineNumber, String codeToInsert);
 	String getLineText();
-
+	bool keyPressed (const KeyPress& key) override;
+	void undoText();
+	void handleTabKey(String direction);
 	
 	void setOpcodeStrings(String opcodes)
     {

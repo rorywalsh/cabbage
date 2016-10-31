@@ -45,6 +45,14 @@ public:
                                        AlertWindow& alert,
                                        const Rectangle<int>& textArea,
                                        TextLayout& textLayout);
+	void drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
+                                        int height,
+                                        bool isScrollbarVertical,
+                                        int thumbStartPosition,
+                                        int thumbSize,
+                                        bool isMouseOver,
+                                        bool isMouseDown);
+
 private:
     ValueTree colourTree;
 
