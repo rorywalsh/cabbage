@@ -85,7 +85,7 @@ CabbageMainDocumentWindow::CabbageMainDocumentWindow (String name, CabbageSettin
             DocumentWindow::allButtons),
 			cabbageSettings(settings->getValueTree())
 {
-	lookAndFeel = new CabbageIDELookAndFeel();
+	lookAndFeel = new LookAndFeel_V2();
     setUsingNativeTitleBar (true);
     setContentOwned (mainContentComponent = new MainContentComponent(cabbageSettings), true);
     this->setResizable(true, true);
@@ -101,8 +101,8 @@ MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()
 
 void CabbageMainDocumentWindow::updateEditorColourScheme()
 {
-	lookAndFeel->setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
-	lookAndFeel->setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelText, Colour(50,50,50)));
+	this->getLookAndFeel().setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
+	this->getLookAndFeel().setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelText, Colour(50,50,50)));
 	this->lookAndFeelChanged();
 	mainContentComponent->propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyPanelBackground, Colour(50,50,50)));
 	mainContentComponent->editorAndConsole->editor->updateColourScheme();

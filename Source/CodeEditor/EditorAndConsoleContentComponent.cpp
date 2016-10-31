@@ -50,7 +50,7 @@ void EditorAndConsoleContentComponent::resized()
 	const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
 	const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
 	statusBar.setBounds(0, consoleY, getWidth(), 28); 
-	outputConsole->setBounds(0, consoleY+28, getWidth(), consoleHeight+2);
+	outputConsole->setBounds(0, consoleY+28, getWidth()+2, consoleHeight+2);
 		
 }
 
