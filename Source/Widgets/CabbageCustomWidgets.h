@@ -13,7 +13,8 @@
 
 #include "../CabbageCommonHeaders.h"
 
-// Simple base class for taking care of some widget housekeeping
+// Simple base class for taking care of some widget housekeeping. This class looks after
+// common memeber variables such as alpha values, tooltiptext, bounds, etc 
 // Each cabbage widget should inherit from this class so initialiseCommonAttributes()
 // can be called in its valueTreePropertyChanged() method.  
 class CabbageWidgetBase
@@ -23,7 +24,8 @@ public:
 	~CabbageWidgetBase(){}
 
 	int pivotx, pivoty, visible, active;
-    float rotate;
+    float rotate, alpha, currentValue;
+	String tooltipText, text, channel;
 	
 	void initialiseCommonAttributes(ValueTree valueTree)
 	{
@@ -31,10 +33,15 @@ public:
 		pivotx = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::pivotx);
 		pivoty = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::pivoty);
 		visible = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::visible);
-		active = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::active);		
+		active = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::active);
+		tooltipText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);				
 	}
 	
 	void handleCommonUpdates(Component* child, ValueTree data);
+	String getTooltipText(ValueTree data);
+	String getText(ValueTree data);
+	void setChannel(ValueTree value);
+	float getValue(ValueTree data);
 
 };
 

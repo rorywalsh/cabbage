@@ -26,6 +26,9 @@ public:
 	void codeDocumentTextDeleted(int,int){};
     void codeDocumentTextInserted(const juce::String &,int);
 	void displayOpcodeHelpInStatusBar(String lineFromCsd);
+	void insertCodeAndHighlightLine(int lineNumber, String codeToInsert);
+	String getLineText();
+
 	
 	void setOpcodeStrings(String opcodes)
     {

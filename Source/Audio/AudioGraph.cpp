@@ -62,7 +62,7 @@ void AudioGraph::createPlugin(File inputFile)
 
 
 	AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-	bool isCabbageFile = CabbageUtilities::hasCabbageTags(inputFile);
+	isCabbageFile = CabbageUtilities::hasCabbageTags(inputFile);
 	if(isCabbageFile)
 		processor = createCabbagePluginFilter(inputFile);
 	else
@@ -178,7 +178,10 @@ void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceNam
 //==============================================================================
 String AudioGraph::getCsoundOutput()
 {
-	return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+	if(isCabbageFile)
+		return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+	else
+		return dynamic_cast<GenericCabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
 }
 
 //==============================================================================

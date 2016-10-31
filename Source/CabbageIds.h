@@ -478,7 +478,7 @@ static const Identifier guirefresh = "guirefresh";
 static const Identifier identchannel = "identchannel";
 static const Identifier identchannelmessage = "identchannelmessage";
 static const Identifier visible = "visible";
-static const Identifier lineNumber = "linenumber";
+static const Identifier linenumber = "linenumber";
 static const Identifier scrubberposition = "scrubberposition";
 static const Identifier startpoint = "startpoint";
 static const Identifier endpoint = "endpoint";
@@ -586,11 +586,11 @@ class CabbageIdentifierPropertyStringPairs : public StringPairArray
 		set("Active", CabbageIdentifierIds::active.toString());
 		set("Visible", CabbageIdentifierIds::visible.toString());		
 		
-		set("Font Colour: On", CabbageIdentifierIds::onfontcolour.toString());
-		set("Font Colour: Off", CabbageIdentifierIds::fontcolour.toString());
+		set("Font: On", CabbageIdentifierIds::onfontcolour.toString());
+		set("Font: Off", CabbageIdentifierIds::fontcolour.toString());
 		set("Colour: Off", CabbageIdentifierIds::colour.toString());
 		set("Colour: On", CabbageIdentifierIds::oncolour.toString());
-		//set("Popup Text", CabbageIdentifierIds::.toString());
+		set("Alpha", CabbageIdentifierIds::alpha.toString());
 		
 	}
 };

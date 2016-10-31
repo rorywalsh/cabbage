@@ -83,6 +83,7 @@ public:
 	ScopedPointer<XmlElement> xmlSettings;
 	bool isInput;
     int currentBus;
+	bool isCabbageFile=false;
 
 private:
     void setupAudioDevices (const String& preferredDefaultDeviceName,

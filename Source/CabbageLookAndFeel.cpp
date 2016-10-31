@@ -934,7 +934,10 @@ void CabbageLookAndFeel::drawToggleButton (Graphics &g, ToggleButton &button, bo
     {
         Justification just (1); //left
         //g.setFont (CabbageUtilities::getComponentFont());
-        g.setColour (button.findColour(ToggleButton::textColourId));
+		if(isToggleOn)
+			g.setColour (button.findColour(TextButton::textColourOnId));
+		else
+			g.setColour (button.findColour(TextButton::textColourOffId));
         //g.setColour(Colours::white);
         String name;
         name << button.getButtonText();

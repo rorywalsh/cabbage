@@ -88,20 +88,7 @@ static Array<PropertyComponent*> createTextEditors(CabbagePropertiesPanel* owner
 	addListener(comps, owner);
 	return comps;
 }
-//==============================================================================
-static Array<PropertyComponent*> createColourChoosers (CabbagePropertiesPanel* owner, ValueTree valueTree)
-{
-    Array<PropertyComponent*> comps;
-	
-	const String colourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
-	const String onColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour);
-	const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
-	comps.add(new ColourPropertyComponent("Colour: Off", colourString));
-	comps.add(new ColourPropertyComponent("Colour: On", onColourString));
-	comps.add(new ColourPropertyComponent("Font Colour", fontColourString));
-	addListener(comps, owner);
-	return comps;
-}
+
 //==============================================================================
 static Array<PropertyComponent*> createButtons (int howMany)
 {
@@ -133,6 +120,27 @@ static Array<PropertyComponent*> createChoices (int howMany)
 //==============================================================================
 // Property Panel for editing widgets
 //==============================================================================
+Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTree valueTree)
+{
+    Array<PropertyComponent*> comps;
+	
+	const String colourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
+	const String onColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour);
+	const String onFontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::onfontcolour);
+	const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+	comps.add(new ColourPropertyComponent("Colour: Off", colourString));
+	comps.add(new ColourPropertyComponent("Colour: On", onColourString));
+	comps.add(new ColourPropertyComponent("Font: Off", fontColourString));
+	comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
+
+	alpha.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
+	alpha.addListener(this);
+	comps.add(new SliderPropertyComponent(alpha, "Alpha", 0, 1, .01, 1, 1));
+	
+
+	addListener(comps, this);
+	return comps;
+}
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors(ValueTree valueTree)
 {
@@ -155,18 +163,20 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors(ValueTre
 	addListener(comps, this);
     return comps;
 }
+//==============================================================================
 CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 :widgetData(widgetData)
 {
 	setOpaque (true);
 	setSize(300, 500);
+	
 	addAndMakeVisible (propertyPanel);
 	propertyPanel.addSection ("Bounds", createPositionEditors(widgetData));
 	propertyPanel.addSection ("Rotation", createRotationEditors(this, widgetData));
 	propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
 	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
 	propertyPanel.addSection ("Text", createTextEditors(this, widgetData));
-	propertyPanel.addSection ("Colours", createColourChoosers(this, widgetData));
+	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
 
 	//ropertyPanel.addSection ("Channels", createChoices (16));
 	//propertyPanel.addSection ("Buttons & Toggles", createButtons (20));
@@ -181,7 +191,7 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 	propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
 	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
 	propertyPanel.addSection ("Text", createTextEditors(this, widgetData));
-	propertyPanel.addSection ("Colours", createColourChoosers(this, widgetData));
+	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
 	this->setVisible(true);
 	
 }
@@ -205,6 +215,8 @@ void CabbagePropertiesPanel::setPropertyByName(ValueTree widgetData, String name
 	{
 		//CabbageUtilities::debug(value.toString());
 		CabbageWidgetData::setStringProp(widgetData, identifier, value);
+		//update code in editor when changes are made...
+		sendChangeMessage();
 	}
 }
 
@@ -228,6 +240,8 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 {
 	if(value.refersToSameSourceAs(isActive))
 		setPropertyByName(widgetData, "Active", value.getValue());		
-	if(value.refersToSameSourceAs(isVisible))
+	else if(value.refersToSameSourceAs(isVisible))
 		setPropertyByName(widgetData, "Visible", value.getValue());		
+	else if(value.refersToSameSourceAs(alpha))
+		setPropertyByName(widgetData, "Alpha", value.getValue());	
 }

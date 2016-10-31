@@ -19,7 +19,7 @@ CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
 name(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
 buttonText(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)),
 colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
-fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
+fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)),
 oncolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)),
 isRect(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square")),
 tooltipText(String::empty),
@@ -84,20 +84,21 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 	if(prop==CabbageIdentifierIds::value)
 	{
 		bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
-		this->setToggleState(state, dontSendNotification);
+		setToggleState(getValue(valueTree)==1 ? true : false, dontSendNotification);
 	}
 
 	else
 	{
 		handleCommonUpdates(this, valueTree);		
 		
-		//CabbageUtilities::debug(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
-		setColour(ToggleButton::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+		setColour(TextButton::ColourIds::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+		setColour(TextButton::ColourIds::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::onfontcolour)));
 		setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+		setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour)));
 		getProperties().set("isRect", CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
-		setButtonText(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text));
 		
-		setAlpha(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
+		setButtonText(getText(valueTree));
+		
 
 		if(tooltipText!=CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
 		{

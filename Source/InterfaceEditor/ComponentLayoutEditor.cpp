@@ -250,7 +250,7 @@ void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
 		}
         selectedCompsOrigCoordinates.add(selectedFilters.getSelectedItem(i)->getBounds());
 		//should I get line numbers from here?
-        selectedLineNumbers.add(selectedFilters.getSelectedItem(i)->getProperties().getWithDefault(CabbageIdentifierIds::lineNumber, -99));
+        //selectedLineNumbers.add(selectedFilters.getSelectedItem(i)->getProperties().getWithDefault(CabbageIdentifierIds::linenumber, -99));
     }
     lassoComp.endLasso();
     removeChildComponent (&lassoComp);
@@ -281,7 +281,7 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
     }
 
     selectedCompsOrigCoordinates.clear();
-    selectedLineNumbers.clear();
+    //selectedLineNumbers.clear();
 
     if(e.mods.isPopupMenu())
     {

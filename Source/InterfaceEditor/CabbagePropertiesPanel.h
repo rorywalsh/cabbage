@@ -33,7 +33,8 @@ public:
 	void updateProperties(ValueTree widgetData);
 	void valueChanged(Value& value);
 	Array<PropertyComponent*> createPositionEditors(ValueTree valueTree);
-	Value isActive, isVisible;
+	Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
+	Value isActive, isVisible, alpha;
 private:
     PropertyPanel propertyPanel;
 	ValueTree widgetData;

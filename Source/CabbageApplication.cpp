@@ -52,8 +52,11 @@ void CabbageApplication::initialise (const String& commandLine)
     //cabbageSettings->setDefaultColourSettings();
     cabbageSettings->setDefaultSettings();
     lookAndFeel.setColour(2, Colours::red);
+	
+	lookAndFeel.setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
 
     mainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings);
+	mainDocumentWindow->mainContentComponent->propertyPanel->addChangeListener(this);
     mainDocumentWindow->setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
     initialiseLogger ("IDE_Log_");
     Logger::writeToLog (SystemStats::getOperatingSystemName());
@@ -107,10 +110,25 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
     if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source))
     {
 		mainDocumentWindow->mainContentComponent->propertyPanel->updateProperties(editor->getCurrentlySelectedComponent());
+		//CabbageUtilities::debug(CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent()));
+		
+		const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
+		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
+		mainDocumentWindow->mainContentComponent->editorAndConsole->editor->insertCodeAndHighlightLine(lineNumber, newText);
     }
     if(ComponentLayoutEditor* layoutEditor = dynamic_cast<ComponentLayoutEditor*>(source))
     {
 		//getPluginEditor()->getLayoutEditor().updateFrames();
+    }
+    if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(panel))
+    {
+		if(CabbagePluginEditor* editor = this->getPluginEditor())
+		{
+			const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
+			const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
+			mainDocumentWindow->mainContentComponent->editorAndConsole->editor->insertCodeAndHighlightLine(lineNumber, newText);
+			
+		}
     }
 }
 

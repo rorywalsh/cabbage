@@ -103,3 +103,19 @@ void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd
             }
     }
 }
+
+//==============================================================================
+String CabbageCodeEditorComponent::getLineText()
+{
+	return String::empty;
+}
+
+void CabbageCodeEditorComponent::insertCodeAndHighlightLine(int lineNumber, String codeToInsert)
+{
+    StringArray csdLines;
+    csdLines.addLines(getDocument().getAllContent());
+	csdLines.set(lineNumber, codeToInsert);
+	getDocument().replaceAllContent(csdLines.joinIntoString("\n"));
+    moveCaretTo(CodeDocument::Position(this->getDocument(), lineNumber, 0), false);
+    moveCaretTo(CodeDocument::Position(this->getDocument(), lineNumber, 4096), true);
+}

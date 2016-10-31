@@ -41,6 +41,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     setProperty(widgetData, CabbageIdentifierIds::rotate, 0.f);
     setProperty(widgetData, CabbageIdentifierIds::pivotx, 0.f);
     setProperty(widgetData, CabbageIdentifierIds::pivoty, 0.f);
+	setProperty(widgetData, CabbageIdentifierIds::linenumber, ID);
 
 
 	int top, left, width, height;
@@ -377,6 +378,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::type, "checkbox");
         setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::lime.toString());
         setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+        setProperty(widgetData, CabbageIdentifierIds::onfontcolour, CabbageUtilities::getComponentFontColour().toString());
         setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
         setProperty(widgetData, CabbageIdentifierIds::name, "checkbox");
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
@@ -2040,6 +2042,47 @@ String CabbageWidgetData::getStringProp(ValueTree widgetData, Identifier prop, i
 
 }
 
+StringArray CabbageWidgetData::getStringArrayProp(ValueTree widgetData, Identifier prop)
+{
+	StringArray strings;
+	var array;
+	if(widgetData.getChildWithName(prop).isValid())
+	{
+		const int numberOfItemsInChild = widgetData.getChildWithName(prop).getNumProperties();
+
+		for(int i=0; i<numberOfItemsInChild; i++)
+		{
+			const Identifier name = widgetData.getChildWithName(prop).getPropertyName(i);
+			strings.add(widgetData.getChildWithName(prop).getProperty(name));						
+		}
+			
+		return strings;
+
+	}
+	else
+	{	
+		strings.add(getProperty(widgetData, prop));
+		return strings;
+	}
+}
+
+void CabbageWidgetData::setStringArrayProp(ValueTree widgetData, Identifier prop)
+{
+	const Array<var>* valueArray = widgetData.getProperty(CabbageIdentifierIds::channel).getArray();
+	var array;
+	if(valueArray)
+	{
+		for(int i=0; i<valueArray->size(); i++)
+		{
+		array.append(valueArray[i]);						
+		}
+	}
+	else
+		array.append(CabbageWidgetData::getStringProp(widgetData, prop));
+	
+	CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::channel, array);
+	
+}
 void CabbageWidgetData::setNumProp(ValueTree widgetData, Identifier prop, float val)
 {
     setProperty(widgetData, prop, val);
@@ -2209,17 +2252,6 @@ void CabbageWidgetData::setTableChannelValues(int index, float val)
 }
 
 
-
-//===================================================================
-StringArray CabbageWidgetData::getStringArrayProp(Identifier prop)
-{
-		jassert(false);
-//    StringArray returnArray;
-//    var strings = getWidgetPropertyWithDefault(prop, "");
-//    for(int i=0; i<strings.size(); i++)
-//        returnArray.add(strings[i].toString());
-//    return returnArray;
-}
 //===================================================================
 void CabbageWidgetData::setStringArrayProp(Identifier prop, var value)
 {
@@ -2349,217 +2381,34 @@ String CabbageWidgetData::getStringForIdentifier(var propsArray, String identifi
         return "";
 }
 //===================================================================
-String CabbageWidgetData::getCabbageCodeFromIdentifiers(NamedValueSet props)
+String CabbageWidgetData::getBoundsText(Rectangle<int> rect)
 {
-		jassert(false);
-//    //Logger::writeToLog("::::getCabbageCodeFromIdentifiers::::");
-//    String line, widgetType;
-//    var propsArray;
-//    String temp="";
-//    String type;
-//    String colour, fontcolour;
-//    String left("0"), top("0"), width("100"), height("50"), colR, colG, colB, colA, min("0"), max("1"), skew("1"), drawmode, tablenumber,resizemode,
-//           incr("0.001"), slidervalue, value, maxx, maxy, minx, miny, valuex, valuey, channel, xchannel, ychannel,
-//           amprange;
-//    var rgbVals;
-//    //run through the complete list of identifiers and find type
-//    for(int i=0; i<props.size(); i++)
-//        if(props.getName(i).toString().equalsIgnoreCase(CabbageIdentifierIds::type))
-//            widgetType = props.getValueAt(i).toString();
-//
-//    //get default values for this type of widget
-//    CabbageWidget cAttr(widgetType, -99);
-//
-//    //run through the complete list of identifiersand create code
-//    for(int i=0; i<props.size(); i++)
-//    {
-//        String identifier = props.getName(i).toString();
-//        propsArray = props.getValueAt(i);
-//
-//
-//
-//        if((props.getValueAt(i).toString()!=""))
-//        {
-//            //first check to make sure no default values used
-//            if(props.getValueAt(i).isString() &&
-//                    props.getValueAt(i).toString() == cAttr.getStringProp(identifier))
-//            {
-//                //CabbageUtilities::debug(identifier, cAttr.getStringProp(identifier));
-//            }
-//            else if(props.getValueAt(i).isDouble() &&
-//                    double(props.getValueAt(i)) == cAttr.getNumProp(identifier))
-//            {
-//                //CabbageUtilities::debug(identifier, cAttr.getNumProp(identifier));
-//            }
-//            else if(props.getValueAt(i).isInt() &&
-//                    int(props.getValueAt(i)) == cAttr.getNumProp(identifier))
-//            {
-//                //CabbageUtilities::debug(identifier, cAttr.getNumProp(identifier));
-//            }
-//            else if(props.getValueAt(i).isUndefined())
-//            {
-//                //CabbageUtilities::debug("Undefined value");
-//            }
-//            else if(props.getName(i).toString()=="top")
-//                top = props.getValueAt(i).toString();
-//            else if(props.getName(i).toString()=="left")
-//                left = props.getValueAt(i).toString();
-//            else if(props.getName(i).toString()=="width")
-//                width = props.getValueAt(i).toString();
-//            else if(props.getName(i).toString()=="height")
-//                height = props.getValueAt(i).toString();
-//            else if(identifier=="decimalplaces" ||
-//                    identifier=="range" ||
-//                    identifier=="name" ||
-//                    identifier=="scalex" ||
-//                    identifier=="scaley" ||
-//                    identifier=="mode" ||
-//                    identifier=="basetype" ||
-//                    identifier=="kind" ||
-//                    identifier=="visible" ||
-//                    identifier=="trackerthickness" ||
-//                    identifier=="xyautoindex" ||
-//                    identifier=="comborange")
-//            {
-//                //none of these identifiers need to be seen...
-//            }
-//            else if(props.getName(i).toString()=="colour" || props.getName(i).toString()=="fontcolour"
-//                    || props.getName(i).toString()=="trackercolour" || props.getName(i).toString()=="textcolour" ||
-//                    props.getName(i).toString()=="outlinecolour")
-//            {
-//                if(propsArray.size()>0)
-//                {
-//                    for(int y=0; y<propsArray.size(); y++)
-//                    {
-//                        rgbVals.append(propsArray[y]);
-//                    }
-//                    colour = colour << props.getName(i).toString() <<"("<<rgbVals[0].toString() << ", " << rgbVals[1].toString() << ", " << rgbVals[2].toString() << ", " << rgbVals[3].toString() << "), ";
-//                }
-//                else
-//                {
-//                    Colour col = Colour::fromString(props.getValueAt(i).toString());
-//                    colour = colour << props.getName(i).toString() << "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
-//                }
-//                rgbVals.resize(0);
-//            }
-//
-//            else if((identifier=="popup") && (int(props.getValueAt(i))==0))
-//            {
-//                //only show if not set to default
-//            }
-//            else if((identifier=="midictrl") && (int(props.getValueAt(i))==-99))
-//            {
-//                //only show if not set to default
-//            }
-//            else if((identifier=="midichan") && (int(props.getValueAt(i))==-99))
-//            {
-//                //only show if not set to default
-//            }
-//            else if((identifier=="channel"))
-//            {
-//                channel = getStringForIdentifier(propsArray, "channel(", "string");
-//            }
-//
-//            else if(identifier=="drawmode")
-//            {
-//                drawmode = getStringForIdentifier(propsArray, "drawmode(", "number");
-//            }
-//
-//            else if((identifier=="amprange"))
-//            {
-//                amprange = getStringForIdentifier(propsArray, "amprange(", "number");
-//            }
-//
-//            else if((identifier=="tablenumber"))
-//            {
-//                tablenumber = getStringForIdentifier(propsArray, "tablenumber(", "number");
-//            }
-//
-//            else if((identifier=="resizemode"))
-//            {
-//                resizemode = getStringForIdentifier(propsArray, "resizemode(", "number");
-//            }
-//
-//            else if((identifier=="xchannel"))
-//            {
-//                xchannel = props.getValueAt(i).toString();
-//            }
-//            else if((identifier=="ychannel"))
-//            {
-//                ychannel = props.getValueAt(i).toString();
-//            }
-//
-//
-//            //grab slider settings..
-//            else if(identifier=="min")
-//                min = props.getValueAt(i).toString();
-//            else if(identifier=="max")
-//                max = props.getValueAt(i).toString();
-//            else if(identifier=="value")
-//            {
-//                slidervalue = props.getValueAt(i).toString();
-//                value = "value("+slidervalue+"), ";
-//            }
-//            else if(identifier=="sliderskew")
-//                skew = props.getValueAt(i).toString();
-//            else if(identifier=="sliderincr")
-//                incr = String(CabbageUtilities::roundToPrec(props.getValueAt(i), 5));
-//
-//            //grab xypad x-ranges...
-//            else if(identifier=="minx")
-//                minx = props.getValueAt(i).toString();
-//            else if(identifier=="maxx")
-//                maxx = props.getValueAt(i).toString();
-//            else if(identifier=="valuex")
-//                valuex = props.getValueAt(i).toString();
-//
-//            //grab xypad y-ranges...
-//            else if(identifier=="miny")
-//                miny = props.getValueAt(i).toString();
-//            else if(identifier=="maxy")
-//                maxy = props.getValueAt(i).toString();
-//            else if(identifier=="valuey")
-//                valuey = props.getValueAt(i).toString();
-//
-//            else if((identifier=="textbox") && (int(props.getValueAt(i))==0))
-//            {
-//                //only show if not set to default
-//            }
-//            else
-//            {
-//                //catch all other identifiers....
-//                line = line + identifier+String("(");
-//
-//                if(propsArray.size()>0)
-//                    for(int y=0; y<propsArray.size(); y++)
-//                    {
-//                        if(propsArray[y].isString())
-//                            temp = temp+"\""+propsArray[y].toString()+"\", ";
-//                        else
-//                            temp = temp+propsArray[y].toString()+", ";
-//                    }
-//                else if(props.getValueAt(i).isString())
-//                    temp = temp+"\""+props.getValueAt(i).toString()+"\"";
-//                else
-//                    temp = temp+props.getValueAt(i).toString();
-//
-//                line = line + temp + "), ";
-//                temp = "";
-//            }
-//        }
-//    }
-//
-//    String completeLine;
-//    String range = "range("+min+", "+max+", "+slidervalue+", "+skew+", "+incr+"), ";
-//    String rangex = "rangex("+minx+", "+maxx+", "+valuex+"), ";
-//    String rangey = "rangey("+miny+", "+maxy+", "+valuey+"), ";
-//    String xypadChannels = "channel(\""+xchannel+"\", \""+ychannel+"\"), ";
-//    if(widgetType.contains("slider") || widgetType=="numberbox")
-//        completeLine = widgetType+" bounds("+left+", "+top+", "+width+", "+height+"), "+channel+range+line.replace(", )", ")")+ " "+colour;
-//    else if(widgetType=="xypad")
-//        completeLine = widgetType+" bounds("+left+", "+top+", "+width+", "+height+"), "+xypadChannels+rangex+rangey+line.replace(", )", ")")+ " "+colour;
-//    else
-//        completeLine = widgetType+" bounds("+left+", "+top+", "+width+", "+height+"), "+channel+line.replace(", )", ")")+ " "+tablenumber+drawmode+amprange+colour+resizemode+value;
-//    return completeLine;
+	const String boundsText = "bounds(" + String(rect.getX()) + ", " + String(rect.getY()) + ", " + String(rect.getWidth()) + ", " + String(rect.getHeight()) + "), ";
+	return boundsText;
+}
 
+//===================================================================
+String CabbageWidgetData::getChannelText(StringArray channels)
+{
+	String channelString = "";
+	if(channels.size()>0)
+	{
+		for(int i = 0 ; i < channels.size()-1 ; i++)
+		{
+			channelString = channelString+ "\"" + channels[i] + "\", ";
+		}
+		return "channel(\""+channelString+channels[channels.size()-1]+"\"), ";
+	}	
+	else 
+		return "channel("+channels[0]+"\"), ";
+}
+//===================================================================
+String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
+{
+	StringArray listOfChannels = CabbageWidgetData::getStringArrayProp(widgetData, CabbageIdentifierIds::channel);
+	CabbageUtilities::debug(listOfChannels.joinIntoString("\n"));
+	String cabbageCode = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type) + " " +
+						 CabbageWidgetData::getBoundsText(CabbageWidgetData::getBounds(widgetData)) +	
+						 getChannelText(listOfChannels);
+	return cabbageCode;
 }

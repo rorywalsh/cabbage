@@ -45,7 +45,43 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data)
 		child->setEnabled(active==1 ? true : false);
 	}
 	
+	if(alpha != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha))
+	{
+		alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
+		child->setAlpha(alpha);
+	}	
 }
 
+
+String CabbageWidgetBase::getText(ValueTree data)
+{
+	if(text!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text))
+	{
+		text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
+		return text;
+	}
+	else
+		return text;
+}
+
+void CabbageWidgetBase::setChannel(ValueTree data)
+{
+	if(channel != CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel))
+	{
+		channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
+		CabbageWidgetData::setStringProp(data, CabbageIdentifierIds::channel, channel);
+	}	
+}
+
+float CabbageWidgetBase::getValue(ValueTree data)
+{
+	if(currentValue!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value))
+	{
+		currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::text);
+		return currentValue;
+	}
+	else
+		return currentValue;
+}
 
 //add any new custom widgets here to avoid having to eidt makefiles and projects
