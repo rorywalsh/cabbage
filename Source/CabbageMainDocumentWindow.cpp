@@ -70,20 +70,28 @@ void MainContentComponent::paint (Graphics& g)
 
 void MainContentComponent::resized()
 {
-	propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
-	editorAndConsole->setBounds(0, 0, getWidth()-propertyPanel->getWidth(), getHeight());    
+	if(propertyPanel->isVisible())
+	{
+		propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
+		editorAndConsole->setBounds(0, 0, getWidth()-propertyPanel->getWidth(), getHeight());
+	} 
+	else
+		editorAndConsole->setBounds(0, 0, getWidth(), getHeight());
 }
 
 //=================================================================================================================
 CabbageMainDocumentWindow::CabbageMainDocumentWindow (String name, CabbageSettings* settings)  : DocumentWindow(name,
             Colours::lightgrey,
-            DocumentWindow::allButtons)
+            DocumentWindow::allButtons),
+			cabbageSettings(settings->getValueTree())
 {
+	lookAndFeel = new CabbageIDELookAndFeel();
     setUsingNativeTitleBar (true);
-    setContentOwned (mainContentComponent = new MainContentComponent(settings->getValueTree()), true);
+    setContentOwned (mainContentComponent = new MainContentComponent(cabbageSettings), true);
     this->setResizable(true, true);
     centreWithSize (getWidth(), getHeight());
     setVisible (true);	
+	setLookAndFeel(lookAndFeel);
 }
 
 MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()
@@ -93,6 +101,10 @@ MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()
 
 void CabbageMainDocumentWindow::updateEditorColourScheme()
 {
+	lookAndFeel->setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
+	lookAndFeel->setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelText, Colour(50,50,50)));
+	this->lookAndFeelChanged();
+	mainContentComponent->propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyPanelBackground, Colour(50,50,50)));
 	mainContentComponent->editorAndConsole->editor->updateColourScheme();
 	mainContentComponent->editorAndConsole->outputConsole->updateColourScheme();
 	mainContentComponent->editorAndConsole->horizontalResizerBar.repaint();	

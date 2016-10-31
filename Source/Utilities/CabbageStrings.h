@@ -62,6 +62,9 @@ public:
 			colours.add("Interface - Main Background");
 			colours.add("Interface - Status Bar");
 			colours.add("Interface - Status Bar Text");
+			colours.add("Interface - Property Panel Background");
+			colours.add("Interface - Property Label Background");
+			colours.add("Interface - Property Label Text");
 			colours.add("Interface - Alart Window Background");
 			colours.add("Editor - Code Background");
 			colours.add("Editor - Line Numbers Background");

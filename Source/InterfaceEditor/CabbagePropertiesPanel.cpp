@@ -133,9 +133,9 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 	comps.add(new ColourPropertyComponent("Font: Off", fontColourString));
 	comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
 
-	alpha.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
-	alpha.addListener(this);
-	comps.add(new SliderPropertyComponent(alpha, "Alpha", 0, 1, .01, 1, 1));
+	alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
+	alphaValue.addListener(this);
+	comps.add(new SliderPropertyComponent(alphaValue, "Alpha", 0, 1, .01, 1, 1));
 	
 
 	addListener(comps, this);
@@ -151,13 +151,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors(ValueTre
 	comps.add (new TextPropertyComponent(Value (var (bounds.getWidth())), "Width", 200, false));
 	comps.add (new TextPropertyComponent(Value (var (bounds.getHeight())), "Height", 200, false));
 	
-	isActive.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::active));
-	isActive.addListener(this);
-	isVisible.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::visible));
-	isVisible.addListener(this);	
+	isActiveValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::active));
+	isActiveValue.addListener(this);
+	isVisibleValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::visible));
+	isVisibleValue.addListener(this);	
 	
-    comps.add (new BooleanPropertyComponent(isActive, "Active", "Is Active"));
-	comps.add (new BooleanPropertyComponent(isVisible, "Visible", "Is Visible"));
+    comps.add (new BooleanPropertyComponent(isActiveValue, "Active", "Is Active"));
+	comps.add (new BooleanPropertyComponent(isVisibleValue, "Visible", "Is Visible"));
 	
 	
 	addListener(comps, this);
@@ -197,7 +197,7 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 }
 void CabbagePropertiesPanel::paint (Graphics& g)
 {
-	g.fillAll (Colour::greyLevel (0.8f));
+	g.fillAll(backgroundColour);
 }
 
 void CabbagePropertiesPanel::resized()
@@ -238,10 +238,10 @@ void CabbagePropertiesPanel::textPropertyComponentChanged(TextPropertyComponent 
 	
 void CabbagePropertiesPanel::valueChanged(Value& value)
 {
-	if(value.refersToSameSourceAs(isActive))
+	if(value.refersToSameSourceAs(isActiveValue))
 		setPropertyByName(widgetData, "Active", value.getValue());		
-	else if(value.refersToSameSourceAs(isVisible))
+	else if(value.refersToSameSourceAs(isVisibleValue))
 		setPropertyByName(widgetData, "Visible", value.getValue());		
-	else if(value.refersToSameSourceAs(alpha))
+	else if(value.refersToSameSourceAs(alphaValue))
 		setPropertyByName(widgetData, "Alpha", value.getValue());	
 }

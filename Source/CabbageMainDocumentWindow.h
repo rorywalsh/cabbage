@@ -60,7 +60,7 @@ public:
     CabbageMainDocumentWindow (String name, CabbageSettings* settings);
 	~CabbageMainDocumentWindow()
 	{
-
+		lookAndFeel = nullptr;
 	}
 	
 	void closeButtonPressed() override
@@ -72,7 +72,8 @@ public:
 	
 	MainContentComponent* getMainContentComponent();
 	ScopedPointer<MainContentComponent> mainContentComponent;
-
+	ValueTree cabbageSettings;
+	ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainDocumentWindow)
 };

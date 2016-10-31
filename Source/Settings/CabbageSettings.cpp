@@ -80,6 +80,7 @@ void CabbageSettings::setDefaultSettings()
 	defaultPropSet->setValue("Colours_"+CabbageColourIds::mainBackground, "ff000000");
 	defaultPropSet->setValue("Colours_"+CabbageColourIds::statusBar, "ff000000");
 	defaultPropSet->setValue("Colours_"+CabbageColourIds::statusBarText, "ffffffff");
+	defaultPropSet->setValue("Colours_"+CabbageColourIds::propertyPanelBackground, "ff222222");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::alertWindowBackground, Colour(147, 210,0).toString());
     defaultPropSet->setValue("Colours_"+CabbageColourIds::codeBackground,  "FF222222");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumberBackground,  "44C1C1C1");

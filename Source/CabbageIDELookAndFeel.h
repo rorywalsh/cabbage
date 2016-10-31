@@ -52,7 +52,7 @@ public:
                                         int thumbSize,
                                         bool isMouseOver,
                                         bool isMouseDown);
-
+	int getDefaultScrollbarWidth();
 private:
     ValueTree colourTree;
 

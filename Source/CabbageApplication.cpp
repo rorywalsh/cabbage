@@ -50,8 +50,11 @@ void CabbageApplication::initialise (const String& commandLine)
 	
 	lookAndFeel.setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
 	lookAndFeel.setColour(ScrollBar::backgroundColourId, Colour(70, 70, 70));
-
+	
+	
     mainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings);
+	mainDocumentWindow->setLookAndFeel(&lookAndFeel);
+	mainDocumentWindow->mainContentComponent->propertyPanel->setVisible(false);
 	mainDocumentWindow->mainContentComponent->propertyPanel->addChangeListener(this);
     mainDocumentWindow->setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
     initialiseLogger ("IDE_Log_");
@@ -61,7 +64,6 @@ void CabbageApplication::initialise (const String& commandLine)
                         + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
 
     lookAndFeel.refreshLookAndFeel(cabbageSettings->getValueTree());
-    LookAndFeel::setDefaultLookAndFeel (&lookAndFeel);
 
     if (commandLine.isNotEmpty())
     {
@@ -106,6 +108,8 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
 	
     else if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source)) // update Cabbage code when user drags a widget around
     {
+		mainDocumentWindow->mainContentComponent->propertyPanel->setVisible(true);
+		mainDocumentWindow->mainContentComponent->resized();
 		mainDocumentWindow->mainContentComponent->propertyPanel->updateProperties(editor->getCurrentlySelectedComponent());
 		const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
 		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());

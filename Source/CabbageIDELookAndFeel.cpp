@@ -216,4 +216,9 @@ void CabbageIDELookAndFeel::drawScrollbar (Graphics &g, ScrollBar &scrollbar, in
 
 }
 
+int CabbageIDELookAndFeel::getDefaultScrollbarWidth()
+{
+    return 18;
+}
+
 

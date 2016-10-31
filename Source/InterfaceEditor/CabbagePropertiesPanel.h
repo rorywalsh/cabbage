@@ -34,7 +34,14 @@ public:
 	void valueChanged(Value& value);
 	Array<PropertyComponent*> createPositionEditors(ValueTree valueTree);
 	Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
-	Value isActive, isVisible, alpha;
+	Value isActiveValue, isVisibleValue, alphaValue;
+	Colour backgroundColour;
+	
+	void setBackgroundColour(Colour colour)
+	{
+		backgroundColour = colour;
+		repaint();
+	}
 private:
     PropertyPanel propertyPanel;
 	ValueTree widgetData;

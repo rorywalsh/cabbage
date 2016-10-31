@@ -110,6 +110,7 @@ public:
     ScopedPointer<FileLogger> logger;
     PropertiesFile::Options getPropertyFileOptionsFor (const String& filename);
     CabbageIDELookAndFeel lookAndFeel;
+
     bool isRunningCommandLine;
 	CodeEditorComponent* getCodeEditor();
 	CabbageOutputConsole* getOutputConsole();
