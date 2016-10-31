@@ -10,12 +10,12 @@
 
 #include "CabbageCheckbox.h"
 #include "../Audio/CabbagePluginEditor.h"
-#include "CabbageCustomWidgets.h"
+
 
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================
-CabbageCheckbox::CabbageCheckbox(ValueTree wData) :
+CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
 name(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::name)),
 caption(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::caption)),
 buttonText(CabbageWidget::getStringProp(wData, CabbageIdentifierIds::text)),
@@ -105,7 +105,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
 		else
 		{
-			CabbageWidgetUtilities::handleBoundsUpdate(this, valueTree);
+			handleCommonUpdates(this, valueTree);
 			
 			
 			//CabbageUtilities::debug(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour));
@@ -113,30 +113,9 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 			setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::colour)));
 			getProperties().set("isRect", CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
 			setButtonText(CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::text));
+			
 			setAlpha(CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::alpha));
-			if(rotate!=CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate))
-			{
-				rotate = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate);
-				setTransform(AffineTransform::rotation(rotate, getX()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivotx), getY()+CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivoty)));
-			}
-			if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::visible))
-			{
-				setVisible(false);
-				setEnabled(false);
-			}
-			else
-			{
-				setVisible(true);
-				setEnabled(true);
-			}
-			if(!CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::active))
-			{
-				setEnabled(false);
-			}
-			else
-			{
-				setEnabled(true);
-			}
+
 			if(tooltipText!=CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
 			{
 				tooltipText = CabbageWidget::getStringProp(valueTree, CabbageIdentifierIds::popuptext);

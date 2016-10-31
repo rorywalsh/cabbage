@@ -12,12 +12,13 @@
 #define CABBAGECHECKBOX_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
+#include "CabbageCustomWidgets.h"
 
 class CabbagePluginEditor;
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================
-class CabbageCheckbox : public ToggleButton, public ValueTree::Listener
+class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public CabbageWidgetBase
 {
     int offX, offY, offWidth, offHeight, pivotx, pivoty, corners;
     float rotate;

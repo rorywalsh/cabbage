@@ -12,7 +12,7 @@
 #define CABBAGEPROPERTIESCOMPONENT_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
-#include "CabbageColourProperty.h"
+#include "../Utilities/CabbageColourProperty.h"
 
 //==============================================================================
 class CabbagePropertiesPanel   : 

@@ -34,6 +34,14 @@ static Array<PropertyComponent*> createPositionEditors(CabbagePropertiesPanel* o
 	comps.add (new TextPropertyComponent(Value (var (bounds.getY())), "Y Position", 200, false));
 	comps.add (new TextPropertyComponent(Value (var (bounds.getWidth())), "Width", 200, false));
 	comps.add (new TextPropertyComponent(Value (var (bounds.getHeight())), "Height", 200, false));
+	
+	const float rotate = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::rotate);
+	const float pivotx = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivotx);
+	const float pivoty = CabbageWidget::getNumProp(valueTree, CabbageIdentifierIds::pivoty);
+	
+	comps.add (new TextPropertyComponent(Value (var (pivotx)), "Pivot X", 200, false));
+	comps.add (new TextPropertyComponent(Value (var (pivoty)), "Pivot Y", 200, false));
+	comps.add (new TextPropertyComponent(Value (var (rotate)), "Rotate", 200, false));
 	addListener(comps, owner);
     return comps;
 }
@@ -149,8 +157,9 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 	//propertyPanel.addSection ("Buttons & Toggles", createButtons (20));
 }
 
-void CabbagePropertiesPanel::updateProperties(ValueTree widgetData)
+void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 {
+	widgetData = wData;
 	propertyPanel.clear();
 	propertyPanel.addSection ("Bounds", createPositionEditors(this, widgetData));
 	propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));

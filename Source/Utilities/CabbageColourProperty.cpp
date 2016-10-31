@@ -30,17 +30,15 @@ void ColourPropertyComponent::paint(Graphics &g)
     g.setFont (getHeight()*.6);
 
 
-    const int textW = 200;
-    Rectangle<int> compRect(textW, 1, getWidth() - textW - 1, getHeight() - 3);
-	
-    const Rectangle<int> r (compRect);
+    const int textW = jmin (200, getWidth() / 3);
+    const Rectangle<int> r (textW, 1, getWidth() - textW - 1, getHeight() - 3);
 
     g.drawFittedText (getName(),
                       3, r.getY(), r.getX() - 5, r.getHeight(),
                       Justification::centredLeft, 2);	
 					  
 	g.setColour(colour);
-	g.fillRect(r.getWidth() + 3 , r.getY(), getWidth(), r.getHeight());
+	g.fillRect( getWidth()/3, r.getY(), getWidth(), r.getHeight());
 
 }
 

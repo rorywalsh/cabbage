@@ -567,6 +567,10 @@ class CabbageIdentifierPropertyStringPairs : public StringPairArray
 		set("Width", CabbageIdentifierIds::width.toString());
 		set("Height", CabbageIdentifierIds::height.toString());
 		
+		set("Pivot X", CabbageIdentifierIds::pivotx.toString());
+		set("Pivot Y", CabbageIdentifierIds::pivoty.toString());
+		set("Rotate", CabbageIdentifierIds::rotate.toString());
+		
 		set("Channel", CabbageIdentifierIds::channel.toString());
 		set("Ident Channel", CabbageIdentifierIds::identchannel.toString());
 		
