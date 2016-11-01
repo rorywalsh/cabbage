@@ -100,6 +100,12 @@ public:
         return dynamic_cast<CabbageAudioParameter*> (params[components.indexOf (button)]);
     }
 	
+    CabbageAudioParameter* getParameterForComboBox (ComboBox* combo)
+    {
+        const OwnedArray<AudioProcessorParameter>& params = processor.getParameters();
+        return dynamic_cast<CabbageAudioParameter*> (params[components.indexOf (combo)]);
+    }
+	
 	ComponentLayoutEditor& getLayoutEditor()
 	{
 		return layoutEditor;

@@ -27,7 +27,7 @@ CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
 	widgetData(wData)
 {
 	widgetData.addListener(this);
-    bool isPresetCombo = false;
+    isPresetCombo = false;
     setName(name);
     offX=offY=offWidth=offHeight=0;
     StringArray fileNames;
@@ -127,8 +127,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {	
 	if(prop==CabbageIdentifierIds::value)
 	{
-//		bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
+		int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
 //		setToggleState(getValue(valueTree)==1 ? true : false, dontSendNotification);
+		setSelectedItemIndex(value-1, dontSendNotification);	
 	}
 
 	else

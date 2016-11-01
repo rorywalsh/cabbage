@@ -100,18 +100,23 @@ void CabbagePluginEditor::InsertComboBox(ValueTree cabbageWidgetData)
 
 //======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
-{
-	
+{	
+	if (CabbageAudioParameter* param = getParameterForComboBox(combo))
+	{
+		param->beginChangeGesture();
+		const int value = combo->getSelectedItemIndex()+1;
+		param->setValue(value);
+		param->endChangeGesture();
+	}	
+
 }
  
 void CabbagePluginEditor::buttonClicked(Button* button)
 {	
-	ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
-	
-	if (CabbageAudioParameter* param = getParameterForButton (button))
+	if (CabbageAudioParameter* param = getParameterForButton(button))
 	{
 		param->beginChangeGesture();
-		param->setValue(button->getToggleState()==true ? 1.f : 0.f);
+		param->setValue(button->getToggleState()==true ? 1 : 0);
 		param->endChangeGesture();
 	}	
 }

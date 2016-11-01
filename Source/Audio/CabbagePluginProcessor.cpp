@@ -77,6 +77,11 @@ void CabbagePluginProcessor::createParameters()
 			
 			if(typeOfWidget==CabbageIdentifierIds::checkbox)
 				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));	
+			else if(typeOfWidget==CabbageIdentifierIds::combobox)
+			{
+				StringArray textItems = CabbageWidgetData::getStringArrayProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::text);
+				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, textItems.size(), value));
+			}
 		}
 	}	
 }
@@ -103,6 +108,7 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 		const String identChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
 		const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannelmessage);
 		
+		//infinite loop here with comboxes, NOT AGAIN!!! Bloody eck. Same shite as last time. 
 		if(getCsound()->GetChannel(channel.toUTF8())!=value)
 			CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value, getCsound()->GetChannel(channel.toUTF8()));			
 		

@@ -23,6 +23,7 @@ class CabbageComboBox : public ComboBox, public ValueTree::Listener, public Cabb
     File pluginDir;
     CabbagePluginEditor* owner;
 	ValueTree widgetData;
+	bool isPresetCombo = false;
 
 public:
 
