@@ -33,8 +33,10 @@ public:
 	void updateProperties(ValueTree widgetData);
 	void valueChanged(Value& value);
 	Array<PropertyComponent*> createPositionEditors(ValueTree valueTree);
+	Array<PropertyComponent*> createTextEditors(ValueTree valueTree);
 	Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
-	Value isActiveValue, isVisibleValue, alphaValue;
+	Array<PropertyComponent*> createMiscEditors(ValueTree valueTree);
+	Value isActiveValue, isVisibleValue, alphaValue, shapeValue, textItems;;
 	Colour backgroundColour;
 	
 	void setBackgroundColour(Colour colour)

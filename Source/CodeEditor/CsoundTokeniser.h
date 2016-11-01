@@ -257,7 +257,7 @@ private:
             "vstaudio","vstaudiog","vstbankload","vstedit","vstinit","vstinfo","vstmidiout","vstnote","vstparamset","vstparamget","vstprogset","vsubv","vtablei","vtablek","vtablea","vtablewi",
             "vtablewk","vtablewa","vtabi","vtabk","vtaba","vtabwi","vtabwk","vtabwa","vwrap","waveset","weibull","wgbow","wgbowedbar","wgbrass","wgclar","wgflute","wgpluck","wgpluck2","wguide1",
             "wguide2","wrap","wterrain","xadsr","xin","xout","xscanmap","xscansmap","xscans","xscanu","xtratim","xyin","zacl","zakinit","zamod","zar","zarg","zaw","zawm","zfilter2","zir","ziw",
-            "ziwm","zkcl","zkmod","zkr","zkw","zkwm ", "signaldisplay", "signalvariable", "updaterate", 0
+            "ziwm","zkcl","zkmod","zkr","zkw","zkwm ", "signaldisplay", "signalvariable", "updaterate", "menucolour", 0
         };
 
 

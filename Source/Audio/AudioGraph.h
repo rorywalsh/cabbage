@@ -138,6 +138,8 @@ public:
 
     static void closeCurrentlyOpenWindowsFor (const uint32 nodeId);
     static void closeAllCurrentlyOpenWindows();
+	static Point<int> getPositionOfCurrentlyOpenWindow(const uint32 node);
+	
 
     void moved() override;
     void closeButtonPressed() override;

@@ -61,7 +61,7 @@ public:
     void resized()
     {
         Rectangle<int> area (getLocalBounds());
-        textEditor->setBounds(area.reduced(3).withY(0));
+        textEditor->setBounds(area.reduced(2).withY(0));
     }
 
     void paint(Graphics& g)

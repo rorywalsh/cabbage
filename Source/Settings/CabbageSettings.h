@@ -24,6 +24,7 @@ public:
     String get(String child, String identifier);
     static Colour getColourFromValueTree(ValueTree valueTree, Identifier identifier, Colour defaultColour);
     static String getColourPropertyName(ValueTree valueTree, int index);
+	int getIntProperty(String child);
     static Colour getColourFromValueTree(ValueTree valueTree, int index, Colour defaultColour);
     static void set(ValueTree tree, String child, Identifier identifier, var value);
     static String get(ValueTree tree, String child, String identifier);

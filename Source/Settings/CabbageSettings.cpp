@@ -58,10 +58,11 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue("SetAlwaysOnTop", 1);
     defaultPropSet->setValue("GridSize", 4);
-	defaultPropSet->setValue("CompileOnSave", 4);
+	defaultPropSet->setValue("CompileOnSave", 1);
     defaultPropSet->setValue("PlantRepository", xml);
     defaultPropSet->setValue("EditorColourScheme", 0);
     defaultPropSet->setValue("showTabs", 1);
+	defaultPropSet->setValue("showTabs", 1);
     defaultPropSet->setValue("EnablePopupDisplay", 1);
     defaultPropSet->setValue("ShowAutoComplete", 0);
     defaultPropSet->setValue("ShowNativeFileDialogues", 1);
@@ -128,6 +129,11 @@ void CabbageSettings::set(String child, Identifier identifier, var value)
 void CabbageSettings::setProperty(String child, var value)
 {
 	getUserSettings()->setValue(child, value);
+}
+
+int CabbageSettings::getIntProperty(String child)
+{
+	getUserSettings()->getIntValue(child);
 }
 
 String CabbageSettings::get(String child, String identifier)

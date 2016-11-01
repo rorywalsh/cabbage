@@ -96,6 +96,9 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 		setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
 		setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour)));
 		getProperties().set("isRect", CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
+		getProperties().set("cornersize", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::corners));
+		
+		CabbageUtilities::debug(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::corners));
 		
 		setButtonText(getText(valueTree));
 		
@@ -111,10 +114,4 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
 }
 
-//---------------------------------------------
-void CabbageCheckbox::resized()
-{
-	//setBounds(offX, offY, getWidth()+offWidth, getHeight()+offHeight);
-	this->setWantsKeyboardFocus(false);
-}
 

@@ -324,6 +324,8 @@ public:
         add("pluginid");
         add("trackercolour");
         add("trackercolor");
+		add("menucolour");
+		add("menucolor");
         add("popup");
         add("show");
         add("latched");
@@ -393,6 +395,7 @@ static const Identifier trackercolour = "trackercolour";
 static const Identifier tablecolour = "tablecolour";
 static const Identifier fontcolour= "fontcolour";
 static const Identifier onfontcolour= "onfontcolour";
+static const Identifier menucolour = "menucolour";
 static const Identifier colour = "colour";
 static const Identifier oncolour = "oncolour";
 static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
@@ -560,8 +563,7 @@ static const String signaldisplay = "signaldisplay";
 };
 
 class CabbageIdentifierPropertyStringPairs : public StringPairArray
-{
-	
+{	
 	public:
 	CabbageIdentifierPropertyStringPairs()
 	{
@@ -591,9 +593,14 @@ class CabbageIdentifierPropertyStringPairs : public StringPairArray
 		
 		set("Font: On", CabbageIdentifierIds::onfontcolour.toString());
 		set("Font: Off", CabbageIdentifierIds::fontcolour.toString());
+		set("Font", CabbageIdentifierIds::fontcolour.toString());
+		set("Menu: Colour", CabbageIdentifierIds::menucolour.toString());
 		set("Colour: Off", CabbageIdentifierIds::colour.toString());
+		set("Colour", CabbageIdentifierIds::colour.toString());
 		set("Colour: On", CabbageIdentifierIds::oncolour.toString());
 		set("Alpha", CabbageIdentifierIds::alpha.toString());
+		set("Corners", CabbageIdentifierIds::corners.toString());
+		set("Shape", CabbageIdentifierIds::shape.toString());
 		
 	}
 };

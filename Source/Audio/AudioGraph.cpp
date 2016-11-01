@@ -42,7 +42,6 @@ AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
 	setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
 	reloadPluginState();
 	startPlaying();
-	
 	bool connection1 = graph.addConnection(1, 0, 2, 0);			
 	bool connection2 = graph.addConnection(1, 1, 2, 1);	
 }
@@ -212,19 +211,7 @@ AudioProcessor* AudioGraph::getProcessor()
 	return processor;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+//========================================================================================
 
 static Array <PluginWindow*> activePluginWindows;
 
@@ -240,7 +227,6 @@ PluginWindow::PluginWindow (Component* const pluginEditor,
 {
     setSize (400, 300);
     setContentOwned (pluginEditor, true);
-    setTopLeftPosition (Random::getSystemRandom().nextInt (500), Random::getSystemRandom().nextInt (500));   
     setVisible (true);
 	setAlwaysOnTop(true);
     activePluginWindows.add (this);
@@ -253,6 +239,13 @@ void PluginWindow::closeCurrentlyOpenWindowsFor (const uint32 nodeId)
             delete activePluginWindows.getUnchecked (i);
 }
 
+Point<int> PluginWindow::getPositionOfCurrentlyOpenWindow(const uint32 nodeId)
+{
+    for (int i = activePluginWindows.size(); --i >= 0;)
+        if (activePluginWindows.getUnchecked(i)->owner->nodeId == nodeId)
+            return Point<int>(activePluginWindows.getUnchecked(i)->getX(), activePluginWindows.getUnchecked(i)->getY());
+	return Point<int>(-1000, -1000);
+}
 void PluginWindow::closeAllCurrentlyOpenWindows()
 {
     if (activePluginWindows.size() > 0)

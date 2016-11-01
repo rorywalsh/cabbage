@@ -31,7 +31,6 @@ CabbageApplication::CabbageApplication()
 void CabbageApplication::initialise (const String& commandLine)
 {
 	
-	
     PropertiesFile::Options options;
     options.applicationName     = "Cabbage2";
     options.filenameSuffix      = "settings";
@@ -696,6 +695,11 @@ void CabbageApplication::saveDocument()
 {
 	if(currentCsdFile.existsAsFile())
 		currentCsdFile.replaceWithText(getCodeEditor()->getDocument().getAllContent());
+		
+	if(cabbageSettings->getUserSettings()->getIntValue("CompileOnSave")==1)
+	{
+		createAudioGraph();
+	}
 }
 
 void CabbageApplication::timerCallback()
@@ -736,6 +740,14 @@ void CabbageApplication::stopCode()
 //==============================================================================
 void CabbageApplication::createAudioGraph()
 {
+	const Point<int> lastPoint = PluginWindow::getPositionOfCurrentlyOpenWindow(1);
+	
+	if(lastPoint.getX()>0)
+	{
+		cabbageSettings->setProperty("windowX", lastPoint.getX());
+		cabbageSettings->setProperty("windowY", lastPoint.getY());
+	}
+	
 	//pluginWindow = nullptr;
 	audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
 	audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
@@ -748,10 +760,12 @@ void CabbageApplication::createAudioGraph()
 }
 
 void CabbageApplication::createEditorForAudioGraphNode()
-{
+{				
 	const bool numParameters = audioGraph->getNumberOfParameters();
 	if(numParameters>0)
 	{
+
+		
 		if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
 		{
 			AudioProcessor* const processor = f->getProcessor();
@@ -760,7 +774,16 @@ void CabbageApplication::createEditorForAudioGraphNode()
 																	 : PluginWindow::Generic;
 
 			if (PluginWindow* const w = PluginWindow::getWindowFor(f, type, audioGraph->graph))
-			w->toFront (true);
+			{				
+				w->toFront (true);
+				Point<int> point(cabbageSettings->getIntProperty("windowX"), 
+										cabbageSettings->getIntProperty("windowY"));	
+				if(point.getY()>0 && point.getX()>0)
+					w->setTopLeftPosition(point.getX(), point.getY());
+			}
+			
+				
+			
 		}
 	}
 		
@@ -787,6 +810,7 @@ void CabbageApplication::shutdown()
 {
 	if(audioGraph->getDeviceManagerSettings().isNotEmpty())
 		cabbageSettings->setProperty("audioSetup", audioGraph->getDeviceManagerSettings());	
+	
 		
     mainDocumentWindow->setMenuBar(nullptr);
 #if JUCE_MAC
@@ -807,6 +831,8 @@ void CabbageApplication::shutdown()
 
     deleteLogger();
 }
+
+
 //==============================================================================
 // This macro generates the main() routine that launches the app.
 START_JUCE_APPLICATION (CabbageApplication)

@@ -33,6 +33,7 @@ void SelectedComponents::itemDeselected (ChildAlias* item)
 }
 
 #include "ComponentLayoutEditor.h"
+
 ChildAlias::ChildAlias (Component* targetChild)
 :   target (targetChild)
 {	

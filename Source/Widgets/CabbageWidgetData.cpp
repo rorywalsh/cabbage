@@ -432,45 +432,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     //===============combobox==================//
     else if(strTokens[0].trim() == "combobox")
     {
-        setProperty(widgetData, "basetype", "interactive");
-
-        top = 10;
-        left = 10;
-        width = 80;
-        height = 22;
-        //add one item by befault, will be overwritten by users values
-        var array;
-        array.append("Item 1");
-        array.append("Item 2");
-        array.append("Item 3");
-        array.append("Item 4");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 80);
-        setProperty(widgetData, CabbageIdentifierIds::height, 20);
-        var channels;
-        channels.append("combochan");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::channeltype, "number");
-        setProperty(widgetData, CabbageIdentifierIds::text, array);
-        setProperty(widgetData, CabbageIdentifierIds::value, 1);
-        setProperty(widgetData, CabbageIdentifierIds::currenttext, "");
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "combobox");
-        setProperty(widgetData, CabbageIdentifierIds::name, "combobox");
-        setProperty(widgetData, CabbageIdentifierIds::comborange, 4);
-        setProperty(widgetData, CabbageIdentifierIds::file, "");
-        var populate;
-        populate.append("");
-        populate.append("");
-        setProperty(widgetData, CabbageIdentifierIds::populate, populate);
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::workingdir, "");
-
+		setComboBoxProperties(widgetData, ID);
     }
 
     //===============label==================//
@@ -1031,6 +993,43 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
 }
 
 //===========================================================================================
+void CabbageWidgetData::setComboBoxProperties(ValueTree widgetData, int ID)
+{
+        setProperty(widgetData, "basetype", "interactive");
+        var array;
+        array.append("Item 1");
+        array.append("Item 2");
+        array.append("Item 3");
+        array.append("Item 4");
+        setProperty(widgetData, CabbageIdentifierIds::top, 10);
+        setProperty(widgetData, CabbageIdentifierIds::left, 10);
+        setProperty(widgetData, CabbageIdentifierIds::width, 80);
+        setProperty(widgetData, CabbageIdentifierIds::height, 20);
+        var channels;
+        channels.append("combochan");
+        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+        setProperty(widgetData, CabbageIdentifierIds::channeltype, "number");
+        setProperty(widgetData, CabbageIdentifierIds::text, array);
+        setProperty(widgetData, CabbageIdentifierIds::value, 1);
+        setProperty(widgetData, CabbageIdentifierIds::currenttext, "");
+        setProperty(widgetData, CabbageIdentifierIds::caption, "");
+        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+		setProperty(widgetData, CabbageIdentifierIds::menucolour, Colours::whitesmoke.toString());
+        setProperty(widgetData, CabbageIdentifierIds::type, "combobox");
+        setProperty(widgetData, CabbageIdentifierIds::name, "combobox");
+        setProperty(widgetData, CabbageIdentifierIds::comborange, 4);
+        setProperty(widgetData, CabbageIdentifierIds::file, "");
+        var populate;
+        populate.append("");
+        populate.append("");
+        setProperty(widgetData, CabbageIdentifierIds::populate, populate);
+        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+        setProperty(widgetData, CabbageIdentifierIds::workingdir, "");
+}
+		
 void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
 {
 	setProperty(widgetData, "basetype", "interactive");
@@ -1244,6 +1243,11 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                 setProperty(widgetData, CabbageIdentifierIds::fontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
 
+            else if(identArray[indx].equalsIgnoreCase("menucolour"))
+            {
+                setProperty(widgetData, CabbageIdentifierIds::menucolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+            }
+			
             else if(identArray[indx].equalsIgnoreCase("tablebackgroundcolour"))
             {
                 setProperty(widgetData, CabbageIdentifierIds::tablebackgroundcolour, getColourFromText(strTokens.joinIntoString(",")).toString());

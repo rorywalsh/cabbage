@@ -1237,10 +1237,9 @@ void CabbageLookAndFeel::drawScrollbarButton (Graphics &g, ScrollBar &scrollbar,
 //======== Popup Menu background ======================================================================
 void CabbageLookAndFeel::drawPopupMenuBackground(Graphics &g, int width, int height)
 {
-    g.setColour (CabbageUtilities::getDarkerBackgroundSkin());
+    g.setColour (findColour(PopupMenu::backgroundColourId));
     g.fillAll();
-
-    g.setColour (CabbageUtilities::getComponentSkin());
+    g.setColour (findColour(PopupMenu::backgroundColourId));
     g.drawRect (0, 0, width, height, 1); //dont want to see top line
 }
 

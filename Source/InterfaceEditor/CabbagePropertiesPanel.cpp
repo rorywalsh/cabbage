@@ -25,6 +25,7 @@ static void addListener(Array<PropertyComponent*> comps, CabbagePropertiesPanel*
 		}				
 	}
 }
+
 //==============================================================================
 static Array<PropertyComponent*> createRotationEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
@@ -78,18 +79,6 @@ static Array<PropertyComponent*> createChannelEditors(CabbagePropertiesPanel* ow
 }
 
 //==============================================================================
-static Array<PropertyComponent*> createTextEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
-{
-    Array<PropertyComponent*> comps;
-	const String text = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
-	const String popupText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
-    comps.add (new TextPropertyComponent(Value (var (text)), "Text", 200, false));
-	comps.add (new TextPropertyComponent(Value (var (popupText)), "popup Text", 100, false));
-	addListener(comps, owner);
-	return comps;
-}
-
-//==============================================================================
 static Array<PropertyComponent*> createButtons (int howMany)
 {
     Array<PropertyComponent*> comps;
@@ -114,11 +103,27 @@ static Array<PropertyComponent*> createChoices (int howMany)
     }
 
     for (int i = 0; i < howMany; ++i)
-        comps.add (new ChoicePropertyComponent (Value (Random::getSystemRandom().nextInt (6)), "Choice Property " + String (i + 1), choices, choiceVars));
+        comps.add (new ChoicePropertyComponent(Value (Random::getSystemRandom().nextInt (6)), "Choice Property " + String (i + 1), choices, choiceVars));
     return comps;
 }
 //==============================================================================
 // Property Panel for editing widgets
+//==============================================================================
+Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors(ValueTree valueTree)
+{
+	Array<PropertyComponent*> comps;
+	const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+	
+	const bool isMultiline = typeOfWidget=="combobox" || typeOfWidget.contains("button") ? true : false;
+	const String text = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
+	comps.add (new TextPropertyComponent(Value (var (text)), "Text", 1000, isMultiline));
+			
+		
+	const String popupText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+	comps.add (new TextPropertyComponent(Value (var (popupText)), "popup Text", 100, false));
+	addListener(comps, this);
+	return comps;
+}
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTree valueTree)
 {
@@ -128,11 +133,23 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 	const String onColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour);
 	const String onFontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::onfontcolour);
 	const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
-	comps.add(new ColourPropertyComponent("Colour: Off", colourString));
-	comps.add(new ColourPropertyComponent("Colour: On", onColourString));
-	comps.add(new ColourPropertyComponent("Font: Off", fontColourString));
-	comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
-
+	const String menuColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour);
+	
+	const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+	if(typeOfWidget=="checkbox" || typeOfWidget.contains("button"))
+	{
+		comps.add(new ColourPropertyComponent("Colour: Off", colourString));
+		comps.add(new ColourPropertyComponent("Colour: On", onColourString));
+		comps.add(new ColourPropertyComponent("Font: Off", fontColourString));
+		comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
+	}
+	else if(typeOfWidget=="combobox")
+	{
+		comps.add(new ColourPropertyComponent("Colour", colourString));
+		comps.add(new ColourPropertyComponent("Font", fontColourString));
+		//comps.add(new ColourPropertyComponent("Menu Colour", menuColourString));
+	}
+	
 	alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
 	alphaValue.addListener(this);
 	comps.add(new SliderPropertyComponent(alphaValue, "Alpha", 0, 1, .01, 1, 1));
@@ -163,6 +180,35 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors(ValueTre
 	addListener(comps, this);
     return comps;
 }
+
+//==============================================================================
+Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree valueTree)
+{
+    Array<PropertyComponent*> comps;
+	var corners = valueTree.getProperty(CabbageIdentifierIds::corners);
+	if(corners.isVoid()==false)
+	{
+		comps.add (new TextPropertyComponent(Value (corners), "Corners", 200, false));
+	}
+	
+	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type)=="checkbox")
+	{	
+		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape)=="square")
+			shapeValue.setValue(0);
+		
+		shapeValue.addListener(this);
+	    StringArray choices;
+		Array<var> choiceVars;
+
+		choices.add ("Square");
+		choices.add ("Circle");
+		choiceVars.add (0);
+		choiceVars.add (1);		
+		comps.add (new ChoicePropertyComponent(shapeValue, "Shape", choices, choiceVars));
+	}
+	addListener(comps, this);
+	return comps;
+}
 //==============================================================================
 CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 :widgetData(widgetData)
@@ -175,8 +221,9 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 	propertyPanel.addSection ("Rotation", createRotationEditors(this, widgetData));
 	propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
 	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
-	propertyPanel.addSection ("Text", createTextEditors(this, widgetData));
+	propertyPanel.addSection ("Text", createTextEditors(widgetData));
 	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
+	propertyPanel.addSection ("Misc", createMiscEditors(widgetData));
 
 	//ropertyPanel.addSection ("Channels", createChoices (16));
 	//propertyPanel.addSection ("Buttons & Toggles", createButtons (20));
@@ -190,8 +237,9 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 	propertyPanel.addSection ("Rotation", createRotationEditors(this, widgetData), false);
 	propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
 	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
-	propertyPanel.addSection ("Text", createTextEditors(this, widgetData));
+	propertyPanel.addSection ("Text", createTextEditors(widgetData));
 	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
+	propertyPanel.addSection ("Misc", createMiscEditors(widgetData));
 	this->setVisible(true);
 	
 }
@@ -206,17 +254,15 @@ void CabbagePropertiesPanel::resized()
 }
 
 //==============================================================================
-void CabbagePropertiesPanel::setPropertyByName(ValueTree widgetData, String name, var value)
+void CabbagePropertiesPanel::setPropertyByName(ValueTree wData, String name, var value)
 {
 	CabbageIdentifierPropertyStringPairs propertyStringPairs;
 	const String identifier = propertyStringPairs.getValue(name, "");
 
 	if(identifier.isNotEmpty())
 	{
-		//CabbageUtilities::debug(value.toString());
 		CabbageWidgetData::setStringProp(widgetData, identifier, value);
-		//update code in editor when changes are made...
-		sendChangeMessage();
+		sendChangeMessage();	//update code in editor when changes are made...
 	}
 }
 
@@ -244,4 +290,9 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 		setPropertyByName(widgetData, "Visible", value.getValue());		
 	else if(value.refersToSameSourceAs(alphaValue))
 		setPropertyByName(widgetData, "Alpha", value.getValue());	
+	else if(value.refersToSameSourceAs(shapeValue))
+	{
+		if(value.getValue().isInt())
+			setPropertyByName(widgetData, "Shape", int(value.getValue())==0 ? "Square" : "Circle");
+	}
 }

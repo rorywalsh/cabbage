@@ -16,6 +16,7 @@
 #include "CabbageAudioParameter.h"
 
 #include "../Widgets/CabbageCheckbox.h"
+#include "../Widgets/CabbageComboBox.h"
 #include "../InterfaceEditor/ComponentLayoutEditor.h"
 #include "../Widgets/CabbageCustomWidgets.h"
 
@@ -32,7 +33,7 @@ static CabbagePluginEditor* getPluginEditor(Component* child)
 
 //==============================================================================
 class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener,
-							 public ChangeBroadcaster, public ComponentListener
+							 public ChangeBroadcaster, public ComboBoxListener
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
@@ -51,7 +52,7 @@ public:
 	void SetupWindow(ValueTree cabbageWidgetData);
 	void InsertSlider(ValueTree cabbageWidgetData){};
     void InsertGroupBox(ValueTree cabbageWidgetData){};
-    void InsertComboBox(ValueTree cabbageWidgetData){};
+    void InsertComboBox(ValueTree cabbageWidgetData);
     void InsertSoundfiler(ValueTree cabbageWidgetData){};
     void InsertSourceButton(ValueTree cabbageWidgetData){};
     void InsertDirectoryList(ValueTree cabbageWidgetData){};
@@ -91,6 +92,7 @@ public:
 	void componentMovedOrResized (Component &component, bool wasMoved, bool wasResized);
 	//=============================================================================
 	void buttonClicked(Button *button);
+	void comboBoxChanged (ComboBox* combo);
 	
     CabbageAudioParameter* getParameterForButton (Button* button)
     {

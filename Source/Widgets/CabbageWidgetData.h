@@ -38,6 +38,7 @@ public:
 	static void setCustomWidgetState(ValueTree widgetData, String lineFromCsd, String identifier=String::empty);
 	//============================================================================
 	static void setCheckBoxProperties(ValueTree widgetData, int ID);
+	static void setComboBoxProperties(ValueTree widgetData, int ID);
 	//============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);

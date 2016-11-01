@@ -64,7 +64,9 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 		else if(widgetType==CabbageIdentifierIds::rslider)
 			InsertSlider(widgets.getChild(widget));
 		else if(widgetType==CabbageIdentifierIds::checkbox)
-			InsertCheckbox(widgets.getChild(widget));		
+			InsertCheckbox(widgets.getChild(widget));
+		else if(widgetType==CabbageIdentifierIds::combobox)
+			InsertComboBox(widgets.getChild(widget));		
 	}
 }
 
@@ -84,11 +86,24 @@ void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 {
 	CabbageCheckbox* checkbox;
 	components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
-	checkbox->addComponentListener(this);
 	checkbox->addListener(this);
 	mainComponent.addAndMakeVisible(checkbox);
 }
 
+void CabbagePluginEditor::InsertComboBox(ValueTree cabbageWidgetData)
+{
+	CabbageComboBox* combobox;
+	components.add(combobox = new CabbageComboBox(cabbageWidgetData, this));
+	combobox->addListener(this);
+	mainComponent.addAndMakeVisible(combobox);
+}
+
+//======================================================================================================
+void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
+{
+	
+}
+ 
 void CabbagePluginEditor::buttonClicked(Button* button)
 {	
 	ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
@@ -123,15 +138,5 @@ void CabbagePluginEditor::updateLayoutEditorFrames()
 {
 	if(isGUIEnabled)
 		layoutEditor.updateFrames();
-}
-
-void CabbagePluginEditor::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
-{
-//	CabbageUtilities::debug(component.getName());
-//	ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, component.getName());
-//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, component.getX());
-//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, component.getY());
-//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, component.getWidth());
-//	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, component.getHeight());
 }
 
