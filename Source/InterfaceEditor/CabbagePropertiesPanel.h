@@ -37,11 +37,17 @@ public:
 	Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
 	Array<PropertyComponent*> createMiscEditors(ValueTree valueTree);
 	Value isActiveValue, isVisibleValue, alphaValue, shapeValue, textItems;;
-	Colour backgroundColour;
+	Colour backgroundColour, borderColour;
 	
 	void setBackgroundColour(Colour colour)
 	{
 		backgroundColour = colour;
+		repaint();
+	}
+	
+	void setBorderColour(Colour colour)
+	{
+		borderColour = colour;
 		repaint();
 	}
 private:

@@ -81,6 +81,7 @@ public:
 	//as is done in CabbagePluginprocessor. 
 	virtual void sendChannelDataToCsound(){};
 	virtual void receiveChannelDataFromCsound(){};
+	virtual void initAllCsoundChannels(ValueTree cabbageData);
 	//=============================================================================
 	String getCsoundOutput();
 

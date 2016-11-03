@@ -11,6 +11,7 @@
 #include "CsoundPluginProcessor.h"
 #include "CsoundPluginEditor.h"
 #include "../Utilities/CabbageUtilities.h"
+#include "../Widgets/CabbageWidgetData.h"
 
 
 //==============================================================================
@@ -74,7 +75,81 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
 		editorBeingDeleted (this->getActiveEditor());
     }
 }
+//==============================================================================
+void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
+{
+	for(int i = 0; i < cabbageData.getNumChildren(); i++)
+	{
+		const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type);
+		if(CabbageWidgetData::getStringProp(cabbageData.getChild(i), "channeltype")=="string")
+		{
+//					getCsound()->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).toUTF8(),
+//        									CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text), 
+//											CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value)-1).toUTF8().getAddress());
+					
+		}
+        else
+        {
+            if(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type)==CabbageIdentifierIds::hrange ||
+                    CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type)==CabbageIdentifierIds::vrange)
+            {
+                csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel, 0).toUTF8(), 
+								   CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::minvalue));
+                csound->SetChannel( CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel, 1).toUTF8(), 
+									CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::maxvalue));
+            }
+            else
+				csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel, 0).toUTF8(), 
+								   CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value));
+        }
 
+	}
+		
+		
+		
+/*	
+    //init all channels with their init val, and set parameters
+    for(int i=0; i<guiCtrls.size(); i++)
+    {
+        //		Logger::writeToLog(guiCtrls.getReference(i).getStringProp(CabbageIDs::channel)+": "+String(guiCtrls[i].getNumProp(CabbageIDs::value)));
+        if(guiCtrls[i].getStringProp("channeltype")=="string")
+            //deal with combobox strings..
+            csound->SetChannel(guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
+        									guiCtrls.getReference(i).getStringArrayPropValue("text", guiCtrls[i].getNumProp(CabbageIDs::value)-1).toUTF8().getAddress());
+        else
+        {
+            if(guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::hrange ||
+                    guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::vrange)
+            {
+                csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 0).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::minvalue));
+                csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 1).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::maxvalue));
+            }
+            else
+                csound->SetChannel( guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::value));
+        }
+
+        if(guiCtrls[i].getStringProp(CabbageIDs::type)!="hrange" && guiCtrls.getReference(i).getStringProp(CabbageIDs::type)!="vrange")
+        {
+
+            messageQueue.addOutgoingChannelMessageToQueue(guiCtrls[i].getStringProp(CabbageIDs::channel),
+                    guiCtrls[i].getNumProp(CabbageIDs::value), guiCtrls[i].getStringProp(CabbageIDs::type));
+        }
+    }
+
+    //init all channels with their init val, and set parameters
+    for(int i=0; i<guiLayoutCtrls.size(); i++)
+    {
+        if(guiLayoutCtrls[i].getStringProp(CabbageIDs::type).equalsIgnoreCase("texteditor"))
+            csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
+                               guiLayoutCtrls[i].getStringProp(CabbageIDs::text).toUTF8().getAddress());
+        if(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).isNotEmpty())
+            //deal with combobox strings..
+            csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).toUTF8(), "");
+    }
+    this->updateCabbageControls();
+    updateHostDisplay();
+	 * */
+}
 //==============================================================================
 String CsoundPluginProcessor::getCsoundOutput()
 {

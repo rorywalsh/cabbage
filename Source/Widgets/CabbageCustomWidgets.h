@@ -23,7 +23,7 @@ public:
 	CabbageWidgetBase(){}
 	~CabbageWidgetBase(){}
 
-	int pivotx, pivoty, visible, active;
+	int pivotx, pivoty, visible, active, value;
     float rotate, alpha, currentValue;
 	String tooltipText, text, channel;
 	

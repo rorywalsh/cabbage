@@ -77,7 +77,7 @@ float CabbageWidgetBase::getValue(ValueTree data)
 {
 	if(currentValue!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value))
 	{
-		currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::text);
+		currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value);
 		return currentValue;
 	}
 	else

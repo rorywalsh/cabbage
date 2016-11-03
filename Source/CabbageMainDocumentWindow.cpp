@@ -105,6 +105,7 @@ void CabbageMainDocumentWindow::updateEditorColourScheme()
 	this->getLookAndFeel().setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelText, Colour(50,50,50)));
 	this->lookAndFeelChanged();
 	mainContentComponent->propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyPanelBackground, Colour(50,50,50)));
+	mainContentComponent->propertyPanel->setBorderColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::consoleOutline, Colour(50,50,50)));
 	mainContentComponent->editorAndConsole->editor->updateColourScheme();
 	mainContentComponent->editorAndConsole->outputConsole->updateColourScheme();
 	mainContentComponent->editorAndConsole->horizontalResizerBar.repaint();	

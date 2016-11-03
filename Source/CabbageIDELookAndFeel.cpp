@@ -207,7 +207,7 @@ void CabbageIDELookAndFeel::drawScrollbar (Graphics &g, ScrollBar &scrollbar, in
     g.fillAll();
 
     g.setColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::codeBackground, Colour(250,250,250)).contrasting(.5f));
-    g.drawRect (x, y, width, height);
+    //g.drawRect (x, y, width, height);
 
     if (isScrollbarVertical == false) //horizontal
         g.fillRoundedRectangle (thumbStartPosition+3, 3, jmax(0, thumbSize-6), height-6, 5);

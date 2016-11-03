@@ -62,6 +62,7 @@ CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
     setAlpha(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::alpha));
     Array<File> dirFiles;
 
+
     if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file).isNotEmpty())
     {
         clear(dontSendNotification);
@@ -111,6 +112,8 @@ CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
             addItem(fileNames[i], i+1);
     }
 
+
+	CabbageUtilities::debug(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1);
     setSelectedItemIndex(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1, isPresetCombo ? sendNotification : dontSendNotification);	
 	setBounds(CabbageWidgetData::getBounds(wData));
 
@@ -127,9 +130,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {	
 	if(prop==CabbageIdentifierIds::value)
 	{
-		int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
-//		setToggleState(getValue(valueTree)==1 ? true : false, dontSendNotification);
-		setSelectedItemIndex(value-1, dontSendNotification);	
+		//keeps getting 0 on startup...
+		int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+		setSelectedItemIndex(value-1, sendNotification);	
 	}
 
 	else

@@ -24,7 +24,7 @@ PropertyComponent(name, 25)
 void ColourPropertyComponent::paint(Graphics &g)
 {
 	g.setColour(getLookAndFeel().findColour(PropertyComponent::ColourIds::backgroundColourId));
-	g.fillRect(getLocalBounds().reduced(1));
+	g.fillRect(getLocalBounds().reduced(0));
 
 	g.setColour (getLookAndFeel().findColour(PropertyComponent::ColourIds::labelTextColourId));
     g.setFont (getHeight()*.6);

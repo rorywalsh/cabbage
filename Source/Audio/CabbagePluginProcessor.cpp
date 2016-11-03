@@ -22,11 +22,14 @@ csdFile(inputFile),
 cabbageWidgets("CabbageWidgetData")
 {	
 	
+	//initAllCsoundChannels(cabbageWidgets);
 	if(inputFile.existsAsFile())
 	{
 		parseCsdFile();
 		createParameters();
 	}
+	
+	initAllCsoundChannels(cabbageWidgets);
 
 }
 
@@ -80,7 +83,7 @@ void CabbagePluginProcessor::createParameters()
 			else if(typeOfWidget==CabbageIdentifierIds::combobox)
 			{
 				StringArray textItems = CabbageWidgetData::getStringArrayProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::text);
-				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, textItems.size(), value));
+				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));
 			}
 		}
 	}	
@@ -100,7 +103,6 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor()
 //==============================================================================
 void CabbagePluginProcessor::receiveChannelDataFromCsound()
 {
-
 	for( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
 	{
 		const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
