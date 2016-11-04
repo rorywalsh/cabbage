@@ -693,6 +693,10 @@ bool CabbageApplication::openFile (const File& file, String type)
 //==============================================================================
 void CabbageApplication::saveDocument()
 {
+		
+	isGUIEnabled = false;
+	getPluginEditor()->enableGUIEditor(false);
+	
 	if(currentCsdFile.existsAsFile())
 		currentCsdFile.replaceWithText(getCodeEditor()->getDocument().getAllContent());
 		

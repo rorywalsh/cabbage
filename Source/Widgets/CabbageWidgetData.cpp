@@ -2242,6 +2242,21 @@ String CabbageWidgetData::getBoundsText(Rectangle<int> rect)
 }
 
 //===================================================================
+String CabbageWidgetData::getValueText(ValueTree widgetData, String identifier)
+{
+	ValueTree tempData("tempTree");
+	const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+	CabbageWidgetData::setWidgetState(tempData, type, -99);
+	
+	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)!=CabbageWidgetData::getNumProp(tempData, CabbageIdentifierIds::value))
+	{
+		return "value(" + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)) + "), ";
+	}
+	
+	return String::empty;
+}
+
+//===================================================================
 String CabbageWidgetData::getMultiItemText(ValueTree widgetData, String identifier)
 {
 	var items = CabbageWidgetData::getProperty(widgetData, identifier);
@@ -2318,6 +2333,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
 	String cabbageCode = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type) + " " 
 						 + CabbageWidgetData::getBoundsText(CabbageWidgetData::getBounds(widgetData)) 
 						 + getMultiItemText(widgetData, "channel")
+						 + getValueText(widgetData, "value")
 						 + getMultiItemText(widgetData, "text")
 						 + getColoursText(widgetData);
 	return cabbageCode;
