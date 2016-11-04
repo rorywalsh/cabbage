@@ -120,6 +120,10 @@
             file="Source/CabbageApplication.h"/>
       <FILE id="TLpv5E" name="CabbageCommonHeaders.h" compile="0" resource="0"
             file="Source/CabbageCommonHeaders.h"/>
+      <FILE id="jtLfNB" name="CabbageGenericPluginLookAndFeel.cpp" compile="1"
+            resource="0" file="Source/CabbageGenericPluginLookAndFeel.cpp"/>
+      <FILE id="k6ggNj" name="CabbageGenericPluginLookAndFeel.h" compile="0"
+            resource="0" file="Source/CabbageGenericPluginLookAndFeel.h"/>
       <FILE id="zj2ZFW" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
             file="Source/CabbageIDELookAndFeel.cpp"/>
       <FILE id="b6HxSu" name="CabbageIDELookAndFeel.h" compile="0" resource="0"

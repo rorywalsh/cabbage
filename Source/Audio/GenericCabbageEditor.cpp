@@ -12,9 +12,11 @@ Author:  rory
 #include "GenericCabbagePluginProcessor.h"
 
 GenericCabbageEditor::GenericCabbageEditor(AudioProcessor& parent)
-: AudioProcessorEditor (parent),
+: AudioProcessorEditor (parent), lookAndFeel(),
 noParameterLabel ("noparam", "No Csound channels found in orchestra. Please delcare using the chn, or chnexport opecodes.")
 {
+	
+	setLookAndFeel(&lookAndFeel);
 	const OwnedArray<AudioProcessorParameter>& params = parent.getParameters();
 	
 	for (int i = 0; i < params.size(); ++i)
@@ -23,6 +25,7 @@ noParameterLabel ("noparam", "No Csound channels found in orchestra. Please delc
 		{
 			Slider* aSlider;
 			paramSliders.add (aSlider = new Slider (param->name));
+			aSlider->setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxRight, false, 100, 25);
 			aSlider->setRange (param->range.start, param->range.end);
 			aSlider->setSliderStyle (Slider::LinearHorizontal);
 			aSlider->setValue (*param);

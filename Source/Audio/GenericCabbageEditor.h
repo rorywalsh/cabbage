@@ -24,6 +24,7 @@
  */
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "../CabbageGenericPluginLookAndFeel.h"
 
 class GenericCabbagePluginProcessor;
 
@@ -35,8 +36,8 @@ class GenericCabbageEditor : public AudioProcessorEditor,
 public:
     enum
     {
-        kParamControlHeight = 40,
-        kParamLabelWidth = 80,
+        kParamControlHeight = 30,
+        kParamLabelWidth = 60,
         kParamSliderWidth = 300
     };
 
@@ -48,8 +49,9 @@ public:
 
     void paint (Graphics& g) override
     {
-        g.setColour (Colours::white);
-        g.fillRect (getLocalBounds());
+        //g.setColour (Colour(58, 110, 182));
+        g.setColour(Colours::black.brighter(.4f));
+		g.fillRect (getLocalBounds());
     }
 
     //==============================================================================
@@ -121,4 +123,5 @@ private:
     OwnedArray<Label> paramLabels;
     OwnedArray<Button> paramToggles;  // [8]
     Array<Component*> controls;       // [9]
+	CabbageGenericPluginLookAndFeel lookAndFeel;
 };

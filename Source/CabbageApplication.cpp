@@ -782,6 +782,7 @@ void CabbageApplication::createEditorForAudioGraphNode()
 				w->toFront (true);
 				Point<int> point(cabbageSettings->getIntProperty("windowX"), 
 										cabbageSettings->getIntProperty("windowY"));	
+										
 				if(point.getY()>0 && point.getX()>0)
 					w->setTopLeftPosition(point.getX(), point.getY());
 			}

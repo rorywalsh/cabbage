@@ -144,6 +144,7 @@ public:
     void moved() override;
     void closeButtonPressed() override;
 
+
 private:
     AudioProcessorGraph& graph;
     AudioProcessorGraph::Node* owner;

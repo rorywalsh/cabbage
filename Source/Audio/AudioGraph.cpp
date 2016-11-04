@@ -219,7 +219,7 @@ PluginWindow::PluginWindow (Component* const pluginEditor,
                             AudioProcessorGraph::Node* const o,
                             WindowFormatType t,
                             AudioProcessorGraph& audioGraph)
-    : DocumentWindow (pluginEditor->getName(), Colours::lightblue,
+    : DocumentWindow (pluginEditor->getName(), Colours::lightgrey,
                       DocumentWindow::minimiseButton | DocumentWindow::closeButton),
       graph (audioGraph),
       owner (o),
@@ -228,6 +228,7 @@ PluginWindow::PluginWindow (Component* const pluginEditor,
     setSize (400, 300);
     setContentOwned (pluginEditor, true);
     setVisible (true);
+
 	setAlwaysOnTop(true);
     activePluginWindows.add (this);
 }
