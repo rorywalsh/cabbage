@@ -69,7 +69,7 @@ void CabbageWidgetBase::setChannel(ValueTree data)
 	if(channel != CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel))
 	{
 		channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
-		CabbageWidgetData::setStringProp(data, CabbageIdentifierIds::channel, channel);
+		CabbageWidgetData::setProperty(data, CabbageIdentifierIds::channel, channel);
 	}	
 }
 

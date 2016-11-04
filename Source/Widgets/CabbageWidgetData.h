@@ -47,13 +47,10 @@ public:
 	static Rectangle<int> getBounds(ValueTree widgetData);
 	static void setProperty(ValueTree widgetData, Identifier name, const var &value);
 	static var getProperty(ValueTree widgetData, Identifier name);
+	//============================================================================
 	static String getBoundsText(Rectangle<int> rect);
-	static String getChannelText(StringArray channels);
+	static String getMultiItemText(ValueTree widgetData, String identifier);
 	static String getColoursText(ValueTree widgetData);
-	
-	static StringArray getStringArrayProp(ValueTree widgetData, Identifier prop);
-	static void setStringArrayProp(ValueTree widgetData, Identifier prop);
-
 	//============================================================================
 
 	static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);
@@ -63,11 +60,11 @@ public:
     float getTableChannelValues(int index);
     void addTableChannelValues();
 
-    static String getPropsString();
+   // static String getPropsString();
     static String getColourProp(ValueTree widgetData, Identifier prop);
-    static float getNumPropVal(ValueTree widgetData, Identifier prop);
+  //  static float getNumPropVal(ValueTree widgetData, Identifier prop);
     void scaleWidget(Point<float> scale);
-    void setNumPropVal(Identifier prop, float val);
+  //  void setNumPropVal(Identifier prop, float val);
     static String getCabbageCodeFromIdentifiers(ValueTree props);
     static String getStringForIdentifier(var props, String identifier, String type);
 
@@ -80,15 +77,6 @@ public:
     static float getSkewFromText(String text);
     static var getVarArrayFromText(String text);
     
-    String getStringArrayPropValue(Identifier prop, int index);
-    int getIntArrayPropValue(Identifier prop, int index);
-    Array<int> getIntArrayProp(Identifier prop);
-    var getVarArrayProp(Identifier prop);
-    float getFloatArrayPropValue(Identifier prop, int index);
-    Array<float> getFloatArrayProp(Identifier prop);
-    void setStringArrayPropValue(Identifier prop, int index, String value);
-    void setStringArrayProp(Identifier prop, var value);
-
 
 };
 

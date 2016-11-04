@@ -14,7 +14,7 @@
 // combobox widget
 //================================================================================================================
 CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
-    name( CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
+    name(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
     caption(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::caption)),
     colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
     fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
@@ -77,11 +77,11 @@ CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
     else if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         clear(dontSendNotification);
-		StringArray items = CabbageWidgetData::getStringArrayProp(wData, CabbageIdentifierIds::text);		
+		var items = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::text);		
 		
         for(int i=0; i<items.size(); i++)
         {
-            const String item  = items[i];
+            const String item  = items[i].toString();
             addItem(item, i+1);
         }		
     }

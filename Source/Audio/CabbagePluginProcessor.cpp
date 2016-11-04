@@ -82,7 +82,6 @@ void CabbagePluginProcessor::createParameters()
 				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));	
 			else if(typeOfWidget==CabbageIdentifierIds::combobox)
 			{
-				StringArray textItems = CabbageWidgetData::getStringArrayProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::text);
 				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));
 			}
 		}

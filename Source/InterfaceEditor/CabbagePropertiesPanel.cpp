@@ -70,10 +70,10 @@ static Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owne
 static Array<PropertyComponent*> createChannelEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
-	const String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-	const String identChannel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::identchannel);
-    comps.add (new TextPropertyComponent(Value (var (channel)), "Channel", 200, false));
-	comps.add (new TextPropertyComponent(Value (var (identChannel)), "Ident Channel", 100, false));
+	var channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+	var identChannel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::identchannel);
+    comps.add (new TextPropertyComponent(Value(channel), "Channel", 200, false));
+	comps.add (new TextPropertyComponent(Value(identChannel), "Ident Channel", 100, false));
 	addListener(comps, owner);
 	return comps;
 }
@@ -115,9 +115,35 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors(ValueTree va
 	const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 	
 	const bool isMultiline = typeOfWidget=="combobox" || typeOfWidget.contains("button") ? true : false;
-	const String text = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
-	comps.add (new TextPropertyComponent(Value (var (text)), "Text", 1000, isMultiline));
-			
+	
+	if(isMultiline==true)
+	{
+		StringArray items;
+		const Array<var>* array = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::text).getArray();
+		if(array)
+		{
+			for( int i = 0 ; i < array->size(); i++)
+			{
+				items.add(array->getReference(i).toString());
+			}
+					
+			comps.add (new TextPropertyComponent(Value (var (items.joinIntoString("\n"))), "Text", 1000, isMultiline));
+		}
+		else
+		{
+			var text = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::text);
+			StringArray stringArray;
+			stringArray.addLines(text.toString());
+			CabbageUtilities::debug(stringArray.joinIntoString("\n"));
+			comps.add (new TextPropertyComponent(Value (var (stringArray.joinIntoString("\n"))), "Text", 1000, isMultiline));
+		}
+		
+	}
+	else
+	{
+		const String text = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
+		comps.add (new TextPropertyComponent(Value (var (text)), "Text", 1000, isMultiline));
+	}		
 		
 	const String popupText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
 	comps.add (new TextPropertyComponent(Value (var (popupText)), "popup Text", 100, false));
@@ -263,7 +289,7 @@ void CabbagePropertiesPanel::setPropertyByName(ValueTree wData, String name, var
 
 	if(identifier.isNotEmpty())
 	{
-		CabbageWidgetData::setStringProp(widgetData, identifier, value);
+		CabbageWidgetData::setProperty(widgetData, identifier, value);
 		sendChangeMessage();	//update code in editor when changes are made...
 	}
 }
