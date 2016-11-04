@@ -2242,20 +2242,42 @@ String CabbageWidgetData::getBoundsText(Rectangle<int> rect)
 }
 
 //===================================================================
-String CabbageWidgetData::getValueText(ValueTree widgetData, String identifier)
+String CabbageWidgetData::getNumvericalValueText(ValueTree widgetData, String identifier)
 {
 	ValueTree tempData("tempTree");
 	const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 	CabbageWidgetData::setWidgetState(tempData, type, -99);
 	
-	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)!=CabbageWidgetData::getNumProp(tempData, CabbageIdentifierIds::value))
+	if(CabbageWidgetData::getNumProp(widgetData, identifier)!=CabbageWidgetData::getNumProp(tempData, identifier))
 	{
-		return "value(" + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)) + "), ";
+		return identifier + "(" + String(CabbageWidgetData::getNumProp(widgetData, identifier)) + "), ";
 	}
 	
 	return String::empty;
 }
 
+//===================================================================
+String CabbageWidgetData::getRotateText(ValueTree widgetData)
+{
+	ValueTree tempData("tempTree");
+	const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+	CabbageWidgetData::setWidgetState(tempData, type, -99);
+	
+	
+	
+	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::rotate)!=CabbageWidgetData::getNumProp(tempData, CabbageIdentifierIds::rotate)
+		|| CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::pivotx)!=CabbageWidgetData::getNumProp(tempData, CabbageIdentifierIds::pivotx)
+		|| CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::pivoty)!=CabbageWidgetData::getNumProp(tempData, CabbageIdentifierIds::pivoty))
+	{
+		const float rotate = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::rotate);
+		const float pivotx = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::pivotx);
+		const float pivoty = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::pivoty);
+		
+		return "rotate(" + String(rotate) + ", " + String(pivotx) + ", " + String(pivoty) + "), ";
+	}
+	
+	return String::empty;
+}
 //===================================================================
 String CabbageWidgetData::getMultiItemText(ValueTree widgetData, String identifier)
 {
@@ -2333,8 +2355,13 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
 	String cabbageCode = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type) + " " 
 						 + CabbageWidgetData::getBoundsText(CabbageWidgetData::getBounds(widgetData)) 
 						 + getMultiItemText(widgetData, "channel")
-						 + getValueText(widgetData, "value")
+						 + getNumvericalValueText(widgetData, "value")
 						 + getMultiItemText(widgetData, "text")
-						 + getColoursText(widgetData);
+						 + getColoursText(widgetData)
+						 + getRotateText(widgetData)
+						 + getNumvericalValueText(widgetData, "alpha")
+						 + getNumvericalValueText(widgetData, "active")
+						 + getNumvericalValueText(widgetData, "visible")
+						 + getMultiItemText(widgetData, "popuptext");
 	return cabbageCode;
 }

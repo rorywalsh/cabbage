@@ -48,6 +48,7 @@ public:
 	Component mainComponent;						
 	CabbageLookAndFeel lookAndFeel;					
 
+	TooltipWindow tooltipWindow;
 	//==============================================================================
 	void SetupWindow(ValueTree cabbageWidgetData);
 	void InsertSlider(ValueTree cabbageWidgetData){};

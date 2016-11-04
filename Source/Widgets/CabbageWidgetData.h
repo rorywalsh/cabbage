@@ -51,7 +51,8 @@ public:
 	static String getBoundsText(Rectangle<int> rect);
 	static String getMultiItemText(ValueTree widgetData, String identifier);
 	static String getColoursText(ValueTree widgetData);
-	static String getValueText(ValueTree widgetData, String identifier);
+	static String getNumvericalValueText(ValueTree widgetData, String identifier);
+	static String getRotateText(ValueTree widgetData);
 	//============================================================================
 
 	static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);

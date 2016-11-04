@@ -22,7 +22,6 @@ colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
 fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)),
 oncolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)),
 isRect(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square")),
-tooltipText(String::empty),
 corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
 ToggleButton(""),
 widgetData(wData)
@@ -100,18 +99,20 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 		
 		CabbageUtilities::debug(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::corners));
 		
-		setButtonText(getText(valueTree));
+		setButtonText(getString(valueTree, "text"));		
+		setTooltip(getString(valueTree, "popuptext"));
 		
-
-		if(tooltipText!=CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
-		{
-			tooltipText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
-			setTooltip(tooltipText);
-		}
+//
+//		if(tooltipText!=CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext))
+//		{
+//			tooltipText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+//			setTooltip(tooltipText);
+//		}
 	}
 	
 	repaint();	
 
 }
+
 
 

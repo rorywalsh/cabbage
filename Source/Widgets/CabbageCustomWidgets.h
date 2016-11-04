@@ -38,11 +38,10 @@ public:
 	}
 	
 	void handleCommonUpdates(Component* child, ValueTree data);
-	String getTooltipText(ValueTree data);
-	String getText(ValueTree data);
+
+	String getString(ValueTree data, String identifier);
 	void setChannel(ValueTree value);
 	float getValue(ValueTree data);
-
 };
 
 // Add any new custom widgets here to avoid having to edit makefiles and projects

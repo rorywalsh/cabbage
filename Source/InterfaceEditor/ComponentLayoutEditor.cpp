@@ -65,15 +65,26 @@ void ChildAlias::resized ()
 
 void ChildAlias::paint (Graphics& g)
 {
-	Colour c;
-	if (interest)
-		c = findColour (ComponentLayoutEditor::aliasHoverColour,true);
-	else c = findColour (ComponentLayoutEditor::aliasIdleColour,true);
-	g.setColour (c.withMultipliedAlpha (0.3f));
-	g.fillAll ();
+	
+	Colour c = Colours::white;
+	if (interest=="selected")
+	{
+		Path selectedRect;
+		selectedRect.addRectangle(getLocalBounds().reduced(2));
+		g.setColour(c);
+		
+
+		const float dashLengths[] = { 10.0f, 10.0f };
+		PathStrokeType stroke(1.0, PathStrokeType::mitered);
+		stroke.createDashedStroke (selectedRect, selectedRect, dashLengths, 2);		
+        g.strokePath(selectedRect, stroke);
+	}
+
 	g.setColour (c);
 	g.drawRect (0,0,getWidth(),getHeight(),1);
 }
+
+
 
 const Component* ChildAlias::getTargetChild ()
 {
@@ -141,6 +152,9 @@ void ChildAlias::mouseDown (const MouseEvent& e)
 	getPluginEditor()->setCurrentlySelectedComponent(componentName);
 	getPluginEditor()->sendChangeMessage();
 	
+	getComponentLayoutEditor()->resetAllInterest();
+	interest = "selected";
+	
 }
 
 CabbagePluginEditor* ChildAlias::getPluginEditor()
@@ -192,13 +206,11 @@ void ChildAlias::mouseDrag (const MouseEvent& e)
 
 void ChildAlias::mouseEnter (const MouseEvent& e)
 {
-	interest = true;
 	repaint ();
 }
 
 void ChildAlias::mouseExit (const MouseEvent& e)
 {
-	interest = false;
 	repaint ();
 }
 
@@ -217,7 +229,7 @@ ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)
 :   target (0), widgetData(valueTree)
 {
 	setColour (ComponentLayoutEditor::aliasIdleColour,Colours::lightgrey.withAlpha(0.2f));
-	setColour (ComponentLayoutEditor::aliasHoverColour,Colours::white.withAlpha(0.5f));
+	setColour (ComponentLayoutEditor::aliasHoverColour, Colours::yellow.withAlpha(0.5f));
     setInterceptsMouseClicks (false, true);	
 }
 
@@ -239,6 +251,15 @@ void ComponentLayoutEditor::paint (Graphics& g)
 {
 }
 
+void ComponentLayoutEditor::resetAllInterest()
+{    
+	for(int i=0; i<frames.size(); i++)
+    {
+		if(ChildAlias* child = dynamic_cast<ChildAlias*>(frames[i]))
+			child->setInterest("none");
+    }
+    repaint();
+}
 //==================================================================================================================
 void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
 {
@@ -246,7 +267,7 @@ void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
     {
 		if(ChildAlias* child = dynamic_cast<ChildAlias*>(selectedFilters.getSelectedItem(i)))
 		{
-			child->setInterest(true);
+			child->setInterest("selected");
 			child->repaint();
 		}
         selectedCompsOrigCoordinates.add(selectedFilters.getSelectedItem(i)->getBounds());
@@ -270,16 +291,18 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 {
     selectedFilters.deselectAll();
     boundsForDuplicatedCtrls.clear();
-    for(int i=0; i<getNumChildComponents(); i++)
+	
+	for(int i=0; i<getNumChildComponents(); i++)
     {
         if(ChildAlias* child = dynamic_cast<ChildAlias*>(getChildComponent(i)))
 		{
-			child->setInterest(false);
+			child->setInterest("none");
 			child->repaint();
 		}
-		//->getProperties().set("interest", "none");
-        //getChildComponent(i)->repaint();
     }
+
+	
+
 
     selectedCompsOrigCoordinates.clear();
     //selectedLineNumbers.clear();

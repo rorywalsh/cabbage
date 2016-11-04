@@ -35,6 +35,11 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
+	String getTooltip()
+	{
+		return tooltipText;
+	}
+
 	ValueTree widgetData;
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);

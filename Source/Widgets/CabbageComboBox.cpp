@@ -141,6 +141,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 		setColour(ComboBox::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
 		setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 		setColour(PopupMenu::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour)));
+		
+		setTooltip(getString(valueTree, "popuptext"));
+		
 		if(refresh != CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles))
 		{
 //			refresh = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::refreshfiles);

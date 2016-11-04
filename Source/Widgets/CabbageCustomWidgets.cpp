@@ -50,18 +50,23 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data)
 		alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
 		child->setAlpha(alpha);
 	}	
+	
+	if(alpha != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha))
+	{
+		alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
+	}
 }
 
 
-String CabbageWidgetBase::getText(ValueTree data)
+String CabbageWidgetBase::getString(ValueTree data, String identifier)
 {
-	if(text!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text))
+	if(text!=CabbageWidgetData::getStringProp(data, identifier))
 	{
-		text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
+		text = CabbageWidgetData::getStringProp(data, identifier);
 		return text;
 	}
-	else
-		return text;
+
+	return text;
 }
 
 void CabbageWidgetBase::setChannel(ValueTree data)
@@ -80,8 +85,8 @@ float CabbageWidgetBase::getValue(ValueTree data)
 		currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value);
 		return currentValue;
 	}
-	else
-		return currentValue;
+
+	return currentValue;
 }
 
 //add any new custom widgets here to avoid having to eidt makefiles and projects

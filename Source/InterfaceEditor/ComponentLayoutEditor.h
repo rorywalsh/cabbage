@@ -55,7 +55,7 @@ class ChildAlias   :   public Component
 		void mouseUp (const MouseEvent& e);
 		void mouseDrag (const MouseEvent& e);
 		
-		void setInterest(bool isInteresting)
+		void setInterest(String isInteresting)
 		{
 			interest = isInteresting;
 		}
@@ -63,13 +63,14 @@ class ChildAlias   :   public Component
 		ComponentLayoutEditor* getComponentLayoutEditor();
 		CabbagePluginEditor* getPluginEditor();
 		void updateBoundsDataForTarget();
+
 		
     private:
 		CriticalSection bounds;
 		ScopedPointer<ComponentBoundsConstrainer>  constrainer;
     	ComponentDragger dragger;
 		SafePointer<Component> target;
-		bool interest;
+		String interest;
 		bool userAdjusting;
 		Rectangle<int> startBounds;
 		ScopedPointer<ComponentBoundsConstrainer> resizeContainer; 
@@ -110,6 +111,7 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 		Array<Rectangle<int>> selectedCompsNewCoordinates;
 		Array<juce::Rectangle <int> > boundsForDuplicatedCtrls;
 		Point<int> currentMouseCoors;
+		void resetAllInterest();
 		
 	
 	private:
