@@ -112,7 +112,7 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
 		mainDocumentWindow->mainContentComponent->propertyPanel->updateProperties(editor->getCurrentlySelectedComponent());
 		const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
 		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
-		mainDocumentWindow->mainContentComponent->editorAndConsole->editor->insertCodeAndHighlightLine(lineNumber, newText);
+		mainDocumentWindow->mainContentComponent->editorAndConsole[0]->editor->insertCodeAndHighlightLine(lineNumber, newText);
     }
 
     else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(panel)) // update Cabbage syntax when a user changes a property
@@ -123,7 +123,7 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
 			
 			const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
 			
-			mainDocumentWindow->mainContentComponent->editorAndConsole->editor->insertCodeAndHighlightLine(lineNumber, newText);
+			mainDocumentWindow->mainContentComponent->editorAndConsole[0]->editor->insertCodeAndHighlightLine(lineNumber, newText);
 		}
     }
 }
@@ -383,6 +383,10 @@ void CabbageApplication::getAllCommands (Array <CommandID>& commands)
 //==============================================================================
 void CabbageApplication::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
+	bool shouldShowEditMenu = false;
+	if(getCodeEditor() != nullptr)
+		shouldShowEditMenu = true;
+	
     switch (commandID)
     {
     case CommandIDs::newProject:
@@ -441,68 +445,68 @@ void CabbageApplication::getCommandInfo (CommandID commandID, ApplicationCommand
     case CommandIDs::undo:
         result.setInfo (String("Undo"), String("Undo last action"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('z', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::redo:
         result.setInfo (String("Redo"), String("Redo last action"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('z', ModifierKeys::shiftModifier | ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::cut:
         result.setInfo (String("Cut"), String("Cut selection"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('x', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::copy:
         result.setInfo (String("Copy"), String("Copy selection"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('c', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::paste:
         result.setInfo (String("Paste"), String("Paste selection"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('v', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::columnEdit:
         result.setInfo (String("Column Edit mode"), String("Column Edit"), CommandCategories::edit, 0);
         //result.setTicked(isColumnModeEnabled);
         result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::toggleComments:
         result.setInfo (String("Toggle comments"), String("Toggle comments"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('/', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::searchReplace:
         result.setInfo(String("Search or Replace"), String("Search Replace"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('f', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::zoomIn:
         result.setInfo (String("Zoom in"), String("Zoom in"), CommandCategories::edit, 0);
         result.addDefaultKeypress('[', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::zoomOut:
         result.setInfo (String("Zoom out"), String("Zoom out"), CommandCategories::edit, 0);
         result.addDefaultKeypress (']', ModifierKeys::commandModifier);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::csoundMode:
         result.setInfo (String("Csound mode"), String("Csound only mode"), CommandCategories::edit, 0);
         result.setTicked(getCurrentInterfaceMode()==CabbageInterfaceModes::csound);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::genericMode:
         result.setInfo (String("Generic mode"), String("Generic interface mode"), CommandCategories::edit, 0);
         result.setTicked(getCurrentInterfaceMode()==CabbageInterfaceModes::generic);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::cabbageMode:
         result.setInfo (String("Cabbage mode"), String("Normal Cabbage mode"), CommandCategories::edit, 0);
         result.setTicked(getCurrentInterfaceMode()==CabbageInterfaceModes::cabbage);
-		result.setActive((getCodeEditor()->isVisible() ? true : false));
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::showGenericWidgetWindow:
         result.setInfo (String("Show Generic Widget Window"), String("Show genric channel based widgets"), CommandCategories::general, 0);
@@ -641,12 +645,18 @@ void CabbageApplication::showSettingsDialog()
 //==============================================================================
 CodeEditorComponent* CabbageApplication::getCodeEditor()
 {
-	return mainDocumentWindow->getMainContentComponent()->editorAndConsole->editor;
+	if(mainDocumentWindow->getMainContentComponent()->editorAndConsole.size()>0)
+		return mainDocumentWindow->getMainContentComponent()->editorAndConsole[0]->editor;
+
+	return nullptr;
 }
 //==============================================================================
 CabbageOutputConsole* CabbageApplication::getOutputConsole()
 {
-	return mainDocumentWindow->getMainContentComponent()->editorAndConsole->outputConsole;
+	if(mainDocumentWindow->getMainContentComponent()->editorAndConsole.size()>0)
+		return mainDocumentWindow->getMainContentComponent()->editorAndConsole[0]->outputConsole;
+
+	return nullptr;
 }
 //==============================================================================
 void CabbageApplication::createNewProject()

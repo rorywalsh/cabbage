@@ -25,7 +25,7 @@ class CabbageSettings;
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainContentComponent   : public Component
+class MainContentComponent   : public Component, public Button::Listener
 {
 public:
 
@@ -37,12 +37,19 @@ public:
     void resized() override;
 	Image createBackground();	
 	void openFile(File file);
-    ScopedPointer<EditorAndConsoleContentComponent> editorAndConsole;
+    OwnedArray<EditorAndConsoleContentComponent> editorAndConsole;
+	void resizeAllEditorAndConsoles(int height);
 	ScopedPointer<CabbagePropertiesPanel> propertyPanel;
-
+	OwnedArray<TextButton> fileTabs;
+	Array<File> openFiles;
+	void buttonClicked(Button* button);
+	void addFileTabButton(File file, int xPos);
+	
 private:
 	Image bgImage;
 	const int statusBarHeight = 25;
+	ValueTree settings;
+	int currentFileIndex = 0;
 	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
@@ -74,6 +81,7 @@ public:
 	ScopedPointer<MainContentComponent> mainContentComponent;
 	ValueTree cabbageSettings;
 	ScopedPointer<LookAndFeel_V2> lookAndFeel;
+
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainDocumentWindow)
 };

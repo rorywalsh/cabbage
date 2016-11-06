@@ -28,7 +28,8 @@ statusBar(settings)
 	const int height = settings.getChildWithName("General").getProperty("LastKnownHeight");	
 	horizontalBarPosition = settings.getChildWithName("General").getProperty("HorizontalBarLastPosition");
 	editor->setBounds(0, 0, getWidth(), 500);	
-	horizontalResizerBar.setBounds(0, 500, 4000, getHeight()*.01);			
+	horizontalResizerBar.setBounds(0, 500, 4000, getHeight()*.01);
+	updateLookAndFeel();			
 }
 
 EditorAndConsoleContentComponent::~EditorAndConsoleContentComponent()
@@ -42,6 +43,13 @@ void EditorAndConsoleContentComponent::openFile(File file)
 	outputConsole->setVisible(true);
 	horizontalResizerBar.setVisible(true);
 	editor->loadContent(file.loadFileAsString());
+}
+
+void EditorAndConsoleContentComponent::updateLookAndFeel()
+{
+	editor->updateColourScheme();
+	outputConsole->updateColourScheme();
+	horizontalResizerBar.repaint();	
 }
 
 void EditorAndConsoleContentComponent::resized()

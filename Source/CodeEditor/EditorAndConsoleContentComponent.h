@@ -111,7 +111,7 @@ public:
 				
 				void mouseDrag(const MouseEvent& e)
 				{
-					setBounds(getPosition().getX(), startingYPos+e.getDistanceFromDragStartY(), owner->getWidth(), getHeight());
+					setBounds(getPosition().getX(), jmin(2, startingYPos+e.getDistanceFromDragStartY()), owner->getWidth(), getHeight());
 					owner->resized();
 					repaint();
 				}
@@ -136,6 +136,7 @@ public:
 		//=============================================================================
 		EditorAndConsoleContentComponent(ValueTree settings);
 		~EditorAndConsoleContentComponent();
+		void updateLookAndFeel();
 		void openFile(File file);
 		void resized();
 		void updateEditorColourScheme();

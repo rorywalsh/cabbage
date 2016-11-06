@@ -15,9 +15,11 @@
 
 	
 //==============================================================================
-MainContentComponent::MainContentComponent(ValueTree settings)
+MainContentComponent::MainContentComponent(ValueTree settings): settings(settings)
 {
-    addAndMakeVisible(editorAndConsole = new EditorAndConsoleContentComponent(settings));
+	//editorAndConsole.add(new EditorAndConsoleContentComponent(settings));
+	currentFileIndex++;
+    //addAndMakeVisible(editorAndConsole[0]);
 	addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(settings));
 	propertyPanel->setVisible(false);
  	setSize (1200, 800);
@@ -26,7 +28,7 @@ MainContentComponent::MainContentComponent(ValueTree settings)
 
 MainContentComponent::~MainContentComponent()
 {
-    editorAndConsole = nullptr;
+    editorAndConsole.clear();
 }
 
 Image MainContentComponent::createBackground()
@@ -56,27 +58,75 @@ Image MainContentComponent::createBackground()
 
 void MainContentComponent::openFile(File file)
 {
-	editorAndConsole->setVisible(true);
-	editorAndConsole->editor->loadContent(file.loadFileAsString());
+	editorAndConsole.add(new EditorAndConsoleContentComponent(settings));
+	addAndMakeVisible(editorAndConsole[editorAndConsole.size()-1]);
+	addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(settings));
+	propertyPanel->setVisible(false);
+	editorAndConsole[editorAndConsole.size()-1]->setVisible(true);
+	openFiles.add(file);
+	editorAndConsole[editorAndConsole.size()-1]->editor->loadContent(file.loadFileAsString());
+	currentFileIndex = editorAndConsole.size()-1;
+	CabbageUtilities::debug("Number of open files", editorAndConsole.size());
+	resized();
+	
+	if(currentFileIndex==1)
+	{
+		addFileTabButton(openFiles[0], 10);
+		addFileTabButton(openFiles[1], 105);
+	}
+	else if(currentFileIndex>1)
+	{
+		addFileTabButton(openFiles[currentFileIndex], 10+currentFileIndex*95);
+	}
+}
+
+void MainContentComponent::addFileTabButton(File file, int xPos)
+{
+	TextButton* fileButton;
+	fileTabs.add(fileButton = new TextButton(file.getFileName()));
+	addAndMakeVisible(fileButton);
+	fileButton->setBounds(xPos, 3, 90, 20);	
+	fileButton->addListener(this);
+}
+
+void MainContentComponent::buttonClicked(Button* button)
+{
+	if(const TextButton* textButton = dynamic_cast<TextButton*>(button))
+	{
+		const int fileIndex = fileTabs.indexOf(textButton);
+		editorAndConsole[fileIndex]->toFront(true);
+		if(CabbageMainDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageMainDocumentWindow>())
+			docWindow->setName(openFiles[fileIndex].getFileName());
+	}	
 }
 
 void MainContentComponent::paint (Graphics& g)
 {	
-	if(!editorAndConsole->isVisible())
+	if(editorAndConsole.size()==0)
 		g.drawImage(bgImage, getLocalBounds().toFloat());
+		
 	else
-		g.fillAll(Colours::transparentBlack);
+		g.fillAll( CabbageSettings::getColourFromValueTree(settings, CabbageColourIds::lineNumberBackground, Colour(50,50,50)));
+
+}
+
+void MainContentComponent::resizeAllEditorAndConsoles(int height)
+{
+	const bool isPropPanelVisible = propertyPanel->isVisible();
+	for( EditorAndConsoleContentComponent* editor : editorAndConsole )
+		editor->setBounds(0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight());
 }
 
 void MainContentComponent::resized()
 {
+	const int heightOfTabButtons = (editorAndConsole.size()>1) ? 25 : 0; 	
+	
 	if(propertyPanel->isVisible())
 	{
 		propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
-		editorAndConsole->setBounds(0, 0, getWidth()-propertyPanel->getWidth(), getHeight());
-	} 
-	else
-		editorAndConsole->setBounds(0, 0, getWidth(), getHeight());
+	} 		
+	
+	resizeAllEditorAndConsoles(heightOfTabButtons);
 }
 
 //=================================================================================================================
@@ -106,8 +156,7 @@ void CabbageMainDocumentWindow::updateEditorColourScheme()
 	this->lookAndFeelChanged();
 	mainContentComponent->propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyPanelBackground, Colour(50,50,50)));
 	mainContentComponent->propertyPanel->setBorderColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::consoleOutline, Colour(50,50,50)));
-	mainContentComponent->editorAndConsole->editor->updateColourScheme();
-	mainContentComponent->editorAndConsole->outputConsole->updateColourScheme();
-	mainContentComponent->editorAndConsole->horizontalResizerBar.repaint();	
-	mainContentComponent->editorAndConsole->statusBar.repaint();	
+	int editorIndex = mainContentComponent->editorAndConsole.size()-1;
+	mainContentComponent->editorAndConsole[editorIndex]->updateLookAndFeel();
 }
+
