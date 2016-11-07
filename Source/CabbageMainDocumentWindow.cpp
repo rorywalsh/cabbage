@@ -17,9 +17,6 @@
 //==============================================================================
 MainContentComponent::MainContentComponent(ValueTree settings): settings(settings)
 {
-	//editorAndConsole.add(new EditorAndConsoleContentComponent(settings));
-	currentFileIndex++;
-    //addAndMakeVisible(editorAndConsole[0]);
 	addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(settings));
 	propertyPanel->setVisible(false);
  	setSize (1200, 800);
@@ -58,25 +55,27 @@ Image MainContentComponent::createBackground()
 
 void MainContentComponent::openFile(File file)
 {
-	editorAndConsole.add(new EditorAndConsoleContentComponent(settings));
-	addAndMakeVisible(editorAndConsole[editorAndConsole.size()-1]);
+	EditorAndConsoleContentComponent* editorConsole;
+	editorAndConsole.add(editorConsole = new EditorAndConsoleContentComponent(settings));
+	addAndMakeVisible(editorConsole);
 	addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(settings));
 	propertyPanel->setVisible(false);
-	editorAndConsole[editorAndConsole.size()-1]->setVisible(true);
+	editorConsole->setVisible(true);
+	editorConsole->toFront(true);
 	openFiles.add(file);
-	editorAndConsole[editorAndConsole.size()-1]->editor->loadContent(file.loadFileAsString());
-	currentFileIndex = editorAndConsole.size()-1;
+	editorConsole->editor->loadContent(file.loadFileAsString());
+	numberOfFiles = editorAndConsole.size()-1;
 	CabbageUtilities::debug("Number of open files", editorAndConsole.size());
 	resized();
 	
-	if(currentFileIndex==1)
+	if(numberOfFiles==1)
 	{
 		addFileTabButton(openFiles[0], 10);
 		addFileTabButton(openFiles[1], 105);
 	}
-	else if(currentFileIndex>1)
+	else if(numberOfFiles>1)
 	{
-		addFileTabButton(openFiles[currentFileIndex], 10+currentFileIndex*95);
+		addFileTabButton(openFiles[numberOfFiles], 10+numberOfFiles*95);
 	}
 }
 
@@ -87,16 +86,25 @@ void MainContentComponent::addFileTabButton(File file, int xPos)
 	addAndMakeVisible(fileButton);
 	fileButton->setBounds(xPos, 3, 90, 20);	
 	fileButton->addListener(this);
+	fileButton->setRadioGroupId(99);
+	fileButton->setClickingTogglesState(true);
+	fileButton->setToggleState(true, sendNotification);
+	currentFileIndex = fileTabs.size()-1;
+}
+
+EditorAndConsoleContentComponent* MainContentComponent::getCurrentCodeEditor()
+{	
+	return editorAndConsole[currentFileIndex];
 }
 
 void MainContentComponent::buttonClicked(Button* button)
 {
 	if(const TextButton* textButton = dynamic_cast<TextButton*>(button))
 	{
-		const int fileIndex = fileTabs.indexOf(textButton);
-		editorAndConsole[fileIndex]->toFront(true);
+		currentFileIndex = fileTabs.indexOf(textButton);
+		editorAndConsole[currentFileIndex]->toFront(true);
 		if(CabbageMainDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageMainDocumentWindow>())
-			docWindow->setName(openFiles[fileIndex].getFileName());
+			docWindow->setName(openFiles[currentFileIndex].getFileName());
 	}	
 }
 
@@ -148,6 +156,12 @@ MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()
 {
 	return mainContentComponent;
 }
+
+EditorAndConsoleContentComponent* CabbageMainDocumentWindow::getCurrentCodeEditor()
+{
+	return mainContentComponent->getCurrentCodeEditor();
+}
+
 
 void CabbageMainDocumentWindow::updateEditorColourScheme()
 {

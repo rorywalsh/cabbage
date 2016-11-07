@@ -45,11 +45,14 @@ public:
 	void buttonClicked(Button* button);
 	void addFileTabButton(File file, int xPos);
 	
+	EditorAndConsoleContentComponent* getCurrentCodeEditor();
+	
 private:
 	Image bgImage;
 	const int statusBarHeight = 25;
 	ValueTree settings;
 	int currentFileIndex = 0;
+	int numberOfFiles = 0;
 	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
@@ -76,9 +79,11 @@ public:
 	}
 	
 	void updateEditorColourScheme();
+	EditorAndConsoleContentComponent* getCurrentCodeEditor();
 	
 	MainContentComponent* getMainContentComponent();
 	ScopedPointer<MainContentComponent> mainContentComponent;
+
 	ValueTree cabbageSettings;
 	ScopedPointer<LookAndFeel_V2> lookAndFeel;
 

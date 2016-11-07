@@ -54,7 +54,6 @@ void CabbageApplication::initialise (const String& commandLine)
     mainDocumentWindow = new CabbageMainDocumentWindow (getApplicationName(), cabbageSettings);
 	mainDocumentWindow->setLookAndFeel(&lookAndFeel);
 	mainDocumentWindow->mainContentComponent->propertyPanel->setVisible(false);
-	mainDocumentWindow->mainContentComponent->propertyPanel->addChangeListener(this);
     mainDocumentWindow->setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
     initialiseLogger ("IDE_Log_");
     Logger::writeToLog (SystemStats::getOperatingSystemName());
@@ -93,6 +92,9 @@ void CabbageApplication::initialise (const String& commandLine)
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (menuModel, nullptr, "Open Recent");
 #endif
+
+	mainDocumentWindow->mainContentComponent->propertyPanel->addChangeListener(this);
+
 }
 
 //==============================================================================
@@ -112,18 +114,18 @@ void CabbageApplication::changeListenerCallback(ChangeBroadcaster* source)
 		mainDocumentWindow->mainContentComponent->propertyPanel->updateProperties(editor->getCurrentlySelectedComponent());
 		const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
 		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
-		mainDocumentWindow->mainContentComponent->editorAndConsole[0]->editor->insertCodeAndHighlightLine(lineNumber, newText);
+		if(mainDocumentWindow->getCurrentCodeEditor()!=nullptr)
+			mainDocumentWindow->getCurrentCodeEditor()->editor->insertCodeAndHighlightLine(lineNumber, newText);
+		mainDocumentWindow->updateEditorColourScheme();
     }
 
     else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(panel)) // update Cabbage syntax when a user changes a property
     {
 		if(CabbagePluginEditor* editor = this->getPluginEditor())
 		{
-			const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
-			
-			const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
-			
-			mainDocumentWindow->mainContentComponent->editorAndConsole[0]->editor->insertCodeAndHighlightLine(lineNumber, newText);
+			const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);			
+			const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());			
+			mainDocumentWindow->getCurrentCodeEditor()->editor->insertCodeAndHighlightLine(lineNumber, newText);
 		}
     }
 }
@@ -617,9 +619,8 @@ CabbagePluginEditor* CabbageApplication::getPluginEditor()
 		//need to check what kind of processor we are dealing with!
 		if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(processor->getActiveEditor()))
 			return editor;
-		else
-			return nullptr;
 	}
+
 	return nullptr;
 
 }
@@ -705,7 +706,8 @@ void CabbageApplication::saveDocument()
 {
 		
 	isGUIEnabled = false;
-	getPluginEditor()->enableGUIEditor(false);
+	if(getPluginEditor()!=nullptr)
+		getPluginEditor()->enableGUIEditor(false);
 	
 	if(currentCsdFile.existsAsFile())
 		currentCsdFile.replaceWithText(getCodeEditor()->getDocument().getAllContent());

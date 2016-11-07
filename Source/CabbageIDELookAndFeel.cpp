@@ -14,7 +14,10 @@
 //Cabbage IDE look and feel class
 CabbageIDELookAndFeel::CabbageIDELookAndFeel()
 {
-	setColour(TextButton::ColourIds::buttonColourId, Colours::red);	
+	setColour(TextButton::ColourIds::buttonColourId, Colour(50, 50, 50));	
+	setColour(TextButton::ColourIds::textColourOffId, Colour(150, 150, 150));
+	setColour(TextButton::ColourIds::buttonOnColourId, Colour(150, 150, 150));	
+	setColour(TextButton::ColourIds::textColourOnId, Colour(250, 250, 250));
 }
 
 //======== Update value tree ======================================================================

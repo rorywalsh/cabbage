@@ -197,7 +197,6 @@ private:
 	Identifier currentInterfaceMode;
 	ScopedPointer<AudioGraph> audioGraph;
     ScopedPointer<CabbageMainDocumentWindow> mainDocumentWindow;
-	ScopedPointer<TempPropsWindow> propsWindow;
 };
 
 

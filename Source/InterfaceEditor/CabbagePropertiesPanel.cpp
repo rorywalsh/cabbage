@@ -271,9 +271,9 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 }
 void CabbagePropertiesPanel::paint (Graphics& g)
 {
-	g.setColour(borderColour);
-	g.fillRect(0, 0, 10, getHeight());
-	g.fillAll(backgroundColour);
+	//g.setColour(borderColour);
+	//g.fillRect(0, 0, 10, getHeight());
+	g.fillAll(backgroundColour.withAlpha(1.f));
 }
 
 void CabbagePropertiesPanel::resized()
