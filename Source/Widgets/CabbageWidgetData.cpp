@@ -1061,7 +1061,7 @@ void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
 //===========================================================================================
 void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr, String identifier)
 {
-    //Logger::writeToLog(str);
+    Logger::writeToLog(inStr);
     //remove any text after a semicolon and take out tabs..
     String str = inStr.replace("\t", " ");
     if(str.indexOf(0, ";")!=-1)
@@ -1096,7 +1096,10 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
     for(int indx=0; indx<identArray.size(); indx++)
     {
-        int identPos = str.toLowerCase().indexOf(" "+identArray[indx]);
+        int identPos = str.toLowerCase().indexOf(" "+identArray[indx]+"(");
+        if(identPos<0)
+            identPos = str.toLowerCase().indexOf(","+identArray[indx]+"(");
+
 		
         if(identPos>-1)
         {
@@ -1118,6 +1121,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             //string paramters
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
             if(identArray[indx].equalsIgnoreCase("name"))
             {
                 setProperty(widgetData, CabbageIdentifierIds::name, strTokens[0].trim());
@@ -2054,7 +2058,7 @@ ValueTree CabbageWidgetData::getValueTreeForComponent(ValueTree widgetData, Stri
 		}
 	}
 	 
-	return ValueTree(""); 
+	return ValueTree("empty"); 
 }
 
 //================================================================================================
@@ -2302,15 +2306,20 @@ String CabbageWidgetData::getMultiItemText(ValueTree widgetData, String identifi
 		else
 			return identifier+"("+channelString+ "\"" + array->getReference(array->size()-1).toString()+"\"), ";
 	}	
- 
- 
+  
 	StringArray stringArray;
 	stringArray.addLines(items.toString());
 	for( int i = 0 ; i < stringArray.size(); i++)
 		stringArray.set(i, "\"" + stringArray[i] + "\"");
-	CabbageUtilities::debug(stringArray.joinIntoString(", "));
+	//CabbageUtilities::debug(stringArray.joinIntoString(", "));
  
-	return identifier+"("+stringArray.joinIntoString(", ")+"), ";
+
+ 
+ 
+	if(stringArray.joinIntoString("\n").length()>0)
+		return identifier+"("+stringArray.joinIntoString(", ")+"), ";
+	else
+		return String::empty;
 }
 
 //===================================================================

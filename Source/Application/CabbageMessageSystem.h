@@ -21,7 +21,7 @@
 #ifndef CABBMESS_H
 #define CABBMESS_H
 
-#include "Utilities/CabbageUtilities.h"
+#include "../Utilities/CabbageUtilities.h"
 
 #ifndef Cabbage_No_Csound
 #include "csound.hpp"

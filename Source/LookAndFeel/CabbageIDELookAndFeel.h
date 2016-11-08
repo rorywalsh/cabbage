@@ -1,21 +1,29 @@
 /*
-  ==============================================================================
+  Copyright (C) 2016 Rory Walsh
 
-    CabbageIDELookAndFeel.h
-    Created: 13 Oct 2016 11:31:50am
-    Author:  rory
+  Cabbage is free software; you can redistribute it
+  and/or modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  ==============================================================================
+  Cabbage is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with Csound; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  02111-1307 USA
 */
-
 #ifndef CABBAGEIDELOOKANDFEEL_H_INCLUDED
 #define CABBAGEIDELOOKANDFEEL_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings/CabbageSettings.h"
-#include "CabbageIds.h"
-#include "Utilities/CabbageUtilities.h"
-#include "BinaryData/CabbageBinaryData.h"
+#include "../Settings/CabbageSettings.h"
+#include "../CabbageIds.h"
+#include "../Utilities/CabbageUtilities.h"
+#include "../BinaryData/CabbageBinaryData.h"
 
 
 class CabbageIDELookAndFeel	: public LookAndFeel_V3
@@ -52,7 +60,11 @@ public:
                                         int thumbSize,
                                         bool isMouseOver,
                                         bool isMouseDown);
+
+	ImageEffectFilter* getScrollbarEffect();
+	int getMinimumScrollbarThumbSize (ScrollBar& scrollbar);
 	int getDefaultScrollbarWidth();
+	int getScrollbarButtonSize(ScrollBar& scrollbar);
 private:
     ValueTree colourTree;
 

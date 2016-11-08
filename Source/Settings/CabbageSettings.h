@@ -1,11 +1,20 @@
 /*
-  ==============================================================================
+  Copyright (C) 2016 Rory Walsh
 
-    CabbageSettings.h
-    Created: 12 Oct 2016 12:12:47pm
-    Author:  rory
+  Cabbage is free software; you can redistribute it
+  and/or modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  ==============================================================================
+  Cabbage is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with Csound; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  02111-1307 USA
 */
 
 #ifndef CABBAGESETTINGS_H_INCLUDED
@@ -18,7 +27,10 @@ class CabbageSettings : public ApplicationProperties, public ValueTree::Listener
 {
 public:
     CabbageSettings();
-    ~CabbageSettings() {};
+    ~CabbageSettings()
+	{
+		defaultPropSet = nullptr;
+	};
 
     void set(String child, Identifier identifier, var value);
     String get(String child, String identifier);

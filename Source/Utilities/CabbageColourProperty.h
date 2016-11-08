@@ -27,59 +27,60 @@
 
 #include "../CabbageCommonHeaders.h"
 
+class CabbagePropertiesPanel;
+
+//======= ColourPallete =======
+class ColourPallete : public ColourSelector
+{
+public:
+	ColourPallete(): ColourSelector()
+	{
+		setColour(ColourSelector::backgroundColourId, Colours::black);
+		setColour(ColourSelector::labelTextColourId, Colours::white);
+
+	};
+
+	~ColourPallete()     {     this->removeAllChangeListeners();      };
+
+	static Array<Colour> getColourSwatches()
+	{
+		Array <Colour> swatchColours;
+		//setup swatches for colour selector.
+		swatchColours.set(0, Colour(0xFF000000));
+		swatchColours.set(1, Colour(0xFFFFFFFF));
+		swatchColours.set(2, Colour(0xFFFF0000));
+		swatchColours.set(3, Colour(0xFF00FF00));
+		swatchColours.set(4, Colour(0xFF0000FF));
+		swatchColours.set(5, Colour(0xFFFFFF00));
+		swatchColours.set(6, Colour(0xFFFF00FF));
+		swatchColours.set(7, Colour(0xFF00FFFF));
+		swatchColours.set(8, Colour(0x80000000));
+		swatchColours.set(9, Colour(0x80FFFFFF));
+		swatchColours.set(10, Colour(0x80FF0000));
+		swatchColours.set(11, Colour(0x8000FF00));
+		swatchColours.set(12, Colour(0x800000FF));
+		swatchColours.set(13, Colour(0x80FFFF00));
+		swatchColours.set(14, Colour(0x80FF00FF));
+		swatchColours.set(15, Colour(0x8000FFFF));
+		return swatchColours;
+	}
+
+	int getNumSwatches() const {	return getColourSwatches().size();        }
+	Colour getSwatchColour(int index) const {	return getColourSwatches()[index];        }
+	void setSwatchColour (const int index, const Colour &newColour) const {		getColourSwatches().set(index, newColour);        }
+	String getNameOfParent()       {            return nameOfParent;        }
+	void setNameOfParent(String parent)        {            nameOfParent = parent;        }
+
+private:
+	String nameOfParent;
+
+
+};
+
 class ColourPropertyComponent : public PropertyComponent, public ChangeListener, public ChangeBroadcaster
 {
 
 public :
-
-    //======= ColourPallete =======
-    class ColourPallete : public ColourSelector
-    {
-    public:
-        ColourPallete(): ColourSelector()
-        {
-            setColour(ColourSelector::backgroundColourId, Colours::black);
-            setColour(ColourSelector::labelTextColourId, Colours::white);
-
-        };
-
-        ~ColourPallete()     {     this->removeAllChangeListeners();      };
-
-        static Array<Colour> getColourSwatches()
-        {
-            Array <Colour> swatchColours;
-            //setup swatches for colour selector.
-            swatchColours.set(0, Colour(0xFF000000));
-            swatchColours.set(1, Colour(0xFFFFFFFF));
-            swatchColours.set(2, Colour(0xFFFF0000));
-            swatchColours.set(3, Colour(0xFF00FF00));
-            swatchColours.set(4, Colour(0xFF0000FF));
-            swatchColours.set(5, Colour(0xFFFFFF00));
-            swatchColours.set(6, Colour(0xFFFF00FF));
-            swatchColours.set(7, Colour(0xFF00FFFF));
-            swatchColours.set(8, Colour(0x80000000));
-            swatchColours.set(9, Colour(0x80FFFFFF));
-            swatchColours.set(10, Colour(0x80FF0000));
-            swatchColours.set(11, Colour(0x8000FF00));
-            swatchColours.set(12, Colour(0x800000FF));
-            swatchColours.set(13, Colour(0x80FFFF00));
-            swatchColours.set(14, Colour(0x80FF00FF));
-            swatchColours.set(15, Colour(0x8000FFFF));
-            return swatchColours;
-        }
-
-        int getNumSwatches() const {	return getColourSwatches().size();        }
-        Colour getSwatchColour(int index) const {	return getColourSwatches()[index];        }
-        void setSwatchColour (const int index, const Colour &newColour) const {		getColourSwatches().set(index, newColour);        }
-        String getNameOfParent()       {            return nameOfParent;        }
-        void setNameOfParent(String parent)        {            nameOfParent = parent;        }
-
-    private:
-        String nameOfParent;
-
-
-    };
-
     //======= ColourPropertyComponent =======
     ColourPropertyComponent(String name, String colourString);
     ~ColourPropertyComponent() {}

@@ -1,21 +1,27 @@
 /*
-  ==============================================================================
+  Copyright (C) 2016 Rory Walsh
 
-    CabbageMainWindow.cpp
-    Created: 11 Oct 2016 12:26:56pm
-    Author:  rory
+  Cabbage is free software; you can redistribute it
+  and/or modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  ==============================================================================
+  Cabbage is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with Csound; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  02111-1307 USA
 */
 
-#include "CabbageMainDocumentWindow.h"
-#include "./Settings/CabbageSettings.h"
+#include "CabbageContentComponent.h"
+#include "CabbageDocumentWindow.h"
 
-
-
-	
 //==============================================================================
-MainContentComponent::MainContentComponent(ValueTree settings): settings(settings)
+CabbageContentComponent::CabbageContentComponent(ValueTree settings): settings(settings)
 {
 	addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(settings));
 	propertyPanel->setVisible(false);
@@ -23,12 +29,12 @@ MainContentComponent::MainContentComponent(ValueTree settings): settings(setting
 	bgImage = createBackground();	
 }
 
-MainContentComponent::~MainContentComponent()
+CabbageContentComponent::~CabbageContentComponent()
 {
     editorAndConsole.clear();
 }
 
-Image MainContentComponent::createBackground()
+Image CabbageContentComponent::createBackground()
 {
 	Image backgroundImg;
 	backgroundImg = Image(Image::RGB, getWidth(), getHeight(), true);
@@ -53,7 +59,7 @@ Image MainContentComponent::createBackground()
 	}
 }
 
-void MainContentComponent::openFile(File file)
+void CabbageContentComponent::openFile(File file)
 {
 	EditorAndConsoleContentComponent* editorConsole;
 	editorAndConsole.add(editorConsole = new EditorAndConsoleContentComponent(settings));
@@ -79,7 +85,7 @@ void MainContentComponent::openFile(File file)
 	}
 }
 
-void MainContentComponent::addFileTabButton(File file, int xPos)
+void CabbageContentComponent::addFileTabButton(File file, int xPos)
 {
 	TextButton* fileButton;
 	fileTabs.add(fileButton = new TextButton(file.getFileName()));
@@ -88,27 +94,31 @@ void MainContentComponent::addFileTabButton(File file, int xPos)
 	fileButton->addListener(this);
 	fileButton->setRadioGroupId(99);
 	fileButton->setClickingTogglesState(true);
+	fileButton->setLookAndFeel(&lookAndFeel);
 	fileButton->setToggleState(true, sendNotification);
 	currentFileIndex = fileTabs.size()-1;
 }
 
-EditorAndConsoleContentComponent* MainContentComponent::getCurrentCodeEditor()
+EditorAndConsoleContentComponent* CabbageContentComponent::getCurrentCodeEditor()
 {	
 	return editorAndConsole[currentFileIndex];
 }
 
-void MainContentComponent::buttonClicked(Button* button)
+void CabbageContentComponent::buttonClicked(Button* button)
 {
 	if(const TextButton* textButton = dynamic_cast<TextButton*>(button))
 	{
 		currentFileIndex = fileTabs.indexOf(textButton);
 		editorAndConsole[currentFileIndex]->toFront(true);
-		if(CabbageMainDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageMainDocumentWindow>())
+		if(CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
+		{
 			docWindow->setName(openFiles[currentFileIndex].getFileName());
+			docWindow->setCurrentCsdFile(openFiles[currentFileIndex]);
+		}
 	}	
 }
 
-void MainContentComponent::paint (Graphics& g)
+void CabbageContentComponent::paint (Graphics& g)
 {	
 	if(editorAndConsole.size()==0)
 		g.drawImage(bgImage, getLocalBounds().toFloat());
@@ -118,14 +128,14 @@ void MainContentComponent::paint (Graphics& g)
 
 }
 
-void MainContentComponent::resizeAllEditorAndConsoles(int height)
+void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 {
 	const bool isPropPanelVisible = propertyPanel->isVisible();
 	for( EditorAndConsoleContentComponent* editor : editorAndConsole )
 		editor->setBounds(0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight());
 }
 
-void MainContentComponent::resized()
+void CabbageContentComponent::resized()
 {
 	const int heightOfTabButtons = (editorAndConsole.size()>1) ? 25 : 0; 	
 	
@@ -136,41 +146,3 @@ void MainContentComponent::resized()
 	
 	resizeAllEditorAndConsoles(heightOfTabButtons);
 }
-
-//=================================================================================================================
-CabbageMainDocumentWindow::CabbageMainDocumentWindow (String name, CabbageSettings* settings)  : DocumentWindow(name,
-            Colours::lightgrey,
-            DocumentWindow::allButtons),
-			cabbageSettings(settings->getValueTree())
-{
-	lookAndFeel = new LookAndFeel_V2();
-    setUsingNativeTitleBar (true);
-    setContentOwned (mainContentComponent = new MainContentComponent(cabbageSettings), true);
-    this->setResizable(true, true);
-    centreWithSize (getWidth(), getHeight());
-    setVisible (true);	
-	setLookAndFeel(lookAndFeel);
-}
-
-MainContentComponent* CabbageMainDocumentWindow::getMainContentComponent()
-{
-	return mainContentComponent;
-}
-
-EditorAndConsoleContentComponent* CabbageMainDocumentWindow::getCurrentCodeEditor()
-{
-	return mainContentComponent->getCurrentCodeEditor();
-}
-
-
-void CabbageMainDocumentWindow::updateEditorColourScheme()
-{
-	this->getLookAndFeel().setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
-	this->getLookAndFeel().setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyLabelText, Colour(50,50,50)));
-	this->lookAndFeelChanged();
-	mainContentComponent->propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::propertyPanelBackground, Colour(50,50,50)));
-	mainContentComponent->propertyPanel->setBorderColour(CabbageSettings::getColourFromValueTree(cabbageSettings, CabbageColourIds::consoleOutline, Colour(50,50,50)));
-	int editorIndex = mainContentComponent->editorAndConsole.size()-1;
-	mainContentComponent->editorAndConsole[editorIndex]->updateLookAndFeel();
-}
-

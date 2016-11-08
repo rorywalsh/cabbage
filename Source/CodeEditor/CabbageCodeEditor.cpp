@@ -1,17 +1,26 @@
 /*
-  ==============================================================================
+  Copyright (C) 2016 Rory Walsh
 
-    CabbageCodeEditor.cpp
-    Created: 16 Oct 2016 2:59:39pm
-    Author:  rory
+  Cabbage is free software; you can redistribute it
+  and/or modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  ==============================================================================
+  Cabbage is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with Csound; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  02111-1307 USA
 */
 
 #include "CabbageCodeEditor.h"
 #include "../Settings/CabbageSettings.h"
 #include "../Utilities/CabbageUtilities.h"
-#include "../CabbageMainDocumentWindow.h"
+#include "../Application/CabbageDocumentWindow.h"
 
 //==============================================================================
 CabbageCodeEditorComponent::CabbageCodeEditorComponent(Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)

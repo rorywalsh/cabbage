@@ -24,7 +24,7 @@
  */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "../CabbageGenericPluginLookAndFeel.h"
+#include "../LookAndFeel/CabbageGenericPluginLookAndFeel.h"
 
 class GenericCabbagePluginProcessor;
 

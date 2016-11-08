@@ -892,9 +892,10 @@ public:
 //======================================================================================
 	static void writeValueTreeToFile(ValueTree valueTree, String filePath)
 	{
-		//ScopedPointer<XmlElement> data (valueTree.createXml());
+		ScopedPointer<XmlElement> data (valueTree.createXml());
+		// only works when there are no objects in the array...
 		//write new xml settings files based on data from user settings file, but using ValueTree
-		//data->writeToFile(File(filePath), String::empty);
+		data->writeToFile(File(filePath), String::empty);
 	}
 
 //======================================================================================

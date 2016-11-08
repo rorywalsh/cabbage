@@ -1,21 +1,29 @@
 /*
-  ==============================================================================
+  Copyright (C) 2016 Rory Walsh
 
-    CabbageNewProjectWindow.h
-    Created: 16 Oct 2016 7:46:10pm
-    Author:  rory
+  Cabbage is free software; you can redistribute it
+  and/or modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  ==============================================================================
+  Cabbage is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with Csound; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  02111-1307 USA
 */
 
-//<div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 #ifndef CABBAGENEWPROJECTWINDOW_H_INCLUDED
 #define CABBAGENEWPROJECTWINDOW_H_INCLUDED
 
-#include "BinaryData/CabbageBinaryData.h"
-#include "CabbageIDELookAndFeel.h"
+#include "../BinaryData/CabbageBinaryData.h"
+#include "../LookAndFeel/CabbageIDELookAndFeel.h"
 
-class CabbageApplication;
+class CabbageDocumentWindow;
 
 class CabbageProjectWindow : public Component, public Button::Listener
 {
@@ -51,7 +59,7 @@ class CabbageProjectWindow : public Component, public Button::Listener
 			
 		};
 public:
-    CabbageProjectWindow(CabbageApplication* owner, ValueTree valueTree);
+    CabbageProjectWindow(CabbageDocumentWindow* owner, ValueTree valueTree);
     ~CabbageProjectWindow() {}
 	
 	void setInformationString(String informationStr)
@@ -83,7 +91,7 @@ private:
     ValueTree valueTree;
 	String information;
     SimpleImageButton newInstrumentButton, newEffectButton, newCsoundFileButton;
-	CabbageApplication* owner;
+	CabbageDocumentWindow* owner;
 
 
 };
