@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "../Utilities/CabbageColourProperty.h"
+#include "../Utilities/CabbageFilePropertyComponent.h"
 
 
 //==============================================================================
@@ -30,7 +31,8 @@ public Component,
 public ChangeBroadcaster, 
 public Value::Listener,
 public TextPropertyComponent::Listener,
-public ChangeListener
+public ChangeListener,
+public FilenameComponentListener
 {
 public:
     CabbagePropertiesPanel(ValueTree widgetData);
@@ -41,10 +43,13 @@ public:
 	void changeListenerCallback(juce::ChangeBroadcaster *source);
 	void updateProperties(ValueTree widgetData);
 	void valueChanged(Value& value);
+	void filenameComponentChanged (FilenameComponent* fileComponent);	
+	
 	Array<PropertyComponent*> createPositionEditors(ValueTree valueTree);
 	Array<PropertyComponent*> createTextEditors(ValueTree valueTree);
 	Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
 	Array<PropertyComponent*> createMiscEditors(ValueTree valueTree);
+	Array<PropertyComponent*> createFileEditors(ValueTree valueTree);
 	Value isActiveValue, isVisibleValue, alphaValue, shapeValue, textItems;;
 	Colour backgroundColour, borderColour;
 

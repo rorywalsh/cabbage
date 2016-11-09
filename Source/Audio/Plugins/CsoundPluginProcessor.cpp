@@ -19,8 +19,8 @@
 
 #include "CsoundPluginProcessor.h"
 #include "CsoundPluginEditor.h"
-#include "../Utilities/CabbageUtilities.h"
-#include "../Widgets/CabbageWidgetData.h"
+#include "../../Utilities/CabbageUtilities.h"
+#include "../../Widgets/CabbageWidgetData.h"
 
 
 //==============================================================================

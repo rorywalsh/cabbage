@@ -9,7 +9,7 @@
 */
 
 #include "ComponentLayoutEditor.h"
-#include "../Audio/CabbagePluginEditor.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 /*
  *  ComponentLayoutEditor.cpp

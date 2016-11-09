@@ -37,8 +37,6 @@ AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
 	setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
 	reloadPluginState();
 	startPlaying();
-	bool connection1 = graph.addConnection(1, 0, 2, 0);			
-	bool connection2 = graph.addConnection(1, 1, 2, 1);	
 }
 
 AudioGraph::~AudioGraph()
@@ -73,8 +71,11 @@ void AudioGraph::createPlugin(File inputFile)
 	
 	updateBusLayout(processor);
 	
+	
 	AudioProcessorGraph::Node* processorNode = graph.addNode(processor, 1);
 	
+	bool connection1 = graph.addConnection(1, 0, 2, 0);			
+	bool connection2 = graph.addConnection(1, 1, 2, 1);	
 
 }
 

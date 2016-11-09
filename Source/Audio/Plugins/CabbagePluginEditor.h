@@ -24,10 +24,10 @@
 #include "CabbagePluginProcessor.h"
 #include "CabbageAudioParameter.h"
 
-#include "../Widgets/CabbageCheckbox.h"
-#include "../Widgets/CabbageComboBox.h"
-#include "../InterfaceEditor/ComponentLayoutEditor.h"
-#include "../Widgets/CabbageCustomWidgets.h"
+#include "../../Widgets/CabbageCheckbox.h"
+#include "../../Widgets/CabbageComboBox.h"
+#include "../../InterfaceEditor/ComponentLayoutEditor.h"
+#include "../../Widgets/CabbageCustomWidgets.h"
 
 class CabbagePluginEditor;
 

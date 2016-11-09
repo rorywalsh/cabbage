@@ -19,7 +19,7 @@
 
 #include "CabbageCustomWidgets.h"
 #include "../CabbageCommonHeaders.h"
-#include "../Audio/CabbagePluginEditor.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
 void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data)

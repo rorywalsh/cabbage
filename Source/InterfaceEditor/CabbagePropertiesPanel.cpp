@@ -31,7 +31,11 @@ static void addListener(Array<PropertyComponent*> comps, CabbagePropertiesPanel*
 		else if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(comps[i]))
 		{
 			colourProperty->addChangeListener(owner);
-		}				
+		}	
+		else if(CabbageFilePropertyComponent* fileComp = dynamic_cast<CabbageFilePropertyComponent*>(comps[i]))
+		{
+			fileComp->filenameComp.addListener(owner);
+		}
 	}
 }
 
@@ -217,6 +221,11 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors(ValueTre
 }
 
 //==============================================================================
+Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors(ValueTree valueTree)
+{
+	
+}
+//==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
@@ -226,9 +235,9 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 		comps.add (new TextPropertyComponent(Value (corners), "Corners", 200, false));
 	}
 	
-	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type)=="checkbox")
+	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "checkbox")
 	{	
-		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape)=="square")
+		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape) == "square")
 			shapeValue.setValue(0);
 		
 		shapeValue.addListener(this);
@@ -241,6 +250,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 		choiceVars.add (1);		
 		comps.add (new ChoicePropertyComponent(shapeValue, "Shape", choices, choiceVars));
 	}
+	
+	else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "combobox")
+	{
+		comps.add (new CabbageFilePropertyComponent("File", false, true));
+	}
+	
+	
 	addListener(comps, this);
 	return comps;
 }
@@ -259,6 +275,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 	propertyPanel.addSection ("Text", createTextEditors(widgetData));
 	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
 	propertyPanel.addSection ("Misc", createMiscEditors(widgetData));
+	
 
 	//ropertyPanel.addSection ("Channels", createChoices (16));
 	//propertyPanel.addSection ("Buttons & Toggles", createButtons (20));
@@ -330,6 +347,14 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 	else if(value.refersToSameSourceAs(shapeValue))
 	{
 		if(value.getValue().isInt())
-			setPropertyByName(widgetData, "Shape", int(value.getValue())==0 ? "Square" : "Circle");
+			setPropertyByName(widgetData, "Shape", int(value.getValue())==0 ? "square" : "circle");
 	}
+}
+
+void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
+{
+	fileComponent->setTooltip(fileComponent->getCurrentFileText());
+	setPropertyByName(widgetData, "File", fileComponent->getCurrentFileText());
+	CabbageUtilities::debug(fileComponent->getCurrentFileText());
+	
 }

@@ -26,7 +26,7 @@
 #include "../CabbageIds.h"
 #include "CabbageContentComponent.h"
 #include "../CodeEditor/CabbageOutputConsole.h"
-#include "../Audio/AudioGraph.h"
+#include "../Audio/Graph/AudioGraph.h"
 #include "../Settings/CabbageSettingsWindow.h"
 #include "../Settings/CabbageSettings.h"
 

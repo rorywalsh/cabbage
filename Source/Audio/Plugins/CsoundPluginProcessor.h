@@ -21,7 +21,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <csound.hpp>
-#include "../Utilities/CabbageUtilities.h"
+#include "../../Utilities/CabbageUtilities.h"
 
 //==============================================================================
 /**

@@ -1096,9 +1096,12 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
     for(int indx=0; indx<identArray.size(); indx++)
     {
-        int identPos = str.toLowerCase().indexOf(" "+identArray[indx]+"(");
-        if(identPos<0)
-            identPos = str.toLowerCase().indexOf(","+identArray[indx]+"(");
+		
+		int identPos = str.toLowerCase().indexOf(" "+identArray[indx]);
+		
+       // int identPos = str.toLowerCase().indexOf(" "+identArray[indx]+"(");
+       // if(identPos<0)
+       //     identPos = str.toLowerCase().indexOf(","+identArray[indx]+"(");
 
 		
         if(identPos>-1)
@@ -2283,6 +2286,21 @@ String CabbageWidgetData::getRotateText(ValueTree widgetData)
 	return String::empty;
 }
 //===================================================================
+String CabbageWidgetData::getSimpleText(ValueTree widgetData, String identifier)
+{
+	ValueTree tempData("tempTree");
+	const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+	CabbageWidgetData::setWidgetState(tempData, type, -99);
+	
+	if(CabbageWidgetData::getStringProp(widgetData, identifier)!=CabbageWidgetData::getStringProp(tempData, identifier))
+	{
+		const String text = CabbageWidgetData::getStringProp(widgetData, identifier);
+		return identifier+"(\"" + text + "\"), ";
+	}
+	
+	return String::empty;
+}
+//===================================================================
 String CabbageWidgetData::getMultiItemText(ValueTree widgetData, String identifier)
 {
 	var items = CabbageWidgetData::getProperty(widgetData, identifier);
@@ -2312,9 +2330,6 @@ String CabbageWidgetData::getMultiItemText(ValueTree widgetData, String identifi
 	for( int i = 0 ; i < stringArray.size(); i++)
 		stringArray.set(i, "\"" + stringArray[i] + "\"");
 	//CabbageUtilities::debug(stringArray.joinIntoString(", "));
- 
-
- 
  
 	if(stringArray.joinIntoString("\n").length()>0)
 		return identifier+"("+stringArray.joinIntoString(", ")+"), ";
@@ -2369,8 +2384,12 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
 						 + getColoursText(widgetData)
 						 + getRotateText(widgetData)
 						 + getNumvericalValueText(widgetData, "alpha")
+						 + getNumvericalValueText(widgetData, "corners")
 						 + getNumvericalValueText(widgetData, "active")
 						 + getNumvericalValueText(widgetData, "visible")
-						 + getMultiItemText(widgetData, "popuptext");
+						 + getSimpleText(widgetData, "popuptext")
+						 + getSimpleText(widgetData, "file")
+						 + getSimpleText(widgetData, "shape");
+						 
 	return cabbageCode;
 }

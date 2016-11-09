@@ -28,12 +28,12 @@ public:
 
     }
 
-//    virtual void setFile (const File& newFile) = 0;
-//    virtual File getFile() const = 0;
-//
+    //virtual void setFile (const File& newFile) = 0;
+    //virtual File getFile() const = 0;
+
     void refresh()
     {
-        //filenameComp.setCurrentFile (getFile(), false);
+        int i=0;//filenameComp.setCurrentFile (getFile(), false);
     }
 
 	FilenameComponent filenameComp;

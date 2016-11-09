@@ -18,7 +18,7 @@
 */
 
 #include "CabbageCheckbox.h"
-#include "../Audio/CabbagePluginEditor.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
 //==============================================================================

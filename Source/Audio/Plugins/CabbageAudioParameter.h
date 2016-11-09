@@ -17,35 +17,34 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGEPLUGINPROCESSOR_H_INCLUDED
-#define CABBAGEPLUGINPROCESSOR_H_INCLUDED
+#ifndef AUDIOPRAMATERS_H_INCLUDED
+#define AUDIOPRAMATERS_H_INCLUDED
 
-#include "CsoundPluginProcessor.h"
-#include "../Widgets/CabbageWidgetData.h"
-#include "../CabbageIds.h"
-#include "CabbageAudioParameter.h"
+#include "../../CabbageCommonHeaders.h"
+#include "CabbagePluginProcessor.h"
 
-class CabbagePluginProcessor  : public CsoundPluginProcessor
+class CabbageAudioParameter : public AudioParameterFloat
 {
+	
 public:
-	CabbagePluginProcessor(File inputFile);
-	~CabbagePluginProcessor();	
+	CabbageAudioParameter(Csound &csound, String channel, String name, float minValue, float maxValue, float def)
+	:AudioParameterFloat(channel, name, minValue, maxValue, def), name(name), channel(channel), csound(csound)
+	{}
+	~CabbageAudioParameter(){}
 	
-	ValueTree cabbageWidgets;	
-
-	void receiveChannelDataFromCsound();
-	void parseCsdFile();
-	void createParameters();
-
-	//==============================================================================
-    AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+	float getValue() const override
+	{
+		
+	}
 	
-private:
-	File csdFile;
+	void setValue (float newValue) override
+	{
+		CabbageUtilities::debug(channel);
+		csound.SetChannel(channel.toUTF8(), newValue);
+	}
 
+	String channel, name;
+	Csound csound;
 };
 
-
-
-#endif  // CABBAGEPLUGINPROCESSOR_H_INCLUDED
+#endif  // AUDIOPRAMATERS_H_INCLUDED

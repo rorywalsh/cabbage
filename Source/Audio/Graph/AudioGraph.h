@@ -21,12 +21,12 @@
 #define JUCE_PluginWrapperWindow_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "CsoundPluginEditor.h"
-#include "CsoundPluginProcessor.h"
-#include "GenericCabbagePluginProcessor.h"
-#include "CabbagePluginProcessor.h"
-#include "CabbagePluginEditor.h"
-#include "../Settings/CabbageSettings.h"
+#include "../Plugins/CsoundPluginEditor.h"
+#include "../Plugins/CsoundPluginProcessor.h"
+#include "../Plugins/GenericCabbagePluginProcessor.h"
+#include "../Plugins/CabbagePluginProcessor.h"
+#include "../Plugins/CabbagePluginEditor.h"
+#include "../../Settings/CabbageSettings.h"
 
 
 class AudioGraph

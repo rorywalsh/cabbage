@@ -53,6 +53,7 @@ public:
 	static String getColoursText(ValueTree widgetData);
 	static String getNumvericalValueText(ValueTree widgetData, String identifier);
 	static String getRotateText(ValueTree widgetData);
+	static String getSimpleText(ValueTree widgetData, String identfier);
 	//============================================================================
 
 	static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);

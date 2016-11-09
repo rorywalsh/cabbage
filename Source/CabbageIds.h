@@ -610,6 +610,7 @@ class CabbageIdentifierPropertyStringPairs : public StringPairArray
 		set("Alpha", CabbageIdentifierIds::alpha.toString());
 		set("Corners", CabbageIdentifierIds::corners.toString());
 		set("Shape", CabbageIdentifierIds::shape.toString());
+		set("File", CabbageIdentifierIds::file.toString());
 		
 	}
 };

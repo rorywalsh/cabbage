@@ -17,34 +17,35 @@
   02111-1307 USA
 */
 
-#ifndef AUDIOPRAMATERS_H_INCLUDED
-#define AUDIOPRAMATERS_H_INCLUDED
+#ifndef CABBAGEPLUGINPROCESSOR_H_INCLUDED
+#define CABBAGEPLUGINPROCESSOR_H_INCLUDED
 
-#include "../CabbageCommonHeaders.h"
-#include "CabbagePluginProcessor.h"
+#include "CsoundPluginProcessor.h"
+#include "../../Widgets/CabbageWidgetData.h"
+#include "../../CabbageIds.h"
+#include "CabbageAudioParameter.h"
 
-class CabbageAudioParameter : public AudioParameterFloat
+class CabbagePluginProcessor  : public CsoundPluginProcessor
 {
-	
 public:
-	CabbageAudioParameter(Csound &csound, String channel, String name, float minValue, float maxValue, float def)
-	:AudioParameterFloat(channel, name, minValue, maxValue, def), name(name), channel(channel), csound(csound)
-	{}
-	~CabbageAudioParameter(){}
+	CabbagePluginProcessor(File inputFile);
+	~CabbagePluginProcessor();	
 	
-	float getValue() const override
-	{
-		
-	}
-	
-	void setValue (float newValue) override
-	{
-		CabbageUtilities::debug(channel);
-		csound.SetChannel(channel.toUTF8(), newValue);
-	}
+	ValueTree cabbageWidgets;	
 
-	String channel, name;
-	Csound csound;
+	void receiveChannelDataFromCsound();
+	void parseCsdFile();
+	void createParameters();
+
+	//==============================================================================
+    AudioProcessorEditor* createEditor() override;
+    bool hasEditor() const override;
+	
+private:
+	File csdFile;
+
 };
 
-#endif  // AUDIOPRAMATERS_H_INCLUDED
+
+
+#endif  // CABBAGEPLUGINPROCESSOR_H_INCLUDED
