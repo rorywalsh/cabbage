@@ -21,13 +21,13 @@
 #define CABBAGECOMBOBOX_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
-#include "CabbageCustomWidgets.h"
+#include "CabbageWidgetBase.h"
 
 class CabbagePluginEditor;
 class CabbageComboBox : public ComboBox, public ValueTree::Listener, public CabbageWidgetBase
 {
     int offX, offY, offWidth, offHeight, pivotx, pivoty, refresh;
-    String name, tooltipText, caption, text, colour, fontcolour, filetype;
+    String name, tooltipText, caption, text, filetype;
     float rotate;
     File pluginDir;
     CabbagePluginEditor* owner;

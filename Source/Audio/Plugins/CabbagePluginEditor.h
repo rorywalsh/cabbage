@@ -55,7 +55,7 @@ public:
 	
 	OwnedArray<Component> components;				
 	Component mainComponent;						
-	CabbageLookAndFeel lookAndFeel;					
+	CabbageLookAndFeel2 lookAndFeel;					
 
 	TooltipWindow tooltipWindow;
 	//==============================================================================

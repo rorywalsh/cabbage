@@ -470,7 +470,7 @@ void CabbageLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int width,
     //if valid background SVG file....
     if(svgSliderBg.length()>0)
     {
-        g.drawImage(CabbageUtilities::drawFromSVG(svgSliderBg, svgSliderWidthBg, svgSliderHeightBg, AffineTransform::identity), rx, ry,
+        g.drawImage(drawFromSVG(svgSliderBg, svgSliderWidthBg, svgSliderHeightBg, AffineTransform::identity), rx, ry,
                     diameter, diameter, 0, 0, svgSliderWidthBg, svgSliderHeightBg, false);
         useSliderBackgroundSVG = true;
     }
@@ -507,7 +507,7 @@ void CabbageLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int width,
             }
 
             g.setOpacity(1.0);
-            g.drawImage(CabbageUtilities::drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::rotation(angle,
+            g.drawImage(drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::rotation(angle,
                                             svgRSliderDiameter/2, svgRSliderDiameter/2)), rx, ry, diameter, diameter,
                         0, 0, svgSliderWidth, svgSliderHeight, false);
             useSliderSVG = true;
@@ -603,10 +603,10 @@ void CabbageLookAndFeel::drawLinearSliderBackground (Graphics &g, int x, int y, 
     if(svgSliderBg.length()>0)
     {
         if(slider.isHorizontal())
-            g.drawImage(CabbageUtilities::drawFromSVG(svgSliderBg, svgSliderWidthBg, svgSliderHeightBg, AffineTransform::identity),
+            g.drawImage(drawFromSVG(svgSliderBg, svgSliderWidthBg, svgSliderHeightBg, AffineTransform::identity),
                         width*(xOffset/3), 0,  width*(1+xOffset*2), height, 0, 0, svgSliderWidthBg, svgSliderHeightBg, false);
         else
-            g.drawImage(CabbageUtilities::drawFromSVG(svgSliderBg, svgSliderWidthBg, svgSliderHeightBg, AffineTransform::identity),
+            g.drawImage(drawFromSVG(svgSliderBg, svgSliderWidthBg, svgSliderHeightBg, AffineTransform::identity),
                         0, 0, width, height+sliderRadius, 0, 0, svgSliderWidthBg, svgSliderHeightBg, false);
 
         useSVG  = true;
@@ -799,14 +799,14 @@ void CabbageLookAndFeel::drawLinearSliderThumb (Graphics& g, int x, int y, int w
         {
             sliderWidth = height;
             sliderHeight = height;
-            g.drawImage(CabbageUtilities::drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::identity),
+            g.drawImage(drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::identity),
                         sliderPos-width*.05, 0, sliderWidth, sliderHeight, 0, 0, svgHSliderThumb, svgHSliderThumb, false);
         }
         else
         {
             sliderWidth = width;
             sliderHeight = width;
-            g.drawImage(CabbageUtilities::drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::identity),
+            g.drawImage(drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::identity),
                         0, sliderPos-(height*.07), sliderWidth, sliderHeight, 0, 0, svgVSliderThumb, svgVSliderThumb, false);
         }
         useSVG  = true;
@@ -911,8 +911,14 @@ void CabbageLookAndFeel::drawToggleButton (Graphics &g, ToggleButton &button, bo
         isToggleOn = false;
 
     bool isRECT = button.getProperties().getWithDefault("isRect", 0);
-    String svgPath = button.getProperties().getWithDefault("svgpath", "");
+
     float corner = button.getProperties().getWithDefault("cornersize", 5);
+	
+    String imgButtonOn = button.getProperties().getWithDefault("imgbuttonon", "");
+    String imgButtonOff = button.getProperties().getWithDefault("imgbuttonoff", "");
+
+    int imgWidth = button.getProperties().getWithDefault("imgbuttonwidth", 100);
+    int imgHeight = button.getProperties().getWithDefault("imgbuttonheight", 100);
 
     //----- Creating the image
 	
@@ -920,10 +926,19 @@ void CabbageLookAndFeel::drawToggleButton (Graphics &g, ToggleButton &button, bo
 	
     Image newButton;
     if(!button.getToggleState())
-        newButton = CabbageUtilities::drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonColourId), isRECT, svgPath, corner);
-    else
-        newButton = CabbageUtilities::drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonOnColourId), isRECT, svgPath, corner);
-
+	{
+        if(imgButtonOn.isNotEmpty())
+			newButton = drawTextButtonImage(destWidth, destHeight, button.getToggleState(), button.findColour(TextButton::buttonColourId), imgButtonOn, imgWidth, imgHeight, false);	
+		else
+			newButton = drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonColourId), isRECT, "", corner);	
+	}
+	else
+	{
+		if(imgButtonOff.isNotEmpty())
+			newButton = drawTextButtonImage (destWidth, destHeight, button.getToggleState(), button.findColour(TextButton::buttonOnColourId), imgButtonOff, imgWidth, imgHeight, true);
+		else
+			newButton = drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonOnColourId), isRECT, "", corner);
+	}
 
 
     //----- Drawing image
@@ -947,6 +962,214 @@ void CabbageLookAndFeel::drawToggleButton (Graphics &g, ToggleButton &button, bo
     }
 }
 
+Image CabbageLookAndFeel::drawFromSVG(String svgString, int width, int height, AffineTransform affine)
+{
+	Image svgImg;
+	svgImg = Image(Image::ARGB, width, height, true);
+	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgString));
+	if(svg == nullptr)
+		return Image::null;
+
+	ScopedPointer<Drawable> drawable;
+
+	Graphics graph(svgImg);
+	if (svg != nullptr)
+	{
+		drawable = Drawable::createFromSVG (*svg);
+		drawable->draw(graph, 1.f, affine);
+		return svgImg;
+	}
+	return Image::null;
+}
+
+Image CabbageLookAndFeel::drawFromPNG(String pngString, int width, int height, AffineTransform affine)
+{
+	Image img = ImageCache::getFromFile(File(pngString));
+	img.rescaled(width, height);
+	return img;
+
+}
+
+Image CabbageLookAndFeel::drawTextButtonImage(float width, float height, bool isButtonDown, Colour colour,
+								 String imgFile, int imgWidth, int imgHeight, bool on)
+{
+	Image img = Image(Image::ARGB, width, height, true);
+	Graphics g (img);
+	float opacity;
+
+	//if alpha is full draw invible button
+	if(colour.getAlpha()==0x00)
+	{
+		g.fillAll(Colours::transparentBlack);
+		return img;
+	}
+
+
+	if(imgFile.length()>0)
+	{
+		//----- If "off"
+		if (on == false)
+		{
+			if(imgFile.containsIgnoreCase(".svg"))
+				g.drawImage(drawFromSVG(imgFile, imgWidth, imgHeight, AffineTransform::identity), 0, 0, width, height, 0, 0, imgWidth, imgHeight, false);
+			else
+				g.drawImage(drawFromPNG(imgFile, imgWidth, imgHeight, AffineTransform::identity), 0, 0, width, height, 0, 0, imgWidth, imgHeight, false);
+		}
+		else
+		{
+			if(imgFile.containsIgnoreCase(".svg"))
+				g.drawImage(drawFromSVG(imgFile, imgWidth, imgHeight, AffineTransform::identity), 1, 1, width-2, height-2, 0, 0, imgWidth, imgHeight, false);
+			else
+				g.drawImage(drawFromPNG(imgFile, imgWidth, imgHeight, AffineTransform::identity), 0, 0, width, height, 0, 0, imgWidth, imgHeight, false);
+			
+		}
+	}
+	else
+	{
+
+		//----- Outline
+		g.setColour (Colour::fromRGBA (10, 10, 10, 255));
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
+
+		//----- If "off"
+		if (isButtonDown == false)
+		{
+			//----- Shadow
+			for (float i=0.01; i<0.05; i+=0.01)
+			{
+				g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
+				g.fillRoundedRectangle (width*i, height*i,
+										width*0.95, height*0.95, height*0.1);
+				opacity = 0.3;
+			}
+		}
+		else
+			opacity = 0.1;
+
+		//----- Filling in the button
+		//Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
+		//Colour bg2 = Colour::fromRGBA (15, 15, 18, 255);
+		Colour bg1 = colour;
+		Colour bg2 = colour.darker();
+
+		ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
+		g.setGradientFill (cg);
+		g.fillRoundedRectangle (width*0.01, height*0.01, width*0.93, height*0.93, height*0.1);
+
+		//----- For emphasising the top and left edges to give the illusion that light is shining on them
+		ColourGradient edgeHighlight = ColourGradient (Colours::whitesmoke, 0, 0,
+									   Colours::transparentWhite, 0, height*0.1, false);
+		g.setGradientFill (edgeHighlight);
+		g.setOpacity (opacity);
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
+
+		ColourGradient edgeHighlight2 = ColourGradient (Colours::whitesmoke, 0, 0,
+										Colours::transparentWhite, height*0.1, 0, false);
+		g.setGradientFill (edgeHighlight2);
+		g.setOpacity (opacity);
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
+	}
+	return img;
+}
+	
+Image CabbageLookAndFeel::drawToggleImage (float width, float height, bool isToggleOn, Colour colour, bool isRect, String imgPath, float corners)
+{
+	Image img = Image(Image::ARGB, width, height, true);
+	Graphics g (img);
+	float opacity = 0;
+
+	//if alpha is full draw invible button
+	if(colour.getAlpha()==0x00)
+	{
+		g.fillAll(Colours::transparentBlack);
+		return img;
+	}
+
+	if (isRect)   //if rectangular toggle
+	{
+		g.setColour (Colour::fromRGBA (10, 10, 10, 255));
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
+
+		if (isToggleOn == true)
+		{
+			g.setColour (colour);
+			g.fillRoundedRectangle(width*0.01, height*0.01, width*0.93, height*0.93, corners);
+			opacity = 0.4;
+		}
+		else   //off
+		{
+			// Shadow
+			for (float i=0.01; i<0.05; i+=0.01)
+			{
+				g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
+				g.fillRoundedRectangle (width*i+1, height*i+1,
+										width*0.95, height*0.95, corners);
+			}
+			// Filling in the button
+			Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
+			Colour bg2 = Colour::fromRGBA (15, 15, 18, 255);
+			ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
+			g.setGradientFill (cg);
+			g.fillRoundedRectangle (width*0.01, height*0.01, width*0.93, height*0.93, corners);
+			opacity = 0.2;
+		}
+
+		// For emphasising the top and left edges to give the illusion that light is shining on them
+		ColourGradient edgeHighlight = ColourGradient (Colours::whitesmoke, 0, 0,
+									   Colours::transparentWhite, 0, height*0.1, false);
+		g.setGradientFill (edgeHighlight);
+		g.setOpacity (opacity);
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
+
+		ColourGradient edgeHighlight2 = ColourGradient (Colours::whitesmoke, 0, 0,
+										Colours::transparentWhite, height*0.1, 0, false);
+		g.setGradientFill (edgeHighlight2);
+		g.setOpacity (opacity);
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
+	}
+	else   //else if round toggle
+	{
+		//base
+		ColourGradient base = ColourGradient (Colours::white, width*-0.3, height*-0.3, Colours::black,
+											  width*0.8, height*0.8, false);
+		g.setGradientFill(base);
+		g.fillEllipse (0, 0, width, height);
+
+		g.setColour(Colours::black);
+		g.fillEllipse(width*0.09, height*0.09, width*0.82, height*0.82);
+
+		Colour outline = Colour::fromRGB(70, 70, 70);
+
+		g.setColour(outline.withAlpha(colour.getAlpha()));
+		g.fillEllipse(width*0.04, height*0.04, width*0.92, height*0.92);
+
+		if (isToggleOn)   //on
+		{
+//                ColourGradient cg = ColourGradient(colour.withSaturation(0.2), width*0.4, height*0.4, colour,
+//                                                   width*0.8, height*0.8, true);
+
+			//g.setGradientFill (cg);
+			g.setColour(colour);
+			g.fillEllipse(width*0.09, height*0.09, width*0.82, height*0.82);
+		}
+		else   //off
+		{
+			g.setColour(Colours::black);
+			g.fillEllipse(width*0.09, height*0.09, width*0.82, height*0.82);
+
+			Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
+			Colour bg2 = Colour::fromRGBA (15, 15, 18, 255);
+			ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
+
+
+			//ColourGradient cg = ColourGradient (Colours::white, width*0.4, height*0.4, colour.darker(0.9), width*0.3, height*0.3, true);
+			g.setGradientFill (cg);
+			g.setOpacity(0.4);
+			g.fillEllipse(width*0.1, height*0.1, width*0.8, height*0.8);
+		}
+	}
+	return img;
+}
 //========= Text Button Background ======================================================================
 void CabbageLookAndFeel::drawButtonBackground (Graphics& g, Button& button, const Colour& /*backgroundColour*/,
         bool /*isButtonOver*/,
@@ -964,10 +1187,13 @@ void CabbageLookAndFeel::drawButtonBackground (Graphics& g, Button& button, cons
 
 
     if(!button.getToggleState())
-        newButton = CabbageUtilities::drawTextButtonImage(width, height, isButtonDown, button.findColour(TextButton::buttonColourId), svgButtonOff, svgWidth, svgHeight, false);
-    else
-        newButton = CabbageUtilities::drawTextButtonImage (width, height, isButtonDown, button.findColour(TextButton::buttonOnColourId), svgButtonOn, svgWidth, svgHeight, true);
-
+	{
+        newButton = drawTextButtonImage(width, height, isButtonDown, button.findColour(TextButton::buttonColourId), svgButtonOff, svgWidth, svgHeight, false);	
+	}
+	else
+	{
+        newButton = drawTextButtonImage (width, height, isButtonDown, button.findColour(TextButton::buttonOnColourId), svgButtonOn, svgWidth, svgHeight, true);
+	}
     g.drawImage (newButton, 0, 0, width, height, 0, 0, width, height, false);
 }
 
@@ -1128,7 +1354,7 @@ void CabbageLookAndFeel::drawGroupComponentOutline (Graphics &g, int w, int h, c
 
     //if valid SVG file....
     if(svgFile.length()>0)
-        g.drawImage(CabbageUtilities::drawFromSVG(svgFile, svgWidth, svgHeight, AffineTransform::identity), 0, 0,
+        g.drawImage(drawFromSVG(svgFile, svgWidth, svgHeight, AffineTransform::identity), 0, 0,
                     w, h, 0, 0, svgGroupboxWidth, svgGroupboxHeight, false);
 
     else
@@ -2410,9 +2636,9 @@ void CabbageLookAndFeelBasic::drawToggleButton (Graphics &g, ToggleButton &butto
     //----- Creating the image
     Image newButton;
     if(!button.getToggleState())
-        newButton = CabbageUtilities::drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonColourId), isRECT, svgPath, 5.f);
+        newButton = CabbageLookAndFeel::drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonColourId), isRECT, svgPath, 5.f);
     else
-        newButton = CabbageUtilities::drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonOnColourId), isRECT, svgPath, 5.f);
+        newButton = CabbageLookAndFeel::drawToggleImage (destWidth, destHeight, true, button.findColour(TextButton::buttonOnColourId), isRECT, svgPath, 5.f);
 
 
 
@@ -2423,12 +2649,10 @@ void CabbageLookAndFeelBasic::drawToggleButton (Graphics &g, ToggleButton &butto
     if (button.getButtonText().length() > 0)
     {
         Justification just (1); //left
-        //g.setFont (CabbageUtilities::getComponentFont());
         g.setColour (button.findColour(ToggleButton::textColourId));
-        //g.setColour(Colours::white);
         String name;
         name << button.getButtonText();
-        name = CabbageUtilities::cabbageString (name, CabbageUtilities::getComponentFont(), (button.getWidth()-(destWidth+5))); //shortening string if too long
+        name = CabbageUtilities::cabbageString (name, CabbageUtilities::getComponentFont(), (button.getWidth()-(destWidth+5)));
 
         g.drawText (name, destWidth+5, destY, button.getWidth(), button.getHeight(), just, false);
     }

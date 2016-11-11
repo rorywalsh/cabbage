@@ -48,37 +48,23 @@ public:
 	static void setProperty(ValueTree widgetData, Identifier name, const var &value);
 	static var getProperty(ValueTree widgetData, Identifier name);
 	//============================================================================
+	static Colour getColourFromText(String text);
+	static String getCabbageCodeFromIdentifiers(ValueTree props);
+	//============================================================================
 	static String getBoundsText(Rectangle<int> rect);
 	static String getMultiItemText(ValueTree widgetData, String identifier);
 	static String getColoursText(ValueTree widgetData);
 	static String getNumvericalValueText(ValueTree widgetData, String identifier);
 	static String getRotateText(ValueTree widgetData);
 	static String getSimpleText(ValueTree widgetData, String identfier);
+	static String getImagesText(ValueTree widgetData);
 	//============================================================================
-
 	static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);
-
-
     void setTableChannelValues(int index, float val);
     float getTableChannelValues(int index);
     void addTableChannelValues();
-
-   // static String getPropsString();
-    static String getColourProp(ValueTree widgetData, Identifier prop);
-  //  static float getNumPropVal(ValueTree widgetData, Identifier prop);
     void scaleWidget(Point<float> scale);
-  //  void setNumPropVal(Identifier prop, float val);
-    static String getCabbageCodeFromIdentifiers(ValueTree props);
-    static String getStringForIdentifier(var props, String identifier, String type);
-
-	static var getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value);
     static Rectangle<int> getBoundsFromText(String text);
-    static Colour getColourFromText(String text);
-    static String getTextFromText(String text);
-    static Point<int> getSizeFromText(String text);
-    static Point<int> getPosFromText(String text);
-    static float getSkewFromText(String text);
-    static var getVarArrayFromText(String text);
     
 
 };

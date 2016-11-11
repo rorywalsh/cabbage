@@ -932,172 +932,46 @@ public:
 			return false;
     }
 //====================================================================================
-    static int getSVGWidth(String svgContents)
+    static int getImgWidth(File imgFile)
     {
-        ScopedPointer<XmlElement> svg (XmlDocument::parse(svgContents));
-        for(int i=0; i<svg->getNumAttributes(); i++)
-        {
-            if(svg->getAttributeName(i)=="width")
-                return svg->getAttributeValue(i).getIntValue();
-        }
+		const String fileName = imgFile.getFullPathName();
+		if(fileName.contains(".svg"))
+		{
+			ScopedPointer<XmlElement> svg (XmlDocument::parse(imgFile.loadFileAsString()));
+			for(int i=0; i<svg->getNumAttributes(); i++)
+			{
+				if(svg->getAttributeName(i)=="width")
+					return svg->getAttributeValue(i).getIntValue();
+			}		
+		}
+		
+		else if(fileName.contains(".png"))
+		{
+			Image image = ImageCache::getFromFile(imgFile);
+			return image.getWidth();
+		}
+		
+        return 10;
+    }
+	//---------------------------------------------------------------
+    static int getImgHeight(File imgFile)
+    {
+		const String fileName = imgFile.getFullPathName();
+		if(fileName.contains(".svg"))
+		{
+			ScopedPointer<XmlElement> svg (XmlDocument::parse(imgFile.loadFileAsString()));
+			for(int i=0; i<svg->getNumAttributes(); i++)
+			{
+				if(svg->getAttributeName(i)=="height")
+					return svg->getAttributeValue(i).getIntValue();
+			}
+		}
+		else if(fileName.contains(".png"))
+		{
+			Image image = ImageCache::getFromFile(imgFile);
+			return image.getHeight();
+		}
         return 0;
-    }
-
-    static int getSVGHeight(String svgContents)
-    {
-        ScopedPointer<XmlElement> svg (XmlDocument::parse(svgContents));
-        for(int i=0; i<svg->getNumAttributes(); i++)
-        {
-            if(svg->getAttributeName(i)=="height")
-                return svg->getAttributeValue(i).getIntValue();
-        }
-        return 0;
-    }
-
-//============================================================================
-    static void setSVGProperties(Component& comp, File svgFile, File svgPath, String type)
-    {
-        if(type=="groupbox")
-        {
-            if(svgFile.existsAsFile())
-            {
-                comp.getProperties().set("svggroupbox", svgFile.loadFileAsString());
-                comp.getProperties().set("svggroupboxheight", CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                comp.getProperties().set("svggroupboxwidth", CabbageUtilities::getSVGWidth(svgFile.loadFileAsString()));
-            }
-            else if(svgPath.exists())
-            {
-                File filename(svgPath.getFullPathName()+"/groupbox.svg");
-                CabbageUtilities::debug(filename.getFullPathName());
-                if(filename.existsAsFile())
-                {
-                    comp.getProperties().set("svggroupbox", filename.loadFileAsString());
-                    comp.getProperties().set("svggroupboxheight", CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svggroupboxwidth", CabbageUtilities::getSVGWidth(filename.loadFileAsString()));
-                }
-            }
-        }
-        else if(type=="buttonon")
-        {
-            if(svgFile.existsAsFile())
-            {
-                comp.getProperties().set("svgbuttonon", svgFile.loadFileAsString());
-                comp.getProperties().set("svgbuttonheight", CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                comp.getProperties().set("svgbuttonwidth", CabbageUtilities::getSVGWidth(svgFile.loadFileAsString()));
-            }
-            else if(svgPath.exists())
-            {
-                File filename(svgPath.getFullPathName()+"/buttonon.svg");
-                CabbageUtilities::debug(filename.getFullPathName());
-                if(filename.existsAsFile())
-                {
-                    comp.getProperties().set("svgbuttonon", filename.loadFileAsString());
-                    comp.getProperties().set("svgbuttonheight", CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svgbuttonwidth", CabbageUtilities::getSVGWidth(filename.loadFileAsString()));
-                }
-            }
-        }
-        else if(type=="buttonoff")
-        {
-            if(svgFile.existsAsFile())
-            {
-                comp.getProperties().set("svgbuttonoff", svgFile.loadFileAsString());
-                CabbageUtilities::debug(svgFile.loadFileAsString());
-                comp.getProperties().set("svgbuttonheight", CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                CabbageUtilities::debug(CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                comp.getProperties().set("svgbuttonwidth", CabbageUtilities::getSVGWidth(svgFile.loadFileAsString()));
-            }
-            else if(svgPath.exists())
-            {
-                File filename(svgPath.getFullPathName()+"/buttonoff.svg");
-                CabbageUtilities::debug(filename.getFullPathName());
-                if(filename.existsAsFile())
-                {
-                    comp.getProperties().set("svgbuttonoff", filename.loadFileAsString());
-                    CabbageUtilities::debug(CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svgbuttonheight", CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svgbuttonwidth", CabbageUtilities::getSVGWidth(filename.loadFileAsString()));
-                }
-            }
-        }
-        else if(type.contains("sliderbg"))
-        {
-            if(svgFile.existsAsFile())
-            {
-                comp.getProperties().set("svgsliderbg", svgFile.loadFileAsString());
-                comp.getProperties().set("svgsliderbgheight", CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                CabbageUtilities::debug(CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                comp.getProperties().set("svgsliderbgwidth", CabbageUtilities::getSVGWidth(svgFile.loadFileAsString()));
-            }
-            else if(svgPath.exists())
-            {
-                File filename;
-                if(type=="rsliderbg")
-                    filename = File(svgPath.getFullPathName()+"/rslider_background.svg");
-                else if(type=="hsliderbg")
-                    filename = File(svgPath.getFullPathName()+"/hslider_background.svg");
-                else
-                    filename = File(svgPath.getFullPathName()+"/vslider_background.svg");
-
-                if(filename.existsAsFile())
-                {
-                    comp.getProperties().set("svgsliderbg", filename.loadFileAsString());
-                    CabbageUtilities::debug(CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svgsliderbgheight", CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svgsliderbgwidth", CabbageUtilities::getSVGWidth(filename.loadFileAsString()));
-                }
-            }
-        }
-        else if(type.contains("slider"))
-        {
-            if(svgFile.existsAsFile())
-            {
-                comp.getProperties().set("svgslider", svgFile.loadFileAsString());
-                comp.getProperties().set("svgsliderheight", CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                CabbageUtilities::debug(CabbageUtilities::getSVGHeight(svgFile.loadFileAsString()));
-                comp.getProperties().set("svgsliderwidth", CabbageUtilities::getSVGWidth(svgFile.loadFileAsString()));
-            }
-            else if(svgPath.exists())
-            {
-                File filename;
-                if(type=="rslider")
-                    filename = File(svgPath.getFullPathName()+"/rslider.svg");
-                else if(type=="hslider")
-                    filename = File(svgPath.getFullPathName()+"/hslider.svg");
-                else
-                    filename = File(svgPath.getFullPathName()+"/vslider.svg");
-
-                //CabbageUtilities::debug(filename.getFullPathName());
-                if(filename.existsAsFile())
-                {
-                    comp.getProperties().set("svgslider", filename.loadFileAsString());
-                    CabbageUtilities::debug(CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svgsliderheight", CabbageUtilities::getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("svgsliderwidth", CabbageUtilities::getSVGWidth(filename.loadFileAsString()));
-                }
-            }
-        }
-
-    }
-
-    static Image drawFromSVG(String svgString, int width, int height, AffineTransform affine)
-    {
-        Image svgImg;
-        svgImg = Image(Image::ARGB, width, height, true);
-        ScopedPointer<XmlElement> svg (XmlDocument::parse(svgString));
-        if(svg == nullptr)
-            return Image::null;
-
-        ScopedPointer<Drawable> drawable;
-
-        Graphics graph(svgImg);
-        if (svg != nullptr)
-        {
-            drawable = Drawable::createFromSVG (*svg);
-            drawable->draw(graph, 1.f, affine);
-            return svgImg;
-        }
-        return Image::null;
     }
 
 
@@ -1193,176 +1067,6 @@ public:
 #endif
     }
 //========= Text button image ========================================================
-    static Image drawTextButtonImage(float width, float height, bool isButtonDown, Colour colour,
-                                     String svgFile, int svgWidth, int svgHeight, bool on)
-    {
-        Image img = Image(Image::ARGB, width, height, true);
-        Graphics g (img);
-        float opacity;
-
-        //if alpha is full draw invible button
-        if(colour.getAlpha()==0x00)
-        {
-            g.fillAll(Colours::transparentBlack);
-            return img;
-        }
-
-
-        if(svgFile.length()>0)
-        {
-            //----- If "off"
-            if (on == false)
-                g.drawImage(drawFromSVG(svgFile, svgWidth, svgHeight, AffineTransform::identity), 0, 0, width, height, 0, 0, svgWidth, svgHeight, false);
-            else
-                g.drawImage(drawFromSVG(svgFile, svgWidth, svgHeight, AffineTransform::identity), 1, 1, width-2, height-2, 0, 0, svgWidth, svgHeight, false);
-        }
-        else
-        {
-
-            //----- Outline
-            g.setColour (Colour::fromRGBA (10, 10, 10, 255));
-            g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
-
-            //----- If "off"
-            if (isButtonDown == false)
-            {
-                //----- Shadow
-                for (float i=0.01; i<0.05; i+=0.01)
-                {
-                    g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
-                    g.fillRoundedRectangle (width*i, height*i,
-                                            width*0.95, height*0.95, height*0.1);
-                    opacity = 0.3;
-                }
-            }
-            else
-                opacity = 0.1;
-
-            //----- Filling in the button
-            //Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
-            //Colour bg2 = Colour::fromRGBA (15, 15, 18, 255);
-            Colour bg1 = colour;
-            Colour bg2 = colour.darker();
-
-            ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
-            g.setGradientFill (cg);
-            g.fillRoundedRectangle (width*0.01, height*0.01, width*0.93, height*0.93, height*0.1);
-
-            //----- For emphasising the top and left edges to give the illusion that light is shining on them
-            ColourGradient edgeHighlight = ColourGradient (Colours::whitesmoke, 0, 0,
-                                           Colours::transparentWhite, 0, height*0.1, false);
-            g.setGradientFill (edgeHighlight);
-            g.setOpacity (opacity);
-            g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
-
-            ColourGradient edgeHighlight2 = ColourGradient (Colours::whitesmoke, 0, 0,
-                                            Colours::transparentWhite, height*0.1, 0, false);
-            g.setGradientFill (edgeHighlight2);
-            g.setOpacity (opacity);
-            g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
-        }
-        return img;
-    }
-
-//====================================================================================================
-    static Image drawToggleImage (float width, float height, bool isToggleOn, Colour colour, bool isRect, String svgPath, float corners)
-    {
-        Image img = Image(Image::ARGB, width, height, true);
-        Graphics g (img);
-        float opacity = 0;
-
-        //if alpha is full draw invible button
-        if(colour.getAlpha()==0x00)
-        {
-            g.fillAll(Colours::transparentBlack);
-            return img;
-        }
-
-        if (isRect)   //if rectangular toggle
-        {
-            g.setColour (Colour::fromRGBA (10, 10, 10, 255));
-            g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
-
-            if (isToggleOn == true)
-            {
-                g.setColour (colour);
-                g.fillRoundedRectangle(width*0.01, height*0.01, width*0.93, height*0.93, corners);
-                opacity = 0.4;
-            }
-            else   //off
-            {
-                // Shadow
-                for (float i=0.01; i<0.05; i+=0.01)
-                {
-                    g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
-                    g.fillRoundedRectangle (width*i+1, height*i+1,
-                                            width*0.95, height*0.95, corners);
-                }
-                // Filling in the button
-                Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
-                Colour bg2 = Colour::fromRGBA (15, 15, 18, 255);
-                ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
-                g.setGradientFill (cg);
-                g.fillRoundedRectangle (width*0.01, height*0.01, width*0.93, height*0.93, corners);
-                opacity = 0.2;
-            }
-
-            // For emphasising the top and left edges to give the illusion that light is shining on them
-            ColourGradient edgeHighlight = ColourGradient (Colours::whitesmoke, 0, 0,
-                                           Colours::transparentWhite, 0, height*0.1, false);
-            g.setGradientFill (edgeHighlight);
-            g.setOpacity (opacity);
-            g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
-
-            ColourGradient edgeHighlight2 = ColourGradient (Colours::whitesmoke, 0, 0,
-                                            Colours::transparentWhite, height*0.1, 0, false);
-            g.setGradientFill (edgeHighlight2);
-            g.setOpacity (opacity);
-            g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
-        }
-        else   //else if round toggle
-        {
-            //base
-            ColourGradient base = ColourGradient (Colours::white, width*-0.3, height*-0.3, Colours::black,
-                                                  width*0.8, height*0.8, false);
-            g.setGradientFill(base);
-            g.fillEllipse (0, 0, width, height);
-
-            g.setColour(Colours::black);
-            g.fillEllipse(width*0.09, height*0.09, width*0.82, height*0.82);
-
-            Colour outline = Colour::fromRGB(70, 70, 70);
-
-            g.setColour(outline.withAlpha(colour.getAlpha()));
-            g.fillEllipse(width*0.04, height*0.04, width*0.92, height*0.92);
-
-            if (isToggleOn)   //on
-            {
-//                ColourGradient cg = ColourGradient(colour.withSaturation(0.2), width*0.4, height*0.4, colour,
-//                                                   width*0.8, height*0.8, true);
-
-                //g.setGradientFill (cg);
-                g.setColour(colour);
-                g.fillEllipse(width*0.09, height*0.09, width*0.82, height*0.82);
-            }
-            else   //off
-            {
-                g.setColour(Colours::black);
-                g.fillEllipse(width*0.09, height*0.09, width*0.82, height*0.82);
-
-                Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
-                Colour bg2 = Colour::fromRGBA (15, 15, 18, 255);
-                ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
-
-
-                //ColourGradient cg = ColourGradient (Colours::white, width*0.4, height*0.4, colour.darker(0.9), width*0.3, height*0.3, true);
-                g.setGradientFill (cg);
-                g.setOpacity(0.4);
-                g.fillEllipse(width*0.1, height*0.1, width*0.8, height*0.8);
-            }
-        }
-        return img;
-    }
 
 //====================================================================================================
     static void setPreference(ApplicationProperties* appPrefs, String pref, String value)

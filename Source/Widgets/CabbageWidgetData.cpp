@@ -32,7 +32,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     setProperty(widgetData, "resize", 0);
     setProperty(widgetData, CabbageIdentifierIds::active, 1);
     setProperty(widgetData, CabbageIdentifierIds::parentdir, "");
-    setProperty(widgetData, CabbageIdentifierIds::svgdebug, 0);
+    setProperty(widgetData, CabbageIdentifierIds::imgdebug, 0);
 	setProperty(widgetData, CabbageIdentifierIds::allowboundsupdate, 0);
 	setProperty(widgetData, CabbageIdentifierIds::identchannelmessage, "");
     setProperty(widgetData, CabbageIdentifierIds::popuptext, "");
@@ -91,8 +91,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
         setProperty(widgetData, CabbageIdentifierIds::gradient, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgsliderbg, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
 
 
     }
@@ -142,8 +142,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgsliderbg, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
     }
     else if(strTokens[0].trim() == "rslider")
     {
@@ -180,8 +180,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .7);
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgsliderbg, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
     }
 
     else if((strTokens[0].trim() == "sourcebutton")||(strTokens[0].trim() == "loadbutton"))
@@ -206,8 +206,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonoff, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
     }
 
     //===============info button==================//
@@ -234,8 +234,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonoff, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
     }
 
 
@@ -276,8 +276,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         populate.append("");
         setProperty(widgetData, "populate", populate);
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonoff, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
     }
     //===============file button==================//
     else if(strTokens[0].trim() == "filebutton")
@@ -317,8 +317,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, "populate", populate);
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
         setProperty(widgetData, CabbageIdentifierIds::filetype, "*");
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonoff, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
     }
 
     //===============button==================//
@@ -354,8 +354,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::radiogroup, 0);
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgbuttonoff, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 
     }
 
@@ -629,7 +629,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svggroupbox, "");
+        setProperty(widgetData, CabbageIdentifierIds::imggroupbox, "");
 
     }
     //===============line==================//
@@ -873,8 +873,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::svgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::svgsliderbg, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
     }
 
     //===============signaldisplay==================//
@@ -1044,7 +1044,7 @@ void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::value, 0);
 	setProperty(widgetData, CabbageIdentifierIds::caption, "");
 	setProperty(widgetData, CabbageIdentifierIds::shape, "square");
-	setProperty(widgetData, CabbageIdentifierIds::corners, 2);
+	setProperty(widgetData, CabbageIdentifierIds::corners, 5);
 	setProperty(widgetData, CabbageIdentifierIds::type, "checkbox");
 	setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::lime.toString());
 	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
@@ -1055,6 +1055,8 @@ void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
 	setProperty(widgetData, CabbageIdentifierIds::radiogroup, 0);
 	setProperty(widgetData, CabbageIdentifierIds::visible, 1);		
+	setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+    setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 }
 //===========================================================================================
 // this method parsing the Cabbage text and set each of the Cabbage indentifers
@@ -1220,7 +1222,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             }
 
             else if(identArray[indx].equalsIgnoreCase("colour:0")||
-                    identArray[indx].equalsIgnoreCase("colours("))
+                    identArray[indx].equalsIgnoreCase("colour"))
             {
                 setProperty(widgetData, CabbageIdentifierIds::colour, getColourFromText(strTokens.joinIntoString(",")).toString());
             }
@@ -1307,28 +1309,29 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                 setProperty(widgetData, CabbageIdentifierIds::file, strTokens[0].trim());
             }
 
-            else if(identArray[indx].equalsIgnoreCase("svgpath"))
+            else if(identArray[indx].equalsIgnoreCase("imgpath"))
             {
-                setProperty(widgetData, CabbageIdentifierIds::svgpath, strTokens[0].trim());
+                setProperty(widgetData, CabbageIdentifierIds::imgpath, strTokens[0].trim());
             }
 
-            else if(identArray[indx].equalsIgnoreCase("svgfile"))
+            else if(identArray[indx].equalsIgnoreCase("imgfile"))
             {
+				CabbageUtilities::debug(strTokens[0].trim());
                 if(typeOfWidget=="groupbox")
-                    setProperty(widgetData, CabbageIdentifierIds::svggroupbox, strTokens[0].trim());
+                    setProperty(widgetData, CabbageIdentifierIds::imggroupbox, strTokens[0].trim());
                 else if(typeOfWidget.contains("slider"))
                 {
-                    if(strTokens[0].trim().contains("background"))
-                        setProperty(widgetData, CabbageIdentifierIds::svgsliderbg, strTokens[1].trim());
+                    if(strTokens[0].trim().containsIgnoreCase("background"))
+                        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, strTokens[1].trim());
                     else
-                        setProperty(widgetData, CabbageIdentifierIds::svgslider, strTokens[1].trim());
+                        setProperty(widgetData, CabbageIdentifierIds::imgslider, strTokens[1].trim());
                 }
-                else if(typeOfWidget.contains("button"))
+                else if(typeOfWidget.contains("button") || typeOfWidget.contains("checkbox"))
                 {
-                    if(strTokens[0].trim().contains("off"))
-                        setProperty(widgetData, CabbageIdentifierIds::svgbuttonoff, strTokens[1].trim());
+                    if(strTokens[0].trim().containsIgnoreCase("off"))
+                        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, strTokens[1].trim());
                     else
-                        setProperty(widgetData, CabbageIdentifierIds::svgbuttonon, strTokens[1].trim());
+                        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, strTokens[1].trim());
                 }
                 //identifiers that appear more than once need to use indx-- so we can check for another instance
                 indx--;
@@ -1647,9 +1650,9 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                 setProperty(widgetData, CabbageIdentifierIds::minvalue, strTokens[0].trim().getFloatValue());
             }
 
-            else if(identArray[indx].equalsIgnoreCase("svgdebug"))
+            else if(identArray[indx].equalsIgnoreCase("imgdebug"))
             {
-                setProperty(widgetData, CabbageIdentifierIds::svgdebug, strTokens[0].trim().getFloatValue());
+                setProperty(widgetData, CabbageIdentifierIds::imgdebug, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("middlec"))
@@ -2041,11 +2044,6 @@ void CabbageWidgetData::setProperty(ValueTree widgetData, Identifier name, const
 	widgetData.setProperty(name, value, 0);		
 }
 
-var CabbageWidgetData::getWidgetPropertyWithDefault(ValueTree widgetData, Identifier name, const var &value)
-{
-	return widgetData.getProperty(name, value);
-}	
-
 var CabbageWidgetData::getProperty(ValueTree widgetData, Identifier name)
 {
 	return widgetData.getProperty(name);
@@ -2110,137 +2108,10 @@ Colour CabbageWidgetData::getColourFromText(String text)
         colour = Colour::fromRGB (strTokens[0].getIntValue(),
                                   strTokens[1].getIntValue(),
                                   strTokens[2].getIntValue());
-
-    //Logger::writeToLog(text);
-    //Logger::writeToLog(colour.toString());
     return colour;
 }
-//==================================================================
-String CabbageWidgetData::getTextFromText(String text)
-{
-    text = " "+text;
-    String subString = text.substring(text.indexOfWholeWord("text"));
-    subString = subString.substring(5, subString.indexOf(")"));
-    return subString;
-}
-//==================================================================
-var CabbageWidgetData::getVarArrayFromText(String text)
-{
-    text = " "+text.replace("\"", "");
-    String subString = text.substring(text.indexOfWholeWord("text"));
-    subString = subString.substring(5, subString.indexOf(")"));
-    StringArray array;
-    var varArray;
-    array.addTokens(subString, ",", "");
-    for(int i=0; i<array.size(); i++)
-        varArray.append(array[i].trim());
-    return varArray;
-}
-//==================================================================
-Point<int> CabbageWidgetData::getPosFromText(String text)
-{
-    text = " "+text;
-    String subString = text.substring(text.indexOfWholeWord("pos"));
-    subString = subString.substring(4, subString.indexOf(")"));
-    StringArray strTokens;
-    strTokens.addTokens(subString, ",()", "");
-    return Point<int>(strTokens[0].getIntValue(), strTokens[1].getIntValue());
-}
-//==================================================================
-Point<int> CabbageWidgetData::getSizeFromText(String text)
-{
-    text = " "+text;
-    String subString = text.substring(text.indexOfWholeWord("size"));
-    subString = subString.substring(5, subString.indexOf(")"));
-    StringArray strTokens;
-    strTokens.addTokens(subString, ",()", "");
-    return Point<int>(strTokens[0].getIntValue(), strTokens[1].getIntValue());
-}
-//==================================================================
-float CabbageWidgetData::getSkewFromText(String text)
-{
-    text = " "+text;
-    String subString = text.substring(text.indexOfWholeWord("sliderskew"));
-    subString = subString.substring(11, subString.indexOf(")"));
-    return subString.getFloatValue();
-}
 
 
-//===================================================================
-float CabbageWidgetData::getTableChannelValues(int index)
-{
-		jassert(false);
-//    if(index<tableChannelValues.size())
-//        return tableChannelValues.getReference(index);
-//    else
-//        return 0.f;
-}
-//===================================================================
-void CabbageWidgetData::addTableChannelValues()
-{
-		jassert(false);
-//    tableChannelValues.add(-1.f);
-}
-//===================================================================
-void CabbageWidgetData::setTableChannelValues(int index, float val)
-{
-		jassert(false);
-//    if(index<tableChannelValues.size())
-//        tableChannelValues.set(index, val);
-}
-
-
-//===================================================================
-void CabbageWidgetData::scaleWidget(Point<float> scale)
-{
-		jassert(false);
-//    Rectangle<int> rect(getWidgetPropertyWithDefault("left", 0),
-//                        getWidgetPropertyWithDefault("top", 0),
-//                        getWidgetPropertyWithDefault("width", 10),
-//                        getWidgetPropertyWithDefault("height", 10));
-//
-//    setProperty(CabbageIdentifierIds::left, rect.getX()*scale.x);
-//    setProperty(CabbageIdentifierIds::top, rect.getY()*scale.y);
-//    setProperty(CabbageIdentifierIds::width, rect.getWidth()*scale.x);
-//    setProperty(CabbageIdentifierIds::height, rect.getHeight()*scale.y);	;
-}
-
-//===================================================================
-String CabbageWidgetData::getStringForIdentifier(var propsArray, String identifier, String type)
-{
-    String str;
-    if(type=="number")
-    {
-        if(propsArray.size()>0)
-        {
-            for(int p=0; p<propsArray.size(); p++)
-                str += propsArray[p].toString()+",";
-            str= identifier+str.dropLastCharacters(1)+"), ";
-            //Logger::writeToLog(str);
-        }
-        else
-            str = identifier+propsArray.toString()+"), ";
-
-        return str;
-    }
-
-    else if(type=="string")
-    {
-        if(propsArray.size()>0)
-        {
-            for(int p=0; p<propsArray.size(); p++)
-                str += "\""+propsArray[p].toString()+"\",";
-            str = identifier+str.dropLastCharacters(1)+"), ";
-            //Logger::writeToLog(str);
-        }
-        else
-            str = identifier+String("\"")+propsArray.toString()+"\"), ";
-
-        return str;
-    }
-    else
-        return "";
-}
 //===================================================================
 String CabbageWidgetData::getBoundsText(Rectangle<int> rect)
 {
@@ -2299,6 +2170,30 @@ String CabbageWidgetData::getSimpleText(ValueTree widgetData, String identifier)
 	}
 	
 	return String::empty;
+}
+//===================================================================
+String CabbageWidgetData::getImagesText(ValueTree widgetData)
+{
+	ValueTree tempData("tempTree");
+	const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+	CabbageWidgetData::setWidgetState(tempData, type, -99);
+	String returnText = "";
+	
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::imgbuttonon)
+										!= CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::imgbuttonon))
+	{
+		const String text = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::imgbuttonon);
+		returnText = "imgfile(\"On\", \"" + text + "\"), ";
+	}
+	
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::imgbuttonoff)
+										!= CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::imgbuttonoff))
+	{
+		const String text = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::imgbuttonoff);
+		returnText = returnText+"imgfile(\"Off\", \"" + text + "\"), ";
+	}
+	
+	return returnText;
 }
 //===================================================================
 String CabbageWidgetData::getMultiItemText(ValueTree widgetData, String identifier)
@@ -2389,7 +2284,30 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
 						 + getNumvericalValueText(widgetData, "visible")
 						 + getSimpleText(widgetData, "popuptext")
 						 + getSimpleText(widgetData, "file")
-						 + getSimpleText(widgetData, "shape");
+						 + getSimpleText(widgetData, "shape")
+						 + getImagesText(widgetData);
 						 
 	return cabbageCode;
 }
+
+//===================================================================
+float CabbageWidgetData::getTableChannelValues(int index)
+{
+		jassert(false);
+}
+//===================================================================
+void CabbageWidgetData::addTableChannelValues()
+{
+		jassert(false);
+}
+//===================================================================
+void CabbageWidgetData::setTableChannelValues(int index, float val)
+{
+		jassert(false);
+}
+//===================================================================
+void CabbageWidgetData::scaleWidget(Point<float> scale)
+{
+		jassert(false);
+}
+//===================================================================

@@ -24,9 +24,6 @@
 //================================================================================================================
 CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
     name(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
-    caption(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::caption)),
-    colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
-    fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
     rotate(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::rotate)),
     pivotx(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::pivotx)),
     pivoty(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::pivoty)),
@@ -46,7 +43,7 @@ CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
 	CabbageUtilities::debug(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::menucolour));	
 
     lookAndFeelChanged();
-    getProperties().set("svgpath", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::svgpath));
+    getProperties().set("svgpath", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgpath));
 
     if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext).isNotEmpty())
     {

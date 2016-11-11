@@ -223,7 +223,20 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors(ValueTre
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors(ValueTree valueTree)
 {
+    Array<PropertyComponent*> comps;
+
+	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "checkbox")
+	{	
+		comps.add (new CabbageFilePropertyComponent("On Image", false, true));
+		comps.add (new CabbageFilePropertyComponent("Off Image", false, true));
+	}	
+	else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "combobox")
+	{	
+
+	}	
 	
+	addListener(comps, this);
+	return comps;
 }
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree valueTree)
@@ -260,6 +273,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 	addListener(comps, this);
 	return comps;
 }
+
 //==============================================================================
 CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 :widgetData(widgetData)
@@ -274,6 +288,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
 	propertyPanel.addSection ("Text", createTextEditors(widgetData));
 	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
+	propertyPanel.addSection ("Images", createFileEditors(widgetData));
 	propertyPanel.addSection ("Misc", createMiscEditors(widgetData));
 	
 
@@ -291,6 +306,7 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 	propertyPanel.addSection ("Values", createValueEditors(this, widgetData));
 	propertyPanel.addSection ("Text", createTextEditors(widgetData));
 	propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
+	propertyPanel.addSection ("Images", createFileEditors(widgetData));
 	propertyPanel.addSection ("Misc", createMiscEditors(widgetData));
 	this->setVisible(true);
 	
@@ -354,7 +370,7 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
 {
 	fileComponent->setTooltip(fileComponent->getCurrentFileText());
-	setPropertyByName(widgetData, "File", fileComponent->getCurrentFileText());
+	setPropertyByName(widgetData, fileComponent->getName(), fileComponent->getCurrentFileText());
 	CabbageUtilities::debug(fileComponent->getCurrentFileText());
 	
 }

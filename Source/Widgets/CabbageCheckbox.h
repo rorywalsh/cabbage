@@ -21,7 +21,7 @@
 #define CABBAGECHECKBOX_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
-#include "CabbageCustomWidgets.h"
+#include "CabbageWidgetBase.h"
 
 class CabbagePluginEditor;
 //==============================================================================
@@ -33,7 +33,7 @@ class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public 
 
     bool isRect;
     String name, tooltipText, buttonText, colour, fontcolour, oncolour;
-
+	
 public:
 
     CabbageCheckbox(ValueTree widgetData);
@@ -50,6 +50,7 @@ public:
 	}
 
 	ValueTree widgetData;
+	
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);
 };
