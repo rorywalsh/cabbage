@@ -40,11 +40,20 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 		if(File::getCurrentWorkingDirectory().getChildFile(imgButtonOn).existsAsFile())
 		{
 			image = ImageCache::getFromFile(File(imgButtonOn));
-			image = image.rescaled(button.getWidth(), button.getHeight());
+			image = image.rescaled(button.getWidth(), button.getHeight());		
 		}
 		else
 		{
-			image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
+			if(imgButtonOn.containsIgnoreCase(".svg"))
+			{
+				const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
+				const int imgHeight = button.getProperties().getWithDefault("imgbuttonheight", 30.f);
+				const int imgWidth = button.getProperties().getWithDefault("imgbuttonwidth", 100.f);
+				image = drawFromSVG(imgButtonOn, imgWidth, imgHeight, AffineTransform::identity);				
+			
+			}
+			else
+				image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
 									button.findColour(TextButton::ColourIds::buttonOnColourId), isRectangle, corners);
 		}			
 	}
@@ -52,24 +61,24 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 	{		
 		if(File::getCurrentWorkingDirectory().getChildFile(imgButtonOff).existsAsFile())
 		{
-			if(imgButtonOff.containsIgnoreCase(".svg"))
-			{
-				const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
-				//image = drawFromSVG(imgButtonOff, imgWidth, imgHeight, AffineTransform::identity);				
-			
-			}
-			else
-			{
-				image = ImageCache::getFromFile(File(imgButtonOff));
-				image = image.rescaled(button.getWidth(), button.getHeight());		
-			}
+			image = ImageCache::getFromFile(File(imgButtonOff));
+			image = image.rescaled(button.getWidth(), button.getHeight());		
 		}
 		else
 		{
-			image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
+			if(imgButtonOff.containsIgnoreCase(".svg"))
+			{
+				const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
+				const int imgHeight = button.getProperties().getWithDefault("imgbuttoffheight", 30.f);
+				const int imgWidth = button.getProperties().getWithDefault("imgbuttoffwidth", 100.f);
+				image = drawFromSVG(imgButtonOff, imgWidth, imgHeight, AffineTransform::identity);				
+			}
+			else
+				image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
 									button.findColour(TextButton::ColourIds::buttonColourId), isRectangle, corners);
 		}
 	}
+	
 
 	g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f,
 				button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);	

@@ -100,44 +100,24 @@ void CabbageWidgetBase::initialiseCommonAttributes(ValueTree data)
 }
 
 
-int CabbageWidgetBase::getImgWidth(File imgFile)
+int CabbageWidgetBase::getSVGWidth(String svgContents)
 {
-	const String fileName = imgFile.getFullPathName();
-	if(fileName.contains(".svg"))
+	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgContents));
+	for(int i=0; i<svg->getNumAttributes(); i++)
 	{
-		ScopedPointer<XmlElement> svg (XmlDocument::parse(imgFile.loadFileAsString()));
-		for(int i=0; i<svg->getNumAttributes(); i++)
-		{
-			if(svg->getAttributeName(i)=="width")
-				return svg->getAttributeValue(i).getIntValue();
-		}		
+		if(svg->getAttributeName(i)=="width")
+			return svg->getAttributeValue(i).getIntValue();
 	}
-	
-	else if(fileName.contains(".png"))
-	{
-		Image image = ImageCache::getFromFile(imgFile);
-		return image.getWidth();
-	}
-	
-	return 10;
+	return 0;
 }
 
-int CabbageWidgetBase::getImgHeight(File imgFile)
+int CabbageWidgetBase::getSVGHeight(String svgContents)
 {
-	const String fileName = imgFile.getFullPathName();
-	if(fileName.contains(".svg"))
+	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgContents));
+	for(int i=0; i<svg->getNumAttributes(); i++)
 	{
-		ScopedPointer<XmlElement> svg (XmlDocument::parse(imgFile.loadFileAsString()));
-		for(int i=0; i<svg->getNumAttributes(); i++)
-		{
-			if(svg->getAttributeName(i)=="height")
-				return svg->getAttributeValue(i).getIntValue();
-		}
-	}
-	else if(fileName.contains(".png"))
-	{
-		Image image = ImageCache::getFromFile(imgFile);
-		return image.getHeight();
+		if(svg->getAttributeName(i)=="height")
+			return svg->getAttributeValue(i).getIntValue();
 	}
 	return 0;
 }

@@ -931,50 +931,7 @@ public:
 		else 
 			return false;
     }
-//====================================================================================
-    static int getImgWidth(File imgFile)
-    {
-		const String fileName = imgFile.getFullPathName();
-		if(fileName.contains(".svg"))
-		{
-			ScopedPointer<XmlElement> svg (XmlDocument::parse(imgFile.loadFileAsString()));
-			for(int i=0; i<svg->getNumAttributes(); i++)
-			{
-				if(svg->getAttributeName(i)=="width")
-					return svg->getAttributeValue(i).getIntValue();
-			}		
-		}
-		
-		else if(fileName.contains(".png"))
-		{
-			Image image = ImageCache::getFromFile(imgFile);
-			return image.getWidth();
-		}
-		
-        return 10;
-    }
-	//---------------------------------------------------------------
-    static int getImgHeight(File imgFile)
-    {
-		const String fileName = imgFile.getFullPathName();
-		if(fileName.contains(".svg"))
-		{
-			ScopedPointer<XmlElement> svg (XmlDocument::parse(imgFile.loadFileAsString()));
-			for(int i=0; i<svg->getNumAttributes(); i++)
-			{
-				if(svg->getAttributeName(i)=="height")
-					return svg->getAttributeValue(i).getIntValue();
-			}
-		}
-		else if(fileName.contains(".png"))
-		{
-			Image image = ImageCache::getFromFile(imgFile);
-			return image.getHeight();
-		}
-        return 0;
-    }
-
-
+//====================================================================================================	
     static Image drawSVGImageFromFilePath(String path, String type, AffineTransform affine)
     {
         String svgFileName = File(path).existsAsFile()? path : path+"/"+String(type)+".svg";
