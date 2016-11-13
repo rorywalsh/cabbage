@@ -2039,6 +2039,11 @@ void CabbageWidgetData::setNumProp(ValueTree widgetData, Identifier prop, float 
     setProperty(widgetData, prop, val);
 }
 
+void CabbageWidgetData::setStringProp(ValueTree widgetData, Identifier name, const String value)
+{		
+	widgetData.setProperty(name, value, 0);		
+}
+
 void CabbageWidgetData::setProperty(ValueTree widgetData, Identifier name, const var &value)
 {		
 	widgetData.setProperty(name, value, 0);		

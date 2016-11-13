@@ -313,8 +313,6 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 }
 void CabbagePropertiesPanel::paint (Graphics& g)
 {
-	//g.setColour(borderColour);
-	//g.fillRect(0, 0, 10, getHeight());
 	g.fillAll(backgroundColour.withAlpha(1.f));
 }
 
@@ -324,7 +322,7 @@ void CabbagePropertiesPanel::resized()
 }
 
 //==============================================================================
-void CabbagePropertiesPanel::setPropertyByName(ValueTree wData, String name, var value)
+void CabbagePropertiesPanel::setPropertyByName(String name, var value)
 {
 	CabbageIdentifierPropertyStringPairs propertyStringPairs;
 	const String identifier = propertyStringPairs.getValue(name, "");
@@ -340,7 +338,7 @@ void CabbagePropertiesPanel::changeListenerCallback(ChangeBroadcaster *source)
 {
 	if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(source))
 	{
-		setPropertyByName(widgetData, colourProperty->getName(), colourProperty->getCurrentColourString());
+		setPropertyByName(colourProperty->getName(), colourProperty->getCurrentColourString());
 	}	
 }
 
@@ -348,29 +346,29 @@ void CabbagePropertiesPanel::textPropertyComponentChanged(TextPropertyComponent 
 {
 	//when in edit mode, direct bounds updating is only permitted from properties dialogue
 	CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::allowboundsupdate, 1);
-	setPropertyByName(widgetData, comp->getName(), comp->getValue());
+	setPropertyByName(comp->getName(), comp->getValue());
 	CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::allowboundsupdate, 0);	
 }
 	
 void CabbagePropertiesPanel::valueChanged(Value& value)
 {
 	if(value.refersToSameSourceAs(isActiveValue))
-		setPropertyByName(widgetData, "Active", value.getValue());		
+		setPropertyByName("Active", value.getValue());		
 	else if(value.refersToSameSourceAs(isVisibleValue))
-		setPropertyByName(widgetData, "Visible", value.getValue());		
+		setPropertyByName("Visible", value.getValue());		
 	else if(value.refersToSameSourceAs(alphaValue))
-		setPropertyByName(widgetData, "Alpha", value.getValue());	
+		setPropertyByName("Alpha", value.getValue());	
 	else if(value.refersToSameSourceAs(shapeValue))
 	{
 		if(value.getValue().isInt())
-			setPropertyByName(widgetData, "Shape", int(value.getValue())==0 ? "square" : "circle");
+			setPropertyByName("Shape", int(value.getValue())==0 ? "square" : "circle");
 	}
 }
 
 void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
 {
 	fileComponent->setTooltip(fileComponent->getCurrentFileText());
-	setPropertyByName(widgetData, fileComponent->getName(), fileComponent->getCurrentFileText());
-	CabbageUtilities::debug(fileComponent->getCurrentFileText());
-	
+	setPropertyByName(fileComponent->getName(), fileComponent->getCurrentFileText());
+	const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
+	CabbageUtilities::debug(fileComponent->getCurrentFile().getRelativePathFrom(File(csdFile)));
 }

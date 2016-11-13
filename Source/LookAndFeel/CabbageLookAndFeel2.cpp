@@ -17,7 +17,6 @@ CabbageLookAndFeel2::CabbageLookAndFeel2()
 }
 
 //===========================================================================================
-// methods for drawing toggle buttons / checkboxes
 void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown)
 {
 	Image image;
@@ -47,7 +46,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 	}
 	else
 	{
-		if(imgButtonOn.isNotEmpty() || imgButtonOff.isNotEmpty()) //when dealing with SVGs, imgButtonOn and imgButtonOff are xml documents...
+		if(imgButtonOn.isNotEmpty() && imgButtonOff.isNotEmpty()) //when dealing with SVGs, imgButtonOn and imgButtonOff are xml documents...
 		{
 			imgHeight = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonheight" : "imgbuttoffheight", 30.f);
 			imgWidth = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonwidth" : "imgbuttoffwidth", 100.f);
@@ -55,13 +54,12 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 		}
 		else
 		{
-			image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
-								button.findColour(TextButton::ColourIds::buttonOnColourId), isRectangle, corners);
+			image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId), isRectangle, corners);
 			g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);						
 		}
 	}			
 
-	g.setColour (button.getToggleState() ==true ? button.findColour(TextButton::textColourOnId) : button.findColour(TextButton::textColourOffId));	
+	g.setColour (toggleState == true ? button.findColour(TextButton::textColourOnId) : button.findColour(TextButton::textColourOffId));	
     g.setFont (fontSize);
 
     if (! button.isEnabled())

@@ -568,6 +568,8 @@ static const String updaterate = "updaterate";
 static const String csoundoutput = "csoundoutput";
 static const String fftdisplay = "fftdisplay";
 static const String signaldisplay = "signaldisplay";
+
+static const String csdfile = "csdfile";
 };
 
 class CabbageIdentifierPropertyStringPairs : public StringPairArray

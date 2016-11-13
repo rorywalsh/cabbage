@@ -41,6 +41,8 @@ public:
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
 	
+	File getCurrentCsdFile(){	return csdFile;	}
+	
 private:
 	File csdFile;
 

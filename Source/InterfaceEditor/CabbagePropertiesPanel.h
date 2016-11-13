@@ -38,7 +38,7 @@ public:
     CabbagePropertiesPanel(ValueTree widgetData);
     void paint (Graphics& g) override;
     void resized() override;
-	void setPropertyByName(ValueTree widgetData, String name, var value);
+	void setPropertyByName(String name, var value);
 	void textPropertyComponentChanged (TextPropertyComponent * comp);
 	void changeListenerCallback(juce::ChangeBroadcaster *source);
 	void updateProperties(ValueTree widgetData);

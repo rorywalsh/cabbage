@@ -61,6 +61,8 @@ void CabbagePluginProcessor::parseCsdFile()
 		const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
 		ValueTree temp(widgetTreeIdentifier);
 		CabbageWidgetData::setWidgetState(temp, linesFromCsd[lineNumber], lineNumber);
+		CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
+		
 		
 		if(CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="interactive" ||
 			CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )

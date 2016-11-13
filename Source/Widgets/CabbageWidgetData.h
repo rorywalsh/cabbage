@@ -42,7 +42,7 @@ public:
 	//============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);
-    static void setStringProp(ValueTree widgetData, Identifier prop, String val, int index=0);
+    static void setStringProp(ValueTree widgetData, Identifier prop, String val);
     static String getStringProp(ValueTree widgetData, Identifier prop, int index=0);
 	static Rectangle<int> getBounds(ValueTree widgetData);
 	static void setProperty(ValueTree widgetData, Identifier name, const var &value);
