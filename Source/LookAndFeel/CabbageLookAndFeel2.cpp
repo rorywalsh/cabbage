@@ -21,13 +21,15 @@ CabbageLookAndFeel2::CabbageLookAndFeel2()
 void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown)
 {
 	Image image;
+	bool drawFromFile = true;
+	ScopedPointer<DrawableRectangle> drawableRect;
 	const String imgButtonOn = button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonon, "").toString();
 	const String imgButtonOff = button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonoff, "").toString();
 	const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
 	const bool isRectangle = button.getProperties().getWithDefault(CabbageIdentifierIds::shape, false);
     float fontSize = jmin (15.0f, button.getHeight() * 0.85f);
     const float tickWidth = button.getHeight() * .9f;	
-	
+	int imgHeight, imgWidth;
 
     if (button.hasKeyboardFocus (true))
     {
@@ -35,53 +37,29 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
         g.drawRect (0, 0, button.getWidth(), button.getHeight());
     }
 	
-	if(button.getToggleState())
-	{		
-		if(File::getCurrentWorkingDirectory().getChildFile(imgButtonOn).existsAsFile())
-		{
-			image = ImageCache::getFromFile(File(imgButtonOn));
-			image = image.rescaled(button.getWidth(), button.getHeight());		
-		}
-		else
-		{
-			if(imgButtonOn.containsIgnoreCase(".svg"))
-			{
-				const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
-				const int imgHeight = button.getProperties().getWithDefault("imgbuttonheight", 30.f);
-				const int imgWidth = button.getProperties().getWithDefault("imgbuttonwidth", 100.f);
-				image = drawFromSVG(imgButtonOn, imgWidth, imgHeight, AffineTransform::identity);				
-			
-			}
-			else
-				image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
-									button.findColour(TextButton::ColourIds::buttonOnColourId), isRectangle, corners);
-		}			
+	bool toggleState = button.getToggleState();
+
+	if(File::getCurrentWorkingDirectory().getChildFile(toggleState == true ? imgButtonOn : imgButtonOff).existsAsFile())	//when dealing with PNGs, imgButtonOn and imgButtonOff are file paths...
+	{
+		image = ImageCache::getFromFile(File(toggleState == true ? imgButtonOn : imgButtonOff));
+		image = image.rescaled(button.getWidth(), button.getHeight());	
+		g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);	
 	}
 	else
-	{		
-		if(File::getCurrentWorkingDirectory().getChildFile(imgButtonOff).existsAsFile())
+	{
+		if(imgButtonOn.isNotEmpty() || imgButtonOff.isNotEmpty()) //when dealing with SVGs, imgButtonOn and imgButtonOff are xml documents...
 		{
-			image = ImageCache::getFromFile(File(imgButtonOff));
-			image = image.rescaled(button.getWidth(), button.getHeight());		
+			imgHeight = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonheight" : "imgbuttoffheight", 30.f);
+			imgWidth = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonwidth" : "imgbuttoffwidth", 100.f);
+			drawFromSVG(g, toggleState == true ? imgButtonOn : imgButtonOff, imgWidth, imgHeight, button.getWidth(), button.getHeight(), AffineTransform::identity);		
 		}
 		else
 		{
-			if(imgButtonOff.containsIgnoreCase(".svg"))
-			{
-				const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
-				const int imgHeight = button.getProperties().getWithDefault("imgbuttoffheight", 30.f);
-				const int imgWidth = button.getProperties().getWithDefault("imgbuttoffwidth", 100.f);
-				image = drawFromSVG(imgButtonOff, imgWidth, imgHeight, AffineTransform::identity);				
-			}
-			else
-				image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
-									button.findColour(TextButton::ColourIds::buttonColourId), isRectangle, corners);
+			image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), 
+								button.findColour(TextButton::ColourIds::buttonOnColourId), isRectangle, corners);
+			g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);						
 		}
-	}
-	
-
-	g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f,
-				button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);	
+	}			
 
 	g.setColour (button.getToggleState() ==true ? button.findColour(TextButton::textColourOnId) : button.findColour(TextButton::textColourOffId));	
     g.setFont (fontSize);
@@ -91,13 +69,15 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 
     const int textX = (int) tickWidth + 10;
 
-    g.drawFittedText (button.getButtonText(),
-                      textX, 0,
-                      button.getWidth() - textX - 2, button.getHeight(),
-                      Justification::centredLeft, 10);	
+	if(button.getButtonText().isNotEmpty())
+		g.drawFittedText (button.getButtonText(),
+						  textX, 0,
+						  button.getWidth() - textX - 2, button.getHeight(),
+						  Justification::centredLeft, 10);	
 	
 }
 
+//==========================================================================================================================================
 Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRectangle, const float corners)
 {
 	Image img = Image(Image::ARGB, width, height, true);
@@ -175,22 +155,20 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
 	return img;
 }
 
-Image CabbageLookAndFeel2::drawFromSVG(String svgString, int width, int height, AffineTransform affine)
+//==========================================================================================================================================
+//if using an SVG..
+void CabbageLookAndFeel2::drawFromSVG(Graphics& g, String svgString, int width, int height, int newWidth, int newHeight, AffineTransform affine)
 {
-	Image svgImg;
-	svgImg = Image(Image::ARGB, width, height, true);
 	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgString));
 	if(svg == nullptr)
-		return Image::null;
+		jassert(false);
 
 	ScopedPointer<Drawable> drawable;
 
-	Graphics graph(svgImg);
 	if (svg != nullptr)
 	{
 		drawable = Drawable::createFromSVG (*svg);
-		drawable->draw(graph, 1.f, affine);
-		return svgImg;
+		drawable->setTransformToFit(Rectangle<float>(0, 0, newWidth, newHeight), RectanglePlacement::centred);
+		drawable->draw(g, 1.f, affine);
 	}
-	return Image::null;
 }
