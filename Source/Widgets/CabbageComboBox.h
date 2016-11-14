@@ -36,10 +36,12 @@ class CabbageComboBox : public ComboBox, public ValueTree::Listener, public Cabb
 
 public:
 
-    CabbageComboBox(ValueTree &cAttr, CabbagePluginEditor* _owner);
+    CabbageComboBox(ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageComboBox();
 
 	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+	void addItemsToCombobox(ValueTree wData);
+	
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}

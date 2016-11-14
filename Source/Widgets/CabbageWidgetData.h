@@ -39,6 +39,8 @@ public:
 	//============================================================================
 	static void setCheckBoxProperties(ValueTree widgetData, int ID);
 	static void setComboBoxProperties(ValueTree widgetData, int ID);
+	static void setImageProperties(ValueTree widgetData, int ID);
+	static void setFormProperties(ValueTree widgetData, int ID);
 	//============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);
@@ -51,13 +53,13 @@ public:
 	static Colour getColourFromText(String text);
 	static String getCabbageCodeFromIdentifiers(ValueTree props);
 	//============================================================================
-	static String getBoundsText(Rectangle<int> rect);
-	static String getMultiItemText(ValueTree widgetData, String identifier);
-	static String getColoursText(ValueTree widgetData);
-	static String getNumvericalValueText(ValueTree widgetData, String identifier);
-	static String getRotateText(ValueTree widgetData);
-	static String getSimpleText(ValueTree widgetData, String identfier);
-	static String getImagesText(ValueTree widgetData);
+	static String getBoundsTextAsCabbageCode(Rectangle<int> rect);
+	static String getMultiItemTextAsCabbageCode(ValueTree widgetData, String identifier);
+	static String getColoursTextAsCabbageCode(ValueTree widgetData);
+	static String getNumericalValueTextAsCabbageCode(ValueTree widgetData, String identifier);
+	static String getRotateTextAsCabbageCode(ValueTree widgetData);
+	static String getSimpleTextAsCabbageCode(ValueTree widgetData, String identfier);
+	static String getImagesTextAsCabbageCode(ValueTree widgetData);
 	//============================================================================
 	static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);
     void setTableChannelValues(int index, float val);

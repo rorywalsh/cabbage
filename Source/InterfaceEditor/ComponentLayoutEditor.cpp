@@ -38,7 +38,7 @@ ChildAlias::ChildAlias (Component* targetChild)
 :   target (targetChild)
 {	
 	resizeContainer = new ComponentBoundsConstrainer();
-	resizeContainer->setMinimumSize(target.getComponent()->getWidth()/2, target.getComponent()->getHeight()/2); //set minimum size so objects cant be resized too small
+	resizeContainer->setMinimumSize(10, 10); //set minimum size so objects cant be resized too small
 	resizer = new ResizableBorderComponent (this,resizeContainer);
 	addAndMakeVisible (resizer);
 	resizer->addMouseListener (this,false);

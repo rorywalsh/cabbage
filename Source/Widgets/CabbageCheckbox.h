@@ -23,7 +23,6 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-class CabbagePluginEditor;
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================

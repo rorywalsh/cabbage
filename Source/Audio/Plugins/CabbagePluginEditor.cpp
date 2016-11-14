@@ -57,8 +57,6 @@ void CabbagePluginEditor::resized()
 {
 	layoutEditor.setBounds(getLocalBounds());
 	mainComponent.setBounds(getLocalBounds());
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
 }
 //==============================================================================
 void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
@@ -75,7 +73,9 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 		else if(widgetType==CabbageIdentifierIds::checkbox)
 			InsertCheckbox(widgets.getChild(widget));
 		else if(widgetType==CabbageIdentifierIds::combobox)
-			InsertComboBox(widgets.getChild(widget));		
+			InsertComboBox(widgets.getChild(widget));	
+		else if(widgetType==CabbageIdentifierIds::image)
+			InsertImage(widgets.getChild(widget));		
 	}
 }
 
@@ -107,6 +107,13 @@ void CabbagePluginEditor::InsertComboBox(ValueTree cabbageWidgetData)
 	mainComponent.addAndMakeVisible(combobox);
 }
 
+void CabbagePluginEditor::InsertImage(ValueTree cabbageWidgetData)
+{
+	CabbageImage* image;
+	components.add(image = new CabbageImage(cabbageWidgetData, this));
+	CabbageUtilities::debug(CabbageWidgetData::getNumProp(cabbageWidgetData, CabbageIdentifierIds::linenumber));
+	mainComponent.addAndMakeVisible(image);
+}
 //======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {	

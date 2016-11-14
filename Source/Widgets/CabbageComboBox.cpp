@@ -22,7 +22,7 @@
 //================================================================================================================
 // combobox widget
 //================================================================================================================
-CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
+CabbageComboBox::CabbageComboBox(ValueTree wData, CabbagePluginEditor* _owner):
     name(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
     rotate(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::rotate)),
     pivotx(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::pivotx)),
@@ -34,42 +34,31 @@ CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
 {
 	widgetData.addListener(this);
     isPresetCombo = false;
-    setName(name);
-    offX=offY=offWidth=offHeight=0;
-    StringArray fileNames;
-
 	setColour(ComboBox::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
 	setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-	CabbageUtilities::debug(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::menucolour));	
-
-    lookAndFeelChanged();
-    getProperties().set("svgpath", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgpath));
-
-    if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext).isNotEmpty())
-    {
-        tooltipText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext);
-        setTooltip(tooltipText);
-    }
-
+    setTooltip(tooltipText = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext));
 	setEditableText (false);
-
-    Justification justify(Justification::centred);
-
-    if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::align)=="left")
-        justify = Justification::left;
-    else if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::align)=="centre")
-        justify = Justification::centred;
-    else
-        justify = Justification::right;
-
-    setJustificationType (justify);
     setTextWhenNothingSelected(text);
     setWantsKeyboardFocus(false);
-    setAlpha(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::alpha));
-    Array<File> dirFiles;
+	
+	addItemsToCombobox(wData);
+    setSelectedItemIndex(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1, isPresetCombo ? sendNotification : dontSendNotification);	
+	
+	initialiseCommonAttributes(this, wData);	
 
+}
+//---------------------------------------------
+CabbageComboBox::~CabbageComboBox()
+{
 
-    if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file).isNotEmpty())
+}
+
+void CabbageComboBox::addItemsToCombobox(ValueTree wData)
+{
+	Array<File> dirFiles;
+	StringArray fileNames;
+	
+	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file).isNotEmpty())
     {
         clear(dontSendNotification);
         String file = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file)).loadFileAsString();
@@ -116,21 +105,19 @@ CabbageComboBox::CabbageComboBox(ValueTree &wData, CabbagePluginEditor* _owner):
 		
         for( int i=0; i<fileNames.size(); i++)
             addItem(fileNames[i], i+1);
-    }
+    }	
+	
+    Justification justify(Justification::centred);
 
+    if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::align)=="left")
+        justify = Justification::left;
+    else if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::align)=="centre")
+        justify = Justification::centred;
+    else
+        justify = Justification::right;
 
-	CabbageUtilities::debug(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1);
-    setSelectedItemIndex(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1, isPresetCombo ? sendNotification : dontSendNotification);	
-	setBounds(CabbageWidgetData::getBounds(wData));
-
+    setJustificationType (justify);	
 }
-//---------------------------------------------
-CabbageComboBox::~CabbageComboBox()
-{
-
-}
-
-
 //update controls
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {	
@@ -148,7 +135,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 		setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 		setColour(PopupMenu::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour)));
 		
-		setTooltip(getString(valueTree, "popuptext"));
+		setTooltip(getCurrentString(valueTree, "popuptext"));
 		
 		if(refresh != CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles))
 		{

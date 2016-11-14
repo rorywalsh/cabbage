@@ -24,9 +24,11 @@
 #include "CabbagePluginProcessor.h"
 #include "CabbageAudioParameter.h"
 
+#include "../../InterfaceEditor/ComponentLayoutEditor.h"
+
 #include "../../Widgets/CabbageCheckbox.h"
 #include "../../Widgets/CabbageComboBox.h"
-#include "../../InterfaceEditor/ComponentLayoutEditor.h"
+#include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 
 class CabbagePluginEditor;
@@ -60,21 +62,26 @@ public:
 	TooltipWindow tooltipWindow;
 	//==============================================================================
 	void SetupWindow(ValueTree cabbageWidgetData);
+	// the following methods instantiate controls that CAN
+	// be automated in a host...
 	void InsertSlider(ValueTree cabbageWidgetData){};
-    void InsertGroupBox(ValueTree cabbageWidgetData){};
     void InsertComboBox(ValueTree cabbageWidgetData);
+    void InsertButton(ValueTree cabbageWidgetData){};
+    void InsertCheckbox(ValueTree cabbageWidgetData);
+    void InsertXYPad(ValueTree cabbageWidgetData){};
+    void InsertRangeSlider(ValueTree cabbageWidgetData){};
+	//the following methods instantiate controls that CANNOT 
+	// be automated in a host...
+    void InsertGroupBox(ValueTree cabbageWidgetData){};
     void InsertSoundfiler(ValueTree cabbageWidgetData){};
     void InsertSourceButton(ValueTree cabbageWidgetData){};
     void InsertDirectoryList(ValueTree cabbageWidgetData){};
     void InsertTextEditor(ValueTree cabbageWidgetData){};
-    void InsertButton(ValueTree cabbageWidgetData){};
-    void InsertCheckbox(ValueTree cabbageWidgetData);
     void InsertCsoundOutput(ValueTree cabbageWidgetData){};
     void InsertMIDIKeyboard(ValueTree cabbageWidgetData){};
-    void InsertXYPad(ValueTree cabbageWidgetData){};
     void InsertFileButton(ValueTree cabbageWidgetData){};
     void InsertRecordButton(ValueTree cabbageWidgetData){};
-    void InsertImage(ValueTree cabbageWidgetData){};
+    void InsertImage(ValueTree cabbageWidgetData);
     void InsertLabel(ValueTree cabbageWidgetData){};
     void InsertTable(ValueTree cabbageWidgetData){};
     void InsertMultiTab(ValueTree cabbageWidgetData){};
@@ -89,7 +96,6 @@ public:
     void InsertPopupMenu(ValueTree cabbageWidgetData){};
     void InsertGenTable(ValueTree cabbageWidgetData){};
     void InsertTextbox(ValueTree cabbageWidgetData){};
-    void InsertRangeSlider(ValueTree cabbageWidgetData){};
     void InsertSignalDisplay(ValueTree cabbageWidgetData){};
     void InsertStepper(ValueTree cabbageWidgetData){};
     void InsertNumberBox(ValueTree cabbageWidgetData){};

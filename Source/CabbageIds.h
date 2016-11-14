@@ -261,6 +261,8 @@ class CabbageIdentifierStrings : public StringArray
 public:
     CabbageIdentifierStrings()
     {
+        add("outlinecolour");
+        add("outlinecolor");
         add("tablecolour");
         add("tablecolor");
         add("tablegridcolour");
@@ -323,8 +325,6 @@ public:
         add("file");
         add("corners");
         add("imgpath");
-        add("outlinecolour");
-        add("outlinecolor");
         add("shape");
         add("rotate");
         add("textcolour");
@@ -604,9 +604,11 @@ class CabbageIdentifierPropertyStringPairs : public StringPairArray
 		set("Font: On", CabbageIdentifierIds::onfontcolour.toString());
 		set("Font: Off", CabbageIdentifierIds::fontcolour.toString());
 		set("Font", CabbageIdentifierIds::fontcolour.toString());
-		set("Menu: Colour", CabbageIdentifierIds::menucolour.toString());
+		set("Menu Colour", CabbageIdentifierIds::menucolour.toString());
 		set("Colour: Off", CabbageIdentifierIds::colour.toString());
 		set("Colour", CabbageIdentifierIds::colour.toString());
+		set("Outline Colour", CabbageIdentifierIds::outlinecolour.toString());
+		set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
 		set("Colour: On", CabbageIdentifierIds::oncolour.toString());
 		set("Alpha", CabbageIdentifierIds::alpha.toString());
 		set("Corners", CabbageIdentifierIds::corners.toString());

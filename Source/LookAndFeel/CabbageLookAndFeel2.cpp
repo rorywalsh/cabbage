@@ -22,13 +22,14 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 	Image image;
 	bool drawFromFile = true;
 	ScopedPointer<DrawableRectangle> drawableRect;
-	const String imgButtonOn = button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonon, "").toString();
-	const String imgButtonOff = button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonoff, "").toString();
+	const File imgButtonOnFile(button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonon, "").toString());
+	const File imgButtonOffFile(button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonoff, "").toString());
 	const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
 	const bool isRectangle = button.getProperties().getWithDefault(CabbageIdentifierIds::shape, false);
     float fontSize = jmin (15.0f, button.getHeight() * 0.85f);
     const float tickWidth = button.getHeight() * .9f;	
 	int imgHeight, imgWidth;
+	bool toggleState = button.getToggleState();
 
     if (button.hasKeyboardFocus (true))
     {
@@ -36,28 +37,30 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
         g.drawRect (0, 0, button.getWidth(), button.getHeight());
     }
 	
-	bool toggleState = button.getToggleState();
 
-	if(File::getCurrentWorkingDirectory().getChildFile(toggleState == true ? imgButtonOn : imgButtonOff).existsAsFile())	//when dealing with PNGs, imgButtonOn and imgButtonOff are file paths...
+
+	if(imgButtonOnFile.existsAsFile() && imgButtonOffFile.existsAsFile())	//if image files exist, draw them..
 	{
-		image = ImageCache::getFromFile(File(toggleState == true ? imgButtonOn : imgButtonOff));
-		image = image.rescaled(button.getWidth(), button.getHeight());	
-		g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);	
-	}
-	else
-	{
-		if(imgButtonOn.isNotEmpty() && imgButtonOff.isNotEmpty()) //when dealing with SVGs, imgButtonOn and imgButtonOff are xml documents...
+		if(imgButtonOnFile.hasFileExtension("png") && imgButtonOffFile.hasFileExtension("png"))
+		{
+			image = ImageCache::getFromFile(File(toggleState == true ? imgButtonOnFile : imgButtonOffFile));
+			image = image.rescaled(button.getWidth(), button.getHeight());	
+			g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);	
+		}
+		else if(imgButtonOnFile.hasFileExtension("svg") && imgButtonOffFile.hasFileExtension("svg"))
 		{
 			imgHeight = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonheight" : "imgbuttoffheight", 30.f);
 			imgWidth = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonwidth" : "imgbuttoffwidth", 100.f);
-			drawFromSVG(g, toggleState == true ? imgButtonOn : imgButtonOff, imgWidth, imgHeight, button.getWidth(), button.getHeight(), AffineTransform::identity);		
+			drawFromSVG(g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, imgWidth, imgHeight, button.getWidth(), button.getHeight(), AffineTransform::identity);	
 		}
-		else
-		{
-			image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId), isRectangle, corners);
-			g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);						
-		}
-	}			
+	}
+	
+	else	//if files don't exist, draw a native Cabbage checkbox 
+	{
+		image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId), isRectangle, corners);
+		g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);						
+	}	
+		
 
 	g.setColour (toggleState == true ? button.findColour(TextButton::textColourOnId) : button.findColour(TextButton::textColourOffId));	
     g.setFont (fontSize);
@@ -155,9 +158,9 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
 
 //==========================================================================================================================================
 //if using an SVG..
-void CabbageLookAndFeel2::drawFromSVG(Graphics& g, String svgString, int width, int height, int newWidth, int newHeight, AffineTransform affine)
+void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int width, int height, int newWidth, int newHeight, AffineTransform affine)
 {
-	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgString));
+	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgFile.loadFileAsString()));
 	if(svg == nullptr)
 		jassert(false);
 

@@ -172,7 +172,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 	const String onColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour);
 	const String onFontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::onfontcolour);
 	const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
-	const String menuColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour);
+	
 	
 	const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 	if(typeOfWidget=="checkbox" || typeOfWidget.contains("button"))
@@ -184,9 +184,16 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 	}
 	else if(typeOfWidget=="combobox")
 	{
+		const String menuColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour);
 		comps.add(new ColourPropertyComponent("Colour", colourString));
 		comps.add(new ColourPropertyComponent("Font", fontColourString));
 		//comps.add(new ColourPropertyComponent("Menu Colour", menuColourString));
+	}
+	else if(typeOfWidget=="image")
+	{
+		const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
+		comps.add(new ColourPropertyComponent("Colour", colourString));
+		comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));		
 	}
 	
 	alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
@@ -248,7 +255,8 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 		comps.add (new TextPropertyComponent(Value (corners), "Corners", 200, false));
 	}
 	
-	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "checkbox")
+	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "checkbox"
+		|| CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image")
 	{	
 		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape) == "square")
 			shapeValue.setValue(0);
@@ -264,11 +272,16 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 		comps.add (new ChoicePropertyComponent(shapeValue, "Shape", choices, choiceVars));
 	}
 	
-	else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "combobox")
+	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "combobox")
 	{
 		comps.add (new CabbageFilePropertyComponent("File", false, true));
 	}
 	
+	if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image")
+	{
+		var corners = valueTree.getProperty(CabbageIdentifierIds::outlinethickness);
+		comps.add (new TextPropertyComponent(Value (corners), "Outline Thickness", 200, false));
+	}
 	
 	addListener(comps, this);
 	return comps;

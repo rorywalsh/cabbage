@@ -55,10 +55,11 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data)
 	{
 		alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
 	}
+	
 }
 
 
-String CabbageWidgetBase::getString(ValueTree data, String identifier)
+String CabbageWidgetBase::getCurrentString(ValueTree data, String identifier)
 {
 	if(text!=CabbageWidgetData::getStringProp(data, identifier))
 	{
@@ -78,7 +79,7 @@ void CabbageWidgetBase::setChannel(ValueTree data)
 	}	
 }
 
-float CabbageWidgetBase::getValue(ValueTree data)
+float CabbageWidgetBase::getCurrentValue(ValueTree data)
 {
 	if(currentValue!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value))
 	{
@@ -89,20 +90,23 @@ float CabbageWidgetBase::getValue(ValueTree data)
 	return currentValue;
 }
 
-void CabbageWidgetBase::initialiseCommonAttributes(ValueTree data)
+void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree data)
 {
 	rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
 	pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
 	pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
 	visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
 	active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
-	tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);				
+	tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);	
+	child->setBounds(CabbageWidgetData::getBounds(data));
+	child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
+			
 }
 
 
-int CabbageWidgetBase::getSVGWidth(String svgContents)
+int CabbageWidgetBase::getSVGWidth(File svgFile)
 {
-	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgContents));
+	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgFile.loadFileAsString()));
 	for(int i=0; i<svg->getNumAttributes(); i++)
 	{
 		if(svg->getAttributeName(i)=="width")
@@ -111,9 +115,9 @@ int CabbageWidgetBase::getSVGWidth(String svgContents)
 	return 0;
 }
 
-int CabbageWidgetBase::getSVGHeight(String svgContents)
+int CabbageWidgetBase::getSVGHeight(File svgFile)
 {
-	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgContents));
+	ScopedPointer<XmlElement> svg (XmlDocument::parse(svgFile.loadFileAsString()));
 	for(int i=0; i<svg->getNumAttributes(); i++)
 	{
 		if(svg->getAttributeName(i)=="height")

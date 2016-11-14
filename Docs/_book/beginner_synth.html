@@ -1,0 +1,1292 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>A simple Synthesiser | Cabbage quickstart and Reference Manual</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.1.0">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="gitbook/style.css">
+    
+    
+
+        
+    
+    
+    <link rel="next" href="./add_new_widgets.html" />
+    
+    
+    <link rel="prev" href="./operators_and_comments.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="4.6" data-basepath="." data-revision="Mon Mar 28 2016 17:36:42 GMT+0100 (IST)">
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        
+
+        
+
+        
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="./index.html">
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="introduction.html">
+            
+                
+                    <a href="./introduction.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Quick start
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="first_synth.html">
+            
+                
+                    <a href="./first_synth.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        First synth
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="controlling.html">
+            
+                
+                    <a href="./controlling.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        Controlling your instrument
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="first_effect.html">
+            
+                
+                    <a href="./first_effect.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.3.</b>
+                        
+                        First effect
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="exporting.html">
+            
+                
+                    <a href="./exporting.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.4.</b>
+                        
+                        Exporting instruments as plugins
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="distributing.html">
+            
+                
+                    <a href="./distributing.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.5.</b>
+                        
+                        Distributing instruments
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="cabbage_syntax.html">
+            
+                
+                    <a href="./cabbage_syntax.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Widget Reference
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="button.html">
+            
+                
+                    <a href="./button.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        Button
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="button_file.html">
+            
+                
+                    <a href="./button_file.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        Button(File)
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="button_info.html">
+            
+                
+                    <a href="./button_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.</b>
+                        
+                        Button(Info)
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="checkbox.html">
+            
+                
+                    <a href="./checkbox.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.4.</b>
+                        
+                        Checkbox
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="combobox.html">
+            
+                
+                    <a href="./combobox.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.5.</b>
+                        
+                        Combobox
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="csound_output.html">
+            
+                
+                    <a href="./csound_output.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.6.</b>
+                        
+                        Csound Output
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="encoder.html">
+            
+                
+                    <a href="./encoder.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.7.</b>
+                        
+                        Endless encoder
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="gentable.html">
+            
+                
+                    <a href="./gentable.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.8.</b>
+                        
+                        Gentable
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="fftdisplay.html">
+            
+                
+                    <a href="./fftdisplay.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.9.</b>
+                        
+                        FFTDisplay
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="form.html">
+            
+                
+                    <a href="./form.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.10.</b>
+                        
+                        Form
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.11" data-path="groupbox.html">
+            
+                
+                    <a href="./groupbox.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.11.</b>
+                        
+                        Groupbox
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.12" data-path="image.html">
+            
+                
+                    <a href="./image.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.12.</b>
+                        
+                        Image
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.13" data-path="keyboard.html">
+            
+                
+                    <a href="./keyboard.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.13.</b>
+                        
+                        Keyboard
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.14" data-path="label.html">
+            
+                
+                    <a href="./label.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.14.</b>
+                        
+                        Labels
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.15" data-path="listbox.html">
+            
+                
+                    <a href="./listbox.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.15.</b>
+                        
+                        Listbox
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.16" data-path="sliders.html">
+            
+                
+                    <a href="./sliders.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.16.</b>
+                        
+                        Sliders
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.17" data-path="hrange.html">
+            
+                
+                    <a href="./hrange.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.17.</b>
+                        
+                        Hrange
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.18" data-path="vrange.html">
+            
+                
+                    <a href="./vrange.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.18.</b>
+                        
+                        Vrange
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.19" data-path="soundfiler.html">
+            
+                
+                    <a href="./soundfiler.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.19.</b>
+                        
+                        Soundfiler
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.20" data-path="table.html">
+            
+                
+                    <a href="./table.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.20.</b>
+                        
+                        Table (Deprecated)
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.21" data-path="textbox.html">
+            
+                
+                    <a href="./textbox.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.21.</b>
+                        
+                        Textbox
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.22" data-path="texteditor.html">
+            
+                
+                    <a href="./texteditor.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.22.</b>
+                        
+                        Texteditor
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.23" data-path="xypad.html">
+            
+                
+                    <a href="./xypad.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.23.</b>
+                        
+                        XY Pad
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="extras.html">
+            
+                
+                    <a href="./extras.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Extras
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="gui_designer.html">
+            
+                
+                    <a href="./gui_designer.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        GUI Designer
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="plants.html">
+            
+                
+                    <a href="./plants.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        Plants
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="identchannels.html">
+            
+                
+                    <a href="./identchannels.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        Identifier channels
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="presets.html">
+            
+                
+                    <a href="./presets.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.4.</b>
+                        
+                        Presets
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="widget_arrays.html">
+            
+                
+                    <a href="./widget_arrays.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.5.</b>
+                        
+                        Widget arrays
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="macros_and_reserved_channels.html">
+            
+                
+                    <a href="./macros_and_reserved_channels.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.6.</b>
+                        
+                        Reserved channels and Macros
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="managing_large_numbers_of_widgets.html">
+            
+                
+                    <a href="./managing_large_numbers_of_widgets.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.7.</b>
+                        
+                        Managing large numbers of Widgets
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.8" data-path="using_svgs.html">
+            
+                
+                    <a href="./using_svgs.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.8.</b>
+                        
+                        Using SVGs
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.9" data-path="android.html">
+            
+                
+                    <a href="./android.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.9.</b>
+                        
+                        Cabage on Android
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.10" data-path="cabbage_audio_unit.html">
+            
+                
+                    <a href="./cabbage_audio_unit.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.10.</b>
+                        
+                        Cabage AudioUnit
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.11" data-path="standalone_host.html">
+            
+                
+                    <a href="./standalone_host.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.11.</b>
+                        
+                        Standalone Standalone Host
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.12" data-path="cabbage_studio.html">
+            
+                
+                    <a href="./cabbage_studio.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.12.</b>
+                        
+                        Cabbage Studio
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="csound.html">
+            
+                
+                    <a href="./csound.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Beginners
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="file_structure_and_syntax.html">
+            
+                
+                    <a href="./file_structure_and_syntax.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        File Structure and Syntax
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="keywords.html">
+            
+                
+                    <a href="./keywords.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        Keywords
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="constants_and_variables.html">
+            
+                
+                    <a href="./constants_and_variables.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.</b>
+                        
+                        Constants and Variables
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="opcodes.html">
+            
+                
+                    <a href="./opcodes.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.</b>
+                        
+                        Opcodes
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="operators_and_comments.html">
+            
+                
+                    <a href="./operators_and_comments.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.5.</b>
+                        
+                        Operators and Comments
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.6" data-path="beginner_synth.html">
+            
+                
+                    <a href="./beginner_synth.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.6.</b>
+                        
+                        A simple Synthesiser
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="add_new_widgets.html">
+            
+                
+                    <a href="./add_new_widgets.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Adding new Widgets
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="new_widgets_part_1.html">
+            
+                
+                    <a href="./new_widgets_part_1.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        Part 1
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="new_widgets_part_2.html">
+            
+                
+                    <a href="./new_widgets_part_2.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.2.</b>
+                        
+                        Part 2
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="new_widgets_part_3.html">
+            
+                
+                    <a href="./new_widgets_part_3.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.3.</b>
+                        
+                        Part 3
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                Published with GitBook
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="./" >Cabbage quickstart and Reference Manual</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="beginner-synth">Beginner Synth</h1>
+<p>As mentioned in the opening page of this beginner&apos;s section, each Cabbage instrument is defined in a simple text file with a .csd extension. The syntax used to create GUI widgets is quite straightforward and should be provided within special xml-style tags <Cabbage> and </Cabbage> which can appear either above or below Csound&apos;s own <CsoundSynthesizer> tags. Each line of Cabbage specific code relates to one GUI widget only. The attributes of each widget are set using different identifiers such as colour(), channel(), size() etc. Where identifiers are not used, Cabbage will use the default values. Long lines can be broken up with a &apos;\&apos; placed at the end of a line. </CsoundSynthesizer></p>
+<p>Each and every Cabbage widget has 4 common parameters: position on screen(x, y) and size(width, height). Apart from position and size all other parameters are optional and if left out default values will be assigned. To set widget parameters you will need to use an appropriate identifier after the widget name. More information on the various widgets and identifiers available in Cabbage can be found in the Widget reference section of these docs.</p>
+<h3 id="getting-started">Getting started.</h3>
+<p>Now that the basics of the Csound language have been outlined, let&apos;s create a simple instrument. The opcodes used in this simple walk through are vco2, madsr, moogladder and out.</p>
+<p>The vco2 opcode models a voltage controlled oscillator. It provides users with an effective way of generating band-limited waveforms and can be the building blocks of many a synthesiser. Its syntax, taken from the Csound <a href="https://csound.github.io/docs/manual/vco2.html" target="_blank">reference</a> manual, is given below. It is important to become au fait with the way opcodes are presented in the Csound reference manual. It, along with the the Cabbage widget reference are two documents that you will end up referencing time and time again as you start developing Cabbage instruments.  </p>
+<pre><code class="lang-csharp">ares vco2 kamp, kcps [, imode] [, kpw] [, kphs] [, inyx]
+</code></pre>
+<p><strong>vco2</strong> outputs an a-rate signal and accepts several different input argument. The types of input parameters are given by the first letter in their names. We see above that the kamp argument needs to be k-rate. Square brackets around an input argument means that argument is optional and can be left out. Although not seen above, whenever an input argument start with &apos;x&apos;, it can be an i, k or a-rate variable. </p>
+<p><em>kamp</em> determines the amplitude of the signal, while <em>kcps</em> set the frequency of the signal. The default type of waveform created by a <strong>vco2</strong> is a sawtooth waveform. The simplest instrument that can be written to use a <strong>vco2</strong> is given below. The <strong>out</strong> opcode is used to output an a-rate signal as audio.</p>
+<pre><code class="lang-csharp">instr <span class="hljs-number">1</span>
+aOut vco2 <span class="hljs-number">1</span>, <span class="hljs-number">440</span>
+<span class="hljs-keyword">out</span> aOut
+endin
+</code></pre>
+<p>In the traditional Csound context, we would start this instrument using a &apos;score statement&apos;. We&apos;ll learn about score statements later, but because we are building a synthesiser that will be played with a MIDI keyboard, our score section will not be very complex. In fact, it will only contain one line of code. <em>f0 z</em> is a special score statement that instructs Csound to listen for events for an extremely long time. Below is the entire source code, including a simple Cabbage section for the instrument presented above.</p>
+<pre><code class="lang-csharp">&lt;Cabbage&gt;
+<span class="hljs-function">form <span class="hljs-title">caption</span><span class="hljs-params">(<span class="hljs-string">&quot;Untitled&quot;</span>)</span> <span class="hljs-title">size</span><span class="hljs-params">(<span class="hljs-number">400</span>, <span class="hljs-number">300</span>)</span>, <span class="hljs-title">colour</span><span class="hljs-params">(<span class="hljs-number">58</span>, <span class="hljs-number">110</span>, <span class="hljs-number">182</span>)</span>, <span class="hljs-title">pluginID</span><span class="hljs-params">(<span class="hljs-string">&quot;def1&quot;</span>)</span>
+keyboard <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">8</span>, <span class="hljs-number">158</span>, <span class="hljs-number">381</span>, <span class="hljs-number">95</span>)</span>
+&lt;/Cabbage&gt;
+&lt;CsoundSynthesizer&gt;
+&lt;CsOptions&gt;
+-+rtmidi</span>=NULL -M0 -m0d --midi-key-cps=<span class="hljs-number">4</span> --midi-velocity-amp=<span class="hljs-number">5</span>
+&lt;/CsOptions&gt;
+&lt;CsInstruments&gt;
+; Initialize the global variables. 
+sr = <span class="hljs-number">44100</span>
+ksmps = <span class="hljs-number">32</span>
+nchnls = <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>dbfs = <span class="hljs-number">1</span>
+
+;instrument will be triggered by keyboard widget
+instr <span class="hljs-number">1</span>
+iFreq = p4
+iAmp = p5
+aOut vco2 iAmp, iFreq
+outs aOut, aOut
+endin
+
+&lt;/CsInstruments&gt;
+&lt;CsScore&gt;
+;causes Csound to run <span class="hljs-keyword">for</span> about <span class="hljs-number">7000</span> years...
+f0 z
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</code></pre>
+<p>You&apos;ll notice that the pitch and frequency for the <strong>vco2</strong> opcode has been replaced with two <em>i</em>-rate variables, <em>iFreq</em> and <em>iAmp</em>, who in turn get their value from <em>p5</em>, and <em>p4</em>. <em>p5</em> and <em>p4</em> are p-variables. Their values will be assigned based on incoming MIDI data. If you look at the code in the <CsOptions> section you&apos;ll see the text &apos;--midi-key-cps=4 --midi-velocity-amp=5&apos;. This instructs Csound to pass the current note&apos;s velocity to <em>p5</em>, and the current note&apos;s frequency, in cycle per second(Hz.) to <em>p4</em>. <em>p4</em> and <em>p5</em> were chosen arbitrarily. <em>p7</em>, <em>p8</em>, <em>p</em>-whatever could have been used, so long as we accessed those same <em>p</em> variables in our instrument.</CsOptions></p>
+<p>Another important piece of text from the <CsOptions> section is the &apos;<em>-M0</em>&apos;. This tells Csound to send MIDI data to our instruments. Whenever a note is pressed using the on-screen MIDI keyboard, or a hardware keyboard if one is connected, it will trigger instrument 1 to play. Not only will it trigger instrument one to play, it will also pass the current note&apos;s amplitude and frequency to our two <em>p</em> variables. </CsOptions></p>
+<h3 id="don-t-be-a-click-head">Don&apos;t be a click head!</h3>
+<p>If you&apos;ve tried out the instrument above you&apos;ll notice the notes will click each time they sound. To avoid this, an amplitude envelope should be applied to the output signal. The most common envelope is the ubiquitous ADSR envelope. ADSR stands for Attack, Decay, Sustain and Release. The attack, decay and sustain sections are given in seconds as they relate to time values. The sustain value describes the sustain level which kicks in after the attack and decay times have passed. The note&apos;s amplitude will rest at this sustain level until it is released.</p>
+<p><img src="images/adsr.png" alt=""></p>
+<p>Csound offers several ADSR envelopes. The simplest one to use, and the one that will work out of the box with MIDI based instruments is <strong>madsr</strong> Its syntax, as listed in the Csound <a href="https://csound.github.io/docs/manual/madsr.html" target="_blank">reference</a> manual, is given as:</p>
+<pre><code class="lang-csharp">kres madsr iatt, idec, islev, irel
+</code></pre>
+<p>Note that the inputs to madsr are <em>i</em>-rate. They cannot change over the duration of a note. There are several places in the instrument code where the output of this opcode can be used. It could be applied directly to the first input argument of the vco2 opcode, or it can be placed in the line with the out opcode. Both are valid approaches. </p>
+<pre><code class="lang-csharp">&lt;Cabbage&gt;
+<span class="hljs-function">form <span class="hljs-title">caption</span><span class="hljs-params">(<span class="hljs-string">&quot;Untitled&quot;</span>)</span> <span class="hljs-title">size</span><span class="hljs-params">(<span class="hljs-number">400</span>, <span class="hljs-number">300</span>)</span>, <span class="hljs-title">colour</span><span class="hljs-params">(<span class="hljs-number">58</span>, <span class="hljs-number">110</span>, <span class="hljs-number">182</span>)</span>, <span class="hljs-title">pluginID</span><span class="hljs-params">(<span class="hljs-string">&quot;def1&quot;</span>)</span>
+keyboard <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">8</span>, <span class="hljs-number">158</span>, <span class="hljs-number">381</span>, <span class="hljs-number">95</span>)</span>
+&lt;/Cabbage&gt;
+&lt;CsoundSynthesizer&gt;
+&lt;CsOptions&gt;
+-n -d -+rtmidi</span>=NULL -M0 -m0d --midi-key-cps=<span class="hljs-number">4</span> --midi-velocity-amp=<span class="hljs-number">5</span>
+&lt;/CsOptions&gt;
+&lt;CsInstruments&gt;
+; Initialize the global variables. 
+sr = <span class="hljs-number">44100</span>
+ksmps = <span class="hljs-number">32</span>
+nchnls = <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>dbfs = <span class="hljs-number">1</span>
+
+;instrument will be triggered by keyboard widget
+instr <span class="hljs-number">1</span>
+iFreq = p4
+iAmp = p5
+iAtt = <span class="hljs-number">0.1</span>
+iDec = <span class="hljs-number">0.4</span>
+iSus = <span class="hljs-number">0.6</span>
+iRel = <span class="hljs-number">0.7</span>
+kEnv madsr iAtt, iDec, iSus, iRel 
+aOut vco2 iAmp, iFreq
+outs aOut*kEnv, aOut*kEnv
+endin
+
+&lt;/CsInstruments&gt;
+&lt;CsScore&gt;
+;causes Csound to run <span class="hljs-keyword">for</span> about <span class="hljs-number">7000</span> years...
+f0 z
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</code></pre>
+<h3 id="controlling-adsr-parameters">Controlling ADSR parameters.</h3>
+<p>The values of the ADSR parameters can be set using widgets. A typical widget for such control is a slider of some sort. They all behave in more or less the same way. Their job is to send numbers to Csound on a fixed channel. Each widget that is capable of controlling some aspect of an instrument must have a channel set using the <strong>channel()</strong> identifier. In the following code 4 rslider are created. Each one has a unique <strong>channel()</strong> set, and they all have the same range. More details on sliders can be found in the widget reference section.</p>
+<pre><code class="lang-csharp">&lt;Cabbage&gt;
+<span class="hljs-function">form <span class="hljs-title">caption</span><span class="hljs-params">(<span class="hljs-string">&quot;Simple Synth&quot;</span>)</span> <span class="hljs-title">size</span><span class="hljs-params">(<span class="hljs-number">450</span>, <span class="hljs-number">260</span>)</span>, <span class="hljs-title">colour</span><span class="hljs-params">(<span class="hljs-number">58</span>, <span class="hljs-number">110</span>, <span class="hljs-number">182</span>)</span>, <span class="hljs-title">pluginID</span><span class="hljs-params">(<span class="hljs-string">&quot;def1&quot;</span>)</span>
+keyboard <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">14</span>, <span class="hljs-number">120</span>, <span class="hljs-number">413</span>, <span class="hljs-number">95</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">12</span>, <span class="hljs-number">14</span>, <span class="hljs-number">105</span>, <span class="hljs-number">101</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;att&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.01</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Attack&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">114</span>, <span class="hljs-number">14</span>, <span class="hljs-number">105</span>, <span class="hljs-number">101</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;dec&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Decay&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">218</span>, <span class="hljs-number">14</span>, <span class="hljs-number">105</span>, <span class="hljs-number">101</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;sus&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Sustain&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">322</span>, <span class="hljs-number">14</span>, <span class="hljs-number">105</span>, <span class="hljs-number">101</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;rel&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Release&quot;</span>)</span>
+&lt;/Cabbage&gt;
+</span></code></pre>
+<p><img src="images/csound_cabbage_synth1.png" alt=""></p>
+<p>It can&apos;t be stated enough that each widget responsible for controlling an aspect of your instrument MUST have a channel set using the <strong>channel()</strong> identifier. Why? Because Csound can access these channels using its <strong>chnget</strong> opcode. The syntax for <strong>chnget</strong> is very simple:</p>
+<pre><code class="lang-csharp">kRes chnget <span class="hljs-string">&quot;channel&quot;</span>
+</code></pre>
+<p>The <strong>chnget</strong> opcode will create a variable that will contain the current value of the named channel. The rate at which the <strong>chnget</strong> opcode will operate at is determined by the first letter of its output variable. The simple instrument shown in the complete example above can now be modified so that it accesses the values of each of the sliders. </p>
+<pre><code class="lang-csharp">instr <span class="hljs-number">1</span>
+iFreq = p4
+iAmp = p5
+iAtt chnget <span class="hljs-string">&quot;att&quot;</span>
+iDec chnget <span class="hljs-string">&quot;dec&quot;</span>
+iSus chnget <span class="hljs-string">&quot;sus&quot;</span>
+iRel chnget <span class="hljs-string">&quot;rel&quot;</span>
+kEnv madsr iAtt, iDec, iSus, iRel 
+aOut vco2 iAmp, iFreq
+outs aOut*kEnv, aOut*kEnv
+endin
+</code></pre>
+<p>Every time a user plays a note, the instrument will grab the current value of each slider and use that value to set its ADSR envelop. Note that the <strong>chnget</strong> opcodes listed above all operate at i-time only. This is important because the <strong>madsr</strong> opcode expects <em>i</em>-rate variable.  </p>
+<h3 id="low-pass-me-the-cabbage-please">Low-pass me the Cabbage please...</h3>
+<p>ADSR envelopes are often used to control the cut-off frequency of low-pass filters. Low-pass filters block high frequency components of a sound, while letting lower frequencies pass. A popular low-pass filter found in Csound is the moogladder filter which is modeled on the famous filters found in Moog synthesisers. Its syntax, as listed in the Csound <a href="https://csound.github.io/docs/manual/moogladder.html" target="_blank">reference</a> manual is given as:</p>
+<pre><code class="lang-csharp">asig moogladder ain, kcf, kres
+</code></pre>
+<p>Its first input argument is an a-rate variable. The next two arguments set the filter cut-off frequency and the amount of resonance to be added to the signal. Both of these can be k-rate variables, thus allowing them to be changed during the note. Cut-off and resonance controls can easily be added to our instrument. To do so we need to add two more sliders to our Cabbage section of code. We&apos;ll also need to add two more <strong>chnget</strong> opcodes and a <strong>moogladder</strong> to our Csound code. One thing to note about the cut-off slider is that it should be exponential. As the users increases the slider, it should increment in larger and larger steps. We can do this be setting the sliders <em>skew</em> value to .5. More details about this can be found in the slider widget reference page.  </p>
+<pre><code class="lang-csharp">&lt;Cabbage&gt;
+<span class="hljs-function">form <span class="hljs-title">caption</span><span class="hljs-params">(<span class="hljs-string">&quot;Simple Synth&quot;</span>)</span> <span class="hljs-title">size</span><span class="hljs-params">(<span class="hljs-number">450</span>, <span class="hljs-number">220</span>)</span>, <span class="hljs-title">colour</span><span class="hljs-params">(<span class="hljs-number">58</span>, <span class="hljs-number">110</span>, <span class="hljs-number">182</span>)</span>, <span class="hljs-title">pluginID</span><span class="hljs-params">(<span class="hljs-string">&quot;def1&quot;</span>)</span>
+keyboard <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">14</span>, <span class="hljs-number">88</span>, <span class="hljs-number">413</span>, <span class="hljs-number">95</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">12</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;att&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.01</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Attack&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">82</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;dec&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Decay&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">152</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;sus&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Sustain&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">222</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;rel&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Release&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">292</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;cutoff&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">22000</span>, <span class="hljs-number">2000</span>, <span class="hljs-number">.5</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Cut-Off&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">360</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;res&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Resonance&quot;</span>)</span>
+&lt;/Cabbage&gt;
+&lt;CsoundSynthesizer&gt;
+&lt;CsOptions&gt;
+-n -d -+rtmidi</span>=NULL -M0 -m0d --midi-key-cps=<span class="hljs-number">4</span> --midi-velocity-amp=<span class="hljs-number">5</span>
+&lt;/CsOptions&gt;
+&lt;CsInstruments&gt;
+; Initialize the global variables. 
+sr = <span class="hljs-number">44100</span>
+ksmps = <span class="hljs-number">32</span>
+nchnls = <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>dbfs = <span class="hljs-number">1</span>
+
+;instrument will be triggered by keyboard widget
+instr <span class="hljs-number">1</span>
+iFreq = p4
+iAmp = p5
+
+iAtt chnget <span class="hljs-string">&quot;att&quot;</span>
+iDec chnget <span class="hljs-string">&quot;dec&quot;</span>
+iSus chnget <span class="hljs-string">&quot;sus&quot;</span>
+iRel chnget <span class="hljs-string">&quot;rel&quot;</span>
+kRes chnget <span class="hljs-string">&quot;res&quot;</span>
+kCutOff chnget <span class="hljs-string">&quot;cutoff&quot;</span>
+
+kEnv madsr iAtt, iDec, iSus, iRel 
+aOut vco2 iAmp, iFreq
+aLP moogladder aOut, kCutOff, kRes
+outs aLP*kEnv, aLP*kEnv
+endin
+
+&lt;/CsInstruments&gt;
+&lt;CsScore&gt;
+;causes Csound to run <span class="hljs-keyword">for</span> about <span class="hljs-number">7000</span> years...
+f0 z
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</code></pre>
+<p><img src="images/csound_cabbage_synth2.png" alt=""></p>
+<h3 id="sightings-of-lfos">Sightings of LFOs!</h3>
+<p>Many synths use some kind of automation to control filter parameters. Sometimes an ADSR is used to control the cut-off frequency of a filter, and in other cases low frequency oscillators, or LFOs are used. As we have already seen how ADSRs work, let&apos;s look at implementing an LFO to control the filters cut-off frequency. Csound comes with a standard LFO opcode that provides several different type of waveforms to use. Its syntax, as listed in the Csound <a href="https://csound.github.io/docs/manual/lfo.html" target="_blank">reference</a> manual is given as: </p>
+<pre><code class="lang-csharp">kres lfo kamp, kcps [, itype]
+</code></pre>
+<p>Type can be one of the following:</p>
+<ul>
+<li>itype = 0  sine</li>
+<li>itype = 1  triangles</li>
+<li>itype = 2  square (bipolar)</li>
+<li>itype = 3  square (unipolar)</li>
+<li>itype = 4  saw-tooth</li>
+<li>itype = 5  saw-tooth(down)</li>
+</ul>
+<p>In our example we will use a downward moving saw-tooth wave form. A basic implementation would look like this.</p>
+<pre><code class="lang-csharp">(...)
+kEnv madsr iAtt, iDec, iSus, iRel 
+aOut vco2 iAmp, iFreq
+kLFO lfo <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>
+aLP moogladder aOut, kLFO*kCutOff, kRes
+outs aLP*kEnv, aLP*<span class="hljs-function">kEnv
+<span class="hljs-title">endin</span>
+<span class="hljs-params">(...)</span>
+</span></code></pre>
+<p>The output of the LFO is multiplied by the value of <em>kCutOff</em>. The frequency of the LFO is set to 1 which means the cut-off frequency will move from <em>kCutOff</em> to 0, once every second. This will create a simple rhythmical effect. Of course it doesn&apos;t make much sense to have the frequency fixed at 1. Instead, it is better to give the user control over the frequency using another slider. Finally, an amplitude control slider will also be added, allowing users to control the over amplitude of their synth. </p>
+<p>There are many further improvements that could be made to the simple instrument. For example, a second <strong>vco2</strong> could be added to create a detune effect which will add some depth to the synth&apos;s sound. One could also an ADSR to control the filter envelope, allowing the user an option to switch between modes. If you do end up with something special why not share it on the Cabbage recipes forum!  </p>
+<pre><code class="lang-csharp">&lt;Cabbage&gt;
+<span class="hljs-function">form <span class="hljs-title">caption</span><span class="hljs-params">(<span class="hljs-string">&quot;Simple Synth&quot;</span>)</span> <span class="hljs-title">size</span><span class="hljs-params">(<span class="hljs-number">310</span>, <span class="hljs-number">310</span>)</span>, <span class="hljs-title">colour</span><span class="hljs-params">(<span class="hljs-number">58</span>, <span class="hljs-number">110</span>, <span class="hljs-number">182</span>)</span>, <span class="hljs-title">pluginID</span><span class="hljs-params">(<span class="hljs-string">&quot;def1&quot;</span>)</span>
+keyboard <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">12</span>, <span class="hljs-number">164</span>, <span class="hljs-number">281</span>, <span class="hljs-number">95</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">12</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;att&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.01</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Attack&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">82</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;dec&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Decay&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">152</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;sus&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Sustain&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">222</span>, <span class="hljs-number">14</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;rel&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Release&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">12</span>, <span class="hljs-number">84</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;cutoff&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">22000</span>, <span class="hljs-number">2000</span>, <span class="hljs-number">.5</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Cut-Off&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">82</span>, <span class="hljs-number">84</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;res&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Resonance&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">152</span>, <span class="hljs-number">84</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;LFOFreq&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;LFO Freq&quot;</span>)</span>
+rslider <span class="hljs-title">bounds</span><span class="hljs-params">(<span class="hljs-number">222</span>, <span class="hljs-number">84</span>, <span class="hljs-number">70</span>, <span class="hljs-number">70</span>)</span>, <span class="hljs-title">channel</span><span class="hljs-params">(<span class="hljs-string">&quot;amp&quot;</span>)</span>, <span class="hljs-title">range</span><span class="hljs-params">(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">.01</span>)</span>, <span class="hljs-title">text</span><span class="hljs-params">(<span class="hljs-string">&quot;Amp&quot;</span>)</span>
+&lt;/Cabbage&gt;
+&lt;CsoundSynthesizer&gt;
+&lt;CsOptions&gt;
+-n -d -+rtmidi</span>=NULL -M0 -m0d --midi-key-cps=<span class="hljs-number">4</span> --midi-velocity-amp=<span class="hljs-number">5</span>
+&lt;/CsOptions&gt;
+&lt;CsInstruments&gt;
+; Initialize the global variables. 
+sr = <span class="hljs-number">44100</span>
+ksmps = <span class="hljs-number">32</span>
+nchnls = <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>dbfs = <span class="hljs-number">1</span>
+
+;instrument will be triggered by keyboard widget
+instr <span class="hljs-number">1</span>
+iFreq = p4
+iAmp = p5
+
+iAtt chnget <span class="hljs-string">&quot;att&quot;</span>
+iDec chnget <span class="hljs-string">&quot;dec&quot;</span>
+iSus chnget <span class="hljs-string">&quot;sus&quot;</span>
+iRel chnget <span class="hljs-string">&quot;rel&quot;</span>
+kRes chnget <span class="hljs-string">&quot;res&quot;</span>
+kCutOff chnget <span class="hljs-string">&quot;cutoff&quot;</span>
+kLFOFreq chnget <span class="hljs-string">&quot;LFOFreq&quot;</span>
+kAmp chnget <span class="hljs-string">&quot;amp&quot;</span>
+
+kEnv madsr iAtt, iDec, iSus, iRel 
+aOut vco2 iAmp, iFreq
+kLFO lfo <span class="hljs-number">1</span>, kLFOFreq
+aLP moogladder aOut, kLFO*kCutOff, kRes
+outs kAmp*(aLP*kEnv), kAmp*(aLP*kEnv)
+endin
+
+&lt;/CsInstruments&gt;
+&lt;CsScore&gt;
+;causes Csound to run <span class="hljs-keyword">for</span> about <span class="hljs-number">7000</span> years...
+f0 z
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</code></pre>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="./operators_and_comments.html" class="navigation navigation-prev " aria-label="Previous page: Operators and Comments"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="./add_new_widgets.html" class="navigation navigation-next " aria-label="Next page: Adding new Widgets"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="gitbook/app.js"></script>
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
