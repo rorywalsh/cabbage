@@ -148,10 +148,21 @@ void CabbagePluginEditor::setGUIEditor(bool enable)
 	isGUIEnabled = enable;
 	layoutEditor.toFront(false);
 }
-
+//======================================================================================================
 void CabbagePluginEditor::setCurrentlySelectedComponent(String componentName)
 {
 	currentlySelectedComponentName = componentName;
+}
+
+Component* CabbagePluginEditor::getComponentFromName(String name)
+{
+	for (auto comp : components)
+	{
+		if(name == comp->getName())
+			return comp;
+	}
+	
+	return nullptr;
 }
 
 ValueTree CabbagePluginEditor::getValueTreeForCurrentlySelectedComponent()
@@ -165,16 +176,7 @@ void CabbagePluginEditor::updateLayoutEditorFrames()
 		layoutEditor.updateFrames();
 }
 
-Component* CabbagePluginEditor::getComponentFromName(String name)
-{
-	for (auto comp : components)
-	{
-		if(name == comp->getName())
-			return comp;
-	}
-	
-	return nullptr;
-}
+//======================================================================================================
 
 void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree widgetData)
 {
