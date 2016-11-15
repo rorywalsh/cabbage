@@ -106,7 +106,7 @@ void ChildAlias::applyToTarget ()
 		//!target.hasBeenDeleted ())
 	{
 		Component* c = (Component*) target.getComponent ();
-		c->toFront(false); //added this to bring the the component to the front
+		//c->toFront(false); //added this to bring the the component to the front
 		c->setBounds (getBounds ());
 		userChangedBounds ();
 	}

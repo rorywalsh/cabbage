@@ -28,8 +28,8 @@ class CabbageWidgetData : public CabbageUtilities
 {
 //    Array<int> tableNumbers;
 //    Array<float> tableChannelValues;
-    String warningMessages;
-    bool refreshFromDisk;
+//    String warningMessages;
+//    bool refreshFromDisk;
 
 public:
     CabbageWidgetData(){};

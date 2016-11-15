@@ -451,6 +451,7 @@ static const Identifier middlec = "middlec";
 static const Identifier displaytype = "displaytype";
 static const Identifier imgpath = "imgpath";
 static const Identifier plant = "plant";
+static const Identifier parentcomponent = "parentcomponent";
 static const Identifier trackerthickness = "trackerthickness";
 static const Identifier outlinethickness = "outlinethickness";
 static const Identifier linethickness = "linethickness";

@@ -52,28 +52,47 @@ void CabbagePluginProcessor::parseCsdFile()
 {
 	StringArray linesFromCsd;
 	linesFromCsd.addLines(csdFile.loadFileAsString());
-	
+	String parentComponent;
+	bool withinPlantGroup = false;
 	for( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
 	{
 		if(linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
 			lineNumber = linesFromCsd.size()+1;
-		
+		else if(linesFromCsd[lineNumber].contains("{"))
+		{
+			withinPlantGroup = true;
+		}
+		else if(linesFromCsd[lineNumber].contains("}"))
+		{
+			parentComponent = "";
+			withinPlantGroup = false;
+		}	
+
+			
 		const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
 		ValueTree temp(widgetTreeIdentifier);
 		CabbageWidgetData::setWidgetState(temp, linesFromCsd[lineNumber], lineNumber);
 		CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
 		
-		
+		if(parentComponent.isNotEmpty())
+			CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::parentcomponent, parentComponent);
+			
 		if(CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="interactive" ||
 			CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
 		{
 			cabbageWidgets.addChild(temp, -1, 0);
 		}
+		
+		
+		parentComponent = withinPlantGroup == false ? CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString() : parentComponent;		
 	}
 }
 
 //==============================================================================
-void CabbagePluginProcessor::createParameters()
+// create parameters for sliders, buttons, comboboxes, checkboxes and xypads. 
+// Other widgets can communicate with Csound, but they cannot be automated
+
+void CabbagePluginProcessor::createParameters()	
 {
 	for(int i = 0; i < cabbageWidgets.getNumChildren(); i++)
 	{
@@ -98,7 +117,7 @@ void CabbagePluginProcessor::createParameters()
 //==============================================================================
 bool CabbagePluginProcessor::hasEditor() const	
 {
-    return true; // (change this to false if you choose to not supply an editor)
+    return true; 
 }
 
 AudioProcessorEditor* CabbagePluginProcessor::createEditor()

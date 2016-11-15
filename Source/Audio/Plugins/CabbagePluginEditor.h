@@ -103,7 +103,9 @@ public:
 	//=============================================================================
 	void setGUIEditor(bool enable);
 	void setCurrentlySelectedComponent(String componentName);
-	ValueTree getCurrentlySelectedComponent();
+	ValueTree getValueTreeForCurrentlySelectedComponent();
+	Component* getComponentFromName(String name);
+	void addToEditorAndMakeVisible(Component* comp, ValueTree widgetData);
 	void updateLayoutEditorFrames();
 	void componentMovedOrResized (Component &component, bool wasMoved, bool wasResized);
 	//=============================================================================

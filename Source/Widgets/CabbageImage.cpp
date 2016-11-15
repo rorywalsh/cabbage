@@ -75,6 +75,8 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 	outlineColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour));	
 	mainColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));	
 	shape = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape);
+	
+	handleCommonUpdates(this, valueTree);			
 	repaint();
 }
 

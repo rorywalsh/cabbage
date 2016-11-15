@@ -170,7 +170,7 @@ void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)
     {
 		content->propertyPanel->setVisible(true);
 		content->resized();
-		content->propertyPanel->updateProperties(editor->getCurrentlySelectedComponent());
+		content->propertyPanel->updateProperties(editor->getValueTreeForCurrentlySelectedComponent());
 		updateCodeInEditor(editor);
 		updateEditorColourScheme();
     }
@@ -188,8 +188,8 @@ void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)
 void CabbageDocumentWindow::updateCodeInEditor(CabbagePluginEditor* editor)
 {
 	content->propertyPanel->addChangeListener(this);
-	const int lineNumber = CabbageWidgetData::getNumProp(editor->getCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
-	const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getCurrentlySelectedComponent());
+	const int lineNumber = CabbageWidgetData::getNumProp(editor->getValueTreeForCurrentlySelectedComponent(), CabbageIdentifierIds::linenumber);
+	const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(editor->getValueTreeForCurrentlySelectedComponent());
 	if(getCurrentCodeEditor()!=nullptr)
 			getCurrentCodeEditor()->insertCodeAndHighlightLine(lineNumber, newText);	
 }

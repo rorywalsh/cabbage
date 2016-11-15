@@ -66,6 +66,10 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 	{
 		const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();
 
+		CabbageUtilities::debug(widgetType);
+		CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgets.getChild(widget), 
+													CabbageIdentifierIds::parentcomponent));
+
 		if(widgetType==CabbageIdentifierIds::form)
 			SetupWindow(widgets.getChild(widget));
 		else if(widgetType==CabbageIdentifierIds::rslider)
@@ -96,7 +100,7 @@ void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 	CabbageCheckbox* checkbox;
 	components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
 	checkbox->addListener(this);
-	mainComponent.addAndMakeVisible(checkbox);
+	addToEditorAndMakeVisible(checkbox, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::InsertComboBox(ValueTree cabbageWidgetData)
@@ -104,7 +108,7 @@ void CabbagePluginEditor::InsertComboBox(ValueTree cabbageWidgetData)
 	CabbageComboBox* combobox;
 	components.add(combobox = new CabbageComboBox(cabbageWidgetData, this));
 	combobox->addListener(this);
-	mainComponent.addAndMakeVisible(combobox);
+	addToEditorAndMakeVisible(combobox, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::InsertImage(ValueTree cabbageWidgetData)
@@ -112,7 +116,7 @@ void CabbagePluginEditor::InsertImage(ValueTree cabbageWidgetData)
 	CabbageImage* image;
 	components.add(image = new CabbageImage(cabbageWidgetData, this));
 	CabbageUtilities::debug(CabbageWidgetData::getNumProp(cabbageWidgetData, CabbageIdentifierIds::linenumber));
-	mainComponent.addAndMakeVisible(image);
+	addToEditorAndMakeVisible(image, cabbageWidgetData);
 }
 //======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
@@ -150,7 +154,7 @@ void CabbagePluginEditor::setCurrentlySelectedComponent(String componentName)
 	currentlySelectedComponentName = componentName;
 }
 
-ValueTree CabbagePluginEditor::getCurrentlySelectedComponent()
+ValueTree CabbagePluginEditor::getValueTreeForCurrentlySelectedComponent()
 {
 	return CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, currentlySelectedComponentName);
 }
@@ -159,5 +163,27 @@ void CabbagePluginEditor::updateLayoutEditorFrames()
 {
 	if(isGUIEnabled)
 		layoutEditor.updateFrames();
+}
+
+Component* CabbagePluginEditor::getComponentFromName(String name)
+{
+	for (auto comp : components)
+	{
+		if(name == comp->getName())
+			return comp;
+	}
+	
+	return nullptr;
+}
+
+void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree widgetData)
+{
+	const String parent = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::parentcomponent);
+	if(auto parentComp = getComponentFromName(parent))
+	{
+		parentComp->addAndMakeVisible(comp);
+	}
+	else
+		mainComponent.addAndMakeVisible(comp);
 }
 
