@@ -102,8 +102,8 @@ public:
 
 	//=============================================================================
 	void setGUIEditor(bool enable);
-	void setCurrentlySelectedComponent(String componentName);
-	ValueTree getValueTreeForCurrentlySelectedComponent();
+	void setCurrentlySelectedComponents(StringArray componentNames);
+	Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
 	ValueTree getValueTreeForComponent(String compName);
 	Component* getComponentFromName(String name);
 	void addToEditorAndMakeVisible(Component* comp, ValueTree widgetData);
@@ -140,7 +140,7 @@ private:
 	bool isGUIEnabled=false;
     CabbagePluginProcessor& processor;
 	ComponentLayoutEditor layoutEditor;			
-	String currentlySelectedComponentName;
+	StringArray currentlySelectedComponentNames;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)
 };

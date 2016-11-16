@@ -144,9 +144,9 @@ void CabbagePluginEditor::setGUIEditor(bool enable)
 	layoutEditor.toFront(false);
 }
 //======================================================================================================
-void CabbagePluginEditor::setCurrentlySelectedComponent(String componentName)
+void CabbagePluginEditor::setCurrentlySelectedComponents(StringArray componentNames)
 {
-	currentlySelectedComponentName = componentName;
+	currentlySelectedComponentNames = componentNames;
 }
 
 Component* CabbagePluginEditor::getComponentFromName(String name)
@@ -160,9 +160,13 @@ Component* CabbagePluginEditor::getComponentFromName(String name)
 	return nullptr;
 }
 
-ValueTree CabbagePluginEditor::getValueTreeForCurrentlySelectedComponent()
+Array<ValueTree> CabbagePluginEditor::getValueTreesForCurrentlySelectedComponents()
 {
-	return CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, currentlySelectedComponentName);
+	Array<ValueTree> valueTreeArray;
+	for(String compName : currentlySelectedComponentNames)
+		valueTreeArray.add(CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, compName));
+	
+	return valueTreeArray;
 }
 
 ValueTree CabbagePluginEditor::getValueTreeForComponent(String compName)

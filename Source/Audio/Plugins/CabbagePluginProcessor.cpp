@@ -84,7 +84,7 @@ void CabbagePluginProcessor::parseCsdFile()
 		}
 		
 		
-		parentComponent = withinPlantGroup == false ? CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString() : parentComponent;		
+		parentComponent = withinPlantGroup == true ? CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString() : parentComponent;		
 	}
 }
 

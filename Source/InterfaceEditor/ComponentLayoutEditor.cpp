@@ -156,8 +156,17 @@ void ChildAlias::mouseDown (const MouseEvent& e)
 	userAdjusting = true;
 	startBounds = getBounds ();
 	userStartedChangingBounds ();	
-	const String componentName = target.getComponent()->getName();
-	getPluginEditor()->setCurrentlySelectedComponent(componentName);
+	StringArray compNames;
+	
+	if(getLassoSelection().getNumSelected()>0)
+	for ( ChildAlias* child : getLassoSelection() )
+	{
+		compNames.add(child->getName());
+	}
+	else
+		compNames.add(getName());
+		
+	getPluginEditor()->setCurrentlySelectedComponents(compNames);
 	getPluginEditor()->sendChangeMessage();
 	
 	if(getLassoSelection().getNumSelected()==0)
@@ -249,11 +258,26 @@ CabbagePluginEditor* ChildAlias::getPluginEditor()
 
 void ChildAlias::updateBoundsDataForTarget()
 {
-	ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
-	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
-	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
-	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, target.getComponent()->getWidth());
-	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
+	bool multipleSelection = false;
+	
+	for ( ChildAlias* child : getLassoSelection() )
+	{
+		ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,child->target.getComponent()->getName());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, child->target.getComponent()->getX());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, child->target.getComponent()->getY());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, child->target.getComponent()->getWidth());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, child->target.getComponent()->getHeight());	
+	}
+	
+	if(multipleSelection=false)
+	{
+		ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, target.getComponent()->getWidth());
+		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
+	}
+	
 	getPluginEditor()->sendChangeMessage();
 }
 
@@ -315,7 +339,7 @@ void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
 		child->setInterest("selected");
 		child->repaint();
 		
-		child->getProperties().set("originalX", var(&child->getBounds(), sizeof(child->getBounds())));
+		child->getProperties().set("originalX", child->getBounds().getX());
 		child->getProperties().set("originalY", child->getBounds().getY());
 		child->getProperties().set("originalWidth", child->getBounds().getWidth());
 		child->getProperties().set("originalHeight", child->getBounds().getHeight());
