@@ -152,7 +152,6 @@ String CabbageSettings::get(String child, String identifier)
 
 void CabbageSettings::set(ValueTree tree, String child, Identifier identifier, var value)
 {
-	CabbageUtilities::debug(value.toString());
 	if(tree.getChildWithName(child).isValid())
 		tree.getChildWithName(child).setProperty(identifier,  value.toString(), 0);
 	else{
@@ -195,7 +194,6 @@ ValueTree CabbageSettings::getValueTree()
 
 void CabbageSettings::valueTreePropertyChanged (ValueTree& tree, const Identifier& value)
 {
-	CabbageUtilities::debug(value.toString());
 	if(valueTree.getChildWithName("Colours").getProperty(value).toString().isNotEmpty())
 		getUserSettings()->setValue("Colours_"+value.toString(), valueTree.getChildWithName("Colours").getProperty(value).toString());
 

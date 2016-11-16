@@ -71,7 +71,6 @@ void CabbageContentComponent::openFile(File file)
 	openFiles.add(file);
 	editorConsole->editor->loadContent(file.loadFileAsString());
 	numberOfFiles = editorAndConsole.size()-1;
-	CabbageUtilities::debug("Number of open files", editorAndConsole.size());
 	resized();
 	
 	if(numberOfFiles==1)

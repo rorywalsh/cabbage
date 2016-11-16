@@ -84,13 +84,20 @@ void ChildAlias::paint (Graphics& g)
 	g.drawRect (0,0,getWidth(),getHeight(),1);
 }
 
-
+//===========================================================================
+SelectedItemSet <ChildAlias*>& ChildAlias::getLassoSelection()
+{
+	if(ComponentLayoutEditor* c = this->findParentComponentOfClass<ComponentLayoutEditor>())
+	{
+		return c->getLassoSelection();
+	}
+}
 
 const Component* ChildAlias::getTargetChild ()
 {
 	return target.getComponent ();
 }
-
+//===========================================================================
 void ChildAlias::updateFromTarget ()
 {
 	if (target != NULL)
@@ -111,7 +118,7 @@ void ChildAlias::applyToTarget ()
 		userChangedBounds ();
 	}
 }
-
+//===========================================================================
 void ChildAlias::userChangedBounds ()
 {
 	//update minimum onscreen amounts so that object can't be resized past the screen area
@@ -131,19 +138,20 @@ bool ChildAlias::boundsChangedSinceStart ()
 {
 	return startBounds != getBounds ();
 }
-
+//===========================================================================
 void ChildAlias::mouseDown (const MouseEvent& e)
 {
 	toFront (true);
 	
 	if (e.eventComponent == resizer)
 	{
+
 	}
 	else
 	{
 		//added a constrainer so that components can't be dragged off-screen
 		constrainer->setMinimumOnscreenAmounts(getHeight(), getWidth(), getHeight(), getWidth());
-		dragger.startDraggingComponent(this, e);
+		dragger.startDraggingComponent(this, e);		
 	}
 	userAdjusting = true;
 	startBounds = getBounds ();
@@ -152,25 +160,11 @@ void ChildAlias::mouseDown (const MouseEvent& e)
 	getPluginEditor()->setCurrentlySelectedComponent(componentName);
 	getPluginEditor()->sendChangeMessage();
 	
-	getComponentLayoutEditor()->resetAllInterest();
+	if(getLassoSelection().getNumSelected()==0)
+		getComponentLayoutEditor()->resetAllInterest();
+	
 	interest = "selected";
 	
-}
-
-CabbagePluginEditor* ChildAlias::getPluginEditor()
-{
-	if(CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
-		return c;
-	else
-		return nullptr;
-}
-
-ComponentLayoutEditor* ChildAlias::getComponentLayoutEditor()
-{
-	if(ComponentLayoutEditor* c = dynamic_cast <ComponentLayoutEditor*> (getParentComponent()))
-		return c;
-	else
-		return nullptr;
 }
 
 void ChildAlias::mouseUp (const MouseEvent& e)
@@ -190,15 +184,39 @@ void ChildAlias::mouseUp (const MouseEvent& e)
 
 void ChildAlias::mouseDrag (const MouseEvent& e)
 {
+	
 	if (e.eventComponent == resizer)
 	{
 	}
 	else
 	{
+		bool multipleSelection = false;
 		if (!e.mouseWasClicked ())
 		{
-			dragger.dragComponent(this,e, constrainer);
-			applyToTarget ();
+			for ( ChildAlias* child : getLassoSelection() )
+			{
+				const int dragX = e.getDistanceFromDragStartX();
+				const int dragY = e.getDistanceFromDragStartY();
+				const int gridSize = 2;
+				int selectedCompsPosX = child->getProperties().getWithDefault("originalX", 1);
+				int selectedCompsPosY = child->getProperties().getWithDefault("originalY", 1);
+				selectedCompsPosY = selectedCompsPosY+dragY;
+				selectedCompsPosY = selectedCompsPosY/gridSize*gridSize;
+				selectedCompsPosX = selectedCompsPosX+dragX;
+				selectedCompsPosX = selectedCompsPosX/gridSize*gridSize;
+				//needs fixing for multiple objects. For now leaving it disabled...
+				//restrictBounds(selectedCompsPosX, selectedCompsPosY);
+				child->setTopLeftPosition(selectedCompsPosX, selectedCompsPosY);
+				child->applyToTarget();				
+				multipleSelection = true;
+			}
+
+			if(multipleSelection == false)
+			{
+				dragger.dragComponent(this,e, constrainer);
+				applyToTarget ();
+			}
+
 		}
 	}
 	updateBoundsDataForTarget();	
@@ -214,9 +232,23 @@ void ChildAlias::mouseExit (const MouseEvent& e)
 	repaint ();
 }
 
+//===========================================================================
+ComponentLayoutEditor* ChildAlias::getComponentLayoutEditor()
+{
+	if(ComponentLayoutEditor* c = dynamic_cast <ComponentLayoutEditor*> (getParentComponent()))
+		return c;
+	else
+		return nullptr;
+}
+
+CabbagePluginEditor* ChildAlias::getPluginEditor()
+{
+	return getComponentLayoutEditor()->getPluginEditor();
+}	
+//===========================================================================
+
 void ChildAlias::updateBoundsDataForTarget()
 {
-	CabbageUtilities::debug(target.getComponent()->getName());
 	ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
 	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
 	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, target.getComponent()->getY());
@@ -224,6 +256,13 @@ void ChildAlias::updateBoundsDataForTarget()
 	CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, target.getComponent()->getHeight());
 	getPluginEditor()->sendChangeMessage();
 }
+
+
+
+
+
+
+
 //=============================================================================
 ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)
 :   target (0), widgetData(valueTree)
@@ -237,6 +276,14 @@ ComponentLayoutEditor::~ComponentLayoutEditor ()
 {
 	target = nullptr;
 
+}
+
+CabbagePluginEditor* ComponentLayoutEditor::getPluginEditor()
+{
+	if(CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
+		return c;
+	else
+		return nullptr;
 }
 
 void ComponentLayoutEditor::resized ()
@@ -263,17 +310,19 @@ void ComponentLayoutEditor::resetAllInterest()
 //==================================================================================================================
 void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
 {
-    for(int i=0; i<selectedFilters.getNumSelected(); i++)
+    for(ChildAlias* child : selectedFilters)
     {
-		if(ChildAlias* child = dynamic_cast<ChildAlias*>(selectedFilters.getSelectedItem(i)))
-		{
-			child->setInterest("selected");
-			child->repaint();
-		}
-        selectedCompsOrigCoordinates.add(selectedFilters.getSelectedItem(i)->getBounds());
-		//should I get line numbers from here?
-        //selectedLineNumbers.add(selectedFilters.getSelectedItem(i)->getProperties().getWithDefault(CabbageIdentifierIds::linenumber, -99));
-    }
+		child->setInterest("selected");
+		child->repaint();
+		
+		child->getProperties().set("originalX", var(&child->getBounds(), sizeof(child->getBounds())));
+		child->getProperties().set("originalY", child->getBounds().getY());
+		child->getProperties().set("originalWidth", child->getBounds().getWidth());
+		child->getProperties().set("originalHeight", child->getBounds().getHeight());
+		const ValueTree wData = getPluginEditor()->getValueTreeForComponent(child->getName());
+		selectedCompsLineNumbers.add(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber));
+	}
+    
     lassoComp.endLasso();
     removeChildComponent (&lassoComp);
 }
@@ -292,19 +341,13 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
     selectedFilters.deselectAll();
     boundsForDuplicatedCtrls.clear();
 	
-	for(int i=0; i<getNumChildComponents(); i++)
+    for(ChildAlias* child : selectedFilters)
     {
-        if(ChildAlias* child = dynamic_cast<ChildAlias*>(getChildComponent(i)))
-		{
-			child->setInterest("none");
-			child->repaint();
-		}
-    }
-
+		child->setInterest("none");
+		child->repaint();
+	}
 	
-
-
-    selectedCompsOrigCoordinates.clear();
+    selectedCompsOriginalCoordinates.clear();
     //selectedLineNumbers.clear();
 
     if(e.mods.isPopupMenu())
@@ -408,6 +451,7 @@ void ComponentLayoutEditor::updateFrames ()
                 ChildAlias* alias = createAlias (c);
                 if (alias)
                 {
+					alias->setName(c->getName());
 					frames.add (alias);
 					addAndMakeVisible (alias);
                 }

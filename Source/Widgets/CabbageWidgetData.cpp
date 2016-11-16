@@ -1065,7 +1065,6 @@ void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
 //===========================================================================================
 void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr, String identifier)
 {
-    Logger::writeToLog(inStr);
     //remove any text after a semicolon and take out tabs..
     String str = inStr.replace("\t", " ");
     if(str.indexOf(0, ";")!=-1)
@@ -1318,7 +1317,6 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
             else if(identArray[indx].equalsIgnoreCase("imgfile"))
             {
-				CabbageUtilities::debug(strTokens[0].trim());
                 if(typeOfWidget=="groupbox")
                     setProperty(widgetData, CabbageIdentifierIds::imggroupbox, strTokens[0].trim());
                 else if(typeOfWidget.contains("slider"))
@@ -2206,7 +2204,6 @@ String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData)
 String CabbageWidgetData::getMultiItemTextAsCabbageCode(ValueTree widgetData, String identifier)
 {
 	var items = CabbageWidgetData::getProperty(widgetData, identifier);
-	CabbageUtilities::debug(items.toString());
 	String channelString = "";
 
 	const Array<var>* array = items.getArray();
@@ -2214,13 +2211,10 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode(ValueTree widgetData, St
 	{
 		for(int i = 0 ; i < array->size()-1 ; i++)
 		{
-			CabbageUtilities::debug(array->getReference(i).toString());
 			const String text = array->getReference(array->size()-1).toString();
 			channelString = channelString+ "\"" + array->getReference(i).toString() + "\", ";
 		}
-		
-		CabbageUtilities::debug(channelString);
-		
+				
 		if( array->size()==1)
 			return identifier+"(\""+channelString+array->getReference(array->size()-1).toString()+"\"), ";
 		else

@@ -39,7 +39,6 @@ public:
 	
 	void setValue (float newValue) override
 	{
-		CabbageUtilities::debug(channel);
 		csound.SetChannel(channel.toUTF8(), newValue);
 	}
 

@@ -104,6 +104,7 @@ public:
 	void setGUIEditor(bool enable);
 	void setCurrentlySelectedComponent(String componentName);
 	ValueTree getValueTreeForCurrentlySelectedComponent();
+	ValueTree getValueTreeForComponent(String compName);
 	Component* getComponentFromName(String name);
 	void addToEditorAndMakeVisible(Component* comp, ValueTree widgetData);
 	void updateLayoutEditorFrames();

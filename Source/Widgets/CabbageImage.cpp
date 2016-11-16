@@ -42,21 +42,20 @@ void CabbageImage::paint(Graphics& g)
 	}
 	else
 	{
+		g.fillAll(Colours::transparentBlack);
+		g.setColour(outlineColour);
+		
 		if(shape=="square")
-		{
-			g.fillAll(Colours::transparentBlack);
-			g.setColour(outlineColour);
 			g.fillRoundedRectangle(0,0, getWidth(), getHeight(), corners);
-			g.setColour(mainColour);
-			g.fillRoundedRectangle(lineThickness,lineThickness, getWidth()-(lineThickness*2), getHeight()-(lineThickness*2), corners);
-		}
-		if(shape=="ellipse")
-		{
-			g.setColour(outlineColour);
+		else
 			g.fillEllipse(0,0, getWidth(), getHeight());
-			g.setColour(mainColour);
+			
+		g.setColour(mainColour);
+		
+		if(shape=="square")
+			g.fillRoundedRectangle(lineThickness,lineThickness, getWidth()-(lineThickness*2), getHeight()-(lineThickness*2), corners);
+		else
 			g.fillEllipse(lineThickness,lineThickness, getWidth()-(lineThickness*2), getHeight()-(lineThickness*2));
-		}
 	}
 }	
 

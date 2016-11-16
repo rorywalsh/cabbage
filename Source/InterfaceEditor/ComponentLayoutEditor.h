@@ -60,8 +60,9 @@ class ChildAlias   :   public Component
 			interest = isInteresting;
 		}
 		
+		SelectedItemSet <ChildAlias*>& getLassoSelection();		
 		ComponentLayoutEditor* getComponentLayoutEditor();
-		CabbagePluginEditor* getPluginEditor();
+		CabbagePluginEditor* getPluginEditor();		
 		void updateBoundsDataForTarget();
 
 		
@@ -106,13 +107,14 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 	    LassoComponent <ChildAlias*> lassoComp;
 		SelectedComponents selectedFilters;	
 		
-		Array<int> selectedLineNumbers;
-		Array<Rectangle<int>> selectedCompsOrigCoordinates;
+		Array<int> selectedCompsLineNumbers;
+		Array<Rectangle<int>> selectedCompsOriginalCoordinates;
 		Array<Rectangle<int>> selectedCompsNewCoordinates;
 		Array<juce::Rectangle <int> > boundsForDuplicatedCtrls;
 		Point<int> currentMouseCoors;
 		void resetAllInterest();
 		
+		CabbagePluginEditor* getPluginEditor();
 	
 	private:
 	

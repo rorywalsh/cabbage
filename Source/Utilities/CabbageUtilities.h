@@ -554,7 +554,6 @@ public:
         for(int i=0; i<array.size(); i++)
         {
             //CabbageUtilities::debug(array.joinIntoString(" "));
-            CabbageUtilities::debug(array[i]);
             if(array[i].contains("nchnls") && array[i].contains("="))
             {
                 String channels = array[i].substring(array[i].indexOf("=")+1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
@@ -571,7 +570,6 @@ public:
 
         for(int i=0; i<array.size(); i++)
         {
-            //CabbageUtilities::debug(array.joinIntoString(" "));
             if(array[i].contains("kr") && array[i].contains("="))
             {
                 String kr = array[i].substring(array[i].indexOf("=")+1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
@@ -581,7 +579,6 @@ public:
 
         for(int i=0; i<array.size(); i++)
         {
-            //CabbageUtilities::debug(array[i]);
             if(array[i].contains("ksmps") && array[i].contains("="))
             {
                 String ksmps = array[i].substring(array[i].indexOf("=")+1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
@@ -756,7 +753,6 @@ public:
                 for(int y = i-2; y<=i+1; y++)
                 {
                     ampRange.add(ranges[y]);
-                    CabbageUtilities::debug(ranges[y]);
                 }
             }
 
@@ -815,7 +811,6 @@ public:
                 PopupMenu subMenu;
                 for (int subs = 0; subs < subFolders.size(); subs++)
                 {
-                    CabbageUtilities::debug(subFolders[subs].getFullPathName());
                     fileCnt = plantFiles.size();
                     subFolders[subs].findChildFiles(plantFiles, File::findFiles, false, "*.plants");
                     subMenu.clear();
@@ -1442,7 +1437,6 @@ public:
 //====================================================================================================
     static String returnFullPathForFile(String file, String fullPath)
     {
-        CabbageUtilities::debug(file);
         String filePath;
         if(file.isNotEmpty())
         {

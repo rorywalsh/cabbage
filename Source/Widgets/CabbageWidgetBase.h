@@ -67,7 +67,7 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
 		else if(imgPath.exists())
 		{
 			File filename(imgPath.getFullPathName()+"/groupbox."+fileType);
-			CabbageUtilities::debug(filename.getFullPathName());
+
 			if(filename.existsAsFile())
 			{
 				if(imgFile.getFileExtension().contains("svg"))
@@ -99,7 +99,7 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
 		else if(imgPath.exists())
 		{
 			File filename(imgPath.getFullPathName()+"/buttonon."+fileType);
-			CabbageUtilities::debug(filename.getFullPathName());
+
 			if(filename.existsAsFile())
 			{
 				if(imgFile.getFileExtension().contains("svg"))
@@ -130,7 +130,7 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
 		else if(imgPath.exists())
 		{
 			File filename(imgPath.getFullPathName()+"/buttonoff."+fileType);
-			CabbageUtilities::debug(filename.getFullPathName());
+
 			if(filename.existsAsFile())
 			{
 				

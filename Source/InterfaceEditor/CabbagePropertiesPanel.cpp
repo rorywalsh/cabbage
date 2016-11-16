@@ -147,7 +147,6 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors(ValueTree va
 			var text = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::text);
 			StringArray stringArray;
 			stringArray.addLines(text.toString());
-			CabbageUtilities::debug(stringArray.joinIntoString("\n"));
 			comps.add (new TextPropertyComponent(Value (var (stringArray.joinIntoString("\n"))), "Text", 1000, isMultiline));
 		}
 		
@@ -383,5 +382,4 @@ void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileCo
 	fileComponent->setTooltip(fileComponent->getCurrentFileText());
 	setPropertyByName(fileComponent->getName(), fileComponent->getCurrentFileText());
 	const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
-	CabbageUtilities::debug(fileComponent->getCurrentFile().getRelativePathFrom(File(csdFile)));
 }

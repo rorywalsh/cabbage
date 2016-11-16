@@ -28,8 +28,6 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
 		addParameter(new AudioParameterFloat(channel, channel, range, defaultValue));		
 	}
 	
-	CabbageUtilities::debug(getParameters().size());
-	
 }
 
 GenericCabbagePluginProcessor::~GenericCabbagePluginProcessor()

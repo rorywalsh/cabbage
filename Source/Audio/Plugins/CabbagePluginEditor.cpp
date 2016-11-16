@@ -66,10 +66,6 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 	{
 		const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();
 
-		CabbageUtilities::debug(widgetType);
-		CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgets.getChild(widget), 
-													CabbageIdentifierIds::parentcomponent));
-
 		if(widgetType==CabbageIdentifierIds::form)
 			SetupWindow(widgets.getChild(widget));
 		else if(widgetType==CabbageIdentifierIds::rslider)
@@ -115,7 +111,6 @@ void CabbagePluginEditor::InsertImage(ValueTree cabbageWidgetData)
 {
 	CabbageImage* image;
 	components.add(image = new CabbageImage(cabbageWidgetData, this));
-	CabbageUtilities::debug(CabbageWidgetData::getNumProp(cabbageWidgetData, CabbageIdentifierIds::linenumber));
 	addToEditorAndMakeVisible(image, cabbageWidgetData);
 }
 //======================================================================================================
@@ -168,6 +163,11 @@ Component* CabbagePluginEditor::getComponentFromName(String name)
 ValueTree CabbagePluginEditor::getValueTreeForCurrentlySelectedComponent()
 {
 	return CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, currentlySelectedComponentName);
+}
+
+ValueTree CabbagePluginEditor::getValueTreeForComponent(String compName)
+{
+	return CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, getComponentFromName(compName)->getName());
 }
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
