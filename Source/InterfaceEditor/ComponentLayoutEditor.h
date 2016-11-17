@@ -102,15 +102,17 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 		const Component* getTarget();
 	
 		void findLassoItemsInArea (Array <ChildAlias*>& results, const juce::Rectangle<int>& area);
-		Rectangle<int> getLassoRect(SelectedItemSet <ChildAlias*>);
+
+		static void updateSelectedComponentBounds(SelectedItemSet <ChildAlias*>);
+		
 		SelectedItemSet <ChildAlias*>& getLassoSelection();
 	    LassoComponent <ChildAlias*> lassoComp;
-		SelectedComponents selectedFilters;	
+		SelectedComponents selectedComponents;	
 		
-		Array<int> selectedCompsLineNumbers;
-		Array<Rectangle<int>> selectedCompsOriginalCoordinates;
-		Array<Rectangle<int>> selectedCompsNewCoordinates;
-		Array<juce::Rectangle <int> > boundsForDuplicatedCtrls;
+//		Array<int> selectedCompsLineNumbers;
+//		Array<Rectangle<int>> selectedCompsOriginalCoordinates;
+//		Array<Rectangle<int>> selectedCompsNewCoordinates;
+//		Array<juce::Rectangle <int> > boundsForDuplicatedCtrls;
 		Point<int> currentMouseCoors;
 		void resetAllInterest();
 		

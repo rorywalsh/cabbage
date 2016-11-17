@@ -189,6 +189,8 @@ void ChildAlias::mouseUp (const MouseEvent& e)
 	}
 	if (userAdjusting) userStoppedChangingBounds ();
 	userAdjusting = false;
+	
+	ComponentLayoutEditor::updateSelectedComponentBounds(getLassoSelection());
 }
 
 void ChildAlias::mouseDrag (const MouseEvent& e)
@@ -269,7 +271,7 @@ void ChildAlias::updateBoundsDataForTarget()
 		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, child->target.getComponent()->getHeight());	
 	}
 	
-	if(multipleSelection=false)
+	if(multipleSelection==false)
 	{
 		ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(getComponentLayoutEditor()->widgetData,target.getComponent()->getName());
 		CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, target.getComponent()->getX());
@@ -332,28 +334,28 @@ void ComponentLayoutEditor::resetAllInterest()
     repaint();
 }
 //==================================================================================================================
-void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
+void ComponentLayoutEditor::updateSelectedComponentBounds(SelectedItemSet <ChildAlias*> selectedComponents)
 {
-    for(ChildAlias* child : selectedFilters)
-    {
-		child->setInterest("selected");
-		child->repaint();
-		
+    for(ChildAlias* child : selectedComponents)
+    {	
 		child->getProperties().set("originalX", child->getBounds().getX());
 		child->getProperties().set("originalY", child->getBounds().getY());
 		child->getProperties().set("originalWidth", child->getBounds().getWidth());
 		child->getProperties().set("originalHeight", child->getBounds().getHeight());
-		const ValueTree wData = getPluginEditor()->getValueTreeForComponent(child->getName());
-		selectedCompsLineNumbers.add(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber));
-	}
-    
+	}	
+	
+}
+void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
+{
+
+    updateSelectedComponentBounds(selectedComponents);
     lassoComp.endLasso();
     removeChildComponent (&lassoComp);
 }
 
 void ComponentLayoutEditor::mouseDrag (const MouseEvent& e)
 {
-    selectedFilters.deselectAll();
+    selectedComponents.deselectAll();
     lassoComp.toFront (false);
     lassoComp.dragLasso (e);
     //currentEvent = "mouseDragLayoutEditor";
@@ -362,16 +364,10 @@ void ComponentLayoutEditor::mouseDrag (const MouseEvent& e)
 
 void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 {
-    selectedFilters.deselectAll();
-    boundsForDuplicatedCtrls.clear();
+    selectedComponents.deselectAll();
 	
-    for(ChildAlias* child : selectedFilters)
-    {
-		child->setInterest("none");
-		child->repaint();
-	}
+    resetAllInterest();
 	
-    selectedCompsOriginalCoordinates.clear();
     //selectedLineNumbers.clear();
 
     if(e.mods.isPopupMenu())
@@ -399,37 +395,17 @@ void ComponentLayoutEditor::findLassoItemsInArea (Array <ChildAlias*>& results, 
         if (c->getBounds().intersects (lasso))
         {
             results.addIfNotAlreadyThere(c);
-            selectedFilters.addToSelection(c);
+            selectedComponents.addToSelection(c);
             //Logger::writeToLog(c->getName());
         }
         else
-            selectedFilters.deselect(c);
+            selectedComponents.deselect(c);
     }
 }
 
 SelectedItemSet <ChildAlias*>& ComponentLayoutEditor::getLassoSelection()
 {
-    return selectedFilters;
-}
-
-
-Rectangle<int> ComponentLayoutEditor::getLassoRect(SelectedItemSet <ChildAlias*> children)
-{
-    Rectangle<int> bounds(9999, 9999, -9999, -9999);
-    for(int i=0; i<children.getItemArray().size(); i++)
-        bounds.setX(children.getSelectedItem(i)->getX()<bounds.getX() ? children.getSelectedItem(i)->getX() : bounds.getX());
-    for(int i=0; i<children.getItemArray().size(); i++)
-        bounds.setY(children.getSelectedItem(i)->getY()<bounds.getY() ? children.getSelectedItem(i)->getY() : bounds.getY());
-    for(int i=0; i<children.getItemArray().size(); i++)
-        bounds.setY(children.getSelectedItem(i)->getY()<bounds.getY() ? children.getSelectedItem(i)->getY() : bounds.getY());
-    for(int i=0; i<children.getItemArray().size(); i++)
-        if(children.getSelectedItem(i)->getWidth()+children.getSelectedItem(i)->getX()>bounds.getX()+bounds.getWidth())
-            bounds.setWidth(children.getSelectedItem(i)->getWidth()+children.getSelectedItem(i)->getX()-bounds.getX());
-    for(int i=0; i<children.getItemArray().size(); i++)
-        if(children.getSelectedItem(i)->getHeight()+children.getSelectedItem(i)->getY()>bounds.getY()+bounds.getHeight())
-            bounds.setHeight(children.getSelectedItem(i)->getHeight()+children.getSelectedItem(i)->getY()-bounds.getY());
-
-    return bounds;
+    return selectedComponents;
 }
 
 //==================================================================================================================

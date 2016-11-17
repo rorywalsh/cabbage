@@ -52,27 +52,22 @@ void CabbagePluginProcessor::parseCsdFile()
 {
 	StringArray linesFromCsd;
 	linesFromCsd.addLines(csdFile.loadFileAsString());
-	String parentComponent;
+	String parentComponent, previousComponent;
 	bool withinPlantGroup = false;
 	for( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
 	{
 		if(linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
-			lineNumber = linesFromCsd.size()+1;
-		else if(linesFromCsd[lineNumber].contains("{"))
-		{
-			withinPlantGroup = true;
-		}
-		else if(linesFromCsd[lineNumber].contains("}"))
-		{
-			parentComponent = "";
-			withinPlantGroup = false;
-		}	
-
-			
+			return;
+		
 		const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
 		ValueTree temp(widgetTreeIdentifier);
 		CabbageWidgetData::setWidgetState(temp, linesFromCsd[lineNumber], lineNumber);
 		CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
+		
+		if(linesFromCsd[lineNumber].contains("}"))
+		{
+			parentComponent = "";
+		}	
 		
 		if(parentComponent.isNotEmpty())
 			CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::parentcomponent, parentComponent);
@@ -83,8 +78,15 @@ void CabbagePluginProcessor::parseCsdFile()
 			cabbageWidgets.addChild(temp, -1, 0);
 		}
 		
+		if(linesFromCsd[lineNumber].contains("{"))
+		{
+			if(linesFromCsd[lineNumber].removeCharacters(" ")=="{")
+				parentComponent = previousComponent;
+			else 
+				parentComponent = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString();
+		}
 		
-		parentComponent = withinPlantGroup == true ? CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString() : parentComponent;		
+		previousComponent = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString();	
 	}
 }
 

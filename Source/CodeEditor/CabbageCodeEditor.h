@@ -34,7 +34,7 @@ public:
 	void codeDocumentTextDeleted(int,int){};
     void codeDocumentTextInserted(const juce::String &,int);
 	void displayOpcodeHelpInStatusBar(String lineFromCsd);
-	void insertCodeAndHighlightLine(int lineNumber, String codeToInsert);
+	void insertCode(int lineNumber, String codeToInsert, bool highlightLine);
 	String getLineText();
 	bool keyPressed (const KeyPress& key) override;
 	void undoText();

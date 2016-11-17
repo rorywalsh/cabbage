@@ -193,7 +193,7 @@ void CabbageDocumentWindow::updateCodeInEditor(CabbagePluginEditor* editor)
 		const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
 		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
 		if(getCurrentCodeEditor()!=nullptr)
-			getCurrentCodeEditor()->insertCodeAndHighlightLine(lineNumber, newText);
+			getCurrentCodeEditor()->insertCode(lineNumber, newText, editor->getValueTreesForCurrentlySelectedComponents().size()==1);
 			
 	}	
 }
@@ -380,7 +380,7 @@ void CabbageDocumentWindow::createAudioGraph()
 
 void CabbageDocumentWindow::createEditorForAudioGraphNode()
 {				
-	const bool numParameters = audioGraph->getNumberOfParameters();
+	const int numParameters = audioGraph->getNumberOfParameters();
 	if(numParameters>0)
 	{
 		
