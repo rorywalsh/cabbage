@@ -142,7 +142,7 @@ bool ChildAlias::boundsChangedSinceStart ()
 void ChildAlias::mouseDown (const MouseEvent& e)
 {
 	toFront (true);
-	
+	mouseDownSelectStatus = getLassoSelection().addToSelectionOnMouseDown (this, e.mods);
 	if (e.eventComponent == resizer)
 	{
 
@@ -191,6 +191,7 @@ void ChildAlias::mouseUp (const MouseEvent& e)
 	userAdjusting = false;
 	
 	ComponentLayoutEditor::updateSelectedComponentBounds(getLassoSelection());
+	getLassoSelection().addToSelectionOnMouseUp(this, e.mods, false, mouseDownSelectStatus);
 }
 
 void ChildAlias::mouseDrag (const MouseEvent& e)
@@ -293,8 +294,6 @@ void ChildAlias::updateBoundsDataForTarget()
 ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)
 :   target (0), widgetData(valueTree)
 {
-	setColour (ComponentLayoutEditor::aliasIdleColour,Colours::lightgrey.withAlpha(0.2f));
-	setColour (ComponentLayoutEditor::aliasHoverColour, Colours::yellow.withAlpha(0.5f));
     setInterceptsMouseClicks (false, true);	
 }
 
@@ -338,6 +337,8 @@ void ComponentLayoutEditor::updateSelectedComponentBounds(SelectedItemSet <Child
 {
     for(ChildAlias* child : selectedComponents)
     {	
+		child->setInterest("selected");
+		child->repaint();
 		child->getProperties().set("originalX", child->getBounds().getX());
 		child->getProperties().set("originalY", child->getBounds().getY());
 		child->getProperties().set("originalWidth", child->getBounds().getWidth());

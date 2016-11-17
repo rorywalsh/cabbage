@@ -64,7 +64,7 @@ class ChildAlias   :   public Component
 		ComponentLayoutEditor* getComponentLayoutEditor();
 		CabbagePluginEditor* getPluginEditor();		
 		void updateBoundsDataForTarget();
-
+		bool mouseDownSelectStatus = false;
 		
     private:
 		CriticalSection bounds;
@@ -81,14 +81,9 @@ class ChildAlias   :   public Component
 class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAlias*>
 {
     public:
-		enum ColourIds
-		{
-			aliasIdleColour,
-			aliasHoverColour
-		};
-		
 		ComponentLayoutEditor (ValueTree valueTree);
 		~ComponentLayoutEditor ();
+		
 		ValueTree widgetData;
 		void resized ();
 		void paint (Graphics& g);
@@ -100,23 +95,15 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 		void mouseDrag(const MouseEvent& e);
 		void mouseDown(const MouseEvent& e);
 		const Component* getTarget();
-	
 		void findLassoItemsInArea (Array <ChildAlias*>& results, const juce::Rectangle<int>& area);
-
 		static void updateSelectedComponentBounds(SelectedItemSet <ChildAlias*>);
-		
 		SelectedItemSet <ChildAlias*>& getLassoSelection();
 	    LassoComponent <ChildAlias*> lassoComp;
 		SelectedComponents selectedComponents;	
-		
-//		Array<int> selectedCompsLineNumbers;
-//		Array<Rectangle<int>> selectedCompsOriginalCoordinates;
-//		Array<Rectangle<int>> selectedCompsNewCoordinates;
-//		Array<juce::Rectangle <int> > boundsForDuplicatedCtrls;
 		Point<int> currentMouseCoors;
 		void resetAllInterest();
-		
 		CabbagePluginEditor* getPluginEditor();
+		
 	
 	private:
 	
