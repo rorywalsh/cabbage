@@ -75,15 +75,21 @@ void CabbagePluginProcessor::parseCsdFile()
 		if(CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="interactive" ||
 			CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
 		{
+			CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel));
 			cabbageWidgets.addChild(temp, -1, 0);
 		}
 		
 		if(linesFromCsd[lineNumber].contains("{"))
 		{
 			if(linesFromCsd[lineNumber].removeCharacters(" ")=="{")
+			{
 				parentComponent = previousComponent;
-			else 
+			}
+			else
+			{ 
 				parentComponent = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString();
+				CabbageWidgetData::setProperty(temp, "containsOpeningCurlyBracket", 1);
+			}
 		}
 		
 		previousComponent = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::name).toString();	
@@ -91,7 +97,7 @@ void CabbagePluginProcessor::parseCsdFile()
 }
 
 //==============================================================================
-// create parameters for sliders, buttons, comboboxes, checkboxes and xypads. 
+// create parameters for sliders, buttons, comboboxes, checkboxes, encoders and xypads. 
 // Other widgets can communicate with Csound, but they cannot be automated
 
 void CabbagePluginProcessor::createParameters()	

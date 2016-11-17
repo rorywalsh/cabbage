@@ -1026,6 +1026,7 @@ void CabbageWidgetData::setComboBoxProperties(ValueTree widgetData, int ID)
 	populate.append("");
 	populate.append("");
 	setProperty(widgetData, CabbageIdentifierIds::populate, populate);
+	setProperty(widgetData, CabbageIdentifierIds::name, "combobox");
 	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
 	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
 	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
@@ -2293,7 +2294,10 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
 						 + getSimpleTextAsCabbageCode(widgetData, "popuptext")
 						 + getSimpleTextAsCabbageCode(widgetData, "file")
 						 + getSimpleTextAsCabbageCode(widgetData, "shape")
-						 + getImagesTextAsCabbageCode(widgetData);
+						 + getImagesTextAsCabbageCode(widgetData)
+						 
+						 //lastly, add a bracket in cases of plants that open on a line of widget code
+						 + (getNumProp(widgetData, "containsOpeningCurlyBracket")==1 ? "{" : String::empty);
 						 
 	return cabbageCode;
 }

@@ -70,11 +70,13 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 
     const int textX = (int) tickWidth + 10;
 
+	int widthButton =  button.getWidth();
+
 	if(button.getButtonText().isNotEmpty())
-		g.drawFittedText (button.getButtonText(),
+		g.drawFittedText(button.getButtonText(),
 						  textX, 0,
-						  button.getWidth() - textX - 2, button.getHeight(),
-						  Justification::centredLeft, 10);	
+						  jmax(20, button.getWidth() - textX - 2), button.getHeight(),
+						  Justification::centredLeft, 5);	
 	
 }
 

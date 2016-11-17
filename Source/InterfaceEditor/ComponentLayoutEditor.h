@@ -38,7 +38,7 @@ public:
 class ChildAlias   :   public Component
 {
     public:
-		ChildAlias (Component* targetChild);
+		ChildAlias (Component* targetChild, ComponentLayoutEditor* layoutEditor);
 		~ChildAlias ();
 		void resized ();
 		void paint (Graphics& g);
@@ -46,8 +46,8 @@ class ChildAlias   :   public Component
 		void updateFromTarget ();
 		void applyToTarget ();
 		virtual void userChangedBounds ();
-		virtual void userStartedChangingBounds ();
-		virtual void userStoppedChangingBounds ();
+		virtual void userStartedChangingBounds (){};
+		virtual void userStoppedChangingBounds (){};
 		bool boundsChangedSinceStart ();
 		void mouseEnter (const MouseEvent& e);
 		void mouseExit (const MouseEvent& e);
@@ -60,22 +60,29 @@ class ChildAlias   :   public Component
 			interest = isInteresting;
 		}
 		
-		SelectedItemSet <ChildAlias*>& getLassoSelection();		
-		ComponentLayoutEditor* getComponentLayoutEditor();
 		CabbagePluginEditor* getPluginEditor();		
 		void updateBoundsDataForTarget();
+		void setBoundsForChildren();
 		bool mouseDownSelectStatus = false;
+		
+		const Component* getTarget()
+		{
+			return target;
+		}
 		
     private:
 		CriticalSection bounds;
 		ScopedPointer<ComponentBoundsConstrainer>  constrainer;
     	ComponentDragger dragger;
 		SafePointer<Component> target;
+		Array<juce::Rectangle<int> > childBounds;
 		String interest;
 		bool userAdjusting;
 		Rectangle<int> startBounds;
 		ScopedPointer<ComponentBoundsConstrainer> resizeContainer; 
 		ResizableBorderComponent* resizer;
+		ComponentLayoutEditor* layoutEditor;
+
 };
 //=============================================================================
 class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAlias*>
@@ -96,17 +103,18 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 		void mouseDown(const MouseEvent& e);
 		const Component* getTarget();
 		void findLassoItemsInArea (Array <ChildAlias*>& results, const juce::Rectangle<int>& area);
-		static void updateSelectedComponentBounds(SelectedItemSet <ChildAlias*>);
+		void updateCodeEditor();
+		void updateSelectedComponentBounds();
+		void setComponentBoundsProperties(Component* child, Rectangle<int> bounds);
+
 		SelectedItemSet <ChildAlias*>& getLassoSelection();
 	    LassoComponent <ChildAlias*> lassoComp;
 		SelectedComponents selectedComponents;	
 		Point<int> currentMouseCoors;
 		void resetAllInterest();
 		CabbagePluginEditor* getPluginEditor();
-		
 	
-	private:
-	
+	private:	
 		virtual ChildAlias* createAlias (Component* child);		
 		SafePointer<Component> target;
 		OwnedArray<ChildAlias> frames;

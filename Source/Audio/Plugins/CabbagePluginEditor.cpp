@@ -114,21 +114,33 @@ void CabbagePluginEditor::InsertImage(ValueTree cabbageWidgetData)
 	addToEditorAndMakeVisible(image, cabbageWidgetData);
 }
 //======================================================================================================
+CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (Component* comp)
+{
+	const OwnedArray<AudioProcessorParameter>& params = processor.getParameters();
+	for( int i = 0 ; i < params.size() ; i++)
+	{
+		if(comp->getName()==params[i]->getName(512))
+			return  dynamic_cast<CabbageAudioParameter*> (params[i]);
+	}
+
+	return nullptr;
+}
+
+//======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {	
-	if (CabbageAudioParameter* param = getParameterForComboBox(combo))
+	if (CabbageAudioParameter* param = getParameterForComponent(combo))
 	{
 		param->beginChangeGesture();
 		const int value = combo->getSelectedItemIndex()+1;
 		param->setValue(value);
 		param->endChangeGesture();
 	}	
+} 
 
-}
- 
 void CabbagePluginEditor::buttonClicked(Button* button)
 {	
-	if (CabbageAudioParameter* param = getParameterForButton(button))
+	if (CabbageAudioParameter* param = getParameterForComponent(button))
 	{
 		param->beginChangeGesture();
 		param->setValue(button->getToggleState()==true ? 1 : 0);
@@ -137,7 +149,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 }
 
 //======================================================================================================
-void CabbagePluginEditor::setGUIEditor(bool enable)
+void CabbagePluginEditor::enableGUIEditor(bool enable)
 {
 	layoutEditor.setEnabled(enable);
 	isGUIEnabled = enable;

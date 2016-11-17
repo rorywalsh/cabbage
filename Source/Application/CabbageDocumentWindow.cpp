@@ -215,7 +215,7 @@ void CabbageDocumentWindow::setEditMode(bool enable)
 				getMainContentComponent()->propertyPanel->setInterceptsMouseClicks(false, false);
 			}
 			
-			getPluginEditor()->setGUIEditor(enable);
+			getPluginEditor()->enableGUIEditor(enable);
 			getMainContentComponent()->propertyPanel->setEnabled(enable);
 			
 		}
@@ -281,7 +281,7 @@ void CabbageDocumentWindow::saveDocument(bool saveAs)
 	{
 		isGUIEnabled = false;
 		if(getPluginEditor()!=nullptr)
-			getPluginEditor()->setGUIEditor(false);
+			getPluginEditor()->enableGUIEditor(false);
 			
 		FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
 
@@ -307,7 +307,7 @@ void CabbageDocumentWindow::saveDocument(bool saveAs)
 	{
 		isGUIEnabled = false;
 		if(getPluginEditor()!=nullptr)
-			getPluginEditor()->setGUIEditor(false);
+			getPluginEditor()->enableGUIEditor(false);
 		
 		if(currentCsdFile.existsAsFile())
 			currentCsdFile.replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());

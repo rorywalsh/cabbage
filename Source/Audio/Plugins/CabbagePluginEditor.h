@@ -101,7 +101,7 @@ public:
     void InsertNumberBox(ValueTree cabbageWidgetData){};
 
 	//=============================================================================
-	void setGUIEditor(bool enable);
+	void enableGUIEditor(bool enable);
 	void setCurrentlySelectedComponents(StringArray componentNames);
 	Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
 	ValueTree getValueTreeForComponent(String compName);
@@ -113,17 +113,7 @@ public:
 	void buttonClicked(Button *button);
 	void comboBoxChanged (ComboBox* combo);
 	
-    CabbageAudioParameter* getParameterForButton (Button* button)
-    {
-        const OwnedArray<AudioProcessorParameter>& params = processor.getParameters();
-        return dynamic_cast<CabbageAudioParameter*> (params[components.indexOf (button)]);
-    }
-	
-    CabbageAudioParameter* getParameterForComboBox (ComboBox* combo)
-    {
-        const OwnedArray<AudioProcessorParameter>& params = processor.getParameters();
-        return dynamic_cast<CabbageAudioParameter*> (params[components.indexOf (combo)]);
-    }
+    CabbageAudioParameter* getParameterForComponent (Component* button);	
 	
 	ComponentLayoutEditor& getLayoutEditor()
 	{
