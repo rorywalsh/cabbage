@@ -170,31 +170,47 @@ void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)
     {
 		content->propertyPanel->setVisible(true);
 		content->resized();
-		content->propertyPanel->updateProperties(editor->getValueTreesForCurrentlySelectedComponents()[0]);
-		updateCodeInEditor(editor);
+		ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
+		content->propertyPanel->updateProperties(widgetData);
+		
+		if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber)>9999) //if widget was added in edit mode...
+		{
+			StringArray csdArray;
+			csdArray.addLines(getCurrentCodeEditor()->getDocument().getAllContent());
+			for( int i = 0 ; i < csdArray.size() ; i++ )
+			{
+				if(csdArray[i].contains("</Cabbage>"))
+				{
+					CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::linenumber, i);
+					updateCodeInEditor(editor, false);	
+				}
+			}
+		}
+		else
+		{
+		updateCodeInEditor(editor, true);
 		updateEditorColourScheme();
+		}
     }
 
     else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(panel)) // update Cabbage syntax when a user changes a property
     {
 		if(CabbagePluginEditor* editor = this->getPluginEditor())
 		{
-			updateCodeInEditor(editor);
+			updateCodeInEditor(editor, true);
 		}
     }
 }
 
-
-void CabbageDocumentWindow::updateCodeInEditor(CabbagePluginEditor* editor)
+//=======================================================================================
+void CabbageDocumentWindow::updateCodeInEditor(CabbagePluginEditor* editor, bool replaceExistingLine)
 {
 	content->propertyPanel->addChangeListener(this);
 	for(ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
 	{
 		const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
 		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
-		if(getCurrentCodeEditor()!=nullptr)
-			getCurrentCodeEditor()->insertCode(lineNumber, newText, editor->getValueTreesForCurrentlySelectedComponents().size()==1);
-			
+		getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, editor->getValueTreesForCurrentlySelectedComponents().size()==1);	
 	}	
 }
 

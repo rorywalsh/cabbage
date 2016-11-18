@@ -54,55 +54,55 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-	
-	OwnedArray<Component> components;				
-	Component mainComponent;						
-	CabbageLookAndFeel2 lookAndFeel;					
-
-	TooltipWindow tooltipWindow;
 	//==============================================================================
-	void SetupWindow(ValueTree cabbageWidgetData);
+	void setupWindow(ValueTree cabbageWidgetData);
+	
+	void insertWidget(ValueTree cabbageWidgetData);
 	// the following methods instantiate controls that CAN
 	// be automated in a host...
-	void InsertSlider(ValueTree cabbageWidgetData){};
-    void InsertComboBox(ValueTree cabbageWidgetData);
-    void InsertButton(ValueTree cabbageWidgetData){};
-    void InsertCheckbox(ValueTree cabbageWidgetData);
-    void InsertXYPad(ValueTree cabbageWidgetData){};
-    void InsertRangeSlider(ValueTree cabbageWidgetData){};
+	void insertSlider(ValueTree cabbageWidgetData){};
+    void insertComboBox(ValueTree cabbageWidgetData);
+    void insertButton(ValueTree cabbageWidgetData){};
+    void insertCheckbox(ValueTree cabbageWidgetData);
+    void insertXYPad(ValueTree cabbageWidgetData){};
+    void insertRangeSlider(ValueTree cabbageWidgetData){};
 	//the following methods instantiate controls that CANNOT 
 	// be automated in a host...
-    void InsertGroupBox(ValueTree cabbageWidgetData){};
-    void InsertSoundfiler(ValueTree cabbageWidgetData){};
-    void InsertSourceButton(ValueTree cabbageWidgetData){};
-    void InsertDirectoryList(ValueTree cabbageWidgetData){};
-    void InsertTextEditor(ValueTree cabbageWidgetData){};
-    void InsertCsoundOutput(ValueTree cabbageWidgetData){};
-    void InsertMIDIKeyboard(ValueTree cabbageWidgetData){};
-    void InsertFileButton(ValueTree cabbageWidgetData){};
-    void InsertRecordButton(ValueTree cabbageWidgetData){};
-    void InsertImage(ValueTree cabbageWidgetData);
-    void InsertLabel(ValueTree cabbageWidgetData){};
-    void InsertTable(ValueTree cabbageWidgetData){};
-    void InsertMultiTab(ValueTree cabbageWidgetData){};
-    void InsertEncoder(ValueTree cabbageWidgetData){};
-    void InsertInfoButton(ValueTree cabbageWidgetData){};
-    void InsertLineSeparator(ValueTree cabbageWidgetData){};
-    void InsertScope(ValueTree cabbageWidgetData){};
-    void InsertPatternMatrix(ValueTree cabbageWidgetData){};
-    void InsertSnapshot(ValueTree cabbageWidgetData){};
-    void InsertTransport(ValueTree cabbageWidgetData){};
-    void InsertListbox(ValueTree cabbageWidgetData){};
-    void InsertPopupMenu(ValueTree cabbageWidgetData){};
-    void InsertGenTable(ValueTree cabbageWidgetData){};
-    void InsertTextbox(ValueTree cabbageWidgetData){};
-    void InsertSignalDisplay(ValueTree cabbageWidgetData){};
-    void InsertStepper(ValueTree cabbageWidgetData){};
-    void InsertNumberBox(ValueTree cabbageWidgetData){};
-
+    void insertGroupBox(ValueTree cabbageWidgetData){};
+    void insertSoundfiler(ValueTree cabbageWidgetData){};
+    void insertSourceButton(ValueTree cabbageWidgetData){};
+    void insertDirectoryList(ValueTree cabbageWidgetData){};
+    void insertTextEditor(ValueTree cabbageWidgetData){};
+    void insertCsoundOutput(ValueTree cabbageWidgetData){};
+    void insertMIDIKeyboard(ValueTree cabbageWidgetData){};
+    void insertFileButton(ValueTree cabbageWidgetData){};
+    void insertRecordButton(ValueTree cabbageWidgetData){};
+    void insertImage(ValueTree cabbageWidgetData);
+    void insertLabel(ValueTree cabbageWidgetData){};
+    void insertTable(ValueTree cabbageWidgetData){};
+    void insertMultiTab(ValueTree cabbageWidgetData){};
+    void insertEncoder(ValueTree cabbageWidgetData){};
+    void insertInfoButton(ValueTree cabbageWidgetData){};
+    void insertLineSeparator(ValueTree cabbageWidgetData){};
+    void insertScope(ValueTree cabbageWidgetData){};
+    void insertPatternMatrix(ValueTree cabbageWidgetData){};
+    void insertSnapshot(ValueTree cabbageWidgetData){};
+    void insertTransport(ValueTree cabbageWidgetData){};
+    void insertListbox(ValueTree cabbageWidgetData){};
+    void insertPopupMenu(ValueTree cabbageWidgetData){};
+    void insertGenTable(ValueTree cabbageWidgetData){};
+    void insertTextbox(ValueTree cabbageWidgetData){};
+    void insertSignalDisplay(ValueTree cabbageWidgetData){};
+    void insertStepper(ValueTree cabbageWidgetData){};
+    void insertNumberBox(ValueTree cabbageWidgetData){};
+	
+	//=============================================================================
+	void addNewWidget(String widgetType, Point<int> point);
+	ValueTree getValueTreeForlastWidgetAdded();
 	//=============================================================================
 	void enableGUIEditor(bool enable);
 	void setCurrentlySelectedComponents(StringArray componentNames);
+	void resetCurrentlySelectedComponents();
 	Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
 	ValueTree getValueTreeForComponent(String compName);
 	Component* getComponentFromName(String name);
@@ -112,22 +112,32 @@ public:
 	//=============================================================================
 	void buttonClicked(Button *button);
 	void comboBoxChanged (ComboBox* combo);
+	//=============================================================================
+	CabbageAudioParameter* getParameterForComponent (Component* button);	
+	//=============================================================================
+	void mouseDown(const MouseEvent& e);	
 	
-    CabbageAudioParameter* getParameterForComponent (Component* button);	
 	
+	
+		
 	ComponentLayoutEditor& getLayoutEditor()
 	{
 		return layoutEditor;
 	}
 	
-	bool inGUIEditMode()
+	bool isEditModeEnabled()
 	{
-		return isGUIEnabled;
+		return editModeEnabled;
 	}
 	
 	Colour backgroundColour;
 private:
-	bool isGUIEnabled=false;
+	OwnedArray<Component> components;				
+	Component mainComponent;						
+	CabbageLookAndFeel2 lookAndFeel;
+	int newlyAddedWidgetIndex = 10000;
+	TooltipWindow tooltipWindow;
+	bool editModeEnabled=false;
     CabbagePluginProcessor& processor;
 	ComponentLayoutEditor layoutEditor;			
 	StringArray currentlySelectedComponentNames;

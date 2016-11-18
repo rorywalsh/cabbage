@@ -97,6 +97,10 @@
               file="Source/InterfaceEditor/ComponentLayoutEditor.cpp"/>
         <FILE id="Yg9GtA" name="ComponentLayoutEditor.h" compile="0" resource="0"
               file="Source/InterfaceEditor/ComponentLayoutEditor.h"/>
+        <FILE id="miAl8T" name="ComponentOverlay.cpp" compile="1" resource="0"
+              file="Source/InterfaceEditor/ComponentOverlay.cpp"/>
+        <FILE id="dTnGbt" name="ComponentOverlay.h" compile="0" resource="0"
+              file="Source/InterfaceEditor/ComponentOverlay.h"/>
       </GROUP>
       <GROUP id="{5902C018-3EA6-C5AC-9CCC-3104AC4F4412}" name="LookAndFeel">
         <FILE id="byZ2za" name="CabbageGenericPluginLookAndFeel.cpp" compile="1"

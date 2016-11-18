@@ -46,7 +46,7 @@ public:
 	
 	//=======================================================
 	void changeListenerCallback(ChangeBroadcaster* source);	
-	void updateCodeInEditor(CabbagePluginEditor* pluginEditor);
+	void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
 	//=======================================================
     StringArray getMenuBarNames();								// thesew method implementations 
     void createMenu (PopupMenu&, const String& menuName);		// are found in CabbageMainWindowMenu.cpp

@@ -23,69 +23,19 @@
 
 #include "../CabbageCommonHeaders.h"
 
-class ChildAlias;
+class ComponentOverlay;
 class CabbagePluginEditor;
 class ComponentLayoutEditor;
 //=============================================================================
-class SelectedComponents   : public SelectedItemSet<ChildAlias*>
+class SelectedComponents   : public SelectedItemSet<ComponentOverlay*>
 {
 public:
-    void itemSelected (ChildAlias* item);
-    void itemDeselected (ChildAlias* item);
+    void itemSelected (ComponentOverlay* item);
+    void itemDeselected (ComponentOverlay* item);
 };
 
 //=============================================================================
-class ChildAlias   :   public Component
-{
-    public:
-		ChildAlias (Component* targetChild, ComponentLayoutEditor* layoutEditor);
-		~ChildAlias ();
-		void resized ();
-		void paint (Graphics& g);
-		const Component* getTargetChild ();
-		void updateFromTarget ();
-		void applyToTarget ();
-		virtual void userChangedBounds ();
-		virtual void userStartedChangingBounds (){};
-		virtual void userStoppedChangingBounds (){};
-		bool boundsChangedSinceStart ();
-		void mouseEnter (const MouseEvent& e);
-		void mouseExit (const MouseEvent& e);
-		void mouseDown (const MouseEvent& e);
-		void mouseUp (const MouseEvent& e);
-		void mouseDrag (const MouseEvent& e);
-		
-		void setInterest(String isInteresting)
-		{
-			interest = isInteresting;
-		}
-		
-		CabbagePluginEditor* getPluginEditor();		
-		void updateBoundsDataForTarget();
-		void setBoundsForChildren();
-		bool mouseDownSelectStatus = false;
-		
-		const Component* getTarget()
-		{
-			return target;
-		}
-		
-    private:
-		CriticalSection bounds;
-		ScopedPointer<ComponentBoundsConstrainer>  constrainer;
-    	ComponentDragger dragger;
-		SafePointer<Component> target;
-		Array<juce::Rectangle<int> > childBounds;
-		String interest;
-		bool userAdjusting;
-		Rectangle<int> startBounds;
-		ScopedPointer<ComponentBoundsConstrainer> resizeContainer; 
-		ResizableBorderComponent* resizer;
-		ComponentLayoutEditor* layoutEditor;
-
-};
-//=============================================================================
-class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAlias*>
+class ComponentLayoutEditor   :   public Component, public LassoSource <ComponentOverlay*>
 {
     public:
 		ComponentLayoutEditor (ValueTree valueTree);
@@ -102,22 +52,22 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <ChildAli
 		void mouseDrag(const MouseEvent& e);
 		void mouseDown(const MouseEvent& e);
 		const Component* getTarget();
-		void findLassoItemsInArea (Array <ChildAlias*>& results, const juce::Rectangle<int>& area);
+		void findLassoItemsInArea (Array <ComponentOverlay*>& results, const juce::Rectangle<int>& area);
 		void updateCodeEditor();
 		void updateSelectedComponentBounds();
 		void setComponentBoundsProperties(Component* child, Rectangle<int> bounds);
 
-		SelectedItemSet <ChildAlias*>& getLassoSelection();
-	    LassoComponent <ChildAlias*> lassoComp;
+		SelectedItemSet <ComponentOverlay*>& getLassoSelection();
+	    LassoComponent <ComponentOverlay*> lassoComp;
 		SelectedComponents selectedComponents;	
 		Point<int> currentMouseCoors;
 		void resetAllInterest();
 		CabbagePluginEditor* getPluginEditor();
 	
 	private:	
-		virtual ChildAlias* createAlias (Component* child);		
+		virtual ComponentOverlay* createAlias (Component* child);		
 		SafePointer<Component> target;
-		OwnedArray<ChildAlias> frames;
+		OwnedArray<ComponentOverlay> frames;
 
 	
 };

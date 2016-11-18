@@ -42,6 +42,12 @@ public:
     bool hasEditor() const override;
 	
 	File getCurrentCsdFile(){	return csdFile;	}
+	StringArray getCurrentCsdFileAsStringArray()
+	{	
+		StringArray csdArray;
+		csdArray.addLines(csdFile.loadFileAsString());
+		return csdArray;
+	}
 	
 private:
 	File csdFile;

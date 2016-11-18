@@ -23,7 +23,10 @@
 #include "CsoundTokeniser.h"
 
 
-class CabbageCodeEditorComponent : public CodeEditorComponent, public CodeDocument::Listener
+class CabbageCodeEditorComponent : 
+public CodeEditorComponent, 
+public CodeDocument::Listener,
+public ListBoxModel
 {
 public:
     CabbageCodeEditorComponent(Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
@@ -34,19 +37,71 @@ public:
 	void codeDocumentTextDeleted(int,int){};
     void codeDocumentTextInserted(const juce::String &,int);
 	void displayOpcodeHelpInStatusBar(String lineFromCsd);
-	void insertCode(int lineNumber, String codeToInsert, bool highlightLine);
 	String getLineText();
 	bool keyPressed (const KeyPress& key) override;
 	void undoText();
-	void handleTabKey(String direction);
 	
+	String getSelectedText();
+	const StringArray getAllTextAsStringArray();	
+	StringArray getSelectedTextArray();
+	
+
+	void handleTabKey(String direction);
+	void handleReturnKey();
+	
+	void insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool highlightLine);
+	void insertNewLine(String text);
+	void insertTextAtCaret (const String &textToInsert);
+	void insertMultiLineTextAtCaret (String text);
+	void insertText(String text);
+	
+	void highlightLines(int firstLine, int lastLine);
+	void highlightLine(int lineNumber);
+	
+	void handleAutoComplete(String text);
+	void showAutoComplete(String currentWord);
+	bool deleteForwards (const bool moveInWholeWordSteps);
+	bool deleteBackwards (const bool moveInWholeWordSteps);
+	
+	
+	void setAllText(String text)
+	{
+		getDocument().replaceAllContent(text);
+	}
+
+
 	void setOpcodeStrings(String opcodes)
     {
         opcodeStrings.addLines(opcodes);
     }
+	
+    int getNumRows()
+    {
+        return variableNamesToShow.size();
+    }
+
+    void listBoxItemDoubleClicked(int row, const MouseEvent &e) {};
+
+    void paintListBoxItem (int rowNumber, Graphics& g,
+                           int width, int height, bool rowIsSelected)
+    {
+        if (rowIsSelected)
+            g.fillAll (Colours::whitesmoke.darker(.2));
+        else
+            g.fillAll(Colours::whitesmoke);
+
+        g.setColour(Colour(20, 20, 20));
+        g.drawFittedText(variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
+    }
+
+    void selectedRowsChanged (int /*lastRowselected*/) {};	
 private:
 	Component* statusBar;
+	int listBoxRowHeight = 18;
 	StringArray opcodeStrings;
+	bool columnEditMode = false;
+	ListBox autoCompleteListBox;
+	StringArray variableNamesToShow, variableNames;
 };
 
 

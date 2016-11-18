@@ -24,7 +24,7 @@
 
 //==============================================================================
 CabbageCodeEditorComponent::CabbageCodeEditorComponent(Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
-    : CodeEditorComponent(document, codeTokeniser), valueTree(valueTree), statusBar(statusBar)
+    : CodeEditorComponent(document, codeTokeniser), valueTree(valueTree), statusBar(statusBar), autoCompleteListBox()
 {
 	
     String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
@@ -37,6 +37,11 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(Component* statusBar, Val
 	document.addListener(this);
 	this->setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
 	this->setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
+	
+	autoCompleteListBox.setRowHeight (listBoxRowHeight);
+    autoCompleteListBox.setModel (this);
+    addChildComponent(autoCompleteListBox);
+	
 }
 
 void CabbageCodeEditorComponent::updateColourScheme()
@@ -77,12 +82,67 @@ void CabbageCodeEditorComponent::updateColourScheme()
 	this->setColourScheme(cs);
 }
 
+//==============================================================================
 void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text,int)
 {
+	handleAutoComplete(text);
     const String lineFromCsd = getDocument().getLine(getDocument().findWordBreakBefore(getCaretPos()).getLineNumber());
     displayOpcodeHelpInStatusBar(lineFromCsd);
 }
 
+
+void CabbageCodeEditorComponent::insertTextAtCaret (const String &textToInsert)
+{
+    if(!columnEditMode)
+        insertText(textToInsert);
+    else
+        insertMultiLineTextAtCaret(textToInsert);
+}
+
+
+void CabbageCodeEditorComponent::insertText(String text)
+{
+    if(this->isHighlightActive())
+    {
+        getDocument().replaceSection(getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
+    }
+
+    getDocument().insertText(getCaretPos(), text);
+
+    if(variableNamesToShow.size()>0)
+    {
+        const int height = jmin(200, variableNamesToShow.size()*listBoxRowHeight);
+        autoCompleteListBox.setBounds(getCaretRectangle().getX(),getCaretRectangle().getY()+16, 300, height);
+    }
+}
+
+void CabbageCodeEditorComponent::insertMultiLineTextAtCaret (String text)
+{
+    //sendActionMessage("make popup invisible");
+    StringArray csdArray = getAllTextAsStringArray();
+    String curLine;
+    CodeDocument::Position newPos, indexPos;
+
+    const CodeDocument::Position startPos(getDocument(), getHighlightedRegion().getStart());
+    const CodeDocument::Position endPos(getDocument(), getHighlightedRegion().getEnd());
+    int indexInLine = startPos.getIndexInLine();
+
+
+    for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
+    {
+        while(csdArray[i].length()<indexInLine)
+        {
+            csdArray.getReference(i).append(" ", 1);
+        }
+        csdArray.set(i, csdArray[i].replaceSection(indexInLine, 0, text));
+    }
+    setAllText(csdArray.joinIntoString("\n"));
+
+    CodeDocument::Position newStartPos(getDocument(), startPos.getLineNumber(), indexInLine+text.length());
+    CodeDocument::Position newEndPos(getDocument(), endPos.getLineNumber(), indexInLine+text.length());
+    moveCaretTo(newStartPos, false);
+    moveCaretTo(newEndPos, true);
+}
 //==============================================================================
 void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd)
 {
@@ -113,12 +173,187 @@ void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd
     }
 }
 
+//==============================================================================
+bool CabbageCodeEditorComponent::deleteBackwards (const bool moveInWholeWordSteps)
+{
+    const CodeDocument::Position startPos(getDocument(), getHighlightedRegion().getStart());
+    const CodeDocument::Position endPos(getDocument(), getHighlightedRegion().getEnd());
+
+    if(columnEditMode)
+    {
+        //sendActionMessage("make popup invisible");
+        StringArray csdArray = getAllTextAsStringArray();
+        String curLine;
+        CodeDocument::Position newPos, indexPos;
+
+        int indexInLine = startPos.getIndexInLine();
+
+        for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
+        {
+            while(csdArray[i].length()<indexInLine)
+            {
+                csdArray.getReference(i).append(" ", 1);
+            }
+            csdArray.set(i, csdArray[i].replaceSection(indexInLine-1, 1, ""));
+        }
+        setAllText(csdArray.joinIntoString("\n"));
+
+        const CodeDocument::Position newStartPos(getDocument(), startPos.getLineNumber(), indexInLine-1);
+        const CodeDocument::Position newEndPos(getDocument(), endPos.getLineNumber(), indexInLine-1);
+        moveCaretTo(newStartPos, false);
+        moveCaretTo(newEndPos, true);
+    }
+    else
+    {
+
+        if (moveInWholeWordSteps)
+        {
+            getDocument().deleteSection(getCaretPos().getPosition(), getCaretPos().getPosition()+1);
+            moveCaretTo (getDocument().findWordBreakBefore (getCaretPos()), true);
+        }
+        else if ( !isHighlightActive() )
+        {
+            CodeDocument::Position startPos = getCaretPos();
+            startPos.moveBy (-1);
+            getDocument().deleteSection(startPos.getPosition(), getCaretPos().getPosition());
+        }
+        else
+        {
+            getDocument().deleteSection(startPos.getPosition(), endPos.getPosition());
+        }
+
+        const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
+        const CodeDocument::Position pos2 = getDocument().findWordBreakAfter(getCaretPos());
+        String currentWord = getDocument().getTextBetween(pos1, pos2);
+        variableNamesToShow.clear();
+        autoCompleteListBox.setVisible(false);
+
+    }
+
+    scrollToKeepCaretOnScreen();
+
+    return true;
+}
+//==============================================================================
+bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps)
+{
+    CodeDocument::Position startPos(getDocument(), getHighlightedRegion().getStart());
+    CodeDocument::Position endPos(getDocument(), getHighlightedRegion().getEnd());
+
+    if(columnEditMode)
+    {
+        //sendActionMessage("make popup invisible");
+        StringArray csdArray = getAllTextAsStringArray();
+
+        String curLine;
+        CodeDocument::Position newPos, indexPos;
+
+        int indexInLine = startPos.getIndexInLine();
+
+        for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
+        {
+            while(csdArray[i].length()<indexInLine)
+            {
+                csdArray.getReference(i).append(" ", 1);
+            }
+            csdArray.set(i, csdArray[i].replaceSection(indexInLine, 1, ""));
+        }
+        setAllText(csdArray.joinIntoString("\n"));
+
+        CodeDocument::Position newStartPos(getDocument(), startPos.getLineNumber(), indexInLine);
+        CodeDocument::Position newEndPos(getDocument(), endPos.getLineNumber(), indexInLine);
+        moveCaretTo(newStartPos, false);
+        moveCaretTo(newEndPos, true);
+    }
+
+    else
+    {
+        if (moveInWholeWordSteps)
+        {
+            getDocument().deleteSection(getCaretPos().getPosition(), getCaretPos().getPosition()+1);
+            moveCaretTo (getDocument().findWordBreakBefore (getCaretPos()), true);
+        }
+        else if ( !isHighlightActive() )
+        {
+            startPos.moveBy (+1);
+            getDocument().deleteSection(getCaretPos().getPosition(), startPos.getPosition());
+        }
+        else
+        {
+            getDocument().deleteSection(startPos.getPosition(), endPos.getPosition());
+        }
+
+        const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
+        const CodeDocument::Position pos2 = getDocument().findWordBreakAfter(getCaretPos());
+        String currentWord = getDocument().getTextBetween(pos1, pos2);
+        variableNamesToShow.clear();
+        autoCompleteListBox.setVisible(false);
+
+        if(currentWord.isNotEmpty())
+        {
+            showAutoComplete(currentWord);
+        }
+    }
+    return true;
+}
+//==============================================================================
+void CabbageCodeEditorComponent::handleAutoComplete(String text)
+{
+    const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
+    const CodeDocument::Position pos2 = getDocument().findWordBreakAfter(getCaretPos());
+    const String currentWord = getDocument().getTextBetween(pos1, pos2).trim();
+    //currentWord = currentWord.trim();
+
+    if(currentWord.startsWith("a") || currentWord.startsWith("i") ||
+            currentWord.startsWith("k") ||currentWord.startsWith("S") ||
+            currentWord.startsWith("f") || currentWord.startsWith("g"))
+    {
+        if(text==" " && currentWord.isNotEmpty())
+        {
+            variableNames.addIfNotAlreadyThere(currentWord);
+            autoCompleteListBox.updateContent();
+        }
+    }
+
+    variableNamesToShow.clear();
+    autoCompleteListBox.setVisible(false);
+
+    if(currentWord.isNotEmpty())
+    {
+        showAutoComplete(currentWord);
+    }
+}
+
+
+void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
+{
+    for (int i = 0; i < variableNames.size(); ++i)
+    {
+        const String item (variableNames[i]);
+        if (item.startsWith (currentWord))
+        {
+            variableNamesToShow.addIfNotAlreadyThere(item.trim());
+            autoCompleteListBox.updateContent();
+			autoCompleteListBox.setVisible(true);
+        }
+    }
+}
+//==============================================================================
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key)
 {
     //Logger::writeToLog(String(key.getKeyCode()));
     if (key.getTextDescription().contains("cursor up") || key.getTextDescription().contains("cursor down"))
     {
-  
+        if(autoCompleteListBox.isVisible())
+        {
+            int selectedRow = autoCompleteListBox.getSelectedRow();
+            if(key.getTextDescription().contains("cursor down"))
+                autoCompleteListBox.selectRow(jmax(0, selectedRow+1));
+            else if(key.getTextDescription().contains("cursor up"))
+                autoCompleteListBox.selectRow(jmax(0, selectedRow-1));
+            return true;
+
+        }
     }
 
     this->getParentComponent()->repaint();
@@ -155,8 +390,67 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key)
 void CabbageCodeEditorComponent::handleTabKey(String direction)
 {
 
- 
+    StringArray csdArray = getAllTextAsStringArray();
+    const CodeDocument::Position startPos(this->getDocument(), getHighlightedRegion().getStart());
+    const CodeDocument::Position endPos(this->getDocument(), getHighlightedRegion().getEnd());
 
+    if(direction.equalsIgnoreCase("forwards"))
+    {
+        if(getHighlightedRegion().getLength()==0) //single line tab
+        {
+            insertTabAtCaret();
+            return;
+        }
+        else
+        {
+            for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
+                csdArray.set(i, "\t"+csdArray[i]);
+        }
+
+        setAllText(csdArray.joinIntoString("\n"));
+        highlightLines(startPos.getLineNumber(), endPos.getLineNumber());
+
+    }
+    else if(direction.equalsIgnoreCase("backwards"))
+    {
+		if(getHighlightedRegion().getLength()>0)
+        {
+            for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
+                if(csdArray[i].substring(0, 1).equalsIgnoreCase("\t"))
+                    csdArray.set(i, csdArray[i].substring(1));
+
+            setAllText(csdArray.joinIntoString("\n"));
+            highlightLines(startPos.getLineNumber(), endPos.getLineNumber());
+        }
+	} 
+
+}
+
+void CabbageCodeEditorComponent::handleReturnKey ()
+{
+    if(autoCompleteListBox.isVisible() && autoCompleteListBox.getSelectedRow()!=-1)
+    {
+		const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
+         const CodeDocument::Position pos2 = getCaretPos();
+        getDocument().deleteSection(pos1, pos2);
+        //cUtils::debug(currentWord);
+        insertText(variableNamesToShow[autoCompleteListBox.getSelectedRow()]);
+        autoCompleteListBox.setVisible(false);
+        return;
+    }
+	
+    if(getSelectedText().length()>0)
+    {
+        CodeDocument::Position startPos(this->getDocument(), getHighlightedRegion().getStart());
+        CodeDocument::Position endPos(this->getDocument(), getHighlightedRegion().getEnd());
+        this->getDocument().deleteSection(startPos, endPos);
+        insertNewLine("\n");
+    }
+    else
+        insertNewLine("\n");
+
+    scrollToKeepCaretOnScreen();
+    autoCompleteListBox.setVisible(false);
 }
 //==============================================================================
 void CabbageCodeEditorComponent::undoText()
@@ -171,16 +465,77 @@ String CabbageCodeEditorComponent::getLineText()
 	return String::empty;
 }
 
-void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert, bool highlightLine)
+//==============================================================================
+void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool shouldHighlight)
 {
     StringArray csdLines;
     csdLines.addLines(getDocument().getAllContent());
-	csdLines.set(lineNumber, codeToInsert);
+	
+	if(replaceExistingLine)
+		csdLines.set(lineNumber, codeToInsert);
+	else
+		csdLines.insert(lineNumber, codeToInsert);
+		
 	getDocument().replaceAllContent(csdLines.joinIntoString("\n"));
 	
-	if(highlightLine)
-	{
-		moveCaretTo(CodeDocument::Position(this->getDocument(), lineNumber, 0), false);
-		moveCaretTo(CodeDocument::Position(this->getDocument(), lineNumber, 4096), true);
-	}
+	if(shouldHighlight)
+		highlightLine(lineNumber);
+}
+
+void CabbageCodeEditorComponent::insertNewLine(String text)
+{
+    const CodeDocument::Position pos = getCaretPos();
+    StringArray csdArray = getAllTextAsStringArray();
+    String currentLine = csdArray[pos.getLineNumber()];
+    int numberOfTabs=0;
+    int numberOfSpaces=0;
+    String tabs;
+    while(currentLine.substring(numberOfTabs, numberOfTabs+1).equalsIgnoreCase("\t"))
+    {
+        tabs.append("\t", 8);
+        numberOfTabs++;
+    }
+
+    while(currentLine.substring(numberOfSpaces, numberOfSpaces+1).equalsIgnoreCase(" "))
+    {
+        tabs.append(" ", 8);
+        numberOfSpaces++;
+    }
+
+    getDocument().insertText(pos, text+tabs);
+}
+//==============================================================================
+void CabbageCodeEditorComponent::highlightLine(int lineNumber)
+{
+    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 0), false);
+    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 5000), true);
+}
+
+void CabbageCodeEditorComponent::highlightLines(int firstLine, int lastLine)
+{
+    moveCaretTo(CodeDocument::Position (getDocument(), firstLine, 0), false);
+    moveCaretTo(CodeDocument::Position (getDocument(), lastLine, 5000), true);
+}
+
+//==============================================================================
+String CabbageCodeEditorComponent::getSelectedText()
+{
+    String selectedText = getTextInRange(this->getHighlightedRegion());
+    return selectedText;
+}
+
+const StringArray CabbageCodeEditorComponent::getAllTextAsStringArray()
+{
+	StringArray csdArray;
+	csdArray.addLines(getDocument().getAllContent());
+	return csdArray;
+}
+
+StringArray CabbageCodeEditorComponent::getSelectedTextArray()
+{
+    StringArray tempArray;
+    String selectedText = getTextInRange(this->getHighlightedRegion());
+    tempArray.addLines(selectedText);
+    Logger::writeToLog(selectedText);
+    return tempArray;
 }

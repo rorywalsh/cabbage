@@ -1039,7 +1039,7 @@ void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::top, 10);
 	setProperty(widgetData, CabbageIdentifierIds::left, 10);
 	setProperty(widgetData, CabbageIdentifierIds::width, 100);
-	setProperty(widgetData, CabbageIdentifierIds::height, 22);
+	setProperty(widgetData, CabbageIdentifierIds::height, 30);
 	var channels;
 	channels.append("checkchan");
 	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
@@ -2022,7 +2022,7 @@ float CabbageWidgetData::getNumProp(ValueTree widgetData, Identifier prop)
 }
 
 
-String CabbageWidgetData::getStringProp(ValueTree widgetData, Identifier prop, int index)
+String CabbageWidgetData::getStringProp(ValueTree widgetData, Identifier prop)
 {
 	var string = getProperty(widgetData, prop);
 	const Array<var>* array = string.getArray();

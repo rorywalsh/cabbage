@@ -99,16 +99,7 @@ void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
 		}
         else
         {
-            if(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type)==CabbageIdentifierIds::hrange ||
-                    CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type)==CabbageIdentifierIds::vrange)
-            {
-                csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel, 0).toUTF8(), 
-								   CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::minvalue));
-                csound->SetChannel( CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel, 1).toUTF8(), 
-									CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::maxvalue));
-            }
-            else
-				csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel, 0).toUTF8(), 
+				csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).toUTF8(), 
 								   CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value));
         }
 

@@ -573,6 +573,38 @@ static const String signaldisplay = "signaldisplay";
 static const String csdfile = "csdfile";
 };
 
+
+// this array holds the names of all widgets that can only be controlled via the plugin editor GUI
+class CabbagePopupWidgets : public StringPairArray
+{
+public:
+    CabbagePopupWidgets()
+    {
+		set("Button", CabbageIdentifierIds::button);
+		set("Button - File", CabbageIdentifierIds::filebutton);
+		set("Button - Info", CabbageIdentifierIds::infobutton);
+		set("Checkbox", CabbageIdentifierIds::checkbox);
+		set("ComboBox", CabbageIdentifierIds::combobox);
+		set("Csound Output", CabbageIdentifierIds::csoundoutput);
+		set("Endless Encoder", CabbageIdentifierIds::encoder);
+		set("Gentable", CabbageIdentifierIds::gentable);
+		set("Horizontal Range Slider", CabbageIdentifierIds::hrange);
+		set("Groupbox", CabbageIdentifierIds::groupbox);
+		set("Image", CabbageIdentifierIds::image);
+		set("Numberbox", CabbageIdentifierIds::numberbox);
+		set("Signal Display", CabbageIdentifierIds::signaldisplay);
+		set("Slider - Horizontal", CabbageIdentifierIds::hslider);
+		set("Slider - Rotary", CabbageIdentifierIds::rslider);
+		set("Slider - Vertical", CabbageIdentifierIds::vslider);
+		set("Soundfiler", CabbageIdentifierIds::soundfiler);
+		set("Text Box", CabbageIdentifierIds::textbox.toString());
+		set("Text Editor", CabbageIdentifierIds::texteditor);
+		set("Vertical Range Slider", CabbageIdentifierIds::vrange);
+		set("XY Pad", CabbageIdentifierIds::xypad);
+	}
+};
+
+
 class CabbageIdentifierPropertyStringPairs : public StringPairArray
 {	
 	public:

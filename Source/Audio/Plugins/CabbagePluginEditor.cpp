@@ -35,6 +35,7 @@ mainComponent()
 	createEditorInterface(processor.cabbageWidgets);	
 	addAndMakeVisible(layoutEditor);
 	addAndMakeVisible(mainComponent);
+	mainComponent.setInterceptsMouseClicks(false, true);
 	layoutEditor.setTargetComponent(&mainComponent);
 	layoutEditor.updateFrames();
 	layoutEditor.setEnabled(false);
@@ -67,19 +68,16 @@ void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 		const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();
 
 		if(widgetType==CabbageIdentifierIds::form)
-			SetupWindow(widgets.getChild(widget));
-		else if(widgetType==CabbageIdentifierIds::rslider)
-			InsertSlider(widgets.getChild(widget));
-		else if(widgetType==CabbageIdentifierIds::checkbox)
-			InsertCheckbox(widgets.getChild(widget));
-		else if(widgetType==CabbageIdentifierIds::combobox)
-			InsertComboBox(widgets.getChild(widget));	
-		else if(widgetType==CabbageIdentifierIds::image)
-			InsertImage(widgets.getChild(widget));		
+			setupWindow(widgets.getChild(widget));
+		else
+		{
+			insertWidget(widgets.getChild(widget));
+		}	
 	}
 }
 
-void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
+//======================================================================================================
+void CabbagePluginEditor::setupWindow(ValueTree widgetData)
 {
 	const String name = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::caption);
 	setName(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::caption));
@@ -90,8 +88,46 @@ void CabbagePluginEditor::SetupWindow(ValueTree widgetData)
 	setSize(width, height);	
 	repaint();
 }
+//======================================================================================================
+void CabbagePluginEditor::addNewWidget(String widgetType, Point<int> position)
+{
+	
+	StringArray csdArray = processor.getCurrentCsdFileAsStringArray();
+	const String widgetTreeIdentifier = "newlyAddedWidget";
+	ValueTree newWidget(widgetTreeIdentifier);
+	
+	CabbageWidgetData::setWidgetState(newWidget, widgetType, newlyAddedWidgetIndex);
+	newWidget.setProperty(CabbageIdentifierIds::top, position.getY(), 0);
+	newWidget.setProperty(CabbageIdentifierIds::left, position.getX(), 0);
+	
+	processor.cabbageWidgets.addChild(newWidget, -1, 0);
+	
+	setCurrentlySelectedComponents(StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
+	
+	insertWidget(newWidget);
+	updateLayoutEditorFrames();
+	
+	sendChangeMessage(); 	//update code in editor
 
-void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
+	newlyAddedWidgetIndex++;
+
+}
+
+//======================================================================================================
+void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
+{
+	const String widgetType = cabbageWidgetData.getProperty(CabbageIdentifierIds::type).toString();
+
+	if(widgetType==CabbageIdentifierIds::checkbox)
+		insertCheckbox(cabbageWidgetData);
+	else if(widgetType==CabbageIdentifierIds::combobox)
+		insertComboBox(cabbageWidgetData);	
+	else if(widgetType==CabbageIdentifierIds::image)
+		insertImage(cabbageWidgetData);	
+	
+}
+
+void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
 {
 	CabbageCheckbox* checkbox;
 	components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
@@ -99,7 +135,7 @@ void CabbagePluginEditor::InsertCheckbox(ValueTree cabbageWidgetData)
 	addToEditorAndMakeVisible(checkbox, cabbageWidgetData);
 }
 
-void CabbagePluginEditor::InsertComboBox(ValueTree cabbageWidgetData)
+void CabbagePluginEditor::insertComboBox(ValueTree cabbageWidgetData)
 {
 	CabbageComboBox* combobox;
 	components.add(combobox = new CabbageComboBox(cabbageWidgetData, this));
@@ -107,7 +143,7 @@ void CabbagePluginEditor::InsertComboBox(ValueTree cabbageWidgetData)
 	addToEditorAndMakeVisible(combobox, cabbageWidgetData);
 }
 
-void CabbagePluginEditor::InsertImage(ValueTree cabbageWidgetData)
+void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
 {
 	CabbageImage* image;
 	components.add(image = new CabbageImage(cabbageWidgetData, this));
@@ -152,13 +188,18 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 void CabbagePluginEditor::enableGUIEditor(bool enable)
 {
 	layoutEditor.setEnabled(enable);
-	isGUIEnabled = enable;
+	editModeEnabled = enable;
 	layoutEditor.toFront(false);
 }
 //======================================================================================================
 void CabbagePluginEditor::setCurrentlySelectedComponents(StringArray componentNames)
 {
 	currentlySelectedComponentNames = componentNames;
+}
+
+void CabbagePluginEditor::resetCurrentlySelectedComponents()
+{
+	currentlySelectedComponentNames.clear();
 }
 
 Component* CabbagePluginEditor::getComponentFromName(String name)
@@ -188,12 +229,11 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent(String compName)
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
 {
-	if(isGUIEnabled)
+	if(editModeEnabled)
 		layoutEditor.updateFrames();
 }
 
 //======================================================================================================
-
 void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree widgetData)
 {
 	const String parent = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::parentcomponent);
@@ -204,4 +244,9 @@ void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree w
 	else
 		mainComponent.addAndMakeVisible(comp);
 }
-
+//======================================================================================================
+void CabbagePluginEditor::mouseDown(const MouseEvent& e)
+{
+	PopupMenu menu;
+ 
+}
