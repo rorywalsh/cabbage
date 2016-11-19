@@ -46,7 +46,7 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
     else if (menuName == "Tools")       createToolsMenu  (menu);
     else                                jassertfalse; // names have changed?
 
-	return menu;
+    return menu;
 
 }
 
@@ -57,7 +57,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::open);
 
     PopupMenu recentFilesMenu;
-	cabbageSettings->updateRecentFilesList();
+    cabbageSettings->updateRecentFilesList();
     cabbageSettings->recentFiles.createPopupMenuItems (recentFilesMenu, recentProjectsBaseID, true, true);
     menu.addSubMenu ("Open Recent", recentFilesMenu);
 
@@ -82,22 +82,22 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
 {
-	PopupMenu subMenu;
+    PopupMenu subMenu;
     menu.addCommandItem (&commandManager, CommandIDs::undo);
     menu.addCommandItem (&commandManager, CommandIDs::redo);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::cut);
     menu.addCommandItem (&commandManager, CommandIDs::copy);
     menu.addCommandItem (&commandManager, CommandIDs::paste);
-	menu.addSeparator();
+    menu.addSeparator();
 
-	menu.addSeparator();
+    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::del);
     menu.addCommandItem (&commandManager, CommandIDs::selectAll);
     menu.addCommandItem (&commandManager, CommandIDs::deselectAll);
     menu.addSeparator();
-	menu.addCommandItem (&commandManager, CommandIDs::editMode);
-	menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::editMode);
+    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (&commandManager, CommandIDs::findSelection);
     menu.addCommandItem (&commandManager, CommandIDs::findNext);
@@ -107,7 +107,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
 void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 {
     menu.addSeparator();
-	menu.addCommandItem (&commandManager, CommandIDs::showGenericWidgetWindow);
+    menu.addCommandItem (&commandManager, CommandIDs::showGenericWidgetWindow);
 }
 
 void CabbageDocumentWindow::createBuildMenu (PopupMenu& menu)
@@ -143,7 +143,7 @@ void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::runCode);
-	menu.addCommandItem (&commandManager, CommandIDs::stopCode);
+    menu.addCommandItem (&commandManager, CommandIDs::stopCode);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
     menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
@@ -166,20 +166,20 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::open,
                               CommandIDs::closeAllDocuments,
                               CommandIDs::saveDocument,
-							  CommandIDs::saveDocumentAs,
-							  CommandIDs::settings,
+                              CommandIDs::saveDocumentAs,
+                              CommandIDs::settings,
                               CommandIDs::runCode,
-							  CommandIDs::stopCode,							  
-							  CommandIDs::exportAsSynth,
-							  CommandIDs::exportAsEffect,
-							  CommandIDs::exportAsFMODSoundPlugin,
-							  CommandIDs::copy,
-							  CommandIDs::cut,
-							  CommandIDs::paste,
-							  CommandIDs::undo,
-							  CommandIDs::redo,
-							  CommandIDs::editMode,
-							  CommandIDs::showGenericWidgetWindow
+                              CommandIDs::stopCode,
+                              CommandIDs::exportAsSynth,
+                              CommandIDs::exportAsEffect,
+                              CommandIDs::exportAsFMODSoundPlugin,
+                              CommandIDs::copy,
+                              CommandIDs::cut,
+                              CommandIDs::paste,
+                              CommandIDs::undo,
+                              CommandIDs::redo,
+                              CommandIDs::editMode,
+                              CommandIDs::showGenericWidgetWindow
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -187,10 +187,10 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 
 void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
-	bool shouldShowEditMenu = false;
-	if(getCurrentCodeEditor()!= nullptr)
-		shouldShowEditMenu = true;
-	
+    bool shouldShowEditMenu = false;
+    if(getCurrentCodeEditor()!= nullptr)
+        shouldShowEditMenu = true;
+
     switch (commandID)
     {
     case CommandIDs::newProject:
@@ -202,43 +202,43 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.setInfo ("Open...", "Opens a Jucer project", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
         break;
-	
+
     case CommandIDs::saveDocument:
         result.setInfo ("Save file...", "Save a document", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
         break;
-	
+
     case CommandIDs::saveDocumentAs:
         result.setInfo ("Save file as...", "Save a document", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
         break;
-		
+
     case CommandIDs::settings:
         result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
         break;
 
     case CommandIDs::runCode:
         result.setInfo ("Compile", "Starts Csound and runs code", CommandCategories::general, 0);
-		result.defaultKeypresses.add(KeyPress(KeyPress::F5Key, ModifierKeys::noModifiers, 0));
+        result.defaultKeypresses.add(KeyPress(KeyPress::F5Key, ModifierKeys::noModifiers, 0));
         break;
 
     case CommandIDs::stopCode:
         result.setInfo ("Cancel Compile", "Starts Csound and runs code", CommandCategories::general, 0);
-		result.defaultKeypresses.add(KeyPress(KeyPress::escapeKey, ModifierKeys::noModifiers, 0));
-        break;	
-	
+        result.defaultKeypresses.add(KeyPress(KeyPress::escapeKey, ModifierKeys::noModifiers, 0));
+        break;
+
     case CommandIDs::exportAsSynth:
         result.setInfo ("Export as Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
         break;
 
     case CommandIDs::exportAsEffect:
         result.setInfo ("Export as Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
-        break;	
-		
+        break;
+
     case CommandIDs::exportAsFMODSoundPlugin:
         result.setInfo ("Export as FMOD Sound Plugin", "Exports as plugin", CommandCategories::general, 0);
-		break;
-		
+        break;
+
     case CommandIDs::closeAllDocuments:
         result.setInfo ("Close All Documents", "Closes all open documents", CommandCategories::general, 0);
         break;
@@ -248,56 +248,56 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
         break;
 
-   //edit commands
+    //edit commands
     case CommandIDs::undo:
         result.setInfo (String("Undo"), String("Undo last action"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('z', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::redo:
         result.setInfo (String("Redo"), String("Redo last action"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('z', ModifierKeys::shiftModifier | ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::cut:
         result.setInfo (String("Cut"), String("Cut selection"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('x', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::copy:
         result.setInfo (String("Copy"), String("Copy selection"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('c', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::paste:
         result.setInfo (String("Paste"), String("Paste selection"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('v', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::columnEdit:
         result.setInfo (String("Column Edit mode"), String("Column Edit"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::toggleComments:
         result.setInfo (String("Toggle comments"), String("Toggle comments"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('/', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::searchReplace:
         result.setInfo(String("Search or Replace"), String("Search Replace"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('f', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::zoomIn:
         result.setInfo (String("Zoom in"), String("Zoom in"), CommandCategories::edit, 0);
         result.addDefaultKeypress('[', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::zoomOut:
         result.setInfo (String("Zoom out"), String("Zoom out"), CommandCategories::edit, 0);
         result.addDefaultKeypress (']', ModifierKeys::commandModifier);
-		result.setActive((shouldShowEditMenu ? true : false));
+        result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::showGenericWidgetWindow:
         result.setInfo (String("Show Generic Widget Window"), String("Show genric channel based widgets"), CommandCategories::general, 0);
@@ -305,9 +305,9 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
     case CommandIDs::editMode:
         result.setInfo (String("Edit Mode"), String("Edit Mode"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
-		break;
+        break;
     default:
-	
+
         break;
     }
 }
@@ -323,19 +323,19 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         askUserToOpenFile();
         break;
     case CommandIDs::saveDocument:
-		saveDocument();
-		setEditMode(false);
-		isGUIEnabled = false;
+        saveDocument();
+        setEditMode(false);
+        isGUIEnabled = false;
         break;
     case CommandIDs::saveDocumentAs:
-		saveDocument(true);
+        saveDocument(true);
         break;
     case CommandIDs::closeAllDocuments:
         closeAllDocuments (true);
         break;
-	case CommandIDs::settings:
-		showSettingsDialog();
-		break;
+    case CommandIDs::settings:
+        showSettingsDialog();
+        break;
     case CommandIDs::runCode:
         runCode();
         break;
@@ -343,31 +343,31 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         stopCode();
         break;
     case CommandIDs::exportAsEffect:
-        
+
         break;
     case CommandIDs::exportAsSynth:
-        
+
         break;
     case CommandIDs::exportAsFMODSoundPlugin:
-        
+
         break;
-	case CommandIDs::undo:
-        
+    case CommandIDs::undo:
+
         break;
     case CommandIDs::redo:
-        
+
         break;
     case CommandIDs::paste:
-        
+
         break;
     case CommandIDs::editMode:
-		isGUIEnabled=!isGUIEnabled;
+        isGUIEnabled=!isGUIEnabled;
         setEditMode(isGUIEnabled);
         break;
     case CommandIDs::showGenericWidgetWindow:
         break;
     default:
-		break;
+        break;
     }
 
     return true;

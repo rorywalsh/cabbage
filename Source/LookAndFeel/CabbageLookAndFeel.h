@@ -175,11 +175,11 @@ public:
                                           bool isMouseDragging);
 
     bool drawBackgroundForSVGSlider(Graphics& g, Component* comp, String type, int x, int y, int width, int height);
-	static Image drawToggleImage(float width, float height, bool isToggleOn, Colour colour, bool isRect, String imgPath, float corners);
-	static Image drawTextButtonImage(float width, float height, bool isButtonDown, Colour colour, String imgFile, int svgWidth, int svgHeight, bool on);
-	static Image drawFromSVG(String svgString, int width, int height, AffineTransform affine);
-	static Image drawFromPNG(String pngString, int width, int height, AffineTransform affine);
-	
+    static Image drawToggleImage(float width, float height, bool isToggleOn, Colour colour, bool isRect, String imgPath, float corners);
+    static Image drawTextButtonImage(float width, float height, bool isButtonDown, Colour colour, String imgFile, int svgWidth, int svgHeight, bool on);
+    static Image drawFromSVG(String svgString, int width, int height, AffineTransform affine);
+    static Image drawFromPNG(String pngString, int width, int height, AffineTransform affine);
+
     int getDefaultMenuBarHeight()
     {
         return 18;

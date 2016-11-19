@@ -23,69 +23,72 @@
 #include "../Application/CabbageDocumentWindow.h"
 
 //==============================================================================
-CabbageCodeEditorComponent::CabbageCodeEditorComponent(Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
-    : CodeEditorComponent(document, codeTokeniser), valueTree(valueTree), statusBar(statusBar), autoCompleteListBox()
+CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
+    : CodeEditorComponent(document, codeTokeniser), valueTree(valueTree), statusBar(statusBar), owner(owner), autoCompleteListBox(), Thread("parseVariablesThread")
 {
-	
+
     String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
     Logger::writeToLog(opcodeFile);
 
     if(File(opcodeFile).existsAsFile())
-        setOpcodeStrings(File(opcodeFile).loadFileAsString());	
-	
-	document.addListener(this);
-	this->setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
-	this->setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
-	
-	autoCompleteListBox.setRowHeight (listBoxRowHeight);
+        setOpcodeStrings(File(opcodeFile).loadFileAsString());
+
+    document.addListener(this);
+    this->setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
+    this->setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
+
+    autoCompleteListBox.setRowHeight (listBoxRowHeight);
     autoCompleteListBox.setModel (this);
-    addChildComponent(autoCompleteListBox);
-	
+    autoCompleteListBox.addKeyListener(this);
+    this->addKeyListener(this);
+    owner->addChildComponent(autoCompleteListBox);
+
+
 }
 
 void CabbageCodeEditorComponent::updateColourScheme()
 {
-	struct Type
-	{
-		const char* name;
-		uint32 colour;
-	};
+    struct Type
+    {
+        const char* name;
+        uint32 colour;
+    };
 
-	const Type types[] =
-	{
-		{ "Error",              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::numbers, Colours::grey.darker()).getARGB() },
-		{ "Comment",            CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::comment, Colours::grey.darker()).getARGB() },
-		{ "Keyword",            CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::keyword, Colours::grey.darker()).getARGB() },
-		{ "Identifier",         CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::identifierLiteral, Colours::grey.darker()).getARGB() },
-		{ "Integer",            Colours::grey.darker().getARGB() },
-		{ "Float",              Colours::grey.darker().getARGB() },
-		{ "String",             CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::stringLiteral, Colours::grey.darker()).getARGB() },
-		{ "Operator",           Colours::grey.darker().getARGB() },
-		{ "Bracket",            Colours::grey.darker().getARGB() },
-		{ "Punctuation",        Colours::grey.darker().getARGB() },
-		{ "Preprocessor Text",  Colours::grey.darker().getARGB() },
-		{ "Csd Tag",			CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::csdtags, Colours::grey.darker()).getARGB()}
-	};
+    const Type types[] =
+    {
+        { "Error",              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::numbers, Colours::grey.darker()).getARGB() },
+        { "Comment",            CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::comment, Colours::grey.darker()).getARGB() },
+        { "Keyword",            CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::keyword, Colours::grey.darker()).getARGB() },
+        { "Identifier",         CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::identifierLiteral, Colours::grey.darker()).getARGB() },
+        { "Integer",            Colours::grey.darker().getARGB() },
+        { "Float",              Colours::grey.darker().getARGB() },
+        { "String",             CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::stringLiteral, Colours::grey.darker()).getARGB() },
+        { "Operator",           Colours::grey.darker().getARGB() },
+        { "Bracket",            Colours::grey.darker().getARGB() },
+        { "Punctuation",        Colours::grey.darker().getARGB() },
+        { "Preprocessor Text",  Colours::grey.darker().getARGB() },
+        { "Csd Tag",			CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::csdtags, Colours::grey.darker()).getARGB()}
+    };
 
-	CodeEditorComponent::ColourScheme cs;
+    CodeEditorComponent::ColourScheme cs;
 
-	setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
-	setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
-	setColour(CodeEditorComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::codeBackground, Colours::white));
-	setColour(CaretComponent::ColourIds::caretColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::caret, Colours::white));
-	setColour(CodeEditorComponent::ColourIds::highlightColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::selectTextBackground, Colours::white));
+    setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
+    setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
+    setColour(CodeEditorComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::codeBackground, Colours::white));
+    setColour(CaretComponent::ColourIds::caretColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::caret, Colours::white));
+    setColour(CodeEditorComponent::ColourIds::highlightColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::selectTextBackground, Colours::white));
 
-	for (int i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
-		cs.set (types[i].name, Colour (types[i].colour));
+    for (int i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
+        cs.set (types[i].name, Colour (types[i].colour));
 
-	this->setColourScheme(cs);
+    this->setColourScheme(cs);
 }
 
 //==============================================================================
 void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text,int)
 {
-	handleAutoComplete(text);
+    handleAutoComplete(text);
     const String lineFromCsd = getDocument().getLine(getDocument().findWordBreakBefore(getCaretPos()).getLineNumber());
     displayOpcodeHelpInStatusBar(lineFromCsd);
 }
@@ -111,8 +114,10 @@ void CabbageCodeEditorComponent::insertText(String text)
 
     if(variableNamesToShow.size()>0)
     {
-        const int height = jmin(200, variableNamesToShow.size()*listBoxRowHeight);
+        const int height = jmin(100, variableNamesToShow.size()*listBoxRowHeight);
         autoCompleteListBox.setBounds(getCaretRectangle().getX(),getCaretRectangle().getY()+16, 300, height);
+        autoCompleteListBox.toFront(true);
+        autoCompleteListBox.selectRow(0);
     }
 }
 
@@ -163,8 +168,8 @@ void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd
                 {
                     if(syntaxTokens[0].length()>3)
                     {
-						if(EditorAndConsoleContentComponent::StatusBar* bar = dynamic_cast<EditorAndConsoleContentComponent::StatusBar*>(statusBar))
-							bar->setText(syntaxTokens);
+                        if(EditorAndConsoleContentComponent::StatusBar* bar = dynamic_cast<EditorAndConsoleContentComponent::StatusBar*>(statusBar))
+                            bar->setText(syntaxTokens);
                         x=csdLineTokens.size();
                         i=opcodeStrings.size();
                     }
@@ -297,6 +302,26 @@ bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps
     return true;
 }
 //==============================================================================
+void CabbageCodeEditorComponent::parseTextForVariables()	//this is called on a separate thread..
+{
+    String csdText = getDocument().getAllContent();
+
+    StringArray tokens;
+    variableNames.clear();
+    tokens.addTokens(csdText, "  \n(),*%=\t", "");
+
+    for(const String currentWord : tokens)
+    {
+        if(currentWord.startsWith("a") || currentWord.startsWith("i") ||
+                currentWord.startsWith("k") || currentWord.startsWith("S") ||
+                currentWord.startsWith("f"))
+        {
+            if(currentWord.isNotEmpty())
+                variableNames.addIfNotAlreadyThere(currentWord);
+        }
+    }
+}
+
 void CabbageCodeEditorComponent::handleAutoComplete(String text)
 {
     const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
@@ -320,39 +345,43 @@ void CabbageCodeEditorComponent::handleAutoComplete(String text)
 
     if(currentWord.isNotEmpty())
     {
-        showAutoComplete(currentWord);
+		if(text!=" ")
+			showAutoComplete(currentWord);
     }
 }
 
 
 void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
 {
-    for (int i = 0; i < variableNames.size(); ++i)
+    for (const String item : variableNames)
     {
-        const String item (variableNames[i]);
         if (item.startsWith (currentWord))
         {
             variableNamesToShow.addIfNotAlreadyThere(item.trim());
             autoCompleteListBox.updateContent();
-			autoCompleteListBox.setVisible(true);
+			if(variableNamesToShow.size()==1 && variableNamesToShow[0]==currentWord)
+			{}
+			else
+				autoCompleteListBox.setVisible(true);
         }
     }
 }
-//==============================================================================
-bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key)
+//===========================================================================================================
+bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *originatingComponent)
 {
     //Logger::writeToLog(String(key.getKeyCode()));
     if (key.getTextDescription().contains("cursor up") || key.getTextDescription().contains("cursor down"))
     {
         if(autoCompleteListBox.isVisible())
         {
-            int selectedRow = autoCompleteListBox.getSelectedRow();
+            const int selectedRow = autoCompleteListBox.getSelectedRow();
+
             if(key.getTextDescription().contains("cursor down"))
                 autoCompleteListBox.selectRow(jmax(0, selectedRow+1));
             else if(key.getTextDescription().contains("cursor up"))
                 autoCompleteListBox.selectRow(jmax(0, selectedRow-1));
-            return true;
 
+            autoCompleteListBox.scrollToEnsureRowIsOnscreen(autoCompleteListBox.getSelectedRow());
         }
     }
 
@@ -413,7 +442,7 @@ void CabbageCodeEditorComponent::handleTabKey(String direction)
     }
     else if(direction.equalsIgnoreCase("backwards"))
     {
-		if(getHighlightedRegion().getLength()>0)
+        if(getHighlightedRegion().getLength()>0)
         {
             for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
                 if(csdArray[i].substring(0, 1).equalsIgnoreCase("\t"))
@@ -422,7 +451,7 @@ void CabbageCodeEditorComponent::handleTabKey(String direction)
             setAllText(csdArray.joinIntoString("\n"));
             highlightLines(startPos.getLineNumber(), endPos.getLineNumber());
         }
-	} 
+    }
 
 }
 
@@ -430,15 +459,15 @@ void CabbageCodeEditorComponent::handleReturnKey ()
 {
     if(autoCompleteListBox.isVisible() && autoCompleteListBox.getSelectedRow()!=-1)
     {
-		const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
-         const CodeDocument::Position pos2 = getCaretPos();
+        const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
+        const CodeDocument::Position pos2 = getCaretPos();
         getDocument().deleteSection(pos1, pos2);
         //cUtils::debug(currentWord);
         insertText(variableNamesToShow[autoCompleteListBox.getSelectedRow()]);
         autoCompleteListBox.setVisible(false);
         return;
     }
-	
+
     if(getSelectedText().length()>0)
     {
         CodeDocument::Position startPos(this->getDocument(), getHighlightedRegion().getStart());
@@ -462,7 +491,7 @@ void CabbageCodeEditorComponent::undoText()
 //==============================================================================
 String CabbageCodeEditorComponent::getLineText()
 {
-	return String::empty;
+    return String::empty;
 }
 
 //==============================================================================
@@ -470,16 +499,16 @@ void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert,
 {
     StringArray csdLines;
     csdLines.addLines(getDocument().getAllContent());
-	
-	if(replaceExistingLine)
-		csdLines.set(lineNumber, codeToInsert);
-	else
-		csdLines.insert(lineNumber, codeToInsert);
-		
-	getDocument().replaceAllContent(csdLines.joinIntoString("\n"));
-	
-	if(shouldHighlight)
-		highlightLine(lineNumber);
+
+    if(replaceExistingLine)
+        csdLines.set(lineNumber, codeToInsert);
+    else
+        csdLines.insert(lineNumber, codeToInsert);
+
+    getDocument().replaceAllContent(csdLines.joinIntoString("\n"));
+
+    if(shouldHighlight)
+        highlightLine(lineNumber);
 }
 
 void CabbageCodeEditorComponent::insertNewLine(String text)
@@ -526,9 +555,9 @@ String CabbageCodeEditorComponent::getSelectedText()
 
 const StringArray CabbageCodeEditorComponent::getAllTextAsStringArray()
 {
-	StringArray csdArray;
-	csdArray.addLines(getDocument().getAllContent());
-	return csdArray;
+    StringArray csdArray;
+    csdArray.addLines(getDocument().getAllContent());
+    return csdArray;
 }
 
 StringArray CabbageCodeEditorComponent::getSelectedTextArray()

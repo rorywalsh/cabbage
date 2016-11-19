@@ -32,23 +32,23 @@
 
 class CabbageDocumentWindow    : public DocumentWindow,     public ApplicationCommandTarget,
     public MenuBarModel, public ChangeListener, public Timer
-{	
+{
 public:
-	//==========================================================	
+    //==========================================================
     CabbageDocumentWindow (String name);
-	~CabbageDocumentWindow();
+    ~CabbageDocumentWindow();
 
-	CabbagePluginEditor* getPluginEditor();
-	CabbageOutputConsole* getCurrentOutputConsole();
-	CabbageCodeEditorComponent* getCurrentCodeEditor();	
-	CabbageContentComponent* getMainContentComponent();
-	ScopedPointer<CabbageContentComponent> content;
-	
-	//=======================================================
-	void changeListenerCallback(ChangeBroadcaster* source);	
-	void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
-	//=======================================================
-    StringArray getMenuBarNames();								// thesew method implementations 
+    CabbagePluginEditor* getPluginEditor();
+    CabbageOutputConsole* getCurrentOutputConsole();
+    CabbageCodeEditorComponent* getCurrentCodeEditor();
+    CabbageContentComponent* getMainContentComponent();
+    ScopedPointer<CabbageContentComponent> content;
+
+    //=======================================================
+    void changeListenerCallback(ChangeBroadcaster* source);
+    void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
+    //=======================================================
+    StringArray getMenuBarNames();								// thesew method implementations
     void createMenu (PopupMenu&, const String& menuName);		// are found in CabbageMainWindowMenu.cpp
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
@@ -59,52 +59,52 @@ public:
     void createToolsMenu (PopupMenu&);
     void getAllCommands (Array<CommandID>&) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo&) override;
-    bool perform (const InvocationInfo&) override;	
-	PopupMenu getMenuForIndex(int topLevelMenuIndex, const String& menuName);
-	void menuItemSelected (int menuItemID, int topLevelMenuIndex);	
-	//=======================================================
-	void showAudioSettings();
+    bool perform (const InvocationInfo&) override;
+    PopupMenu getMenuForIndex(int topLevelMenuIndex, const String& menuName);
+    void menuItemSelected (int menuItemID, int topLevelMenuIndex);
+    //=======================================================
+    void showAudioSettings();
     void createNewProject();
     void askUserToOpenFile();
     bool openFile (const File&, String type="");
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
-	void showSettingsDialog();
-	void saveDocument(bool saveAs=false);
-	void runCode();
-	void stopCode();
-	void showGenericWidgetWindow();
-	void hideGenericWidgetWindow(bool freeContent=false);
-	void createGenericCsoundPluginWrapper();
-	void timerCallback();
-	void setupSettingsFile();
-	void createEditorForAudioGraphNode();
-	void createAudioGraph();
-	void setEditMode(bool enable);	
-	String getAudioDeviceSettings();	
-	void closeButtonPressed() override;
-	void updateEditorColourScheme();
-	
-	ScopedPointer<CabbageSettings> cabbageSettings;
-	
-	
-	void setCurrentCsdFile(File file)
-	{
-		currentCsdFile = file;
-	}
-	
-	ApplicationCommandTarget* getNextCommandTarget()
+    void showSettingsDialog();
+    void saveDocument(bool saveAs=false);
+    void runCode();
+    void stopCode();
+    void showGenericWidgetWindow();
+    void hideGenericWidgetWindow(bool freeContent=false);
+    void createGenericCsoundPluginWrapper();
+    void timerCallback();
+    void setupSettingsFile();
+    void createEditorForAudioGraphNode();
+    void createAudioGraph();
+    void setEditMode(bool enable);
+    String getAudioDeviceSettings();
+    void closeButtonPressed() override;
+    void updateEditorColourScheme();
+
+    ScopedPointer<CabbageSettings> cabbageSettings;
+
+
+    void setCurrentCsdFile(File file)
+    {
+        currentCsdFile = file;
+    }
+
+    ApplicationCommandTarget* getNextCommandTarget()
     {
         return findFirstTargetParentComponent();
     }
-	
-private:	
-	ApplicationCommandManager commandManager;
-	ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
-	bool isGUIEnabled = false;
-	String consoleMessages;
-	File currentCsdFile;
-	ScopedPointer<AudioGraph> audioGraph;
+
+private:
+    ApplicationCommandManager commandManager;
+    ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
+    bool isGUIEnabled = false;
+    String consoleMessages;
+    File currentCsdFile;
+    ScopedPointer<AudioGraph> audioGraph;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };
 

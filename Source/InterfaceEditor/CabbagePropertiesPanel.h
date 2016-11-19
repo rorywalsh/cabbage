@@ -26,49 +26,49 @@
 
 
 //==============================================================================
-class CabbagePropertiesPanel : 
-public Component, 
-public ChangeBroadcaster, 
-public Value::Listener,
-public TextPropertyComponent::Listener,
-public ChangeListener,
-public FilenameComponentListener
+class CabbagePropertiesPanel :
+    public Component,
+    public ChangeBroadcaster,
+    public Value::Listener,
+    public TextPropertyComponent::Listener,
+    public ChangeListener,
+    public FilenameComponentListener
 {
 public:
     CabbagePropertiesPanel(ValueTree widgetData);
     void paint (Graphics& g) override;
     void resized() override;
-	void setPropertyByName(String name, var value);
-	void textPropertyComponentChanged (TextPropertyComponent * comp);
-	void changeListenerCallback(juce::ChangeBroadcaster *source);
-	void updateProperties(ValueTree widgetData);
-	void valueChanged(Value& value);
-	void filenameComponentChanged (FilenameComponent* fileComponent);	
-	
-	Array<PropertyComponent*> createPositionEditors(ValueTree valueTree);
-	Array<PropertyComponent*> createTextEditors(ValueTree valueTree);
-	Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
-	Array<PropertyComponent*> createMiscEditors(ValueTree valueTree);
-	Array<PropertyComponent*> createFileEditors(ValueTree valueTree);
-	Value isActiveValue, isVisibleValue, alphaValue, shapeValue, textItems;;
-	Colour backgroundColour, borderColour;
+    void setPropertyByName(String name, var value);
+    void textPropertyComponentChanged (TextPropertyComponent * comp);
+    void changeListenerCallback(juce::ChangeBroadcaster *source);
+    void updateProperties(ValueTree widgetData);
+    void valueChanged(Value& value);
+    void filenameComponentChanged (FilenameComponent* fileComponent);
 
-	
-	void setBackgroundColour(Colour colour)
-	{
-		backgroundColour = colour;
-		repaint();
-	}
-	
-	void setBorderColour(Colour colour)
-	{
-		borderColour = colour;
-		repaint();
-	}
+    Array<PropertyComponent*> createPositionEditors(ValueTree valueTree);
+    Array<PropertyComponent*> createTextEditors(ValueTree valueTree);
+    Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
+    Array<PropertyComponent*> createMiscEditors(ValueTree valueTree);
+    Array<PropertyComponent*> createFileEditors(ValueTree valueTree);
+    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, textItems;;
+    Colour backgroundColour, borderColour;
+
+
+    void setBackgroundColour(Colour colour)
+    {
+        backgroundColour = colour;
+        repaint();
+    }
+
+    void setBorderColour(Colour colour)
+    {
+        borderColour = colour;
+        repaint();
+    }
 private:
     PropertyPanel propertyPanel;
-	ValueTree widgetData;
-	
+    ValueTree widgetData;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePropertiesPanel)
 };

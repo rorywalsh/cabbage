@@ -31,27 +31,27 @@ class CabbageComboBox : public ComboBox, public ValueTree::Listener, public Cabb
     float rotate;
     File pluginDir;
     CabbagePluginEditor* owner;
-	ValueTree widgetData;
-	bool isPresetCombo = false;
+    ValueTree widgetData;
+    bool isPresetCombo = false;
 
 public:
 
     CabbageComboBox(ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageComboBox();
 
-	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
-	void addItemsToCombobox(ValueTree wData);
-	
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void addItemsToCombobox(ValueTree wData);
+
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	String getTooltip()
-	{
-		return tooltipText;
-	}
-	
+    String getTooltip()
+    {
+        return tooltipText;
+    }
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageComboBox);
 };
 

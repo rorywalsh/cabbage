@@ -22,26 +22,26 @@
 //Cabbage IDE look and feel class
 CabbageGenericPluginLookAndFeel::CabbageGenericPluginLookAndFeel()
 {
-	setColour(Slider::thumbColourId, Colours::green);
-	setColour(Label::ColourIds::textColourId, Colour(30, 30, 30));
+    setColour(Slider::thumbColourId, Colours::green);
+    setColour(Label::ColourIds::textColourId, Colour(30, 30, 30));
 }
 
 void CabbageGenericPluginLookAndFeel::refreshLookAndFeel(ValueTree valueTree)
 {
-    
+
 }
 
 void CabbageGenericPluginLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos,
-                                float minSliderPos,
-                                float maxSliderPos,
-                                const Slider::SliderStyle style,
-                                Slider &slider)
+        float minSliderPos,
+        float maxSliderPos,
+        const Slider::SliderStyle style,
+        Slider &slider)
 {
 
     const float sliderRadius = (float) (getSliderThumbRadius (slider) - 2);
 
     Colour knobColour(0, 255, 0);
-	
+
     const float outlineThickness = slider.isEnabled() ? 0.8f : 0.3f;
 
     if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
@@ -60,10 +60,10 @@ void CabbageGenericPluginLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, 
         }
 
         drawThumb (g,
-                         kx - sliderRadius,
-                         ky - sliderRadius,
-                         sliderRadius * 2.0f,
-                         knobColour, outlineThickness);
+                   kx - sliderRadius,
+                   ky - sliderRadius,
+                   sliderRadius * 2.0f,
+                   knobColour, outlineThickness);
     }
     else
     {
@@ -106,21 +106,21 @@ void CabbageGenericPluginLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, 
                               sliderRadius * 2.0f, knobColour, outlineThickness, 4);
         }
     }
-	
+
 }
 
 void CabbageGenericPluginLookAndFeel::drawThumb (Graphics& g, const float x, const float y,
-                                      const float diameter, const Colour& colour,
-                                      const float outlineThickness) noexcept
+        const float diameter, const Colour& colour,
+        const float outlineThickness) noexcept
 {
     if (diameter <= outlineThickness)
         return;
 
-	g.setColour((Colours::black.withAlpha(.5f)));
-	g.fillRoundedRectangle(x+3, y-4, diameter, diameter*1.7+1, 8);
-	//58, 110, 182
-	g.setColour(Colour(58, 110, 182));
-	g.fillRoundedRectangle(x, y-6, diameter, diameter*1.7, 8);
-	g.setColour(Colour(58, 110, 182).darker());
-	g.drawRoundedRectangle(x, y-5, diameter, diameter*1.7, 8.f, 2.f);
+    g.setColour((Colours::black.withAlpha(.5f)));
+    g.fillRoundedRectangle(x+3, y-4, diameter, diameter*1.7+1, 8);
+    //58, 110, 182
+    g.setColour(Colour(58, 110, 182));
+    g.fillRoundedRectangle(x, y-6, diameter, diameter*1.7, 8);
+    g.setColour(Colour(58, 110, 182).darker());
+    g.drawRoundedRectangle(x, y-5, diameter, diameter*1.7, 8.f, 2.f);
 }

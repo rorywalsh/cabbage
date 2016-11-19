@@ -22,10 +22,10 @@
 //Cabbage IDE look and feel class
 CabbageIDELookAndFeel::CabbageIDELookAndFeel()
 {
-	setColour(TextButton::ColourIds::buttonColourId, Colour(50, 50, 50));	
-	setColour(TextButton::ColourIds::textColourOffId, Colour(150, 150, 150));
-	setColour(TextButton::ColourIds::buttonOnColourId, Colour(150, 150, 150));	
-	setColour(TextButton::ColourIds::textColourOnId, Colour(250, 250, 250));
+    setColour(TextButton::ColourIds::buttonColourId, Colour(50, 50, 50));
+    setColour(TextButton::ColourIds::textColourOffId, Colour(150, 150, 150));
+    setColour(TextButton::ColourIds::buttonOnColourId, Colour(150, 150, 150));
+    setColour(TextButton::ColourIds::textColourOnId, Colour(250, 250, 250));
 }
 
 //======== Update value tree ======================================================================
@@ -165,9 +165,9 @@ void CabbageIDELookAndFeel::drawMenuBarItem(Graphics & g, int width, int height,
 }
 
 void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
-                                       AlertWindow& alert,
-                                       const Rectangle<int>& textArea,
-                                       TextLayout& textLayout)
+        AlertWindow& alert,
+        const Rectangle<int>& textArea,
+        TextLayout& textLayout)
 {
     g.fillAll (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::alertWindowBackground, Colour(250,250,250)));
 
@@ -181,15 +181,15 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
 
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
-			Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed).toFloat());
-			const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
-			g.drawImage(warningImage, rect.reduced(20));
+            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed).toFloat());
+            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            g.drawImage(warningImage, rect.reduced(20));
         }
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
-			Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
-			const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
-			g.drawImage(warningImage, rect.reduced(25));
+            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
+            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            g.drawImage(warningImage, rect.reduced(25));
         }
 
     }
@@ -207,12 +207,12 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
 
 //======== Scrollbars ==============================================================================
 void CabbageIDELookAndFeel::drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
-                                        int height,
-                                        bool isScrollbarVertical,
-                                        int thumbStartPosition,
-                                        int thumbSize,
-                                        bool isMouseOver,
-                                        bool isMouseDown)
+        int height,
+        bool isScrollbarVertical,
+        int thumbStartPosition,
+        int thumbSize,
+        bool isMouseOver,
+        bool isMouseDown)
 {
     g.setColour (Colours::transparentBlack);
     g.fillAll();
@@ -245,7 +245,7 @@ int CabbageIDELookAndFeel::getDefaultScrollbarWidth()
 int CabbageIDELookAndFeel::getScrollbarButtonSize (ScrollBar& scrollbar)
 {
     return 2 + (scrollbar.isVertical() ? scrollbar.getWidth()
-                                       : scrollbar.getHeight());
+                : scrollbar.getHeight());
 }
 
 

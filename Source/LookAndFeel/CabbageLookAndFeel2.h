@@ -19,10 +19,10 @@ class CabbageLookAndFeel2	: public LookAndFeel_V3
 public:
     CabbageLookAndFeel2();
     ~CabbageLookAndFeel2() {};
-	
-	void drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown);
+
+    void drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown);
     Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
-	static void drawFromSVG(Graphics &g, File svgFile, int width, int height, int newWidth, int newHeight, AffineTransform affine);
+    static void drawFromSVG(Graphics &g, File svgFile, int width, int height, int newWidth, int newHeight, AffineTransform affine);
 
 private:
 

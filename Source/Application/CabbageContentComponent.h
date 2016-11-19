@@ -44,26 +44,26 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
-	Image createBackground();	
-	void openFile(File file);
+    Image createBackground();
+    void openFile(File file);
     OwnedArray<EditorAndConsoleContentComponent> editorAndConsole;
-	void resizeAllEditorAndConsoles(int height);
-	ScopedPointer<CabbagePropertiesPanel> propertyPanel;
-	OwnedArray<TextButton> fileTabs;
-	Array<File> openFiles;
-	void buttonClicked(Button* button);
-	void addFileTabButton(File file, int xPos);
-	CabbageIDELookAndFeel lookAndFeel;
-	EditorAndConsoleContentComponent* getCurrentCodeEditor();
+    void resizeAllEditorAndConsoles(int height);
+    ScopedPointer<CabbagePropertiesPanel> propertyPanel;
+    OwnedArray<TextButton> fileTabs;
+    Array<File> openFiles;
+    void buttonClicked(Button* button);
+    void addFileTabButton(File file, int xPos);
+    CabbageIDELookAndFeel lookAndFeel;
+    EditorAndConsoleContentComponent* getCurrentCodeEditor();
 
-	
+
 private:
-	Image bgImage;
-	const int statusBarHeight = 25;
-	ValueTree settings;
-	int currentFileIndex = 0;
-	int numberOfFiles = 0;
-	
+    Image bgImage;
+    const int statusBarHeight = 25;
+    ValueTree settings;
+    int currentFileIndex = 0;
+    int numberOfFiles = 0;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageContentComponent)
 };

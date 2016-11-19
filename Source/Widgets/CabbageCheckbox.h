@@ -32,25 +32,25 @@ class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public 
 
     bool isRect;
     String name, tooltipText, buttonText, colour, fontcolour, oncolour;
-	
+
 public:
 
     CabbageCheckbox(ValueTree widgetData);
-    ~CabbageCheckbox(){};
+    ~CabbageCheckbox() {};
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	String getTooltip()
-	{
-		return tooltipText;
-	}
+    String getTooltip()
+    {
+        return tooltipText;
+    }
 
-	ValueTree widgetData;
-	
-	
+    ValueTree widgetData;
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);
 };
 

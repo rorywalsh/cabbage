@@ -48,7 +48,7 @@ public:
         return true;
     }
 
-	void timerCallback();
+    void timerCallback();
     void initialiseBasics();
     void shutdown();
     bool isRunningCommandLine;
@@ -58,7 +58,7 @@ public:
         quit();
     }
     void anotherInstanceStarted (const String& commandLine) override  {}
-	
+
 
 private:
     ScopedPointer<CabbageDocumentWindow> documentWindow;

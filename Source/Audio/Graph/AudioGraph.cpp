@@ -25,186 +25,186 @@ class PluginWindow;
 
 
 AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
-						bool takeOwnershipOfSettings,
-						const String& preferredDefaultDeviceName,
-						const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
+                       bool takeOwnershipOfSettings,
+                       const String& preferredDefaultDeviceName,
+                       const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
 
-	: settings (settingsToUse, takeOwnershipOfSettings), graph()
+    : settings (settingsToUse, takeOwnershipOfSettings), graph()
 {
-	graph.prepareToPlay(44100, 512);
-	graph.setPlayConfigDetails(2, 2, 44100, 512);
-	createPlugin(inputFile);
-	setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
-	reloadPluginState();
-	startPlaying();
+    graph.prepareToPlay(44100, 512);
+    graph.setPlayConfigDetails(2, 2, 44100, 512);
+    createPlugin(inputFile);
+    setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
+    reloadPluginState();
+    startPlaying();
 }
 
 AudioGraph::~AudioGraph()
 {
-	deletePlugin();
-	shutDownAudioDevices();
+    deletePlugin();
+    shutDownAudioDevices();
 }
 
 //==============================================================================
 void AudioGraph::createPlugin(File inputFile)
 {
-	AudioProcessorGraph::AudioGraphIOProcessor* outNode;
-	outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-	AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, 2);
+    AudioProcessorGraph::AudioGraphIOProcessor* outNode;
+    outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+    AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, 2);
 
 
-	AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-	isCabbageFile = CabbageUtilities::hasCabbageTags(inputFile);
-	if(isCabbageFile)
-		processor = createCabbagePluginFilter(inputFile);
-	else
-		processor = createGenericPluginFilter(inputFile);
+    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
+    isCabbageFile = CabbageUtilities::hasCabbageTags(inputFile);
+    if(isCabbageFile)
+        processor = createCabbagePluginFilter(inputFile);
+    else
+        processor = createGenericPluginFilter(inputFile);
 
-	AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
+    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 
 
-	jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
+    jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
-	
-	processor->disableNonMainBuses();
-	processor->setRateAndBufferSizeDetails(44100, 512);
-	
-	updateBusLayout(processor);
-	
-	
-	AudioProcessorGraph::Node* processorNode = graph.addNode(processor, 1);
-	
-	bool connection1 = graph.addConnection(1, 0, 2, 0);			
-	bool connection2 = graph.addConnection(1, 1, 2, 1);	
+
+    processor->disableNonMainBuses();
+    processor->setRateAndBufferSizeDetails(44100, 512);
+
+    updateBusLayout(processor);
+
+
+    AudioProcessorGraph::Node* processorNode = graph.addNode(processor, 1);
+
+    bool connection1 = graph.addConnection(1, 0, 2, 0);
+    bool connection2 = graph.addConnection(1, 1, 2, 1);
 
 }
 
 
 void AudioGraph::updateBusLayout(AudioProcessor* selectedProcessor)
 {
-		if (AudioProcessor* filter = selectedProcessor)
-		{
-			if (AudioProcessor::Bus* bus = filter->getBus (isInput, currentBus))
-			{
-				bool test = bus->setNumberOfChannels(8);
-			}
-		}
-}	
+    if (AudioProcessor* filter = selectedProcessor)
+    {
+        if (AudioProcessor::Bus* bus = filter->getBus (isInput, currentBus))
+        {
+            bool test = bus->setNumberOfChannels(8);
+        }
+    }
+}
 
 int AudioGraph::getNumberOfParameters()
 {
-	return getProcessor()->getParameters().size();
-}	
+    return getProcessor()->getParameters().size();
+}
 
 void AudioGraph::deletePlugin()
 {
-	PluginWindow::closeAllCurrentlyOpenWindows();
-	stopPlaying();
-	graph.clear();
-	processor = nullptr;
+    PluginWindow::closeAllCurrentlyOpenWindows();
+    stopPlaying();
+    graph.clear();
+    processor = nullptr;
 }
 
 String AudioGraph::getFilePatterns (const String& fileSuffix)
 {
-	if (fileSuffix.isEmpty())
-		return String();
+    if (fileSuffix.isEmpty())
+        return String();
 
-	return (fileSuffix.startsWithChar ('.') ? "*" : "*.") + fileSuffix;
+    return (fileSuffix.startsWithChar ('.') ? "*" : "*.") + fileSuffix;
 }
 
 void AudioGraph::setXmlAudioSettings(XmlElement* xmlSettingsString)
 {
-	xmlSettings = xmlSettingsString;
-	setupAudioDevices ( String(), nullptr);
-	startPlaying();
+    xmlSettings = xmlSettingsString;
+    setupAudioDevices ( String(), nullptr);
+    startPlaying();
 }
 
 AudioDeviceSelectorComponent* AudioGraph::getAudioDeviceSelector()
 {
-	return new AudioDeviceSelectorComponent (deviceManager,
-														  processor->getTotalNumInputChannels(),
-														  processor->getTotalNumInputChannels(),
-														  processor->getTotalNumOutputChannels(),
-														  processor->getTotalNumOutputChannels(),
-														  true, false,
-														  true, false);
+    return new AudioDeviceSelectorComponent (deviceManager,
+            processor->getTotalNumInputChannels(),
+            processor->getTotalNumInputChannels(),
+            processor->getTotalNumOutputChannels(),
+            processor->getTotalNumOutputChannels(),
+            true, false,
+            true, false);
 }
 
 String AudioGraph::getDeviceManagerSettings()
 {
-	if(deviceManager.getCurrentAudioDevice())
-	{
-		ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
-		if(xml==nullptr)
-			return String::empty;
-		else
-			return xml->createDocument("");
-	}
-	else return String::empty;
+    if(deviceManager.getCurrentAudioDevice())
+    {
+        ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
+        if(xml==nullptr)
+            return String::empty;
+        else
+            return xml->createDocument("");
+    }
+    else return String::empty;
 }
 
 //==============================================================================
 void AudioGraph::startPlaying()
 {
-	player.setProcessor (&graph);
+    player.setProcessor (&graph);
 }
 
 void AudioGraph::stopPlaying()
 {
-	player.setProcessor (nullptr);
+    player.setProcessor (nullptr);
 }
 
 void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceName,
-							 const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
+        const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
 {
-	ScopedPointer<XmlElement> savedState;
+    ScopedPointer<XmlElement> savedState;
 
-	if (settings != nullptr)
-		savedState = settings->getXmlValue ("audioSetup");
+    if (settings != nullptr)
+        savedState = settings->getXmlValue ("audioSetup");
 
-	deviceManager.initialise (256,
-							  256,
-							  savedState,
-							  true,
-							  preferredDefaultDeviceName,
-							  preferredSetupOptions);
+    deviceManager.initialise (256,
+                              256,
+                              savedState,
+                              true,
+                              preferredDefaultDeviceName,
+                              preferredSetupOptions);
 }
 
 //==============================================================================
 String AudioGraph::getCsoundOutput()
 {
-	if(isCabbageFile)
-		return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
-	else
-		return dynamic_cast<GenericCabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+    if(isCabbageFile)
+        return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+    else
+        return dynamic_cast<GenericCabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
 }
 
 //==============================================================================
 void AudioGraph::savePluginState()
 {
-	if (settings != nullptr && processor != nullptr)
-	{
-		MemoryBlock data;
-		processor->getStateInformation (data);
+    if (settings != nullptr && processor != nullptr)
+    {
+        MemoryBlock data;
+        processor->getStateInformation (data);
 
-		settings->setValue ("filterState", data.toBase64Encoding());
-	}
+        settings->setValue ("filterState", data.toBase64Encoding());
+    }
 }
 
 void AudioGraph::reloadPluginState()
 {
-	if (settings != nullptr)
-	{
-		MemoryBlock data;
+    if (settings != nullptr)
+    {
+        MemoryBlock data;
 
-		if (data.fromBase64Encoding (settings->getValue ("filterState")) && data.getSize() > 0)
-			processor->setStateInformation (data.getData(), (int) data.getSize());
-	}
+        if (data.fromBase64Encoding (settings->getValue ("filterState")) && data.getSize() > 0)
+            processor->setStateInformation (data.getData(), (int) data.getSize());
+    }
 }
 
 AudioProcessor* AudioGraph::getProcessor()
 {
-	return processor;
+    return processor;
 }
 
 //========================================================================================
@@ -225,7 +225,7 @@ PluginWindow::PluginWindow (Component* const pluginEditor,
     setContentOwned (pluginEditor, true);
     setVisible (true);
 
-	setAlwaysOnTop(true);
+    setAlwaysOnTop(true);
     activePluginWindows.add (this);
 }
 
@@ -241,7 +241,7 @@ Point<int> PluginWindow::getPositionOfCurrentlyOpenWindow(const uint32 nodeId)
     for (int i = activePluginWindows.size(); --i >= 0;)
         if (activePluginWindows.getUnchecked(i)->owner->nodeId == nodeId)
             return Point<int>(activePluginWindows.getUnchecked(i)->getX(), activePluginWindows.getUnchecked(i)->getY());
-	return Point<int>(-1000, -1000);
+    return Point<int>(-1000, -1000);
 }
 void PluginWindow::closeAllCurrentlyOpenWindows()
 {
@@ -258,14 +258,14 @@ void PluginWindow::closeAllCurrentlyOpenWindows()
 
 //==============================================================================
 PluginWindow* PluginWindow::getWindowFor (AudioProcessorGraph::Node* const node,
-                                          WindowFormatType type,
-                                          AudioProcessorGraph& audioGraph)
+        WindowFormatType type,
+        AudioProcessorGraph& audioGraph)
 {
     jassert (node != nullptr);
 
     for (int i = activePluginWindows.size(); --i >= 0;)
         if (activePluginWindows.getUnchecked(i)->owner == node
-             && activePluginWindows.getUnchecked(i)->type == type)
+                && activePluginWindows.getUnchecked(i)->type == type)
             return activePluginWindows.getUnchecked(i);
 
     AudioProcessor* processor = node->getProcessor();
@@ -303,11 +303,11 @@ PluginWindow* PluginWindow::getWindowFor (AudioProcessorGraph::Node* const node,
 PluginWindow::~PluginWindow()
 {
     activePluginWindows.removeFirstMatchingValue (this);
-	if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
-	{
-		owner->getProcessor()->editorBeingDeleted (ed);
-		clearContentComponent();
-	}
+    if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
+    {
+        owner->getProcessor()->editorBeingDeleted (ed);
+        clearContentComponent();
+    }
 }
 
 void PluginWindow::moved()

@@ -26,18 +26,18 @@
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+    : AudioProcessor (BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+                      .withInput  ("Input",  AudioChannelSet::stereo(), true)
+#endif
+                      .withOutput ("Output", AudioChannelSet::stereo(), true)
+#endif
+                     )
 #endif
 {
-	CabbageUtilities::debug("Plugin constructor");
-	csound = new Csound();
+    CabbageUtilities::debug("Plugin constructor");
+    csound = new Csound();
 
     csound->SetHostImplementedMIDIIO(true);
     csound->SetHostData(this);
@@ -47,9 +47,9 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
     csound->SetExternalMidiReadCallback(ReadMidiData);
     csound->SetExternalMidiOutOpenCallback(OpenMidiOutputDevice);
     csound->SetExternalMidiWriteCallback(WriteMidiData);
-	csoundParams = nullptr;
+    csoundParams = nullptr;
     csoundParams = new CSOUND_PARAMS();
-	
+
     csoundParams->displays = 0;
     csound->SetParams(csoundParams);
     csound->SetOption((char*)"-n");
@@ -59,96 +59,96 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
     numCsoundChannels = csound->GetNchnls();
 
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
-	
+
     if(csdCompiledWithoutError())
-    {	
-		csdKsmps = csound->GetKsmps();
+    {
+        csdKsmps = csound->GetKsmps();
         if(csound->GetSpout()==nullptr);
         CSspout = csound->GetSpout();
         CSspin  = csound->GetSpin();
         cs_scale = csound->Get0dBFS();
         csndIndex = csound->GetKsmps();
         this->setLatencySamples(csound->GetKsmps());
-	}
-	else
-		CabbageUtilities::debug("Csound could not compile your file?");
-		
+    }
+    else
+        CabbageUtilities::debug("Csound could not compile your file?");
+
 }
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
-	CabbageUtilities::debug("Plugin destructor");
-	if(csound)
+    CabbageUtilities::debug("Plugin destructor");
+    if(csound)
     {
         csound = nullptr;
-		editorBeingDeleted (this->getActiveEditor());
+        editorBeingDeleted (this->getActiveEditor());
     }
 }
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
 {
-	for(int i = 0; i < cabbageData.getNumChildren(); i++)
-	{
-		const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type);
-		if(CabbageWidgetData::getStringProp(cabbageData.getChild(i), "channeltype")=="string")
-		{
+    for(int i = 0; i < cabbageData.getNumChildren(); i++)
+    {
+        const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type);
+        if(CabbageWidgetData::getStringProp(cabbageData.getChild(i), "channeltype")=="string")
+        {
 //					getCsound()->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).toUTF8(),
-//        									CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text), 
+//        									CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text),
 //											CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value)-1).toUTF8().getAddress());
-					
-		}
+
+        }
         else
         {
-				csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).toUTF8(), 
-								   CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value));
+            csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).toUTF8(),
+                               CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value));
         }
 
-	}
-		
-		
-		
-/*	
-    //init all channels with their init val, and set parameters
-    for(int i=0; i<guiCtrls.size(); i++)
-    {
-        //		Logger::writeToLog(guiCtrls.getReference(i).getStringProp(CabbageIDs::channel)+": "+String(guiCtrls[i].getNumProp(CabbageIDs::value)));
-        if(guiCtrls[i].getStringProp("channeltype")=="string")
-            //deal with combobox strings..
-            csound->SetChannel(guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
-        									guiCtrls.getReference(i).getStringArrayPropValue("text", guiCtrls[i].getNumProp(CabbageIDs::value)-1).toUTF8().getAddress());
-        else
+    }
+
+
+
+    /*
+        //init all channels with their init val, and set parameters
+        for(int i=0; i<guiCtrls.size(); i++)
         {
-            if(guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::hrange ||
-                    guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::vrange)
-            {
-                csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 0).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::minvalue));
-                csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 1).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::maxvalue));
-            }
+            //		Logger::writeToLog(guiCtrls.getReference(i).getStringProp(CabbageIDs::channel)+": "+String(guiCtrls[i].getNumProp(CabbageIDs::value)));
+            if(guiCtrls[i].getStringProp("channeltype")=="string")
+                //deal with combobox strings..
+                csound->SetChannel(guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
+            									guiCtrls.getReference(i).getStringArrayPropValue("text", guiCtrls[i].getNumProp(CabbageIDs::value)-1).toUTF8().getAddress());
             else
-                csound->SetChannel( guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::value));
+            {
+                if(guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::hrange ||
+                        guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::vrange)
+                {
+                    csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 0).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::minvalue));
+                    csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 1).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::maxvalue));
+                }
+                else
+                    csound->SetChannel( guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::value));
+            }
+
+            if(guiCtrls[i].getStringProp(CabbageIDs::type)!="hrange" && guiCtrls.getReference(i).getStringProp(CabbageIDs::type)!="vrange")
+            {
+
+                messageQueue.addOutgoingChannelMessageToQueue(guiCtrls[i].getStringProp(CabbageIDs::channel),
+                        guiCtrls[i].getNumProp(CabbageIDs::value), guiCtrls[i].getStringProp(CabbageIDs::type));
+            }
         }
 
-        if(guiCtrls[i].getStringProp(CabbageIDs::type)!="hrange" && guiCtrls.getReference(i).getStringProp(CabbageIDs::type)!="vrange")
+        //init all channels with their init val, and set parameters
+        for(int i=0; i<guiLayoutCtrls.size(); i++)
         {
-
-            messageQueue.addOutgoingChannelMessageToQueue(guiCtrls[i].getStringProp(CabbageIDs::channel),
-                    guiCtrls[i].getNumProp(CabbageIDs::value), guiCtrls[i].getStringProp(CabbageIDs::type));
+            if(guiLayoutCtrls[i].getStringProp(CabbageIDs::type).equalsIgnoreCase("texteditor"))
+                csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
+                                   guiLayoutCtrls[i].getStringProp(CabbageIDs::text).toUTF8().getAddress());
+            if(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).isNotEmpty())
+                //deal with combobox strings..
+                csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).toUTF8(), "");
         }
-    }
-
-    //init all channels with their init val, and set parameters
-    for(int i=0; i<guiLayoutCtrls.size(); i++)
-    {
-        if(guiLayoutCtrls[i].getStringProp(CabbageIDs::type).equalsIgnoreCase("texteditor"))
-            csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
-                               guiLayoutCtrls[i].getStringProp(CabbageIDs::text).toUTF8().getAddress());
-        if(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).isNotEmpty())
-            //deal with combobox strings..
-            csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).toUTF8(), "");
-    }
-    this->updateCabbageControls();
-    updateHostDisplay();
-	 * */
+        this->updateCabbageControls();
+        updateHostDisplay();
+    	 * */
 }
 //==============================================================================
 String CsoundPluginProcessor::getCsoundOutput()
@@ -175,20 +175,20 @@ const String CsoundPluginProcessor::getName() const
 
 bool CsoundPluginProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool CsoundPluginProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double CsoundPluginProcessor::getTailLengthSeconds() const
@@ -199,7 +199,7 @@ double CsoundPluginProcessor::getTailLengthSeconds() const
 int CsoundPluginProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    // so this should be at least 1, even if you're not really implementing programs.
 }
 
 int CsoundPluginProcessor::getCurrentProgram()
@@ -236,31 +236,31 @@ void CsoundPluginProcessor::releaseResources()
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     ignoreUnused (layouts);
     return true;
-  #else
+#else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+            && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
 
     // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
+#endif
 
     return true;
-  #endif
+#endif
 }
 #endif
 
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-	receiveChannelDataFromCsound();
+    receiveChannelDataFromCsound();
 }
 
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
@@ -268,7 +268,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     float** audioBuffers = buffer.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
     float samp;
-	int result = -1;
+    int result = -1;
 
 #if defined(Cabbage_Build_Standalone) || defined(AndroidBuild)
     const int output_channel_count = numCsoundChannels;
@@ -278,77 +278,77 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
 
 
-        //if no inputs are used clear buffer in case it's not empty..
-        if(getTotalNumInputChannels()==0)
-            buffer.clear();
+    //if no inputs are used clear buffer in case it's not empty..
+    if(getTotalNumInputChannels()==0)
+        buffer.clear();
 
-        if(csdCompiledWithoutError())
-        {
-            keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
-            midiBuffer = midiMessages;
+    if(csdCompiledWithoutError())
+    {
+        keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
+        midiBuffer = midiMessages;
 
 #if JucePlugin_ProducesMidiOutput
-            if(!midiOutputBuffer.isEmpty())
-            {
-                midiMessages.swapWith(midiOutputBuffer);
-            }
-            else
-                midiMessages.clear();
+        if(!midiOutputBuffer.isEmpty())
+        {
+            midiMessages.swapWith(midiOutputBuffer);
+        }
+        else
+            midiMessages.clear();
 #endif
 
-            for(int i=0; i<numSamples; i++, ++csndIndex)
+        for(int i=0; i<numSamples; i++, ++csndIndex)
+        {
+            if(csndIndex == csdKsmps)
             {
-                if(csndIndex == csdKsmps)
+                result = csound->PerformKsmps();
+
+                if(result!=0)
+                    this->suspendProcessing(true);
+
+                csndIndex = 0;
+
+                //slow down calls to these functions, no need for them to be firing at k-rate
+                if (guiCycles>guiRefreshRate)
                 {
-                    result = csound->PerformKsmps();
+                    guiCycles = 0;
+                    triggerAsyncUpdate();
 
-                    if(result!=0)
-                        this->suspendProcessing(true);
-
-                    csndIndex = 0;
-					
-					//slow down calls to these functions, no need for them to be firing at k-rate
-                    if (guiCycles>guiRefreshRate)
-                    {
-                        guiCycles = 0;
-						triggerAsyncUpdate();	
-
-                    }
-                    else
-                        ++guiCycles;
-					
-					sendChannelDataToCsound();
-                }
-                if(result==0)
-                {
-                    pos = csndIndex * output_channel_count;
-                    for(int channel = 0; channel < output_channel_count; ++channel)
-                    {
-                        float *&current_buffer = audioBuffers[channel];
-                        samp = *current_buffer * cs_scale;
-                        CSspin[pos] = samp;
-                        *current_buffer = (CSspout[pos] / cs_scale);
-                        ++current_buffer;
-                        ++pos;
-
-                    }
                 }
                 else
-                    buffer.clear();
+                    ++guiCycles;
+
+                sendChannelDataToCsound();
             }
-
-
-        }//if not compiled just mute output
-        else
-        {
-            for(int channel = 0; channel < output_channel_count; ++channel)
+            if(result==0)
             {
-                for(int i=0; i<numSamples; ++i, ++csndIndex)
+                pos = csndIndex * output_channel_count;
+                for(int channel = 0; channel < output_channel_count; ++channel)
                 {
-                    audioBuffers[channel][i]=0;
+                    float *&current_buffer = audioBuffers[channel];
+                    samp = *current_buffer * cs_scale;
+                    CSspin[pos] = samp;
+                    *current_buffer = (CSspout[pos] / cs_scale);
+                    ++current_buffer;
+                    ++pos;
+
                 }
             }
+            else
+                buffer.clear();
         }
+
+
+    }//if not compiled just mute output
+    else
+    {
+        for(int channel = 0; channel < output_channel_count; ++channel)
+        {
+            for(int i=0; i<numSamples; ++i, ++csndIndex)
+            {
+                audioBuffers[channel][i]=0;
+            }
+        }
+    }
 }
 
 
@@ -390,7 +390,7 @@ int CsoundPluginProcessor::OpenMidiInputDevice(CSOUND * csound, void **userData,
 // Reads MIDI input data from host, gets called every time there is MIDI input to our plugin
 //==============================================================================
 int CsoundPluginProcessor::ReadMidiData(CSOUND* /*csound*/, void *userData,
-        unsigned char *mbuf, int nbytes)
+                                        unsigned char *mbuf, int nbytes)
 {
     CsoundPluginProcessor *midiData = (CsoundPluginProcessor *)userData;
     if(!userData)

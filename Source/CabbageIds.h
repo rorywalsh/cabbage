@@ -31,7 +31,7 @@ enum
     closeDocument           = 0x200030,
     saveDocument            = 0x200040,
     saveDocumentAs          = 0x200041,
-	settings				= 0x200042,
+    settings				= 0x200042,
 
     closeProject            = 0x200051,
     saveProject             = 0x200060,
@@ -83,31 +83,31 @@ enum
 
     loginLogout             = 0x4100c1,
 
-	undo			= 0x512011,
-	redo			= 0x512012,
-	cut				= 0x512013,
-	copy			= 0x512014,
-	paste			= 0x512015,
-	searchReplace	= 0x512080,
-	columnEdit		= 0x512082,
-	interfaceMode		= 0x512083,
-	csoundMode			= 0x512084,
-	genericMode			= 0x512085,
-	cabbageMode			= 0x512086,
-	whiteBackground		= 0x512018,
-	blackBackground		= 0x512019,
-	toggleComments		= 0x512020,
-	insertFromRepo		= 0x512021,
-	addFromRepo			= 0x512022,
-	insertRecentEvent	= 0x512023,
-	openPythonEditor	= 0x512024,
-	fontType			= 0x512025,
-	del					= 0x512026,
-	selectAll			= 0x512027,
-	deselectAll			= 0x512028,
-	editMode			= 0x512029,
-	
-	showGenericWidgetWindow	= 0x612000,
+    undo			= 0x512011,
+    redo			= 0x512012,
+    cut				= 0x512013,
+    copy			= 0x512014,
+    paste			= 0x512015,
+    searchReplace	= 0x512080,
+    columnEdit		= 0x512082,
+    interfaceMode		= 0x512083,
+    csoundMode			= 0x512084,
+    genericMode			= 0x512085,
+    cabbageMode			= 0x512086,
+    whiteBackground		= 0x512018,
+    blackBackground		= 0x512019,
+    toggleComments		= 0x512020,
+    insertFromRepo		= 0x512021,
+    addFromRepo			= 0x512022,
+    insertRecentEvent	= 0x512023,
+    openPythonEditor	= 0x512024,
+    fontType			= 0x512025,
+    del					= 0x512026,
+    selectAll			= 0x512027,
+    deselectAll			= 0x512028,
+    editMode			= 0x512029,
+
+    showGenericWidgetWindow	= 0x612000,
 
     lastCommandIDEntry
 };
@@ -142,9 +142,9 @@ const Identifier class_ ("class");
 
 namespace CabbageInterfaceModes
 {
-	static const Identifier csound("csound");
-	static const Identifier generic("generic");
-	static const Identifier cabbage("cabbage");
+static const Identifier csound("csound");
+static const Identifier generic("generic");
+static const Identifier cabbage("cabbage");
 };
 
 // Handy list of static Identifiers..
@@ -332,8 +332,8 @@ public:
         add("pluginid");
         add("trackercolour");
         add("trackercolor");
-		add("menucolour");
-		add("menucolor");
+        add("menucolour");
+        add("menucolor");
         add("popup");
         add("show");
         add("latched");
@@ -345,13 +345,13 @@ public:
         add("zoom");
         add("signalvariable");
         add("samplerange");
-        add("scrollbars");		
+        add("scrollbars");
         add("colour:0");
         add("colour:1");
         add("colour");
         add("color:0");
         add("color:1");
-        add("color");		
+        add("color");
         add("text");
         add("middlec");
         add("gradient");
@@ -372,7 +372,7 @@ public:
     {
 
     }
-	
+
 };
 
 namespace CabbageIdentifierIds
@@ -580,77 +580,77 @@ class CabbagePopupWidgets : public StringPairArray
 public:
     CabbagePopupWidgets()
     {
-		set("Button", CabbageIdentifierIds::button);
-		set("Button - File", CabbageIdentifierIds::filebutton);
-		set("Button - Info", CabbageIdentifierIds::infobutton);
-		set("Checkbox", CabbageIdentifierIds::checkbox);
-		set("ComboBox", CabbageIdentifierIds::combobox);
-		set("Csound Output", CabbageIdentifierIds::csoundoutput);
-		set("Endless Encoder", CabbageIdentifierIds::encoder);
-		set("Gentable", CabbageIdentifierIds::gentable);
-		set("Horizontal Range Slider", CabbageIdentifierIds::hrange);
-		set("Groupbox", CabbageIdentifierIds::groupbox);
-		set("Image", CabbageIdentifierIds::image);
-		set("Numberbox", CabbageIdentifierIds::numberbox);
-		set("Signal Display", CabbageIdentifierIds::signaldisplay);
-		set("Slider - Horizontal", CabbageIdentifierIds::hslider);
-		set("Slider - Rotary", CabbageIdentifierIds::rslider);
-		set("Slider - Vertical", CabbageIdentifierIds::vslider);
-		set("Soundfiler", CabbageIdentifierIds::soundfiler);
-		set("Text Box", CabbageIdentifierIds::textbox.toString());
-		set("Text Editor", CabbageIdentifierIds::texteditor);
-		set("Vertical Range Slider", CabbageIdentifierIds::vrange);
-		set("XY Pad", CabbageIdentifierIds::xypad);
-	}
+        set("Button", CabbageIdentifierIds::button);
+        set("Button - File", CabbageIdentifierIds::filebutton);
+        set("Button - Info", CabbageIdentifierIds::infobutton);
+        set("Checkbox", CabbageIdentifierIds::checkbox);
+        set("ComboBox", CabbageIdentifierIds::combobox);
+        set("Csound Output", CabbageIdentifierIds::csoundoutput);
+        set("Endless Encoder", CabbageIdentifierIds::encoder);
+        set("Gentable", CabbageIdentifierIds::gentable);
+        set("Horizontal Range Slider", CabbageIdentifierIds::hrange);
+        set("Groupbox", CabbageIdentifierIds::groupbox);
+        set("Image", CabbageIdentifierIds::image);
+        set("Numberbox", CabbageIdentifierIds::numberbox);
+        set("Signal Display", CabbageIdentifierIds::signaldisplay);
+        set("Slider - Horizontal", CabbageIdentifierIds::hslider);
+        set("Slider - Rotary", CabbageIdentifierIds::rslider);
+        set("Slider - Vertical", CabbageIdentifierIds::vslider);
+        set("Soundfiler", CabbageIdentifierIds::soundfiler);
+        set("Text Box", CabbageIdentifierIds::textbox.toString());
+        set("Text Editor", CabbageIdentifierIds::texteditor);
+        set("Vertical Range Slider", CabbageIdentifierIds::vrange);
+        set("XY Pad", CabbageIdentifierIds::xypad);
+    }
 };
 
 
 class CabbageIdentifierPropertyStringPairs : public StringPairArray
-{	
-	public:
-	CabbageIdentifierPropertyStringPairs()
-	{
+{
+public:
+    CabbageIdentifierPropertyStringPairs()
+    {
         set("X Position", CabbageIdentifierIds::left.toString());
-		set("Y Position", CabbageIdentifierIds::top.toString());
-		set("Width", CabbageIdentifierIds::width.toString());
-		set("Height", CabbageIdentifierIds::height.toString());
-		
-		set("Pivot X", CabbageIdentifierIds::pivotx.toString());
-		set("Pivot Y", CabbageIdentifierIds::pivoty.toString());
-		set("Rotate", CabbageIdentifierIds::rotate.toString());
-		
-		set("Channel", CabbageIdentifierIds::channel.toString());
-		set("Ident Channel", CabbageIdentifierIds::identchannel.toString());
-		
-		set("Minimum.", CabbageIdentifierIds::min.toString());
-		set("Maximum.", CabbageIdentifierIds::max.toString());
-		set("Skew", CabbageIdentifierIds::sliderskew.toString());
-		set("Incremenet", CabbageIdentifierIds::sliderincr.toString());
-		set("Value", CabbageIdentifierIds::value.toString());
-		
-		set("Text", CabbageIdentifierIds::text.toString());
-		set("Popup Text", CabbageIdentifierIds::popuptext.toString());
+        set("Y Position", CabbageIdentifierIds::top.toString());
+        set("Width", CabbageIdentifierIds::width.toString());
+        set("Height", CabbageIdentifierIds::height.toString());
 
-		set("Active", CabbageIdentifierIds::active.toString());
-		set("Visible", CabbageIdentifierIds::visible.toString());		
-		
-		set("Font: On", CabbageIdentifierIds::onfontcolour.toString());
-		set("Font: Off", CabbageIdentifierIds::fontcolour.toString());
-		set("Font", CabbageIdentifierIds::fontcolour.toString());
-		set("Menu Colour", CabbageIdentifierIds::menucolour.toString());
-		set("Colour: Off", CabbageIdentifierIds::colour.toString());
-		set("Colour", CabbageIdentifierIds::colour.toString());
-		set("Outline Colour", CabbageIdentifierIds::outlinecolour.toString());
-		set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
-		set("Colour: On", CabbageIdentifierIds::oncolour.toString());
-		set("Alpha", CabbageIdentifierIds::alpha.toString());
-		set("Corners", CabbageIdentifierIds::corners.toString());
-		set("Shape", CabbageIdentifierIds::shape.toString());
-		set("File", CabbageIdentifierIds::file.toString());
-		set("On Image", CabbageIdentifierIds::imgbuttonon.toString());
-		set("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
-		
-	}
+        set("Pivot X", CabbageIdentifierIds::pivotx.toString());
+        set("Pivot Y", CabbageIdentifierIds::pivoty.toString());
+        set("Rotate", CabbageIdentifierIds::rotate.toString());
+
+        set("Channel", CabbageIdentifierIds::channel.toString());
+        set("Ident Channel", CabbageIdentifierIds::identchannel.toString());
+
+        set("Minimum.", CabbageIdentifierIds::min.toString());
+        set("Maximum.", CabbageIdentifierIds::max.toString());
+        set("Skew", CabbageIdentifierIds::sliderskew.toString());
+        set("Incremenet", CabbageIdentifierIds::sliderincr.toString());
+        set("Value", CabbageIdentifierIds::value.toString());
+
+        set("Text", CabbageIdentifierIds::text.toString());
+        set("Popup Text", CabbageIdentifierIds::popuptext.toString());
+
+        set("Active", CabbageIdentifierIds::active.toString());
+        set("Visible", CabbageIdentifierIds::visible.toString());
+
+        set("Font: On", CabbageIdentifierIds::onfontcolour.toString());
+        set("Font: Off", CabbageIdentifierIds::fontcolour.toString());
+        set("Font", CabbageIdentifierIds::fontcolour.toString());
+        set("Menu Colour", CabbageIdentifierIds::menucolour.toString());
+        set("Colour: Off", CabbageIdentifierIds::colour.toString());
+        set("Colour", CabbageIdentifierIds::colour.toString());
+        set("Outline Colour", CabbageIdentifierIds::outlinecolour.toString());
+        set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
+        set("Colour: On", CabbageIdentifierIds::oncolour.toString());
+        set("Alpha", CabbageIdentifierIds::alpha.toString());
+        set("Corners", CabbageIdentifierIds::corners.toString());
+        set("Shape", CabbageIdentifierIds::shape.toString());
+        set("File", CabbageIdentifierIds::file.toString());
+        set("On Image", CabbageIdentifierIds::imgbuttonon.toString());
+        set("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
+
+    }
 };
 
 

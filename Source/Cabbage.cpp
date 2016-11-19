@@ -29,7 +29,7 @@ Cabbage::Cabbage()
 }
 //==============================================================================
 void Cabbage::initialise (const String& commandLine)
-{	
+{
     documentWindow = new CabbageDocumentWindow (getApplicationName());
 
     if (commandLine.isNotEmpty())
@@ -49,7 +49,7 @@ void Cabbage::initialise (const String& commandLine)
 
 //==============================================================================
 void Cabbage::shutdown()
-{	
+{
     if (! isRunningCommandLine)
         Logger::writeToLog ("Shutdown");
 }

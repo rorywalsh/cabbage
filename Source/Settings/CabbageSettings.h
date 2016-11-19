@@ -28,40 +28,40 @@ class CabbageSettings : public ApplicationProperties, public ValueTree::Listener
 public:
     CabbageSettings();
     ~CabbageSettings()
-	{
-		defaultPropSet = nullptr;
-	};
+    {
+        defaultPropSet = nullptr;
+    };
 
     void set(String child, Identifier identifier, var value);
     String get(String child, String identifier);
     static Colour getColourFromValueTree(ValueTree valueTree, Identifier identifier, Colour defaultColour);
     static String getColourPropertyName(ValueTree valueTree, int index);
-	int getIntProperty(String child);
+    int getIntProperty(String child);
     static Colour getColourFromValueTree(ValueTree valueTree, int index, Colour defaultColour);
     static void set(ValueTree tree, String child, Identifier identifier, var value);
     static String get(ValueTree tree, String child, String identifier);
-	void setProperty(String child, var value);
-	void updateRecentFilesList();
-	void updateRecentFilesList(File file);
+    void setProperty(String child, var value);
+    void updateRecentFilesList();
+    void updateRecentFilesList(File file);
     int getIndexOfProperty(String child, String identifier);
     ValueTree getValueTree();
     XmlElement* getXML(String identifier);
     void setDefaultSettings();
     void setDefaultColourSettings();
-	ScopedPointer<PropertySet> defaultPropSet;	
+    ScopedPointer<PropertySet> defaultPropSet;
     ValueTree valueTree;
-	RecentlyOpenedFilesList recentFiles;
-	File getMostRecentFile();
-	
-	String getAudioSettingsXml()
-	{
-		return audioSettingsXml;
-	}
-	
+    RecentlyOpenedFilesList recentFiles;
+    File getMostRecentFile();
+
+    String getAudioSettingsXml()
+    {
+        return audioSettingsXml;
+    }
+
 private:
 
 
-	String audioSettingsXml;
+    String audioSettingsXml;
     void changed()
     {
         ScopedPointer<XmlElement> data (valueTree.createXml());
@@ -74,7 +74,7 @@ private:
 
     //==============================================================================
     void valueTreePropertyChanged (ValueTree&, const Identifier&) override;
-	
+
     void valueTreeChildAdded (ValueTree&, ValueTree&) override
     {
         changed();

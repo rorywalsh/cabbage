@@ -14,14 +14,14 @@
 
 /*
  *  ComponentLayoutEditor.cpp
- *  
+ *
  *  Original written by Haydxn
  *  Modified by Jordan Hochenbaum on 10/25/10.
  *  Further modified by Rory Walsh 2016
  *  http://www.rawmaterialsoftware.com/viewtopic.php?f=6&t=2635
  *
  */
- 
+
 //this get populated whenever we select multiple objects..
 void SelectedComponents::itemSelected (ComponentOverlay* item)
 {
@@ -35,31 +35,31 @@ void SelectedComponents::itemDeselected (ComponentOverlay* item)
 
 //=============================================================================
 ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)
-:   target (0), widgetData(valueTree)
+    :   target (0), widgetData(valueTree)
 {
-    setInterceptsMouseClicks (false, true);	
+    setInterceptsMouseClicks (false, true);
 }
 
 ComponentLayoutEditor::~ComponentLayoutEditor ()
 {
-	target = nullptr;
+    target = nullptr;
 
 }
 
 CabbagePluginEditor* ComponentLayoutEditor::getPluginEditor()
 {
-	if(CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
-		return c;
-	else
-		return nullptr;
+    if(CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
+        return c;
+    else
+        return nullptr;
 }
 
 void ComponentLayoutEditor::resized ()
 {
-	for (int i=0; i<frames.size(); i++)
-	{
-		frames.getUnchecked(i)->updateFromTarget ();
-	}
+    for (int i=0; i<frames.size(); i++)
+    {
+        frames.getUnchecked(i)->updateFromTarget ();
+    }
 }
 
 void ComponentLayoutEditor::paint (Graphics& g)
@@ -67,11 +67,11 @@ void ComponentLayoutEditor::paint (Graphics& g)
 }
 
 void ComponentLayoutEditor::resetAllInterest()
-{    
-	for(int i=0; i<frames.size(); i++)
+{
+    for(int i=0; i<frames.size(); i++)
     {
-		if(ComponentOverlay* child = dynamic_cast<ComponentOverlay*>(frames[i]))
-			child->setInterest("none");
+        if(ComponentOverlay* child = dynamic_cast<ComponentOverlay*>(frames[i]))
+            child->setInterest("none");
     }
     repaint();
 }
@@ -79,42 +79,42 @@ void ComponentLayoutEditor::resetAllInterest()
 void ComponentLayoutEditor::updateSelectedComponentBounds()
 {
     for(ComponentOverlay* child : selectedComponents)
-    {	
-		child->setInterest("selected");
-		child->repaint();
-		setComponentBoundsProperties(child, child->getBounds());
-	}		
+    {
+        child->setInterest("selected");
+        child->repaint();
+        setComponentBoundsProperties(child, child->getBounds());
+    }
 }
 
 void ComponentLayoutEditor::setComponentBoundsProperties(Component* child, Rectangle<int> bounds)
 {
-	child->getProperties().set("originalX", bounds.getX());
-	child->getProperties().set("originalY", bounds.getY());
-	child->getProperties().set("originalWidth", bounds.getWidth());
-	child->getProperties().set("originalHeight", bounds.getHeight());	
+    child->getProperties().set("originalX", bounds.getX());
+    child->getProperties().set("originalY", bounds.getY());
+    child->getProperties().set("originalWidth", bounds.getWidth());
+    child->getProperties().set("originalHeight", bounds.getHeight());
 }
 
 //==================================================================================================================
 void ComponentLayoutEditor::updateCodeEditor()
 {
-	StringArray compNames;
-	
-	if(getLassoSelection().getNumSelected()>0)
-		for ( ComponentOverlay* child : getLassoSelection() )
-		{
-			compNames.add(child->getName());
-			for( int i = 0 ; i < child->getTarget()->getNumChildComponents() ; i++)
-			{
-				if(child->getTarget()->getChildComponent(i)->getName().isNotEmpty())
-					compNames.add(child->getTarget()->getChildComponent(i)->getName());
-			}
-		}
-		else
-			compNames.add(getName());	
-		
-		
-	getPluginEditor()->setCurrentlySelectedComponents(compNames);
-	getPluginEditor()->sendChangeMessage();	
+    StringArray compNames;
+
+    if(getLassoSelection().getNumSelected()>0)
+        for ( ComponentOverlay* child : getLassoSelection() )
+        {
+            compNames.add(child->getName());
+            for( int i = 0 ; i < child->getTarget()->getNumChildComponents() ; i++)
+            {
+                if(child->getTarget()->getChildComponent(i)->getName().isNotEmpty())
+                    compNames.add(child->getTarget()->getChildComponent(i)->getName());
+            }
+        }
+    else
+        compNames.add(getName());
+
+
+    getPluginEditor()->setCurrentlySelectedComponents(compNames);
+    getPluginEditor()->sendChangeMessage();
 }
 
 //==================================================================================================================
@@ -140,14 +140,14 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 
     if(e.mods.isPopupMenu())
     {
-		PopupMenu menu;
-		CabbagePopupWidgets widgets;
-		for( int i = 0 ; i < widgets.size() ; i++ )
-			menu.addItem(i+1, widgets.getAllKeys()[i]);
-			
-		const int result = menu.show();		
-		getPluginEditor()->addNewWidget(widgets.getAllValues()[result-1], e.getPosition());		
-		currentMouseCoors = e.getPosition();	
+        PopupMenu menu;
+        CabbagePopupWidgets widgets;
+        for( int i = 0 ; i < widgets.size() ; i++ )
+            menu.addItem(i+1, widgets.getAllKeys()[i]);
+
+        const int result = menu.show();
+        getPluginEditor()->addNewWidget(widgets.getAllValues()[result-1], e.getPosition());
+        currentMouseCoors = e.getPosition();
     }
     else
     {
@@ -182,73 +182,73 @@ SelectedItemSet <ComponentOverlay*>& ComponentLayoutEditor::getLassoSelection()
 //==================================================================================================================
 void ComponentLayoutEditor::setTargetComponent (Component* targetComp)
 {
-	jassert (targetComp);
-	jassert (targetComp->getParentComponent() == getParentComponent());
-	if (target)
-	{
-		if (target.getComponent() == targetComp) return;
-		deleteAndZero (target);
-	}
-	target = targetComp;
-	bindWithTarget ();
+    jassert (targetComp);
+    jassert (targetComp->getParentComponent() == getParentComponent());
+    if (target)
+    {
+        if (target.getComponent() == targetComp) return;
+        deleteAndZero (target);
+    }
+    target = targetComp;
+    bindWithTarget ();
 }
 
 void ComponentLayoutEditor::bindWithTarget ()
 {
-	if (target != NULL)
-	{
-		Component* t = (Component*) target.getComponent ();
-		Component* p = t->getParentComponent ();		
-		p->addAndMakeVisible (this);
-		setBounds (t->getBounds ());
-		updateFrames ();
-	}
+    if (target != NULL)
+    {
+        Component* t = (Component*) target.getComponent ();
+        Component* p = t->getParentComponent ();
+        p->addAndMakeVisible (this);
+        setBounds (t->getBounds ());
+        updateFrames ();
+    }
 }
 
 void ComponentLayoutEditor::updateFrames ()
 {
-	frames.clear ();
-	if (target != NULL)
-	{
-		Component* t = (Component*) target.getComponent ();
-		int n = t->getNumChildComponents ();
-		for (int i=0; i<n; i++)
-		{
-			Component* c = t->getChildComponent (i);
-			if (c)
-			{
+    frames.clear ();
+    if (target != NULL)
+    {
+        Component* t = (Component*) target.getComponent ();
+        int n = t->getNumChildComponents ();
+        for (int i=0; i<n; i++)
+        {
+            Component* c = t->getChildComponent (i);
+            if (c)
+            {
                 ComponentOverlay* alias = createAlias (c);
                 if (alias)
                 {
-					alias->setName(c->getName());
-					setComponentBoundsProperties(alias, alias->getBounds());
-					frames.add (alias);
-					addAndMakeVisible (alias);
+                    alias->setName(c->getName());
+                    setComponentBoundsProperties(alias, alias->getBounds());
+                    frames.add (alias);
+                    addAndMakeVisible (alias);
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }
 
 void ComponentLayoutEditor::enablementChanged ()
 {
-	if (isEnabled ())
-	{
-		setVisible (true);
-	}
-	else
-	{
-		setVisible (false);
-	}
+    if (isEnabled ())
+    {
+        setVisible (true);
+    }
+    else
+    {
+        setVisible (false);
+    }
 }
 
 const Component* ComponentLayoutEditor::getTarget ()
 {
-	if (target) return target.getComponent ();
-	return 0;
+    if (target) return target.getComponent ();
+    return 0;
 }
 
 ComponentOverlay* ComponentLayoutEditor::createAlias (Component* child)
 {
-	return new ComponentOverlay (child, this);
+    return new ComponentOverlay (child, this);
 }

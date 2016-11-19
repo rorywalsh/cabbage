@@ -25,62 +25,62 @@
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================
 CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
-name(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
-buttonText(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)),
-isRect(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square")),
-corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
-ToggleButton(""),
-widgetData(wData)
+    name(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
+    buttonText(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)),
+    isRect(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square")),
+    corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
+    ToggleButton(""),
+    widgetData(wData)
 {
-	widgetData.addListener(this);	
-	setButtonText(buttonText);
-	setTooltip(tooltipText = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext));
-	setToggleState(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)==1 ? true : false, dontSendNotification);
+    widgetData.addListener(this);
+    setButtonText(buttonText);
+    setTooltip(tooltipText = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext));
+    setToggleState(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)==1 ? true : false, dontSendNotification);
 
-	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup)!=0)
-		setRadioGroupId(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup));
+    if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup)!=0)
+        setRadioGroupId(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup));
 
-	this->setWantsKeyboardFocus(false);
-	
-	setColour(TextButton::ColourIds::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-	setColour(TextButton::ColourIds::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
-	setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-	setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
-	getProperties().set(CabbageIdentifierIds::shape, CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
-	getProperties().set(CabbageIdentifierIds::corners, CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
-	
-	initialiseCommonAttributes(this, wData);		
-	setImgProperties(*this, wData, "buttonon");
-	setImgProperties(*this, wData, "buttonoff");
-	
+    this->setWantsKeyboardFocus(false);
+
+    setColour(TextButton::ColourIds::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    setColour(TextButton::ColourIds::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
+    setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+    setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+    getProperties().set(CabbageIdentifierIds::shape, CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
+    getProperties().set(CabbageIdentifierIds::corners, CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
+
+    initialiseCommonAttributes(this, wData);
+    setImgProperties(*this, wData, "buttonon");
+    setImgProperties(*this, wData, "buttonoff");
+
 }
 
 //==============================================================================
 void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	
-	if(prop==CabbageIdentifierIds::value)
-	{
-		bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
-		setToggleState(getCurrentValue(valueTree)==1 ? true : false, dontSendNotification);
-	}
 
-	else
-	{
-		handleCommonUpdates(this, valueTree);		
-		
-		setColour(TextButton::ColourIds::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-		setColour(TextButton::ColourIds::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::onfontcolour)));
-		setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-		setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour)));
-		getProperties().set(CabbageIdentifierIds::shape, CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
-		getProperties().set(CabbageIdentifierIds::corners, CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::corners));
+    if(prop==CabbageIdentifierIds::value)
+    {
+        bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
+        setToggleState(getCurrentValue(valueTree)==1 ? true : false, dontSendNotification);
+    }
 
-		setButtonText(getCurrentString(valueTree, "text"));		
-		setTooltip(getCurrentString(valueTree, "popuptext"));
-	}
-	
-	repaint();	
+    else
+    {
+        handleCommonUpdates(this, valueTree);
+
+        setColour(TextButton::ColourIds::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+        setColour(TextButton::ColourIds::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::onfontcolour)));
+        setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+        setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::oncolour)));
+        getProperties().set(CabbageIdentifierIds::shape, CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
+        getProperties().set(CabbageIdentifierIds::corners, CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::corners));
+
+        setButtonText(getCurrentString(valueTree, "text"));
+        setTooltip(getCurrentString(valueTree, "popuptext"));
+    }
+
+    repaint();
 
 }
 

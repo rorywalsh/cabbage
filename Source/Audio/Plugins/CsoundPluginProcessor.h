@@ -28,8 +28,8 @@
 */
 class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 {
-	
-public:	
+
+public:
     //==============================================================================
     CsoundPluginProcessor(File csoundInputFile);
     ~CsoundPluginProcessor();
@@ -38,9 +38,9 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
+#ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#endif
 
     virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
 
@@ -65,9 +65,9 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-	
-	//==============================================================================
-	//Csound API functions for deailing with midi input
+
+    //==============================================================================
+    //Csound API functions for deailing with midi input
     static int OpenMidiInputDevice(CSOUND * csnd, void **userData, const char *devName);
     static int OpenMidiOutputDevice(CSOUND * csnd, void **userData, const char *devName);
     static int ReadMidiData(CSOUND *csound, void *userData, unsigned char *mbuf, int nbytes);
@@ -78,63 +78,63 @@ public:
     static void drawGraphCallback(CSOUND *csound, WINDAT *windat);
     static void killGraphCallback(CSOUND *csound, WINDAT *windat);
     static int exitGraphCallback(CSOUND *csound);
-	
-	
-	void handleAsyncUpdate();
-	//=============================================================================
-	//Implement these to send and receive channel data to Csound. Typically used when 
-	//a component is updated and its value is sent to Csound, or when a Csound channel
-	//is updated in the Csound orchestra and we need to update the Cabbage components.
-	//Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
-	//as is done in CabbagePluginprocessor. 
-	virtual void sendChannelDataToCsound(){};
-	virtual void receiveChannelDataFromCsound(){};
-	virtual void initAllCsoundChannels(ValueTree cabbageData);
-	//=============================================================================
-	String getCsoundOutput();
 
-	void compileCsdFile(File csdFile)
-	{
-		csCompileResult = csound->Compile(const_cast<char*>(csdFile.getFullPathName().toUTF8().getAddress()));
-	}
-	
-	bool csdCompiledWithoutError()
-	{
-		return csCompileResult==0 ? true : false;	
-	}
 
-	Csound* getCsound()
-	{
-		return csound;
-	}
-	
-	CSOUND* getCsoundStruct()
-	{
-		return csound->GetCsound();
-	}
-	
-	int setGUIRefreshRate(int rate)
-	{
-		guiRefreshRate = rate;
-	}
-	
+    void handleAsyncUpdate();
+    //=============================================================================
+    //Implement these to send and receive channel data to Csound. Typically used when
+    //a component is updated and its value is sent to Csound, or when a Csound channel
+    //is updated in the Csound orchestra and we need to update the Cabbage components.
+    //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
+    //as is done in CabbagePluginprocessor.
+    virtual void sendChannelDataToCsound() {};
+    virtual void receiveChannelDataFromCsound() {};
+    virtual void initAllCsoundChannels(ValueTree cabbageData);
+    //=============================================================================
+    String getCsoundOutput();
+
+    void compileCsdFile(File csdFile)
+    {
+        csCompileResult = csound->Compile(const_cast<char*>(csdFile.getFullPathName().toUTF8().getAddress()));
+    }
+
+    bool csdCompiledWithoutError()
+    {
+        return csCompileResult==0 ? true : false;
+    }
+
+    Csound* getCsound()
+    {
+        return csound;
+    }
+
+    CSOUND* getCsoundStruct()
+    {
+        return csound->GetCsound();
+    }
+
+    int setGUIRefreshRate(int rate)
+    {
+        guiRefreshRate = rate;
+    }
+
 private:
     //==============================================================================
-	MidiBuffer midiOutputBuffer;
-	int guiCycles = 0;
-	int guiRefreshRate = 50;
-	MidiBuffer midiBuffer;
-	String csoundOutput;
-	ScopedPointer<CSOUND_PARAMS> csoundParams;
-	int csCompileResult, numCsoundChannels, pos;
-	MidiKeyboardState keyboardState;
-	MYFLT cs_scale;
-    MYFLT *CSspin, *CSspout;       
-    int csndIndex;                         
+    MidiBuffer midiOutputBuffer;
+    int guiCycles = 0;
+    int guiRefreshRate = 50;
+    MidiBuffer midiBuffer;
+    String csoundOutput;
+    ScopedPointer<CSOUND_PARAMS> csoundParams;
+    int csCompileResult, numCsoundChannels, pos;
+    MidiKeyboardState keyboardState;
+    MYFLT cs_scale;
+    MYFLT *CSspin, *CSspout;
+    int csndIndex;
     int csdKsmps;
-	ScopedPointer<Csound> csound;
+    ScopedPointer<Csound> csound;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginProcessor)
-	
+
 };
 
 

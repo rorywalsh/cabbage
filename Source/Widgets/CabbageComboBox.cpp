@@ -30,21 +30,21 @@ CabbageComboBox::CabbageComboBox(ValueTree wData, CabbagePluginEditor* _owner):
     tooltipText(String::empty),
     refresh(0),
     owner(_owner),
-	widgetData(wData)
+    widgetData(wData)
 {
-	widgetData.addListener(this);
+    widgetData.addListener(this);
     isPresetCombo = false;
-	setColour(ComboBox::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-	setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    setColour(ComboBox::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+    setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
     setTooltip(tooltipText = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext));
-	setEditableText (false);
+    setEditableText (false);
     setTextWhenNothingSelected(text);
     setWantsKeyboardFocus(false);
-	
-	addItemsToCombobox(wData);
-    setSelectedItemIndex(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1, isPresetCombo ? sendNotification : dontSendNotification);	
-	
-	initialiseCommonAttributes(this, wData);	
+
+    addItemsToCombobox(wData);
+    setSelectedItemIndex(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1, isPresetCombo ? sendNotification : dontSendNotification);
+
+    initialiseCommonAttributes(this, wData);
 
 }
 //---------------------------------------------
@@ -55,10 +55,10 @@ CabbageComboBox::~CabbageComboBox()
 
 void CabbageComboBox::addItemsToCombobox(ValueTree wData)
 {
-	Array<File> dirFiles;
-	StringArray fileNames;
-	
-	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file).isNotEmpty())
+    Array<File> dirFiles;
+    StringArray fileNames;
+
+    if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file).isNotEmpty())
     {
         clear(dontSendNotification);
         String file = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file)).loadFileAsString();
@@ -72,13 +72,13 @@ void CabbageComboBox::addItemsToCombobox(ValueTree wData)
     else if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         clear(dontSendNotification);
-		var items = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::text);		
-		
+        var items = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::text);
+
         for(int i=0; i<items.size(); i++)
         {
             const String item  = items[i].toString();
             addItem(item, i+1);
-        }		
+        }
     }
     else
     {
@@ -102,11 +102,11 @@ void CabbageComboBox::addItemsToCombobox(ValueTree wData)
         }
 
         fileNames.sort(true);
-		
+
         for( int i=0; i<fileNames.size(); i++)
             addItem(fileNames[i], i+1);
-    }	
-	
+    }
+
     Justification justify(Justification::centred);
 
     if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::align)=="left")
@@ -116,32 +116,32 @@ void CabbageComboBox::addItemsToCombobox(ValueTree wData)
     else
         justify = Justification::right;
 
-    setJustificationType (justify);	
+    setJustificationType (justify);
 }
 //update controls
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
-{	
-	if(prop==CabbageIdentifierIds::value)
-	{
-		//keeps getting 0 on startup...
-		int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
-		setSelectedItemIndex(value-1, sendNotification);	
-	}
+{
+    if(prop==CabbageIdentifierIds::value)
+    {
+        //keeps getting 0 on startup...
+        int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+        setSelectedItemIndex(value-1, sendNotification);
+    }
 
-	else
-	{
-		handleCommonUpdates(this, valueTree);	
-		setColour(ComboBox::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-		setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-		setColour(PopupMenu::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour)));
-		
-		setTooltip(getCurrentString(valueTree, "popuptext"));
-		
-		if(refresh != CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles))
-		{
+    else
+    {
+        handleCommonUpdates(this, valueTree);
+        setColour(ComboBox::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+        setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+        setColour(PopupMenu::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour)));
+
+        setTooltip(getCurrentString(valueTree, "popuptext"));
+
+        if(refresh != CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles))
+        {
 //			refresh = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::refreshfiles);
 //			owner->refreshDiskReadingGUIControls("combobox");
-		}
-	}
+        }
+    }
     repaint();
 }

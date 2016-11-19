@@ -28,39 +28,39 @@
 #include "../BinaryData/CabbageBinaryData.h"
 
 
-class CabbageSettingsWindow : 
-public Component, 
-public Button::Listener, 
-public Value::Listener,
-public FilenameComponentListener,
-public ChangeListener
+class CabbageSettingsWindow :
+    public Component,
+    public Button::Listener,
+    public Value::Listener,
+    public FilenameComponentListener,
+    public ChangeListener
 {
 
 public:
     CabbageSettingsWindow(CabbageSettings &settings, AudioDeviceSelectorComponent* audioDevice);
     ~CabbageSettingsWindow()
-	{
-		audioDeviceSelector = nullptr;	
-	};
+    {
+        audioDeviceSelector = nullptr;
+    };
 
-	void changeListenerCallback(ChangeBroadcaster *source);
+    void changeListenerCallback(ChangeBroadcaster *source);
     void addColourProperties();
-	void addMiscProperties();
+    void addMiscProperties();
     void resized();
-	void buttonClicked(Button* button);
-	void paint(Graphics& g);
-	void valueChanged(Value& value);
+    void buttonClicked(Button* button);
+    void paint(Graphics& g);
+    void valueChanged(Value& value);
     void filenameComponentChanged (FilenameComponent*);
 
-	
+
 private:
     PropertyPanel colourPanel, miscPanel;
-	ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
+    ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
     TextButton loadButton, saveButton;
-	ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
-	CabbageSettings &settings;
-	Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue;
+    ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
+    CabbageSettings &settings;
+    Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue;
 
 };
 

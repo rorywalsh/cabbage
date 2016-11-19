@@ -27,71 +27,71 @@ class CabbageDocumentWindow;
 
 class CabbageProjectWindow : public Component, public Button::Listener
 {
-		class SimpleImageButton : public ImageButton
-		{
-			public:
-				SimpleImageButton(String name, CabbageProjectWindow* owner):owner(owner), name(name), ImageButton(name){}
-				~SimpleImageButton(){}
-				
-				void mouseEnter(const MouseEvent &e)
-				{
-						if(name=="newInstrument")
-							owner->setInformationString("Choose this option to create a new synth instrument. This option should be used for any instruments that will be generating sounds in reponse to MIDI notes.");
+    class SimpleImageButton : public ImageButton
+    {
+    public:
+        SimpleImageButton(String name, CabbageProjectWindow* owner):owner(owner), name(name), ImageButton(name) {}
+        ~SimpleImageButton() {}
 
-						else if(name=="newEffect")
-							owner->setInformationString("Choose this option to create a new effect based instrument. This option should be used for any instruments that will be processing incoming audio.");
+        void mouseEnter(const MouseEvent &e)
+        {
+            if(name=="newInstrument")
+                owner->setInformationString("Choose this option to create a new synth instrument. This option should be used for any instruments that will be generating sounds in reponse to MIDI notes.");
 
-						else if(name=="newCsound")
-							owner->setInformationString("Choose this option to create a new Csound file. This option should be used for any old-school Csound instruments/files that don't use a GUI.");
-						
-						owner->repaint();
-				}
-				
-				void mouseExit(const MouseEvent &e)
-				{
-					owner->setInformationString("Please choose a project type.");
-					owner->repaint();
-				}
-				
-			private:
-				CabbageProjectWindow* owner;
-				String name;
-			
-		};
+            else if(name=="newEffect")
+                owner->setInformationString("Choose this option to create a new effect based instrument. This option should be used for any instruments that will be processing incoming audio.");
+
+            else if(name=="newCsound")
+                owner->setInformationString("Choose this option to create a new Csound file. This option should be used for any old-school Csound instruments/files that don't use a GUI.");
+
+            owner->repaint();
+        }
+
+        void mouseExit(const MouseEvent &e)
+        {
+            owner->setInformationString("Please choose a project type.");
+            owner->repaint();
+        }
+
+    private:
+        CabbageProjectWindow* owner;
+        String name;
+
+    };
 public:
     CabbageProjectWindow(CabbageDocumentWindow* owner, ValueTree valueTree);
     ~CabbageProjectWindow() {}
-	
-	void setInformationString(String informationStr)
-	{
-		information = informationStr;
-	}
 
-	void buttonClicked(Button* button);
-	
-	void paint(Graphics& g)
-	{
-		g.fillAll(Colour(147,210,0));
-		g.setColour(Colours::white);
-		g.setFont(Font(20));
-		g.drawFittedText(information, 0, 200, getWidth(), 100, Justification::centred, 10);
-	}
+    void setInformationString(String informationStr)
+    {
+        information = informationStr;
+    }
+
+    void buttonClicked(Button* button);
+
+    void paint(Graphics& g)
+    {
+        g.fillAll(Colour(147,210,0));
+        g.setColour(Colours::white);
+        g.setFont(Font(20));
+        g.drawFittedText(information, 0, 200, getWidth(), 100, Justification::centred, 10);
+    }
 
     void resized() override
     {
         Rectangle<int> r (getLocalBounds());
-		
-		newInstrumentButton.setBounds(50, 50, 150, 150);
-		newEffectButton.setBounds(250, 50, 150, 150);
-		newCsoundFileButton.setBounds(450, 50, 150, 150);
+
+        newInstrumentButton.setBounds(50, 50, 150, 150);
+        newEffectButton.setBounds(250, 50, 150, 150);
+        newCsoundFileButton.setBounds(450, 50, 150, 150);
     }
 
 private:
 
     ValueTree valueTree;
-	String information;
+    String information;
     SimpleImageButton newInstrumentButton, newEffectButton, newCsoundFileButton;
-	CabbageDocumentWindow* owner;
+    CabbageDocumentWindow* owner;
 
 
 };

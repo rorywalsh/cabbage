@@ -16,9 +16,9 @@ class CabbageFilePropertyComponent  : public PropertyComponent
 {
 public:
     CabbageFilePropertyComponent (const String& name,
-                           const bool isDirectory,
-                           const bool allowEditingOfFilename,
-                           const String& fileBrowserWildcard = "*")
+                                  const bool isDirectory,
+                                  const bool allowEditingOfFilename,
+                                  const String& fileBrowserWildcard = "*")
         : PropertyComponent (name),
           filenameComp (name, File(), allowEditingOfFilename,
                         isDirectory, false, fileBrowserWildcard,
@@ -36,10 +36,10 @@ public:
         int i=0;//filenameComp.setCurrentFile (getFile(), false);
     }
 
-	FilenameComponent filenameComp;
+    FilenameComponent filenameComp;
 
 private:
-    
+
 };
 
 

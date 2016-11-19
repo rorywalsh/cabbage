@@ -22,59 +22,66 @@
 #include "../CabbageIds.h"
 #include "CsoundTokeniser.h"
 
+class EditorAndConsoleContentComponent;
 
-class CabbageCodeEditorComponent : 
-public CodeEditorComponent, 
-public CodeDocument::Listener,
-public ListBoxModel
+class CabbageCodeEditorComponent :
+    public CodeEditorComponent,
+    public CodeDocument::Listener,
+    public ListBoxModel,
+    public KeyListener,
+    public Thread
 {
 public:
-    CabbageCodeEditorComponent(Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
-    ~CabbageCodeEditorComponent(){};
-	void updateColourScheme();
+    CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
+    ~CabbageCodeEditorComponent() {};
+    void updateColourScheme();
     CodeDocument::Position positionInCode;
-	ValueTree valueTree;
-	void codeDocumentTextDeleted(int,int){};
+    ValueTree valueTree;
+    void codeDocumentTextDeleted(int,int) {};
     void codeDocumentTextInserted(const juce::String &,int);
-	void displayOpcodeHelpInStatusBar(String lineFromCsd);
-	String getLineText();
-	bool keyPressed (const KeyPress& key) override;
-	void undoText();
-	
-	String getSelectedText();
-	const StringArray getAllTextAsStringArray();	
-	StringArray getSelectedTextArray();
-	
+    void displayOpcodeHelpInStatusBar(String lineFromCsd);
+    String getLineText();
 
-	void handleTabKey(String direction);
-	void handleReturnKey();
-	
-	void insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool highlightLine);
-	void insertNewLine(String text);
-	void insertTextAtCaret (const String &textToInsert);
-	void insertMultiLineTextAtCaret (String text);
-	void insertText(String text);
-	
-	void highlightLines(int firstLine, int lastLine);
-	void highlightLine(int lineNumber);
-	
-	void handleAutoComplete(String text);
-	void showAutoComplete(String currentWord);
-	bool deleteForwards (const bool moveInWholeWordSteps);
-	bool deleteBackwards (const bool moveInWholeWordSteps);
-	
-	
-	void setAllText(String text)
-	{
-		getDocument().replaceAllContent(text);
-	}
+    bool keyPressed (const KeyPress &key, Component *originatingComponent) override;
+    void undoText();
+
+    String getSelectedText();
+    const StringArray getAllTextAsStringArray();
+    StringArray getSelectedTextArray();
+
+    void run() {	parseTextForVariables();	};
+
+    void handleTabKey(String direction);
+    void handleReturnKey();
+
+    void insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool highlightLine);
+    void insertNewLine(String text);
+    void insertTextAtCaret (const String &textToInsert);
+    void insertMultiLineTextAtCaret (String text);
+    void insertText(String text);
+
+    void highlightLines(int firstLine, int lastLine);
+    void highlightLine(int lineNumber);
+
+    void handleAutoComplete(String text);
+    void showAutoComplete(String currentWord);
+    void parseTextForVariables();
+
+    bool deleteForwards (const bool moveInWholeWordSteps);
+    bool deleteBackwards (const bool moveInWholeWordSteps);
 
 
-	void setOpcodeStrings(String opcodes)
+    void setAllText(String text)
+    {
+        getDocument().replaceAllContent(text);
+    }
+
+
+    void setOpcodeStrings(String opcodes)
     {
         opcodeStrings.addLines(opcodes);
     }
-	
+
     int getNumRows()
     {
         return variableNamesToShow.size();
@@ -90,18 +97,20 @@ public:
         else
             g.fillAll(Colours::whitesmoke);
 
+        g.setFont(Font(String("DejaVu Sans Mono"), 17, 0));
         g.setColour(Colour(20, 20, 20));
         g.drawFittedText(variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
     }
 
-    void selectedRowsChanged (int /*lastRowselected*/) {};	
+    void selectedRowsChanged (int /*lastRowselected*/) {};
 private:
-	Component* statusBar;
-	int listBoxRowHeight = 18;
-	StringArray opcodeStrings;
-	bool columnEditMode = false;
-	ListBox autoCompleteListBox;
-	StringArray variableNamesToShow, variableNames;
+    Component* statusBar;
+    int listBoxRowHeight = 18;
+    StringArray opcodeStrings;
+    bool columnEditMode = false;
+    ListBox autoCompleteListBox;
+    StringArray variableNamesToShow, variableNames;
+    EditorAndConsoleContentComponent* owner;
 };
 
 

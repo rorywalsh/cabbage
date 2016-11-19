@@ -28,29 +28,32 @@
 class CabbagePluginProcessor  : public CsoundPluginProcessor
 {
 public:
-	CabbagePluginProcessor(File inputFile);
-	~CabbagePluginProcessor();	
-	
-	ValueTree cabbageWidgets;	
+    CabbagePluginProcessor(File inputFile);
+    ~CabbagePluginProcessor();
 
-	void receiveChannelDataFromCsound();
-	void parseCsdFile();
-	void createParameters();
+    ValueTree cabbageWidgets;
 
-	//==============================================================================
+    void receiveChannelDataFromCsound();
+    void parseCsdFile();
+    void createParameters();
+
+    //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
-	
-	File getCurrentCsdFile(){	return csdFile;	}
-	StringArray getCurrentCsdFileAsStringArray()
-	{	
-		StringArray csdArray;
-		csdArray.addLines(csdFile.loadFileAsString());
-		return csdArray;
-	}
-	
+
+    File getCurrentCsdFile()
+    {
+        return csdFile;
+    }
+    StringArray getCurrentCsdFileAsStringArray()
+    {
+        StringArray csdArray;
+        csdArray.addLines(csdFile.loadFileAsString());
+        return csdArray;
+    }
+
 private:
-	File csdFile;
+    File csdFile;
 
 };
 

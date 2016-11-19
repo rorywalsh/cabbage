@@ -32,53 +32,53 @@
 class AudioGraph
 {
 public:
-	// This creates new instances of the plugin..
-	GenericCabbagePluginProcessor* JUCE_CALLTYPE createGenericPluginFilter(File inputFile)
-	{
-		return new GenericCabbagePluginProcessor(inputFile);
-	}
-	
-	CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter(File inputFile)
-	{
-		return new CabbagePluginProcessor(inputFile);
-	}
+    // This creates new instances of the plugin..
+    GenericCabbagePluginProcessor* JUCE_CALLTYPE createGenericPluginFilter(File inputFile)
+    {
+        return new GenericCabbagePluginProcessor(inputFile);
+    }
+
+    CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter(File inputFile)
+    {
+        return new CabbagePluginProcessor(inputFile);
+    }
 
     AudioGraph (PropertySet* settingsToUse, File inputFile,
-                            bool takeOwnershipOfSettings = true,
-                            const String& preferredDefaultDeviceName = String(),
-                            const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr);
+                bool takeOwnershipOfSettings = true,
+                const String& preferredDefaultDeviceName = String(),
+                const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr);
     ~AudioGraph();
     void createPlugin(File inputFile);
     void updateBusLayout(AudioProcessor* selectedProcessor);
-	int getNumberOfParameters();
+    int getNumberOfParameters();
     virtual void deletePlugin();
 
     static String getFilePatterns (const String& fileSuffix);
 
-	void setXmlAudioSettings(XmlElement* xmlSettingsString);
-	AudioDeviceSelectorComponent* getAudioDeviceSelector();
-	String getDeviceManagerSettings();
+    void setXmlAudioSettings(XmlElement* xmlSettingsString);
+    AudioDeviceSelectorComponent* getAudioDeviceSelector();
+    String getDeviceManagerSettings();
     //==============================================================================
     void startPlaying();
     void stopPlaying();
     void reloadAudioDeviceState (const String& preferredDefaultDeviceName,
                                  const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions);
     //==============================================================================
-	String getCsoundOutput();
+    String getCsoundOutput();
     //==============================================================================
     void savePluginState();
     void reloadPluginState();
-	AudioProcessor* getProcessor();
+    AudioProcessor* getProcessor();
     //==============================================================================
     OptionalScopedPointer<PropertySet> settings;
     AudioProcessor* processor;
     AudioProcessorGraph graph;
-	AudioDeviceManager deviceManager;
+    AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
-	ScopedPointer<XmlElement> xmlSettings;
-	bool isInput;
+    ScopedPointer<XmlElement> xmlSettings;
+    bool isInput;
     int currentBus;
-	bool isCabbageFile=false;
+    bool isCabbageFile=false;
 
 private:
     void setupAudioDevices (const String& preferredDefaultDeviceName,
@@ -133,8 +133,8 @@ public:
 
     static void closeCurrentlyOpenWindowsFor (const uint32 nodeId);
     static void closeAllCurrentlyOpenWindows();
-	static Point<int> getPositionOfCurrentlyOpenWindow(const uint32 node);
-	
+    static Point<int> getPositionOfCurrentlyOpenWindow(const uint32 node);
+
 
     void moved() override;
     void closeButtonPressed() override;
@@ -145,7 +145,10 @@ private:
     AudioProcessorGraph::Node* owner;
     WindowFormatType type;
 
-    float getDesktopScaleFactor() const override     { return 1.0f; }
+    float getDesktopScaleFactor() const override
+    {
+        return 1.0f;
+    }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginWindow)
 };

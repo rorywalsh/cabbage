@@ -30,20 +30,20 @@ class DemoCabbageWidget : public Component, public ValueTree::Listener, public C
 {
 public:
 
-    DemoCabbageWidget(ValueTree widgetData){};
-    ~DemoCabbageWidget(){};
-	
-	//VlaueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&){};
+    DemoCabbageWidget(ValueTree widgetData) {};
+    ~DemoCabbageWidget() {};
+
+    //VlaueTree::Listener virtual methods....
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) {};
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
     void resized();
 
-	ValueTree widgetData;
+    ValueTree widgetData;
 
-	
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoCabbageWidget);
 };
 

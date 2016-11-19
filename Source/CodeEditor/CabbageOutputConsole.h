@@ -31,7 +31,7 @@ public:
         addAndMakeVisible(textEditor = new TextEditor(), true);
         textEditor->setColour(Label::outlineColourId, Colours::white);
         textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleText, Colours::grey.darker()));
-		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
+        textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
         textEditor->setMultiLine(true);
         textEditor->setReadOnly(true);
         textEditor->setFont(Font("Arial", 12, 1));
@@ -54,12 +54,12 @@ public:
         return textEditor->getText();
     }
 
-	void updateColourScheme()
-	{
+    void updateColourScheme()
+    {
         textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleText, Colours::grey.darker()));
-		textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleBackground, Colours::grey.darker()));	
-		repaint();	
-	}
+        textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleBackground, Colours::grey.darker()));
+        repaint();
+    }
 
     void setFontSize(int size)
     {
@@ -81,7 +81,7 @@ public:
     }
 
 private:
-	ValueTree value;
+    ValueTree value;
 
 };
 

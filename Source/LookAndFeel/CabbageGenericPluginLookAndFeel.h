@@ -42,10 +42,10 @@ public:
                                 const Slider::SliderStyle style,
                                 Slider &slider) override;
 
-	void drawThumb (Graphics& g, const float x, const float y,
-                                      const float diameter, const Colour& colour,
-                                      const float outlineThickness) noexcept;
-									  
+    void drawThumb (Graphics& g, const float x, const float y,
+                    const float diameter, const Colour& colour,
+                    const float outlineThickness) noexcept;
+
     void refreshLookAndFeel(ValueTree valueTree);
 
 

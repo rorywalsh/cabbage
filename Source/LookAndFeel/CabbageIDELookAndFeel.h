@@ -49,22 +49,22 @@ public:
                            const String& shortcutKeyText,
                            const Drawable* icon, const Colour* const textColourToUse);
 
-	void drawAlertBox (Graphics& g,
-                                       AlertWindow& alert,
-                                       const Rectangle<int>& textArea,
-                                       TextLayout& textLayout);
-	void drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
-                                        int height,
-                                        bool isScrollbarVertical,
-                                        int thumbStartPosition,
-                                        int thumbSize,
-                                        bool isMouseOver,
-                                        bool isMouseDown);
+    void drawAlertBox (Graphics& g,
+                       AlertWindow& alert,
+                       const Rectangle<int>& textArea,
+                       TextLayout& textLayout);
+    void drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
+                        int height,
+                        bool isScrollbarVertical,
+                        int thumbStartPosition,
+                        int thumbSize,
+                        bool isMouseOver,
+                        bool isMouseDown);
 
-	ImageEffectFilter* getScrollbarEffect();
-	int getMinimumScrollbarThumbSize (ScrollBar& scrollbar);
-	int getDefaultScrollbarWidth();
-	int getScrollbarButtonSize(ScrollBar& scrollbar);
+    ImageEffectFilter* getScrollbarEffect();
+    int getMinimumScrollbarThumbSize (ScrollBar& scrollbar);
+    int getDefaultScrollbarWidth();
+    int getScrollbarButtonSize(ScrollBar& scrollbar);
 private:
     ValueTree colourTree;
 

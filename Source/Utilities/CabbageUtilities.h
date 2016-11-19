@@ -202,11 +202,11 @@ public:
 
     }
 
-	static void setImagesForButton(ImageButton* button, const Image image)
-	{
-	button->setImages(true, true, true, image, 1, Colours::transparentBlack, image,
-					 1, Colours::transparentBlack, image, .8, Colours::transparentBlack, 0);
-	}
+    static void setImagesForButton(ImageButton* button, const Image image)
+    {
+        button->setImages(true, true, true, image, 1, Colours::transparentBlack, image,
+                          1, Colours::transparentBlack, image, .8, Colours::transparentBlack, 0);
+    }
 
     static bool compDouble(double x, int y)
     {
@@ -358,54 +358,55 @@ public:
         strArray.add(str2Juce(str.substr(0, 100)));
         return strArray;
     }
-	
+
 
 //==========================================================================================
-	static void addFilesToPluginBundle(File csdFile, File exportDir, LookAndFeel *look)
+    static void addFilesToPluginBundle(File csdFile, File exportDir, LookAndFeel *look)
     {
-		Array<File> invalidFiles;
+        Array<File> invalidFiles;
         bool invalidFilename = false;
-		StringArray csdArray;
-		File parentDirectory = csdFile.getParentDirectory();
-		csdArray.addLines(csdFile.loadFileAsString());
-		for(int i=0; i<csdArray.size(); i++)
-		{
-			if(csdArray[i].contains("<CabbageIncludes>"))
-			{
-				int lineIndex = 1;
-				while(!csdArray[i+lineIndex].contains("</CabbageIncludes>") && i+lineIndex<csdArray.size())
-				{
-					File includeFile(parentDirectory.getFullPathName()+"/"+csdArray[i+lineIndex]);					
-					File newFile(exportDir.getParentDirectory().getFullPathName()+"/"+csdArray[i+lineIndex]);
-					if(includeFile.exists())
-					{
+        StringArray csdArray;
+        File parentDirectory = csdFile.getParentDirectory();
+        csdArray.addLines(csdFile.loadFileAsString());
+        for(int i=0; i<csdArray.size(); i++)
+        {
+            if(csdArray[i].contains("<CabbageIncludes>"))
+            {
+                int lineIndex = 1;
+                while(!csdArray[i+lineIndex].contains("</CabbageIncludes>") && i+lineIndex<csdArray.size())
+                {
+                    File includeFile(parentDirectory.getFullPathName()+"/"+csdArray[i+lineIndex]);
+                    File newFile(exportDir.getParentDirectory().getFullPathName()+"/"+csdArray[i+lineIndex]);
+                    if(includeFile.exists())
+                    {
                         invalidFilename = true;
-						includeFile.copyFileTo(newFile);
-					}
-					else{
-						invalidFiles.add(includeFile);
-					}
-					lineIndex++;
-				}
-                
+                        includeFile.copyFileTo(newFile);
+                    }
+                    else
+                    {
+                        invalidFiles.add(includeFile);
+                    }
+                    lineIndex++;
+                }
+
                 if(invalidFilename)
                 {
                     StringArray invalidFileNames;
-                    for(int y=0;y<invalidFiles.size();y++)
+                    for(int y=0; y<invalidFiles.size(); y++)
                         invalidFileNames.add(invalidFiles[y].getFullPathName());
                     showMessage("Cabbage could not bundle the following files\n"+invalidFileNames.joinIntoString("\n")+"\nPlease make sure they are located in the same folder as your .csd file.", look);
                 }
-                
-				
+
+
 //					CabbageGUIType cAttr(csdArray[i], -99);
 //					this->getProperties().set("colour", cAttr.getStringProp(CabbageIDs::colour));
 //					this->getProperties().set("fontcolour", cAttr.getStringProp(CabbageIDs::fontcolour));
 //					this->getProperties().set("titlebarcolour", cAttr.getStringProp(CabbageIDs::titlebarcolour));
 //					this->lookAndFeelChanged();
 //					setName(cAttr.getStringProp(CabbageIDs::caption));
-			}
-		}
-	}
+            }
+        }
+    }
 //==========================================================================================
     static Array<File> launchFileBrowser(String title, WildcardFileFilter filter, String fileType, int mode, File initialDir, bool useNative, LookAndFeel *look)
     {
@@ -885,13 +886,13 @@ public:
 
 
 //======================================================================================
-	static void writeValueTreeToFile(ValueTree valueTree, String filePath)
-	{
-		ScopedPointer<XmlElement> data (valueTree.createXml());
-		// only works when there are no objects in the array...
-		//write new xml settings files based on data from user settings file, but using ValueTree
-		data->writeToFile(File(filePath), String::empty);
-	}
+    static void writeValueTreeToFile(ValueTree valueTree, String filePath)
+    {
+        ScopedPointer<XmlElement> data (valueTree.createXml());
+        // only works when there are no objects in the array...
+        //write new xml settings files based on data from user settings file, but using ValueTree
+        data->writeToFile(File(filePath), String::empty);
+    }
 
 //======================================================================================
     static int getPreference(ApplicationProperties* appPrefs, String pref)
@@ -920,13 +921,13 @@ public:
 //====================================================================================================
     static bool hasCabbageTags(File inputFile)
     {
-		const String csdFile = inputFile.loadFileAsString();
-		if(csdFile.contains("<Cabbage>") && csdFile.contains("</Cabbage>"))
-			return true;
-		else 
-			return false;
+        const String csdFile = inputFile.loadFileAsString();
+        if(csdFile.contains("<Cabbage>") && csdFile.contains("</Cabbage>"))
+            return true;
+        else
+            return false;
     }
-//====================================================================================================	
+//====================================================================================================
     static Image drawSVGImageFromFilePath(String path, String type, AffineTransform affine)
     {
         String svgFileName = File(path).existsAsFile()? path : path+"/"+String(type)+".svg";
@@ -997,14 +998,14 @@ public:
         {
             File binary(csdfile.getFullPathName()+"/Contents/MacOS/"+csdfile.getFileNameWithoutExtension());
             if(binary.existsAsFile())
-              return true;
+                return true;
         }
         {
             File binary(csdfile.getParentDirectory().getFullPathName()+"/MacOS/"+csdfile.getFileNameWithoutExtension());
             if(binary.existsAsFile())
                 return true;
         }
-        
+
         return false;
 #elif defined(WIN32)
         if(File(csdfile.withFileExtension("dll")).existsAsFile())
@@ -1015,7 +1016,7 @@ public:
         if(File(csdfile.withFileExtension("so")).existsAsFile())
             return true;
         else
-            return false;        
+            return false;
 #endif
     }
 //========= Text button image ========================================================

@@ -18,16 +18,16 @@
 class GenericCabbagePluginProcessor  : public CsoundPluginProcessor
 {
 public:
-	GenericCabbagePluginProcessor(File inputFile);
-	~GenericCabbagePluginProcessor();	
-	
-	controlChannelInfo_s* csoundChanList;
-	
-	OwnedArray<AudioParameterFloat> parameters;
-	
-	void sendChannelDataToCsound();
+    GenericCabbagePluginProcessor(File inputFile);
+    ~GenericCabbagePluginProcessor();
 
-	//==============================================================================
+    controlChannelInfo_s* csoundChanList;
+
+    OwnedArray<AudioParameterFloat> parameters;
+
+    void sendChannelDataToCsound();
+
+    //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
 };
