@@ -146,6 +146,17 @@ CabbagePluginEditor* CabbageDocumentWindow::getPluginEditor()
     return nullptr;
 }
 
+CabbagePluginProcessor* CabbageDocumentWindow::getCabbagePluginProcessor()
+{
+    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
+    {
+        if(CabbagePluginProcessor* const processor = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
+            return processor;
+    }
+
+    return nullptr;
+}
+//==============================================================================
 void CabbageDocumentWindow::updateEditorColourScheme()
 {
     this->getLookAndFeel().setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
@@ -193,13 +204,14 @@ void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)
         }
     }
 
-    else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(panel)) // update Cabbage syntax when a user changes a property
+    else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(source)) // update code when a user changes a property
     {
         if(CabbagePluginEditor* editor = this->getPluginEditor())
         {
             updateCodeInEditor(editor, true);
         }
     }
+	
 }
 
 //=======================================================================================

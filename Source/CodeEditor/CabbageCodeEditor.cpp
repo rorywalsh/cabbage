@@ -91,8 +91,14 @@ void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text,int
     handleAutoComplete(text);
     const String lineFromCsd = getDocument().getLine(getDocument().findWordBreakBefore(getCaretPos()).getLineNumber());
     displayOpcodeHelpInStatusBar(lineFromCsd);
+
+	
 }
 
+void CabbageCodeEditorComponent::codeDocumentTextDeleted(int,int)
+{
+
+}
 
 void CabbageCodeEditorComponent::insertTextAtCaret (const String &textToInsert)
 {
@@ -327,7 +333,6 @@ void CabbageCodeEditorComponent::handleAutoComplete(String text)
     const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
     const CodeDocument::Position pos2 = getDocument().findWordBreakAfter(getCaretPos());
     const String currentWord = getDocument().getTextBetween(pos1, pos2).trim();
-    //currentWord = currentWord.trim();
 
     if(currentWord.startsWith("a") || currentWord.startsWith("i") ||
             currentWord.startsWith("k") ||currentWord.startsWith("S") ||
@@ -462,7 +467,6 @@ void CabbageCodeEditorComponent::handleReturnKey ()
         const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
         const CodeDocument::Position pos2 = getCaretPos();
         getDocument().deleteSection(pos1, pos2);
-        //cUtils::debug(currentWord);
         insertText(variableNamesToShow[autoCompleteListBox.getSelectedRow()]);
         autoCompleteListBox.setVisible(false);
         return;
@@ -558,6 +562,11 @@ const StringArray CabbageCodeEditorComponent::getAllTextAsStringArray()
     StringArray csdArray;
     csdArray.addLines(getDocument().getAllContent());
     return csdArray;
+}
+
+const String CabbageCodeEditorComponent::getAllText()
+{
+    return getDocument().getAllContent();
 }
 
 StringArray CabbageCodeEditorComponent::getSelectedTextArray()

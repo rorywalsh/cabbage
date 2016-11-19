@@ -37,7 +37,7 @@ public:
     void updateColourScheme();
     CodeDocument::Position positionInCode;
     ValueTree valueTree;
-    void codeDocumentTextDeleted(int,int) {};
+    void codeDocumentTextDeleted(int,int);
     void codeDocumentTextInserted(const juce::String &,int);
     void displayOpcodeHelpInStatusBar(String lineFromCsd);
     String getLineText();
@@ -47,6 +47,7 @@ public:
 
     String getSelectedText();
     const StringArray getAllTextAsStringArray();
+	const String getAllText();
     StringArray getSelectedTextArray();
 
     void run() {	parseTextForVariables();	};

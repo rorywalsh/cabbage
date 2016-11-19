@@ -34,7 +34,7 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile)
     //initAllCsoundChannels(cabbageWidgets);
     if(inputFile.existsAsFile())
     {
-        parseCsdFile();
+        parseCsdFile(inputFile.loadFileAsString());
         createParameters();
     }
 
@@ -48,10 +48,11 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 }
 
 //==============================================================================
-void CabbagePluginProcessor::parseCsdFile()
+void CabbagePluginProcessor::parseCsdFile(String csdText)
 {
     StringArray linesFromCsd;
-    linesFromCsd.addLines(csdFile.loadFileAsString());
+	cabbageWidgets.removeAllChildren(0);
+    linesFromCsd.addLines(csdText);
     String parentComponent, previousComponent;
     bool withinPlantGroup = false;
     for( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )

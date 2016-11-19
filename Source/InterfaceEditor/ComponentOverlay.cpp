@@ -116,29 +116,44 @@ bool ComponentOverlay::boundsChangedSinceStart ()
 //===========================================================================
 void ComponentOverlay::mouseDown (const MouseEvent& e)
 {
-    layoutEditor->updateSelectedComponentBounds();
+	if(e.mods.isPopupMenu())
+	{
+		PopupMenu menu;
+		menu.addItem(100, "Delete");
+		
+		const int r = menu.show();
 
-    mouseDownSelectStatus = layoutEditor->getLassoSelection().addToSelectionOnMouseDown (this, e.mods);
+		if(r==100)
+		{
+			
+		}
+	}
+	else
+	{
+		layoutEditor->updateSelectedComponentBounds();
 
-    if (e.eventComponent != resizer)
-    {
-        //added a constrainer so that components can't be dragged off-screen
-        constrainer->setMinimumOnscreenAmounts(getHeight(), getWidth(), getHeight(), getWidth());
-        dragger.startDraggingComponent(this, e);
-    }
+		mouseDownSelectStatus = layoutEditor->getLassoSelection().addToSelectionOnMouseDown (this, e.mods);
+
+		if (e.eventComponent != resizer)
+		{
+			//added a constrainer so that components can't be dragged off-screen
+			constrainer->setMinimumOnscreenAmounts(getHeight(), getWidth(), getHeight(), getWidth());
+			dragger.startDraggingComponent(this, e);
+		}
 
 
-    setBoundsForChildren();
+		setBoundsForChildren();
 
-    userAdjusting = true;
-    startBounds = getBounds ();
-    userStartedChangingBounds ();
-    layoutEditor->updateCodeEditor();
+		userAdjusting = true;
+		startBounds = getBounds ();
+		userStartedChangingBounds ();
+		layoutEditor->updateCodeEditor();
 
-    if(layoutEditor->getLassoSelection().getNumSelected()==1)
-        layoutEditor->resetAllInterest();
+		if(layoutEditor->getLassoSelection().getNumSelected()==1)
+			layoutEditor->resetAllInterest();
 
-    interest = "selected";
+		interest = "selected";
+	}
 
 }
 
