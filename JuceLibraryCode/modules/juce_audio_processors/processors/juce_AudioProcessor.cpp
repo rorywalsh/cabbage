@@ -224,7 +224,7 @@ bool AudioProcessor::setChannelLayoutOfBus (bool isInputBus, int busIdx, const A
     return false;
 }
 
-bool AudioProcessor::enableAllBuses()
+bool AudioProcessor::enableAllBuses ()
 {
     BusesLayout layouts;
     const int numInputs  = getBusCount (true);
@@ -382,7 +382,7 @@ void AudioProcessor::setPlayConfigDetails (const int newNumIns,
         success &= setChannelLayoutOfBus (false, 0, AudioChannelSet::canonicalChannelSet (newNumOuts));
 
     // if the user is using this method then they do not want any side-buses or aux outputs
-    success &= disableNonMainBuses();
+    success &= disableNonMainBuses ();
     jassert (success);
 
     // the processor may not support this arrangement at all
@@ -840,14 +840,15 @@ bool AudioProcessor::containsLayout (const BusesLayout& layouts, const Array<InO
     if (layouts.inputBuses.size() > 1 || layouts.outputBuses.size() > 1)
         return false;
 
-    const InOutChannelPair mainLayout (static_cast<int16> (layouts.getNumChannels (true, 0)),
-                                       static_cast<int16> (layouts.getNumChannels (false, 0)));
+    const InOutChannelPair mainLayout
+      ( static_cast<int16> (layouts.getNumChannels (true, 0)),
+        static_cast<int16> (layouts.getNumChannels (false, 0)) );
 
     return channelLayouts.contains (mainLayout);
 }
 
 //==============================================================================
-bool AudioProcessor::disableNonMainBuses()
+bool AudioProcessor::disableNonMainBuses ()
 {
     BusesLayout layouts = getBusesLayout();
 
@@ -1157,33 +1158,19 @@ bool AudioProcessor::Bus::isNumberOfChannelsSupported (int channels) const
 {
     if (channels == 0) return isLayoutSupported(AudioChannelSet::disabled());
 
-    const AudioChannelSet set = supportedLayoutWithChannels (channels);
-    return (! set.isDisabled()) && isLayoutSupported (set);
+    return isLayoutSupported (supportedLayoutWithChannels (channels));
 }
 
 AudioChannelSet AudioProcessor::Bus::supportedLayoutWithChannels (int channels) const
 {
     if (channels == 0) return AudioChannelSet::disabled();
 
-    {
-        AudioChannelSet set;
-        if (! (set = AudioChannelSet::namedChannelSet  (channels)).isDisabled() && isLayoutSupported (set))
-            return set;
+    AudioChannelSet set;
+    if (! (set = AudioChannelSet::namedChannelSet  (channels)).isDisabled() && isLayoutSupported (set))
+        return set;
 
-        if (! (set = AudioChannelSet::discreteChannels (channels)).isDisabled() && isLayoutSupported (set))
-            return set;
-    }
-
-    Array<AudioChannelSet> sets = AudioChannelSet::channelSetsWithNumberOfChannels (channels);
-    const int n = sets.size();
-
-    for (int i = 0; i < n; ++i)
-    {
-        const AudioChannelSet set = sets.getReference (i);
-
-        if (isLayoutSupported (set))
-            return set;
-    }
+    if (! (set = AudioChannelSet::discreteChannels (channels)).isDisabled() && isLayoutSupported (set))
+        return set;
 
     return AudioChannelSet::disabled();
 }

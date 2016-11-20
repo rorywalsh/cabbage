@@ -131,8 +131,8 @@ public:
     bool moveCaretToStartOfLine (bool selecting);
     bool moveCaretToEnd (bool selecting);
     bool moveCaretToEndOfLine (bool selecting);
-    bool deleteBackwards (bool moveInWholeWordSteps);
-    bool deleteForwards (bool moveInWholeWordSteps);
+    virtual bool deleteBackwards (bool moveInWholeWordSteps);
+    virtual bool deleteForwards (bool moveInWholeWordSteps);
     bool deleteWhitespaceBackwardsToTabStop();
     virtual bool copyToClipboard();
     virtual bool cutToClipboard();

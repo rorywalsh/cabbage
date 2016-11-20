@@ -496,13 +496,10 @@ String URL::removeEscapeChars (const String& s)
     return String::fromUTF8 (utf8.getRawDataPointer(), utf8.size());
 }
 
-String URL::addEscapeChars (const String& s, const bool isParameter, bool roundBracketsAreLegal)
+String URL::addEscapeChars (const String& s, const bool isParameter)
 {
-    String legalChars (isParameter ? "_-.*!'"
-                                   : ",$_-.*!'");
-
-    if (roundBracketsAreLegal)
-        legalChars += "()";
+    const CharPointer_UTF8 legalChars (isParameter ? "_-.*!'()"
+                                                   : ",$_-.*!'()");
 
     Array<char> utf8 (s.toRawUTF8(), (int) s.getNumBytesAsUTF8());
 
@@ -511,7 +508,7 @@ String URL::addEscapeChars (const String& s, const bool isParameter, bool roundB
         const char c = utf8.getUnchecked(i);
 
         if (! (CharacterFunctions::isLetterOrDigit (c)
-                 || legalChars.containsChar ((juce_wchar) c)))
+                 || legalChars.indexOf ((juce_wchar) c) >= 0))
         {
             utf8.set (i, '%');
             utf8.insert (++i, "0123456789ABCDEF" [((uint8) c) >> 4]);

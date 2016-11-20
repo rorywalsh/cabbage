@@ -33,7 +33,7 @@ StringArray AudioCDReader::getAvailableCDNames()
     return names;
 }
 
-AudioCDReader* AudioCDReader::createReaderForCD (const int)
+AudioCDReader* AudioCDReader::createReaderForCD (const int index)
 {
     return nullptr;
 }
@@ -46,8 +46,8 @@ void AudioCDReader::refreshTrackLengths()
 {
 }
 
-bool AudioCDReader::readSamples (int**, int, int,
-                                 int64, int)
+bool AudioCDReader::readSamples (int** destSamples, int numDestChannels, int startOffsetInDestBuffer,
+                                 int64 startSampleInFile, int numSamples)
 {
     return false;
 }
@@ -57,12 +57,12 @@ bool AudioCDReader::isCDStillPresent() const
     return false;
 }
 
-bool AudioCDReader::isTrackAudio (int) const
+bool AudioCDReader::isTrackAudio (int trackNum) const
 {
     return false;
 }
 
-void AudioCDReader::enableIndexScanning (bool)
+void AudioCDReader::enableIndexScanning (bool b)
 {
 }
 
@@ -71,7 +71,7 @@ int AudioCDReader::getLastIndex() const
     return 0;
 }
 
-Array<int> AudioCDReader::findIndexesInTrack (const int)
+Array<int> AudioCDReader::findIndexesInTrack (const int trackNumber)
 {
     return Array<int>();
 }
