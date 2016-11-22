@@ -2302,6 +2302,24 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
     return cabbageCode;
 }
 
+
+String CabbageWidgetData::removeWidgetFromValueTree(ValueTree wData, int lineNumber)
+{
+
+	for( int  i = 0 ; i < wData.getNumChildren() ; i++ )
+	{
+		if(int(wData.getChild(i).getProperty(CabbageIdentifierIds::linenumber))==lineNumber)
+		{
+			const String childName = wData.getChild(i).getProperty(CabbageIdentifierIds::name).toString();
+			wData.removeChild(i, 0);
+			return childName;
+		}			
+	}
+
+	return String::empty;	
+}
+
+
 //===================================================================
 float CabbageWidgetData::getTableChannelValues(int index)
 {

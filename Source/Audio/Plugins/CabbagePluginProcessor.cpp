@@ -76,7 +76,6 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
         if(CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="interactive" ||
                 CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
         {
-            CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel));
             cabbageWidgets.addChild(temp, -1, 0);
         }
 
@@ -97,6 +96,14 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
     }
 }
 
+//right now we rebuild the entire GUi each time something changes, 
+void CabbagePluginProcessor::updateWidgets(String csdText)
+{
+	CabbagePluginEditor* editor = static_cast<CabbagePluginEditor*>(this->getActiveEditor());
+	parseCsdFile(csdText);
+	editor->createEditorInterface(cabbageWidgets);
+	editor->updateLayoutEditorFrames();	
+}
 //==============================================================================
 // create parameters for sliders, buttons, comboboxes, checkboxes, encoders and xypads.
 // Other widgets can communicate with Csound, but they cannot be automated

@@ -29,7 +29,8 @@ class CabbageCodeEditorComponent :
     public CodeDocument::Listener,
     public ListBoxModel,
     public KeyListener,
-    public Thread
+    public Thread,
+	public ChangeBroadcaster
 {
 public:
     CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
@@ -71,6 +72,7 @@ public:
     bool deleteForwards (const bool moveInWholeWordSteps);
     bool deleteBackwards (const bool moveInWholeWordSteps);
 
+	void sendUpdateMessage(int lineNumber);
 
     void setAllText(String text)
     {
@@ -104,6 +106,9 @@ public:
     }
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
+	String lastAction;
+	bool shouldSendUpdateMessage = false;
+	
 private:
     Component* statusBar;
     int listBoxRowHeight = 18;

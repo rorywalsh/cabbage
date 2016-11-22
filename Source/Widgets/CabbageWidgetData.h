@@ -34,6 +34,7 @@ class CabbageWidgetData : public CabbageUtilities
 public:
     CabbageWidgetData() {};
     ~CabbageWidgetData() {};
+	//============================================================================
     static void setWidgetState(ValueTree widgetData, String lineFromCsd, int ID);
     static void setCustomWidgetState(ValueTree widgetData, String lineFromCsd, String identifier=String::empty);
     //============================================================================
@@ -61,6 +62,8 @@ public:
     static String getSimpleTextAsCabbageCode(ValueTree widgetData, String identfier);
     static String getImagesTextAsCabbageCode(ValueTree widgetData);
     //============================================================================
+	static String removeWidgetFromValueTree(ValueTree widgetData, int lineNumber);
+	//============================================================================
     static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);
     void setTableChannelValues(int index, float val);
     float getTableChannelValues(int index);

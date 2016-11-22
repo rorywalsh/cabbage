@@ -35,15 +35,9 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
 
-    //setLookAndFeel(lookAndFeel);
-
-
     setContentOwned (content = new CabbageContentComponent(cabbageSettings->getValueTree()), true);
     content->propertyPanel->setVisible(false);
-    //content->propertyPanel->setLookAndFeel(juceLookAndFeel);
-    //content->setLookAndFeel(juceLookAndFeel);
 
-    //lookAndFeel.setColour(2, Colours::red);
     lookAndFeel->setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
     lookAndFeel->setColour(ScrollBar::backgroundColourId, Colour(70, 70, 70));
 
@@ -133,7 +127,7 @@ String CabbageDocumentWindow::getAudioDeviceSettings()
         return String::empty;
 }
 
-CabbagePluginEditor* CabbageDocumentWindow::getPluginEditor()
+CabbagePluginEditor* CabbageDocumentWindow::getCabbagePluginEditor()
 {
     if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
     {
@@ -206,22 +200,31 @@ void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)
 
     else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(source)) // update code when a user changes a property
     {
-        if(CabbagePluginEditor* editor = this->getPluginEditor())
+        if(CabbagePluginEditor* editor = this->getCabbagePluginEditor())
         {
             updateCodeInEditor(editor, true);
         }
     }
 	
+	
+    else if(CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*>(source)) // update code when a user changes a property
+    {
+		if(getCabbagePluginProcessor() && getCabbagePluginEditor()->isEditModeEnabled())
+			this->getCabbagePluginProcessor()->updateWidgets(codeEditor->getAllText());
+    }	
 }
 
 //=======================================================================================
 void CabbageDocumentWindow::updateCodeInEditor(CabbagePluginEditor* editor, bool replaceExistingLine)
 {
     content->propertyPanel->addChangeListener(this);
+	
     for(ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
     {
         const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
         const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
+		//prevent this change from sending a change message
+		getCurrentCodeEditor()->shouldSendUpdateMessage = false;
         getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, editor->getValueTreesForCurrentlySelectedComponents().size()==1);
     }
 }
@@ -229,24 +232,26 @@ void CabbageDocumentWindow::updateCodeInEditor(CabbagePluginEditor* editor, bool
 //=======================================================================================
 void CabbageDocumentWindow::setEditMode(bool enable)
 {
-    if(getPluginEditor())
-    {
-        getPluginEditor()->addChangeListener(this);
-        if(enable==true)
-        {
-            audioGraph->stopPlaying();
-            getMainContentComponent()->propertyPanel->setInterceptsMouseClicks(true, true);
-        }
-        else
-        {
-            audioGraph->startPlaying();
-            getMainContentComponent()->propertyPanel->setInterceptsMouseClicks(false, false);
-        }
+    if(!getCabbagePluginEditor())
+	{
+		createAudioGraph();
+	}
 
-        getPluginEditor()->enableGUIEditor(enable);
-        getMainContentComponent()->propertyPanel->setEnabled(enable);
+	getCabbagePluginEditor()->addChangeListener(this);
+	if(enable==true)
+	{
+		audioGraph->stopPlaying();
+		getMainContentComponent()->propertyPanel->setInterceptsMouseClicks(true, true);
+	}
+	else
+	{
+		audioGraph->startPlaying();
+		getMainContentComponent()->propertyPanel->setInterceptsMouseClicks(false, false);
+	}
 
-    }
+	getCabbagePluginEditor()->enableEditMode(enable);
+	getMainContentComponent()->propertyPanel->setEnabled(enable);
+
 }
 //=======================================================================================
 void CabbageDocumentWindow::showSettingsDialog()
@@ -296,6 +301,7 @@ bool CabbageDocumentWindow::openFile (const File& file, String type)
     PluginWindow::closeAllCurrentlyOpenWindows();
 
     getMainContentComponent()->openFile(file);
+	getCurrentCodeEditor()->addChangeListener(this);
     cabbageSettings->updateRecentFilesList(file);
     setName("Cabbage " + file.getFullPathName());
     currentCsdFile = File(file.getFullPathName());
@@ -308,8 +314,8 @@ void CabbageDocumentWindow::saveDocument(bool saveAs)
     if(saveAs == true)
     {
         isGUIEnabled = false;
-        if(getPluginEditor()!=nullptr)
-            getPluginEditor()->enableGUIEditor(false);
+        if(getCabbagePluginEditor()!=nullptr)
+            getCabbagePluginEditor()->enableEditMode(false);
 
         FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
 
@@ -334,8 +340,8 @@ void CabbageDocumentWindow::saveDocument(bool saveAs)
     else
     {
         isGUIEnabled = false;
-        if(getPluginEditor()!=nullptr)
-            getPluginEditor()->enableGUIEditor(false);
+        if(getCabbagePluginEditor()!=nullptr)
+            getCabbagePluginEditor()->enableEditMode(false);
 
         if(currentCsdFile.existsAsFile())
             currentCsdFile.replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
@@ -348,6 +354,7 @@ void CabbageDocumentWindow::saveDocument(bool saveAs)
     }
 }
 
+//==============================================================================
 void CabbageDocumentWindow::timerCallback()
 {
     if(currentCsdFile.existsAsFile())
@@ -360,12 +367,6 @@ void CabbageDocumentWindow::timerCallback()
         }
     }
 }
-
-void CabbageDocumentWindow::closeButtonPressed()
-{
-    JUCEApplicationBase::quit();
-}
-
 //==============================================================================
 void CabbageDocumentWindow::runCode()
 {
@@ -378,7 +379,7 @@ void CabbageDocumentWindow::runCode()
     else
         CabbageUtilities::showMessage("Warning", "Please open a file first", lookAndFeel);
 }
-//==============================================================================
+
 void CabbageDocumentWindow::stopCode()
 {
     if(currentCsdFile.existsAsFile())
@@ -434,6 +435,7 @@ void CabbageDocumentWindow::createEditorForAudioGraphNode()
 
 }
 
+//==============================================================================
 bool CabbageDocumentWindow::closeAllDocuments (bool askUserToSave)
 {
     // return openDocumentManager.closeAll (askUserToSave);
@@ -444,4 +446,8 @@ bool CabbageDocumentWindow::closeAllMainWindows()
 {
     //return server != nullptr || mainWindowList.askAllWindowsToClose();
     return true;
+}
+void CabbageDocumentWindow::closeButtonPressed()
+{
+    JUCEApplicationBase::quit();
 }

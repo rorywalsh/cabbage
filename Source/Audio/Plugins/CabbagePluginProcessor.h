@@ -36,6 +36,7 @@ public:
     void receiveChannelDataFromCsound();
     void parseCsdFile(String csdText);
     void createParameters();
+	void updateWidgets(String csdText);
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;

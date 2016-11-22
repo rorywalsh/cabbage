@@ -86,18 +86,37 @@ void CabbageCodeEditorComponent::updateColourScheme()
 }
 
 //==============================================================================
-void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text,int)
+void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
+{
+	const StringArray csdArray = getAllTextAsStringArray();
+	const int cabbageSectionClosingLineNumber = csdArray.indexOf("</Cabbage>"); 
+	
+	if(shouldSendUpdateMessage && lineNumber<cabbageSectionClosingLineNumber)
+	{
+		sendChangeMessage();
+	}
+	
+	shouldSendUpdateMessage =! shouldSendUpdateMessage;
+}
+//==============================================================================
+void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, int startIndex)
 {
     handleAutoComplete(text);
     const String lineFromCsd = getDocument().getLine(getDocument().findWordBreakBefore(getCaretPos()).getLineNumber());
     displayOpcodeHelpInStatusBar(lineFromCsd);
 
+	lastAction = "insertText";
 	
+	const CodeDocument::Position pos(getDocument(), startIndex);	
+	sendUpdateMessage(pos.getLineNumber());
+		
 }
 
-void CabbageCodeEditorComponent::codeDocumentTextDeleted(int,int)
-{
-
+void CabbageCodeEditorComponent::codeDocumentTextDeleted(int startIndex, int endIndex)
+{	
+	const CodeDocument::Position endPos(getDocument(), endIndex);
+	lastAction = "removeText";	
+	sendUpdateMessage(endPos.getLineNumber());
 }
 
 void CabbageCodeEditorComponent::insertTextAtCaret (const String &textToInsert)

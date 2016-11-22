@@ -38,7 +38,7 @@ public:
     CabbageDocumentWindow (String name);
     ~CabbageDocumentWindow();
 
-    CabbagePluginEditor* getPluginEditor();
+    CabbagePluginEditor* getCabbagePluginEditor();
 	CabbagePluginProcessor* getCabbagePluginProcessor();
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();

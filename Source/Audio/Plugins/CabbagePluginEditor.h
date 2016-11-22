@@ -100,7 +100,7 @@ public:
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
     //=============================================================================
-    void enableGUIEditor(bool enable);
+    void enableEditMode(bool enable);
     void setCurrentlySelectedComponents(StringArray componentNames);
     void resetCurrentlySelectedComponents();
     Array<ValueTree> getValueTreesForCurrentlySelectedComponents();

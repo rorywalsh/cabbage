@@ -62,7 +62,8 @@ void CabbagePluginEditor::resized()
 //==============================================================================
 void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 {
-
+	components.clear();
+	
     for(int widget=0; widget<widgets.getNumChildren(); widget++)
     {
         const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();
@@ -185,7 +186,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 }
 
 //======================================================================================================
-void CabbagePluginEditor::enableGUIEditor(bool enable)
+void CabbagePluginEditor::enableEditMode(bool enable)
 {
     layoutEditor.setEnabled(enable);
     editModeEnabled = enable;
