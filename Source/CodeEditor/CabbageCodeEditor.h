@@ -30,7 +30,8 @@ class CabbageCodeEditorComponent :
     public ListBoxModel,
     public KeyListener,
     public Thread,
-	public ChangeBroadcaster
+	public ChangeBroadcaster,
+	public Timer
 {
 public:
     CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
@@ -74,6 +75,8 @@ public:
 
 	void sendUpdateMessage(int lineNumber);
 
+	void timerCallback();
+	
     void setAllText(String text)
     {
         getDocument().replaceAllContent(text);

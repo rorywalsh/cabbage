@@ -365,6 +365,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         setEditMode(isGUIEnabled);
         break;
     case CommandIDs::showGenericWidgetWindow:
+		CabbageUtilities::writeValueTreeToFile(getCabbagePluginProcessor()->getBreakpointData(), "/home/rory/breakpointData.xml");
         break;
     default:
         break;

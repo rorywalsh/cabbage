@@ -26,7 +26,7 @@
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
 #ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor (BusesProperties()
+     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
@@ -55,8 +55,16 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
     csound->SetOption((char*)"-n");
     csound->SetOption((char*)"-d");
 
+
+#ifdef Cabbage_IDE_Build	
+	csoundDebuggerInit(csound->GetCsound());
+    csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
+    csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 441);	
+#endif	
+
     compileCsdFile(csdFile);
     numCsoundChannels = csound->GetNchnls();
+	
 
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
 
@@ -104,51 +112,6 @@ void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
         }
 
     }
-
-
-
-    /*
-        //init all channels with their init val, and set parameters
-        for(int i=0; i<guiCtrls.size(); i++)
-        {
-            //		Logger::writeToLog(guiCtrls.getReference(i).getStringProp(CabbageIDs::channel)+": "+String(guiCtrls[i].getNumProp(CabbageIDs::value)));
-            if(guiCtrls[i].getStringProp("channeltype")=="string")
-                //deal with combobox strings..
-                csound->SetChannel(guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
-            									guiCtrls.getReference(i).getStringArrayPropValue("text", guiCtrls[i].getNumProp(CabbageIDs::value)-1).toUTF8().getAddress());
-            else
-            {
-                if(guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::hrange ||
-                        guiCtrls[i].getStringProp(CabbageIDs::type)==CabbageIDs::vrange)
-                {
-                    csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 0).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::minvalue));
-                    csound->SetChannel( guiCtrls[i].getStringArrayPropValue(CabbageIDs::channel, 1).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::maxvalue));
-                }
-                else
-                    csound->SetChannel( guiCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(), guiCtrls[i].getNumProp(CabbageIDs::value));
-            }
-
-            if(guiCtrls[i].getStringProp(CabbageIDs::type)!="hrange" && guiCtrls.getReference(i).getStringProp(CabbageIDs::type)!="vrange")
-            {
-
-                messageQueue.addOutgoingChannelMessageToQueue(guiCtrls[i].getStringProp(CabbageIDs::channel),
-                        guiCtrls[i].getNumProp(CabbageIDs::value), guiCtrls[i].getStringProp(CabbageIDs::type));
-            }
-        }
-
-        //init all channels with their init val, and set parameters
-        for(int i=0; i<guiLayoutCtrls.size(); i++)
-        {
-            if(guiLayoutCtrls[i].getStringProp(CabbageIDs::type).equalsIgnoreCase("texteditor"))
-                csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::channel).toUTF8(),
-                                   guiLayoutCtrls[i].getStringProp(CabbageIDs::text).toUTF8().getAddress());
-            if(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).isNotEmpty())
-                //deal with combobox strings..
-                csound->SetChannel(guiLayoutCtrls[i].getStringProp(CabbageIDs::identchannel).toUTF8(), "");
-        }
-        this->updateCabbageControls();
-        updateHostDisplay();
-    	 * */
 }
 //==============================================================================
 String CsoundPluginProcessor::getCsoundOutput()
@@ -351,6 +314,58 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     }
 }
 
+void CsoundPluginProcessor::breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *userdata)
+{
+	CsoundPluginProcessor* ud = (CsoundPluginProcessor *) userdata;
+	const String instrument = "Instrument"+String(bkpt_info->breakpointInstr->p1);
+	
+	
+    String info;
+	info << "\nBreakpoint at instr " << bkpt_info->breakpointInstr->p1
+         << "\nNumber of k-cycles into performance: "
+         << int(bkpt_info->breakpointInstr->kcounter)
+         << "\n------------------------------------------------------";
+
+//    debug_instr_t *debug_instr = bkpt_info.breakpointInstr;
+    debug_variable_t *vp = bkpt_info->instrVarList;
+    while (vp) {
+        info << " \n";
+        if (vp->name[0] != '#')
+        {
+			
+            info << "VarName:"<< vp->name << "\t";;
+            if (strcmp(vp->typeName, "i") == 0
+                    || strcmp(vp->typeName, "k") == 0) 
+			{
+				MYFLT *data = (MYFLT *) vp->data;
+				ud->breakPointData.set(instrument, vp->name, data[0]);
+                info << "value = " << *((MYFLT *) vp->data) << "\t";
+            } 
+			else if(strcmp(vp->typeName, "S") == 0) 
+			{
+				ud->breakPointData.set(instrument, vp->name, String((char *)vp->data));
+                info << "value = " << (char *) vp->data << "\t\t";
+            } 
+			else if (strcmp(vp->typeName, "a") == 0) 
+			{
+                MYFLT *data = (MYFLT *) vp->data;
+				ud->breakPointData.set(instrument, vp->name, String(data[0]));
+                info << "value[0] = "<< data[0] << "\t";
+            }
+			else 
+			{
+                info << "Unknown type\t";
+            }
+			
+            info << " varType[" << vp->typeName << "]";
+        }
+        vp = vp->next;
+    }
+	
+	//CabbageUtilities::debug(info);
+	
+    csoundDebugContinue(csound);	
+}
 
 //==============================================================================
 bool CsoundPluginProcessor::hasEditor() const

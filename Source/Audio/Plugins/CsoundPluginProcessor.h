@@ -21,7 +21,9 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <csound.hpp>
+#include <csdebug.h>
 #include "../../Utilities/CabbageUtilities.h"
+#include "CabbageCsoundBreakpointData.h"
 
 //==============================================================================
 /**
@@ -81,6 +83,13 @@ public:
 
 
     void handleAsyncUpdate();
+	//csound breakpint function
+	static void breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *udata);
+	CabbageCsoundBreakpointData breakPointData;
+	
+	ValueTree getBreakpointData(){
+		return breakPointData.valueTree;
+	}
     //=============================================================================
     //Implement these to send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel

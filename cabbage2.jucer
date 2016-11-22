@@ -33,6 +33,8 @@
         <GROUP id="{7DD20367-6FC1-032B-4A6D-FD89F6DB0F84}" name="Plugins">
           <FILE id="FAWUwm" name="CabbageAudioParameter.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/CabbageAudioParameter.h"/>
+          <FILE id="P42bcd" name="CabbageCsoundBreakpointData.h" compile="0"
+                resource="0" file="Source/Audio/Plugins/CabbageCsoundBreakpointData.h"/>
           <FILE id="yO6soR" name="CabbagePluginEditor.cpp" compile="1" resource="0"
                 file="Source/Audio/Plugins/CabbagePluginEditor.cpp"/>
           <FILE id="L08DBa" name="CabbagePluginEditor.h" compile="0" resource="0"
@@ -175,8 +177,8 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="" externalLibraries="csound64&#10;sndfile"
-                cppLanguageStandard="-std=c++14">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="Cabbage_IDE_Build=1"
+                externalLibraries="csound64&#10;sndfile" cppLanguageStandard="-std=c++14">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>

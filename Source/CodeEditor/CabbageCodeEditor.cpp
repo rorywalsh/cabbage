@@ -43,6 +43,9 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentCo
     autoCompleteListBox.addKeyListener(this);
     this->addKeyListener(this);
     owner->addChildComponent(autoCompleteListBox);
+	
+	
+	startTimerHz (100);	
 
 
 }
@@ -84,7 +87,26 @@ void CabbageCodeEditorComponent::updateColourScheme()
 
     this->setColourScheme(cs);
 }
+//==============================================================================
+void CabbageCodeEditorComponent::timerCallback()
+{
+	MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
+	Component* underMouse = mouse.getComponentUnderMouse();
 
+	Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
+
+	CodeDocument::Position start, end;
+	getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);
+
+	if (end.getPosition() > start.getPosition())
+	{
+		Range<int> selection(start.getPosition(), end.getPosition());
+
+		String text = getTextInRange (selection).toLowerCase();
+		//CabbageUtilities::debug(text);
+		
+	}
+}
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
 {
