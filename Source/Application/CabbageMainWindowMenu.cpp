@@ -156,7 +156,7 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
 {
     if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
     {
-        openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
+        getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
     }
 }
 
@@ -190,7 +190,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
     bool shouldShowEditMenu = false;
-    if(getCurrentCodeEditor()!= nullptr)
+    if(getContentComponent()->getCurrentEditorAndConsole()!= nullptr)
         shouldShowEditMenu = true;
 
     switch (commandID)
@@ -307,13 +307,13 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
     case CommandIDs::editMode:
         result.setInfo (String("Edit Mode"), String("Edit Mode"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
-		result.setTicked(getCabbagePluginEditor()==nullptr ? false : getCabbagePluginEditor()->isEditModeEnabled());
+		result.setTicked(getContentComponent()->getCabbagePluginEditor()==nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
 		result.setActive((shouldShowEditMenu ? true : false));
         break;
     case CommandIDs::enableLiveDebugger:
         result.setInfo (String("Enable Live Debugger"), String("Enable Live Debugger"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
-		result.setTicked(getCurrentCodeEditor() == nullptr ? false : getCurrentCodeEditor()->isDebugModeEnabled());
+		result.setTicked(getContentComponent()->getCurrentCodeEditor() == nullptr ? false : getContentComponent()->getCurrentCodeEditor()->isDebugModeEnabled());
 		result.setActive((shouldShowEditMenu ? true : false));
         break;
     default:
@@ -334,8 +334,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         break;
     case CommandIDs::saveDocument:
         saveDocument();
-        setEditMode(false);
-        isGUIEnabled = false;
+        getContentComponent()->setEditMode(false);
         break;
     case CommandIDs::saveDocumentAs:
         saveDocument(true);
@@ -371,11 +370,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 
         break;
     case CommandIDs::editMode:
-        isGUIEnabled=!isGUIEnabled;
-        setEditMode(isGUIEnabled);
+        getContentComponent()->setEditMode(isGUIEnabled =! isGUIEnabled);
         break;
     case CommandIDs::enableLiveDebugger:
-		getCurrentCodeEditor()->toggleDebuggerMode();
+		getContentComponent()->getCurrentCodeEditor()->toggleDebuggerMode();
         break;
     default:
         break;

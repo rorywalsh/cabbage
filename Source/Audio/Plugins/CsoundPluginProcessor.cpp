@@ -59,7 +59,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
 #ifdef Cabbage_IDE_Build	
 	csoundDebuggerInit(csound->GetCsound());
     csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
-    csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 441);	
+    csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);	
 #endif	
 
     compileCsdFile(csdFile);
@@ -89,6 +89,7 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
     if(csound)
     {
         csound = nullptr;
+		csoundParams = nullptr;		
         editorBeingDeleted (this->getActiveEditor());
     }
 }
@@ -316,55 +317,41 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
 void CsoundPluginProcessor::breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *userdata)
 {
+
 	CsoundPluginProcessor* ud = (CsoundPluginProcessor *) userdata;
 	const String instrument = "Instrument"+String(bkpt_info->breakpointInstr->p1);
+	debug_variable_t *vp = bkpt_info->instrVarList;
 	
-	
-    String info;
-	info << "\nBreakpoint at instr " << bkpt_info->breakpointInstr->p1
-         << "\nNumber of k-cycles into performance: "
-         << int(bkpt_info->breakpointInstr->kcounter)
-         << "\n------------------------------------------------------";
-
-//    debug_instr_t *debug_instr = bkpt_info.breakpointInstr;
-    debug_variable_t *vp = bkpt_info->instrVarList;
     while (vp) {
-        info << " \n";
         if (vp->name[0] != '#')
         {
 			
-            info << "VarName:"<< vp->name << "\t";;
             if (strcmp(vp->typeName, "i") == 0
                     || strcmp(vp->typeName, "k") == 0) 
 			{
 				MYFLT *data = (MYFLT *) vp->data;
 				ud->breakPointData.set(instrument, vp->name, data[0]);
-                info << "value = " << *((MYFLT *) vp->data) << "\t";
             } 
 			else if(strcmp(vp->typeName, "S") == 0) 
 			{
 				ud->breakPointData.set(instrument, vp->name, String((char *)vp->data));
-                info << "value = " << (char *) vp->data << "\t\t";
             } 
 			else if (strcmp(vp->typeName, "a") == 0) 
 			{
                 MYFLT *data = (MYFLT *) vp->data;
 				ud->breakPointData.set(instrument, vp->name, String(data[0]));
-                info << "value[0] = "<< data[0] << "\t";
             }
 			else 
 			{
-                info << "Unknown type\t";
+
             }
-			
-            info << " varType[" << vp->typeName << "]";
         }
         vp = vp->next;
     }
-	
-	//CabbageUtilities::debug(info);
-	
+
     csoundDebugContinue(csound);	
+	
+	
 }
 
 //==============================================================================
