@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.cabbage2" includeBinaryInAppConfig="0"
-              jucerVersion="4.2.4">
+              jucerVersion="4.3.0">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{D038562E-7D7D-26DB-5019-6CE1A94F3F1F}" name="Application">
@@ -24,6 +24,10 @@
               file="Source/Application/CabbageNewProjectWindow.cpp"/>
         <FILE id="OrpVgF" name="CabbageNewProjectWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageNewProjectWindow.h"/>
+        <FILE id="HTZJXm" name="CabbageToolbarFactory.cpp" compile="1" resource="0"
+              file="Source/Application/CabbageToolbarFactory.cpp"/>
+        <FILE id="nLe4X9" name="CabbageToolbarFactory.h" compile="0" resource="0"
+              file="Source/Application/CabbageToolbarFactory.h"/>
       </GROUP>
       <GROUP id="{9205CC0D-0001-83B4-0964-80FA3B5F3228}" name="Audio">
         <GROUP id="{D7CC3B0A-213D-D74F-9D80-FBF21D5A9E9E}" name="Graph">

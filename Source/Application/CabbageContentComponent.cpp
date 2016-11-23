@@ -20,8 +20,9 @@
 #include "CabbageContentComponent.h"
 #include "CabbageDocumentWindow.h"
 
+
 //==============================================================================
-CabbageContentComponent::CabbageContentComponent(ValueTree settings): settings(settings)
+CabbageContentComponent::CabbageContentComponent(CabbageDocumentWindow* owner, ValueTree settings): settings(settings), owner(owner), factory(owner)
 {
     addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(settings));
     propertyPanel->setVisible(false);
@@ -117,7 +118,7 @@ void CabbageContentComponent::buttonClicked(Button* button)
             docWindow->setName(openFiles[currentFileIndex].getFileName());
             docWindow->setCurrentCsdFile(openFiles[currentFileIndex]);
         }
-    }
+    }	
 }
 
 void CabbageContentComponent::paint (Graphics& g)
@@ -138,6 +139,7 @@ void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 
 void CabbageContentComponent::resized()
 {
+	const int heightOfTabButtons = (editorAndConsole.size()>1) ? 25 : 0;
     const int toolbarThickness = 35;
 	if (toolbar.isVertical())
 		toolbar.setBounds (getLocalBounds().removeFromLeft (toolbarThickness));
@@ -149,5 +151,5 @@ void CabbageContentComponent::resized()
         propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
     }
 
-    resizeAllEditorAndConsoles(toolbarThickness);
+    resizeAllEditorAndConsoles(toolbarThickness + heightOfTabButtons);
 }

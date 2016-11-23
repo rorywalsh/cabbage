@@ -29,13 +29,12 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
 {
     setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
     setUsingNativeTitleBar (true);
-    setupSettingsFile();
-
     setResizable(true, true);
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
 
-    setContentOwned (content = new CabbageContentComponent(cabbageSettings->getValueTree()), true);
+	initSettings();
+    setContentOwned (content = new CabbageContentComponent(this, cabbageSettings->getValueTree()), true);
     content->propertyPanel->setVisible(false);
 
     lookAndFeel->setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
@@ -65,7 +64,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
 
 }
 
-void CabbageDocumentWindow::setupSettingsFile()
+void CabbageDocumentWindow::initSettings()
 {
     PropertiesFile::Options options;
     options.applicationName     = "Cabbage2";
@@ -97,6 +96,13 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
 
 }
 
+void CabbageDocumentWindow::buttonClicked(Button* button)
+{
+	if(const ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*>(button))
+	{
+		CabbageUtilities::debug(toolbarButton->getName());
+	}
+}
 //=======================================================================================
 CabbageContentComponent* CabbageDocumentWindow::getMainContentComponent()
 {

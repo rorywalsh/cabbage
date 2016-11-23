@@ -28,7 +28,7 @@
 #include "../CabbageIds.h"
 #include "CabbageToolbarFactory.h"
 
-
+class CabbageDocumentWindow;
 
 //==============================================================================
 /*
@@ -40,7 +40,7 @@ class CabbageContentComponent   : public Component, public Button::Listener
 public:
 
     //==============================================================================
-    CabbageContentComponent(ValueTree settings);
+    CabbageContentComponent(CabbageDocumentWindow* owner, ValueTree settings);
     ~CabbageContentComponent();
 
     void paint (Graphics&) override;
@@ -59,7 +59,7 @@ public:
 	Toolbar toolbar;
 
 private:
-	
+	ScopedPointer<CabbageDocumentWindow> owner;
 	CabbageToolbarFactory factory;
     Image bgImage;
     const int statusBarHeight = 25;

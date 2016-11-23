@@ -33,8 +33,13 @@
 
 
 
-class CabbageDocumentWindow    : public DocumentWindow,     public ApplicationCommandTarget,
-    public MenuBarModel, public ChangeListener, public Timer
+class CabbageDocumentWindow    
+	: public DocumentWindow,     
+	public ApplicationCommandTarget,
+    public MenuBarModel, 
+	public ChangeListener, 
+	public Timer,
+	public Button::Listener
 {
 public:
     //==========================================================
@@ -81,7 +86,7 @@ public:
     void hideGenericWidgetWindow(bool freeContent=false);
     void createGenericCsoundPluginWrapper();
     void timerCallback();
-    void setupSettingsFile();
+    void initSettings();
     void createEditorForAudioGraphNode();
     void createAudioGraph();
     void setEditMode(bool enable);
@@ -89,18 +94,11 @@ public:
     void closeButtonPressed() override;
     void updateEditorColourScheme();
 
+	void buttonClicked(Button* button);
+
     ScopedPointer<CabbageSettings> cabbageSettings;
-
-
-    void setCurrentCsdFile(File file)
-    {
-        currentCsdFile = file;
-    }
-
-    ApplicationCommandTarget* getNextCommandTarget()
-    {
-        return findFirstTargetParentComponent();
-    }
+    void setCurrentCsdFile(File file)    {        currentCsdFile = file;    }
+    ApplicationCommandTarget* getNextCommandTarget()    {        return findFirstTargetParentComponent();    }
 
 private:
     ApplicationCommandManager commandManager;

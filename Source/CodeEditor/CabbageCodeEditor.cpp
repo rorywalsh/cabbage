@@ -137,7 +137,6 @@ void CabbageCodeEditorComponent::timerCallback()
 			debugLabel.toFront(true);
 			debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
 			debugLabel.grabKeyboardFocus();
-			//CabbageUtilities::debug(token+":"+value.toString());
 		}
 		else
 		{
