@@ -141,7 +141,6 @@ LivePropertyEditorBase::LivePropertyEditorBase (LiveValueBase& v, CodeDocument& 
     valueEditor.setText (v.getStringValue (wasHex), dontSendNotification);
     valueEditor.addListener (this);
     sourceEditor.setReadOnly (true);
-    sourceEditor.setFont (sourceEditor.getFont().withHeight (13.0f));
     resetButton.addListener (this);
 }
 

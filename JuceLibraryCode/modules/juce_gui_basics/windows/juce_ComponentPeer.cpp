@@ -320,7 +320,7 @@ void ComponentPeer::handleMovedOrResized()
 
         if (wasMoved || wasResized)
         {
-            component.boundsRelativeToParent = newBounds;
+            component.bounds = newBounds;
 
             if (wasResized)
                 component.repaint();

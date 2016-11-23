@@ -740,7 +740,7 @@ class DirectoryIterator::NativeIterator::Pimpl
 {
 public:
     Pimpl (const File& directory, const String& wildCard)
-        : directoryWithWildCard (directory.getFullPathName().isNotEmpty() ? File::addTrailingSeparator (directory.getFullPathName()) + wildCard : String()),
+        : directoryWithWildCard (File::addTrailingSeparator (directory.getFullPathName()) + wildCard),
           handle (INVALID_HANDLE_VALUE)
     {
     }
