@@ -27,6 +27,8 @@ CabbageContentComponent::CabbageContentComponent(ValueTree settings): settings(s
     propertyPanel->setVisible(false);
     setSize (1200, 800);
     bgImage = createBackground();
+	addAndMakeVisible (toolbar);
+	toolbar.addDefaultItems (factory);
 }
 
 CabbageContentComponent::~CabbageContentComponent()
@@ -122,7 +124,6 @@ void CabbageContentComponent::paint (Graphics& g)
 {
     if(editorAndConsole.size()==0)
         g.drawImage(bgImage, getLocalBounds().toFloat());
-
     else
         g.fillAll( CabbageSettings::getColourFromValueTree(settings, CabbageColourIds::lineNumberBackground, Colour(50,50,50)));
 
@@ -137,12 +138,16 @@ void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 
 void CabbageContentComponent::resized()
 {
-    const int heightOfTabButtons = (editorAndConsole.size()>1) ? 25 : 0;
-
+    const int toolbarThickness = 35;
+	if (toolbar.isVertical())
+		toolbar.setBounds (getLocalBounds().removeFromLeft (toolbarThickness));
+	else
+		toolbar.setBounds (getLocalBounds().removeFromTop  (toolbarThickness));
+		
     if(propertyPanel->isVisible())
     {
         propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
     }
 
-    resizeAllEditorAndConsoles(heightOfTabButtons);
+    resizeAllEditorAndConsoles(toolbarThickness);
 }

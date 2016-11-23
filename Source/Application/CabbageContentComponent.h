@@ -26,6 +26,7 @@
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../InterfaceEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"
+#include "CabbageToolbarFactory.h"
 
 
 
@@ -55,9 +56,11 @@ public:
     void addFileTabButton(File file, int xPos);
     CabbageIDELookAndFeel lookAndFeel;
     EditorAndConsoleContentComponent* getCurrentCodeEditor();
-
+	Toolbar toolbar;
 
 private:
+	
+	CabbageToolbarFactory factory;
     Image bgImage;
     const int statusBarHeight = 25;
     ValueTree settings;

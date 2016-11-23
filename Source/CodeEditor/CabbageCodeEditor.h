@@ -22,6 +22,7 @@
 #include "../CabbageIds.h"
 #include "CsoundTokeniser.h"
 
+
 class EditorAndConsoleContentComponent;
 
 class CabbageCodeEditorComponent :

@@ -40,7 +40,8 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
 
     lookAndFeel->setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
     lookAndFeel->setColour(ScrollBar::backgroundColourId, Colour(70, 70, 70));
-
+	content->toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
+	content->toolbar.repaint();
     setMenuBar(this, 25);
     getMenuBarComponent()->setLookAndFeel(lookAndFeel);
 
@@ -95,7 +96,6 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
     //lookAndFeel = nullptr;
 
 }
-
 
 //=======================================================================================
 CabbageContentComponent* CabbageDocumentWindow::getMainContentComponent()
@@ -153,13 +153,15 @@ CabbagePluginProcessor* CabbageDocumentWindow::getCabbagePluginProcessor()
 //==============================================================================
 void CabbageDocumentWindow::updateEditorColourScheme()
 {
-    this->getLookAndFeel().setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
-    this->getLookAndFeel().setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour(50,50,50)));
-    this->lookAndFeelChanged();
+    getLookAndFeel().setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
+    getLookAndFeel().setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour(50,50,50)));
+    lookAndFeelChanged();
     content->propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
     content->propertyPanel->setBorderColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
     int editorIndex = content->editorAndConsole.size()-1;
     content->getCurrentCodeEditor()->updateLookAndFeel();
+	content->toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
+	content->toolbar.repaint();
 }
 //==============================================================================
 void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)

@@ -30,6 +30,9 @@
 #include "../Settings/CabbageSettingsWindow.h"
 #include "../Settings/CabbageSettings.h"
 
+
+
+
 class CabbageDocumentWindow    : public DocumentWindow,     public ApplicationCommandTarget,
     public MenuBarModel, public ChangeListener, public Timer
 {
