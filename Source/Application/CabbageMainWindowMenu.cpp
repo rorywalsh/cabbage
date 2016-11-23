@@ -97,6 +97,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::deselectAll);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::editMode);
+	menu.addCommandItem (&commandManager, CommandIDs::enableLiveDebugger);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (&commandManager, CommandIDs::findSelection);
@@ -179,6 +180,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::undo,
                               CommandIDs::redo,
                               CommandIDs::editMode,
+							  CommandIDs::enableLiveDebugger,
                               CommandIDs::showGenericWidgetWindow
                             };
 
@@ -305,6 +307,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
     case CommandIDs::editMode:
         result.setInfo (String("Edit Mode"), String("Edit Mode"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
+		result.setTicked(getCabbagePluginEditor()==nullptr ? false : getCabbagePluginEditor()->isEditModeEnabled());
+		result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::enableLiveDebugger:
+        result.setInfo (String("Enable Live Debugger"), String("Enable Live Debugger"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
+		result.setTicked(getCurrentCodeEditor() == nullptr ? false : getCurrentCodeEditor()->isDebugModeEnabled());
+		result.setActive((shouldShowEditMenu ? true : false));
         break;
     default:
 
@@ -364,8 +374,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         isGUIEnabled=!isGUIEnabled;
         setEditMode(isGUIEnabled);
         break;
-    case CommandIDs::showGenericWidgetWindow:
-		CabbageUtilities::writeValueTreeToFile(getCabbagePluginProcessor()->getBreakpointData(), "/home/rory/breakpointData.xml");
+    case CommandIDs::enableLiveDebugger:
+		getCurrentCodeEditor()->toggleDebuggerMode();
         break;
     default:
         break;

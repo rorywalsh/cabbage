@@ -24,7 +24,13 @@
 
 //==============================================================================
 CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
-    : CodeEditorComponent(document, codeTokeniser), valueTree(valueTree), statusBar(statusBar), owner(owner), autoCompleteListBox(), Thread("parseVariablesThread")
+    : CodeEditorComponent(document, codeTokeniser), 
+	valueTree(valueTree), 
+	statusBar(statusBar), 
+	owner(owner), 
+	autoCompleteListBox(), 
+	Thread("parseVariablesThread"),
+	debugLabel("")
 {
 
     String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
@@ -43,10 +49,9 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentCo
     autoCompleteListBox.addKeyListener(this);
     this->addKeyListener(this);
     owner->addChildComponent(autoCompleteListBox);
-	
-	
-	startTimerHz (100);	
-
+	owner->addChildComponent(debugLabel);
+	debugLabel.setColour(Label::backgroundColourId, Colours::whitesmoke);
+	debugLabel.setFont(Font(String("DejaVu Sans Mono"), 17, 0));
 
 }
 
@@ -88,6 +93,26 @@ void CabbageCodeEditorComponent::updateColourScheme()
     this->setColourScheme(cs);
 }
 //==============================================================================
+void CabbageCodeEditorComponent::toggleDebuggerMode()
+{
+	debugModeEnabled = !debugModeEnabled;
+	
+	if(debugModeEnabled)
+	{
+		startTimerHz(100);
+	}
+	else
+	{
+		stopTimer();
+		debugLabel.setVisible(false);
+	}
+}
+
+bool CabbageCodeEditorComponent::isDebugModeEnabled()
+{
+	return debugModeEnabled;
+}
+
 void CabbageCodeEditorComponent::timerCallback()
 {
 	MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
@@ -102,10 +127,29 @@ void CabbageCodeEditorComponent::timerCallback()
 	{
 		Range<int> selection(start.getPosition(), end.getPosition());
 
-		String text = getTextInRange (selection).toLowerCase();
-		//CabbageUtilities::debug(text);
+		const String token = getTextInRange (selection);
+		const var value = findValueForCsoundVariable(token);
+		if(!value.isVoid())
+		{
+			const String displayText = token+":"+value.toString(); 
+			debugLabel.setText(displayText, dontSendNotification);
+			debugLabel.setVisible(true);
+			debugLabel.toFront(true);
+			debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
+			debugLabel.grabKeyboardFocus();
+			//CabbageUtilities::debug(token+":"+value.toString());
+		}
+		else
+		{
+			debugLabel.setVisible(false);
+		}
 		
 	}
+}
+
+var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
+{
+	return breakpointData.getChildWithName("Instrument1").getProperty(varName);
 }
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)

@@ -52,7 +52,8 @@ public:
 	const String getAllText();
     StringArray getSelectedTextArray();
 
-    void run() {	parseTextForVariables();	};
+
+    void run() {	parseTextForVariables();	};		// thread for parsing text for variables on startup
 
     void handleTabKey(String direction);
     void handleReturnKey();
@@ -75,8 +76,15 @@ public:
 
 	void sendUpdateMessage(int lineNumber);
 
+	//=========================================================
 	void timerCallback();
-	
+	ValueTree breakpointData;
+	var findValueForCsoundVariable(String varName);
+	bool debugModeEnabled = false;
+	void toggleDebuggerMode();
+	bool isDebugModeEnabled();
+	Label debugLabel;
+	//=========================================================
     void setAllText(String text)
     {
         getDocument().replaceAllContent(text);

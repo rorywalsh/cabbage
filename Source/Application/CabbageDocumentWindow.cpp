@@ -209,7 +209,7 @@ void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)
 	
     else if(CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*>(source)) // update code when a user changes a property
     {
-		if(getCabbagePluginProcessor() && getCabbagePluginEditor()->isEditModeEnabled())
+		if(getCabbagePluginProcessor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
 			this->getCabbagePluginProcessor()->updateWidgets(codeEditor->getAllText());
     }	
 }
@@ -404,6 +404,8 @@ void CabbageDocumentWindow::createAudioGraph()
     audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
 
     createEditorForAudioGraphNode();
+	if(getCurrentCodeEditor() != nullptr)
+		getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
 
 }
 
@@ -429,10 +431,8 @@ void CabbageDocumentWindow::createEditorForAudioGraphNode()
                 if(point.getY()>0 && point.getX()>0)
                     w->setTopLeftPosition(point.getX(), point.getY());
             }
-
         }
     }
-
 }
 
 //==============================================================================
