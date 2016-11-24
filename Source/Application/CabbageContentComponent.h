@@ -37,7 +37,8 @@ class CabbageContentComponent
 	: public Component, 
 	public Button::Listener,
 	public ChangeListener,
-	public Timer
+	public Timer,
+	public ComboBox::Listener
 {
 public:
 
@@ -46,6 +47,8 @@ public:
     ~CabbageContentComponent();
 	//==============================================================================
     void changeListenerCallback(ChangeBroadcaster* source);
+    void buttonClicked(Button* button);
+	void comboBoxChanged (ComboBox *comboBoxThatHasChanged);
     void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
 	//==============================================================================
     void paint (Graphics&) override;
@@ -53,7 +56,6 @@ public:
     void resizeAllEditorAndConsoles(int height);	
 	void createEditorForAudioGraphNode();
     void createAudioGraph();
-    void buttonClicked(Button* button);
     void addFileTabButton(File file, int xPos);
     Image createBackground();
 	//==============================================================================

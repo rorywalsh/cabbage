@@ -16,7 +16,9 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
 */
+
 #include "CabbageDocumentWindow.h"
+
 enum
 {
     recentProjectsBaseID = 100,
@@ -24,10 +26,85 @@ enum
     colourSchemeBaseID = 1000
 };
 
-//==============================================================================
-// This file contains all implementations for methods relating to
-// CabbageDocumentWindow menubar
-//==============================================================================
+//=================================================================================================================
+CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(name,
+            Colours::lightgrey,
+            DocumentWindow::allButtons)
+{
+    setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
+    setUsingNativeTitleBar (true);
+    setResizable(true, true);
+    centreWithSize (getWidth(), getHeight());
+    setVisible (true);
+
+	initSettings();
+    setContentOwned (content = new CabbageContentComponent(this, cabbageSettings), true);
+    content->propertyPanel->setVisible(false);
+	cabbageSettings->addChangeListener(content);
+    setMenuBar(this, 25);
+    getMenuBarComponent()->setLookAndFeel(getContentComponent()->lookAndFeel);
+
+    content->createAudioGraph();
+
+    if(cabbageSettings->getUserSettings()->getIntValue("OpenMostRecentFileOnStartup")==1)
+    {
+        cabbageSettings->updateRecentFilesList();
+        content->openFile(cabbageSettings->getMostRecentFile().getFullPathName());
+    }
+
+    setApplicationCommandManagerToWatch(&commandManager);
+    commandManager.registerAllCommandsForTarget(this);
+    addKeyListener(commandManager.getKeyMappings());
+
+#if JUCE_MAC
+    MenuBarModel::setMacMainMenu (this, nullptr, "Open Recent");
+#endif
+	setLookAndFeel(&getContentComponent()->getLookAndFeel());
+	lookAndFeelChanged();
+}
+
+void CabbageDocumentWindow::initSettings()
+{
+    PropertiesFile::Options options;
+    options.applicationName     = "Cabbage2";
+    options.filenameSuffix      = "settings";
+    options.osxLibrarySubFolder = "Preferences";
+#if JUCE_LINUX
+    options.folderName          = "~/.config/Cabbage2";
+#else
+    options.folderName          = "Cabbage2";
+#endif
+
+    cabbageSettings = new CabbageSettings();
+    cabbageSettings->setStorageParameters (options);
+    cabbageSettings->setDefaultSettings();
+    //lookAndFeel->refreshLookAndFeel(cabbageSettings->getValueTree());
+}
+
+CabbageDocumentWindow::~CabbageDocumentWindow()
+{
+    setMenuBar(nullptr);
+
+#if JUCE_MAC
+    MenuBarModel::setMacMainMenu (nullptr);
+#endif
+    cabbageSettings->setProperty("audioSetup", getContentComponent()->getAudioDeviceSettings());
+	cabbageSettings->closeFiles();
+	
+    //lookAndFeel = nullptr;
+
+}
+//=======================================================================================
+CabbageContentComponent* CabbageDocumentWindow::getContentComponent()
+{
+    return content;
+}
+
+void CabbageDocumentWindow::closeButtonPressed()
+{
+    JUCEApplicationBase::quit();
+}
+
 StringArray CabbageDocumentWindow::getMenuBarNames()
 {
     const char* const names[] = { "File", "Edit", "Tools", "View", nullptr };
@@ -327,29 +404,28 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     switch (info.commandID)
     {
     case CommandIDs::newProject:
-        createNewProject();
+        getContentComponent()->createNewProject();
         break;
     case CommandIDs::open:
-        askUserToOpenFile();
+        getContentComponent()->openFile();
         break;
     case CommandIDs::saveDocument:
-        saveDocument();
+        getContentComponent()->saveDocument();
         getContentComponent()->setEditMode(false);
         break;
     case CommandIDs::saveDocumentAs:
-        saveDocument(true);
+        getContentComponent()->saveDocument(true);
         break;
     case CommandIDs::closeAllDocuments:
-        closeAllDocuments (true);
         break;
     case CommandIDs::settings:
-        showSettingsDialog();
+        getContentComponent()->showSettingsDialog();
         break;
     case CommandIDs::runCode:
-        runCode();
+        getContentComponent()->runCode();
         break;
     case CommandIDs::stopCode:
-        stopCode();
+        getContentComponent()->stopCode();
         break;
     case CommandIDs::exportAsEffect:
 

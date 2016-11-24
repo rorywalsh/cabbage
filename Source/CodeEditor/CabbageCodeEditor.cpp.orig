@@ -24,19 +24,18 @@
 
 //==============================================================================
 CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
-    : CodeEditorComponent(document, codeTokeniser),
-      valueTree(valueTree),
-      statusBar(statusBar),
-      owner(owner),
-      autoCompleteListBox(),
-      Thread("parseVariablesThread"),
-      debugLabel("")
+    : CodeEditorComponent(document, codeTokeniser), 
+	valueTree(valueTree), 
+	statusBar(statusBar), 
+	owner(owner), 
+	autoCompleteListBox(), 
+	Thread("parseVariablesThread"),
+	debugLabel("")
 {
 
     String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
     Logger::writeToLog(opcodeFile);
-
 
     if(File(opcodeFile).existsAsFile())
         setOpcodeStrings(File(opcodeFile).loadFileAsString());
@@ -50,9 +49,9 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentCo
     autoCompleteListBox.addKeyListener(this);
     this->addKeyListener(this);
     owner->addChildComponent(autoCompleteListBox);
-    owner->addChildComponent(debugLabel);
-    debugLabel.setColour(Label::backgroundColourId, Colours::whitesmoke);
-    debugLabel.setFont(Font(String("DejaVu Sans Mono"), 17, 0));
+	owner->addChildComponent(debugLabel);
+	debugLabel.setColour(Label::backgroundColourId, Colours::whitesmoke);
+	debugLabel.setFont(Font(String("DejaVu Sans Mono"), 17, 0));
 
 }
 
@@ -96,73 +95,73 @@ void CabbageCodeEditorComponent::updateColourScheme()
 //==============================================================================
 void CabbageCodeEditorComponent::toggleDebuggerMode()
 {
-    debugModeEnabled = !debugModeEnabled;
-
-    if(debugModeEnabled)
-    {
-        startTimerHz(100);
-    }
-    else
-    {
-        stopTimer();
-        debugLabel.setVisible(false);
-    }
+	debugModeEnabled = !debugModeEnabled;
+	
+	if(debugModeEnabled)
+	{
+		startTimerHz(100);
+	}
+	else
+	{
+		stopTimer();
+		debugLabel.setVisible(false);
+	}
 }
 
 bool CabbageCodeEditorComponent::isDebugModeEnabled()
 {
-    return debugModeEnabled;
+	return debugModeEnabled;
 }
 
 void CabbageCodeEditorComponent::timerCallback()
 {
-    MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
-    Component* underMouse = mouse.getComponentUnderMouse();
+	MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
+	Component* underMouse = mouse.getComponentUnderMouse();
 
-    Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
+	Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
 
-    CodeDocument::Position start, end;
-    getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);
+	CodeDocument::Position start, end;
+	getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);
 
-    if (end.getPosition() > start.getPosition())
-    {
-        Range<int> selection(start.getPosition(), end.getPosition());
+	if (end.getPosition() > start.getPosition())
+	{
+		Range<int> selection(start.getPosition(), end.getPosition());
 
-        const String token = getTextInRange (selection);
-        const var value = findValueForCsoundVariable(token);
-        if(!value.isVoid())
-        {
-            const String displayText = token+":"+value.toString();
-            debugLabel.setText(displayText, dontSendNotification);
-            debugLabel.setVisible(true);
-            debugLabel.toFront(true);
-            debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
-            debugLabel.grabKeyboardFocus();
-        }
-        else
-        {
-            debugLabel.setVisible(false);
-        }
-
-    }
+		const String token = getTextInRange (selection);
+		const var value = findValueForCsoundVariable(token);
+		if(!value.isVoid())
+		{
+			const String displayText = token+":"+value.toString(); 
+			debugLabel.setText(displayText, dontSendNotification);
+			debugLabel.setVisible(true);
+			debugLabel.toFront(true);
+			debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
+			debugLabel.grabKeyboardFocus();
+		}
+		else
+		{
+			debugLabel.setVisible(false);
+		}
+		
+	}
 }
 
 var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
 {
-    return breakpointData.getChildWithName("Instrument1").getProperty(varName);
+	return breakpointData.getChildWithName("Instrument1").getProperty(varName);
 }
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
 {
-    const StringArray csdArray = getAllTextAsStringArray();
-    const int cabbageSectionClosingLineNumber = csdArray.indexOf("</Cabbage>");
-
-    if(shouldSendUpdateMessage && lineNumber<cabbageSectionClosingLineNumber)
-    {
-        sendChangeMessage();
-    }
-
-    shouldSendUpdateMessage =! shouldSendUpdateMessage;
+	const StringArray csdArray = getAllTextAsStringArray();
+	const int cabbageSectionClosingLineNumber = csdArray.indexOf("</Cabbage>"); 
+	
+	if(shouldSendUpdateMessage && lineNumber<cabbageSectionClosingLineNumber)
+	{
+		sendChangeMessage();
+	}
+	
+	shouldSendUpdateMessage =! shouldSendUpdateMessage;
 }
 //==============================================================================
 void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, int startIndex)
@@ -171,18 +170,18 @@ void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, in
     const String lineFromCsd = getDocument().getLine(getDocument().findWordBreakBefore(getCaretPos()).getLineNumber());
     displayOpcodeHelpInStatusBar(lineFromCsd);
 
-    lastAction = "insertText";
-
-    const CodeDocument::Position pos(getDocument(), startIndex);
-    sendUpdateMessage(pos.getLineNumber());
-
+	lastAction = "insertText";
+	
+	const CodeDocument::Position pos(getDocument(), startIndex);	
+	sendUpdateMessage(pos.getLineNumber());
+		
 }
 
 void CabbageCodeEditorComponent::codeDocumentTextDeleted(int startIndex, int endIndex)
-{
-    const CodeDocument::Position endPos(getDocument(), endIndex);
-    lastAction = "removeText";
-    sendUpdateMessage(endPos.getLineNumber());
+{	
+	const CodeDocument::Position endPos(getDocument(), endIndex);
+	lastAction = "removeText";	
+	sendUpdateMessage(endPos.getLineNumber());
 }
 
 void CabbageCodeEditorComponent::insertTextAtCaret (const String &textToInsert)
@@ -393,24 +392,6 @@ bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps
     return true;
 }
 //==============================================================================
-void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()	//this is called on a separate thread..
-{
-    StringArray csdArray = this->getAllTextAsStringArray();
-
-	for(int i = 0 ; i < csdArray.size() ; i++)
-	{
-		int commentInLine = csdArray[i].indexOf(";");
-		int instrumentKeyword = csdArray[i].indexOf("instr");
-		if(instrumentKeyword<commentInLine)
-		{
-			String line = csdArray[i];
-			String instrumentNameOrNumber = line.substring(csdArray[i].indexOf("instr")+5, 100);
-			CabbageUtilities::debug(instrumentNameOrNumber);
-		}
-			
-	}
-}
-
 void CabbageCodeEditorComponent::parseTextForVariables()	//this is called on a separate thread..
 {
     String csdText = getDocument().getAllContent();
@@ -453,8 +434,8 @@ void CabbageCodeEditorComponent::handleAutoComplete(String text)
 
     if(currentWord.isNotEmpty())
     {
-        if(text!=" ")
-            showAutoComplete(currentWord);
+		if(text!=" ")
+			showAutoComplete(currentWord);
     }
 }
 
@@ -467,10 +448,10 @@ void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
         {
             variableNamesToShow.addIfNotAlreadyThere(item.trim());
             autoCompleteListBox.updateContent();
-            if(variableNamesToShow.size()==1 && variableNamesToShow[0]==currentWord)
-            {}
-            else
-                autoCompleteListBox.setVisible(true);
+			if(variableNamesToShow.size()==1 && variableNamesToShow[0]==currentWord)
+			{}
+			else
+				autoCompleteListBox.setVisible(true);
         }
     }
 }

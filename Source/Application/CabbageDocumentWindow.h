@@ -35,21 +35,16 @@
 class CabbageDocumentWindow    
 	: public DocumentWindow,     
 	public ApplicationCommandTarget,
-    public MenuBarModel, 
-	public Button::Listener
+    public MenuBarModel
 {
 public:
     //==========================================================
     CabbageDocumentWindow (String name);
     ~CabbageDocumentWindow();
     CabbageContentComponent* getContentComponent();
-    
-
     //=======================================================
-
-    //=======================================================
-    StringArray getMenuBarNames();								// thesew method implementations
-    void createMenu (PopupMenu&, const String& menuName);		// are found in CabbageMainWindowMenu.cpp
+    StringArray getMenuBarNames();								
+    void createMenu (PopupMenu&, const String& menuName);		
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);
@@ -63,25 +58,10 @@ public:
     PopupMenu getMenuForIndex(int topLevelMenuIndex, const String& menuName);
     void menuItemSelected (int menuItemID, int topLevelMenuIndex);
     //=======================================================
-    void showAudioSettings();
-    void createNewProject();
-    void askUserToOpenFile();
-    bool openFile (const File&, String type="");
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
-    void showSettingsDialog();
-    void saveDocument(bool saveAs=false);
-    void runCode();
-    void stopCode();
-    void showGenericWidgetWindow();
-    void hideGenericWidgetWindow(bool freeContent=false);
-    void createGenericCsoundPluginWrapper();
     void initSettings();
-
-    void setEditMode(bool enable);
     void closeButtonPressed() override;
-    void updateEditorColourScheme();
-
 	void buttonClicked(Button* button);
 
     ScopedPointer<CabbageSettings> cabbageSettings;

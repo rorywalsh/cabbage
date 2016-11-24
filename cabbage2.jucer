@@ -14,8 +14,6 @@
               file="Source/Application/CabbageDocumentWindow.cpp"/>
         <FILE id="D5nGiz" name="CabbageDocumentWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageDocumentWindow.h"/>
-        <FILE id="QkdASf" name="CabbageMainWindowMenu.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageMainWindowMenu.cpp"/>
         <FILE id="N3MNyk" name="CabbageMessageSystem.cpp" compile="1" resource="0"
               file="Source/Application/CabbageMessageSystem.cpp"/>
         <FILE id="xnUeDS" name="CabbageMessageSystem.h" compile="0" resource="0"

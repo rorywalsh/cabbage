@@ -26,7 +26,7 @@
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
 #ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor (BusesProperties()
+     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
@@ -56,15 +56,15 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
     csound->SetOption((char*)"-d");
 
 
-#ifdef Cabbage_IDE_Build
-    csoundDebuggerInit(csound->GetCsound());
+#ifdef Cabbage_IDE_Build	
+	csoundDebuggerInit(csound->GetCsound());
     csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
-    csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);
-#endif
+    csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);	
+#endif	
 
     compileCsdFile(csdFile);
     numCsoundChannels = csound->GetNchnls();
-
+	
 
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
 
@@ -89,7 +89,7 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
     if(csound)
     {
         csound = nullptr;
-        csoundParams = nullptr;
+		csoundParams = nullptr;		
         editorBeingDeleted (this->getActiveEditor());
     }
 }
@@ -318,41 +318,40 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 void CsoundPluginProcessor::breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *userdata)
 {
 
-    CsoundPluginProcessor* ud = (CsoundPluginProcessor *) userdata;
-    const String instrument = "Instrument"+String(bkpt_info->breakpointInstr->p1);
-    debug_variable_t *vp = bkpt_info->instrVarList;
-
-    while (vp)
-    {
+	CsoundPluginProcessor* ud = (CsoundPluginProcessor *) userdata;
+	const String instrument = "Instrument"+String(bkpt_info->breakpointInstr->p1);
+	debug_variable_t *vp = bkpt_info->instrVarList;
+	
+    while (vp) {
         if (vp->name[0] != '#')
         {
-
+			
             if (strcmp(vp->typeName, "i") == 0
-                    || strcmp(vp->typeName, "k") == 0)
-            {
+                    || strcmp(vp->typeName, "k") == 0) 
+			{
+				MYFLT *data = (MYFLT *) vp->data;
+				ud->breakPointData.set(instrument, vp->name, data[0]);
+            } 
+			else if(strcmp(vp->typeName, "S") == 0) 
+			{
+				ud->breakPointData.set(instrument, vp->name, String((char *)vp->data));
+            } 
+			else if (strcmp(vp->typeName, "a") == 0) 
+			{
                 MYFLT *data = (MYFLT *) vp->data;
-                ud->breakPointData.set(instrument, vp->name, data[0]);
+				ud->breakPointData.set(instrument, vp->name, String(data[0]));
             }
-            else if(strcmp(vp->typeName, "S") == 0)
-            {
-                ud->breakPointData.set(instrument, vp->name, String((char *)vp->data));
-            }
-            else if (strcmp(vp->typeName, "a") == 0)
-            {
-                MYFLT *data = (MYFLT *) vp->data;
-                ud->breakPointData.set(instrument, vp->name, String(data[0]));
-            }
-            else
-            {
+			else 
+			{
 
             }
         }
         vp = vp->next;
     }
 
-    csoundDebugContinue(csound);
-
-
+    csoundDebugContinue(csound);	
+	
+	
 }
 
 //==============================================================================

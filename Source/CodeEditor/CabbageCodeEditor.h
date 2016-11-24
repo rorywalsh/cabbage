@@ -54,7 +54,12 @@ public:
     StringArray getSelectedTextArray();
 
 
-    void run() {	parseTextForVariables();	};		// thread for parsing text for variables on startup
+    void run() // thread for parsing text for variables on startup
+	{	
+		if(parseForVariables==true)
+			parseTextForVariables();	
+		parseForVariables = false;
+	};		
 
     void handleTabKey(String direction);
     void handleReturnKey();
@@ -76,7 +81,8 @@ public:
     bool deleteBackwards (const bool moveInWholeWordSteps);
 
 	void sendUpdateMessage(int lineNumber);
-
+	//=========================================================
+	NamedValueSet instrumentsAndRegions;
 	//=========================================================
 	void timerCallback();
 	ValueTree breakpointData;
@@ -125,6 +131,7 @@ private:
     Component* statusBar;
     int listBoxRowHeight = 18;
     StringArray opcodeStrings;
+	bool parseForVariables = true;
     bool columnEditMode = false;
     ListBox autoCompleteListBox;
     StringArray variableNamesToShow, variableNames;
