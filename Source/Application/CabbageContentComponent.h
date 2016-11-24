@@ -74,6 +74,7 @@ public:
     void createGenericCsoundPluginWrapper();
     void initSettings();
 	void updateEditorColourScheme();
+	void addInstrumentsAndRegionsToCombobox();
 	//==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
 	CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -91,8 +92,8 @@ public:
     EditorAndConsoleContentComponent* getCurrentEditorAndConsole();
 	Toolbar toolbar;
 
-	void setCurrentCsdFile(File file)    {        currentCsdFile = file;    }
-
+	bool setCurrentCsdFile(File file);
+	
 private:
 	CabbageDocumentWindow* owner;
 	//ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
@@ -106,6 +107,7 @@ private:
 	ScopedPointer<AudioGraph> audioGraph;
     bool isGUIEnabled = false;
     String consoleMessages;
+    const int toolbarThickness = 35;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageContentComponent)

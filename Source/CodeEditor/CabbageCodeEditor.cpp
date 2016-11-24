@@ -111,7 +111,7 @@ void CabbageCodeEditorComponent::toggleDebuggerMode()
 
 bool CabbageCodeEditorComponent::isDebugModeEnabled()
 {
-    return debugModeEnabled;
+   return debugModeEnabled;
 }
 
 void CabbageCodeEditorComponent::timerCallback()
@@ -399,15 +399,26 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()	//this is c
 
 	for(int i = 0 ; i < csdArray.size() ; i++)
 	{
-		int commentInLine = csdArray[i].indexOf(";");
-		int instrumentKeyword = csdArray[i].indexOf("instr");
-		if(instrumentKeyword<commentInLine)
+		if(csdArray[i].indexOf("<Cabbage>") != -1)
 		{
-			String line = csdArray[i];
-			String instrumentNameOrNumber = line.substring(csdArray[i].indexOf("instr")+5, 100);
-			CabbageUtilities::debug(instrumentNameOrNumber);
+			instrumentsAndRegions.set("<Cabbage>", i);
 		}
-			
+		else if(csdArray[i].indexOf("<CsoundSynthesiser>") != -1 ||
+			csdArray[i].indexOf("<CsoundSynthesizer>") != -1)
+		{
+			instrumentsAndRegions.set("<CsoundSynthesizer>", i);
+		}
+		
+		
+		else if(csdArray[i].indexOf("instr ") != -1)
+		{
+			int commentInLine = csdArray[i].indexOf(";");
+			String line = csdArray[i];
+			String instrumentNameOrNumber = line.substring(csdArray[i].indexOf("instr")+6, commentInLine==-1 ? 1024 : commentInLine);
+			const String identifier = "instr "+instrumentNameOrNumber.trim();
+			if(identifier.isNotEmpty())
+				instrumentsAndRegions.set(identifier, i);
+		}			
 	}
 }
 

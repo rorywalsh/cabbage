@@ -76,6 +76,7 @@ public:
     void handleAutoComplete(String text);
     void showAutoComplete(String currentWord);
     void parseTextForVariables();
+	void parseTextForInstrumentsAndRegions();
 
     bool deleteForwards (const bool moveInWholeWordSteps);
     bool deleteBackwards (const bool moveInWholeWordSteps);

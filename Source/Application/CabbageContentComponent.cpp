@@ -37,7 +37,6 @@ CabbageContentComponent::CabbageContentComponent(CabbageDocumentWindow* owner, C
     toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
 	toolbar.setColour(Toolbar::ColourIds::buttonMouseOverBackgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)).contrasting(.3f));
     toolbar.repaint();
-	factory.combo->addItemsToComboBox("Test", 1000);
 	factory.combo->getCombo().addListener(this);
 }
 
@@ -59,7 +58,6 @@ void CabbageContentComponent::paint (Graphics& g)
 void CabbageContentComponent::resized()
 {
     const int heightOfTabButtons = (editorAndConsole.size()>1) ? 25 : 0;
-    const int toolbarThickness = 35;
     if (toolbar.isVertical())
         toolbar.setBounds (getLocalBounds().removeFromLeft (toolbarThickness));
     else
@@ -73,17 +71,30 @@ void CabbageContentComponent::resized()
     resizeAllEditorAndConsoles(toolbarThickness + heightOfTabButtons);
 }
 
+bool CabbageContentComponent::setCurrentCsdFile(File file)
+{
+	if(currentCsdFile==file)
+	{
+		CabbageUtilities::showMessage("File is already open", lookAndFeel);
+		return false;
+	}
+	else	
+		currentCsdFile = file;
+		
+	return true;
+}   
 //==============================================================================
 void CabbageContentComponent::buttonClicked(Button* button)
 {
-    if(const TextButton* textButton = dynamic_cast<TextButton*>(button))
+    if(const TextButton* tabButton = dynamic_cast<TextButton*>(button))
     {
-        currentFileIndex = fileTabs.indexOf(textButton);
+        currentFileIndex = fileTabs.indexOf(tabButton);
         editorAndConsole[currentFileIndex]->toFront(true);
         if(CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
         {
             docWindow->setName(openFiles[currentFileIndex].getFileName());
-            setCurrentCsdFile(openFiles[currentFileIndex]);
+            currentCsdFile = openFiles[currentFileIndex];
+			addInstrumentsAndRegionsToCombobox();
         }
     }
 	else if(const ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*>(button))
@@ -94,7 +105,9 @@ void CabbageContentComponent::buttonClicked(Button* button)
 
 void CabbageContentComponent::comboBoxChanged (ComboBox *comboBoxThatHasChanged)
 {
-	
+	int index = comboBoxThatHasChanged->getSelectedId();
+	const int lineToScrollTo = getCurrentCodeEditor()->instrumentsAndRegions.getValueAt(index-1);
+	getCurrentCodeEditor()->scrollToLine(lineToScrollTo);
 }
 //==============================================================================
 void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
@@ -207,7 +220,7 @@ void CabbageContentComponent::addFileTabButton(File file, int xPos)
     TextButton* fileButton;
     fileTabs.add(fileButton = new TextButton(file.getFileName()));
     addAndMakeVisible(fileButton);
-    fileButton->setBounds(xPos, 3, 90, 20);
+    fileButton->setBounds(xPos, toolbarThickness+3, 90, 20);
     fileButton->addListener(this);
     fileButton->setRadioGroupId(99);
     fileButton->setClickingTogglesState(true);
@@ -216,6 +229,16 @@ void CabbageContentComponent::addFileTabButton(File file, int xPos)
     currentFileIndex = fileTabs.size()-1;
 }
 
+void CabbageContentComponent::addInstrumentsAndRegionsToCombobox()
+{
+	factory.combo->clearItemsFromComboBox();
+	
+	const NamedValueSet instrRegions = getCurrentCodeEditor()->instrumentsAndRegions;
+	for( int i = 0 ; i < instrRegions.size() ; i++)
+	{
+		factory.combo->addItemsToComboBox(instrRegions.getName(i).toString(), i+1);	
+	}
+}
 //==============================================================================
 void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 {
@@ -407,10 +430,14 @@ void CabbageContentComponent::openFile(String filename)
     {
         FileChooser fc ("Open File");
         if (fc.browseForFileToOpen())
-            currentCsdFile = fc.getResult();
+		{
+			if(setCurrentCsdFile(fc.getResult()) == false)
+				return;
+		}
     }
     else
-        currentCsdFile = File(filename);
+        if(setCurrentCsdFile(File(filename)) == false)
+			return;
 
 
     cabbageSettings->updateRecentFilesList(currentCsdFile);
@@ -426,6 +453,8 @@ void CabbageContentComponent::openFile(String filename)
     openFiles.add(currentCsdFile);
     editorConsole->editor->loadContent(currentCsdFile.loadFileAsString());
 	editorConsole->editor->parseTextForInstrumentsAndRegions();
+	
+	
     editorConsole->editor->startThread();
     numberOfFiles = editorAndConsole.size()-1;
     resized();
@@ -442,6 +471,7 @@ void CabbageContentComponent::openFile(String filename)
 
     getCurrentCodeEditor()->addChangeListener(this);
     owner->setName("Cabbage " + currentCsdFile.getFullPathName());
+	addInstrumentsAndRegionsToCombobox();
 }
 //==============================================================================
 void CabbageContentComponent::saveDocument(bool saveAs)

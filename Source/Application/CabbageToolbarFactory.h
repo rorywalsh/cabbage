@@ -20,6 +20,9 @@ class CabbageToolbarFactory   : public ToolbarItemFactory
 {
 public:
 	CabbageToolbarFactory(CabbageContentComponent* owner);
+	~CabbageToolbarFactory()
+	{
+	}
 
 	//==============================================================================
 	// Each type of item a toolbar can contain must be given a unique ID. These
@@ -85,6 +88,11 @@ private:
 				comboBox.addItem(text, itemId);
 				comboBox.setSelectedId (1);
 			}
+
+			void clearItemsFromComboBox()
+			{
+				comboBox.clear(dontSendNotification);
+			}
 			
 			ComboBox& getCombo()
 			{
@@ -98,7 +106,7 @@ private:
 	CabbageContentComponent* owner;
 
 public:
-	ScopedPointer<ToolbarComboBox> combo;	
+	ToolbarComboBox* combo;	//owner by toolbar factory...
 };
 
 
