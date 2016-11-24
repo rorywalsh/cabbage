@@ -22,33 +22,33 @@
 
 namespace LookAndFeelHelpers
 {
-static Colour createBaseColour (Colour buttonColour,
-                                bool hasKeyboardFocus,
-                                bool isMouseOverButton,
-                                bool isButtonDown) noexcept
-{
-    const float sat = hasKeyboardFocus ? 1.3f : 0.9f;
-    const Colour baseColour (buttonColour.withMultipliedSaturation (sat));
+    static Colour createBaseColour (Colour buttonColour,
+                                    bool hasKeyboardFocus,
+                                    bool isMouseOverButton,
+                                    bool isButtonDown) noexcept
+    {
+        const float sat = hasKeyboardFocus ? 1.3f : 0.9f;
+        const Colour baseColour (buttonColour.withMultipliedSaturation (sat));
 
-    if (isButtonDown)      return baseColour.contrasting (0.2f);
-    if (isMouseOverButton) return baseColour.contrasting (0.1f);
+        if (isButtonDown)      return baseColour.contrasting (0.2f);
+        if (isMouseOverButton) return baseColour.contrasting (0.1f);
 
-    return baseColour;
-}
+        return baseColour;
+    }
 
-static TextLayout layoutTooltipText (const String& text, Colour colour) noexcept
-{
-    const float tooltipFontSize = 13.0f;
-    const int maxToolTipWidth = 400;
+    static TextLayout layoutTooltipText (const String& text, Colour colour) noexcept
+    {
+        const float tooltipFontSize = 13.0f;
+        const int maxToolTipWidth = 400;
 
-    AttributedString s;
-    s.setJustification (Justification::centred);
-    s.append (text, Font (tooltipFontSize, Font::bold), colour);
+        AttributedString s;
+        s.setJustification (Justification::centred);
+        s.append (text, Font (tooltipFontSize, Font::bold), colour);
 
-    TextLayout tl;
-    tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
-    return tl;
-}
+        TextLayout tl;
+        tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
+        return tl;
+    }
 }
 //main Cabbage look and feel class
 CabbageLookAndFeel::CabbageLookAndFeel()

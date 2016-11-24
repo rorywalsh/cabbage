@@ -62,8 +62,8 @@ void CabbagePluginEditor::resized()
 //==============================================================================
 void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 {
-	components.clear();
-	
+    components.clear();
+
     for(int widget=0; widget<widgets.getNumChildren(); widget++)
     {
         const String widgetType = widgets.getChild(widget).getProperty(CabbageIdentifierIds::type).toString();

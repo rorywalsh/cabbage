@@ -14,12 +14,12 @@
 #ifndef CODEEDITORTOOLBARFACTORY_H_INCLUDED
 #define CODEEDITORTOOLBARFACTORY_H_INCLUDED
 
-class CabbageDocumentWindow;
+class CabbageContentComponent;
 
 class CabbageToolbarFactory   : public ToolbarItemFactory
 {
 public:
-	CabbageToolbarFactory(CabbageDocumentWindow* owner);
+	CabbageToolbarFactory(CabbageContentComponent* owner);
 
 	//==============================================================================
 	// Each type of item a toolbar can contain must be given a unique ID. These
@@ -39,7 +39,7 @@ public:
 	void getAllToolbarItemIds (Array<int>& ids) override;
 	void getDefaultItemSet (Array<int>& ids) override;
 	ToolbarItemComponent* createItem (int itemId) override;
-
+	
 private:
 
 	ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const File svgFile);
@@ -53,11 +53,6 @@ private:
 				  comboBox ("toolbar combo box")
 			{
 				addAndMakeVisible (comboBox);
-
-				for (int i = 1; i < 20; ++i)
-					comboBox.addItem ("instr " + String (i), i);
-
-				comboBox.setSelectedId (1);
 				comboBox.setEditableText (false);
 			}
 
@@ -84,12 +79,26 @@ private:
 
 				comboBox.setCentrePosition (newArea.getCentreX(), newArea.getCentreY());
 			}
+			
+			void addItemsToComboBox(const String text, const int itemId)
+			{
+				comboBox.addItem(text, itemId);
+				comboBox.setSelectedId (1);
+			}
+			
+			ComboBox& getCombo()
+			{
+				return comboBox;
+			}
 
 		private:
 			ComboBox comboBox;
 	};
 	
-	CabbageDocumentWindow* owner;
+	CabbageContentComponent* owner;
+
+public:
+	ScopedPointer<ToolbarComboBox> combo;	
 };
 
 

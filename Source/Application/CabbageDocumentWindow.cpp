@@ -18,14 +18,18 @@
 */
 
 #include "CabbageDocumentWindow.h"
-#include "CabbageNewProjectWindow.h"
 
+enum
+{
+    recentProjectsBaseID = 100,
+    activeDocumentsBaseID = 300,
+    colourSchemeBaseID = 1000
+};
 
 //=================================================================================================================
 CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(name,
             Colours::lightgrey,
-            DocumentWindow::allButtons),
-    lookAndFeel(new CabbageIDELookAndFeel())
+            DocumentWindow::allButtons)
 {
     setTitleBarButtonsRequired(DocumentWindow::allButtons, false);
     setUsingNativeTitleBar (true);
@@ -33,23 +37,19 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
 
-	initSettings();
-    setContentOwned (content = new CabbageContentComponent(this, cabbageSettings->getValueTree()), true);
+    initSettings();
+    setContentOwned (content = new CabbageContentComponent(this, cabbageSettings), true);
     content->propertyPanel->setVisible(false);
-
-    lookAndFeel->setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
-    lookAndFeel->setColour(ScrollBar::backgroundColourId, Colour(70, 70, 70));
-	content->toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
-	content->toolbar.repaint();
+    cabbageSettings->addChangeListener(content);
     setMenuBar(this, 25);
-    getMenuBarComponent()->setLookAndFeel(lookAndFeel);
+    getMenuBarComponent()->setLookAndFeel(getContentComponent()->lookAndFeel);
 
-    createAudioGraph();
+    content->createAudioGraph();
 
     if(cabbageSettings->getUserSettings()->getIntValue("OpenMostRecentFileOnStartup")==1)
     {
         cabbageSettings->updateRecentFilesList();
-        openFile(cabbageSettings->getMostRecentFile());
+        content->openFile(cabbageSettings->getMostRecentFile().getFullPathName());
     }
 
     setApplicationCommandManagerToWatch(&commandManager);
@@ -59,9 +59,8 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (this, nullptr, "Open Recent");
 #endif
-
-    content->propertyPanel->addChangeListener(this);
-
+    setLookAndFeel(&getContentComponent()->getLookAndFeel());
+    lookAndFeelChanged();
 }
 
 void CabbageDocumentWindow::initSettings()
@@ -79,383 +78,382 @@ void CabbageDocumentWindow::initSettings()
     cabbageSettings = new CabbageSettings();
     cabbageSettings->setStorageParameters (options);
     cabbageSettings->setDefaultSettings();
-    cabbageSettings->addChangeListener(this);
     //lookAndFeel->refreshLookAndFeel(cabbageSettings->getValueTree());
 }
 
 CabbageDocumentWindow::~CabbageDocumentWindow()
 {
     setMenuBar(nullptr);
-    cabbageSettings->closeFiles();
-    cabbageSettings->setProperty("audioSetup", getAudioDeviceSettings());
+
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
-    audioGraph = nullptr;
+    cabbageSettings->setProperty("audioSetup", getContentComponent()->getAudioDeviceSettings());
+    cabbageSettings->closeFiles();
+
     //lookAndFeel = nullptr;
 
 }
-
-void CabbageDocumentWindow::buttonClicked(Button* button)
-{
-	if(const ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*>(button))
-	{
-		CabbageUtilities::debug(toolbarButton->getName());
-	}
-}
 //=======================================================================================
-CabbageContentComponent* CabbageDocumentWindow::getMainContentComponent()
+CabbageContentComponent* CabbageDocumentWindow::getContentComponent()
 {
     return content;
 }
 
-CabbageCodeEditorComponent* CabbageDocumentWindow::getCurrentCodeEditor()
-{
-    if(content->getCurrentCodeEditor())
-        return content->getCurrentCodeEditor()->editor;
-    else
-        return nullptr;
-}
-
-CabbageOutputConsole* CabbageDocumentWindow::getCurrentOutputConsole()
-{
-    if(content->getCurrentCodeEditor())
-        return content->getCurrentCodeEditor()->outputConsole;
-    else
-        return nullptr;
-}
-
-String CabbageDocumentWindow::getAudioDeviceSettings()
-{
-    if(audioGraph->getDeviceManagerSettings().isNotEmpty())
-        return audioGraph->getDeviceManagerSettings();
-    else
-        return String::empty;
-}
-
-CabbagePluginEditor* CabbageDocumentWindow::getCabbagePluginEditor()
-{
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
-    {
-        AudioProcessor* const processor = f->getProcessor();
-        //need to check what kind of processor we are dealing with!
-        if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(processor->getActiveEditor()))
-            return editor;
-    }
-
-    return nullptr;
-}
-
-CabbagePluginProcessor* CabbageDocumentWindow::getCabbagePluginProcessor()
-{
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
-    {
-        if(CabbagePluginProcessor* const processor = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
-            return processor;
-    }
-
-    return nullptr;
-}
-//==============================================================================
-void CabbageDocumentWindow::updateEditorColourScheme()
-{
-    getLookAndFeel().setColour(PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour(50,50,50)));
-    getLookAndFeel().setColour(PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour(50,50,50)));
-    lookAndFeelChanged();
-    content->propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
-    content->propertyPanel->setBorderColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
-    int editorIndex = content->editorAndConsole.size()-1;
-    content->getCurrentCodeEditor()->updateLookAndFeel();
-	content->toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
-	content->toolbar.repaint();
-}
-//==============================================================================
-void CabbageDocumentWindow::changeListenerCallback(ChangeBroadcaster* source)
-{
-    if(CabbageSettings* settings = dynamic_cast<CabbageSettings*>(source)) // update lookandfeel whenever a user changes colour settings
-    {
-        lookAndFeel->refreshLookAndFeel(cabbageSettings->getValueTree());
-        lookAndFeelChanged();
-        updateEditorColourScheme();
-    }
-
-    else if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source)) // update Cabbage code when user drags a widget around
-    {
-        content->propertyPanel->setVisible(true);
-        content->resized();
-        ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
-        content->propertyPanel->updateProperties(widgetData);
-
-        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber)>9999) //if widget was added in edit mode...
-        {
-            StringArray csdArray;
-            csdArray.addLines(getCurrentCodeEditor()->getDocument().getAllContent());
-            for( int i = 0 ; i < csdArray.size() ; i++ )
-            {
-                if(csdArray[i].contains("</Cabbage>"))
-                {
-                    CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::linenumber, i);
-                    updateCodeInEditor(editor, false);
-                }
-            }
-        }
-        else
-        {
-            updateCodeInEditor(editor, true);
-            updateEditorColourScheme();
-        }
-    }
-
-    else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(source)) // update code when a user changes a property
-    {
-        if(CabbagePluginEditor* editor = this->getCabbagePluginEditor())
-        {
-            updateCodeInEditor(editor, true);
-        }
-    }
-	
-	
-    else if(CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*>(source)) // update code when a user changes a property
-    {
-		if(getCabbagePluginProcessor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
-			this->getCabbagePluginProcessor()->updateWidgets(codeEditor->getAllText());
-    }	
-}
-
-//=======================================================================================
-void CabbageDocumentWindow::updateCodeInEditor(CabbagePluginEditor* editor, bool replaceExistingLine)
-{
-    content->propertyPanel->addChangeListener(this);
-	
-    for(ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
-    {
-        const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
-        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
-		//prevent this change from sending a change message
-		getCurrentCodeEditor()->shouldSendUpdateMessage = false;
-        getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, editor->getValueTreesForCurrentlySelectedComponents().size()==1);
-    }
-}
-
-//=======================================================================================
-void CabbageDocumentWindow::setEditMode(bool enable)
-{
-    if(!getCabbagePluginEditor())
-	{
-		createAudioGraph();
-	}
-
-	getCabbagePluginEditor()->addChangeListener(this);
-	if(enable==true)
-	{
-		audioGraph->stopPlaying();
-		getMainContentComponent()->propertyPanel->setInterceptsMouseClicks(true, true);
-	}
-	else
-	{
-		audioGraph->startPlaying();
-		getMainContentComponent()->propertyPanel->setInterceptsMouseClicks(false, false);
-	}
-
-	getCabbagePluginEditor()->enableEditMode(enable);
-	getMainContentComponent()->propertyPanel->setEnabled(enable);
-
-}
-//=======================================================================================
-void CabbageDocumentWindow::showSettingsDialog()
-{
-    DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSettingsWindow(*cabbageSettings, audioGraph->getAudioDeviceSelector()));
-    o.content->setSize(500, 450);
-    o.dialogTitle = TRANS("Cabbage Settings");
-    o.dialogBackgroundColour = Colour(0xfff0f0f0);
-    o.escapeKeyTriggersCloseButton = true;
-    o.useNativeTitleBar = true;
-    o.resizable = false;
-    o.launchAsync();
-}
-
-//==============================================================================
-void CabbageDocumentWindow::createNewProject()
-{
-    Logger::writeToLog("CreateNewProject");
-
-    DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageProjectWindow(this, cabbageSettings->getValueTree()));
-    o.content->setSize(650, 350);
-
-    o.dialogTitle = TRANS("Select new project type");
-    o.dialogBackgroundColour = Colour(0xfff0f0f0);
-    o.escapeKeyTriggersCloseButton = true;
-    o.useNativeTitleBar = true;
-    o.resizable = false;
-
-    o.launchAsync();
-}
-//==============================================================================
-void CabbageDocumentWindow::askUserToOpenFile()
-{
-    FileChooser fc ("Open File");
-
-    if (fc.browseForFileToOpen())
-        openFile (fc.getResult());
-}
-//==============================================================================
-bool CabbageDocumentWindow::openFile (const File& file, String type)
-{
-    stopTimer();
-    stopCode();
-
-    PluginWindow::closeAllCurrentlyOpenWindows();
-
-    getMainContentComponent()->openFile(file);
-	getCurrentCodeEditor()->addChangeListener(this);
-    cabbageSettings->updateRecentFilesList(file);
-    setName("Cabbage " + file.getFullPathName());
-    currentCsdFile = File(file.getFullPathName());
-    return true;
-}
-//==============================================================================
-void CabbageDocumentWindow::saveDocument(bool saveAs)
-{
-
-    if(saveAs == true)
-    {
-        isGUIEnabled = false;
-        if(getCabbagePluginEditor()!=nullptr)
-            getCabbagePluginEditor()->enableEditMode(false);
-
-        FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
-
-        if (fc.browseForFileToSave(false))
-        {
-            if(fc.getResult().existsAsFile())
-            {
-                const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel);
-                if(result==0)
-                {
-                    fc.getResult().replaceWithText(currentCsdFile.loadFileAsString());
-                    openFile(fc.getResult());
-                }
-            }
-            else
-            {
-                fc.getResult().replaceWithText(currentCsdFile.loadFileAsString());
-                openFile(fc.getResult());
-            }
-        }
-    }
-    else
-    {
-        isGUIEnabled = false;
-        if(getCabbagePluginEditor()!=nullptr)
-            getCabbagePluginEditor()->enableEditMode(false);
-
-        if(currentCsdFile.existsAsFile())
-            currentCsdFile.replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
-
-        if(cabbageSettings->getUserSettings()->getIntValue("CompileOnSave")==1)
-        {
-            getMainContentComponent()->propertyPanel->setEnabled(false);
-            createAudioGraph();
-        }
-    }
-}
-
-//==============================================================================
-void CabbageDocumentWindow::timerCallback()
-{
-    if(currentCsdFile.existsAsFile())
-    {
-        const String csoundOutputString = audioGraph->getCsoundOutput();
-        consoleMessages+=csoundOutputString;
-        if(csoundOutputString.length()>0)
-        {
-            getCurrentOutputConsole()->setText(csoundOutputString);
-        }
-    }
-}
-//==============================================================================
-void CabbageDocumentWindow::runCode()
-{
-    if(currentCsdFile.existsAsFile())
-    {
-        PluginWindow::closeAllCurrentlyOpenWindows();
-        createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
-        startTimer(100);
-    }
-    else
-        CabbageUtilities::showMessage("Warning", "Please open a file first", lookAndFeel);
-}
-
-void CabbageDocumentWindow::stopCode()
-{
-    if(currentCsdFile.existsAsFile())
-    {
-        stopTimer();
-        audioGraph->stopPlaying();
-    }
-}
-
-//==============================================================================
-void CabbageDocumentWindow::createAudioGraph()
-{
-    const Point<int> lastPoint = PluginWindow::getPositionOfCurrentlyOpenWindow(1);
-
-    if(lastPoint.getX()>0)
-    {
-        cabbageSettings->setProperty("windowX", lastPoint.getX());
-        cabbageSettings->setProperty("windowY", lastPoint.getY());
-    }
-
-    audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
-    audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
-
-    createEditorForAudioGraphNode();
-	if(getCurrentCodeEditor() != nullptr)
-		getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
-
-}
-
-void CabbageDocumentWindow::createEditorForAudioGraphNode()
-{
-    const int numParameters = audioGraph->getNumberOfParameters();
-    if(numParameters>0)
-    {
-
-        if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
-        {
-            AudioProcessor* const processor = f->getProcessor();
-
-            PluginWindow::WindowFormatType type = audioGraph->getProcessor()->hasEditor() ? PluginWindow::Normal
-                                                  : PluginWindow::Generic;
-
-            if (PluginWindow* const w = PluginWindow::getWindowFor(f, type, audioGraph->graph))
-            {
-                w->toFront (true);
-                Point<int> point(cabbageSettings->getIntProperty("windowX"),
-                                 cabbageSettings->getIntProperty("windowY"));
-
-                if(point.getY()>0 && point.getX()>0)
-                    w->setTopLeftPosition(point.getX(), point.getY());
-            }
-        }
-    }
-}
-
-//==============================================================================
-bool CabbageDocumentWindow::closeAllDocuments (bool askUserToSave)
-{
-    // return openDocumentManager.closeAll (askUserToSave);
-    return true;
-}
-
-bool CabbageDocumentWindow::closeAllMainWindows()
-{
-    //return server != nullptr || mainWindowList.askAllWindowsToClose();
-    return true;
-}
 void CabbageDocumentWindow::closeButtonPressed()
 {
     JUCEApplicationBase::quit();
+}
+
+StringArray CabbageDocumentWindow::getMenuBarNames()
+{
+    const char* const names[] = { "File", "Edit", "Tools", "View", nullptr };
+    return StringArray (names);
+}
+
+
+PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const String& menuName)
+{
+    PopupMenu menu;
+    if (menuName == "File")             createFileMenu   (menu);
+    else if (menuName == "Edit")        createEditMenu   (menu);
+    else if (menuName == "View")        createViewMenu   (menu);
+    else if (menuName == "Build")       createBuildMenu  (menu);
+    else if (menuName == "Window")      createWindowMenu (menu);
+    else if (menuName == "Tools")       createToolsMenu  (menu);
+    else                                jassertfalse; // names have changed?
+
+    return menu;
+
+}
+
+void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
+{
+    menu.addCommandItem (&commandManager, CommandIDs::newProject);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::open);
+
+    PopupMenu recentFilesMenu;
+    cabbageSettings->updateRecentFilesList();
+    cabbageSettings->recentFiles.createPopupMenuItems (recentFilesMenu, recentProjectsBaseID, true, true);
+    menu.addSubMenu ("Open Recent", recentFilesMenu);
+
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
+    menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
+    menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
+    menu.addCommandItem (&commandManager, CommandIDs::saveAll);
+
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::closeProject);
+    menu.addCommandItem (&commandManager, CommandIDs::saveProject);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::settings);
+    menu.addSeparator();
+
+#if ! JUCE_MAC
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
+#endif
+}
+
+void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
+{
+    PopupMenu subMenu;
+    menu.addCommandItem (&commandManager, CommandIDs::undo);
+    menu.addCommandItem (&commandManager, CommandIDs::redo);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::cut);
+    menu.addCommandItem (&commandManager, CommandIDs::copy);
+    menu.addCommandItem (&commandManager, CommandIDs::paste);
+    menu.addSeparator();
+
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::del);
+    menu.addCommandItem (&commandManager, CommandIDs::selectAll);
+    menu.addCommandItem (&commandManager, CommandIDs::deselectAll);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::editMode);
+    menu.addCommandItem (&commandManager, CommandIDs::enableLiveDebugger);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
+    menu.addCommandItem (&commandManager, CommandIDs::findSelection);
+    menu.addCommandItem (&commandManager, CommandIDs::findNext);
+    menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
+}
+
+void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
+{
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::showGenericWidgetWindow);
+}
+
+void CabbageDocumentWindow::createBuildMenu (PopupMenu& menu)
+{
+    menu.addCommandItem (&commandManager, CommandIDs::enableBuild);
+    menu.addCommandItem (&commandManager, CommandIDs::toggleContinuousBuild);
+    menu.addCommandItem (&commandManager, CommandIDs::buildNow);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::launchApp);
+    menu.addCommandItem (&commandManager, CommandIDs::killApp);
+    menu.addCommandItem (&commandManager, CommandIDs::cleanAll);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::reinstantiateComp);
+    menu.addCommandItem (&commandManager, CommandIDs::showWarnings);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::nextError);
+    menu.addCommandItem (&commandManager, CommandIDs::prevError);
+}
+
+
+void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
+{
+    menu.addCommandItem (&commandManager, CommandIDs::closeWindow);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::goToPreviousDoc);
+    menu.addCommandItem (&commandManager, CommandIDs::goToNextDoc);
+    menu.addCommandItem (&commandManager, CommandIDs::goToCounterpart);
+    menu.addSeparator();
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::closeAllDocuments);
+}
+
+void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
+{
+    menu.addCommandItem (&commandManager, CommandIDs::runCode);
+    menu.addCommandItem (&commandManager, CommandIDs::stopCode);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
+    menu.addSeparator();
+}
+
+void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIndex)
+{
+    if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
+    {
+        getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
+    }
+}
+
+void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
+{
+
+    const CommandID ids[] = { CommandIDs::newProject,
+                              CommandIDs::open,
+                              CommandIDs::closeAllDocuments,
+                              CommandIDs::saveDocument,
+                              CommandIDs::saveDocumentAs,
+                              CommandIDs::settings,
+                              CommandIDs::runCode,
+                              CommandIDs::stopCode,
+                              CommandIDs::exportAsSynth,
+                              CommandIDs::exportAsEffect,
+                              CommandIDs::exportAsFMODSoundPlugin,
+                              CommandIDs::copy,
+                              CommandIDs::cut,
+                              CommandIDs::paste,
+                              CommandIDs::undo,
+                              CommandIDs::redo,
+                              CommandIDs::editMode,
+                              CommandIDs::enableLiveDebugger,
+                              CommandIDs::showGenericWidgetWindow
+                            };
+
+    commands.addArray (ids, numElementsInArray (ids));
+}
+
+void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
+{
+    bool shouldShowEditMenu = false;
+    if(getContentComponent()->getCurrentEditorAndConsole()!= nullptr)
+        shouldShowEditMenu = true;
+
+    switch (commandID)
+    {
+    case CommandIDs::newProject:
+        result.setInfo ("New Project...", "Creates a new Jucer project", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier, 0));
+        break;
+
+    case CommandIDs::open:
+        result.setInfo ("Open...", "Opens a Jucer project", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
+        break;
+
+    case CommandIDs::saveDocument:
+        result.setInfo ("Save file...", "Save a document", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+        break;
+
+    case CommandIDs::saveDocumentAs:
+        result.setInfo ("Save file as...", "Save a document", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
+        break;
+
+    case CommandIDs::settings:
+        result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
+        break;
+
+    case CommandIDs::runCode:
+        result.setInfo ("Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+        result.defaultKeypresses.add(KeyPress(KeyPress::F5Key, ModifierKeys::noModifiers, 0));
+        break;
+
+    case CommandIDs::stopCode:
+        result.setInfo ("Cancel Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+        result.defaultKeypresses.add(KeyPress(KeyPress::escapeKey, ModifierKeys::noModifiers, 0));
+        break;
+
+    case CommandIDs::exportAsSynth:
+        result.setInfo ("Export as Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+        break;
+
+    case CommandIDs::exportAsEffect:
+        result.setInfo ("Export as Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+        break;
+
+    case CommandIDs::exportAsFMODSoundPlugin:
+        result.setInfo ("Export as FMOD Sound Plugin", "Exports as plugin", CommandCategories::general, 0);
+        break;
+
+    case CommandIDs::closeAllDocuments:
+        result.setInfo ("Close All Documents", "Closes all open documents", CommandCategories::general, 0);
+        break;
+
+    case CommandIDs::saveAll:
+        result.setInfo ("Save All", "Saves all open documents", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
+        break;
+
+    //edit commands
+    case CommandIDs::undo:
+        result.setInfo (String("Undo"), String("Undo last action"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('z', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::redo:
+        result.setInfo (String("Redo"), String("Redo last action"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('z', ModifierKeys::shiftModifier | ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::cut:
+        result.setInfo (String("Cut"), String("Cut selection"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('x', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::copy:
+        result.setInfo (String("Copy"), String("Copy selection"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('c', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::paste:
+        result.setInfo (String("Paste"), String("Paste selection"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('v', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::columnEdit:
+        result.setInfo (String("Column Edit mode"), String("Column Edit"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::toggleComments:
+        result.setInfo (String("Toggle comments"), String("Toggle comments"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('/', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::searchReplace:
+        result.setInfo(String("Search or Replace"), String("Search Replace"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('f', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::zoomIn:
+        result.setInfo (String("Zoom in"), String("Zoom in"), CommandCategories::edit, 0);
+        result.addDefaultKeypress('[', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::zoomOut:
+        result.setInfo (String("Zoom out"), String("Zoom out"), CommandCategories::edit, 0);
+        result.addDefaultKeypress (']', ModifierKeys::commandModifier);
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::showGenericWidgetWindow:
+        result.setInfo (String("Show Generic Widget Window"), String("Show genric channel based widgets"), CommandCategories::general, 0);
+        break;
+    case CommandIDs::editMode:
+        result.setInfo (String("Edit Mode"), String("Edit Mode"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
+        result.setTicked(getContentComponent()->getCabbagePluginEditor()==nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    case CommandIDs::enableLiveDebugger:
+        result.setInfo (String("Enable Live Debugger"), String("Enable Live Debugger"), CommandCategories::edit, 0);
+        result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
+        result.setTicked(getContentComponent()->getCurrentCodeEditor() == nullptr ? false : getContentComponent()->getCurrentCodeEditor()->isDebugModeEnabled());
+        result.setActive((shouldShowEditMenu ? true : false));
+        break;
+    default:
+
+        break;
+    }
+}
+
+bool CabbageDocumentWindow::perform (const InvocationInfo& info)
+{
+    switch (info.commandID)
+    {
+    case CommandIDs::newProject:
+        getContentComponent()->createNewProject();
+        break;
+    case CommandIDs::open:
+        getContentComponent()->openFile();
+        break;
+    case CommandIDs::saveDocument:
+        getContentComponent()->saveDocument();
+        getContentComponent()->setEditMode(false);
+        break;
+    case CommandIDs::saveDocumentAs:
+        getContentComponent()->saveDocument(true);
+        break;
+    case CommandIDs::closeAllDocuments:
+        break;
+    case CommandIDs::settings:
+        getContentComponent()->showSettingsDialog();
+        break;
+    case CommandIDs::runCode:
+        getContentComponent()->runCode();
+        break;
+    case CommandIDs::stopCode:
+        getContentComponent()->stopCode();
+        break;
+    case CommandIDs::exportAsEffect:
+
+        break;
+    case CommandIDs::exportAsSynth:
+
+        break;
+    case CommandIDs::exportAsFMODSoundPlugin:
+
+        break;
+    case CommandIDs::undo:
+
+        break;
+    case CommandIDs::redo:
+
+        break;
+    case CommandIDs::paste:
+
+        break;
+    case CommandIDs::editMode:
+        getContentComponent()->setEditMode(isGUIEnabled =! isGUIEnabled);
+        break;
+    case CommandIDs::enableLiveDebugger:
+        getContentComponent()->getCurrentCodeEditor()->toggleDebuggerMode();
+        break;
+    default:
+        break;
+    }
+
+    return true;
 }

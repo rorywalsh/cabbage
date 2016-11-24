@@ -26,7 +26,6 @@
 #include "../CabbageIds.h"
 #include "CabbageContentComponent.h"
 #include "../CodeEditor/CabbageOutputConsole.h"
-#include "../Audio/Graph/AudioGraph.h"
 #include "../Settings/CabbageSettingsWindow.h"
 #include "../Settings/CabbageSettings.h"
 
@@ -36,29 +35,16 @@
 class CabbageDocumentWindow    
 	: public DocumentWindow,     
 	public ApplicationCommandTarget,
-    public MenuBarModel, 
-	public ChangeListener, 
-	public Timer,
-	public Button::Listener
+    public MenuBarModel
 {
 public:
     //==========================================================
     CabbageDocumentWindow (String name);
     ~CabbageDocumentWindow();
-
-    CabbagePluginEditor* getCabbagePluginEditor();
-	CabbagePluginProcessor* getCabbagePluginProcessor();
-    CabbageOutputConsole* getCurrentOutputConsole();
-    CabbageCodeEditorComponent* getCurrentCodeEditor();
-    CabbageContentComponent* getMainContentComponent();
-    ScopedPointer<CabbageContentComponent> content;
-
+    CabbageContentComponent* getContentComponent();
     //=======================================================
-    void changeListenerCallback(ChangeBroadcaster* source);
-    void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
-    //=======================================================
-    StringArray getMenuBarNames();								// thesew method implementations
-    void createMenu (PopupMenu&, const String& menuName);		// are found in CabbageMainWindowMenu.cpp
+    StringArray getMenuBarNames();								
+    void createMenu (PopupMenu&, const String& menuName);		
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);
@@ -72,41 +58,19 @@ public:
     PopupMenu getMenuForIndex(int topLevelMenuIndex, const String& menuName);
     void menuItemSelected (int menuItemID, int topLevelMenuIndex);
     //=======================================================
-    void showAudioSettings();
-    void createNewProject();
-    void askUserToOpenFile();
-    bool openFile (const File&, String type="");
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
-    void showSettingsDialog();
-    void saveDocument(bool saveAs=false);
-    void runCode();
-    void stopCode();
-    void showGenericWidgetWindow();
-    void hideGenericWidgetWindow(bool freeContent=false);
-    void createGenericCsoundPluginWrapper();
-    void timerCallback();
     void initSettings();
-    void createEditorForAudioGraphNode();
-    void createAudioGraph();
-    void setEditMode(bool enable);
-    String getAudioDeviceSettings();
     void closeButtonPressed() override;
-    void updateEditorColourScheme();
-
 	void buttonClicked(Button* button);
 
     ScopedPointer<CabbageSettings> cabbageSettings;
-    void setCurrentCsdFile(File file)    {        currentCsdFile = file;    }
     ApplicationCommandTarget* getNextCommandTarget()    {        return findFirstTargetParentComponent();    }
 
 private:
     ApplicationCommandManager commandManager;
-    ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     bool isGUIEnabled = false;
-    String consoleMessages;
-    File currentCsdFile;
-    ScopedPointer<AudioGraph> audioGraph;
+	ScopedPointer<CabbageContentComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };
 

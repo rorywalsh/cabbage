@@ -18,12 +18,12 @@
 */
 
 #include "CabbageNewProjectWindow.h"
-#include "CabbageDocumentWindow.h"
+#include "CabbageContentComponent.h"
 #include "../Utilities/CabbageStrings.h"
 #include "../Utilities/CabbageUtilities.h"
 
 
-CabbageProjectWindow::CabbageProjectWindow(CabbageDocumentWindow* owner, ValueTree valueTree):
+CabbageProjectWindow::CabbageProjectWindow(CabbageContentComponent* owner, ValueTree valueTree):
     owner(owner),
     valueTree(valueTree),
     newInstrumentButton("newInstrument", this),
@@ -65,14 +65,14 @@ void CabbageProjectWindow::buttonClicked(Button* button)
                 if(result==0)
                 {
                     fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-                    owner->openFile (fc.getResult(), "Csound");
+                    owner->openFile (fc.getResult().getFullPathName());
                     delete this->getParentComponent();
                 }
             }
             else
             {
                 fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-                owner->openFile (fc.getResult(), "Csound");
+                owner->openFile (fc.getResult().getFullPathName());
                 delete this->getParentComponent();
             }
         }

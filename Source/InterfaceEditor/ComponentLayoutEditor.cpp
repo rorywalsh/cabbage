@@ -207,7 +207,7 @@ void ComponentLayoutEditor::bindWithTarget ()
 
 void ComponentLayoutEditor::updateFrames ()
 {
-	selectedComponents.deselectAll();
+    selectedComponents.deselectAll();
     frames.clear ();
     if (target != NULL)
     {

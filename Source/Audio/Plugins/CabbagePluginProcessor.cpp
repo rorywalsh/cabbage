@@ -51,7 +51,7 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 void CabbagePluginProcessor::parseCsdFile(String csdText)
 {
     StringArray linesFromCsd;
-	cabbageWidgets.removeAllChildren(0);
+    cabbageWidgets.removeAllChildren(0);
     linesFromCsd.addLines(csdText);
     String parentComponent, previousComponent;
     bool withinPlantGroup = false;
@@ -96,13 +96,13 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
     }
 }
 
-//right now we rebuild the entire GUi each time something changes, 
+//right now we rebuild the entire GUi each time something changes,
 void CabbagePluginProcessor::updateWidgets(String csdText)
 {
-	CabbagePluginEditor* editor = static_cast<CabbagePluginEditor*>(this->getActiveEditor());
-	parseCsdFile(csdText);
-	editor->createEditorInterface(cabbageWidgets);
-	editor->updateLayoutEditorFrames();	
+    CabbagePluginEditor* editor = static_cast<CabbagePluginEditor*>(this->getActiveEditor());
+    parseCsdFile(csdText);
+    editor->createEditorInterface(cabbageWidgets);
+    editor->updateLayoutEditorFrames();
 }
 //==============================================================================
 // create parameters for sliders, buttons, comboboxes, checkboxes, encoders and xypads.
