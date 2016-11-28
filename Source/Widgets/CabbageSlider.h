@@ -25,13 +25,15 @@
 
 class CabbagePluginEditor;
 
-class CabbageSlider : public Slider, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageSlider : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
     CabbagePluginEditor* owner;
     ValueTree widgetData;	
-	ScopedPointer<Label> textLabel;
-	float velocity, sliderIncrement, sliderSkew;
+	Label textLabel;
+	float velocity, sliderIncrement, sliderSkew, min, max, value, shouldShowTextBox;
 	String colour, fontColour, textColour, outlineColour, sliderType, trackerColour;
+	bool shouldDisplayPopup;
+	Slider slider;
 	
 public:
 	CabbageSlider(ValueTree cAttr, CabbagePluginEditor* _owner);
@@ -39,6 +41,13 @@ public:
 	
 	void setLookAndFeelColours(ValueTree wData);
 	void setSliderVelocity(ValueTree wData);
+	void resized();
+	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop);
+	
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
+    void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
+    void valueTreeParentChanged (ValueTree&) override {};	
 	
 };
 

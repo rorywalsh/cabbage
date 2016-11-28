@@ -21,7 +21,6 @@
 CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	: owner(_owner),
     widgetData(wData),
-	textLabel(new Label()),
 	colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
 	fontColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
 	textColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)),
@@ -33,23 +32,23 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	widgetData.addListener(this);
 	setLookAndFeelColours(widgetData);
 	addAndMakeVisible(textLabel);
+	addAndMakeVisible(&slider);
 	
-	sliderIncrement = cAttr.getNumProp(CabbageIDs::sliderincr);
-	sliderSkew = cAttr.getNumProp(CabbageIDs::sliderskew);
-	setSkewFactor(cAttr.getNumProp(CabbageIDs::sliderskew));
-	setRange(cAttr.getNumProp(CabbageIDs::min), cAttr.getNumProp(CabbageIDs::max), cAttr.getNumProp(CabbageIDs::sliderincr));
+	sliderIncrement = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderincr);
+	sliderSkew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
+	min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
+	max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
+	value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
+	shouldShowTextBox = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::textbox);
+	slider.setSkewFactor(sliderSkew);
+	slider.setRange(min, max, sliderIncrement);
 
-	if(cAttr.getStringProp(CabbageIDs::popuptext).isNotEmpty())
-	{
-		if(cAttr.getStringProp(CabbageIDs::popuptext)=="0")
+	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext)=="0")
 			shouldDisplayPopup=false;
-		else
-			tooltipText = cAttr.getStringProp(CabbageIDs::popuptext);
-
-	}
-
-        slider->setDoubleClickReturnValue(true, cAttr.getNumProp(CabbageIDs::value));	
+			
+    slider.setDoubleClickReturnValue(true, value);	
 	
+	setSliderVelocity(wData);
 	initialiseCommonAttributes(this, wData);
 }
 
@@ -58,33 +57,83 @@ CabbageSlider::~CabbageSlider()
 	
 }
 
+void CabbageSlider::resized()
+{
+        if (sliderType.contains("rotary"))
+        {
+            
+            getProperties().set("type", var("rslider"));
+            slider.setSliderStyle(Slider::RotaryVerticalDrag);
+            slider.setValue(value, dontSendNotification);
+            if(shouldShowTextBox>0)
+                slider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 15);
+
+            slider.setRotaryParameters(float_Pi * 1.2f, float_Pi * 2.8f, false);
+
+                if(text.isNotEmpty())
+                {
+                    if(shouldShowTextBox>0)
+                    {
+                        textLabel.setBounds(0, 0, getWidth(), 20);
+                        textLabel.setText(text, dontSendNotification);
+                        textLabel.setJustificationType(Justification::centred);
+                        textLabel.setVisible(true);
+                        slider.setBounds(0, 20, getWidth(), getHeight()-20);
+                    }
+                    else
+                    {
+                        textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
+                        textLabel.setText(text, dontSendNotification);
+                        textLabel.setJustificationType(Justification::centred);
+                        textLabel.setVisible(true);
+                        slider.setBounds(0, 0, getWidth(), getHeight()-15);
+                    }
+                }
+                else
+                    slider.setBounds(0, 0, getWidth(), getHeight());
+
+        }	
+}
+
 void CabbageSlider::setSliderVelocity(ValueTree wData)
 {
 	velocity = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::velocity);
 	if(velocity > 0)
 	{
-		setVelocityModeParameters(velocity, 1, 0.0, true);
-		setVelocityBasedMode(true);
+		slider.setVelocityModeParameters(velocity, 1, 0.0, true);
+		slider.setVelocityBasedMode(true);
 	}
 	else
-		setVelocityBasedMode(false);	
+		slider.setVelocityBasedMode(false);	
 }
 
 void CabbageSlider::setLookAndFeelColours(ValueTree wData)
 {
-	textLabel->setColour(Label::textColourId, Colour::fromString(textColour));
-	textLabel->setColour(Label::outlineColourId, Colours::transparentBlack);
-	setColour(Slider::textBoxHighlightColourId, Colours::lime.withAlpha(.2f));
-	setColour(Slider::thumbColourId, Colour::fromString(colour));
-	setColour(Label::textColourId, Colour::fromString(fontColour));
-	setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
-	setColour(TextEditor::textColourId, Colour::fromString(fontColour));
-	setColour(Slider::textBoxTextColourId, Colour::fromString(fontColour));
-	setColour(Slider::textBoxBackgroundColourId, Colours::black);
-	setColour(Slider::textBoxHighlightColourId, Colours::white);
-	setColour(Slider::trackColourId, Colour::fromString(trackerColour));
-	setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
-	setColour(Slider::Slider::rotarySliderOutlineColourId, Colour::fromString(outlineColour));
-	textLabel->setColour(Label::outlineColourId, Colours::transparentBlack);
-	textLabel->setVisible(false);
+	textLabel.setColour(Label::textColourId, Colour::fromString(textColour));
+	textLabel.setColour(Label::outlineColourId, Colours::transparentBlack);
+	textLabel.setColour(Label::outlineColourId, Colours::transparentBlack);
+	textLabel.setVisible(false);
+	slider.setColour(Slider::textBoxHighlightColourId, Colours::lime.withAlpha(.2f));
+	slider.setColour(Slider::thumbColourId, Colour::fromString(colour));
+	slider.setColour(Label::textColourId, Colour::fromString(fontColour));
+	slider.setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
+	slider.setColour(TextEditor::textColourId, Colour::fromString(fontColour));
+	slider.setColour(Slider::textBoxTextColourId, Colour::fromString(fontColour));
+	slider.setColour(Slider::textBoxBackgroundColourId, Colours::black);
+	slider.setColour(Slider::textBoxHighlightColourId, Colours::white);
+	slider.setColour(Slider::trackColourId, Colour::fromString(trackerColour));
+	slider.setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
+	slider.setColour(Slider::Slider::rotarySliderOutlineColourId, Colour::fromString(outlineColour));
+	slider.setColour(Slider::rotarySliderFillColourId, Colour::fromString(colour));
+}
+
+//==============================================================================
+void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+{
+
+    if(prop==CabbageIdentifierIds::value)
+    {
+
+    }
+	
 }

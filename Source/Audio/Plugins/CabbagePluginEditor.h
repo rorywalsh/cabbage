@@ -29,6 +29,7 @@
 #include "../../Widgets/CabbageCheckbox.h"
 #include "../../Widgets/CabbageComboBox.h"
 #include "../../Widgets/CabbageImage.h"
+#include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 
 class CabbagePluginEditor;
