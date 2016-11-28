@@ -110,6 +110,7 @@ void CabbagePluginProcessor::updateWidgets(String csdText)
 
 void CabbagePluginProcessor::createParameters()
 {
+	CabbageControlWidgetStrings controlWidgetTypes;
     for(int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
@@ -119,13 +120,10 @@ void CabbagePluginProcessor::createParameters()
             const String name = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
             const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
             const int value = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+			
+			if(controlWidgetTypes.contains(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type)))
+				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));
 
-            if(typeOfWidget==CabbageIdentifierIds::checkbox)
-                addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));
-            else if(typeOfWidget==CabbageIdentifierIds::combobox)
-            {
-                addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));
-            }
         }
     }
 }

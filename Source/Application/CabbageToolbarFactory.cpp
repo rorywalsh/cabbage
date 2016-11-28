@@ -30,7 +30,8 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
-    ids.add (customComboBox);
+	ids.add (toggle_play);
+    ids.add (custom_comboBox);
 }
 
 void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
@@ -45,7 +46,9 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
-    ids.add (customComboBox);
+	ids.add (toggle_play);
+    ids.add (custom_comboBox);
+
 }
 
 
@@ -67,8 +70,10 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
         return createButtonFromSVG(itemId, "cut", File("/home/rory/sourcecode/cabaiste/Icons/edit-cut.svg"));
     case edit_paste:
         return createButtonFromSVG(itemId, "paste", File("/home/rory/sourcecode/cabaiste/Icons/edit-paste.svg"));
-    case customComboBox:
+    case custom_comboBox:
 		return(combo = new ToolbarComboBox (itemId));	
+	case toggle_play:
+        return createButtonFromSVG(itemId, "togglePlay", File("/home/rory/sourcecode/cabaiste/Icons/media-playback-start.svg"), "/home/rory/sourcecode/cabaiste/Icons/media-playback-stop.svg");
     default:
         break;
     }
@@ -76,20 +81,40 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
     return nullptr;
 }
 
-ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, const String& text, const File svgFile)
+ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, const String& text, const File svgFile, const String onFile)
 {
-    ScopedPointer<XmlElement> svg (XmlDocument::parse(svgFile.loadFileAsString()));
-    if(svg == nullptr)
+    ScopedPointer<XmlElement> svgNormal (XmlDocument::parse(svgFile.loadFileAsString()));
+    if(svgNormal == nullptr)
         jassert(false);
 
-    Drawable* drawable;
+    Drawable* drawableNormal;
 
-    if (svg != nullptr)
+    if (svgNormal != nullptr)
     {
-        drawable = Drawable::createFromSVG (*svg);
+        drawableNormal = Drawable::createFromSVG (*svgNormal);
     }
 
-    ToolbarButton* button = new ToolbarButton(itemId, text, drawable, 0);
-    button->addListener(owner);
-    return button;
+	if(File(onFile).existsAsFile())
+	{
+		ScopedPointer<XmlElement> svgOn (XmlDocument::parse(File(onFile).loadFileAsString()));
+		if(svgOn == nullptr)
+			jassert(false);
+
+		Drawable* drawableOn;
+
+		if (svgOn != nullptr)
+		{
+			drawableOn = Drawable::createFromSVG (*svgOn);
+		}
+
+		togglePlayButton = new ToolbarButton(itemId, text, drawableNormal, drawableOn);	
+		togglePlayButton->setClickingTogglesState(true);
+		togglePlayButton->addListener(owner);	
+		return togglePlayButton;
+	}
+
+	ToolbarButton* button = new ToolbarButton(itemId, text, drawableNormal, 0);
+	button->addListener(owner);
+	return button;
+    
 }

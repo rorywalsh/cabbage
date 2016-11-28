@@ -75,6 +75,8 @@ public:
     void initSettings();
 	void updateEditorColourScheme();
 	void addInstrumentsAndRegionsToCombobox();
+	
+	void setLookAndFeelColours();
 	//==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
 	CabbagePluginProcessor* getCabbagePluginProcessor();

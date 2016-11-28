@@ -60,12 +60,14 @@ public:
     void insertWidget(ValueTree cabbageWidgetData);
     // the following methods instantiate controls that CAN
     // be automated in a host...
-    void insertSlider(ValueTree cabbageWidgetData) {};
+    void insertSlider(ValueTree cabbageWidgetData);
     void insertComboBox(ValueTree cabbageWidgetData);
     void insertButton(ValueTree cabbageWidgetData) {};
     void insertCheckbox(ValueTree cabbageWidgetData);
     void insertXYPad(ValueTree cabbageWidgetData) {};
     void insertRangeSlider(ValueTree cabbageWidgetData) {};
+	 void insertNumberBox(ValueTree cabbageWidgetData) {};
+	 void insertEncoder(ValueTree cabbageWidgetData) {};
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
     void insertGroupBox(ValueTree cabbageWidgetData) {};
@@ -81,7 +83,6 @@ public:
     void insertLabel(ValueTree cabbageWidgetData) {};
     void insertTable(ValueTree cabbageWidgetData) {};
     void insertMultiTab(ValueTree cabbageWidgetData) {};
-    void insertEncoder(ValueTree cabbageWidgetData) {};
     void insertInfoButton(ValueTree cabbageWidgetData) {};
     void insertLineSeparator(ValueTree cabbageWidgetData) {};
     void insertScope(ValueTree cabbageWidgetData) {};
@@ -94,7 +95,7 @@ public:
     void insertTextbox(ValueTree cabbageWidgetData) {};
     void insertSignalDisplay(ValueTree cabbageWidgetData) {};
     void insertStepper(ValueTree cabbageWidgetData) {};
-    void insertNumberBox(ValueTree cabbageWidgetData) {};
+   
 
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);

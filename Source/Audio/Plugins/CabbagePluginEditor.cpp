@@ -125,6 +125,10 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
         insertComboBox(cabbageWidgetData);
     else if(widgetType==CabbageIdentifierIds::image)
         insertImage(cabbageWidgetData);
+    else if(widgetType==CabbageIdentifierIds::rslider 
+			|| widgetType==CabbageIdentifierIds::vslider
+			|| widgetType==CabbageIdentifierIds::hslider)
+        insertSlider(cabbageWidgetData);
 
 }
 
@@ -149,6 +153,13 @@ void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
     CabbageImage* image;
     components.add(image = new CabbageImage(cabbageWidgetData, this));
     addToEditorAndMakeVisible(image, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
+{
+    CabbageSlider* slider;
+    components.add(slider = new CabbageSlider(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(slider, cabbageWidgetData);
 }
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (Component* comp)

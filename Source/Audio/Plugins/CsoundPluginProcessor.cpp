@@ -24,7 +24,7 @@
 
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
+CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
 #ifndef JucePlugin_PreferredChannelConfigurations
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
@@ -56,11 +56,12 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile)
     csound->SetOption((char*)"-d");
 
 
-#ifdef Cabbage_IDE_Build
-    csoundDebuggerInit(csound->GetCsound());
-    csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
-    csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);
-#endif
+	if(debugMode)
+	{
+		csoundDebuggerInit(csound->GetCsound());
+		csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
+		csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);
+	}
 
     compileCsdFile(csdFile);
     numCsoundChannels = csound->GetNchnls();

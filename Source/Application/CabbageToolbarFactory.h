@@ -36,16 +36,24 @@ public:
 		edit_copy       = 5,
 		edit_cut        = 6,
 		edit_paste      = 7,
-		customComboBox  = 8
+		custom_comboBox  = 8,
+		toggle_play		= 9
 	};
 
 	void getAllToolbarItemIds (Array<int>& ids) override;
 	void getDefaultItemSet (Array<int>& ids) override;
 	ToolbarItemComponent* createItem (int itemId) override;
 	
+	void togglePlay(bool enabled)
+	{
+		togglePlayButton->setToggleState(enabled, dontSendNotification);
+	}
+	
+	ToolbarButton* togglePlayButton;
+	
 private:
 
-	ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const File svgFile);
+	ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const File svgFile, const String onFile="");
 
 
 	class ToolbarComboBox : public ToolbarItemComponent

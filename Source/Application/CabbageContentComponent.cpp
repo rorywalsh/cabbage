@@ -27,17 +27,15 @@ CabbageContentComponent::CabbageContentComponent(CabbageDocumentWindow* owner, C
     addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(cabbageSettings->valueTree));
     propertyPanel->setVisible(false);
     setSize (1200, 800);
+    
     bgImage = createBackground();
+
     addAndMakeVisible (toolbar);
     toolbar.addDefaultItems (factory);
     propertyPanel->addChangeListener(this);
-    lookAndFeel = new CabbageIDELookAndFeel();
-    lookAndFeel->setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
-    lookAndFeel->setColour(ScrollBar::backgroundColourId, Colour(70, 70, 70));
-    toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
-	toolbar.setColour(Toolbar::ColourIds::buttonMouseOverBackgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)).contrasting(.3f));
-    toolbar.repaint();
 	factory.combo->getCombo().addListener(this);
+	
+	setLookAndFeelColours();
 }
 
 CabbageContentComponent::~CabbageContentComponent()
@@ -71,6 +69,18 @@ void CabbageContentComponent::resized()
     resizeAllEditorAndConsoles(toolbarThickness + heightOfTabButtons);
 }
 
+void CabbageContentComponent::setLookAndFeelColours()
+{
+    lookAndFeel = new CabbageIDELookAndFeel();
+    lookAndFeel->setColour(Slider::ColourIds::thumbColourId, Colour(110, 247, 0));
+    lookAndFeel->setColour(ScrollBar::backgroundColourId, Colour(70, 70, 70));
+    toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
+	toolbar.setColour(Toolbar::ColourIds::buttonMouseOverBackgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)).contrasting(.3f));
+	toolbar.setColour(Toolbar::ColourIds::buttonMouseDownBackgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)).contrasting(.5f));
+	
+    toolbar.repaint();
+}
+
 bool CabbageContentComponent::setCurrentCsdFile(File file)
 {
 	if(currentCsdFile==file)
@@ -99,7 +109,30 @@ void CabbageContentComponent::buttonClicked(Button* button)
     }
 	else if(const ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*>(button))
     {
-		CabbageUtilities::debug(toolbarButton->getName());
+		if(toolbarButton->getName()=="new")
+        {
+            createNewProject();
+        }
+        else if(toolbarButton->getName()=="open")
+        {
+            openFile();
+        }
+        else if(toolbarButton->getName()=="save")
+        {
+            saveDocument(false);
+        }
+        else if(toolbarButton->getName()=="save as")
+        {
+            saveDocument(true);
+        }
+		else if(toolbarButton->getName()=="togglePlay")
+		{
+			if(toolbarButton->getToggleState())
+				this->runCode();
+			else
+				this->stopCode();
+		}
+    
 	}
 }
 
@@ -442,7 +475,6 @@ void CabbageContentComponent::openFile(String filename)
 
     cabbageSettings->updateRecentFilesList(currentCsdFile);
 
-
     EditorAndConsoleContentComponent* editorConsole;
     editorAndConsole.add(editorConsole = new EditorAndConsoleContentComponent(cabbageSettings->valueTree));
     addAndMakeVisible(editorConsole);
@@ -516,6 +548,7 @@ void CabbageContentComponent::saveDocument(bool saveAs)
         {
             propertyPanel->setEnabled(false);
             createAudioGraph();
+			runCode();
         }
     }
 }
@@ -528,6 +561,7 @@ void CabbageContentComponent::runCode()
         PluginWindow::closeAllCurrentlyOpenWindows();
         createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
         startTimer(100);
+		factory.togglePlay(true);
     }
     else
         CabbageUtilities::showMessage("Warning", "Please open a file first", lookAndFeel);
@@ -538,6 +572,7 @@ void CabbageContentComponent::stopCode()
     if(currentCsdFile.existsAsFile())
     {
         stopTimer();
+		factory.togglePlay(false);
         audioGraph->stopPlaying();
     }
 }

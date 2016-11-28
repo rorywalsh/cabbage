@@ -33,7 +33,7 @@ class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 
 public:
     //==============================================================================
-    CsoundPluginProcessor(File csoundInputFile);
+    CsoundPluginProcessor(File csoundInputFile, bool debugMode = false);
     ~CsoundPluginProcessor();
 
     //==============================================================================
