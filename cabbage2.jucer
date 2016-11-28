@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.cabbage2" includeBinaryInAppConfig="0"
-              jucerVersion="4.3.0">
+              jucerVersion="4.2.4">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{D038562E-7D7D-26DB-5019-6CE1A94F3F1F}" name="Application">
@@ -162,6 +162,9 @@
         <FILE id="u5NRwZ" name="CabbageImage.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageImage.cpp"/>
         <FILE id="VRvyYa" name="CabbageImage.h" compile="0" resource="0" file="Source/Widgets/CabbageImage.h"/>
+        <FILE id="ryLDrk" name="CabbageSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageSlider.cpp"/>
+        <FILE id="UXmekB" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
         <FILE id="svFd1v" name="CabbageWidgetBase.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageWidgetBase.cpp"/>
         <FILE id="s7qnTW" name="CabbageWidgetBase.h" compile="0" resource="0"
