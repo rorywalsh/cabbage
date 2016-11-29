@@ -21,8 +21,14 @@ public:
     ~CabbageLookAndFeel2() {};
 
     void drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown);
-    Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
-    static void drawFromSVG(Graphics &g, File svgFile, int width, int height, int newWidth, int newHeight, AffineTransform affine);
+	void drawRotarySlider (Graphics &g, int x, int y, int width, int height, float sliderPosProportional,
+                           float rotaryStartAngle,
+                           float rotaryEndAngle,
+                           Slider &slider);
+	
+	
+	Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
+	static void drawFromSVG(Graphics &g, File svgFile, int width, int height, int newWidth, int newHeight, AffineTransform affine);
 
 private:
 

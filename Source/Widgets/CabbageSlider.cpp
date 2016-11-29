@@ -28,7 +28,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	textColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)),
 	trackerColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackercolour)),
 	outlineColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)),
-	sliderType(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind))
+	sliderType(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind)),
+	channel(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::channel))
 {
 	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
 	widgetData.addListener(this);
@@ -57,6 +58,7 @@ void CabbageSlider::createPopupBubble()
 
 void CabbageSlider::initialiseSlider(ValueTree wData)
 {
+	decimalPlaces = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::decimalplaces);
 	sliderIncrement = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderincr);
 	sliderSkew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
 	min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
@@ -74,10 +76,12 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 	slider.setRange(min, max, sliderIncrement);
 
 	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext)=="0")
-			shouldDisplayPopup=false;
+		shouldDisplayPopup=false;
+	
 			
     slider.setDoubleClickReturnValue(true, value);		
 	setSliderVelocity(wData);	
+	slider.addMouseListener(this, false);
 	
 	slider.setSliderStyle(Slider::RotaryVerticalDrag);
 	slider.setValue(value, dontSendNotification);
@@ -116,22 +120,33 @@ void CabbageSlider::resized()
         }	
 }
 
+void CabbageSlider::showPopupBubble()
+{
+	if(tooltipText.isNotEmpty())
+		popupText = tooltipText;
+	else
+		popupText = channel+": "+String(CabbageUtilities::roundToPrec(slider.getValue(), decimalPlaces));
+
+	popupBubble.showAt(&slider, AttributedString(popupText), 550);	
+	
+}
+
 void CabbageSlider::mouseDrag(const MouseEvent& event)
 {
 	if(shouldDisplayPopup)
-		CabbageUtilities::debug("drag");
+		showPopupBubble();
 }
 
 void CabbageSlider::mouseMove(const MouseEvent &event)
 {
 	if(shouldDisplayPopup)
-		CabbageUtilities::debug("move");
+		showPopupBubble();
 }
 
 void CabbageSlider::mouseEnter(const MouseEvent &event)
 {
 	if(shouldDisplayPopup)
-		CabbageUtilities::debug("enter");
+		showPopupBubble();
 }
 
 void CabbageSlider::setSliderVelocity(ValueTree wData)

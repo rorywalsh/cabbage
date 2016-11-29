@@ -153,6 +153,7 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
             layoutEditor->resetAllInterest();
 
         interest = "selected";
+		repaint();
     }
 
 }

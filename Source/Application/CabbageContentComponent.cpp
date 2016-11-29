@@ -178,7 +178,7 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
         else
         {
             updateCodeInEditor(editor, true);
-            updateEditorColourScheme();
+            updateEditorColourScheme(); //keep look and feel updated..
         }
     }
 
@@ -305,28 +305,23 @@ void CabbageContentComponent::createAudioGraph()
 
 void CabbageContentComponent::createEditorForAudioGraphNode()
 {
-    const int numParameters = audioGraph->getNumberOfParameters();
-    if(numParameters>0)
-    {
+	if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
+	{
+		AudioProcessor* const processor = f->getProcessor();
 
-        if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
-        {
-            AudioProcessor* const processor = f->getProcessor();
+		PluginWindow::WindowFormatType type = audioGraph->getProcessor()->hasEditor() ? PluginWindow::Normal
+											  : PluginWindow::Generic;
 
-            PluginWindow::WindowFormatType type = audioGraph->getProcessor()->hasEditor() ? PluginWindow::Normal
-                                                  : PluginWindow::Generic;
+		if (PluginWindow* const w = PluginWindow::getWindowFor(f, type, audioGraph->graph))
+		{
+			w->toFront (true);
+			Point<int> point(cabbageSettings->getIntProperty("windowX"),
+							 cabbageSettings->getIntProperty("windowY"));
 
-            if (PluginWindow* const w = PluginWindow::getWindowFor(f, type, audioGraph->graph))
-            {
-                w->toFront (true);
-                Point<int> point(cabbageSettings->getIntProperty("windowX"),
-                                 cabbageSettings->getIntProperty("windowY"));
-
-                if(point.getY()>0 && point.getX()>0)
-                    w->setTopLeftPosition(point.getX(), point.getY());
-            }
-        }
-    }
+			if(point.getY()>0 && point.getX()>0)
+				w->setTopLeftPosition(point.getX(), point.getY());
+		}
+	}
 }
 
 //==============================================================================
