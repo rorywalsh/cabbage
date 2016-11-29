@@ -77,7 +77,9 @@ void CabbageContentComponent::setLookAndFeelColours()
     toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
 	toolbar.setColour(Toolbar::ColourIds::buttonMouseOverBackgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)).contrasting(.3f));
 	toolbar.setColour(Toolbar::ColourIds::buttonMouseDownBackgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)).contrasting(.5f));
-	
+	owner->lookAndFeelChanged();
+    lookAndFeel->refreshLookAndFeel(cabbageSettings->getValueTree());
+    lookAndFeelChanged();
     toolbar.repaint();
 }
 
@@ -149,6 +151,7 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
     {
         lookAndFeel->refreshLookAndFeel(cabbageSettings->getValueTree());
         lookAndFeelChanged();
+		owner->lookAndFeelChanged();
         updateEditorColourScheme();
     }
 

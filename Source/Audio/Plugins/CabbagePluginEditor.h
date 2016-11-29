@@ -44,8 +44,12 @@ static CabbagePluginEditor* getPluginEditor(Component* child)
 }
 
 //==============================================================================
-class CabbagePluginEditor  : public AudioProcessorEditor, public Button::Listener,
-    public ChangeBroadcaster, public ComboBoxListener
+class CabbagePluginEditor  
+	: public AudioProcessorEditor, 
+	public Button::Listener,
+    public ChangeBroadcaster, 
+	public ComboBoxListener,
+	public Slider::Listener
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
@@ -67,8 +71,8 @@ public:
     void insertCheckbox(ValueTree cabbageWidgetData);
     void insertXYPad(ValueTree cabbageWidgetData) {};
     void insertRangeSlider(ValueTree cabbageWidgetData) {};
-	 void insertNumberBox(ValueTree cabbageWidgetData) {};
-	 void insertEncoder(ValueTree cabbageWidgetData) {};
+	void insertNumberBox(ValueTree cabbageWidgetData) {};
+	void insertEncoder(ValueTree cabbageWidgetData) {};
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
     void insertGroupBox(ValueTree cabbageWidgetData) {};
@@ -114,7 +118,8 @@ public:
     //=============================================================================
     void buttonClicked(Button *button);
     void comboBoxChanged (ComboBox* combo);
-    //=============================================================================
+    void sliderValueChanged(Slider* slider);
+	//=============================================================================
     CabbageAudioParameter* getParameterForComponent (Component* button);
     //=============================================================================
     void mouseDown(const MouseEvent& e);

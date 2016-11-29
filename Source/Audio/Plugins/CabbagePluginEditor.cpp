@@ -159,6 +159,7 @@ void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
 {
     CabbageSlider* slider;
     components.add(slider = new CabbageSlider(cabbageWidgetData, this));
+	slider->getSlider()->addListener(this);
     addToEditorAndMakeVisible(slider, cabbageWidgetData);
 }
 //======================================================================================================
@@ -196,6 +197,15 @@ void CabbagePluginEditor::buttonClicked(Button* button)
     }
 }
 
+void CabbagePluginEditor::sliderValueChanged(Slider* slider)
+{
+    if (CabbageAudioParameter* param = getParameterForComponent(slider))
+    {
+        param->beginChangeGesture();
+        param->setValue(slider->getValue());
+        param->endChangeGesture();
+    }	
+}
 //======================================================================================================
 void CabbagePluginEditor::enableEditMode(bool enable)
 {

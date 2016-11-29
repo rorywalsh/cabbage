@@ -25,7 +25,7 @@
 
 class CabbagePluginEditor;
 
-class CabbageSlider : public Component, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageSlider : public Slider, public ValueTree::Listener, public CabbageWidgetBase
 {
     CabbagePluginEditor* owner;
     ValueTree widgetData;	
@@ -42,6 +42,9 @@ public:
 	void setLookAndFeelColours(ValueTree wData);
 	void setSliderVelocity(ValueTree wData);
 	void resized();
+	void initialiseSlider(ValueTree wData);
+	Slider* getSlider(){	return &slider;	};
+	
 	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop);
 	
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
