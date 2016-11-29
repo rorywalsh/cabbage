@@ -34,6 +34,7 @@ class CabbageSlider : public Slider, public ValueTree::Listener, public CabbageW
 	String colour, fontColour, textColour, outlineColour, sliderType, trackerColour;
 	bool shouldDisplayPopup;
 	Slider slider;
+	BubbleMessageComponent popupBubble;
 	
 public:
 	CabbageSlider(ValueTree cAttr, CabbagePluginEditor* _owner);
@@ -43,9 +44,14 @@ public:
 	void setSliderVelocity(ValueTree wData);
 	void resized();
 	void initialiseSlider(ValueTree wData);
+	void createPopupBubble();
 	Slider* getSlider(){	return &slider;	};
 	
 	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop);
+	
+    void mouseDrag(const MouseEvent& event);
+	void mouseMove (const MouseEvent &event);
+    void mouseEnter (const MouseEvent &event);
 	
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}

@@ -17,10 +17,12 @@
   02111-1307 USA
 */
 #include "CabbageSlider.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	: owner(_owner),
     widgetData(wData),
+	popupBubble(250),
 	colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
 	fontColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
 	textColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)),
@@ -36,11 +38,21 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
 	initialiseSlider(wData);
 	initialiseCommonAttributes(this, wData);
+	createPopupBubble();
 }
 
 CabbageSlider::~CabbageSlider()
 {
 	
+}
+
+void CabbageSlider::createPopupBubble()
+{
+    //create popup display for showing value of sliders.
+    popupBubble.setColour(BubbleComponent::backgroundColourId, Colours::white);
+    popupBubble.setBounds(0, 0, 50, 20);
+    owner->addChildComponent(popupBubble);
+    popupBubble.setAlwaysOnTop(true);	
 }
 
 void CabbageSlider::initialiseSlider(ValueTree wData)
@@ -66,19 +78,19 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 			
     slider.setDoubleClickReturnValue(true, value);		
 	setSliderVelocity(wData);	
+	
+	slider.setSliderStyle(Slider::RotaryVerticalDrag);
+	slider.setValue(value, dontSendNotification);
+	if(shouldShowTextBox>0)
+		slider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 15);
+
+	slider.setRotaryParameters(float_Pi * 1.2f, float_Pi * 2.8f, false);	
 }
 
 void CabbageSlider::resized()
 {
         if (sliderType.contains("rotary"))
         {
-				getProperties().set("type", var("rslider"));
-	slider.setSliderStyle(Slider::RotaryVerticalDrag);
-	slider.setValue(value, dontSendNotification);
-	if(shouldShowTextBox>0)
-		slider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 15);
-
-	slider.setRotaryParameters(float_Pi * 1.2f, float_Pi * 2.8f, false);
                 if(text.isNotEmpty())
                 {
                     if(shouldShowTextBox>0)
@@ -102,6 +114,24 @@ void CabbageSlider::resized()
                     slider.setBounds(0, 0, getWidth(), getHeight());
 
         }	
+}
+
+void CabbageSlider::mouseDrag(const MouseEvent& event)
+{
+	if(shouldDisplayPopup)
+		CabbageUtilities::debug("drag");
+}
+
+void CabbageSlider::mouseMove(const MouseEvent &event)
+{
+	if(shouldDisplayPopup)
+		CabbageUtilities::debug("move");
+}
+
+void CabbageSlider::mouseEnter(const MouseEvent &event)
+{
+	if(shouldDisplayPopup)
+		CabbageUtilities::debug("enter");
 }
 
 void CabbageSlider::setSliderVelocity(ValueTree wData)
