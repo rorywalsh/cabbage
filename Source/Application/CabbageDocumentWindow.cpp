@@ -412,6 +412,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     case CommandIDs::saveDocument:
         getContentComponent()->saveDocument();
         getContentComponent()->setEditMode(false);
+		isGUIEnabled = false;
         break;
     case CommandIDs::saveDocumentAs:
         getContentComponent()->saveDocument(true);
@@ -447,6 +448,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         break;
     case CommandIDs::editMode:
         getContentComponent()->setEditMode(isGUIEnabled =! isGUIEnabled);
+		if(isGUIEnabled==false)
+			getContentComponent()->saveDocument();
         break;
     case CommandIDs::enableLiveDebugger:
         getContentComponent()->getCurrentCodeEditor()->toggleDebuggerMode();

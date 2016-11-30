@@ -161,6 +161,7 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
 void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos,
         const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
+
     const float radius = jmin (width / 2, height / 2) - 2.0f;
     const float diameter = radius*2.f;
     const float centreX = x + width * 0.5f;

@@ -26,7 +26,7 @@
 class CabbagePluginEditor;
 
 class CabbageSlider 
-	: public Slider, 
+	: public Component, 
 	public ValueTree::Listener, 
 	public CabbageWidgetBase
 {

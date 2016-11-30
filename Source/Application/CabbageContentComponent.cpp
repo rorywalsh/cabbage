@@ -208,7 +208,6 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
         const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
 		const String parent = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
         const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
-		CabbageUtilities::debug(newText);
 
         getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty() == true ? true : false);
     }

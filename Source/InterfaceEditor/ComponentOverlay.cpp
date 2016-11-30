@@ -250,12 +250,12 @@ void ComponentOverlay::updateBoundsDataForTarget()
     }
 
 
-	Component* c = (Component*) target.getComponent ();	//now deal with plants, all children have theirs bounds updated..
+	Component* c = (Component*) target.getComponent ();	
 	for(int i=0; i<c->getNumChildComponents(); i++)
 	{
 		const Component* child = target.getComponent()->getChildComponent(i);
 		ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(layoutEditor->widgetData,child->getName());
-		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::parentcomponent).isNotEmpty())
+		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::parentcomponent).isNotEmpty())	//now deal with plants, all child widgets must have theirs bounds updated..
 		{
 			CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, child->getX());
 			CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, child->getY());

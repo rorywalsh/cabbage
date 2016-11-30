@@ -622,8 +622,8 @@ public:
         set("Channel", CabbageIdentifierIds::channel.toString());
         set("Ident Channel", CabbageIdentifierIds::identchannel.toString());
 
-        set("Minimum.", CabbageIdentifierIds::min.toString());
-        set("Maximum.", CabbageIdentifierIds::max.toString());
+        set("Minimum", CabbageIdentifierIds::min.toString());
+        set("Maximum", CabbageIdentifierIds::max.toString());
         set("Skew", CabbageIdentifierIds::sliderskew.toString());
         set("Increment", CabbageIdentifierIds::sliderincr.toString());
         set("Value", CabbageIdentifierIds::value.toString());
@@ -640,7 +640,10 @@ public:
         set("Menu Colour", CabbageIdentifierIds::menucolour.toString());
         set("Colour: Off", CabbageIdentifierIds::colour.toString());
         set("Colour", CabbageIdentifierIds::colour.toString());
-        set("Outline Colour", CabbageIdentifierIds::outlinecolour.toString());
+        set("Outline", CabbageIdentifierIds::outlinecolour.toString());
+		set("Tracker", CabbageIdentifierIds::trackercolour.toString());
+		set("Text Colour", CabbageIdentifierIds::textcolour.toString());
+		
         set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
         set("Colour: On", CabbageIdentifierIds::oncolour.toString());
         set("Alpha", CabbageIdentifierIds::alpha.toString());

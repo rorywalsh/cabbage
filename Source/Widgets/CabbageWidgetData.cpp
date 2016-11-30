@@ -42,6 +42,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     setProperty(widgetData, CabbageIdentifierIds::pivotx, 0.f);
     setProperty(widgetData, CabbageIdentifierIds::pivoty, 0.f);
     setProperty(widgetData, CabbageIdentifierIds::linenumber, ID);
+	setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 0);
 
 
     int top, left, width, height;
@@ -2260,7 +2261,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::colour))
     {
-        const String identifier = type=="image" ? "colour(" : "colour:0(";
+        const String identifier = (type=="image" || type.contains("slider") ? "colour(" : "colour:0(");
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
         colourString = colourString << identifier << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
@@ -2274,7 +2275,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::fontcolour))
     {
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour));
-        colourString = colourString << "fontcolour:0(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << (type.contains("slider") ? "fontcolour(" : "fontcolour:0(") << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::onfontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::onfontcolour))
@@ -2285,10 +2286,16 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::outlinecolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::outlinecolour))
     {
-        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::outlinecolour));
         colourString = colourString << "outlinecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::trackercolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::trackercolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::trackercolour));
+        colourString = colourString << "trackercolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+	
     return colourString;
 }
 //===================================================================

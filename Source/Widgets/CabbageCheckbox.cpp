@@ -76,8 +76,8 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         getProperties().set(CabbageIdentifierIds::shape, CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape).equalsIgnoreCase("square"));
         getProperties().set(CabbageIdentifierIds::corners, CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::corners));
 
-        setButtonText(getCurrentString(valueTree, "text"));
-        setTooltip(getCurrentString(valueTree, "popuptext"));
+        setButtonText(getCurrentText(valueTree));
+        setTooltip(getCurrentPopupText(valueTree));
     }
 
     repaint();

@@ -68,15 +68,26 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data)
 }
 
 
-String CabbageWidgetBase::getCurrentString(ValueTree data, String identifier)
+String CabbageWidgetBase::getCurrentText(ValueTree data)
 {
-    if(text!=CabbageWidgetData::getStringProp(data, identifier))
+    if(text!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text))
     {
-        text = CabbageWidgetData::getStringProp(data, identifier);
+        text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
         return text;
     }
 
     return text;
+}
+
+String CabbageWidgetBase::getCurrentPopupText(ValueTree data)
+{
+    if(tooltipText!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext))
+    {
+        tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
+        return tooltipText;
+    }
+
+    return tooltipText;
 }
 
 void CabbageWidgetBase::setChannel(ValueTree data)

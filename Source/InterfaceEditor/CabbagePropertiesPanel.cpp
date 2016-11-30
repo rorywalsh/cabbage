@@ -58,21 +58,21 @@ static Array<PropertyComponent*> createRotationEditors(CabbagePropertiesPanel* o
 static Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
-
+	const int decimalPlaces = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::decimalplaces); //get precision of number to display
     const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
     if(typeOfWidget.contains("slider"))
     {
-        const String min = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min));
-        const String max = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max));
-        const String skew = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderskew));
-        const String incr = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderincr));
+        const String min = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min), decimalPlaces);
+        const String max = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max), decimalPlaces);
+        const String skew = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderskew), decimalPlaces);
+        const String incr = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderincr), decimalPlaces);
         comps.add(new TextPropertyComponent(Value(min), "Minimum", 8, false));
         comps.add(new TextPropertyComponent(Value(max), "Maximum", 8, false));
         comps.add(new TextPropertyComponent(Value(skew), "Skew", 8, false));
         comps.add(new TextPropertyComponent(Value(incr), "Increment", 8, false));
     }
 
-    const String value = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
+    const String value = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), decimalPlaces);
     comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
 
     addListener(comps, owner);
@@ -193,6 +193,19 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
         comps.add(new ColourPropertyComponent("Colour", colourString));
         comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));
+    }
+    else if(typeOfWidget.contains("slider"))
+    {
+        const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
+        const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
+        const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+        const String trackerColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour);
+        
+		comps.add(new ColourPropertyComponent("Colour", colourString));		
+		comps.add(new ColourPropertyComponent("Text Colour", textColourString));
+		comps.add(new ColourPropertyComponent("Font", fontColourString));
+		comps.add(new ColourPropertyComponent("Outline", outlineColourString));
+		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
 
     alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
@@ -342,6 +355,11 @@ void CabbagePropertiesPanel::setPropertyByName(String name, var value)
     if(identifier.isNotEmpty())
     {
         CabbageWidgetData::setProperty(widgetData, identifier, value);
+		
+		if(identifier==CabbageIdentifierIds::sliderincr.toString())
+			CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 
+											CabbageUtilities::getNumberOfDecimalPlaces(StringArray(value.toString())));
+											
         sendChangeMessage();	//update code in editor when changes are made...
     }
 }

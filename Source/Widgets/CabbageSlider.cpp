@@ -53,6 +53,7 @@ void CabbageSlider::createPopupBubble()
     popupBubble.setColour(BubbleComponent::backgroundColourId, Colours::white);
     popupBubble.setBounds(0, 0, 50, 20);
     owner->addChildComponent(popupBubble);
+	popupBubble.setVisible(false);
     popupBubble.setAlwaysOnTop(true);	
 }
 
@@ -65,6 +66,8 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 	max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
 	value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
 	shouldShowTextBox = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::textbox);
+
+	
 	
 	if(shouldShowTextBox<1)
     {
@@ -78,7 +81,11 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext)=="0")
 		shouldDisplayPopup=false;
 	
-			
+	if(getCurrentText(wData).isNotEmpty())
+		textLabel.setVisible(true);
+	else
+		textLabel.setVisible(false);
+		
     slider.setDoubleClickReturnValue(true, value);		
 	setSliderVelocity(wData);	
 	slider.addMouseListener(this, false);
@@ -163,22 +170,29 @@ void CabbageSlider::setSliderVelocity(ValueTree wData)
 
 void CabbageSlider::setLookAndFeelColours(ValueTree wData)
 {
-	textLabel.setColour(Label::textColourId, Colour::fromString(textColour));
+	
 	textLabel.setColour(Label::outlineColourId, Colours::transparentBlack);
-	textLabel.setColour(Label::outlineColourId, Colours::transparentBlack);
+
 	textLabel.setVisible(false);
 	slider.setColour(Slider::textBoxHighlightColourId, Colours::lime.withAlpha(.2f));
+	
 	slider.setColour(Slider::thumbColourId, Colour::fromString(colour));
-	slider.setColour(Label::textColourId, Colour::fromString(fontColour));
-	slider.setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
+	slider.setColour(Slider::trackColourId, Colour::fromString(trackerColour));
+	slider.setColour(Slider::Slider::rotarySliderOutlineColourId, Colour::fromString(outlineColour));
+	slider.setColour(Slider::rotarySliderFillColourId, Colour::fromString(colour));
 	slider.setColour(TextEditor::textColourId, Colour::fromString(fontColour));
+	textLabel.setColour(Label::textColourId, Colour::fromString(textColour));
+	
 	slider.setColour(Slider::textBoxTextColourId, Colour::fromString(fontColour));
 	slider.setColour(Slider::textBoxBackgroundColourId, Colours::black);
 	slider.setColour(Slider::textBoxHighlightColourId, Colours::white);
-	slider.setColour(Slider::trackColourId, Colour::fromString(trackerColour));
+
+	slider.setColour(Label::textColourId, Colour::fromString(fontColour));
+	slider.setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
+	
 	slider.setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
-	slider.setColour(Slider::Slider::rotarySliderOutlineColourId, Colour::fromString(outlineColour));
-	slider.setColour(Slider::rotarySliderFillColourId, Colour::fromString(colour));
+
+	
 }
 
 //==============================================================================
@@ -191,8 +205,15 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
     }
 	else
 	{
+		slider.setColour(Slider::thumbColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+		slider.setColour(Slider::trackColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour)));
+		slider.setColour(Slider::Slider::rotarySliderOutlineColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour)));
+		slider.setColour(Slider::rotarySliderFillColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+		slider.setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+		textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour)));
+
 		handleCommonUpdates(this, valueTree);
-		setTooltip(getCurrentString(valueTree, "popuptext"));
+		slider.setTooltip(getCurrentPopupText(valueTree));
 	}
 	
 }
