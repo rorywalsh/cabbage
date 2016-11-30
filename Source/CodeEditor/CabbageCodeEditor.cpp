@@ -157,12 +157,11 @@ void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
     const StringArray csdArray = getAllTextAsStringArray();
     const int cabbageSectionClosingLineNumber = csdArray.indexOf("</Cabbage>");
 
-    if(shouldSendUpdateMessage && lineNumber<cabbageSectionClosingLineNumber)
+    if(allowUpdateOfPluginGUI && lineNumber<cabbageSectionClosingLineNumber)
     {
         sendChangeMessage();
     }
 
-    shouldSendUpdateMessage =! shouldSendUpdateMessage;
 }
 //==============================================================================
 void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, int startIndex)
@@ -488,7 +487,9 @@ void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
 //===========================================================================================================
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *originatingComponent)
 {
-    //Logger::writeToLog(String(key.getKeyCode()));
+    
+	allowUpdateOfPluginGUI = true; //allow keystrokes to update GUI 
+	
     if (key.getTextDescription().contains("cursor up") || key.getTextDescription().contains("cursor down"))
     {
         if(autoCompleteListBox.isVisible())
@@ -615,6 +616,11 @@ String CabbageCodeEditorComponent::getLineText()
 //==============================================================================
 void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool shouldHighlight)
 {
+	// This method is called when users move widgets around in GUI edit mode. 
+	// As the user is updating the plugin GUI, we don't need to, hence the 
+	// allowUpdateOfPluginGUI is set to false
+	allowUpdateOfPluginGUI = false;	
+	
     StringArray csdLines;
     csdLines.addLines(getDocument().getAllContent());
 

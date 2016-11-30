@@ -126,7 +126,7 @@ public:
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
 	String lastAction;
-	bool shouldSendUpdateMessage = false;
+	bool allowUpdateOfPluginGUI = false;
 	
 private:
     Component* statusBar;

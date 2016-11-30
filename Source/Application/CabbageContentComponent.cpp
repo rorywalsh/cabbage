@@ -198,6 +198,21 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
+//=======================================================================================
+void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bool replaceExistingLine)
+{
+    propertyPanel->addChangeListener(this);
+
+    for(ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
+    {
+        const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
+        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
+		CabbageUtilities::debug(newText);
+		
+        //prevent this change from sending a change message
+        getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, editor->getValueTreesForCurrentlySelectedComponents().size()==1);
+    }
+}
 //==============================================================================
 void CabbageContentComponent::timerCallback()
 {
@@ -376,21 +391,6 @@ CabbagePluginProcessor* CabbageContentComponent::getCabbagePluginProcessor()
     }
 
     return nullptr;
-}
-
-//=======================================================================================
-void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bool replaceExistingLine)
-{
-    propertyPanel->addChangeListener(this);
-
-    for(ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
-    {
-        const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
-        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
-        //prevent this change from sending a change message
-        getCurrentCodeEditor()->shouldSendUpdateMessage = false;
-        getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, editor->getValueTreesForCurrentlySelectedComponents().size()==1);
-    }
 }
 
 //=======================================================================================
