@@ -170,7 +170,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::outlinecolour, Colours::black.brighter(.3f).toString());
         setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
         setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
-        //these don't appear in the props dialog
         setProperty(widgetData, CabbageIdentifierIds::name, "rslider");
         setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
@@ -1579,7 +1578,8 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                         }
                         else
                         {
-                            setProperty(widgetData, CabbageIdentifierIds::value, strTokens[2].trim().getDoubleValue() < min ? min : strTokens[2].trim().getDoubleValue());
+							CabbageUtilities::debug(strTokens[2].trim());
+                            setProperty(widgetData, CabbageIdentifierIds::value, strTokens[2].trim().getFloatValue());
                             tempArray.add(strTokens[2].trim());
                         }
                     }
@@ -1587,14 +1587,14 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
                     if(strTokens.size()>3)
                     {
-                        setProperty(widgetData, CabbageIdentifierIds::sliderskew, strTokens[3].trim().getDoubleValue());
+                        setProperty(widgetData, CabbageIdentifierIds::sliderskew, strTokens[3].trim().getFloatValue());
                         tempArray.add(strTokens[3].trim());
                     }
 
                     if(strTokens.size()>4)
                     {
                         tempArray.add(strTokens[4].trim());
-                        setProperty(widgetData, CabbageIdentifierIds::sliderincr, strTokens[4].trim().getDoubleValue());
+                        setProperty(widgetData, CabbageIdentifierIds::sliderincr, strTokens[4].trim().getFloatValue());
                     }
 
                     double sliderRange = max-min;
@@ -2132,11 +2132,26 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode(ValueTree widgetDat
     const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
     CabbageWidgetData::setWidgetState(tempData, type, -99);
 
-    if(CabbageWidgetData::getNumProp(widgetData, identifier)!=CabbageWidgetData::getNumProp(tempData, identifier))
-    {
-        return identifier + "(" + String(CabbageWidgetData::getNumProp(widgetData, identifier)) + "), ";
-    }
-
+	if(type.contains("slider") && identifier=="value")
+	{
+		return "range(" + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::min)) 
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::max)) 
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value))
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::sliderskew))
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::sliderincr))
+						 + "), ";
+	}
+	else
+	{
+		if(CabbageWidgetData::getNumProp(widgetData, identifier)!=CabbageWidgetData::getNumProp(tempData, identifier))
+		{
+			return identifier + "(" + String(CabbageWidgetData::getNumProp(widgetData, identifier)) + "), ";
+		}
+	}
     return String::empty;
 }
 

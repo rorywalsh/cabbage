@@ -62,18 +62,18 @@ static Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owne
     const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
     if(typeOfWidget.contains("slider"))
     {
-        const float min = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min);
-        const float max = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max);
-        const float skew = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderskew);
-        const float incr = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderincr);
-        comps.add(new TextPropertyComponent(Value (var (min)), "Minimum", 200, false));
-        comps.add(new TextPropertyComponent(Value (var (max)), "Maximum", 200, false));
-        comps.add(new TextPropertyComponent(Value (var (skew)), "Skew", 200, false));
-        comps.add(new TextPropertyComponent(Value (var (incr)), "Increment", 200, false));
+        const String min = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min));
+        const String max = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max));
+        const String skew = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderskew));
+        const String incr = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderincr));
+        comps.add(new TextPropertyComponent(Value(min), "Minimum", 8, false));
+        comps.add(new TextPropertyComponent(Value(max), "Maximum", 8, false));
+        comps.add(new TextPropertyComponent(Value(skew), "Skew", 8, false));
+        comps.add(new TextPropertyComponent(Value(incr), "Increment", 8, false));
     }
 
-    const float value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
-    comps.add(new TextPropertyComponent(Value (var (value)), "Value", 200, false));
+    const String value = String::formatted("%.5f", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
+    comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
 
     addListener(comps, owner);
 

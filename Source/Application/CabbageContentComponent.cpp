@@ -206,11 +206,11 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
     for(ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
     {
         const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
+		const String parent = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
         const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
 		CabbageUtilities::debug(newText);
-		
-        //prevent this change from sending a change message
-        getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, editor->getValueTreesForCurrentlySelectedComponents().size()==1);
+
+        getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty() == true ? true : false);
     }
 }
 //==============================================================================

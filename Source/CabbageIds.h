@@ -625,7 +625,7 @@ public:
         set("Minimum.", CabbageIdentifierIds::min.toString());
         set("Maximum.", CabbageIdentifierIds::max.toString());
         set("Skew", CabbageIdentifierIds::sliderskew.toString());
-        set("Incremenet", CabbageIdentifierIds::sliderincr.toString());
+        set("Increment", CabbageIdentifierIds::sliderincr.toString());
         set("Value", CabbageIdentifierIds::value.toString());
 
         set("Text", CabbageIdentifierIds::text.toString());
