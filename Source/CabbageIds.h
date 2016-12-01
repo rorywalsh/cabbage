@@ -307,7 +307,8 @@ public:
         add("sliderincr");
         add("widgetarray");
         add("channelarray");
-        add("textbox");
+        add("valuetextbox");
+		add("textbox");
         add("active");
         add("caption");
         add("kind");
@@ -423,6 +424,7 @@ static const Identifier imggroupbox = "imggroupbox";
 static const Identifier imgbuttonon = "imgbuttonon";
 static const Identifier imgbuttonoff = "imgbuttonoff";
 static const Identifier textbox = "textbox";
+static const Identifier valuetextbox = "valuetextbox";
 static const Identifier name = "name";
 static const Identifier active = "active";
 static const Identifier type = "type";
@@ -643,7 +645,7 @@ public:
         set("Outline", CabbageIdentifierIds::outlinecolour.toString());
 		set("Tracker", CabbageIdentifierIds::trackercolour.toString());
 		set("Text Colour", CabbageIdentifierIds::textcolour.toString());
-		
+		set("Value Box", CabbageIdentifierIds::valuetextbox.toString());
         set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
         set("Colour: On", CabbageIdentifierIds::oncolour.toString());
         set("Alpha", CabbageIdentifierIds::alpha.toString());

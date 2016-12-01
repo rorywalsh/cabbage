@@ -289,11 +289,19 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
         comps.add (new CabbageFilePropertyComponent("File", false, true));
     }
 
-    if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image")
+    else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image")
     {
         var corners = valueTree.getProperty(CabbageIdentifierIds::outlinethickness);
         comps.add (new TextPropertyComponent(Value (corners), "Outline Thickness", 200, false));
     }
+	
+	else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type).contains("slider"))
+	{
+		sliderNumberBoxValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::textbox));
+		sliderNumberBoxValue.addListener(this);
+
+		comps.add (new BooleanPropertyComponent(sliderNumberBoxValue, "NumberBox", "Is Visible"));		
+	}    
 
     addListener(comps, this);
     return comps;

@@ -65,7 +65,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::max, 1);
         setProperty(widgetData, CabbageIdentifierIds::value, 0);
         setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::textbox, 0.f);
+        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
         setProperty(widgetData, CabbageIdentifierIds::caption, "");
         setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
         setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
@@ -97,12 +97,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
 
 
     }
-    else if(strTokens[0].trim() == "socketsend" || strTokens[0].trim() == "socketreceive")
-    {
-        setProperty(widgetData, CabbageIdentifierIds::basetype, "layout");
-        setProperty(widgetData, CabbageIdentifierIds::socketaddress, "");
-        setProperty(widgetData, CabbageIdentifierIds::socketport, 0);
-    }
     else if(strTokens[0].trim() == "vslider" || strTokens[0].trim() == "vslider2" ||  strTokens[0].trim() == "vslider3")
     {
         setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
@@ -117,7 +111,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::max, 1);
         setProperty(widgetData, CabbageIdentifierIds::value, 0);
         setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::textbox, 0.f);
+        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
         setProperty(widgetData, CabbageIdentifierIds::caption, "");
         setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
         setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
@@ -162,7 +156,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
         setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
         setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::textbox, 0.f);
+        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
         setProperty(widgetData, CabbageIdentifierIds::caption, "");
         setProperty(widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
         setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
@@ -184,6 +178,13 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
     }
 
+    else if(strTokens[0].trim() == "socketsend" || strTokens[0].trim() == "socketreceive")
+    {
+        setProperty(widgetData, CabbageIdentifierIds::basetype, "layout");
+        setProperty(widgetData, CabbageIdentifierIds::socketaddress, "");
+        setProperty(widgetData, CabbageIdentifierIds::socketport, 0);
+    }
+	
     else if((strTokens[0].trim() == "sourcebutton")||(strTokens[0].trim() == "loadbutton"))
     {
         top = 10;
@@ -2296,6 +2297,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
         colourString = colourString << "trackercolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 	
+	
     return colourString;
 }
 //===================================================================
@@ -2313,6 +2315,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
                          + getNumericalValueTextAsCabbageCode(widgetData, "corners")
                          + getNumericalValueTextAsCabbageCode(widgetData, "active")
                          + getNumericalValueTextAsCabbageCode(widgetData, "visible")
+						 + getNumericalValueTextAsCabbageCode(widgetData, "valuetextbox")
                          + getSimpleTextAsCabbageCode(widgetData, "popuptext")
                          + getSimpleTextAsCabbageCode(widgetData, "file")
                          + getSimpleTextAsCabbageCode(widgetData, "shape")

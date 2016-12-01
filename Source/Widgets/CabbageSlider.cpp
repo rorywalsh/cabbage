@@ -212,8 +212,14 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 		slider.setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 		textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour)));
 
+		textLabel.setText(getCurrentText(valueTree), dontSendNotification);
+		textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);
+
+		
 		handleCommonUpdates(this, valueTree);
 		slider.setTooltip(getCurrentPopupText(valueTree));
+		
+		resized();
 	}
 	
 }

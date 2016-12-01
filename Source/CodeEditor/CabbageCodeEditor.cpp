@@ -164,6 +164,8 @@ void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
 
 }
 //==============================================================================
+// the update messages sent from these method could be plaaced in a timer callback if they 
+// start to make the editor less responsive...
 void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, int startIndex)
 {
     handleAutoComplete(text);
