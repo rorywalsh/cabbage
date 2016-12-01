@@ -297,10 +297,9 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 	
 	else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type).contains("slider"))
 	{
-		sliderNumberBoxValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::textbox));
+		sliderNumberBoxValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox));
 		sliderNumberBoxValue.addListener(this);
-
-		comps.add (new BooleanPropertyComponent(sliderNumberBoxValue, "NumberBox", "Is Visible"));		
+		comps.add (new BooleanPropertyComponent(sliderNumberBoxValue, "Value Box", "Is Visible"));		
 	}    
 
     addListener(comps, this);
@@ -392,10 +391,16 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 {
     if(value.refersToSameSourceAs(isActiveValue))
         setPropertyByName("Active", value.getValue());
+		
     else if(value.refersToSameSourceAs(isVisibleValue))
         setPropertyByName("Visible", value.getValue());
+		
     else if(value.refersToSameSourceAs(alphaValue))
         setPropertyByName("Alpha", value.getValue());
+		
+    else if(value.refersToSameSourceAs(sliderNumberBoxValue))
+        setPropertyByName("Value Box", value.getValue());
+		
     else if(value.refersToSameSourceAs(shapeValue))
     {
         if(value.getValue().isInt())

@@ -427,6 +427,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         break;
     case CommandIDs::stopCode:
         getContentComponent()->stopCode();
+		getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
         break;
     case CommandIDs::exportAsEffect:
 
@@ -452,7 +453,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 			getContentComponent()->saveDocument();
         break;
     case CommandIDs::enableLiveDebugger:
-        getContentComponent()->getCurrentCodeEditor()->toggleDebuggerMode();
+        getContentComponent()->getCurrentCodeEditor()->runInDebugMode();
         break;
     default:
         break;

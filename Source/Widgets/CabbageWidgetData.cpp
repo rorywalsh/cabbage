@@ -1796,9 +1796,9 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                     setProperty(widgetData, CabbageIdentifierIds::fontstyle, 0);
             }
 
-            else if(identArray[indx].equalsIgnoreCase("textbox"))
+            else if(identArray[indx].equalsIgnoreCase("textbox") || identArray[indx].equalsIgnoreCase("valuetextbox"))
             {
-                setProperty(widgetData, CabbageIdentifierIds::textbox, strTokens[0].trim().getFloatValue());
+                setProperty(widgetData, CabbageIdentifierIds::valuetextbox, strTokens[0].trim().getFloatValue());
             }
 
             else if(identArray[indx].equalsIgnoreCase("velocity"))
@@ -2307,6 +2307,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
     String cabbageCode = getStringProp(widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode(getBounds(widgetData))
                          + getMultiItemTextAsCabbageCode(widgetData, "channel")
+						 + getMultiItemTextAsCabbageCode(widgetData, "identchannel")
                          + getNumericalValueTextAsCabbageCode(widgetData, "value")
                          + getMultiItemTextAsCabbageCode(widgetData, "text")
                          + getColoursTextAsCabbageCode(widgetData)
@@ -2321,7 +2322,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
                          + getSimpleTextAsCabbageCode(widgetData, "shape")
                          + getImagesTextAsCabbageCode(widgetData)
 
-                         //lastly, add a bracket in cases of plants that open on a line of widget code
+                         //lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
                          + (getNumProp(widgetData, "containsOpeningCurlyBracket")==1 ? "{" : String::empty);
 
     return cabbageCode;

@@ -151,6 +151,8 @@ void CabbageSettingsWindow::valueChanged(Value& value)
         settings.getUserSettings()->setValue("SetAlwaysOnTop", value.getValue().toString());
     else if(value.refersToSameSourceAs(compileOnSaveValue))
         settings.getUserSettings()->setValue("CompileOnSave", value.getValue().toString());
+    else if(value.refersToSameSourceAs(breakLinesValue))
+        settings.getUserSettings()->setValue("IdentifiersBeforeLineBreak", value.getValue().toString());
 }
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)

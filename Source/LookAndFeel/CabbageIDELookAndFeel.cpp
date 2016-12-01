@@ -221,9 +221,9 @@ void CabbageIDELookAndFeel::drawScrollbar (Graphics &g, ScrollBar &scrollbar, in
     //g.drawRect (x, y, width, height);
 
     if (isScrollbarVertical == false) //horizontal
-        g.fillRoundedRectangle (thumbStartPosition+3, 3, jmax(0, thumbSize-6), height-6, 5);
+        g.fillRoundedRectangle (thumbStartPosition+3, 3, jmax(0, thumbSize-2), height-6, 5);
     else //vertical
-        g.fillRoundedRectangle (3, thumbStartPosition+3, width-6, jmax(1, thumbSize-6), 5);
+        g.fillRoundedRectangle (3, thumbStartPosition+3, width-6, jmax(1, thumbSize-2), 5);
 
 }
 

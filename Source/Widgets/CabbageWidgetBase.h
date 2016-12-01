@@ -24,8 +24,8 @@
 
 // Simple base class for taking care of some widget housekeeping. This class looks after
 // common memeber variables such as alpha values, tooltiptext, bounds, etc
-// Each cabbage widget should inherit from this class so initialiseCommonAttributes()
-// can be called in its valueTreePropertyChanged() method.
+// Each cabbage widget should inherit from this class and call initialiseCommonAttributes()
+// in the derived class's constructor, and handleCommonUpdates() in its valueTreePropertyChanged() method.
 class CabbageWidgetBase
 {
 public:
@@ -37,8 +37,8 @@ public:
     String tooltipText, text, channel;
     File imgButtonOn, imgButtonOff, imgPath;
 
-    void initialiseCommonAttributes(Component* child, ValueTree valueTree);		//handles simple attributes
-    void handleCommonUpdates(Component* child, ValueTree data);
+    void initialiseCommonAttributes(Component* child, ValueTree valueTree);							//handles simple attributes on initialisation
+    void handleCommonUpdates(Component* child, ValueTree data, bool calledFromConstructor=false);	//handles all updates from ident channel message
 
     //see below file for implementation
     template< typename Type >
@@ -51,6 +51,7 @@ public:
     static int getSVGHeight(File svgFile);
     static int getSVGWidth(File svgFile);
 };
+
 //================== setImgProperties ==========================
 template< typename Type >
 void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgType)
@@ -68,8 +69,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
             if(imgFile.getFileExtension().contains("svg"))
             {
                 comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
-                comp.getProperties().set("imggroupboxheight", getSVGHeight(imgFile.loadFileAsString()));
-                comp.getProperties().set("imggroupboxwidth", getSVGWidth(imgFile.loadFileAsString()));
+                comp.getProperties().set("imggroupboxheight", getSVGHeight(imgFile));
+                comp.getProperties().set("imggroupboxwidth", getSVGWidth(imgFile));
             }
             else
                 comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
@@ -83,8 +84,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
                 if(imgFile.getFileExtension().contains("svg"))
                 {
                     comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
-                    comp.getProperties().set("imggroupboxheight", getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("imggroupboxwidth", getSVGWidth(filename.loadFileAsString()));
+                    comp.getProperties().set("imggroupboxheight", getSVGHeight(filename));
+                    comp.getProperties().set("imggroupboxwidth", getSVGWidth(filename));
                 }
                 else
                     comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
@@ -100,8 +101,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
             if(imgFile.getFileExtension().contains("svg"))
             {
                 comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
-                comp.getProperties().set("imgbuttonheight", getSVGHeight(imgFile.loadFileAsString()));
-                comp.getProperties().set("imgbuttonwidth", getSVGWidth(imgFile.loadFileAsString()));
+                comp.getProperties().set("imgbuttonheight", getSVGHeight(imgFile));
+                comp.getProperties().set("imgbuttonwidth", getSVGWidth(imgFile));
             }
             else
                 comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
@@ -115,8 +116,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
                 if(imgFile.getFileExtension().contains("svg"))
                 {
                     comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
-                    comp.getProperties().set("imgbuttonheight", getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("imgbuttonwidth", getSVGWidth(filename.loadFileAsString()));
+                    comp.getProperties().set("imgbuttonheight", getSVGHeight(filename));
+                    comp.getProperties().set("imgbuttonwidth", getSVGWidth(filename));
                 }
                 else
                     comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
@@ -131,8 +132,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
             if(imgFile.getFileExtension().contains("svg"))
             {
                 comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, imgFile.getFullPathName());
-                comp.getProperties().set("imgbuttoffheight", getSVGHeight(imgFile.loadFileAsString()));
-                comp.getProperties().set("imgbuttoffwidth", getSVGWidth(imgFile.loadFileAsString()));
+                comp.getProperties().set("imgbuttoffheight", getSVGHeight(imgFile));
+                comp.getProperties().set("imgbuttoffwidth", getSVGWidth(imgFile));
             }
             else
                 comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, imgFile.getFullPathName());
@@ -147,8 +148,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
                 if(imgFile.getFileExtension().contains("svg"))
                 {
                     comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
-                    comp.getProperties().set("imgbuttoffheight", getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("imgbuttoffwidth", getSVGWidth(filename.loadFileAsString()));
+                    comp.getProperties().set("imgbuttoffheight", getSVGHeight(filename));
+                    comp.getProperties().set("imgbuttoffwidth", getSVGWidth(filename));
                 }
                 else
                     comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
@@ -164,8 +165,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
             if(imgFile.getFileExtension().contains("svg"))
             {
                 comp.getProperties().set("imgsliderbg", imgFile.getFullPathName());
-                comp.getProperties().set("imgsliderbgheight", getSVGHeight(imgFile.loadFileAsString()));
-                comp.getProperties().set("imgsliderbgwidth", getSVGWidth(imgFile.loadFileAsString()));
+                comp.getProperties().set("imgsliderbgheight", getSVGHeight(imgFile));
+                comp.getProperties().set("imgsliderbgwidth", getSVGWidth(imgFile));
             }
             else
                 comp.getProperties().set("imgsliderbg", imgFile.getFullPathName());
@@ -187,8 +188,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
                 if(imgFile.getFileExtension().contains("svg"))
                 {
                     comp.getProperties().set("imgsliderbg", filename.getFullPathName());
-                    comp.getProperties().set("imgsliderbgheight", getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("imgsliderbgwidth", getSVGWidth(filename.loadFileAsString()));
+                    comp.getProperties().set("imgsliderbgheight", getSVGHeight(filename));
+                    comp.getProperties().set("imgsliderbgwidth", getSVGWidth(filename));
                 }
                 else
                     comp.getProperties().set("imgsliderbg", imgFile.getFullPathName());
@@ -204,8 +205,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
             if(imgFile.getFileExtension().contains("svg"))
             {
                 comp.getProperties().set("imgslider", imgFile.getFullPathName());
-                comp.getProperties().set("imgsliderheight", getSVGHeight(imgFile.loadFileAsString()));
-                comp.getProperties().set("imgsliderwidth", getSVGWidth(imgFile.loadFileAsString()));
+                comp.getProperties().set("imgsliderheight", getSVGHeight(imgFile));
+                comp.getProperties().set("imgsliderwidth", getSVGWidth(imgFile));
             }
             else
                 comp.getProperties().set("imgslider", imgFile.getFullPathName());
@@ -226,8 +227,8 @@ void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgT
                 if(imgFile.getFileExtension().contains("svg"))
                 {
                     comp.getProperties().set("imgslider", filename.getFullPathName());
-                    comp.getProperties().set("imgsliderheight", getSVGHeight(filename.loadFileAsString()));
-                    comp.getProperties().set("imgsliderwidth", getSVGWidth(filename.loadFileAsString()));
+                    comp.getProperties().set("imgsliderheight", getSVGHeight(filename));
+                    comp.getProperties().set("imgsliderwidth", getSVGWidth(filename));
                 }
                 else
                     comp.getProperties().set("imgslider", filename.getFullPathName());

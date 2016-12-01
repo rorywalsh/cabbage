@@ -81,7 +81,6 @@ void CabbageCodeEditorComponent::updateColourScheme()
     };
 
     CodeEditorComponent::ColourScheme cs;
-
     setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
     setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
     setColour(CodeEditorComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::codeBackground, Colours::white));
@@ -94,19 +93,17 @@ void CabbageCodeEditorComponent::updateColourScheme()
     this->setColourScheme(cs);
 }
 //==============================================================================
-void CabbageCodeEditorComponent::toggleDebuggerMode()
+void CabbageCodeEditorComponent::runInDebugMode()
 {
-    debugModeEnabled = !debugModeEnabled;
+    debugModeEnabled = true;
+    startTimerHz(5);
+}
 
-    if(debugModeEnabled)
-    {
-        startTimerHz(100);
-    }
-    else
-    {
-        stopTimer();
-        debugLabel.setVisible(false);
-    }
+void CabbageCodeEditorComponent::stopDebugMode()
+{
+	stopTimer();
+	debugLabel.setVisible(false);
+	debugModeEnabled = false;		
 }
 
 bool CabbageCodeEditorComponent::isDebugModeEnabled()
@@ -116,35 +113,39 @@ bool CabbageCodeEditorComponent::isDebugModeEnabled()
 
 void CabbageCodeEditorComponent::timerCallback()
 {
-    MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
-    Component* underMouse = mouse.getComponentUnderMouse();
+	if(isDebugModeEnabled() == true)
+	{
+		MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
+		Component* underMouse = mouse.getComponentUnderMouse();
 
-    Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
+		Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
 
-    CodeDocument::Position start, end;
-    getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);
+		CodeDocument::Position start, end;
+		getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);
 
-    if (end.getPosition() > start.getPosition())
-    {
-        Range<int> selection(start.getPosition(), end.getPosition());
+		if (end.getPosition() > start.getPosition())
+		{
+			Range<int> selection(start.getPosition(), end.getPosition());
 
-        const String token = getTextInRange (selection);
-        const var value = findValueForCsoundVariable(token);
-        if(!value.isVoid())
-        {
-            const String displayText = token+":"+value.toString();
-            debugLabel.setText(displayText, dontSendNotification);
-            debugLabel.setVisible(true);
-            debugLabel.toFront(true);
-            debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
-            debugLabel.grabKeyboardFocus();
-        }
-        else
-        {
-            debugLabel.setVisible(false);
-        }
+			const String token = getTextInRange (selection);
+			const var value = findValueForCsoundVariable(token);
+			if(!value.isVoid())
+			{
+				const String displayText = token+":"+value.toString();
+				debugLabel.setText(displayText, dontSendNotification);
+				debugLabel.setVisible(true);
+				debugLabel.toFront(true);
+				debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
+				debugLabel.grabKeyboardFocus();
+			}
+			else
+			{
+				debugLabel.setVisible(false);
+			}
 
-    }
+		}
+	}
+
 }
 
 var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
@@ -173,7 +174,6 @@ void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, in
     displayOpcodeHelpInStatusBar(lineFromCsd);
 
     lastAction = "insertText";
-
     const CodeDocument::Position pos(getDocument(), startIndex);
     sendUpdateMessage(pos.getLineNumber());
 
@@ -623,7 +623,7 @@ void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert,
 	// allowUpdateOfPluginGUI is set to false
 	allowUpdateOfPluginGUI = false;	
 	
-    StringArray csdLines;
+	StringArray csdLines;
     csdLines.addLines(getDocument().getAllContent());
 
     if(replaceExistingLine)
@@ -635,6 +635,25 @@ void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert,
 
     if(shouldHighlight)
         highlightLine(lineNumber);
+}
+
+
+StringArray CabbageCodeEditorComponent::getIdentifiersFromString(String code)
+{
+	StringArray tokens;
+	vector<string> result;
+	const char* str = code.toUTF8().getAddress();
+	do
+	{
+		const char *begin = str;
+
+		while(*str != ')' && *str)
+			str++;
+
+		tokens.add(string(begin+1, str+1));
+	} 
+	while (0 != *str++);
+	return tokens;		
 }
 
 void CabbageCodeEditorComponent::insertNewLine(String text)
@@ -662,14 +681,14 @@ void CabbageCodeEditorComponent::insertNewLine(String text)
 //==============================================================================
 void CabbageCodeEditorComponent::highlightLine(int lineNumber)
 {
-    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 0), false);
-    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 5000), true);
+    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 5000), false);
+	moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 0), true);
 }
 
 void CabbageCodeEditorComponent::highlightLines(int firstLine, int lastLine)
 {
-    moveCaretTo(CodeDocument::Position (getDocument(), firstLine, 0), false);
-    moveCaretTo(CodeDocument::Position (getDocument(), lastLine, 5000), true);
+	moveCaretTo(CodeDocument::Position (getDocument(), lastLine, 5000), false);
+    moveCaretTo(CodeDocument::Position (getDocument(), firstLine, 0), true);
 }
 
 //==============================================================================

@@ -40,6 +40,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	initialiseSlider(wData);
 	initialiseCommonAttributes(this, wData);
 	createPopupBubble();
+	setImgProperties(this->slider, wData, "slider");
+    setImgProperties(this->slider, wData, "sliderbg");
 }
 
 CabbageSlider::~CabbageSlider()
@@ -65,7 +67,7 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 	min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
 	max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
 	value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
-	shouldShowTextBox = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::textbox);
+	shouldShowTextBox = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuetextbox);
 
 	
 	
@@ -100,31 +102,31 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 
 void CabbageSlider::resized()
 {
-        if (sliderType.contains("rotary"))
-        {
-                if(text.isNotEmpty())
-                {
-                    if(shouldShowTextBox>0)
-                    {
-                        textLabel.setBounds(0, 0, getWidth(), 20);
-                        textLabel.setText(text, dontSendNotification);
-                        textLabel.setJustificationType(Justification::centred);
-                        textLabel.setVisible(true);
-                        slider.setBounds(0, 20, getWidth(), getHeight()-20);
-                    }
-                    else
-                    {
-                        textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
-                        textLabel.setText(text, dontSendNotification);
-                        textLabel.setJustificationType(Justification::centred);
-                        textLabel.setVisible(true);
-                        slider.setBounds(0, 0, getWidth(), getHeight()-15);
-                    }
-                }
-                else
-                    slider.setBounds(0, 0, getWidth(), getHeight());
+	if (sliderType.contains("rotary"))
+	{
+			if(text.isNotEmpty())
+			{
+				if(shouldShowTextBox>0)
+				{
+					textLabel.setBounds(0, 0, getWidth(), 20);
+					textLabel.setText(text, dontSendNotification);
+					textLabel.setJustificationType(Justification::centred);
+					textLabel.setVisible(true);
+					slider.setBounds(0, 20, getWidth(), getHeight()-20);
+				}
+				else
+				{
+					textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
+					textLabel.setText(text, dontSendNotification);
+					textLabel.setJustificationType(Justification::centred);
+					textLabel.setVisible(true);
+					slider.setBounds(0, 0, getWidth(), getHeight()-15);
+				}
+			}
+			else
+				slider.setBounds(0, 0, getWidth(), getHeight());
 
-        }	
+	}	
 }
 
 void CabbageSlider::showPopupBubble()
@@ -214,10 +216,12 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 
 		textLabel.setText(getCurrentText(valueTree), dontSendNotification);
 		textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);
-
+		shouldShowTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
+		slider.setTextBoxStyle(shouldShowTextBox==1 ? Slider::TextBoxBelow : Slider::NoTextBox, false, 40, 15);
+		slider.setTooltip(getCurrentPopupText(valueTree));
 		
 		handleCommonUpdates(this, valueTree);
-		slider.setTooltip(getCurrentPopupText(valueTree));
+		
 		
 		resized();
 	}

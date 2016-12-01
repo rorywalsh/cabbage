@@ -82,6 +82,7 @@ public:
     bool deleteBackwards (const bool moveInWholeWordSteps);
 
 	void sendUpdateMessage(int lineNumber);
+	StringArray getIdentifiersFromString(String code);
 	//=========================================================
 	NamedValueSet instrumentsAndRegions;
 	//=========================================================
@@ -89,10 +90,12 @@ public:
 	ValueTree breakpointData;
 	var findValueForCsoundVariable(String varName);
 	bool debugModeEnabled = false;
-	void toggleDebuggerMode();
+	void runInDebugMode();
+	void stopDebugMode();
 	bool isDebugModeEnabled();
 	Label debugLabel;
 	//=========================================================
+	
     void setAllText(String text)
     {
         getDocument().replaceAllContent(text);
@@ -137,6 +140,7 @@ private:
     ListBox autoCompleteListBox;
     StringArray variableNamesToShow, variableNames;
     EditorAndConsoleContentComponent* owner;
+	int updateGUICounter;
 };
 
 

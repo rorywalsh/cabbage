@@ -62,10 +62,33 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
 
         const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
         ValueTree temp(widgetTreeIdentifier);
-        CabbageWidgetData::setWidgetState(temp, linesFromCsd[lineNumber], lineNumber);
+		
+		String currentLineOfCabbageCode = linesFromCsd[lineNumber];
+ 
+		if(currentLineOfCabbageCode.contains(" \\"))
+		{
+			for(int index = lineNumber+1;;index++)
+			{
+				CabbageUtilities::debug(linesFromCsd[index]);
+				CabbageUtilities::debug(linesFromCsd[index+1]);
+				
+				if(linesFromCsd[index].contains(" \\"))
+					currentLineOfCabbageCode+=linesFromCsd[index];
+				else
+				{
+					currentLineOfCabbageCode+=linesFromCsd[index];
+					break;
+				}
+				
+			}			
+		}
+		
+		//CabbageUtilities::debug(currentLineOfCabbageCode);
+		
+        CabbageWidgetData::setWidgetState(temp, currentLineOfCabbageCode, lineNumber);
         CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
 
-        if(linesFromCsd[lineNumber].contains("}"))
+        if(currentLineOfCabbageCode.contains("}"))
         {
             parentComponent = "";
         }
@@ -79,9 +102,9 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
             cabbageWidgets.addChild(temp, -1, 0);
         }
 
-        if(linesFromCsd[lineNumber].contains("{"))
+        if(currentLineOfCabbageCode.contains("{"))
         {
-            if(linesFromCsd[lineNumber].removeCharacters(" ")=="{")
+            if(currentLineOfCabbageCode.removeCharacters(" ")=="{")
             {
                 parentComponent = previousComponent;
             }

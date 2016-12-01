@@ -22,17 +22,19 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
-void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data)
+void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bool calledFromConstructor)
 {
-    if(getPluginEditor(child)->isEditModeEnabled() == false)
-        child->setBounds(CabbageWidgetData::getBounds(data));
+	if(calledFromConstructor == false)
+	{
+		if(getPluginEditor(child)->isEditModeEnabled() == false)
+			child->setBounds(CabbageWidgetData::getBounds(data));
 
-    else if(CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::allowboundsupdate)==1)
-    {
-        child->setBounds(CabbageWidgetData::getBounds(data));
-        getPluginEditor(child)->updateLayoutEditorFrames();
-    }
-
+		else if(CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::allowboundsupdate)==1)
+		{
+			child->setBounds(CabbageWidgetData::getBounds(data));
+			getPluginEditor(child)->updateLayoutEditorFrames();
+		}
+	}
     if(rotate!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate))
     {
         rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
@@ -120,6 +122,8 @@ void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree d
     tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
     child->setBounds(CabbageWidgetData::getBounds(data));
     child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
+	//now initialise everything that can be updated using ident channels
+	handleCommonUpdates(child, data, true);
 
 }
 

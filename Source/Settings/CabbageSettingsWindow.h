@@ -60,7 +60,7 @@ private:
     TextButton loadButton, saveButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
     CabbageSettings &settings;
-    Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue;
+    Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue;
 
 };
 

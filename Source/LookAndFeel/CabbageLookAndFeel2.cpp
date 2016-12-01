@@ -175,6 +175,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
     bool useSliderSVG = false;
     Image image;
     const File imgSlider(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgslider, "").toString());
+	//CabbageUtilities::debug(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgsliderbg, "").toString());
     const File imgSliderBackground(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgsliderbg, "").toString());
  
     const int svgSliderWidthBg = slider.getProperties().getWithDefault("svgsliderbgwidth", 100);
@@ -236,12 +237,17 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
 			{
 				image = ImageCache::getFromFile(imgSlider);
 				image = image.rescaled(slider.getWidth(), slider.getHeight());
-				g.drawImage(image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
+				ScopedPointer<Drawable> drawable;
+				drawable = Drawable::createFromImageFile(imgSlider);
+				drawable->setTransformToFit(Rectangle<float>(0, 0, slider.getWidth(), slider.getWidth()), RectanglePlacement::centred);
+				drawable->draw(g, 1.f, AffineTransform::rotation(angle,
+                                    slider.getWidth()/2, slider.getWidth()/2));
+				//g.drawImage(image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
 			}
 			else if(imgSlider.hasFileExtension("svg"))
 			{
-				CabbageLookAndFeel2::drawFromSVG(g, imgSlider, svgSliderWidthBg, svgSliderHeightBg, slider.getWidth(), slider.getHeight(), AffineTransform::rotation(angle,
-                                    svgRSliderDiameter/2, svgRSliderDiameter/2));
+				drawFromSVG(g, imgSlider, svgSliderWidthBg, svgSliderHeightBg, slider.getWidth(), slider.getHeight(), AffineTransform::rotation(angle,
+                                    slider.getWidth()/2, slider.getWidth()/2));
 			}			
 			
             useSliderSVG = true;

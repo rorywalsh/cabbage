@@ -259,8 +259,9 @@ public:
 class CabbageIdentifierStrings : public StringArray
 {
 public:
-    CabbageIdentifierStrings()
-    {
+    CabbageIdentifierStrings()	// some care must be taken here to insure that the longest strings appear first 
+    {							// in the array if they contain similiar char sequences, for instance, outlinecolour should 
+		add("valuetextbox");	// should appear before colour, otherwise identifiers will be missed in parsing
         add("outlinecolour");
         add("outlinecolor");
         add("tablecolour");
@@ -307,7 +308,6 @@ public:
         add("sliderincr");
         add("widgetarray");
         add("channelarray");
-        add("valuetextbox");
 		add("textbox");
         add("active");
         add("caption");
@@ -423,8 +423,8 @@ static const Identifier imgsliderbg = "imgsliderbg";
 static const Identifier imggroupbox = "imggroupbox";
 static const Identifier imgbuttonon = "imgbuttonon";
 static const Identifier imgbuttonoff = "imgbuttonoff";
-static const Identifier textbox = "textbox";
 static const Identifier valuetextbox = "valuetextbox";
+static const Identifier textbox = "textbox";
 static const Identifier name = "name";
 static const Identifier active = "active";
 static const Identifier type = "type";
