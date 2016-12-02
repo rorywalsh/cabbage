@@ -42,7 +42,7 @@ void CabbageImage::paint(Graphics& g)
     {
         if(imgFile.hasFileExtension(".svg"))
         {
-            CabbageLookAndFeel2::drawFromSVG(g, imgFile, getSVGWidth(imgFile), getSVGWidth(imgFile), getWidth(), getHeight(), AffineTransform::identity);
+            CabbageLookAndFeel2::drawFromSVG(g, imgFile, getWidth(), getHeight(), AffineTransform::identity);
         }
         else
             g.drawImage(ImageCache::getFromFile(imgFile), 0, 0, getWidth(), getHeight(), 0, 0,

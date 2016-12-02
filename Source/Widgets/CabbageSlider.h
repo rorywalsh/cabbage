@@ -33,7 +33,7 @@ class CabbageSlider
     CabbagePluginEditor* owner;
     ValueTree widgetData;	
 	Label textLabel;
-	float velocity, sliderIncrement, sliderSkew, min, max, value, shouldShowTextBox;
+	float velocity, sliderIncrement, sliderSkew, min, max, value, shouldShowTextBox, trackerThickness;
 	int decimalPlaces;
 	String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
 	bool shouldDisplayPopup = true;

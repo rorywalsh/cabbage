@@ -21,14 +21,20 @@ public:
     ~CabbageLookAndFeel2() {};
 
     void drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown);
-	void drawRotarySlider (Graphics &g, int x, int y, int width, int height, float sliderPosProportional,
-                           float rotaryStartAngle,
-                           float rotaryEndAngle,
-                           Slider &slider);
 	
+	void drawRotarySlider (Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &slider);
+						   
+	void drawLinearSlider (Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider);
+	
+	void drawLinearSliderBackground (Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos,	float maxSliderPos,	const Slider::SliderStyle style, Slider &slider);
+	
+	void drawLinearSliderThumb (Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider);
 	
 	Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
-	static void drawFromSVG(Graphics &g, File svgFile, int width, int height, int newWidth, int newHeight, AffineTransform affine);
+	
+	static void drawFromSVG(Graphics &g, File svgFile, int newWidth, int newHeight, AffineTransform affine);
+	void drawSphericalThumb (Graphics& g, const float x, const float y, const float w, const float h, const Colour& colour,	const float outlineThickness);
+	void drawGlassPointer (Graphics& g, float x, float y, float diameter, const Colour& colour, float outlineThickness, int direction);
 
 private:
 

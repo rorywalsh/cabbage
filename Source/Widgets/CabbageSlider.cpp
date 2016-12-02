@@ -68,14 +68,9 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 	max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
 	value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
 	shouldShowTextBox = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuetextbox);
-
+	trackerThickness = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness);
 	
-	
-	if(shouldShowTextBox<1)
-    {
-		slider.setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
-        shouldDisplayPopup=true;
-    }
+	slider.getProperties().set("trackerthickness", trackerThickness);
 	
 	slider.setSkewFactor(sliderSkew);
 	slider.setRange(min, max, sliderIncrement);
@@ -92,12 +87,30 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 	setSliderVelocity(wData);	
 	slider.addMouseListener(this, false);
 	
-	slider.setSliderStyle(Slider::RotaryVerticalDrag);
-	slider.setValue(value, dontSendNotification);
 	if(shouldShowTextBox>0)
-		slider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 15);
-
+	{
+		if(slider.isRotary() || slider.isVertical())
+			slider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 15);
+		
+		else
+			slider.setTextBoxStyle(Slider::TextBoxRight, false, 40, 15);
+	}	
+	else
+	{
+		slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+		shouldDisplayPopup=true;
+	}
+	
 	slider.setRotaryParameters(float_Pi * 1.2f, float_Pi * 2.8f, false);	
+	
+	if(sliderType.contains("rotary"))
+		slider.setSliderStyle(Slider::RotaryVerticalDrag);
+	else if(sliderType.contains("vertical"))
+		slider.setSliderStyle(Slider::LinearVertical);
+	else if(sliderType.contains("horizontal"))
+		slider.setSliderStyle(Slider::LinearHorizontal);	
+		
+		
 }
 
 void CabbageSlider::resized()
@@ -127,6 +140,42 @@ void CabbageSlider::resized()
 				slider.setBounds(0, 0, getWidth(), getHeight());
 
 	}	
+	
+	//else if vertical
+	else if (sliderType.contains("vertical"))
+	{
+		if(text.isNotEmpty())
+		{
+			textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
+			textLabel.setJustificationType(Justification::centred);
+			textLabel.setText(text, dontSendNotification);
+			textLabel.setVisible(true);
+			slider.setBounds(0, 0, getWidth(), getHeight()-20);
+		}
+		else
+		{
+			slider.setBounds(0, 0, getWidth(), getHeight());
+			CabbageUtilities::debug(getHeight());
+		}
+	}
+	
+	//else if horizontal
+	else
+	{
+		if(text.isNotEmpty())
+		{
+			float width = textLabel.getFont().getStringWidthFloat(text)+10.f;
+			textLabel.setBounds(0, 0, width, getHeight());
+			textLabel.setText(text, dontSendNotification);
+			textLabel.setVisible(true);
+			slider.setBounds(width-3, 0, getWidth()-(width-4), getHeight());
+		}
+		else
+			slider.setBounds(0, 0, getWidth(), getHeight());
+
+	}
+
+	slider.setValue(value, dontSendNotification);	
 }
 
 void CabbageSlider::showPopupBubble()
@@ -136,7 +185,7 @@ void CabbageSlider::showPopupBubble()
 	else
 		popupText = channel+": "+String(CabbageUtilities::roundToPrec(slider.getValue(), decimalPlaces));
 
-	popupBubble.showAt(&slider, AttributedString(popupText), 550);	
+	popupBubble.showAt(&slider, AttributedString(popupText), 150);	
 	
 }
 
