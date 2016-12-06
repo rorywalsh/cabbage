@@ -18,13 +18,59 @@
 */
 
 #include "CabbageLabel.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageLabel::CabbageLabel(ValueTree wData):
-widgetData(wData)
+
+CabbageLabel::CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner)
+	: widgetData(wData),
+	  text(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)),
+      owner(_owner),
+      channel(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::channel)),
+      colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
+      fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
+      align(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::align)),
+      textAlign(Justification::centred),
+      rotate(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::rotate)),
+      pivotx(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::pivotx)),
+      pivoty(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::pivoty)),
+      fontstyle(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontstyle)),
+      corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
+      counter(0)
 {
-	
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
+	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
+	
+	if(align=="centre")
+        textAlign = Justification::centred;
+    else if(align=="left")
+        textAlign = Justification::left;
+    else
+        textAlign = Justification::right;	
+}
+
+void CabbageLabel::paint(Graphics& g)
+{
+    g.setColour(Colour::fromString(colour));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), corners);
+    g.setColour(Colour::fromString(fontcolour));
+    g.setFont(CabbageUtilities::getComponentFont(fontstyle));
+    g.setFont(getHeight());
+    g.drawFittedText(text, 0, 0, getWidth(), getHeight(), textAlign, 1, 1);
+}
+
+void CabbageLabel::setText(String _text)
+{
+    text = _text;
+    repaint();
+}
+
+void CabbageLabel::mouseDown(const MouseEvent& event)
+{
+    if(!event.mods.isPopupMenu())
+    {
+        counter = (counter==0 ? 1 : 0);
+        //owner->processor->messageQueue.addOutgoingChannelMessageToQueue(channel, counter);
+    }
 }
 
 void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -35,9 +81,12 @@ void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     }
 	else
 	{
-
-		
-		
+		if(fontstyle!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle))
+		{
+			fontstyle = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle);
+		}	
+	
+		setText(this->getCurrentText(valueTree));
 		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 	}
 }

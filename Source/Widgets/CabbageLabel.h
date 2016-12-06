@@ -23,11 +23,22 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+class CabbagePluginEditor;
+
 class CabbageLabel : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
+
+    float rotate, corners;
+    int pivotx, pivoty, fontstyle;
+    String channel;
+    CabbagePluginEditor* owner;
+    int counter;
+    String text, colour, fontcolour, align;
+    Justification textAlign;
+	
 public:
 
-    CabbageLabel(ValueTree wData);
+    CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageLabel() {};
 
     //VlaueTree::Listener virtual methods....
@@ -38,6 +49,11 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
 
     ValueTree widgetData;
+	
+	void resized(){};
+    void paint(Graphics& g);
+    void mouseDown(const MouseEvent& e);
+    void setText(String _text);
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLabel);
