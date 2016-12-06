@@ -207,6 +207,12 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		comps.add(new ColourPropertyComponent("Outline", outlineColourString));
 		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
+	else if(typeOfWidget=="label")
+	{
+		const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+		comps.add(new ColourPropertyComponent("Colour", colourString));	
+		comps.add(new ColourPropertyComponent("Font", fontColourString));
+	}
 
     alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
     alphaValue.addListener(this);

@@ -129,7 +129,8 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 			|| widgetType==CabbageIdentifierIds::vslider
 			|| widgetType==CabbageIdentifierIds::hslider)
         insertSlider(cabbageWidgetData);
-
+	else if(widgetType==CabbageIdentifierIds::label)
+		insertLabel(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -153,6 +154,13 @@ void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
     CabbageImage* image;
     components.add(image = new CabbageImage(cabbageWidgetData, this));
     addToEditorAndMakeVisible(image, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertLabel(ValueTree cabbageWidgetData)
+{
+    CabbageLabel* label;
+    components.add(label = new CabbageLabel(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(label, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)

@@ -81,12 +81,26 @@ void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     }
 	else
 	{
+		setText(this->getCurrentText(valueTree));
+		
 		if(fontstyle!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle))
 		{
 			fontstyle = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle);
-		}	
+		}
+
+		if(colour != CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour))
+		{
+			colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
+			repaint();
+		}
+		
+		if(fontcolour != CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour))
+		{
+			fontcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+			repaint();	
+		}
 	
-		setText(this->getCurrentText(valueTree));
+		
 		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 	}
 }

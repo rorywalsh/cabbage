@@ -29,6 +29,7 @@
 #include "../../Widgets/CabbageCheckbox.h"
 #include "../../Widgets/CabbageComboBox.h"
 #include "../../Widgets/CabbageImage.h"
+#include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 
@@ -85,7 +86,7 @@ public:
     void insertFileButton(ValueTree cabbageWidgetData) {};
     void insertRecordButton(ValueTree cabbageWidgetData) {};
     void insertImage(ValueTree cabbageWidgetData);
-    void insertLabel(ValueTree cabbageWidgetData) {};
+    void insertLabel(ValueTree cabbageWidgetData);
     void insertTable(ValueTree cabbageWidgetData) {};
     void insertMultiTab(ValueTree cabbageWidgetData) {};
     void insertInfoButton(ValueTree cabbageWidgetData) {};
