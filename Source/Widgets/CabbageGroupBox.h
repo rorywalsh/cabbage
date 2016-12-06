@@ -17,21 +17,19 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGECUSTOMWIDGETS_H_INCLUDED
-#define CABBAGECUSTOMWIDGETS_H_INCLUDED
+#ifndef CABBAGEGROUPBOX_H_INCLUDED
+#define CABBAGEGROUPBOX_H_INCLUDED
+
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-
-// Add any new custom widgets here to avoid having to edit makefiles and projects
-// Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
-class DemoCabbageWidget : public Component, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageGroupBox : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
 public:
 
-    DemoCabbageWidget(ValueTree wData);
-    ~DemoCabbageWidget() {};
+    CabbageGroupBox(ValueTree wData);
+    ~CabbageGroupBox() {};
 
     //VlaueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -43,8 +41,8 @@ public:
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoCabbageWidget);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageGroupBox);
 };
 
 
-#endif  // CABBAGECUSTOMWIDGETS_H_INCLUDED
+#endif  // CABBAGEGROUPBOX_H_INCLUDED

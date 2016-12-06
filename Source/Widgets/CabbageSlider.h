@@ -50,6 +50,7 @@ public:
 	void initialiseSlider(ValueTree wData);
 	void createPopupBubble();
 	void showPopupBubble();	
+	void setTextBoxOrientation(String type, bool textBox);
 	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop);	
     void mouseDrag(const MouseEvent& event);
 	void mouseMove (const MouseEvent &event);

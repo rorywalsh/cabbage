@@ -82,7 +82,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
         {
 //            imgHeight = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonheight" : "imgbuttoffheight", 30.f);
 //            imgWidth = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonwidth" : "imgbuttoffwidth", 100.f);
-            drawFromSVG(g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, button.getWidth(), button.getHeight(), AffineTransform::identity);
+            drawFromSVG(g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
         }
     }
 
@@ -225,7 +225,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
         }
         else if(imgSliderBackground.hasFileExtension("svg"))
         {
-            drawFromSVG(g, imgSliderBackground, slider.getWidth(), slider.getHeight(), AffineTransform::identity);
+            drawFromSVG(g, imgSliderBackground, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform::identity);
         }
 		
         useSliderBackgroundImg = true;
@@ -277,7 +277,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
 			}
 			else if(imgSlider.hasFileExtension("svg"))
 			{
-				drawFromSVG(g, imgSlider, slider.getWidth(), slider.getHeight(), AffineTransform::rotation(angle,
+				drawFromSVG(g, imgSlider, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform::rotation(angle,
                                     slider.getWidth()/2, slider.getWidth()/2));
 			}			
 			
@@ -364,6 +364,83 @@ void CabbageLookAndFeel2::drawLinearSlider (Graphics& g, int x, int y, int width
     }
 }
 
+Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
+{
+    Slider::SliderLayout layout;
+    layout.sliderBounds = slider.getLocalBounds();
+//	const File imgSlider(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgslider, "").toString());
+//	const File imgSliderBg(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgsliderbg, "").toString());
+//
+//	if(imgSlider.existsAsFile() || imgSliderBg.existsAsFile())
+//	{
+//		layout.sliderBounds.reduce(0, .6f);
+//		layout.textBoxBounds.reduce(0, .6f);
+//		return layout;
+//	}
+//	
+    int minXSpace = 0;
+    int minYSpace = 0;
+
+    Slider::TextEntryBoxPosition textBoxPos = slider.getTextBoxPosition();
+
+    if (textBoxPos == Slider::TextBoxLeft || textBoxPos == Slider::TextBoxRight)
+        minXSpace = 30;
+    else
+        minYSpace = 15;
+
+    Rectangle<int> localBounds = slider.getLocalBounds();
+
+    const int textBoxWidth = jmax (0, jmin (slider.getTextBoxWidth(),  localBounds.getWidth() - minXSpace));
+    const int textBoxHeight = jmax (0, jmin (slider.getTextBoxHeight(), localBounds.getHeight() - minYSpace));
+
+
+    // 2. set the textBox bounds
+
+    if (textBoxPos != Slider::NoTextBox)
+    {
+        if (slider.isBar())
+        {
+            layout.textBoxBounds = localBounds;
+        }
+        else
+        {
+            layout.textBoxBounds.setWidth (textBoxWidth);
+            layout.textBoxBounds.setHeight (textBoxHeight);
+
+            if (textBoxPos == Slider::TextBoxLeft)           layout.textBoxBounds.setX (0);
+            else if (textBoxPos == Slider::TextBoxRight)     layout.textBoxBounds.setX (localBounds.getWidth() - textBoxWidth);
+            else /* above or below -> centre horizontally */ layout.textBoxBounds.setX ((localBounds.getWidth() - textBoxWidth) / 2);
+
+            if (textBoxPos == Slider::TextBoxAbove)          layout.textBoxBounds.setY (0);
+            else if (textBoxPos == Slider::TextBoxBelow)     layout.textBoxBounds.setY (localBounds.getHeight() - textBoxHeight);
+            else /* left or right -> centre vertically */    layout.textBoxBounds.setY ((localBounds.getHeight() - textBoxHeight) / 2);
+        }
+    }
+
+    // 3. set the slider bounds
+
+    layout.sliderBounds = localBounds;
+
+    if (slider.isBar())
+    {
+        layout.sliderBounds.reduce (1, 1);   // bar border
+    }
+    else
+    {
+        if (textBoxPos == Slider::TextBoxLeft)       layout.sliderBounds.removeFromLeft (textBoxWidth);
+        else if (textBoxPos == Slider::TextBoxRight) layout.sliderBounds.removeFromRight (textBoxWidth);
+        else if (textBoxPos == Slider::TextBoxAbove) layout.sliderBounds.removeFromTop (textBoxHeight);
+        else if (textBoxPos == Slider::TextBoxBelow) layout.sliderBounds.removeFromBottom (textBoxHeight);
+
+        const int thumbIndent = getSliderThumbRadius (slider);
+
+        if (slider.isHorizontal())    layout.sliderBounds.reduce (thumbIndent, 0);
+        else if (slider.isVertical()) layout.sliderBounds.reduce (0, thumbIndent);
+    }
+
+    return layout;
+}
+
 //=========== Linear Slider Background ===========================================================================
 void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y, int width, int height, float sliderPos,
         float minSliderPos,
@@ -383,8 +460,6 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
     const float trackerThickness = slider.getProperties().getWithDefault("trackerthickness", .75);
     bool usingImg=false;
 
-
-	CabbageUtilities::debug(slider.getProperties().getWithDefault("imgsliderbg", "").toString());
     const File imgSliderBackground(slider.getProperties().getWithDefault("imgsliderbg", "").toString());
 	
     //if valid background SVG file....
@@ -394,23 +469,24 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
         {
             Image image = ImageCache::getFromFile(imgSliderBackground);
             image = image.rescaled(slider.getWidth(), slider.getHeight());
-//			if(slider.isHorizontal())
-//				g.drawImage(image, width*(xOffset/3), 0,  width*(1+xOffset*2), height, 0, 0, imgSliderWidthBg, imgSliderHeightBg, false);
-//			else
-//				g.drawImage(image, 0, 0, width, height+sliderRadius, 0, 0, imgSliderWidthBg, imgSliderHeightBg, false);
-//			
+			if(slider.isHorizontal())
+				g.drawImage(image, 0, 0,  width*(1+xOffset*2), height, 0, 0, slider.getWidth(), slider.getHeight(), false);
+			else
+				g.drawImage(image, 0, height*.05, width, height+sliderRadius, 0, 0, slider.getWidth(), slider.getHeight(), false);
+			
 			usingImg = true;
         }
         else if(imgSliderBackground.hasFileExtension("svg"))
         {
-			//if(slider.isHorizontal())
-			drawFromSVG(g, imgSliderBackground, width, height, AffineTransform::identity);
+			if(slider.isVertical())
+				drawFromSVG(g, imgSliderBackground, 0, height*.05,  width, height*1.1, AffineTransform::identity);
+			else
+				drawFromSVG(g, imgSliderBackground, 0, 0, width*1.08, height, AffineTransform::identity);
+				
 			usingImg = true;
 		}
 		
     }	
-
-    //bool useSVG = drawBackgroundForSVGSlider(g, &slider, "slider", x, y, width, height);
 
     Path indent;
     if (slider.isHorizontal())
@@ -480,7 +556,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
     {
         if(!usingImg)
         {
-            height = height-8;
+            height = height-6;
             g.setColour (Colours::whitesmoke);
             g.setOpacity (0.6);
             const float midPoint = (height/2.f+sliderRadius)+3;
@@ -498,7 +574,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
             g.setOpacity (0.1);
             g.fillRoundedRectangle(width*0.44, sliderRadius, width*0.15, height*1.003, width*0.05);
             g.setColour (Colour::fromRGBA(5, 5, 5, 255));
-            g.fillRoundedRectangle (width*0.425, sliderRadius, width*0.15, height*1.029, width*0.05);
+            g.fillRoundedRectangle (width*0.425, sliderRadius, width*0.15, height*1.1, width*0.05);
         }
 
         const float scale = trackerThickness;
@@ -553,31 +629,44 @@ void CabbageLookAndFeel2::drawLinearSliderThumb (Graphics& g, int x, int y, int 
 {
     const float sliderRadius = (float) (getSliderThumbRadius (slider) - 2);
     float sliderWidth, sliderHeight;
-    bool useSVG=false;
-    String svgSlider = slider.getProperties().getWithDefault("imgslider", "");
-    int svgSliderWidth = slider.getProperties().getWithDefault("imgsliderwidth", 100);
-    int svgSliderHeight = slider.getProperties().getWithDefault("imgsliderheight", 100);
-
-    if(svgSlider.length()>0)
-    {
-//        if(slider.isHorizontal())
-//        {
-//            sliderWidth = height;
-//            sliderHeight = height;
-//            g.drawImage(cUtils::drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::identity),
-//                        sliderPos-width*.05, 0, sliderWidth, sliderHeight, 0, 0, svgHSliderThumb, svgHSliderThumb, false);
-//        }
-//        else
-//        {
-//            sliderWidth = width;
-//            sliderHeight = width;
-//            g.drawImage(cUtils::drawFromSVG(svgSlider, svgSliderWidth, svgSliderHeight, AffineTransform::identity),
-//                        0, sliderPos-(height*.07), sliderWidth, sliderHeight, 0, 0, svgVSliderThumb, svgVSliderThumb, false);
-//        }
-//        useSVG  = true;
+    bool useImg=false;
+    
+	const File imgSlider(slider.getProperties().getWithDefault("imgslider", "").toString());
+    
+	if(imgSlider.existsAsFile())
+    {		
+        if(imgSlider.hasFileExtension("png"))
+        {
+            g.setOpacity(1.0);
+			Image image = ImageCache::getFromFile(imgSlider);
+            image = image.rescaled(slider.getWidth(), slider.getHeight());
+			if(slider.isHorizontal())
+				g.drawImage(image, 0, sliderPos-width*.05, width, height, 0, 0, slider.getWidth(), slider.getHeight(), false);
+			else
+			{
+				sliderHeight = sliderRadius * 1.5f;	
+				g.drawImage(image, 0, sliderPos-height*.05, width, sliderHeight, 0, 0, slider.getWidth(), slider.getHeight(), false);
+			}
+			useImg = true;
+        }
+        else if(imgSlider.hasFileExtension("svg"))
+        {
+			if(slider.isVertical())
+			{
+                sliderHeight = sliderRadius * 1.5f;	
+				drawFromSVG(g, imgSlider, 0,  sliderPos-height*.05,  width, sliderHeight, AffineTransform::identity);
+			}
+			else
+			{
+				sliderWidth = sliderRadius * 2.0f;	
+				drawFromSVG(g, imgSlider, sliderPos-width*.05, 0, sliderWidth, height, AffineTransform::identity);
+			}	
+			useImg = true;
+		}		
     }
 
-    if(!useSVG)
+
+    if(!useImg)
     {
         Colour knobColour (LookAndFeelHelpers::createBaseColour (slider.findColour (Slider::thumbColourId),
                            slider.hasKeyboardFocus (false) && slider.isEnabled(),
@@ -668,7 +757,7 @@ void CabbageLookAndFeel2::drawGlassPointer (Graphics& g, float x, float y, float
 	g.strokePath (p, PathStrokeType (outlineThickness));
 }
 //if using an SVG..
-void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int newWidth, int newHeight, AffineTransform affine)
+void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine)
 {
     ScopedPointer<XmlElement> svg (XmlDocument::parse(svgFile.loadFileAsString()));
     if(svg == nullptr)
@@ -679,7 +768,7 @@ void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int newWidth, i
     if (svg != nullptr)
     {
         drawable = Drawable::createFromSVG (*svg);
-        drawable->setTransformToFit(Rectangle<float>(0, 0, newWidth, newHeight), RectanglePlacement::stretchToFit);
+        drawable->setTransformToFit(Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
         drawable->draw(g, 1.f, affine);
     }
 }

@@ -69,9 +69,7 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
 		{
 			for(int index = lineNumber+1;;index++)
 			{
-				CabbageUtilities::debug(linesFromCsd[index]);
-				CabbageUtilities::debug(linesFromCsd[index+1]);
-				
+			
 				if(linesFromCsd[index].contains(" \\"))
 					currentLineOfCabbageCode+=linesFromCsd[index];
 				else

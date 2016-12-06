@@ -17,9 +17,9 @@
   02111-1307 USA
 */
 
-#include "CabbageCustomWidgets.h"
+#include "CabbageButton.h"
 
-DemoCabbageWidget::DemoCabbageWidget(ValueTree wData):
+CabbageButton::CabbageButton(ValueTree wData):
 widgetData(wData)
 {
 	
@@ -27,7 +27,7 @@ widgetData(wData)
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
 }
 
-void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 	if(prop==CabbageIdentifierIds::value)
     {
@@ -41,4 +41,3 @@ void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Id
 		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 	}
 }
-//add any new custom widgets here to avoid having to eidt makefiles and projects

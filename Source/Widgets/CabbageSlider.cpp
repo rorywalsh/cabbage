@@ -42,6 +42,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	createPopupBubble();
 	setImgProperties(this->slider, wData, "slider");
     setImgProperties(this->slider, wData, "sliderbg");
+	slider.setLookAndFeel(&owner->getLookAndFeel());
 }
 
 CabbageSlider::~CabbageSlider()
@@ -87,19 +88,7 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 	setSliderVelocity(wData);	
 	slider.addMouseListener(this, false);
 	
-	if(shouldShowTextBox>0)
-	{
-		if(slider.isRotary() || slider.isVertical())
-			slider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 15);
-		
-		else
-			slider.setTextBoxStyle(Slider::TextBoxRight, false, 40, 15);
-	}	
-	else
-	{
-		slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-		shouldDisplayPopup=true;
-	}
+	setTextBoxOrientation(sliderType, shouldShowTextBox);
 	
 	slider.setRotaryParameters(float_Pi * 1.2f, float_Pi * 2.8f, false);	
 	
@@ -113,26 +102,43 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
 		
 }
 
+void CabbageSlider::setTextBoxOrientation(String type, bool shouldShowTextBox)
+{
+	if(shouldShowTextBox>0)
+	{
+		shouldDisplayPopup=false;
+		if(type.contains("horizontal"))
+			slider.setTextBoxStyle(Slider::TextBoxRight, false, 40, 15);		
+		else
+			slider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 15);
+			
+	}	
+	else
+	{
+		slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+		shouldDisplayPopup=true;
+	}
+}
+
 void CabbageSlider::resized()
 {
 	if (sliderType.contains("rotary"))
 	{
 			if(text.isNotEmpty())
 			{
+				
+				textLabel.setText(text, dontSendNotification);
+				textLabel.setJustificationType(Justification::centred);
+				textLabel.setVisible(true);
+					
 				if(shouldShowTextBox>0)
 				{
 					textLabel.setBounds(0, 0, getWidth(), 20);
-					textLabel.setText(text, dontSendNotification);
-					textLabel.setJustificationType(Justification::centred);
-					textLabel.setVisible(true);
 					slider.setBounds(0, 20, getWidth(), getHeight()-20);
 				}
 				else
 				{
 					textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
-					textLabel.setText(text, dontSendNotification);
-					textLabel.setJustificationType(Justification::centred);
-					textLabel.setVisible(true);
 					slider.setBounds(0, 0, getWidth(), getHeight()-15);
 				}
 			}
@@ -146,16 +152,24 @@ void CabbageSlider::resized()
 	{
 		if(text.isNotEmpty())
 		{
-			textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
 			textLabel.setJustificationType(Justification::centred);
 			textLabel.setText(text, dontSendNotification);
 			textLabel.setVisible(true);
+			
+			if(shouldShowTextBox>0)
+			{
+				textLabel.setBounds(0, 1, getWidth(), 20);			
+				slider.setBounds(0, 20, getWidth(), getHeight()-20);				
+			}
+			else
+			{
+			textLabel.setBounds(0, getHeight()-20, getWidth(), 20);			
 			slider.setBounds(0, 0, getWidth(), getHeight()-20);
+			}
 		}
 		else
 		{
 			slider.setBounds(0, 0, getWidth(), getHeight());
-			CabbageUtilities::debug(getHeight());
 		}
 	}
 	
@@ -164,11 +178,20 @@ void CabbageSlider::resized()
 	{
 		if(text.isNotEmpty())
 		{
-			float width = textLabel.getFont().getStringWidthFloat(text)+10.f;
-			textLabel.setBounds(0, 0, width, getHeight());
+			const float width = textLabel.getFont().getStringWidthFloat(text)+10.f;
 			textLabel.setText(text, dontSendNotification);
 			textLabel.setVisible(true);
-			slider.setBounds(width-3, 0, getWidth()-(width-4), getHeight());
+			
+			if(shouldShowTextBox>0)
+			{
+				textLabel.setBounds(0, 0, width, getHeight());
+				slider.setBounds(width-3, 0, getWidth()-(width-4), getHeight());	
+			}
+			else
+			{
+				textLabel.setBounds(0, 0, width, getHeight());
+				slider.setBounds(width-3, 0, getWidth()-(width-4), getHeight());				
+			}
 		}
 		else
 			slider.setBounds(0, 0, getWidth(), getHeight());
@@ -241,9 +264,7 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
 	slider.setColour(Label::textColourId, Colour::fromString(fontColour));
 	slider.setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
 	
-	slider.setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
-
-	
+	slider.setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());	
 }
 
 //==============================================================================
@@ -266,12 +287,9 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 		textLabel.setText(getCurrentText(valueTree), dontSendNotification);
 		textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);
 		shouldShowTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
-		slider.setTextBoxStyle(shouldShowTextBox==1 ? Slider::TextBoxBelow : Slider::NoTextBox, false, 40, 15);
-		slider.setTooltip(getCurrentPopupText(valueTree));
-		
-		handleCommonUpdates(this, valueTree);
-		
-		
+		setTextBoxOrientation(sliderType, shouldShowTextBox);
+		slider.setTooltip(getCurrentPopupText(valueTree));		
+		handleCommonUpdates(this, valueTree);			
 		resized();
 	}
 	

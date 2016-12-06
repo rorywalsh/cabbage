@@ -147,6 +147,9 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{FAFD4DCB-E143-5624-0198-20E9415D0C1E}" name="Widgets">
+        <FILE id="hw24qv" name="CabbageButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageButton.cpp"/>
+        <FILE id="CJGsoV" name="CabbageButton.h" compile="0" resource="0" file="Source/Widgets/CabbageButton.h"/>
         <FILE id="JFyVBu" name="CabbageCheckbox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageCheckbox.cpp"/>
         <FILE id="zkwuEL" name="CabbageCheckbox.h" compile="0" resource="0"
@@ -159,9 +162,16 @@
               file="Source/Widgets/CabbageCustomWidgets.cpp"/>
         <FILE id="hIFGMx" name="CabbageCustomWidgets.h" compile="0" resource="0"
               file="Source/Widgets/CabbageCustomWidgets.h"/>
+        <FILE id="MZ68MI" name="CabbageGroupBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageGroupBox.cpp"/>
+        <FILE id="ES4od2" name="CabbageGroupBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageGroupBox.h"/>
         <FILE id="u5NRwZ" name="CabbageImage.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageImage.cpp"/>
         <FILE id="VRvyYa" name="CabbageImage.h" compile="0" resource="0" file="Source/Widgets/CabbageImage.h"/>
+        <FILE id="aP526A" name="CabbageLabel.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageLabel.cpp"/>
+        <FILE id="W74o3U" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
         <FILE id="ryLDrk" name="CabbageSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSlider.cpp"/>
         <FILE id="UXmekB" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>

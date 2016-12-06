@@ -158,6 +158,7 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
     else if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*>(source)) // update Cabbage code when user drags a widget around
     {
         propertyPanel->setVisible(true);
+		propertyPanel->setEnabled(true);
         resized();
         ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
         propertyPanel->updateProperties(widgetData);
@@ -413,7 +414,6 @@ void CabbageContentComponent::setEditMode(bool enable)
     }
 
     getCabbagePluginEditor()->enableEditMode(enable);
-    propertyPanel->setEnabled(enable);
 
 }
 //=======================================================================================
