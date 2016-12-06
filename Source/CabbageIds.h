@@ -593,6 +593,7 @@ public:
         set("Horizontal Range Slider", CabbageIdentifierIds::hrange);
         set("Groupbox", CabbageIdentifierIds::groupbox);
         set("Image", CabbageIdentifierIds::image);
+		set("Label", CabbageIdentifierIds::label);
         set("Numberbox", CabbageIdentifierIds::numberbox);
         set("Signal Display", CabbageIdentifierIds::signaldisplay);
         set("Slider - Horizontal", CabbageIdentifierIds::hslider);

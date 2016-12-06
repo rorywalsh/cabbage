@@ -24,8 +24,14 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-class CabbageGroupBox : public Component, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, public CabbageWidgetBase
 {
+    int offX, offY, offWidth, offHeight, pivotx, pivoty, left, top, corners, svgDebug;
+    String text, colour, fontcolour;
+    float rotate;
+    int line;
+    File svgPath, svgFile;	
+	
 public:
 
     CabbageGroupBox(ValueTree wData);

@@ -29,6 +29,7 @@
 #include "../../Widgets/CabbageCheckbox.h"
 #include "../../Widgets/CabbageComboBox.h"
 #include "../../Widgets/CabbageImage.h"
+#include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
@@ -76,7 +77,7 @@ public:
 	void insertEncoder(ValueTree cabbageWidgetData) {};
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
-    void insertGroupBox(ValueTree cabbageWidgetData) {};
+    void insertGroupBox(ValueTree cabbageWidgetData);
     void insertSoundfiler(ValueTree cabbageWidgetData) {};
     void insertSourceButton(ValueTree cabbageWidgetData) {};
     void insertDirectoryList(ValueTree cabbageWidgetData) {};

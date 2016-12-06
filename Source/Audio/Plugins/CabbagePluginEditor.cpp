@@ -131,6 +131,8 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
         insertSlider(cabbageWidgetData);
 	else if(widgetType==CabbageIdentifierIds::label)
 		insertLabel(cabbageWidgetData);
+	else if(widgetType==CabbageIdentifierIds::groupbox)
+		insertGroupBox(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -169,6 +171,13 @@ void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
     components.add(slider = new CabbageSlider(cabbageWidgetData, this));
 	slider->getSlider()->addListener(this);
     addToEditorAndMakeVisible(slider, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
+{
+    CabbageGroupBox* groupBox;
+    components.add(groupBox = new CabbageGroupBox(cabbageWidgetData));
+    addToEditorAndMakeVisible(groupBox, cabbageWidgetData);	
 }
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (Component* comp)

@@ -593,8 +593,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::basetype, "layout");
         setProperty(widgetData, CabbageIdentifierIds::top, 10);
         setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 80);
-        setProperty(widgetData, CabbageIdentifierIds::height, 22);
+        setProperty(widgetData, CabbageIdentifierIds::width, 180);
+        setProperty(widgetData, CabbageIdentifierIds::height, 122);
         setProperty(widgetData, CabbageIdentifierIds::corners, 5);
         setProperty(widgetData, CabbageIdentifierIds::colour, Colour(35, 35, 35).toString());
         setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());

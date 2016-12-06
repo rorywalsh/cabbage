@@ -37,6 +37,8 @@ CabbageLabel::CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner)
       corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
       counter(0)
 {
+	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+	
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
 	
@@ -98,8 +100,7 @@ void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 		{
 			fontcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
 			repaint();	
-		}
-	
+		}	
 		
 		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 	}
