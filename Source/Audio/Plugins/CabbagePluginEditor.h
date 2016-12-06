@@ -100,8 +100,8 @@ public:
     void insertTextbox(ValueTree cabbageWidgetData) {};
     void insertSignalDisplay(ValueTree cabbageWidgetData) {};
     void insertStepper(ValueTree cabbageWidgetData) {};
-   
-
+	//=============================================================================
+	void sendChannelDataToCsound(String channel, float value);
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
@@ -122,7 +122,6 @@ public:
 	//=============================================================================
     CabbageAudioParameter* getParameterForComponent (Component* button);
     //=============================================================================
-    void mouseDown(const MouseEvent& e);
 
 
 

@@ -267,8 +267,7 @@ void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree w
         mainComponent.addAndMakeVisible(comp);
 }
 //======================================================================================================
-void CabbagePluginEditor::mouseDown(const MouseEvent& e)
+void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 {
-    PopupMenu menu;
-
+	processor.getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
 }
