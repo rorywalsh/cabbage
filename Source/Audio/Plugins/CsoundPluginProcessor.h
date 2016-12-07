@@ -127,6 +127,8 @@ public:
         guiRefreshRate = rate;
     }
 
+	MidiKeyboardState keyboardState;
+	
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
@@ -136,7 +138,7 @@ private:
     String csoundOutput;
     ScopedPointer<CSOUND_PARAMS> csoundParams;
     int csCompileResult, numCsoundChannels, pos;
-    MidiKeyboardState keyboardState;
+    
     MYFLT cs_scale;
     MYFLT *CSspin, *CSspout;
     int csndIndex;

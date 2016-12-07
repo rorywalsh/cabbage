@@ -17,26 +17,26 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGEGROUPBOX_H_INCLUDED
-#define CABBAGEGROUPBOX_H_INCLUDED
+#ifndef CABBAGEKEYBOARD_H_INCLUDED
+#define CABBAGEKEYBOARD_H_INCLUDED
 
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, public CabbageWidgetBase
+
+// Add any new custom widgets here to avoid having to edit makefiles and projects
+// Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
+class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener, public CabbageWidgetBase
 {
-    int offX, offY, offWidth, offHeight, pivotx, pivoty, left, top, outlineThickness, corners, svgDebug;
-    String text, colour, fontColour, justification, outlineColour;
-    float rotate;
-
-    File svgPath, svgFile;	
-
+    int scrollbars;
+    float keyWidth;
+	String kind;
 	
 public:
 
-    CabbageGroupBox(ValueTree wData);
-    ~CabbageGroupBox() {};
+    CabbageKeyboard(ValueTree wData, MidiKeyboardState &state);
+    ~CabbageKeyboard() {};
 
     //VlaueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -48,8 +48,8 @@ public:
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageGroupBox);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageKeyboard);
 };
 
 
-#endif  // CABBAGEGROUPBOX_H_INCLUDED
+#endif  // CABBAGEKEYBOARD_H_INCLUDED

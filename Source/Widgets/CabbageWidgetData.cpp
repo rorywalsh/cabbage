@@ -44,138 +44,22 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     setProperty(widgetData, CabbageIdentifierIds::linenumber, ID);
 	setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 0);
 
-
     int top, left, width, height;
     StringArray strTokens;
     strTokens.addTokens(lineFromCsd, " ", "\"");
-
     setProperty(widgetData, CabbageIdentifierIds::channelarray, "");
-    //===============sliders==================//
-    if(strTokens[0].trim() == "hslider" || strTokens[0].trim() == "hslider2" || strTokens[0].trim() == "hslider3")
+
+    if(strTokens[0].trim() == "hslider")
     {
-        setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 150);
-        setProperty(widgetData, CabbageIdentifierIds::height, 50);
-        var channels;
-        channels.append("hslider");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::min, 0);
-        setProperty(widgetData, CabbageIdentifierIds::max, 1);
-        setProperty(widgetData, CabbageIdentifierIds::value, 0);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
-        setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
-        setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
-
-        setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
-        setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
-        //these don't appear in the props dialog
-        setProperty(widgetData, CabbageIdentifierIds::name, "hslider");
-        setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        if(strTokens[0].trim() == "hslider2")
-            setProperty(widgetData, CabbageIdentifierIds::kind, "horizontal2");
-        else if(strTokens[0].trim() == "hslider3")
-            setProperty(widgetData, CabbageIdentifierIds::kind, "horizontal3");
-        else
-            setProperty(widgetData, CabbageIdentifierIds::kind, "horizontal");
-        setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::gradient, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
-
-
+		 setHSliderProperties(widgetData, ID);
     }
-    else if(strTokens[0].trim() == "vslider" || strTokens[0].trim() == "vslider2" ||  strTokens[0].trim() == "vslider3")
+    else if(strTokens[0].trim() == "vslider")
     {
-        setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 50);
-        setProperty(widgetData, CabbageIdentifierIds::height, 150);
-        var channels;
-        channels.append("vslider");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::min, 0);
-        setProperty(widgetData, CabbageIdentifierIds::max, 1);
-        setProperty(widgetData, CabbageIdentifierIds::value, 0);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
-        setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
-        setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
-        setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
-        setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
-        //these don't appear in the props dialog
-        setProperty(widgetData, CabbageIdentifierIds::name, "vslider");
-        setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        if(strTokens[0].trim() == "vslider2")
-            setProperty(widgetData, CabbageIdentifierIds::kind, "vertical2");
-        else if(strTokens[0].trim() == "vslider3")
-            setProperty(widgetData, CabbageIdentifierIds::kind, "vertical3");
-        else
-            setProperty(widgetData, CabbageIdentifierIds::kind, "vertical");
-
-        setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
-        setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
+		setVSliderProperties(widgetData, ID);
     }
     else if(strTokens[0].trim() == "rslider")
     {
-        setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 60);
-        setProperty(widgetData, CabbageIdentifierIds::height, 60);
-        var channels;
-        channels.append("rslider");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::min, 0);
-        setProperty(widgetData, CabbageIdentifierIds::max, 1);
-        setProperty(widgetData, CabbageIdentifierIds::value, 0);
-        setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
-        setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
-        setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::outlinecolour, Colours::black.brighter(.3f).toString());
-        setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
-        setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
-        setProperty(widgetData, CabbageIdentifierIds::name, "rslider");
-        setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::kind, "rotary");
-        setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
-        setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .7);
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
+		setRSliderProperties(widgetData, ID);
     }
 
     else if(strTokens[0].trim() == "socketsend" || strTokens[0].trim() == "socketreceive")
@@ -590,25 +474,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     //===============groupbox==================//
     else if(strTokens[0].trim() == "groupbox")
     {
-        setProperty(widgetData, CabbageIdentifierIds::basetype, "layout");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 180);
-        setProperty(widgetData, CabbageIdentifierIds::height, 122);
-        setProperty(widgetData, CabbageIdentifierIds::corners, 5);
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colour(35, 35, 35).toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::popup, 0);
-        setProperty(widgetData, CabbageIdentifierIds::plant, "");
-        setProperty(widgetData, CabbageIdentifierIds::child, 0);
-        setProperty(widgetData, CabbageIdentifierIds::linethickness, 1);
-        setProperty(widgetData, CabbageIdentifierIds::type, "groupbox");
-        setProperty(widgetData, CabbageIdentifierIds::name, "groupbox");
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imggroupbox, "");
-
+		setGroupBoxProperties(widgetData, ID);
     }
     //===============line==================//
     else if(strTokens[0].trim() == "line")
@@ -788,6 +654,13 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::middlec, 3);
         setProperty(widgetData, CabbageIdentifierIds::type, "keyboard");
         setProperty(widgetData, CabbageIdentifierIds::name, "keyboard");
+		setProperty(widgetData, CabbageIdentifierIds::kind, "horizontal");
+		setProperty(widgetData, CabbageIdentifierIds::whitenotecolour, Colours::whitesmoke.toString());
+		setProperty(widgetData, CabbageIdentifierIds::blacknotecolour, Colours::black.toString());
+		setProperty(widgetData, CabbageIdentifierIds::noteseparatorcolour, Colour(0x66000000).toString());
+		setProperty(widgetData, CabbageIdentifierIds::arrowbackgroundcolour, Colour(0xffd3d3d3).toString());
+		setProperty(widgetData, CabbageIdentifierIds::arrowcolour, Colour(0xff000000).toString());
+		
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
         setProperty(widgetData, CabbageIdentifierIds::keywidth, 16);
@@ -975,6 +848,147 @@ void CabbageWidgetData::setFormProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::titlebarcolour, "");
     setProperty(widgetData, CabbageIdentifierIds::fontcolour, "");
 }
+
+void CabbageWidgetData::setGroupBoxProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, CabbageIdentifierIds::basetype, "layout");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 180);
+	setProperty(widgetData, CabbageIdentifierIds::height, 122);
+	setProperty(widgetData, CabbageIdentifierIds::corners, 5);
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colour(35, 35, 35).toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::outlinecolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::popup, 0);
+	setProperty(widgetData, CabbageIdentifierIds::plant, "");
+	setProperty(widgetData, CabbageIdentifierIds::child, 0);
+	setProperty(widgetData, CabbageIdentifierIds::outlinethickness, 1);
+	setProperty(widgetData, CabbageIdentifierIds::align, "centre");
+	setProperty(widgetData, CabbageIdentifierIds::type, "groupbox");
+	setProperty(widgetData, CabbageIdentifierIds::name, "groupbox");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::imggroupbox, "");
+}
+
+void CabbageWidgetData::setHSliderProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 150);
+	setProperty(widgetData, CabbageIdentifierIds::height, 50);
+	var channels;
+	channels.append("hslider");
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::min, 0);
+	setProperty(widgetData, CabbageIdentifierIds::max, 1);
+	setProperty(widgetData, CabbageIdentifierIds::value, 0);
+	setProperty(widgetData, CabbageIdentifierIds::text, "");
+	setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
+	setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
+	setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
+
+	setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
+	setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
+	//these don't appear in the props dialog
+	setProperty(widgetData, CabbageIdentifierIds::name, "hslider");
+	setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::kind, "horizontal");
+	setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::gradient, 1);
+	setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+	setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
+}
+	
+void CabbageWidgetData::setRSliderProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 60);
+	setProperty(widgetData, CabbageIdentifierIds::height, 60);
+	var channels;
+	channels.append("rslider");
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::min, 0);
+	setProperty(widgetData, CabbageIdentifierIds::max, 1);
+	setProperty(widgetData, CabbageIdentifierIds::value, 0);
+	setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
+	setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
+	setProperty(widgetData, CabbageIdentifierIds::text, "");
+	setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
+	setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::outlinecolour, Colours::black.brighter(.3f).toString());
+	setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
+	setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
+	setProperty(widgetData, CabbageIdentifierIds::name, "rslider");
+	setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::kind, "rotary");
+	setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
+	setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .7);
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+	setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
+}	
+
+void CabbageWidgetData::setVSliderProperties(ValueTree widgetData, int ID)
+{
+        setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
+        setProperty(widgetData, CabbageIdentifierIds::top, 10);
+        setProperty(widgetData, CabbageIdentifierIds::left, 10);
+        setProperty(widgetData, CabbageIdentifierIds::width, 50);
+        setProperty(widgetData, CabbageIdentifierIds::height, 150);
+        var channels;
+        channels.append("vslider");
+        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+        setProperty(widgetData, CabbageIdentifierIds::min, 0);
+        setProperty(widgetData, CabbageIdentifierIds::max, 1);
+        setProperty(widgetData, CabbageIdentifierIds::value, 0);
+        setProperty(widgetData, CabbageIdentifierIds::text, "");
+        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
+        setProperty(widgetData, CabbageIdentifierIds::caption, "");
+        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
+        setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+        setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+        setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
+        setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
+        setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
+        setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
+        setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
+        //these don't appear in the props dialog
+        setProperty(widgetData, CabbageIdentifierIds::name, "vslider");
+        setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
+        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+        setProperty(widgetData, CabbageIdentifierIds::kind, "vertical");
+
+        setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
+        setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
+        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
+}	
 
 void CabbageWidgetData::setImageProperties(ValueTree widgetData, int ID)
 {
@@ -2262,7 +2276,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::colour))
     {
-        const String identifier = (type=="image" || type.contains("slider") ? "colour(" : "colour:0(");
+        const String identifier = (type=="image" || type.contains("slider") || type=="label" || type=="groupbox" ? "colour(" : "colour:0(");
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
         colourString = colourString << identifier << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
@@ -2291,6 +2305,36 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
         colourString = colourString << "outlinecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::whitenotecolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::whitenotecolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::whitenotecolour));
+        colourString = colourString << "whitenotecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+	
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::blacknotecolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::blacknotecolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::blacknotecolour));
+        colourString = colourString << "blacknotecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::noteseparatorcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::noteseparatorcolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::noteseparatorcolour));
+        colourString = colourString << "noteseparatorcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::arrowbackgroundcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::arrowbackgroundcolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::arrowbackgroundcolour));
+        colourString = colourString << "arrowbackgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::arrowcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::arrowcolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::arrowcolour));
+        colourString = colourString << "arrowcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+	
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::trackercolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::trackercolour))
     {
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::trackercolour));
@@ -2317,7 +2361,9 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
                          + getNumericalValueTextAsCabbageCode(widgetData, "active")
                          + getNumericalValueTextAsCabbageCode(widgetData, "visible")
 						 + getNumericalValueTextAsCabbageCode(widgetData, "valuetextbox")
+						 + getNumericalValueTextAsCabbageCode(widgetData, "outlinethickness")
                          + getSimpleTextAsCabbageCode(widgetData, "popuptext")
+						 + getSimpleTextAsCabbageCode(widgetData, "align")
                          + getSimpleTextAsCabbageCode(widgetData, "file")
                          + getSimpleTextAsCabbageCode(widgetData, "shape")
                          + getImagesTextAsCabbageCode(widgetData)

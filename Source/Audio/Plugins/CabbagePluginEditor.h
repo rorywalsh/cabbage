@@ -31,6 +31,7 @@
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageLabel.h"
+#include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 
@@ -83,7 +84,7 @@ public:
     void insertDirectoryList(ValueTree cabbageWidgetData) {};
     void insertTextEditor(ValueTree cabbageWidgetData) {};
     void insertCsoundOutput(ValueTree cabbageWidgetData) {};
-    void insertMIDIKeyboard(ValueTree cabbageWidgetData) {};
+    void insertMIDIKeyboard(ValueTree cabbageWidgetData);
     void insertFileButton(ValueTree cabbageWidgetData) {};
     void insertRecordButton(ValueTree cabbageWidgetData) {};
     void insertImage(ValueTree cabbageWidgetData);
@@ -149,6 +150,7 @@ private:
     CabbagePluginProcessor& processor;
     ComponentLayoutEditor layoutEditor;
     StringArray currentlySelectedComponentNames;
+	ScopedPointer<CabbageKeyboard> midiKeyboard;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)
 };

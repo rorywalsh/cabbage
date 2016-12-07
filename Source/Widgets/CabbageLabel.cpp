@@ -42,12 +42,8 @@ CabbageLabel::CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner)
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
 	
-	if(align=="centre")
-        textAlign = Justification::centred;
-    else if(align=="left")
-        textAlign = Justification::left;
-    else
-        textAlign = Justification::right;	
+	textAlign = CabbageUtilities::getJustification(align);
+
 }
 
 void CabbageLabel::paint(Graphics& g)
@@ -77,31 +73,26 @@ void CabbageLabel::mouseDown(const MouseEvent& event)
 
 void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	if(prop==CabbageIdentifierIds::value)
-    {
-		//set value. This is only needed for widgets that can have their value changed directly using a chnset
-    }
-	else
+	textAlign = CabbageUtilities::getJustification(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align));
+	setText(this->getCurrentText(valueTree));
+	
+	if(fontstyle!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle))
 	{
-		setText(this->getCurrentText(valueTree));
-		
-		if(fontstyle!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle))
-		{
-			fontstyle = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle);
-		}
-
-		if(colour != CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour))
-		{
-			colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
-			repaint();
-		}
-		
-		if(fontcolour != CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour))
-		{
-			fontcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
-			repaint();	
-		}	
-		
-		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+		fontstyle = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::fontstyle);
 	}
+
+	if(colour != CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour))
+	{
+		colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
+	}
+	
+	if(fontcolour != CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour))
+	{
+		fontcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+	}	
+	
+	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+	
+	repaint();
+
 }

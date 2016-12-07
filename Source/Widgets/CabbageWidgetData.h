@@ -42,6 +42,10 @@ public:
     static void setComboBoxProperties(ValueTree widgetData, int ID);
     static void setImageProperties(ValueTree widgetData, int ID);
     static void setFormProperties(ValueTree widgetData, int ID);
+	static void setGroupBoxProperties(ValueTree widgetData, int ID);
+	static void setRSliderProperties(ValueTree widgetData, int ID);
+	static void setHSliderProperties(ValueTree widgetData, int ID);
+	static void setVSliderProperties(ValueTree widgetData, int ID);
     //============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);

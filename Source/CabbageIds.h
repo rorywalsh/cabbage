@@ -268,6 +268,11 @@ public:
         add("tablecolor");
         add("tablegridcolour");
         add("tablegridcolor");
+		add("whitenotecolour");
+		add("blacknotecolour");
+		add("arrowbackgroundcolour");
+		add("arrowcolour");
+		add("noteseparatorcolour");
         add("alpha");
         add("bounds");
         add("fontcolour:1");
@@ -397,6 +402,11 @@ static const Identifier channelarray = "widgetarray";
 static const Identifier identchannelarray = "identchannelarray";
 static const Identifier outlinecolour = "outlinecolour";
 static const Identifier fillcolour = "fillcolour";
+static const Identifier whitenotecolour = "whitenotecolour";
+static const Identifier blacknotecolour = "blacknotecolour";
+static const Identifier arrowcolour = "arrowcolour";
+static const Identifier arrowbackgroundcolour = "arrowbackgroundcolour";
+static const Identifier noteseparatorcolour = "noteseparatorcolour";
 static const Identifier fill = "fill";
 static const Identifier bold = "bold";
 static const Identifier textcolour = "textcolour";
@@ -576,7 +586,7 @@ static const String csdfile = "csdfile";
 };
 
 
-// this array holds the names of all widgets that can only be controlled via the plugin editor GUI
+// this array holds the names of all widgets that can inserted when in GUI edit mode
 class CabbagePopupWidgets : public StringPairArray
 {
 public:
@@ -593,6 +603,7 @@ public:
         set("Horizontal Range Slider", CabbageIdentifierIds::hrange);
         set("Groupbox", CabbageIdentifierIds::groupbox);
         set("Image", CabbageIdentifierIds::image);
+		set("Keyboard", CabbageIdentifierIds::keyboard);
 		set("Label", CabbageIdentifierIds::label);
         set("Numberbox", CabbageIdentifierIds::numberbox);
         set("Signal Display", CabbageIdentifierIds::signaldisplay);
@@ -649,12 +660,21 @@ public:
 		set("Value Box", CabbageIdentifierIds::valuetextbox.toString());
         set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
         set("Colour: On", CabbageIdentifierIds::oncolour.toString());
+		
+		set("White Notes", CabbageIdentifierIds::whitenotecolour.toString());
+		set("Black Notes", CabbageIdentifierIds::blacknotecolour.toString());
+		set("Notes Separator", CabbageIdentifierIds::noteseparatorcolour.toString());
+		set("Arrows Background", CabbageIdentifierIds::arrowbackgroundcolour.toString());
+		set("Arrows", CabbageIdentifierIds::arrowcolour.toString());
+		
         set("Alpha", CabbageIdentifierIds::alpha.toString());
         set("Corners", CabbageIdentifierIds::corners.toString());
         set("Shape", CabbageIdentifierIds::shape.toString());
         set("File", CabbageIdentifierIds::file.toString());
         set("On Image", CabbageIdentifierIds::imgbuttonon.toString());
         set("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
+		
+		set("Align", CabbageIdentifierIds::align.toString());
 
     }
 };

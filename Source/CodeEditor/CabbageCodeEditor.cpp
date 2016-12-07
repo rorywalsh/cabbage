@@ -32,7 +32,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentCo
       Thread("parseVariablesThread"),
       debugLabel("")
 {
-
+	setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
     Logger::writeToLog(opcodeFile);

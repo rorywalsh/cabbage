@@ -207,13 +207,32 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		comps.add(new ColourPropertyComponent("Outline", outlineColourString));
 		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
-	else if(typeOfWidget=="label")
+	else if(typeOfWidget=="label" || typeOfWidget=="groupbox")
 	{
 		const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+		const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
 		comps.add(new ColourPropertyComponent("Colour", colourString));	
 		comps.add(new ColourPropertyComponent("Font", fontColourString));
+		if(typeOfWidget=="groupbox")
+			comps.add(new ColourPropertyComponent("Outline", outlineColourString));
 	}
 
+	else if(typeOfWidget=="keyboard")
+	{
+		const String whiteNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::whitenotecolour);
+		const String blackNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::blacknotecolour);
+		const String noteSeparator = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::noteseparatorcolour);
+		const String arrowBg = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::arrowbackgroundcolour);
+		const String arrow = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::arrowcolour);
+		
+		comps.add(new ColourPropertyComponent("White Notes", whiteNotes));	
+		comps.add(new ColourPropertyComponent("Black Notes", blackNotes));
+		comps.add(new ColourPropertyComponent("Notes Separator", noteSeparator));
+		comps.add(new ColourPropertyComponent("Arrows Background", arrowBg));
+		comps.add(new ColourPropertyComponent("Arrows", arrow));
+
+	}
+	
     alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
     alphaValue.addListener(this);
     comps.add(new SliderPropertyComponent(alphaValue, "Alpha", 0, 1, .01, 1, 1));
@@ -276,9 +295,6 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
     if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "checkbox"
             || CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image")
     {
-        if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape) == "square")
-            shapeValue.setValue(0);
-
         shapeValue.addListener(this);
         StringArray choices;
         Array<var> choiceVars;
@@ -287,15 +303,49 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
         choices.add ("Circle");
         choiceVars.add (0);
         choiceVars.add (1);
+		
+        if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape) == "square")
+            shapeValue.setValue(0);
+		else
+			shapeValue.setValue(1);
+		
         comps.add (new ChoicePropertyComponent(shapeValue, "Shape", choices, choiceVars));
+		
     }
 
+    if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "label"
+            || CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "groupbox")
+    {
+        alignValue.addListener(this);
+        StringArray choices;
+        Array<var> choiceVars;
+
+        choices.add ("Centre");
+        choices.add ("Left");
+		choices.add ("Right");
+        choiceVars.add (0);
+        choiceVars.add (1);
+		choiceVars.add (2);
+		
+		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "centre")
+            alignValue.setValue(0);
+		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "left")
+            alignValue.setValue(1);
+		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "right")
+            alignValue.setValue(2);	
+		
+        comps.add (new ChoicePropertyComponent(alignValue, "Align", choices, choiceVars));
+		
+
+    }
+	
     if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "combobox")
     {
         comps.add (new CabbageFilePropertyComponent("File", false, true));
     }
 
-    else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image")
+    else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image" 
+			|| CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "groupbox")
     {
         var corners = valueTree.getProperty(CabbageIdentifierIds::outlinethickness);
         comps.add (new TextPropertyComponent(Value (corners), "Outline Thickness", 200, false));
@@ -320,6 +370,9 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
     setSize(300, 500);
 
     addAndMakeVisible (propertyPanel);
+	
+	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+	
     propertyPanel.addSection ("Bounds", createPositionEditors(widgetData));
     propertyPanel.addSection ("Rotation", createRotationEditors(this, widgetData));
     propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
@@ -337,6 +390,9 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 {
     widgetData = wData;
+	
+	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+	
     propertyPanel.clear();
     propertyPanel.addSection ("Bounds", createPositionEditors(widgetData));
     propertyPanel.addSection ("Rotation", createRotationEditors(this, widgetData), false);
@@ -411,6 +467,19 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
     {
         if(value.getValue().isInt())
             setPropertyByName("Shape", int(value.getValue())==0 ? "square" : "circle");
+    }
+
+    else if(value.refersToSameSourceAs(alignValue))
+    {
+        if(value.getValue().isInt())
+		{
+			if(int(value.getValue())==0)
+				setPropertyByName("Align", "centre");
+			else if(int(value.getValue())==1)
+				setPropertyByName("Align", "left");
+			else if(int(value.getValue())==2)
+				setPropertyByName("Align", "right");           
+		}
     }
 }
 

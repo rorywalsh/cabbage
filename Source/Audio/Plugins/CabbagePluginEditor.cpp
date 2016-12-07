@@ -133,6 +133,8 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 		insertLabel(cabbageWidgetData);
 	else if(widgetType==CabbageIdentifierIds::groupbox)
 		insertGroupBox(cabbageWidgetData);
+	else if(widgetType==CabbageIdentifierIds::keyboard)
+		insertMIDIKeyboard(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -178,6 +180,12 @@ void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
     CabbageGroupBox* groupBox;
     components.add(groupBox = new CabbageGroupBox(cabbageWidgetData));
     addToEditorAndMakeVisible(groupBox, cabbageWidgetData);	
+}
+
+void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
+{
+    components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
+    addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);		
 }
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (Component* comp)

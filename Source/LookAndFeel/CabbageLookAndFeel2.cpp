@@ -47,6 +47,59 @@ CabbageLookAndFeel2::CabbageLookAndFeel2()
 
 }
 
+//======== Group Components ======================================================================
+void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics &g, int w, int h, const String &text,
+        const Justification &position,
+        GroupComponent &group)
+{
+    g.fillAll(Colours::transparentBlack);
+    File imgFile(group.getProperties().getWithDefault("imggroupbox", "").toString());
+	const int outlineThickness = group.getProperties().getWithDefault("outlinethickness", 1);
+
+
+    //if valid SVG file....
+    if(imgFile.existsAsFile())
+	{
+		if(imgFile.hasFileExtension("svg"))
+			drawFromSVG(g, imgFile, 0, 0, group.getWidth(), group.getHeight(), AffineTransform::identity);
+		else if(imgFile.hasFileExtension("png"))
+		{
+			Image image = ImageCache::getFromFile(imgFile);
+            image = image.rescaled(group.getWidth(), group.getHeight());
+			g.drawImage(image, 0, 0, group.getWidth(), group.getHeight(), 0, 0, group.getWidth(), group.getHeight());
+					
+		}
+	}
+    else
+    {
+
+        int corners = group.getProperties().getWithDefault("cornersize", 5);
+        Colour col;
+        g.setColour (group.findColour(TextButton::buttonColourId));
+        g.fillRoundedRectangle (0, 0, w, h, corners);
+
+        //----- Outline
+        g.setColour (group.findColour(GroupComponent::outlineColourId));
+        g.drawRoundedRectangle (0.5, 0.5, w-1, h-1, corners, outlineThickness);
+
+        if(outlineThickness>0)
+        {
+            g.drawLine (10, 20, w-10, 20, outlineThickness);
+        }
+    }
+
+    //----- Text
+    String name = group.getText();
+    Font font = CabbageUtilities::getTitleFont();
+#ifndef MACOSX
+    font.setFallbackFontName("Verdana");
+#endif
+    g.setFont (font);
+
+    g.setColour (group.findColour(GroupComponent::textColourId));
+    name = CabbageUtilities::cabbageString (name, font, group.getWidth());
+    g.drawText (name, 0, 5, w, font.getHeight(), 36, false);
+}
 //===========================================================================================
 void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown)
 {
@@ -69,7 +122,6 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
     }
 
 
-
     if(imgButtonOnFile.existsAsFile() && imgButtonOffFile.existsAsFile())	//if image files exist, draw them..
     {
         if(imgButtonOnFile.hasFileExtension("png") && imgButtonOffFile.hasFileExtension("png"))
@@ -80,8 +132,6 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
         }
         else if(imgButtonOnFile.hasFileExtension("svg") && imgButtonOffFile.hasFileExtension("svg"))
         {
-//            imgHeight = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonheight" : "imgbuttoffheight", 30.f);
-//            imgWidth = button.getProperties().getWithDefault(toggleState == true ? "imgbuttonwidth" : "imgbuttoffwidth", 100.f);
             drawFromSVG(g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
         }
     }
@@ -155,7 +205,9 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
         g.setGradientFill (edgeHighlight2);
         g.setOpacity (opacity);
         g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
+		
     }
+	
     else   //else if round toggle
     {
         ColourGradient base = ColourGradient (Colours::white, width*-0.3, height*-0.3, Colours::black,
@@ -186,6 +238,7 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
             g.fillEllipse(width*0.1, height*0.1, width*0.8, height*0.8);
         }
     }
+	
     return img;
 }
 //==========================================================================================================================================
@@ -282,7 +335,6 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
 			}			
 			
             useSliderSVG = true;
-
         }
         else
             useSliderSVG = false;
@@ -368,16 +420,7 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
 {
     Slider::SliderLayout layout;
     layout.sliderBounds = slider.getLocalBounds();
-//	const File imgSlider(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgslider, "").toString());
-//	const File imgSliderBg(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgsliderbg, "").toString());
-//
-//	if(imgSlider.existsAsFile() || imgSliderBg.existsAsFile())
-//	{
-//		layout.sliderBounds.reduce(0, .6f);
-//		layout.textBoxBounds.reduce(0, .6f);
-//		return layout;
-//	}
-//	
+	
     int minXSpace = 0;
     int minYSpace = 0;
 
@@ -393,8 +436,6 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
     const int textBoxWidth = jmax (0, jmin (slider.getTextBoxWidth(),  localBounds.getWidth() - minXSpace));
     const int textBoxHeight = jmax (0, jmin (slider.getTextBoxHeight(), localBounds.getHeight() - minYSpace));
 
-
-    // 2. set the textBox bounds
 
     if (textBoxPos != Slider::NoTextBox)
     {
@@ -416,8 +457,6 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
             else /* left or right -> centre vertically */    layout.textBoxBounds.setY ((localBounds.getHeight() - textBoxHeight) / 2);
         }
     }
-
-    // 3. set the slider bounds
 
     layout.sliderBounds = localBounds;
 

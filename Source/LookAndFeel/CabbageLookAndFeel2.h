@@ -33,6 +33,8 @@ public:
 	
 	Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
 	
+	void drawGroupComponentOutline (Graphics &g, int w, int h, const String &text, const Justification &position, GroupComponent &group);
+	
 	static void drawFromSVG(Graphics &g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine);
 	void drawSphericalThumb (Graphics& g, const float x, const float y, const float w, const float h, const Colour& colour,	const float outlineThickness);
 	void drawGlassPointer (Graphics& g, float x, float y, float diameter, const Colour& colour, float outlineThickness, int direction);

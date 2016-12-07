@@ -69,6 +69,7 @@ public:
     void insertTextAtCaret (const String &textToInsert);
     void insertMultiLineTextAtCaret (String text);
     void insertText(String text);
+		
 
     void highlightLines(int firstLine, int lastLine);
     void highlightLine(int lineNumber);
