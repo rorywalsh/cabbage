@@ -169,6 +169,10 @@
         <FILE id="u5NRwZ" name="CabbageImage.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageImage.cpp"/>
         <FILE id="VRvyYa" name="CabbageImage.h" compile="0" resource="0" file="Source/Widgets/CabbageImage.h"/>
+        <FILE id="Gl84nX" name="CabbageKeyboard.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageKeyboard.cpp"/>
+        <FILE id="d3U37t" name="CabbageKeyboard.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageKeyboard.h"/>
         <FILE id="aP526A" name="CabbageLabel.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageLabel.cpp"/>
         <FILE id="W74o3U" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
