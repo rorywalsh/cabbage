@@ -184,6 +184,7 @@ void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
 
 void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
 {
+	CabbageKeyboard* midiKeyboard;
     components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
     addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);		
 }

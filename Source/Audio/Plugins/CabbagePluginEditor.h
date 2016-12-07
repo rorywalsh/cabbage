@@ -150,7 +150,6 @@ private:
     CabbagePluginProcessor& processor;
     ComponentLayoutEditor layoutEditor;
     StringArray currentlySelectedComponentNames;
-	ScopedPointer<CabbageKeyboard> midiKeyboard;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)
 };
