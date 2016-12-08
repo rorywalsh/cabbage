@@ -31,6 +31,9 @@
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageNumberBox.h"
+#include "../../Widgets/CabbageEncoder.h"
+#include "../../Widgets/CabbageTextBox.h"
+#include "../../Widgets/CabbageTextEditor.h"
 #include "../../Widgets/CabbageCsoundConsole.h"
 #include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageKeyboard.h"
@@ -77,14 +80,14 @@ public:
     void insertXYPad(ValueTree cabbageWidgetData) {};
     void insertRangeSlider(ValueTree cabbageWidgetData) {};
 	void insertNumberBox(ValueTree cabbageWidgetData);
-	void insertEncoder(ValueTree cabbageWidgetData) {};
+	void insertEncoder(ValueTree cabbageWidgetData);
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
     void insertGroupBox(ValueTree cabbageWidgetData);
     void insertSoundfiler(ValueTree cabbageWidgetData) {};
     void insertSourceButton(ValueTree cabbageWidgetData) {};
     void insertDirectoryList(ValueTree cabbageWidgetData) {};
-    void insertTextEditor(ValueTree cabbageWidgetData) {};
+    void insertTextEditor(ValueTree cabbageWidgetData);
     void insertCsoundOutputConsole(ValueTree cabbageWidgetData);
     void insertMIDIKeyboard(ValueTree cabbageWidgetData);
     void insertFileButton(ValueTree cabbageWidgetData) {};
@@ -102,11 +105,12 @@ public:
     void insertListbox(ValueTree cabbageWidgetData) {};
     void insertPopupMenu(ValueTree cabbageWidgetData) {};
     void insertGenTable(ValueTree cabbageWidgetData) {};
-    void insertTextbox(ValueTree cabbageWidgetData) {};
+    void insertTextBox(ValueTree cabbageWidgetData);
     void insertSignalDisplay(ValueTree cabbageWidgetData) {};
     void insertStepper(ValueTree cabbageWidgetData) {};
 	//=============================================================================
 	void sendChannelDataToCsound(String channel, float value);
+	void sendChannelStringDataToCsound(String channel, String value);
 	const String getCsoundOutputFromProcessor();
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);

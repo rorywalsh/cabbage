@@ -166,6 +166,10 @@
               file="Source/Widgets/CabbageCustomWidgets.cpp"/>
         <FILE id="hIFGMx" name="CabbageCustomWidgets.h" compile="0" resource="0"
               file="Source/Widgets/CabbageCustomWidgets.h"/>
+        <FILE id="K7O2lg" name="CabbageEncoder.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageEncoder.cpp"/>
+        <FILE id="SWjGLg" name="CabbageEncoder.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageEncoder.h"/>
         <FILE id="MZ68MI" name="CabbageGroupBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageGroupBox.cpp"/>
         <FILE id="ES4od2" name="CabbageGroupBox.h" compile="0" resource="0"
@@ -187,6 +191,14 @@
         <FILE id="ryLDrk" name="CabbageSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSlider.cpp"/>
         <FILE id="UXmekB" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
+        <FILE id="m8btHC" name="CabbageTextBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageTextBox.cpp"/>
+        <FILE id="qn8j4j" name="CabbageTextBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageTextBox.h"/>
+        <FILE id="bEUeou" name="CabbageTextEditor.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageTextEditor.cpp"/>
+        <FILE id="DK6b6s" name="CabbageTextEditor.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageTextEditor.h"/>
         <FILE id="svFd1v" name="CabbageWidgetBase.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageWidgetBase.cpp"/>
         <FILE id="s7qnTW" name="CabbageWidgetBase.h" compile="0" resource="0"

@@ -120,24 +120,41 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 
     if(widgetType==CabbageIdentifierIds::checkbox)
         insertCheckbox(cabbageWidgetData);
+		
     else if(widgetType==CabbageIdentifierIds::combobox)
         insertComboBox(cabbageWidgetData);
+		
     else if(widgetType==CabbageIdentifierIds::image)
         insertImage(cabbageWidgetData);
+		
     else if(widgetType==CabbageIdentifierIds::rslider 
 			|| widgetType==CabbageIdentifierIds::vslider
 			|| widgetType==CabbageIdentifierIds::hslider)
         insertSlider(cabbageWidgetData);
+		
 	else if(widgetType==CabbageIdentifierIds::label)
 		insertLabel(cabbageWidgetData);
+		
 	else if(widgetType==CabbageIdentifierIds::groupbox)
 		insertGroupBox(cabbageWidgetData);
+		
 	else if(widgetType==CabbageIdentifierIds::keyboard)
 		insertMIDIKeyboard(cabbageWidgetData);
+		
 	else if(widgetType==CabbageIdentifierIds::csoundoutput)
 		insertCsoundOutputConsole(cabbageWidgetData);
+		
 	else if(widgetType==CabbageIdentifierIds::numberbox)
 		insertNumberBox(cabbageWidgetData);
+		
+	else if(widgetType==CabbageIdentifierIds::textbox.toString())
+		insertTextBox(cabbageWidgetData);
+		
+	else if(widgetType==CabbageIdentifierIds::texteditor)
+		insertTextEditor(cabbageWidgetData);
+		
+	else if(widgetType==CabbageIdentifierIds::encoder)
+		insertEncoder(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -170,12 +187,26 @@ void CabbagePluginEditor::insertLabel(ValueTree cabbageWidgetData)
     addToEditorAndMakeVisible(label, cabbageWidgetData);
 }
 
+void CabbagePluginEditor::insertTextEditor(ValueTree cabbageWidgetData)
+{
+    CabbageTextEditor* editor;
+    components.add(editor = new CabbageTextEditor(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(editor, cabbageWidgetData);
+}
+
 void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
 {
     CabbageSlider* slider;
     components.add(slider = new CabbageSlider(cabbageWidgetData, this));
 	slider->getSlider()->addListener(this);
     addToEditorAndMakeVisible(slider, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertEncoder(ValueTree cabbageWidgetData)
+{
+    CabbageEncoder* encoder;
+    components.add(encoder = new CabbageEncoder(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(encoder, cabbageWidgetData);	
 }
 
 void CabbagePluginEditor::insertNumberBox(ValueTree cabbageWidgetData)
@@ -192,6 +223,14 @@ void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
     components.add(groupBox = new CabbageGroupBox(cabbageWidgetData));
     addToEditorAndMakeVisible(groupBox, cabbageWidgetData);	
 }
+
+void CabbagePluginEditor::insertTextBox(ValueTree cabbageWidgetData)
+{
+    CabbageTextBox* textBox;
+    components.add(textBox = new CabbageTextBox(cabbageWidgetData));
+    addToEditorAndMakeVisible(textBox, cabbageWidgetData);	
+}
+
 
 void CabbagePluginEditor::insertCsoundOutputConsole(ValueTree cabbageWidgetData)
 {
@@ -321,10 +360,16 @@ void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree w
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 {
-	processor.getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
+	processor.getCsound()->SetChannel(channel.getCharPointer(), value);
 }
-
+//======================================================================================================
+void CabbagePluginEditor::sendChannelStringDataToCsound(String channel, String value)
+{
+	processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
+}
+//======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {
+	jassert(false);
 	return String::empty;
 }

@@ -37,8 +37,8 @@ CabbageNumberBox::CabbageNumberBox(ValueTree wData)
 	label.setJustificationType(Justification::centred);
 	label.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
 
-	addAndMakeVisible(&label);
-	addAndMakeVisible(&slider);
+	addAndMakeVisible(label);
+	addAndMakeVisible(slider);
 
 	slider.setSliderStyle(Slider::LinearBarVertical);
 	slider.setColour(Slider::trackColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));

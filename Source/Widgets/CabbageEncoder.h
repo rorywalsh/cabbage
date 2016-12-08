@@ -17,29 +17,32 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGELABEL_H_INCLUDED
-#define CABBAGELABEL_H_INCLUDED
+#ifndef CABBAGEENCODER_H_INCLUDED
+#define CABBAGEENCODER_H_INCLUDED
+
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
 class CabbagePluginEditor;
 
-class CabbageLabel : public Component, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageEncoder : public Component, public ValueTree::Listener, public CabbageWidgetBase, public Label::Listener
 {
-
-    float rotate, corners;
-    int pivotx, pivoty, fontstyle;
-    CabbagePluginEditor* owner;
-    int counter;
-    String text, colour, fontcolour, align;
-    Justification textAlign;
+    bool isMouseOver, shouldDisplayPopup;
+    Rectangle<float> slider;
+    Label textLabel, valueLabel;
+	float sliderIncr, value, skew, startingValue, sliderPos, currentValue, max, min, maxEnabled, minEnabled;
+	int yAxis, textBox, height, line, progress, decimalPlaces;
+	String outlinecolour, colour, trackercolour, text, textcolour, popupText;
+	BubbleMessageComponent popupBubble;
 	
 public:
 
-    CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageLabel() {};
+    CabbageEncoder(ValueTree wData, CabbagePluginEditor* _owner);
+    ~CabbageEncoder() {};
 
+	CabbagePluginEditor* owner;
+	
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
@@ -47,17 +50,24 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    ValueTree widgetData;
+	void labelTextChanged (Label *label);
+    void mouseDown(const MouseEvent &e);
+    void mouseEnter(const MouseEvent &e);
+    void mouseDrag(const MouseEvent& e);
+    void mouseExit(const MouseEvent &e);
+    void paint(Graphics &g);
+    void showPopup();
+    void resized();
 	
-	void resized(){};
-    void paint(Graphics& g);
-    void mouseDown(const MouseEvent& e);
-    void setText(String _text);
+	void showPopupBubble();
+	void createPopupBubble();
+	
+	ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLabel);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageEncoder);
 };
 
 
 
-#endif  // CABBAGELABEL_H_INCLUDED
+#endif  // CABBAGEENCODER_H_INCLUDED

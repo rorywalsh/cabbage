@@ -17,47 +17,36 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGELABEL_H_INCLUDED
-#define CABBAGELABEL_H_INCLUDED
+#ifndef CABBAGETEXTBOX_H_INCLUDED
+#define CABBAGETEXTBOX_H_INCLUDED
+
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-class CabbagePluginEditor;
 
-class CabbageLabel : public Component, public ValueTree::Listener, public CabbageWidgetBase
+
+class CabbageTextBox : public TextEditor, public ValueTree::Listener, public CabbageWidgetBase
 {
-
-    float rotate, corners;
-    int pivotx, pivoty, fontstyle;
-    CabbagePluginEditor* owner;
-    int counter;
-    String text, colour, fontcolour, align;
-    Justification textAlign;
-	
+	String filename;
 public:
 
-    CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageLabel() {};
-
+    CabbageTextBox(ValueTree wData);
+    ~CabbageTextBox() {};
+	
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-
-    ValueTree widgetData;
 	
-	void resized(){};
-    void paint(Graphics& g);
-    void mouseDown(const MouseEvent& e);
-    void setText(String _text);
+    ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLabel);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextBox);
 };
 
 
 
-#endif  // CABBAGELABEL_H_INCLUDED
+#endif  // CABBAGETEXTBOX_H_INCLUDED

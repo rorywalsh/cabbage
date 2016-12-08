@@ -60,16 +60,20 @@ static Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owne
     Array<PropertyComponent*> comps;
 	const int decimalPlaces = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::decimalplaces); //get precision of number to display
     const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-    if(typeOfWidget.contains("slider"))
+    if(typeOfWidget.contains("slider") || typeOfWidget=="encoder")
     {
         const String min = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min), decimalPlaces);
         const String max = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max), decimalPlaces);
         const String skew = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderskew), decimalPlaces);
         const String incr = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderincr), decimalPlaces);
+		const String velocity = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::velocity), decimalPlaces);
         comps.add(new TextPropertyComponent(Value(min), "Minimum", 8, false));
         comps.add(new TextPropertyComponent(Value(max), "Maximum", 8, false));
         comps.add(new TextPropertyComponent(Value(skew), "Skew", 8, false));
         comps.add(new TextPropertyComponent(Value(incr), "Increment", 8, false));
+		comps.add(new TextPropertyComponent(Value(velocity), "Velocity", 8, false));
+		
+		
     }
 
     const String value = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), decimalPlaces);
@@ -194,7 +198,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         comps.add(new ColourPropertyComponent("Colour", colourString));
         comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));
     }
-    else if(typeOfWidget.contains("slider"))
+    else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder")
     {
         const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
         const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
@@ -207,7 +211,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		comps.add(new ColourPropertyComponent("Outline", outlineColourString));
 		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
-	else if(typeOfWidget=="label" || typeOfWidget=="groupbox" || typeOfWidget=="numberbox" || typeOfWidget=="csoundoutput")
+	else if(typeOfWidget=="label" || typeOfWidget=="groupbox" || typeOfWidget=="numberbox" || typeOfWidget=="csoundoutput" || typeOfWidget=="textbox")
 	{
 		const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
 		const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
@@ -291,13 +295,14 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 {
     Array<PropertyComponent*> comps;
     var corners = valueTree.getProperty(CabbageIdentifierIds::corners);
+	const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+	
     if(corners.isVoid()==false)
     {
         comps.add (new TextPropertyComponent(Value (corners), "Corners", 200, false));
     }
 
-    if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "checkbox"
-            || CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image")
+    if(typeOfWidget == "checkbox" || typeOfWidget == "image")
     {
         shapeValue.addListener(this);
         StringArray choices;
@@ -317,9 +322,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 		
     }
 
-    if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "label"
-            || CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "groupbox"
-			|| CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "numberbox")
+    if(typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox")
     {
         alignValue.addListener(this);
         StringArray choices;
@@ -362,19 +365,18 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 
     }
 	
-    if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "combobox")
+    if(typeOfWidget == "combobox")
     {
         comps.add (new CabbageFilePropertyComponent("File", false, true));
     }
 
-    else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "image" 
-			|| CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "groupbox")
+    else if(typeOfWidget == "image" || typeOfWidget == "groupbox")
     {
         var corners = valueTree.getProperty(CabbageIdentifierIds::outlinethickness);
         comps.add (new TextPropertyComponent(Value (corners), "Outline Thickness", 200, false));
     }
 	
-	else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type).contains("slider"))
+	else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder")
 	{
 		sliderNumberBoxValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox));
 		sliderNumberBoxValue.addListener(this);

@@ -119,6 +119,7 @@ void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree d
     pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
     visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
     active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
+	channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
     tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
     child->setBounds(CabbageWidgetData::getBounds(data));
     child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));

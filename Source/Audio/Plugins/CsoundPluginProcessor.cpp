@@ -103,14 +103,13 @@ void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type);
         if(CabbageWidgetData::getStringProp(cabbageData.getChild(i), "channeltype")=="string")
         {
-//					getCsound()->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).toUTF8(),
-//        									CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text),
-//											CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value)-1).toUTF8().getAddress());
+			csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+								CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text).toUTF8().getAddress());
 
         }
         else
         {
-            csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).toUTF8(),
+            csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
                                CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::value));
         }
 

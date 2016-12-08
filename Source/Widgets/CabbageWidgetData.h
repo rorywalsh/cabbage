@@ -49,6 +49,12 @@ public:
 	static void setHSliderProperties(ValueTree widgetData, int ID);
 	static void setVSliderProperties(ValueTree widgetData, int ID);
 	static void setNumberBoxProperties(ValueTree widgetData, int ID);
+	static void setCsoundOutputProperties(ValueTree widgetData, int ID);
+	static void setKeyboardProperties(ValueTree widgetData, int ID);
+	static void setTextBoxProperties(ValueTree widgetData, int ID);
+	static void setLabelProperties(ValueTree widgetData, int ID);
+	static void setTextEditorProperties(ValueTree widgetData, int ID);
+	static void setEncoderProperties(ValueTree widgetData, int ID);
     //============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);
