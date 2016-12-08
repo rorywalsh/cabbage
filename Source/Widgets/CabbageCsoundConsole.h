@@ -17,42 +17,38 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGECHECKBOX_H_INCLUDED
-#define CABBAGECHECKBOX_H_INCLUDED
+#ifndef CABBAGECSOUNDCONSOLE_H_INCLUDED
+#define CABBAGECSOUNDCONSOLE_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-//==============================================================================
-// custom checkbox component with optional surrounding groupbox
-//==============================================================================
-class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public CabbageWidgetBase
+class CabbagePluginEditor;
+
+class CabbageCsoundConsole : public TextEditor, public Timer, public ValueTree::Listener, public CabbageWidgetBase
 {
-    int corners;
-
-    bool isRect;
-    String name, tooltipText, buttonText, colour, fontcolour, oncolour;
-
 public:
 
-    CabbageCheckbox(ValueTree widgetData);
-    ~CabbageCheckbox() {};
+    CabbageCsoundConsole(ValueTree wData, CabbagePluginEditor* _owner);
+    ~CabbageCsoundConsole() {};
+
+	CabbagePluginEditor* owner;
+	
+    //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    String getTooltip()
-    {
-        return tooltipText;
-    }
-
+	void timerCallback();
+	
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCsoundConsole);
 };
 
 
-#endif  // CABBAGECHECKBOX_H_INCLUDED
+
+#endif  // CABBAGECSOUNDCONSOLE_H_INCLUDED

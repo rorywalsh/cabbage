@@ -2,7 +2,7 @@
   Copyright (C) 2016 Rory Walsh
 
   Cabbage is free software; you can redistribute it
-  and/or modify it under the terms of the GNU Lesser General Public
+  and/or modify it under the terms of the GNU General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
 
@@ -11,12 +11,11 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public
+  You should have received a copy of the GNU General Public
   License along with Csound; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
 */
-
 #include "CabbagePluginEditor.h"
 
 class CabbageCheckbox;
@@ -135,6 +134,10 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 		insertGroupBox(cabbageWidgetData);
 	else if(widgetType==CabbageIdentifierIds::keyboard)
 		insertMIDIKeyboard(cabbageWidgetData);
+	else if(widgetType==CabbageIdentifierIds::csoundoutput)
+		insertCsoundOutputConsole(cabbageWidgetData);
+	else if(widgetType==CabbageIdentifierIds::numberbox)
+		insertNumberBox(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -175,6 +178,14 @@ void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
     addToEditorAndMakeVisible(slider, cabbageWidgetData);
 }
 
+void CabbagePluginEditor::insertNumberBox(ValueTree cabbageWidgetData)
+{
+    CabbageNumberBox* numberBox;
+    components.add(numberBox = new CabbageNumberBox(cabbageWidgetData));
+	numberBox->getSlider()->addListener(this);
+    addToEditorAndMakeVisible(numberBox, cabbageWidgetData);
+}
+
 void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
 {
     CabbageGroupBox* groupBox;
@@ -182,11 +193,26 @@ void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
     addToEditorAndMakeVisible(groupBox, cabbageWidgetData);	
 }
 
+void CabbagePluginEditor::insertCsoundOutputConsole(ValueTree cabbageWidgetData)
+{
+	if(consoleCount<1)
+	{
+		CabbageCsoundConsole* csoundConsole;
+		components.add(csoundConsole = new CabbageCsoundConsole(cabbageWidgetData, this));
+		addToEditorAndMakeVisible(csoundConsole, cabbageWidgetData);
+		csoundConsole++;
+	}	
+}
+
 void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
 {
-	CabbageKeyboard* midiKeyboard;
-    components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
-    addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);		
+	if(keyboardCount<1)
+	{
+		CabbageKeyboard* midiKeyboard;
+		components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
+		addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);	
+		keyboardCount++;
+	}	
 }
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (Component* comp)
@@ -296,4 +322,9 @@ void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree w
 void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 {
 	processor.getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
+}
+
+const String CabbagePluginEditor::getCsoundOutputFromProcessor()
+{
+	return String::empty;
 }

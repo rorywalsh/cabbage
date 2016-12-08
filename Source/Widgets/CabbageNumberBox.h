@@ -17,42 +17,38 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGECHECKBOX_H_INCLUDED
-#define CABBAGECHECKBOX_H_INCLUDED
+#ifndef CABBAGENUMBERBOX_H_INCLUDED
+#define CABBAGENUMBERBOX_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-//==============================================================================
-// custom checkbox component with optional surrounding groupbox
-//==============================================================================
-class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public CabbageWidgetBase
+
+class CabbageNumberBox : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
-    int corners;
-
-    bool isRect;
-    String name, tooltipText, buttonText, colour, fontcolour, oncolour;
-
+	Slider slider;
+	Label label;
+	String text, align;
 public:
 
-    CabbageCheckbox(ValueTree widgetData);
-    ~CabbageCheckbox() {};
+    CabbageNumberBox(ValueTree wData);
+    ~CabbageNumberBox() {};
+
+    //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
+	void resized();
 
-    String getTooltip()
-    {
-        return tooltipText;
-    }
+	Slider* getSlider(){	return &slider;	};
 
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCheckbox);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageNumberBox);
 };
 
 
-#endif  // CABBAGECHECKBOX_H_INCLUDED
+#endif  // CABBAGENUMBERBOX_H_INCLUDED

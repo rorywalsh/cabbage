@@ -2,7 +2,7 @@
   Copyright (C) 2016 Rory Walsh
 
   Cabbage is free software; you can redistribute it
-  and/or modify it under the terms of the GNU Lesser General Public
+  and/or modify it under the terms of the GNU General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
 
@@ -11,7 +11,7 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public
+  You should have received a copy of the GNU General Public
   License along with Csound; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
@@ -30,6 +30,8 @@
 #include "../../Widgets/CabbageComboBox.h"
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageGroupBox.h"
+#include "../../Widgets/CabbageNumberBox.h"
+#include "../../Widgets/CabbageCsoundConsole.h"
 #include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageSlider.h"
@@ -74,7 +76,7 @@ public:
     void insertCheckbox(ValueTree cabbageWidgetData);
     void insertXYPad(ValueTree cabbageWidgetData) {};
     void insertRangeSlider(ValueTree cabbageWidgetData) {};
-	void insertNumberBox(ValueTree cabbageWidgetData) {};
+	void insertNumberBox(ValueTree cabbageWidgetData);
 	void insertEncoder(ValueTree cabbageWidgetData) {};
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
@@ -83,7 +85,7 @@ public:
     void insertSourceButton(ValueTree cabbageWidgetData) {};
     void insertDirectoryList(ValueTree cabbageWidgetData) {};
     void insertTextEditor(ValueTree cabbageWidgetData) {};
-    void insertCsoundOutput(ValueTree cabbageWidgetData) {};
+    void insertCsoundOutputConsole(ValueTree cabbageWidgetData);
     void insertMIDIKeyboard(ValueTree cabbageWidgetData);
     void insertFileButton(ValueTree cabbageWidgetData) {};
     void insertRecordButton(ValueTree cabbageWidgetData) {};
@@ -105,6 +107,7 @@ public:
     void insertStepper(ValueTree cabbageWidgetData) {};
 	//=============================================================================
 	void sendChannelDataToCsound(String channel, float value);
+	const String getCsoundOutputFromProcessor();
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
@@ -143,6 +146,8 @@ public:
 private:
     OwnedArray<Component> components;
     Component mainComponent;
+	int keyboardCount=0;
+	int consoleCount=0;
     CabbageLookAndFeel2 lookAndFeel;
     int newlyAddedWidgetIndex = 10000;
     TooltipWindow tooltipWindow;

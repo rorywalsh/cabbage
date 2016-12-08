@@ -158,6 +158,10 @@
               file="Source/Widgets/CabbageComboBox.cpp"/>
         <FILE id="zSBqRx" name="CabbageComboBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageComboBox.h"/>
+        <FILE id="sebLOa" name="CabbageCsoundConsole.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageCsoundConsole.cpp"/>
+        <FILE id="e72sn8" name="CabbageCsoundConsole.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageCsoundConsole.h"/>
         <FILE id="eRfaQV" name="CabbageCustomWidgets.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageCustomWidgets.cpp"/>
         <FILE id="hIFGMx" name="CabbageCustomWidgets.h" compile="0" resource="0"
@@ -176,6 +180,10 @@
         <FILE id="aP526A" name="CabbageLabel.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageLabel.cpp"/>
         <FILE id="W74o3U" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
+        <FILE id="edh95X" name="CabbageNumberBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageNumberBox.cpp"/>
+        <FILE id="juXuez" name="CabbageNumberBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageNumberBox.h"/>
         <FILE id="ryLDrk" name="CabbageSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSlider.cpp"/>
         <FILE id="UXmekB" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
@@ -187,6 +195,8 @@
               file="Source/Widgets/CabbageWidgetData.cpp"/>
         <FILE id="CBrHSR" name="CabbageWidgetData.h" compile="0" resource="0"
               file="Source/Widgets/CabbageWidgetData.h"/>
+        <FILE id="u0lmiV" name="CabbageWidgetDataInitMethods.cpp" compile="1"
+              resource="0" file="Source/Widgets/CabbageWidgetDataInitMethods.cpp"/>
       </GROUP>
       <FILE id="aGYLVl" name="Cabbage.cpp" compile="1" resource="0" file="Source/Cabbage.cpp"/>
       <FILE id="RfSn2a" name="Cabbage.h" compile="0" resource="0" file="Source/Cabbage.h"/>

@@ -2,7 +2,7 @@
   Copyright (C) 2016 Rory Walsh
 
   Cabbage is free software; you can redistribute it
-  and/or modify it under the terms of the GNU Lesser General Public
+  and/or modify it under the terms of the GNU General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
 
@@ -11,7 +11,7 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public
+  You should have received a copy of the GNU General Public
   License along with Csound; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
@@ -207,14 +207,18 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		comps.add(new ColourPropertyComponent("Outline", outlineColourString));
 		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
-	else if(typeOfWidget=="label" || typeOfWidget=="groupbox")
+	else if(typeOfWidget=="label" || typeOfWidget=="groupbox" || typeOfWidget=="numberbox" || typeOfWidget=="csoundoutput")
 	{
 		const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+		const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
 		const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
 		comps.add(new ColourPropertyComponent("Colour", colourString));	
 		comps.add(new ColourPropertyComponent("Font", fontColourString));
+		
 		if(typeOfWidget=="groupbox")
 			comps.add(new ColourPropertyComponent("Outline", outlineColourString));
+		else if(typeOfWidget=="numberbox")
+			comps.add(new ColourPropertyComponent("Text Colour", textColourString));
 	}
 
 	else if(typeOfWidget=="keyboard")
@@ -314,11 +318,15 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
     }
 
     if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "label"
-            || CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "groupbox")
+            || CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "groupbox"
+			|| CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "numberbox")
     {
         alignValue.addListener(this);
         StringArray choices;
         Array<var> choiceVars;
+		
+		const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+
 
         choices.add ("Centre");
         choices.add ("Left");
@@ -327,14 +335,29 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
         choiceVars.add (1);
 		choiceVars.add (2);
 		
+		if(typeOfWidget == "numberbox")
+		{
+			choices.remove(0);
+			choiceVars.remove(0);
+			choices.add ("Above");
+			choices.add ("Below");
+			choiceVars.add (3);
+			choiceVars.add (4);
+		}
+		
 		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "centre")
             alignValue.setValue(0);
 		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "left")
             alignValue.setValue(1);
 		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "right")
             alignValue.setValue(2);	
+		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "above")
+            alignValue.setValue(3);	
+		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "below")
+            alignValue.setValue(4);	
 		
-        comps.add (new ChoicePropertyComponent(alignValue, "Align", choices, choiceVars));
+	
+        comps.add (new ChoicePropertyComponent(alignValue, typeOfWidget=="numberbox" ? "Align Text" : "Align", choices, choiceVars));
 		
 
     }
@@ -478,7 +501,11 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 			else if(int(value.getValue())==1)
 				setPropertyByName("Align", "left");
 			else if(int(value.getValue())==2)
-				setPropertyByName("Align", "right");           
+				setPropertyByName("Align", "right");   
+			else if(int(value.getValue())==3)
+				setPropertyByName("Align", "above");  
+			else if(int(value.getValue())==4)
+				setPropertyByName("Align", "below");          
 		}
     }
 }
