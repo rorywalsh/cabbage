@@ -600,8 +600,8 @@ public:
         set("Csound Output", CabbageIdentifierIds::csoundoutput);
         set("Endless Encoder", CabbageIdentifierIds::encoder);
         set("Gentable", CabbageIdentifierIds::gentable);
+		set("Groupbox", CabbageIdentifierIds::groupbox);
         set("Horizontal Range Slider", CabbageIdentifierIds::hrange);
-        set("Groupbox", CabbageIdentifierIds::groupbox);
         set("Image", CabbageIdentifierIds::image);
 		set("Keyboard", CabbageIdentifierIds::keyboard);
 		set("Label", CabbageIdentifierIds::label);

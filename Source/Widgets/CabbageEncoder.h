@@ -33,7 +33,7 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     Rectangle<float> slider;
     Label textLabel, valueLabel;
 	float sliderIncr, value, skew, startingValue, sliderPos, currentValue, max, min, maxEnabled, minEnabled;
-	int yAxis, shouldShowTextBox, height, line, progress, decimalPlaces;
+	int yAxis, shouldShowValueTextBox, height, line, progress, decimalPlaces;
 	String outlinecolour, colour, trackercolour, text, textcolour, popupText;
 	BubbleMessageComponent popupBubble;
 	
@@ -57,10 +57,9 @@ public:
     void mouseDrag(const MouseEvent& e);
     void mouseExit(const MouseEvent &e);
     void paint(Graphics &g);
-    void showPopup();
+    void showPopup(int displayTime=250);
     void resized();
-	
-	void showPopupBubble();
+
 	void createPopupBubble();
 	
 	ValueTree widgetData;

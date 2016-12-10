@@ -1760,7 +1760,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::fontcolour))
     {
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour));
-        colourString = colourString << (type.contains("slider") || type=="csoundoutput" ? "fontcolour(" : "fontcolour:0(") << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << (type.contains("slider") || type=="csoundoutput" || type=="encoder" ? "fontcolour(" : "fontcolour:0(") << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::onfontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::onfontcolour))
@@ -1803,6 +1803,12 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
     {
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::arrowcolour));
         colourString = colourString << "arrowcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::textcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::textcolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::textcolour));
+        colourString = colourString << "textcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 	
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::trackercolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::trackercolour))
