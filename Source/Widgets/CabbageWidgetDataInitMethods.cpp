@@ -156,7 +156,7 @@ void CabbageWidgetData::setEncoderProperties(ValueTree widgetData, int ID)
 	channels.append("encoder");
 	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
 	setProperty(widgetData, CabbageIdentifierIds::value, 0);
-	setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
+	setProperty(widgetData, CabbageIdentifierIds::sliderincr, 1);
 	setProperty(widgetData, CabbageIdentifierIds::text, "");
 	setProperty(widgetData, CabbageIdentifierIds::textbox, 0.f);
 	setProperty(widgetData, CabbageIdentifierIds::caption, "");

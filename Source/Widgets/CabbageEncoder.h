@@ -28,11 +28,12 @@ class CabbagePluginEditor;
 
 class CabbageEncoder : public Component, public ValueTree::Listener, public CabbageWidgetBase, public Label::Listener
 {
-    bool isMouseOver, shouldDisplayPopup;
+    bool isMouseOver = false;
+	bool shouldDisplayPopup = true;
     Rectangle<float> slider;
     Label textLabel, valueLabel;
 	float sliderIncr, value, skew, startingValue, sliderPos, currentValue, max, min, maxEnabled, minEnabled;
-	int yAxis, textBox, height, line, progress, decimalPlaces;
+	int yAxis, shouldShowTextBox, height, line, progress, decimalPlaces;
 	String outlinecolour, colour, trackercolour, text, textcolour, popupText;
 	BubbleMessageComponent popupBubble;
 	

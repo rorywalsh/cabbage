@@ -14,23 +14,28 @@
 CabbageEncoder::CabbageEncoder(ValueTree wData, CabbagePluginEditor* _owner)
 	: widgetData(wData),
 	owner(_owner),
+	popupBubble(250),
 	outlinecolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)),
 	colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
     trackercolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackercolour)), 
 	text(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)), 
 	textcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)),
-	decimalPlaces(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::decimalplaces))
+	decimalPlaces(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::decimalplaces)),
+	shouldShowTextBox(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuetextbox))
 {
 	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
-
+	textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
 	min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
 	max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
 	sliderIncr = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderincr);
 	skew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
 	value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
-
+	addAndMakeVisible(textLabel);
+	addAndMakeVisible(valueLabel);
+	valueLabel.setVisible(true);
+	textLabel.setVisible(true);
 	createPopupBubble();
 }
 
@@ -80,7 +85,6 @@ void CabbageEncoder::mouseDown(const MouseEvent &e)
 void CabbageEncoder::mouseEnter(const MouseEvent &e)
 {
     isMouseOver = true;
-    repaint();
     showPopup();
 }
 
@@ -113,7 +117,7 @@ void CabbageEncoder::showPopup()
         else
             popupText = channel+": "+String(currentValue);
 
-        //owner->showBubble(this, popupText);
+        popupBubble.showAt(this, AttributedString(popupText), 250);	
     }
 }
 
@@ -197,9 +201,9 @@ void CabbageEncoder::paint(Graphics &g)
 
 void CabbageEncoder::resized()
 {
-    if(text.isNotEmpty())
+    if(text.isNotEmpty() || shouldShowTextBox>0)
     {
-        if(textBox>0)
+        if(shouldShowTextBox>0)
         {
             textLabel.setBounds(0, 0, getWidth(), 20);
             textLabel.setText(text, dontSendNotification);
@@ -229,7 +233,9 @@ void CabbageEncoder::valueTreePropertyChanged (ValueTree& valueTree, const Ident
     textcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
     trackercolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour);
     outlinecolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
-	repaint();
+	shouldShowTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
+	resized();
     textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour)));
+	valueLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 }
