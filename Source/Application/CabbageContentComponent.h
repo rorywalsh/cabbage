@@ -56,6 +56,7 @@ public:
     void resizeAllEditorAndConsoles(int height);	
 	void createEditorForAudioGraphNode();
     void createAudioGraph();
+	void rebuildAudioGraph();
     void addFileTabButton(File file, int xPos);
     Image createBackground();
 	//==============================================================================

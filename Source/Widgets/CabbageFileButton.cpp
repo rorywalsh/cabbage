@@ -40,7 +40,7 @@ CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner
 
 	setImgProperties(*this, wData, "buttonon");
     setImgProperties(*this, wData, "buttonoff");	
-	addListener(this);
+
 }
 
 void CabbageFileButton::setLookAndFeelColours(ValueTree wData)
@@ -49,18 +49,6 @@ void CabbageFileButton::setLookAndFeelColours(ValueTree wData)
 	setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
 	setColour(TextButton::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
 	setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
-}
-
-void CabbageFileButton::buttonClicked(Button* sourceButton)
-{
-	if(mode=="file")
-	{
-        FileChooser fc ("Open File");
-        if (fc.browseForFileToOpen())
-		{
-			owner->sendChannelStringDataToCsound(_channel, fc.getResult().getFullPathName());
-		}
-	}
 }
 
 void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)

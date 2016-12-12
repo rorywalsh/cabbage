@@ -318,6 +318,28 @@ void CabbageContentComponent::createAudioGraph()
 
 }
 
+//==============================================================================
+void CabbageContentComponent::rebuildAudioGraph()
+{
+    const Point<int> lastPoint = PluginWindow::getPositionOfCurrentlyOpenWindow(1);
+
+    if(lastPoint.getX()>0)
+    {
+        cabbageSettings->setProperty("windowX", lastPoint.getX());
+        cabbageSettings->setProperty("windowY", lastPoint.getY());
+    }
+
+	audioGraph->deletePlugin();
+	audioGraph->createPlugin(currentCsdFile);
+    //audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
+    //audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+
+    createEditorForAudioGraphNode();
+    if(getCurrentCodeEditor() != nullptr)
+        getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
+
+}
+
 void CabbageContentComponent::createEditorForAudioGraphNode()
 {
 	if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
@@ -544,7 +566,6 @@ void CabbageContentComponent::saveDocument(bool saveAs)
         if(cabbageSettings->getUserSettings()->getIntValue("CompileOnSave")==1)
         {
             propertyPanel->setEnabled(false);
-            createAudioGraph();
 			runCode();
         }
     }
@@ -556,8 +577,11 @@ void CabbageContentComponent::runCode()
     if(currentCsdFile.existsAsFile())
     {
         PluginWindow::closeAllCurrentlyOpenWindows();
+		audioGraph = nullptr;
         createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
-        startTimer(100);
+        
+		//rebuildAudioGraph();
+		startTimer(100);
 		factory.togglePlay(true);
     }
     else

@@ -130,6 +130,7 @@ public:
     void componentMovedOrResized (Component &component, bool wasMoved, bool wasResized);
     //=============================================================================
     void buttonClicked(Button *button);
+	void fileButtonClicked(ValueTree value);
     void comboBoxChanged (ComboBox* combo);
     void sliderValueChanged(Slider* slider);
 	//=============================================================================

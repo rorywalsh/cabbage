@@ -25,7 +25,7 @@
 
 class CabbagePluginEditor;
 
-class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener
+class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase
 {
 	CabbagePluginEditor* owner;
 	String mode;
@@ -41,7 +41,6 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	void buttonClicked(Button* sourceButton);
 	void setLookAndFeelColours(ValueTree wData);
 
     ValueTree widgetData;

@@ -229,6 +229,7 @@ void CabbagePluginEditor::insertFileButton(ValueTree cabbageWidgetData)
 {
     CabbageFileButton* fileButton;
     components.add(fileButton = new CabbageFileButton(cabbageWidgetData, this));
+	fileButton->addListener(this);
     addToEditorAndMakeVisible(fileButton, cabbageWidgetData);	
 }
 
@@ -307,21 +308,24 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
         param->endChangeGesture();
     }
 }
-
+//======================================================================================================
 void CabbagePluginEditor::buttonClicked(Button* button)
 {
+	const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
+	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 	const int buttonState = button->getToggleState();
 	
-    if (CabbageAudioParameter* param = getParameterForComponent(button))
-    {
-        param->beginChangeGesture();
-        param->setValue(buttonState == 0 ? 1 : 0);
-        param->endChangeGesture();
-    }
-	
-	const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
-	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type)=="button")
+
+	if(typeOfWidget=="button")
 	{
+		
+		if (CabbageAudioParameter* param = getParameterForComponent(button))	//only update parameters for normal buttons
+		{
+			param->beginChangeGesture();
+			param->setValue(buttonState == 0 ? 1 : 0);
+			param->endChangeGesture();
+		}
+		
 		if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
 		{
 			const StringArray textItems = cabbageButton->getTextArray();
@@ -329,11 +333,43 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 				cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
 		}
 	}
+	else if(typeOfWidget=="filebutton")
+	{
+		fileButtonClicked(widgetData);
+	}
 	
-	button->setToggleState(buttonState == 0 ? 1 : 0, dontSendNotification);
-	
+	button->setToggleState(buttonState == 0 ? 1 : 0, dontSendNotification);	
 }
 
+void CabbagePluginEditor::fileButtonClicked(ValueTree widgetData)
+{
+	const String mode = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::mode);
+	const String channel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
+	
+	if(mode=="file")
+	{
+		FileChooser fc ("Open File");
+		if (fc.browseForFileToOpen())
+		{
+			sendChannelStringDataToCsound(channel, fc.getResult().getFullPathName());
+		}
+	}
+	
+	else if(mode=="directory")
+	{
+		FileChooser fc ("Open Directory");
+		if (fc.browseForDirectory())
+		{
+			sendChannelStringDataToCsound(channel, fc.getResult().getFullPathName());
+		}
+	}
+	
+	else if(mode=="snapshot")
+	{
+		//add code for new preset snapshot system
+	}		
+}
+//======================================================================================================
 void CabbagePluginEditor::sliderValueChanged(Slider* slider)
 {
     if (CabbageAudioParameter* param = getParameterForComponent(slider))
@@ -411,7 +447,7 @@ void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelStringDataToCsound(String channel, String value)
 {
-	processor.getCsound();//->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
+	processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
 }
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
