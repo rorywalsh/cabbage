@@ -75,7 +75,9 @@ public:
         return (x / getWidth()) * (visibleRange.getLength()) + visibleRange.getStart();
     }
 
-
+	void setWaveformColour(String waveform){	colour = Colour::fromString(waveform);	};
+	void setBackgroundColour(String tableColour){	bgColour = Colour::fromString(tableColour);	};
+	
     void setZoomFactor (double amount);
     void setFile (const File& file);
     void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel);
@@ -112,7 +114,7 @@ private:
     Image waveformImage;
     AudioThumbnailCache thumbnailCache;
     ScopedPointer<AudioThumbnail> thumbnail;
-    Colour colour, fontcolour;
+    Colour colour, bgColour;
     int mouseDownX, mouseUpX;
     Rectangle<int> localBounds;
     double loopLength;

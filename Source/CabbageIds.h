@@ -650,6 +650,7 @@ public:
         set("Colour", CabbageIdentifierIds::colour.toString());
         set("Outline", CabbageIdentifierIds::outlinecolour.toString());
 		set("Tracker", CabbageIdentifierIds::trackercolour.toString());
+		set("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
 		set("Text Colour", CabbageIdentifierIds::textcolour.toString());
 		set("Value Box", CabbageIdentifierIds::valuetextbox.toString());
         set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
@@ -660,6 +661,7 @@ public:
 		set("Arrows Background", CabbageIdentifierIds::arrowbackgroundcolour.toString());
 		set("Arrows", CabbageIdentifierIds::arrowcolour.toString());		
         set("Alpha", CabbageIdentifierIds::alpha.toString());
+		set("Zoom", CabbageIdentifierIds::zoom.toString());
         set("Corners", CabbageIdentifierIds::corners.toString());
         set("Shape", CabbageIdentifierIds::shape.toString());
         set("File", CabbageIdentifierIds::file.toString());

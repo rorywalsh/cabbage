@@ -23,7 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-class CabbageButton : public Component, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase
 {
 public:
 
@@ -36,6 +36,8 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
+
+	void setLookAndFeelColours(ValueTree wData);
 
     ValueTree widgetData;
 

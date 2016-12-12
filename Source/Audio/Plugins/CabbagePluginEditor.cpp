@@ -158,6 +158,9 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 		
 	else if(widgetType==CabbageIdentifierIds::soundfiler)
 		insertSoundfiler(cabbageWidgetData);
+
+	else if(widgetType==CabbageIdentifierIds::button)
+		insertButton(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -200,7 +203,7 @@ void CabbagePluginEditor::insertTextEditor(ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertSoundfiler(ValueTree cabbageWidgetData)
 {
     CabbageSoundfiler* soundfiler;
-    components.add(soundfiler = new CabbageSoundfiler(cabbageWidgetData));
+    components.add(soundfiler = new CabbageSoundfiler(cabbageWidgetData, this));
     addToEditorAndMakeVisible(soundfiler, cabbageWidgetData);
 }
 
@@ -217,6 +220,13 @@ void CabbagePluginEditor::insertEncoder(ValueTree cabbageWidgetData)
     CabbageEncoder* encoder;
     components.add(encoder = new CabbageEncoder(cabbageWidgetData, this));
     addToEditorAndMakeVisible(encoder, cabbageWidgetData);	
+}
+
+void CabbagePluginEditor::insertButton(ValueTree cabbageWidgetData)
+{
+    CabbageButton* button;
+    components.add(button = new CabbageButton(cabbageWidgetData));
+    addToEditorAndMakeVisible(button, cabbageWidgetData);	
 }
 
 void CabbagePluginEditor::insertNumberBox(ValueTree cabbageWidgetData)

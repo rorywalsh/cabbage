@@ -29,6 +29,7 @@
 #include "../../Widgets/CabbageCheckbox.h"
 #include "../../Widgets/CabbageComboBox.h"
 #include "../../Widgets/CabbageImage.h"
+#include "../../Widgets/CabbageButton.h"
 #include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageNumberBox.h"
 #include "../../Widgets/CabbageEncoder.h"
@@ -76,7 +77,7 @@ public:
     // be automated in a host...
     void insertSlider(ValueTree cabbageWidgetData);
     void insertComboBox(ValueTree cabbageWidgetData);
-    void insertButton(ValueTree cabbageWidgetData) {};
+    void insertButton(ValueTree cabbageWidgetData);
     void insertCheckbox(ValueTree cabbageWidgetData);
     void insertXYPad(ValueTree cabbageWidgetData) {};
     void insertRangeSlider(ValueTree cabbageWidgetData) {};

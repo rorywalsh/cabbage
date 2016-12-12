@@ -32,10 +32,12 @@ public:
     CabbageWidgetBase() {}
     ~CabbageWidgetBase() {}
 
-    int pivotx, pivoty, visible, active, value;
-    float rotate, alpha, currentValue;
-    String tooltipText, text, channel;
-    File imgButtonOn, imgButtonOff, imgPath;
+    int _pivotx, _pivoty, _visible, _active, _value;
+    float _rotate, _alpha, _currentValue;
+    String _tooltipText, _text, _channel;
+    File _imgButtonOn, _imgButtonOff, _imgPath;
+	StringArray _channelArray;	//can be used if widget supports multiple channel
+	StringArray _textArray;	//can be used used if widget supports multiple text items
 
     void initialiseCommonAttributes(Component* child, ValueTree valueTree);							//handles simple attributes on initialisation
     void handleCommonUpdates(Component* child, ValueTree data, bool calledFromConstructor=false);	//handles all updates from ident channel message

@@ -35,36 +35,36 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bo
 			getPluginEditor(child)->updateLayoutEditorFrames();
 		}
 	}
-    if(rotate!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate))
+    if(_rotate!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate))
     {
-        rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
-        child->setTransform(AffineTransform::rotation(rotate, child->getX()+CabbageWidgetData::getNumProp(data,
+        _rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
+        child->setTransform(AffineTransform::rotation(_rotate, child->getX()+CabbageWidgetData::getNumProp(data,
                             CabbageIdentifierIds::pivotx),
                             child->getY()+CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty)));
     }
 
-    if(visible != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible))
+    if(_visible != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible))
     {
-        visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
-        child->setVisible(visible==1 ? true : false);
-        child->setEnabled(visible==1 ? true : false);
+        _visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
+        child->setVisible(_visible==1 ? true : false);
+        child->setEnabled(_visible==1 ? true : false);
     }
 
-    if(active != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active))
+    if(_active != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active))
     {
-        active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
-        child->setEnabled(active==1 ? true : false);
+        _active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
+        child->setEnabled(_active==1 ? true : false);
     }
 
-    if(alpha != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha))
+    if(_alpha != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha))
     {
-        alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
-        child->setAlpha(alpha);
+        _alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
+        child->setAlpha(_alpha);
     }
 
-    if(alpha != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha))
+    if(_alpha != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha))
     {
-        alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
+        _alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
     }
 
 }
@@ -72,60 +72,80 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bo
 
 String CabbageWidgetBase::getCurrentText(ValueTree data)
 {
-    if(text!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text))
+    if(_text!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text))
     {
-        text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
-        return text;
+        _text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
+        return _text;
     }
 
-    return text;
+    return _text;
 }
 
 String CabbageWidgetBase::getCurrentPopupText(ValueTree data)
 {
-    if(tooltipText!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext))
+    if(_tooltipText!=CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext))
     {
-        tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
-        return tooltipText;
+        _tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
+        return _tooltipText;
     }
 
-    return tooltipText;
+    return _tooltipText;
 }
 
 void CabbageWidgetBase::setChannel(ValueTree data)
 {
-    if(channel != CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel))
+    if(_channel != CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel))
     {
-        channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
-        CabbageWidgetData::setProperty(data, CabbageIdentifierIds::channel, channel);
+        _channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
+        CabbageWidgetData::setProperty(data, CabbageIdentifierIds::channel, _channel);
     }
 }
 
 float CabbageWidgetBase::getCurrentValue(ValueTree data)
 {
-    if(currentValue!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value))
+    if(_currentValue!=CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value))
     {
-        currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value);
-        return currentValue;
+        _currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value);
+        return _currentValue;
     }
 
-    return currentValue;
+    return _currentValue;
 }
 
 void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree data)
 {
-    rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
-    pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
-    pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
-    visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
-    active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
-	channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
-    tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
+    _rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
+    _pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
+    _pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
+    _visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
+    _active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
+	_channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
+    _tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
     child->setBounds(CabbageWidgetData::getBounds(data));
     child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
+	
+	const Array<var>* channelArray = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::channel).getArray();
+	if(channelArray && channelArray->size()>0)
+	{
+		for(int i = 0 ; i < channelArray->size() ; i++ )
+			_channelArray.add(channelArray->getReference(i).toString());
+	}
+	else
+		_channelArray.add(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel));
+	
+	const Array<var>* textArray = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::text).getArray();
+	if(textArray && textArray->size()>0)
+	{
+		for(int i = 0 ; i < textArray->size() ; i++ )
+		{
+			_textArray.add(textArray->getReference(i).toString());
+			CabbageUtilities::debug(textArray->getReference(i).toString());
+		}
+	}
+	else
+		_channelArray.add(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel));
 	//now initialise everything that can be updated using ident channels
 	handleCommonUpdates(child, data, true);
-
 }
 
 

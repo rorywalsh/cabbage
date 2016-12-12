@@ -1721,7 +1721,12 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::colour))
     {
-        const String identifier = (type=="image" || type.contains("slider") || type=="label" || type=="groupbox" ? "colour(" : "colour:0(");
+        const String identifier = (type=="image" 
+									|| type.contains("slider") 
+									|| type=="label" 
+									|| type=="groupbox" 
+									|| type=="soundfiler" 
+									? "colour(" : "colour:0(");
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
         colourString = colourString << identifier << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
@@ -1780,6 +1785,12 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
         colourString = colourString << "arrowcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::tablebackgroundcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::tablebackgroundcolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::tablebackgroundcolour));
+        colourString = colourString << "tablebackgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+	
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::textcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::textcolour))
     {
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::textcolour));
@@ -1812,6 +1823,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
                          + getNumericalValueTextAsCabbageCode(widgetData, "active")
                          + getNumericalValueTextAsCabbageCode(widgetData, "visible")
 						 + getNumericalValueTextAsCabbageCode(widgetData, "valuetextbox")
+						 + getNumericalValueTextAsCabbageCode(widgetData, "zoom")
 						 + getNumericalValueTextAsCabbageCode(widgetData, "outlinethickness")
 						 + getNumericalValueTextAsCabbageCode(widgetData, "velocity")
                          + getSimpleTextAsCabbageCode(widgetData, "popuptext")

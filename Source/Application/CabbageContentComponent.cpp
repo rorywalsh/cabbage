@@ -63,7 +63,7 @@ void CabbageContentComponent::resized()
 
     if(propertyPanel->isVisible())
     {
-        propertyPanel->setBounds(getWidth()-200, 0, 200, getHeight());
+        propertyPanel->setBounds(getWidth()-200, toolbar.getHeight(), 200, getHeight());
     }
 
     resizeAllEditorAndConsoles(toolbarThickness + heightOfTabButtons);

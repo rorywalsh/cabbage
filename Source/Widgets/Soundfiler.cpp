@@ -54,7 +54,7 @@ public:
 // soundfiler display  component
 //==============================================================================
 
-Soundfiler::Soundfiler(int sr, Colour col, Colour fcol):	thumbnailCache (5), colour(col),														sampleRate(sr),
+Soundfiler::Soundfiler(int sr, Colour col, Colour bgcol):	thumbnailCache (5), colour(col),														sampleRate(sr),
     currentPlayPosition(0),
     mouseDownX(0),
     mouseUpX(0),
@@ -64,7 +64,7 @@ Soundfiler::Soundfiler(int sr, Colour col, Colour fcol):	thumbnailCache (5), col
     scrubberPosition(0),
     showScrubber(true),
     selectableRange(true),
-    fontcolour(fcol),
+    bgColour(bgcol),
     currentPositionMarker(new DrawableRectangle())
 {
     formatManager.registerBasicFormats();
@@ -176,6 +176,11 @@ void Soundfiler::setZoomFactor (double amount)
         zoomIn->setVisible(false);
         zoomOut->setVisible(false);
     }
+	else
+	{
+        zoomIn->setVisible(true);
+        zoomOut->setVisible(true);		
+	}
 
     if (thumbnail->getTotalLength() > 0)
     {
@@ -196,7 +201,7 @@ void Soundfiler::setRange(Range<double> newRange)
 //==============================================================================
 void Soundfiler::paint (Graphics& g)
 {
-    g.fillAll (Colours::black);
+    g.fillAll (bgColour);
     g.setColour (colour);
     //Logger::writeToLog(String(thumbnail->getTotalLength()));
     if (thumbnail->getTotalLength() != 0.0)

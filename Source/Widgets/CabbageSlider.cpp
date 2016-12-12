@@ -39,6 +39,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 	addAndMakeVisible(&slider);
 	slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
 	initialiseSlider(wData);
+	textLabel.setVisible(false);
 	initialiseCommonAttributes(this, wData);
 	createPopupBubble();
 	setImgProperties(this->slider, wData, "slider");
@@ -125,10 +126,10 @@ void CabbageSlider::resized()
 {
 	if (sliderType.contains("rotary"))
 	{
-			if(text.isNotEmpty())
+			if(_text.isNotEmpty())
 			{
 				
-				textLabel.setText(text, dontSendNotification);
+				textLabel.setText(_text, dontSendNotification);
 				textLabel.setJustificationType(Justification::centred);
 				textLabel.setVisible(true);
 					
@@ -151,10 +152,10 @@ void CabbageSlider::resized()
 	//else if vertical
 	else if (sliderType.contains("vertical"))
 	{
-		if(text.isNotEmpty())
+		if(_text.isNotEmpty())
 		{
 			textLabel.setJustificationType(Justification::centred);
-			textLabel.setText(text, dontSendNotification);
+			textLabel.setText(_text, dontSendNotification);
 			textLabel.setVisible(true);
 			
 			if(shouldShowTextBox>0)
@@ -177,10 +178,10 @@ void CabbageSlider::resized()
 	//else if horizontal
 	else
 	{
-		if(text.isNotEmpty())
+		if(_text.isNotEmpty())
 		{
-			const float width = textLabel.getFont().getStringWidthFloat(text)+10.f;
-			textLabel.setText(text, dontSendNotification);
+			const float width = textLabel.getFont().getStringWidthFloat(_text)+10.f;
+			textLabel.setText(_text, dontSendNotification);
 			textLabel.setVisible(true);
 			
 			if(shouldShowTextBox>0)
@@ -204,8 +205,8 @@ void CabbageSlider::resized()
 
 void CabbageSlider::showPopupBubble()
 {
-	if(tooltipText.isNotEmpty())
-		popupText = tooltipText;
+	if(_tooltipText.isNotEmpty())
+		popupText = _tooltipText;
 	else
 		popupText = channel+": "+String(CabbageUtilities::roundToPrec(slider.getValue(), decimalPlaces));
 
@@ -247,8 +248,6 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
 {
 	
 	textLabel.setColour(Label::outlineColourId, Colours::transparentBlack);
-
-	textLabel.setVisible(false);
 	slider.setColour(Slider::textBoxHighlightColourId, Colours::lime.withAlpha(.2f));
 	
 	slider.setColour(Slider::thumbColourId, Colour::fromString(colour));
@@ -278,12 +277,7 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
     }
 	else
 	{
-		slider.setColour(Slider::thumbColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-		slider.setColour(Slider::trackColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour)));
-		slider.setColour(Slider::Slider::rotarySliderOutlineColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour)));
-		slider.setColour(Slider::rotarySliderFillColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-		slider.setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-		textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour)));
+		setLookAndFeelColours(valueTree);
 
 		textLabel.setText(getCurrentText(valueTree), dontSendNotification);
 		textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);

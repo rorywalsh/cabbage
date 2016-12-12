@@ -18,16 +18,16 @@
 */
 
 #include "CabbageSoundfiler.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageSoundfiler::CabbageSoundfiler(ValueTree wData)
+CabbageSoundfiler::CabbageSoundfiler(ValueTree wData, CabbagePluginEditor* _owner)
 	: widgetData(wData),
-	colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
-	fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
+	owner(_owner),
 	file(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file)),
 	zoom(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom)),
 	scrubberPos(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrubberposition)),
-	soundfiler(44100, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)), 
-									Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)))
+	soundfiler(44100, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)), 
+									Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::tablebackgroundcolour)))
 {
 	addAndMakeVisible(soundfiler);
 	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
@@ -48,7 +48,22 @@ CabbageSoundfiler::CabbageSoundfiler(ValueTree wData)
 		soundfiler.setIsRangeSelectable(false);
 		
 	soundfiler.setFile(file);
+	soundfiler.addChangeListener(this);
 	
+
+	
+}
+
+void CabbageSoundfiler::changeListenerCallback(ChangeBroadcaster* source)
+{
+	//no need to check source, it has to be a soundfiler object
+	const float position = getScrubberPosition();
+	const float length = getLoopLength();	
+	
+	owner->sendChannelDataToCsound(_channelArray[0], position);
+	
+	if(_channelArray.size()>1)
+		owner->sendChannelDataToCsound(_channelArray[0], length);
 }
 
 void CabbageSoundfiler::resized()
@@ -66,7 +81,7 @@ int CabbageSoundfiler::setWaveform(AudioSampleBuffer buffer, int channels)
 	soundfiler.setWaveform(buffer, channels);
 }
 
-int CabbageSoundfiler::getPosition()
+int CabbageSoundfiler::getScrubberPosition()
 {
 	return soundfiler.getCurrentPlayPosInSamples();
 }
@@ -84,7 +99,14 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
 		setFile(file);		
 	}
 
-		
-		
+	if(zoom != CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom))
+	{
+		zoom = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom);
+		soundfiler.setZoomFactor(zoom);
+	}
+	
+	soundfiler.setWaveformColour(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
+	soundfiler.setBackgroundColour(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::tablebackgroundcolour));
+	soundfiler.repaint();
 	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 }

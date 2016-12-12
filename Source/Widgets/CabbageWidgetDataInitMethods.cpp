@@ -155,7 +155,7 @@ void CabbageWidgetData::setSoundfilerProperties(ValueTree widgetData, int ID)
 	var channels;
 	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
 	setProperty(widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
-	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::tablebackgroundcolour, Colours::black.toString());
 	setProperty(widgetData, CabbageIdentifierIds::type, "soundfiler");
 	setProperty(widgetData, CabbageIdentifierIds::name, "soundfiler");
 	setProperty(widgetData, CabbageIdentifierIds::file, "");
@@ -163,7 +163,7 @@ void CabbageWidgetData::setSoundfilerProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
 	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
 	setProperty(widgetData, CabbageIdentifierIds::scrubberposition, 0);
-	setProperty(widgetData, CabbageIdentifierIds::zoom, 0);
+	setProperty(widgetData, CabbageIdentifierIds::zoom, -1);
 	setProperty(widgetData, CabbageIdentifierIds::startpos, 0);
 	setProperty(widgetData, CabbageIdentifierIds::tablenumber, -1);	
 } 

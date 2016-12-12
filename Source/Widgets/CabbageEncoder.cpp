@@ -63,7 +63,7 @@ void CabbageEncoder::labelTextChanged (Label *label)
     sliderPos=0;
     currentValue=value;
     valueLabel.setText(String(value, 2), dontSendNotification);
-    owner->sendChannelDataToCsound(channel, currentValue);
+    owner->sendChannelDataToCsound(_channel, currentValue);
     showPopup();
 }
 
@@ -75,7 +75,7 @@ void CabbageEncoder::mouseDown(const MouseEvent &e)
         sliderPos=0;
         currentValue=startingValue;
         repaint();
-        owner->sendChannelDataToCsound(channel, currentValue);
+        owner->sendChannelDataToCsound(_channel, currentValue);
         showPopup();
     }
 }
@@ -102,7 +102,7 @@ void CabbageEncoder::mouseDrag(const MouseEvent& e)
 		valueLabel.setText(String(currentValue), dontSendNotification);
 
 		//	valueLabel.setText(String(currentValue, 2), dontSendNotification);
-        owner->sendChannelDataToCsound(channel, currentValue);
+        owner->sendChannelDataToCsound(_channel, currentValue);
         showPopup();
     }
 }
@@ -112,10 +112,10 @@ void CabbageEncoder::showPopup(int displayTime)
     if(shouldDisplayPopup)
     {
         String popupText;
-        if(tooltipText.isNotEmpty())
-            popupText = tooltipText;
+        if(_tooltipText.isNotEmpty())
+            popupText = _tooltipText;
         else
-            popupText = channel+": "+String(currentValue);
+            popupText = _channel+": "+String(currentValue);
 
         popupBubble.showAt(this, AttributedString(popupText), displayTime);	
     }
