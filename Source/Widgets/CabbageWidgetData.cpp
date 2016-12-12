@@ -95,6 +95,15 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     else if(strTokens[0].trim() == "encoder")
 		setEncoderProperties(widgetData, ID);
 
+    else if(strTokens[0].trim() == "button")
+        setButtonProperties(widgetData, ID);
+
+    else if(strTokens[0].trim() == "soundfiler")
+		setSoundfilerProperties(widgetData, ID);
+
+    else if(strTokens[0].trim() == "filebutton")
+		setFileButtonProperties(widgetData, ID);
+		
 	
     else if((strTokens[0].trim() == "sourcebutton")||(strTokens[0].trim() == "loadbutton"))
     {
@@ -150,92 +159,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
     }
 
-
-    //===============file button==================//
-    else if(strTokens[0].trim() == "filebutton")
-    {
-        setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 80;
-        height = 40;
-        var array;
-        array.append("Open file");
-        array.append("Open file");
-
-
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 80);
-        setProperty(widgetData, CabbageIdentifierIds::height, 40);
-        var channels;
-        channels.append("filebutton");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::value, 1);
-        setProperty(widgetData, CabbageIdentifierIds::text, array);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "filebutton");
-        setProperty(widgetData, CabbageIdentifierIds::name, "filebutton");
-        setProperty(widgetData, CabbageIdentifierIds::mode, "file");
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, "name", getProperty(widgetData, "name").toString()+String(ID));
-        var populate;
-        populate.append("");
-        populate.append("");
-        setProperty(widgetData, "populate", populate);
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::filetype, "*");
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
-    }
-
-    //===============button==================//
-    else if(strTokens[0].trim() == "button")
-    {
-        setProperty(widgetData, "basetype", "interactive");
-        top = 10;
-        left = 10;
-        width = 80;
-        height = 40;
-        var array;
-        array.append("Push me");
-        array.append("Push me");
-
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 80);
-        setProperty(widgetData, CabbageIdentifierIds::height, 40);
-        var channels;
-        channels.append("buttonchan");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::value, 0);
-        setProperty(widgetData, CabbageIdentifierIds::text, array);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::latched, 1);
-        setProperty(widgetData, CabbageIdentifierIds::type, "button");
-        setProperty(widgetData, CabbageIdentifierIds::name, "button");
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::radiogroup, 0);
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
-
-    }
-
-    //===============soundfiler==================//
-    else if(strTokens[0].trim() == "soundfiler")
-    {
-		setSoundfilerProperties(widgetData, ID);
-    }
     //===============gentable==================//
     else if(strTokens[0].trim() == "gentable")
     {

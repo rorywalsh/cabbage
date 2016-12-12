@@ -30,6 +30,7 @@
 #include "../../Widgets/CabbageComboBox.h"
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageButton.h"
+#include "../../Widgets/CabbageFileButton.h"
 #include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageNumberBox.h"
 #include "../../Widgets/CabbageEncoder.h"
@@ -92,7 +93,7 @@ public:
     void insertTextEditor(ValueTree cabbageWidgetData);
     void insertCsoundOutputConsole(ValueTree cabbageWidgetData);
     void insertMIDIKeyboard(ValueTree cabbageWidgetData);
-    void insertFileButton(ValueTree cabbageWidgetData) {};
+    void insertFileButton(ValueTree cabbageWidgetData);
     void insertRecordButton(ValueTree cabbageWidgetData) {};
     void insertImage(ValueTree cabbageWidgetData);
     void insertLabel(ValueTree cabbageWidgetData);

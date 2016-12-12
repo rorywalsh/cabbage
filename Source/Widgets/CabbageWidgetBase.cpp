@@ -66,6 +66,8 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bo
     {
         _alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
     }
+	
+	populateTextArrays(data);
 
 }
 
@@ -124,30 +126,35 @@ void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree d
     child->setBounds(CabbageWidgetData::getBounds(data));
     child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
 	
+	populateTextArrays(data);
+	//now initialise everything that can be updated using ident channels
+	handleCommonUpdates(child, data, true);
+}
+
+void CabbageWidgetBase::populateTextArrays(ValueTree data)
+{
 	const Array<var>* channelArray = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::channel).getArray();
-	if(channelArray && channelArray->size()>0)
+	if(channelArray && channelArray->size()>1)
 	{
 		for(int i = 0 ; i < channelArray->size() ; i++ )
 			_channelArray.add(channelArray->getReference(i).toString());
 	}
 	else
+		_channelArray.add(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel));	//make sure we have at least two items in array
 		_channelArray.add(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel));
 	
 	const Array<var>* textArray = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::text).getArray();
-	if(textArray && textArray->size()>0)
+	if(textArray && textArray->size()>1)
 	{
 		for(int i = 0 ; i < textArray->size() ; i++ )
 		{
 			_textArray.add(textArray->getReference(i).toString());
-			CabbageUtilities::debug(textArray->getReference(i).toString());
 		}
 	}
 	else
-		_channelArray.add(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel));
-	//now initialise everything that can be updated using ident channels
-	handleCommonUpdates(child, data, true);
+		_channelArray.add(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel));	//make sure we have at least two items in array
+		_channelArray.add(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel));	
 }
-
 
 int CabbageWidgetBase::getSVGWidth(File svgFile)
 {

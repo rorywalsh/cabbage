@@ -84,6 +84,73 @@ void CabbageWidgetData::setCsoundOutputProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
 }
 
+void CabbageWidgetData::setButtonProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, "basetype", "interactive");
+	var array;
+	array.append("Push me");
+	array.append("Push me");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 80);
+	setProperty(widgetData, CabbageIdentifierIds::height, 40);
+	var channels;
+	channels.append("buttonchan");
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::value, 0);
+	setProperty(widgetData, CabbageIdentifierIds::text, array);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
+	setProperty(widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::latched, 1);
+	setProperty(widgetData, CabbageIdentifierIds::type, "button");
+	setProperty(widgetData, CabbageIdentifierIds::name, "button");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::radiogroup, 0);
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+	setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+}
+
+void CabbageWidgetData::setFileButtonProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, "basetype", "layout");
+	var array;
+	array.append("Open file");
+	array.append("Open file");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 80);
+	setProperty(widgetData, CabbageIdentifierIds::height, 40);
+	var channels;
+	channels.append("filebutton");
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::value, 1);
+	setProperty(widgetData, CabbageIdentifierIds::text, array);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
+	setProperty(widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::type, "filebutton");
+	setProperty(widgetData, CabbageIdentifierIds::name, "filebutton");
+	setProperty(widgetData, CabbageIdentifierIds::channeltype, "string");
+	setProperty(widgetData, CabbageIdentifierIds::mode, "file");
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, "name", getProperty(widgetData, "name").toString()+String(ID));
+	var populate;
+	populate.append("");
+	populate.append("");
+	setProperty(widgetData, "populate", populate);
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::filetype, "*");
+	setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+	setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+}
+
 void CabbageWidgetData::setTextBoxProperties(ValueTree widgetData, int ID)
 {
 	setProperty(widgetData, "basetype", "layout");
@@ -306,41 +373,41 @@ void CabbageWidgetData::setRSliderProperties(ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setVSliderProperties(ValueTree widgetData, int ID)
 {
-        setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 50);
-        setProperty(widgetData, CabbageIdentifierIds::height, 150);
-        var channels;
-        channels.append("vslider");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::min, 0);
-        setProperty(widgetData, CabbageIdentifierIds::max, 1);
-        setProperty(widgetData, CabbageIdentifierIds::value, 0);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
-        setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
-        setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
-        setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
-        setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
-        //these don't appear in the props dialog
-        setProperty(widgetData, CabbageIdentifierIds::name, "vslider");
-        setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::kind, "vertical");
+	setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 50);
+	setProperty(widgetData, CabbageIdentifierIds::height, 150);
+	var channels;
+	channels.append("vslider");
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::min, 0);
+	setProperty(widgetData, CabbageIdentifierIds::max, 1);
+	setProperty(widgetData, CabbageIdentifierIds::value, 0);
+	setProperty(widgetData, CabbageIdentifierIds::text, "");
+	setProperty(widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
+	setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
+	setProperty(widgetData, CabbageIdentifierIds::velocity, 0);
+	setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
+	setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
+	//these don't appear in the props dialog
+	setProperty(widgetData, CabbageIdentifierIds::name, "vslider");
+	setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::kind, "vertical");
 
-        setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
-        setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
+	setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
+	setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
+	setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
 }	
 
 void CabbageWidgetData::setImageProperties(ValueTree widgetData, int ID)

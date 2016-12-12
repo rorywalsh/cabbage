@@ -46,8 +46,13 @@ public:
     template< typename Type >
     void setImgProperties(Type& comp, ValueTree widgetData, String type);
 
+	StringArray getTextArray(){	return _textArray;	};
+	StringArray getChannelArray(){	return _channelArray;	};
+	
     String getCurrentText(ValueTree data);
     String getCurrentPopupText(ValueTree data);
+	
+	void populateTextArrays(ValueTree data);
     void setChannel(ValueTree value);
     float getCurrentValue(ValueTree data);
     static int getSVGHeight(File svgFile);

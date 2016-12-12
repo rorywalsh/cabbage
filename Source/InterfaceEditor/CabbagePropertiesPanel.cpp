@@ -134,6 +134,8 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
     setSize(300, 500);
 
     addAndMakeVisible (propertyPanel);
+	//setColour(TextEditor::highlightColourId, Colour(100, 100, 100));
+
 	
 	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 	
@@ -253,6 +255,19 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 				setPropertyByName("Align", "above");  
 			else if(int(value.getValue())==4)
 				setPropertyByName("Align", "below");          
+		}
+    }
+	
+    else if(value.refersToSameSourceAs(fileModeValue))
+    {
+        if(value.getValue().isInt())
+		{
+			if(int(value.getValue())==0)
+				setPropertyByName("Mode", "file");
+			else if(int(value.getValue())==1)
+				setPropertyByName("Align", "directory");
+			else if(int(value.getValue())==2)
+				setPropertyByName("Align", "snapshot");         
 		}
     }
 }
@@ -514,7 +529,31 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 		sliderNumberBoxValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox));
 		sliderNumberBoxValue.addListener(this);
 		comps.add (new BooleanPropertyComponent(sliderNumberBoxValue, "Value Box", "Is Visible"));		
-	}    
+	} 
+
+    else if(typeOfWidget == "filebutton")
+    {
+        shapeValue.addListener(this);
+        StringArray choices;
+        Array<var> choiceVars;
+
+        choices.add ("File");
+        choices.add ("Directory");
+		choices.add ("Snapshot");
+        choiceVars.add (0);
+        choiceVars.add (1);
+		choiceVars.add (2);
+		
+        if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::mode) == "file")
+            shapeValue.setValue(0);
+		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::mode) == "directory")
+			shapeValue.setValue(1);
+		else 
+			shapeValue.setValue(2);
+			
+        comps.add (new ChoicePropertyComponent(shapeValue, "Mode", choices, choiceVars));
+		
+    }	
 
     addListener(comps, this);
     return comps;

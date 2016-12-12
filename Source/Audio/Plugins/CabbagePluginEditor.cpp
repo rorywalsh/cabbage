@@ -161,6 +161,9 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 
 	else if(widgetType==CabbageIdentifierIds::button)
 		insertButton(cabbageWidgetData);
+	
+	else if(widgetType==CabbageIdentifierIds::filebutton)
+		insertFileButton(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -222,10 +225,18 @@ void CabbagePluginEditor::insertEncoder(ValueTree cabbageWidgetData)
     addToEditorAndMakeVisible(encoder, cabbageWidgetData);	
 }
 
+void CabbagePluginEditor::insertFileButton(ValueTree cabbageWidgetData)
+{
+    CabbageFileButton* fileButton;
+    components.add(fileButton = new CabbageFileButton(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(fileButton, cabbageWidgetData);	
+}
+
 void CabbagePluginEditor::insertButton(ValueTree cabbageWidgetData)
 {
     CabbageButton* button;
     components.add(button = new CabbageButton(cabbageWidgetData));
+	button->addListener(this);
     addToEditorAndMakeVisible(button, cabbageWidgetData);	
 }
 
@@ -250,7 +261,6 @@ void CabbagePluginEditor::insertTextBox(ValueTree cabbageWidgetData)
     components.add(textBox = new CabbageTextBox(cabbageWidgetData));
     addToEditorAndMakeVisible(textBox, cabbageWidgetData);	
 }
-
 
 void CabbagePluginEditor::insertCsoundOutputConsole(ValueTree cabbageWidgetData)
 {
@@ -300,12 +310,28 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 
 void CabbagePluginEditor::buttonClicked(Button* button)
 {
+	const int buttonState = button->getToggleState();
+	
     if (CabbageAudioParameter* param = getParameterForComponent(button))
     {
         param->beginChangeGesture();
-        param->setValue(button->getToggleState()==true ? 1 : 0);
+        param->setValue(buttonState == 0 ? 1 : 0);
         param->endChangeGesture();
     }
+	
+	const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type)=="button")
+	{
+		if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
+		{
+			const StringArray textItems = cabbageButton->getTextArray();
+			if(textItems.size()>0)
+				cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
+		}
+	}
+	
+	button->setToggleState(buttonState == 0 ? 1 : 0, dontSendNotification);
+	
 }
 
 void CabbagePluginEditor::sliderValueChanged(Slider* slider)
@@ -385,7 +411,7 @@ void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelStringDataToCsound(String channel, String value)
 {
-	processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
+	processor.getCsound();//->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
 }
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()

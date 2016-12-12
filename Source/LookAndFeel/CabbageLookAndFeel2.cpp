@@ -745,6 +745,74 @@ void CabbageLookAndFeel2::drawLinearSliderThumb (Graphics& g, int x, int y, int 
         }
     }
 }
+
+void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, const Colour& backgroundColour, bool isMouseOverButton, bool isButtonDown)
+{
+	const int width = button.getWidth();
+	const int height = button.getHeight();
+	float opacity = 0.1;
+	const bool toggleState = button.getToggleState();
+	
+	File imgButtonOnFile = File(button.getProperties().getWithDefault("imgbuttonon", "").toString());
+    File imgButtonOffFile = File(button.getProperties().getWithDefault("imgbuttonoff", "").toString());
+	
+    if(imgButtonOnFile.existsAsFile() && imgButtonOffFile.existsAsFile())	//if image files exist, draw them..
+    {
+        if(imgButtonOnFile.hasFileExtension("png") && imgButtonOffFile.hasFileExtension("png"))
+        {
+            Image image = ImageCache::getFromFile(File(toggleState == true ? imgButtonOnFile : imgButtonOffFile));
+            image = image.rescaled(button.getWidth(), button.getHeight());
+            g.drawImage(image, 0.0f, 0, button.getWidth(), button.getHeight(), 0, 0, button.getWidth(), button.getHeight(), false);
+        }
+        else if(imgButtonOnFile.hasFileExtension("svg") && imgButtonOffFile.hasFileExtension("svg"))
+        {
+            drawFromSVG(g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
+        }
+    }
+
+    else	//if files don't exist, draw a native Cabbage checkbox
+    {
+		//----- Outline
+		g.setColour (Colour::fromRGBA (10, 10, 10, 255));
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
+
+		//----- If "off"
+		if (isButtonDown == false)
+		{
+			//----- Shadow
+			for (float i=0.01; i<0.05; i+=0.01)
+			{
+				g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
+				g.fillRoundedRectangle (width*i, height*i,
+										width*0.95, height*0.95, height*0.1);
+				opacity = 0.3;
+			}
+		}
+		
+		//----- Filling in the button
+		//Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
+		//Colour bg2 = Colour::fromRGBA (15, 15, 18, 255);
+		Colour bg1 = button.findColour(toggleState == true ? TextButton::buttonOnColourId : TextButton::buttonColourId);
+		Colour bg2 = bg1.darker();
+
+		ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
+		g.setGradientFill (cg);
+		g.fillRoundedRectangle (width*0.01, height*0.01, width*0.93, height*0.93, height*0.1);
+
+		//----- For emphasising the top and left edges to give the illusion that light is shining on them
+		ColourGradient edgeHighlight = ColourGradient (Colours::whitesmoke, 0, 0,
+									   Colours::transparentWhite, 0, height*0.1, false);
+		g.setGradientFill (edgeHighlight);
+		g.setOpacity (opacity);
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
+
+		ColourGradient edgeHighlight2 = ColourGradient (Colours::whitesmoke, 0, 0,
+										Colours::transparentWhite, height*0.1, 0, false);
+		g.setGradientFill (edgeHighlight2);
+		g.setOpacity (opacity);
+		g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, height*0.1);
+	}
+}
 //==========================================================================================================================================
 void CabbageLookAndFeel2::drawSphericalThumb (Graphics& g, const float x, const float y,
 								const float w, const float h, const Colour& colour,

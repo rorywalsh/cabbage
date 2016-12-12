@@ -114,7 +114,10 @@ public:
 
     Csound* getCsound()
     {
-        return csound;
+		if(csound)
+			return csound;
+		else 
+			return nullptr;
     }
 
     CSOUND* getCsoundStruct()

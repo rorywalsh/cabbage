@@ -17,16 +17,17 @@
   02111-1307 USA
 */
 
-#include "CabbageButton.h"
+#include "CabbageFileButton.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageButton::CabbageButton(ValueTree wData)
+CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner)
 	: widgetData(wData),
 	TextButton()
 {
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
 	setLookAndFeelColours(wData);
-	
+
 	_value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);	
 	setButtonText(_textArray[_value]);
 	setToggleState((bool)_value, dontSendNotification);
@@ -35,11 +36,14 @@ CabbageButton::CabbageButton(ValueTree wData)
 	if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup)!=0)
 		setRadioGroupId(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup));	
 
+	mode = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mode);
+
 	setImgProperties(*this, wData, "buttonon");
     setImgProperties(*this, wData, "buttonoff");	
+	addListener(this);
 }
 
-void CabbageButton::setLookAndFeelColours(ValueTree wData)
+void CabbageFileButton::setLookAndFeelColours(ValueTree wData)
 {
 	setColour(TextButton::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
 	setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
@@ -47,9 +51,21 @@ void CabbageButton::setLookAndFeelColours(ValueTree wData)
 	setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
 }
 
-void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+void CabbageFileButton::buttonClicked(Button* sourceButton)
 {
-	
+	if(mode=="file")
+	{
+        FileChooser fc ("Open File");
+        if (fc.browseForFileToOpen())
+		{
+			owner->sendChannelStringDataToCsound(_channel, fc.getResult().getFullPathName());
+		}
+	}
+}
+
+void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+{
+
 	if(prop==CabbageIdentifierIds::value)
     {
 		_value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);

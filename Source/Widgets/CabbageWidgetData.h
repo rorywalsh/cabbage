@@ -56,6 +56,8 @@ public:
 	static void setTextEditorProperties(ValueTree widgetData, int ID);
 	static void setEncoderProperties(ValueTree widgetData, int ID);
 	static void setSoundfilerProperties(ValueTree widgetData, int ID);
+	static void setButtonProperties(ValueTree widgetData, int ID);
+	static void setFileButtonProperties(ValueTree widgetData, int ID); 
     //============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);
