@@ -234,32 +234,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     //===============soundfiler==================//
     else if(strTokens[0].trim() == "soundfiler")
     {
-        setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 300;
-        height = 200;
-
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 300);
-        setProperty(widgetData, CabbageIdentifierIds::height, 200);
-        var channels;
-        //channels.append("pos");
-        //channels.append("end");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "soundfiler");
-        setProperty(widgetData, CabbageIdentifierIds::name, "soundfiler");
-        setProperty(widgetData, CabbageIdentifierIds::file, "");
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::scrubberposition, 0);
-        setProperty(widgetData, CabbageIdentifierIds::zoom, 0);
-        setProperty(widgetData, CabbageIdentifierIds::startpos, 0);
-        setProperty(widgetData, CabbageIdentifierIds::tablenumber, -1);
+		setSoundfilerProperties(widgetData, ID);
     }
     //===============gentable==================//
     else if(strTokens[0].trim() == "gentable")

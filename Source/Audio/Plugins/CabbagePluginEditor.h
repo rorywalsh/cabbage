@@ -38,6 +38,7 @@
 #include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageSlider.h"
+#include "../../Widgets/CabbageSoundfiler.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 
 class CabbagePluginEditor;
@@ -84,7 +85,7 @@ public:
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
     void insertGroupBox(ValueTree cabbageWidgetData);
-    void insertSoundfiler(ValueTree cabbageWidgetData) {};
+    void insertSoundfiler(ValueTree cabbageWidgetData);
     void insertSourceButton(ValueTree cabbageWidgetData) {};
     void insertDirectoryList(ValueTree cabbageWidgetData) {};
     void insertTextEditor(ValueTree cabbageWidgetData);

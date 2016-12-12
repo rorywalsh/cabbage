@@ -145,6 +145,29 @@ void CabbageWidgetData::setTextEditorProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::visible, 1);	
 }
 	
+void CabbageWidgetData::setSoundfilerProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, "basetype", "layout");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 300);
+	setProperty(widgetData, CabbageIdentifierIds::height, 200);
+	var channels;
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::type, "soundfiler");
+	setProperty(widgetData, CabbageIdentifierIds::name, "soundfiler");
+	setProperty(widgetData, CabbageIdentifierIds::file, "");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::scrubberposition, 0);
+	setProperty(widgetData, CabbageIdentifierIds::zoom, 0);
+	setProperty(widgetData, CabbageIdentifierIds::startpos, 0);
+	setProperty(widgetData, CabbageIdentifierIds::tablenumber, -1);	
+} 
+
 void CabbageWidgetData::setEncoderProperties(ValueTree widgetData, int ID)
 {
 	setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");

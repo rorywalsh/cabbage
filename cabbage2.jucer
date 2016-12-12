@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.cabbage2" includeBinaryInAppConfig="0"
-              jucerVersion="4.3.0">
+              jucerVersion="4.2.4">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{D038562E-7D7D-26DB-5019-6CE1A94F3F1F}" name="Application">
@@ -191,6 +191,10 @@
         <FILE id="ryLDrk" name="CabbageSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSlider.cpp"/>
         <FILE id="UXmekB" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
+        <FILE id="aNUWm2" name="CabbageSoundfiler.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageSoundfiler.cpp"/>
+        <FILE id="KktQgu" name="CabbageSoundfiler.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageSoundfiler.h"/>
         <FILE id="m8btHC" name="CabbageTextBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageTextBox.cpp"/>
         <FILE id="qn8j4j" name="CabbageTextBox.h" compile="0" resource="0"
@@ -209,6 +213,8 @@
               file="Source/Widgets/CabbageWidgetData.h"/>
         <FILE id="u0lmiV" name="CabbageWidgetDataInitMethods.cpp" compile="1"
               resource="0" file="Source/Widgets/CabbageWidgetDataInitMethods.cpp"/>
+        <FILE id="DErG31" name="Soundfiler.cpp" compile="1" resource="0" file="Source/Widgets/Soundfiler.cpp"/>
+        <FILE id="Wgrt0W" name="Soundfiler.h" compile="0" resource="0" file="Source/Widgets/Soundfiler.h"/>
       </GROUP>
       <FILE id="aGYLVl" name="Cabbage.cpp" compile="1" resource="0" file="Source/Cabbage.cpp"/>
       <FILE id="RfSn2a" name="Cabbage.h" compile="0" resource="0" file="Source/Cabbage.h"/>
