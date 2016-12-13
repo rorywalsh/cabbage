@@ -135,7 +135,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 
     addAndMakeVisible (propertyPanel);
 	//setColour(TextEditor::highlightColourId, Colour(100, 100, 100));
-
+	propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::hotpink);
 	
 	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 	
@@ -157,6 +157,7 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 {
     widgetData = wData;
 	
+	propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::hotpink);
 	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 	
     propertyPanel.clear();
@@ -314,27 +315,32 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 
 
     const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-    if(typeOfWidget=="checkbox" || typeOfWidget.contains("button"))
+    if(typeOfWidget == "checkbox" || typeOfWidget.contains("button"))
     {
         comps.add(new ColourPropertyComponent("Colour: Off", colourString));
-        comps.add(new ColourPropertyComponent("Colour: On", onColourString));
+		
+        if( typeOfWidget != "filebutton" && typeOfWidget != "infobutton")
+			comps.add(new ColourPropertyComponent("Colour: On", onColourString));
+			
         comps.add(new ColourPropertyComponent("Font: Off", fontColourString));
-        comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
+		
+		if( typeOfWidget != "filebutton" && typeOfWidget != "infobutton")
+			comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
+			
     }
-    else if(typeOfWidget=="combobox")
+    else if(typeOfWidget == "combobox")
     {
         const String menuColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::menucolour);
         comps.add(new ColourPropertyComponent("Colour", colourString));
         comps.add(new ColourPropertyComponent("Font", fontColourString));
-        //comps.add(new ColourPropertyComponent("Menu Colour", menuColourString));
     }
-    else if(typeOfWidget=="image" || typeOfWidget=="soundfiler")
+    else if(typeOfWidget == "image" || typeOfWidget == "soundfiler")
     {
         const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
 		const String backgroundColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::tablebackgroundcolour);
 		
         comps.add(new ColourPropertyComponent("Colour", colourString));
-		if(typeOfWidget=="soundfiler")
+		if(typeOfWidget == "soundfiler")
 			comps.add(new ColourPropertyComponent("Soundfiler Background", backgroundColour));
 		else
 			comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));
@@ -352,7 +358,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		comps.add(new ColourPropertyComponent("Outline", outlineColourString));
 		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
-	else if(typeOfWidget=="label" || typeOfWidget=="groupbox" || typeOfWidget=="numberbox" || typeOfWidget=="csoundoutput" || typeOfWidget=="textbox")
+	else if(typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
 	{
 		const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
 		const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
@@ -360,13 +366,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		comps.add(new ColourPropertyComponent("Colour", colourString));	
 		comps.add(new ColourPropertyComponent("Font", fontColourString));
 		
-		if(typeOfWidget=="groupbox")
+		if(typeOfWidget == "groupbox")
 			comps.add(new ColourPropertyComponent("Outline", outlineColourString));
-		else if(typeOfWidget=="numberbox")
+		else if(typeOfWidget == "numberbox")
 			comps.add(new ColourPropertyComponent("Text Colour", textColourString));
 	}
 
-	else if(typeOfWidget=="keyboard")
+	else if(typeOfWidget == "keyboard")
 	{
 		const String whiteNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::whitenotecolour);
 		const String blackNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::blacknotecolour);

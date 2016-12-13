@@ -16,18 +16,20 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
 */
+
 #ifndef PLUGINPROCESSOR_H_INCLUDED
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <csound.hpp>
 #include <csdebug.h>
+#include "csdl.h"
+#include <cwindow.h>
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 
+
 //==============================================================================
-/**
-*/
 class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 {
 
@@ -129,6 +131,51 @@ public:
 
 	MidiKeyboardState keyboardState;
 	
+	//==================================================================================
+	class SignalDisplay
+	{
+	public:
+		float yScale;
+		int windid, min ,max, size;
+		String caption;
+
+		SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
+			caption(_caption),
+			windid(_id),
+			yScale(_scale),
+			min(_min),
+			max(_max),
+			size(_size)
+		{}
+
+		~SignalDisplay()
+		{
+			points.clear();
+		}
+
+		Array<float, CriticalSection> getPoints()
+		{
+			return points;
+		}
+
+		void setPoints(Array <float, CriticalSection > tablePoints)
+		{
+			points.swapWith(tablePoints);
+		}
+
+	private:
+		Array <float, CriticalSection > points;
+	};	
+		
+	bool shouldUpdateSignalDisplay()
+	{	
+		bool returnVal = updateSignalDisplay;	
+		updateSignalDisplay = false;
+		return returnVal;		
+	};
+	    
+    OwnedArray <SignalDisplay, CriticalSection> signalArrays;	//holds values from FFT function table created using dispfft	
+	CsoundPluginProcessor::SignalDisplay* getSignalArray(String variableName, String displayType="");
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
@@ -138,7 +185,7 @@ private:
     String csoundOutput;
     ScopedPointer<CSOUND_PARAMS> csoundParams;
     int csCompileResult, numCsoundChannels, pos;
-    
+    bool updateSignalDisplay=false;
     MYFLT cs_scale;
     MYFLT *CSspin, *CSspout;
     int csndIndex;

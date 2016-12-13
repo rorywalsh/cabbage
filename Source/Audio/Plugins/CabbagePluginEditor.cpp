@@ -164,6 +164,12 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 	
 	else if(widgetType==CabbageIdentifierIds::filebutton)
 		insertFileButton(cabbageWidgetData);
+		
+	else if(widgetType==CabbageIdentifierIds::infobutton)
+		insertInfoButton(cabbageWidgetData);
+		
+	else if(widgetType==CabbageIdentifierIds::signaldisplay)
+		insertSignalDisplay(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -229,8 +235,21 @@ void CabbagePluginEditor::insertFileButton(ValueTree cabbageWidgetData)
 {
     CabbageFileButton* fileButton;
     components.add(fileButton = new CabbageFileButton(cabbageWidgetData, this));
-	fileButton->addListener(this);
     addToEditorAndMakeVisible(fileButton, cabbageWidgetData);	
+}
+
+void CabbagePluginEditor::insertSignalDisplay(ValueTree cabbageWidgetData)
+{
+    CabbageSignalDisplay* signalDisplay;
+    components.add(signalDisplay = new CabbageSignalDisplay(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(signalDisplay, cabbageWidgetData);	
+}
+
+void CabbagePluginEditor::insertInfoButton(ValueTree cabbageWidgetData)
+{
+    CabbageInfoButton* infoButton;
+    components.add(infoButton = new CabbageInfoButton(cabbageWidgetData));
+    addToEditorAndMakeVisible(infoButton, cabbageWidgetData);	
 }
 
 void CabbagePluginEditor::insertButton(ValueTree cabbageWidgetData)
@@ -311,14 +330,12 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 //======================================================================================================
 void CabbagePluginEditor::buttonClicked(Button* button)
 {
-	const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, button->getName());
-	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+
 	const int buttonState = button->getToggleState();
 	
 
-	if(typeOfWidget=="button")
-	{
-		
+	if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
+	{		
 		if (CabbageAudioParameter* param = getParameterForComponent(button))	//only update parameters for normal buttons
 		{
 			param->beginChangeGesture();
@@ -326,49 +343,17 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 			param->endChangeGesture();
 		}
 		
-		if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
+		
 		{
 			const StringArray textItems = cabbageButton->getTextArray();
 			if(textItems.size()>0)
 				cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
 		}
 	}
-	else if(typeOfWidget=="filebutton")
-	{
-		fileButtonClicked(widgetData);
-	}
 	
 	button->setToggleState(buttonState == 0 ? 1 : 0, dontSendNotification);	
 }
 
-void CabbagePluginEditor::fileButtonClicked(ValueTree widgetData)
-{
-	const String mode = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::mode);
-	const String channel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
-	
-	if(mode=="file")
-	{
-		FileChooser fc ("Open File");
-		if (fc.browseForFileToOpen())
-		{
-			sendChannelStringDataToCsound(channel, fc.getResult().getFullPathName());
-		}
-	}
-	
-	else if(mode=="directory")
-	{
-		FileChooser fc ("Open Directory");
-		if (fc.browseForDirectory())
-		{
-			sendChannelStringDataToCsound(channel, fc.getResult().getFullPathName());
-		}
-	}
-	
-	else if(mode=="snapshot")
-	{
-		//add code for new preset snapshot system
-	}		
-}
 //======================================================================================================
 void CabbagePluginEditor::sliderValueChanged(Slider* slider)
 {
@@ -444,11 +429,22 @@ void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 {
 	processor.getCsound()->SetChannel(channel.getCharPointer(), value);
 }
-//======================================================================================================
+
 void CabbagePluginEditor::sendChannelStringDataToCsound(String channel, String value)
 {
 	processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
 }
+
+const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDisplay(const String signalVariable, const String displayType)
+{
+	return processor.getSignalArray(signalVariable, displayType)->getPoints();	
+}
+
+bool CabbagePluginEditor::shouldUpdateSignalDisplay()
+{
+	return processor.shouldUpdateSignalDisplay();
+}
+
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {

@@ -17,21 +17,20 @@
   02111-1307 USA
 */
 
-#include "CabbageFileButton.h"
+#include "CabbageInfoButton.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner)
+CabbageInfoButton::CabbageInfoButton(ValueTree wData)
 	: widgetData(wData),
-	TextButton(),
-	owner(owner)
+	TextButton()
 {
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
 	setLookAndFeelColours(wData);
 
 	setButtonText(_text);
-	
-	mode = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mode);
+
+	filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
 
 	setImgProperties(*this, wData, "buttonon");
     setImgProperties(*this, wData, "buttonoff");
@@ -40,35 +39,17 @@ CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner
 }
 
 //===============================================================================
-void CabbageFileButton::buttonClicked(Button* button)
+void CabbageInfoButton::buttonClicked(Button* button)
 {
-	
-	if(mode=="file")
+	if(File(filename).existsAsFile())
 	{
-		FileChooser fc ("Open File");
-		if (fc.browseForFileToOpen())
-		{
-			owner->sendChannelStringDataToCsound(_channel, fc.getResult().getFullPathName());
-		}
-	}
-	
-	else if(mode=="directory")
-	{
-		FileChooser fc ("Open Directory");
-		if (fc.browseForDirectory())
-		{
-			owner->sendChannelStringDataToCsound(_channel, fc.getResult().getFullPathName());
-		}
-	}
-	
-	else if(mode=="snapshot")
-	{
-		//add code for new preset snapshot system
-	}		
+		URL url(filename);
+		url.launchInDefaultBrowser();
+	}	
 }
 
 //===============================================================================
-void CabbageFileButton::setLookAndFeelColours(ValueTree wData)
+void CabbageInfoButton::setLookAndFeelColours(ValueTree wData)
 {
 	setColour(TextButton::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
 	setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
@@ -77,10 +58,10 @@ void CabbageFileButton::setLookAndFeelColours(ValueTree wData)
 }
 
 //===============================================================================
-void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+void CabbageInfoButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 	setLookAndFeelColours(valueTree);
 	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
-	
+		
 	setButtonText(_text);
 }

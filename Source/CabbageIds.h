@@ -328,7 +328,6 @@ public:
         add("tablenumbers");
         add("fill");
         add("logger");
-        add("file");
         add("corners");
         add("imgpath");
         add("shape");
@@ -372,6 +371,7 @@ public:
 //sample identifiers for stepper widget
         add("numberofsteps");
         add("stepbpm");
+		add("file");
     }
 
     ~CabbageIdentifierStrings()

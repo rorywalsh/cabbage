@@ -58,6 +58,9 @@ public:
 	static void setSoundfilerProperties(ValueTree widgetData, int ID);
 	static void setButtonProperties(ValueTree widgetData, int ID);
 	static void setFileButtonProperties(ValueTree widgetData, int ID); 
+	static void setInfoButtonProperties(ValueTree widgetData, int ID);
+	static void setLoadButtonProperties(ValueTree widgetDatta, int ID);
+	static void setSignalDisplayProperties(ValueTree widgetData, int ID);
     //============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);

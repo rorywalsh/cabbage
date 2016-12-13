@@ -104,61 +104,15 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     else if(strTokens[0].trim() == "filebutton")
 		setFileButtonProperties(widgetData, ID);
 		
+    else if(strTokens[0].trim() == "infobutton")
+		setInfoButtonProperties(widgetData, ID);
 	
     else if((strTokens[0].trim() == "sourcebutton")||(strTokens[0].trim() == "loadbutton"))
-    {
-        top = 10;
-        left = 10;
-        width = 600;
-        height = 440;
-        //name.append(String(ID), 1024);
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 80);
-        setProperty(widgetData, CabbageIdentifierIds::height, 40);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, strTokens[0].trim());
-        setProperty(widgetData, CabbageIdentifierIds::name, strTokens[0].trim());
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
-    }
+		setLoadButtonProperties(widgetData, ID);
 
-    //===============info button==================//
-    else if(strTokens[0].trim() == "infobutton")
-    {
-        setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 600;
-        height = 440;
-        //name.append(String(ID), 1024);
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 80);
-        setProperty(widgetData, CabbageIdentifierIds::height, 40);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
-        setProperty(widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "infobutton");
-        setProperty(widgetData, CabbageIdentifierIds::name, "infobutton");
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
-    }
-
+    else if(strTokens[0].trim() == "signaldisplay" || strTokens[0].trim() == "fftdisplay")
+		setSignalDisplayProperties(widgetData, ID);
+		
     //===============gentable==================//
     else if(strTokens[0].trim() == "gentable")
     {
@@ -329,61 +283,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
     }
 
-    //===============signaldisplay==================//
-    else if(strTokens[0].trim() == "signaldisplay" || strTokens[0].trim() == "fftdisplay")
-    {
-        setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 180;
-        height = 2;
-
-        var signalVariables;
-        signalVariables.append("");
-
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 260);
-        setProperty(widgetData, CabbageIdentifierIds::height, 100);
-        setProperty(widgetData, CabbageIdentifierIds::tablecolour, Colours::lime.toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::tablebackgroundcolour, Colour(30, 30, 38).toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "signaldisplay");
-        setProperty(widgetData, CabbageIdentifierIds::name, "signaldisplay");
-        setProperty(widgetData, CabbageIdentifierIds::min, 0);
-        setProperty(widgetData, CabbageIdentifierIds::max, 2048);
-        setProperty(widgetData, CabbageIdentifierIds::updaterate, 100);
-        setProperty(widgetData, CabbageIdentifierIds::signalvariable, signalVariables);
-        setProperty(widgetData, CabbageIdentifierIds::outlinethickness, 1);
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::displaytype, "spectroscope");
-        setProperty(widgetData, CabbageIdentifierIds::zoom, 0);
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-    }
-
-    //===============stepper==================//
-    else if(strTokens[0].trim() == "scope")
-    {
-        setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 180;
-        height = 2;
-
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 160);
-        setProperty(widgetData, CabbageIdentifierIds::height, 2);
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "scope");
-        setProperty(widgetData, CabbageIdentifierIds::name, "scope");
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-    }
-
-    //===============stepper==================//
+    //===============stepper example==================//
     else if(strTokens[0].trim() == "stepper")
     {
         setProperty(widgetData, "basetype", "layout");
@@ -1663,7 +1563,9 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::fontcolour))
     {
         const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour));
-        colourString = colourString << (type.contains("slider") || type=="csoundoutput" || type=="encoder" ? "fontcolour(" : "fontcolour:0(") << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << (type.contains("slider") 
+										|| type=="csoundoutput"
+										|| type=="encoder" ? "fontcolour(" : "fontcolour:0(") << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::onfontcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::onfontcolour))

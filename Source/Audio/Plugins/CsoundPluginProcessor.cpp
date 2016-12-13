@@ -42,6 +42,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     csound->SetHostImplementedMIDIIO(true);
     csound->SetHostData(this);
 
+
     csound->CreateMessageBuffer(0);
     csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
     csound->SetExternalMidiReadCallback(ReadMidiData);
@@ -51,6 +52,13 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     csoundParams = new CSOUND_PARAMS();
 
     csoundParams->displays = 0;
+
+    csound->SetIsGraphable(true);
+    csound->SetMakeGraphCallback(makeGraphCallback);
+    csound->SetDrawGraphCallback(drawGraphCallback);
+    csound->SetKillGraphCallback(killGraphCallback);
+    csound->SetExitGraphCallback(exitGraphCallback);
+
     csound->SetParams(csoundParams);
     csound->SetOption((char*)"-n");
     csound->SetOption((char*)"-d");
@@ -357,6 +365,29 @@ void CsoundPluginProcessor::breakpointCallback(CSOUND *csound, debug_bkpt_info_t
 }
 
 //==============================================================================
+CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray(String variableName, String displayType)
+{
+    for(int i=0; i<signalArrays.size(); i++)
+    {
+        if(signalArrays[i]->caption.contains(variableName))
+        {
+            if(displayType.isEmpty())
+                return signalArrays[i];
+
+            else if(displayType=="waveform" && !signalArrays[i]->caption.contains("fft"))
+                return signalArrays[i];
+
+            else if(displayType=="lissajous" && !signalArrays[i]->caption.contains("fft"))
+                return signalArrays[i];
+
+            else if(displayType!="waveform" && signalArrays[i]->caption.contains("fft"))
+                return signalArrays[i];
+        }
+    }
+
+    return new SignalDisplay("", -1, 0, 0, 0, 0);
+}
+//==============================================================================
 bool CsoundPluginProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
@@ -469,12 +500,30 @@ int CsoundPluginProcessor::WriteMidiData(CSOUND* /*csound*/, void *_userData,
 void CsoundPluginProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, const char * /*name*/)
 {
     CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
+    CsoundPluginProcessor::SignalDisplay* display = new CsoundPluginProcessor::SignalDisplay(String(windat->caption),windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
+
+    bool addDisplay = true;
+    for(int i=0; i<ud->signalArrays.size(); i++)
+    {
+        if(ud->signalArrays[i]->caption==windat->caption)
+            addDisplay  = false;
+    }
+
+    if(addDisplay)
+        ud->signalArrays.add(display);
 }
 
 void CsoundPluginProcessor::drawGraphCallback(CSOUND *csound, WINDAT *windat)
 {
     CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
+	
+    Array<float, CriticalSection> tablePoints;
+    //only take all sample sif dealing with fft, waveforms and lissajous curves can be drawn with less samples
+    tablePoints = Array<float, CriticalSection>(&windat->fdata[0], windat->npts);
 
+    ud->getSignalArray(windat->caption)->setPoints(tablePoints);
+    //ud->signalArrays.getUnchecked(windat->windid)->setPoints(tablePoints);
+    ud->updateSignalDisplay = true;
 }
 
 void CsoundPluginProcessor::killGraphCallback(CSOUND *csound, WINDAT *windat)

@@ -31,10 +31,12 @@
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageButton.h"
 #include "../../Widgets/CabbageFileButton.h"
+#include "../../Widgets/CabbageInfoButton.h"
 #include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageNumberBox.h"
 #include "../../Widgets/CabbageEncoder.h"
 #include "../../Widgets/CabbageTextBox.h"
+#include "../../Widgets/CabbageSignalDisplay.h"
 #include "../../Widgets/CabbageTextEditor.h"
 #include "../../Widgets/CabbageCsoundConsole.h"
 #include "../../Widgets/CabbageLabel.h"
@@ -99,7 +101,7 @@ public:
     void insertLabel(ValueTree cabbageWidgetData);
     void insertTable(ValueTree cabbageWidgetData) {};
     void insertMultiTab(ValueTree cabbageWidgetData) {};
-    void insertInfoButton(ValueTree cabbageWidgetData) {};
+    void insertInfoButton(ValueTree cabbageWidgetData);
     void insertLineSeparator(ValueTree cabbageWidgetData) {};
     void insertScope(ValueTree cabbageWidgetData) {};
     void insertPatternMatrix(ValueTree cabbageWidgetData) {};
@@ -109,11 +111,13 @@ public:
     void insertPopupMenu(ValueTree cabbageWidgetData) {};
     void insertGenTable(ValueTree cabbageWidgetData) {};
     void insertTextBox(ValueTree cabbageWidgetData);
-    void insertSignalDisplay(ValueTree cabbageWidgetData) {};
+    void insertSignalDisplay(ValueTree cabbageWidgetData);
     void insertStepper(ValueTree cabbageWidgetData) {};
 	//=============================================================================
 	void sendChannelDataToCsound(String channel, float value);
 	void sendChannelStringDataToCsound(String channel, String value);
+	bool shouldUpdateSignalDisplay();
+	const Array<float, CriticalSection> getArrayForSignalDisplay(const String signalVariable, const String displayType);
 	const String getCsoundOutputFromProcessor();
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);
@@ -130,7 +134,6 @@ public:
     void componentMovedOrResized (Component &component, bool wasMoved, bool wasResized);
     //=============================================================================
     void buttonClicked(Button *button);
-	void fileButtonClicked(ValueTree value);
     void comboBoxChanged (ComboBox* combo);
     void sliderValueChanged(Slider* slider);
 	//=============================================================================

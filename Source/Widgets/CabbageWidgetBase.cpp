@@ -125,6 +125,7 @@ void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree d
     _tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
     child->setBounds(CabbageWidgetData::getBounds(data));
     child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
+	_text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
 	
 	populateTextArrays(data);
 	//now initialise everything that can be updated using ident channels

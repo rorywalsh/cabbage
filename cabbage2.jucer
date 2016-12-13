@@ -181,6 +181,10 @@
         <FILE id="u5NRwZ" name="CabbageImage.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageImage.cpp"/>
         <FILE id="VRvyYa" name="CabbageImage.h" compile="0" resource="0" file="Source/Widgets/CabbageImage.h"/>
+        <FILE id="zJTHCf" name="CabbageInfoButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageInfoButton.cpp"/>
+        <FILE id="pPjE5u" name="CabbageInfoButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageInfoButton.h"/>
         <FILE id="Gl84nX" name="CabbageKeyboard.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageKeyboard.cpp"/>
         <FILE id="d3U37t" name="CabbageKeyboard.h" compile="0" resource="0"
@@ -192,6 +196,10 @@
               file="Source/Widgets/CabbageNumberBox.cpp"/>
         <FILE id="juXuez" name="CabbageNumberBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageNumberBox.h"/>
+        <FILE id="LlQULO" name="CabbageSignalDisplay.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageSignalDisplay.cpp"/>
+        <FILE id="Q8dG44" name="CabbageSignalDisplay.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageSignalDisplay.h"/>
         <FILE id="ryLDrk" name="CabbageSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSlider.cpp"/>
         <FILE id="UXmekB" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
@@ -217,6 +225,8 @@
               file="Source/Widgets/CabbageWidgetData.h"/>
         <FILE id="u0lmiV" name="CabbageWidgetDataInitMethods.cpp" compile="1"
               resource="0" file="Source/Widgets/CabbageWidgetDataInitMethods.cpp"/>
+        <FILE id="naslmr" name="FrequencyRangeDisplayComponent.h" compile="0"
+              resource="0" file="Source/Widgets/FrequencyRangeDisplayComponent.h"/>
         <FILE id="DErG31" name="Soundfiler.cpp" compile="1" resource="0" file="Source/Widgets/Soundfiler.cpp"/>
         <FILE id="Wgrt0W" name="Soundfiler.h" compile="0" resource="0" file="Source/Widgets/Soundfiler.h"/>
       </GROUP>

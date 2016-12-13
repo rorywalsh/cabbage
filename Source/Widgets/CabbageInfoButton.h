@@ -17,22 +17,22 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGEFILEBUTTON_H_INCLUDED
-#define CABBAGEFILEBUTTON_H_INCLUDED
+#ifndef CABBAGEINFOBUTTON_H_INCLUDED
+#define CABBAGEINFOBUTTON_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-class CabbagePluginEditor;
 
-class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener
+class CabbageInfoButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener
 {
-	CabbagePluginEditor* owner;
-	String mode;
+
+	String filename;
+
 public:
 
-    CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageFileButton() {};
+    CabbageInfoButton(ValueTree wData);
+    ~CabbageInfoButton() {};
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -47,9 +47,8 @@ public:
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageFileButton);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageInfoButton);
 };
 
 
-
-#endif  // CABBAGEFILEBUTTON_H_INCLUDED
+#endif  // CABBAGEINFOBUTTON_H_INCLUDED
