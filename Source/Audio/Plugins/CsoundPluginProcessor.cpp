@@ -87,6 +87,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
         csndIndex = csound->GetKsmps();
 		
 		//hack to allow tables to be set up correctly.
+		// might be best to simply do an init run?
         csound->PerformKsmps();
         csound->SetScoreOffsetSeconds(0);
         csound->RewindScore();
