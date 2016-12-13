@@ -31,7 +31,7 @@ public:
 	void drawLinearSliderThumb (Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider);
 	Slider::SliderLayout getSliderLayout (Slider& slider) override;
 	
-	Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
+	static Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
 	
 	void drawGroupComponentOutline (Graphics &g, int w, int h, const String &text, const Justification &position, GroupComponent &group);
 

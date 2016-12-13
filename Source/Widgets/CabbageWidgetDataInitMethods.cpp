@@ -361,6 +361,55 @@ void CabbageWidgetData::setGroupBoxProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::imggroupbox, "");
 }
 
+void CabbageWidgetData::setGenTableProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, "basetype", "layout");
+	var tableColours;
+	tableColours.append("white");
+	tableColours.append("cornflowerblue");
+	tableColours.append("yellow");
+	tableColours.append("lime");
+	tableColours.append("green");
+	tableColours.append("pink");
+	tableColours.append("brown");
+	tableColours.append("purple");
+	tableColours.append("lightblue");
+	tableColours.append("darkgreen");
+	tableColours.append("lightgreen");
+	tableColours.append("mango");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 300);
+	setProperty(widgetData, CabbageIdentifierIds::height, 200);
+	var channels;
+	channels.append("pos");
+	channels.append("end");
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+	setProperty(widgetData, CabbageIdentifierIds::type, "gentable");
+	setProperty(widgetData, CabbageIdentifierIds::tablecolour, tableColours);
+	setProperty(widgetData, CabbageIdentifierIds::name, "gentable");
+	setProperty(widgetData, CabbageIdentifierIds::amprange, 0);
+	setProperty(widgetData, CabbageIdentifierIds::drawmode, "");
+	setProperty(widgetData, CabbageIdentifierIds::file, "");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::active, 0);
+
+	var tables;
+	tables.append(0);
+	tables.append(0);
+
+	setProperty(widgetData, CabbageIdentifierIds::scrubberposition, tables);
+	setProperty(widgetData, CabbageIdentifierIds::zoom, -1);
+	setProperty(widgetData, CabbageIdentifierIds::startpos, 0);
+	setProperty(widgetData, CabbageIdentifierIds::tablenumber, -1);
+	setProperty(widgetData, CabbageIdentifierIds::outlinethickness, 1.f);
+	setProperty(widgetData, CabbageIdentifierIds::tablebackgroundcolour, Colour(15, 15, 15).toString());
+	setProperty(widgetData, CabbageIdentifierIds::tablegridcolour, Colour(45, 45, 45).toString());	
+}
 void CabbageWidgetData::setHSliderProperties(ValueTree widgetData, int ID)
 {
 	setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");

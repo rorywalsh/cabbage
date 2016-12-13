@@ -170,6 +170,9 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 		
 	else if(widgetType==CabbageIdentifierIds::signaldisplay)
 		insertSignalDisplay(cabbageWidgetData);
+
+	else if(widgetType==CabbageIdentifierIds::gentable)
+		insertGenTable(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -268,6 +271,13 @@ void CabbagePluginEditor::insertNumberBox(ValueTree cabbageWidgetData)
     addToEditorAndMakeVisible(numberBox, cabbageWidgetData);
 }
 
+void CabbagePluginEditor::insertGenTable(ValueTree cabbageWidgetData)
+{
+    CabbageGenTable* genTable;
+    components.add(genTable = new CabbageGenTable(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(genTable, cabbageWidgetData);	
+}
+
 void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
 {
     CabbageGroupBox* groupBox;
@@ -331,27 +341,25 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 void CabbagePluginEditor::buttonClicked(Button* button)
 {
 
-	const int buttonState = button->getToggleState();
-	
-
-	if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
-	{		
-		if (CabbageAudioParameter* param = getParameterForComponent(button))	//only update parameters for normal buttons
-		{
-			param->beginChangeGesture();
-			param->setValue(buttonState == 0 ? 1 : 0);
-			param->endChangeGesture();
-		}
-		
-		
-		{
-			const StringArray textItems = cabbageButton->getTextArray();
-			if(textItems.size()>0)
-				cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
-		}
+	const bool buttonState = button->getToggleState();
+			
+	if (CabbageAudioParameter* param = getParameterForComponent(button))	//only update parameters for normal buttons
+	{
+		param->beginChangeGesture();
+		param->setValue(buttonState == true ? 1 : 0);
+		param->endChangeGesture();
 	}
 	
-	button->setToggleState(buttonState == 0 ? 1 : 0, dontSendNotification);	
+	if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
+	{	
+		const StringArray textItems = cabbageButton->getTextArray();
+		if(textItems.size()>0)
+			cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
+		
+		button->setToggleState(buttonState == false ? true : false, dontSendNotification);	
+	}
+	
+	
 }
 
 //======================================================================================================
@@ -445,6 +453,20 @@ bool CabbagePluginEditor::shouldUpdateSignalDisplay()
 	return processor.shouldUpdateSignalDisplay();
 }
 
+bool CabbagePluginEditor::csdCompiledWithoutError()
+{
+	return processor.csdCompiledWithoutError();
+}
+
+StringArray CabbagePluginEditor::getTableStatement(int tableNumber)
+{
+	return processor.getTableStatement(tableNumber);
+}
+
+const Array<float, CriticalSection> CabbagePluginEditor::getTableFloats(int tableNumber)
+{
+	return processor.getTableFloats(tableNumber);
+}
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {

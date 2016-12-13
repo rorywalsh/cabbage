@@ -143,7 +143,7 @@ void CabbagePluginProcessor::createParameters()
             const int value = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
 			
 			if(controlWidgetTypes.contains(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type)))
-				addParameter(new CabbageAudioParameter(*getCsound(), channel, name, 0, 1, value));
+				addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel, name, 0, 1, value));
 
         }
     }

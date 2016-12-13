@@ -84,6 +84,7 @@ public:
     static int exitGraphCallback(CSOUND *csound);
 
 
+
     void handleAsyncUpdate();
 	//csound breakpint function
 	static void breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *udata);
@@ -92,6 +93,11 @@ public:
 	ValueTree getBreakpointData(){
 		return breakPointData.valueTree;
 	}
+	
+	StringArray getTableStatement(int tableNum);
+	const Array<float, CriticalSection> getTableFloats(int tableNum);
+	int checkTable(int tableNum);
+	std::vector<MYFLT> temp;
     //=============================================================================
     //Implement these to send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel

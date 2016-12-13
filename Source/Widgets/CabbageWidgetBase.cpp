@@ -22,6 +22,25 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
+void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree data)
+{
+    _rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
+    _pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
+    _pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
+    _visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
+    _active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
+	_channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
+    _tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
+    child->setBounds(CabbageWidgetData::getBounds(data));
+    child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
+	_text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
+	_currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value);
+	
+	populateTextArrays(data);
+	//now initialise everything that can be updated using ident channels
+	handleCommonUpdates(child, data, true);
+}
+
 void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bool calledFromConstructor)
 {
 	if(calledFromConstructor == false)
@@ -112,24 +131,6 @@ float CabbageWidgetBase::getCurrentValue(ValueTree data)
     }
 
     return _currentValue;
-}
-
-void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree data)
-{
-    _rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
-    _pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
-    _pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
-    _visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
-    _active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
-	_channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
-    _tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
-    child->setBounds(CabbageWidgetData::getBounds(data));
-    child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
-	_text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
-	
-	populateTextArrays(data);
-	//now initialise everything that can be updated using ident channels
-	handleCommonUpdates(child, data, true);
 }
 
 void CabbageWidgetBase::populateTextArrays(ValueTree data)

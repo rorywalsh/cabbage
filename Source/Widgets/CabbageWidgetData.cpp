@@ -116,57 +116,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     //===============gentable==================//
     else if(strTokens[0].trim() == "gentable")
     {
-        setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 300;
-        height = 200;
-
-        var tableColours;
-        tableColours.append("white");
-        tableColours.append("cornflowerblue");
-        tableColours.append("yellow");
-        tableColours.append("lime");
-        tableColours.append("green");
-        tableColours.append("pink");
-        tableColours.append("brown");
-        tableColours.append("purple");
-        tableColours.append("lightblue");
-        tableColours.append("darkgreen");
-        tableColours.append("lightgreen");
-        tableColours.append("mango");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 300);
-        setProperty(widgetData, CabbageIdentifierIds::height, 200);
-        var channels;
-        channels.append("pos");
-        channels.append("end");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "gentable");
-        setProperty(widgetData, CabbageIdentifierIds::tablecolour, tableColours);
-        setProperty(widgetData, CabbageIdentifierIds::name, "gentable");
-        setProperty(widgetData, CabbageIdentifierIds::amprange, 0);
-        setProperty(widgetData, CabbageIdentifierIds::drawmode, "");
-        setProperty(widgetData, CabbageIdentifierIds::file, "");
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::active, 0);
-
-        var tables;
-        tables.append(0);
-        tables.append(0);
-
-        setProperty(widgetData, CabbageIdentifierIds::scrubberposition, tables);
-        setProperty(widgetData, CabbageIdentifierIds::zoom, -1);
-        setProperty(widgetData, CabbageIdentifierIds::startpos, 0);
-        setProperty(widgetData, CabbageIdentifierIds::tablenumber, -1);
-        setProperty(widgetData, CabbageIdentifierIds::outlinethickness, 1.f);
-        setProperty(widgetData, CabbageIdentifierIds::tablebackgroundcolour, Colour(15, 15, 15).toString());
-        setProperty(widgetData, CabbageIdentifierIds::tablegridcolour, Colour(45, 45, 45).toString());
+		setGenTableProperties(widgetData, ID);
     }
 
 
@@ -1155,40 +1105,40 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                      identArray[indx].equalsIgnoreCase("tablenumbers")||
                      identArray[indx].equalsIgnoreCase("tablenumbs")))
             {
-//                var value;
-//                var tableConfig;
-//                //value.append(tableNum);
-//                //tableNumbers.add(tableNum);
-//
-//                for(int i=0; i<strTokens.size(); i++)
-//                {
-//                    if(strTokens[i].contains(":") && strTokens.size()>0)
-//                    {
-//                        //split string into two
-//                        StringArray tablesData;
-//                        tablesData.addTokens(strTokens[i], ":", "");
-//                        var tables;
-//                        for(int w=0; w<tablesData.size(); w++)
-//                        {
-//                            tables.append(tablesData[w]);
-//                            value.append(tablesData[w]);
-//                            //Logger::writeToLog(tablesData[w]);
-//
-//                        }
-//                        //value.append(tables);
-//                        tableConfig.append(tables);
-//                    }
-//                    else
-//                    {
-//                        tableNumbers.add(strTokens[i].trim().getFloatValue());
-//                        value.append(strTokens[i].trim().getFloatValue());
-//                        tableConfig.append(strTokens[i].trim().getFloatValue());
-//                        //Logger::writeToLog(strTokens[i].trim());
-//                    }
-//                }
+                var value;
+                var tableConfig;
+                //value.append(tableNum);
+                //tableNumbers.add(tableNum);
 
-//                setProperty(widgetData, CabbageIdentifierIds::tableconfig, tableConfig);
-//                setProperty(widgetData, CabbageIdentifierIds::tablenumber, value);
+                for(int i=0; i<strTokens.size(); i++)
+                {
+                    if(strTokens[i].contains(":") && strTokens.size()>0)
+                    {
+                        //split string into two
+                        StringArray tablesData;
+                        tablesData.addTokens(strTokens[i], ":", "");
+                        var tables;
+                        for(int w=0; w<tablesData.size(); w++)
+                        {
+                            tables.append(tablesData[w]);
+                            value.append(tablesData[w]);
+                            //Logger::writeToLog(tablesData[w]);
+
+                        }
+                        //value.append(tables);
+                        tableConfig.append(tables);
+                    }
+                    else
+                    {
+                        //tableNumbers.add(strTokens[i].trim().getFloatValue());
+                        value.append(strTokens[i].trim().getFloatValue());
+                        tableConfig.append(strTokens[i].trim().getFloatValue());
+                        //Logger::writeToLog(strTokens[i].trim());
+                    }
+                }
+
+                setProperty(widgetData, CabbageIdentifierIds::tableconfig, tableConfig);
+                setProperty(widgetData, CabbageIdentifierIds::tablenumber, value);
             }
             else if(identArray[indx].equalsIgnoreCase("popup"))
             {

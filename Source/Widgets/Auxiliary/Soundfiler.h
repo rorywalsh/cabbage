@@ -20,8 +20,7 @@
 #ifndef SOUNDFILEWAVEFORM_H
 #define SOUNDFILEWAVEFORM_H
 
-#include "../CabbageCommonHeaders.h"
-#include "CabbageWidgetBase.h"
+#include "../../CabbageCommonHeaders.h"
 
 class ZoomButton;
 //=================================================================

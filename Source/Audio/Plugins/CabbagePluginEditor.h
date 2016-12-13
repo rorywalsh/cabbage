@@ -33,6 +33,7 @@
 #include "../../Widgets/CabbageFileButton.h"
 #include "../../Widgets/CabbageInfoButton.h"
 #include "../../Widgets/CabbageGroupBox.h"
+#include "../../Widgets/CabbageGenTable.h"
 #include "../../Widgets/CabbageNumberBox.h"
 #include "../../Widgets/CabbageEncoder.h"
 #include "../../Widgets/CabbageTextBox.h"
@@ -91,25 +92,15 @@ public:
     void insertGroupBox(ValueTree cabbageWidgetData);
     void insertSoundfiler(ValueTree cabbageWidgetData);
     void insertSourceButton(ValueTree cabbageWidgetData) {};
-    void insertDirectoryList(ValueTree cabbageWidgetData) {};
     void insertTextEditor(ValueTree cabbageWidgetData);
     void insertCsoundOutputConsole(ValueTree cabbageWidgetData);
     void insertMIDIKeyboard(ValueTree cabbageWidgetData);
     void insertFileButton(ValueTree cabbageWidgetData);
-    void insertRecordButton(ValueTree cabbageWidgetData) {};
     void insertImage(ValueTree cabbageWidgetData);
     void insertLabel(ValueTree cabbageWidgetData);
     void insertTable(ValueTree cabbageWidgetData) {};
-    void insertMultiTab(ValueTree cabbageWidgetData) {};
     void insertInfoButton(ValueTree cabbageWidgetData);
-    void insertLineSeparator(ValueTree cabbageWidgetData) {};
-    void insertScope(ValueTree cabbageWidgetData) {};
-    void insertPatternMatrix(ValueTree cabbageWidgetData) {};
-    void insertSnapshot(ValueTree cabbageWidgetData) {};
-    void insertTransport(ValueTree cabbageWidgetData) {};
-    void insertListbox(ValueTree cabbageWidgetData) {};
-    void insertPopupMenu(ValueTree cabbageWidgetData) {};
-    void insertGenTable(ValueTree cabbageWidgetData) {};
+    void insertGenTable(ValueTree cabbageWidgetData);
     void insertTextBox(ValueTree cabbageWidgetData);
     void insertSignalDisplay(ValueTree cabbageWidgetData);
     void insertStepper(ValueTree cabbageWidgetData) {};
@@ -119,6 +110,9 @@ public:
 	bool shouldUpdateSignalDisplay();
 	const Array<float, CriticalSection> getArrayForSignalDisplay(const String signalVariable, const String displayType);
 	const String getCsoundOutputFromProcessor();
+	StringArray getTableStatement(int tableNumber);
+	bool csdCompiledWithoutError();
+	const Array<float, CriticalSection> getTableFloats(int tableNum);
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();

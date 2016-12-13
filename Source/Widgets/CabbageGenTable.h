@@ -17,39 +17,37 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGESOUNDFILER_H_INCLUDED
-#define CABBAGESOUNDFILER_H_INCLUDED
+#ifndef CABBAGEGENTABLE_H_INCLUDED
+#define CABBAGEGENTABLE_H_INCLUDED
+
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
-#include "Auxiliary/Soundfiler.h"
+#include "Auxiliary/TableManager.h"
 
 class CabbagePluginEditor;
-// Add any new custom widgets here to avoid having to edit makefiles and projects
-// Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
-class CabbageSoundfiler : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener 
-{
 
-    Soundfiler soundfiler;
-    float scrubberPosition;
-	String file;
+class CabbageGenTable : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
+{
+    String colour;
+    String fontcolour;
+    String file, tooltipText;
+    var ampranges;
     float zoom, rotate;
-    int pivotx, pivoty;
+    float startpos, endpos;
     double sampleRate;
-    float scrubberPos;
-	
+    int pivotx, pivoty;
+    double scrubberPos;
+    var ampRanges;
 	CabbagePluginEditor* owner;
+	TableManager table;
+	double scrubberPosition;
+	Array <float, CriticalSection> tableValues;
+	AudioSampleBuffer tableBuffer;
 public:
 
-    CabbageSoundfiler(ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageSoundfiler() {};
-	
-	void resized();
-	
-    void setFile(String newFile);
-    int setWaveform(AudioSampleBuffer buffer, int channels);
-    int getScrubberPosition();
-    int getLoopLength();
+    CabbageGenTable(ValueTree wData, CabbagePluginEditor* owner);
+    ~CabbageGenTable() {};
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -57,15 +55,18 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-
-	void changeListenerCallback(ChangeBroadcaster* source);
+	void initialiseGenTable(ValueTree widgetData);
+    void changeListenerCallback(ChangeBroadcaster *source);
+	void setWaveform(AudioSampleBuffer buffer, int ftnumber);
 	
+	void resized();
+
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSoundfiler);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageGenTable);
 };
 
 
 
-#endif  // CABBAGESOUNDFILER_H_INCLUDED
+#endif  // CABBAGEGENTABLE_H_INCLUDED

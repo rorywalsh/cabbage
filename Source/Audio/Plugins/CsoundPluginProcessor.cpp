@@ -85,6 +85,12 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
         CSspin  = csound->GetSpin();
         cs_scale = csound->Get0dBFS();
         csndIndex = csound->GetKsmps();
+		
+		//hack to allow tables to be set up correctly.
+        csound->PerformKsmps();
+        csound->SetScoreOffsetSeconds(0);
+        csound->RewindScore();
+		
         this->setLatencySamples(csound->GetKsmps());
     }
     else
@@ -122,6 +128,69 @@ void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
         }
 
     }
+}
+
+//==============================================================================
+StringArray CsoundPluginProcessor::getTableStatement(int tableNum)
+{
+    StringArray fdata;
+    fdata.add(String::empty);
+    if(csCompileResult==OK)
+    {
+        MYFLT* argsPtr, *temp;
+        int noOfArgs = csoundGetTableArgs(csound->GetCsound(), &argsPtr, tableNum);
+        if(noOfArgs!=-1)
+        {
+            int tableSize = csound->GetTable(temp, tableNum);
+            fdata.add(String(tableNum));
+            fdata.add("0");
+            fdata.add(String(tableSize));
+            if(noOfArgs==0)
+                fdata.add(String(1));
+            else
+                for(int i=0; i<noOfArgs; i++)
+                {
+                    fdata.add(String(argsPtr[i]));
+                }
+        }
+    }
+    return fdata;
+}
+//==============================================================================
+const Array<float, CriticalSection> CsoundPluginProcessor::getTableFloats(int tableNum)
+{
+    Array<float, CriticalSection> points;
+    if(csCompileResult==OK)
+    {
+        points.clear();
+
+        int tableSize=0;
+#ifndef Cabbage_No_Csound
+
+        tableSize = csound->TableLength(tableNum);
+        temp.clear();
+        //not good if table size is -1!
+        if(tableSize<0)
+            return points;
+
+        temp.reserve(tableSize);
+        csound->TableCopyOut(tableNum, &temp[0]);
+#else
+        float *temp;
+#endif
+        if(tableSize>0)
+            points = Array<float, CriticalSection>(&temp[0], tableSize);
+    }
+    return points;
+}
+
+int CsoundPluginProcessor::checkTable(int tableNum)
+{
+#ifndef Cabbage_No_Csound
+    return  csound->TableLength(tableNum);
+#else
+    return -1;
+#endif
 }
 //==============================================================================
 String CsoundPluginProcessor::getCsoundOutput()

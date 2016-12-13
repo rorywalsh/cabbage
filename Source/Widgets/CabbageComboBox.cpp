@@ -118,12 +118,12 @@ void CabbageComboBox::addItemsToCombobox(ValueTree wData)
 
     setJustificationType (justify);
 }
-//update controls
+
+
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     if(prop==CabbageIdentifierIds::value)
     {
-        //keeps getting 0 on startup...
         int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
         setSelectedItemIndex(value-1, sendNotification);
     }

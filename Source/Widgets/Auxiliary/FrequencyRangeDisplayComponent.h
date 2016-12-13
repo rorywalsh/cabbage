@@ -20,8 +20,8 @@
 #ifndef FREQUENCYRANGEDISPLAYCOMPONENT_H_INCLUDED
 #define FREQUENCYRANGEDISPLAYCOMPONENT_H_INCLUDED
 
-#include "../CabbageCommonHeaders.h"
-#include "CabbageWidgetBase.h"
+#include "../../CabbageCommonHeaders.h"
+#include "../CabbageWidgetBase.h"
 
 class FrequencyRangeDisplayComponent : public Component
 {

@@ -34,11 +34,13 @@ CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
 {
     widgetData.addListener(this);
     setButtonText(buttonText);
-    setTooltip(tooltipText = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext));
-    setToggleState(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value)==1 ? true : false, dontSendNotification);
+    setTooltip(tooltipText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext));
+    setToggleState(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)==1 ? true : false, dontSendNotification);
+	
+	CabbageUtilities::debug(String(getToggleState()==true ? "On" : "Off"));
 
-    if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup)!=0)
-        setRadioGroupId(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::radiogroup));
+    if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup)!=0)
+        setRadioGroupId(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup));
 
     this->setWantsKeyboardFocus(false);
 
@@ -60,9 +62,9 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {
 
     if(prop==CabbageIdentifierIds::value)
-    {
+    {		
         bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
-        setToggleState(getCurrentValue(valueTree)==1 ? true : false, dontSendNotification);
+        setToggleState(state, dontSendNotification);
     }
 
     else
