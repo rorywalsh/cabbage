@@ -37,6 +37,15 @@ public:
 
 	void drawButtonBackground (Graphics& g, Button& button, const Colour& backgroundColour, bool isMouseOverButton, bool isButtonDown);
 	
+	void drawComboBox(Graphics& g, int width, int height, bool /*isButtonDown*/, int /*buttonX*/, int /*buttonY*/, int /*buttonW*/, int /*buttonH*/, ComboBox& box);
+	
+	void drawPopupMenuBackground(Graphics &g, int width, int height);
+	
+	void drawPopupMenuItem(Graphics& g, const Rectangle<int>& area, const bool isSeparator, const bool isActive, const bool isHighlighted, const bool isTicked,
+							const bool hasSubMenu, const String& text, const String& shortcutKeyText, const Drawable* icon, const Colour* const textColourToUse);
+							
+	Image drawCheckMark();
+	
 	static void drawFromSVG(Graphics &g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine);
 	void drawSphericalThumb (Graphics& g, const float x, const float y, const float w, const float h, const Colour& colour,	const float outlineThickness);
 	void drawGlassPointer (Graphics& g, float x, float y, float diameter, const Colour& colour, float outlineThickness, int direction);

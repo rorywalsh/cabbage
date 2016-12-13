@@ -47,6 +47,122 @@ CabbageLookAndFeel2::CabbageLookAndFeel2()
 
 }
 
+//=========== ComboBox ============================================================================
+void CabbageLookAndFeel2::drawComboBox(Graphics& g, int width, int height, bool /*isButtonDown*/,
+                                      int /*buttonX*/,
+                                      int /*buttonY*/,
+                                      int /*buttonW*/,
+                                      int /*buttonH*/,
+                                      ComboBox& box)
+{
+    // The box that contains the arrow
+    g.setColour(CabbageUtilities::getComponentFontColour());
+    float arrowBoxWidth;
+    if (width >= 40)
+        arrowBoxWidth = 20;
+    else
+        arrowBoxWidth = width/2;
+
+    // Main bg
+    g.setColour(box.findColour(ComboBox::backgroundColourId));
+    g.fillRoundedRectangle (0, 0, width, height, height*0.1);
+
+    // Border outline
+    g.setColour(CabbageUtilities::getBorderColour());
+    float borderWidth = CabbageUtilities::getBorderWidth();
+    g.drawRoundedRectangle (borderWidth/2, borderWidth/2, width-borderWidth,
+                            height-borderWidth, height*0.1, borderWidth);
+
+    // Arrow
+    g.setColour(box.findColour(ComboBox::textColourId));
+    const Line<float> line(width-(arrowBoxWidth/2), height*0.3, width-(arrowBoxWidth/2), height*0.7);
+    g.drawArrow(line, 0, arrowBoxWidth*0.4, height*0.4);
+}
+
+//======== Popup Menu background ======================================================================
+void CabbageLookAndFeel2::drawPopupMenuBackground(Graphics &g, int width, int height)
+{
+    g.setColour (findColour(PopupMenu::backgroundColourId));
+    g.fillAll();
+    g.setColour (findColour(PopupMenu::backgroundColourId));
+    g.drawRect (0, 0, width, height, 1); //dont want to see top line
+}
+
+//====== Returns image of a check mark ==============================================
+Image CabbageLookAndFeel2::drawCheckMark()
+{
+    Image img = Image(Image::ARGB, 10, 10, true);
+    Graphics g(img);
+
+    Path path;
+    path.startNewSubPath(3, 7);
+    path.lineTo(5, 10);
+    path.lineTo(10, 0);
+    g.setColour (Colours::black.brighter(.2));
+    g.strokePath(path, PathStrokeType(2.0f));
+
+    return img;
+}
+//======== Popup Menu Items ===========================================================================
+void CabbageLookAndFeel2::drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
+        const bool isSeparator, const bool isActive,
+        const bool isHighlighted, const bool isTicked,
+        const bool hasSubMenu, const String& text,
+        const String& shortcutKeyText,
+        const Drawable* icon, const Colour* const textColourToUse)
+{
+    Colour textColour;
+    if ((isHighlighted == true) && (isSeparator == false))
+    {
+        g.setColour (Colour(200, 200, 200)); //red
+        g.fillAll();
+        g.setColour (Colour(10, 10, 10));//findColour(ComboBox::backgroundColourId)); //black
+    }
+    else
+    {
+        if (textColourToUse != nullptr)
+        {
+            textColour = *textColourToUse;
+            g.setColour(textColour);
+        }
+        else
+            g.setColour (Colours::black.brighter(.6));//findColour(PopupMenu::ColourIds::highlightedTextColourId));//yellow
+    }
+
+
+    g.setFont (CabbageUtilities::getComponentFont());
+    g.drawText (CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth()*0.8), 20, 0, area.getWidth()*0.8, area.getHeight(), 1, false);
+
+    if (isSeparator == true)
+    {
+        g.setColour(CabbageUtilities::getComponentSkin());
+        g.drawLine(0, area.getHeight()/2,  area.getWidth(), 3);
+    }
+
+    if (isTicked)
+    {
+        Image checkMark = drawCheckMark();
+        g.setColour(Colours::cornflowerblue);
+        g.drawImage(checkMark, 5, (area.getHeight()/2)-5, 10, 10, 0, 0, 10, 10, false);
+    }
+    if (hasSubMenu)
+    {
+        g.setColour(Colours::cornflowerblue);
+        const Line<float> line( area.getWidth()-15, area.getHeight()*.5,  area.getWidth()-5, area.getHeight()*.5);
+        g.drawArrow(line, 0, area.getHeight()*.3, area.getHeight()*.3);
+    }
+    if (shortcutKeyText.isNotEmpty())
+    {
+        const int leftBorder = (area.getHeight() * 5) / 4;
+        const int rightBorder = 4;
+
+        g.drawText (shortcutKeyText,
+                    leftBorder, 0,  area.getWidth() - (leftBorder + rightBorder + 4), area.getHeight(),
+                    Justification::centredRight,
+                    true);
+    }
+
+}
 //======== Group Components ======================================================================
 void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics &g, int w, int h, const String &text,
         const Justification &position,
