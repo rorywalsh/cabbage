@@ -74,7 +74,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     compileCsdFile(csdFile);
     numCsoundChannels = csound->GetNchnls();
 
-
+	addMacros(csdFile.getFullPathName());
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
 
     if(csdCompiledWithoutError())
@@ -130,7 +130,31 @@ void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
 
     }
 }
+//==============================================================================
+void CsoundPluginProcessor::addMacros(String csdText)
+{
+    StringArray csdArray;
+    String macroName, macroText;
 
+    csdArray.addLines(csdText);
+    for(int i=0; i<csdArray.size(); i++)
+    {
+        if(csdArray[i].trim().substring(0, 7)=="#define")
+        {
+            StringArray tokens;
+            tokens.addTokens(csdArray[i].replace("#", "").trim() ," ");
+            macroName = tokens[1];
+            tokens.remove(0);
+            tokens.remove(0);
+            macroText = "\\\"" + tokens.joinIntoString(" ").replace("\"", "\\\\\\\"")+"\\\"";
+            String fullMacro = "--omacro:"+macroName+"="+macroText+"\"";
+            csound->SetOption(fullMacro.toUTF8().getAddress());
+        }
+
+        if(csdArray[i].contains("</Cabbage>"))
+            i=csdArray.size();
+    }
+}
 //==============================================================================
 StringArray CsoundPluginProcessor::getTableStatement(int tableNum)
 {

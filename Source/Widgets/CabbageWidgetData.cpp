@@ -44,6 +44,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     setProperty(widgetData, CabbageIdentifierIds::pivoty, 0.f);
     setProperty(widgetData, CabbageIdentifierIds::linenumber, ID);
 	setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 0);
+	setProperty(widgetData, CabbageIdentifierIds::update, 0);
 
     int top, left, width, height;
     StringArray strTokens;
@@ -1075,10 +1076,10 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             else if(identArray[indx].equalsIgnoreCase("zoom"))
             {
                 setProperty(widgetData, CabbageIdentifierIds::zoom, strTokens[0].trim().getFloatValue());
-                if(strTokens.size()>1)
-                    setProperty(widgetData, CabbageIdentifierIds::startpos, strTokens[1].trim().getFloatValue());
-                else
-                    setProperty(widgetData, CabbageIdentifierIds::startpos, -1);
+//                if(strTokens.size()>1)
+//                    setProperty(widgetData, CabbageIdentifierIds::startpos, strTokens[1].trim().getFloatValue());
+//                else
+//                    setProperty(widgetData, CabbageIdentifierIds::startpos, -1);
             }
 
             else if(identArray[indx].equalsIgnoreCase("samplerange"))
@@ -1139,6 +1140,8 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
                 setProperty(widgetData, CabbageIdentifierIds::tableconfig, tableConfig);
                 setProperty(widgetData, CabbageIdentifierIds::tablenumber, value);
+				//setProperty(widgetData, CabbageIdentifierIds::updatetable, 1);
+				
             }
             else if(identArray[indx].equalsIgnoreCase("popup"))
             {

@@ -621,6 +621,7 @@ void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::left, 10);
     setProperty(widgetData, CabbageIdentifierIds::width, 100);
     setProperty(widgetData, CabbageIdentifierIds::height, 30);
+
     var channels;
     channels.append("checkchan");
     setProperty(widgetData, CabbageIdentifierIds::channel, channels);
@@ -628,7 +629,7 @@ void CabbageWidgetData::setCheckBoxProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::value, 0);
     setProperty(widgetData, CabbageIdentifierIds::caption, "");
     setProperty(widgetData, CabbageIdentifierIds::shape, "square");
-    setProperty(widgetData, CabbageIdentifierIds::corners, 5);
+    setProperty(widgetData, CabbageIdentifierIds::corners, float(getProperty(widgetData, CabbageIdentifierIds::height))*.1f);
     setProperty(widgetData, CabbageIdentifierIds::type, "checkbox");
     setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::lime.toString());
     setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());

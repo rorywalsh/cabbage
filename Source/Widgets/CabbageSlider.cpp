@@ -265,6 +265,7 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
 	slider.setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
 	
 	slider.setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());	
+	repaint();
 }
 
 //==============================================================================

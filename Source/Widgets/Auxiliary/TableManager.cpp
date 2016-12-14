@@ -471,7 +471,7 @@ void TableManager::setWaveform(Array<float, CriticalSection> buffer, int ftNumbe
 {
     for( int i=0; i<tables.size(); i++)
         if(ftNumber==tables[i]->tableNumber)
-        {
+        {		
             tables[i]->setWaveform(buffer, updateRange);
             return;
         }
@@ -685,9 +685,9 @@ void GenTable::setFile (const File& file)
         genRoutine==1;
         AudioFormatManager format;
         format.registerBasicFormats();
-        //registers wav and aif format (just nescearry one time if you alays use the "getInstance()" method)
+
         AudioFormatReader* reader = format.createReaderFor(file);
-        //creates a reader for the result file (may file, if the result/opened file is no wav or aif)
+
         if(reader) //if a reader got created
         {
             AudioSampleBuffer buffer(reader->numChannels, reader->lengthInSamples);
@@ -714,21 +714,15 @@ Array<double> GenTable::getPfields()
         {
             currXPos = handleViewer->handles[i]->xPosRelative*waveformBuffer.size();
 
-            //add x position
             values.add(jmax(0.0, ceil(currXPos-prevXPos)));
             //hack to prevent csound from bawking with a 0 in gen05
             float amp = pixelToAmp(handleViewer->getHeight(), minMax, currYPos);
             if(genRoutine==5)
                 amp = jmax(0.001f, amp);
-            //what was I thinking here with this next code! It was preventing
-            //any tables with negative values from editing properly. I'm leaving it
-            //here as a reminder of how dumb that was...
 
-            //else
-            //    amp = jmax(0.f, amp);
-            //add y position
             values.add(amp);
-            CabbageUtilities::debug("Amp:" + String(amp));
+
+
             prevXPos = roundToIntAccurate(handleViewer->handles[i]->xPosRelative*waveformBuffer.size());
         }
         else if(genRoutine==2)
@@ -736,8 +730,8 @@ Array<double> GenTable::getPfields()
             if(this->displayAsGrid())
             {
                 int status = handleViewer->handles[i]->status==true ? 1 : 0;
-                float amp =  status;//pixelToAmp(handleViewer->getHeight(), minMax, handleViewer->getHeight()*status);
-                //CabbageUtilities::debug("CurrentStatus:"+String(amp));
+                float amp =  status;
+
                 values.add(round(amp));
             }
             else
@@ -778,12 +772,6 @@ void GenTable::setWaveform(Array<float, CriticalSection> buffer, bool updateRang
     {
         waveformBuffer.clear();
         waveformBuffer = buffer;
-
-        for(int i=0; i<buffer.size(); i++)
-        {
-            //CabbageUtilities::debug(String(i)+":"+String(buffer[i]));
-        }
-
 
         //waveformBuffer.swapWith(buffer);
         tableSize = waveformBuffer.size();
@@ -1107,7 +1095,6 @@ void GenTable::paint (Graphics& g)
             else
             {
                 //minMax is the range of the current waveforms amplitude
-
                 currY = ampToPixel(thumbHeight, minMax, waveformBuffer[i]);
                 if(tableSize<=2)
                 {
@@ -1130,10 +1117,11 @@ void GenTable::paint (Graphics& g)
                         g.drawLine(prevX, prevY, currX, currY, traceThickness);
                     }
                 }
+				
+				//CabbageUtilities::debug(i, currY);
 
                 prevX = jmax(0.0, (i-visibleStart)*numPixelsPerIndex);
                 prevY = currY;
-
             }
         }
     }

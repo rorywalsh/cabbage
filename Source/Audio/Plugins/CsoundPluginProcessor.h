@@ -99,7 +99,7 @@ public:
 	int checkTable(int tableNum);
 	std::vector<MYFLT> temp;
     //=============================================================================
-    //Implement these to send and receive channel data to Csound. Typically used when
+    //Implement these to init, send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel
     //is updated in the Csound orchestra and we need to update the Cabbage components.
     //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
@@ -108,6 +108,7 @@ public:
     virtual void receiveChannelDataFromCsound() {};
     virtual void initAllCsoundChannels(ValueTree cabbageData);
     //=============================================================================
+	void addMacros(String csdText);
     String getCsoundOutput();
 
     void compileCsdFile(File csdFile)

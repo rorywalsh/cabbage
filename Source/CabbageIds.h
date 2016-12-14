@@ -522,6 +522,7 @@ static const Identifier socketaddress = "socketaddress";
 static const Identifier ffttablenumber = "ffttablenumber";
 static const Identifier velocity = "velocity";
 static const Identifier highlightcolour = "highlightcolour";
+static const Identifier update = "update";
 static const Identifier fontstyle = "fontstyle";
 static const Identifier minenabled = "minenabled";
 static const Identifier maxenabled = "maxenabled";

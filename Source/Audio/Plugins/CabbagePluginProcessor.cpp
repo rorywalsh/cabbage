@@ -55,6 +55,9 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
     linesFromCsd.addLines(csdText);
     String parentComponent, previousComponent;
     bool withinPlantGroup = false;
+	
+	searchAndExpandMacros(linesFromCsd);
+	
     for( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
     {
         if(linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
@@ -117,6 +120,39 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
     }
 }
 
+void CabbagePluginProcessor::searchAndExpandMacros(StringArray& linesFromCsd)
+{
+	
+	for(String csdLine : linesFromCsd)	//deal with Cabbage macros
+	{
+		StringArray tokens;
+        tokens.addTokens(csdLine.trimEnd(), ", ", "\"");
+		if(tokens[0].containsIgnoreCase("#define"))
+		{
+			tokens.removeEmptyStrings();
+			if(tokens.size()>1)
+			{
+				macroText.set("$"+tokens[1], " "+csdLine.substring(csdLine.indexOf(tokens[1])+tokens[1].length())+" ");
+			}
+		}
+	}
+
+	for(int cnt = 0 ; cnt<macroText.size() ; cnt++)
+	{
+		for(int i = 0 ; i < linesFromCsd.size(); i++)
+		{
+			String csdLine = linesFromCsd[i];
+			if(csdLine.contains(macroText.getName(cnt).toString()))
+			{
+				csdLine = csdLine.replace(macroText.getName(cnt), macroText.getWithDefault(macroText.getName(cnt), "").toString()+" ");
+				linesFromCsd.set(i, csdLine);
+			}
+		}
+	}
+
+		
+}
+
 //right now we rebuild the entire GUi each time something changes,
 void CabbagePluginProcessor::updateWidgets(String csdText)
 {
@@ -176,9 +212,15 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
         if(identChannel.isNotEmpty())
         {
             getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
-            if(String(tmp_string)!=identChannelMessage)
+			String identifierText(tmp_string); 
+            if(identifierText!=identChannelMessage)
             {
                 CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " "+String(tmp_string));
+				
+				if(identifierText.contains("tablenumber"))	//update even if table number has not changed
+					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
+					
+				getCsound()->SetChannel(identChannel.toUTF8(), "");
             }
         }
 

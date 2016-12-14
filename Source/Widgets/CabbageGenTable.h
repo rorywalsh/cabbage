@@ -44,6 +44,7 @@ class CabbageGenTable : public Component, public ValueTree::Listener, public Cab
 	double scrubberPosition;
 	Array <float, CriticalSection> tableValues;
 	AudioSampleBuffer tableBuffer;
+	var tables;
 public:
 
     CabbageGenTable(ValueTree wData, CabbagePluginEditor* owner);
@@ -57,7 +58,7 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
 	void initialiseGenTable(ValueTree widgetData);
     void changeListenerCallback(ChangeBroadcaster *source);
-	void setWaveform(AudioSampleBuffer buffer, int ftnumber);
+
 	
 	void resized();
 

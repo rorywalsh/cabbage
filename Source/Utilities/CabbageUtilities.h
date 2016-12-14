@@ -46,7 +46,6 @@ using namespace std;
 #define svgGroupboxWidth 400
 #define svgGroupboxHeight 300
 
-#define OK 0
 
 //simple abstract class used to hold information about about displays
 class SignalDisplay

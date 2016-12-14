@@ -37,6 +37,7 @@ public:
     void parseCsdFile(String csdText);
     void createParameters();
 	void updateWidgets(String csdText);
+	void searchAndExpandMacros(StringArray& csdText);
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
@@ -55,6 +56,7 @@ public:
 
 private:
     File csdFile;
+	NamedValueSet macroText;
 
 };
 

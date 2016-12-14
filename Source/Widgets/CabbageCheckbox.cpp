@@ -35,7 +35,7 @@ CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
     widgetData.addListener(this);
     setButtonText(buttonText);
     setTooltip(tooltipText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext));
-    setToggleState(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)==1 ? true : false, dontSendNotification);
+
 	
 	CabbageUtilities::debug(String(getToggleState()==true ? "On" : "Off"));
 
@@ -54,7 +54,7 @@ CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
     initialiseCommonAttributes(this, wData);
     setImgProperties(*this, wData, "buttonon");
     setImgProperties(*this, wData, "buttonoff");
-
+    setToggleState(_currentValue==1 ? true : false, dontSendNotification);
 }
 
 //==============================================================================
