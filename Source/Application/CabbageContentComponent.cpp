@@ -209,8 +209,10 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
         const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
 		const String parent = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
         const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
+		
 
         getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty() == true ? true : false);
+
     }
 }
 //==============================================================================
@@ -315,6 +317,7 @@ void CabbageContentComponent::createAudioGraph()
     createEditorForAudioGraphNode();
     if(getCurrentCodeEditor() != nullptr)
         getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
+
 
 }
 
@@ -523,6 +526,8 @@ void CabbageContentComponent::openFile(String filename)
     getCurrentCodeEditor()->addChangeListener(this);
     owner->setName("Cabbage " + currentCsdFile.getFullPathName());
 	addInstrumentsAndRegionsToCombobox();
+	
+	
 }
 //==============================================================================
 void CabbageContentComponent::saveDocument(bool saveAs)

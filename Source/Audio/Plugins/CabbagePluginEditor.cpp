@@ -356,10 +356,8 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 		if(textItems.size()>0)
 			cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
 		
-		button->setToggleState(buttonState == false ? true : false, dontSendNotification);	
-	}
-	
-	
+		//button->setToggleState(buttonState == false ? true : false, dontSendNotification);	
+	}	
 }
 
 //======================================================================================================

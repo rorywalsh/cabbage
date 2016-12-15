@@ -29,6 +29,8 @@ CabbageButton::CabbageButton(ValueTree wData)
 	
 	_value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);	
 	setButtonText(_textArray[_value]);
+	setClickingTogglesState(true);
+	
 	setToggleState((bool)_value, dontSendNotification);
 	
 	

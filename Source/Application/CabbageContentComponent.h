@@ -75,8 +75,7 @@ public:
     void createGenericCsoundPluginWrapper();
     void initSettings();
 	void updateEditorColourScheme();
-	void addInstrumentsAndRegionsToCombobox();
-	
+	void addInstrumentsAndRegionsToCombobox();	
 	void setLookAndFeelColours();
 	//==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();

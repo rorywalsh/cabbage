@@ -52,6 +52,8 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
         content->openFile(cabbageSettings->getMostRecentFile().getFullPathName());
     }
 
+	
+
     setApplicationCommandManagerToWatch(&commandManager);
     commandManager.registerAllCommandsForTarget(this);
     addKeyListener(commandManager.getKeyMappings());

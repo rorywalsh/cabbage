@@ -431,14 +431,16 @@ void CabbageCodeEditorComponent::parseTextForVariables()	//this is called on a s
     variableNames.clear();
     tokens.addTokens(csdText, "  \n(),*%=\t", "");
 
+
+	
     for(const String currentWord : tokens)
     {
         if(currentWord.startsWith("a") || currentWord.startsWith("i") ||
                 currentWord.startsWith("k") || currentWord.startsWith("S") ||
-                currentWord.startsWith("f"))
+                currentWord.startsWith("f") || currentWord.startsWith("\""))
         {
             if(currentWord.isNotEmpty())
-                variableNames.addIfNotAlreadyThere(currentWord);
+                variableNames.addIfNotAlreadyThere(currentWord.replace("\"", ""));
         }
     }
 }

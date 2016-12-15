@@ -127,6 +127,8 @@ public:
         g.setColour(Colour(20, 20, 20));
         g.drawFittedText(variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
     }
+	
+	void addChannelNameToPopupList(String channel){		variableNames.add(channel);	};
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
 	String lastAction;
