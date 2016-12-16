@@ -41,6 +41,7 @@
 #include "../../Widgets/CabbageTextEditor.h"
 #include "../../Widgets/CabbageCsoundConsole.h"
 #include "../../Widgets/CabbageLabel.h"
+#include "../../Widgets/CabbageXYPad.h"
 #include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageSoundfiler.h"
@@ -83,7 +84,7 @@ public:
     void insertComboBox(ValueTree cabbageWidgetData);
     void insertButton(ValueTree cabbageWidgetData);
     void insertCheckbox(ValueTree cabbageWidgetData);
-    void insertXYPad(ValueTree cabbageWidgetData) {};
+    void insertXYPad(ValueTree cabbageWidgetData);
     void insertRangeSlider(ValueTree cabbageWidgetData) {};
 	void insertNumberBox(ValueTree cabbageWidgetData);
 	void insertEncoder(ValueTree cabbageWidgetData);
@@ -113,6 +114,7 @@ public:
 	StringArray getTableStatement(int tableNumber);
 	bool csdCompiledWithoutError();
 	const Array<float, CriticalSection> getTableFloats(int tableNum);
+	CabbagePluginProcessor& getProcessor();
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
@@ -152,6 +154,7 @@ private:
     OwnedArray<Component> components;
     Component mainComponent;
 	int keyboardCount=0;
+	int xyPadIndex = 0;
 	int consoleCount=0;
     CabbageLookAndFeel2 lookAndFeel;
     int newlyAddedWidgetIndex = 10000;

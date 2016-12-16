@@ -24,8 +24,12 @@
 #include "../../Widgets/CabbageWidgetData.h"
 #include "../../CabbageIds.h"
 #include "CabbageAudioParameter.h"
+#include "../../Widgets/Auxiliary/XYPadAutomation.h"
 
-class CabbagePluginProcessor  : public CsoundPluginProcessor
+class CabbagePluginProcessor  
+	: public ChangeListener, 
+	public CsoundPluginProcessor,
+	public Timer
 {
 public:
     CabbagePluginProcessor(File inputFile);
@@ -54,9 +58,22 @@ public:
         return csdArray;
     }
 
+
+	void changeListenerCallback(juce::ChangeBroadcaster*);
+	//===== XYPad methods =========
+	void timerCallback();
+    void addXYAutomater(XYPadAutomation* xyAuto, ValueTree wData);
+    XYPadAutomation* getXYAutomater(int index)    {        return xyAutomation[index];    }
+    int getXYAutomaterSize()    {        return xyAutomation.size();    }
+    void removeXYAutomaters()    {        xyAutomation.clear();    }	
+    bool haveXYAutosBeenCreated()    {        return xyAutosCreated;    }
+    void setHaveXYAutoBeenCreated(bool val)    {        xyAutosCreated = val;    }
+	
 private:
     File csdFile;
 	NamedValueSet macroText;
+	bool xyAutosCreated = false;
+	OwnedArray<XYPadAutomation, CriticalSection> xyAutomation;
 
 };
 

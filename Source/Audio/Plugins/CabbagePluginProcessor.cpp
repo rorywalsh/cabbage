@@ -101,6 +101,16 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
                 CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
         {
             cabbageWidgets.addChild(temp, -1, 0);
+			if(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type)==CabbageIdentifierIds::xypad)
+			{
+				ValueTree temp2 = temp.createCopy();
+				const String name = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::name);
+				const String yChannel = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::ychannel);
+				CabbageWidgetData::setStringProp(temp2, CabbageIdentifierIds::channel, yChannel);
+				CabbageWidgetData::setStringProp(temp2, CabbageIdentifierIds::name, name+"dummy");
+				cabbageWidgets.addChild(temp2, -1, 0);
+				startTimer(20);
+			}
         }
 
         if(currentLineOfCabbageCode.contains("{"))
@@ -179,8 +189,9 @@ void CabbagePluginProcessor::createParameters()
             const int value = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
 			
 			if(controlWidgetTypes.contains(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type)))
-				addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel, name, 0, 1, value));
-
+			{
+				addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel, name, 0, 1, value));	
+			}
         }
     }
 }
@@ -227,3 +238,48 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
     }
 }
 
+//================================================================================
+void CabbagePluginProcessor::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    if(XYPadAutomation* xyPadAuto = dynamic_cast< XYPadAutomation*>(source))
+    {
+		float xVal, yVal;
+#ifdef Cabbage_IDE_Build
+        setParameterNotifyingHost(xyPadAuto->paramIndex, xyPadAuto->getXValue());
+        setParameterNotifyingHost(xyPadAuto->paramIndex+1, xyPadAuto->getYValue());
+#else
+        if(xyPadAuto->getMinimumXValue()>=0)
+            xVal = (xyPadAuto->getXValue()/xyPadAuto->getXRange())+(fabs(xyPadAuto->getMinimumXValue())/xyPadAuto->getXRange());
+        else
+            xVal = (xyPadAuto->getXValue()/xyPadAuto->getXRange())-(fabs(xyPadAuto->getMinimumXValue())/xyPadAuto->getXRange());
+
+        if(xyPadAuto->getMinimumYValue()<=0)
+            yVal = (xyPadAuto->getYValue()/xyPadAuto->getYRange())+(fabs(xyPadAuto->getMinimumYValue())/xyPadAuto->getYRange());
+        else
+            yVal = (xyPadAuto->getYValue()/xyPadAuto->getYRange())-(fabs(xyPadAuto->getMinimumYValue())/xyPadAuto->getYRange());
+
+        setParameterNotifyingHost(xyPadAuto->paramIndex, xVal);		
+        setParameterNotifyingHost(xyPadAuto->paramIndex+1, yVal);
+
+#endif
+    }	
+}
+
+void CabbagePluginProcessor::addXYAutomater(XYPadAutomation* xyAuto, ValueTree wData)    
+{        
+	xyAuto->setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+	xyAutomation.add(xyAuto);  
+    getXYAutomater(getXYAutomaterSize()-1)->addChangeListener(this);
+	getXYAutomater(getXYAutomaterSize()-1)->xChannel = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::xchannel);
+	getXYAutomater(getXYAutomaterSize()-1)->yChannel = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::ychannel);
+	CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::xyautoindex, getXYAutomaterSize()-1);
+}
+
+void CabbagePluginProcessor::timerCallback()
+{
+    for(int y=0; y<xyAutomation.size(); y++)
+    {
+        if(xyAutomation[y])
+            xyAutomation[y]->update();
+    }
+}

@@ -173,6 +173,9 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 
 	else if(widgetType==CabbageIdentifierIds::gentable)
 		insertGenTable(cabbageWidgetData);
+	
+	else if(widgetType==CabbageIdentifierIds::xypad)
+		insertXYPad(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -232,6 +235,26 @@ void CabbagePluginEditor::insertEncoder(ValueTree cabbageWidgetData)
     CabbageEncoder* encoder;
     components.add(encoder = new CabbageEncoder(cabbageWidgetData, this));
     addToEditorAndMakeVisible(encoder, cabbageWidgetData);	
+}
+
+void CabbagePluginEditor::insertXYPad(ValueTree cabbageWidgetData)
+{
+	
+    if(processor.haveXYAutosBeenCreated())
+    {
+		CabbageXYPad* xyPad;
+		components.add(xyPad = new CabbageXYPad(cabbageWidgetData, processor.getXYAutomater(xyPadIndex), this, xyPadIndex));
+	}
+	else
+	{
+		
+		CabbageXYPad* xyPad;
+		processor.addXYAutomater(new XYPadAutomation(), cabbageWidgetData);	
+		components.add(xyPad = new CabbageXYPad(cabbageWidgetData, processor.getXYAutomater(xyPadIndex), this, xyPadIndex));	
+		processor.getXYAutomater(processor.getXYAutomaterSize()-1)->paramIndex = components.size()-1;
+		
+		addToEditorAndMakeVisible(xyPad, cabbageWidgetData);
+	}	
 }
 
 void CabbagePluginEditor::insertFileButton(ValueTree cabbageWidgetData)
@@ -464,6 +487,11 @@ StringArray CabbagePluginEditor::getTableStatement(int tableNumber)
 const Array<float, CriticalSection> CabbagePluginEditor::getTableFloats(int tableNumber)
 {
 	return processor.getTableFloats(tableNumber);
+}
+
+CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
+{
+	return processor;
 }
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()

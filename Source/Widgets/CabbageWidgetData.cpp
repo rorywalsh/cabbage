@@ -442,6 +442,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                 }
 
                 setProperty(widgetData, CabbageIdentifierIds::channel, array);
+				
                 if(identArray[indx].equalsIgnoreCase("widgetarray"))
                 {
                     var channelArray, identChannelArray;

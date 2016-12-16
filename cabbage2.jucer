@@ -155,6 +155,12 @@
           <FILE id="W9UQTE" name="TableManager.cpp" compile="1" resource="0"
                 file="Source/Widgets/Auxiliary/TableManager.cpp"/>
           <FILE id="FvHNR6" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Auxiliary/TableManager.h"/>
+          <FILE id="mh9aYO" name="XYPad.cpp" compile="1" resource="0" file="Source/Widgets/Auxiliary/XYPad.cpp"/>
+          <FILE id="oA6NCb" name="XYPad.h" compile="0" resource="0" file="Source/Widgets/Auxiliary/XYPad.h"/>
+          <FILE id="hD250g" name="XYPadAutomation.cpp" compile="1" resource="0"
+                file="Source/Widgets/Auxiliary/XYPadAutomation.cpp"/>
+          <FILE id="JldCPm" name="XYPadAutomation.h" compile="0" resource="0"
+                file="Source/Widgets/Auxiliary/XYPadAutomation.h"/>
         </GROUP>
         <FILE id="YU2TGc" name="CabbageButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageButton.cpp"/>
@@ -238,6 +244,9 @@
               file="Source/Widgets/CabbageWidgetData.h"/>
         <FILE id="ivexKH" name="CabbageWidgetDataInitMethods.cpp" compile="1"
               resource="0" file="Source/Widgets/CabbageWidgetDataInitMethods.cpp"/>
+        <FILE id="RxbE55" name="CabbageXYPad.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageXYPad.cpp"/>
+        <FILE id="f9H3B9" name="CabbageXYPad.h" compile="0" resource="0" file="Source/Widgets/CabbageXYPad.h"/>
       </GROUP>
       <FILE id="h9SIaE" name="Cabbage.cpp" compile="1" resource="0" file="Source/Cabbage.cpp"/>
       <FILE id="MZGiut" name="Cabbage.h" compile="0" resource="0" file="Source/Cabbage.h"/>

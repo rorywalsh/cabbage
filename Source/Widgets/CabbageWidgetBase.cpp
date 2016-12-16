@@ -81,11 +81,6 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bo
         child->setAlpha(_alpha);
     }
 
-    if(_alpha != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha))
-    {
-        _alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
-    }
-	
 	populateTextArrays(data);
 
 }
