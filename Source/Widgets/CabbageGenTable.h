@@ -23,7 +23,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
-#include "Auxiliary/TableManager.h"
+#include "Legacy/TableManager.h"
 
 class CabbagePluginEditor;
 

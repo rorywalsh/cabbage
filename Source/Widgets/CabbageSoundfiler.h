@@ -22,7 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
-#include "Auxiliary/Soundfiler.h"
+#include "Legacy/Soundfiler.h"
 
 class CabbagePluginEditor;
 // Add any new custom widgets here to avoid having to edit makefiles and projects

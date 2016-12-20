@@ -24,12 +24,10 @@
 #include "../../Widgets/CabbageWidgetData.h"
 #include "../../CabbageIds.h"
 #include "CabbageAudioParameter.h"
-#include "../../Widgets/Auxiliary/XYPadAutomation.h"
+#include "../../Widgets/CabbageXYPad.h"
 
 class CabbagePluginProcessor  
-	: public ChangeListener, 
-	public CsoundPluginProcessor,
-	public Timer
+	: public CsoundPluginProcessor
 {
 public:
     CabbagePluginProcessor(File inputFile);
@@ -43,6 +41,7 @@ public:
 	void updateWidgets(String csdText);
 	void searchAndExpandMacros(StringArray& csdText);
 
+	CabbageAudioParameter* getParameterForXYPad(String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
@@ -51,6 +50,7 @@ public:
     {
         return csdFile;
     }
+	
     StringArray getCurrentCsdFileAsStringArray()
     {
         StringArray csdArray;
@@ -58,22 +58,16 @@ public:
         return csdArray;
     }
 
-
-	void changeListenerCallback(juce::ChangeBroadcaster*);
 	//===== XYPad methods =========
-	void timerCallback();
-    void addXYAutomater(XYPadAutomation* xyAuto, ValueTree wData);
-    XYPadAutomation* getXYAutomater(int index)    {        return xyAutomation[index];    }
-    int getXYAutomaterSize()    {        return xyAutomation.size();    }
-    void removeXYAutomaters()    {        xyAutomation.clear();    }	
-    bool haveXYAutosBeenCreated()    {        return xyAutosCreated;    }
-    void setHaveXYAutoBeenCreated(bool val)    {        xyAutosCreated = val;    }
+    void addXYAutomator(CabbageXYPad* xyPad, ValueTree wData); 
+	void enableXYAutomator(String name, bool enable, Line<float> dragLine); 
+
 	
 private:
     File csdFile;
 	NamedValueSet macroText;
 	bool xyAutosCreated = false;
-	OwnedArray<XYPadAutomation, CriticalSection> xyAutomation;
+	OwnedArray<XYPadAutomator> xyAutomator;
 
 };
 

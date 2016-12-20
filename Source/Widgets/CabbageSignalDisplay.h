@@ -24,7 +24,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-#include "Auxiliary/FrequencyRangeDisplayComponent.h"
+#include "Legacy/FrequencyRangeDisplayComponent.h"
 	
 class CabbagePluginEditor;
 

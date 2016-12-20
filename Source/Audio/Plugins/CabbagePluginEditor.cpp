@@ -103,7 +103,7 @@ void CabbagePluginEditor::addNewWidget(String widgetType, Point<int> position)
     processor.cabbageWidgets.addChild(newWidget, -1, 0);
 
     setCurrentlySelectedComponents(StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
-
+	
     insertWidget(newWidget);
     updateLayoutEditorFrames();
 
@@ -226,7 +226,7 @@ void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
 {
     CabbageSlider* slider;
     components.add(slider = new CabbageSlider(cabbageWidgetData, this));
-	slider->getSlider()->addListener(this);
+	slider->getSlider().addListener(this);
     addToEditorAndMakeVisible(slider, cabbageWidgetData);
 }
 
@@ -239,22 +239,13 @@ void CabbagePluginEditor::insertEncoder(ValueTree cabbageWidgetData)
 
 void CabbagePluginEditor::insertXYPad(ValueTree cabbageWidgetData)
 {
+	CabbageXYPad* xyPad;
+	components.add(xyPad = new CabbageXYPad(cabbageWidgetData, this));	
+	xyPad->getSliderX().addListener(this);
+	xyPad->getSliderY().addListener(this);
+	addToEditorAndMakeVisible(xyPad, cabbageWidgetData);
+	processor.addXYAutomator(xyPad, cabbageWidgetData);
 	
-    if(processor.haveXYAutosBeenCreated())
-    {
-		CabbageXYPad* xyPad;
-		components.add(xyPad = new CabbageXYPad(cabbageWidgetData, processor.getXYAutomater(xyPadIndex), this, xyPadIndex));
-	}
-	else
-	{
-		
-		CabbageXYPad* xyPad;
-		processor.addXYAutomater(new XYPadAutomation(), cabbageWidgetData);	
-		components.add(xyPad = new CabbageXYPad(cabbageWidgetData, processor.getXYAutomater(xyPadIndex), this, xyPadIndex));	
-		processor.getXYAutomater(processor.getXYAutomaterSize()-1)->paramIndex = components.size()-1;
-		
-		addToEditorAndMakeVisible(xyPad, cabbageWidgetData);
-	}	
 }
 
 void CabbagePluginEditor::insertFileButton(ValueTree cabbageWidgetData)
@@ -290,7 +281,7 @@ void CabbagePluginEditor::insertNumberBox(ValueTree cabbageWidgetData)
 {
     CabbageNumberBox* numberBox;
     components.add(numberBox = new CabbageNumberBox(cabbageWidgetData));
-	numberBox->getSlider()->addListener(this);
+	numberBox->getSlider().addListener(this);
     addToEditorAndMakeVisible(numberBox, cabbageWidgetData);
 }
 
@@ -472,6 +463,11 @@ const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDispla
 bool CabbagePluginEditor::shouldUpdateSignalDisplay()
 {
 	return processor.shouldUpdateSignalDisplay();
+}
+
+void CabbagePluginEditor::enableXYAutomator(String name, bool enable, Line<float> dragLine)
+{
+	processor.enableXYAutomator(name, enable, dragLine);
 }
 
 bool CabbagePluginEditor::csdCompiledWithoutError()

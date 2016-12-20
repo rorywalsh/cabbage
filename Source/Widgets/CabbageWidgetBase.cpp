@@ -24,6 +24,7 @@
 
 void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree data)
 {
+	_csdFile = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::csdfile);
     _rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
     _pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
     _pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);

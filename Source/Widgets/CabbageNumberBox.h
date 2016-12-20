@@ -42,7 +42,7 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
 	void resized();
 
-	Slider* getSlider(){	return &slider;	};
+	Slider& getSlider(){	return slider;	};
 
     ValueTree widgetData;
 

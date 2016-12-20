@@ -62,6 +62,7 @@ public:
 	static void setLoadButtonProperties(ValueTree widgetDatta, int ID);
 	static void setSignalDisplayProperties(ValueTree widgetData, int ID);
 	static void setGenTableProperties(ValueTree widgetData, int ID);
+	static void setXYPadProperties(ValueTree widgetData, int ID);
     //============================================================================
     static float getNumProp(ValueTree widgetData, Identifier prop);
     static void setNumProp(ValueTree widgetData, Identifier prop, float val);

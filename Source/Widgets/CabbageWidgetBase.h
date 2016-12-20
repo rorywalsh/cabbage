@@ -34,7 +34,7 @@ public:
 
     int _pivotx, _pivoty, _visible, _active, _value;
     float _rotate, _alpha, _currentValue;
-    String _tooltipText, _text, _channel;
+    String _tooltipText, _text, _channel, _csdFile;
     File _imgButtonOn, _imgButtonOff, _imgPath;
 	StringArray _channelArray;	//can be used if widget supports multiple channel
 	StringArray _textArray;	//can be used used if widget supports multiple text items

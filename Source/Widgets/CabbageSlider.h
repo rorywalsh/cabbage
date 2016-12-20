@@ -59,7 +59,7 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};	
-	Slider* getSlider(){	return &slider;	};
+	Slider& getSlider(){	return slider;	};
 	
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)
 	

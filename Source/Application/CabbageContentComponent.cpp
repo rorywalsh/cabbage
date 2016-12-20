@@ -194,7 +194,7 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
 
     else if(CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*>(source)) // update code when a user changes a property
     {
-        if(getCabbagePluginProcessor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
+        if(getCabbagePluginEditor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
             this->getCabbagePluginProcessor()->updateWidgets(codeEditor->getAllText());
     }
 }

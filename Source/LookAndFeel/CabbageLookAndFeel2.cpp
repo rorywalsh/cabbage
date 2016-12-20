@@ -221,7 +221,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 {
     Image image;
     bool drawFromFile = true;
-    ScopedPointer<DrawableRectangle> drawableRect;
+
     const File imgButtonOnFile(button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonon, "").toString());
     const File imgButtonOffFile(button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonoff, "").toString());
     const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);

@@ -106,6 +106,7 @@ public:
     void insertSignalDisplay(ValueTree cabbageWidgetData);
     void insertStepper(ValueTree cabbageWidgetData) {};
 	//=============================================================================
+	// all these methods expose public methods in CabagePluginProcessor
 	void sendChannelDataToCsound(String channel, float value);
 	void sendChannelStringDataToCsound(String channel, String value);
 	bool shouldUpdateSignalDisplay();
@@ -115,6 +116,8 @@ public:
 	bool csdCompiledWithoutError();
 	const Array<float, CriticalSection> getTableFloats(int tableNum);
 	CabbagePluginProcessor& getProcessor();
+	void enableXYAutomator(String name, bool enable, Line<float> dragLine = Line<float>(0, 0, 1, 1));
+	
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();

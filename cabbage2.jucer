@@ -147,20 +147,14 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{FAFD4DCB-E143-5624-0198-20E9415D0C1E}" name="Widgets">
-        <GROUP id="{5CC09F91-6176-C4E5-2894-AD3525DB70BD}" name="Auxiliary">
-          <FILE id="jnVJJI" name="FrequencyRangeDisplayComponent.h" compile="0"
-                resource="0" file="Source/Widgets/Auxiliary/FrequencyRangeDisplayComponent.h"/>
-          <FILE id="qUGXCZ" name="Soundfiler.cpp" compile="1" resource="0" file="Source/Widgets/Auxiliary/Soundfiler.cpp"/>
-          <FILE id="qGpWpi" name="Soundfiler.h" compile="0" resource="0" file="Source/Widgets/Auxiliary/Soundfiler.h"/>
-          <FILE id="W9UQTE" name="TableManager.cpp" compile="1" resource="0"
-                file="Source/Widgets/Auxiliary/TableManager.cpp"/>
-          <FILE id="FvHNR6" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Auxiliary/TableManager.h"/>
-          <FILE id="mh9aYO" name="XYPad.cpp" compile="1" resource="0" file="Source/Widgets/Auxiliary/XYPad.cpp"/>
-          <FILE id="oA6NCb" name="XYPad.h" compile="0" resource="0" file="Source/Widgets/Auxiliary/XYPad.h"/>
-          <FILE id="hD250g" name="XYPadAutomation.cpp" compile="1" resource="0"
-                file="Source/Widgets/Auxiliary/XYPadAutomation.cpp"/>
-          <FILE id="JldCPm" name="XYPadAutomation.h" compile="0" resource="0"
-                file="Source/Widgets/Auxiliary/XYPadAutomation.h"/>
+        <GROUP id="{5CC09F91-6176-C4E5-2894-AD3525DB70BD}" name="Legacy">
+          <FILE id="WsdZtU" name="FrequencyRangeDisplayComponent.h" compile="0"
+                resource="0" file="Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h"/>
+          <FILE id="VazJFN" name="Soundfiler.cpp" compile="1" resource="0" file="Source/Widgets/Legacy/Soundfiler.cpp"/>
+          <FILE id="M2Akt6" name="Soundfiler.h" compile="0" resource="0" file="Source/Widgets/Legacy/Soundfiler.h"/>
+          <FILE id="HOksbz" name="TableManager.cpp" compile="1" resource="0"
+                file="Source/Widgets/Legacy/TableManager.cpp"/>
+          <FILE id="lQC4hY" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
         </GROUP>
         <FILE id="YU2TGc" name="CabbageButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageButton.cpp"/>
@@ -257,7 +251,8 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="Cabbage_IDE_Build=1"
-                externalLibraries="csound64&#10;sndfile" cppLanguageStandard="-std=c++14">
+                externalLibraries="csound64&#10;sndfile" cppLanguageStandard="-std=c++14"
+                extraCompilerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>

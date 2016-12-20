@@ -41,6 +41,38 @@ void CabbageWidgetData::setFormProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::scrollbars, 1);
     setProperty(widgetData, CabbageIdentifierIds::titlebarcolour, "");
     setProperty(widgetData, CabbageIdentifierIds::fontcolour, "");
+	setProperty(widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getBackgroundSkin().toString());
+}
+
+void CabbageWidgetData::setXYPadProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, "basetype", "interactive");
+	var channels;
+	channels.append("xChan");
+	channels.append("yChan");
+	setProperty(widgetData, CabbageIdentifierIds::xyautoindex, 0);
+	setProperty(widgetData, CabbageIdentifierIds::xchannel, channels[0]);
+	setProperty(widgetData, CabbageIdentifierIds::ychannel, channels[1]);
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::width, 200);
+	setProperty(widgetData, CabbageIdentifierIds::height, 200);
+	setProperty(widgetData, CabbageIdentifierIds::minx, 0);
+	setProperty(widgetData, CabbageIdentifierIds::maxx, 200);
+	setProperty(widgetData, CabbageIdentifierIds::text, "");
+	setProperty(widgetData, CabbageIdentifierIds::miny, 0);
+	setProperty(widgetData, CabbageIdentifierIds::maxy, 200);
+	setProperty(widgetData, CabbageIdentifierIds::valuex, 0);
+	setProperty(widgetData, CabbageIdentifierIds::valuey, 0);
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::lime.toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
+	setProperty(widgetData, CabbageIdentifierIds::textcolour, Colours::cornflowerblue.toString());
+	setProperty(widgetData, CabbageIdentifierIds::type, "xypad");
+	setProperty(widgetData, CabbageIdentifierIds::name, "xypad");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
 }
 
 void CabbageWidgetData::setSignalDisplayProperties(ValueTree widgetData, int ID)

@@ -113,13 +113,11 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
 
     else if(strTokens[0].trim() == "signaldisplay" || strTokens[0].trim() == "fftdisplay")
 		setSignalDisplayProperties(widgetData, ID);
-		
-    //===============gentable==================//
-    else if(strTokens[0].trim() == "gentable")
-    {
-		setGenTableProperties(widgetData, ID);
-    }
 
+    else if(strTokens[0].trim() == "xypad")
+		setXYPadProperties(widgetData, ID);
+    else if(strTokens[0].trim() == "gentable")
+		setGenTableProperties(widgetData, ID);
 
     //===============table==================//
     else if(strTokens[0].trim() == "table")
@@ -150,43 +148,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::amprange, 0);
         setProperty(widgetData, CabbageIdentifierIds::type, "table");
         setProperty(widgetData, CabbageIdentifierIds::stack, 0);
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-    }
-
-    //===============xypad==================//
-    else if(strTokens[0].trim() == "xypad")
-    {
-        setProperty(widgetData, "basetype", "interactive");
-        top = 10;
-        left = 10;
-        width = 200;
-        height = 200;
-
-        var channels;
-        channels.append("xChan");
-        channels.append("yChan");
-        setProperty(widgetData, CabbageIdentifierIds::xyautoindex, 0);
-        setProperty(widgetData, CabbageIdentifierIds::xchannel, channels[0]);
-        setProperty(widgetData, CabbageIdentifierIds::ychannel, channels[1]);
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::width, 200);
-        setProperty(widgetData, CabbageIdentifierIds::height, 200);
-        setProperty(widgetData, CabbageIdentifierIds::minx, 0);
-        setProperty(widgetData, CabbageIdentifierIds::maxx, 200);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::miny, 0);
-        setProperty(widgetData, CabbageIdentifierIds::maxy, 200);
-        setProperty(widgetData, CabbageIdentifierIds::valuex, 0);
-        setProperty(widgetData, CabbageIdentifierIds::valuey, 0);
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::lime.toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
-        setProperty(widgetData, CabbageIdentifierIds::textcolour, Colours::cornflowerblue.toString());
-        setProperty(widgetData, CabbageIdentifierIds::type, "xypad");
-        setProperty(widgetData, CabbageIdentifierIds::name, "xypad");
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
@@ -848,7 +809,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             {
                 if(strTokens.size()<3)
                 {
-                    warningMessages+="Not enough paramters passed to range(): usage range(minx, max, value\")\n";
+                    warningMessages+="Not enough paramters passed to range(): usage rangex(minx, max, value\")\n";
                 }
                 else
                 {
@@ -867,7 +828,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             {
                 if(strTokens.size()<3)
                 {
-                    warningMessages+="Not enough paramters passed to range(): usage range(minx, max, value\")\n";
+                    warningMessages+="Not enough paramters passed to range(): usage rangey(minx, max, value\")\n";
                 }
                 else
                 {
