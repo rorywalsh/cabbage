@@ -40,14 +40,20 @@ CabbageGenTable::CabbageGenTable(ValueTree wData, CabbagePluginEditor* owner)
 	
 	ampRanges = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::amprange);
 	initialiseGenTable(wData);
-	//ampRange = Array<float>(
 
 }
 
 //===============================================================================
 void CabbageGenTable::changeListenerCallback(ChangeBroadcaster *source)
 {
-	
+    GenTable* genTable = dynamic_cast<GenTable*>(source);
+    if(genTable)
+    {
+     //   if((genTable->getCurrentHandle() && genTable->displayAsGrid()!=1))
+     //       popupBubble->showAt(genTable->getCurrentHandle(), AttributedString(genTable->getCoordinates()), 1050);
+        if(genTable->changeMessage == "updateFunctionTable")
+            owner->updatefTableData(genTable);
+    }
 }
 
 void CabbageGenTable::initialiseGenTable(ValueTree wData)
@@ -64,8 +70,6 @@ void CabbageGenTable::initialiseGenTable(ValueTree wData)
         fileTable=1;
         table.setFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
     }
-
-
 
 
     tables = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablenumber);

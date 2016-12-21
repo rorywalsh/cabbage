@@ -35,7 +35,11 @@ valueX(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuex)),
 valueY(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuey)),
 yValueLabel(),
 xValueLabel(),
-fontColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)))
+fontColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour))),
+textColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour))),
+colour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour))),
+ballColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::ballcolour))),
+bgColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::backgroundcolour)))
 {
 	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
@@ -51,10 +55,12 @@ fontColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIde
 	yAxis.setRange(minY, maxY);
 	yAxis.setName(getName()+"_y");
 	
+	ball.setColour(ballColour);	
 	xValueLabel.setColour(Label::textColourId, fontColour);
+	yValueLabel.setColour(Label::textColourId, fontColour);
 	xValueLabel.setJustificationType(Justification::centred);
 	xValueLabel.setText(String(valueX, 3), dontSendNotification);
-	yValueLabel.setColour(Label::textColourId, fontColour);
+
 	yValueLabel.setText(String(valueY, 3), dontSendNotification);
 	yValueLabel.setJustificationType(Justification::centred);
 	xValueLabel.setFont(Font(12, 1));
@@ -124,14 +130,27 @@ void CabbageXYPad::changeListenerCallback(ChangeBroadcaster* source)
 void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 	if(prop != CabbageIdentifierIds::value)
-		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+	{
+		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc			
+		fontColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour));
+		textColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour));
+		colour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
+		ballColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::ballcolour));
+		bgColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::backgroundcolour));		
+		xValueLabel.setColour(Label::textColourId, fontColour);
+		yValueLabel.setColour(Label::textColourId, fontColour);
+		ball.setColour(ballColour);	
+		ball.repaint();
+		repaint();
+	}
 }
 
 //==================================================================
 void CabbageXYPad::paint(Graphics& g)
 {
+	//main background
 	g.fillAll(Colour(30, 30, 30));
-    g.setColour (CabbageUtilities::getComponentSkin());
+    g.setColour (colour);
     g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), 5);
 
     float borderWidth = CabbageUtilities::getBorderWidth();
@@ -139,7 +158,8 @@ void CabbageXYPad::paint(Graphics& g)
     g.drawRoundedRectangle (borderWidth/2, borderWidth/2, getWidth()-borderWidth, getHeight()-borderWidth,
                             5, borderWidth);
 
-    g.setColour(fontColour);
+	//text label
+    g.setColour(textColour);
     Font font = CabbageUtilities::getComponentFont();
     g.setFont (font);
     float strWidth = font.getStringWidthFloat (getText());
@@ -147,7 +167,7 @@ void CabbageXYPad::paint(Graphics& g)
                 strWidth, font.getHeight(), 1, false);	
 
 	//xypad background 
-    g.setColour (CabbageUtilities::getBackgroundSkin());
+    g.setColour (bgColour);
     g.fillRoundedRectangle(xyPadRect, 5);
 
     ColourGradient vGradient = ColourGradient(Colours::transparentBlack, 0, 0,
@@ -173,7 +193,7 @@ void CabbageXYPad::paint(Graphics& g)
 	{
 		ColourGradient vLineCg = ColourGradient(Colours::transparentBlack, 0, 0, Colours::transparentBlack,
 												0, getHeight(), false);
-		vLineCg.addColour(jlimit(0.f, 1.f, ((ball.getY()+(ball.getWidth()/2.f)) / xyPadRect.getHeight())), Colours::red);
+		vLineCg.addColour(jlimit(0.f, 1.f, ((ball.getY()+(ball.getWidth()/2.f)) / xyPadRect.getHeight())), ballColour);
 		g.setGradientFill(vLineCg);
 		g.setOpacity(1);
 		g.drawLine(ball.getX()+ball.getWidth()/2, 0, ball.getX()+ball.getWidth()/2, xyPadRect.getHeight());
@@ -181,7 +201,7 @@ void CabbageXYPad::paint(Graphics& g)
 		ColourGradient hLineCg = ColourGradient(Colours::transparentBlack, 0, 0, Colours::transparentBlack,
 												getWidth(), 0, false);
 		
-		hLineCg.addColour(jmax (0.f, jmin (1.f, ((ball.getX()+(ball.getWidth()/2.f)) / xyPadRect.getHeight()))), Colours::red);
+		hLineCg.addColour(jmax (0.f, jmin (1.f, ((ball.getX()+(ball.getWidth()/2.f)) / xyPadRect.getHeight()))), ballColour);
 		g.setGradientFill(hLineCg);
 		g.setOpacity(1);
 		g.drawLine(0, ball.getY()+ball.getWidth()/2, xyPadRect.getWidth(), ball.getY()+ball.getWidth()/2);

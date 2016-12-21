@@ -262,19 +262,22 @@ public:
     CabbageIdentifierStrings()	// longest strings appear first otherwise identifiers will be missed in parsing
     {							
         add("tablebackgroundcolour");
-        add("backgroundcolour");
-        add("trackerthickness");
+		add("arrowbackgroundcolour");
+		add("noteseparatorcolour");
+		add("backgroundcolour");
+		add("trackerthickness");
         add("outlinethickness");
         add("scrubberposition");
+		add("whitenotecolour");
+		add("blacknotecolour");
         add("highlightcolour");
         add("tablegridcolour");
         add("backgroundcolor");
-		add("arrowbackgroundcolour");
-        add("titlebarcolour");
+		add("titlebarcolour");
         add("tablegridcolor");
         add("signalvariable");
         add("linethickness");
-		add("noteseparatorcolour");
+		add("outlinecolour");
         add("numberofsteps");
         add("trackercolour");
         add("valuetextbox");
@@ -287,6 +290,7 @@ public:
         add("fontcolour:0");
         add("outlinecolor");
         add("tablecolour");
+		add("arrowcolour");
         add("widgetarray");
         add("channeltype");
         add("samplerange");
@@ -306,12 +310,11 @@ public:
         add("tablecolor");
         add("radiogroup");
         add("sliderincr");
+		add("ballcolour");
         add("menucolor");
-		add("whitenotecolour");
         add("popuptext");
         add("textcolor");
         add("fontstyle");
-		add("blacknotecolour");
         add("fontcolor");
         add("populate");
         add("keywidth");
@@ -323,9 +326,9 @@ public:
         add("channels");
         add("velocity");
         add("amprange");
-		add("outlinecolour");
         add("color:0");
         add("caption");
+		add("textbox");
         add("corners");
         add("color:1");
         add("middlec");
@@ -355,8 +358,8 @@ public:
         add("value");
         add("range");
         add("plant");
-		add("arrowcolour");
         add("align");
+		add("file");
         add("wrap");
         add("text");
         add("zoom");
@@ -369,8 +372,7 @@ public:
         add("min");
         add("max");
         add("pos");
-		add("textbox");
-		add("file");
+
     }
 
     ~CabbageIdentifierStrings()
@@ -420,6 +422,7 @@ static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
 static const Identifier backgroundcolour = "backgroundcolour";
 static const Identifier items = "items";
 static const Identifier text = "text";
+static const Identifier ballcolour = "ballcolour";
 static const Identifier popuptext = "popuptext";
 static const Identifier allowboundsupdate = "allowboundsupdate";
 static const Identifier range = "range";
@@ -676,6 +679,9 @@ public:
 		set("Max: Y", CabbageIdentifierIds::maxy.toString());
 		set("Value X", CabbageIdentifierIds::valuex.toString());
 		set("Value Y", CabbageIdentifierIds::valuey.toString());
+		set("Background", CabbageIdentifierIds::backgroundcolour.toString());
+		set("Ball", CabbageIdentifierIds::ballcolour.toString());
+		
     }
 };
 

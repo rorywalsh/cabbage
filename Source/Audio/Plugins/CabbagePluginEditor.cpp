@@ -444,6 +444,72 @@ void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree w
     else
         mainComponent.addAndMakeVisible(comp);
 }
+
+//======================================================================================================
+void CabbagePluginEditor::updatefTableData(GenTable* table)
+{
+    Array<double> pFields = table->getPfields();
+    if( table->genRoutine==5 || table->genRoutine==7 || table->genRoutine==2)
+    {
+        FUNC *ftpp;
+        EVTBLK  evt;
+        memset(&evt, 0, sizeof(EVTBLK));
+        evt.pcnt = 5+pFields.size();
+        evt.opcod = 'f';
+        evt.p[0]=0;
+
+        //setting table number to 0.
+        evt.p[1]=0;
+        evt.p[2]=0;
+        evt.p[3]=table->tableSize;
+        evt.p[4]=table->realGenRoutine;
+        if(table->genRoutine==5)
+        {
+            for(int i=0; i<pFields.size()-1; i++)
+                evt.p[5+i]= jmax(0.00001, pFields[i+1]);
+        }
+        else if(table->genRoutine==7)
+        {
+            for(int i=0; i<pFields.size()-1; i++)
+                evt.p[5+i]= pFields[i+1];
+        }
+        else
+        {
+            for(int i=0; i<pFields.size(); i++)
+                evt.p[5+i] = pFields[i];
+        }
+
+        StringArray fStatement;
+        int pCnt=0;
+        for(int i=0; i<evt.pcnt-1; i++)
+        {
+            fStatement.add(String(evt.p[i]));
+            //cUtils::debug(i, fStatement[i]);
+            pCnt=i;
+        }
+
+        if(table->genRoutine!=2)
+        {
+            fStatement.add(String(1));
+            fStatement.add(String(evt.p[pCnt]));
+        }
+
+        //now set table number and set score char to f
+        fStatement.set(1, String(table->tableNumber));
+        fStatement.set(0, "f");
+
+        processor.getCsound()->GetCsound()->hfgens(processor.getCsound()->GetCsound(), &ftpp, &evt, 1);
+        Array<float, CriticalSection> points;
+
+        points = Array<float, CriticalSection>(ftpp->ftable, ftpp->flen);
+        table->setWaveform(points, false);
+        //table->enableEditMode(fStatement);
+
+        processor.getCsound()->InputMessage(fStatement.joinIntoString(" ").toUTF8());
+    }
+
+}
+
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 {

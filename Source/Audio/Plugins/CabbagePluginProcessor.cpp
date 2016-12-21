@@ -44,7 +44,7 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile)
 
 CabbagePluginProcessor::~CabbagePluginProcessor()
 {
-
+	xyAutomator.clear();
 }
 
 //==============================================================================
@@ -182,15 +182,13 @@ void CabbagePluginProcessor::createParameters()
 			{
 				if(typeOfWidget==CabbageIdentifierIds::xypad)
 				{
-					const String xChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::xchannel);
-					const String yChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::ychannel);
-					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), xChannel, name+"_x", 0, 1, value));
-					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), yChannel, name+"_y", 0, 1, value));
+					const var channel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+					//const String yChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::ychannel);
+					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[0] , name+"_x", 0, 1, value));
+					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[1], name+"_y", 0, 1, value));
 				}
 				else
 					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel, name, 0, 1, value));
-				
-
 					
 			}
         }

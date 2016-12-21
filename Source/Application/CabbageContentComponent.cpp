@@ -481,9 +481,12 @@ void CabbageContentComponent::openFile(String filename)
 
     PluginWindow::closeAllCurrentlyOpenWindows();
 
+	
+
     if(File(filename).existsAsFile() == false)
     {
-        FileChooser fc ("Open File");
+        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory());
+
         if (fc.browseForFileToOpen())
 		{
 			if(setCurrentCsdFile(fc.getResult()) == false)

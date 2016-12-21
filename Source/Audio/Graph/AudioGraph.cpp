@@ -243,6 +243,7 @@ Point<int> PluginWindow::getPositionOfCurrentlyOpenWindow(const uint32 nodeId)
             return Point<int>(activePluginWindows.getUnchecked(i)->getX(), activePluginWindows.getUnchecked(i)->getY());
     return Point<int>(-1000, -1000);
 }
+
 void PluginWindow::closeAllCurrentlyOpenWindows()
 {
     if (activePluginWindows.size() > 0)
@@ -252,7 +253,7 @@ void PluginWindow::closeAllCurrentlyOpenWindows()
 
         Component dummyModalComp;
         dummyModalComp.enterModalState();
-        MessageManager::getInstance()->runDispatchLoopUntil (50);
+        MessageManager::getInstance()->runDispatchLoopUntil(150);
     }
 }
 

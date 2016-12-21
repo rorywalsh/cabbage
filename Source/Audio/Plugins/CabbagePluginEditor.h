@@ -138,6 +138,7 @@ public:
 	//=============================================================================
     CabbageAudioParameter* getParameterForComponent (Component* button);
     //=============================================================================
+	void updatefTableData(GenTable* table);
 
 
 

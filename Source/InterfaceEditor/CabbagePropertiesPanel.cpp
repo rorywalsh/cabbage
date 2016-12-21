@@ -135,7 +135,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 
     addAndMakeVisible (propertyPanel);
 	//setColour(TextEditor::highlightColourId, Colour(100, 100, 100));
-	propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::hotpink);
+	propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::black);
 	
 	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 	
@@ -156,8 +156,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
 void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 {
     widgetData = wData;
-	
-	propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::hotpink);
+
 	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 	
     propertyPanel.clear();
@@ -388,6 +387,21 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 
 	}
 	
+	else if(typeOfWidget == "xypad")
+	{
+		const String colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
+		const String backgroundColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::backgroundcolour);
+		const String textColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
+		const String fontColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+		const String ballColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::ballcolour);
+		
+		comps.add(new ColourPropertyComponent("Colour", colour));	
+		comps.add(new ColourPropertyComponent("Ball", ballColour));
+		comps.add(new ColourPropertyComponent("Background", backgroundColour));
+		comps.add(new ColourPropertyComponent("Text Colour", textColour));
+		comps.add(new ColourPropertyComponent("Font", fontColour));
+
+	}
     alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
     alphaValue.addListener(this);
     comps.add(new SliderPropertyComponent(alphaValue, "Alpha", 0, 1, .01, 1, 1));

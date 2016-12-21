@@ -28,13 +28,12 @@
 // in the derived class's constructor, and handleCommonUpdates() in its valueTreePropertyChanged() method.
 class CabbageWidgetBase
 {
-
 	int pivotx, pivoty, visible, active, value;
 	float rotate, alpha, currentValue;
 	String tooltipText, text, channel, csdFile;
 	File imgButtonOn, imgButtonOff, imgPath;
-	StringArray channelArray;	//can be used if widget supports multiple channel
-	StringArray textArray;	//can be used used if widget supports multiple text items
+	StringArray channelArray;	//can be used if widget supports multiple channels
+	StringArray textArray;		//can be used used if widget supports multiple text items
 
 public:
 	CabbageWidgetBase() {}

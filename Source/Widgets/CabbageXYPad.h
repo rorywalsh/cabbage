@@ -39,7 +39,7 @@ class CabbageXYPad
   public ChangeListener
 {
 	CabbagePluginEditor* owner;
-	Colour fontColour;
+	Colour fontColour, textColour, colour, bgColour, ballColour;
 	Rectangle<float> xyPadRect;
 	Line<float> dragLine;
 	bool isAutomating = false;
@@ -55,13 +55,14 @@ class CabbageXYPad
 	class XYBall : public Component
 	{
 		Point<int> ballXY;
+		Colour colour;
 
 	public:
-
+		void setColour(Colour col){	colour = col;	repaint();}
 		XYBall() {}
 		void paint(Graphics& g) {
 			g.fillAll(Colours::transparentBlack);
-			g.setColour(Colours::red);
+			g.setColour(colour);
 			g.fillEllipse(getLocalBounds().toFloat());
 		}
 	};
@@ -79,11 +80,6 @@ public:
 	void valueTreeParentChanged (ValueTree&) override {};
 
 	void changeListenerCallback(ChangeBroadcaster* source);
-	Rectangle<float> getXYPadRect() {
-		return xyPadRect;
-	}
-	void setValues(float x, float y);
-
 	ValueTree widgetData;
 
 	void paint(Graphics& g);
@@ -92,12 +88,11 @@ public:
 	void mouseDrag(const MouseEvent& e);
 	void mouseUp(const MouseEvent& e);
 
-	Slider& getSliderX() {
-		return xAxis;
-	}
-	Slider& getSliderY() {
-		return yAxis;
-	}
+	Slider& getSliderX() {	return xAxis;	}
+	Slider& getSliderY() {	return yAxis;	}
+	Rectangle<float> getXYPadRect() {	return xyPadRect;	}
+	
+	void setValues(float x, float y);
 
 	Point<int> constrainPosition(float x, float y);
 	Point<float> getPositionAsValue(Point<float> position);
@@ -106,6 +101,7 @@ public:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageXYPad);
 };
 
+//=============================================================================
 class XYPadAutomator : public ChangeBroadcaster, public Timer
 {
 	String name;
@@ -126,6 +122,7 @@ public:
 
 	~XYPadAutomator() 
 	{
+		stopTimer();
 		removeAllChangeListeners();
 	}
 

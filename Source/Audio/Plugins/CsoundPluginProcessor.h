@@ -98,6 +98,7 @@ public:
 	const Array<float, CriticalSection> getTableFloats(int tableNum);
 	int checkTable(int tableNum);
 	std::vector<MYFLT> temp;
+	
     //=============================================================================
     //Implement these to init, send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel

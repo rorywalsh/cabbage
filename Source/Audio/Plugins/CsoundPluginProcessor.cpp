@@ -217,6 +217,8 @@ int CsoundPluginProcessor::checkTable(int tableNum)
     return -1;
 #endif
 }
+
+
 //==============================================================================
 String CsoundPluginProcessor::getCsoundOutput()
 {

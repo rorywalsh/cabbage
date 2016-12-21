@@ -51,8 +51,8 @@ void CabbageWidgetData::setXYPadProperties(ValueTree widgetData, int ID)
 	channels.append("xChan");
 	channels.append("yChan");
 	setProperty(widgetData, CabbageIdentifierIds::xyautoindex, 0);
-	setProperty(widgetData, CabbageIdentifierIds::xchannel, channels[0]);
-	setProperty(widgetData, CabbageIdentifierIds::ychannel, channels[1]);
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	//setProperty(widgetData, CabbageIdentifierIds::ychannel, channels[1]);
 	setProperty(widgetData, CabbageIdentifierIds::top, 10);
 	setProperty(widgetData, CabbageIdentifierIds::left, 10);
 	setProperty(widgetData, CabbageIdentifierIds::caption, "");
@@ -65,9 +65,11 @@ void CabbageWidgetData::setXYPadProperties(ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::maxy, 200);
 	setProperty(widgetData, CabbageIdentifierIds::valuex, 0);
 	setProperty(widgetData, CabbageIdentifierIds::valuey, 0);
-	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::lime.toString());
+	setProperty(widgetData, CabbageIdentifierIds::ballcolour, Colours::lime.toString());
 	setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
 	setProperty(widgetData, CabbageIdentifierIds::textcolour, Colours::cornflowerblue.toString());
+	setProperty(widgetData, CabbageIdentifierIds::backgroundcolour, CabbageUtilities::getComponentSkin().toString());
+	setProperty(widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentSkin().toString());
 	setProperty(widgetData, CabbageIdentifierIds::type, "xypad");
 	setProperty(widgetData, CabbageIdentifierIds::name, "xypad");
 	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));

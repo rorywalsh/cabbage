@@ -32,8 +32,8 @@ void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree d
      active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
 	 channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
      tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
-    child->setBounds(CabbageWidgetData::getBounds(data));
-    child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
+     child->setBounds(CabbageWidgetData::getBounds(data));
+     child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
 	 text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
 	 currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value);
 	
@@ -70,6 +70,11 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bo
         child->setEnabled( visible==1 ? true : false);
     }
 
+	if(text != CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text))
+	{
+		text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
+	}
+	 
     if( active != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active))
     {
          active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
