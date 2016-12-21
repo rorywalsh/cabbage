@@ -30,7 +30,7 @@ class CabbagePluginProcessor
 	: public CsoundPluginProcessor
 {
 public:
-    CabbagePluginProcessor(File inputFile);
+    CabbagePluginProcessor(File inputFile = File());
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;

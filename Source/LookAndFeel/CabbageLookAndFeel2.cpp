@@ -676,40 +676,57 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
         const float ih = (height * scale);
         const float iy = ((height-ih)/2.f);
 
-        //gradient fill for tracker...
-		if(useGradient)
-		{
-			if(slider.getMinimum()>=0)
-				g.setGradientFill(ColourGradient (Colours::transparentBlack, 0, 0, trackColour, width*0.25, 0, false));
-			else
-				g.setGradientFill(ColourGradient(Colours::transparentBlack,
-												 (slider.getValue()<= 0 ? zeroPosProportional*width*1.25 : zeroPosProportional*width),
-												 0,
-												 trackColour,
-												 (slider.getValue()<= 0 ? 0 : width),
-												 0,
-												 false));
-		}
-		else
-			g.setColour(trackColour);
-
-		if(slider.getValue()>0)
-			g.fillRoundedRectangle (zeroPosProportional*width + sliderRadius, iy,
-									sliderPos - sliderRadius*0.5 - zeroPosProportional*width, ih,
-									5.0f);
-		else
-			g.fillRoundedRectangle(sliderPos, iy,
-								   jmax(0.f, zeroPosProportional*width + sliderRadius - sliderPos), ih,
-								   5.0f);
-
-
-        if(!usingImg)
+		//gradient fill for tracker...
+        if(slider.getSliderStyle()==Slider::TwoValueHorizontal)
         {
-            g.fillPath (indent);
-            g.setColour (Colour (0x4c000000));
-            g.strokePath (indent, PathStrokeType (0.3f));
+            g.setColour(trackColour);
+            const float minPos = slider.valueToProportionOfLength(slider.getMinValue())*width;
+            const float maxPos = slider.valueToProportionOfLength(slider.getMaxValue())*width;
+            indent.addRoundedRectangle(minPos + sliderRadius, iy, maxPos-minPos, ih, 5.0f);
         }
+        else if(slider.getSliderStyle()==Slider::ThreeValueHorizontal)
+        {
+            g.setColour(trackColour);
+            const float minPos = slider.valueToProportionOfLength(slider.getMinValue())*width;
+            const float currentPos = slider.valueToProportionOfLength(slider.getValue())*width;
+            indent.addRoundedRectangle(minPos + sliderRadius, iy, currentPos-minPos, ih, 5.0f);
+        }
+		else
+		{
+			//gradient fill for tracker...
+			if(useGradient)
+			{
+				if(slider.getMinimum()>=0)
+					g.setGradientFill(ColourGradient (Colours::transparentBlack, 0, 0, trackColour, width*0.25, 0, false));
+				else
+					g.setGradientFill(ColourGradient(Colours::transparentBlack,
+													 (slider.getValue()<= 0 ? zeroPosProportional*width*1.25 : zeroPosProportional*width),
+													 0,
+													 trackColour,
+													 (slider.getValue()<= 0 ? 0 : width),
+													 0,
+													 false));
+			}
+			else
+				g.setColour(trackColour);
 
+			if(slider.getValue()>0)
+				g.fillRoundedRectangle (zeroPosProportional*width + sliderRadius, iy,
+										sliderPos - sliderRadius*0.5 - zeroPosProportional*width, ih,
+										5.0f);
+			else
+				g.fillRoundedRectangle(sliderPos, iy,
+									   jmax(0.f, zeroPosProportional*width + sliderRadius - sliderPos), ih,
+									   5.0f);
+
+
+			if(!usingImg)
+			{
+				g.fillPath (indent);
+				g.setColour (Colour (0x4c000000));
+				g.strokePath (indent, PathStrokeType (0.3f));
+			}
+		}
     }
     else //vertical
     {

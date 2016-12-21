@@ -45,6 +45,7 @@
 #include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageSoundfiler.h"
+#include "../../Widgets/CabbageRangeSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 
 class CabbagePluginEditor;
@@ -85,7 +86,7 @@ public:
     void insertButton(ValueTree cabbageWidgetData);
     void insertCheckbox(ValueTree cabbageWidgetData);
     void insertXYPad(ValueTree cabbageWidgetData);
-    void insertRangeSlider(ValueTree cabbageWidgetData) {};
+    void insertRangeSlider(ValueTree cabbageWidgetData);
 	void insertNumberBox(ValueTree cabbageWidgetData);
 	void insertEncoder(ValueTree cabbageWidgetData);
     //the following methods instantiate controls that CANNOT

@@ -25,12 +25,25 @@ char tmp_string[4096] = {0};
 char channelMessage[4096] = {0};
 
 
+#ifndef Cabbage_IDE_Build
+AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+	const File csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+	if (!csdFile.existsAsFile())
+	{
+		CabbageUtilities::debug(csdFile.getFullPathName());
+	}	
+    return new CabbagePluginProcessor(csdFile);
+};
+#endif
+
+//============================================================================
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile)
     :CsoundPluginProcessor(inputFile),
      csdFile(inputFile),
      cabbageWidgets("CabbageWidgetData")
 {
-
+	
     //initAllCsoundChannels(cabbageWidgets);
     if(inputFile.existsAsFile())
     {

@@ -176,6 +176,10 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 	
 	else if(widgetType==CabbageIdentifierIds::xypad)
 		insertXYPad(cabbageWidgetData);
+		
+	else if(widgetType==CabbageIdentifierIds::hrange
+			|| widgetType==CabbageIdentifierIds::vrange)
+		insertRangeSlider(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -192,6 +196,13 @@ void CabbagePluginEditor::insertComboBox(ValueTree cabbageWidgetData)
     components.add(combobox = new CabbageComboBox(cabbageWidgetData, this));
     combobox->addListener(this);
     addToEditorAndMakeVisible(combobox, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertRangeSlider(ValueTree cabbageWidgetData)
+{
+    CabbageRangeSlider* rangeSlider;
+    components.add(rangeSlider = new CabbageRangeSlider(cabbageWidgetData));
+    addToEditorAndMakeVisible(rangeSlider, cabbageWidgetData);		
 }
 
 void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
