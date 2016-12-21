@@ -121,10 +121,10 @@ void CabbageSlider::resized()
 {
 	if (sliderType.contains("rotary"))
 	{
-			if(_text.isNotEmpty())
+			if(getText().isNotEmpty())
 			{
 				
-				textLabel.setText(_text, dontSendNotification);
+				textLabel.setText(getText(), dontSendNotification);
 				textLabel.setJustificationType(Justification::centred);
 				textLabel.setVisible(true);
 					
@@ -147,10 +147,10 @@ void CabbageSlider::resized()
 	//else if vertical
 	else if (sliderType.contains("vertical"))
 	{
-		if(_text.isNotEmpty())
+		if(getText().isNotEmpty())
 		{
 			textLabel.setJustificationType(Justification::centred);
-			textLabel.setText(_text, dontSendNotification);
+			textLabel.setText(getText(), dontSendNotification);
 			textLabel.setVisible(true);
 			
 			if(shouldShowTextBox>0)
@@ -173,10 +173,10 @@ void CabbageSlider::resized()
 	//else if horizontal
 	else
 	{
-		if(_text.isNotEmpty())
+		if(getText().isNotEmpty())
 		{
-			const float width = textLabel.getFont().getStringWidthFloat(_text)+10.f;
-			textLabel.setText(_text, dontSendNotification);
+			const float width = textLabel.getFont().getStringWidthFloat(getText())+10.f;
+			textLabel.setText(getText(), dontSendNotification);
 			textLabel.setVisible(true);
 			
 			if(shouldShowTextBox>0)
@@ -200,8 +200,8 @@ void CabbageSlider::resized()
 
 void CabbageSlider::showPopupBubble()
 {
-	if(_tooltipText.isNotEmpty())
-		popupText = _tooltipText;
+	if(getTooltipText().isNotEmpty())
+		popupText = getTooltipText();
 	else
 		popupText = channel+": "+String(CabbageUtilities::roundToPrec(slider.getValue(), decimalPlaces));
 

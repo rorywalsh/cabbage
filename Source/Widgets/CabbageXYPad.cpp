@@ -142,8 +142,8 @@ void CabbageXYPad::paint(Graphics& g)
     g.setColour(fontColour);
     Font font = CabbageUtilities::getComponentFont();
     g.setFont (font);
-    float strWidth = font.getStringWidthFloat (_text);
-    g.drawText (_text, getWidth()-strWidth-10, getHeight()-(font.getHeight()+3),
+    float strWidth = font.getStringWidthFloat (getText());
+    g.drawText (getText(), getWidth()-strWidth-10, getHeight()-(font.getHeight()+3),
                 strWidth, font.getHeight(), 1, false);	
 
 	//xypad background 

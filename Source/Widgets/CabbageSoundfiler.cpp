@@ -60,10 +60,10 @@ void CabbageSoundfiler::changeListenerCallback(ChangeBroadcaster* source)
 	const float position = getScrubberPosition();
 	const float length = getLoopLength();	
 	
-	owner->sendChannelDataToCsound(_channelArray[0], position);
+	owner->sendChannelDataToCsound(getChannelArray()[0], position);
 	
-	if(_channelArray.size()>1)
-		owner->sendChannelDataToCsound(_channelArray[0], length);
+	if(getChannelArray().size()>1)
+		owner->sendChannelDataToCsound(getChannelArray()[0], length);
 }
 
 void CabbageSoundfiler::resized()

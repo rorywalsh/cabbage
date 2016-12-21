@@ -54,7 +54,7 @@ CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
     initialiseCommonAttributes(this, wData);
     setImgProperties(*this, wData, "buttonon");
     setImgProperties(*this, wData, "buttonoff");
-    setToggleState(_currentValue==1 ? true : false, dontSendNotification);
+    setToggleState(getCurrentValue()==1 ? true : false, dontSendNotification);
 }
 
 //==============================================================================

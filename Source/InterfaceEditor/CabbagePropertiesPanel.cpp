@@ -594,10 +594,28 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors(CabbageProp
 		
 		
     }
-
-    const String value = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), decimalPlaces);
-    comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
-
+	
+	if(typeOfWidget == "xypad")
+    {
+        const String minx = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::minx), decimalPlaces);
+        const String maxx = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::maxx), decimalPlaces);
+        const String miny = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::miny), decimalPlaces);
+        const String maxy = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::maxy), decimalPlaces);
+        const String valuex = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuex), decimalPlaces);
+        const String valuey = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuey), decimalPlaces);
+		
+		comps.add(new TextPropertyComponent(Value(minx), "Min: X", 8, false));
+		comps.add(new TextPropertyComponent(Value(maxx), "Max: X", 8, false));
+		comps.add(new TextPropertyComponent(Value(miny), "Min: Y", 8, false));
+		comps.add(new TextPropertyComponent(Value(maxy), "Max: Y", 8, false));
+		comps.add(new TextPropertyComponent(Value(valuex), "Value X", 8, false));
+		comps.add(new TextPropertyComponent(Value(valuey), "Value Y", 8, false));		
+	}
+	else
+	{
+		const String value = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), decimalPlaces);
+		comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
+	}
     addListener(comps, owner);
 
     return comps;

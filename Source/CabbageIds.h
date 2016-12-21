@@ -670,7 +670,12 @@ public:
 		set("Text Align", CabbageIdentifierIds::align.toString());		
 		set("Align", CabbageIdentifierIds::align.toString());
 		set("Velocity", CabbageIdentifierIds::velocity.toString());
-
+		set("Min: X", CabbageIdentifierIds::minx.toString());
+		set("Max: X", CabbageIdentifierIds::maxx.toString());
+		set("Min: Y", CabbageIdentifierIds::miny.toString());
+		set("Max: Y", CabbageIdentifierIds::maxy.toString());
+		set("Value X", CabbageIdentifierIds::valuex.toString());
+		set("Value Y", CabbageIdentifierIds::valuey.toString());
     }
 };
 

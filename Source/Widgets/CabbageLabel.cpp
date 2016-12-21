@@ -63,7 +63,7 @@ void CabbageLabel::mouseDown(const MouseEvent& event)
     if(!event.mods.isPopupMenu())
     {
         counter = (counter==0 ? 1 : 0);
-        owner->sendChannelDataToCsound(_channel, counter);
+        owner->sendChannelDataToCsound(getChannel(), counter);
     }
 }
 

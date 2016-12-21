@@ -27,11 +27,11 @@ CabbageButton::CabbageButton(ValueTree wData)
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
 	setLookAndFeelColours(wData);
 	
-	_value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);	
-	setButtonText(_textArray[_value]);
+
+	setButtonText(getTextArray()[getValue()]);
 	setClickingTogglesState(true);
 	
-	setToggleState((bool)_value, dontSendNotification);
+	setToggleState((bool)getValue(), dontSendNotification);
 	
 	
 	if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup)!=0)
@@ -54,8 +54,8 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 	
 	if(prop==CabbageIdentifierIds::value)
     {
-		_value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
-		setToggleState(_value==0 ? false : true, dontSendNotification);
+		setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
+		setToggleState(getValue()==0 ? false : true, dontSendNotification);
     }
 	else
 	{
@@ -63,6 +63,6 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 		setLookAndFeelColours(valueTree);
 		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 		
-		setButtonText(_textArray[_value]);
+		setButtonText(getTextArray()[getValue()]);
 	}
 }

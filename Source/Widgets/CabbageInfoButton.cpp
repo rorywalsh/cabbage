@@ -28,7 +28,7 @@ CabbageInfoButton::CabbageInfoButton(ValueTree wData)
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
 	setLookAndFeelColours(wData);
 
-	setButtonText(_text);
+	setButtonText(getText());
 
 	filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
 
@@ -41,8 +41,8 @@ CabbageInfoButton::CabbageInfoButton(ValueTree wData)
 //===============================================================================
 void CabbageInfoButton::buttonClicked(Button* button)
 {
-	CabbageUtilities::debug(File(_csdFile).getParentDirectory().getChildFile(filename).getFullPathName());
-	if(File(_csdFile).getParentDirectory().getChildFile(filename).existsAsFile())
+	CabbageUtilities::debug(File(getCsdFile()).getParentDirectory().getChildFile(filename).getFullPathName());
+	if(File(getCsdFile()).getParentDirectory().getChildFile(filename).existsAsFile())
 	{
 		URL url(filename);
 		url.launchInDefaultBrowser();
@@ -64,5 +64,5 @@ void CabbageInfoButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
 	setLookAndFeelColours(valueTree);
 	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 		
-	setButtonText(_text);
+	setButtonText(getText());
 }

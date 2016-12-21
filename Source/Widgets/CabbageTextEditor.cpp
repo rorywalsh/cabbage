@@ -59,7 +59,7 @@ void CabbageTextEditor::sendTextToCsound()
 	strings.removeDuplicates(false);
 	stringIndex = strings.size()-1;
 
-	owner->sendChannelStringDataToCsound(_channel, textEditor.getText());
+	owner->sendChannelStringDataToCsound(getChannel(), textEditor.getText());
 }
 	
 bool CabbageTextEditor::keyPressed(const juce::KeyPress &key,Component *)

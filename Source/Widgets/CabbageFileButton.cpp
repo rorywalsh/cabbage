@@ -29,7 +29,7 @@ CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
 	setLookAndFeelColours(wData);
 
-	setButtonText(_text);
+	setButtonText(getText());
 	
 	mode = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mode);
 
@@ -48,7 +48,7 @@ void CabbageFileButton::buttonClicked(Button* button)
 		FileChooser fc ("Open File");
 		if (fc.browseForFileToOpen())
 		{
-			owner->sendChannelStringDataToCsound(_channel, fc.getResult().getFullPathName());
+			owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
 		}
 	}
 	
@@ -57,7 +57,7 @@ void CabbageFileButton::buttonClicked(Button* button)
 		FileChooser fc ("Open Directory");
 		if (fc.browseForDirectory())
 		{
-			owner->sendChannelStringDataToCsound(_channel, fc.getResult().getFullPathName());
+			owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
 		}
 	}
 	
@@ -82,5 +82,5 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
 	setLookAndFeelColours(valueTree);
 	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
 	
-	setButtonText(_text);
+	setButtonText(getText());
 }
