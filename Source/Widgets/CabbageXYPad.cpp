@@ -109,14 +109,14 @@ void CabbageXYPad::changeListenerCallback(ChangeBroadcaster* source)
 {
 	if(XYPadAutomator* xyAuto = dynamic_cast<XYPadAutomator*>(source))
 	{
-		Point<float> pos(getValueAsPosition(Point<float>(xyAuto->position.getX(), xyAuto->position.getY())));
+		Point<float> pos(getValueAsPosition(Point<float>(xyAuto->getPosition().getX(), xyAuto->getPosition().getY())));
 		pos.addXY(-ball.getWidth()/2, -ball.getWidth()/2);
 		ball.setBounds(pos.getX(), pos.getY(), 20, 20);
 		
-		if(xyAuto->repaintBackground==true)
+		if(xyAuto->getShouldRepaintBackground()==true)
 		{
 			repaint();
-			xyAuto->repaintBackground = false;
+			xyAuto->setRepaintBackground(false);
 		}
 	}
 }

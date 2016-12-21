@@ -258,10 +258,10 @@ void CabbagePluginProcessor::addXYAutomator(CabbageXYPad* xyPad, ValueTree wData
 		if(xParameter && yParameter)
 		{
 			xyAutomator.add(xyAuto = new XYPadAutomator(xyPad->getName(), xParameter, yParameter));
-			xyAuto->xMin = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::minx);
-			xyAuto->yMin = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::miny);
-			xyAuto->xMax = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxx);
-			xyAuto->yMax = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxy);
+			xyAuto->setXMin(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::minx));
+			xyAuto->setYMin(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::miny));
+			xyAuto->setXMax(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxx));
+			xyAuto->setYMax(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxy));
 			xyAuto->addChangeListener(xyPad);
 		}
 	}
@@ -280,13 +280,13 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 		{
 			if(enable == true)
 			{
-				xyAuto->dragLine = dragLine;
-				xyAuto->xValue = dragLine.getEndX();
-				xyAuto->yValue = dragLine.getEndY();
-				xyAuto->xValueIncrement = (dragLine.getEndX()-dragLine.getStartX())*.05;
-				xyAuto->yValueIncrement = (dragLine.getEndY()-dragLine.getStartY())*.05;
-				xyAuto->repaintBackground = true;
-				xyAuto->isPluginEditorOpen = getActiveEditor() != nullptr ? true : false;
+				xyAuto->setDragLine(dragLine);
+				xyAuto->setXValue(dragLine.getEndX());
+				xyAuto->setYValue(dragLine.getEndY());
+				xyAuto->setXValueIncrement((dragLine.getEndX()-dragLine.getStartX())*.05);
+				xyAuto->setYValueIncrement((dragLine.getEndY()-dragLine.getStartY())*.05);
+				xyAuto->setRepaintBackground(true);
+				xyAuto->setIsPluginEditorOpen(getActiveEditor() != nullptr ? true : false);
 				xyAuto->startTimer(20);
 			}
 			else
