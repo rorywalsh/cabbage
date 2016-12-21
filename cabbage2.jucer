@@ -209,6 +209,10 @@
               file="Source/Widgets/CabbageNumberBox.cpp"/>
         <FILE id="rgWkcR" name="CabbageNumberBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageNumberBox.h"/>
+        <FILE id="EDLpH3" name="CabbageRangeSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRangeSlider.cpp"/>
+        <FILE id="rZ2XD3" name="CabbageRangeSlider.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRangeSlider.h"/>
         <FILE id="oSUoN9" name="CabbageSignalDisplay.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSignalDisplay.cpp"/>
         <FILE id="zLa0Pm" name="CabbageSignalDisplay.h" compile="0" resource="0"
