@@ -680,16 +680,9 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
         if(slider.getSliderStyle()==Slider::TwoValueHorizontal)
         {
             g.setColour(trackColour);
-            const float minPos = slider.valueToProportionOfLength(slider.getMinValue())*width;
-            const float maxPos = slider.valueToProportionOfLength(slider.getMaxValue())*width;
-            indent.addRoundedRectangle(minPos + sliderRadius, iy, maxPos-minPos, ih, 5.0f);
-        }
-        else if(slider.getSliderStyle()==Slider::ThreeValueHorizontal)
-        {
-            g.setColour(trackColour);
-            const float minPos = slider.valueToProportionOfLength(slider.getMinValue())*width;
-            const float currentPos = slider.valueToProportionOfLength(slider.getValue())*width;
-            indent.addRoundedRectangle(minPos + sliderRadius, iy, currentPos-minPos, ih, 5.0f);
+            const double minPos = slider.valueToProportionOfLength(slider.getMinValue())*width;
+            const double maxPos = slider.valueToProportionOfLength(slider.getMaxValue())*width;
+			g.fillRoundedRectangle(minPos + sliderRadius*1.5, height*0.425, (maxPos-minPos)+(sliderRadius*.5), height*0.15, height*0.05);
         }
 		else
 		{
@@ -719,13 +712,6 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
 									   jmax(0.f, zeroPosProportional*width + sliderRadius - sliderPos), ih,
 									   5.0f);
 
-
-			if(!usingImg)
-			{
-				g.fillPath (indent);
-				g.setColour (Colour (0x4c000000));
-				g.strokePath (indent, PathStrokeType (0.3f));
-			}
 		}
     }
     else //vertical
@@ -757,42 +743,44 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics &g, int x, int y,
         const float iw = (width* scale);
         const float ix = ((width-iw)/2.f);
 
-		if(useGradient)
-		{
-			if(slider.getMinimum()>=0)
-				g.setGradientFill(ColourGradient(Colours::transparentBlack, 0, height, trackColour, 0, height*0.8, false));
-			else
-				g.setGradientFill(ColourGradient(Colours::transparentBlack,
-												 0,
-												 (slider.getValue()<= 0 ? zeroPosProportional*height : zeroPosProportional*height*1.25),
-												 trackColour,
-												 0,
-												 (slider.getValue()<= 0 ? height : 0),
-												 false));
-		}
-		else
-			g.setColour(trackColour);
-
-
-		if(slider.getValue()>=0)
-		{
-			const int sliderHeight = jmax(0.f, height - sliderPos + sliderRadius+1.5f - zeroPosProportional*height);
-			g.fillRoundedRectangle(ix, y + sliderPos - sliderRadius*2,
-									iw, sliderHeight,
-									3.0f);
-		}
-		else
-			g.fillRoundedRectangle (ix, zeroPosProportional*height+sliderRadius,
-									iw, sliderPos - sliderRadius - zeroPosProportional*height,
-									3.0f);
-
-
-        if(!usingImg)
+        if(slider.getSliderStyle()==Slider::TwoValueVertical)
         {
-            g.fillPath (indent);
-            g.setColour (Colour (0x4c000000));
-            g.strokePath (indent, PathStrokeType (0.3f));
+            g.setColour(trackColour);
+            const float minPos = slider.valueToProportionOfLength(slider.getMinValue())*height;
+            const float maxPos = slider.valueToProportionOfLength(slider.getMaxValue())*height;
+			g.fillRoundedRectangle(width*0.44, jmax(0.f, height-maxPos)+sliderRadius*1.5f, width*0.15, maxPos - minPos, width*0.05);
         }
+		else
+		{
+			if(useGradient)
+			{
+				if(slider.getMinimum()>=0)
+					g.setGradientFill(ColourGradient(Colours::transparentBlack, 0, height, trackColour, 0, height*0.8, false));
+				else
+					g.setGradientFill(ColourGradient(Colours::transparentBlack,
+													 0,
+													 (slider.getValue()<= 0 ? zeroPosProportional*height : zeroPosProportional*height*1.25),
+													 trackColour,
+													 0,
+													 (slider.getValue()<= 0 ? height : 0),
+													 false));
+			}
+			else
+				g.setColour(trackColour);
+
+
+			if(slider.getValue()>=0)
+			{
+				const int sliderHeight = jmax(0.f, height - sliderPos + sliderRadius+1.5f - zeroPosProportional*height);
+				g.fillRoundedRectangle(ix, y + sliderPos - sliderRadius*2,
+										iw, sliderHeight,
+										3.0f);
+			}
+			else
+				g.fillRoundedRectangle (ix, zeroPosProportional*height+sliderRadius,
+										iw, sliderPos - sliderRadius - zeroPosProportional*height,
+										3.0f);
+		}
     }
 
 }
@@ -876,6 +864,27 @@ void CabbageLookAndFeel2::drawLinearSliderThumb (Graphics& g, int x, int y, int 
                                        sliderHeight,
                                        knobColour, outlineThickness);
         }
+            if (style == Slider::TwoValueVertical || style == Slider::ThreeValueVertical)
+            {
+                const float sr = jmin (sliderRadius, width * 0.4f);
+                drawTwoValueThumb (g, jmax (0.0f, x + width * 0.5f - sliderRadius * 2.0f),
+                                          minSliderPos - sliderRadius,
+                                          sliderRadius * 2.0f, knobColour, outlineThickness, 1);
+
+                drawTwoValueThumb (g, jmin (x + width - sliderRadius * 2.0f, x + width * 0.5f), maxSliderPos - sr,
+                                          sliderRadius * 2.0f, knobColour, outlineThickness, 3);
+            }
+            else if (style == Slider::TwoValueHorizontal || style == Slider::ThreeValueHorizontal)
+            {
+                const float sr = jmin (sliderRadius, height * 0.4f);
+                drawTwoValueThumb (g, minSliderPos - sr,
+                                          jmax (0.0f, y + height * 0.5f - sliderRadius * 2.0f)-height*.01,
+                                          sliderRadius * 2.0f, knobColour, outlineThickness, 2);
+
+                drawTwoValueThumb (g, maxSliderPos - sliderRadius,
+                                          jmin (y + height - sliderRadius * 2.0f, y + height * 0.5f)+height*.01,
+                                          sliderRadius * 2.0f, knobColour, outlineThickness, 4);
+            }
     }
 }
 
@@ -959,7 +968,7 @@ void CabbageLookAndFeel2::drawSphericalThumb (Graphics& g, const float x, const 
 	g.fillEllipse (x+1, y+1, w, h);
 }
 //====================================================================================================
-void CabbageLookAndFeel2::drawGlassPointer (Graphics& g, float x, float y, float diameter,
+void CabbageLookAndFeel2::drawTwoValueThumb (Graphics& g, float x, float y, float diameter,
 							  const Colour& colour, float outlineThickness, int direction)
 {
 	if (diameter <= outlineThickness)
@@ -967,10 +976,15 @@ void CabbageLookAndFeel2::drawGlassPointer (Graphics& g, float x, float y, float
 
 	Path p;
 
-	p.startNewSubPath (x + diameter * 0.5f, y);
-	p.lineTo (x + diameter*.9f, y + diameter * 0.6f);
+	p.startNewSubPath(x+diameter*.2, y-diameter*.2);
+	p.lineTo(x+diameter*.8, y-diameter*.2);
+	p.lineTo(x+diameter, y+diameter);
+	p.lineTo(x, y+diameter);
+	
+	//p.startNewSubPath (x + diameter * 0.5f, y-5);
+	//p.lineTo (x + diameter*2, y + diameter*2);
 	//    p.lineTo (x + diameter, y + diameter);
-	p.lineTo (diameter*.1f+x, y + diameter*0.6f);
+	//p.lineTo (x, y + diameter*2);
 	//    p.lineTo (x, y + diameter * 0.6f);
 	p.closeSubPath();
 
@@ -978,7 +992,7 @@ void CabbageLookAndFeel2::drawGlassPointer (Graphics& g, float x, float y, float
 
 	{
 		ColourGradient cg (Colours::white.overlaidWith (colour.withMultipliedAlpha (0.7f)), 0, y,
-						   Colours::white.overlaidWith (colour.withMultipliedAlpha (0.3f)), 0, y + diameter, false);
+						   Colours::white.overlaidWith (colour.withMultipliedAlpha (0.5f)), 0, y + diameter, false);
 
 		cg.addColour (0.4, Colours::white.overlaidWith (colour));
 

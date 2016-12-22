@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="1.0.0"
-              bundleIdentifier="com.yourcompany.CabbagePlugin" includeBinaryInAppConfig="1"
+              bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="0" buildAU="1" buildAUv3="0" buildRTAS="0"
-              buildAAX="0" pluginName="CabbagePlugin" pluginDesc="CabbagePlugin"
-              pluginManufacturer="yourcompany" pluginManufacturerCode="Manu"
-              pluginCode="Etrt" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="0"
-              pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
+              buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
+              pluginManufacturer="CabbageAudio" pluginManufacturerCode="Cabb"
+              pluginCode="RORY" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="1"
+              pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
               jucerVersion="4.3.0">
@@ -151,6 +151,10 @@
               file="Source/Widgets/CabbageNumberBox.cpp"/>
         <FILE id="Z05WE0" name="CabbageNumberBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageNumberBox.h"/>
+        <FILE id="SYfwm2" name="CabbageRangeSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRangeSlider.cpp"/>
+        <FILE id="nAcfuY" name="CabbageRangeSlider.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRangeSlider.h"/>
         <FILE id="tJt8D3" name="CabbageSignalDisplay.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSignalDisplay.cpp"/>
         <FILE id="U57WSe" name="CabbageSignalDisplay.h" compile="0" resource="0"
@@ -190,9 +194,11 @@
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" externalLibraries="csound64&#10;sndfile">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
+                       defines="Cabbage_Plugin_Synth=1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
+                       defines="Cabbage_Plugin_Synth=1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
@@ -231,4 +237,7 @@
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
+  <LIVE_SETTINGS>
+    <LINUX/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>

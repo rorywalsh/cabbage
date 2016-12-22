@@ -679,6 +679,8 @@ public:
 		set("Max: Y", CabbageIdentifierIds::maxy.toString());
 		set("Value X", CabbageIdentifierIds::valuex.toString());
 		set("Value Y", CabbageIdentifierIds::valuey.toString());
+		set("Value Min", CabbageIdentifierIds::minvalue.toString());
+		set("Value Max", CabbageIdentifierIds::maxvalue.toString());
 		set("Background", CabbageIdentifierIds::backgroundcolour.toString());
 		set("Ball", CabbageIdentifierIds::ballcolour.toString());
 		

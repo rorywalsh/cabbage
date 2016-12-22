@@ -23,21 +23,51 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+class CabbagePluginEditor;
+class CabbageRangeSlider;
 
-class CabbageRangeSlider  : public Slider, public ValueTree::Listener, public CabbageWidgetBase
+class RangeSlider  : public Slider
 {
-	void mouseDown (const MouseEvent& event) override;
+	CabbageRangeSlider* owner;
+public:
+    RangeSlider(CabbageRangeSlider* owner);
+    
+    ~RangeSlider();
+    
+private:
+    void mouseDown (const MouseEvent& event) override;
+	void mouseExit (const MouseEvent& event) override;
     void mouseDrag (const MouseEvent& event) override;
+	void mouseEnter (const MouseEvent& event) override;
     void valueChanged() override;
 
     bool mouseDragBetweenThumbs;
-    float xMinAtThumbDown;
-    float xMaxAtThumbDown;
+    float xMinAtThumbDown, xMaxAtThumbDown;
+	float yMinAtThumbDown, yMaxAtThumbDown;
+};
+
+class CabbageRangeSlider  : public Component, public ValueTree::Listener, public CabbageWidgetBase
+{
+	CabbagePluginEditor* owner;
+    String name, text, textColour;
+    RangeSlider slider;
+    Label textLabel;
+    bool isVertical;
+	bool shouldDisplayPopup;
+    float minValue, maxValue, min, max, decimalPlaces, sliderIncrement, sliderSkew;	
+	BubbleMessageComponent popupBubble;
+	
+	void createPopupBubble();
+	void setLookAndFeelColours(ValueTree wData);
+	void setSliderValues(ValueTree wData);
 	
 public:
-    CabbageRangeSlider(ValueTree wData);    
+    CabbageRangeSlider(ValueTree wData, CabbagePluginEditor* _owner);    
     ~CabbageRangeSlider(){};
-
+	
+	
+	void resized();
+	void showPopup(int displayTime);
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
@@ -45,9 +75,10 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	LookAndFeel_V2 lookAndFeel;
-
+    RangeSlider& getSlider(){        return slider;    }	
+	
 	ValueTree widgetData;
+	
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageRangeSlider);
 
 };

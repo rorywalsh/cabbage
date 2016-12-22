@@ -100,6 +100,7 @@ OBJECTS := \
   $(JUCE_OBJDIR)/CabbageKeyboard_fa013309.o \
   $(JUCE_OBJDIR)/CabbageLabel_3cb7edc.o \
   $(JUCE_OBJDIR)/CabbageNumberBox_d8ec912a.o \
+  $(JUCE_OBJDIR)/CabbageRangeSlider_b2c3b526.o \
   $(JUCE_OBJDIR)/CabbageSignalDisplay_29ee9ee2.o \
   $(JUCE_OBJDIR)/CabbageSlider_1c8d4243.o \
   $(JUCE_OBJDIR)/CabbageSoundfiler_7f844aa9.o \
@@ -359,6 +360,11 @@ $(JUCE_OBJDIR)/CabbageLabel_3cb7edc.o: ../../Source/Widgets/CabbageLabel.cpp
 $(JUCE_OBJDIR)/CabbageNumberBox_d8ec912a.o: ../../Source/Widgets/CabbageNumberBox.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageNumberBox.cpp"
+	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CabbageRangeSlider_b2c3b526.o: ../../Source/Widgets/CabbageRangeSlider.cpp
+	-@mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling CabbageRangeSlider.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbageSignalDisplay_29ee9ee2.o: ../../Source/Widgets/CabbageSignalDisplay.cpp

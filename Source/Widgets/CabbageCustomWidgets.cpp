@@ -38,7 +38,7 @@ void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Id
 
 		
 		
-		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+		handleCommonUpdates(this, valueTree);		//handle common updates such as bounds, alpha, rotation, visible, etc	
 	}
 }
 //add any new custom widgets here to avoid having to eidt makefiles and projects

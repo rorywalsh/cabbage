@@ -40,21 +40,25 @@ class CabbageSlider
 	Slider slider;
 	BubbleMessageComponent popupBubble;
 	
+    void mouseDrag(const MouseEvent& event);
+	void mouseMove (const MouseEvent &event);
+    void mouseEnter (const MouseEvent &event);	
+	void createPopupBubble();
+	void showPopupBubble();	
+	void setLookAndFeelColours(ValueTree wData);
+	
 public:
 	CabbageSlider(ValueTree cAttr, CabbagePluginEditor* _owner);
 	~CabbageSlider();
 	
-	void setLookAndFeelColours(ValueTree wData);
+	
 	void setSliderVelocity(ValueTree wData);
 	void resized();
 	void initialiseSlider(ValueTree wData);
-	void createPopupBubble();
-	void showPopupBubble();	
+
 	void setTextBoxOrientation(String type, bool textBox);
 	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop);	
-    void mouseDrag(const MouseEvent& event);
-	void mouseMove (const MouseEvent &event);
-    void mouseEnter (const MouseEvent &event);	
+
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}

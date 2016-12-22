@@ -344,7 +344,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		else
 			comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));
     }
-    else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder")
+    else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder" || typeOfWidget.contains("range"))
     {
         const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
         const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
@@ -352,9 +352,15 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String trackerColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour);
         
 		comps.add(new ColourPropertyComponent("Colour", colourString));		
-		comps.add(new ColourPropertyComponent("Text Colour", textColourString));
+		
+		if(typeOfWidget.contains("range")== false)
+			comps.add(new ColourPropertyComponent("Text Colour", textColourString));
+		
 		comps.add(new ColourPropertyComponent("Font", fontColourString));
-		comps.add(new ColourPropertyComponent("Outline", outlineColourString));
+		
+		if(typeOfWidget == "rslider")
+			comps.add(new ColourPropertyComponent("Outline", outlineColourString));
+		
 		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
 	else if(typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
@@ -585,7 +591,8 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors(CabbageProp
     Array<PropertyComponent*> comps;
 	const int decimalPlaces = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::decimalplaces); //get precision of number to display
     const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-    if(typeOfWidget.contains("slider") || typeOfWidget=="encoder")
+	
+    if(typeOfWidget.contains("slider") || typeOfWidget=="encoder" || typeOfWidget.contains("range"))
     {
         const String min = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min), decimalPlaces);
         const String max = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max), decimalPlaces);
@@ -628,7 +635,16 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors(CabbageProp
 	else
 	{
 		const String value = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), decimalPlaces);
-		comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
+		
+		if(typeOfWidget.contains("range"))
+		{
+			const String minValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::minvalue), decimalPlaces);
+			const String maxValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::maxvalue), decimalPlaces);
+			comps.add(new TextPropertyComponent(Value(minValue), "Value Min", 8, false));
+			comps.add(new TextPropertyComponent(Value(maxValue), "Value Max", 8, false));
+		}
+		else
+			comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
 	}
     addListener(comps, owner);
 

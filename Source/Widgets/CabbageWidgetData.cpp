@@ -116,8 +116,15 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
 
     else if(strTokens[0].trim() == "xypad")
 		setXYPadProperties(widgetData, ID);
+		
     else if(strTokens[0].trim() == "gentable")
 		setGenTableProperties(widgetData, ID);
+	
+    else if(strTokens[0].trim() == "hrange")
+		setHRangeSliderProperties(widgetData, ID);
+
+    else if(strTokens[0].trim() == "vrange")
+		setVRangeSliderProperties(widgetData, ID);
 
     //===============table==================//
     else if(strTokens[0].trim() == "table")
@@ -151,48 +158,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
         setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
         setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
         setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-    }
-
-    //===============rangeslider===============//
-    else if(strTokens[0].trim() == "hrange" || strTokens[0].trim() == "vrange")
-    {
-        setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
-        setProperty(widgetData, CabbageIdentifierIds::top, 10);
-        setProperty(widgetData, CabbageIdentifierIds::left, 10);
-        setProperty(widgetData, CabbageIdentifierIds::width, 50);
-        setProperty(widgetData, CabbageIdentifierIds::height, 150);
-        var channels;
-        channels.append("rangeslider");
-        setProperty(widgetData, CabbageIdentifierIds::channel, channels);
-        setProperty(widgetData, CabbageIdentifierIds::min, 0);
-        setProperty(widgetData, CabbageIdentifierIds::max, 1);
-        setProperty(widgetData, CabbageIdentifierIds::value, 0);
-        setProperty(widgetData, CabbageIdentifierIds::text, "");
-        setProperty(widgetData, CabbageIdentifierIds::textbox, 0.f);
-        setProperty(widgetData, CabbageIdentifierIds::caption, "");
-        setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
-        setProperty(widgetData, CabbageIdentifierIds::trackercolour, Colour(0, 118, 38).toString());
-        setProperty(widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-        setProperty(widgetData, CabbageIdentifierIds::sliderskew, 1);
-        setProperty(widgetData, CabbageIdentifierIds::sliderincr, .001);
-        setProperty(widgetData, CabbageIdentifierIds::midichan, -99);
-        setProperty(widgetData, CabbageIdentifierIds::midictrl, -99);
-        //these don't appear in the props dialog
-        setProperty(widgetData, CabbageIdentifierIds::name, strTokens[0].trim());
-        setProperty(widgetData, CabbageIdentifierIds::type, getProperty(widgetData, "name").toString());
-        setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
-        if(strTokens[0].trim() == "hrange")
-            setProperty(widgetData, CabbageIdentifierIds::kind, "horizontal");
-        else
-            setProperty(widgetData, CabbageIdentifierIds::kind, "vertical");
-
-        setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 1);
-        setProperty(widgetData, CabbageIdentifierIds::trackerthickness, .1);
-        setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
-        setProperty(widgetData, CabbageIdentifierIds::visible, 1);
-        setProperty(widgetData, CabbageIdentifierIds::imgslider, "");
-        setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
     }
 
     //===============stepper example==================//
@@ -536,7 +501,10 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
             else if(identArray[indx].equalsIgnoreCase("shape"))
             {
-                setProperty(widgetData, CabbageIdentifierIds::shape, strTokens[0].trim());
+				if(strTokens[0].trim()=="sharp")
+					setProperty(widgetData, CabbageIdentifierIds::shape, "square");
+				else
+					setProperty(widgetData, CabbageIdentifierIds::shape, strTokens[0].trim());
             }
             else if(identArray[indx].equalsIgnoreCase("outlinecolour"))
             {
@@ -1333,6 +1301,21 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode(ValueTree widgetDat
 						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::max)) 
 						 + ", "
 						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value))
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::sliderskew))
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::sliderincr))
+						 + "), ";
+	}
+	if(type.contains("range") && identifier=="value")
+	{
+		return "range(" + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::min)) 
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::max)) 
+						 + ", "
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::minvalue))
+						 + ":"
+						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::maxvalue))
 						 + ", "
 						 + String(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::sliderskew))
 						 + ", "

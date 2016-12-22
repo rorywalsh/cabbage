@@ -201,7 +201,8 @@ void CabbagePluginEditor::insertComboBox(ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertRangeSlider(ValueTree cabbageWidgetData)
 {
     CabbageRangeSlider* rangeSlider;
-    components.add(rangeSlider = new CabbageRangeSlider(cabbageWidgetData));
+    components.add(rangeSlider = new CabbageRangeSlider(cabbageWidgetData, this));
+	rangeSlider->getSlider().addListener(this);
     addToEditorAndMakeVisible(rangeSlider, cabbageWidgetData);		
 }
 
@@ -334,18 +335,19 @@ void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
 	{
 		CabbageKeyboard* midiKeyboard;
 		components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
+		midiKeyboard->setKeyPressBaseOctave(3);
 		addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);	
 		keyboardCount++;
 	}	
 }
 //======================================================================================================
-CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (Component* comp)
+CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
     const OwnedArray<AudioProcessorParameter>& params = processor.getParameters();
     for( int i = 0 ; i < params.size() ; i++)
     {
-        if(comp->getName()==params[i]->getName(512))
-            return  dynamic_cast<CabbageAudioParameter*> (params[i]);
+        if(name==params[i]->getName(512))
+            return dynamic_cast<CabbageAudioParameter*> (params[i]);
     }
 
     return nullptr;
@@ -354,7 +356,7 @@ CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (Component*
 //======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
-    if (CabbageAudioParameter* param = getParameterForComponent(combo))
+    if (CabbageAudioParameter* param = getParameterForComponent(combo->getName()))
     {
         param->beginChangeGesture();
         const int value = combo->getSelectedItemIndex()+1;
@@ -368,7 +370,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 
 	const bool buttonState = button->getToggleState();
 			
-	if (CabbageAudioParameter* param = getParameterForComponent(button))	//only update parameters for normal buttons
+	if (CabbageAudioParameter* param = getParameterForComponent(button->getName()))	//only update parameters for normal buttons
 	{
 		param->beginChangeGesture();
 		param->setValue(buttonState == true ? 1 : 0);
@@ -380,20 +382,37 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 		const StringArray textItems = cabbageButton->getTextArray();
 		if(textItems.size()>0)
 			cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
-		
-		//button->setToggleState(buttonState == false ? true : false, dontSendNotification);	
 	}	
 }
 
 //======================================================================================================
 void CabbagePluginEditor::sliderValueChanged(Slider* slider)
 {
-    if (CabbageAudioParameter* param = getParameterForComponent(slider))
-    {
-        param->beginChangeGesture();
-        param->setValue(slider->getValue());
-        param->endChangeGesture();
-    }	
+	if(slider->getSliderStyle()!=Slider::TwoValueHorizontal && slider->getSliderStyle()!=Slider::TwoValueVertical)
+	{
+		if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+		{
+			param->beginChangeGesture();
+			param->setValue(slider->getValue());		
+			param->endChangeGesture();
+		}
+	}
+	else
+	{
+		if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_min"))
+		{
+			param->beginChangeGesture();
+			param->setValue(slider->getMinValue());
+			param->endChangeGesture();
+		}
+		
+		if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_max"))
+		{
+			param->beginChangeGesture();
+			param->setValue(slider->getMaxValue());
+			param->endChangeGesture();
+		}		
+	}
 }
 //======================================================================================================
 void CabbagePluginEditor::enableEditMode(bool enable)

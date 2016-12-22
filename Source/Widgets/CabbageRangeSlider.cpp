@@ -18,75 +18,252 @@
 */
 
 #include "CabbageRangeSlider.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageRangeSlider::CabbageRangeSlider(ValueTree wData):
-widgetData(wData), mouseDragBetweenThumbs {false}
+CabbageRangeSlider::CabbageRangeSlider(ValueTree wData, CabbagePluginEditor* _owner):
+widgetData(wData),
+owner(_owner),
+slider(this),
+popupBubble(250),
+textColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour))
 {
 	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
 	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
-	setSliderStyle (Slider::TwoValueHorizontal);
-	setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-	setMinValue(0);
-	setMaxValue(100);
-	setRange(0, 100, .01);
-	setLookAndFeel(&lookAndFeel);
+
+    isVertical = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind)=="horizontal" ? false : true;
+    
+	if (isVertical == true)
+		slider.setSliderStyle(Slider::SliderStyle::TwoValueVertical);
+	else
+		slider.setSliderStyle(Slider::SliderStyle::TwoValueHorizontal);
+
+	slider.setName(getName());
+    addAndMakeVisible(&slider);
+
+    minValue = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::minvalue);
+    maxValue = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxvalue);
+
+    min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
+    max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
+	
+	decimalPlaces = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::decimalplaces);
+	sliderIncrement = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderincr);
+	sliderSkew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
+
+	slider.setRange(min, max, sliderIncrement);
+	slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+	slider.setSkewFactor(sliderSkew);
+    slider.setMinAndMaxValues(minValue, maxValue);
+
+    addAndMakeVisible(&textLabel);
+    textLabel.setVisible(false);
+	
+	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext)=="0")
+		shouldDisplayPopup=false;
+	
+	setLookAndFeelColours(widgetData);
+	createPopupBubble();
+	
+	resized();
 }
 
+void CabbageRangeSlider::setSliderValues(ValueTree wData)
+{
+    minValue = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::minvalue);
+    maxValue = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxvalue);
+
+    min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
+    max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
 	
+	decimalPlaces = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::decimalplaces);
+	sliderIncrement = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderincr);
+	sliderSkew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
+
+	slider.setRange(min, max, sliderIncrement);
+	slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+	slider.setSkewFactor(sliderSkew);
+	slider.setMinAndMaxValues(minValue, maxValue);	
+}
+
+void CabbageRangeSlider::createPopupBubble()
+{
+    //create popup display for showing value of sliders.
+    popupBubble.setColour(BubbleComponent::backgroundColourId, Colours::white);
+    popupBubble.setBounds(0, 0, 50, 20);
+    owner->addChildComponent(popupBubble);
+	popupBubble.setVisible(false);
+    popupBubble.setAlwaysOnTop(true);	
+}
+
+void CabbageRangeSlider::showPopup(int displayTime)
+{
+	String popupText;
+	if(getTooltipText().isNotEmpty())
+		popupText = getTooltipText();
+	else
+		popupText = getChannelArray()[0]+": "+String(slider.getMinValue(), 2)+
+					+"\n"+getChannelArray()[1]+": "+String(slider.getMaxValue(), 2);
+					
+	popupBubble.showAt(&slider, AttributedString(popupText), displayTime);	
+}
+
+
+void CabbageRangeSlider::setLookAndFeelColours(ValueTree wData)
+{
+	
+	textLabel.setColour(Label::outlineColourId, Colours::transparentBlack);
+	slider.setColour(Slider::textBoxHighlightColourId, Colours::lime.withAlpha(.2f));
+	
+	slider.setColour(Slider::thumbColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+	slider.setColour(Slider::trackColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackercolour)));
+	slider.setColour(Slider::Slider::rotarySliderOutlineColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)));
+
+	
+	slider.setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+	textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
+	
+	slider.setColour(Slider::textBoxTextColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+	slider.setColour(Slider::textBoxBackgroundColourId, Colours::black);
+	slider.setColour(Slider::textBoxHighlightColourId, Colours::white);
+
+	slider.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+	slider.setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
+	
+	slider.setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());	
+	slider.lookAndFeelChanged();
+}
+
+void CabbageRangeSlider::resized()
+{ 
+	if(getText().isNotEmpty())
+    {
+        if(isVertical)
+        {
+            textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
+            textLabel.setJustificationType(Justification::centred);
+            textLabel.setText(getText(), dontSendNotification);
+            textLabel.setVisible(true);
+            slider.setBounds(0, 4, getWidth(), getHeight()-20);
+        }
+        else
+        {
+            float width = textLabel.getFont().getStringWidthFloat(getText())+10.f;
+            textLabel.setBounds(0, 0, width, getHeight());
+            textLabel.setText(getText(), dontSendNotification);
+            textLabel.setVisible(true);
+            slider.setBounds(width, 0, getWidth()-(width*1.10), getHeight());
+        }
+
+    }
+	else
+		slider.setBounds(getLocalBounds());
+}	
 	
 void CabbageRangeSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	if(prop==CabbageIdentifierIds::value)
+	if(prop==CabbageIdentifierIds::minvalue || prop==CabbageIdentifierIds::maxvalue)
     {
-		//set value. This is only needed for widgets that can have their value changed directly using a chnset
+		setSliderValues(valueTree);
     }
 	else
 	{
-
-		
-		
-		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+		textLabel.setText(getCurrentText(valueTree), dontSendNotification);
+		textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);
+		slider.setTooltip(getCurrentPopupText(valueTree));		
+		handleCommonUpdates(this, valueTree);			
+		setLookAndFeelColours(valueTree);		
 	}
 }
 
-// To enable the section between the two thumbs to be draggable.
-void CabbageRangeSlider::mouseDown (const MouseEvent& event)
+//======================================================================================
+RangeSlider::RangeSlider (CabbageRangeSlider* _owner)
+  : mouseDragBetweenThumbs {false},
+  owner(_owner)
 {
-    const float currentMouseX = event.getPosition().getX();
-    const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
-    xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();
-    xMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getWidth();
-
-    if (currentMouseX > xMinAtThumbDown + thumbRadius && currentMouseX < xMaxAtThumbDown - thumbRadius)
-    {
-        mouseDragBetweenThumbs = true;
-    }
-    else
-    {
-        mouseDragBetweenThumbs = false;
-        Slider::mouseDown (event);
-    }
+   // setSliderStyle (Slider::TwoValueHorizontal);
 }
 
-// To enable the section between the two thumbs to be draggable.
-void CabbageRangeSlider::mouseDrag (const MouseEvent& event)
+RangeSlider::~RangeSlider ()
 {
-    const float distanceFromStart = event.getDistanceFromDragStartX();
-    
-    if (mouseDragBetweenThumbs)
-    {        
-        setMinValue (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));   
-        setMaxValue (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));    
-    }
-    else
-    {
-        Slider::mouseDrag (event);
-    }  
 }
 
-// This makes one thumb slide if the other is moved against it.
-void CabbageRangeSlider::valueChanged()
+void RangeSlider::mouseDown (const MouseEvent& event)
+{
+	if(getSliderStyle()==Slider::TwoValueHorizontal)
+	{
+		const float currentMouseX = event.getPosition().getX();
+		const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
+		xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();
+		xMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getWidth();
+
+		if (currentMouseX > xMinAtThumbDown + thumbRadius && currentMouseX < xMaxAtThumbDown - thumbRadius)
+		{
+			mouseDragBetweenThumbs = true;
+		}
+		else
+		{
+			mouseDragBetweenThumbs = false;
+			Slider::mouseDown (event);
+		}
+	}
+	else
+	{
+		const float currentMouseY = getHeight() - event.getPosition().getY();
+		const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
+		yMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getHeight();
+		yMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getHeight();
+
+		if (currentMouseY > yMinAtThumbDown + thumbRadius && currentMouseY < yMaxAtThumbDown - thumbRadius)
+		{
+			mouseDragBetweenThumbs = true;
+		}
+		else
+		{
+			mouseDragBetweenThumbs = false;
+			Slider::mouseDown (event);
+		}
+		
+	}
+	owner->showPopup(1000);
+}
+
+void RangeSlider::mouseDrag (const MouseEvent& event)
+{
+	if(getSliderStyle()==Slider::TwoValueHorizontal)
+	{
+		const float distanceFromStart = event.getDistanceFromDragStartX();
+		
+		if (mouseDragBetweenThumbs)
+		{        
+			setMinValue (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));   
+			setMaxValue (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));    
+		}
+		else
+		{
+			Slider::mouseDrag (event);
+		}  
+	}
+	else
+	{
+		const float distanceFromStart = event.getDistanceFromDragStartY();
+		
+		if (mouseDragBetweenThumbs)
+		{        
+			setMinValue (proportionOfLengthToValue ((yMinAtThumbDown - distanceFromStart) / getHeight()));   
+			setMaxValue (proportionOfLengthToValue ((yMaxAtThumbDown - distanceFromStart) / getHeight()));    
+		}
+		else
+		{
+			Slider::mouseDrag (event);
+		}  
+		
+	}
+	
+	owner->showPopup(1000);
+}
+
+void RangeSlider::valueChanged()
 {   
     if (getMinValue() == getMaxValue())
     {
@@ -100,4 +277,14 @@ void CabbageRangeSlider::valueChanged()
             setMinValue(getMinValue() - minimalIntervalBetweenMinAndMax);
         }
     }
+}
+
+void RangeSlider::mouseExit (const MouseEvent& event)
+{
+	owner->showPopup(0);
+}
+
+void RangeSlider::mouseEnter(const MouseEvent &e)
+{
+    owner->showPopup(5000);
 }

@@ -177,14 +177,15 @@ void CabbagePluginProcessor::updateWidgets(String csdText)
 //==============================================================================
 // create parameters for sliders, buttons, comboboxes, checkboxes, encoders and xypads.
 // Other widgets can communicate with Csound, but they cannot be automated
-
 void CabbagePluginProcessor::createParameters()
 {
+	
 	CabbageControlWidgetStrings controlWidgetTypes;
     for(int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
         CabbageControlWidgetStrings controlWidgetTypes;
+		
         if(controlWidgetTypes.contains(typeOfWidget))
         {
             const String name = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
@@ -193,12 +194,19 @@ void CabbagePluginProcessor::createParameters()
 			
 			if(controlWidgetTypes.contains(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type)))
 			{
+				
 				if(typeOfWidget==CabbageIdentifierIds::xypad)
 				{
 					const var channel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-					//const String yChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::ychannel);
 					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[0] , name+"_x", 0, 1, value));
 					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[1], name+"_y", 0, 1, value));
+				}
+				
+				else if(typeOfWidget.contains("range"))
+				{
+					const var channel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[0], name+"_min", 0, 1, value));
+					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[1], name+"_max", 0, 1, value));
 				}
 				else
 					addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel, name, 0, 1, value));

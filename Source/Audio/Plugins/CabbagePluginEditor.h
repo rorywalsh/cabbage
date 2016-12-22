@@ -137,7 +137,7 @@ public:
     void comboBoxChanged (ComboBox* combo);
     void sliderValueChanged(Slider* slider);
 	//=============================================================================
-    CabbageAudioParameter* getParameterForComponent (Component* button);
+    CabbageAudioParameter* getParameterForComponent (const String name);
     //=============================================================================
 	void updatefTableData(GenTable* table);
 
