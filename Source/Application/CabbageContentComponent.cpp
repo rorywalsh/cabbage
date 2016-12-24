@@ -208,7 +208,10 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
     {
         const int lineNumber = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber);
 		const String parent = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
-        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData);
+        
+		const String currentLineText = getCurrentCodeEditor()->getLineText(lineNumber);
+		
+		const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData, currentLineText);
 		
 
         getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty() == true ? true : false);
@@ -315,8 +318,8 @@ void CabbageContentComponent::createAudioGraph()
     audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
 
     createEditorForAudioGraphNode();
-    if(getCurrentCodeEditor() != nullptr)
-        getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
+//    if(getCurrentCodeEditor() != nullptr)
+//        getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
 
 
 }
@@ -345,7 +348,7 @@ void CabbageContentComponent::rebuildAudioGraph()
 
 void CabbageContentComponent::createEditorForAudioGraphNode()
 {
-	if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
+	if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
 	{
 		AudioProcessor* const processor = f->getProcessor();
 
@@ -396,7 +399,7 @@ String CabbageContentComponent::getAudioDeviceSettings()
 
 CabbagePluginEditor* CabbageContentComponent::getCabbagePluginEditor()
 {
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
+    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
     {
         AudioProcessor* const processor = f->getProcessor();
         //need to check what kind of processor we are dealing with!
@@ -409,7 +412,7 @@ CabbagePluginEditor* CabbageContentComponent::getCabbagePluginEditor()
 
 CabbagePluginProcessor* CabbageContentComponent::getCabbagePluginProcessor()
 {
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (1))
+    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
     {
         if(CabbagePluginProcessor* const processor = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
             return processor;
@@ -421,25 +424,27 @@ CabbagePluginProcessor* CabbageContentComponent::getCabbagePluginProcessor()
 //=======================================================================================
 void CabbageContentComponent::setEditMode(bool enable)
 {
-    if(!getCabbagePluginEditor())
-    {
-        createAudioGraph();
-    }
+	if(audioGraph->getIsCabbageFile() == true)
+	{
+		if(!getCabbagePluginEditor())
+		{
+			createAudioGraph();
+		}
 
-    getCabbagePluginEditor()->addChangeListener(this);
-    if(enable==true)
-    {
-        audioGraph->stopPlaying();
-        propertyPanel->setInterceptsMouseClicks(true, true);
-    }
-    else
-    {
-        audioGraph->startPlaying();
-        propertyPanel->setInterceptsMouseClicks(false, false);
-    }
+		getCabbagePluginEditor()->addChangeListener(this);
+		if(enable==true)
+		{
+			audioGraph->stopPlaying();
+			propertyPanel->setInterceptsMouseClicks(true, true);
+		}
+		else
+		{
+			audioGraph->startPlaying();
+			propertyPanel->setInterceptsMouseClicks(false, false);
+		}
 
-    getCabbagePluginEditor()->enableEditMode(enable);
-
+		getCabbagePluginEditor()->enableEditMode(enable);
+	}
 }
 //=======================================================================================
 void CabbageContentComponent::showSettingsDialog()

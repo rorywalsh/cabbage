@@ -1555,9 +1555,9 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
     return colourString;
 }
 //===================================================================
-String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData)
+String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData, const String currentLineText)
 {
-    //CabbageUtilities::debug(listOfChannels.joinIntoString("\n"));
+    
     String cabbageCode = getStringProp(widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode(getBounds(widgetData))
                          + getMultiItemTextAsCabbageCode(widgetData, "channel")

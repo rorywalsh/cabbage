@@ -24,6 +24,8 @@
 class PluginWindow;
 
 
+const int AudioGraph::midiChannelNumber = 0x1000;
+
 AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
                        bool takeOwnershipOfSettings,
                        const String& preferredDefaultDeviceName,
@@ -50,7 +52,11 @@ void AudioGraph::createPlugin(File inputFile)
 {
     AudioProcessorGraph::AudioGraphIOProcessor* outNode;
     outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-    AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, 2);
+    AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, NodeType::Input);
+
+    AudioProcessorGraph::AudioGraphIOProcessor* midiNode;
+    midiNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
+    AudioProcessorGraph::Node* midiInputNode = graph.addNode(midiNode, NodeType::MidiInput);
 
 
     AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
@@ -72,11 +78,14 @@ void AudioGraph::createPlugin(File inputFile)
     updateBusLayout(processor);
 
 
-    AudioProcessorGraph::Node* processorNode = graph.addNode(processor, 1);
+    AudioProcessorGraph::Node* processorNode = graph.addNode(processor, NodeType::CabbageNode);
 
-    bool connection1 = graph.addConnection(1, 0, 2, 0);
-    bool connection2 = graph.addConnection(1, 1, 2, 1);
-
+    bool connection1 = graph.addConnection(NodeType::CabbageNode, 0, NodeType::Input, 0);
+    bool connection2 = graph.addConnection(NodeType::CabbageNode, 1, NodeType::Input, 1);
+	bool connection3 = graph.addConnection(NodeType::MidiInput, AudioProcessorGraph::midiChannelIndex, NodeType::CabbageNode, AudioProcessorGraph::midiChannelIndex);
+	
+	if(connection1 == false || connection2 == false || connection3 == false)
+		jassert(false);
 }
 
 

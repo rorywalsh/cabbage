@@ -16,11 +16,11 @@ if [ "$#" -ne 1 ]; then
     echo "Please pass the full name and path to the Projucer binary."
     exit 1
 else
-	"$1" --resave CabbageIDE.jucer
+	"$1" --resave ../../CabbageIDE.jucer
 	cp Makefile MakefileIDE
-	"$1" --resave CabbagePlugin.jucer
+	"$1" --resave ../../CabbagePlugin.jucer
 	cp Makefile MakefilePluginSynth
-	sed 's/CabbagePlugin.so/CabbagePluginSynth.so/g' <Makefile>MakefilePluginSynth
+	sed 's/CabbagePlugin.so/CabbagePluginSynth.so/g ;s/@echo Cleaning CabbagePlugin/@echo Cleaning CabbagePluginSynth/g; s/@echo Linking CabbagePlugin/@echo Linking CabbagePluginSynth/g' <Makefile>MakefilePluginSynth
 	cp Makefile MakefilePluginEffect
-	sed 's/-DCabbage_Plugin_Synth=1//g;s/CabbagePlugin.so/CabbagePluginEffect.so/g' <Makefile>MakefilePluginEffect
+	sed 's/-DCabbage_Plugin_Synth=1//g; s/CabbagePlugin.so/CabbagePluginEffect.so/g; ;s/@echo Cleaning CabbagePlugin/@echo Cleaning CabbagePluginSynth/g; s/@echo Linking CabbagePlugin/@echo Linking CabbagePluginEffect/g' <Makefile>MakefilePluginEffect
 fi

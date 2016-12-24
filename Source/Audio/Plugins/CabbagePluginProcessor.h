@@ -39,7 +39,8 @@ public:
     void parseCsdFile(String csdText);
     void createParameters();
 	void updateWidgets(String csdText);
-	void searchAndExpandMacros(StringArray& csdText);
+	void searchForMacros(StringArray& csdText);
+	const String getExpandedMacroText(const String line);
 
 	CabbageAudioParameter* getParameterForXYPad(String name);
     //==============================================================================

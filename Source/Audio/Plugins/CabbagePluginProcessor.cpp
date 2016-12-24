@@ -20,10 +20,8 @@
 #include "CabbagePluginProcessor.h"
 #include "CabbagePluginEditor.h"
 
-
 char tmp_string[4096] = {0};
 char channelMessage[4096] = {0};
-
 
 #ifndef Cabbage_IDE_Build
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -52,7 +50,6 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile)
     }
 
     initAllCsoundChannels(cabbageWidgets);
-
 }
 
 CabbagePluginProcessor::~CabbagePluginProcessor()
@@ -69,7 +66,7 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
     String parentComponent, previousComponent;
     bool withinPlantGroup = false;
 	
-	searchAndExpandMacros(linesFromCsd);
+	searchForMacros(linesFromCsd);
 	
     for( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
     {
@@ -79,6 +76,7 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
         const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
         ValueTree temp(widgetTreeIdentifier);
 		
+		//CabbageUtilities::debug(getExpandedMacroText(linesFromCsd[lineNumber]));
 		String currentLineOfCabbageCode = linesFromCsd[lineNumber];
  
 		if(currentLineOfCabbageCode.contains(" \\"))
@@ -133,9 +131,8 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
     }
 }
 
-void CabbagePluginProcessor::searchAndExpandMacros(StringArray& linesFromCsd)
-{
-	
+void CabbagePluginProcessor::searchForMacros(StringArray& linesFromCsd)
+{	
 	for(String csdLine : linesFromCsd)	//deal with Cabbage macros
 	{
 		StringArray tokens;
@@ -149,21 +146,20 @@ void CabbagePluginProcessor::searchAndExpandMacros(StringArray& linesFromCsd)
 			}
 		}
 	}
+}
 
+const String CabbagePluginProcessor::getExpandedMacroText(const String line)
+{
+	String csdLine;
 	for(int cnt = 0 ; cnt<macroText.size() ; cnt++)
 	{
-		for(int i = 0 ; i < linesFromCsd.size(); i++)
+		if(line.contains(macroText.getName(cnt).toString()))
 		{
-			String csdLine = linesFromCsd[i];
-			if(csdLine.contains(macroText.getName(cnt).toString()))
-			{
-				csdLine = csdLine.replace(macroText.getName(cnt), macroText.getWithDefault(macroText.getName(cnt), "").toString()+" ");
-				linesFromCsd.set(i, csdLine);
-			}
+			csdLine += macroText.getWithDefault(macroText.getName(cnt), "").toString()+" ";
 		}
 	}
 
-		
+	return csdLine;;	
 }
 
 //right now we rebuild the entire GUi each time something changes,

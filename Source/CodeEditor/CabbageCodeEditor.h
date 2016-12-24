@@ -43,7 +43,7 @@ public:
     void codeDocumentTextDeleted(int,int);
     void codeDocumentTextInserted(const juce::String &,int);
     void displayOpcodeHelpInStatusBar(String lineFromCsd);
-    String getLineText();
+    const String getLineText(int lineNumber);
 
     bool keyPressed (const KeyPress &key, Component *originatingComponent) override;
     void undoText();

@@ -75,7 +75,7 @@ public:
     static var getProperty(ValueTree widgetData, Identifier name);
     //============================================================================
     static Colour getColourFromText(String text);
-    static String getCabbageCodeFromIdentifiers(ValueTree props);
+    static String getCabbageCodeFromIdentifiers(ValueTree props, const String);
     //============================================================================
     static String getBoundsTextAsCabbageCode(Rectangle<int> rect);
     static String getMultiItemTextAsCabbageCode(ValueTree widgetData, String identifier);

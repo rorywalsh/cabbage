@@ -612,9 +612,10 @@ void CabbageCodeEditorComponent::undoText()
     moveCaretTo(startPos, false);
 }
 //==============================================================================
-String CabbageCodeEditorComponent::getLineText()
+const String CabbageCodeEditorComponent::getLineText(int lineNumber)
 {
-    return String::empty;
+	const StringArray csdArray = getAllTextAsStringArray();
+    return csdArray[lineNumber];
 }
 
 //==============================================================================
