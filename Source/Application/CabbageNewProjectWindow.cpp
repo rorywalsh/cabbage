@@ -50,33 +50,52 @@ CabbageProjectWindow::CabbageProjectWindow(CabbageContentComponent* owner, Value
 
 }
 
+void CabbageProjectWindow::writeNewFile(File fc, String fileText)
+{
+	fc.replaceWithText(fileText);
+	owner->openFile (fc.getFullPathName());
+	delete this->getParentComponent();	
+}
+
+void CabbageProjectWindow::createNewFile(String type)
+{
+	
+	FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
+
+	if (fc.browseForFileToSave(false))
+	{
+		String csdText;
+		if(type=="newCsound")
+			csdText = CabbageStrings::getNewCsoundFileText();
+		else if(type=="newEffect")
+			csdText = CabbageStrings::getNewCabbageEffectFileText();
+		else
+			csdText = CabbageStrings::getNewCabbageInstrumentFileText();
+			
+		if(fc.getResult().existsAsFile())
+		{
+			CabbageIDELookAndFeel lookAndFeel;
+			const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+			if(result==0)
+			{
+				writeNewFile(fc.getResult(), csdText);
+//				
+//				fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
+//				owner->openFile (fc.getResult().getFullPathName());
+//				delete this->getParentComponent();
+			}
+		}
+		else
+		{
+				writeNewFile(fc.getResult(), csdText);
+//			fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
+//			owner->openFile (fc.getResult().getFullPathName());
+//			delete this->getParentComponent();
+		}
+	}	
+}
+
 void CabbageProjectWindow::buttonClicked(Button* button)
 {
-    CabbageIDELookAndFeel lookAndFeel;
-    if(button->getName()=="newCsound")
-    {
-        FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
-
-        if (fc.browseForFileToSave(false))
-        {
-            if(fc.getResult().existsAsFile())
-            {
-                const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-                if(result==0)
-                {
-                    fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-                    owner->openFile (fc.getResult().getFullPathName());
-                    delete this->getParentComponent();
-                }
-            }
-            else
-            {
-                fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-                owner->openFile (fc.getResult().getFullPathName());
-                delete this->getParentComponent();
-            }
-        }
-    }
-    else
-        CabbageUtilities::showMessage("Warning", "Yet to be implemented", &lookAndFeel);
+	createNewFile(button->getName());
 }

@@ -16,7 +16,7 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
 {
 
     csoundChanList = NULL;
-
+/*
     int numberOfChannels = csoundListChannels(getCsoundStruct(), &csoundChanList);
     for(int i = 0; i < numberOfChannels; i++ )
     {
@@ -27,7 +27,7 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
         NormalisableRange<float> range(min, max);
         addParameter(new AudioParameterFloat(channel, channel, range, defaultValue));
     }
-
+*/
 }
 
 GenericCabbagePluginProcessor::~GenericCabbagePluginProcessor()

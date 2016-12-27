@@ -87,6 +87,8 @@ public:
     }
 
 private:
+	void writeNewFile(File fc, String fileText);
+	void createNewFile(String type);
 	CabbageContentComponent* owner;
     ValueTree valueTree;
     String information;

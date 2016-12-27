@@ -63,6 +63,7 @@ public:
 
     void handleTabKey(String direction);
     void handleReturnKey();
+	void handleEscapeKey();
 
     void insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool highlightLine);
     void insertNewLine(String text);
@@ -73,6 +74,8 @@ public:
 
     void highlightLines(int firstLine, int lastLine);
     void highlightLine(int lineNumber);
+	
+	void toggleComments();
 
     void handleAutoComplete(String text);
     void showAutoComplete(String currentWord);

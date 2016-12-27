@@ -240,6 +240,33 @@ void CabbageCodeEditorComponent::insertMultiLineTextAtCaret (String text)
     moveCaretTo(newStartPos, false);
     moveCaretTo(newEndPos, true);
 }
+
+//==============================================================================
+void CabbageCodeEditorComponent::toggleComments()
+{
+
+    const CodeDocument::Position startPos(this->getDocument(), getHighlightedRegion().getStart());
+    const CodeDocument::Position endPos(this->getDocument(), getHighlightedRegion().getEnd());
+
+
+    StringArray selectedText;
+    selectedText.addLines(getSelectedText());
+    StringArray csdArray = getAllTextAsStringArray();
+
+
+    for(int i=startPos.getLineNumber(); i<=endPos.getLineNumber(); i++)
+    {
+        String lineText = csdArray[i];
+        if(lineText.trim().startsWith(";"))
+            csdArray.set(i, lineText.substring(lineText.indexOf(";")+1));
+        else
+            csdArray.set(i, ";"+lineText);
+
+    }
+
+    setAllText(csdArray.joinIntoString("\n"));
+    moveCaretTo(CodeDocument::Position(getDocument(), endPos.getLineNumber(), 1000), false);
+}
 //==============================================================================
 void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd)
 {
@@ -577,6 +604,11 @@ void CabbageCodeEditorComponent::handleTabKey(String direction)
         }
     }
 
+}
+
+void CabbageCodeEditorComponent::handleEscapeKey()
+{
+	autoCompleteListBox.setVisible(false);
 }
 
 void CabbageCodeEditorComponent::handleReturnKey ()

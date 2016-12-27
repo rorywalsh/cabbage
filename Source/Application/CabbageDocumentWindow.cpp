@@ -176,7 +176,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::deselectAll);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::editMode);
-    menu.addCommandItem (&commandManager, CommandIDs::enableLiveDebugger);
+    menu.addCommandItem (&commandManager, CommandIDs::toggleComments);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (&commandManager, CommandIDs::findSelection);
@@ -255,6 +255,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::exportAsFMODSoundPlugin,
                               CommandIDs::copy,
                               CommandIDs::cut,
+							  CommandIDs::toggleComments,
                               CommandIDs::paste,
                               CommandIDs::undo,
                               CommandIDs::redo,
@@ -445,6 +446,9 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         break;
     case CommandIDs::redo:
 
+        break;
+    case CommandIDs::toggleComments:
+		this->getContentComponent()->getCurrentCodeEditor()->toggleComments();
         break;
     case CommandIDs::paste:
 
