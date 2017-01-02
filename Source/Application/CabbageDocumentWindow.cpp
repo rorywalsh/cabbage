@@ -142,6 +142,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 
     menu.addSeparator();
 	menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
+	menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
 	menu.addSeparator();
 	menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
@@ -258,6 +259,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 							  CommandIDs::openFromRPi,
                               CommandIDs::closeAllDocuments,
                               CommandIDs::saveDocument,
+							  CommandIDs::saveDocumentToRPi,
                               CommandIDs::saveDocumentAs,
                               CommandIDs::settings,
                               CommandIDs::runCode,
@@ -307,6 +309,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
         break;
 
+    case CommandIDs::saveDocumentToRPi:
+        result.setInfo ("Save file to RPi", "Save a document to RPi", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+        break;
+		
     case CommandIDs::saveDocumentAs:
         result.setInfo ("Save file as...", "Save a document", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
@@ -430,13 +437,17 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         getContentComponent()->openFile();
         break;
     case CommandIDs::openFromRPi:
-        getContentComponent()->launchSSHFileBrowser();
+        getContentComponent()->launchSSHFileBrowser("open");
         break;
     case CommandIDs::saveDocument:
         getContentComponent()->saveDocument();
         getContentComponent()->setEditMode(false);
         isGUIEnabled = false;
         break;
+    case CommandIDs::saveDocumentToRPi:
+		getContentComponent()->saveDocument();
+        getContentComponent()->launchSSHFileBrowser("save");
+		break;
     case CommandIDs::saveDocumentAs:
         getContentComponent()->saveDocument(true);
         break;

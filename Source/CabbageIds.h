@@ -30,6 +30,7 @@ enum
     open                    = 0x200020,
 	openFromRPi             = 0x200021,
     closeDocument           = 0x200030,
+	saveDocumentToRPi       = 0x200039,
     saveDocument            = 0x200040,
     saveDocumentAs          = 0x200041,
     settings				= 0x200042,

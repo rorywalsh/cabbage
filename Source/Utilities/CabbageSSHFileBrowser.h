@@ -25,10 +25,11 @@
 class CabbageContentComponent;
 //==============================================================================
 class CabbageSSHFileBrowser   : public Component,
-    public ListBoxModel
+    public ListBoxModel,
+	public TextEditor::Listener
 {
 public:
-    CabbageSSHFileBrowser(String ip, String homeDir, CabbageContentComponent* owner);
+    CabbageSSHFileBrowser(String ip, String homeDir, CabbageContentComponent* owner, String mode, String csdFilePath);
     ~CabbageSSHFileBrowser();
     void paint (Graphics& g) override;
     void resized() override;
@@ -47,13 +48,15 @@ public:
     void killChildProcess();
 
 private:
-    String ipAddress, homeDirectory;
-    Label currentDirectoryLabel;
+    String ipAddress, homeDirectory, currentLocalFilePath;
+    TextEditor currentDirectoryLabel;
     const String getFileOrFolderName(String text);
-    //TextEditor testResultsBox;
+	void textEditorReturnKeyPressed(TextEditor &);	
+
     ChildProcess childProcess;
     StringArray filesAndFoldersToDisplay, filePath;
 	CabbageContentComponent* owner;
+	String labelPrefix = "Current Directory: ";
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSSHFileBrowser)

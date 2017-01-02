@@ -62,7 +62,7 @@ public:
     //==============================================================================
     void showAudioSettings();
     void createNewProject();
-    void launchSSHFileBrowser();
+    void launchSSHFileBrowser(String mode);
     void setEditMode(bool enable);
     void openFile(String filename="");
     bool closeAllDocuments (bool askUserToSave);

@@ -483,12 +483,13 @@ void CabbageContentComponent::createNewProject()
 }
 
 //==============================================================================
-void CabbageContentComponent::launchSSHFileBrowser()
+void CabbageContentComponent::launchSSHFileBrowser(String mode)
 {
     const String sshAddress = cabbageSettings->getUserSettings()->getValue("SSHAddress");
     const String sshHome = cabbageSettings->getUserSettings()->getValue("SSHHomeDir");
     DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSSHFileBrowser(sshAddress, sshHome, this));
+	CabbageUtilities::debug(currentCsdFile.getFullPathName());
+    o.content.setOwned(new CabbageSSHFileBrowser(sshAddress, sshHome, this, mode, currentCsdFile.getFullPathName()));
     o.content->setSize(650, 350);
 
     o.dialogTitle = TRANS("Browse Raspberry PI for files..");
