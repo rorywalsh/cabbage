@@ -485,14 +485,13 @@ void CabbageContentComponent::createNewProject()
 //==============================================================================
 void CabbageContentComponent::launchSSHFileBrowser()
 {
-    Logger::writeToLog("CreateNewProject");
     const String sshAddress = cabbageSettings->getUserSettings()->getValue("SSHAddress");
     const String sshHome = cabbageSettings->getUserSettings()->getValue("SSHHomeDir");
     DialogWindow::LaunchOptions o;
-    o.content.setOwned(new CabbageSSHFileBrowser(sshAddress, sshHome));
+    o.content.setOwned(new CabbageSSHFileBrowser(sshAddress, sshHome, this));
     o.content->setSize(650, 350);
 
-    o.dialogTitle = TRANS("Select new project type");
+    o.dialogTitle = TRANS("Browse Raspberry PI for files..");
     o.dialogBackgroundColour = Colour(0xfff0f0f0);
     o.escapeKeyTriggersCloseButton = true;
     o.useNativeTitleBar = true;

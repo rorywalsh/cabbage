@@ -141,7 +141,9 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSubMenu ("Open Recent", recentFilesMenu);
 
     menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
+	menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
+	menu.addSeparator();
+	menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
@@ -241,7 +243,7 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
 
 void CabbageDocumentWindow::focusGained(FocusChangeType cause) //grab focus when user clicks on editor
 {
-    if(getContentComponent())
+    if(getContentComponent() && getContentComponent()->getCurrentCodeEditor())
     {
         getContentComponent()->getCurrentCodeEditor()->setWantsKeyboardFocus (true);
         getContentComponent()->getCurrentCodeEditor()->grabKeyboardFocus();
@@ -253,6 +255,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 
     const CommandID ids[] = { CommandIDs::newProject,
                               CommandIDs::open,
+							  CommandIDs::openFromRPi,
                               CommandIDs::closeAllDocuments,
                               CommandIDs::saveDocument,
                               CommandIDs::saveDocumentAs,
@@ -290,10 +293,15 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         break;
 
     case CommandIDs::open:
-        result.setInfo ("Open...", "Opens a Jucer project", CommandCategories::general, 0);
+        result.setInfo ("Open...", "Opens a project", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
         break;
 
+    case CommandIDs::openFromRPi:
+        result.setInfo ("Open from RPi", "Opens a file from a RPi", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
+        break;
+		
     case CommandIDs::saveDocument:
         result.setInfo ("Save file...", "Save a document", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
@@ -416,11 +424,13 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     switch (info.commandID)
     {
     case CommandIDs::newProject:
-        //getContentComponent()->createNewProject();
-        getContentComponent()->launchSSHFileBrowser();
+        getContentComponent()->createNewProject();
         break;
     case CommandIDs::open:
         getContentComponent()->openFile();
+        break;
+    case CommandIDs::openFromRPi:
+        getContentComponent()->launchSSHFileBrowser();
         break;
     case CommandIDs::saveDocument:
         getContentComponent()->saveDocument();

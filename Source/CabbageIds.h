@@ -28,6 +28,7 @@ enum
 {
     newProject              = 0x200010,
     open                    = 0x200020,
+	openFromRPi             = 0x200021,
     closeDocument           = 0x200030,
     saveDocument            = 0x200040,
     saveDocumentAs          = 0x200041,

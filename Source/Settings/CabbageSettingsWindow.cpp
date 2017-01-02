@@ -141,6 +141,9 @@ void CabbageSettingsWindow::addMiscProperties()
     const String sshHomeDir = settings.getUserSettings()->getValue("SSHHomeDir");
     props.add(new TextPropertyComponent(Value (sshHomeDir), "SSH Home Directory", 200, false));
 
+//    const String sshLocalDir = settings.getUserSettings()->getValue("SSHLocalDir");
+//    props.add(new TextPropertyComponent(Value (sshLocalDir), "SSH Local Directory", 200, false));
+	
     addCustomListener(props, this);
     miscPanel.clear();
     miscPanel.addProperties(props);

@@ -22,13 +22,13 @@
 
 #include "../CabbageCommonHeaders.h"
 
+class CabbageContentComponent;
 //==============================================================================
 class CabbageSSHFileBrowser   : public Component,
-    private Button::Listener,
     public ListBoxModel
 {
 public:
-    CabbageSSHFileBrowser(String ip, String homeDir);
+    CabbageSSHFileBrowser(String ip, String homeDir, CabbageContentComponent* owner);
     ~CabbageSSHFileBrowser();
     void paint (Graphics& g) override;
     void resized() override;
@@ -48,13 +48,13 @@ public:
 
 private:
     String ipAddress, homeDirectory;
-    TextButton launchButton, pingButton, killButton;
+    Label currentDirectoryLabel;
     const String getFileOrFolderName(String text);
     //TextEditor testResultsBox;
     ChildProcess childProcess;
     StringArray filesAndFoldersToDisplay, filePath;
+	CabbageContentComponent* owner;
 
-    void buttonClicked (Button* button) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSSHFileBrowser)
 };

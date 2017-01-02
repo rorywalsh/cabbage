@@ -18,28 +18,26 @@
 */
 
 #include "CabbageSSHFileBrowser.h"
-CabbageSSHFileBrowser::CabbageSSHFileBrowser(String ip, String homeDir)
-    :ipAddress(ip), homeDirectory(homeDir)
+#include "../Application/CabbageContentComponent.h"
+
+CabbageSSHFileBrowser::CabbageSSHFileBrowser(String ip, String homeDir,CabbageContentComponent* owner)
+    :ipAddress(ip), homeDirectory(homeDir), owner(owner)
 {
     setOpaque (true);
 
-    addAndMakeVisible (launchButton);
-    launchButton.setButtonText ("Launch Child Process");
-    launchButton.addListener (this);
+    addAndMakeVisible (currentDirectoryLabel);
 
-    addAndMakeVisible (pingButton);
-    pingButton.setButtonText ("Send Ping");
-    pingButton.addListener (this);
-
-    addAndMakeVisible (killButton);
-    killButton.setButtonText ("Kill Child Process");
-    killButton.addListener (this);
     addAndMakeVisible (filesListBox);
     filesListBox.setColour(ListBox::ColourIds::backgroundColourId, Colour(20, 20, 20));
     filesListBox.setModel(this);
     filePath.add(homeDirectory.trim());
-    String command2("ssh " + ipAddress + " ls -l "+homeDirectory);
-    launchChildProcess(command2);
+    const String command("ssh " + ipAddress + " ls -l "+homeDirectory);
+    launchChildProcess(command);
+	currentDirectoryLabel.setFont(Font("DejaVu Sans Mono", 15, 0));
+	currentDirectoryLabel.setText("Current Directory: " + homeDirectory, dontSendNotification);
+	currentDirectoryLabel.setColour(Label::textColourId, Colours::whitesmoke);
+	currentDirectoryLabel.setColour(Label::backgroundColourId, Colour(20, 20, 20));
+	currentDirectoryLabel.setEditable(false);
 
 }
 
@@ -55,10 +53,7 @@ void CabbageSSHFileBrowser::paint (Graphics& g)
 void CabbageSSHFileBrowser::resized()
 {
     Rectangle<int> area (getLocalBounds());
-    Rectangle<int> top (area.removeFromTop (40));
-    launchButton.setBounds (top.removeFromLeft (180).reduced (8));
-    pingButton.setBounds (top.removeFromLeft (180).reduced (8));
-    killButton.setBounds (top.removeFromLeft (180).reduced (8));
+	currentDirectoryLabel.setBounds(area.removeFromTop(30).reduced(8).withHeight(25));
     filesListBox.setBounds (area.reduced (8));
 }
 
@@ -69,25 +64,59 @@ int CabbageSSHFileBrowser::getNumRows()
 
 void CabbageSSHFileBrowser::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 {
-    bool isDirectory;
+    bool isDirectory = false;
+	CabbageUtilities::debug(filesAndFoldersToDisplay[row]);
     if(filesAndFoldersToDisplay[row].substring(0, 1)=="d")
         isDirectory = true;
 
     const String name = filesAndFoldersToDisplay[row].toUTF8().getAddress();
-    if(isDirectory)
+
+	if(name=="Double-click to go back a directory..")
+	{
+		filePath.remove(filePath.size()-1);
+		String command("ssh " + ipAddress + " ls -l "+filePath.joinIntoString(""));
+		CabbageUtilities::debug(command);
+		launchChildProcess(command);
+		currentDirectoryLabel.setText("Current Directory: " + filePath.joinIntoString(""), dontSendNotification);
+	}
+	else if(isDirectory)
     {
-        filePath.add("/" + getFileOrFolderName(name));
-        String command("ssh " + ipAddress + " ls -l "+filePath.joinIntoString(""));
-        CabbageUtilities::debug(command);
-        launchChildProcess(command);
+			filePath.add("/" + getFileOrFolderName(name));
+			String command("ssh " + ipAddress + " ls -l "+filePath.joinIntoString(""));
+			CabbageUtilities::debug(command);
+			launchChildProcess(command);
+			currentDirectoryLabel.setText("Current Directory: " + filePath.joinIntoString(""), dontSendNotification);
     }
     else
     {
-
-        String command("ssh " + ipAddress + " ls -l "+filePath.joinIntoString("")+"/"+getFileOrFolderName(name));
-        CabbageUtilities::debug(command);
+		String command;
+        FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
+		CabbageIDELookAndFeel lookAndFeel;
+        if (fc.browseForFileToSave(false))
+        {
+			File newFile = fc.getResult();
+            if(fc.getResult().existsAsFile())
+            {
+                const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+				command = ("scp " + ipAddress + ":"+filePath.joinIntoString("")+"/"+getFileOrFolderName(name) + " "
+						       + newFile.getFullPathName());
+				if(result==0)
+                {
+					launchChildProcess(command);
+					owner->openFile(newFile.getFullPathName());
+					delete this->getParentComponent();
+				}
+            }
+            else
+            {
+				command = ("scp " + ipAddress + ":"+filePath.joinIntoString("")+"/"+getFileOrFolderName(name) + " "
+						       + newFile.getFullPathName());
+				launchChildProcess(command);
+				owner->openFile(newFile.getFullPathName());
+				delete this->getParentComponent();
+            }
+        }		
     }
-
 }
 
 const String CabbageSSHFileBrowser::getFileOrFolderName(String text)
@@ -123,14 +152,14 @@ void CabbageSSHFileBrowser::paintListBoxItem (int rowNumber, Graphics& g,
     g.setFont(Font(String("DejaVu Sans Mono"), 15, 0));
 
     if(filesAndFoldersToDisplay[rowNumber]=="Double-click to go back a directory..")
-        g.setColour(Colours::whitesmoke);
+        g.setColour(Colours::lime.darker());
 
     else if(filesAndFoldersToDisplay[rowNumber].substring(0, 1)=="d")
         g.setColour(Colours::lime);
     else
         g.setColour(Colours::cornflowerblue);
 
-    g.drawFittedText(filesAndFoldersToDisplay[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
+    g.drawFittedText(filesAndFoldersToDisplay[rowNumber], Rectangle<int> (width, height).withLeft(8), Justification::centredLeft, 0);
 }
 
 
@@ -170,11 +199,5 @@ void CabbageSSHFileBrowser::pingChildProcess()
 void CabbageSSHFileBrowser::killChildProcess()
 {
     childProcess.kill();
-}
-
-void CabbageSSHFileBrowser::buttonClicked (Button* button)
-{
-    if (button == &pingButton)    pingChildProcess();
-    if (button == &killButton)    killChildProcess();
 }
 
