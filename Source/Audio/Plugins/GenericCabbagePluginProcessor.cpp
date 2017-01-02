@@ -16,18 +16,18 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor(File intputFile)
 {
 
     csoundChanList = NULL;
-/*
-    int numberOfChannels = csoundListChannels(getCsoundStruct(), &csoundChanList);
-    for(int i = 0; i < numberOfChannels; i++ )
-    {
-        const float min = csoundChanList[i].hints.min;
-        const float max = csoundChanList[i].hints.max;
-        const float defaultValue = csoundChanList[i].hints.dflt;
-        const String channel = csoundChanList[i].name;
-        NormalisableRange<float> range(min, max);
-        addParameter(new AudioParameterFloat(channel, channel, range, defaultValue));
-    }
-*/
+    /*
+        int numberOfChannels = csoundListChannels(getCsoundStruct(), &csoundChanList);
+        for(int i = 0; i < numberOfChannels; i++ )
+        {
+            const float min = csoundChanList[i].hints.min;
+            const float max = csoundChanList[i].hints.max;
+            const float defaultValue = csoundChanList[i].hints.dflt;
+            const String channel = csoundChanList[i].name;
+            NormalisableRange<float> range(min, max);
+            addParameter(new AudioParameterFloat(channel, channel, range, defaultValue));
+        }
+    */
 }
 
 GenericCabbagePluginProcessor::~GenericCabbagePluginProcessor()

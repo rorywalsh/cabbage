@@ -29,21 +29,21 @@ class CabbagePluginEditor;
 class CabbageEncoder : public Component, public ValueTree::Listener, public CabbageWidgetBase, public Label::Listener
 {
     bool isMouseOver = false;
-	bool shouldDisplayPopup = true;
+    bool shouldDisplayPopup = true;
     Rectangle<float> slider;
     Label textLabel, valueLabel;
-	float sliderIncr, value, skew, startingValue, sliderPos, currentEncValue, max, min, maxEnabled, minEnabled;
-	int yAxis, shouldShowValueTextBox, height, line, progress, decimalPlaces;
-	String outlinecolour, colour, trackercolour, text, textcolour, popupText;
-	BubbleMessageComponent popupBubble;
-	
+    float sliderIncr, value, skew, startingValue, sliderPos, currentEncValue, max, min, maxEnabled, minEnabled;
+    int yAxis, shouldShowValueTextBox, height, line, progress, decimalPlaces;
+    String outlinecolour, colour, trackercolour, text, textcolour, popupText;
+    BubbleMessageComponent popupBubble;
+
 public:
 
     CabbageEncoder(ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageEncoder() {};
 
-	CabbagePluginEditor* owner;
-	
+    CabbagePluginEditor* owner;
+
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
@@ -51,7 +51,7 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	void labelTextChanged (Label *label);
+    void labelTextChanged (Label *label);
     void mouseDown(const MouseEvent &e);
     void mouseEnter(const MouseEvent &e);
     void mouseDrag(const MouseEvent& e);
@@ -60,9 +60,9 @@ public:
     void showPopup(int displayTime=250);
     void resized();
 
-	void createPopupBubble();
-	
-	ValueTree widgetData;
+    void createPopupBubble();
+
+    ValueTree widgetData;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageEncoder);

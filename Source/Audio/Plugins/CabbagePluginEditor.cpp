@@ -103,7 +103,7 @@ void CabbagePluginEditor::addNewWidget(String widgetType, Point<int> position)
     processor.cabbageWidgets.addChild(newWidget, -1, 0);
 
     setCurrentlySelectedComponents(StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
-	
+
     insertWidget(newWidget);
     updateLayoutEditorFrames();
 
@@ -120,66 +120,66 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 
     if(widgetType==CabbageIdentifierIds::checkbox)
         insertCheckbox(cabbageWidgetData);
-		
+
     else if(widgetType==CabbageIdentifierIds::combobox)
         insertComboBox(cabbageWidgetData);
-		
+
     else if(widgetType==CabbageIdentifierIds::image)
         insertImage(cabbageWidgetData);
-		
-    else if(widgetType==CabbageIdentifierIds::rslider 
-			|| widgetType==CabbageIdentifierIds::vslider
-			|| widgetType==CabbageIdentifierIds::hslider)
+
+    else if(widgetType==CabbageIdentifierIds::rslider
+            || widgetType==CabbageIdentifierIds::vslider
+            || widgetType==CabbageIdentifierIds::hslider)
         insertSlider(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::label)
-		insertLabel(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::groupbox)
-		insertGroupBox(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::keyboard)
-		insertMIDIKeyboard(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::csoundoutput)
-		insertCsoundOutputConsole(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::numberbox)
-		insertNumberBox(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::textbox.toString())
-		insertTextBox(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::texteditor)
-		insertTextEditor(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::encoder)
-		insertEncoder(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::soundfiler)
-		insertSoundfiler(cabbageWidgetData);
 
-	else if(widgetType==CabbageIdentifierIds::button)
-		insertButton(cabbageWidgetData);
-	
-	else if(widgetType==CabbageIdentifierIds::filebutton)
-		insertFileButton(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::infobutton)
-		insertInfoButton(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::signaldisplay)
-		insertSignalDisplay(cabbageWidgetData);
+    else if(widgetType==CabbageIdentifierIds::label)
+        insertLabel(cabbageWidgetData);
 
-	else if(widgetType==CabbageIdentifierIds::gentable)
-		insertGenTable(cabbageWidgetData);
-	
-	else if(widgetType==CabbageIdentifierIds::xypad)
-		insertXYPad(cabbageWidgetData);
-		
-	else if(widgetType==CabbageIdentifierIds::hrange
-			|| widgetType==CabbageIdentifierIds::vrange)
-		insertRangeSlider(cabbageWidgetData);
+    else if(widgetType==CabbageIdentifierIds::groupbox)
+        insertGroupBox(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::keyboard)
+        insertMIDIKeyboard(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::csoundoutput)
+        insertCsoundOutputConsole(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::numberbox)
+        insertNumberBox(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::textbox.toString())
+        insertTextBox(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::texteditor)
+        insertTextEditor(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::encoder)
+        insertEncoder(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::soundfiler)
+        insertSoundfiler(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::button)
+        insertButton(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::filebutton)
+        insertFileButton(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::infobutton)
+        insertInfoButton(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::signaldisplay)
+        insertSignalDisplay(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::gentable)
+        insertGenTable(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::xypad)
+        insertXYPad(cabbageWidgetData);
+
+    else if(widgetType==CabbageIdentifierIds::hrange
+            || widgetType==CabbageIdentifierIds::vrange)
+        insertRangeSlider(cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -202,8 +202,8 @@ void CabbagePluginEditor::insertRangeSlider(ValueTree cabbageWidgetData)
 {
     CabbageRangeSlider* rangeSlider;
     components.add(rangeSlider = new CabbageRangeSlider(cabbageWidgetData, this));
-	rangeSlider->getSlider().addListener(this);
-    addToEditorAndMakeVisible(rangeSlider, cabbageWidgetData);		
+    rangeSlider->getSlider().addListener(this);
+    addToEditorAndMakeVisible(rangeSlider, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
@@ -238,7 +238,7 @@ void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
 {
     CabbageSlider* slider;
     components.add(slider = new CabbageSlider(cabbageWidgetData, this));
-	slider->getSlider().addListener(this);
+    slider->getSlider().addListener(this);
     addToEditorAndMakeVisible(slider, cabbageWidgetData);
 }
 
@@ -246,54 +246,54 @@ void CabbagePluginEditor::insertEncoder(ValueTree cabbageWidgetData)
 {
     CabbageEncoder* encoder;
     components.add(encoder = new CabbageEncoder(cabbageWidgetData, this));
-    addToEditorAndMakeVisible(encoder, cabbageWidgetData);	
+    addToEditorAndMakeVisible(encoder, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertXYPad(ValueTree cabbageWidgetData)
 {
-	CabbageXYPad* xyPad;
-	components.add(xyPad = new CabbageXYPad(cabbageWidgetData, this));	
-	xyPad->getSliderX().addListener(this);
-	xyPad->getSliderY().addListener(this);
-	addToEditorAndMakeVisible(xyPad, cabbageWidgetData);
-	processor.addXYAutomator(xyPad, cabbageWidgetData);
-	
+    CabbageXYPad* xyPad;
+    components.add(xyPad = new CabbageXYPad(cabbageWidgetData, this));
+    xyPad->getSliderX().addListener(this);
+    xyPad->getSliderY().addListener(this);
+    addToEditorAndMakeVisible(xyPad, cabbageWidgetData);
+    processor.addXYAutomator(xyPad, cabbageWidgetData);
+
 }
 
 void CabbagePluginEditor::insertFileButton(ValueTree cabbageWidgetData)
 {
     CabbageFileButton* fileButton;
     components.add(fileButton = new CabbageFileButton(cabbageWidgetData, this));
-    addToEditorAndMakeVisible(fileButton, cabbageWidgetData);	
+    addToEditorAndMakeVisible(fileButton, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertSignalDisplay(ValueTree cabbageWidgetData)
 {
     CabbageSignalDisplay* signalDisplay;
     components.add(signalDisplay = new CabbageSignalDisplay(cabbageWidgetData, this));
-    addToEditorAndMakeVisible(signalDisplay, cabbageWidgetData);	
+    addToEditorAndMakeVisible(signalDisplay, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertInfoButton(ValueTree cabbageWidgetData)
 {
     CabbageInfoButton* infoButton;
     components.add(infoButton = new CabbageInfoButton(cabbageWidgetData));
-    addToEditorAndMakeVisible(infoButton, cabbageWidgetData);	
+    addToEditorAndMakeVisible(infoButton, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertButton(ValueTree cabbageWidgetData)
 {
     CabbageButton* button;
     components.add(button = new CabbageButton(cabbageWidgetData));
-	button->addListener(this);
-    addToEditorAndMakeVisible(button, cabbageWidgetData);	
+    button->addListener(this);
+    addToEditorAndMakeVisible(button, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertNumberBox(ValueTree cabbageWidgetData)
 {
     CabbageNumberBox* numberBox;
     components.add(numberBox = new CabbageNumberBox(cabbageWidgetData));
-	numberBox->getSlider().addListener(this);
+    numberBox->getSlider().addListener(this);
     addToEditorAndMakeVisible(numberBox, cabbageWidgetData);
 }
 
@@ -301,44 +301,44 @@ void CabbagePluginEditor::insertGenTable(ValueTree cabbageWidgetData)
 {
     CabbageGenTable* genTable;
     components.add(genTable = new CabbageGenTable(cabbageWidgetData, this));
-    addToEditorAndMakeVisible(genTable, cabbageWidgetData);	
+    addToEditorAndMakeVisible(genTable, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
 {
     CabbageGroupBox* groupBox;
     components.add(groupBox = new CabbageGroupBox(cabbageWidgetData));
-    addToEditorAndMakeVisible(groupBox, cabbageWidgetData);	
+    addToEditorAndMakeVisible(groupBox, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertTextBox(ValueTree cabbageWidgetData)
 {
     CabbageTextBox* textBox;
     components.add(textBox = new CabbageTextBox(cabbageWidgetData));
-    addToEditorAndMakeVisible(textBox, cabbageWidgetData);	
+    addToEditorAndMakeVisible(textBox, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertCsoundOutputConsole(ValueTree cabbageWidgetData)
 {
-	if(consoleCount<1)
-	{
-		CabbageCsoundConsole* csoundConsole;
-		components.add(csoundConsole = new CabbageCsoundConsole(cabbageWidgetData, this));
-		addToEditorAndMakeVisible(csoundConsole, cabbageWidgetData);
-		csoundConsole++;
-	}	
+    if(consoleCount<1)
+    {
+        CabbageCsoundConsole* csoundConsole;
+        components.add(csoundConsole = new CabbageCsoundConsole(cabbageWidgetData, this));
+        addToEditorAndMakeVisible(csoundConsole, cabbageWidgetData);
+        csoundConsole++;
+    }
 }
 
 void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
 {
-	if(keyboardCount<1)
-	{
-		CabbageKeyboard* midiKeyboard;
-		components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
-		midiKeyboard->setKeyPressBaseOctave(3);
-		addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);	
-		keyboardCount++;
-	}	
+    if(keyboardCount<1)
+    {
+        CabbageKeyboard* midiKeyboard;
+        components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
+        midiKeyboard->setKeyPressBaseOctave(3);
+        addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);
+        keyboardCount++;
+    }
 }
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
@@ -368,51 +368,51 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 void CabbagePluginEditor::buttonClicked(Button* button)
 {
 
-	const bool buttonState = button->getToggleState();
-			
-	if (CabbageAudioParameter* param = getParameterForComponent(button->getName()))	//only update parameters for normal buttons
-	{
-		param->beginChangeGesture();
-		param->setValue(buttonState == true ? 1 : 0);
-		param->endChangeGesture();
-	}
-	
-	if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
-	{	
-		const StringArray textItems = cabbageButton->getTextArray();
-		if(textItems.size()>0)
-			cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
-	}	
+    const bool buttonState = button->getToggleState();
+
+    if (CabbageAudioParameter* param = getParameterForComponent(button->getName()))	//only update parameters for normal buttons
+    {
+        param->beginChangeGesture();
+        param->setValue(buttonState == true ? 1 : 0);
+        param->endChangeGesture();
+    }
+
+    if(CabbageButton* cabbageButton = dynamic_cast<CabbageButton*>(button))
+    {
+        const StringArray textItems = cabbageButton->getTextArray();
+        if(textItems.size()>0)
+            cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
+    }
 }
 
 //======================================================================================================
 void CabbagePluginEditor::sliderValueChanged(Slider* slider)
 {
-	if(slider->getSliderStyle()!=Slider::TwoValueHorizontal && slider->getSliderStyle()!=Slider::TwoValueVertical)
-	{
-		if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
-		{
-			param->beginChangeGesture();
-			param->setValue(slider->getValue());		
-			param->endChangeGesture();
-		}
-	}
-	else
-	{
-		if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_min"))
-		{
-			param->beginChangeGesture();
-			param->setValue(slider->getMinValue());
-			param->endChangeGesture();
-		}
-		
-		if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_max"))
-		{
-			param->beginChangeGesture();
-			param->setValue(slider->getMaxValue());
-			param->endChangeGesture();
-		}		
-	}
+    if(slider->getSliderStyle()!=Slider::TwoValueHorizontal && slider->getSliderStyle()!=Slider::TwoValueVertical)
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+        {
+            param->beginChangeGesture();
+            param->setValue(slider->getValue());
+            param->endChangeGesture();
+        }
+    }
+    else
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_min"))
+        {
+            param->beginChangeGesture();
+            param->setValue(slider->getMinValue());
+            param->endChangeGesture();
+        }
+
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_max"))
+        {
+            param->beginChangeGesture();
+            param->setValue(slider->getMaxValue());
+            param->endChangeGesture();
+        }
+    }
 }
 //======================================================================================================
 void CabbagePluginEditor::enableEditMode(bool enable)
@@ -543,51 +543,51 @@ void CabbagePluginEditor::updatefTableData(GenTable* table)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 {
-	processor.getCsound()->SetChannel(channel.getCharPointer(), value);
+    processor.getCsound()->SetChannel(channel.getCharPointer(), value);
 }
 
 void CabbagePluginEditor::sendChannelStringDataToCsound(String channel, String value)
 {
-	processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
+    processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
 const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDisplay(const String signalVariable, const String displayType)
 {
-	return processor.getSignalArray(signalVariable, displayType)->getPoints();	
+    return processor.getSignalArray(signalVariable, displayType)->getPoints();
 }
 
 bool CabbagePluginEditor::shouldUpdateSignalDisplay()
 {
-	return processor.shouldUpdateSignalDisplay();
+    return processor.shouldUpdateSignalDisplay();
 }
 
 void CabbagePluginEditor::enableXYAutomator(String name, bool enable, Line<float> dragLine)
 {
-	processor.enableXYAutomator(name, enable, dragLine);
+    processor.enableXYAutomator(name, enable, dragLine);
 }
 
 bool CabbagePluginEditor::csdCompiledWithoutError()
 {
-	return processor.csdCompiledWithoutError();
+    return processor.csdCompiledWithoutError();
 }
 
 StringArray CabbagePluginEditor::getTableStatement(int tableNumber)
 {
-	return processor.getTableStatement(tableNumber);
+    return processor.getTableStatement(tableNumber);
 }
 
 const Array<float, CriticalSection> CabbagePluginEditor::getTableFloats(int tableNumber)
 {
-	return processor.getTableFloats(tableNumber);
+    return processor.getTableFloats(tableNumber);
 }
 
 CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 {
-	return processor;
+    return processor;
 }
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {
-	jassert(false);
-	return String::empty;
+    jassert(false);
+    return String::empty;
 }

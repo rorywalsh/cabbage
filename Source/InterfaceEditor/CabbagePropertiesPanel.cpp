@@ -58,24 +58,24 @@ static Array<PropertyComponent*> createRotationEditors(CabbagePropertiesPanel* o
 //==============================================================================
 static void createMultiLineTextEditors(ValueTree valueTree, Array<PropertyComponent*> &comps, Identifier identifier, String label)
 {
-	StringArray items;
-	const Array<var>* array = CabbageWidgetData::getProperty(valueTree, identifier).getArray();
-	if(array)
-	{
-		for( int i = 0 ; i < array->size(); i++)
-		{
-			items.add(array->getReference(i).toString());
-		}
+    StringArray items;
+    const Array<var>* array = CabbageWidgetData::getProperty(valueTree, identifier).getArray();
+    if(array)
+    {
+        for( int i = 0 ; i < array->size(); i++)
+        {
+            items.add(array->getReference(i).toString());
+        }
 
-		comps.add (new TextPropertyComponent(Value (var (items.joinIntoString("\n"))), label, 1000, true));
-	}
-	else
-	{
-		var text = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::text);
-		StringArray stringArray;
-		stringArray.addLines(text.toString());
-		comps.add (new TextPropertyComponent(Value (var (stringArray.joinIntoString("\n"))), label, 1000, true));
-	}	
+        comps.add (new TextPropertyComponent(Value (var (items.joinIntoString("\n"))), label, 1000, true));
+    }
+    else
+    {
+        var text = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::text);
+        StringArray stringArray;
+        stringArray.addLines(text.toString());
+        comps.add (new TextPropertyComponent(Value (var (stringArray.joinIntoString("\n"))), label, 1000, true));
+    }
 }
 
 //==============================================================================
@@ -84,14 +84,14 @@ static Array<PropertyComponent*> createChannelEditors(CabbagePropertiesPanel* ow
     Array<PropertyComponent*> comps;
     var channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
     var identChannel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::identchannel);
-	
-	const Array<var>* array = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::channel).getArray();
-	if(array && array->size()>1)
-		createMultiLineTextEditors(valueTree, comps, CabbageIdentifierIds::channel, "Channel");
-	else
-		comps.add (new TextPropertyComponent(Value(channel), "Channel", 200, false));
-    
-	comps.add (new TextPropertyComponent(Value(identChannel), "Ident Channel", 100, false));
+
+    const Array<var>* array = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::channel).getArray();
+    if(array && array->size()>1)
+        createMultiLineTextEditors(valueTree, comps, CabbageIdentifierIds::channel, "Channel");
+    else
+        comps.add (new TextPropertyComponent(Value(channel), "Channel", 200, false));
+
+    comps.add (new TextPropertyComponent(Value(identChannel), "Ident Channel", 100, false));
     addListener(comps, owner);
     return comps;
 }
@@ -134,11 +134,11 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
     setSize(300, 500);
 
     addAndMakeVisible (propertyPanel);
-	//setColour(TextEditor::highlightColourId, Colour(100, 100, 100));
-	propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::black);
-	
-	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-	
+    //setColour(TextEditor::highlightColourId, Colour(100, 100, 100));
+    propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::black);
+
+    const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+
     propertyPanel.addSection ("Bounds", createPositionEditors(widgetData));
     propertyPanel.addSection ("Rotation", createRotationEditors(this, widgetData));
     propertyPanel.addSection ("Channels", createChannelEditors(this, widgetData));
@@ -157,8 +157,8 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
 {
     widgetData = wData;
 
-	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-	
+    const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+
     propertyPanel.clear();
     propertyPanel.addSection ("Bounds", createPositionEditors(widgetData));
     propertyPanel.addSection ("Rotation", createRotationEditors(this, widgetData), false);
@@ -190,11 +190,11 @@ void CabbagePropertiesPanel::setPropertyByName(String name, var value)
     if(identifier.isNotEmpty())
     {
         CabbageWidgetData::setProperty(widgetData, identifier, value);
-		
-		if(identifier==CabbageIdentifierIds::sliderincr.toString())
-			CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 
-											CabbageUtilities::getNumberOfDecimalPlaces(StringArray(value.toString())));
-											
+
+        if(identifier==CabbageIdentifierIds::sliderincr.toString())
+            CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::decimalplaces,
+                                           CabbageUtilities::getNumberOfDecimalPlaces(StringArray(value.toString())));
+
         sendChangeMessage();	//update code in editor when changes are made...
     }
 }
@@ -219,16 +219,16 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
 {
     if(value.refersToSameSourceAs(isActiveValue))
         setPropertyByName("Active", value.getValue());
-		
+
     else if(value.refersToSameSourceAs(isVisibleValue))
         setPropertyByName("Visible", value.getValue());
-		
+
     else if(value.refersToSameSourceAs(alphaValue))
         setPropertyByName("Alpha", value.getValue());
-		
+
     else if(value.refersToSameSourceAs(sliderNumberBoxValue))
         setPropertyByName("Value Box", value.getValue());
-		
+
     else if(value.refersToSameSourceAs(shapeValue))
     {
         if(value.getValue().isInt())
@@ -240,43 +240,55 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
         if(value.getValue().isDouble())
             setPropertyByName("Velocity", value.getValue());
     }
-	
+
     else if(value.refersToSameSourceAs(alignValue))
     {
         if(value.getValue().isInt())
-		{
-			if(int(value.getValue())==0)
-				setPropertyByName("Align", "centre");
-			else if(int(value.getValue())==1)
-				setPropertyByName("Align", "left");
-			else if(int(value.getValue())==2)
-				setPropertyByName("Align", "right");   
-			else if(int(value.getValue())==3)
-				setPropertyByName("Align", "above");  
-			else if(int(value.getValue())==4)
-				setPropertyByName("Align", "below");          
-		}
+        {
+            if(int(value.getValue())==0)
+                setPropertyByName("Align", "centre");
+            else if(int(value.getValue())==1)
+                setPropertyByName("Align", "left");
+            else if(int(value.getValue())==2)
+                setPropertyByName("Align", "right");
+            else if(int(value.getValue())==3)
+                setPropertyByName("Align", "above");
+            else if(int(value.getValue())==4)
+                setPropertyByName("Align", "below");
+        }
     }
-	
+
     else if(value.refersToSameSourceAs(fileModeValue))
     {
         if(value.getValue().isInt())
-		{
-			if(int(value.getValue())==0)
-				setPropertyByName("Mode", "file");
-			else if(int(value.getValue())==1)
-				setPropertyByName("Align", "directory");
-			else if(int(value.getValue())==2)
-				setPropertyByName("Align", "snapshot");         
-		}
+        {
+            if(int(value.getValue())==0)
+                setPropertyByName("Mode", "file");
+            else if(int(value.getValue())==1)
+                setPropertyByName("Align", "directory");
+            else if(int(value.getValue())==2)
+                setPropertyByName("Align", "snapshot");
+        }
     }
 }
 
 void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
 {
-    fileComponent->setTooltip(fileComponent->getCurrentFileText());
-    setPropertyByName(fileComponent->getName(), fileComponent->getCurrentFileText());
-    const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
+    if(File(fileComponent->getCurrentFileText()).existsAsFile())
+    {
+        const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
+        fileComponent->setTooltip(fileComponent->getCurrentFileText());
+        const String relativePath = File(fileComponent->getCurrentFileText()).getRelativePathFrom(File(csdFile));
+        setPropertyByName(fileComponent->getName(), relativePath);
+
+    }
+    else
+    {
+        fileComponent->setCurrentFile(File(""), false, dontSendNotification);
+        fileComponent->setTooltip(fileComponent->getCurrentFileText());
+        setPropertyByName(fileComponent->getName(), fileComponent->getCurrentFileText());
+
+    }
 }
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors(ValueTree valueTree)
@@ -288,7 +300,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors(ValueTree va
 
     if(isMultiline==true)
     {
-		createMultiLineTextEditors(valueTree, comps, CabbageIdentifierIds::text, "Text");
+        createMultiLineTextEditors(valueTree, comps, CabbageIdentifierIds::text, "Text");
     }
     else
     {
@@ -317,15 +329,15 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
     if(typeOfWidget == "checkbox" || typeOfWidget.contains("button"))
     {
         comps.add(new ColourPropertyComponent("Colour: Off", colourString));
-		
+
         if( typeOfWidget != "filebutton" && typeOfWidget != "infobutton")
-			comps.add(new ColourPropertyComponent("Colour: On", onColourString));
-			
+            comps.add(new ColourPropertyComponent("Colour: On", onColourString));
+
         comps.add(new ColourPropertyComponent("Font: Off", fontColourString));
-		
-		if( typeOfWidget != "filebutton" && typeOfWidget != "infobutton")
-			comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
-			
+
+        if( typeOfWidget != "filebutton" && typeOfWidget != "infobutton")
+            comps.add(new ColourPropertyComponent("Font: On", onFontColourString));
+
     }
     else if(typeOfWidget == "combobox")
     {
@@ -336,13 +348,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
     else if(typeOfWidget == "image" || typeOfWidget == "soundfiler")
     {
         const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
-		const String backgroundColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::tablebackgroundcolour);
-		
+        const String backgroundColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::tablebackgroundcolour);
+
         comps.add(new ColourPropertyComponent("Colour", colourString));
-		if(typeOfWidget == "soundfiler")
-			comps.add(new ColourPropertyComponent("Soundfiler Background", backgroundColour));
-		else
-			comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));
+        if(typeOfWidget == "soundfiler")
+            comps.add(new ColourPropertyComponent("Soundfiler Background", backgroundColour));
+        else
+            comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));
     }
     else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder" || typeOfWidget.contains("range"))
     {
@@ -350,64 +362,64 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
         const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
         const String trackerColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour);
-        
-		comps.add(new ColourPropertyComponent("Colour", colourString));		
-		
-		if(typeOfWidget.contains("range")== false)
-			comps.add(new ColourPropertyComponent("Text Colour", textColourString));
-		
-		comps.add(new ColourPropertyComponent("Font", fontColourString));
-		
-		if(typeOfWidget == "rslider")
-			comps.add(new ColourPropertyComponent("Outline", outlineColourString));
-		
-		comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
+
+        comps.add(new ColourPropertyComponent("Colour", colourString));
+
+        if(typeOfWidget.contains("range")== false)
+            comps.add(new ColourPropertyComponent("Text Colour", textColourString));
+
+        comps.add(new ColourPropertyComponent("Font", fontColourString));
+
+        if(typeOfWidget == "rslider")
+            comps.add(new ColourPropertyComponent("Outline", outlineColourString));
+
+        comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
     }
-	else if(typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
-	{
-		const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
-		const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
-		const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
-		comps.add(new ColourPropertyComponent("Colour", colourString));	
-		comps.add(new ColourPropertyComponent("Font", fontColourString));
-		
-		if(typeOfWidget == "groupbox")
-			comps.add(new ColourPropertyComponent("Outline", outlineColourString));
-		else if(typeOfWidget == "numberbox")
-			comps.add(new ColourPropertyComponent("Text Colour", textColourString));
-	}
+    else if(typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
+    {
+        const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+        const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
+        const String outlineColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
+        comps.add(new ColourPropertyComponent("Colour", colourString));
+        comps.add(new ColourPropertyComponent("Font", fontColourString));
 
-	else if(typeOfWidget == "keyboard")
-	{
-		const String whiteNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::whitenotecolour);
-		const String blackNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::blacknotecolour);
-		const String noteSeparator = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::noteseparatorcolour);
-		const String arrowBg = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::arrowbackgroundcolour);
-		const String arrow = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::arrowcolour);
-		
-		comps.add(new ColourPropertyComponent("White Notes", whiteNotes));	
-		comps.add(new ColourPropertyComponent("Black Notes", blackNotes));
-		comps.add(new ColourPropertyComponent("Notes Separator", noteSeparator));
-		comps.add(new ColourPropertyComponent("Arrows Background", arrowBg));
-		comps.add(new ColourPropertyComponent("Arrows", arrow));
+        if(typeOfWidget == "groupbox")
+            comps.add(new ColourPropertyComponent("Outline", outlineColourString));
+        else if(typeOfWidget == "numberbox")
+            comps.add(new ColourPropertyComponent("Text Colour", textColourString));
+    }
 
-	}
-	
-	else if(typeOfWidget == "xypad")
-	{
-		const String colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
-		const String backgroundColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::backgroundcolour);
-		const String textColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
-		const String fontColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
-		const String ballColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::ballcolour);
-		
-		comps.add(new ColourPropertyComponent("Colour", colour));	
-		comps.add(new ColourPropertyComponent("Ball", ballColour));
-		comps.add(new ColourPropertyComponent("Background", backgroundColour));
-		comps.add(new ColourPropertyComponent("Text Colour", textColour));
-		comps.add(new ColourPropertyComponent("Font", fontColour));
+    else if(typeOfWidget == "keyboard")
+    {
+        const String whiteNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::whitenotecolour);
+        const String blackNotes = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::blacknotecolour);
+        const String noteSeparator = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::noteseparatorcolour);
+        const String arrowBg = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::arrowbackgroundcolour);
+        const String arrow = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::arrowcolour);
 
-	}
+        comps.add(new ColourPropertyComponent("White Notes", whiteNotes));
+        comps.add(new ColourPropertyComponent("Black Notes", blackNotes));
+        comps.add(new ColourPropertyComponent("Notes Separator", noteSeparator));
+        comps.add(new ColourPropertyComponent("Arrows Background", arrowBg));
+        comps.add(new ColourPropertyComponent("Arrows", arrow));
+
+    }
+
+    else if(typeOfWidget == "xypad")
+    {
+        const String colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
+        const String backgroundColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::backgroundcolour);
+        const String textColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
+        const String fontColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+        const String ballColour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::ballcolour);
+
+        comps.add(new ColourPropertyComponent("Colour", colour));
+        comps.add(new ColourPropertyComponent("Ball", ballColour));
+        comps.add(new ColourPropertyComponent("Background", backgroundColour));
+        comps.add(new ColourPropertyComponent("Text Colour", textColour));
+        comps.add(new ColourPropertyComponent("Font", fontColour));
+
+    }
     alphaValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::alpha));
     alphaValue.addListener(this);
     comps.add(new SliderPropertyComponent(alphaValue, "Alpha", 0, 1, .01, 1, 1));
@@ -443,15 +455,31 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors(ValueTre
 Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors(ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
+    const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 
-    if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "checkbox")
+    if(typeOfWidget == "checkbox" || typeOfWidget == "button")
     {
-        comps.add (new CabbageFilePropertyComponent("On Image", false, true));
-        comps.add (new CabbageFilePropertyComponent("Off Image", false, true));
+		const String onFile = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::imgbuttonon);
+		const String offFile = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::imgbuttonoff);
+        comps.add (new CabbageFilePropertyComponent("On Image", false, true, "*", onFile));
+        comps.add (new CabbageFilePropertyComponent("Off Image", false, true, "*", offFile));
     }
-    else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type) == "combobox")
+    else if(typeOfWidget == "combobox")
     {
 
+    }
+	else if(typeOfWidget.contains("slider"))
+    {
+		const String sliderFile = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::imgslider);
+		const String sliderBgFile = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::imgsliderbg);
+        comps.add (new CabbageFilePropertyComponent("Thumb Image", false, true, "*", sliderFile));
+        comps.add (new CabbageFilePropertyComponent("Background Image", false, true, "*", sliderBgFile));		
+    }
+		
+    else if(typeOfWidget == "image")
+    {
+        const String file = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
+        comps.add (new CabbageFilePropertyComponent("Image File", false, true, "*", file));
     }
 
     addListener(comps, this);
@@ -462,8 +490,8 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 {
     Array<PropertyComponent*> comps;
     var corners = valueTree.getProperty(CabbageIdentifierIds::corners);
-	const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-	
+    const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+
     if(corners.isVoid()==false)
     {
         comps.add (new TextPropertyComponent(Value (corners), "Corners", 200, false));
@@ -479,14 +507,14 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
         choices.add ("Circle");
         choiceVars.add (0);
         choiceVars.add (1);
-		
+
         if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape) == "square")
             shapeValue.setValue(0);
-		else
-			shapeValue.setValue(1);
-		
+        else
+            shapeValue.setValue(1);
+
         comps.add (new ChoicePropertyComponent(shapeValue, "Shape", choices, choiceVars));
-		
+
     }
 
     if(typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox")
@@ -494,68 +522,68 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
         alignValue.addListener(this);
         StringArray choices;
         Array<var> choiceVars;
-		
-		const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+
+        const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 
 
         choices.add ("Centre");
         choices.add ("Left");
-		choices.add ("Right");
+        choices.add ("Right");
         choiceVars.add (0);
         choiceVars.add (1);
-		choiceVars.add (2);
-		
-		if(typeOfWidget == "numberbox")
-		{
-			choices.remove(0);
-			choiceVars.remove(0);
-			choices.add ("Above");
-			choices.add ("Below");
-			choiceVars.add (3);
-			choiceVars.add (4);
-		}
-		
-		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "centre")
+        choiceVars.add (2);
+
+        if(typeOfWidget == "numberbox")
+        {
+            choices.remove(0);
+            choiceVars.remove(0);
+            choices.add ("Above");
+            choices.add ("Below");
+            choiceVars.add (3);
+            choiceVars.add (4);
+        }
+
+        if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "centre")
             alignValue.setValue(0);
-		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "left")
+        else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "left")
             alignValue.setValue(1);
-		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "right")
-            alignValue.setValue(2);	
-		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "above")
-            alignValue.setValue(3);	
-		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "below")
-            alignValue.setValue(4);	
-		
-	
+        else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "right")
+            alignValue.setValue(2);
+        else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "above")
+            alignValue.setValue(3);
+        else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align) == "below")
+            alignValue.setValue(4);
+
+
         comps.add (new ChoicePropertyComponent(alignValue, typeOfWidget=="numberbox" ? "Align Text" : "Align", choices, choiceVars));
-		
+
 
     }
-	
+
     if(typeOfWidget == "combobox" || typeOfWidget == "soundfiler")
     {
         comps.add (new CabbageFilePropertyComponent("File", false, true));
-		
-		if(typeOfWidget == "soundfiler")
-		{
-			var zoom = valueTree.getProperty(CabbageIdentifierIds::zoom);
-			const String zoomValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min), 2);
-			comps.add (new TextPropertyComponent(Value (zoomValue), "Zoom", 200, false));
-		}
+
+        if(typeOfWidget == "soundfiler")
+        {
+            var zoom = valueTree.getProperty(CabbageIdentifierIds::zoom);
+            const String zoomValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min), 2);
+            comps.add (new TextPropertyComponent(Value (zoomValue), "Zoom", 200, false));
+        }
     }
-	
+
     else if(typeOfWidget == "image" || typeOfWidget == "groupbox")
     {
         var outline = valueTree.getProperty(CabbageIdentifierIds::outlinethickness);
         comps.add (new TextPropertyComponent(Value (outline), "Outline Thickness", 200, false));
     }
-	
-	else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder")
-	{
-		sliderNumberBoxValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox));
-		sliderNumberBoxValue.addListener(this);
-		comps.add (new BooleanPropertyComponent(sliderNumberBoxValue, "Value Box", "Is Visible"));		
-	} 
+
+    else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder")
+    {
+        sliderNumberBoxValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox));
+        sliderNumberBoxValue.addListener(this);
+        comps.add (new BooleanPropertyComponent(sliderNumberBoxValue, "Value Box", "Is Visible"));
+    }
 
     else if(typeOfWidget == "filebutton")
     {
@@ -565,21 +593,21 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 
         choices.add ("File");
         choices.add ("Directory");
-		choices.add ("Snapshot");
+        choices.add ("Snapshot");
         choiceVars.add (0);
         choiceVars.add (1);
-		choiceVars.add (2);
-		
+        choiceVars.add (2);
+
         if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::mode) == "file")
             shapeValue.setValue(0);
-		else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::mode) == "directory")
-			shapeValue.setValue(1);
-		else 
-			shapeValue.setValue(2);
-			
+        else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::mode) == "directory")
+            shapeValue.setValue(1);
+        else
+            shapeValue.setValue(2);
+
         comps.add (new ChoicePropertyComponent(shapeValue, "Mode", choices, choiceVars));
-		
-    }	
+
+    }
 
     addListener(comps, this);
     return comps;
@@ -589,34 +617,34 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
-	const int decimalPlaces = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::decimalplaces); //get precision of number to display
+    const int decimalPlaces = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::decimalplaces); //get precision of number to display
     const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-	
+
     if(typeOfWidget.contains("slider") || typeOfWidget=="encoder" || typeOfWidget.contains("range"))
     {
         const String min = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min), decimalPlaces);
         const String max = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max), decimalPlaces);
         const String skew = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderskew), decimalPlaces);
         const String incr = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::sliderincr), decimalPlaces);
-		
+
         comps.add(new TextPropertyComponent(Value(min), "Minimum", 8, false));
         comps.add(new TextPropertyComponent(Value(max), "Maximum", 8, false));
         if(typeOfWidget.contains("slider"))
-			comps.add(new TextPropertyComponent(Value(skew), "Skew", 8, false));
-        
-		comps.add(new TextPropertyComponent(Value(incr), "Increment", 8, false));
+            comps.add(new TextPropertyComponent(Value(skew), "Skew", 8, false));
 
-		if(typeOfWidget.contains("slider"))
-		{
-			velocityValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::velocity));
-			velocityValue.addListener(this);
-			comps.add(new SliderPropertyComponent(velocityValue, "Velocity", 0, 50, .01, .25, false));
-		}
-		
-		
+        comps.add(new TextPropertyComponent(Value(incr), "Increment", 8, false));
+
+        if(typeOfWidget.contains("slider"))
+        {
+            velocityValue.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::velocity));
+            velocityValue.addListener(this);
+            comps.add(new SliderPropertyComponent(velocityValue, "Velocity", 0, 50, .01, .25, false));
+        }
+
+
     }
-	
-	if(typeOfWidget == "xypad")
+
+    if(typeOfWidget == "xypad")
     {
         const String minx = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::minx), decimalPlaces);
         const String maxx = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::maxx), decimalPlaces);
@@ -624,28 +652,28 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors(CabbageProp
         const String maxy = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::maxy), decimalPlaces);
         const String valuex = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuex), decimalPlaces);
         const String valuey = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuey), decimalPlaces);
-		
-		comps.add(new TextPropertyComponent(Value(minx), "Min: X", 8, false));
-		comps.add(new TextPropertyComponent(Value(maxx), "Max: X", 8, false));
-		comps.add(new TextPropertyComponent(Value(miny), "Min: Y", 8, false));
-		comps.add(new TextPropertyComponent(Value(maxy), "Max: Y", 8, false));
-		comps.add(new TextPropertyComponent(Value(valuex), "Value X", 8, false));
-		comps.add(new TextPropertyComponent(Value(valuey), "Value Y", 8, false));		
-	}
-	else
-	{
-		const String value = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), decimalPlaces);
-		
-		if(typeOfWidget.contains("range"))
-		{
-			const String minValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::minvalue), decimalPlaces);
-			const String maxValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::maxvalue), decimalPlaces);
-			comps.add(new TextPropertyComponent(Value(minValue), "Value Min", 8, false));
-			comps.add(new TextPropertyComponent(Value(maxValue), "Value Max", 8, false));
-		}
-		else
-			comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
-	}
+
+        comps.add(new TextPropertyComponent(Value(minx), "Min: X", 8, false));
+        comps.add(new TextPropertyComponent(Value(maxx), "Max: X", 8, false));
+        comps.add(new TextPropertyComponent(Value(miny), "Min: Y", 8, false));
+        comps.add(new TextPropertyComponent(Value(maxy), "Max: Y", 8, false));
+        comps.add(new TextPropertyComponent(Value(valuex), "Value X", 8, false));
+        comps.add(new TextPropertyComponent(Value(valuey), "Value Y", 8, false));
+    }
+    else
+    {
+        const String value = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), decimalPlaces);
+
+        if(typeOfWidget.contains("range"))
+        {
+            const String minValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::minvalue), decimalPlaces);
+            const String maxValue = String(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::maxvalue), decimalPlaces);
+            comps.add(new TextPropertyComponent(Value(minValue), "Value Min", 8, false));
+            comps.add(new TextPropertyComponent(Value(maxValue), "Value Max", 8, false));
+        }
+        else
+            comps.add(new TextPropertyComponent(Value(value), "Value", 8, false));
+    }
     addListener(comps, owner);
 
     return comps;

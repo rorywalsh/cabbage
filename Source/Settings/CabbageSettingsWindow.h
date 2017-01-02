@@ -33,7 +33,8 @@ class CabbageSettingsWindow :
     public Button::Listener,
     public Value::Listener,
     public FilenameComponentListener,
-    public ChangeListener
+    public ChangeListener,
+    public TextPropertyComponent::Listener
 {
 
 public:
@@ -51,6 +52,7 @@ public:
     void paint(Graphics& g);
     void valueChanged(Value& value);
     void filenameComponentChanged (FilenameComponent*);
+    void textPropertyComponentChanged(TextPropertyComponent *comp);
 
 
 private:

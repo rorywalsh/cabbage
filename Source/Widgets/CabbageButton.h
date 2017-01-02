@@ -37,7 +37,7 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	void setLookAndFeelColours(ValueTree wData);
+    void setLookAndFeelColours(ValueTree wData);
 
     ValueTree widgetData;
 

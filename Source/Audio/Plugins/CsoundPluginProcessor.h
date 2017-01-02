@@ -86,19 +86,20 @@ public:
 
 
     void handleAsyncUpdate();
-	//csound breakpint function
-	static void breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *udata);
-	CabbageCsoundBreakpointData breakPointData;
-	
-	ValueTree getBreakpointData(){
-		return breakPointData.valueTree;
-	}
-	
-	StringArray getTableStatement(int tableNum);
-	const Array<float, CriticalSection> getTableFloats(int tableNum);
-	int checkTable(int tableNum);
-	std::vector<MYFLT> temp;
-	
+    //csound breakpint function
+    static void breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *udata);
+    CabbageCsoundBreakpointData breakPointData;
+
+    ValueTree getBreakpointData()
+    {
+        return breakPointData.valueTree;
+    }
+
+    StringArray getTableStatement(int tableNum);
+    const Array<float, CriticalSection> getTableFloats(int tableNum);
+    int checkTable(int tableNum);
+    std::vector<MYFLT> temp;
+
     //=============================================================================
     //Implement these to init, send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel
@@ -109,7 +110,7 @@ public:
     virtual void receiveChannelDataFromCsound() {};
     virtual void initAllCsoundChannels(ValueTree cabbageData);
     //=============================================================================
-	void addMacros(String csdText);
+    void addMacros(String csdText);
     String getCsoundOutput();
 
     void compileCsdFile(File csdFile)
@@ -124,7 +125,7 @@ public:
 
     Csound* getCsound()
     {
-		return csound;
+        return csound;
     }
 
     CSOUND* getCsoundStruct()
@@ -137,53 +138,53 @@ public:
         guiRefreshRate = rate;
     }
 
-	MidiKeyboardState keyboardState;
-	
-	//==================================================================================
-	class SignalDisplay
-	{
-	public:
-		float yScale;
-		int windid, min ,max, size;
-		String caption;
+    MidiKeyboardState keyboardState;
 
-		SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
-			caption(_caption),
-			windid(_id),
-			yScale(_scale),
-			min(_min),
-			max(_max),
-			size(_size)
-		{}
+    //==================================================================================
+    class SignalDisplay
+    {
+    public:
+        float yScale;
+        int windid, min ,max, size;
+        String caption;
 
-		~SignalDisplay()
-		{
-			points.clear();
-		}
+        SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
+            caption(_caption),
+            windid(_id),
+            yScale(_scale),
+            min(_min),
+            max(_max),
+            size(_size)
+        {}
 
-		Array<float, CriticalSection> getPoints()
-		{
-			return points;
-		}
+        ~SignalDisplay()
+        {
+            points.clear();
+        }
 
-		void setPoints(Array <float, CriticalSection > tablePoints)
-		{
-			points.swapWith(tablePoints);
-		}
+        Array<float, CriticalSection> getPoints()
+        {
+            return points;
+        }
 
-	private:
-		Array <float, CriticalSection > points;
-	};	
-		
-	bool shouldUpdateSignalDisplay()
-	{	
-		bool returnVal = updateSignalDisplay;	
-		updateSignalDisplay = false;
-		return returnVal;		
-	};
-	    
-    OwnedArray <SignalDisplay, CriticalSection> signalArrays;	//holds values from FFT function table created using dispfft	
-	CsoundPluginProcessor::SignalDisplay* getSignalArray(String variableName, String displayType="");
+        void setPoints(Array <float, CriticalSection > tablePoints)
+        {
+            points.swapWith(tablePoints);
+        }
+
+    private:
+        Array <float, CriticalSection > points;
+    };
+
+    bool shouldUpdateSignalDisplay()
+    {
+        bool returnVal = updateSignalDisplay;
+        updateSignalDisplay = false;
+        return returnVal;
+    };
+
+    OwnedArray <SignalDisplay, CriticalSection> signalArrays;	//holds values from FFT function table created using dispfft
+    CsoundPluginProcessor::SignalDisplay* getSignalArray(String variableName, String displayType="");
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;

@@ -37,12 +37,12 @@ CabbageComboBox::CabbageComboBox(ValueTree wData, CabbagePluginEditor* _owner):
     setColour(ComboBox::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
     setColour(ComboBox::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
     setTooltip(tooltipText = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::popuptext));
-	
-	setColour(PopupMenu::ColourIds::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)).brighter(.8f));
-	setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-	setColour(PopupMenu::ColourIds::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-	setColour(PopupMenu::ColourIds::highlightedTextColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)).darker());
-	
+
+    setColour(PopupMenu::ColourIds::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)).brighter(.8f));
+    setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+    setColour(PopupMenu::ColourIds::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+    setColour(PopupMenu::ColourIds::highlightedTextColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)).darker());
+
     setEditableText (false);
     setTextWhenNothingSelected(text);
     setWantsKeyboardFocus(false);

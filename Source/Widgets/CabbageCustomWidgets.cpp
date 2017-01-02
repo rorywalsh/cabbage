@@ -20,25 +20,25 @@
 #include "CabbageCustomWidgets.h"
 
 DemoCabbageWidget::DemoCabbageWidget(ValueTree wData):
-widgetData(wData)
+    widgetData(wData)
 {
-	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
-	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
+    setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
 }
 
 void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	if(prop==CabbageIdentifierIds::value)
+    if(prop==CabbageIdentifierIds::value)
     {
-		//set value. This is only needed for widgets that can have their value changed directly using a chnset
+        //set value. This is only needed for widgets that can have their value changed directly using a chnset
     }
-	else
-	{
+    else
+    {
 
-		
-		
-		handleCommonUpdates(this, valueTree);		//handle common updates such as bounds, alpha, rotation, visible, etc	
-	}
+
+
+        handleCommonUpdates(this, valueTree);		//handle common updates such as bounds, alpha, rotation, visible, etc
+    }
 }
 //add any new custom widgets here to avoid having to eidt makefiles and projects

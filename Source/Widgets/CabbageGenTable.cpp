@@ -23,23 +23,23 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageGenTable::CabbageGenTable(ValueTree wData, CabbagePluginEditor* owner)
-	: widgetData(wData),
-	owner(owner),
-	fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
-	file(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file)),
-	zoom(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom)),
-	scrubberPos(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrubberposition)),
-	startpos(-1),
-	endpos(-1),
-	tooltipText(String::empty)
+    : widgetData(wData),
+      owner(owner),
+      fontcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
+      file(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file)),
+      zoom(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom)),
+      scrubberPos(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrubberposition)),
+      startpos(-1),
+      endpos(-1),
+      tooltipText(String::empty)
 {
-	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
+    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
 
-	addAndMakeVisible(table);
-	
-	ampRanges = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::amprange);
-	initialiseGenTable(wData);
+    addAndMakeVisible(table);
+
+    ampRanges = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::amprange);
+    initialiseGenTable(wData);
 
 }
 
@@ -49,8 +49,8 @@ void CabbageGenTable::changeListenerCallback(ChangeBroadcaster *source)
     GenTable* genTable = dynamic_cast<GenTable*>(source);
     if(genTable)
     {
-     //   if((genTable->getCurrentHandle() && genTable->displayAsGrid()!=1))
-     //       popupBubble->showAt(genTable->getCurrentHandle(), AttributedString(genTable->getCoordinates()), 1050);
+        //   if((genTable->getCurrentHandle() && genTable->displayAsGrid()!=1))
+        //       popupBubble->showAt(genTable->getCurrentHandle(), AttributedString(genTable->getCoordinates()), 1050);
         if(genTable->changeMessage == "updateFunctionTable")
             owner->updatefTableData(genTable);
     }
@@ -63,10 +63,10 @@ void CabbageGenTable::initialiseGenTable(ValueTree wData)
     if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file).isNotEmpty())
     {
         table.addTable(44100,
-                        Colours::findColourForName(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[0].toString(), Colours::white),
-                        1,
-                        ampRanges,
-                        0, this);
+                       Colours::findColourForName(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[0].toString(), Colours::white),
+                       1,
+                       ampRanges,
+                       0, this);
         fileTable=1;
         table.setFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
     }
@@ -89,10 +89,10 @@ void CabbageGenTable::initialiseGenTable(ValueTree wData)
             if(owner->csdCompiledWithoutError())
             {
                 table.addTable(44100,
-                                Colours::findColourForName(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[0].toString(), Colours::white),
-                                (tableValues.size()>=MAX_TABLE_SIZE ? 1 : genRoutine),
-                                ampRanges,
-                                tableNumber, this);
+                               Colours::findColourForName(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[0].toString(), Colours::white),
+                               (tableValues.size()>=MAX_TABLE_SIZE ? 1 : genRoutine),
+                               ampRanges,
+                               tableNumber, this);
 
                 if(abs(genRoutine)==1 || tableValues.size()>=MAX_TABLE_SIZE)
                 {
@@ -108,10 +108,10 @@ void CabbageGenTable::initialiseGenTable(ValueTree wData)
                     table.setWaveform(tableValues, tableNumber);
                     //only enable editing for gen05, 07, and 02
                     if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom)!=0)
-					{
-						CabbageUtilities::debug(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom));
+                    {
+                        CabbageUtilities::debug(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom));
                         table.setZoomFactor(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom));
-					}
+                    }
                     table.enableEditMode(pFields, tableNumber);
                 }
 
@@ -148,91 +148,91 @@ void CabbageGenTable::initialiseGenTable(ValueTree wData)
     {
         //cUtils::debug(cAttr.getStringArrayPropValue(CabbageIDs::tablecolour, i));
         gradient.add(Colours::red);
-		gradient.add(Colours::white);
+        gradient.add(Colours::white);
     }
 
     table.setVUGradient(gradient);
 
     if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::active)!=1)
-        table.toggleEditMode(false);	
+        table.toggleEditMode(false);
 }
 
 //===============================================================================
 void CabbageGenTable::resized()
 {
-	table.setBounds(0, 0, getWidth(), getHeight());
+    table.setBounds(0, 0, getWidth(), getHeight());
 }
 
 //===============================================================================
 void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	if(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::update)==1)
-	{
-		const int numberOfTables = tables.size();
-		tableBuffer.clear();
-		for(int y=0; y<numberOfTables; y++)
-		{
-			int tableNumber = tables[y];
-			tableValues.clear();
-			tableValues = owner->getTableFloats(tableNumber);
-
-			
-			if(table.getTableFromFtNumber(tableNumber)->tableSize>=MAX_TABLE_SIZE)
-			{
-				tableBuffer.clear();
-				tableBuffer.addFrom(y, 0, tableValues.getRawDataPointer(), tableValues.size());
-				table.setWaveform(tableBuffer, tableNumber);
-			}
-			else
-			{		
-				table.setWaveform(tableValues, tableNumber, false);
-				StringArray pFields = owner->getTableStatement(tableNumber);
-				table.enableEditMode(pFields, tableNumber);
-			}
-		}		
-		
-		
-		CabbageWidgetData::setProperty(valueTree, CabbageIdentifierIds::update, 0); //reset value for further updates
-		
-	}
-	else
-	{
-		if(scrubberPos!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::scrubberposition))
-		{
-			var scrubPosition = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::scrubberposition);
-			if(scrubPosition.size()>1)
-			{
-				scrubberPos = scrubPosition[0];
-				int tableNumber = scrubPosition[1];
-				table.setScrubberPos(scrubberPos, tableNumber);
-			}
-		}
-
-		if(!CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::active))
-			table.toggleEditMode(false);
-		else
-			table.toggleEditMode(true);
+    if(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::update)==1)
+    {
+        const int numberOfTables = tables.size();
+        tableBuffer.clear();
+        for(int y=0; y<numberOfTables; y++)
+        {
+            int tableNumber = tables[y];
+            tableValues.clear();
+            tableValues = owner->getTableFloats(tableNumber);
 
 
-		if(ampRanges!=CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::amprange))
-		{
-			ampRanges = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::amprange);
-			table.setAmpRanges(ampRanges);
-			if(ampRanges.size()>2)
-				table.enableEditMode(StringArray(""), ampRanges[2]);
-		}
+            if(table.getTableFromFtNumber(tableNumber)->tableSize>=MAX_TABLE_SIZE)
+            {
+                tableBuffer.clear();
+                tableBuffer.addFrom(y, 0, tableValues.getRawDataPointer(), tableValues.size());
+                table.setWaveform(tableBuffer, tableNumber);
+            }
+            else
+            {
+                table.setWaveform(tableValues, tableNumber, false);
+                StringArray pFields = owner->getTableStatement(tableNumber);
+                table.enableEditMode(pFields, tableNumber);
+            }
+        }
 
-		if(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::startpos)!=startpos 
-			||  CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::endpos)!=endpos)
-		{
-			table.setRange(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::startpos), CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::endpos));
-			endpos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::endpos);
-			startpos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::startpos);
-		}
 
-		if(zoom!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom))
-			zoom = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom);
-		
-		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
-	}
+        CabbageWidgetData::setProperty(valueTree, CabbageIdentifierIds::update, 0); //reset value for further updates
+
+    }
+    else
+    {
+        if(scrubberPos!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::scrubberposition))
+        {
+            var scrubPosition = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::scrubberposition);
+            if(scrubPosition.size()>1)
+            {
+                scrubberPos = scrubPosition[0];
+                int tableNumber = scrubPosition[1];
+                table.setScrubberPos(scrubberPos, tableNumber);
+            }
+        }
+
+        if(!CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::active))
+            table.toggleEditMode(false);
+        else
+            table.toggleEditMode(true);
+
+
+        if(ampRanges!=CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::amprange))
+        {
+            ampRanges = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::amprange);
+            table.setAmpRanges(ampRanges);
+            if(ampRanges.size()>2)
+                table.enableEditMode(StringArray(""), ampRanges[2]);
+        }
+
+        if(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::startpos)!=startpos
+                ||  CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::endpos)!=endpos)
+        {
+            table.setRange(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::startpos), CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::endpos));
+            endpos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::endpos);
+            startpos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::startpos);
+        }
+
+        if(zoom!=CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom))
+            zoom = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom);
+
+        handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
+    }
 }

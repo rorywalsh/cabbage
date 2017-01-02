@@ -25,17 +25,17 @@
 #include "CabbageWidgetBase.h"
 
 #include "Legacy/FrequencyRangeDisplayComponent.h"
-	
+
 class CabbagePluginEditor;
 
-class CabbageSignalDisplay : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener, 
-	public Timer, private ScrollBar::Listener
+class CabbageSignalDisplay : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener,
+    public Timer, private ScrollBar::Listener
 {
 
     String name, displayType;
     RoundButton zoomInButton, zoomOutButton;
     Array<float, CriticalSection> signalFloatArray;
-	Array<float, CriticalSection> signalFloatArray2;
+    Array<float, CriticalSection> signalFloatArray2;
     var signalVariables;
     int tableNumber, freq, shouldDrawSonogram, leftPos, scrollbarHeight,
         minFFTBin, maxFFTBin, vectorSize, zoomLevel, scopeWidth, lineThickness;
@@ -49,11 +49,11 @@ class CabbageSignalDisplay : public Component, public ValueTree::Listener, publi
     Image spectrogramImage, spectroscopeImage;
     FrequencyRangeDisplayComponent freqRangeDisplay;
     Range<int> freqRange;
-	
-	CabbagePluginEditor* owner;
-	
+
+    CabbagePluginEditor* owner;
+
 public:
-	
+
     CabbageSignalDisplay(ValueTree wData, CabbagePluginEditor* owner);
     ~CabbageSignalDisplay() {};
 

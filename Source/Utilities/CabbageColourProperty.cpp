@@ -27,8 +27,8 @@ void ColourPropertyComponent::paint(Graphics &g)
     g.fillRect(getLocalBounds().reduced(0));
 
 
-	const Colour textColour = isEnabled() == true ? getLookAndFeel().findColour(PropertyComponent::ColourIds::labelTextColourId) :
-															getLookAndFeel().findColour(PropertyComponent::ColourIds::labelTextColourId).withAlpha(.5f);
+    const Colour textColour = isEnabled() == true ? getLookAndFeel().findColour(PropertyComponent::ColourIds::labelTextColourId) :
+                              getLookAndFeel().findColour(PropertyComponent::ColourIds::labelTextColourId).withAlpha(.5f);
 
     g.setColour (textColour);
     g.setFont (getHeight()*.6);
@@ -48,16 +48,16 @@ void ColourPropertyComponent::paint(Graphics &g)
 
 void ColourPropertyComponent::mouseDown(const MouseEvent& e)
 {
-	if(isEnabled())
-	{
-		ColourPallete* colourSelector = new ColourPallete();
-		colourSelector->setBounds(0, 0, 300, 300);
-		colourSelector->addChangeListener(this);
-		colourSelector->setNameOfParent(name);
-		colourSelector->setCurrentColour(colour);
-		CallOutBox &callOut = CallOutBox::launchAsynchronously(colourSelector, getScreenBounds(), nullptr);
-		colour = colourSelector->getCurrentColour();
-	}
+    if(isEnabled())
+    {
+        ColourPallete* colourSelector = new ColourPallete();
+        colourSelector->setBounds(0, 0, 300, 300);
+        colourSelector->addChangeListener(this);
+        colourSelector->setNameOfParent(name);
+        colourSelector->setCurrentColour(colour);
+        CallOutBox &callOut = CallOutBox::launchAsynchronously(colourSelector, getScreenBounds(), nullptr);
+        colour = colourSelector->getCurrentColour();
+    }
 }
 
 void ColourPropertyComponent::changeListenerCallback(juce::ChangeBroadcaster *source)

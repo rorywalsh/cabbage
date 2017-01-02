@@ -153,7 +153,7 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
             layoutEditor->resetAllInterest();
 
         interest = "selected";
-		repaint();
+        repaint();
     }
 
 }
@@ -250,19 +250,19 @@ void ComponentOverlay::updateBoundsDataForTarget()
     }
 
 
-	Component* c = (Component*) target.getComponent ();	
-	for(int i=0; i<c->getNumChildComponents(); i++)
-	{
-		const Component* child = target.getComponent()->getChildComponent(i);
-		ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(layoutEditor->widgetData,child->getName());
-		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::parentcomponent).isNotEmpty())	//now deal with plants, all child widgets must have theirs bounds updated..
-		{
-			CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, child->getX());
-			CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, child->getY());
-			CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, child->getWidth());
-			CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, child->getHeight());
-		}
-	}
+    Component* c = (Component*) target.getComponent ();
+    for(int i=0; i<c->getNumChildComponents(); i++)
+    {
+        const Component* child = target.getComponent()->getChildComponent(i);
+        ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(layoutEditor->widgetData,child->getName());
+        if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::parentcomponent).isNotEmpty())	//now deal with plants, all child widgets must have theirs bounds updated..
+        {
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::left, child->getX());
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::top, child->getY());
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::width, child->getWidth());
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::height, child->getHeight());
+        }
+    }
 
 
     getPluginEditor()->sendChangeMessage();

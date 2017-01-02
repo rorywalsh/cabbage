@@ -39,7 +39,7 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
-	ids.add (toggle_play);
+    ids.add (toggle_play);
     ids.add (custom_comboBox);
 }
 
@@ -55,7 +55,7 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
-	ids.add (toggle_play);
+    ids.add (toggle_play);
     ids.add (custom_comboBox);
 
 }
@@ -80,8 +80,8 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
     case edit_paste:
         return createButtonFromSVG(itemId, "paste", File("/home/rory/sourcecode/cabaiste/Icons/edit-paste.svg"));
     case custom_comboBox:
-		return(combo = new ToolbarComboBox (itemId));	
-	case toggle_play:
+        return(combo = new ToolbarComboBox (itemId));
+    case toggle_play:
         return createButtonFromSVG(itemId, "togglePlay", File("/home/rory/sourcecode/cabaiste/Icons/media-playback-start.svg"), "/home/rory/sourcecode/cabaiste/Icons/media-playback-stop.svg");
     default:
         break;
@@ -103,27 +103,27 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
         drawableNormal = Drawable::createFromSVG (*svgNormal);
     }
 
-	if(File(onFile).existsAsFile())
-	{
-		ScopedPointer<XmlElement> svgOn (XmlDocument::parse(File(onFile).loadFileAsString()));
-		if(svgOn == nullptr)
-			jassert(false);
+    if(File(onFile).existsAsFile())
+    {
+        ScopedPointer<XmlElement> svgOn (XmlDocument::parse(File(onFile).loadFileAsString()));
+        if(svgOn == nullptr)
+            jassert(false);
 
-		Drawable* drawableOn;
+        Drawable* drawableOn;
 
-		if (svgOn != nullptr)
-		{
-			drawableOn = Drawable::createFromSVG (*svgOn);
-		}
+        if (svgOn != nullptr)
+        {
+            drawableOn = Drawable::createFromSVG (*svgOn);
+        }
 
-		togglePlayButton = new ToolbarButton(itemId, text, drawableNormal, drawableOn);	
-		togglePlayButton->setClickingTogglesState(true);
-		togglePlayButton->addListener(owner);	
-		return togglePlayButton;
-	}
+        togglePlayButton = new ToolbarButton(itemId, text, drawableNormal, drawableOn);
+        togglePlayButton->setClickingTogglesState(true);
+        togglePlayButton->addListener(owner);
+        return togglePlayButton;
+    }
 
-	ToolbarButton* button = new ToolbarButton(itemId, text, drawableNormal, 0);
-	button->addListener(owner);
-	return button;
-    
+    ToolbarButton* button = new ToolbarButton(itemId, text, drawableNormal, 0);
+    button->addListener(owner);
+    return button;
+
 }

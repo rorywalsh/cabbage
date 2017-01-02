@@ -50,8 +50,8 @@ public:
     Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
     Array<PropertyComponent*> createMiscEditors(ValueTree valueTree);
     Array<PropertyComponent*> createFileEditors(ValueTree valueTree);
-	Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owner, ValueTree valueTree);
-	Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue;
+    Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owner, ValueTree valueTree);
+    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue;
     Colour backgroundColour, borderColour;
 
 

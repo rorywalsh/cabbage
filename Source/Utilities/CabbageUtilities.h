@@ -263,17 +263,17 @@ public:
     }
 
 //===========================================================================================
-	static Justification getJustification(String align)
-	{
-		if(align=="centre")
-			return Justification::centred;
-		else if(align=="left")
-			return Justification::left;
-		else
-			return Justification::right;
+    static Justification getJustification(String align)
+    {
+        if(align=="centre")
+            return Justification::centred;
+        else if(align=="left")
+            return Justification::left;
+        else
+            return Justification::right;
 
-		return Justification::centred;
-	}
+        return Justification::centred;
+    }
 
 //===========================================================================================
     static void showMessageWithLocation(String message)

@@ -39,14 +39,14 @@ public:
 
     void setValue (float newValue) override
     {
-		//this may or may not be required, depends on whether the combobox passes or not...
-		//CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::value, newValue);
+        //this may or may not be required, depends on whether the combobox passes or not...
+        //CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::value, newValue);
         csound.SetChannel(channel.toUTF8(), newValue);
     }
 
     String channel, name;
     Csound csound;
-	ValueTree widgetData;
+    ValueTree widgetData;
 };
 
 #endif  // AUDIOPRAMATERS_H_INCLUDED

@@ -21,92 +21,92 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageSoundfiler::CabbageSoundfiler(ValueTree wData, CabbagePluginEditor* _owner)
-	: widgetData(wData),
-	owner(_owner),
-	file(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file)),
-	zoom(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom)),
-	scrubberPos(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrubberposition)),
-	soundfiler(44100, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)), 
-									Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::tablebackgroundcolour)))
+    : widgetData(wData),
+      owner(_owner),
+      file(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file)),
+      zoom(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom)),
+      scrubberPos(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrubberposition)),
+      soundfiler(44100, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
+                 Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::tablebackgroundcolour)))
 {
-	addAndMakeVisible(soundfiler);
-	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
-	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
-	
-
-	sampleRate = 44100;
-	soundfiler.setZoomFactor(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom));
+    addAndMakeVisible(soundfiler);
+    setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
 
 
-	//if no channels are set remove the selectable range feature
+    sampleRate = 44100;
+    soundfiler.setZoomFactor(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom));
 
-	if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrubberposition)<0)
-		soundfiler.shouldShowScrubber(false);
 
-	if(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel).size()==0)
-		soundfiler.setIsRangeSelectable(false);
-		
-	soundfiler.setFile(file);
-	soundfiler.addChangeListener(this);
-	
+    //if no channels are set remove the selectable range feature
 
-	
+    if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrubberposition)<0)
+        soundfiler.shouldShowScrubber(false);
+
+    if(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel).size()==0)
+        soundfiler.setIsRangeSelectable(false);
+
+    soundfiler.setFile(file);
+    soundfiler.addChangeListener(this);
+
+
+
 }
 
 void CabbageSoundfiler::changeListenerCallback(ChangeBroadcaster* source)
 {
-	//no need to check source, it has to be a soundfiler object
-	const float position = getScrubberPosition();
-	const float length = getLoopLength();	
-	
-	owner->sendChannelDataToCsound(getChannelArray()[0], position);
-	
-	if(getChannelArray().size()>1)
-		owner->sendChannelDataToCsound(getChannelArray()[0], length);
+    //no need to check source, it has to be a soundfiler object
+    const float position = getScrubberPosition();
+    const float length = getLoopLength();
+
+    owner->sendChannelDataToCsound(getChannelArray()[0], position);
+
+    if(getChannelArray().size()>1)
+        owner->sendChannelDataToCsound(getChannelArray()[0], length);
 }
 
 void CabbageSoundfiler::resized()
 {
-	soundfiler.setBounds(0, 0, getWidth(), getHeight());
+    soundfiler.setBounds(0, 0, getWidth(), getHeight());
 }
-	
+
 void CabbageSoundfiler::setFile(String newFile)
 {
-	soundfiler.setFile(File(newFile));
+    soundfiler.setFile(File(newFile));
 }
 
 int CabbageSoundfiler::setWaveform(AudioSampleBuffer buffer, int channels)
 {
-	soundfiler.setWaveform(buffer, channels);
+    soundfiler.setWaveform(buffer, channels);
 }
 
 int CabbageSoundfiler::getScrubberPosition()
 {
-	return soundfiler.getCurrentPlayPosInSamples();
+    return soundfiler.getCurrentPlayPosInSamples();
 }
 
 int CabbageSoundfiler::getLoopLength()
 {
-	return soundfiler.getLoopLengthInSamples();
+    return soundfiler.getLoopLengthInSamples();
 }
-	
+
 void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	if(file!=CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file))
-	{
-		file = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
-		setFile(file);		
-	}
+    if(file!=CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file))
+    {
+        file = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
+        setFile(file);
+    }
 
-	if(zoom != CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom))
-	{
-		zoom = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom);
-		soundfiler.setZoomFactor(zoom);
-	}
-	
-	soundfiler.setWaveformColour(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
-	soundfiler.setBackgroundColour(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::tablebackgroundcolour));
-	soundfiler.repaint();
-	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+    if(zoom != CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom))
+    {
+        zoom = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::zoom);
+        soundfiler.setZoomFactor(zoom);
+    }
+
+    soundfiler.setWaveformColour(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
+    soundfiler.setBackgroundColour(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::tablebackgroundcolour));
+    soundfiler.repaint();
+    handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
 }

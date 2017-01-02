@@ -25,48 +25,51 @@
 
 class CabbagePluginEditor;
 
-class CabbageSlider 
-	: public Component, 
-	public ValueTree::Listener, 
-	public CabbageWidgetBase
+class CabbageSlider
+    : public Component,
+      public ValueTree::Listener,
+      public CabbageWidgetBase
 {
     CabbagePluginEditor* owner;
-    ValueTree widgetData;	
-	Label textLabel;
-	float velocity, sliderIncrement, sliderSkew, min, max, value, shouldShowTextBox, trackerThickness;
-	int decimalPlaces;
-	String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
-	bool shouldDisplayPopup = true;
-	Slider slider;
-	BubbleMessageComponent popupBubble;
-	
-    void mouseDrag(const MouseEvent& event);
-	void mouseMove (const MouseEvent &event);
-    void mouseEnter (const MouseEvent &event);	
-	void createPopupBubble();
-	void showPopupBubble();	
-	void setLookAndFeelColours(ValueTree wData);
-	
-public:
-	CabbageSlider(ValueTree cAttr, CabbagePluginEditor* _owner);
-	~CabbageSlider();
-	
-	
-	void setSliderVelocity(ValueTree wData);
-	void resized();
-	void initialiseSlider(ValueTree wData);
+    ValueTree widgetData;
+    Label textLabel;
+    float velocity, sliderIncrement, sliderSkew, min, max, value, shouldShowTextBox, trackerThickness;
+    int decimalPlaces;
+    String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
+    bool shouldDisplayPopup = true;
+    Slider slider;
+    BubbleMessageComponent popupBubble;
 
-	void setTextBoxOrientation(String type, bool textBox);
-	void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop);	
+    void mouseDrag(const MouseEvent& event);
+    void mouseMove (const MouseEvent &event);
+    void mouseEnter (const MouseEvent &event);
+    void createPopupBubble();
+    void showPopupBubble();
+    void setLookAndFeelColours(ValueTree wData);
+
+public:
+    CabbageSlider(ValueTree cAttr, CabbagePluginEditor* _owner);
+    ~CabbageSlider();
+
+
+    void setSliderVelocity(ValueTree wData);
+    void resized();
+    void initialiseSlider(ValueTree wData);
+
+    void setTextBoxOrientation(String type, bool textBox);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop);
 
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};	
-	Slider& getSlider(){	return slider;	};
-	
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)
-	
+    void valueTreeParentChanged (ValueTree&) override {};
+    Slider& getSlider()
+    {
+        return slider;
+    };
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)
+
 };
 
 

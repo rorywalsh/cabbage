@@ -31,7 +31,7 @@
 
 class AudioGraph
 {
-	
+
 public:
     // This creates new instances of the plugin..
     GenericCabbagePluginProcessor* JUCE_CALLTYPE createGenericPluginFilter(File inputFile)
@@ -52,11 +52,11 @@ public:
 
     enum NodeType
     {
-		Output = 0,
-		Input,
-		MidiInput,
-		CabbageNode
-	};
+        Output = 0,
+        Input,
+        MidiInput,
+        CabbageNode
+    };
 
     void createPlugin(File inputFile);
     void updateBusLayout(AudioProcessor* selectedProcessor);
@@ -88,14 +88,17 @@ public:
     ScopedPointer<XmlElement> xmlSettings;
     bool isInput;
     int currentBus;
-    bool getIsCabbageFile(){ return isCabbageFile;	}
+    bool getIsCabbageFile()
+    {
+        return isCabbageFile;
+    }
 
-	static const int midiChannelNumber;
-	
+    static const int midiChannelNumber;
+
 private:
 
-	bool isCabbageFile=false;
-	
+    bool isCabbageFile=false;
+
     void setupAudioDevices (const String& preferredDefaultDeviceName,
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
     {

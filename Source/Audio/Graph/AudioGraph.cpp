@@ -82,10 +82,10 @@ void AudioGraph::createPlugin(File inputFile)
 
     bool connection1 = graph.addConnection(NodeType::CabbageNode, 0, NodeType::Input, 0);
     bool connection2 = graph.addConnection(NodeType::CabbageNode, 1, NodeType::Input, 1);
-	bool connection3 = graph.addConnection(NodeType::MidiInput, AudioProcessorGraph::midiChannelIndex, NodeType::CabbageNode, AudioProcessorGraph::midiChannelIndex);
-	
-	if(connection1 == false || connection2 == false || connection3 == false)
-		jassert(false);
+    bool connection3 = graph.addConnection(NodeType::MidiInput, AudioProcessorGraph::midiChannelIndex, NodeType::CabbageNode, AudioProcessorGraph::midiChannelIndex);
+
+    if(connection1 == false || connection2 == false || connection3 == false)
+        jassert(false);
 }
 
 

@@ -59,7 +59,7 @@ class CabbageProjectWindow : public Component, public Button::Listener
 
     };
 public:
-    CabbageProjectWindow(CabbageContentComponent* owner, ValueTree valueTree);
+    CabbageProjectWindow(CabbageContentComponent* owner);
     ~CabbageProjectWindow() {}
 
     void setInformationString(String informationStr)
@@ -87,10 +87,9 @@ public:
     }
 
 private:
-	void writeNewFile(File fc, String fileText);
-	void createNewFile(String type);
-	CabbageContentComponent* owner;
-    ValueTree valueTree;
+    void writeNewFile(File fc, String fileText);
+    void createNewFile(String type);
+    CabbageContentComponent* owner;
     String information;
     SimpleImageButton newInstrumentButton, newEffectButton, newCsoundFileButton;
 };

@@ -29,7 +29,7 @@ CabbageImage::CabbageImage(ValueTree wData, CabbagePluginEditor* owner) : Cabbag
     mainColour(Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)))
 {
     widgetData.addListener(this);
-    File imgFile = File::getCurrentWorkingDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
+    imgFile = File::getCurrentWorkingDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
     this->setWantsKeyboardFocus(false);
     initialiseCommonAttributes(this, wData);
 }
@@ -83,6 +83,7 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     outlineColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour));
     mainColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
     shape = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape);
+    imgFile = File::getCurrentWorkingDirectory().getChildFile(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file));
 
     handleCommonUpdates(this, valueTree);
     repaint();

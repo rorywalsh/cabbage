@@ -21,66 +21,66 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner)
-	: widgetData(wData),
-	TextButton(),
-	owner(owner)
+    : widgetData(wData),
+      TextButton(),
+      owner(owner)
 {
-	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
-	setLookAndFeelColours(wData);
+    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
+    setLookAndFeelColours(wData);
 
-	setButtonText(getText());
-	
-	mode = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mode);
+    setButtonText(getText());
 
-	setImgProperties(*this, wData, "buttonon");
+    mode = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mode);
+
+    setImgProperties(*this, wData, "buttonon");
     setImgProperties(*this, wData, "buttonoff");
-	addListener(this);	
+    addListener(this);
 
 }
 
 //===============================================================================
 void CabbageFileButton::buttonClicked(Button* button)
 {
-	
-	if(mode=="file")
-	{
-		FileChooser fc ("Open File");
-		if (fc.browseForFileToOpen())
-		{
-			owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
-		}
-	}
-	
-	else if(mode=="directory")
-	{
-		FileChooser fc ("Open Directory");
-		if (fc.browseForDirectory())
-		{
-			owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
-		}
-	}
-	
-	else if(mode=="snapshot")
-	{
-		//add code for new preset snapshot system
-	}		
+
+    if(mode=="file")
+    {
+        FileChooser fc ("Open File");
+        if (fc.browseForFileToOpen())
+        {
+            owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
+        }
+    }
+
+    else if(mode=="directory")
+    {
+        FileChooser fc ("Open Directory");
+        if (fc.browseForDirectory())
+        {
+            owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
+        }
+    }
+
+    else if(mode=="snapshot")
+    {
+        //add code for new preset snapshot system
+    }
 }
 
 //===============================================================================
 void CabbageFileButton::setLookAndFeelColours(ValueTree wData)
 {
-	setColour(TextButton::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-	setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-	setColour(TextButton::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
-	setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+    setColour(TextButton::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+    setColour(TextButton::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
+    setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
 }
 
 //===============================================================================
 void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	setLookAndFeelColours(valueTree);
-	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
-	
-	setButtonText(getText());
+    setLookAndFeelColours(valueTree);
+    handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
+
+    setButtonText(getText());
 }

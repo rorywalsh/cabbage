@@ -31,8 +31,8 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
 {
     int scrollbars;
     float keyWidth;
-	String kind;
-	
+    String kind;
+
 public:
 
     CabbageKeyboard(ValueTree wData, MidiKeyboardState &state);

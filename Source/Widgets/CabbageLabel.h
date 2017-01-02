@@ -34,7 +34,7 @@ class CabbageLabel : public Component, public ValueTree::Listener, public Cabbag
     int counter;
     String text, colour, fontcolour, align;
     Justification textAlign;
-	
+
 public:
 
     CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner);
@@ -48,8 +48,8 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
 
     ValueTree widgetData;
-	
-	void resized(){};
+
+    void resized() {};
     void paint(Graphics& g);
     void mouseDown(const MouseEvent& e);
     void setText(String _text);

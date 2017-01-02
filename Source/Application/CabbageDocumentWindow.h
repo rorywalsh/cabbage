@@ -33,10 +33,10 @@
 
 
 
-class CabbageDocumentWindow    
-	: public DocumentWindow,     
-	public ApplicationCommandTarget,
-    public MenuBarModel
+class CabbageDocumentWindow
+    : public DocumentWindow,
+      public ApplicationCommandTarget,
+      public MenuBarModel
 {
 public:
     //==========================================================
@@ -44,8 +44,8 @@ public:
     ~CabbageDocumentWindow();
     CabbageContentComponent* getContentComponent();
     //=======================================================
-    StringArray getMenuBarNames();								
-    void createMenu (PopupMenu&, const String& menuName);		
+    StringArray getMenuBarNames();
+    void createMenu (PopupMenu&, const String& menuName);
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);
@@ -63,15 +63,19 @@ public:
     bool closeAllMainWindows();
     void initSettings();
     void closeButtonPressed() override;
-	void buttonClicked(Button* button);
+    void buttonClicked(Button* button);
+    void focusGained (FocusChangeType cause); //grab focus when user clicks on editor
 
     ScopedPointer<CabbageSettings> cabbageSettings;
-    ApplicationCommandTarget* getNextCommandTarget()    {        return findFirstTargetParentComponent();    }
+    ApplicationCommandTarget* getNextCommandTarget()
+    {
+        return findFirstTargetParentComponent();
+    }
 
 private:
     ApplicationCommandManager commandManager;
     bool isGUIEnabled = false;
-	ScopedPointer<CabbageContentComponent> content;
+    ScopedPointer<CabbageContentComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };
 

@@ -12,38 +12,38 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageEncoder::CabbageEncoder(ValueTree wData, CabbagePluginEditor* _owner)
-	: widgetData(wData),
-	owner(_owner),
-	popupBubble(250),
-	outlinecolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)),
-	colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
-    trackercolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackercolour)), 
-	text(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)), 
-	textcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)),
-	decimalPlaces(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::decimalplaces)),
-	shouldShowValueTextBox(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuetextbox))
+    : widgetData(wData),
+      owner(_owner),
+      popupBubble(250),
+      outlinecolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)),
+      colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
+      trackercolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackercolour)),
+      text(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)),
+      textcolour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)),
+      decimalPlaces(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::decimalplaces)),
+      shouldShowValueTextBox(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuetextbox))
 {
-	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
-	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
-	textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
-	min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
-	max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
-	sliderIncr = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderincr);
-	skew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
-	value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
-	addAndMakeVisible(textLabel);
-	addAndMakeVisible(valueLabel);
-	valueLabel.setVisible(true);
-	valueLabel.setText(String(value), dontSendNotification);
-	textLabel.setVisible(true);
-	createPopupBubble();
-	valueLabel.setEditable(true);
+    setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
+    textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
+    min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
+    max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
+    sliderIncr = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderincr);
+    skew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
+    value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
+    addAndMakeVisible(textLabel);
+    addAndMakeVisible(valueLabel);
+    valueLabel.setVisible(true);
+    valueLabel.setText(String(value), dontSendNotification);
+    textLabel.setVisible(true);
+    createPopupBubble();
+    valueLabel.setEditable(true);
     valueLabel.addListener(this);
     textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
-	valueLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-	valueLabel.setColour(Label::backgroundColourId, Colours::black);
-	valueLabel.setColour(Label::outlineColourId, Colours::whitesmoke);	
+    valueLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    valueLabel.setColour(Label::backgroundColourId, Colours::black);
+    valueLabel.setColour(Label::outlineColourId, Colours::whitesmoke);
 
 }
 
@@ -53,8 +53,8 @@ void CabbageEncoder::createPopupBubble()
     popupBubble.setColour(BubbleComponent::backgroundColourId, Colours::white);
     popupBubble.setBounds(0, 0, 50, 20);
     owner->addChildComponent(popupBubble);
-	popupBubble.setVisible(false);
-    popupBubble.setAlwaysOnTop(true);	
+    popupBubble.setVisible(false);
+    popupBubble.setAlwaysOnTop(true);
 }
 
 void CabbageEncoder::labelTextChanged (Label *label)
@@ -99,9 +99,9 @@ void CabbageEncoder::mouseDrag(const MouseEvent& e)
 
         yAxis = e.getOffsetFromDragStart().getY();
         repaint();
-		valueLabel.setText(String(currentEncValue), dontSendNotification);
+        valueLabel.setText(String(currentEncValue), dontSendNotification);
 
-		//	valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
+        //	valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
         owner->sendChannelDataToCsound(getChannel(), currentEncValue);
         showPopup();
     }
@@ -117,14 +117,14 @@ void CabbageEncoder::showPopup(int displayTime)
         else
             popupText = getChannel()+": "+String(currentEncValue);
 
-        popupBubble.showAt(this, AttributedString(popupText), displayTime);	
+        popupBubble.showAt(this, AttributedString(popupText), displayTime);
     }
 }
 
 void CabbageEncoder::mouseExit(const MouseEvent &e)
 {
     isMouseOver = false;
-	showPopup(10);
+    showPopup(10);
     repaint();
 }
 
@@ -204,41 +204,41 @@ void CabbageEncoder::resized()
 {
     if(text.isNotEmpty() && shouldShowValueTextBox>0)
     {
-		textLabel.setBounds(0, 0, getWidth(), 20);
-		textLabel.setText(text, dontSendNotification);
-		textLabel.setJustificationType(Justification::centred);
-		textLabel.setVisible(true);
-		valueLabel.setVisible(true);
-		slider.setBounds(20, 20, getWidth()-40, getHeight()-40);
-		valueLabel.setBounds(getWidth()/3, getHeight()-15, getWidth()/3, 15);
-		valueLabel.setJustificationType(Justification::centred);
-		valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
-	}
-	else if(text.isNotEmpty() && shouldShowValueTextBox==0)
-	{
-		textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
-		textLabel.setText(text, dontSendNotification);
-		textLabel.setJustificationType(Justification::centred);
-		textLabel.setVisible(true);
-		valueLabel.setVisible(false);
-		slider.setBounds(10, 0, getWidth()-20, getHeight()-20);
+        textLabel.setBounds(0, 0, getWidth(), 20);
+        textLabel.setText(text, dontSendNotification);
+        textLabel.setJustificationType(Justification::centred);
+        textLabel.setVisible(true);
+        valueLabel.setVisible(true);
+        slider.setBounds(20, 20, getWidth()-40, getHeight()-40);
+        valueLabel.setBounds(getWidth()/3, getHeight()-15, getWidth()/3, 15);
+        valueLabel.setJustificationType(Justification::centred);
+        valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
     }
-	else if(shouldShowValueTextBox>0)
-	{
-		textLabel.setVisible(false);
-		valueLabel.setVisible(true);
-		slider.setBounds(0, 0, getWidth()-20, getHeight()-20);
-		valueLabel.setBounds(getWidth()/3, getHeight()-15, getWidth()/3, 15);
-		valueLabel.setJustificationType(Justification::centred);
-		valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
-	}	
+    else if(text.isNotEmpty() && shouldShowValueTextBox==0)
+    {
+        textLabel.setBounds(0, getHeight()-20, getWidth(), 20);
+        textLabel.setText(text, dontSendNotification);
+        textLabel.setJustificationType(Justification::centred);
+        textLabel.setVisible(true);
+        valueLabel.setVisible(false);
+        slider.setBounds(10, 0, getWidth()-20, getHeight()-20);
+    }
+    else if(shouldShowValueTextBox>0)
+    {
+        textLabel.setVisible(false);
+        valueLabel.setVisible(true);
+        slider.setBounds(0, 0, getWidth()-20, getHeight()-20);
+        valueLabel.setBounds(getWidth()/3, getHeight()-15, getWidth()/3, 15);
+        valueLabel.setJustificationType(Justification::centred);
+        valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
+    }
     else
-	{
-		textLabel.setVisible(false);
-		valueLabel.setVisible(false);		
+    {
+        textLabel.setVisible(false);
+        valueLabel.setVisible(false);
         slider.setBounds(0, 0, getWidth(), getHeight());
-	}	
-	repaint();
+    }
+    repaint();
 }
 
 void CabbageEncoder::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -246,25 +246,25 @@ void CabbageEncoder::valueTreePropertyChanged (ValueTree& valueTree, const Ident
 
     if(prop==CabbageIdentifierIds::value)
     {
-		currentEncValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
-		valueLabel.setText(String(currentEncValue), dontSendNotification);
-		//sliderPos = 1.f/currentEncValue;
-		repaint();
-    }	
-	else
-	{	
-		colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
-		textcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
-		trackercolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour);
-		outlinecolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
-		shouldShowValueTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
-		text = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text); 
-		CabbageUtilities::debug(text);
-		textcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
-		textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour)));
-		valueLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+        currentEncValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+        valueLabel.setText(String(currentEncValue), dontSendNotification);
+        //sliderPos = 1.f/currentEncValue;
+        repaint();
+    }
+    else
+    {
+        colour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour);
+        textcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
+        trackercolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour);
+        outlinecolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour);
+        shouldShowValueTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
+        text = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
+        CabbageUtilities::debug(text);
+        textcolour = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
+        textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour)));
+        valueLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
 
-		handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
-		resized();
-	}
+        handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
+        resized();
+    }
 }

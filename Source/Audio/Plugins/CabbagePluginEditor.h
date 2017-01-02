@@ -60,12 +60,12 @@ static CabbagePluginEditor* getPluginEditor(Component* child)
 }
 
 //==============================================================================
-class CabbagePluginEditor  
-	: public AudioProcessorEditor, 
-	public Button::Listener,
-    public ChangeBroadcaster, 
-	public ComboBoxListener,
-	public Slider::Listener
+class CabbagePluginEditor
+    : public AudioProcessorEditor,
+      public Button::Listener,
+      public ChangeBroadcaster,
+      public ComboBoxListener,
+      public Slider::Listener
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
@@ -87,8 +87,8 @@ public:
     void insertCheckbox(ValueTree cabbageWidgetData);
     void insertXYPad(ValueTree cabbageWidgetData);
     void insertRangeSlider(ValueTree cabbageWidgetData);
-	void insertNumberBox(ValueTree cabbageWidgetData);
-	void insertEncoder(ValueTree cabbageWidgetData);
+    void insertNumberBox(ValueTree cabbageWidgetData);
+    void insertEncoder(ValueTree cabbageWidgetData);
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
     void insertGroupBox(ValueTree cabbageWidgetData);
@@ -106,19 +106,19 @@ public:
     void insertTextBox(ValueTree cabbageWidgetData);
     void insertSignalDisplay(ValueTree cabbageWidgetData);
     void insertStepper(ValueTree cabbageWidgetData) {};
-	//=============================================================================
-	// all these methods expose public methods in CabagePluginProcessor
-	void sendChannelDataToCsound(String channel, float value);
-	void sendChannelStringDataToCsound(String channel, String value);
-	bool shouldUpdateSignalDisplay();
-	const Array<float, CriticalSection> getArrayForSignalDisplay(const String signalVariable, const String displayType);
-	const String getCsoundOutputFromProcessor();
-	StringArray getTableStatement(int tableNumber);
-	bool csdCompiledWithoutError();
-	const Array<float, CriticalSection> getTableFloats(int tableNum);
-	CabbagePluginProcessor& getProcessor();
-	void enableXYAutomator(String name, bool enable, Line<float> dragLine = Line<float>(0, 0, 1, 1));
-	
+    //=============================================================================
+    // all these methods expose public methods in CabagePluginProcessor
+    void sendChannelDataToCsound(String channel, float value);
+    void sendChannelStringDataToCsound(String channel, String value);
+    bool shouldUpdateSignalDisplay();
+    const Array<float, CriticalSection> getArrayForSignalDisplay(const String signalVariable, const String displayType);
+    const String getCsoundOutputFromProcessor();
+    StringArray getTableStatement(int tableNumber);
+    bool csdCompiledWithoutError();
+    const Array<float, CriticalSection> getTableFloats(int tableNum);
+    CabbagePluginProcessor& getProcessor();
+    void enableXYAutomator(String name, bool enable, Line<float> dragLine = Line<float>(0, 0, 1, 1));
+
     //=============================================================================
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
@@ -136,10 +136,10 @@ public:
     void buttonClicked(Button *button);
     void comboBoxChanged (ComboBox* combo);
     void sliderValueChanged(Slider* slider);
-	//=============================================================================
+    //=============================================================================
     CabbageAudioParameter* getParameterForComponent (const String name);
     //=============================================================================
-	void updatefTableData(GenTable* table);
+    void updatefTableData(GenTable* table);
 
 
 
@@ -158,9 +158,9 @@ public:
 private:
     OwnedArray<Component> components;
     Component mainComponent;
-	int keyboardCount=0;
-	int xyPadIndex = 0;
-	int consoleCount=0;
+    int keyboardCount=0;
+    int xyPadIndex = 0;
+    int consoleCount=0;
     CabbageLookAndFeel2 lookAndFeel;
     int newlyAddedWidgetIndex = 10000;
     TooltipWindow tooltipWindow;

@@ -39,12 +39,12 @@ class CabbageGenTable : public Component, public ValueTree::Listener, public Cab
     int pivotx, pivoty;
     double scrubberPos;
     var ampRanges;
-	CabbagePluginEditor* owner;
-	TableManager table;
-	double scrubberPosition;
-	Array <float, CriticalSection> tableValues;
-	AudioSampleBuffer tableBuffer;
-	var tables;
+    CabbagePluginEditor* owner;
+    TableManager table;
+    double scrubberPosition;
+    Array <float, CriticalSection> tableValues;
+    AudioSampleBuffer tableBuffer;
+    var tables;
 public:
 
     CabbageGenTable(ValueTree wData, CabbagePluginEditor* owner);
@@ -56,11 +56,11 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-	void initialiseGenTable(ValueTree widgetData);
+    void initialiseGenTable(ValueTree widgetData);
     void changeListenerCallback(ChangeBroadcaster *source);
 
-	
-	void resized();
+
+    void resized();
 
     ValueTree widgetData;
 

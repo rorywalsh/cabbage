@@ -77,6 +77,8 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("ShowNativeFileDialogues", 1);
 
     defaultPropSet->setValue("EnableNativePopup", 0);
+    defaultPropSet->setValue("SSHHomeDir", "/pi");
+    defaultPropSet->setValue("SSHAddress", "empty");
     defaultPropSet->setValue("windowX", 100);
     defaultPropSet->setValue("windowY", 100);
     defaultPropSet->setValue("audioSetup", "");

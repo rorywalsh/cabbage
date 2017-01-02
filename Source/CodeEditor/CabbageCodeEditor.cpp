@@ -18,8 +18,8 @@
 */
 
 #include "CabbageCodeEditor.h"
-#include "../Settings/CabbageSettings.h"
-#include "../Utilities/CabbageUtilities.h"
+//#include "../Settings/CabbageSettings.h"
+//#include "../Utilities/CabbageUtilities.h"
 #include "../Application/CabbageDocumentWindow.h"
 
 //==============================================================================
@@ -32,7 +32,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentCo
       Thread("parseVariablesThread"),
       debugLabel("")
 {
-	setMouseClickGrabsKeyboardFocus (true);
+    setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
     Logger::writeToLog(opcodeFile);
@@ -101,50 +101,50 @@ void CabbageCodeEditorComponent::runInDebugMode()
 
 void CabbageCodeEditorComponent::stopDebugMode()
 {
-	stopTimer();
-	debugLabel.setVisible(false);
-	debugModeEnabled = false;		
+    stopTimer();
+    debugLabel.setVisible(false);
+    debugModeEnabled = false;
 }
 
 bool CabbageCodeEditorComponent::isDebugModeEnabled()
 {
-   return debugModeEnabled;
+    return debugModeEnabled;
 }
 
 void CabbageCodeEditorComponent::timerCallback()
 {
-	if(isDebugModeEnabled() == true)
-	{
-		MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
-		Component* underMouse = mouse.getComponentUnderMouse();
+    if(isDebugModeEnabled() == true)
+    {
+        MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
+        Component* underMouse = mouse.getComponentUnderMouse();
 
-		Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
+        Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
 
-		CodeDocument::Position start, end;
-		getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);
+        CodeDocument::Position start, end;
+        getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);
 
-		if (end.getPosition() > start.getPosition())
-		{
-			Range<int> selection(start.getPosition(), end.getPosition());
+        if (end.getPosition() > start.getPosition())
+        {
+            Range<int> selection(start.getPosition(), end.getPosition());
 
-			const String token = getTextInRange (selection);
-			const var value = findValueForCsoundVariable(token);
-			if(!value.isVoid())
-			{
-				const String displayText = token+":"+value.toString();
-				debugLabel.setText(displayText, dontSendNotification);
-				debugLabel.setVisible(true);
-				debugLabel.toFront(true);
-				debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
-				debugLabel.grabKeyboardFocus();
-			}
-			else
-			{
-				debugLabel.setVisible(false);
-			}
+            const String token = getTextInRange (selection);
+            const var value = findValueForCsoundVariable(token);
+            if(!value.isVoid())
+            {
+                const String displayText = token+":"+value.toString();
+                debugLabel.setText(displayText, dontSendNotification);
+                debugLabel.setVisible(true);
+                debugLabel.toFront(true);
+                debugLabel.setBounds(mousePos.getX(), mousePos.getY(), debugLabel.getFont().getStringWidth(displayText), 17);
+                debugLabel.grabKeyboardFocus();
+            }
+            else
+            {
+                debugLabel.setVisible(false);
+            }
 
-		}
-	}
+        }
+    }
 
 }
 
@@ -165,7 +165,7 @@ void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
 
 }
 //==============================================================================
-// the update messages sent from these method could be plaaced in a timer callback if they 
+// the update messages sent from these method could be plaaced in a timer callback if they
 // start to make the editor less responsive...
 void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, int startIndex)
 {
@@ -425,29 +425,29 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()	//this is c
 {
     StringArray csdArray = this->getAllTextAsStringArray();
 
-	for(int i = 0 ; i < csdArray.size() ; i++)
-	{
-		if(csdArray[i].indexOf("<Cabbage>") != -1)
-		{
-			instrumentsAndRegions.set("<Cabbage>", i);
-		}
-		else if(csdArray[i].indexOf("<CsoundSynthesiser>") != -1 ||
-			csdArray[i].indexOf("<CsoundSynthesizer>") != -1)
-		{
-			instrumentsAndRegions.set("<CsoundSynthesizer>", i);
-		}
-		
-		
-		else if(csdArray[i].indexOf("instr ") != -1)
-		{
-			int commentInLine = csdArray[i].indexOf(";");
-			String line = csdArray[i];
-			String instrumentNameOrNumber = line.substring(csdArray[i].indexOf("instr")+6, commentInLine==-1 ? 1024 : commentInLine);
-			const String identifier = "instr "+instrumentNameOrNumber.trim();
-			if(identifier.isNotEmpty())
-				instrumentsAndRegions.set(identifier, i);
-		}			
-	}
+    for(int i = 0 ; i < csdArray.size() ; i++)
+    {
+        if(csdArray[i].indexOf("<Cabbage>") != -1)
+        {
+            instrumentsAndRegions.set("<Cabbage>", i);
+        }
+        else if(csdArray[i].indexOf("<CsoundSynthesiser>") != -1 ||
+                csdArray[i].indexOf("<CsoundSynthesizer>") != -1)
+        {
+            instrumentsAndRegions.set("<CsoundSynthesizer>", i);
+        }
+
+
+        else if(csdArray[i].indexOf("instr ") != -1)
+        {
+            int commentInLine = csdArray[i].indexOf(";");
+            String line = csdArray[i];
+            String instrumentNameOrNumber = line.substring(csdArray[i].indexOf("instr")+6, commentInLine==-1 ? 1024 : commentInLine);
+            const String identifier = "instr "+instrumentNameOrNumber.trim();
+            if(identifier.isNotEmpty())
+                instrumentsAndRegions.set(identifier, i);
+        }
+    }
 }
 
 void CabbageCodeEditorComponent::parseTextForVariables()	//this is called on a separate thread..
@@ -459,7 +459,7 @@ void CabbageCodeEditorComponent::parseTextForVariables()	//this is called on a s
     tokens.addTokens(csdText, "  \n(),*%=\t", "");
 
 
-	
+
     for(const String currentWord : tokens)
     {
         if(currentWord.startsWith("a") || currentWord.startsWith("i") ||
@@ -508,9 +508,7 @@ void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
         {
             variableNamesToShow.addIfNotAlreadyThere(item.trim());
             autoCompleteListBox.updateContent();
-            if(variableNamesToShow.size()==1 && variableNamesToShow[0]==currentWord)
-            {}
-            else
+            if(variableNamesToShow.size()!=1 && variableNamesToShow[0]!=currentWord)
                 autoCompleteListBox.setVisible(true);
         }
     }
@@ -518,37 +516,50 @@ void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
 //===========================================================================================================
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *originatingComponent)
 {
-    
-	allowUpdateOfPluginGUI = true; //allow keystrokes to update GUI 
-	
+
+    allowUpdateOfPluginGUI = true; //allow keystrokes to update GUI
+
     if (key.getTextDescription().contains("cursor up") || key.getTextDescription().contains("cursor down"))
     {
-        if(autoCompleteListBox.isVisible())
-        {
-            const int selectedRow = autoCompleteListBox.getSelectedRow();
 
-            if(key.getTextDescription().contains("cursor down"))
-                autoCompleteListBox.selectRow(jmax(0, selectedRow+1));
-            else if(key.getTextDescription().contains("cursor up"))
-                autoCompleteListBox.selectRow(jmax(0, selectedRow-1));
-
-            autoCompleteListBox.scrollToEnsureRowIsOnscreen(autoCompleteListBox.getSelectedRow());
-        }
     }
-
-    this->getParentComponent()->repaint();
 
     if (key == KeyPress ('z', ModifierKeys::commandModifier, 0))
         undoText();
 
-    if (! TextEditorKeyMapper<CodeEditorComponent>::invokeKeyFunction (*this, key))
+    if (! CustomTextEditorKeyMapper<CodeEditorComponent>::invokeKeyFunction (*this, key))
     {
+
 
         if (key == KeyPress::returnKey)
             handleReturnKey();
 
         else if (key == KeyPress::escapeKey)
             handleEscapeKey();
+
+
+        else  if (key.isKeyCode (KeyPress::upKey || key.isKeyCode(KeyPress::downKey)))
+        {
+            if(autoCompleteListBox.isVisible())
+            {
+                const int selectedRow = autoCompleteListBox.getSelectedRow();
+
+                CabbageUtilities::debug(selectedRow);
+
+                if(key.getTextDescription().contains("cursor down"))
+                    autoCompleteListBox.selectRow(jmax(0, selectedRow)+1);
+                else if(key.getTextDescription().contains("cursor up"))
+                    autoCompleteListBox.selectRow(jmax(0, selectedRow)-1);
+
+                autoCompleteListBox.scrollToEnsureRowIsOnscreen(autoCompleteListBox.getSelectedRow());
+            }
+            else if(key.isKeyCode (KeyPress::upKey))
+                moveCaretUp(key.getModifiers().isShiftDown());
+            else if(key.isKeyCode (KeyPress::downKey))
+                moveCaretDown (key.getModifiers().isShiftDown());
+        }
+
+
         //else if (key == KeyPress (']', ModifierKeys::commandModifier, 0))   indentSelection();
         else if (key.getTextCharacter() >= ' ')
         {
@@ -559,10 +570,11 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *ori
             handleTabKey("backwards");
         else if(key ==  KeyPress::tabKey)
             handleTabKey("forwards");
-
         else
             return false;
     }
+
+    getParentComponent()->repaint();
     //handleUpdateNowIfNeeded();
     return true;
 }
@@ -604,11 +616,12 @@ void CabbageCodeEditorComponent::handleTabKey(String direction)
         }
     }
 
+    autoCompleteListBox.setVisible(false);
 }
 
 void CabbageCodeEditorComponent::handleEscapeKey()
 {
-	autoCompleteListBox.setVisible(false);
+    autoCompleteListBox.setVisible(false);
 }
 
 void CabbageCodeEditorComponent::handleReturnKey ()
@@ -618,7 +631,8 @@ void CabbageCodeEditorComponent::handleReturnKey ()
         const CodeDocument::Position pos1 = getDocument().findWordBreakBefore(getCaretPos());
         const CodeDocument::Position pos2 = getCaretPos();
         getDocument().deleteSection(pos1, pos2);
-        insertText(variableNamesToShow[autoCompleteListBox.getSelectedRow()]);
+
+        insertText(variableNamesToShow[autoCompleteListBox.getSelectedRow()].trim());
         autoCompleteListBox.setVisible(false);
         return;
     }
@@ -646,19 +660,19 @@ void CabbageCodeEditorComponent::undoText()
 //==============================================================================
 const String CabbageCodeEditorComponent::getLineText(int lineNumber)
 {
-	const StringArray csdArray = getAllTextAsStringArray();
+    const StringArray csdArray = getAllTextAsStringArray();
     return csdArray[lineNumber];
 }
 
 //==============================================================================
 void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool shouldHighlight)
 {
-	// This method is called when users move widgets around in GUI edit mode. 
-	// As the user is updating the plugin GUI, we don't need to, hence the 
-	// allowUpdateOfPluginGUI is set to false
-	allowUpdateOfPluginGUI = false;	
-	
-	StringArray csdLines;
+    // This method is called when users move widgets around in GUI edit mode.
+    // As the user is updating the plugin GUI, we don't need to, hence the
+    // allowUpdateOfPluginGUI is set to false
+    allowUpdateOfPluginGUI = false;
+
+    StringArray csdLines;
     csdLines.addLines(getDocument().getAllContent());
 
     if(replaceExistingLine)
@@ -675,20 +689,20 @@ void CabbageCodeEditorComponent::insertCode(int lineNumber, String codeToInsert,
 
 StringArray CabbageCodeEditorComponent::getIdentifiersFromString(String code)
 {
-	StringArray tokens;
-	vector<string> result;
-	const char* str = code.toUTF8().getAddress();
-	do
-	{
-		const char *begin = str;
+    StringArray tokens;
 
-		while(*str != ')' && *str)
-			str++;
+    const char* str = code.toUTF8().getAddress();
+    do
+    {
+        const char *begin = str;
 
-		tokens.add(string(begin+1, str+1));
-	} 
-	while (0 != *str++);
-	return tokens;		
+        while(*str != ')' && *str)
+            str++;
+
+        tokens.add(string(begin+1, str+1));
+    }
+    while (0 != *str++);
+    return tokens;
 }
 
 void CabbageCodeEditorComponent::insertNewLine(String text)
@@ -717,12 +731,12 @@ void CabbageCodeEditorComponent::insertNewLine(String text)
 void CabbageCodeEditorComponent::highlightLine(int lineNumber)
 {
     moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 5000), false);
-	moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 0), true);
+    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 0), true);
 }
 
 void CabbageCodeEditorComponent::highlightLines(int firstLine, int lastLine)
 {
-	moveCaretTo(CodeDocument::Position (getDocument(), lastLine, 5000), false);
+    moveCaretTo(CodeDocument::Position (getDocument(), lastLine, 5000), false);
     moveCaretTo(CodeDocument::Position (getDocument(), firstLine, 0), true);
 }
 

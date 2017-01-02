@@ -32,8 +32,8 @@ public:
     CabbageCsoundConsole(ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageCsoundConsole() {};
 
-	CabbagePluginEditor* owner;
-	
+    CabbagePluginEditor* owner;
+
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
@@ -41,8 +41,8 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	void timerCallback();
-	
+    void timerCallback();
+
     ValueTree widgetData;
 
 

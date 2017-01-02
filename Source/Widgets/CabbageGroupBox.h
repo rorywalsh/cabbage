@@ -30,9 +30,9 @@ class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, publi
     String text, colour, fontColour, justification, outlineColour;
     float rotate;
 
-    File svgPath, svgFile;	
+    File svgPath, svgFile;
 
-	
+
 public:
 
     CabbageGroupBox(ValueTree wData);

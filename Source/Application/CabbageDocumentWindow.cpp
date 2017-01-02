@@ -52,7 +52,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
         content->openFile(cabbageSettings->getMostRecentFile().getFullPathName());
     }
 
-	
+
 
     setApplicationCommandManagerToWatch(&commandManager);
     commandManager.registerAllCommandsForTarget(this);
@@ -239,6 +239,15 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
     }
 }
 
+void CabbageDocumentWindow::focusGained(FocusChangeType cause) //grab focus when user clicks on editor
+{
+    if(getContentComponent())
+    {
+        getContentComponent()->getCurrentCodeEditor()->setWantsKeyboardFocus (true);
+        getContentComponent()->getCurrentCodeEditor()->grabKeyboardFocus();
+    }
+}
+
 void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 {
 
@@ -255,7 +264,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::exportAsFMODSoundPlugin,
                               CommandIDs::copy,
                               CommandIDs::cut,
-							  CommandIDs::toggleComments,
+                              CommandIDs::toggleComments,
                               CommandIDs::paste,
                               CommandIDs::undo,
                               CommandIDs::redo,
@@ -407,7 +416,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     switch (info.commandID)
     {
     case CommandIDs::newProject:
-        getContentComponent()->createNewProject();
+        //getContentComponent()->createNewProject();
+        getContentComponent()->launchSSHFileBrowser();
         break;
     case CommandIDs::open:
         getContentComponent()->openFile();
@@ -415,7 +425,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     case CommandIDs::saveDocument:
         getContentComponent()->saveDocument();
         getContentComponent()->setEditMode(false);
-		isGUIEnabled = false;
+        isGUIEnabled = false;
         break;
     case CommandIDs::saveDocumentAs:
         getContentComponent()->saveDocument(true);
@@ -430,7 +440,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         break;
     case CommandIDs::stopCode:
         getContentComponent()->stopCode();
-		getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
+        getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
         break;
     case CommandIDs::exportAsEffect:
 
@@ -448,15 +458,15 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 
         break;
     case CommandIDs::toggleComments:
-		this->getContentComponent()->getCurrentCodeEditor()->toggleComments();
+        this->getContentComponent()->getCurrentCodeEditor()->toggleComments();
         break;
     case CommandIDs::paste:
 
         break;
     case CommandIDs::editMode:
         getContentComponent()->setEditMode(isGUIEnabled =! isGUIEnabled);
-		if(isGUIEnabled==false)
-			getContentComponent()->saveDocument();
+        if(isGUIEnabled==false)
+            getContentComponent()->saveDocument();
         break;
     case CommandIDs::enableLiveDebugger:
         getContentComponent()->getCurrentCodeEditor()->runInDebugMode();

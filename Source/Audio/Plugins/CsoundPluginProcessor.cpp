@@ -64,17 +64,17 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     csound->SetOption((char*)"-d");
 
 
-	if(debugMode)
-	{
-		csoundDebuggerInit(csound->GetCsound());
-		csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
-		csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);
-	}
+    if(debugMode)
+    {
+        csoundDebuggerInit(csound->GetCsound());
+        csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
+        csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);
+    }
 
     compileCsdFile(csdFile);
     numCsoundChannels = csound->GetNchnls();
 
-	addMacros(csdFile.getFullPathName());
+    addMacros(csdFile.getFullPathName());
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
 
     if(csdCompiledWithoutError())
@@ -85,13 +85,13 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
         CSspin  = csound->GetSpin();
         cs_scale = csound->Get0dBFS();
         csndIndex = csound->GetKsmps();
-		
-		//hack to allow tables to be set up correctly.
-		// might be best to simply do an init run?
+
+        //hack to allow tables to be set up correctly.
+        // might be best to simply do an init run?
         csound->PerformKsmps();
         csound->SetScoreOffsetSeconds(0);
         csound->RewindScore();
-		
+
         this->setLatencySamples(csound->GetKsmps());
     }
     else
@@ -102,7 +102,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
     CabbageUtilities::debug("Plugin destructor");
-	
+
     if(csound)
     {
         csound = nullptr;
@@ -118,8 +118,8 @@ void CsoundPluginProcessor::initAllCsoundChannels(ValueTree cabbageData)
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type);
         if(CabbageWidgetData::getStringProp(cabbageData.getChild(i), "channeltype")=="string")
         {
-			csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
-								CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text).toUTF8().getAddress());
+            csound->SetChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                               CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text).toUTF8().getAddress());
 
         }
         else
@@ -612,7 +612,7 @@ void CsoundPluginProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, co
 void CsoundPluginProcessor::drawGraphCallback(CSOUND *csound, WINDAT *windat)
 {
     CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
-	
+
     Array<float, CriticalSection> tablePoints;
     //only take all sample sif dealing with fft, waveforms and lissajous curves can be drawn with less samples
     tablePoints = Array<float, CriticalSection>(&windat->fdata[0], windat->npts);

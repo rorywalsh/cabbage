@@ -18,14 +18,13 @@
 */
 
 #include "CabbageNewProjectWindow.h"
-#include "CabbageContentComponent.h"
-#include "../Utilities/CabbageStrings.h"
-#include "../Utilities/CabbageUtilities.h"
+#include "../Application/CabbageContentComponent.h"
+#include "CabbageStrings.h"
+#include "CabbageUtilities.h"
 
 
-CabbageProjectWindow::CabbageProjectWindow(CabbageContentComponent* owner, ValueTree valueTree):
+CabbageProjectWindow::CabbageProjectWindow(CabbageContentComponent* owner):
     owner(owner),
-    valueTree(valueTree),
     newInstrumentButton("newInstrument", this),
     newEffectButton("newEffect", this),
     newCsoundFileButton("newCsound", this)
@@ -52,50 +51,50 @@ CabbageProjectWindow::CabbageProjectWindow(CabbageContentComponent* owner, Value
 
 void CabbageProjectWindow::writeNewFile(File fc, String fileText)
 {
-	fc.replaceWithText(fileText);
-	owner->openFile (fc.getFullPathName());
-	delete this->getParentComponent();	
+    fc.replaceWithText(fileText);
+    owner->openFile (fc.getFullPathName());
+    delete this->getParentComponent();
 }
 
 void CabbageProjectWindow::createNewFile(String type)
 {
-	
-	FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
 
-	if (fc.browseForFileToSave(false))
-	{
-		String csdText;
-		if(type=="newCsound")
-			csdText = CabbageStrings::getNewCsoundFileText();
-		else if(type=="newEffect")
-			csdText = CabbageStrings::getNewCabbageEffectFileText();
-		else
-			csdText = CabbageStrings::getNewCabbageInstrumentFileText();
-			
-		if(fc.getResult().existsAsFile())
-		{
-			CabbageIDELookAndFeel lookAndFeel;
-			const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-			if(result==0)
-			{
-				writeNewFile(fc.getResult(), csdText);
-//				
+    FileChooser fc ("Select file name and location", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory));
+
+    if (fc.browseForFileToSave(false))
+    {
+        String csdText;
+        if(type=="newCsound")
+            csdText = CabbageStrings::getNewCsoundFileText();
+        else if(type=="newEffect")
+            csdText = CabbageStrings::getNewCabbageEffectFileText();
+        else
+            csdText = CabbageStrings::getNewCabbageInstrumentFileText();
+
+        if(fc.getResult().existsAsFile())
+        {
+            CabbageIDELookAndFeel lookAndFeel;
+            const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+            if(result==0)
+            {
+                writeNewFile(fc.getResult(), csdText);
+//
 //				fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
 //				owner->openFile (fc.getResult().getFullPathName());
 //				delete this->getParentComponent();
-			}
-		}
-		else
-		{
-				writeNewFile(fc.getResult(), csdText);
+            }
+        }
+        else
+        {
+            writeNewFile(fc.getResult(), csdText);
 //			fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
 //			owner->openFile (fc.getResult().getFullPathName());
 //			delete this->getParentComponent();
-		}
-	}	
+        }
+    }
 }
 
 void CabbageProjectWindow::buttonClicked(Button* button)
 {
-	createNewFile(button->getName());
+    createNewFile(button->getName());
 }

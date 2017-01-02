@@ -25,61 +25,61 @@
 
 class FrequencyRangeDisplayComponent : public Component
 {
-	int maxFreq, minFreq, resolution;
-	Colour fontColour, backgroundColour;
+    int maxFreq, minFreq, resolution;
+    Colour fontColour, backgroundColour;
 
 public:
-	FrequencyRangeDisplayComponent(Colour fColour, Colour bgColour) :
-		Component(),
-		fontColour(fColour),
-		backgroundColour(bgColour),
-		minFreq(0),
-		maxFreq(22050),
-		resolution(10)
-	{}
+    FrequencyRangeDisplayComponent(Colour fColour, Colour bgColour) :
+        Component(),
+        fontColour(fColour),
+        backgroundColour(bgColour),
+        minFreq(0),
+        maxFreq(22050),
+        resolution(10)
+    {}
 
-	~FrequencyRangeDisplayComponent() {}
+    ~FrequencyRangeDisplayComponent() {}
 
-	void resized()
-	{
-		if(getWidth()<400)
-			resolution = resolution/2.f;
-	}
+    void resized()
+    {
+        if(getWidth()<400)
+            resolution = resolution/2.f;
+    }
 
-	void setResolution(int res)
-	{
-		resolution = res;
-		if(getWidth()<400)
-			resolution = resolution/3.f;
+    void setResolution(int res)
+    {
+        resolution = res;
+        if(getWidth()<400)
+            resolution = resolution/3.f;
 
-	}
+    }
 
-	void paint(Graphics &g)
-	{
-		g.fillAll(backgroundColour);
-		g.setColour(fontColour);
-		for(int i=0; i<resolution; i++)
-		{
-			const int width = getWidth()/resolution;
-			int freq = jmap(i, 0, resolution, minFreq, maxFreq);
+    void paint(Graphics &g)
+    {
+        g.fillAll(backgroundColour);
+        g.setColour(fontColour);
+        for(int i=0; i<resolution; i++)
+        {
+            const int width = getWidth()/resolution;
+            int freq = jmap(i, 0, resolution, minFreq, maxFreq);
 
-			String freqStr = String(freq);
-			if(freqStr.length()>4)
-				freqStr = freqStr.substring(0, 2) + "." + freqStr.substring(2, 3)+"kHz";
-			else if(freqStr.length()>3)
-				freqStr = freqStr.substring(0, 1) + "." + freqStr.substring(1, 2)+"kHz";
-			else
-				freqStr = freqStr+"Hz";
+            String freqStr = String(freq);
+            if(freqStr.length()>4)
+                freqStr = freqStr.substring(0, 2) + "." + freqStr.substring(2, 3)+"kHz";
+            else if(freqStr.length()>3)
+                freqStr = freqStr.substring(0, 1) + "." + freqStr.substring(1, 2)+"kHz";
+            else
+                freqStr = freqStr+"Hz";
 
-			g.drawFittedText(String(freqStr), i*width, 4, 35, 7, Justification::left, 1);
-		}
-	}
+            g.drawFittedText(String(freqStr), i*width, 4, 35, 7, Justification::left, 1);
+        }
+    }
 
-	void setMinMax(int min, int max)
-	{
-		minFreq = min;
-		maxFreq = max;
-	}
+    void setMinMax(int min, int max)
+    {
+        minFreq = min;
+        maxFreq = max;
+    }
 };
 
 

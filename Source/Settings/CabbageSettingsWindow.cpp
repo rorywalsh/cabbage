@@ -18,24 +18,43 @@
 */
 
 #include "CabbageSettingsWindow.h"
-
-static void addFilenameComponentListener(FilenameComponentListener* parent, PropertyComponent* propertyComponent)
-{
-    if(CabbageFilePropertyComponent* fileComp = dynamic_cast<CabbageFilePropertyComponent*>(propertyComponent))
-        fileComp->filenameComp.addListener(parent);
-
-}
-
-static void addColourListener(Array<PropertyComponent*> comps, CabbageSettingsWindow* owner)
+//==============================================================================
+static void addCustomListener(Array<PropertyComponent*> comps, CabbageSettingsWindow* owner)
 {
     for( int i = 0; i < comps.size(); i++)
     {
-        if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(comps[i]))
+        if(TextPropertyComponent* textProperty = dynamic_cast<TextPropertyComponent*>(comps[i]))
+        {
+            textProperty->addListener(owner);
+        }
+        else if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(comps[i]))
         {
             colourProperty->addChangeListener(owner);
         }
+        else if(CabbageFilePropertyComponent* fileComp = dynamic_cast<CabbageFilePropertyComponent*>(comps[i]))
+        {
+            fileComp->filenameComp.addListener(owner);
+        }
     }
 }
+
+//static void addFilenameComponentListener(FilenameComponentListener* parent, PropertyComponent* propertyComponent)
+//{
+//    if(CabbageFilePropertyComponent* fileComp = dynamic_cast<CabbageFilePropertyComponent*>(propertyComponent))
+//        fileComp->filenameComp.addListener(parent);
+//
+//}
+//
+//static void addColourListener(Array<PropertyComponent*> comps, CabbageSettingsWindow* owner)
+//{
+//    for( int i = 0; i < comps.size(); i++)
+//    {
+//        if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(comps[i]))
+//        {
+//            colourProperty->addChangeListener(owner);
+//        }
+//    }
+//}
 
 CabbageSettingsWindow::CabbageSettingsWindow(CabbageSettings &settings, AudioDeviceSelectorComponent* audioDevice):
     Component(""),
@@ -87,9 +106,9 @@ void CabbageSettingsWindow::addColourProperties()
             interfaceProps.add (new ColourPropertyComponent(name, colour.toString()));
     }
     colourPanel.clear();
-    addColourListener(interfaceProps, this);
-    addColourListener(editorProps, this);
-    addColourListener(consoleProps, this);
+    addCustomListener(interfaceProps, this);
+    addCustomListener(editorProps, this);
+    addCustomListener(consoleProps, this);
 
     colourPanel.addSection("Interface", interfaceProps);
     colourPanel.addSection("Editor", editorProps);
@@ -113,14 +132,26 @@ void CabbageSettingsWindow::addMiscProperties()
     props.add (new BooleanPropertyComponent(compileOnSaveValue, "Compiling", "Compile on save"));
 
     props.add (new CabbageFilePropertyComponent("Csound manual dir.", true, false));
-    addFilenameComponentListener(this, props[props.size()-1]);
     props.add (new CabbageFilePropertyComponent("Cabbage plants dir.", true, false));
-    addFilenameComponentListener(this, props[props.size()-1]);
     props.add (new CabbageFilePropertyComponent("Cabbage examples dir.", true, false));
-    addFilenameComponentListener(this, props[props.size()-1]);
 
+    const String sshAddress = settings.getUserSettings()->getValue("SSHAddress");
+    props.add(new TextPropertyComponent(Value (sshAddress), "SSH Address", 200, false));
+
+    const String sshHomeDir = settings.getUserSettings()->getValue("SSHHomeDir");
+    props.add(new TextPropertyComponent(Value (sshHomeDir), "SSH Home Directory", 200, false));
+
+    addCustomListener(props, this);
     miscPanel.clear();
     miscPanel.addProperties(props);
+}
+
+void CabbageSettingsWindow::textPropertyComponentChanged(TextPropertyComponent *comp)
+{
+    if(comp->getName()=="SSH Address")
+        settings.getUserSettings()->setValue("SSHAddress", comp->getValue().toString());
+    else if(comp->getName()=="SSH Home Directory")
+        settings.getUserSettings()->setValue("SSHHomeDir", comp->getValue().toString());
 }
 
 void CabbageSettingsWindow::resized()

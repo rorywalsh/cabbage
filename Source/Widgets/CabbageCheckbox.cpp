@@ -36,8 +36,8 @@ CabbageCheckbox::CabbageCheckbox(ValueTree wData) : CabbageWidgetBase(),
     setButtonText(buttonText);
     setTooltip(tooltipText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext));
 
-	
-	CabbageUtilities::debug(String(getToggleState()==true ? "On" : "Off"));
+
+    CabbageUtilities::debug(String(getToggleState()==true ? "On" : "Off"));
 
     if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup)!=0)
         setRadioGroupId(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup));
@@ -62,7 +62,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {
 
     if(prop==CabbageIdentifierIds::value)
-    {		
+    {
         bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
         setToggleState(state, dontSendNotification);
     }

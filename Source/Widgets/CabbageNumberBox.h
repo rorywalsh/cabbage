@@ -26,9 +26,9 @@
 
 class CabbageNumberBox : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
-	Slider slider;
-	Label label;
-	String text, align;
+    Slider slider;
+    Label label;
+    String text, align;
 public:
 
     CabbageNumberBox(ValueTree wData);
@@ -40,9 +40,12 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-	void resized();
+    void resized();
 
-	Slider& getSlider(){	return slider;	};
+    Slider& getSlider()
+    {
+        return slider;
+    };
 
     ValueTree widgetData;
 

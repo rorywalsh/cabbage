@@ -27,25 +27,25 @@
 class CabbagePluginEditor;
 // Add any new custom widgets here to avoid having to edit makefiles and projects
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
-class CabbageSoundfiler : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener 
+class CabbageSoundfiler : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
 {
 
     Soundfiler soundfiler;
     float scrubberPosition;
-	String file;
+    String file;
     float zoom, rotate;
     int pivotx, pivoty;
     double sampleRate;
     float scrubberPos;
-	
-	CabbagePluginEditor* owner;
+
+    CabbagePluginEditor* owner;
 public:
 
     CabbageSoundfiler(ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageSoundfiler() {};
-	
-	void resized();
-	
+
+    void resized();
+
     void setFile(String newFile);
     int setWaveform(AudioSampleBuffer buffer, int channels);
     int getScrubberPosition();
@@ -58,8 +58,8 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-	void changeListenerCallback(ChangeBroadcaster* source);
-	
+    void changeListenerCallback(ChangeBroadcaster* source);
+
     ValueTree widgetData;
 
 

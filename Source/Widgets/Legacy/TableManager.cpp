@@ -471,7 +471,7 @@ void TableManager::setWaveform(Array<float, CriticalSection> buffer, int ftNumbe
 {
     for( int i=0; i<tables.size(); i++)
         if(ftNumber==tables[i]->tableNumber)
-        {		
+        {
             tables[i]->setWaveform(buffer, updateRange);
             return;
         }
@@ -926,11 +926,11 @@ const Image GenTable::drawGridImage(bool redraw, double width, double height, do
         for(double i=0; i<waveformBuffer.size(); i++)
         {
             g.drawImageAt(CabbageLookAndFeel2::drawToggleImage(widthOfGridElement-3.f,
-                                                  height,
-                                                  (waveformBuffer[i]>0.0 ? true : false),
-                                                  colour,
-                                                  true,
-                                                  4.f),
+                          height,
+                          (waveformBuffer[i]>0.0 ? true : false),
+                          colour,
+                          true,
+                          4.f),
                           i*(widthOfGridElement)+2,
                           1.f);
         }
@@ -1117,8 +1117,8 @@ void GenTable::paint (Graphics& g)
                         g.drawLine(prevX, prevY, currX, currY, traceThickness);
                     }
                 }
-				
-				//CabbageUtilities::debug(i, currY);
+
+                //CabbageUtilities::debug(i, currY);
 
                 prevX = jmax(0.0, (i-visibleStart)*numPixelsPerIndex);
                 prevY = currY;

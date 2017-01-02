@@ -176,11 +176,11 @@ void Soundfiler::setZoomFactor (double amount)
         zoomIn->setVisible(false);
         zoomOut->setVisible(false);
     }
-	else
-	{
+    else
+    {
         zoomIn->setVisible(true);
-        zoomOut->setVisible(true);		
-	}
+        zoomOut->setVisible(true);
+    }
 
     if (thumbnail->getTotalLength() > 0)
     {

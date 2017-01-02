@@ -18,23 +18,19 @@ public:
     CabbageFilePropertyComponent (const String& name,
                                   const bool isDirectory,
                                   const bool allowEditingOfFilename,
-                                  const String& fileBrowserWildcard = "*")
+                                  const String& fileBrowserWildcard = "*",
+                                  const String currentFile = "")
         : PropertyComponent (name),
           filenameComp (name, File(), allowEditingOfFilename,
                         isDirectory, false, fileBrowserWildcard,
                         String(), String())
     {
         addAndMakeVisible (filenameComp);
-
+        filenameComp.setCurrentFile(File(currentFile), true, dontSendNotification);
+        filenameComp.setTooltip(filenameComp.getCurrentFileText());
     }
 
-    //virtual void setFile (const File& newFile) = 0;
-    //virtual File getFile() const = 0;
-
-    void refresh()
-    {
-        int i=0;//filenameComp.setCurrentFile (getFile(), false);
-    }
+    void refresh() {}
 
     FilenameComponent filenameComp;
 

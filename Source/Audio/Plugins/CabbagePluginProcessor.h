@@ -26,8 +26,8 @@
 #include "CabbageAudioParameter.h"
 #include "../../Widgets/CabbageXYPad.h"
 
-class CabbagePluginProcessor  
-	: public CsoundPluginProcessor
+class CabbagePluginProcessor
+    : public CsoundPluginProcessor
 {
 public:
     CabbagePluginProcessor(File inputFile = File());
@@ -38,11 +38,11 @@ public:
     void receiveChannelDataFromCsound();
     void parseCsdFile(String csdText);
     void createParameters();
-	void updateWidgets(String csdText);
-	void searchForMacros(StringArray& csdText);
-	const String getExpandedMacroText(const String line);
+    void updateWidgets(String csdText);
+    void searchForMacros(StringArray& csdText);
+    const String getExpandedMacroText(const String line);
 
-	CabbageAudioParameter* getParameterForXYPad(String name);
+    CabbageAudioParameter* getParameterForXYPad(String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
@@ -51,7 +51,7 @@ public:
     {
         return csdFile;
     }
-	
+
     StringArray getCurrentCsdFileAsStringArray()
     {
         StringArray csdArray;
@@ -59,16 +59,16 @@ public:
         return csdArray;
     }
 
-	//===== XYPad methods =========
-    void addXYAutomator(CabbageXYPad* xyPad, ValueTree wData); 
-	void enableXYAutomator(String name, bool enable, Line<float> dragLine); 
+    //===== XYPad methods =========
+    void addXYAutomator(CabbageXYPad* xyPad, ValueTree wData);
+    void enableXYAutomator(String name, bool enable, Line<float> dragLine);
 
-	
+
 private:
     File csdFile;
-	NamedValueSet macroText;
-	bool xyAutosCreated = false;
-	OwnedArray<XYPadAutomator> xyAutomator;
+    NamedValueSet macroText;
+    bool xyAutosCreated = false;
+    OwnedArray<XYPadAutomator> xyAutomator;
 
 };
 

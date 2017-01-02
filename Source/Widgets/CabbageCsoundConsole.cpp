@@ -21,45 +21,45 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageCsoundConsole::CabbageCsoundConsole(ValueTree wData, CabbagePluginEditor* _owner)
-	: widgetData(wData),
-	owner(_owner),
-	TextEditor("")
+    : widgetData(wData),
+      owner(_owner),
+      TextEditor("")
 {
-	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
-	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
-	this->setMultiLine(true, false);
-	this->setScrollbarsShown(true);
+    setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
+    this->setMultiLine(true, false);
+    this->setScrollbarsShown(true);
 
-	setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour))); 
-	setColour(TextEditor::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));	
-	setColour(TextEditor::outlineColourId, Colours::transparentBlack);
-	setColour(TextEditor::focusedOutlineColourId, Colours::transparentBlack);
-	setColour(TextEditor::highlightColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)).contrasting(.5f));
-	
+    setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    setColour(TextEditor::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+    setColour(TextEditor::outlineColourId, Colours::transparentBlack);
+    setColour(TextEditor::focusedOutlineColourId, Colours::transparentBlack);
+    setColour(TextEditor::highlightColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)).contrasting(.5f));
+
 #ifdef Cabbage_IDE_Build
-	String initText("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
-	setText(initText);
+    String initText("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
+    setText(initText);
 #else
-	startTimer(100);
+    startTimer(100);
 #endif
 }
 
 void CabbageCsoundConsole::timerCallback()
 {
-	const String csoundOutputString = owner->getCsoundOutputFromProcessor();
+    const String csoundOutputString = owner->getCsoundOutputFromProcessor();
 
-	if(csoundOutputString.isNotEmpty())
-	{
-		insertTextAtCaret(csoundOutputString);
-	}
+    if(csoundOutputString.isNotEmpty())
+    {
+        insertTextAtCaret(csoundOutputString);
+    }
 }
 
 void CabbageCsoundConsole::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-	setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour))); 
-	setColour(TextEditor::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
-	lookAndFeelChanged();	
-	repaint();
-	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+    setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
+    setColour(TextEditor::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+    lookAndFeelChanged();
+    repaint();
+    handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
 }

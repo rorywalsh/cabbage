@@ -67,28 +67,28 @@ public:
     CabbageTextEditor(ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageTextEditor() {};
 
-	CabbagePluginEditor* owner;
-	
+    CabbagePluginEditor* owner;
+
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-	
+
     ValueTree widgetData;
-	
-	void sendTextToCsound();
-	bool keyPressed(const juce::KeyPress &key,Component *);
-	void textEditorReturnKeyPressed (TextEditor&);
-	void resized();
+
+    void sendTextToCsound();
+    bool keyPressed(const juce::KeyPress &key,Component *);
+    void textEditorReturnKeyPressed (TextEditor&);
+    void resized();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextEditor);
-	
+
 private:
-	CustomTextEditor textEditor;
-	int stringIndex = 0;
-	StringArray strings;
+    CustomTextEditor textEditor;
+    int stringIndex = 0;
+    StringArray strings;
 };
 
 

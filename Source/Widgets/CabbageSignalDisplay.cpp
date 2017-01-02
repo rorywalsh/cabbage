@@ -22,8 +22,8 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageSignalDisplay::CabbageSignalDisplay(ValueTree wData, CabbagePluginEditor* owner)
-	: widgetData(wData),
-	  owner(owner),
+    : widgetData(wData),
+      owner(owner),
       colour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour))),
       backgroundColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::backgroundcolour))),
       fontColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour))),
@@ -46,9 +46,9 @@ CabbageSignalDisplay::CabbageSignalDisplay(ValueTree wData, CabbagePluginEditor*
       scrollbarHeight(20),
       lineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness))
 {
-	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
-	widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-	initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..	
+    setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
 
     addAndMakeVisible(freqRangeDisplay);
 
@@ -69,7 +69,7 @@ CabbageSignalDisplay::CabbageSignalDisplay(ValueTree wData, CabbagePluginEditor*
         addAndMakeVisible(zoomOutButton);
     }
 
-    startTimer(updateRate);	
+    startTimer(updateRate);
 }
 
 //====================================================================================
@@ -287,7 +287,7 @@ void CabbageSignalDisplay::setSignalFloatArraysForLissajous(Array<float, Critica
     signalFloatArray.swapWith(_points1);
     signalFloatArray2.swapWith(_points2);
     vectorSize = signalFloatArray.size();
-	
+
     if(vectorSize>0)
     {
         shouldPaint = true;
@@ -297,27 +297,27 @@ void CabbageSignalDisplay::setSignalFloatArraysForLissajous(Array<float, Critica
 //====================================================================================
 void CabbageSignalDisplay::timerCallback()
 {
-	if(owner->shouldUpdateSignalDisplay())
-	{
-		const String variable = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::signalvariable);
-		const String displayType = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::displaytype);
+    if(owner->shouldUpdateSignalDisplay())
+    {
+        const String variable = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::signalvariable);
+        const String displayType = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::displaytype);
 
-		if(displayType!="lissajous")
-		{
-			setSignalFloatArray(owner->getArrayForSignalDisplay(variable, displayType));
-		}
-		else
-		{
-			var signalVariables = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::signalvariable);
-			if(signalVariables.size()==2)
-				setSignalFloatArraysForLissajous(owner->getArrayForSignalDisplay(signalVariables[0], displayType),
-													owner->getArrayForSignalDisplay(signalVariables[1], displayType));
+        if(displayType!="lissajous")
+        {
+            setSignalFloatArray(owner->getArrayForSignalDisplay(variable, displayType));
+        }
+        else
+        {
+            var signalVariables = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::signalvariable);
+            if(signalVariables.size()==2)
+                setSignalFloatArraysForLissajous(owner->getArrayForSignalDisplay(signalVariables[0], displayType),
+                                                 owner->getArrayForSignalDisplay(signalVariables[1], displayType));
 
-		}
-		
-		repaint();
-	}
-    
+        }
+
+        repaint();
+    }
+
 }
 
 //====================================================================================
@@ -343,12 +343,12 @@ void CabbageSignalDisplay::resized()
 
 //====================================================================================
 void CabbageSignalDisplay::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
-{		
+{
     if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::displaytype)!=displayType)
     {
         displayType = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::displaytype);
-        
-		shouldDrawSonogram = displayType=="spectrogram" ? true : false;
+
+        shouldDrawSonogram = displayType=="spectrogram" ? true : false;
         if(shouldDrawSonogram)
         {
             freqRangeDisplay.setVisible(false);
@@ -377,11 +377,11 @@ void CabbageSignalDisplay::valueTreePropertyChanged (ValueTree& valueTree, const
     }
 
     if(freqRange!=Range<int>(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min),
-							 CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max)))
+                             CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max)))
     {
         freqRange = Range<int>(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::min),
-							   CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max));
-							   
+                               CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::max));
+
         freqRangeDisplay.setMinMax(freqRange.getStart(), freqRange.getEnd());
     }
 
@@ -395,6 +395,6 @@ void CabbageSignalDisplay::valueTreePropertyChanged (ValueTree& valueTree, const
         updateRate = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::updaterate);
         startTimer(updateRate);
     }
-	
-	handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc	
+
+    handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
 }

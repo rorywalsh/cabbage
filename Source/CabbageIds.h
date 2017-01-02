@@ -260,24 +260,24 @@ class CabbageIdentifierStrings : public StringArray
 {
 public:
     CabbageIdentifierStrings()	// longest strings appear first otherwise identifiers will be missed in parsing
-    {							
+    {
         add("tablebackgroundcolour");
-		add("arrowbackgroundcolour");
-		add("noteseparatorcolour");
-		add("backgroundcolour");
-		add("trackerthickness");
+        add("arrowbackgroundcolour");
+        add("noteseparatorcolour");
+        add("backgroundcolour");
+        add("trackerthickness");
         add("outlinethickness");
         add("scrubberposition");
-		add("whitenotecolour");
-		add("blacknotecolour");
+        add("whitenotecolour");
+        add("blacknotecolour");
         add("highlightcolour");
         add("tablegridcolour");
         add("backgroundcolor");
-		add("titlebarcolour");
+        add("titlebarcolour");
         add("tablegridcolor");
         add("signalvariable");
         add("linethickness");
-		add("outlinecolour");
+        add("outlinecolour");
         add("numberofsteps");
         add("trackercolour");
         add("valuetextbox");
@@ -290,7 +290,7 @@ public:
         add("fontcolour:0");
         add("outlinecolor");
         add("tablecolour");
-		add("arrowcolour");
+        add("arrowcolour");
         add("widgetarray");
         add("channeltype");
         add("samplerange");
@@ -310,7 +310,7 @@ public:
         add("tablecolor");
         add("radiogroup");
         add("sliderincr");
-		add("ballcolour");
+        add("ballcolour");
         add("menucolor");
         add("popuptext");
         add("textcolor");
@@ -328,7 +328,7 @@ public:
         add("amprange");
         add("color:0");
         add("caption");
-		add("textbox");
+        add("textbox");
         add("corners");
         add("color:1");
         add("middlec");
@@ -359,7 +359,7 @@ public:
         add("range");
         add("plant");
         add("align");
-		add("file");
+        add("file");
         add("wrap");
         add("text");
         add("zoom");
@@ -603,11 +603,11 @@ public:
         set("Csound Output", CabbageIdentifierIds::csoundoutput);
         set("Endless Encoder", CabbageIdentifierIds::encoder);
         set("Gentable", CabbageIdentifierIds::gentable);
-		set("Groupbox", CabbageIdentifierIds::groupbox);
+        set("Groupbox", CabbageIdentifierIds::groupbox);
         set("Horizontal Range Slider", CabbageIdentifierIds::hrange);
         set("Image", CabbageIdentifierIds::image);
-		set("Keyboard", CabbageIdentifierIds::keyboard);
-		set("Label", CabbageIdentifierIds::label);
+        set("Keyboard", CabbageIdentifierIds::keyboard);
+        set("Label", CabbageIdentifierIds::label);
         set("Numberbox", CabbageIdentifierIds::numberbox);
         set("Signal Display", CabbageIdentifierIds::signaldisplay);
         set("Slider - Horizontal", CabbageIdentifierIds::hslider);
@@ -652,38 +652,40 @@ public:
         set("Colour: Off", CabbageIdentifierIds::colour.toString());
         set("Colour", CabbageIdentifierIds::colour.toString());
         set("Outline", CabbageIdentifierIds::outlinecolour.toString());
-		set("Tracker", CabbageIdentifierIds::trackercolour.toString());
-		set("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
-		set("Text Colour", CabbageIdentifierIds::textcolour.toString());
-		set("Value Box", CabbageIdentifierIds::valuetextbox.toString());
+        set("Tracker", CabbageIdentifierIds::trackercolour.toString());
+        set("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
+        set("Text Colour", CabbageIdentifierIds::textcolour.toString());
+        set("Value Box", CabbageIdentifierIds::valuetextbox.toString());
         set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
-        set("Colour: On", CabbageIdentifierIds::oncolour.toString());		
-		set("White Notes", CabbageIdentifierIds::whitenotecolour.toString());
-		set("Black Notes", CabbageIdentifierIds::blacknotecolour.toString());
-		set("Notes Separator", CabbageIdentifierIds::noteseparatorcolour.toString());
-		set("Arrows Background", CabbageIdentifierIds::arrowbackgroundcolour.toString());
-		set("Arrows", CabbageIdentifierIds::arrowcolour.toString());		
+        set("Colour: On", CabbageIdentifierIds::oncolour.toString());
+        set("White Notes", CabbageIdentifierIds::whitenotecolour.toString());
+        set("Black Notes", CabbageIdentifierIds::blacknotecolour.toString());
+        set("Notes Separator", CabbageIdentifierIds::noteseparatorcolour.toString());
+        set("Arrows Background", CabbageIdentifierIds::arrowbackgroundcolour.toString());
+        set("Arrows", CabbageIdentifierIds::arrowcolour.toString());
         set("Alpha", CabbageIdentifierIds::alpha.toString());
-		set("Zoom", CabbageIdentifierIds::zoom.toString());
+        set("Zoom", CabbageIdentifierIds::zoom.toString());
         set("Corners", CabbageIdentifierIds::corners.toString());
         set("Shape", CabbageIdentifierIds::shape.toString());
         set("File", CabbageIdentifierIds::file.toString());
+        set("Text Align", CabbageIdentifierIds::align.toString());
+        set("Align", CabbageIdentifierIds::align.toString());
+        set("Velocity", CabbageIdentifierIds::velocity.toString());
+        set("Min: X", CabbageIdentifierIds::minx.toString());
+        set("Max: X", CabbageIdentifierIds::maxx.toString());
+        set("Min: Y", CabbageIdentifierIds::miny.toString());
+        set("Max: Y", CabbageIdentifierIds::maxy.toString());
+        set("Value X", CabbageIdentifierIds::valuex.toString());
+        set("Value Y", CabbageIdentifierIds::valuey.toString());
+        set("Value Min", CabbageIdentifierIds::minvalue.toString());
+        set("Value Max", CabbageIdentifierIds::maxvalue.toString());
+        set("Background", CabbageIdentifierIds::backgroundcolour.toString());
+        set("Ball", CabbageIdentifierIds::ballcolour.toString());
+
+		set("Thumb Image", CabbageIdentifierIds::imgslider.toString());
+		set("Background Image", CabbageIdentifierIds::imgsliderbg.toString());
         set("On Image", CabbageIdentifierIds::imgbuttonon.toString());
         set("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
-		set("Text Align", CabbageIdentifierIds::align.toString());		
-		set("Align", CabbageIdentifierIds::align.toString());
-		set("Velocity", CabbageIdentifierIds::velocity.toString());
-		set("Min: X", CabbageIdentifierIds::minx.toString());
-		set("Max: X", CabbageIdentifierIds::maxx.toString());
-		set("Min: Y", CabbageIdentifierIds::miny.toString());
-		set("Max: Y", CabbageIdentifierIds::maxy.toString());
-		set("Value X", CabbageIdentifierIds::valuex.toString());
-		set("Value Y", CabbageIdentifierIds::valuey.toString());
-		set("Value Min", CabbageIdentifierIds::minvalue.toString());
-		set("Value Max", CabbageIdentifierIds::maxvalue.toString());
-		set("Background", CabbageIdentifierIds::backgroundcolour.toString());
-		set("Ball", CabbageIdentifierIds::ballcolour.toString());
-		
     }
 };
 
