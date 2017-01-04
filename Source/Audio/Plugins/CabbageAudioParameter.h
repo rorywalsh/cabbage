@@ -28,13 +28,13 @@ class CabbageAudioParameter : public AudioParameterFloat
 
 public:
     CabbageAudioParameter(ValueTree wData, Csound &csound, String channel, String name, float minValue, float maxValue, float def)
-        :widgetData(wData), AudioParameterFloat(channel, name, minValue, maxValue, def), name(name), channel(channel), csound(csound)
+        :widgetData(wData), AudioParameterFloat(channel, channel, minValue, maxValue, def), widgetName(name), channel(channel), csound(csound)
     {}
     ~CabbageAudioParameter() {}
 
     float getValue() const override
     {
-
+		return currentValue;
     }
 
     void setValue (float newValue) override
@@ -42,9 +42,13 @@ public:
         //this may or may not be required, depends on whether the combobox passes or not...
         //CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::value, newValue);
         csound.SetChannel(channel.toUTF8(), newValue);
+		currentValue = newValue;
     }
 
-    String channel, name;
+	const String getWidgetName(){	return widgetName;	}
+
+    String channel, widgetName;
+	float currentValue;
     Csound csound;
     ValueTree widgetData;
 };

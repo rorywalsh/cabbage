@@ -205,8 +205,9 @@ void CabbagePluginProcessor::createParameters()
                     addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[1], name+"_max", 0, 1, value));
                 }
                 else
+				{
                     addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel, name, 0, 1, value));
-
+				}
             }
         }
     }

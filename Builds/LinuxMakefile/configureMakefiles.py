@@ -44,7 +44,7 @@ with open("Makefile", "rt") as file:
 	filedata = filedata.replace('@echo Linking CabbagePlugin', '@echo Linking CabbagePluginSynth')
 
 	# Write the file out again
-	with open('MakeFilePluginSynth', 'w') as file:
+	with open('MakePluginSynth', 'w') as file:
 	  file.write(filedata)
 
 with open("Makefile", "rt") as file:

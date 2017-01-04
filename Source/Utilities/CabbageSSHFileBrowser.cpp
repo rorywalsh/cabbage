@@ -31,8 +31,10 @@ CabbageSSHFileBrowser::CabbageSSHFileBrowser(String ip, String homeDir,CabbageCo
     filesListBox.setColour(ListBox::ColourIds::backgroundColourId, Colour(20, 20, 20));
     filesListBox.setModel(this);
     filePath.add(homeDirectory.trim());
-    const String command("ssh " + ipAddress + " ls -l "+homeDirectory);
+    
+	const String command("ssh " + ipAddress + " ls -l "+homeDirectory);
     launchChildProcess(command);
+	
 	if(mode=="save")
 	{
 		currentDirectoryLabel.setReadOnly(false);
@@ -91,17 +93,13 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked(int row, const MouseEvent &
 	if(name=="Double-click to go back a directory..")
 	{
 		filePath.remove(filePath.size()-1);
-		String command("ssh " + ipAddress + " ls -l "+filePath.joinIntoString(""));
-		CabbageUtilities::debug(command);
-		launchChildProcess(command);
+		launchChildProcess(getSSHLsCommand(filePath.joinIntoString("")));
 		currentDirectoryLabel.setText(labelPrefix + filePath.joinIntoString(""), dontSendNotification);
 	}
 	else if(isDirectory)
     {
 		filePath.add("/" + getFileOrFolderName(name));
-		String command("ssh " + ipAddress + " ls -l "+filePath.joinIntoString(""));
-		CabbageUtilities::debug(command);
-		launchChildProcess(command);
+		launchChildProcess(getSSHLsCommand(filePath.joinIntoString("")));
 		currentDirectoryLabel.setText(labelPrefix + filePath.joinIntoString(""), dontSendNotification);
     }
     else
@@ -134,6 +132,11 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked(int row, const MouseEvent &
             }
         }		
     }
+}
+
+const String CabbageSSHFileBrowser::getSSHLsCommand(String directory)
+{
+	return String("ssh " + ipAddress + " ls -l "+directory);	
 }
 
 const String CabbageSSHFileBrowser::getFileOrFolderName(String text)
@@ -180,7 +183,6 @@ void CabbageSSHFileBrowser::paintListBoxItem (int rowNumber, Graphics& g,
 }
 
 
-// invoked by the 'launch' button.
 void CabbageSSHFileBrowser::launchChildProcess(String command)
 {
     childProcess.start(command);
@@ -204,17 +206,5 @@ void CabbageSSHFileBrowser::launchChildProcess(String command)
     filesAndFoldersToDisplay.insert(0, "Double-click to go back a directory..");
 
     filesListBox.updateContent();
-}
-
-// invoked by the 'ping' button.
-void CabbageSSHFileBrowser::pingChildProcess()
-{
-
-}
-
-// invoked by the 'kill' button.
-void CabbageSSHFileBrowser::killChildProcess()
-{
-    childProcess.kill();
 }
 

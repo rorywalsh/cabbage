@@ -41,17 +41,14 @@ public:
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
     ListBox filesListBox;;
-    // Appends a message to the textbox that's shown in the demo as the console
-    void logMessage (const String& message);
     void launchChildProcess(const String command);
-    void pingChildProcess();
-    void killChildProcess();
 
 private:
     String ipAddress, homeDirectory, currentLocalFilePath;
     TextEditor currentDirectoryLabel;
     const String getFileOrFolderName(String text);
 	void textEditorReturnKeyPressed(TextEditor &);	
+	const String getSSHLsCommand(String directory);
 
     ChildProcess childProcess;
     StringArray filesAndFoldersToDisplay, filePath;

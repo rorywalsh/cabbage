@@ -343,12 +343,15 @@ void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
-    const OwnedArray<AudioProcessorParameter>& params = processor.getParameters();
-    for( int i = 0 ; i < params.size() ; i++)
-    {
-        if(name==params[i]->getName(512))
-            return dynamic_cast<CabbageAudioParameter*> (params[i]);
-    }
+	for(auto param : processor.getParameters())
+	{
+		if(CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*>(param))
+		{
+        if(name==cabbageParam->getWidgetName())
+            return dynamic_cast<CabbageAudioParameter*> (cabbageParam);
+			
+		}
+	}
 
     return nullptr;
 }
@@ -360,7 +363,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     {
         param->beginChangeGesture();
         const int value = combo->getSelectedItemIndex()+1;
-        param->setValue(value);
+        param->setValueNotifyingHost(value);
         param->endChangeGesture();
     }
 }
@@ -373,7 +376,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
     if (CabbageAudioParameter* param = getParameterForComponent(button->getName()))	//only update parameters for normal buttons
     {
         param->beginChangeGesture();
-        param->setValue(buttonState == true ? 1 : 0);
+        param->setValueNotifyingHost(buttonState == true ? 1 : 0);
         param->endChangeGesture();
     }
 
@@ -393,7 +396,7 @@ void CabbagePluginEditor::sliderValueChanged(Slider* slider)
         if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
         {
             param->beginChangeGesture();
-            param->setValue(slider->getValue());
+            param->setValueNotifyingHost(slider->getValue());
             param->endChangeGesture();
         }
     }
@@ -402,14 +405,14 @@ void CabbagePluginEditor::sliderValueChanged(Slider* slider)
         if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_min"))
         {
             param->beginChangeGesture();
-            param->setValue(slider->getMinValue());
+            param->setValueNotifyingHost(slider->getValue());
             param->endChangeGesture();
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_max"))
         {
             param->beginChangeGesture();
-            param->setValue(slider->getMaxValue());
+            param->setValueNotifyingHost(slider->getValue());
             param->endChangeGesture();
         }
     }
