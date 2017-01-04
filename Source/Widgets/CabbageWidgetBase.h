@@ -30,7 +30,7 @@ class CabbageWidgetBase
 {
     int pivotx, pivoty, visible, active, value;
     float rotate, alpha, currentValue;
-    String tooltipText, text, channel, csdFile;
+    String tooltipText, text, channel, csdFile, file;
     File imgButtonOn, imgButtonOff, imgPath;
     StringArray channelArray;	//can be used if widget supports multiple channels
     StringArray textArray;		//can be used used if widget supports multiple text items
@@ -58,6 +58,10 @@ public:
     const String&  getCsdFile() const
     {
         return csdFile;
+    }
+    const String&  getFilename() const
+    {
+        return file;
     }
     float  getCurrentValue() const
     {
@@ -107,7 +111,14 @@ public:
     {
         value = val;
     }
-
+    void setWidgetText(String val)
+    {
+        text = val;
+    }
+    void setFilename(String val)
+    {
+        file = val;
+    }
     void initialiseCommonAttributes(Component* child, ValueTree valueTree);							//handles simple attributes on initialisation
     void handleCommonUpdates(Component* child, ValueTree data, bool calledFromConstructor=false);	//handles all updates from ident channel message
 

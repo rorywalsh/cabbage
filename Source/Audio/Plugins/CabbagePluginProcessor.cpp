@@ -225,6 +225,61 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor()
 }
 
 //==============================================================================
+void CabbagePluginProcessor::getStateInformation (MemoryBlock& destData)
+{
+	XmlElement xml ("CABBAGE_PLUGIN_SETTINGS");
+	
+	for(int i = 0 ; i < cabbageWidgets.getNumChildren() ; i++)
+	{
+		const String widgetName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
+		const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+		
+		const float value = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+		
+		if(type == CabbageIdentifierIds::texteditor)
+		{
+			const String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::text);
+			xml.setAttribute(widgetName, text);
+		}
+		else if(type == CabbageIdentifierIds::filebutton)
+		{
+			const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::file);
+			xml.setAttribute(widgetName, file);
+		}
+		else 
+			xml.setAttribute(widgetName, value);
+	}
+	
+	copyXmlToBinary (xml, destData);
+	
+}
+
+void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBytes)
+{
+	ScopedPointer<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+
+    if (xmlState != nullptr)
+    {
+        for(int i=0; i<xmlState->getNumAttributes(); i++)
+        {
+			CabbageUtilities::debug(xmlState->getAttributeName(i), xmlState->getAttributeValue(i));
+			ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, xmlState->getAttributeName(i));
+			const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+
+			if(type != CabbageIdentifierIds::texteditor)
+				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue(i).getFloatValue()); 
+			else if(type == CabbageIdentifierIds::texteditor)
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, xmlState->getAttributeValue(i)); 
+			else if(type == CabbageIdentifierIds::filebutton)
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, xmlState->getAttributeValue(i)); 
+
+		}
+		
+		initAllCsoundChannels(cabbageWidgets);
+	}
+}
+
+//==============================================================================
 void CabbagePluginProcessor::receiveChannelDataFromCsound()
 {
     for( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
@@ -312,6 +367,7 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 }
 
 //======================================================================================================
+
 CabbageAudioParameter* CabbagePluginProcessor::getParameterForXYPad(String name)
 {
     const OwnedArray<AudioProcessorParameter>& params = getParameters();

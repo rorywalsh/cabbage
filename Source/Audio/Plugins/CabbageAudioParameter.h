@@ -40,7 +40,7 @@ public:
     void setValue (float newValue) override
     {
         //this may or may not be required, depends on whether the combobox passes or not...
-        //CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::value, newValue);
+        CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::value, newValue);
         csound.SetChannel(channel.toUTF8(), newValue);
 		currentValue = newValue;
     }

@@ -45,19 +45,21 @@ void CabbageFileButton::buttonClicked(Button* button)
 
     if(mode=="file")
     {
-        FileChooser fc ("Open File");
+        FileChooser fc("Open File", getFilename());
         if (fc.browseForFileToOpen())
         {
             owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
+			CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
         }
     }
 
     else if(mode=="directory")
     {
-        FileChooser fc ("Open Directory");
+        FileChooser fc ("Open Directory", getFilename());
         if (fc.browseForDirectory())
         {
             owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
+			CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
         }
     }
 
@@ -81,6 +83,5 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
 {
     setLookAndFeelColours(valueTree);
     handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
-
     setButtonText(getText());
 }

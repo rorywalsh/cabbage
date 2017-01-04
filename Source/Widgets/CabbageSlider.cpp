@@ -73,7 +73,7 @@ void CabbageSlider::initialiseSlider(ValueTree wData)
     slider.setSkewFactor(sliderSkew);
     slider.setRange(min, max, sliderIncrement);
 
-    if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::popuptext)==0)
+    if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext)=="0")
         shouldDisplayPopup=false;
     else
         shouldDisplayPopup=true;

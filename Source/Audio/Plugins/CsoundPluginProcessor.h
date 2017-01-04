@@ -111,7 +111,7 @@ public:
     virtual void initAllCsoundChannels(ValueTree cabbageData);
     //=============================================================================
     void addMacros(String csdText);
-    String getCsoundOutput();
+    const String getCsoundOutput();
 
     void compileCsdFile(File csdFile)
     {

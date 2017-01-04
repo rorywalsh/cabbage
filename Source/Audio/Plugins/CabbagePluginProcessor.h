@@ -63,8 +63,13 @@ public:
     void addXYAutomator(CabbageXYPad* xyPad, ValueTree wData);
     void enableXYAutomator(String name, bool enable, Line<float> dragLine);
 
-
+    //==============================================================================
+    void getStateInformation (MemoryBlock& destData) override;
+    void setStateInformation (const void* data, int sizeInBytes) override;
+	
 private:
+
+
     File csdFile;
     NamedValueSet macroText;
     bool xyAutosCreated = false;

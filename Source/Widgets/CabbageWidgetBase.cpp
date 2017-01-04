@@ -31,6 +31,7 @@ void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree d
     visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
     active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
     channel = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel);
+	file = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::file);
     tooltipText = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::popuptext);
     child->setBounds(CabbageWidgetData::getBounds(data));
     child->setName(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::name));
@@ -87,6 +88,11 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bo
         child->setAlpha( alpha);
     }
 
+    if( file != CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::file))
+    {
+        file = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::file);
+    }
+	
     populateTextArrays(data);
 
 }

@@ -222,7 +222,7 @@ int CsoundPluginProcessor::checkTable(int tableNum)
 
 
 //==============================================================================
-String CsoundPluginProcessor::getCsoundOutput()
+const String CsoundPluginProcessor::getCsoundOutput()
 {
     const int messageCnt = csound->GetMessageCnt();
     csoundOutput = "";

@@ -41,7 +41,7 @@ CabbageTextEditor::CabbageTextEditor(ValueTree wData, CabbagePluginEditor* _owne
     textEditor.setColour(TextEditor::outlineColourId, Colours::transparentBlack);
     textEditor.setColour(TextEditor::focusedOutlineColourId, Colours::transparentBlack);
     textEditor.setColour(TextEditor::highlightColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)).contrasting(.5f));
-
+	textEditor.setText(getText(), dontSendNotification);
 }
 
 void CabbageTextEditor::textEditorReturnKeyPressed (TextEditor&)
@@ -58,7 +58,8 @@ void CabbageTextEditor::sendTextToCsound()
     strings.add(textEditor.getText());
     strings.removeDuplicates(false);
     stringIndex = strings.size()-1;
-
+	setWidgetText(textEditor.getText());
+	CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::text, getText());
     owner->sendChannelStringDataToCsound(getChannel(), textEditor.getText());
 }
 

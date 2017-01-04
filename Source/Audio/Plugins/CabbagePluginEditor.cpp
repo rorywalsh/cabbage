@@ -591,6 +591,8 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {
-    jassert(false);
-    return String::empty;
+#ifndef Cabbage_IDE_Build
+    return processor.getCsoundOutput();
+#endif
+	return String("You are currently in 'Standalone' mode.\nThe csoundoutput widget will only be filled\nwith Csound messages when used in a plugin.");
 }
