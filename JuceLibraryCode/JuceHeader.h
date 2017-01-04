@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_ETRTEN__
-#define __APPHEADERFILE_ETRTEN__
+#ifndef __APPHEADERFILE_CXJYJD__
+#define __APPHEADERFILE_CXJYJD__
 
 #include "AppConfig.h"
 
@@ -41,10 +41,10 @@
 #if ! JUCE_DONT_DECLARE_PROJECTINFO
 namespace ProjectInfo
 {
-    const char* const  projectName    = "CabbagePlugin";
+    const char* const  projectName    = "Cabbage";
     const char* const  versionString  = "1.0.0";
     const int          versionNumber  = 0x10000;
 }
 #endif
 
-#endif   // __APPHEADERFILE_ETRTEN__
+#endif   // __APPHEADERFILE_CXJYJD__
