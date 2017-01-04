@@ -266,13 +266,17 @@ void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBy
 			ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, xmlState->getAttributeName(i));
 			const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
 
-			if(type != CabbageIdentifierIds::texteditor)
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue(i).getFloatValue()); 
-			else if(type == CabbageIdentifierIds::texteditor)
+			if(type == CabbageIdentifierIds::texteditor)
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, xmlState->getAttributeValue(i)); 
 			else if(type == CabbageIdentifierIds::filebutton)
+			{
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, xmlState->getAttributeValue(i)); 
-
+				CabbageUtilities::debug(xmlState->getAttributeValue(i));
+			}
+			else
+			{
+				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue(i).getFloatValue()); 
+			}
 		}
 		
 		initAllCsoundChannels(cabbageWidgets);
