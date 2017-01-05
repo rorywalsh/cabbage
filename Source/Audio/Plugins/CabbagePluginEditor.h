@@ -111,6 +111,8 @@ public:
     void sendChannelDataToCsound(String channel, float value);
     void sendChannelStringDataToCsound(String channel, String value);
     bool shouldUpdateSignalDisplay();
+	void savePluginStateToFile(File snapshotFile);
+	void restorePluginStateFrom(File snapshotFile);
     const Array<float, CriticalSection> getArrayForSignalDisplay(const String signalVariable, const String displayType);
     const String getCsoundOutputFromProcessor();
     StringArray getTableStatement(int tableNumber);

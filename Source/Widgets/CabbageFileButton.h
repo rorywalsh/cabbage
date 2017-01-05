@@ -28,7 +28,7 @@ class CabbagePluginEditor;
 class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener
 {
     CabbagePluginEditor* owner;
-    String mode;
+    String mode, filetype;
 public:
 
     CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner);

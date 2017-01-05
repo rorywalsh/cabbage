@@ -18,6 +18,7 @@
 */
 
 #include "CabbageComboBox.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 //================================================================================================================
 // combobox widget
@@ -47,10 +48,10 @@ CabbageComboBox::CabbageComboBox(ValueTree wData, CabbagePluginEditor* _owner):
     setTextWhenNothingSelected(text);
     setWantsKeyboardFocus(false);
 
+    initialiseCommonAttributes(this, wData);
+
     addItemsToCombobox(wData);
     setSelectedItemIndex(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value)-1, isPresetCombo ? sendNotification : dontSendNotification);
-
-    initialiseCommonAttributes(this, wData);
 
 }
 //---------------------------------------------
@@ -89,28 +90,21 @@ void CabbageComboBox::addItemsToCombobox(ValueTree wData)
     else
     {
         clear(dontSendNotification);
-        pluginDir = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::workingdir));
+		
+		const String workingDir = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::workingdir);
+		pluginDir = File(getCsdFile()).getChildFile(workingDir).getParentDirectory();			
         filetype = CabbageWidgetData::getStringProp(wData, "filetype");
         pluginDir.findChildFiles(dirFiles, 2, false, filetype);
+		addItem("Select..", 1);
+		for (int i = 0; i < dirFiles.size(); ++i)
+			snapshotFiles.add(dirFiles[i]);
 
-        for (int i = 0; i < dirFiles.size(); ++i)
-        {
-            String filename;
-            if(filetype.contains("snaps"))
-            {
-                filename = dirFiles[i].getFileNameWithoutExtension();
-                isPresetCombo = true;
-            }
-            else
-                filename = dirFiles[i].getFileName();
+		snapshotFiles.sort();
 
-            fileNames.add(filename);
-        }
-
-        fileNames.sort(true);
-
-        for( int i=0; i<fileNames.size(); i++)
-            addItem(fileNames[i], i+1);
+        for( int i=0; i<snapshotFiles.size(); i++)
+		{
+            addItem(snapshotFiles[i].getFileNameWithoutExtension(), i+2);
+		}
     }
 
     Justification justify(Justification::centred);
@@ -125,6 +119,11 @@ void CabbageComboBox::addItemsToCombobox(ValueTree wData)
     setJustificationType (justify);
 }
 
+void CabbageComboBox::comboBoxChanged(ComboBox* combo)
+{
+//	CabbageUtilities::debug(snapshotFiles[combo->getSelectedItemIndex()-1].getFullPathName());
+	owner->restorePluginStateFrom(snapshotFiles[combo->getSelectedItemIndex()-1]);
+}
 
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {

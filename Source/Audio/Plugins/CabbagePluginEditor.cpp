@@ -194,8 +194,13 @@ void CabbagePluginEditor::insertComboBox(ValueTree cabbageWidgetData)
 {
     CabbageComboBox* combobox;
     components.add(combobox = new CabbageComboBox(cabbageWidgetData, this));
-    combobox->addListener(this);
-    addToEditorAndMakeVisible(combobox, cabbageWidgetData);
+	
+	if(CabbageWidgetData::getStringProp(cabbageWidgetData, CabbageIdentifierIds::filetype).contains("snaps"))
+		combobox->addListener(combobox);
+	else
+		combobox->addListener(this);
+    
+	addToEditorAndMakeVisible(combobox, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertRangeSlider(ValueTree cabbageWidgetData)
@@ -358,7 +363,7 @@ CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const Stri
 
 //======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
-{
+{	
     if (CabbageAudioParameter* param = getParameterForComponent(combo->getName()))
     {
         param->beginChangeGesture();
@@ -587,6 +592,19 @@ const Array<float, CriticalSection> CabbagePluginEditor::getTableFloats(int tabl
 CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 {
     return processor;
+}
+
+void CabbagePluginEditor::savePluginStateToFile(File snapshotFile)
+{
+	const File csdFile(processor.getCsdFile());
+	XmlElement xml = processor.savePluginState(csdFile.getFileNameWithoutExtension().replace(" ", "_"));
+	xml.writeToFile(snapshotFile, "");	
+}
+
+void CabbagePluginEditor::restorePluginStateFrom(File snapshotFile)
+{
+	ScopedPointer<XmlElement> xmlElement = XmlDocument::parse(snapshotFile);
+	processor.restorePluginState(xmlElement);	
 }
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()

@@ -32,6 +32,7 @@ CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner
     setButtonText(getText());
 
     mode = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mode);
+	filetype = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).removeCharacters("*.");
 
     setImgProperties(*this, wData, "buttonon");
     setImgProperties(*this, wData, "buttonoff");
@@ -45,11 +46,34 @@ void CabbageFileButton::buttonClicked(Button* button)
 
     if(mode=="file")
     {
-        FileChooser fc("Open File", File(getCsdFile()).getChildFile(getFilename()));
-        if (fc.browseForFileToOpen())
-        {
-            owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
-			CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
+        FileChooser fc("Open File", File(getCsdFile()).getChildFile(getFilename()).getFileNameWithoutExtension());
+		if(filetype == "snaps")
+		{
+			if (fc.browseForFileToSave(false))
+				{
+					if(fc.getResult().existsAsFile())
+					{
+						CabbageIDELookAndFeel lookAndFeel;
+						const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+						CabbageUtilities::debug("should save a snapshot file");
+						if(result==0)
+						{
+							owner->savePluginStateToFile(fc.getResult());
+						}
+					}
+					else
+					{
+						owner->savePluginStateToFile(fc.getResult());
+					}
+				}
+		}
+		else
+		{
+			if (fc.browseForFileToOpen())
+			{
+				owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
+				CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
+			}
         }
     }
 

@@ -288,7 +288,8 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState)
 		}
 		
 		initAllCsoundChannels(cabbageWidgets);
-	}	
+	}
+	xmlState = nullptr;	
 }
 
 //==============================================================================
