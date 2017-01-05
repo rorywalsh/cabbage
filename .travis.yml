@@ -1,5 +1,5 @@
 sudo: required
-dist: xenial
+dist: trusty
 
 language: cpp
 
@@ -8,7 +8,8 @@ git:
 
 before_install:
     - sudo apt-get update --fix-missing
-    - sudo apt-get install -qq
+    - sudo apt-get update -qq
+    - sudo apt-get install
         libfreetype6-dev
         libx11-dev
         libstdc++6
@@ -27,7 +28,7 @@ before_install:
         libcsnd-dev
 
     - sudo apt-get update --fix-missing
-    - sudo apt-get update -qq
+    
 
 compiler:
     - clang++
