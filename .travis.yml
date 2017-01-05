@@ -40,7 +40,7 @@ branches:
 before_script: 
     - mkdir csoundMaster
     - cd csoundMaster
-    - git pull https://github.com/csound/csound.git
+    - git pull https://github.com/csound/csound.git --allow-unrelated-histories
     - cd csound
     - mkdir build
     - cd build
