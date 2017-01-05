@@ -35,6 +35,7 @@ branches:
     only:
         - master
 
+before_script: cd Builds/LinuxMakefile/
 script:
-    - make -f Builds/LinuxMakefile/MakeCabbageIDE
+    - make -f MakeCabbageIDE
 
