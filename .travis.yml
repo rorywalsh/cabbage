@@ -41,7 +41,7 @@ before_script:
     - cd ..
     - mkdir csoundMaster
     - cd csoundMaster
-    - git pull https://github.com/csound/csound.git
+    - git clone https://github.com/csound/csound.git
     - cd csound
     - mkdir build
     - cd build
