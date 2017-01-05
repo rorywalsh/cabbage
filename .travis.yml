@@ -1,27 +1,10 @@
 sudo: required
 dist: xenial
 
-language: generic
-os: linux
-matrix:
-  include:
-    - os: linux
-      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
-      addons:
-        apt:
-          packages:
-            - g++-5
-          sources: &sources
-            - llvm-toolchain-precise-3.8
-            - ubuntu-toolchain-r-test
-    - os: linux
-      env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8
-      addons:
-        apt:
-          packages:
-            - clang-3.8
-          sources: *sources
+language: cpp
 
+git:
+    depth: 1
 
 before_install:
     - sudo apt-get update --fix-missing
@@ -40,10 +23,13 @@ before_install:
         libasound2-dev
         libjack-dev
         libcsound64-6.0
+        csound
 
     - sudo apt-get update --fix-missing
     - sudo apt-get update -qq
 
+compiler:
+    - clang++
 
 branches:
     only:
@@ -51,6 +37,5 @@ branches:
 
 before_script: cd Builds/LinuxMakefile/
 script:
-  - gcc --version
-  - make -f MakeCabbageIDE
+    - make -f MakeCabbageIDE
 
