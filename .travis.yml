@@ -38,6 +38,7 @@ branches:
         - master
 
 before_script: 
+    - cd ..
     - mkdir csoundMaster
     - cd csoundMaster
     - git pull https://github.com/csound/csound.git --allow-unrelated-histories
@@ -52,5 +53,4 @@ before_script:
 
 script:
     - csound
-    - make -f MakeCabbageIDE
-
+    
