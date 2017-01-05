@@ -18,6 +18,7 @@
 */
 
 #include "CabbageDocumentWindow.h"
+#include <fstream> 
 
 enum
 {
@@ -148,7 +149,13 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
-
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
+	
+	if(SystemStats::getOperatingSystemType()!=SystemStats::OperatingSystemType::Linux)
+		menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);	
+	
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeProject);
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
@@ -318,7 +325,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.setInfo ("Save file as...", "Save a document", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
         break;
-
+		
     case CommandIDs::settings:
         result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
         break;
@@ -464,7 +471,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
         break;
     case CommandIDs::exportAsEffect:
-
+		exportPlugin("VST", getContentComponent()->getCurrentCsdFile());
         break;
     case CommandIDs::exportAsSynth:
 
@@ -497,4 +504,180 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     }
 
     return true;
+}
+
+//================================================================================
+void CabbageDocumentWindow::exportPlugin(String type, File csdFile)
+{
+	File thisFile(File::getSpecialLocation(File::currentExecutableFile));
+    const String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+		
+	if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Linux)
+	{
+		String pluginFilename;
+		
+        if(type.contains("VSTi"))
+            pluginFilename = currentApplicationDirectory + String("/CabbagePluginSynth.so");
+        else if(type.contains(String("VST")))
+            pluginFilename = currentApplicationDirectory + String("/CabbagePluginEffect.so");
+        else if(type.contains(String("LV2-ins")))
+            pluginFilename = currentApplicationDirectory + String("/CabbagePluginSynthLV2.so");
+        else if(type.contains(String("LV2-fx")))
+            pluginFilename = currentApplicationDirectory + String("/CabbagePluginEffectLV2.so");
+
+
+        File VSTData(pluginFilename);
+        if(!VSTData.exists())
+        {
+            CabbageUtilities::showMessage(pluginFilename+" cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
+        }
+		
+		FileChooser fc("Save file as..", csdFile.getParentDirectory().getFullPathName());
+		
+		if (fc.browseForFileToSave(false))
+		{
+			 if(fc.getResult().existsAsFile())
+				{
+				CabbageIDELookAndFeel lookAndFeel;
+				const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+				if(result==0)
+					writePluginFileToDisk(fc.getResult(), csdFile, VSTData);	
+				}
+			else
+				writePluginFileToDisk(fc.getResult(), csdFile, VSTData);
+		}
+		
+	}
+
+}
+
+void CabbageDocumentWindow::writePluginFileToDisk(File fc, File csdFile, File VSTData)
+{
+	File dll(fc.withFileExtension(".so").getFullPathName());
+	if(!VSTData.copyFileTo(dll))
+		CabbageUtilities::showMessage("Can copy plugin lib, is it in use?", &getLookAndFeel());
+
+	if(fc.withFileExtension(".csd").existsAsFile() == false)
+	{
+	File exportedCsdFile(fc.withFileExtension(".csd").getFullPathName());
+	exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+	setUniquePluginId(dll, exportedCsdFile);
+	//bunlde all auxilary files
+	//addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());	
+	}
+}
+
+const String CabbageDocumentWindow::getPluginId(File csdFile)
+{
+	StringArray csdLines;
+	csdLines.addLines(csdFile.loadFileAsString());
+	for(auto line : csdLines)
+	{
+		ValueTree temp("temp");
+		CabbageWidgetData::setWidgetState(temp, line, 0);
+		if(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageIdentifierIds::form)
+			return CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::pluginid);
+	}
+	
+	return String::empty;
+}
+//==============================================================================
+// Set unique plugin ID for each plugin based on the file name
+//==============================================================================
+int CabbageDocumentWindow::setUniquePluginId(File binFile, File csdFile)
+{
+    
+    size_t file_size;
+    const char *pluginID;
+    pluginID = "YROR";
+
+    long loc;
+    std::fstream mFile(binFile.getFullPathName().toUTF8(), ios_base::in | ios_base::out | ios_base::binary);
+
+    if(mFile.is_open())
+    {
+        mFile.seekg (0, ios::end);
+        file_size = mFile.tellg();
+        unsigned char* buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
+        //set plugin ID, do this a few times in case the plugin ID appear in more than one place.
+        for(int r=0; r<10; r++)
+        {
+            mFile.seekg (0, ios::beg);
+            mFile.read((char*)&buffer[0], file_size);
+            loc = cabbageFindPluginId(buffer, file_size, pluginID);
+            if (loc < 0)
+            {
+                //showMessage(String("Internel Cabbage Error: The pluginID was not found"));
+                break;
+            }
+            else
+            {
+                //showMessage(newID);
+                mFile.seekg (loc, ios::beg);
+                mFile.write(getPluginId(csdFile).toUTF8(), 4);
+            }
+        }
+        //set plugin name based on .csd file
+        const char *pluginName = "CabbageEffectNam";
+        String plugLibName = csdFile.getFileNameWithoutExtension();
+        if(plugLibName.length()<16)
+            for(int y=plugLibName.length(); y<16; y++)
+                plugLibName.append(String(" "), 1);
+
+        mFile.seekg (0, ios::end);
+        buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
+        
+        for(int i=0;i<5;i++)
+        {
+            
+            mFile.seekg (0, ios::beg);
+            mFile.read((char*)&buffer[0], file_size);
+        
+
+            loc = cabbageFindPluginId(buffer, file_size, pluginName);
+            if (loc < 0)
+                break;
+            else
+            {
+                mFile.seekg (loc, ios::beg);
+                mFile.write(csdFile.getFileNameWithoutExtension().toUTF8(), 16);
+            }
+        }
+
+
+    }
+    else
+        CabbageUtilities::showMessage("File could not be opened", &getLookAndFeel());
+
+    mFile.close();
+    return 1;
+}
+
+long CabbageDocumentWindow::cabbageFindPluginId(unsigned char *buf, size_t len, const char *s)
+{
+    long i, j;
+    int slen = strlen(s);
+    long imax = len - slen - 1;
+    long ret = -1;
+    int match;
+
+    for(i=0; i<imax; i++)
+    {
+        match = 1;
+        for (j=0; j<slen; j++)
+        {
+            if (buf[i+j] != s[j])
+            {
+                match = 0;
+                break;
+            }
+        }
+        if (match)
+        {
+            ret = i;
+            break;
+        }
+    }
+    //return position of plugin ID
+    return ret;
 }

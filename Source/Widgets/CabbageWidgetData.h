@@ -73,6 +73,8 @@ public:
     static Rectangle<int> getBounds(ValueTree widgetData);
     static void setProperty(ValueTree widgetData, Identifier name, const var &value);
     static var getProperty(ValueTree widgetData, Identifier name);
+	//============================================================================
+
     //============================================================================
     static Colour getColourFromText(String text);
     static String getCabbageCodeFromIdentifiers(ValueTree props, const String);

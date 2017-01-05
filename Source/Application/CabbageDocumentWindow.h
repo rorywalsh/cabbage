@@ -73,6 +73,14 @@ public:
     }
 
 private:
+    //=======================================================
+	const String getPluginId(File csdFile);
+	void exportPlugin(String type, File csdFile);
+	int setUniquePluginId(File binFile, File csdFile);
+	long cabbageFindPluginId(unsigned char *buf, size_t len, const char *s);
+	void writePluginFileToDisk(File fc, File csdFile, File VSTData);
+    //=======================================================
+
     ApplicationCommandManager commandManager;
     bool isGUIEnabled = false;
     ScopedPointer<CabbageContentComponent> content;

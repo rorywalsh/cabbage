@@ -96,8 +96,10 @@ public:
     Toolbar toolbar;
 
     bool setCurrentCsdFile(File file);
+	const File getCurrentCsdFile(){		return currentCsdFile;	}
 
 private:
+
     CabbageDocumentWindow* owner;
     //ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     CabbageToolbarFactory factory;

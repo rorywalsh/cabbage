@@ -503,7 +503,12 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             {
                 if(strTokens[0].trim()=="sharp")
                     setProperty(widgetData, CabbageIdentifierIds::shape, "square");
-                else
+                else if(strTokens[0].trim()=="rounded")
+				{
+					setProperty(widgetData, CabbageIdentifierIds::shape, "square");
+					setProperty(widgetData, CabbageIdentifierIds::corners, 5);
+				}
+				else
                     setProperty(widgetData, CabbageIdentifierIds::shape, strTokens[0].trim());
             }
             else if(identArray[indx].equalsIgnoreCase("outlinecolour"))
