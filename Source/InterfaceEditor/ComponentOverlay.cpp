@@ -19,7 +19,7 @@ ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEdito
     addAndMakeVisible (resizer);
     resizer->addMouseListener (this,false);
     constrainer = new ComponentBoundsConstrainer();
-    interest = false;
+    interest = "none";
     userAdjusting = false;
     updateFromTarget ();
     setRepaintsOnMouseActivity (true);
