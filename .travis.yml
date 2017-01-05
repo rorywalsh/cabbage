@@ -14,6 +14,11 @@ matrix:
             - g++-5
       env: COMPILER=g++-5
 
+
+ env:
+    global:
+ -    - GCC_VERSION="4.9"
+
 before_install:
     - sudo apt-get update --fix-missing
     - sudo apt-get install -qq
@@ -42,5 +47,7 @@ branches:
 
 before_script: cd Builds/LinuxMakefile/
 script:
-    - make -f MakeCabbageIDE
+  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+  - gcc --version
+  - make -f MakeCabbageIDE
 
