@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: xenial
 
 language: cpp
 
@@ -24,6 +24,7 @@ before_install:
         libcurl4-gnutls-dev+
         libasound2-dev
         libjack-dev
+        csound
         libcsound64-6.0
         libcsound64-dev        
         libcsnd-dev
@@ -32,7 +33,7 @@ before_install:
     
 
 compiler:
-    - gcc-5
+    - gcc
 
 branches:
     only:
@@ -42,5 +43,6 @@ before_script:
     - cd Builds/LinuxMakefile/
     - ls /usr/local/include
 script:
+    - csound
     - make -f MakeCabbageIDE
 
