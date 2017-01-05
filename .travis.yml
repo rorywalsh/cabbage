@@ -3,8 +3,17 @@ dist: xenial
 
 language: cpp
 
-git:
-    depth: 1
+matrix:
+  include:
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+      env: COMPILER=g++-4.9
+    - compiler: gcc
 
 before_install:
     - sudo apt-get update --fix-missing
@@ -27,8 +36,6 @@ before_install:
     - sudo apt-get update --fix-missing
     - sudo apt-get update -qq
 
-compiler:
-    - g++
 
 branches:
     only:
