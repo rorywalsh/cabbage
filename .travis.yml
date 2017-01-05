@@ -1,7 +1,7 @@
 sudo: required
 dist: trusty
 
-language: clang++
+language: cpp
 
 git:
     depth: 1
@@ -29,7 +29,7 @@ before_install:
     - sudo apt-get update -qq
 
 compiler:
-    - g++
+    - clang++
 
 branches:
     only:
