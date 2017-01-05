@@ -12,6 +12,7 @@ before_install:
         libfreetype6-dev
         libx11-dev
         libstdc++6
+        libc++-dev
         libxinerama-dev
         libxrandr-dev
         libxcursor-dev
