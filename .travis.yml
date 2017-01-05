@@ -25,6 +25,7 @@ before_install:
         libasound2-dev
         libjack-dev
         libcsound64-6.0
+        libcsound64-dev        
         libcsnd-dev
 
     - sudo apt-get update --fix-missing
