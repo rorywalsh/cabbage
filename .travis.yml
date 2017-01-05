@@ -11,9 +11,8 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-4.9
-      env: COMPILER=g++-4.9
-    - compiler: gcc
+            - g++-5
+      env: COMPILER=g++-5
 
 before_install:
     - sudo apt-get update --fix-missing
