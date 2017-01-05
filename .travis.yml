@@ -15,10 +15,6 @@ matrix:
       env: COMPILER=g++-5
 
 
- env:
-    global:
- -    - GCC_VERSION="4.9"
-
 before_install:
     - sudo apt-get update --fix-missing
     - sudo apt-get install -qq
