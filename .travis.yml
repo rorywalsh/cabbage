@@ -107,5 +107,4 @@ before_script:
     - cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/
 
 script:
-    - make -f MakeCabbageIDE
-    
+    - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make -f MakeCabbageIDE ; fi    
