@@ -54,5 +54,5 @@ before_script:
 
 script:
     - csound
-    
+    - make -f MakeCabbageIDE
     
