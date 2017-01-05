@@ -31,15 +31,15 @@ before_install:
     
 
 compiler:
-    - clang++
+    - gcc-5
 
 branches:
     only:
         - master
 
-before_script: cd Builds/LinuxMakefile/
+before_script: 
+    - cd Builds/LinuxMakefile/
+    - ls /usr/local/include
 script:
-    - ls /usr/local/include/
-
-
+    - make -f MakeCabbageIDE
 
