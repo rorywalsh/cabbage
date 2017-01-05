@@ -51,7 +51,6 @@ branches:
 
 before_script: cd Builds/LinuxMakefile/
 script:
-  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
   - gcc --version
   - make -f MakeCabbageIDE
 
