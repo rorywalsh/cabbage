@@ -474,7 +474,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 		exportPlugin("VST", getContentComponent()->getCurrentCsdFile());
         break;
     case CommandIDs::exportAsSynth:
-
+		exportPlugin("VSTi", getContentComponent()->getCurrentCsdFile());
         break;
     case CommandIDs::exportAsFMODSoundPlugin:
 
@@ -532,7 +532,7 @@ void CabbageDocumentWindow::exportPlugin(String type, File csdFile)
             CabbageUtilities::showMessage(pluginFilename+" cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
         }
 		
-		FileChooser fc("Save file as..", csdFile.getParentDirectory().getFullPathName());
+		FileChooser fc("Save file as..", csdFile.getParentDirectory().getFullPathName(), ".so");
 		
 		if (fc.browseForFileToSave(false))
 		{
@@ -545,25 +545,24 @@ void CabbageDocumentWindow::exportPlugin(String type, File csdFile)
 				}
 			else
 				writePluginFileToDisk(fc.getResult(), csdFile, VSTData);
-		}
-		
+		}		
 	}
-
 }
 
 void CabbageDocumentWindow::writePluginFileToDisk(File fc, File csdFile, File VSTData)
 {
 	File dll(fc.withFileExtension(".so").getFullPathName());
+	
 	if(!VSTData.copyFileTo(dll))
 		CabbageUtilities::showMessage("Can copy plugin lib, is it in use?", &getLookAndFeel());
 
 	if(fc.withFileExtension(".csd").existsAsFile() == false)
 	{
-	File exportedCsdFile(fc.withFileExtension(".csd").getFullPathName());
-	exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
-	setUniquePluginId(dll, exportedCsdFile);
-	//bunlde all auxilary files
-	//addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());	
+		File exportedCsdFile(fc.withFileExtension(".csd").getFullPathName());
+		exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+		setUniquePluginId(dll, exportedCsdFile);
+		//bunlde all auxilary files
+		//addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());	
 	}
 }
 

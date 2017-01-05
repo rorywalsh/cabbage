@@ -241,7 +241,6 @@ public:
         add("sourcebutton");
         add("texteditor");
         add("popupmenu");
-        add("snapshot");
         add("table");
         add("pvsview");
         add("hostrecording");
@@ -683,6 +682,7 @@ public:
         set("Value Max", CabbageIdentifierIds::maxvalue.toString());
         set("Background", CabbageIdentifierIds::backgroundcolour.toString());
         set("Ball", CabbageIdentifierIds::ballcolour.toString());
+		set("Mode", CabbageIdentifierIds::mode.toString());
 
 		set("Thumb Image", CabbageIdentifierIds::imgslider.toString());
 		set("Background Image", CabbageIdentifierIds::imgsliderbg.toString());

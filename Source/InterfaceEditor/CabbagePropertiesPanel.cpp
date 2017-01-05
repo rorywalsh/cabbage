@@ -190,7 +190,6 @@ void CabbagePropertiesPanel::setPropertyByName(String name, var value)
     if(identifier.isNotEmpty())
     {
         CabbageWidgetData::setProperty(widgetData, identifier, value);
-
         if(identifier==CabbageIdentifierIds::sliderincr.toString())
             CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::decimalplaces,
                                            CabbageUtilities::getNumberOfDecimalPlaces(StringArray(value.toString())));
@@ -265,9 +264,9 @@ void CabbagePropertiesPanel::valueChanged(Value& value)
             if(int(value.getValue())==0)
                 setPropertyByName("Mode", "file");
             else if(int(value.getValue())==1)
-                setPropertyByName("Align", "directory");
+                setPropertyByName("Mode", "directory");
             else if(int(value.getValue())==2)
-                setPropertyByName("Align", "snapshot");
+                setPropertyByName("Mode", "snapshot");
         }
     }
 }
@@ -587,7 +586,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 
     else if(typeOfWidget == "filebutton")
     {
-        shapeValue.addListener(this);
+        fileModeValue.addListener(this);
         StringArray choices;
         Array<var> choiceVars;
 
@@ -599,13 +598,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
         choiceVars.add (2);
 
         if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::mode) == "file")
-            shapeValue.setValue(0);
+            fileModeValue.setValue(0);
         else if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::mode) == "directory")
-            shapeValue.setValue(1);
+            fileModeValue.setValue(1);
         else
-            shapeValue.setValue(2);
+            fileModeValue.setValue(2);
 
-        comps.add (new ChoicePropertyComponent(shapeValue, "Mode", choices, choiceVars));
+        comps.add (new ChoicePropertyComponent(fileModeValue, "Mode", choices, choiceVars));
 
     }
 

@@ -227,7 +227,18 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor()
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation (MemoryBlock& destData)
 {
-	XmlElement xml ("CABBAGE_PLUGIN_SETTINGS");
+	copyXmlToBinary (savePluginState("CABBAGE_PLUGIN_SETTINGS"), destData);	
+}
+
+void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBytes)
+{
+	restorePluginState(getXmlFromBinary (data, sizeInBytes));
+}
+
+//==============================================================================
+XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
+{
+	XmlElement xml (xmlTag);
 	
 	for(int i = 0 ; i < cabbageWidgets.getNumChildren() ; i++)
 	{
@@ -250,14 +261,11 @@ void CabbagePluginProcessor::getStateInformation (MemoryBlock& destData)
 			xml.setAttribute(widgetName, value);
 	}
 	
-	copyXmlToBinary (xml, destData);
-	
+	return xml;
 }
 
-void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBytes)
+void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState)
 {
-	ScopedPointer<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
-
     if (xmlState != nullptr)
     {
         for(int i=0; i<xmlState->getNumAttributes(); i++)
@@ -280,7 +288,7 @@ void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBy
 		}
 		
 		initAllCsoundChannels(cabbageWidgets);
-	}
+	}	
 }
 
 //==============================================================================

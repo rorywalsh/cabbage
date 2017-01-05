@@ -45,7 +45,7 @@ void CabbageFileButton::buttonClicked(Button* button)
 
     if(mode=="file")
     {
-        FileChooser fc("Open File", getFilename());
+        FileChooser fc("Open File", File(getCsdFile()).getChildFile(getFilename()));
         if (fc.browseForFileToOpen())
         {
             owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
@@ -55,7 +55,7 @@ void CabbageFileButton::buttonClicked(Button* button)
 
     else if(mode=="directory")
     {
-        FileChooser fc ("Open Directory", getFilename());
+        FileChooser fc ("Open Directory", File(getCsdFile()).getChildFile(getFilename()));
         if (fc.browseForDirectory())
         {
             owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
@@ -65,7 +65,7 @@ void CabbageFileButton::buttonClicked(Button* button)
 
     else if(mode=="snapshot")
     {
-        //add code for new preset snapshot system
+        CabbageUtilities::debug("Saving snapshot");
     }
 }
 

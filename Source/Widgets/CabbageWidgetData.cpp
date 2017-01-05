@@ -260,7 +260,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
     for(int indx=0; indx<identArray.size(); indx++)
     {
-
+		//CabbageUtilities::debug(str);
         int identPos = str.toLowerCase().indexOf(" "+identArray[indx]);
 
         // int identPos = str.toLowerCase().indexOf(" "+identArray[indx]+"(");
@@ -565,8 +565,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                 //CabbageUtilities::showMessage("preset is no longer supported, see docs");
             }
 
-            else if(identArray[indx].equalsIgnoreCase("mode") ||
-                    identArray[indx].equalsIgnoreCase(",mode"))
+            else if(identArray[indx].equalsIgnoreCase("mode"))
             {
                 setProperty(widgetData, CabbageIdentifierIds::mode, strTokens[0].trim());
             }
@@ -1583,6 +1582,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData, co
                          + getSimpleTextAsCabbageCode(widgetData, "align")
                          + getSimpleTextAsCabbageCode(widgetData, "file")
                          + getSimpleTextAsCabbageCode(widgetData, "shape")
+						 + getSimpleTextAsCabbageCode(widgetData, "mode")
                          + getImagesTextAsCabbageCode(widgetData)
 
                          //lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
