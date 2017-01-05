@@ -7,7 +7,7 @@ git:
     depth: 1
 
 before_install:
-
+    - sudo apt-get build-dep csound
     - sudo apt-get update --fix-missing
     - sudo apt-get update -qq
     - sudo apt-get install -y
