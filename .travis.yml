@@ -1,0 +1,40 @@
+sudo: required
+dist: trusty
+
+language: cpp
+
+git:
+    depth: 1
+
+before_install:
+    - sudo apt-get update --fix-missing
+    - sudo apt-get install -qq
+        libfreetype6-dev
+        libx11-dev
+        libstdc++6
+        libxinerama-dev
+        libxrandr-dev
+        libxcursor-dev
+        libxcomposite-dev
+        mesa-common-dev
+        libasound2-dev
+        freeglut3-dev
+        libcurl4-gnutls-dev+
+        libasound2-dev
+        libjack-dev
+        libcsound64-dev
+        csound
+
+    - sudo apt-get update --fix-missing
+    - sudo apt-get update -qq
+
+compiler:
+    - g++
+
+branches:
+    only:
+        - master
+
+script:
+    - make -f Builds/LinuxMakefile/MakeCabbageIDE
+
