@@ -7,7 +7,7 @@ git:
     depth: 1
 
 before_install:
-    - sudo add-apt-repository ppa:quadrispro/ppa
+
     - sudo apt-get update --fix-missing
     - sudo apt-get update -qq
     - sudo apt-get install -y
@@ -41,8 +41,18 @@ branches:
         - master
 
 before_script: 
-    - cd Builds/LinuxMakefile/
-    - ls /usr/local/include
+    - mkdir csoundMaster
+    - cd csoundMaster
+    - git pull https://github.com/csound/csound.git
+    - cd csound
+    - mkdir build
+    - cd build
+    - cmake .. -DUSE_GETTEXT=0 -DBUILD_CSOUNDVST=0 -DBUILD_PD_CLASS=0 -DBUILD_STATIC_LIBRARY=1 -DBUILD_VST4CS_OPCODES=0 -DBUILD_VST4CS_OPCODES=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_LUA_OPCODES:BOOL=0 -DBUILD_CSOUND_AC -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_CSOUND_AC_PYTHON_INTERFAC=0 
+    - sudo make -j4
+    - sudo make install
+    - sudo ldconfig
+    - cd ../../Builds/LinuxMakefile/
+
 script:
     - csound
     - make -f MakeCabbageIDE
