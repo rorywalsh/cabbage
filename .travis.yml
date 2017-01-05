@@ -1,7 +1,7 @@
 sudo: required
 dist: trusty
 
-language: cpp
+language: clang++
 
 git:
     depth: 1
