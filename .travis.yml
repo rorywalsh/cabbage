@@ -6,6 +6,25 @@ language: cpp
 git:
     depth: 1
 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "OsiLt01SfvDANKBXykWTunHJUdMqVXlEmKDhiw5LRYJvlZ8zVDL43xhtJQ31uPTLrXNxJ76bHJ755MO5WiLjGcFCHYb7uCWkbHk6w+TUn6pnnZPVL7eBSZ52QGeKD9SUv7xGTzge9bB2n6VlfIBAl1Po1U1erGFuJ9KAMi4G39bqUmwI4l596MGroZdJnEpsO+JU+4sygmrSReZFmQ7hqMOJ2/xcB5BIyL6xJBJigVnaTrgnSYYtP6N0YMdLumcpK0svHxczqgvn+vhpy13zdzfWGkYI7NY7pKD3tfV/dkKJsQoOAnFR93UA7kNSMaxlLFuMtyi+mHfOG96A5J2n9sssuJ92SXNcehs5yuXD/qy6904sfxgbXgAyNkopEGJ44b2bz7zWDKmmD7M62C/YWWwZHQC4y23wWVNbseS/eut/cS8yr1+fhurdveWdrv4Y3X1e0ZZbMrcxbRuJUYClXBNoYQF1jT0pwxOoMRahF25u+oE2y4ftVzDIdAKond3Fum7KrQ+rZqnF/gk9+nnIQBZdk0XldCeZsDuE1ZOfoKv9hpXE5kGtq6h9hfGxxUUVBmQHgh+BQCA2D/T6khoDODHJcoPa4lrThDLkcU8IxTlcmR/MqohUBrQEljRZEroPrBsLYELuhXopgSaL65Li+PrxYtpyp2lrnx3//QdOWZs="
+
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "rorywalsh/cabaiste"
+      description: "<Your project description here>"
+    notification_email: rorywalsh@ear.ie
+    build_command_prepend: "cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/"
+    build_command:   "make -f MakeCabbageIDE"
+    branch_pattern: coverity_scan
+
 before_install:
     - sudo apt-get build-dep csound
     - sudo apt-get update --fix-missing
