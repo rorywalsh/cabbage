@@ -22,8 +22,7 @@ before_install:
         libcurl4-gnutls-dev+
         libasound2-dev
         libjack-dev
-        libcsound64-dev
-        csound
+        libcsound64-6.0
 
     - sudo apt-get update --fix-missing
     - sudo apt-get update -qq
