@@ -50,8 +50,9 @@ before_script:
     - sudo make -j4
     - sudo make install
     - sudo ldconfig
-    - cd ../../Builds/LinuxMakefile/
+    - cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/
 
 script:
     - csound
+    
     
