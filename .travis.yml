@@ -39,6 +39,6 @@ branches:
 
 before_script: cd Builds/LinuxMakefile/
 script:
-    - ls /usr/loca/include
+    - ls /usr/local/include
     - make -f MakeCabbageIDE
 
