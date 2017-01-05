@@ -39,6 +39,7 @@ branches:
 
 before_script: 
     - cd ..
+    - sudo apt-get install libsndfile1
     - mkdir csoundMaster
     - cd csoundMaster
     - git clone https://github.com/csound/csound.git
