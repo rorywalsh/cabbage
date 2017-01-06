@@ -23,8 +23,7 @@ addons:
     notification_email: rorywalsh@ear.ie
     build_command_prepend: 
 
-    build_command:  
-        - make -f ~/build/rorywalsh/cabaiste/Builds/LinuxMakefile/MakeCabbageIDE
+    build_command:  "make -f ~/build/rorywalsh/cabaiste/Builds/LinuxMakefile/MakeCabbageIDE"
     branch_pattern: coverity_scan
 
 before_install:
