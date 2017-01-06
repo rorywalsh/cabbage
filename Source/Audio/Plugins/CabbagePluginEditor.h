@@ -24,7 +24,7 @@
 #include "CabbagePluginProcessor.h"
 #include "CabbageAudioParameter.h"
 
-#include "../../InterfaceEditor/ComponentLayoutEditor.h"
+#include "../../GUIEditor/ComponentLayoutEditor.h"
 
 #include "../../Widgets/CabbageCheckbox.h"
 #include "../../Widgets/CabbageComboBox.h"

@@ -23,7 +23,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../CodeEditor/CabbageEditorContainer.h"
 #include "../BinaryData/CabbageBinaryData.h"
-#include "../InterfaceEditor/CabbagePropertiesPanel.h"
+#include "../GUIEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"
 #include "CabbageContentComponent.h"
 #include "../CodeEditor/CabbageOutputConsole.h"

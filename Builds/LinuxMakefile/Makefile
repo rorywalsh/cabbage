@@ -69,7 +69,7 @@ OBJECTS := \
   $(JUCE_OBJDIR)/GenericCabbagePluginProcessor_7befc9ee.o \
   $(JUCE_OBJDIR)/CabbageBinaryData_812f3f1.o \
   $(JUCE_OBJDIR)/CabbageCodeEditor_72bb40f.o \
-  $(JUCE_OBJDIR)/EditorAndConsoleContentComponent_87ff20a7.o \
+  $(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o \
   $(JUCE_OBJDIR)/CabbagePropertiesPanel_1024ea82.o \
   $(JUCE_OBJDIR)/ComponentLayoutEditor_a8e1e34c.o \
   $(JUCE_OBJDIR)/ComponentOverlay_8d6d5025.o \
@@ -206,9 +206,9 @@ $(JUCE_OBJDIR)/CabbageCodeEditor_72bb40f.o: ../../Source/CodeEditor/CabbageCodeE
 	@echo "Compiling CabbageCodeEditor.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/EditorAndConsoleContentComponent_87ff20a7.o: ../../Source/CodeEditor/EditorAndConsoleContentComponent.cpp
+$(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o: ../../Source/CodeEditor/CabbageEditorContainer.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling EditorAndConsoleContentComponent.cpp"
+	@echo "Compiling CabbageEditorContainer.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbagePropertiesPanel_1024ea82.o: ../../Source/InterfaceEditor/CabbagePropertiesPanel.cpp
