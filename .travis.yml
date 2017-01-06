@@ -22,38 +22,6 @@ addons:
       description: "<Your project description here>"
     notification_email: rorywalsh@ear.ie
     build_command_prepend: 
-        - sudo apt-get build-dep csound
-        - sudo apt-get update --fix-missing
-        - sudo apt-get update -qq
-        - sudo apt-get install -y
-            libfreetype6-dev
-            libx11-dev
-            libstdc++6
-            libc++-dev
-            libxinerama-dev
-            libxrandr-dev
-            libxcursor-dev
-            libxcomposite-dev
-            mesa-common-dev
-            libasound2-dev
-            freeglut3-dev
-            libcurl4-gnutls-dev+
-            libasound2-dev
-            libsndfile1
-            libjack-dev
-        - sudo apt-get update --fix-missing
-        - cd ..
-        - sudo apt-get install libsndfile1
-        - mkdir csoundMaster
-        - cd csoundMaster
-        - git clone https://github.com/csound/csound.git
-        - cd csound
-        - mkdir build
-        - cd build
-        - cmake .. -DUSE_GETTEXT=0 -DBUILD_CSOUNDVST=0 -DBUILD_PD_CLASS=0 -DBUILD_STATIC_LIBRARY=1 -DBUILD_VST4CS_OPCODES=0 -DBUILD_VST4CS_OPCODES=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_LUA_OPCODES:BOOL=0 -DBUILD_CSOUND_AC=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_CSOUND_AC_PYTHON_INTERFAC=0 
-        - sudo make -j4
-        - sudo make install
-        - sudo ldconfig
         - cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/
 
     build_command:  
