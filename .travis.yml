@@ -87,10 +87,6 @@ before_install:
 compiler:
     - gcc
 
-branches:
-    only:
-        - master
-
 before_script: 
     - cd ..
     - sudo apt-get install libsndfile1
