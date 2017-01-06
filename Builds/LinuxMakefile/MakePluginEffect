@@ -57,9 +57,6 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
-  $(JUCE_OBJDIR)/CabbageContentComponent_ee810147.o \
-  $(JUCE_OBJDIR)/CabbageDocumentWindow_3af539ae.o \
-  $(JUCE_OBJDIR)/CabbageToolbarFactory_a8f7dbd2.o \
   $(JUCE_OBJDIR)/AudioGraph_b22f6a5b.o \
   $(JUCE_OBJDIR)/CabbagePluginEditor_4348213a.o \
   $(JUCE_OBJDIR)/CabbagePluginProcessor_8a6343af.o \
@@ -68,8 +65,6 @@ OBJECTS := \
   $(JUCE_OBJDIR)/GenericCabbageEditor_50c74848.o \
   $(JUCE_OBJDIR)/GenericCabbagePluginProcessor_7befc9ee.o \
   $(JUCE_OBJDIR)/CabbageBinaryData_812f3f1.o \
-  $(JUCE_OBJDIR)/CabbageCodeEditor_72bb40f.o \
-  $(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o \
   $(JUCE_OBJDIR)/CabbagePropertiesPanel_cced81c0.o \
   $(JUCE_OBJDIR)/ComponentLayoutEditor_752a6c4e.o \
   $(JUCE_OBJDIR)/ComponentOverlay_554fade3.o \
@@ -77,8 +72,6 @@ OBJECTS := \
   $(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o \
   $(JUCE_OBJDIR)/CabbageLookAndFeel_85188477.o \
   $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o \
-  $(JUCE_OBJDIR)/CabbageSettings_d59022e1.o \
-  $(JUCE_OBJDIR)/CabbageSettingsWindow_8ea691f1.o \
   $(JUCE_OBJDIR)/CabbageColourProperty_a06c91be.o \
   $(JUCE_OBJDIR)/CabbageNewProjectWindow_b55ea6.o \
   $(JUCE_OBJDIR)/CabbageSSHFileBrowser_34e09761.o \
@@ -108,7 +101,6 @@ OBJECTS := \
   $(JUCE_OBJDIR)/CabbageWidgetData_ba1d0870.o \
   $(JUCE_OBJDIR)/CabbageWidgetDataInitMethods_a1a6cd7c.o \
   $(JUCE_OBJDIR)/CabbageXYPad_f88302da.o \
-  $(JUCE_OBJDIR)/Cabbage_6fb7db02.o \
   $(JUCE_OBJDIR)/juce_audio_basics_6b797ca1.o \
   $(JUCE_OBJDIR)/juce_audio_devices_a742c38b.o \
   $(JUCE_OBJDIR)/juce_audio_formats_5a29c68a.o \
@@ -146,21 +138,6 @@ clean:
 strip:
 	@echo Stripping CabbagePlugin
 	-@$(STRIP) --strip-unneeded $(JUCE_OUTDIR)/$(TARGET)
-
-$(JUCE_OBJDIR)/CabbageContentComponent_ee810147.o: ../../Source/Application/CabbageContentComponent.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageContentComponent.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageDocumentWindow_3af539ae.o: ../../Source/Application/CabbageDocumentWindow.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageDocumentWindow.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageToolbarFactory_a8f7dbd2.o: ../../Source/Application/CabbageToolbarFactory.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageToolbarFactory.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/AudioGraph_b22f6a5b.o: ../../Source/Audio/Graph/AudioGraph.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
@@ -202,16 +179,6 @@ $(JUCE_OBJDIR)/CabbageBinaryData_812f3f1.o: ../../Source/BinaryData/CabbageBinar
 	@echo "Compiling CabbageBinaryData.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/CabbageCodeEditor_72bb40f.o: ../../Source/CodeEditor/CabbageCodeEditor.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageCodeEditor.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o: ../../Source/CodeEditor/CabbageEditorContainer.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageEditorContainer.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
 $(JUCE_OBJDIR)/CabbagePropertiesPanel_cced81c0.o: ../../Source/GUIEditor/CabbagePropertiesPanel.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbagePropertiesPanel.cpp"
@@ -245,16 +212,6 @@ $(JUCE_OBJDIR)/CabbageLookAndFeel_85188477.o: ../../Source/LookAndFeel/CabbageLo
 $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o: ../../Source/LookAndFeel/CabbageLookAndFeel2.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageLookAndFeel2.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageSettings_d59022e1.o: ../../Source/Settings/CabbageSettings.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageSettings.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageSettingsWindow_8ea691f1.o: ../../Source/Settings/CabbageSettingsWindow.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageSettingsWindow.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbageColourProperty_a06c91be.o: ../../Source/Utilities/CabbageColourProperty.cpp
@@ -400,11 +357,6 @@ $(JUCE_OBJDIR)/CabbageWidgetDataInitMethods_a1a6cd7c.o: ../../Source/Widgets/Cab
 $(JUCE_OBJDIR)/CabbageXYPad_f88302da.o: ../../Source/Widgets/CabbageXYPad.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageXYPad.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/Cabbage_6fb7db02.o: ../../Source/Cabbage.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling Cabbage.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/juce_audio_basics_6b797ca1.o: ../../JuceLibraryCode/juce_audio_basics.cpp

@@ -70,9 +70,9 @@ OBJECTS := \
   $(JUCE_OBJDIR)/CabbageBinaryData_812f3f1.o \
   $(JUCE_OBJDIR)/CabbageCodeEditor_72bb40f.o \
   $(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o \
-  $(JUCE_OBJDIR)/CabbagePropertiesPanel_1024ea82.o \
-  $(JUCE_OBJDIR)/ComponentLayoutEditor_a8e1e34c.o \
-  $(JUCE_OBJDIR)/ComponentOverlay_8d6d5025.o \
+  $(JUCE_OBJDIR)/CabbagePropertiesPanel_cced81c0.o \
+  $(JUCE_OBJDIR)/ComponentLayoutEditor_752a6c4e.o \
+  $(JUCE_OBJDIR)/ComponentOverlay_554fade3.o \
   $(JUCE_OBJDIR)/CabbageGenericPluginLookAndFeel_f8a44125.o \
   $(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o \
   $(JUCE_OBJDIR)/CabbageLookAndFeel_85188477.o \
@@ -108,7 +108,6 @@ OBJECTS := \
   $(JUCE_OBJDIR)/CabbageWidgetData_ba1d0870.o \
   $(JUCE_OBJDIR)/CabbageWidgetDataInitMethods_a1a6cd7c.o \
   $(JUCE_OBJDIR)/CabbageXYPad_f88302da.o \
-  $(JUCE_OBJDIR)/Cabbage_6fb7db02.o \
   $(JUCE_OBJDIR)/juce_audio_basics_6b797ca1.o \
   $(JUCE_OBJDIR)/juce_audio_devices_a742c38b.o \
   $(JUCE_OBJDIR)/juce_audio_formats_5a29c68a.o \
@@ -211,17 +210,17 @@ $(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o: ../../Source/CodeEditor/Cabbag
 	@echo "Compiling CabbageEditorContainer.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/CabbagePropertiesPanel_1024ea82.o: ../../Source/InterfaceEditor/CabbagePropertiesPanel.cpp
+$(JUCE_OBJDIR)/CabbagePropertiesPanel_cced81c0.o: ../../Source/GUIEditor/CabbagePropertiesPanel.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbagePropertiesPanel.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/ComponentLayoutEditor_a8e1e34c.o: ../../Source/InterfaceEditor/ComponentLayoutEditor.cpp
+$(JUCE_OBJDIR)/ComponentLayoutEditor_752a6c4e.o: ../../Source/GUIEditor/ComponentLayoutEditor.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling ComponentLayoutEditor.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/ComponentOverlay_8d6d5025.o: ../../Source/InterfaceEditor/ComponentOverlay.cpp
+$(JUCE_OBJDIR)/ComponentOverlay_554fade3.o: ../../Source/GUIEditor/ComponentOverlay.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling ComponentOverlay.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
@@ -399,11 +398,6 @@ $(JUCE_OBJDIR)/CabbageWidgetDataInitMethods_a1a6cd7c.o: ../../Source/Widgets/Cab
 $(JUCE_OBJDIR)/CabbageXYPad_f88302da.o: ../../Source/Widgets/CabbageXYPad.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageXYPad.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/Cabbage_6fb7db02.o: ../../Source/Cabbage.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling Cabbage.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/juce_audio_basics_6b797ca1.o: ../../JuceLibraryCode/juce_audio_basics.cpp
