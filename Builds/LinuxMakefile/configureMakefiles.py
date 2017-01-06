@@ -10,7 +10,9 @@ print "running the ProJUCEr application. Please make sure"
 print "you have already built the JUCE Projucer."
 print ""
 print "Usage:"
-print "python ./projucerConfig ../path_to/projucer"
+print "python ./projucerConfig [../path_to/projucer]"
+print ""
+print "python configureMakefiles.py ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer"
 print ""
 print "More info..."
 print "The standalone and plugin version of Cabbage use slightly different"
@@ -20,20 +22,14 @@ print "code-base across both projects, and project makefiles that can be "
 print "called without needing to constantly use the Projucer"
 
 
-
-pathToJucer = sys.argv[1];
+if len(sys.argv)==1:
+	pathToJucer = "../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer"
+else:
+	pathToJucer = sys.argv[1];
 
 createPluginCommand = str(pathToJucer)+ " --resave ../../CabbagePlugin.jucer"
 process = subprocess.Popen(createPluginCommand, shell=True, stdout=subprocess.PIPE)
 process.wait()
-
-	# "$1" --resave ../../CabbagePlugin.jucer
-	# cp Makefile MakefilePluginSynth
-	# sed 's/CabbagePlugin.so/CabbagePluginSynth.so/g ;s/@echo Cleaning CabbagePlugin/@echo Cleaning CabbagePluginSynth/g; s/@echo Linking CabbagePlugin/@echo Linking CabbagePluginSynth/g' <Makefile>MakefilePluginSynth
-	# cp Makefile MakefilePluginEffect
-	# sed 's/-DCabbage_Plugin_Synth=1//g; s/CabbagePlugin.so/CabbagePluginEffect.so/g; ;s/@echo Cleaning CabbagePlugin/@echo Cleaning CabbagePluginSynth/g; s/@echo Linking CabbagePlugin/@echo Linking CabbagePluginEffect/g' <Makefile>MakefilePluginEffect
-	# "$1" --resave ../../CabbageIDE.jucer
-	# cp Makefile MakefileIDE
 
 filedata = None
 with open("Makefile", "rt") as file:
