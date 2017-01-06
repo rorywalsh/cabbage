@@ -73,10 +73,6 @@
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.cpp"/>
         <FILE id="gK4jsl" name="CabbageGenericPluginLookAndFeel.h" compile="0"
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.h"/>
-        <FILE id="cmi30g" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
-              file="Source/LookAndFeel/CabbageIDELookAndFeel.cpp"/>
-        <FILE id="ArCgQH" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
-              file="Source/LookAndFeel/CabbageIDELookAndFeel.h"/>
         <FILE id="wLenuR" name="CabbageLookAndFeel.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel.cpp"/>
         <FILE id="V3gj4W" name="CabbageLookAndFeel.h" compile="0" resource="0"
@@ -91,16 +87,6 @@
               file="Source/Utilities/CabbageColourProperty.cpp"/>
         <FILE id="RQPYfb" name="CabbageColourProperty.h" compile="0" resource="0"
               file="Source/Utilities/CabbageColourProperty.h"/>
-        <FILE id="TgOEfF" name="CabbageFilePropertyComponent.h" compile="0"
-              resource="0" file="Source/Utilities/CabbageFilePropertyComponent.h"/>
-        <FILE id="DYIfo7" name="CabbageNewProjectWindow.cpp" compile="1" resource="0"
-              file="Source/Utilities/CabbageNewProjectWindow.cpp"/>
-        <FILE id="U764ah" name="CabbageNewProjectWindow.h" compile="0" resource="0"
-              file="Source/Utilities/CabbageNewProjectWindow.h"/>
-        <FILE id="QI4XKR" name="CabbageSSHFileBrowser.cpp" compile="1" resource="0"
-              file="Source/Utilities/CabbageSSHFileBrowser.cpp"/>
-        <FILE id="Y4j2Kr" name="CabbageSSHFileBrowser.h" compile="0" resource="0"
-              file="Source/Utilities/CabbageSSHFileBrowser.h"/>
         <FILE id="WHFDrK" name="CabbageStrings.h" compile="0" resource="0"
               file="Source/Utilities/CabbageStrings.h"/>
         <FILE id="i3o5Zn" name="CabbageUtilities.h" compile="0" resource="0"

@@ -1034,3 +1034,44 @@ void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int x, int y, i
         drawable->draw(g, 1.f, affine);
     }
 }
+
+void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
+        AlertWindow& alert,
+        const Rectangle<int>& textArea,
+        TextLayout& textLayout)
+{
+    g.fillAll (Colour(250,250,250));
+
+    int iconSpaceUsed = 160;
+
+    if (alert.getAlertType() != AlertWindow::NoIcon)
+    {
+        Path icon;
+        uint32 colour;
+        char character;
+
+        if (alert.getAlertType() == AlertWindow::WarningIcon)
+        {
+            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed).toFloat());
+            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            g.drawImage(warningImage, rect.reduced(20));
+        }
+        if (alert.getAlertType() == AlertWindow::QuestionIcon)
+        {
+            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
+            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            g.drawImage(warningImage, rect.reduced(25));
+        }
+
+    }
+
+    g.setColour (alert.findColour (AlertWindow::textColourId));
+
+    textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed-50,
+                                        textArea.getY(),
+                                        textArea.getWidth() - iconSpaceUsed-40,
+                                        textArea.getHeight()).toFloat());
+
+    g.setColour (alert.findColour (AlertWindow::outlineColourId));
+    g.drawRect (0, 0, alert.getWidth(), alert.getHeight());
+}

@@ -227,12 +227,13 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor()
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation (MemoryBlock& destData)
 {
-	copyXmlToBinary (savePluginState("CABBAGE_PLUGIN_SETTINGS"), destData);	
+	copyXmlToBinary(savePluginState("CABBAGE_PLUGIN_SETTINGS"), destData);	
 }
 
 void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-	restorePluginState(getXmlFromBinary (data, sizeInBytes));
+	ScopedPointer<XmlElement> xmlElement = getXmlFromBinary (data, sizeInBytes);
+	restorePluginState(xmlElement);
 }
 
 //==============================================================================

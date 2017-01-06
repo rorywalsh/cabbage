@@ -53,7 +53,7 @@ void CabbageFileButton::buttonClicked(Button* button)
 				{
 					if(fc.getResult().existsAsFile())
 					{
-						CabbageIDELookAndFeel lookAndFeel;
+						CabbageLookAndFeel2 lookAndFeel;
 						const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
 						CabbageUtilities::debug("should save a snapshot file");
 						if(result==0)

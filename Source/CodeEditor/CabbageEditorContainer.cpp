@@ -63,11 +63,12 @@ void CabbageEditorContainer::updateLookAndFeel()
 
 void CabbageEditorContainer::resized()
 {
-    editor->setBounds(0, 0, getWidth(), horizontalResizerBar.getY());
-    const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
-    const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
-    statusBar.setBounds(0, consoleY, getWidth(), 28);
-    outputConsole->setBounds(0, consoleY+28, getWidth(), consoleHeight-55);
+	Rectangle<int> rect = getLocalBounds();
+    editor->setBounds(rect.removeFromTop(horizontalResizerBar.getY()));
+    //const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
+    //const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
+    statusBar.setBounds(rect.removeFromTop(28));
+    outputConsole->setBounds(rect);
 }
 
 void CabbageEditorContainer::updateEditorColourScheme()

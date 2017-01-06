@@ -69,12 +69,9 @@ OBJECTS := \
   $(JUCE_OBJDIR)/ComponentLayoutEditor_752a6c4e.o \
   $(JUCE_OBJDIR)/ComponentOverlay_554fade3.o \
   $(JUCE_OBJDIR)/CabbageGenericPluginLookAndFeel_f8a44125.o \
-  $(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o \
   $(JUCE_OBJDIR)/CabbageLookAndFeel_85188477.o \
   $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o \
   $(JUCE_OBJDIR)/CabbageColourProperty_a06c91be.o \
-  $(JUCE_OBJDIR)/CabbageNewProjectWindow_b55ea6.o \
-  $(JUCE_OBJDIR)/CabbageSSHFileBrowser_34e09761.o \
   $(JUCE_OBJDIR)/Soundfiler_587b384e.o \
   $(JUCE_OBJDIR)/TableManager_fa647506.o \
   $(JUCE_OBJDIR)/CabbageButton_effd6014.o \
@@ -199,11 +196,6 @@ $(JUCE_OBJDIR)/CabbageGenericPluginLookAndFeel_f8a44125.o: ../../Source/LookAndF
 	@echo "Compiling CabbageGenericPluginLookAndFeel.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o: ../../Source/LookAndFeel/CabbageIDELookAndFeel.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageIDELookAndFeel.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
 $(JUCE_OBJDIR)/CabbageLookAndFeel_85188477.o: ../../Source/LookAndFeel/CabbageLookAndFeel.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageLookAndFeel.cpp"
@@ -217,16 +209,6 @@ $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o: ../../Source/LookAndFeel/CabbageL
 $(JUCE_OBJDIR)/CabbageColourProperty_a06c91be.o: ../../Source/Utilities/CabbageColourProperty.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageColourProperty.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageNewProjectWindow_b55ea6.o: ../../Source/Utilities/CabbageNewProjectWindow.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageNewProjectWindow.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageSSHFileBrowser_34e09761.o: ../../Source/Utilities/CabbageSSHFileBrowser.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageSSHFileBrowser.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Soundfiler_587b384e.o: ../../Source/Widgets/Legacy/Soundfiler.cpp
