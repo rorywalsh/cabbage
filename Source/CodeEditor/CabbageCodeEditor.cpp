@@ -23,7 +23,7 @@
 #include "../Application/CabbageDocumentWindow.h"
 
 //==============================================================================
-CabbageCodeEditorComponent::CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
+CabbageCodeEditorComponent::CabbageCodeEditorComponent(CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser)
     : CodeEditorComponent(document, codeTokeniser),
       valueTree(valueTree),
       statusBar(statusBar),
@@ -287,7 +287,7 @@ void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar(String lineFromCsd
                 {
                     if(syntaxTokens[0].length()>3)
                     {
-                        if(EditorAndConsoleContentComponent::StatusBar* bar = dynamic_cast<EditorAndConsoleContentComponent::StatusBar*>(statusBar))
+                        if(CabbageEditorContainer::StatusBar* bar = dynamic_cast<CabbageEditorContainer::StatusBar*>(statusBar))
                             bar->setText(syntaxTokens);
                         x=csdLineTokens.size();
                         i=opcodeStrings.size();

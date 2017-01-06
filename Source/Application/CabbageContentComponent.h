@@ -22,7 +22,7 @@
 
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "../CodeEditor/EditorAndConsoleContentComponent.h"
+#include "../CodeEditor/CabbageEditorContainer.h"
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../InterfaceEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"
@@ -90,9 +90,9 @@ public:
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<TextButton> fileTabs;
     Array<File> openFiles;
-    OwnedArray<EditorAndConsoleContentComponent> editorAndConsole;
+    OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
-    EditorAndConsoleContentComponent* getCurrentEditorAndConsole();
+    CabbageEditorContainer* getCurrentEditorAndConsole();
     Toolbar toolbar;
 
     bool setCurrentCsdFile(File file);

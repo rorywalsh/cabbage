@@ -21,7 +21,7 @@
 #define CABBAGEMAINWINDOW_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "../CodeEditor/EditorAndConsoleContentComponent.h"
+#include "../CodeEditor/CabbageEditorContainer.h"
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../InterfaceEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"

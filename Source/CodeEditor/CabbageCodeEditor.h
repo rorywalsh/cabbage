@@ -24,7 +24,7 @@
 #include "../CabbageCommonHeaders.h"
 
 
-class EditorAndConsoleContentComponent;
+class CabbageEditorContainer;
 
 class CabbageCodeEditorComponent :
     public CodeEditorComponent,
@@ -36,7 +36,7 @@ class CabbageCodeEditorComponent :
     public Timer
 {
 public:
-    CabbageCodeEditorComponent(EditorAndConsoleContentComponent* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
+    CabbageCodeEditorComponent(CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument &document, CodeTokeniser *codeTokeniser);
     ~CabbageCodeEditorComponent() {};
     void updateColourScheme();
     CodeDocument::Position positionInCode;
@@ -149,7 +149,7 @@ private:
     bool columnEditMode = false;
     ListBox autoCompleteListBox;
     StringArray variableNamesToShow, variableNames;
-    EditorAndConsoleContentComponent* owner;
+    CabbageEditorContainer* owner;
     int updateGUICounter;
 };
 

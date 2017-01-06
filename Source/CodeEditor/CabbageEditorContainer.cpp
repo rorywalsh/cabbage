@@ -17,9 +17,9 @@
   02111-1307 USA
 */
 
-#include "EditorAndConsoleContentComponent.h"
+#include "CabbageEditorContainer.h"
 
-EditorAndConsoleContentComponent::EditorAndConsoleContentComponent(ValueTree settings)
+CabbageEditorContainer::CabbageEditorContainer(ValueTree settings)
     : horizontalResizerBar(this, settings), settings(settings),
       statusBar(settings)
 {
@@ -41,12 +41,12 @@ EditorAndConsoleContentComponent::EditorAndConsoleContentComponent(ValueTree set
     updateLookAndFeel();
 }
 
-EditorAndConsoleContentComponent::~EditorAndConsoleContentComponent()
+CabbageEditorContainer::~CabbageEditorContainer()
 {
     editor = nullptr;
     outputConsole = nullptr;
 }
-void EditorAndConsoleContentComponent::openFile(File file)
+void CabbageEditorContainer::openFile(File file)
 {
     editor->setVisible(true);
     outputConsole->setVisible(true);
@@ -54,14 +54,14 @@ void EditorAndConsoleContentComponent::openFile(File file)
     editor->loadContent(file.loadFileAsString());
 }
 
-void EditorAndConsoleContentComponent::updateLookAndFeel()
+void CabbageEditorContainer::updateLookAndFeel()
 {
     editor->updateColourScheme();
     outputConsole->updateColourScheme();
     horizontalResizerBar.repaint();
 }
 
-void EditorAndConsoleContentComponent::resized()
+void CabbageEditorContainer::resized()
 {
     editor->setBounds(0, 0, getWidth(), horizontalResizerBar.getY());
     const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
@@ -70,7 +70,7 @@ void EditorAndConsoleContentComponent::resized()
     outputConsole->setBounds(0, consoleY+28, getWidth(), consoleHeight-55);
 }
 
-void EditorAndConsoleContentComponent::updateEditorColourScheme()
+void CabbageEditorContainer::updateEditorColourScheme()
 {
     editor->updateColourScheme();
     outputConsole->updateColourScheme();

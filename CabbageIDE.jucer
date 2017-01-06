@@ -5,243 +5,243 @@
               jucerVersion="4.3.0">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
-      <GROUP id="{D038562E-7D7D-26DB-5019-6CE1A94F3F1F}" name="Application">
-        <FILE id="w99c3Y" name="CabbageContentComponent.cpp" compile="1" resource="0"
+      <GROUP id="{495DAAB5-6309-C351-257F-C3AE571634AA}" name="Application">
+        <FILE id="QPDxe7" name="CabbageContentComponent.cpp" compile="1" resource="0"
               file="Source/Application/CabbageContentComponent.cpp"/>
-        <FILE id="aQhq2g" name="CabbageContentComponent.h" compile="0" resource="0"
+        <FILE id="QFNrvZ" name="CabbageContentComponent.h" compile="0" resource="0"
               file="Source/Application/CabbageContentComponent.h"/>
-        <FILE id="Uhq6Zo" name="CabbageDocumentWindow.cpp" compile="1" resource="0"
+        <FILE id="jaXjnw" name="CabbageDocumentWindow.cpp" compile="1" resource="0"
               file="Source/Application/CabbageDocumentWindow.cpp"/>
-        <FILE id="KnODer" name="CabbageDocumentWindow.h" compile="0" resource="0"
+        <FILE id="no8k2J" name="CabbageDocumentWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageDocumentWindow.h"/>
-        <FILE id="IWV0FL" name="CabbageToolbarFactory.cpp" compile="1" resource="0"
+        <FILE id="nd7M1L" name="CabbageToolbarFactory.cpp" compile="1" resource="0"
               file="Source/Application/CabbageToolbarFactory.cpp"/>
-        <FILE id="RyWL8A" name="CabbageToolbarFactory.h" compile="0" resource="0"
+        <FILE id="QX9OeN" name="CabbageToolbarFactory.h" compile="0" resource="0"
               file="Source/Application/CabbageToolbarFactory.h"/>
       </GROUP>
       <GROUP id="{9205CC0D-0001-83B4-0964-80FA3B5F3228}" name="Audio">
         <GROUP id="{D7CC3B0A-213D-D74F-9D80-FBF21D5A9E9E}" name="Graph">
-          <FILE id="lSbk9p" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/Graph/AudioGraph.cpp"/>
-          <FILE id="DoNGgY" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/Graph/AudioGraph.h"/>
+          <FILE id="xioWm5" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/Graph/AudioGraph.cpp"/>
+          <FILE id="QlWWbk" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/Graph/AudioGraph.h"/>
         </GROUP>
         <GROUP id="{7DD20367-6FC1-032B-4A6D-FD89F6DB0F84}" name="Plugins">
-          <FILE id="lG59tk" name="CabbageAudioParameter.h" compile="0" resource="0"
+          <FILE id="fBrlzj" name="CabbageAudioParameter.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/CabbageAudioParameter.h"/>
-          <FILE id="T6Y6cK" name="CabbageCsoundBreakpointData.h" compile="0"
+          <FILE id="TOjGiC" name="CabbageCsoundBreakpointData.h" compile="0"
                 resource="0" file="Source/Audio/Plugins/CabbageCsoundBreakpointData.h"/>
-          <FILE id="K80EzV" name="CabbagePluginEditor.cpp" compile="1" resource="0"
+          <FILE id="BaLiHG" name="CabbagePluginEditor.cpp" compile="1" resource="0"
                 file="Source/Audio/Plugins/CabbagePluginEditor.cpp"/>
-          <FILE id="LZVUms" name="CabbagePluginEditor.h" compile="0" resource="0"
+          <FILE id="xTC7dB" name="CabbagePluginEditor.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/CabbagePluginEditor.h"/>
-          <FILE id="vv9bU3" name="CabbagePluginProcessor.cpp" compile="1" resource="0"
+          <FILE id="qWFLjF" name="CabbagePluginProcessor.cpp" compile="1" resource="0"
                 file="Source/Audio/Plugins/CabbagePluginProcessor.cpp"/>
-          <FILE id="flLsel" name="CabbagePluginProcessor.h" compile="0" resource="0"
+          <FILE id="lJWGCL" name="CabbagePluginProcessor.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/CabbagePluginProcessor.h"/>
-          <FILE id="IJG0sY" name="CsoundPluginEditor.cpp" compile="1" resource="0"
+          <FILE id="UqzSSP" name="CsoundPluginEditor.cpp" compile="1" resource="0"
                 file="Source/Audio/Plugins/CsoundPluginEditor.cpp"/>
-          <FILE id="JJDRsJ" name="CsoundPluginEditor.h" compile="0" resource="0"
+          <FILE id="gcJJqr" name="CsoundPluginEditor.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/CsoundPluginEditor.h"/>
-          <FILE id="OzgLP2" name="CsoundPluginProcessor.cpp" compile="1" resource="0"
+          <FILE id="wvhJfx" name="CsoundPluginProcessor.cpp" compile="1" resource="0"
                 file="Source/Audio/Plugins/CsoundPluginProcessor.cpp"/>
-          <FILE id="irDsZs" name="CsoundPluginProcessor.h" compile="0" resource="0"
+          <FILE id="FZttjm" name="CsoundPluginProcessor.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/CsoundPluginProcessor.h"/>
-          <FILE id="sv45gz" name="GenericCabbageEditor.cpp" compile="1" resource="0"
+          <FILE id="DRP6EK" name="GenericCabbageEditor.cpp" compile="1" resource="0"
                 file="Source/Audio/Plugins/GenericCabbageEditor.cpp"/>
-          <FILE id="DyBVKy" name="GenericCabbageEditor.h" compile="0" resource="0"
+          <FILE id="d9RSUN" name="GenericCabbageEditor.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/GenericCabbageEditor.h"/>
-          <FILE id="D9tsZq" name="GenericCabbagePluginProcessor.cpp" compile="1"
+          <FILE id="L2GaAH" name="GenericCabbagePluginProcessor.cpp" compile="1"
                 resource="0" file="Source/Audio/Plugins/GenericCabbagePluginProcessor.cpp"/>
-          <FILE id="yMlb1d" name="GenericCabbagePluginProcessor.h" compile="0"
+          <FILE id="oXMgRv" name="GenericCabbagePluginProcessor.h" compile="0"
                 resource="0" file="Source/Audio/Plugins/GenericCabbagePluginProcessor.h"/>
         </GROUP>
       </GROUP>
       <GROUP id="{32AD2C91-57CE-D3EF-F185-2CD9A89DD7E1}" name="BinaryData">
-        <FILE id="zivUJ8" name="CabbageBinaryData.cpp" compile="1" resource="0"
+        <FILE id="gQrpH1" name="CabbageBinaryData.cpp" compile="1" resource="0"
               file="Source/BinaryData/CabbageBinaryData.cpp"/>
-        <FILE id="umbqA5" name="CabbageBinaryData.h" compile="0" resource="0"
+        <FILE id="FcTjxj" name="CabbageBinaryData.h" compile="0" resource="0"
               file="Source/BinaryData/CabbageBinaryData.h"/>
       </GROUP>
       <GROUP id="{7C8292EA-0515-218A-83B6-1CA9883A3F15}" name="CodeEditor">
-        <FILE id="rVJMsz" name="CabbageCodeEditor.cpp" compile="1" resource="0"
+        <FILE id="l7OznR" name="CabbageCodeEditor.cpp" compile="1" resource="0"
               file="Source/CodeEditor/CabbageCodeEditor.cpp"/>
-        <FILE id="tJXPuQ" name="CabbageCodeEditor.h" compile="0" resource="0"
+        <FILE id="v0y48j" name="CabbageCodeEditor.h" compile="0" resource="0"
               file="Source/CodeEditor/CabbageCodeEditor.h"/>
-        <FILE id="Szu3jg" name="CabbageOutputConsole.h" compile="0" resource="0"
+        <FILE id="AlM60A" name="CabbageEditorContainer.cpp" compile="1" resource="0"
+              file="Source/CodeEditor/CabbageEditorContainer.cpp"/>
+        <FILE id="odlk1S" name="CabbageEditorContainer.h" compile="0" resource="0"
+              file="Source/CodeEditor/CabbageEditorContainer.h"/>
+        <FILE id="n70fgy" name="CabbageOutputConsole.h" compile="0" resource="0"
               file="Source/CodeEditor/CabbageOutputConsole.h"/>
-        <FILE id="aYT2R5" name="CsoundTokeniser.h" compile="0" resource="0"
+        <FILE id="AEbFwI" name="CsoundTokeniser.h" compile="0" resource="0"
               file="Source/CodeEditor/CsoundTokeniser.h"/>
-        <FILE id="NuQnzq" name="EditorAndConsoleContentComponent.cpp" compile="1"
-              resource="0" file="Source/CodeEditor/EditorAndConsoleContentComponent.cpp"/>
-        <FILE id="JM8pJT" name="EditorAndConsoleContentComponent.h" compile="0"
-              resource="0" file="Source/CodeEditor/EditorAndConsoleContentComponent.h"/>
       </GROUP>
-      <GROUP id="{3DFBA103-31CD-DED7-B1D5-A697ADB62B7D}" name="InterfaceEditor">
-        <FILE id="HAGCZB" name="CabbagePropertiesPanel.cpp" compile="1" resource="0"
+      <GROUP id="{EEFF7FAF-EB12-108A-36BF-3AD6EFB40DF0}" name="InterfaceEditor">
+        <FILE id="suEjR8" name="CabbagePropertiesPanel.cpp" compile="1" resource="0"
               file="Source/InterfaceEditor/CabbagePropertiesPanel.cpp"/>
-        <FILE id="Vi5Nxh" name="CabbagePropertiesPanel.h" compile="0" resource="0"
+        <FILE id="iw9sJM" name="CabbagePropertiesPanel.h" compile="0" resource="0"
               file="Source/InterfaceEditor/CabbagePropertiesPanel.h"/>
-        <FILE id="p4B5Y3" name="ComponentLayoutEditor.cpp" compile="1" resource="0"
+        <FILE id="iwmybm" name="ComponentLayoutEditor.cpp" compile="1" resource="0"
               file="Source/InterfaceEditor/ComponentLayoutEditor.cpp"/>
-        <FILE id="YUszH2" name="ComponentLayoutEditor.h" compile="0" resource="0"
+        <FILE id="epDeLt" name="ComponentLayoutEditor.h" compile="0" resource="0"
               file="Source/InterfaceEditor/ComponentLayoutEditor.h"/>
-        <FILE id="Lo50s1" name="ComponentOverlay.cpp" compile="1" resource="0"
+        <FILE id="EdCpcJ" name="ComponentOverlay.cpp" compile="1" resource="0"
               file="Source/InterfaceEditor/ComponentOverlay.cpp"/>
-        <FILE id="kP6m93" name="ComponentOverlay.h" compile="0" resource="0"
+        <FILE id="Zwmcux" name="ComponentOverlay.h" compile="0" resource="0"
               file="Source/InterfaceEditor/ComponentOverlay.h"/>
       </GROUP>
       <GROUP id="{5902C018-3EA6-C5AC-9CCC-3104AC4F4412}" name="LookAndFeel">
-        <FILE id="iYe6wm" name="CabbageGenericPluginLookAndFeel.cpp" compile="1"
+        <FILE id="fEYBb6" name="CabbageGenericPluginLookAndFeel.cpp" compile="1"
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.cpp"/>
-        <FILE id="VoaDKm" name="CabbageGenericPluginLookAndFeel.h" compile="0"
+        <FILE id="o6shL3" name="CabbageGenericPluginLookAndFeel.h" compile="0"
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.h"/>
-        <FILE id="FJBeR1" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
+        <FILE id="ddA64y" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/CabbageIDELookAndFeel.cpp"/>
-        <FILE id="oNnBbc" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
+        <FILE id="cNJdyg" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageIDELookAndFeel.h"/>
-        <FILE id="Qjz0GL" name="CabbageLookAndFeel.cpp" compile="1" resource="0"
+        <FILE id="Qg1v2K" name="CabbageLookAndFeel.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel.cpp"/>
-        <FILE id="JzkGaY" name="CabbageLookAndFeel.h" compile="0" resource="0"
+        <FILE id="rSpt08" name="CabbageLookAndFeel.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel.h"/>
-        <FILE id="SjE55f" name="CabbageLookAndFeel2.cpp" compile="1" resource="0"
+        <FILE id="vZ6Xal" name="CabbageLookAndFeel2.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
-        <FILE id="dvwmgb" name="CabbageLookAndFeel2.h" compile="0" resource="0"
+        <FILE id="HNZhVO" name="CabbageLookAndFeel2.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
       </GROUP>
-      <GROUP id="{81D74EF6-4302-B72F-56CD-F606FA64C53C}" name="Settings">
-        <FILE id="KGu7xC" name="CabbageSettings.cpp" compile="1" resource="0"
+      <GROUP id="{0CF4FEAC-8382-EF2E-08AB-289E938BA433}" name="Settings">
+        <FILE id="SpwAY1" name="CabbageSettings.cpp" compile="1" resource="0"
               file="Source/Settings/CabbageSettings.cpp"/>
-        <FILE id="yZyUMI" name="CabbageSettings.h" compile="0" resource="0"
+        <FILE id="lrIb6f" name="CabbageSettings.h" compile="0" resource="0"
               file="Source/Settings/CabbageSettings.h"/>
-        <FILE id="Xzm9uf" name="CabbageSettingsWindow.cpp" compile="1" resource="0"
+        <FILE id="HS0An7" name="CabbageSettingsWindow.cpp" compile="1" resource="0"
               file="Source/Settings/CabbageSettingsWindow.cpp"/>
-        <FILE id="cY78WG" name="CabbageSettingsWindow.h" compile="0" resource="0"
+        <FILE id="yzOY0y" name="CabbageSettingsWindow.h" compile="0" resource="0"
               file="Source/Settings/CabbageSettingsWindow.h"/>
       </GROUP>
       <GROUP id="{8D9B8DF5-3215-02BE-1D61-4761D82ACE8A}" name="Utilities">
-        <FILE id="MRveY5" name="CabbageColourProperty.cpp" compile="1" resource="0"
+        <FILE id="JqklCN" name="CabbageColourProperty.cpp" compile="1" resource="0"
               file="Source/Utilities/CabbageColourProperty.cpp"/>
-        <FILE id="QcqWdr" name="CabbageColourProperty.h" compile="0" resource="0"
+        <FILE id="Ac7a4j" name="CabbageColourProperty.h" compile="0" resource="0"
               file="Source/Utilities/CabbageColourProperty.h"/>
-        <FILE id="F03I88" name="CabbageFilePropertyComponent.h" compile="0"
+        <FILE id="Rm7V2c" name="CabbageFilePropertyComponent.h" compile="0"
               resource="0" file="Source/Utilities/CabbageFilePropertyComponent.h"/>
-        <FILE id="V6p13M" name="CabbageNewProjectWindow.cpp" compile="1" resource="0"
+        <FILE id="NAmVYw" name="CabbageNewProjectWindow.cpp" compile="1" resource="0"
               file="Source/Utilities/CabbageNewProjectWindow.cpp"/>
-        <FILE id="O2FsdX" name="CabbageNewProjectWindow.h" compile="0" resource="0"
+        <FILE id="zBZsUe" name="CabbageNewProjectWindow.h" compile="0" resource="0"
               file="Source/Utilities/CabbageNewProjectWindow.h"/>
-        <FILE id="kAhOoN" name="CabbageSSHFileBrowser.cpp" compile="1" resource="0"
+        <FILE id="S24RJ4" name="CabbageSSHFileBrowser.cpp" compile="1" resource="0"
               file="Source/Utilities/CabbageSSHFileBrowser.cpp"/>
-        <FILE id="GWTQFe" name="CabbageSSHFileBrowser.h" compile="0" resource="0"
+        <FILE id="Px2ZpL" name="CabbageSSHFileBrowser.h" compile="0" resource="0"
               file="Source/Utilities/CabbageSSHFileBrowser.h"/>
-        <FILE id="nWloyq" name="CabbageStrings.h" compile="0" resource="0"
+        <FILE id="tb1858" name="CabbageStrings.h" compile="0" resource="0"
               file="Source/Utilities/CabbageStrings.h"/>
-        <FILE id="lQ8tGQ" name="CabbageUtilities.h" compile="0" resource="0"
+        <FILE id="hvdH5s" name="CabbageUtilities.h" compile="0" resource="0"
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
-      <GROUP id="{FAFD4DCB-E143-5624-0198-20E9415D0C1E}" name="Widgets">
-        <GROUP id="{F452BC11-0504-9A13-A235-06734BB1308E}" name="Legacy">
-          <FILE id="bnucn7" name="FrequencyRangeDisplayComponent.h" compile="0"
+      <GROUP id="{592AAF2F-3433-0562-613C-4079448F7778}" name="Widgets">
+        <GROUP id="{68A4EEAC-778D-D243-FF23-F440814FE34A}" name="Legacy">
+          <FILE id="xjejmU" name="FrequencyRangeDisplayComponent.h" compile="0"
                 resource="0" file="Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h"/>
-          <FILE id="gPks0R" name="Soundfiler.cpp" compile="1" resource="0" file="Source/Widgets/Legacy/Soundfiler.cpp"/>
-          <FILE id="lHY1MS" name="Soundfiler.h" compile="0" resource="0" file="Source/Widgets/Legacy/Soundfiler.h"/>
-          <FILE id="daHxmG" name="TableManager.cpp" compile="1" resource="0"
+          <FILE id="AJ1vXq" name="Soundfiler.cpp" compile="1" resource="0" file="Source/Widgets/Legacy/Soundfiler.cpp"/>
+          <FILE id="PThc0y" name="Soundfiler.h" compile="0" resource="0" file="Source/Widgets/Legacy/Soundfiler.h"/>
+          <FILE id="Rd31Lz" name="TableManager.cpp" compile="1" resource="0"
                 file="Source/Widgets/Legacy/TableManager.cpp"/>
-          <FILE id="ySirLW" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
+          <FILE id="kKeMOx" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
         </GROUP>
-        <FILE id="cIwN72" name="CabbageButton.cpp" compile="1" resource="0"
+        <FILE id="x2asi2" name="CabbageButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageButton.cpp"/>
-        <FILE id="oe5Pkj" name="CabbageButton.h" compile="0" resource="0" file="Source/Widgets/CabbageButton.h"/>
-        <FILE id="a6pQPl" name="CabbageCheckbox.cpp" compile="1" resource="0"
+        <FILE id="BerOso" name="CabbageButton.h" compile="0" resource="0" file="Source/Widgets/CabbageButton.h"/>
+        <FILE id="upEF6r" name="CabbageCheckbox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageCheckbox.cpp"/>
-        <FILE id="der66D" name="CabbageCheckbox.h" compile="0" resource="0"
+        <FILE id="VMNpiQ" name="CabbageCheckbox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageCheckbox.h"/>
-        <FILE id="d2m4za" name="CabbageComboBox.cpp" compile="1" resource="0"
+        <FILE id="RLcJ2o" name="CabbageComboBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageComboBox.cpp"/>
-        <FILE id="sU2C8n" name="CabbageComboBox.h" compile="0" resource="0"
+        <FILE id="ujuhzv" name="CabbageComboBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageComboBox.h"/>
-        <FILE id="oEQxX4" name="CabbageCsoundConsole.cpp" compile="1" resource="0"
+        <FILE id="dK1RkA" name="CabbageCsoundConsole.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageCsoundConsole.cpp"/>
-        <FILE id="cRrArH" name="CabbageCsoundConsole.h" compile="0" resource="0"
+        <FILE id="KgTNvG" name="CabbageCsoundConsole.h" compile="0" resource="0"
               file="Source/Widgets/CabbageCsoundConsole.h"/>
-        <FILE id="ZPQbIt" name="CabbageCustomWidgets.cpp" compile="1" resource="0"
+        <FILE id="sUUwnR" name="CabbageCustomWidgets.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageCustomWidgets.cpp"/>
-        <FILE id="jzULrK" name="CabbageCustomWidgets.h" compile="0" resource="0"
+        <FILE id="RFomM7" name="CabbageCustomWidgets.h" compile="0" resource="0"
               file="Source/Widgets/CabbageCustomWidgets.h"/>
-        <FILE id="Lt9fqQ" name="CabbageEncoder.cpp" compile="1" resource="0"
+        <FILE id="nGHz36" name="CabbageEncoder.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageEncoder.cpp"/>
-        <FILE id="NwfCWP" name="CabbageEncoder.h" compile="0" resource="0"
+        <FILE id="SZnzSo" name="CabbageEncoder.h" compile="0" resource="0"
               file="Source/Widgets/CabbageEncoder.h"/>
-        <FILE id="Ip76YW" name="CabbageFileButton.cpp" compile="1" resource="0"
+        <FILE id="ODwNmX" name="CabbageFileButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageFileButton.cpp"/>
-        <FILE id="Uu5yOH" name="CabbageFileButton.h" compile="0" resource="0"
+        <FILE id="cQNhVm" name="CabbageFileButton.h" compile="0" resource="0"
               file="Source/Widgets/CabbageFileButton.h"/>
-        <FILE id="MGXcGK" name="CabbageGenTable.cpp" compile="1" resource="0"
+        <FILE id="qOU89j" name="CabbageGenTable.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageGenTable.cpp"/>
-        <FILE id="Zb04vc" name="CabbageGenTable.h" compile="0" resource="0"
+        <FILE id="B69tYC" name="CabbageGenTable.h" compile="0" resource="0"
               file="Source/Widgets/CabbageGenTable.h"/>
-        <FILE id="P4IGiE" name="CabbageGroupBox.cpp" compile="1" resource="0"
+        <FILE id="pnAd6A" name="CabbageGroupBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageGroupBox.cpp"/>
-        <FILE id="SurnVG" name="CabbageGroupBox.h" compile="0" resource="0"
+        <FILE id="urDGW6" name="CabbageGroupBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageGroupBox.h"/>
-        <FILE id="ML9omU" name="CabbageImage.cpp" compile="1" resource="0"
+        <FILE id="asF5Vy" name="CabbageImage.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageImage.cpp"/>
-        <FILE id="X8UxWC" name="CabbageImage.h" compile="0" resource="0" file="Source/Widgets/CabbageImage.h"/>
-        <FILE id="hKLMtU" name="CabbageInfoButton.cpp" compile="1" resource="0"
+        <FILE id="SYXJhV" name="CabbageImage.h" compile="0" resource="0" file="Source/Widgets/CabbageImage.h"/>
+        <FILE id="kW2lkQ" name="CabbageInfoButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageInfoButton.cpp"/>
-        <FILE id="qyKVpK" name="CabbageInfoButton.h" compile="0" resource="0"
+        <FILE id="DEX7r8" name="CabbageInfoButton.h" compile="0" resource="0"
               file="Source/Widgets/CabbageInfoButton.h"/>
-        <FILE id="tf8gIa" name="CabbageKeyboard.cpp" compile="1" resource="0"
+        <FILE id="v7dL40" name="CabbageKeyboard.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageKeyboard.cpp"/>
-        <FILE id="a3D4kf" name="CabbageKeyboard.h" compile="0" resource="0"
+        <FILE id="twcCfX" name="CabbageKeyboard.h" compile="0" resource="0"
               file="Source/Widgets/CabbageKeyboard.h"/>
-        <FILE id="W7EynZ" name="CabbageLabel.cpp" compile="1" resource="0"
+        <FILE id="xz8Btr" name="CabbageLabel.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageLabel.cpp"/>
-        <FILE id="A2ZFM1" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
-        <FILE id="zHUL2p" name="CabbageNumberBox.cpp" compile="1" resource="0"
+        <FILE id="rTXJE3" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
+        <FILE id="KhUZIl" name="CabbageNumberBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageNumberBox.cpp"/>
-        <FILE id="wHtqPP" name="CabbageNumberBox.h" compile="0" resource="0"
+        <FILE id="U2nb7V" name="CabbageNumberBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageNumberBox.h"/>
-        <FILE id="iI2Ijb" name="CabbageRangeSlider.cpp" compile="1" resource="0"
+        <FILE id="F8rFic" name="CabbageRangeSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRangeSlider.cpp"/>
-        <FILE id="PareD8" name="CabbageRangeSlider.h" compile="0" resource="0"
+        <FILE id="FuXcUx" name="CabbageRangeSlider.h" compile="0" resource="0"
               file="Source/Widgets/CabbageRangeSlider.h"/>
-        <FILE id="eX2TRw" name="CabbageSignalDisplay.cpp" compile="1" resource="0"
+        <FILE id="uWwtPC" name="CabbageSignalDisplay.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSignalDisplay.cpp"/>
-        <FILE id="bPnTpe" name="CabbageSignalDisplay.h" compile="0" resource="0"
+        <FILE id="xX8F24" name="CabbageSignalDisplay.h" compile="0" resource="0"
               file="Source/Widgets/CabbageSignalDisplay.h"/>
-        <FILE id="aqHbcQ" name="CabbageSlider.cpp" compile="1" resource="0"
+        <FILE id="IfejUB" name="CabbageSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSlider.cpp"/>
-        <FILE id="TDGHCs" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
-        <FILE id="MFdMHe" name="CabbageSoundfiler.cpp" compile="1" resource="0"
+        <FILE id="bQwsw2" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
+        <FILE id="rrVyG6" name="CabbageSoundfiler.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageSoundfiler.cpp"/>
-        <FILE id="HFW6ev" name="CabbageSoundfiler.h" compile="0" resource="0"
+        <FILE id="YGdvGc" name="CabbageSoundfiler.h" compile="0" resource="0"
               file="Source/Widgets/CabbageSoundfiler.h"/>
-        <FILE id="Jd26to" name="CabbageTextBox.cpp" compile="1" resource="0"
+        <FILE id="NoLKUe" name="CabbageTextBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageTextBox.cpp"/>
-        <FILE id="o1ubXu" name="CabbageTextBox.h" compile="0" resource="0"
+        <FILE id="HNReJk" name="CabbageTextBox.h" compile="0" resource="0"
               file="Source/Widgets/CabbageTextBox.h"/>
-        <FILE id="nUDkvT" name="CabbageTextEditor.cpp" compile="1" resource="0"
+        <FILE id="Nnl0DR" name="CabbageTextEditor.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageTextEditor.cpp"/>
-        <FILE id="RBVptC" name="CabbageTextEditor.h" compile="0" resource="0"
+        <FILE id="PXsaxu" name="CabbageTextEditor.h" compile="0" resource="0"
               file="Source/Widgets/CabbageTextEditor.h"/>
-        <FILE id="RPHDXt" name="CabbageWidgetBase.cpp" compile="1" resource="0"
+        <FILE id="ck4jws" name="CabbageWidgetBase.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageWidgetBase.cpp"/>
-        <FILE id="adbsKy" name="CabbageWidgetBase.h" compile="0" resource="0"
+        <FILE id="zyKS04" name="CabbageWidgetBase.h" compile="0" resource="0"
               file="Source/Widgets/CabbageWidgetBase.h"/>
-        <FILE id="FByZk9" name="CabbageWidgetData.cpp" compile="1" resource="0"
+        <FILE id="Cvcltw" name="CabbageWidgetData.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageWidgetData.cpp"/>
-        <FILE id="KJ210G" name="CabbageWidgetData.h" compile="0" resource="0"
+        <FILE id="HE99OP" name="CabbageWidgetData.h" compile="0" resource="0"
               file="Source/Widgets/CabbageWidgetData.h"/>
-        <FILE id="CNiEgr" name="CabbageWidgetDataInitMethods.cpp" compile="1"
+        <FILE id="MnRGft" name="CabbageWidgetDataInitMethods.cpp" compile="1"
               resource="0" file="Source/Widgets/CabbageWidgetDataInitMethods.cpp"/>
-        <FILE id="xWRql8" name="CabbageXYPad.cpp" compile="1" resource="0"
+        <FILE id="tg5I9e" name="CabbageXYPad.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageXYPad.cpp"/>
-        <FILE id="DZi0Uh" name="CabbageXYPad.h" compile="0" resource="0" file="Source/Widgets/CabbageXYPad.h"/>
+        <FILE id="mgwoB1" name="CabbageXYPad.h" compile="0" resource="0" file="Source/Widgets/CabbageXYPad.h"/>
       </GROUP>
-      <FILE id="r0UAhS" name="Cabbage.cpp" compile="1" resource="0" file="Source/Cabbage.cpp"/>
-      <FILE id="qZlpY2" name="Cabbage.h" compile="0" resource="0" file="Source/Cabbage.h"/>
-      <FILE id="gzEUUX" name="CabbageCommonHeaders.h" compile="0" resource="0"
+      <FILE id="PZce6z" name="Cabbage.cpp" compile="1" resource="0" file="Source/Cabbage.cpp"/>
+      <FILE id="aCBCeH" name="Cabbage.h" compile="0" resource="0" file="Source/Cabbage.h"/>
+      <FILE id="K0gWPg" name="CabbageCommonHeaders.h" compile="0" resource="0"
             file="Source/CabbageCommonHeaders.h"/>
-      <FILE id="PKMlbM" name="CabbageIds.h" compile="0" resource="0" file="Source/CabbageIds.h"/>
+      <FILE id="VGtE7A" name="CabbageIds.h" compile="0" resource="0" file="Source/CabbageIds.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

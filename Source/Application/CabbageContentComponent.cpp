@@ -300,7 +300,7 @@ void CabbageContentComponent::addInstrumentsAndRegionsToCombobox()
 void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
-    for( EditorAndConsoleContentComponent* editor : editorAndConsole )
+    for( CabbageEditorContainer* editor : editorAndConsole )
         editor->setBounds(0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight());
 }
 
@@ -369,7 +369,7 @@ void CabbageContentComponent::createEditorForAudioGraphNode()
 }
 
 //==============================================================================
-EditorAndConsoleContentComponent* CabbageContentComponent::getCurrentEditorAndConsole()
+CabbageEditorContainer* CabbageContentComponent::getCurrentEditorAndConsole()
 {
     if(editorAndConsole.size()>0)
         return editorAndConsole[currentFileIndex];
@@ -527,8 +527,8 @@ void CabbageContentComponent::openFile(String filename)
 
     cabbageSettings->updateRecentFilesList(currentCsdFile);
 
-    EditorAndConsoleContentComponent* editorConsole;
-    editorAndConsole.add(editorConsole = new EditorAndConsoleContentComponent(cabbageSettings->valueTree));
+    CabbageEditorContainer* editorConsole;
+    editorAndConsole.add(editorConsole = new CabbageEditorContainer(cabbageSettings->valueTree));
     addAndMakeVisible(editorConsole);
     addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(cabbageSettings->valueTree));
     propertyPanel->setVisible(false);

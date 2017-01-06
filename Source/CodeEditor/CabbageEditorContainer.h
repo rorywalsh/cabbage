@@ -17,14 +17,14 @@
   02111-1307 USA
 */
 
-#ifndef EDITORANDCONSOLECONTENTCOMPONENT_H_INCLUDED
-#define EDITORANDCONSOLECONTENTCOMPONENT_H_INCLUDED
+#ifndef CabbageEditorContainer_H_INCLUDED
+#define CabbageEditorContainer_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageCodeEditor.h"
 #include "CabbageOutputConsole.h"
 
-class EditorAndConsoleContentComponent   : public Component
+class CabbageEditorContainer   : public Component
 {
 public:
     //-------------------------------------------------------------
@@ -95,7 +95,7 @@ public:
     class HorizontalResizerBar : public Component
     {
     public:
-        HorizontalResizerBar(EditorAndConsoleContentComponent* parent, ValueTree valueTree)
+        HorizontalResizerBar(CabbageEditorContainer* parent, ValueTree valueTree)
             :Component("HorizontalResizerBar"),
              owner(parent),
              valueTree(valueTree)
@@ -136,15 +136,15 @@ public:
         }
 
     private:
-        EditorAndConsoleContentComponent* owner;
+        CabbageEditorContainer* owner;
         ValueTree valueTree;
         int startingYPos;
         bool isActive = false;
     };
 
     //=============================================================================
-    EditorAndConsoleContentComponent(ValueTree settings);
-    ~EditorAndConsoleContentComponent();
+    CabbageEditorContainer(ValueTree settings);
+    ~CabbageEditorContainer();
     void updateLookAndFeel();
     void openFile(File file);
     void resized();
@@ -164,4 +164,4 @@ private:
 };
 
 
-#endif  // EDITORANDCONSOLECONTENTCOMPONENT_H_INCLUDED
+#endif  // CabbageEditorContainer_H_INCLUDED
