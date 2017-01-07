@@ -1,0 +1,28 @@
+#!/bin/bash  
+echo "==========================================="
+echo "======== Build Script for Cabbage ========="
+echo "==========================================="
+
+echo "This scripts assumes that Csound is installed in the default location, i.e, includes files" 
+echo "should be located in /user/local/include/csound while the Csound library itself should be"
+echo "located in /user/local/lib It is also assumed that the VST SDK is located in ~/SDKs/"
+echo ""
+
+make -f MakeCabbageIDE clean CONFIG=Release
+make -f MakeCabbageIDE -j6 CONFIG=Release
+make -f MakePluginEffect clean CONFIG=Release
+make -f MakePluginEffect -j6 CONFIG=Release
+make -f MakePluginSynth clean CONFIG=Release
+make -f MakePluginSynth -j6 CONFIG=Release
+
+rm -rf CabbageBuild
+mkdir CabbageBuild
+cp ./build/Cabbage CabbageBuild/Cabbage
+cp ./../opcodes.txt CabbageBuild/opcodes.txt
+cp ./../../Images/cabbage.png CabbageBuild/cabbage.png
+cp ./build/CabbagePluginSynth.so CabbageBuild/CabbagePluginSynth.so
+cp ./build/CabbagePluginEffect.so CabbageBuild/CabbagePluginEffect.so
+#cp -rf ../../Docs/_book CabbageBuild/Docs
+#cp -rf ../../Examples/ CabbageBuild/Examples
+sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > CabbageBuild/cabbage.desktop
+cp CabbageBuild/cabbage.desktop ~/.local/share/applications/
