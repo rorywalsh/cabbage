@@ -4,7 +4,7 @@ dist: xenial
 language: cpp
 
 git:
-    depth: 1
+    depth: 10
 
 env:
   global:
