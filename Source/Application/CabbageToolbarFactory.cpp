@@ -21,7 +21,7 @@
 #include "CabbageContentComponent.h"
 
 CabbageToolbarFactory::CabbageToolbarFactory(CabbageContentComponent* owner)
-    : owner(owner)
+    : owner(owner), togglePlayButton(nullptr)
 {
 
 }
@@ -106,7 +106,7 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
     if(svgNormal == nullptr)
         jassert(false);
 
-    Drawable* drawableNormal;
+    Drawable* drawableNormal = nullptr;
 
     if (svgNormal != nullptr)
     {
@@ -116,7 +116,7 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
 	ScopedPointer<XmlElement> svgOn (XmlDocument::parse(onFile));
 	if(svgOn != nullptr)
 	{			
-        Drawable* drawableOn;
+        Drawable* drawableOn = nullptr;
 
         if (svgOn != nullptr)
         {

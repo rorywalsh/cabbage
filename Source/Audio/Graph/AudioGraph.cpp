@@ -182,10 +182,15 @@ void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceNam
 //==============================================================================
 String AudioGraph::getCsoundOutput()
 {
-    if(isCabbageFile)
-        return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
-    else
-        return dynamic_cast<GenericCabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+	if(getProcessor() != nullptr)
+	{
+		if(isCabbageFile)
+			return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+		else
+			return dynamic_cast<GenericCabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
+	}
+	
+	return String::empty;
 }
 
 //==============================================================================

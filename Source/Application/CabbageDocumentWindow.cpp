@@ -737,7 +737,8 @@ int CabbageDocumentWindow::setUniquePluginId(File binFile, File csdFile)
                 mFile.write(csdFile.getFileNameWithoutExtension().toUTF8(), 16);
             }
         }
-
+		
+		free(buffer);
 
     }
     else

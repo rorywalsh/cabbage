@@ -531,7 +531,7 @@ void CabbageContentComponent::openFile(String filename)
 
     if(File(filename).existsAsFile() == false)
     {
-        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*txt");
+        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*.csd");
 
         if (fc.browseForFileToOpen())
         {

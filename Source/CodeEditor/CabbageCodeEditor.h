@@ -156,7 +156,7 @@ private:
     ListBox autoCompleteListBox;
     StringArray variableNamesToShow, variableNames;
     CabbageEditorContainer* owner;
-    int updateGUICounter;
+    int updateGUICounter = 0;
 };
 
 template <class CallbackClass>

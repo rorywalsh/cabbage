@@ -151,12 +151,12 @@ void CabbageSettings::setProperty(String child, var value)
 
 int CabbageSettings::getIntProperty(String child)
 {
-    getUserSettings()->getIntValue(child);
+    return getUserSettings()->getIntValue(child);
 }
 
 String CabbageSettings::get(String child, String identifier)
 {
-    valueTree.getChildWithName(child).getProperty(identifier);
+   return valueTree.getChildWithName(child).getProperty(identifier).toString();
 }
 
 void CabbageSettings::set(ValueTree tree, String child, Identifier identifier, var value)
@@ -172,7 +172,7 @@ void CabbageSettings::set(ValueTree tree, String child, Identifier identifier, v
 
 String CabbageSettings::get(ValueTree tree, String child, String identifier)
 {
-    tree.getChildWithName(child).getProperty(identifier);
+    return tree.getChildWithName(child).getProperty(identifier);
 }
 
 Colour CabbageSettings::getColourFromValueTree(ValueTree tree, Identifier identifier, Colour defaultColour)

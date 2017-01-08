@@ -52,7 +52,7 @@ void GenericCabbagePluginProcessor::sendChannelDataToCsound()
 
     for(int i=0; i<params.size(); i++)
     {
-        AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]);
+        ScopedPointer<AudioParameterFloat> param = dynamic_cast<AudioParameterFloat*> (params[i]);
         getCsound()->SetChannel(param->name.toUTF8(), *param);
     }
 }

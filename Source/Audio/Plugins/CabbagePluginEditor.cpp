@@ -330,7 +330,7 @@ void CabbagePluginEditor::insertCsoundOutputConsole(ValueTree cabbageWidgetData)
         CabbageCsoundConsole* csoundConsole;
         components.add(csoundConsole = new CabbageCsoundConsole(cabbageWidgetData, this));
         addToEditorAndMakeVisible(csoundConsole, cabbageWidgetData);
-        csoundConsole++;
+        consoleCount++;
     }
 }
 

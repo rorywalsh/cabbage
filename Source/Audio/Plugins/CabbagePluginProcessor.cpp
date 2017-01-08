@@ -385,11 +385,14 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 CabbageAudioParameter* CabbagePluginProcessor::getParameterForXYPad(String name)
 {
     const OwnedArray<AudioProcessorParameter>& params = getParameters();
+	
     for( int i = 0 ; i < params.size() ; i++)
     {
         if(name==params[i]->getName(512))
             return  dynamic_cast<CabbageAudioParameter*> (params[i]);
     }
+	
+	return nullptr;
 }
 
 

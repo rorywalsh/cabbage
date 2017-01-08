@@ -82,14 +82,13 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     if(csdCompiledWithoutError())
     {
         csdKsmps = csound->GetKsmps();
-        if(csound->GetSpout()==nullptr);
         CSspout = csound->GetSpout();
         CSspin  = csound->GetSpin();
         cs_scale = csound->Get0dBFS();
         csndIndex = csound->GetKsmps();
 
         //hack to allow tables to be set up correctly.
-        // might be best to simply do an init run?
+        //might be best to simply do an init run?
         csound->PerformKsmps();
         csound->SetScoreOffsetSeconds(0);
         csound->RewindScore();
@@ -513,8 +512,6 @@ void CsoundPluginProcessor::setStateInformation (const void* data, int sizeInByt
 int CsoundPluginProcessor::OpenMidiInputDevice(CSOUND * csound, void **userData, const char* /*devName*/)
 {
     *userData = csoundGetHostData(csound);
-    if(!userData)
-        CabbageUtilities::debug("\n\ncan't open midi in\n\n");
     return 0;
 }
 
@@ -562,11 +559,7 @@ int CsoundPluginProcessor::ReadMidiData(CSOUND* /*csound*/, void *userData,
 //==============================================================================
 int CsoundPluginProcessor::OpenMidiOutputDevice(CSOUND * csound, void **userData, const char* /*devName*/)
 {
-#if !defined(AndroidBuild)
     *userData = csoundGetHostData(csound);
-    if(!userData)
-        Logger::writeToLog("\n\ncan't open midi out\n\n");
-#endif
     return 0;
 }
 
@@ -597,7 +590,7 @@ int CsoundPluginProcessor::WriteMidiData(CSOUND* /*csound*/, void *_userData,
 void CsoundPluginProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, const char * /*name*/)
 {
     CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
-    CsoundPluginProcessor::SignalDisplay* display = new CsoundPluginProcessor::SignalDisplay(String(windat->caption),windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
+    ScopedPointer<CsoundPluginProcessor::SignalDisplay> display = new CsoundPluginProcessor::SignalDisplay(String(windat->caption),windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
 
     bool addDisplay = true;
     for(int i=0; i<ud->signalArrays.size(); i++)
@@ -608,6 +601,7 @@ void CsoundPluginProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, co
 
     if(addDisplay)
         ud->signalArrays.add(display);
+	
 }
 
 void CsoundPluginProcessor::drawGraphCallback(CSOUND *csound, WINDAT *windat)

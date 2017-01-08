@@ -51,7 +51,7 @@ public:
     void timerCallback();
     void initialiseBasics();
     void shutdown();
-    bool isRunningCommandLine;
+    bool isRunningCommandLine = false;
     void initialise (const String& commandLine) override;
     void systemRequestedQuit() override
     {
