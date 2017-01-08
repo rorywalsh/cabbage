@@ -99,10 +99,8 @@ void CabbageEditorContainer::resized()
 {
 	Rectangle<int> rect = getLocalBounds();
     editor->setBounds(rect.removeFromTop(statusBar.getY()));	
-    //const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
-    //const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
 	rect.removeFromTop(statusBar.getHeight());
-    outputConsole->setBounds(rect);
+    outputConsole->setBounds(rect.withHeight(rect.getHeight()-statusBar.getHeight()*2));
 	
 }
 
