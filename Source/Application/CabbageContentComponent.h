@@ -58,6 +58,8 @@ public:
     void createAudioGraph();
     void rebuildAudioGraph();
     void addFileTabButton(File file, int xPos);
+	void arrangeFileTabButtons();
+	void removeEditor();
     Image createBackground();
     //==============================================================================
     void showAudioSettings();
@@ -66,9 +68,10 @@ public:
     void setEditMode(bool enable);
     void openFile(String filename="");
     bool closeAllDocuments (bool askUserToSave);
+	void closeDocument();
     bool closeAllMainWindows();
     void showSettingsDialog();
-    void saveDocument(bool saveAs=false);
+    void saveDocument(bool saveAs=false, bool recompile=true);
     void runCode();
     void stopCode();
     void showGenericWidgetWindow();
@@ -86,20 +89,20 @@ public:
     //==============================================================================
     String getAudioDeviceSettings();
     void timerCallback();
-
+	int getStatusbarYPos();
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<TextButton> fileTabs;
     Array<File> openFiles;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
-    CabbageEditorContainer* getCurrentEditorAndConsole();
+    CabbageEditorContainer* getCurrentEditorContainer();
     Toolbar toolbar;
 
     bool setCurrentCsdFile(File file);
 	const File getCurrentCsdFile(){		return currentCsdFile;	}
 
 private:
-
+	bool fileNeedsSaving = false;
     CabbageDocumentWindow* owner;
     //ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     CabbageToolbarFactory factory;

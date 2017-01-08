@@ -19,6 +19,7 @@
 
 #include "../CabbageIds.h"
 #include "../Settings/CabbageSettings.h"
+#include "../BinaryData/CabbageBinaryData.h"
 
 #ifndef CODEEDITORTOOLBARFACTORY_H_INCLUDED
 #define CODEEDITORTOOLBARFACTORY_H_INCLUDED
@@ -45,8 +46,9 @@ public:
         edit_copy       = 5,
         edit_cut        = 6,
         edit_paste      = 7,
-        custom_comboBox  = 8,
-        toggle_play		= 9
+		system_prefs	= 8,
+        custom_comboBox  = 9,
+        toggle_play		= 10
     };
 
     void getAllToolbarItemIds (Array<int>& ids) override;
@@ -62,7 +64,7 @@ public:
 
 private:
 
-    ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const File svgFile, const String onFile="");
+    ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const String svgFile, const String onFile="");
 
 
     class ToolbarComboBox : public ToolbarItemComponent

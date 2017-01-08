@@ -38,24 +38,6 @@ static void addCustomListener(Array<PropertyComponent*> comps, CabbageSettingsWi
     }
 }
 
-//static void addFilenameComponentListener(FilenameComponentListener* parent, PropertyComponent* propertyComponent)
-//{
-//    if(CabbageFilePropertyComponent* fileComp = dynamic_cast<CabbageFilePropertyComponent*>(propertyComponent))
-//        fileComp->filenameComp.addListener(parent);
-//
-//}
-//
-//static void addColourListener(Array<PropertyComponent*> comps, CabbageSettingsWindow* owner)
-//{
-//    for( int i = 0; i < comps.size(); i++)
-//    {
-//        if(ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*>(comps[i]))
-//        {
-//            colourProperty->addChangeListener(owner);
-//        }
-//    }
-//}
-
 CabbageSettingsWindow::CabbageSettingsWindow(CabbageSettings &settings, AudioDeviceSelectorComponent* audioDevice):
     Component(""),
     settings(settings),
@@ -99,11 +81,11 @@ void CabbageSettingsWindow::addColourProperties()
         const String name = CabbageSettings::getColourPropertyName(valueTree, index);
         const Colour colour = CabbageSettings::getColourFromValueTree(valueTree, index, Colours::red);
         if(name.contains("Editor -"))
-            editorProps.add (new ColourPropertyComponent(name, colour.toString()));
+            editorProps.add (new ColourPropertyComponent(name, colour.toString(), true));
         else if(name.contains("Console -"))
-            consoleProps.add (new ColourPropertyComponent(name, colour.toString()));
+            consoleProps.add (new ColourPropertyComponent(name, colour.toString(), true));
         else if(name.contains("Interface -"))
-            interfaceProps.add (new ColourPropertyComponent(name, colour.toString()));
+            interfaceProps.add (new ColourPropertyComponent(name, colour.toString(), true ));
     }
     colourPanel.clear();
     addCustomListener(interfaceProps, this);
@@ -131,9 +113,12 @@ void CabbageSettingsWindow::addMiscProperties()
     props.add (new BooleanPropertyComponent(alwaysOnTopValue, "Plugin Window", "Always show plugin on top"));
     props.add (new BooleanPropertyComponent(compileOnSaveValue, "Compiling", "Compile on save"));
 
-    props.add (new CabbageFilePropertyComponent("Csound manual dir.", true, false));
-    props.add (new CabbageFilePropertyComponent("Cabbage plants dir.", true, false));
-    props.add (new CabbageFilePropertyComponent("Cabbage examples dir.", true, false));
+	const String examplesDir = settings.getUserSettings()->getValue("CabbageExamplesDir");
+	const String manualDir = settings.getUserSettings()->getValue("CsoundManualDir");
+	const String plantDir = settings.getUserSettings()->getValue("CabbagePlantDir");
+    props.add (new CabbageFilePropertyComponent("Csound manual dir.", true, false,  "*", manualDir));
+    props.add (new CabbageFilePropertyComponent("Cabbage plants dir.", true, false, "*", plantDir));
+    props.add (new CabbageFilePropertyComponent("Cabbage examples dir.", true, false, "*", examplesDir));
 
     const String sshAddress = settings.getUserSettings()->getValue("SSHAddress");
     props.add(new TextPropertyComponent(Value (sshAddress), "SSH Address", 200, false));
@@ -141,8 +126,6 @@ void CabbageSettingsWindow::addMiscProperties()
     const String sshHomeDir = settings.getUserSettings()->getValue("SSHHomeDir");
     props.add(new TextPropertyComponent(Value (sshHomeDir), "SSH Home Directory", 200, false));
 
-//    const String sshLocalDir = settings.getUserSettings()->getValue("SSHLocalDir");
-//    props.add(new TextPropertyComponent(Value (sshLocalDir), "SSH Local Directory", 200, false));
 	
     addCustomListener(props, this);
     miscPanel.clear();
@@ -191,7 +174,14 @@ void CabbageSettingsWindow::valueChanged(Value& value)
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)
 {
-    CabbageUtilities::debug(fileComponent->getName());
+	CabbageUtilities::debug(fileComponent->getName());
+	if(fileComponent->getName()=="Csound manual dir.")
+		settings.getUserSettings()->setValue("CsoundManualDir", fileComponent->getCurrentFileText());
+	else if(fileComponent->getName()=="Cabbage plants dir.")
+		settings.getUserSettings()->setValue("CabbagePlantDir", fileComponent->getCurrentFileText());
+	else if(fileComponent->getName()=="Cabbage examples dir.")
+		settings.getUserSettings()->setValue("CabbageExamplesDir", fileComponent->getCurrentFileText());
+
 }
 
 void CabbageSettingsWindow::buttonClicked(Button* button)

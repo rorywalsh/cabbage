@@ -34,6 +34,7 @@ enum
     saveDocument            = 0x200040,
     saveDocumentAs          = 0x200041,
     settings				= 0x200042,
+	examples				= 0x200043,
 
     closeProject            = 0x200051,
     saveProject             = 0x200060,

@@ -19,25 +19,32 @@
 
 #include "CabbageEditorContainer.h"
 
-CabbageEditorContainer::CabbageEditorContainer(ValueTree settings)
-    : horizontalResizerBar(this, settings), settings(settings),
-      statusBar(settings)
+CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
+    : settings(settings),
+      statusBar(settings->valueTree, this)
 {
-    addAndMakeVisible(horizontalResizerBar);
     addAndMakeVisible(statusBar);
-    addAndMakeVisible(editor = new CabbageCodeEditorComponent(this, &statusBar, settings, csoundDocument, &csoundTokeniser));
-    addAndMakeVisible(outputConsole = new CabbageOutputConsole(settings));
+    addAndMakeVisible(editor = new CabbageCodeEditorComponent(this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
+    addAndMakeVisible(outputConsole = new CabbageOutputConsole(settings->valueTree));
     editor->setLineNumbersShown(true);
     editor->setFont(Font(String("DejaVu Sans Mono"), 17, 0));
     editor->setVisible(true);
     outputConsole->setVisible(true);
-    horizontalResizerBar.setVisible(true);
-    setSize(500, 500);
-    const int width = settings.getChildWithName("General").getProperty("LastKnownWidth");
-    const int height = settings.getChildWithName("General").getProperty("LastKnownHeight");
-    horizontalBarPosition = settings.getChildWithName("General").getProperty("HorizontalBarLastPosition");
-    editor->setBounds(0, 0, getWidth(), 500);
-    horizontalResizerBar.setBounds(0, 500, 4000, getHeight()*.01);
+
+    
+	statusBar.addMouseListener(this, true);
+	
+	const int width = settings->getUserSettings()->getIntValue("IDE_LastKnownWidth");
+	const int height = settings->getUserSettings()->getIntValue("IDE_LastKnownHeight");
+	const int x = settings->getUserSettings()->getIntValue("IDE_LastKnownX");
+	const int y = settings->getUserSettings()->getIntValue("IDE_LastKnownY");
+	const int statusBarPosition = settings->getUserSettings()->getIntValue("IDE_StatusBarPos");
+	
+	setSize(width, height);
+	setTopLeftPosition(x, y);
+
+	statusBar.setBounds(0, statusBarPosition, width, 28);
+    editor->setBounds(0, 0, width, height);
     updateLookAndFeel();
 }
 
@@ -46,11 +53,11 @@ CabbageEditorContainer::~CabbageEditorContainer()
     editor = nullptr;
     outputConsole = nullptr;
 }
+
 void CabbageEditorContainer::openFile(File file)
 {
     editor->setVisible(true);
     outputConsole->setVisible(true);
-    horizontalResizerBar.setVisible(true);
     editor->loadContent(file.loadFileAsString());
 }
 
@@ -58,23 +65,91 @@ void CabbageEditorContainer::updateLookAndFeel()
 {
     editor->updateColourScheme();
     outputConsole->updateColourScheme();
-    horizontalResizerBar.repaint();
+}
+
+int CabbageEditorContainer::getStatusBarPosition()
+{
+	return statusBar.getY();
+}
+
+void CabbageEditorContainer::mouseExit(const MouseEvent& e)
+{
+	if(e.eventComponent->getName()=="StatusBar")
+		statusBar.setMouseCursor(MouseCursor::NormalCursor);
+}
+
+void CabbageEditorContainer:: mouseEnter(const MouseEvent& e)
+{
+	startingDragPos = statusBar.getPosition().getY();
+	
+	if(e.eventComponent->getName()=="StatusBar")
+		statusBar.setMouseCursor(MouseCursor::UpDownResizeCursor);
+}
+
+void CabbageEditorContainer::mouseDrag(const MouseEvent& e)
+{
+	if(e.eventComponent->getName()=="StatusBar")
+	{
+		statusBar.setBounds(0, jlimit(statusBar.getHeight(), getHeight()-statusBar.getHeight(), startingDragPos+e.getDistanceFromDragStartY()), getWidth(), statusBar.getHeight());
+		resized();
+	}
 }
 
 void CabbageEditorContainer::resized()
 {
 	Rectangle<int> rect = getLocalBounds();
-    editor->setBounds(rect.removeFromTop(horizontalResizerBar.getY()));
+    editor->setBounds(rect.removeFromTop(statusBar.getY()));	
     //const int consoleY = horizontalResizerBar.getY()+horizontalResizerBar.getHeight();
     //const int consoleHeight = getHeight()-(consoleY+statusBarHeight+5);
-    statusBar.setBounds(rect.removeFromTop(28));
+	rect.removeFromTop(statusBar.getHeight());
     outputConsole->setBounds(rect);
+	
 }
 
 void CabbageEditorContainer::updateEditorColourScheme()
 {
     editor->updateColourScheme();
     outputConsole->updateColourScheme();
-    horizontalResizerBar.repaint();
     statusBar.repaint();
+}
+
+void CabbageEditorContainer::StatusBar::paint(Graphics &g)
+{
+	const Colour background = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBar, Colours::black);
+	const Colour text = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBarText, Colours::black);
+	const Colour outline = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleOutline, Colours::black);
+	const Colour opcodeColour = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::keyword, Colours::black);
+	const Colour syntaxColour = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::numbers, Colours::black);
+	const Colour commmentColour = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::comment, Colours::black);
+
+	g.fillAll(outline);
+
+	g.setColour(background.withAlpha(1.f));
+	g.setColour(background.darker(.7));
+	g.fillRect(2, 2, getWidth()-4, getHeight()-4);
+	g.setColour(text);
+	g.setFont(Font(14));
+	Rectangle<int> area (getLocalBounds());
+
+	if(statusText.size()==1)
+	{
+		g.setColour(syntaxColour);
+		g.drawFittedText (statusText[0], getLocalBounds().withLeft(25), Justification::left, 2);
+	}
+	else
+	{
+//		g.setColour(opcodeColour);
+//		g.setFont(Font(14, Font::bold));
+//		const String opcodeText = statusText[0].replace("\"", "");
+//		g.drawFittedText (opcodeText, getLocalBounds().withLeft(25), Justification::left, 2);
+		g.setColour(syntaxColour);
+		const int opcodeTextWidth = 10;//Font(14).getStringWidth(opcodeText)+10;
+		const String opcodeSyntaxText = statusText[3].replaceSection(0, 1, "").replaceSection(statusText[3].length()-2, 1, "");
+		g.drawFittedText(opcodeSyntaxText, area.withLeft(opcodeTextWidth+30), Justification::left, 2);
+		const int opcodeSyntaxWidth = Font(14).getStringWidth(opcodeSyntaxText)+10;
+		g.setFont(Font(14, Font::italic));
+		const String descriptionText = "; "+statusText[2];
+		g.setColour(commmentColour);
+		g.drawFittedText (descriptionText, getLocalBounds().withLeft(opcodeTextWidth+opcodeSyntaxWidth+50), Justification::left, 2);
+	}
 }

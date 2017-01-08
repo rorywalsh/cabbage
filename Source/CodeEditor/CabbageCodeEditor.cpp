@@ -176,7 +176,6 @@ void CabbageCodeEditorComponent::codeDocumentTextInserted(const String &text, in
     lastAction = "insertText";
     const CodeDocument::Position pos(getDocument(), startIndex);
     sendUpdateMessage(pos.getLineNumber());
-
 }
 
 void CabbageCodeEditorComponent::codeDocumentTextDeleted(int startIndex, int endIndex)
@@ -517,7 +516,8 @@ void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *originatingComponent)
 {
 
-    allowUpdateOfPluginGUI = true; //allow keystrokes to update GUI
+	
+    allowUpdateOfPluginGUI = true; 		//allow keystrokes to update GUI
 
     if (key.getTextDescription().contains("cursor up") || key.getTextDescription().contains("cursor down"))
     {
@@ -529,7 +529,6 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *ori
 
     if (! CustomTextEditorKeyMapper<CodeEditorComponent>::invokeKeyFunction (*this, key))
     {
-
 
         if (key == KeyPress::returnKey)
             handleReturnKey();
@@ -573,7 +572,7 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *ori
         else
             return false;
     }
-
+	
     getParentComponent()->repaint();
     //handleUpdateNowIfNeeded();
     return true;

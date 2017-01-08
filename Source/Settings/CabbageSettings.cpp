@@ -50,10 +50,9 @@ void CabbageSettings::setDefaultSettings()
 
 
 
-    defaultPropSet->setValue("CsoundHelpDir", manualPath);
-    defaultPropSet->setValue("CsoundHelpDir", manualPath);
-    defaultPropSet->setValue("PlantFileDir", homeDir+"/Plants");
-    defaultPropSet->setValue("ExamplesDir", homeDir+"/Examples/Examples");
+    defaultPropSet->setValue("CsoundManualDir", manualPath);
+    defaultPropSet->setValue("CabbagePlantDir", homeDir+"/Plants");
+    defaultPropSet->setValue("CabbageExamplesDir", homeDir+"/Examples/Examples");
     defaultPropSet->setValue("MostRecentDirectory", homeDir);
     defaultPropSet->setValue("DisablePluginInfo", 0);
     defaultPropSet->setValue("ShowEditorConsole", 1);
@@ -75,7 +74,6 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("EnablePopupDisplay", 1);
     defaultPropSet->setValue("ShowAutoComplete", 0);
     defaultPropSet->setValue("ShowNativeFileDialogues", 1);
-
     defaultPropSet->setValue("EnableNativePopup", 0);
     defaultPropSet->setValue("SSHHomeDir", "/pi");
     defaultPropSet->setValue("SSHAddress", "empty");
@@ -83,6 +81,12 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("windowX", 100);
     defaultPropSet->setValue("windowY", 100);
     defaultPropSet->setValue("audioSetup", "");
+
+	defaultPropSet->setValue("IDE_LastKnownWidth", 1200);
+	defaultPropSet->setValue("IDE_LastKnownHeight", 800);
+	defaultPropSet->setValue("IDE_LastKnownX", 10);
+	defaultPropSet->setValue("IDE_LastKnownY", 10);
+	defaultPropSet->setValue("IDE_StatusBarPos", 500);
 
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarBackground,  "ffada9a9");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarText,  "FFFFFFFF");

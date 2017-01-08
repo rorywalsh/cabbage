@@ -98,10 +98,6 @@
               file="Source/LookAndFeel/CabbageIDELookAndFeel.cpp"/>
         <FILE id="l1cs1e" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageIDELookAndFeel.h"/>
-        <FILE id="J7rJC8" name="CabbageLookAndFeel.cpp" compile="1" resource="0"
-              file="Source/LookAndFeel/CabbageLookAndFeel.cpp"/>
-        <FILE id="NXENUn" name="CabbageLookAndFeel.h" compile="0" resource="0"
-              file="Source/LookAndFeel/CabbageLookAndFeel.h"/>
         <FILE id="TMTr0P" name="CabbageLookAndFeel2.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="coSsb2" name="CabbageLookAndFeel2.h" compile="0" resource="0"

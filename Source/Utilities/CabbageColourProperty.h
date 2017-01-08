@@ -97,10 +97,11 @@ private:
 
 class ColourPropertyComponent : public PropertyComponent, public ChangeListener, public ChangeBroadcaster
 {
-
+	bool colourSettings;
+	
 public :
     //======= ColourPropertyComponent =======
-    ColourPropertyComponent(String name, String colourString);
+    ColourPropertyComponent(String name, String colourString, bool colourSettings=false);
     ~ColourPropertyComponent() {}
     void paint(Graphics &g);
     void mouseDown(const MouseEvent& e);

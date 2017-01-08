@@ -34,37 +34,40 @@ public:
 
     void refreshLookAndFeel(ValueTree valueTree);
 
-    void drawMenuBarBackground(Graphics &g, int width, int height, bool isMouseOverBar, MenuBarComponent &menuBar);
+    void drawMenuBarBackground(Graphics &g, int width, int height, bool isMouseOverBar, MenuBarComponent &menuBar) override;
     void drawMenuBarItem(Graphics & g, int width, int height, int itemIndex,
                          const String &itemText,
                          bool isMouseOverItem,
                          bool isMenuOpen,
                          bool isMouseOverBar,
-                         MenuBarComponent &menuBar);
-    void drawPopupMenuBackground (Graphics& g, int width, int height);
+                         MenuBarComponent &menuBar) override;
+    void drawPopupMenuBackground (Graphics& g, int width, int height) override;
     void drawPopupMenuItem(Graphics& g, const Rectangle<int>& area,
                            const bool isSeparator, const bool isActive,
                            const bool isHighlighted, const bool isTicked,
                            const bool hasSubMenu, const String& text,
                            const String& shortcutKeyText,
-                           const Drawable* icon, const Colour* const textColourToUse);
+                           const Drawable* icon, const Colour* const textColourToUse) override;
 
     void drawAlertBox (Graphics& g,
                        AlertWindow& alert,
                        const Rectangle<int>& textArea,
-                       TextLayout& textLayout);
+                       TextLayout& textLayout) override;
     void drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
                         int height,
                         bool isScrollbarVertical,
                         int thumbStartPosition,
                         int thumbSize,
                         bool isMouseOver,
-                        bool isMouseDown);
+                        bool isMouseDown) override;
 
     ImageEffectFilter* getScrollbarEffect();
     int getMinimumScrollbarThumbSize (ScrollBar& scrollbar);
     int getDefaultScrollbarWidth();
     int getScrollbarButtonSize(ScrollBar& scrollbar);
+	
+	Rectangle<int> getPropertyComponentContentPosition (PropertyComponent& component) override;	
+
 private:
     ValueTree colourTree;
 

@@ -63,6 +63,8 @@ public:
     bool closeAllMainWindows();
     void initSettings();
     void closeButtonPressed() override;
+	void maximiseButtonPressed();	
+
     void buttonClicked(Button* button);
     void focusGained (FocusChangeType cause); //grab focus when user clicks on editor
 
@@ -74,6 +76,8 @@ public:
 
 private:
     //=======================================================
+	PopupMenu createExamplesMenu();
+	Array<File> exampleFiles;
 	const String getPluginId(File csdFile);
 	void exportPlugin(String type, File csdFile);
 	int setUniquePluginId(File binFile, File csdFile);

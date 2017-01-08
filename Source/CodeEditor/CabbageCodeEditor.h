@@ -132,10 +132,16 @@ public:
         g.drawFittedText(variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
     }
 
-    void addChannelNameToPopupList(String channel)
-    {
-        variableNames.add(channel);
-    };
+	bool hasFileChanged()
+	{
+		return getDocument().hasChangedSinceSavePoint();
+	}
+	
+	void setSavePoint()
+	{
+		getDocument().setSavePoint();
+	}
+
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
     String lastAction;

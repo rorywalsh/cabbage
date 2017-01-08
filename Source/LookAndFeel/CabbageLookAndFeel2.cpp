@@ -1040,7 +1040,7 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
         const Rectangle<int>& textArea,
         TextLayout& textLayout)
 {
-    g.fillAll (Colour(250,250,250));
+     g.fillAll (Colour(250,250,250));
 
     int iconSpaceUsed = 160;
 
@@ -1053,16 +1053,32 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
             Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed).toFloat());
+			
             const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
-            g.drawImage(warningImage, rect.reduced(20));
+            //g.drawImage(warningImage, rect.reduced(20));
         }
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
             Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
             const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
-            g.drawImage(warningImage, rect.reduced(25));
+            //g.drawImage(warningImage, rect.reduced(25));
         }
+		    
+		MemoryInputStream svgStream(CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
+		ScopedPointer<XmlElement> svg (XmlDocument::parse(svgStream.readString()));
+			
+		if(svg == nullptr)
+			jassert(false);
 
+		ScopedPointer<Drawable> drawable;
+
+		if (svg != nullptr)
+		{
+			drawable = Drawable::createFromSVG(*svg);
+			Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
+			drawable->setTransformToFit(rect.reduced(30), RectanglePlacement::stretchToFit);
+			drawable->draw(g, 1.f, AffineTransform::identity);
+		}
     }
 
     g.setColour (alert.findColour (AlertWindow::textColourId));

@@ -12,8 +12,8 @@
 
 
 //======= ColourPropertyComponent =======
-ColourPropertyComponent::ColourPropertyComponent(String name, String colourString):
-    PropertyComponent(name, 25)
+ColourPropertyComponent::ColourPropertyComponent(String name, String colourString, bool colourSettings):
+    PropertyComponent(name, 25), colourSettings(colourSettings)
 {
     this->setName(name);
     colour = Colour::fromString(colourString);
@@ -33,8 +33,8 @@ void ColourPropertyComponent::paint(Graphics &g)
     g.setColour (textColour);
     g.setFont (getHeight()*.6);
 
-
-    const int textW = jmin (200, getWidth() / 3);
+	
+    const int textW = colourSettings == true ? 300 : jmin (200, getWidth() / 3);
     const Rectangle<int> r (textW, 1, getWidth() - textW - 1, getHeight() - 3);
 
     g.drawFittedText (getName(),
@@ -42,7 +42,7 @@ void ColourPropertyComponent::paint(Graphics &g)
                       Justification::centredLeft, 2);
 
     g.setColour(colour);
-    g.fillRect( getWidth()/3, r.getY(), getWidth(), r.getHeight());
+    g.fillRect( textW, r.getY(), getWidth(), r.getHeight());
 
 }
 

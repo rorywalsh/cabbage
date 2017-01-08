@@ -75,7 +75,6 @@ OBJECTS := \
   $(JUCE_OBJDIR)/ComponentOverlay_554fade3.o \
   $(JUCE_OBJDIR)/CabbageGenericPluginLookAndFeel_f8a44125.o \
   $(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o \
-  $(JUCE_OBJDIR)/CabbageLookAndFeel_85188477.o \
   $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o \
   $(JUCE_OBJDIR)/CabbageSettings_d59022e1.o \
   $(JUCE_OBJDIR)/CabbageSettingsWindow_8ea691f1.o \
@@ -234,11 +233,6 @@ $(JUCE_OBJDIR)/CabbageGenericPluginLookAndFeel_f8a44125.o: ../../Source/LookAndF
 $(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o: ../../Source/LookAndFeel/CabbageIDELookAndFeel.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageIDELookAndFeel.cpp"
-	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageLookAndFeel_85188477.o: ../../Source/LookAndFeel/CabbageLookAndFeel.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageLookAndFeel.cpp"
 	@$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o: ../../Source/LookAndFeel/CabbageLookAndFeel2.cpp

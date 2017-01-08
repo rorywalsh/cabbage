@@ -39,6 +39,7 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
+	ids.add (system_prefs);
     ids.add (toggle_play);
     ids.add (custom_comboBox);
 }
@@ -55,34 +56,43 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
+	ids.add (system_prefs);
     ids.add (toggle_play);
     ids.add (custom_comboBox);
 
 }
 
+static const String getSVGTextFromMemory(const void* svg, size_t size)
+{
+	MemoryInputStream svgStream(svg, size, false);
+    return svgStream.readString();
+}
 
 ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
 {
     switch (itemId)
     {
-    case doc_new:
-        return createButtonFromSVG(itemId, "new", File("/home/rory/sourcecode/cabaiste/Icons/document-new.svg"));
+	case doc_new:
+		return createButtonFromSVG(itemId, "new", getSVGTextFromMemory(CabbageBinaryData::documentnew_svg, CabbageBinaryData::documentnew_svgSize));
     case doc_open:
-        return createButtonFromSVG(itemId, "open", File("/home/rory/sourcecode/cabaiste/Icons/document-open.svg"));
+        return createButtonFromSVG(itemId, "open", getSVGTextFromMemory(CabbageBinaryData::documentopen_svg, CabbageBinaryData::documentopen_svgSize));
     case doc_save:
-        return createButtonFromSVG(itemId, "save", File("/home/rory/sourcecode/cabaiste/Icons/document-save.svg"));
+        return createButtonFromSVG(itemId, "save", getSVGTextFromMemory(CabbageBinaryData::documentsave_svg, CabbageBinaryData::documentsave_svgSize));
     case doc_saveAs:
-        return createButtonFromSVG(itemId, "save as", File("/home/rory/sourcecode/cabaiste/Icons/document-save-as.svg"));
+        return createButtonFromSVG(itemId, "save as", getSVGTextFromMemory(CabbageBinaryData::documentsaveas_svg, CabbageBinaryData::documentsaveas_svgSize));
     case edit_copy:
-        return createButtonFromSVG(itemId, "copy", File("/home/rory/sourcecode/cabaiste/Icons/edit-copy.svg"));
+        return createButtonFromSVG(itemId, "copy", getSVGTextFromMemory(CabbageBinaryData::editcopy_svg, CabbageBinaryData::editcopy_svgSize));
     case edit_cut:
-        return createButtonFromSVG(itemId, "cut", File("/home/rory/sourcecode/cabaiste/Icons/edit-cut.svg"));
+        return createButtonFromSVG(itemId, "cut", getSVGTextFromMemory(CabbageBinaryData::editcut_svg, CabbageBinaryData::editcut_svgSize));
     case edit_paste:
-        return createButtonFromSVG(itemId, "paste", File("/home/rory/sourcecode/cabaiste/Icons/edit-paste.svg"));
+        return createButtonFromSVG(itemId, "paste", getSVGTextFromMemory(CabbageBinaryData::editpaste_svg, CabbageBinaryData::editpaste_svgSize));
+    case system_prefs:
+        return createButtonFromSVG(itemId, "settings", getSVGTextFromMemory(CabbageBinaryData::emblemsystem_svg, CabbageBinaryData::emblemsystem_svgSize));
     case custom_comboBox:
         return(combo = new ToolbarComboBox (itemId));
     case toggle_play:
-        return createButtonFromSVG(itemId, "togglePlay", File("/home/rory/sourcecode/cabaiste/Icons/media-playback-start.svg"), "/home/rory/sourcecode/cabaiste/Icons/media-playback-stop.svg");
+        return createButtonFromSVG(itemId, "togglePlay", getSVGTextFromMemory(CabbageBinaryData::mediaplaybackstart_svg, CabbageBinaryData::mediaplaybackstart_svgSize),
+														getSVGTextFromMemory(CabbageBinaryData::mediaplaybackstop_svg, CabbageBinaryData::mediaplaybackstop_svgSize));
     default:
         break;
     }
@@ -90,9 +100,9 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
     return nullptr;
 }
 
-ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, const String& text, const File svgFile, const String onFile)
+ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, const String& text, const String svgFile, const String onFile)
 {
-    ScopedPointer<XmlElement> svgNormal (XmlDocument::parse(svgFile.loadFileAsString()));
+    ScopedPointer<XmlElement> svgNormal (XmlDocument::parse(svgFile));
     if(svgNormal == nullptr)
         jassert(false);
 
@@ -103,12 +113,9 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
         drawableNormal = Drawable::createFromSVG (*svgNormal);
     }
 
-    if(File(onFile).existsAsFile())
-    {
-        ScopedPointer<XmlElement> svgOn (XmlDocument::parse(File(onFile).loadFileAsString()));
-        if(svgOn == nullptr)
-            jassert(false);
-
+	ScopedPointer<XmlElement> svgOn (XmlDocument::parse(onFile));
+	if(svgOn != nullptr)
+	{			
         Drawable* drawableOn;
 
         if (svgOn != nullptr)

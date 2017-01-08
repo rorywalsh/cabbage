@@ -24,6 +24,7 @@ enum
 {
     recentProjectsBaseID = 100,
     activeDocumentsBaseID = 300,
+	examplesMenuBaseID = 3000,
     colourSchemeBaseID = 1000
 };
 
@@ -38,6 +39,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
 
+	
     initSettings();
     setContentOwned (content = new CabbageContentComponent(this, cabbageSettings), true);
     content->propertyPanel->setVisible(false);
@@ -45,15 +47,14 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
     setMenuBar(this, 25);
     getMenuBarComponent()->setLookAndFeel(getContentComponent()->lookAndFeel);
 
-    content->createAudioGraph();
+    
 
     if(cabbageSettings->getUserSettings()->getIntValue("OpenMostRecentFileOnStartup")==1)
     {
         cabbageSettings->updateRecentFilesList();
         content->openFile(cabbageSettings->getMostRecentFile().getFullPathName());
+		//content->createAudioGraph();
     }
-
-
 
     setApplicationCommandManagerToWatch(&commandManager);
     commandManager.registerAllCommandsForTarget(this);
@@ -64,6 +65,15 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
 #endif
     setLookAndFeel(&getContentComponent()->getLookAndFeel());
     lookAndFeelChanged();
+	
+
+	const int width = cabbageSettings->getUserSettings()->getIntValue("IDE_LastKnownWidth");
+	const int height = cabbageSettings->getUserSettings()->getIntValue("IDE_LastKnownHeight");
+	const int x = cabbageSettings->getUserSettings()->getIntValue("IDE_LastKnownX");
+	const int y = cabbageSettings->getUserSettings()->getIntValue("IDE_LastKnownY");
+	this->setTopLeftPosition(x, y);
+	setSize(width, height);
+		
 }
 
 void CabbageDocumentWindow::initSettings()
@@ -91,6 +101,15 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
+	
+	cabbageSettings->setProperty("IDE_LastKnownWidth", getWidth());
+	cabbageSettings->setProperty("IDE_LastKnownHeight", getHeight());
+	cabbageSettings->setProperty("IDE_LastKnownX", getX());
+	cabbageSettings->setProperty("IDE_LastKnownY", getY());
+	
+	if(getContentComponent()->getCurrentCodeEditor())
+		cabbageSettings->setProperty("IDE_StatusBarPos", getContentComponent()->getStatusbarYPos());
+		
     cabbageSettings->setProperty("audioSetup", getContentComponent()->getAudioDeviceSettings());
     cabbageSettings->closeFiles();
 
@@ -101,6 +120,11 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
 CabbageContentComponent* CabbageDocumentWindow::getContentComponent()
 {
     return content;
+}
+
+void CabbageDocumentWindow::maximiseButtonPressed()
+{
+	getContentComponent()->resizeAllEditorAndConsoles(getHeight());
 }
 
 void CabbageDocumentWindow::closeButtonPressed()
@@ -130,6 +154,50 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
 
 }
 
+static void addFilesToPopupMenu(PopupMenu &m, Array<File> &filesArray, String dir, String ext, int indexOffset)
+{
+	filesArray.clear();
+	File searchDir(dir);
+	Array<File> subFolders;
+	subFolders.add(searchDir);
+	int noOfFiles=0, fileCnt;
+	searchDir.findChildFiles(subFolders, File::findDirectories, true);
+	subFolders.sort();
+	String pathSlash;
+	if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Linux
+		|| SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::MacOSX)
+	{
+		pathSlash = "/";
+		dir = dir+ "/";
+	}
+	else
+	{
+		pathSlash = "\\";
+		dir = dir+ "\\";
+	}
+
+	PopupMenu subMenu;
+
+	for (int i = 1; i < subFolders.size(); i++)
+	{
+		if(!subFolders[i].containsSubDirectories())
+		{
+			subFolders[i].findChildFiles(filesArray, File::findFiles, false, ext);
+			filesArray.sort();
+
+			subMenu.clear();
+			for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+			{
+				subMenu.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+			}
+			noOfFiles = fileCnt;
+			if(noOfFiles>0)
+				m.addSubMenu(subFolders[i].getFullPathName().replace(dir, "").replace(pathSlash, "-"), subMenu);
+		}
+	}
+	subMenu.clear();
+}
+
 void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::newProject);
@@ -140,16 +208,23 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     cabbageSettings->updateRecentFilesList();
     cabbageSettings->recentFiles.createPopupMenuItems (recentFilesMenu, recentProjectsBaseID, true, true);
     menu.addSubMenu ("Open Recent", recentFilesMenu);
-
+	
+	const String examplesDir = cabbageSettings->getUserSettings()->getValue("CabbageExamplesDir", "");
+	
+	PopupMenu examplesMenu;	
+	addFilesToPopupMenu(examplesMenu, exampleFiles, examplesDir, "*.csd", examplesMenuBaseID);
+	
+	menu.addSubMenu ("Examples", examplesMenu);
+    menu.addSeparator();
+	menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
+    menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
+    menu.addCommandItem (&commandManager, CommandIDs::saveAll);
+	menu.addSeparator();
+	menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
     menu.addSeparator();
 	menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
 	menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
 	menu.addSeparator();
-	menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
-    menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
-    menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
-    menu.addCommandItem (&commandManager, CommandIDs::saveAll);
-    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
     menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
 	
@@ -241,12 +316,18 @@ void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
     menu.addSeparator();
 }
 
+
 void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIndex)
 {
     if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
     {
         getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
     }
+	else if (menuItemID >= examplesMenuBaseID && menuItemID < exampleFiles.size() + examplesMenuBaseID)
+	{
+		//CabbageUtilities::debug(exampleFiles[menuItemID-examplesMenuBaseID].getFullPathName());
+		getContentComponent()->openFile (exampleFiles[menuItemID-examplesMenuBaseID].getFullPathName());
+	}
 }
 
 void CabbageDocumentWindow::focusGained(FocusChangeType cause) //grab focus when user clicks on editor
@@ -265,9 +346,11 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::open,
 							  CommandIDs::openFromRPi,
                               CommandIDs::closeAllDocuments,
+							  CommandIDs::closeDocument,
                               CommandIDs::saveDocument,
 							  CommandIDs::saveDocumentToRPi,
                               CommandIDs::saveDocumentAs,
+							  CommandIDs::examples,
                               CommandIDs::settings,
                               CommandIDs::runCode,
                               CommandIDs::stopCode,
@@ -291,7 +374,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
     bool shouldShowEditMenu = false;
-    if(getContentComponent()->getCurrentEditorAndConsole()!= nullptr)
+    if(getContentComponent()->getCurrentEditorContainer()!= nullptr)
         shouldShowEditMenu = true;
 
     switch (commandID)
@@ -306,6 +389,15 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
         break;
 
+    case CommandIDs::closeDocument:
+        result.setInfo ("Close file", "Closes a file", CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('w', ModifierKeys::commandModifier, 0));
+        break;
+		
+    case CommandIDs::examples:
+        result.setInfo ("Examples", "Open an example", CommandCategories::general, 0);
+        break;
+		
     case CommandIDs::openFromRPi:
         result.setInfo ("Open from RPi", "Opens a file from a RPi", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
@@ -322,7 +414,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         break;
 		
     case CommandIDs::saveDocumentAs:
-        result.setInfo ("Save file as...", "Save a document", CommandCategories::general, 0);
+        result.setInfo ("Save as...", "Save a document", CommandCategories::general, 0);
         result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
         break;
 		
@@ -457,6 +549,9 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 		break;
     case CommandIDs::saveDocumentAs:
         getContentComponent()->saveDocument(true);
+        break;
+    case CommandIDs::closeDocument:
+getContentComponent()->closeDocument();
         break;
     case CommandIDs::closeAllDocuments:
         break;
