@@ -21,6 +21,7 @@
 #include "CabbageDocumentWindow.h"
 #include "../Utilities/CabbageNewProjectWindow.h"
 #include "../Utilities/CabbageSSHFileBrowser.h"
+#include "../Utilities/CabbageStrings.h"
 
 //==============================================================================
 CabbageContentComponent::CabbageContentComponent(CabbageDocumentWindow* owner, CabbageSettings* settings): cabbageSettings(settings), owner(owner), factory(this)
@@ -43,6 +44,8 @@ CabbageContentComponent::~CabbageContentComponent()
 {
     editorAndConsole.clear();
     audioGraph = nullptr;
+	if(tempFile.existsAsFile())
+		tempFile.deleteFile();
 }
 
 void CabbageContentComponent::paint (Graphics& g)
@@ -316,7 +319,7 @@ void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 }
 
 //==============================================================================
-void CabbageContentComponent::createAudioGraph()
+void CabbageContentComponent::createAudioGraph(bool firstRun)
 {
     const Point<int> lastPoint = PluginWindow::getPositionOfCurrentlyOpenWindow(1);
 
@@ -326,8 +329,16 @@ void CabbageContentComponent::createAudioGraph()
         cabbageSettings->setProperty("windowY", lastPoint.getY());
     }
 
-    audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
-    audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+	if(firstRun==true)
+	{
+		tempFile = File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory).getChildFile("tmp.csd");
+		tempFile.replaceWithText(CabbageStrings::getNewCsoundFileText());
+		audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), tempFile, false);
+	}
+	else
+	   audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
+    
+	audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
 
     createEditorForAudioGraphNode();
 //    if(getCurrentCodeEditor() != nullptr)

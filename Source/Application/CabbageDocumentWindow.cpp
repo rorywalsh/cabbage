@@ -47,13 +47,12 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
     setMenuBar(this, 25);
     getMenuBarComponent()->setLookAndFeel(getContentComponent()->lookAndFeel);
 
-    
+	content->createAudioGraph(true);
 
     if(cabbageSettings->getUserSettings()->getIntValue("OpenMostRecentFileOnStartup")==1)
     {
         cabbageSettings->updateRecentFilesList();
         content->openFile(cabbageSettings->getMostRecentFile().getFullPathName());
-		//content->createAudioGraph();
     }
 
     setApplicationCommandManagerToWatch(&commandManager);
