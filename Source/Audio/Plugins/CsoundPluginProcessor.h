@@ -170,6 +170,7 @@ public:
         void setPoints(Array <float, CriticalSection > tablePoints)
         {
             points.swapWith(tablePoints);
+			tablePoints.clear();
         }
 
     private:

@@ -42,8 +42,10 @@ private:
     void valueChanged() override;
 
     bool mouseDragBetweenThumbs;
-    float xMinAtThumbDown, xMaxAtThumbDown;
-    float yMinAtThumbDown, yMaxAtThumbDown;
+    float xMinAtThumbDown = 0;
+	float xMaxAtThumbDown = 0;
+    float yMinAtThumbDown = 0;
+	float yMaxAtThumbDown = 0;
 };
 
 class CabbageRangeSlider  : public Component, public ValueTree::Listener, public CabbageWidgetBase

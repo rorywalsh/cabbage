@@ -452,7 +452,7 @@ CabbagePluginProcessor* CabbageContentComponent::getCabbagePluginProcessor()
 
 int CabbageContentComponent::getStatusbarYPos()
 {
-	getCurrentEditorContainer()->getStatusBarPosition();
+	return getCurrentEditorContainer()->getStatusBarPosition();
 }
 
 //=======================================================================================

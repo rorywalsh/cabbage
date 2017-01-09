@@ -55,9 +55,9 @@ void CabbageImage::paint(Graphics& g)
         g.setColour(outlineColour);
 
         if(shape=="square")
-            g.fillRoundedRectangle(0,0, getWidth(), getHeight(), corners);
+            g.fillRoundedRectangle(0,0, jmax(1, getWidth()), jmax(1, getHeight()), corners);
         else
-            g.fillEllipse(0,0, getWidth(), getHeight());
+            g.fillEllipse(0,0, jmax(1, getWidth()), jmax(1, getHeight()));
 
         g.setColour(mainColour);
 

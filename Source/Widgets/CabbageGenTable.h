@@ -33,11 +33,10 @@ class CabbageGenTable : public Component, public ValueTree::Listener, public Cab
     String fontcolour;
     String file, tooltipText;
     var ampranges;
-    float zoom, rotate;
+    float zoom;
     float startpos, endpos;
-    double sampleRate;
-    int pivotx, pivoty;
-    double scrubberPos;
+    double sampleRate = 0;
+    double scrubberPos = 0;
     var ampRanges;
     CabbagePluginEditor* owner;
     TableManager table;

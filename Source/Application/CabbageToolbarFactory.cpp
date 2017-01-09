@@ -21,7 +21,7 @@
 #include "CabbageContentComponent.h"
 
 CabbageToolbarFactory::CabbageToolbarFactory(CabbageContentComponent* owner)
-    : owner(owner), togglePlayButton(nullptr)
+    : owner(owner), togglePlayButton(nullptr), combo(nullptr)
 {
 
 }

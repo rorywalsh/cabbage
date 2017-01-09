@@ -47,7 +47,7 @@ public:
     void resized();
 
     void setFile(String newFile);
-    int setWaveform(AudioSampleBuffer buffer, int channels);
+    void setWaveform(AudioSampleBuffer buffer, int channels);
     int getScrubberPosition();
     int getLoopLength();
 

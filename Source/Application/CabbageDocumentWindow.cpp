@@ -718,7 +718,7 @@ int CabbageDocumentWindow::setUniquePluginId(File binFile, File csdFile)
                 plugLibName.append(String(" "), 1);
 
         mFile.seekg (0, ios::end);
-        buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
+        //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
         
         for(int i=0;i<5;i++)
         {

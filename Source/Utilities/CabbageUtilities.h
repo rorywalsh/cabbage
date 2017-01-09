@@ -219,9 +219,7 @@ public:
         if (prec > 0)
             for (i = 0; i < prec; i++)
                 power *= 10.0;
-        else if (prec < 0)
-            for (i = 0; i < prec; i++)
-                power /= 10.0;
+
 
         if (x > 0)
             x = floor(x * power + 0.5) / power;
@@ -319,8 +317,8 @@ public:
         //space.  Dots are added at the end to signify that it has been truncated.
 
         String newStr;
-        float stringWidth = font.getStringWidthFloat (input);
-        int numChars = input.length();
+        float stringWidth = jmax(font.getStringWidthFloat (input), 1.f);
+        int numChars = jmax(1, input.length());
         float charWidth = stringWidth / numChars;
 
         if (stringWidth > availableWidth)
@@ -629,7 +627,7 @@ public:
         return mode;
     }
 
-    int setMode(int mod)
+    void setMode(int mod)
     {
         mode=mod;
     }

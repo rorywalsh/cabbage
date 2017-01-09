@@ -23,15 +23,10 @@ CabbageGroupBox::CabbageGroupBox(ValueTree wData)
     : widgetData(wData),
       text(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text)),
       colour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)),
-      left(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::left)),
-      top(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::top)),
       fontColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)),
       outlineColour(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)),
       GroupComponent(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name)),
       outlineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness)),
-      rotate(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::rotate)),
-      pivotx(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::pivotx)),
-      pivoty(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::pivoty)),
       corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
       justification(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::align))
 {

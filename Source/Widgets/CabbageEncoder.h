@@ -32,8 +32,22 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     bool shouldDisplayPopup = true;
     Rectangle<float> slider;
     Label textLabel, valueLabel;
-    float sliderIncr, value, skew, startingValue, sliderPos, currentEncValue, max, min, maxEnabled, minEnabled;
-    int yAxis, shouldShowValueTextBox, height, line, progress, decimalPlaces;
+    float sliderIncr = 0;
+	float value = 0;
+	float skew = 0;
+	float startingValue = 0;
+	float sliderPos = 0;
+	float currentEncValue = 0;
+	float max = 0;
+	float min = 0;
+	float maxEnabled = 0;
+	float minEnabled = 0;
+    int yAxis = 0; 
+	int shouldShowValueTextBox = 0; 
+	int height = 10;
+	int line = 1;
+	int progress = 0;
+	int decimalPlaces = 1;
     String outlinecolour, colour, trackercolour, text, textcolour, popupText;
     BubbleMessageComponent popupBubble;
 
