@@ -1608,25 +1608,4 @@ String CabbageWidgetData::removeWidgetFromValueTree(ValueTree wData, int lineNum
     return String::empty;
 }
 
-
-//===================================================================
-float CabbageWidgetData::getTableChannelValues(int index)
-{
-    jassert(false);
-}
-//===================================================================
-void CabbageWidgetData::addTableChannelValues()
-{
-    jassert(false);
-}
-//===================================================================
-void CabbageWidgetData::setTableChannelValues(int index, float val)
-{
-    jassert(false);
-}
-//===================================================================
-void CabbageWidgetData::scaleWidget(Point<float> scale)
-{
-    jassert(false);
-}
 //===================================================================

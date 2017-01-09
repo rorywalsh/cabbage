@@ -102,21 +102,23 @@ void TableManager::changeListenerCallback(ChangeBroadcaster *source)
     }
     else
     {
-        GenTable* table = dynamic_cast<GenTable*>(source);
-        if(table->changeMessage=="updateScrollingPosition")
-            if(table)
-            {
-                for(int i=0; i<tables.size(); i++)
-                {
-                    if(table!=tables[i])
-                    {
-                        float moveBy = table->getNewRangeStart()/ table->visibleRange.getLength();
-                        moveBy = tables[i]->visibleRange.getLength()*moveBy;
-                        tables[i]->setRange(tables[i]->visibleRange.movedToStartAt (moveBy), true);
-                    }
-                }
+        if(GenTable* table = dynamic_cast<GenTable*>(source))
+		{
+			if(table->changeMessage=="updateScrollingPosition")
+				if(table)
+				{
+					for(int i=0; i<tables.size(); i++)
+					{
+						if(table!=tables[i])
+						{
+							float moveBy = table->getNewRangeStart()/ table->visibleRange.getLength();
+							moveBy = tables[i]->visibleRange.getLength()*moveBy;
+							tables[i]->setRange(tables[i]->visibleRange.movedToStartAt (moveBy), true);
+						}
+					}
 
-            }
+				}
+		}
     }
 
 }

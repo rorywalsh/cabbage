@@ -63,11 +63,13 @@ void ColourPropertyComponent::mouseDown(const MouseEvent& e)
 
 void ColourPropertyComponent::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
-    ScopedPointer<ColourPallete> cs = dynamic_cast <ColourPallete*> (source);
-    if(cs->getNameOfParent()==name)
-        colour = cs->getCurrentColour();
-    repaint();
-    sendChangeMessage();
+    if(ColourPallete* cs = dynamic_cast <ColourPallete*> (source))
+	{
+		if(cs->getNameOfParent()==name)
+			colour = cs->getCurrentColour();
+		repaint();
+		sendChangeMessage();
+	}
 }
 
 String ColourPropertyComponent::getCurrentColourString()

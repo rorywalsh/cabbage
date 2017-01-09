@@ -90,10 +90,6 @@ public:
     static String removeWidgetFromValueTree(ValueTree widgetData, int lineNumber);
     //============================================================================
     static ValueTree getValueTreeForComponent(ValueTree widgetData, String name);
-    void setTableChannelValues(int index, float val);
-    float getTableChannelValues(int index);
-    void addTableChannelValues();
-    void scaleWidget(Point<float> scale);
     static Rectangle<int> getBoundsFromText(String text);
 
 
