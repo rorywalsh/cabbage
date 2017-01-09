@@ -76,7 +76,7 @@ void CabbageSoundfiler::setFile(String newFile)
     soundfiler.setFile(File(newFile));
 }
 
-int CabbageSoundfiler::setWaveform(AudioSampleBuffer buffer, int channels)
+void CabbageSoundfiler::setWaveform(AudioSampleBuffer buffer, int channels)
 {
     soundfiler.setWaveform(buffer, channels);
 }
