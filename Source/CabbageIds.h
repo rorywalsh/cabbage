@@ -288,6 +288,7 @@ public:
         add("tablenumber");
         add("displaytype");
         add("fontcolor:1");
+		add("basechannel");
         add("fontcolour");
         add("textcolour");
         add("updaterate");
@@ -301,6 +302,7 @@ public:
         add("textcolor");
         add("fontstyle");
         add("fontcolor");
+		add("arraysize");
         add("populate");
         add("keywidth");
         add("pluginid");
@@ -378,6 +380,8 @@ static const Identifier scaley = "scaley";
 static const Identifier rescale = "scale";
 static const Identifier channel = "channel";
 static const Identifier widgetarray = "widgetarray";
+static const Identifier basechannel = "basechannel";
+static const Identifier arraysize = "arraysize";
 static const Identifier identchannelarray = "identchannelarray";
 static const Identifier outlinecolour = "outlinecolour";
 static const Identifier fillcolour = "fillcolour";
@@ -660,7 +664,8 @@ public:
         set("Background", CabbageIdentifierIds::backgroundcolour.toString());
         set("Ball", CabbageIdentifierIds::ballcolour.toString());
 		set("Mode", CabbageIdentifierIds::mode.toString());
-
+		set("Base Channel", CabbageIdentifierIds::basechannel.toString());
+		set("Array Size", CabbageIdentifierIds::arraysize.toString());
 		set("Thumb Image", CabbageIdentifierIds::imgslider.toString());
 		set("Background Image", CabbageIdentifierIds::imgsliderbg.toString());
         set("On Image", CabbageIdentifierIds::imgbuttonon.toString());

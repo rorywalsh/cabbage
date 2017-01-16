@@ -45,6 +45,8 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     setProperty(widgetData, CabbageIdentifierIds::linenumber, ID);
     setProperty(widgetData, CabbageIdentifierIds::decimalplaces, 0);
     setProperty(widgetData, CabbageIdentifierIds::update, 0);
+	setProperty(widgetData, CabbageIdentifierIds::arraysize, 0);
+	setProperty(widgetData, CabbageIdentifierIds::basechannel, "");
 
     int top, left, width, height;
     StringArray strTokens;
@@ -340,7 +342,10 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
 
                     }
                     setProperty(widgetData, CabbageIdentifierIds::widgetarray, channelArray);
+					setProperty(widgetData, CabbageIdentifierIds::arraysize, size);
+					setProperty(widgetData, CabbageIdentifierIds::basechannel, strTokens[0]);
                     setProperty(widgetData, CabbageIdentifierIds::identchannelarray, identChannelArray);
+					
                 }
             }
 

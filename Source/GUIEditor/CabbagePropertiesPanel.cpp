@@ -146,6 +146,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)
     propertyPanel.addSection ("Text", createTextEditors(widgetData));
     propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
     propertyPanel.addSection ("Images", createFileEditors(widgetData));
+	propertyPanel.addSection ("Widget Array", createWidgetArrayEditors(this, widgetData), false);
     propertyPanel.addSection ("Misc", createMiscEditors(widgetData));
 
 
@@ -167,6 +168,7 @@ void CabbagePropertiesPanel::updateProperties(ValueTree wData)
     propertyPanel.addSection ("Text", createTextEditors(widgetData));
     propertyPanel.addSection ("Colours", createColourChoosers(widgetData));
     propertyPanel.addSection ("Images", createFileEditors(widgetData));
+	propertyPanel.addSection ("Widget Array", createWidgetArrayEditors(this, widgetData), false);
     propertyPanel.addSection ("Misc", createMiscEditors(widgetData));
     this->setVisible(true);
 
@@ -608,12 +610,23 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 
     }
 
-	//const int widgetArrayChannelSize = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::identchannelarray).size();
-	
     addListener(comps, this);
     return comps;
 }
 
+//==============================================================================
+Array<PropertyComponent*> CabbagePropertiesPanel::createWidgetArrayEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
+{
+	Array<PropertyComponent*> comps;	
+	const int widgetArrayChannelSize = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::arraysize);
+	const String channelName  = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::basechannel);	
+		
+	comps.add(new TextPropertyComponent(Value(channelName), "Base channel", 8, false));
+	comps.add(new TextPropertyComponent(Value(widgetArrayChannelSize), "Array Size", 8, false));
+		
+    addListener(comps, this);
+    return comps;	
+}
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {

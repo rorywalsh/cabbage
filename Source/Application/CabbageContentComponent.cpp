@@ -599,7 +599,7 @@ void CabbageContentComponent::saveDocument(bool saveAs, bool recompile)
 
         if (fc.browseForFileToSave(false))
         {
-            if(fc.getResult().withFileExtension(".csd").existsAsFile())
+            if(fc.getResult().withFileExtension("csd").existsAsFile())
             {
                 const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel);
                 if(result==0)
