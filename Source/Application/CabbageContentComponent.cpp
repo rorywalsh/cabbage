@@ -334,13 +334,15 @@ void CabbageContentComponent::createAudioGraph(bool firstRun)
 		tempFile = File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory).getChildFile("tmp.csd");
 		tempFile.replaceWithText(CabbageStrings::getNewCsoundFileText());
 		audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), tempFile, false);
+		audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
 	}
 	else
-	   audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
-    
-	audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+	{
+		audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
+		audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+	    createEditorForAudioGraphNode();
+	}
 
-    createEditorForAudioGraphNode();
 //    if(getCurrentCodeEditor() != nullptr)
 //        getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
 

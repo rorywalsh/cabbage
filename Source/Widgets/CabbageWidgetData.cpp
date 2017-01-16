@@ -49,7 +49,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     int top, left, width, height;
     StringArray strTokens;
     strTokens.addTokens(lineFromCsd, " ", "\"");
-    setProperty(widgetData, CabbageIdentifierIds::channelarray, "");
+    setProperty(widgetData, CabbageIdentifierIds::widgetarray, "");
 
     if(strTokens[0].trim() == "hslider")
         setHSliderProperties(widgetData, ID);
@@ -321,40 +321,10 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             {
                 var array;
                 array.append(strTokens[0].trim());
-                //if(str.containsIgnoreCase("xypad"))
-                // {
-                //    setProperty(widgetData, CabbageIdentifierIds::xchannel, strTokens[0].trim());
-                //    setProperty(widgetData, CabbageIdentifierIds::ychannel, strTokens[1].trim());
-                //}
 
                 for(int i=1; i<strTokens.size(); i++)
                 {
                     array.append(strTokens[i].trim());
-                }
-
-                if(identArray[indx].equalsIgnoreCase("channelarray"))
-                {
-                    //if there are already channels declared we want to keep them
-                    array.resize(0);
-
-                    const Array<var>* valueArray = widgetData.getProperty(CabbageIdentifierIds::channel).getArray();
-
-                    if(valueArray)
-                    {
-                        for(int i=0; i<valueArray->size(); i++)
-                        {
-                            array.append(valueArray[i]);
-                        }
-                    }
-                    var channelArray, identChannelArray;
-                    int size = strTokens[1].getIntValue();
-                    for(int i=0; i<size; i++)
-                    {
-                        array.append(strTokens[0]+String(i+1));
-                    }
-                    setProperty(widgetData, CabbageIdentifierIds::channel, array);
-                    //identifiers that appear more than once need to use indx-- so we can check for another instance
-                    indx--;
                 }
 
                 setProperty(widgetData, CabbageIdentifierIds::channel, array);
@@ -369,7 +339,7 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                         identChannelArray.append(String(strTokens[0])+String("_ident")+String(i+1));
 
                     }
-                    setProperty(widgetData, CabbageIdentifierIds::channelarray, channelArray);
+                    setProperty(widgetData, CabbageIdentifierIds::widgetarray, channelArray);
                     setProperty(widgetData, CabbageIdentifierIds::identchannelarray, identChannelArray);
                 }
             }

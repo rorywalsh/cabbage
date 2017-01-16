@@ -608,6 +608,8 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors(ValueTree va
 
     }
 
+	//const int widgetArrayChannelSize = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::identchannelarray).size();
+	
     addListener(comps, this);
     return comps;
 }

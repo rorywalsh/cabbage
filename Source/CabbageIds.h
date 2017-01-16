@@ -272,7 +272,7 @@ public:
         add("trackercolour");
         add("valuetextbox");
         add("fontcolour:1");
-        add("channelarray");
+        add("widgetarray");
         add("trackercolor");
         add("refreshfiles");
         add("tablenumbers");
@@ -377,7 +377,7 @@ static const Identifier scalex = "scalex";
 static const Identifier scaley = "scaley";
 static const Identifier rescale = "scale";
 static const Identifier channel = "channel";
-static const Identifier channelarray = "widgetarray";
+static const Identifier widgetarray = "widgetarray";
 static const Identifier identchannelarray = "identchannelarray";
 static const Identifier outlinecolour = "outlinecolour";
 static const Identifier fillcolour = "fillcolour";

@@ -99,7 +99,7 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
 
         CabbageWidgetData::setWidgetState(temp, currentLineOfCabbageCode, lineNumber);
         CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
-
+		
         if(currentLineOfCabbageCode.contains("}"))
         {
             parentComponent = "";
@@ -112,6 +112,18 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
                 CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::basetype).toString()=="layout" )
         {
             cabbageWidgets.addChild(temp, -1, 0);
+		
+			if(CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::widgetarray).size()>0 &&
+				CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::identchannelarray).size()>0)
+				{
+					for(int i=0; i<CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::widgetarray).size(); i++)
+					{
+						ValueTree copy = temp.createCopy();
+						CabbageWidgetData::setStringProp(copy, CabbageIdentifierIds::channel, CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::widgetarray)[i]);
+						CabbageWidgetData::setStringProp(copy, CabbageIdentifierIds::identchannel, CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::identchannelarray)[i]);
+						cabbageWidgets.addChild(copy, -1, 0);
+					}
+				}
         }
 
         if(currentLineOfCabbageCode.contains("{"))
