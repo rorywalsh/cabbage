@@ -83,33 +83,6 @@ private:
     Array <float, CriticalSection > points;
 };
 
-
-//not used yet.....
-class KeyboardShortcutKeys
-{
-public:
-    KeyboardShortcutKeys(XmlElement* xml):xmlData(xml)
-    {
-
-    }
-
-    ~KeyboardShortcutKeys() {}
-
-    String getKeyPress(String name)
-    {
-        for(int i=0; xmlData->getNumAttributes(); i++)
-        {
-            if(xmlData->getAttributeName(i)==name)
-                return xmlData->getAttributeValue(i);
-        }
-    }
-
-    int keyCode;
-    ModifierKeys mods;
-    ScopedPointer<XmlElement> xmlData;
-};
-
-
 //===========================================================================================
 //some utility functions used across classes...
 //===========================================================================================
@@ -554,6 +527,24 @@ public:
         data->writeToFile(File(filePath), String::empty);
     }
 
+	//======= method for replacing the contents of an identifier with new values..
+    static String replaceIdentifier(String line, String identifier, String updatedIdentifier)
+    {
+        if(identifier.length()<2)
+            return line;
+        if(updatedIdentifier.length()<2)
+            return line;
+
+        int startPos = line.indexOf(identifier);
+        if(startPos==-1)
+            return "";
+
+        String firstSection = line.substring(0, line.indexOf(identifier));
+        line = line.substring(line.indexOf(identifier));
+        String secondSection = line.substring(line.indexOf(")")+1);
+
+        return firstSection+updatedIdentifier+secondSection;
+    }
 };
 
 //==============================================================================

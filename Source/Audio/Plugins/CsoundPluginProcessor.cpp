@@ -330,6 +330,7 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
     receiveChannelDataFromCsound();
+	sendChannelDataToCsound();
 }
 
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
@@ -386,7 +387,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                 else
                     ++guiCycles;
 
-                sendChannelDataToCsound();
             }
             if(result==0)
             {

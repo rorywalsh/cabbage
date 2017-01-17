@@ -76,7 +76,6 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
         const String widgetTreeIdentifier = "WidgetFromLine_"+String(lineNumber);
         ValueTree temp(widgetTreeIdentifier);
 
-        //CabbageUtilities::debug(getExpandedMacroText(linesFromCsd[lineNumber]));
         String currentLineOfCabbageCode = linesFromCsd[lineNumber];
 
         if(currentLineOfCabbageCode.contains(" \\"))
@@ -95,10 +94,10 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
             }
         }
 
-        //CabbageUtilities::debug(currentLineOfCabbageCode);
-
-        CabbageWidgetData::setWidgetState(temp, currentLineOfCabbageCode, lineNumber);
-        CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
+		const String expandedMacroText = getExpandedMacroText(currentLineOfCabbageCode, temp);
+        CabbageWidgetData::setWidgetState(temp, currentLineOfCabbageCode + " " + expandedMacroText, lineNumber);
+        CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());	
+		CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
 		
         if(currentLineOfCabbageCode.contains("}"))
         {
@@ -160,17 +159,21 @@ void CabbagePluginProcessor::searchForMacros(StringArray& linesFromCsd)
     }
 }
 
-const String CabbagePluginProcessor::getExpandedMacroText(const String line)
+const String CabbagePluginProcessor::getExpandedMacroText(const String line, ValueTree wData)
 {
     String csdLine;
+	var macroNames;
     for(int cnt = 0 ; cnt<macroText.size() ; cnt++)
     {
         if(line.contains(macroText.getName(cnt).toString()))
         {
             csdLine += macroText.getWithDefault(macroText.getName(cnt), "").toString()+" ";
+			macroNames.append(macroText.getName(cnt).toString());
         }
     }
 
+	CabbageWidgetData::setProperty(wData, CabbageIdentifierIds::macronames, macroNames);
+	
     return csdLine;;
 }
 

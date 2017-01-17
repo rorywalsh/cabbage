@@ -254,6 +254,7 @@ public:
         add("tablebackgroundcolour");
         add("arrowbackgroundcolour");
         add("noteseparatorcolour");
+		add("expandedmacrotext");
         add("backgroundcolour");
         add("trackerthickness");
         add("outlinethickness");
@@ -289,6 +290,7 @@ public:
         add("displaytype");
         add("fontcolor:1");
 		add("basechannel");
+		add("macronames");
         add("fontcolour");
         add("textcolour");
         add("updaterate");
@@ -379,6 +381,8 @@ static const Identifier scalex = "scalex";
 static const Identifier scaley = "scaley";
 static const Identifier rescale = "scale";
 static const Identifier channel = "channel";
+static const Identifier expandedmacrotext = "expandedmacrotext";
+static const Identifier macronames = "macronames";
 static const Identifier widgetarray = "widgetarray";
 static const Identifier basechannel = "basechannel";
 static const Identifier arraysize = "arraysize";

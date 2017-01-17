@@ -48,6 +48,7 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
 	setProperty(widgetData, CabbageIdentifierIds::arraysize, 0);
 	setProperty(widgetData, CabbageIdentifierIds::basechannel, "");
 
+
     int top, left, width, height;
     StringArray strTokens;
     strTokens.addTokens(lineFromCsd, " ", "\"");
@@ -1267,11 +1268,11 @@ String CabbageWidgetData::getBoundsTextAsCabbageCode(Rectangle<int> rect)
 }
 
 //===================================================================
-String CabbageWidgetData::getNumericalValueTextAsCabbageCode(ValueTree widgetData, String identifier)
+String CabbageWidgetData::getNumericalValueTextAsCabbageCode(ValueTree widgetData, String identifier, const String macroText)
 {
     ValueTree tempData("tempTree");
     const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-    CabbageWidgetData::setWidgetState(tempData, type, -99);
+    CabbageWidgetData::setWidgetState(tempData, type + " " + macroText, -99);
 
     if(type.contains("slider") && identifier=="value")
     {
@@ -1327,11 +1328,11 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode(ValueTree widgetDat
 }
 
 //===================================================================
-String CabbageWidgetData::getRotateTextAsCabbageCode(ValueTree widgetData)
+String CabbageWidgetData::getRotateTextAsCabbageCode(ValueTree widgetData, const String macroText)
 {
     ValueTree tempData("tempTree");
     const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-    CabbageWidgetData::setWidgetState(tempData, type, -99);
+    CabbageWidgetData::setWidgetState(tempData, type + " " + macroText, -99);
 
 
 
@@ -1349,11 +1350,11 @@ String CabbageWidgetData::getRotateTextAsCabbageCode(ValueTree widgetData)
     return String::empty;
 }
 //===================================================================
-String CabbageWidgetData::getSimpleTextAsCabbageCode(ValueTree widgetData, String identifier)
+String CabbageWidgetData::getSimpleTextAsCabbageCode(ValueTree widgetData, String identifier, const String macroText)
 {
     ValueTree tempData("tempTree");
     const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-    CabbageWidgetData::setWidgetState(tempData, type, -99);
+    CabbageWidgetData::setWidgetState(tempData, type + " " + macroText, -99);
 
     if(CabbageWidgetData::getStringProp(widgetData, identifier)!=CabbageWidgetData::getStringProp(tempData, identifier))
     {
@@ -1364,11 +1365,11 @@ String CabbageWidgetData::getSimpleTextAsCabbageCode(ValueTree widgetData, Strin
     return String::empty;
 }
 //===================================================================
-String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData)
+String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData, const String macroText)
 {
     ValueTree tempData("tempTree");
     const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-    CabbageWidgetData::setWidgetState(tempData, type, -99);
+    CabbageWidgetData::setWidgetState(tempData, type + " " + macroText, -99);
     String returnText = "";
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::imgbuttonon)
@@ -1388,7 +1389,7 @@ String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData)
     return returnText;
 }
 //===================================================================
-String CabbageWidgetData::getMultiItemTextAsCabbageCode(ValueTree widgetData, String identifier)
+String CabbageWidgetData::getMultiItemTextAsCabbageCode(ValueTree widgetData, String identifier, const String macroText)
 {
     var items = CabbageWidgetData::getProperty(widgetData, identifier);
     String channelString = "";
@@ -1421,12 +1422,28 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode(ValueTree widgetData, St
 }
 
 //===================================================================
-String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
+String CabbageWidgetData::getWidgetArrayAsCabbageCode(ValueTree widgetData, const String macroText)
+{
+	ValueTree tempData("tempTree");
+	const String baseChannel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::basechannel);
+	const int arraySize = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::arraysize);
+	
+	if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::basechannel)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::basechannel))
+	{
+		return String("widgetarray(\"" + baseChannel + "\", " + String(arraySize) + "), ");
+	}
+	
+	return String::empty;
+	
+}
+//===================================================================
+String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData, const String macroText)
 {
     ValueTree tempData("tempTree");
+
     //tempData = widgetData.createCopy();
     const String type = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-    CabbageWidgetData::setWidgetState(tempData, type, -99);
+    CabbageWidgetData::setWidgetState(tempData, type + " " + macroText, -99);
     String colourString;
 
     if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::colour))
@@ -1534,31 +1551,32 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData)
     return colourString;
 }
 //===================================================================
-String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData, const String currentLineText)
+String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData, const String currentLineText, const String macroText)
 {
 
     String cabbageCode = getStringProp(widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode(getBounds(widgetData))
-                         + getMultiItemTextAsCabbageCode(widgetData, "channel")
-                         + getMultiItemTextAsCabbageCode(widgetData, "identchannel")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "value")
-                         + getMultiItemTextAsCabbageCode(widgetData, "text")
-                         + getColoursTextAsCabbageCode(widgetData)
-                         + getRotateTextAsCabbageCode(widgetData)
-                         + getNumericalValueTextAsCabbageCode(widgetData, "alpha")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "corners")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "active")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "visible")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "valuetextbox")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "zoom")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "outlinethickness")
-                         + getNumericalValueTextAsCabbageCode(widgetData, "velocity")
-                         + getSimpleTextAsCabbageCode(widgetData, "popuptext")
-                         + getSimpleTextAsCabbageCode(widgetData, "align")
-                         + getSimpleTextAsCabbageCode(widgetData, "file")
-                         + getSimpleTextAsCabbageCode(widgetData, "shape")
-						 + getSimpleTextAsCabbageCode(widgetData, "mode")
-                         + getImagesTextAsCabbageCode(widgetData)
+                         + getMultiItemTextAsCabbageCode(widgetData, "channel", macroText)
+                         + getMultiItemTextAsCabbageCode(widgetData, "identchannel", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "value", macroText)
+                         + getMultiItemTextAsCabbageCode(widgetData, "text", macroText)
+                         + getColoursTextAsCabbageCode(widgetData, macroText)
+                         + getRotateTextAsCabbageCode(widgetData, macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "alpha", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "corners", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "active", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "visible", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "valuetextbox", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "zoom", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "outlinethickness", macroText)
+                         + getNumericalValueTextAsCabbageCode(widgetData, "velocity", macroText)
+                         + getSimpleTextAsCabbageCode(widgetData, "popuptext", macroText)
+                         + getSimpleTextAsCabbageCode(widgetData, "align", macroText)
+                         + getSimpleTextAsCabbageCode(widgetData, "file", macroText)
+                         + getSimpleTextAsCabbageCode(widgetData, "shape", macroText)
+						 + getSimpleTextAsCabbageCode(widgetData, "mode", macroText)
+						 + getWidgetArrayAsCabbageCode(widgetData, macroText)
+                         + getImagesTextAsCabbageCode(widgetData, macroText)
 
                          //lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
                          + (getNumProp(widgetData, "containsOpeningCurlyBracket")==1 ? "{" : String::empty);

@@ -40,7 +40,7 @@ public:
     void createParameters();
     void updateWidgets(String csdText);
     void searchForMacros(StringArray& csdText);
-    const String getExpandedMacroText(const String line);
+    const String getExpandedMacroText(const String line, ValueTree wData);
 
     CabbageAudioParameter* getParameterForXYPad(String name);
     //==============================================================================

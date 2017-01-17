@@ -47,7 +47,8 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
     setMenuBar(this, 25);
     getMenuBarComponent()->setLookAndFeel(getContentComponent()->lookAndFeel);
 
-	content->createAudioGraph(true);
+
+	content->createAudioGraph();	//set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 
     if(cabbageSettings->getUserSettings()->getIntValue("OpenMostRecentFileOnStartup")==1)
     {
@@ -90,7 +91,6 @@ void CabbageDocumentWindow::initSettings()
     cabbageSettings = new CabbageSettings();
     cabbageSettings->setStorageParameters (options);
     cabbageSettings->setDefaultSettings();
-    //lookAndFeel->refreshLookAndFeel(cabbageSettings->getValueTree());
 }
 
 CabbageDocumentWindow::~CabbageDocumentWindow()

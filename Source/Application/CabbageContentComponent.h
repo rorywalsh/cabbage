@@ -55,8 +55,7 @@ public:
     void resized() override;
     void resizeAllEditorAndConsoles(int height);
     void createEditorForAudioGraphNode();
-    void createAudioGraph(bool firstRun=false);
-    void rebuildAudioGraph();
+    void createAudioGraph();
     void addFileTabButton(File file, int xPos);
 	void arrangeFileTabButtons();
 	void removeEditor();

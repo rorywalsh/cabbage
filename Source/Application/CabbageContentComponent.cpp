@@ -208,10 +208,18 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
 
         const String currentLineText = getCurrentCodeEditor()->getLineText(lineNumber);
 
-        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData, currentLineText);
+		const String macroText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::expandedmacrotext);
+		CabbageUtilities::debug(macroText);
+		
+		
+		String macroNames(String::empty);
+		for ( int i = 0 ; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::macronames).size() ; i++ )
+			macroNames += CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::macronames)[i].toString()+ ", ";
+			
+		
+        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData, currentLineText, macroText);
 
-
-        getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty() == true ? true : false);
+        getCurrentCodeEditor()->insertCode(lineNumber, newText+macroNames, replaceExistingLine, parent.isEmpty() == true ? true : false);
 
     }
 }
@@ -319,7 +327,7 @@ void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 }
 
 //==============================================================================
-void CabbageContentComponent::createAudioGraph(bool firstRun)
+void CabbageContentComponent::createAudioGraph()
 {
     const Point<int> lastPoint = PluginWindow::getPositionOfCurrentlyOpenWindow(1);
 
@@ -329,20 +337,10 @@ void CabbageContentComponent::createAudioGraph(bool firstRun)
         cabbageSettings->setProperty("windowY", lastPoint.getY());
     }
 
-	if(firstRun==true)
-	{
-		tempFile = File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory).getChildFile("tmp.csd");
-		tempFile.replaceWithText(CabbageStrings::getNewCsoundFileText());
-		audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), tempFile, false);
-		audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
-	}
-	else
-	{
-		audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
-		audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
-	    createEditorForAudioGraphNode();
-	}
-
+	audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
+	audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
+	createEditorForAudioGraphNode();
+	
 //    if(getCurrentCodeEditor() != nullptr)
 //        getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
 
@@ -350,27 +348,6 @@ void CabbageContentComponent::createAudioGraph(bool firstRun)
 }
 
 //==============================================================================
-void CabbageContentComponent::rebuildAudioGraph()
-{
-    const Point<int> lastPoint = PluginWindow::getPositionOfCurrentlyOpenWindow(1);
-
-    if(lastPoint.getX()>0)
-    {
-        cabbageSettings->setProperty("windowX", lastPoint.getX());
-        cabbageSettings->setProperty("windowY", lastPoint.getY());
-    }
-
-    audioGraph->deletePlugin();
-    audioGraph->createPlugin(currentCsdFile);
-    //audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
-    //audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
-
-    createEditorForAudioGraphNode();
-    if(getCurrentCodeEditor() != nullptr)
-        getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
-
-}
-
 void CabbageContentComponent::createEditorForAudioGraphNode()
 {
     if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
@@ -591,6 +568,8 @@ void CabbageContentComponent::saveDocument(bool saveAs, bool recompile)
 	getCurrentCodeEditor()->setSavePoint();
     if(saveAs == true)
     {
+		stopCode();
+		 
         isGUIEnabled = false;
         if(getCabbagePluginEditor()!=nullptr)
             getCabbagePluginEditor()->enableEditMode(false);
@@ -604,23 +583,30 @@ void CabbageContentComponent::saveDocument(bool saveAs, bool recompile)
                 const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel);
                 if(result==0)
                 {
-                    fc.getResult().replaceWithText(currentCsdFile.loadFileAsString());
+                    //fc.getResult().withFileExtension("csd").replaceWithText(currentCsdFile.loadFileAsString());
                     currentCsdFile = fc.getResult().withFileExtension(".csd");
+					currentCsdFile.replaceWithText(getCurrentCodeEditor()->getAllText());
 					owner->setName("Cabbage " + currentCsdFile.getFullPathName());
+					fileTabs[currentFileIndex]->setButtonText(currentCsdFile.getFileName());
 					addInstrumentsAndRegionsToCombobox();
+					cabbageSettings->updateRecentFilesList(currentCsdFile);
                 }
             }
             else
             {
-				fc.getResult().replaceWithText(currentCsdFile.loadFileAsString());
-				currentCsdFile = fc.getResult().withFileExtension(".csd");;
+				//fc.getResult().withFileExtension("csd").replaceWithText(currentCsdFile.loadFileAsString());
+				currentCsdFile = fc.getResult().withFileExtension(".csd");
+				currentCsdFile.replaceWithText(getCurrentCodeEditor()->getAllText());
 				owner->setName("Cabbage " + currentCsdFile.getFullPathName());
 				addInstrumentsAndRegionsToCombobox();
+				fileTabs[currentFileIndex]->setButtonText(currentCsdFile.getFileName());
+				cabbageSettings->updateRecentFilesList(currentCsdFile);
             }
         }
     }
     else
     {
+		stopCode();
         isGUIEnabled = false;
         if(getCabbagePluginEditor()!=nullptr)
             getCabbagePluginEditor()->enableEditMode(false);
@@ -692,7 +678,6 @@ void CabbageContentComponent::runCode()
         audioGraph = nullptr;
         createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
 
-        //rebuildAudioGraph();
         startTimer(100);
         factory.togglePlay(true);
     }

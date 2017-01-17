@@ -35,7 +35,9 @@ AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
 {
     graph.prepareToPlay(44100, 512);
     graph.setPlayConfigDetails(2, 2, 44100, 512);
-    createPlugin(inputFile);
+	if(inputFile.existsAsFile())
+		createPlugin(inputFile);
+		
     setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
     reloadPluginState();
     startPlaying();

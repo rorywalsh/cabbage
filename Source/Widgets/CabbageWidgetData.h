@@ -77,15 +77,16 @@ public:
 
     //============================================================================
     static Colour getColourFromText(String text);
-    static String getCabbageCodeFromIdentifiers(ValueTree props, const String);
+    static String getCabbageCodeFromIdentifiers(ValueTree props, const String, const String macroText);
     //============================================================================
     static String getBoundsTextAsCabbageCode(Rectangle<int> rect);
-    static String getMultiItemTextAsCabbageCode(ValueTree widgetData, String identifier);
-    static String getColoursTextAsCabbageCode(ValueTree widgetData);
-    static String getNumericalValueTextAsCabbageCode(ValueTree widgetData, String identifier);
-    static String getRotateTextAsCabbageCode(ValueTree widgetData);
-    static String getSimpleTextAsCabbageCode(ValueTree widgetData, String identfier);
-    static String getImagesTextAsCabbageCode(ValueTree widgetData);
+    static String getMultiItemTextAsCabbageCode(ValueTree widgetData, String identifier, const String macroText);
+    static String getColoursTextAsCabbageCode(ValueTree widgetData, const String macroText);
+    static String getNumericalValueTextAsCabbageCode(ValueTree widgetData, String identifier, const String macroText);
+    static String getRotateTextAsCabbageCode(ValueTree widgetData, const String macroText);
+    static String getSimpleTextAsCabbageCode(ValueTree widgetData, String identfier, const String macroText);
+    static String getImagesTextAsCabbageCode(ValueTree widgetData, const String macroText);
+	static String getWidgetArrayAsCabbageCode(ValueTree widgetData, const String macroText);
     //============================================================================
     static String removeWidgetFromValueTree(ValueTree widgetData, int lineNumber);
     //============================================================================
