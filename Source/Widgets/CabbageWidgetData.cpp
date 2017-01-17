@@ -1553,7 +1553,6 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData, cons
 //===================================================================
 String CabbageWidgetData::getCabbageCodeFromIdentifiers(ValueTree widgetData, const String currentLineText, const String macroText)
 {
-
     String cabbageCode = getStringProp(widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode(getBounds(widgetData))
                          + getMultiItemTextAsCabbageCode(widgetData, "channel", macroText)

@@ -153,48 +153,64 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
 
 }
 
-static void addFilesToPopupMenu(PopupMenu &m, Array<File> &filesArray, String dir, String ext, int indexOffset)
+
+static void addExamples(PopupMenu& m, const String menuName, String dir, Array<File> &filesArray, StringArray folders, int indexOffset)
 {
-	filesArray.clear();
-	File searchDir(dir);
-	Array<File> subFolders;
-	subFolders.add(searchDir);
-	int noOfFiles=0, fileCnt;
-	searchDir.findChildFiles(subFolders, File::findDirectories, true);
-	subFolders.sort();
-	String pathSlash;
-	if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Linux
-		|| SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::MacOSX)
+	PopupMenu subMenu1, subMenu2;
+	int noOfFiles=filesArray.size();
+	int fileCnt = 0;
+	
+	if(folders.size()>0)
 	{
-		pathSlash = "/";
-		dir = dir+ "/";
+		for( int i = 0 ; i < folders.size() ; i++ )
+		{
+			subMenu2.clear();
+			File searchDir(dir+CabbageUtilities::correctPathSlashes("/"+menuName+"/"+folders[i]));
+			
+			searchDir.findChildFiles(filesArray, File::findFiles, false, "*.csd");
+			//filesArray.sort();	
+
+			for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+			{
+				subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+			}	
+
+			subMenu1.addSubMenu(folders[i], subMenu2);
+		}
+		
+		m.addSubMenu(menuName, subMenu1);	
 	}
 	else
 	{
-		pathSlash = "\\";
-		dir = dir+ "\\";
-	}
+		subMenu2.clear();
+		File searchDir(dir+CabbageUtilities::correctPathSlashes("/"+menuName));
+		
+		searchDir.findChildFiles(filesArray, File::findFiles, false, "*.csd");
+		//filesArray.sort();	
 
-	PopupMenu subMenu;
-
-	for (int i = 1; i < subFolders.size(); i++)
-	{
-		if(!subFolders[i].containsSubDirectories())
+		for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
 		{
-			subFolders[i].findChildFiles(filesArray, File::findFiles, false, ext);
-			filesArray.sort();
+			subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+		}	
 
-			subMenu.clear();
-			for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
-			{
-				subMenu.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
-			}
-			noOfFiles = fileCnt;
-			if(noOfFiles>0)
-				m.addSubMenu(subFolders[i].getFullPathName().replace(dir, "").replace(pathSlash, "-"), subMenu);
-		}
+		m.addSubMenu(menuName, subMenu2);	
+			
 	}
-	subMenu.clear();
+	
+	
+}
+
+static void addFilesToPopupMenu(PopupMenu &m, Array<File> &filesArray, String dir, String ext, int indexOffset)
+{
+	filesArray.clear();	
+	addExamples(m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);	
+	addExamples(m, "Instruments", dir, filesArray, CabbageExamplesFolder::getInstruments(), indexOffset);
+	addExamples(m, "LiveSampling", dir, filesArray, StringArray(), indexOffset);
+	addExamples(m, "MIDI", dir, filesArray, StringArray(), indexOffset);
+	addExamples(m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
+	addExamples(m, "Instructional", dir, filesArray, StringArray(), indexOffset);
+	addExamples(m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
+	addExamples(m, "Utilities", dir, filesArray, StringArray(), indexOffset);
 }
 
 void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)

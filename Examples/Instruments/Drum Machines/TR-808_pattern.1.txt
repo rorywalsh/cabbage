@@ -1,0 +1,1376 @@
+======= TABLE 103 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 103
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+1.000000
+0.000000
+0.000000
+1.000000
+1.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 104 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 104
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 105 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 105
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 106 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 106
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+1.000000
+1.000000
+1.000000
+0.000000
+1.000000
+1.000000
+1.000000
+1.000000
+1.000000
+1.000000
+1.000000
+0.000000
+1.000000
+1.000000
+1.000000
+1.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 107 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 107
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 108 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 108
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 109 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 109
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 110 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 110
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 111 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 111
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 112 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 112
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+1.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+1.000000
+0.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 113 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 113
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+1.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+1.000000
+0.000000
+1.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 114 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 114
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 115 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 115
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+1.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+1.000000
+0.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 116 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 116
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 117 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 117
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+1.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 118 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 118
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+1.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 119 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 119
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 120 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 120
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 121 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 121
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 122 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 122
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 123 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 123
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 124 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 124
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 125 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 125
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 126 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 126
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 127 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 127
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 128 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 128
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 129 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 129
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 130 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 130
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 131 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 131
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+1.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+1.000000
+---------END OF TABLE---------------
+======= TABLE 132 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 132
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 133 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 133
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+0.000000
+0.000000
+---------END OF TABLE---------------
+======= TABLE 134 size: 16 values ======
+flen: 16
+lenmask: 15
+lobits: 20
+lomask: 1048575
+lodiv: 0.000000
+cvtbas: 0.000000
+cpscvt: 0.000000
+loopmode1: 0
+loopmode2: 0
+begin1: 0
+end1: 0
+begin2: 0
+end2: 0
+soundend: 0
+flenfrms: 16
+nchnls: 1
+fno: 134
+gen01args.gen01: 0.000000
+gen01args.ifilno: 0.000000
+gen01args.iskptim: 0.000000
+gen01args.iformat: 0.000000
+gen01args.channel: 0.000000
+gen01args.sample_rate: 0.000000
+---------END OF HEADER--------------
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+1.000000
+0.000000
+0.000000
+---------END OF TABLE---------------

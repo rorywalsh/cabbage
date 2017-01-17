@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Win32)">
+	<META NAME="CREATED" CONTENT="20120918;12541200">
+	<META NAME="CHANGED" CONTENT="20121002;7553400">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		A:link { so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-GB" DIR="LTR">
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Verdana, sans-serif"><FONT SIZE=5><U><B>Vocoder</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; font-weight: normal; text-decoration: none">
+<FONT FACE="Tahoma, sans-serif"><FONT SIZE=3>This is an
+implementation of a traditional analogue style vocoder. Two audio
+signals, referred to as a modulator and a carrier, are passed into
+the vocoder effect. The modulator is typically a voice and the
+carrier is typically a synthesizer. The modulator is analysed by
+being passed into a multiband filter (a bank of bandpass filters),
+the amplitude envelope of each band is tracked and a control function
+for each band generated. The carrier signal is also passed through a
+matching multiband filter, the set of amplitude envelopes derived
+from the modulator analysis is applied to the outputs of this second
+multiband filter. </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; font-weight: normal; text-decoration: none">
+<FONT FACE="Tahoma, sans-serif"><FONT SIZE=3>The uppermost band of
+the filter bank is always a highpass filter. This is to allow high
+frequency sibilants in the modulator signal to be accurately
+represented.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; font-weight: normal; text-decoration: none">
+<FONT FACE="Tahoma, sans-serif"><FONT SIZE=3>The modulator signal is
+always the signal received at the left input channel. For best
+results it is recommended to use a high quality external microphone.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>Carrier
+Source -</B> Source used as carrier signal. Either an internal synth
+or an external signal. If external is chosen, audio is taken from the
+right input channel.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>Filter
+Steepness &ndash;</B> Steepness of the filters used for both analysis
+and carrier processing.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>Synth
+Type &ndash;</B> Type of oscillator used by the internal synthesizer.
+Choose between <I>sawtooth</I>, <I>square</I>, <I>pulse</I> or <I>noise</I>.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>Base
+&ndash;</B> Frequency of the lowest filter (both analysis and
+processing) expressed as a MIDI note number.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>Num
+&ndash;</B> Number of filters that constitute the multibank filters
+used during both the analysis of the modulator and the carrier
+processing.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>B.width
+&ndash;</B> Bandwidth of the bandpass filters expressed in octaves.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>Spacing
+&ndash;</B> Spacing between the bandpass filters expressed in
+semitones.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>BPF
+&ndash;</B> Gain of the bank of bandpass filters.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>HPF
+&ndash;</B> Gain of the single highpass filter.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif"><B>Gate
+Input &ndash;</B> Activating this switch will apply a noise gate to
+the modulator signal. This option might be useful if the microphone
+used in rather noisy, such as would be the case if using the built-in
+microphone on a laptop, or if working in a noisy environment.</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

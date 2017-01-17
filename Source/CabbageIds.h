@@ -607,6 +607,38 @@ public:
     }
 };
 
+class CabbageExamplesFolder
+{
+public:
+	
+	CabbageExamplesFolder(){}
+	
+	static StringArray getEffects()
+	{
+		StringArray directories;
+		directories.add("Distortion");
+		directories.add("Dynamics");
+		directories.add("Filters");
+		directories.add("Miscellaneous");
+		directories.add("Modulation");
+		directories.add("Reverbs");
+		directories.add("Spectral");
+		directories.add("Time");
+		return directories;
+	}	
+
+	static StringArray getInstruments()
+	{
+		StringArray directories;
+		directories.add("Drum Machines");
+		directories.add("Miscellaneous");
+		directories.add("Noise");
+		directories.add("Physical Modelling");
+		directories.add("Synths");
+		return directories;
+	}
+	
+};
 
 class CabbageIdentifierPropertyStringPairs : public StringPairArray
 {

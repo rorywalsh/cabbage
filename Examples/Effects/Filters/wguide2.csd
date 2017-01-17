@@ -1,0 +1,110 @@
+; wguide.csd
+; Written by Iain McCurdy, 2013.
+
+<Cabbage>
+form caption("wguide2") size(595, 90)
+image        pos(0, 0), size(595, 90), colour(25,0,25), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+button  bounds( 10, 30, 55, 25), text("PLUCK"), channel("pluck"), toggle(0)
+rslider bounds( 65, 11, 70, 70), text("Freq. 1"),   channel("freq1"),     range(20, 8000, 160, 0.25), colour(150,110,110), trackercolour(white)
+rslider bounds(130, 11, 70, 70), text("Freq. 2"),   channel("freq2"),     range(20, 8000, 160, 0.25), colour(150,110,110), trackercolour(white)
+rslider bounds(195, 11, 70, 70), text("Cutoff 1"), channel("cutoff1"),   range(20,20000,8000,0.25),  colour(150,110,110), trackercolour(white)
+rslider bounds(260, 11, 70, 70), text("Cutoff 1"), channel("cutoff2"),   range(20,20000,8000,0.25),  colour(150,110,110), trackercolour(white)
+rslider bounds(325, 11, 70, 70), text("F.back 1"), channel("feedback1"), range(-0.999, 0.999, 0.2),  colour(150,110,110), trackercolour(white)
+rslider bounds(390, 11, 70, 70), text("F.back 2"), channel("feedback2"), range(-0.999, 0.999, 0.2),  colour(150,110,110), trackercolour(white)
+rslider bounds(455, 11, 70, 70), text("Mix"),      channel("mix"),       range(0, 1.00, 0.7),        colour(150,110,110), trackercolour(white)
+rslider bounds(520, 11, 70, 70), text("Level"),    channel("level"),     range(0, 1.00, 0.7),        colour(150,110,110), trackercolour(white)
+</Cabbage>
+
+<CsoundSynthesizer>
+
+<CsOptions>
+-d -n
+</CsOptions>
+
+<CsInstruments>
+
+sr 		= 	44100	;SAMPLE RATE
+ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
+0dbfs		=	1
+
+;Author: Iain McCurdy (2012)
+
+instr	1
+	kporttime	linseg	0,0.001,0.05
+	gkfreq1		chnget	"freq1"					;READ WIDGETS...
+	gkfreq1		portk	gkfreq1,kporttime
+	afreq1		interp	gkfreq1
+	gkfreq2		chnget	"freq2"					;READ WIDGETS...
+	gkfreq2		portk	gkfreq2,kporttime
+	afreq2		interp	gkfreq2
+	gkcutoff1	chnget	"cutoff1"				;
+	gkcutoff2	chnget	"cutoff2"				;
+	gkfeedback1	chnget	"feedback1"				;
+	gkfeedback2	chnget	"feedback2"				;
+	gkmix		chnget	"mix"					;
+	gklevel		chnget	"level"					;
+	;asigL, asigR	diskin2	"Seashore.wav",1,0,1			;USE SOUND FILE FOR TESTING
+	asigL, asigR	ins
+
+ 	kFBtot	=	gkfeedback1 + gkfeedback2		; protect against combined feedbacks greater than 0.5
+ 	if kFBtot>0.5 then
+ 	 gkfeedback1	=	gkfeedback1 / (kFBtot*2)
+ 	 gkfeedback2	=	gkfeedback2 / (kFBtot*2)
+ 	else
+ 	 gkfeedback1	=	gkfeedback1
+ 	 gkfeedback2	=	gkfeedback2
+ 	endif
+	
+	aplk	init	0
+	kpluck	chnget	"pluck"					; pluck button
+	if changed(kpluck)==1 then
+	 aplk	=	1
+	 asigL	+=	aplk
+	 asigR	+=	aplk
+	endif
+	
+	aresL	wguide2 asigL, afreq1, afreq2, gkcutoff1, gkcutoff2, gkfeedback1, gkfeedback2
+	aresR	wguide2 asigR, afreq1, afreq2, gkcutoff1, gkcutoff2, gkfeedback1, gkfeedback2
+	aresL	dcblock2	aresL	;BLOCK DC OFFSET
+	aresR	dcblock2	aresR	;BLOCK DC OFFSET           
+	amixL		ntrpol	asigL,aresL,gkmix
+	amixR		ntrpol	asigR,aresR,gkmix
+			outs	amixL*gklevel, amixR*gklevel		;WGUIDE1 OUTPUTS ARE SENT OUT
+endin
+		
+</CsInstruments>
+
+<CsScore>
+i 1 0 [3600*24*7]
+</CsScore>
+
+
+</CsoundSynthesizer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

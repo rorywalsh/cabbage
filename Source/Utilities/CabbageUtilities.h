@@ -400,6 +400,21 @@ public:
             return false;
     }
 	
+	static String correctPathSlashes(String path)
+	{
+		if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Linux
+			|| SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::MacOSX)
+		{
+			path = path.replace("\\", "/");
+		}
+		else
+		{
+			path = path.replace("/", "\\");
+		}	
+
+		return path;
+		
+	}
 	//==========================================================================================
     static void addCustomPlantsToMenu (PopupMenu& m, Array<File> &plantFiles, String userDir)
     {
