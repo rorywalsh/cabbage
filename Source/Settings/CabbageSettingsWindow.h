@@ -42,6 +42,8 @@ public:
     ~CabbageSettingsWindow()
     {
         audioDeviceSelector = nullptr;
+        colourPanel.clear();
+        miscPanel.clear();
     };
 
     void changeListenerCallback(ChangeBroadcaster *source);
@@ -63,6 +65,7 @@ private:
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
     CabbageSettings &settings;
     Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue;
+    LookAndFeel_V2 lookAndFeel;
 
 };
 

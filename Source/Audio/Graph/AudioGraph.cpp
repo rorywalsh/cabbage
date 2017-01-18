@@ -31,7 +31,7 @@ AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
                        const String& preferredDefaultDeviceName,
                        const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
 
-    : settings (settingsToUse, takeOwnershipOfSettings), graph()
+: settings (settingsToUse, takeOwnershipOfSettings), graph(), processor(nullptr)
 {
     graph.prepareToPlay(44100, 512);
     graph.setPlayConfigDetails(2, 2, 44100, 512);
@@ -132,11 +132,14 @@ void AudioGraph::setXmlAudioSettings(XmlElement* xmlSettingsString)
 
 AudioDeviceSelectorComponent* AudioGraph::getAudioDeviceSelector()
 {
+    const int numInputs = processor!=nullptr ? processor->getTotalNumInputChannels() : 2;
+    const int numOutputs = processor!=nullptr ? processor->getTotalNumOutputChannels() : 2;
+    
     return new AudioDeviceSelectorComponent (deviceManager,
-            processor->getTotalNumInputChannels(),
-            processor->getTotalNumInputChannels(),
-            processor->getTotalNumOutputChannels(),
-            processor->getTotalNumOutputChannels(),
+            numInputs,
+            numInputs,
+            numOutputs,
+            numOutputs,
             true, false,
             true, false);
 }

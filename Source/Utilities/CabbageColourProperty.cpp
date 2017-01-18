@@ -50,12 +50,12 @@ void ColourPropertyComponent::mouseDown(const MouseEvent& e)
 {
     if(isEnabled())
     {
-        ScopedPointer<ColourPallete> colourSelector = new ColourPallete();
+        ColourPallete* colourSelector = new ColourPallete();
         colourSelector->setBounds(0, 0, 300, 300);
         colourSelector->addChangeListener(this);
         colourSelector->setNameOfParent(name);
         colourSelector->setCurrentColour(colour);
-        CallOutBox &callOut = CallOutBox::launchAsynchronously(colourSelector, getScreenBounds(), nullptr);
+        CallOutBox::launchAsynchronously(colourSelector, getScreenBounds(), nullptr);
         colour = colourSelector->getCurrentColour();
 		
     }

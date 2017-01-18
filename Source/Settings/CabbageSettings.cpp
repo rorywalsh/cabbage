@@ -88,7 +88,7 @@ void CabbageSettings::setDefaultSettings()
 	defaultPropSet->setValue("IDE_LastKnownY", 10);
 	defaultPropSet->setValue("IDE_StatusBarPos", 500);
 
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarBackground,  "ffada9a9");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarBackground,  "ff636262");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarText,  "FFFFFFFF");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarMouseOverBackground,  "ff9a9a9a");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::popupMenuBackground,  "fff5f5f5");
@@ -100,20 +100,20 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("Colours_"+CabbageColourIds::statusBarText, "ffffffff");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::propertyPanelBackground, "ff222222");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::alertWindowBackground, Colour(147, 210,0).toString());
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::codeBackground,  "FF222222");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumberBackground,  "44C1C1C1");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::codeBackground,  "ff222222");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumberBackground,  "ff000000");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::lineNumbers,  "E9B2B2B2");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::selectTextBackground,  "FF2859AC");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::caret,  "FFFFFFFF");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::identifierLiteral,  "FFCFCFCF");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::stringLiteral,  "FFEE6F6F");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::keyword,  "FFEE6F6F");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::caret,  "ffe2a4a4");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::identifierLiteral,  "ff007dff");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::stringLiteral,  "ff3fff00");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::keyword,  "ffc5c5c5");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::comment,  "FF72D20C");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::numbers,  "FFE60000");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::csdtags, "FFE60034");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::numbers,  "ffffffff");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::csdtags, "ff575757");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleText, "FFFFFFFF");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleBackground, "FF000000");
-    defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleOutline, "FF000000");
+    defaultPropSet->setValue("Colours_"+CabbageColourIds::consoleOutline, "ffababab");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::genericPluginInterface, "FF666666");
 
 

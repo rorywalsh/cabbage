@@ -245,7 +245,8 @@ void CabbageContentComponent::updateEditorColourScheme()
     propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
     propertyPanel->setBorderColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
     int editorIndex = editorAndConsole.size()-1;
-    getCurrentEditorContainer()->updateLookAndFeel();
+    if(getCurrentEditorContainer()!=nullptr)
+        getCurrentEditorContainer()->updateLookAndFeel();
     toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
     toolbar.repaint();
 }

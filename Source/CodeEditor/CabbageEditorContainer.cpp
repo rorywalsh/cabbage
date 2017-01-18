@@ -27,7 +27,15 @@ CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
     addAndMakeVisible(editor = new CabbageCodeEditorComponent(this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
     addAndMakeVisible(outputConsole = new CabbageOutputConsole(settings->valueTree));
     editor->setLineNumbersShown(true);
-    editor->setFont(Font(String("DejaVu Sans Mono"), 17, 0));
+    
+    if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Linux)
+        editor->setFont(Font(String("DejaVu Sans Mono"), 17, 0));
+    else if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Windows)
+        editor->setFont(Font(String("Consolas"), 17, 0));
+    else
+        editor->setFont(Font(String("Courier New"), 17, 0));
+
+    
     editor->setVisible(true);
     outputConsole->setVisible(true);
 

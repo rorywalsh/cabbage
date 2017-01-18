@@ -1091,3 +1091,20 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
     g.setColour (alert.findColour (AlertWindow::outlineColourId));
     g.drawRect (0, 0, alert.getWidth(), alert.getHeight());
 }
+
+
+int CabbageLookAndFeel2::getMinimumScrollbarThumbSize (ScrollBar& scrollbar)
+{
+    return jmin (scrollbar.getWidth(), scrollbar.getHeight()) * 2;
+}
+
+int CabbageLookAndFeel2::getDefaultScrollbarWidth()
+{
+    return 18;
+}
+
+int CabbageLookAndFeel2::getScrollbarButtonSize (ScrollBar& scrollbar)
+{
+    return 2 + (scrollbar.isVertical() ? scrollbar.getWidth()
+                : scrollbar.getHeight());
+}

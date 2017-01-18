@@ -47,6 +47,7 @@ CabbageSettingsWindow::CabbageSettingsWindow(CabbageSettings &settings, AudioDev
     colourSettingsButton("ColourSettingsButton"),
     audioDeviceSelector(audioDevice)
 {
+    setLookAndFeel(&lookAndFeel);
     addColourProperties();
     addMiscProperties();
     addAndMakeVisible (colourPanel);
