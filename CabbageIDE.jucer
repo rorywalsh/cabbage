@@ -60,6 +60,8 @@
               file="Source/BinaryData/CabbageBinaryData.cpp"/>
         <FILE id="LjmfNy" name="CabbageBinaryData.h" compile="0" resource="0"
               file="Source/BinaryData/CabbageBinaryData.h"/>
+        <FILE id="m9WHE3" name="logo_cabbage.icns" compile="0" resource="0"
+              file="Builds/MacOSX/logo_cabbage.icns" xcodeResource="1"/>
       </GROUP>
       <GROUP id="{7C8292EA-0515-218A-83B6-1CA9883A3F15}" name="CodeEditor">
         <FILE id="H9VGUa" name="CabbageCodeEditor.cpp" compile="1" resource="0"
@@ -268,6 +270,32 @@
         <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
+               extraDefs="MACOSX=1&#10;Cabbage_Build_IDE=1">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
+                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
+                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>

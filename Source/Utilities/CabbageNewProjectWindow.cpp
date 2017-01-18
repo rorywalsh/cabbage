@@ -77,7 +77,7 @@ void CabbageProjectWindow::createNewFile(String type)
             const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
             if(result==0)
             {
-                writeNewFile(fc.getResult(), csdText);
+                writeNewFile(fc.getResult().withFileExtension(".csd"), csdText);
 //
 //				fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
 //				owner->openFile (fc.getResult().getFullPathName());
@@ -86,7 +86,7 @@ void CabbageProjectWindow::createNewFile(String type)
         }
         else
         {
-            writeNewFile(fc.getResult(), csdText);
+            writeNewFile(fc.getResult().withFileExtension(".csd"), csdText);
 //			fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
 //			owner->openFile (fc.getResult().getFullPathName());
 //			delete this->getParentComponent();
