@@ -67,9 +67,9 @@ private:
         ScopedPointer<XmlElement> data (valueTree.createXml());
         getUserSettings()->setValue ("PROJECT_DEFAULT_SETTINGS", data);
         sendChangeMessage();
-        XmlElement * el = valueTree.createXml();
-        el->writeToFile(File("/home/rory/Desktop/Example1.xml"), String::empty);
-        delete el;
+        //XmlElement * el = valueTree.createXml();
+        //el->writeToFile(File("/home/rory/Desktop/Example1.xml"), String::empty);
+        //delete el;
     }
 
     //==============================================================================

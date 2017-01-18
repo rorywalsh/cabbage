@@ -156,7 +156,7 @@ public:
     static void setImagesForButton(ImageButton* button, const Image image)
     {
         button->setImages(true, true, true, image, 1, Colours::transparentBlack, image,
-                          1, Colours::transparentBlack, image, .8, Colours::transparentBlack, 0);
+                          1, Colours::transparentBlack, image, .8f, Colours::transparentBlack, 0.f);
     }
 
 	//==========================================================
@@ -597,7 +597,7 @@ public:
         {
             g.fillAll(Colours::transparentBlack);
             g.setColour(CabbageUtilities::getBackgroundSkin());
-            g.fillEllipse(0, 0, getWidth(), getHeight());
+            g.fillEllipse(0.f, 0.f, getWidth(), getHeight());
             g.setColour(Colours::white.withAlpha(.8f));
             g.fillEllipse(1, 1, getWidth()-2, getHeight()-2);
             g.setColour(Colours::black);
