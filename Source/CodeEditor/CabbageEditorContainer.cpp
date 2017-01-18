@@ -28,12 +28,10 @@ CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
     addAndMakeVisible(outputConsole = new CabbageOutputConsole(settings->valueTree));
     editor->setLineNumbersShown(true);
     
-    if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Linux)
-        editor->setFont(Font(String("DejaVu Sans Mono"), 17, 0));
-    else if(SystemStats::getOperatingSystemType()==SystemStats::OperatingSystemType::Windows)
-        editor->setFont(Font(String("Consolas"), 17, 0));
-    else
-        editor->setFont(Font(String("Courier New"), 17, 0));
+	Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor(CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
+	
+    editor->setFont(Font(fontPtr).withHeight(17));
+
 
     
     editor->setVisible(true);
