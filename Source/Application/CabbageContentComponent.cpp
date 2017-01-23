@@ -233,17 +233,21 @@ void CabbageContentComponent::timerCallback()
 {
     if(currentCsdFile.existsAsFile())
     {
+        if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
+        {
+            if(f->getProcessor()->isSuspended())
+            {
+                stopCode();
+                stopTimer();
+            }
+        }
+ 
         const String csoundOutputString = audioGraph->getCsoundOutput();
         consoleMessages+=csoundOutputString;
+        
         if(csoundOutputString.length()>0)
         {
 			getCurrentOutputConsole()->setText(csoundOutputString);
-			
-			if(csoundOutputString.contains("Score finished in csoundPerformKsmps()") == true)
-			{
-				stopCode();
-				stopTimer();
-			}
         }
     }
 }
