@@ -232,16 +232,7 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
 void CabbageContentComponent::timerCallback()
 {
     if(currentCsdFile.existsAsFile())
-    {
-        if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
-        {
-            if(f->getProcessor()->isSuspended())
-            {
-                stopCode();
-                stopTimer();
-            }
-        }
- 
+    { 
         const String csoundOutputString = audioGraph->getCsoundOutput();
         consoleMessages+=csoundOutputString;
         
