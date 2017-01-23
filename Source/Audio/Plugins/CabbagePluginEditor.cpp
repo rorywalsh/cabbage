@@ -58,6 +58,46 @@ void CabbagePluginEditor::resized()
     layoutEditor.setBounds(getLocalBounds());
     mainComponent.setBounds(getLocalBounds());
 }
+
+//======================================================================================================
+void CabbagePluginEditor::mouseMove(const MouseEvent& e)
+{
+	handleMouseMovement(e);
+}
+
+void CabbagePluginEditor::mouseDrag(const MouseEvent& e)
+{
+	handleMouseMovement(e);
+}
+
+void CabbagePluginEditor::mouseDown(const MouseEvent& e)
+{
+	handleMouseClicks(e, true);
+}
+
+void CabbagePluginEditor::mouseUp(const MouseEvent& e)
+{
+	handleMouseClicks(e, false);
+}
+
+void CabbagePluginEditor::handleMouseMovement(const MouseEvent& e)
+{
+	int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
+	int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y;
+
+	sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
+	sendChannelDataToCsound(CabbageIdentifierIds::mousey, y);		
+}
+
+void CabbagePluginEditor::handleMouseClicks(const MouseEvent& e, bool isMousePressed)
+{
+    if(e.mods.isLeftButtonDown())
+        sendChannelDataToCsound(CabbageIdentifierIds::mousedownleft, (isMousePressed == true ? 1 : 0));
+    else if(e.mods.isRightButtonDown())
+        sendChannelDataToCsound(CabbageIdentifierIds::mousedownright, (isMousePressed == true ? 1 : 0));
+    else if(e.mods.isMiddleButtonDown())
+        sendChannelDataToCsound(CabbageIdentifierIds::mousedownlmiddle, (isMousePressed == true ? 1 : 0));	
+}
 //==============================================================================
 void CabbagePluginEditor::createEditorInterface(ValueTree widgets)
 {
@@ -187,6 +227,7 @@ void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
     CabbageCheckbox* checkbox;
     components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
     checkbox->addListener(this);
+	checkbox->addMouseListener(this, true);
     addToEditorAndMakeVisible(checkbox, cabbageWidgetData);
 }
 
@@ -200,6 +241,7 @@ void CabbagePluginEditor::insertComboBox(ValueTree cabbageWidgetData)
 	else
 		combobox->addListener(this);
     
+	combobox->addMouseListener(this, true);
 	addToEditorAndMakeVisible(combobox, cabbageWidgetData);
 }
 
@@ -208,6 +250,7 @@ void CabbagePluginEditor::insertRangeSlider(ValueTree cabbageWidgetData)
     CabbageRangeSlider* rangeSlider;
     components.add(rangeSlider = new CabbageRangeSlider(cabbageWidgetData, this));
     rangeSlider->getSlider().addListener(this);
+	rangeSlider->addMouseListener(this, true);
     addToEditorAndMakeVisible(rangeSlider, cabbageWidgetData);
 }
 
@@ -215,6 +258,7 @@ void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
 {
     CabbageImage* image;
     components.add(image = new CabbageImage(cabbageWidgetData, this));
+	image->addMouseListener(this, true);
     addToEditorAndMakeVisible(image, cabbageWidgetData);
 }
 
@@ -222,6 +266,7 @@ void CabbagePluginEditor::insertLabel(ValueTree cabbageWidgetData)
 {
     CabbageLabel* label;
     components.add(label = new CabbageLabel(cabbageWidgetData, this));
+	label->addMouseListener(this, true);
     addToEditorAndMakeVisible(label, cabbageWidgetData);
 }
 
@@ -229,6 +274,7 @@ void CabbagePluginEditor::insertTextEditor(ValueTree cabbageWidgetData)
 {
     CabbageTextEditor* editor;
     components.add(editor = new CabbageTextEditor(cabbageWidgetData, this));
+	editor->addMouseListener(this, true);
     addToEditorAndMakeVisible(editor, cabbageWidgetData);
 }
 
@@ -236,6 +282,7 @@ void CabbagePluginEditor::insertSoundfiler(ValueTree cabbageWidgetData)
 {
     CabbageSoundfiler* soundfiler;
     components.add(soundfiler = new CabbageSoundfiler(cabbageWidgetData, this));
+	soundfiler->addMouseListener(this, true);
     addToEditorAndMakeVisible(soundfiler, cabbageWidgetData);
 }
 
@@ -244,6 +291,7 @@ void CabbagePluginEditor::insertSlider(ValueTree cabbageWidgetData)
     CabbageSlider* slider;
     components.add(slider = new CabbageSlider(cabbageWidgetData, this));
     slider->getSlider().addListener(this);
+	slider->addMouseListener(this, true);
     addToEditorAndMakeVisible(slider, cabbageWidgetData);
 }
 
@@ -251,6 +299,7 @@ void CabbagePluginEditor::insertEncoder(ValueTree cabbageWidgetData)
 {
     CabbageEncoder* encoder;
     components.add(encoder = new CabbageEncoder(cabbageWidgetData, this));
+	encoder->addMouseListener(this, true);
     addToEditorAndMakeVisible(encoder, cabbageWidgetData);
 }
 
@@ -262,13 +311,13 @@ void CabbagePluginEditor::insertXYPad(ValueTree cabbageWidgetData)
     xyPad->getSliderY().addListener(this);
     addToEditorAndMakeVisible(xyPad, cabbageWidgetData);
     processor.addXYAutomator(xyPad, cabbageWidgetData);
-
 }
 
 void CabbagePluginEditor::insertFileButton(ValueTree cabbageWidgetData)
 {
     CabbageFileButton* fileButton;
     components.add(fileButton = new CabbageFileButton(cabbageWidgetData, this));
+	fileButton->addMouseListener(this, true);
     addToEditorAndMakeVisible(fileButton, cabbageWidgetData);
 }
 
@@ -276,6 +325,7 @@ void CabbagePluginEditor::insertSignalDisplay(ValueTree cabbageWidgetData)
 {
     CabbageSignalDisplay* signalDisplay;
     components.add(signalDisplay = new CabbageSignalDisplay(cabbageWidgetData, this));
+	signalDisplay->addMouseListener(this, true);
     addToEditorAndMakeVisible(signalDisplay, cabbageWidgetData);
 }
 
@@ -283,6 +333,7 @@ void CabbagePluginEditor::insertInfoButton(ValueTree cabbageWidgetData)
 {
     CabbageInfoButton* infoButton;
     components.add(infoButton = new CabbageInfoButton(cabbageWidgetData));
+	infoButton->addMouseListener(this, true);
     addToEditorAndMakeVisible(infoButton, cabbageWidgetData);
 }
 
@@ -291,6 +342,7 @@ void CabbagePluginEditor::insertButton(ValueTree cabbageWidgetData)
     CabbageButton* button;
     components.add(button = new CabbageButton(cabbageWidgetData));
     button->addListener(this);
+	button->addMouseListener(this, true);
     addToEditorAndMakeVisible(button, cabbageWidgetData);
 }
 
@@ -299,6 +351,7 @@ void CabbagePluginEditor::insertNumberBox(ValueTree cabbageWidgetData)
     CabbageNumberBox* numberBox;
     components.add(numberBox = new CabbageNumberBox(cabbageWidgetData));
     numberBox->getSlider().addListener(this);
+	numberBox->addMouseListener(this, true);
     addToEditorAndMakeVisible(numberBox, cabbageWidgetData);
 }
 
@@ -306,6 +359,7 @@ void CabbagePluginEditor::insertGenTable(ValueTree cabbageWidgetData)
 {
     CabbageGenTable* genTable;
     components.add(genTable = new CabbageGenTable(cabbageWidgetData, this));
+	genTable->addMouseListener(this, true);
     addToEditorAndMakeVisible(genTable, cabbageWidgetData);
 }
 
@@ -313,6 +367,7 @@ void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
 {
     CabbageGroupBox* groupBox;
     components.add(groupBox = new CabbageGroupBox(cabbageWidgetData));
+	groupBox->addMouseListener(this, true);
     addToEditorAndMakeVisible(groupBox, cabbageWidgetData);
 }
 
@@ -320,6 +375,7 @@ void CabbagePluginEditor::insertTextBox(ValueTree cabbageWidgetData)
 {
     CabbageTextBox* textBox;
     components.add(textBox = new CabbageTextBox(cabbageWidgetData));
+	textBox->addMouseListener(this, true);
     addToEditorAndMakeVisible(textBox, cabbageWidgetData);
 }
 
@@ -329,6 +385,7 @@ void CabbagePluginEditor::insertCsoundOutputConsole(ValueTree cabbageWidgetData)
     {
         CabbageCsoundConsole* csoundConsole;
         components.add(csoundConsole = new CabbageCsoundConsole(cabbageWidgetData, this));
+		csoundConsole->addMouseListener(this, true);
         addToEditorAndMakeVisible(csoundConsole, cabbageWidgetData);
         consoleCount++;
     }
@@ -341,6 +398,7 @@ void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
         CabbageKeyboard* midiKeyboard;
         components.add(midiKeyboard = new CabbageKeyboard(cabbageWidgetData, processor.keyboardState));
         midiKeyboard->setKeyPressBaseOctave(3);
+		midiKeyboard->addMouseListener(this, true);
         addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);
         keyboardCount++;
     }
@@ -522,7 +580,6 @@ void CabbagePluginEditor::updatefTableData(GenTable* table)
         for(int i=0; i<evt.pcnt-1; i++)
         {
             fStatement.add(String(evt.p[i]));
-            //cUtils::debug(i, fStatement[i]);
             pCnt=i;
         }
 
@@ -551,22 +608,27 @@ void CabbagePluginEditor::updatefTableData(GenTable* table)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound(String channel, float value)
 {
-    processor.getCsound()->SetChannel(channel.getCharPointer(), value);
+	if(csdCompiledWithoutError())
+		processor.getCsound()->SetChannel(channel.getCharPointer(), value);
 }
 
 void CabbagePluginEditor::sendChannelStringDataToCsound(String channel, String value)
 {
-    processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
+	if(processor.csdCompiledWithoutError())
+		processor.getCsound()->SetChannel(channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
 const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDisplay(const String signalVariable, const String displayType)
 {
-    return processor.getSignalArray(signalVariable, displayType)->getPoints();
+	if(csdCompiledWithoutError())
+		return processor.getSignalArray(signalVariable, displayType)->getPoints();
+	
+	return Array<float, CriticalSection>();
 }
 
 bool CabbagePluginEditor::shouldUpdateSignalDisplay()
 {
-    return processor.shouldUpdateSignalDisplay();
+	return processor.shouldUpdateSignalDisplay();
 }
 
 void CabbagePluginEditor::enableXYAutomator(String name, bool enable, Line<float> dragLine)
@@ -581,12 +643,18 @@ bool CabbagePluginEditor::csdCompiledWithoutError()
 
 StringArray CabbagePluginEditor::getTableStatement(int tableNumber)
 {
-    return processor.getTableStatement(tableNumber);
+	if(csdCompiledWithoutError())
+		return processor.getTableStatement(tableNumber);
+		
+	return StringArray();
 }
 
 const Array<float, CriticalSection> CabbagePluginEditor::getTableFloats(int tableNumber)
 {
-    return processor.getTableFloats(tableNumber);
+	if(csdCompiledWithoutError())
+		return processor.getTableFloats(tableNumber);
+	
+	return Array<float, CriticalSection>();
 }
 
 CabbagePluginProcessor& CabbagePluginEditor::getProcessor()

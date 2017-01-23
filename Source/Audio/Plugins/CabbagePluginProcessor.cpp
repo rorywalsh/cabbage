@@ -396,7 +396,6 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 }
 
 //======================================================================================================
-
 CabbageAudioParameter* CabbagePluginProcessor::getParameterForXYPad(String name)
 {
     const OwnedArray<AudioProcessorParameter>& params = getParameters();

@@ -121,6 +121,14 @@ public:
     void enableXYAutomator(String name, bool enable, Line<float> dragLine = Line<float>(0, 0, 1, 1));
 
     //=============================================================================
+	void mouseMove(const MouseEvent& e);
+	void mouseDrag(const MouseEvent& e);
+	void mouseDown(const MouseEvent& e);
+	void mouseUp(const MouseEvent& e);
+	void handleMouseClicks(const MouseEvent& e, bool isMousePressed);
+	void handleMouseMovement(const MouseEvent& e);
+	//=============================================================================	
+	
     void addNewWidget(String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
     //=============================================================================

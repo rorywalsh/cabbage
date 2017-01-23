@@ -42,6 +42,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     csound = new Csound();
 
     csound->SetHostImplementedMIDIIO(true);
+	csound->SetHostImplementedAudioIO(1, 32);
     csound->SetHostData(this);
 
 

@@ -56,7 +56,7 @@ public:
     void resizeAllEditorAndConsoles(int height);
     void createEditorForAudioGraphNode();
     void createAudioGraph();
-    void addFileTabButton(File file, int xPos);
+    void addFileTabButton(File file);
 	void arrangeFileTabButtons();
 	void removeEditor();
     Image createBackground();
@@ -116,6 +116,7 @@ private:
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;
+	TooltipWindow tooltipWindow;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageContentComponent)

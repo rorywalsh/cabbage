@@ -37,13 +37,15 @@ CabbageTextBox::CabbageTextBox(ValueTree wData)
     setColour(TextEditor::focusedOutlineColourId, Colours::transparentBlack);
     setColour(TextEditor::highlightColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)).contrasting(.5f));
 
-
-    if(File(filename).exists())
-        setText(File(filename).loadFileAsString(), false);
+	const File textFile(File(getCsdFile()).getParentDirectory().getChildFile(filename).getFullPathName());
+    if(textFile.existsAsFile())
+        setText(textFile.loadFileAsString(), false);
     else
         setText("Could not open file: "+String(filename));
 
 }
+
+
 
 void CabbageTextBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {

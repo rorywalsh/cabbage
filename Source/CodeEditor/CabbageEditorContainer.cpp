@@ -29,15 +29,11 @@ CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
     editor->setLineNumbersShown(true);
     
 	Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor(CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
-	
-    editor->setFont(Font(fontPtr).withHeight(17));
-
-
-    
+	const int fontSize = settings->getUserSettings()->getIntValue("FontSize", 17);
+	editor->setFont(Font(fontPtr).withHeight(fontSize));
+	editor->setFontSize(fontSize);    
     editor->setVisible(true);
-    outputConsole->setVisible(true);
-
-    
+    outputConsole->setVisible(true);    
 	statusBar.addMouseListener(this, true);
 	
 	const int width = settings->getUserSettings()->getIntValue("IDE_LastKnownWidth");
@@ -48,7 +44,6 @@ CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
 	
 	setSize(width, height);
 	setTopLeftPosition(x, y);
-
 	statusBar.setBounds(0, statusBarPosition, width, 28);
     editor->setBounds(0, 0, width, height);
     updateLookAndFeel();
@@ -56,6 +51,7 @@ CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
 
 CabbageEditorContainer::~CabbageEditorContainer()
 {
+	settings->getUserSettings()->setValue("FontSize", editor->getFontSize());
     editor = nullptr;
     outputConsole = nullptr;
 }

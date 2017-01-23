@@ -65,19 +65,15 @@ public:
     void handleTabKey(String direction);
     void handleReturnKey();
     void handleEscapeKey();
-
+	void mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& mouse);
     void insertCode(int lineNumber, String codeToInsert, bool replaceExistingLine, bool highlightLine);
     void insertNewLine(String text);
     void insertTextAtCaret (const String &textToInsert);
     void insertMultiLineTextAtCaret (String text);
     void insertText(String text);
-
-
     void highlightLines(int firstLine, int lastLine);
     void highlightLine(int lineNumber);
-
     void toggleComments();
-
     void handleAutoComplete(String text);
     void showAutoComplete(String currentWord);
     void parseTextForVariables();
@@ -132,15 +128,10 @@ public:
         g.drawFittedText(variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
     }
 
-	bool hasFileChanged()
-	{
-		return getDocument().hasChangedSinceSavePoint();
-	}
-	
-	void setSavePoint()
-	{
-		getDocument().setSavePoint();
-	}
+	bool hasFileChanged(){			return getDocument().hasChangedSinceSavePoint();	}
+	void setSavePoint(){			getDocument().setSavePoint();						}
+	int getFontSize(){				return currentFontSize;								}
+	int setFontSize(int size){		currentFontSize = size;								}
 
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
@@ -157,6 +148,7 @@ private:
     StringArray variableNamesToShow, variableNames;
     CabbageEditorContainer* owner;
     int updateGUICounter = 0;
+	int currentFontSize = 17;
 };
 
 template <class CallbackClass>

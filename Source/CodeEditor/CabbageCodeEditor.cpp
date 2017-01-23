@@ -357,6 +357,27 @@ bool CabbageCodeEditorComponent::deleteBackwards (const bool moveInWholeWordStep
 
     return true;
 }
+
+//==============================================================================
+void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& mouse)
+{
+
+    if(e.mods.isCommandDown() && mouse.deltaY>0)
+    {
+        setFont(this->getFont().withHeight(currentFontSize<100 ? ++currentFontSize : 100));
+    }
+    else if(e.mods.isCommandDown() && mouse.deltaY<0)
+    {
+		setFont(this->getFont().withHeight(currentFontSize>8 ? --currentFontSize : 8));
+    }
+    else
+    {
+        if(mouse.deltaY<0)
+            scrollBy(1);
+        else
+            scrollBy(-1);
+    }
+}
 //==============================================================================
 bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps)
 {

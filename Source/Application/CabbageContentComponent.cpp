@@ -24,8 +24,13 @@
 #include "../Utilities/CabbageStrings.h"
 
 //==============================================================================
-CabbageContentComponent::CabbageContentComponent(CabbageDocumentWindow* owner, CabbageSettings* settings): cabbageSettings(settings), owner(owner), factory(this)
+CabbageContentComponent::CabbageContentComponent(CabbageDocumentWindow* owner, CabbageSettings* settings)
+: cabbageSettings(settings), 
+owner(owner), 
+factory(this),
+tooltipWindow(this, 300)
 {
+	getLookAndFeel().setColour(TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
     addAndMakeVisible(propertyPanel = new CabbagePropertiesPanel(cabbageSettings->valueTree));
     propertyPanel->setVisible(false);
     setSize (1200, 800);
@@ -277,31 +282,29 @@ Image CabbageContentComponent::createBackground()
 }
 
 //==============================================================================
-void CabbageContentComponent::addFileTabButton(File file, int xPos)
+void CabbageContentComponent::addFileTabButton(File file)
 {
     TextButton* fileButton;
-    fileTabs.add(fileButton = new TextButton(file.getFileName()));
+    fileTabs.add(fileButton = new TextButton(file.getFileName(), file.getFullPathName()));
 	
     addAndMakeVisible(fileButton);
-    fileButton->setTooltip(file.getFullPathName());
-	fileButton->setBounds(xPos, toolbarThickness+3, 90, 20);
     fileButton->addListener(this);
     fileButton->setRadioGroupId(99);
     fileButton->setClickingTogglesState(true);
     fileButton->setLookAndFeel(lookAndFeel);
     fileButton->setToggleState(true, dontSendNotification);
     currentFileIndex = fileTabs.size()-1;
+	arrangeFileTabButtons();
 }
 
 void CabbageContentComponent::arrangeFileTabButtons()
 {
 	int xPos = 10;
+	const int numTabs = jmax(3, fileTabs.size()); 
 	for( auto fileButton : fileTabs)
-	{
-		auto rect = fileButton->getBounds();
-		
-		fileButton->setBounds(rect.withLeft(xPos).withTop(toolbarThickness+3).withWidth(95));
-		xPos += 95;			
+	{	
+		fileButton->setBounds(xPos, toolbarThickness+3, getWidth()/numTabs, 20);
+		xPos += getWidth()/numTabs+5;			
 	}
 }
 
@@ -553,8 +556,11 @@ void CabbageContentComponent::openFile(String filename)
     editorConsole->editor->startThread();
     numberOfFiles = editorAndConsole.size();
 	currentFileIndex = editorAndConsole.size()-1;
+	
     resized();
-    addFileTabButton(openFiles[numberOfFiles-1], 10+(numberOfFiles-1)*95);
+	const int numTabs = jmax(3, fileTabs.size()); 
+	CabbageUtilities::debug("Width of content comp", getWidth());
+    addFileTabButton(openFiles[numberOfFiles-1]);
 
     getCurrentCodeEditor()->addChangeListener(this);
 	getCurrentCodeEditor()->setSavePoint();

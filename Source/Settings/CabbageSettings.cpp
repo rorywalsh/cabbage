@@ -59,7 +59,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue("ExternalEditor", 0);
     defaultPropSet->setValue("UseCabbageIO", 1);
     defaultPropSet->setValue("OpenMostRecentFileOnStartup", 0);
-
+	defaultPropSet->setValue("FontSize", 14);
     defaultPropSet->setValue("ShowConsoleWithEditor", 1);
     defaultPropSet->setValue("UsingCabbageCsound", 1);
     defaultPropSet->setValue("AudioEnabled", 1);
