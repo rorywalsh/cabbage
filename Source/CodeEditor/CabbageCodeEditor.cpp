@@ -361,15 +361,10 @@ bool CabbageCodeEditorComponent::deleteBackwards (const bool moveInWholeWordStep
 //==============================================================================
 void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& mouse)
 {
-
     if(e.mods.isCommandDown() && mouse.deltaY>0)
-    {
-        setFont(this->getFont().withHeight(currentFontSize<100 ? ++currentFontSize : 100));
-    }
+		zoomIn();
     else if(e.mods.isCommandDown() && mouse.deltaY<0)
-    {
-		setFont(this->getFont().withHeight(currentFontSize>8 ? --currentFontSize : 8));
-    }
+		zoomOut();		
     else
     {
         if(mouse.deltaY<0)
@@ -377,6 +372,29 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
         else
             scrollBy(-1);
     }
+}
+
+void CabbageCodeEditorComponent::zoomIn()
+{
+	setFont(this->getFont().withHeight(currentFontSize<100 ? ++currentFontSize : 100));
+}
+
+void CabbageCodeEditorComponent::zoomOut()
+{
+	setFont(this->getFont().withHeight(currentFontSize>8 ? --currentFontSize : 8));
+}
+
+//==============================================================================
+void CabbageCodeEditorComponent::paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected)
+{
+	if (rowIsSelected)
+		g.fillAll (Colours::whitesmoke.darker(.2));
+	else
+		g.fillAll(Colours::whitesmoke);
+
+	g.setFont(Font(String("DejaVu Sans Mono"), 17, 0));
+	g.setColour(Colour(20, 20, 20));
+	g.drawFittedText(variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
 }
 //==============================================================================
 bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps)
@@ -551,6 +569,11 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *ori
     if (! CustomTextEditorKeyMapper<CodeEditorComponent>::invokeKeyFunction (*this, key))
     {
 
+		if (key == KeyPress ('[', ModifierKeys::commandModifier, 0))
+			zoomIn();
+		else if (key == KeyPress (']', ModifierKeys::commandModifier, 0))
+			zoomOut();
+			
         if (key == KeyPress::returnKey)
             handleReturnKey();
 

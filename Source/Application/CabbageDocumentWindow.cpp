@@ -278,6 +278,9 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::editMode);
     menu.addCommandItem (&commandManager, CommandIDs::toggleComments);
     menu.addSeparator();
+	menu.addCommandItem (&commandManager, CommandIDs::zoomIn);
+	menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
+	
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (&commandManager, CommandIDs::findSelection);
     menu.addCommandItem (&commandManager, CommandIDs::findNext);
@@ -375,6 +378,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::copy,
                               CommandIDs::cut,
                               CommandIDs::toggleComments,
+							  CommandIDs::zoomIn,
+							  CommandIDs::zoomOut,
                               CommandIDs::paste,
                               CommandIDs::undo,
                               CommandIDs::redo,
@@ -566,7 +571,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         getContentComponent()->saveDocument(true);
         break;
     case CommandIDs::closeDocument:
-getContentComponent()->closeDocument();
+		getContentComponent()->closeDocument();
         break;
     case CommandIDs::closeAllDocuments:
         break;
@@ -596,7 +601,7 @@ getContentComponent()->closeDocument();
 
         break;
     case CommandIDs::toggleComments:
-        this->getContentComponent()->getCurrentCodeEditor()->toggleComments();
+        getContentComponent()->getCurrentCodeEditor()->toggleComments();
         break;
     case CommandIDs::paste:
 
@@ -609,6 +614,13 @@ getContentComponent()->closeDocument();
     case CommandIDs::enableLiveDebugger:
         getContentComponent()->getCurrentCodeEditor()->runInDebugMode();
         break;
+		
+	case CommandIDs::zoomIn:
+		getContentComponent()->getCurrentCodeEditor()->zoomIn();
+		break;
+	case CommandIDs::zoomOut:
+		getContentComponent()->getCurrentCodeEditor()->zoomOut();
+		break;
     default:
         break;
     }

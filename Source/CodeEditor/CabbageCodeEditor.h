@@ -78,10 +78,10 @@ public:
     void showAutoComplete(String currentWord);
     void parseTextForVariables();
     void parseTextForInstrumentsAndRegions();
-
+	void zoomIn();
+	void zoomOut();
     bool deleteForwards (const bool moveInWholeWordSteps);
     bool deleteBackwards (const bool moveInWholeWordSteps);
-
     void sendUpdateMessage(int lineNumber);
     StringArray getIdentifiersFromString(String code);
     //=========================================================
@@ -96,44 +96,17 @@ public:
     bool isDebugModeEnabled();
     Label debugLabel;
     //=========================================================
-
-    void setAllText(String text)
-    {
-        getDocument().replaceAllContent(text);
-    }
-
-
-    void setOpcodeStrings(String opcodes)
-    {
-        opcodeStrings.addLines(opcodes);
-    }
-
-    int getNumRows()
-    {
-        return variableNamesToShow.size();
-    }
-
+    void setAllText(String text){        	getDocument().replaceAllContent(text);    			}
+    void setOpcodeStrings(String opcodes){  opcodeStrings.addLines(opcodes);    				}
+    int getNumRows(){				        return variableNamesToShow.size();    				}
+	bool hasFileChanged(){					return getDocument().hasChangedSinceSavePoint();	}
+	void setSavePoint(){					getDocument().setSavePoint();						}
+	int getFontSize(){						return currentFontSize;								}
+	int setFontSize(int size){				currentFontSize = size;								}
+	//=========================================================
+	
     void listBoxItemDoubleClicked(int row, const MouseEvent &e) {};
-
-    void paintListBoxItem (int rowNumber, Graphics& g,
-                           int width, int height, bool rowIsSelected)
-    {
-        if (rowIsSelected)
-            g.fillAll (Colours::whitesmoke.darker(.2));
-        else
-            g.fillAll(Colours::whitesmoke);
-
-        g.setFont(Font(String("DejaVu Sans Mono"), 17, 0));
-        g.setColour(Colour(20, 20, 20));
-        g.drawFittedText(variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
-    }
-
-	bool hasFileChanged(){			return getDocument().hasChangedSinceSavePoint();	}
-	void setSavePoint(){			getDocument().setSavePoint();						}
-	int getFontSize(){				return currentFontSize;								}
-	int setFontSize(int size){		currentFontSize = size;								}
-
-
+    void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
     void selectedRowsChanged (int /*lastRowselected*/) {};
     String lastAction;
     bool allowUpdateOfPluginGUI = false;

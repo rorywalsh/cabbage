@@ -237,7 +237,13 @@ void CabbageContentComponent::timerCallback()
         consoleMessages+=csoundOutputString;
         if(csoundOutputString.length()>0)
         {
-            getCurrentOutputConsole()->setText(csoundOutputString);
+			getCurrentOutputConsole()->setText(csoundOutputString);
+			
+			if(csoundOutputString.contains("Score finished in csoundPerformKsmps()") == true)
+			{
+				stopCode();
+				stopTimer();
+			}
         }
     }
 }
@@ -344,10 +350,6 @@ void CabbageContentComponent::createAudioGraph()
 	audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
 	audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
 	createEditorForAudioGraphNode();
-	
-//    if(getCurrentCodeEditor() != nullptr)
-//        getCurrentCodeEditor()->breakpointData = getCabbagePluginProcessor()->breakPointData.valueTree;
-
 
 }
 

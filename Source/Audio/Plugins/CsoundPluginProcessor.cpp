@@ -87,7 +87,6 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
         CSspin  = csound->GetSpin();
         cs_scale = csound->Get0dBFS();
         csndIndex = csound->GetKsmps();
-
         //hack to allow tables to be set up correctly.
         //might be best to simply do an init run?
         csound->PerformKsmps();
@@ -224,18 +223,23 @@ int CsoundPluginProcessor::checkTable(int tableNum)
 //==============================================================================
 const String CsoundPluginProcessor::getCsoundOutput()
 {
-    const int messageCnt = csound->GetMessageCnt();
-    csoundOutput = "";
-    if(messageCnt==0)
-        return csoundOutput;
+	if(isSuspended()==false)
+	{
+		const int messageCnt = csound->GetMessageCnt();
+		csoundOutput = "";
+		if(messageCnt==0)
+			return csoundOutput;
 
-    for(int i=0; i<messageCnt; i++)
-    {
-        csoundOutput+=csound->GetFirstMessage();
-        csound->PopFirstMessage();
-    }
+		for(int i=0; i<messageCnt; i++)
+		{
+			csoundOutput+=csound->GetFirstMessage();
+			csound->PopFirstMessage();
+		}
 
-    return csoundOutput;
+		return csoundOutput;
+	}
+	
+	return String::empty;
 }
 
 //==============================================================================
