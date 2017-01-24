@@ -25,7 +25,7 @@
 #ifndef JUCE_AUDIOPROCESSORVALUETREESTATE_H_INCLUDED
 #define JUCE_AUDIOPROCESSORVALUETREESTATE_H_INCLUDED
 
-#if JUCE_COMPILER_SUPPORTS_LAMBDAS || defined (DOXYGEN)
+#if JUCE_COMPILER_SUPPORTS_LAMBDAS
 
 /**
     This class contains a ValueTree which is used to manage an AudioProcessor's entire state.
@@ -33,14 +33,15 @@
     It has its own internal class of parameter object which are linked to values
     within its ValueTree, and which are each identified by a string ID.
 
-    To use: Create a AudioProcessorValueTreeState, and give it some parameters
-    using createParameter().
-
     You can get access to the underlying ValueTree object via the state member variable,
     so you can add extra properties to it as necessary.
 
     It also provides some utility child classes for connecting parameters directly to
     GUI controls like sliders.
+
+    To use:
+    1) Create an AudioProcessorValueTreeState, and give it some parameters using createParameter().
+    2) Initialise the state member variable with a type name.
 */
 class JUCE_API  AudioProcessorValueTreeState  : private Timer,
                                                 private ValueTree::Listener
@@ -77,9 +78,9 @@ public:
         @param textToValueFunction  The inverse of valueToTextFunction
         @returns the parameter object that was created
     */
-    AudioProcessorParameter* createAndAddParameter (String parameterID,
-                                                    String parameterName,
-                                                    String labelText,
+    AudioProcessorParameter* createAndAddParameter (const String& parameterID,
+                                                    const String& parameterName,
+                                                    const String& labelText,
                                                     NormalisableRange<float> valueRange,
                                                     float defaultValue,
                                                     std::function<String (float)> valueToTextFunction,
@@ -121,6 +122,8 @@ public:
     AudioProcessor& processor;
 
     /** The state of the whole processor.
+
+        This must be initialised after all calls to createAndAddParameter().
         You can replace this with your own ValueTree object, and can add properties and
         children to the tree. This class will automatically add children for each of the
         parameter objects that are created by createParameter().
