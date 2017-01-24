@@ -286,7 +286,6 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState)
     {
         for(int i=0; i<xmlState->getNumAttributes(); i++)
         {
-			CabbageUtilities::debug(xmlState->getAttributeName(i), xmlState->getAttributeValue(i));
 			ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, xmlState->getAttributeName(i));
 			const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
 
@@ -295,7 +294,6 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState)
 			else if(type == CabbageIdentifierIds::filebutton)
 			{
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, xmlState->getAttributeValue(i)); 
-				CabbageUtilities::debug(xmlState->getAttributeValue(i));
 			}
 			else
 			{

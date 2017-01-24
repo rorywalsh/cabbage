@@ -234,7 +234,7 @@ PluginWindow::PluginWindow (Component* const pluginEditor,
                             AudioProcessorGraph::Node* const o,
                             WindowFormatType t,
                             AudioProcessorGraph& audioGraph)
-    : DocumentWindow (pluginEditor->getName(), Colours::lightgrey,
+    : DocumentWindow (pluginEditor->getName(), Colours::black,
                       DocumentWindow::minimiseButton | DocumentWindow::closeButton),
       graph (audioGraph),
       owner (o),

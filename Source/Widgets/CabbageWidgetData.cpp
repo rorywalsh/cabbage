@@ -718,7 +718,6 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                         }
                         else
                         {
-                            CabbageUtilities::debug(strTokens[2].trim());
                             setProperty(widgetData, CabbageIdentifierIds::value, strTokens[2].trim().getFloatValue());
                             tempArray.add(strTokens[2].trim());
                         }

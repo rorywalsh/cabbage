@@ -52,12 +52,13 @@ void CabbageImage::paint(Graphics& g)
     else
     {
         g.fillAll(Colours::transparentBlack);
+
         g.setColour(outlineColour);
 
         if(shape=="square")
-            g.fillRoundedRectangle(0,0, jmax(1, getWidth()), jmax(1, getHeight()), corners);
+            g.drawRoundedRectangle(0,0, jmax(1, getWidth()), jmax(1, getHeight()), corners, lineThickness);
         else
-            g.fillEllipse(0,0, jmax(1, getWidth()), jmax(1, getHeight()));
+            g.drawEllipse(0,0, jmax(1, getWidth()), jmax(1, getHeight()), lineThickness);
 
         g.setColour(mainColour);
 

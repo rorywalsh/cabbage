@@ -105,6 +105,7 @@ public:
     void insertTextBox(ValueTree cabbageWidgetData);
     void insertSignalDisplay(ValueTree cabbageWidgetData);
     void insertStepper(ValueTree cabbageWidgetData) {};
+	void addMouseListenerAndSetVisibility(Component* comp, ValueTree wData);
     //=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound(String channel, float value);
@@ -150,23 +151,23 @@ public:
     //=============================================================================
     void updatefTableData(GenTable* table);
 
-
-
-
-    ComponentLayoutEditor& getLayoutEditor()
-    {
-        return layoutEditor;
-    }
-
-    bool isEditModeEnabled()
-    {
-        return editModeEnabled;
-    }
-
+    ComponentLayoutEditor& getLayoutEditor(){       return layoutEditor;    }
+    bool isEditModeEnabled(){        				return editModeEnabled; }
     Colour backgroundColour;
+	
 private:
     OwnedArray<Component> components;
-    Component mainComponent;
+
+	class MainComponent : public Component
+	{
+		Colour colour;		
+		public:
+			MainComponent():Component(){							}
+			void setColour(Colour col){		colour = col;			}
+			void paint(Graphics& g){		g.fillAll(colour);		}
+	};	
+	
+	MainComponent mainComponent;
     int keyboardCount=0;
     int xyPadIndex = 0;
     int consoleCount=0;
