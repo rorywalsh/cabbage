@@ -71,8 +71,8 @@ public:
     bool closeAllMainWindows();
     void showSettingsDialog();
     void saveDocument(bool saveAs=false, bool recompile=true);
-    void runCode();
-    void stopCode();
+    void runCsoundCode();
+    void stopCsoundCode();
     void showGenericWidgetWindow();
     void hideGenericWidgetWindow(bool freeContent=false);
     void createGenericCsoundPluginWrapper();

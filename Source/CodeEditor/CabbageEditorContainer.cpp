@@ -18,6 +18,7 @@
 */
 
 #include "CabbageEditorContainer.h"
+#include "../Application/CabbageContentComponent.h"
 
 CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
     : settings(settings),
@@ -54,6 +55,11 @@ CabbageEditorContainer::~CabbageEditorContainer()
 	settings->getUserSettings()->setValue("FontSize", editor->getFontSize());
     editor = nullptr;
     outputConsole = nullptr;
+}
+
+CabbageContentComponent* CabbageEditorContainer::getContentComponent()
+{
+	return this->findParentComponentOfClass<CabbageContentComponent>();
 }
 
 void CabbageEditorContainer::openFile(File file)

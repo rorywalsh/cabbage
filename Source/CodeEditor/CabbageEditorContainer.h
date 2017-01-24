@@ -24,6 +24,8 @@
 #include "CabbageCodeEditor.h"
 #include "CabbageOutputConsole.h"
 
+class CabbageContentComponent;
+
 class CabbageEditorContainer   : public Component
 {
 public:
@@ -62,6 +64,7 @@ public:
 		CabbageEditorContainer* owner;
     };
 
+	CabbageContentComponent* getContentComponent();
     //=============================================================================
     CabbageEditorContainer(CabbageSettings* settings);
     ~CabbageEditorContainer();

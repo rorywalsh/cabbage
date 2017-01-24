@@ -22,7 +22,7 @@
 
 GenericCabbageEditor::GenericCabbageEditor(AudioProcessor& parent)
     : AudioProcessorEditor (parent), lookAndFeel(),
-      noParameterLabel ("noparam", "No Csound channels found in orchestra. Please delcare using the chn, or chnexport opecodes.")
+      noParameterLabel ("noparam", "No Csound channels found in orchestra. If you wish to have real time control of parameters please delcare channels using the chn, or chnexport opecodes.")
 {
 
     setLookAndFeel(&lookAndFeel);
@@ -66,12 +66,11 @@ GenericCabbageEditor::GenericCabbageEditor(AudioProcessor& parent)
     noParameterLabel.setFont (noParameterLabel.getFont().withStyle (Font::italic));
 
     setSize (kParamSliderWidth + kParamLabelWidth,
-             jmax (1, kParamControlHeight * controls.size()));
+             jmax (100, kParamControlHeight * controls.size()));
 
     if (paramSliders.size() == 0)
         addAndMakeVisible (noParameterLabel);
-    //else
-    //startTimer (100);
+
 }
 
 GenericCabbageEditor::~GenericCabbageEditor()

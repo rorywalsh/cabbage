@@ -325,8 +325,8 @@ void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (&commandManager, CommandIDs::runCode);
-    menu.addCommandItem (&commandManager, CommandIDs::stopCode);
+    menu.addCommandItem (&commandManager, CommandIDs::runCsoundCode);
+    menu.addCommandItem (&commandManager, CommandIDs::stopCsoundCode);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
     menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
@@ -370,8 +370,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::saveDocumentAs,
 							  CommandIDs::examples,
                               CommandIDs::settings,
-                              CommandIDs::runCode,
-                              CommandIDs::stopCode,
+                              CommandIDs::runCsoundCode,
+                              CommandIDs::stopCsoundCode,
                               CommandIDs::exportAsSynth,
                               CommandIDs::exportAsEffect,
                               CommandIDs::exportAsFMODSoundPlugin,
@@ -384,7 +384,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::undo,
                               CommandIDs::redo,
                               CommandIDs::editMode,
-                              CommandIDs::enableLiveDebugger,
+                              CommandIDs::startLiveDebugger,
                               CommandIDs::showGenericWidgetWindow
                             };
 
@@ -442,14 +442,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
         break;
 
-    case CommandIDs::runCode:
+    case CommandIDs::runCsoundCode:
         result.setInfo ("Compile", "Starts Csound and runs code", CommandCategories::general, 0);
-        result.defaultKeypresses.add(KeyPress(KeyPress::F5Key, ModifierKeys::noModifiers, 0));
+        result.defaultKeypresses.add(KeyPress(KeyPress::F4Key, ModifierKeys::noModifiers, 0));
         break;
 
-    case CommandIDs::stopCode:
+    case CommandIDs::stopCsoundCode:
         result.setInfo ("Cancel Compile", "Starts Csound and runs code", CommandCategories::general, 0);
-        result.defaultKeypresses.add(KeyPress(KeyPress::escapeKey, ModifierKeys::noModifiers, 0));
+        result.defaultKeypresses.add(KeyPress(KeyPress::F5Key, ModifierKeys::noModifiers, 0));
         break;
 
     case CommandIDs::exportAsSynth:
@@ -533,7 +533,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.setTicked(getContentComponent()->getCabbagePluginEditor()==nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
         result.setActive((shouldShowEditMenu ? true : false));
         break;
-    case CommandIDs::enableLiveDebugger:
+    case CommandIDs::startLiveDebugger:
         result.setInfo (String("Enable Live Debugger"), String("Enable Live Debugger"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
         result.setTicked(getContentComponent()->getCurrentCodeEditor() == nullptr ? false : getContentComponent()->getCurrentCodeEditor()->isDebugModeEnabled());
@@ -578,11 +578,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     case CommandIDs::settings:
         getContentComponent()->showSettingsDialog();
         break;
-    case CommandIDs::runCode:
-        getContentComponent()->runCode();
+    case CommandIDs::runCsoundCode:
+        getContentComponent()->runCsoundCode();
         break;
-    case CommandIDs::stopCode:
-        getContentComponent()->stopCode();
+    case CommandIDs::stopCsoundCode:
+        getContentComponent()->stopCsoundCode();
         getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
         break;
     case CommandIDs::exportAsEffect:
@@ -611,7 +611,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         if(isGUIEnabled==false)
             getContentComponent()->saveDocument();
         break;
-    case CommandIDs::enableLiveDebugger:
+    case CommandIDs::startLiveDebugger:
         getContentComponent()->getCurrentCodeEditor()->runInDebugMode();
         break;
 		

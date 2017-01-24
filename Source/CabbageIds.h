@@ -43,14 +43,14 @@ enum
     saveAndOpenInIDE        = 0x200073,
     createNewExporter       = 0x20007d,
 
-    runCode		            = 0x200076,
+    runCsoundCode	        = 0x200076,
     exportAsSynth   		= 0x200077,
     exportAsEffect          = 0x200074,
     exportAsFMODSoundPlugin = 0x200078,
-    stopCode			    = 0x200079,
+    stopCsoundCode			= 0x200079,
     showProjectSettings     = 0x20007a,
     showProjectModules      = 0x20007b,
-    enableLiveDebugger      = 0x20007c,
+    startLiveDebugger       = 0x20007c,
 
     closeWindow             = 0x201001,
     closeAllDocuments       = 0x201000,

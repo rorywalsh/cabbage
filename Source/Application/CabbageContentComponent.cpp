@@ -134,9 +134,9 @@ void CabbageContentComponent::buttonClicked(Button* button)
             showSettingsDialog();
         else if(toolbarButton->getName()=="togglePlay")
             if(toolbarButton->getToggleState())
-                this->runCode();
+                this->runCsoundCode();
             else
-                this->stopCode();
+                this->stopCsoundCode();
     }
 }
 
@@ -231,15 +231,20 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
 //==============================================================================
 void CabbageContentComponent::timerCallback()
 {
+	if(audioGraph->getProcessor()->isSuspended()==true)
+	{
+		stopCsoundCode();
+		stopTimer();
+	}
+	
     if(currentCsdFile.existsAsFile())
     { 
         const String csoundOutputString = audioGraph->getCsoundOutput();
         consoleMessages+=csoundOutputString;
         
         if(csoundOutputString.length()>0)
-        {
 			getCurrentOutputConsole()->setText(csoundOutputString);
-        }
+
     }
 }
 //==============================================================================
@@ -515,7 +520,7 @@ void CabbageContentComponent::openFile(String filename)
 {
 
     stopTimer();
-    stopCode();
+    stopCsoundCode();
 
     PluginWindow::closeAllCurrentlyOpenWindows();
 
@@ -572,7 +577,7 @@ void CabbageContentComponent::saveDocument(bool saveAs, bool recompile)
 	getCurrentCodeEditor()->setSavePoint();
     if(saveAs == true)
     {
-		stopCode();
+		stopCsoundCode();
 		 
         isGUIEnabled = false;
         if(getCabbagePluginEditor()!=nullptr)
@@ -610,7 +615,7 @@ void CabbageContentComponent::saveDocument(bool saveAs, bool recompile)
     }
     else
     {
-		stopCode();
+		stopCsoundCode();
         isGUIEnabled = false;
         if(getCabbagePluginEditor()!=nullptr)
             getCabbagePluginEditor()->enableEditMode(false);
@@ -622,7 +627,7 @@ void CabbageContentComponent::saveDocument(bool saveAs, bool recompile)
         {
             propertyPanel->setEnabled(false);
 			if(recompile==true)
-				runCode();
+				runCsoundCode();
         }		
     }
 }
@@ -674,7 +679,7 @@ void CabbageContentComponent::removeEditor()
 		
 }
 //==============================================================================
-void CabbageContentComponent::runCode()
+void CabbageContentComponent::runCsoundCode()
 {
     if(currentCsdFile.existsAsFile())
     {
@@ -689,7 +694,7 @@ void CabbageContentComponent::runCode()
         CabbageUtilities::showMessage("Warning", "Please open a file first", lookAndFeel);
 }
 
-void CabbageContentComponent::stopCode()
+void CabbageContentComponent::stopCsoundCode()
 {
     if(currentCsdFile.existsAsFile())
     {

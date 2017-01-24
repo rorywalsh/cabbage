@@ -42,7 +42,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     csound = new Csound();
 
     csound->SetHostImplementedMIDIIO(true);
-	//csound->SetHostImplementedAudioIO(1, 32);
+	csound->SetHostImplementedAudioIO(1, 32);
     csound->SetHostData(this);
 
 
@@ -62,7 +62,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     csound->SetKillGraphCallback(killGraphCallback);
     csound->SetExitGraphCallback(exitGraphCallback);
 
-    csound->SetParams(csoundParams);
+    
     csound->SetOption((char*)"-n");
     csound->SetOption((char*)"-d");
 
@@ -72,8 +72,10 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
         csoundDebuggerInit(csound->GetCsound());
         csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
         csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);
+		csoundParams->ksmps_override = 4410;
     }
 
+	csound->SetParams(csoundParams);
     compileCsdFile(csdFile);
     numCsoundChannels = csound->GetNchnls();
 
@@ -351,8 +353,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     const int output_channel_count = getTotalNumOutputChannels();
 #endif
 
-
-
     //if no inputs are used clear buffer in case it's not empty..
     if(getTotalNumInputChannels()==0)
         buffer.clear();
@@ -377,20 +377,24 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
             {
                 result = csound->PerformKsmps();
 
-                if(result!=0)
-                    this->suspendProcessing(true);
+                if(result==0)
+				{
+					//slow down calls to these functions, no need for them to be firing at k-rate
+					if (guiCycles>guiRefreshRate)
+					{
+						guiCycles = 0;
+						triggerAsyncUpdate();
+					}
+					else
+						++guiCycles;					
+				}
+				else
+				{
+                    this->suspendProcessing(true);	
+					return;	//return as soon as Csound has stopped
+				}
 
                 csndIndex = 0;
-
-                //slow down calls to these functions, no need for them to be firing at k-rate
-                if (guiCycles>guiRefreshRate)
-                {
-                    guiCycles = 0;
-                    triggerAsyncUpdate();
-
-                }
-                else
-                    ++guiCycles;
 
             }
             if(result==0)
