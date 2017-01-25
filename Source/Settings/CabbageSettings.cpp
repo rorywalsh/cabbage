@@ -87,6 +87,7 @@ void CabbageSettings::setDefaultSettings()
 	defaultPropSet->setValue("IDE_LastKnownX", 10);
 	defaultPropSet->setValue("IDE_LastKnownY", 10);
 	defaultPropSet->setValue("IDE_StatusBarPos", 500);
+	defaultPropSet->setValue("searchCaseSensitive", false);
 
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarBackground,  "ff636262");
     defaultPropSet->setValue("Colours_"+CabbageColourIds::menuBarText,  "FFFFFFFF");

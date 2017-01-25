@@ -228,7 +228,7 @@ void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
 {
     CabbageCheckbox* checkbox;
     components.add(checkbox = new CabbageCheckbox(cabbageWidgetData));
-	checkbox->addMouseListener(this, true);
+	checkbox->addListener(this);
     addToEditorAndMakeVisible(checkbox, cabbageWidgetData);
 	addMouseListenerAndSetVisibility(checkbox, cabbageWidgetData);
 }

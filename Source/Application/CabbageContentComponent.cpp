@@ -665,12 +665,32 @@ void CabbageContentComponent::removeEditor()
 		
 }
 //==============================================================================
+String CabbageContentComponent::getSearchString()                 
+{ 
+	return ""; 
+}
 
+void CabbageContentComponent::setSearchString (const String& s)   
+{ 
+	searchString = s; 
+}
+
+bool CabbageContentComponent::isCaseSensitiveSearch()             
+{ 
+	return true;//isCaseSensitive; 
+}
+
+void CabbageContentComponent::setCaseSensitiveSearch (bool b)     
+{ 
+	isCaseSensitive = b; 
+}
+	
 void CabbageContentComponent::findNext(bool forwards)
 {
 	if(findPanel!=nullptr)
 	{
-		getCurrentCodeEditor()->findText(getSearchString(), forwards, isCaseSensitiveSearch(), true);	
+		CabbageUtilities::debug(getSearchString());
+		getCurrentCodeEditor()->findText(searchString, forwards, isCaseSensitiveSearch(), true);	
 	}
 }
 //==============================================================================

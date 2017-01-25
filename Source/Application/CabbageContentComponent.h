@@ -83,10 +83,10 @@ public:
     void setLookAndFeelColours();
 	
 	//==============================================================================
-    String getSearchString()                 { return cabbageSettings->getUserSettings()->getValue ("searchString"); }
-    void setSearchString (const String& s)   { cabbageSettings->getUserSettings()->setValue ("searchString", s); }
-    bool isCaseSensitiveSearch()             { return cabbageSettings->getUserSettings()->getBoolValue ("searchCaseSensitive"); }
-    void setCaseSensitiveSearch (bool b)     { cabbageSettings->getUserSettings()->setValue ("searchCaseSensitive", b); }
+    String getSearchString();
+    void setSearchString (const String& s);
+    bool isCaseSensitiveSearch();
+    void setCaseSensitiveSearch (bool b);
 	void showFindPanel();
 	void hideFindPanel();
 	void findNext(bool forward);
@@ -112,6 +112,8 @@ public:
 
 private:
 	bool fileNeedsSaving = false;
+	String searchString = String::empty;
+	bool isCaseSensitive = false;
 	File tempFile;	
     CabbageDocumentWindow* owner;
     //ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
@@ -210,7 +212,7 @@ public:
 
         if (CabbageContentComponent* contentComp = getOwner())
 		{
-            //contentComp->getCurrentCodeEditor()->findNext (true, false);
+            getOwner()->findNext(true);
 			
 		}
     }
@@ -219,13 +221,18 @@ public:
 
     void textEditorReturnKeyPressed (TextEditor&) override
     {
-       // ProjucerApplication::getCommandManager().invokeDirectly (CommandIDs::findNext, true);
+        getOwner()->setSearchString (editor.getText());
+
+        if (CabbageContentComponent* contentComp = getOwner())
+		{
+            getOwner()->findNext(true);			
+		}
     }
 
     void textEditorEscapeKeyPressed (TextEditor&) override
     {
-        //if (CabbageContentComponent* contentComp = getOwner())
-        //    contentComp->hideFindPanel();
+        if (CabbageContentComponent* contentComp = getOwner())
+            contentComp->hideFindPanel();
     }
 
     CabbageContentComponent* getOwner() const
