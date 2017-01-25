@@ -152,6 +152,60 @@ var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
 {
     return breakpointData.getChildWithName("Instrument1").getProperty(varName);
 }
+
+//==============================================================================
+void CabbageCodeEditorComponent::findText(String text, bool forwards, bool caseSensitive, bool skipCurrentSelection)
+{
+    const Range<int> highlight (getHighlightedRegion());
+    const CodeDocument::Position startPos (getDocument(), skipCurrentSelection ? highlight.getEnd()
+                                                                               : highlight.getStart());
+    int lineNum = startPos.getLineNumber();
+    int linePos = startPos.getIndexInLine();
+
+    const int totalLines = getDocument().getNumLines();
+    const String searchText (text);
+
+    for (int linesToSearch = totalLines; --linesToSearch >= 0;)
+    {
+        String line (getDocument().getLine (lineNum));
+        int index;
+
+        if (forwards)
+        {
+            index = caseSensitive ? line.indexOf (linePos, searchText)
+                                  : line.indexOfIgnoreCase (linePos, searchText);
+        }
+        else
+        {
+            if (linePos >= 0)
+                line = line.substring (0, linePos);
+
+            index = caseSensitive ? line.lastIndexOf (searchText)
+                                  : line.lastIndexOfIgnoreCase (searchText);
+        }
+
+        if (index >= 0)
+        {
+            const CodeDocument::Position p (getDocument(), lineNum, index);
+            selectRegion (p, p.movedBy (searchText.length()));
+            break;
+        }
+
+        if (forwards)
+        {
+            linePos = 0;
+            lineNum = (lineNum + 1) % totalLines;
+        }
+        else
+        {
+            if (--lineNum < 0)
+                lineNum = totalLines - 1;
+
+            linePos = -1;
+        }
+    }
+
+}
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
 {

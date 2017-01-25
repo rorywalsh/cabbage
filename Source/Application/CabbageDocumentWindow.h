@@ -74,6 +74,11 @@ public:
         return findFirstTargetParentComponent();
     }
 
+	ApplicationCommandManager& getCommandManager()
+	{
+		return commandManager;
+	}
+
 private:
     //=======================================================
 	PopupMenu createExamplesMenu();
@@ -87,6 +92,7 @@ private:
 
     ApplicationCommandManager commandManager;
     bool isGUIEnabled = false;
+	bool showfindPanel = false;
     ScopedPointer<CabbageContentComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };

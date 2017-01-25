@@ -41,8 +41,9 @@ tooltipWindow(this, 300)
     toolbar.addDefaultItems (factory);
     propertyPanel->addChangeListener(this);
     factory.combo->getCombo().addListener(this);
-
+	
     setLookAndFeelColours();
+	createAudioGraph();	//set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 }
 
 CabbageContentComponent::~CabbageContentComponent()
@@ -60,23 +61,6 @@ void CabbageContentComponent::paint (Graphics& g)
     else
         g.fillAll( CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::lineNumberBackground, Colour(50,50,50)));
 
-}
-
-void CabbageContentComponent::resized()
-{
-    const int heightOfTabButtons = (editorAndConsole.size()>0) ? 25 : 0;
-	
-    if (toolbar.isVertical())
-        toolbar.setBounds (getLocalBounds().removeFromLeft (toolbarThickness));
-    else
-        toolbar.setBounds (getLocalBounds().removeFromTop  (toolbarThickness));
-
-    if(propertyPanel->isVisible())
-    {
-        propertyPanel->setBounds(getWidth()-200, toolbar.getHeight(), 200, getHeight()-toolbar.getHeight());
-    }
-
-    resizeAllEditorAndConsoles(toolbarThickness + heightOfTabButtons);
 }
 
 void CabbageContentComponent::setLookAndFeelColours()
@@ -350,6 +334,8 @@ void CabbageContentComponent::createAudioGraph()
 	audioGraph = new AudioGraph(cabbageSettings->getUserSettings(), currentCsdFile, false);
 	audioGraph->setXmlAudioSettings(cabbageSettings->getUserSettings()->getXmlValue("audioSetup"));
 	createEditorForAudioGraphNode();
+	
+	//graphComponent = new CabbageGraphComponent(*audioGraph);
 
 }
 
@@ -679,6 +665,15 @@ void CabbageContentComponent::removeEditor()
 		
 }
 //==============================================================================
+
+void CabbageContentComponent::findNext(bool forwards)
+{
+	if(findPanel!=nullptr)
+	{
+		getCurrentCodeEditor()->findText(getSearchString(), forwards, isCaseSensitiveSearch(), true);	
+	}
+}
+//==============================================================================
 void CabbageContentComponent::runCsoundCode()
 {
     if(currentCsdFile.existsAsFile())
@@ -702,5 +697,53 @@ void CabbageContentComponent::stopCsoundCode()
         factory.togglePlay(false);
         if(audioGraph)
 			audioGraph->stopPlaying();
+    }
+}
+
+//==============================================================================
+void CabbageContentComponent::showFindPanel()
+{
+    if (findPanel == nullptr)
+    {
+        findPanel = new FindPanel();
+        findPanel->setCommandManager (&owner->getCommandManager());
+
+        addAndMakeVisible (findPanel);
+        resized();
+    }
+
+    if (findPanel != nullptr)
+    {
+        findPanel->editor.grabKeyboardFocus();
+        findPanel->editor.selectAll();
+    }
+}
+
+void CabbageContentComponent::hideFindPanel()
+{
+    findPanel = nullptr;
+}
+
+//==============================================================================
+void CabbageContentComponent::resized()
+{
+    const int heightOfTabButtons = (editorAndConsole.size()>0) ? 25 : 0;
+	
+    if (toolbar.isVertical())
+        toolbar.setBounds (getLocalBounds().removeFromLeft (toolbarThickness));
+    else
+        toolbar.setBounds (getLocalBounds().removeFromTop  (toolbarThickness));
+
+    if(propertyPanel->isVisible())
+    {
+        propertyPanel->setBounds(getWidth()-200, toolbar.getHeight(), 200, getHeight()-toolbar.getHeight());
+    }
+
+    resizeAllEditorAndConsoles(toolbarThickness + heightOfTabButtons);
+	
+    if (findPanel != nullptr)
+    {
+        findPanel->setSize (jmin (260, getWidth() - 32), 100);
+        findPanel->setTopRightPosition (getWidth() - 16, 70);
     }
 }

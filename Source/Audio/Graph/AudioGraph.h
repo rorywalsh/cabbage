@@ -29,7 +29,10 @@
 #include "../../Settings/CabbageSettings.h"
 
 
-class AudioGraph
+const char* const filenameSuffix = ".cabbagepatch";
+const char* const filenameWildcard = "*.cabbagepatch";
+
+class AudioGraph :  public FileBasedDocument, public AudioProcessorListener
 {
 
 public:
@@ -58,16 +61,38 @@ public:
         CabbageNode
     };
 
+	int getNumPlugins() const noexcept;
     void createPlugin(File inputFile);
     void updateBusLayout(AudioProcessor* selectedProcessor);
     int getNumberOfParameters();
     virtual void deletePlugin();
-
     static String getFilePatterns (const String& fileSuffix);
-
     void setXmlAudioSettings(XmlElement* xmlSettingsString);
     AudioDeviceSelectorComponent* getAudioDeviceSelector();
     String getDeviceManagerSettings();
+    void setNodePosition (uint32 nodeId, double x, double y);
+    Point<double> getNodePosition (uint32 nodeId) const;
+	AudioProcessorGraph& getGraph() noexcept         { return graph; }
+	
+    //==============================================================================
+    int getNumConnections() const noexcept;
+    const AudioProcessorGraph::Connection* getConnection (const int index) const noexcept;
+
+    const AudioProcessorGraph::Connection* getConnectionBetween (uint32 sourceFilterUID, int sourceFilterChannel,
+                                                                 uint32 destFilterUID, int destFilterChannel) const noexcept;
+
+    bool canConnect (uint32 sourceFilterUID, int sourceFilterChannel,
+                     uint32 destFilterUID, int destFilterChannel) const noexcept;
+
+    bool addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
+                        uint32 destFilterUID, int destFilterChannel);
+
+    void removeConnection (const int index);
+
+    void removeConnection (uint32 sourceFilterUID, int sourceFilterChannel,
+                           uint32 destFilterUID, int destFilterChannel);
+
+    void clear();
     //==============================================================================
     void startPlaying();
     void stopPlaying();
@@ -76,10 +101,25 @@ public:
     //==============================================================================
     String getCsoundOutput();
     //==============================================================================
+    const AudioProcessorGraph::Node::Ptr getNode (const int index) const noexcept;
+    const AudioProcessorGraph::Node::Ptr getNodeForId (const uint32 uid) const noexcept;
+    //==============================================================================
+    void audioProcessorParameterChanged (AudioProcessor*, int, float) override {}
+    void audioProcessorChanged (AudioProcessor*) override { changed(); }
+	//==============================================================================
     void savePluginState();
     void reloadPluginState();
     AudioProcessor* getProcessor();
+
     //==============================================================================
+    void newDocument();
+    String getDocumentTitle() override {	return String::empty;				};
+    Result loadDocument (const File& file) override {	return Result::ok();	};
+    Result saveDocument (const File& file) override {	return Result::ok();	};
+    File getLastDocumentOpened() override	{			return File();			}
+    void setLastDocumentOpened (const File& file) override {};
+    //==============================================================================
+	
     OptionalScopedPointer<PropertySet> settings;
     AudioProcessor* processor;
     AudioProcessorGraph graph;
@@ -88,10 +128,7 @@ public:
     ScopedPointer<XmlElement> xmlSettings;
     bool isInput;
     int currentBus;
-    bool getIsCabbageFile()
-    {
-        return isCabbageFile;
-    }
+    bool getIsCabbageFile()    {        return isCabbageFile;    }
 
     static const int midiChannelNumber;
 
@@ -116,19 +153,6 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioGraph)
 };
-
-//
-//inline String toString (PluginWindow::WindowFormatType type)
-//{
-//    switch (type)
-//    {
-//        case PluginWindow::Normal:     return "Normal";
-//        case PluginWindow::Generic:    return "Generic";
-//        case PluginWindow::Programs:   return "Programs";
-//        case PluginWindow::Parameters: return "Parameters";
-//        default:                       return String();
-//    }
-//};
 
 
 class PluginWindow  : public DocumentWindow

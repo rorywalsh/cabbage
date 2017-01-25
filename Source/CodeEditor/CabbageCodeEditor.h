@@ -84,6 +84,7 @@ public:
     bool deleteBackwards (const bool moveInWholeWordSteps);
     void sendUpdateMessage(int lineNumber);
     StringArray getIdentifiersFromString(String code);
+	void findText(String text, bool forwards, bool caseSensitive, bool skipCurrentSelection);
     //=========================================================
     NamedValueSet instrumentsAndRegions;
     //=========================================================
@@ -112,6 +113,7 @@ public:
     bool allowUpdateOfPluginGUI = false;
 
 private:
+	int searchStartIndex  = 0;
     Component* statusBar;
     int listBoxRowHeight = 18;
     StringArray opcodeStrings;

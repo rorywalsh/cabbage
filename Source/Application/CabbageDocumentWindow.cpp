@@ -48,8 +48,6 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow(nam
     getMenuBarComponent()->setLookAndFeel(getContentComponent()->lookAndFeel);
 
 
-	content->createAudioGraph();	//set up graph even though no file is selected. Allows users to change audio devices from the get-go..
-
     if(cabbageSettings->getUserSettings()->getIntValue("OpenMostRecentFileOnStartup")==1)
     {
         cabbageSettings->updateRecentFilesList();
@@ -382,6 +380,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 							  CommandIDs::zoomOut,
                               CommandIDs::paste,
                               CommandIDs::undo,
+							  CommandIDs::showFindPanel,
                               CommandIDs::redo,
                               CommandIDs::editMode,
                               CommandIDs::startLiveDebugger,
@@ -533,6 +532,23 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         result.setTicked(getContentComponent()->getCabbagePluginEditor()==nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
         result.setActive((shouldShowEditMenu ? true : false));
         break;
+	case CommandIDs::showFindPanel:
+            result.setInfo (TRANS ("Find"), TRANS ("Searches for text in the current document."), "Editing", 0);
+            result.defaultKeypresses.add (KeyPress ('f', ModifierKeys::commandModifier, 0));
+			result.setTicked(showfindPanel);
+		break;
+
+	case CommandIDs::findNext:
+		result.setInfo (TRANS ("Find Next"), TRANS ("Searches for the next occurrence of the current search-term."), "Editing", 0);
+		result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
+		break;
+
+	case CommandIDs::findPrevious:
+		result.setInfo (TRANS ("Find Previous"), TRANS ("Searches for the previous occurrence of the current search-term."), "Editing", 0);
+		result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
+		result.defaultKeypresses.add (KeyPress ('d', ModifierKeys::commandModifier, 0));
+		break;
+			
     case CommandIDs::startLiveDebugger:
         result.setInfo (String("Enable Live Debugger"), String("Enable Live Debugger"), CommandCategories::edit, 0);
         result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
@@ -549,15 +565,27 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
     switch (info.commandID)
     {
-    case CommandIDs::newProject:
-        getContentComponent()->createNewProject();
-        break;
-    case CommandIDs::open:
-        getContentComponent()->openFile();
-        break;
-    case CommandIDs::openFromRPi:
-        getContentComponent()->launchSSHFileBrowser("open");
-        break;
+    case CommandIDs::newProject:        	getContentComponent()->createNewProject(); 							return true;
+    case CommandIDs::open:		        	getContentComponent()->openFile(); 									return true;
+    case CommandIDs::openFromRPi:       	getContentComponent()->launchSSHFileBrowser("open"); 				return true;
+    case CommandIDs::saveDocumentAs:        getContentComponent()->saveDocument(true);  						return true;
+    case CommandIDs::closeDocument:			getContentComponent()->closeDocument();  							return true;
+    case CommandIDs::closeAllDocuments:																			return true;
+    case CommandIDs::settings:		        getContentComponent()->showSettingsDialog();  						return true;
+    case CommandIDs::runCsoundCode:			getContentComponent()->runCsoundCode();								return true;
+    case CommandIDs::exportAsEffect:		exportPlugin("VST", getContentComponent()->getCurrentCsdFile());	return true;
+    case CommandIDs::exportAsSynth:			exportPlugin("VSTi", getContentComponent()->getCurrentCsdFile());	return true;
+    case CommandIDs::toggleComments:	    getContentComponent()->getCurrentCodeEditor()->toggleComments();	return true;
+    case CommandIDs::startLiveDebugger:	    getContentComponent()->getCurrentCodeEditor()->runInDebugMode();	return true;
+	case CommandIDs::zoomIn:				getContentComponent()->getCurrentCodeEditor()->zoomIn();			return true;
+	case CommandIDs::zoomOut:				getContentComponent()->getCurrentCodeEditor()->zoomOut();			return true;
+	case CommandIDs::findNext:  			getContentComponent()->findNext (true);								return true;
+	case CommandIDs::findPrevious: 			getContentComponent()->findNext  (false); 							return true;	
+    case CommandIDs::exportAsFMODSoundPlugin:        	return true;
+    case CommandIDs::undo:        						return true;
+    case CommandIDs::redo:       						return true;
+    case CommandIDs::paste:         					return true;
+	
     case CommandIDs::saveDocument:
         getContentComponent()->saveDocument();
         getContentComponent()->setEditMode(false);
@@ -567,59 +595,23 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 		getContentComponent()->saveDocument();
         getContentComponent()->launchSSHFileBrowser("save");
 		break;
-    case CommandIDs::saveDocumentAs:
-        getContentComponent()->saveDocument(true);
-        break;
-    case CommandIDs::closeDocument:
-		getContentComponent()->closeDocument();
-        break;
-    case CommandIDs::closeAllDocuments:
-        break;
-    case CommandIDs::settings:
-        getContentComponent()->showSettingsDialog();
-        break;
-    case CommandIDs::runCsoundCode:
-        getContentComponent()->runCsoundCode();
-        break;
     case CommandIDs::stopCsoundCode:
         getContentComponent()->stopCsoundCode();
         getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
         break;
-    case CommandIDs::exportAsEffect:
-		exportPlugin("VST", getContentComponent()->getCurrentCsdFile());
-        break;
-    case CommandIDs::exportAsSynth:
-		exportPlugin("VSTi", getContentComponent()->getCurrentCsdFile());
-        break;
-    case CommandIDs::exportAsFMODSoundPlugin:
 
-        break;
-    case CommandIDs::undo:
-
-        break;
-    case CommandIDs::redo:
-
-        break;
-    case CommandIDs::toggleComments:
-        getContentComponent()->getCurrentCodeEditor()->toggleComments();
-        break;
-    case CommandIDs::paste:
-
-        break;
     case CommandIDs::editMode:
         getContentComponent()->setEditMode(isGUIEnabled =! isGUIEnabled);
         if(isGUIEnabled==false)
             getContentComponent()->saveDocument();
         break;
-    case CommandIDs::startLiveDebugger:
-        getContentComponent()->getCurrentCodeEditor()->runInDebugMode();
-        break;
-		
-	case CommandIDs::zoomIn:
-		getContentComponent()->getCurrentCodeEditor()->zoomIn();
-		break;
-	case CommandIDs::zoomOut:
-		getContentComponent()->getCurrentCodeEditor()->zoomOut();
+
+	case CommandIDs::showFindPanel:     
+		showfindPanel = !showfindPanel;
+		if(showfindPanel)
+			getContentComponent()->showFindPanel(); 
+		else
+			getContentComponent()->hideFindPanel(); 
 		break;
     default:
         break;

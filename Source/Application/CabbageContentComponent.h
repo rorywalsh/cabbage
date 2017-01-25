@@ -29,9 +29,10 @@
 #include "CabbageToolbarFactory.h"
 #include "../Audio/Graph/AudioGraph.h"
 #include "../Settings/CabbageSettings.h"
+#include "CabbagePluginComponent.h"
+#include "CabbageGraphComponent.h"
 
 class CabbageDocumentWindow;
-
 
 class CabbageContentComponent
     : public Component,
@@ -80,6 +81,15 @@ public:
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
     void setLookAndFeelColours();
+	
+	//==============================================================================
+    String getSearchString()                 { return cabbageSettings->getUserSettings()->getValue ("searchString"); }
+    void setSearchString (const String& s)   { cabbageSettings->getUserSettings()->setValue ("searchString", s); }
+    bool isCaseSensitiveSearch()             { return cabbageSettings->getUserSettings()->getBoolValue ("searchCaseSensitive"); }
+    void setCaseSensitiveSearch (bool b)     { cabbageSettings->getUserSettings()->setValue ("searchCaseSensitive", b); }
+	void showFindPanel();
+	void hideFindPanel();
+	void findNext(bool forward);
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -113,15 +123,121 @@ private:
     int currentFileIndex = 0;
     int numberOfFiles = 0;
     ScopedPointer<AudioGraph> audioGraph;
+	ScopedPointer<CabbageGraphComponent> graphComponent;
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;
+	class FindPanel;
+	ScopedPointer<FindPanel> findPanel;
 	TooltipWindow tooltipWindow;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageContentComponent)
 };
 
+//==============================================================================
+class CabbageContentComponent::FindPanel  : public Component,
+                                               private TextEditor::Listener,
+                                               private ButtonListener
+{
+public:
+    FindPanel()
+        : caseButton ("Case-sensitive"),
+          findPrev ("<"),
+          findNext (">")
+    {
+        editor.setColour (CaretComponent::caretColourId, Colours::black);
+
+        addAndMakeVisible (editor);
+        label.setText ("Find:", dontSendNotification);
+        label.setColour (Label::textColourId, Colours::white);
+        label.attachToComponent (&editor, false);
+
+        addAndMakeVisible (caseButton);
+        caseButton.setColour (ToggleButton::textColourId, Colours::white);
+        caseButton.setToggleState (getOwner()->isCaseSensitiveSearch(), dontSendNotification);
+        caseButton.addListener (this);
+
+        findPrev.setConnectedEdges (Button::ConnectedOnRight);
+        findNext.setConnectedEdges (Button::ConnectedOnLeft);
+        addAndMakeVisible (findPrev);
+        addAndMakeVisible (findNext);
+
+        setWantsKeyboardFocus (false);
+        setFocusContainer (true);
+        findPrev.setWantsKeyboardFocus (false);
+        findNext.setWantsKeyboardFocus (false);
+
+        editor.setText (getOwner()->getSearchString());
+        editor.addListener (this);
+    }
+
+    void setCommandManager (ApplicationCommandManager* cm)
+    {
+        findPrev.setCommandToTrigger (cm, CommandIDs::findPrevious, true);
+        findNext.setCommandToTrigger (cm, CommandIDs::findNext, true);
+    }
+
+    void paint (Graphics& g) override
+    {
+        Path outline;
+        outline.addRoundedRectangle (1.0f, 1.0f, getWidth() - 2.0f, getHeight() - 2.0f, 8.0f);
+
+        g.setColour (Colours::black.withAlpha (0.6f));
+        g.fillPath (outline);
+        g.setColour (Colours::white.withAlpha (0.8f));
+        g.strokePath (outline, PathStrokeType (1.0f));
+    }
+
+    void resized() override
+    {
+        int y = 30;
+        editor.setBounds (10, y, getWidth() - 20, 24);
+        y += 30;
+        caseButton.setBounds (10, y, getWidth() / 2 - 10, 22);
+        findNext.setBounds (getWidth() - 40, y, 30, 22);
+        findPrev.setBounds (getWidth() - 70, y, 30, 22);
+    }
+
+    void buttonClicked (Button*) override
+    {
+        getOwner()->setCaseSensitiveSearch (caseButton.getToggleState());
+    }
+
+    void textEditorTextChanged (TextEditor&) override
+    {
+        getOwner()->setSearchString (editor.getText());
+
+        if (CabbageContentComponent* contentComp = getOwner())
+		{
+            //contentComp->getCurrentCodeEditor()->findNext (true, false);
+			
+		}
+    }
+
+    void textEditorFocusLost (TextEditor&) override {}
+
+    void textEditorReturnKeyPressed (TextEditor&) override
+    {
+       // ProjucerApplication::getCommandManager().invokeDirectly (CommandIDs::findNext, true);
+    }
+
+    void textEditorEscapeKeyPressed (TextEditor&) override
+    {
+        //if (CabbageContentComponent* contentComp = getOwner())
+        //    contentComp->hideFindPanel();
+    }
+
+    CabbageContentComponent* getOwner() const
+    {
+        return findParentComponentOfClass <CabbageContentComponent>();
+    }
+
+    TextEditor editor;
+    Label label;
+    ToggleButton caseButton;
+    TextButton findPrev, findNext;
+};
 
 
 #endif  // CABBAGECONTENT_H_INCLUDED

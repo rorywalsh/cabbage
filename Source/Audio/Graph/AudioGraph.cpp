@@ -31,7 +31,13 @@ AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
                        const String& preferredDefaultDeviceName,
                        const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
 
-: settings (settingsToUse, takeOwnershipOfSettings), graph(), processor(nullptr)
+: 	settings (settingsToUse, takeOwnershipOfSettings), 
+	graph(), 
+	processor(nullptr),
+	FileBasedDocument (filenameSuffix,
+                         filenameWildcard,
+                         "Load a filter graph",
+                         "Save a filter graph")
 {
     graph.prepareToPlay(44100, 512);
     graph.setPlayConfigDetails(2, 2, 44100, 512);
@@ -226,6 +232,97 @@ AudioProcessor* AudioGraph::getProcessor()
     return processor;
 }
 
+const AudioProcessorGraph::Node::Ptr AudioGraph::getNode (const int index) const noexcept
+{
+    return graph.getNode (index);
+}
+
+const AudioProcessorGraph::Node::Ptr AudioGraph::getNodeForId (const uint32 uid) const noexcept
+{
+    return graph.getNodeForId (uid);
+}
+
+//==============================================================================
+int AudioGraph::getNumPlugins() const noexcept
+{
+    return graph.getNumNodes();
+}
+
+void AudioGraph::setNodePosition (const uint32 nodeId, double x, double y)
+{
+    if (AudioProcessorGraph::Node::Ptr n = graph.getNodeForId (nodeId))
+    {
+        n->properties.set ("x", jlimit (0.0, 1.0, x));
+        n->properties.set ("y", jlimit (0.0, 1.0, y));
+    }
+}
+
+Point<double> AudioGraph::getNodePosition (const uint32 nodeId) const
+{
+    if (AudioProcessorGraph::Node::Ptr n = graph.getNodeForId (nodeId))
+        return Point<double> (static_cast<double> (n->properties ["x"]),
+                              static_cast<double> (n->properties ["y"]));
+
+    return Point<double>();
+}
+//==============================================================================
+int AudioGraph::getNumConnections() const noexcept
+{
+    return graph.getNumConnections();
+}
+
+const AudioProcessorGraph::Connection* AudioGraph::getConnection (const int index) const noexcept
+{
+    return graph.getConnection (index);
+}
+
+const AudioProcessorGraph::Connection* AudioGraph::getConnectionBetween (uint32 sourceFilterUID, int sourceFilterChannel,
+                                                                          uint32 destFilterUID, int destFilterChannel) const noexcept
+{
+    return graph.getConnectionBetween (sourceFilterUID, sourceFilterChannel,
+                                       destFilterUID, destFilterChannel);
+}
+
+bool AudioGraph::canConnect (uint32 sourceFilterUID, int sourceFilterChannel,
+                              uint32 destFilterUID, int destFilterChannel) const noexcept
+{
+    return graph.canConnect (sourceFilterUID, sourceFilterChannel,
+                             destFilterUID, destFilterChannel);
+}
+
+bool AudioGraph::addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
+                                 uint32 destFilterUID, int destFilterChannel)
+{
+    const bool result = graph.addConnection (sourceFilterUID, sourceFilterChannel,
+                                             destFilterUID, destFilterChannel);
+
+    if (result)
+        changed();
+
+    return result;
+}
+
+void AudioGraph::removeConnection (const int index)
+{
+    graph.removeConnection (index);
+    changed();
+}
+
+void AudioGraph::removeConnection (uint32 sourceFilterUID, int sourceFilterChannel,
+                                    uint32 destFilterUID, int destFilterChannel)
+{
+    if (graph.removeConnection (sourceFilterUID, sourceFilterChannel,
+                                destFilterUID, destFilterChannel))
+        changed();
+}
+
+void AudioGraph::clear()
+{
+    PluginWindow::closeAllCurrentlyOpenWindows();
+
+    graph.clear();
+    changed();
+}
 //========================================================================================
 
 static Array <PluginWindow*> activePluginWindows;

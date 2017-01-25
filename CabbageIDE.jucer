@@ -14,6 +14,14 @@
               file="Source/Application/CabbageDocumentWindow.cpp"/>
         <FILE id="su6diz" name="CabbageDocumentWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageDocumentWindow.h"/>
+        <FILE id="I9C3AQ" name="CabbageGraphComponent.cpp" compile="1" resource="0"
+              file="Source/Application/CabbageGraphComponent.cpp"/>
+        <FILE id="lnPlHy" name="CabbageGraphComponent.h" compile="0" resource="0"
+              file="Source/Application/CabbageGraphComponent.h"/>
+        <FILE id="csxrNo" name="CabbagePluginComponent.cpp" compile="1" resource="0"
+              file="Source/Application/CabbagePluginComponent.cpp"/>
+        <FILE id="aFQfex" name="CabbagePluginComponent.h" compile="0" resource="0"
+              file="Source/Application/CabbagePluginComponent.h"/>
         <FILE id="k9Y1Dw" name="CabbageToolbarFactory.cpp" compile="1" resource="0"
               file="Source/Application/CabbageToolbarFactory.cpp"/>
         <FILE id="rYkveY" name="CabbageToolbarFactory.h" compile="0" resource="0"
