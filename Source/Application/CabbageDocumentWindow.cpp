@@ -381,6 +381,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::paste,
                               CommandIDs::undo,
 							  CommandIDs::showFindPanel,
+							  CommandIDs::showReplacePanel,
                               CommandIDs::redo,
                               CommandIDs::editMode,
                               CommandIDs::startLiveDebugger,
@@ -535,9 +536,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 	case CommandIDs::showFindPanel:
             result.setInfo (TRANS ("Find"), TRANS ("Searches for text in the current document."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('f', ModifierKeys::commandModifier, 0));
-			result.setTicked(showfindPanel);
 		break;
-
+	case CommandIDs::showReplacePanel:
+            result.setInfo (TRANS ("Replace"), TRANS ("Replaces text in the current document."), "Editing", 0);
+            result.defaultKeypresses.add (KeyPress ('h', ModifierKeys::commandModifier, 0));
+		break;
 	case CommandIDs::findNext:
 		result.setInfo (TRANS ("Find Next"), TRANS ("Searches for the next occurrence of the current search-term."), "Editing", 0);
 		result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
@@ -581,6 +584,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 	case CommandIDs::zoomOut:				getContentComponent()->getCurrentCodeEditor()->zoomOut();			return true;
 	case CommandIDs::findNext:  			getContentComponent()->findNext (true);								return true;
 	case CommandIDs::findPrevious: 			getContentComponent()->findNext  (false); 							return true;	
+	case CommandIDs::showFindPanel:     	getContentComponent()->showFindPanel(false); 						return true;
+	case CommandIDs::showReplacePanel:		getContentComponent()->showFindPanel(true); 						return true;
     case CommandIDs::exportAsFMODSoundPlugin:        	return true;
     case CommandIDs::undo:        						return true;
     case CommandIDs::redo:       						return true;
@@ -606,13 +611,6 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->saveDocument();
         break;
 
-	case CommandIDs::showFindPanel:     
-		showfindPanel = !showfindPanel;
-		if(showfindPanel)
-			getContentComponent()->showFindPanel(); 
-		else
-			getContentComponent()->hideFindPanel(); 
-		break;
     default:
         break;
     }

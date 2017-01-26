@@ -87,7 +87,7 @@ public:
     void setSearchString (const String& s);
     bool isCaseSensitiveSearch();
     void setCaseSensitiveSearch (bool b);
-	void showFindPanel();
+	void showFindPanel(bool withReplace);
 	void hideFindPanel();
 	void findNext(bool forward);
     //==============================================================================
@@ -143,41 +143,68 @@ class CabbageContentComponent::FindPanel  : public Component,
                                                private ButtonListener
 {
 public:
-    FindPanel()
+    FindPanel(String searchString, bool isCaseSensitive, bool withReplace)
         : caseButton ("Case-sensitive"),
           findPrev ("<"),
-          findNext (">")
+          findNext (">"),
+		  replace("Replace"),
+		  replaceAll("Replace all"),
+		  showReplaceControls(withReplace)
     {
-        editor.setColour (CaretComponent::caretColourId, Colours::black);
+		//find components...
+		setSize (260, withReplace == false ? 90 : 180);
+        findEditor.setColour (CaretComponent::caretColourId, Colours::black);
 
-        addAndMakeVisible (editor);
-        label.setText ("Find:", dontSendNotification);
-        label.setColour (Label::textColourId, Colours::white);
-        label.attachToComponent (&editor, false);
+        addAndMakeVisible (findEditor);
+        findLabel.setText ("Find:", dontSendNotification);
+        findLabel.setColour (Label::textColourId, Colours::white);
+        findLabel.attachToComponent (&findEditor, false);
 
         addAndMakeVisible (caseButton);
         caseButton.setColour (ToggleButton::textColourId, Colours::white);
-        caseButton.setToggleState (getOwner()->isCaseSensitiveSearch(), dontSendNotification);
+        caseButton.setToggleState (isCaseSensitive, dontSendNotification);
         caseButton.addListener (this);
 
         findPrev.setConnectedEdges (Button::ConnectedOnRight);
         findNext.setConnectedEdges (Button::ConnectedOnLeft);
         addAndMakeVisible (findPrev);
         addAndMakeVisible (findNext);
+		findNext.addListener(this);
+		findPrev.addListener(this);
 
         setWantsKeyboardFocus (false);
         setFocusContainer (true);
         findPrev.setWantsKeyboardFocus (false);
         findNext.setWantsKeyboardFocus (false);
 
-        editor.setText (getOwner()->getSearchString());
-        editor.addListener (this);
-    }
+        findEditor.setText (searchString);
+        findEditor.addListener (this);
+		
+		//replace components....
+        replaceEditor.setColour (CaretComponent::caretColourId, Colours::black);
 
-    void setCommandManager (ApplicationCommandManager* cm)
-    {
-        findPrev.setCommandToTrigger (cm, CommandIDs::findPrevious, true);
-        findNext.setCommandToTrigger (cm, CommandIDs::findNext, true);
+        addAndMakeVisible (replaceEditor);
+        replaceLabel.setText ("Replace:", dontSendNotification);
+        replaceLabel.setColour (Label::textColourId, Colours::white);
+        replaceLabel.attachToComponent (&replaceEditor, false);
+
+        replace.setConnectedEdges (Button::ConnectedOnRight);
+        replaceAll.setConnectedEdges (Button::ConnectedOnLeft);
+        addAndMakeVisible (replace);
+        addAndMakeVisible (replaceAll);
+		replace.addListener(this);
+		replaceAll.addListener(this);
+		
+        setWantsKeyboardFocus (false);
+        setFocusContainer (true);
+        replace.setWantsKeyboardFocus (false);
+        replaceAll.setWantsKeyboardFocus (false);
+
+		
+        replaceEditor.setText (replaceString);
+        replaceEditor.addListener (this);
+		
+		
     }
 
     void paint (Graphics& g) override
@@ -194,26 +221,38 @@ public:
     void resized() override
     {
         int y = 30;
-        editor.setBounds (10, y, getWidth() - 20, 24);
+        findEditor.setBounds (10, y, getWidth() - 20, 24);
         y += 30;
         caseButton.setBounds (10, y, getWidth() / 2 - 10, 22);
         findNext.setBounds (getWidth() - 40, y, 30, 22);
         findPrev.setBounds (getWidth() - 70, y, 30, 22);
+
+		y += 50;
+        replaceEditor.setBounds (10, y, getWidth() - 20, 24);
+        y += 30;
+        replace.setBounds (10, y, (getWidth()/2)-5, 22);
+        replaceAll.setBounds (getWidth()/2+5, y, getWidth()/2-15, 22);		
+		
     }
 
-    void buttonClicked (Button*) override
+    void buttonClicked (Button* button) override
     {
-        getOwner()->setCaseSensitiveSearch (caseButton.getToggleState());
+		if(button->getName() == caseButton.getName())
+			getOwner()->setCaseSensitiveSearch (caseButton.getToggleState());
+		else if(button->getName() == findNext.getName())
+			getOwner()->findNext(true);	
+		else if(button->getName() == findPrev.getName())
+			getOwner()->findNext(false);		
+			
     }
 
     void textEditorTextChanged (TextEditor&) override
     {
-        getOwner()->setSearchString (editor.getText());
+        getOwner()->setSearchString (findEditor.getText());
 
         if (CabbageContentComponent* contentComp = getOwner())
 		{
-            getOwner()->findNext(true);
-			
+            getOwner()->findNext(true);			
 		}
     }
 
@@ -221,7 +260,7 @@ public:
 
     void textEditorReturnKeyPressed (TextEditor&) override
     {
-        getOwner()->setSearchString (editor.getText());
+        getOwner()->setSearchString (findEditor.getText());
 
         if (CabbageContentComponent* contentComp = getOwner())
 		{
@@ -240,10 +279,12 @@ public:
         return findParentComponentOfClass <CabbageContentComponent>();
     }
 
-    TextEditor editor;
-    Label label;
+    TextEditor findEditor, replaceEditor;
+    Label findLabel, replaceLabel;
+	String replaceString;
     ToggleButton caseButton;
-    TextButton findPrev, findNext;
+	bool showReplaceControls = false;
+    TextButton findPrev, findNext, replace, replaceAll;
 };
 
 

@@ -198,8 +198,6 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
         const String currentLineText = getCurrentCodeEditor()->getLineText(lineNumber);
 
 		const String macroText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::expandedmacrotext);
-		CabbageUtilities::debug(macroText);
-		
 		
 		String macroNames(String::empty);
 		for ( int i = 0 ; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::macronames).size() ; i++ )
@@ -489,7 +487,6 @@ void CabbageContentComponent::launchSSHFileBrowser(String mode)
     const String sshAddress = cabbageSettings->getUserSettings()->getValue("SSHAddress");
     const String sshHome = cabbageSettings->getUserSettings()->getValue("SSHHomeDir");
     DialogWindow::LaunchOptions o;
-	CabbageUtilities::debug(currentCsdFile.getFullPathName());
     o.content.setOwned(new CabbageSSHFileBrowser(sshAddress, sshHome, this, mode, currentCsdFile.getFullPathName()));
     o.content->setSize(650, 350);
 
@@ -546,7 +543,6 @@ void CabbageContentComponent::openFile(String filename)
 	currentFileIndex = editorAndConsole.size()-1;
 	
     resized();
-	CabbageUtilities::debug("Width of content comp", getWidth());
     addFileTabButton(openFiles[numberOfFiles-1]);
 
     getCurrentCodeEditor()->addChangeListener(this);
@@ -666,7 +662,7 @@ void CabbageContentComponent::removeEditor()
 //==============================================================================
 String CabbageContentComponent::getSearchString()                 
 { 
-	return ""; 
+	return searchString; 
 }
 
 void CabbageContentComponent::setSearchString (const String& s)   
@@ -676,7 +672,7 @@ void CabbageContentComponent::setSearchString (const String& s)
 
 bool CabbageContentComponent::isCaseSensitiveSearch()             
 { 
-	return true;//isCaseSensitive; 
+	return isCaseSensitive; 
 }
 
 void CabbageContentComponent::setCaseSensitiveSearch (bool b)     
@@ -688,8 +684,7 @@ void CabbageContentComponent::findNext(bool forwards)
 {
 	if(findPanel!=nullptr)
 	{
-		CabbageUtilities::debug(getSearchString());
-		getCurrentCodeEditor()->findText(searchString, forwards, isCaseSensitiveSearch(), true);	
+		getCurrentCodeEditor()->findText(searchString, forwards, isCaseSensitiveSearch(), forwards);	
 	}
 }
 //==============================================================================
@@ -720,27 +715,26 @@ void CabbageContentComponent::stopCsoundCode()
 }
 
 //==============================================================================
-void CabbageContentComponent::showFindPanel()
+void CabbageContentComponent::showFindPanel(bool withReplace)
 {
     if (findPanel == nullptr)
     {
-        findPanel = new FindPanel();
-        findPanel->setCommandManager (&owner->getCommandManager());
-
+        findPanel = new FindPanel(getSearchString(), isCaseSensitive, withReplace);
         addAndMakeVisible (findPanel);
         resized();
     }
 
     if (findPanel != nullptr)
     {
-        findPanel->editor.grabKeyboardFocus();
-        findPanel->editor.selectAll();
+        findPanel->findEditor.grabKeyboardFocus();
+        findPanel->findEditor.selectAll();
     }
 }
 
 void CabbageContentComponent::hideFindPanel()
 {
     findPanel = nullptr;
+	getCurrentCodeEditor()->grabKeyboardFocus();
 }
 
 //==============================================================================
@@ -762,7 +756,6 @@ void CabbageContentComponent::resized()
 	
     if (findPanel != nullptr)
     {
-        findPanel->setSize (jmin (260, getWidth() - 32), 100);
         findPanel->setTopRightPosition (getWidth() - 16, 70);
     }
 }

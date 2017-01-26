@@ -63,6 +63,7 @@ enum
     findSelection           = 0x2010a1,
     findNext                = 0x2010a2,
     findPrevious            = 0x2010a3,
+	showReplacePanel        = 0x2010a4,
 
 
     showBuildTab            = 0x410001,
