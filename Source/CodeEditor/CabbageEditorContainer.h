@@ -71,6 +71,7 @@ public:
     void updateLookAndFeel();
     void openFile(File file);
     void resized();
+
     void updateEditorColourScheme();
 	
 	void mouseExit(const MouseEvent& e);

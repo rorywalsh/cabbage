@@ -546,7 +546,6 @@ void CabbageContentComponent::openFile(String filename)
 	currentFileIndex = editorAndConsole.size()-1;
 	
     resized();
-	const int numTabs = jmax(3, fileTabs.size()); 
 	CabbageUtilities::debug("Width of content comp", getWidth());
     addFileTabButton(openFiles[numberOfFiles-1]);
 
@@ -554,7 +553,7 @@ void CabbageContentComponent::openFile(String filename)
 	getCurrentCodeEditor()->setSavePoint();
     owner->setName("Cabbage " + openFiles[currentFileIndex].getFullPathName());
     addInstrumentsAndRegionsToCombobox();
-
+    repaint();
 
 }
 //==============================================================================

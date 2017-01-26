@@ -119,6 +119,7 @@ void CabbageEditorContainer::updateEditorColourScheme()
     statusBar.repaint();
 }
 
+
 void CabbageEditorContainer::StatusBar::paint(Graphics &g)
 {
 	const Colour background = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::statusBar, Colours::black);
