@@ -352,10 +352,10 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
                 }
             }
 
-            else if(identArray[indx].equalsIgnoreCase("colour:0")||
-                    identArray[indx].equalsIgnoreCase("colour"))
+            else if(identArray[indx].equalsIgnoreCase("colour:0"))
             {
                 setProperty(widgetData, CabbageIdentifierIds::colour, getColourFromText(strTokens.joinIntoString(",")).toString());
+
             }
 
             else if(identArray[indx].equalsIgnoreCase("colour:1") ||

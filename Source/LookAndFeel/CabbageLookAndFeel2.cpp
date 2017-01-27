@@ -267,15 +267,15 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
     if (! button.isEnabled())
         g.setOpacity (0.5f);
 
-    const int textX = (int) tickWidth + 10;
+    const int textX = (int) tickWidth+10;
 
     int widthButton =  button.getWidth();
 
     if(button.getButtonText().isNotEmpty())
-        g.drawFittedText(button.getButtonText(),
+        g.drawText(button.getButtonText(),
                          textX, 0,
-                         jmax(20, button.getWidth() - textX - 2), button.getHeight(),
-                         Justification::centredLeft, 5);
+                         button.getWidth(), button.getHeight(),
+                         Justification::left, false);
 
 }
 
@@ -291,11 +291,18 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
         if (isToggleOn == true)
         {
             g.setColour (colour);
-            g.fillRoundedRectangle(width*0.01, height*0.01, width*0.99, height*0.99, corners);
+            g.fillRoundedRectangle(width*0.01, height*0.01, width*0.98, height*0.98, corners);
             opacity = 0.4;
         }
         else
         {
+            for (float i=0.01; i<0.05; i+=0.01)
+            {
+                g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
+                g.fillRoundedRectangle (width*i+1, height*i+1,
+                                        width*0.95, height*0.95, corners);
+            }
+
             Colour bg1 = colour.darker();
             Colour bg2 = colour;
             ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
@@ -310,6 +317,13 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
         g.setGradientFill (edgeHighlight);
         g.setOpacity (opacity);
         g.fillRoundedRectangle (0, 0, width, height, corners);
+
+        ColourGradient edgeHighlight2 = ColourGradient (Colours::whitesmoke, 0, 0,
+                                        Colours::transparentWhite, height*0.1, 0, false);
+        g.setGradientFill (edgeHighlight2);
+        g.setOpacity (opacity);
+        g.fillRoundedRectangle (0, 0, width, height, corners);
+
     }
 
     else   //else if round toggle
