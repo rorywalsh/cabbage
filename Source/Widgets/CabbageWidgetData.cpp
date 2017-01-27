@@ -1546,7 +1546,12 @@ String CabbageWidgetData::getColoursTextAsCabbageCode(ValueTree widgetData, cons
         colourString = colourString << "trackercolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
-
+    if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::textboxcolour)!=CabbageWidgetData::getStringProp(tempData, CabbageIdentifierIds::textboxcolour))
+    {
+        const Colour col = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::textboxcolour));
+        colourString = colourString << "textboxcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+	
     return colourString;
 }
 //===================================================================

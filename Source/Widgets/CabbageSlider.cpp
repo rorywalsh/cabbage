@@ -256,8 +256,8 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
     textLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
 
     slider.setColour(Slider::textBoxTextColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-    slider.setColour(Slider::textBoxBackgroundColourId, Colours::black);
-    slider.setColour(Slider::textBoxHighlightColourId, Colours::white);
+    slider.setColour(Slider::textBoxBackgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxcolour)));
+    slider.setColour(Slider::textBoxHighlightColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxcolour)).contrasting());
 
     slider.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
     slider.setColour(Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());

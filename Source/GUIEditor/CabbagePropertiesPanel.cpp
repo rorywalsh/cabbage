@@ -363,6 +363,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String textColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textcolour);
         const String fontColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour);
         const String trackerColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::trackercolour);
+		const String textboxColourString = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::textboxcolour);
 
         comps.add(new ColourPropertyComponent("Colour", colourString));
 
@@ -375,6 +376,8 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
             comps.add(new ColourPropertyComponent("Outline", outlineColourString));
 
         comps.add(new ColourPropertyComponent("Tracker", trackerColourString));
+		comps.add(new ColourPropertyComponent("Value Box Colour", textboxColourString));
+		
     }
     else if(typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
     {

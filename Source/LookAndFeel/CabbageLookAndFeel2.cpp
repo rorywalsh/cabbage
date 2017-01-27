@@ -296,13 +296,6 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
         }
         else
         {
-            for (float i=0.01; i<0.05; i+=0.01)
-            {
-//                g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
-//                g.fillRoundedRectangle (width*i+1, height*i+1,
-//                                        width*0.95, height*0.95, corners);
-            }
-
             Colour bg1 = colour.darker();
             Colour bg2 = colour;
             ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);

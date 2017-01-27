@@ -166,7 +166,7 @@ static void addExamples(PopupMenu& m, const String menuName, String dir, Array<F
 			File searchDir(dir+CabbageUtilities::correctPathSlashes("/"+menuName+"/"+folders[i]));
 			
 			searchDir.findChildFiles(filesArray, File::findFiles, false, "*.csd");
-			//filesArray.sort();	
+			filesArray.sort();	
 
 			for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
 			{
@@ -184,7 +184,7 @@ static void addExamples(PopupMenu& m, const String menuName, String dir, Array<F
 		File searchDir(dir+CabbageUtilities::correctPathSlashes("/"+menuName));
 		
 		searchDir.findChildFiles(filesArray, File::findFiles, false, "*.csd");
-		//filesArray.sort();	
+		filesArray.sort();	
 
 		for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
 		{

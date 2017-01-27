@@ -271,6 +271,7 @@ public:
         add("linethickness");
         add("outlinecolour");
         add("numberofsteps");
+		add("textboxcolour");
         add("trackercolour");
         add("valuetextbox");
         add("fontcolour:1");
@@ -423,6 +424,7 @@ static const Identifier imggroupbox = "imggroupbox";
 static const Identifier imgbuttonon = "imgbuttonon";
 static const Identifier imgbuttonoff = "imgbuttonoff";
 static const Identifier valuetextbox = "valuetextbox";
+static const Identifier textboxcolour = "textboxcolour";
 static const Identifier textbox = "textbox";
 static const Identifier name = "name";
 static const Identifier active = "active";
@@ -675,6 +677,7 @@ public:
         set("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
         set("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set("Value Box", CabbageIdentifierIds::valuetextbox.toString());
+		set("Value Box Colour", CabbageIdentifierIds::textboxcolour.toString());
         set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
         set("Colour: On", CabbageIdentifierIds::oncolour.toString());
         set("White Notes", CabbageIdentifierIds::whitenotecolour.toString());
