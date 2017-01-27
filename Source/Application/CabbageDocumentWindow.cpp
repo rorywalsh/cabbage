@@ -163,10 +163,11 @@ static void addExamples(PopupMenu& m, const String menuName, String dir, Array<F
 		for( int i = 0 ; i < folders.size() ; i++ )
 		{
 			subMenu2.clear();
-			File searchDir(dir+CabbageUtilities::correctPathSlashes("/"+menuName+"/"+folders[i]));
-			
-			searchDir.findChildFiles(filesArray, File::findFiles, false, "*.csd");
-			filesArray.sort();	
+			File searchDir(dir+CabbageUtilities::correctPathSlashes("/"+menuName+"/"+folders[i]));			
+			Array<File> exampleFilesArray;
+			searchDir.findChildFiles(exampleFilesArray, File::findFiles, false, "*.csd");
+			exampleFilesArray.sort();	
+			filesArray.addArray(exampleFilesArray);
 
 			for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
 			{
@@ -174,6 +175,7 @@ static void addExamples(PopupMenu& m, const String menuName, String dir, Array<F
 			}	
 
 			subMenu1.addSubMenu(folders[i], subMenu2);
+			noOfFiles=filesArray.size();
 		}
 		
 		m.addSubMenu(menuName, subMenu1);	
@@ -182,9 +184,10 @@ static void addExamples(PopupMenu& m, const String menuName, String dir, Array<F
 	{
 		subMenu2.clear();
 		File searchDir(dir+CabbageUtilities::correctPathSlashes("/"+menuName));
-		
-		searchDir.findChildFiles(filesArray, File::findFiles, false, "*.csd");
-		filesArray.sort();	
+		Array<File> exampleFilesArray;
+		searchDir.findChildFiles(exampleFilesArray, File::findFiles, false, "*.csd");
+		exampleFilesArray.sort();	
+		filesArray.addArray(exampleFilesArray);
 
 		for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
 		{
