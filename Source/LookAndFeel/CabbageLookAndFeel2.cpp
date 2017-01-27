@@ -227,7 +227,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
     const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
     const bool isRectangle = button.getProperties().getWithDefault(CabbageIdentifierIds::shape, false);
     float fontSize = jmin (15.0f, button.getHeight() * 0.85f);
-    const float tickWidth = button.getHeight() * .9f;
+    const float tickWidth = button.getHeight();
     int imgHeight, imgWidth;
     bool toggleState = button.getToggleState();
 
@@ -246,7 +246,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
         {
             image = ImageCache::getFromFile(File(toggleState == true ? imgButtonOnFile : imgButtonOffFile));
             image = image.rescaled(button.getWidth(), button.getHeight());
-            g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);
+            g.drawImage(image, 0.f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth(), tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);
         }
         else if(imgButtonOnFile.hasFileExtension("svg") && imgButtonOffFile.hasFileExtension("svg"))
         {
@@ -257,7 +257,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
     else	//if files don't exist, draw a native Cabbage checkbox
     {
         image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId), isRectangle, corners);
-        g.drawImage(image, 4.0f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth()-4, tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);
+        g.drawImage(image, 0.f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth(), tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);
     }
 
 
@@ -291,23 +291,23 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
         if (isToggleOn == true)
         {
             g.setColour (colour);
-            g.fillRoundedRectangle(width*0.01, height*0.01, width*0.93, height*0.93, corners);
+            g.fillRoundedRectangle(width*0.01, height*0.01, width*0.99, height*0.99, corners);
             opacity = 0.4;
         }
         else
         {
             for (float i=0.01; i<0.05; i+=0.01)
             {
-                g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
-                g.fillRoundedRectangle (width*i+1, height*i+1,
-                                        width*0.95, height*0.95, corners);
+//                g.setColour (Colour::fromRGBA (0, 0, 0, 255/(i*100)));
+//                g.fillRoundedRectangle (width*i+1, height*i+1,
+//                                        width*0.95, height*0.95, corners);
             }
 
             Colour bg1 = colour.darker();
             Colour bg2 = colour;
             ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width*0.5, height*0.5, false);
             g.setGradientFill (cg);
-            g.fillRoundedRectangle (width*0.01, height*0.01, width*0.93, height*0.93, corners);
+            g.fillRoundedRectangle (width*0.01, height*0.01, width*0.99, height*0.99, corners);
             opacity = 0.2;
         }
 
@@ -316,14 +316,7 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
                                        Colours::transparentWhite, 0, height*0.1, false);
         g.setGradientFill (edgeHighlight);
         g.setOpacity (opacity);
-        g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
-
-        ColourGradient edgeHighlight2 = ColourGradient (Colours::whitesmoke, 0, 0,
-                                        Colours::transparentWhite, height*0.1, 0, false);
-        g.setGradientFill (edgeHighlight2);
-        g.setOpacity (opacity);
-        g.fillRoundedRectangle (0, 0, width*0.95, height*0.95, corners);
-
+        g.fillRoundedRectangle (0, 0, width, height, corners);
     }
 
     else   //else if round toggle
