@@ -282,7 +282,6 @@ void CabbageContentComponent::addFileTabButton(File file)
     fileButton->setLookAndFeel(lookAndFeel);
     fileButton->setToggleState(true, dontSendNotification);
     currentFileIndex = fileTabs.size()-1;
-	arrangeFileTabButtons();
 }
 
 void CabbageContentComponent::arrangeFileTabButtons()
@@ -291,8 +290,9 @@ void CabbageContentComponent::arrangeFileTabButtons()
 	const int numTabs = jmax(3, fileTabs.size()); 
 	for( auto fileButton : fileTabs)
 	{	
-		fileButton->setBounds(xPos, toolbarThickness+3, getWidth()/numTabs, 20);
-		xPos += getWidth()/numTabs+5;			
+		const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 15 : getWidth()-5;
+		fileButton->setBounds(xPos, toolbarThickness+3, width/numTabs, 20);
+		xPos += width/numTabs+5;			
 	}
 }
 
@@ -311,11 +311,13 @@ void CabbageContentComponent::addInstrumentsAndRegionsToCombobox()
 void CabbageContentComponent::resizeAllEditorAndConsoles(int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
+	
     for( CabbageEditorContainer* editor : editorAndConsole )
 	{
 		editor->statusBar.setSize(getWidth(), 28);
         editor->setBounds(0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight());
 	}
+	arrangeFileTabButtons();
 }
 
 //==============================================================================
@@ -541,15 +543,13 @@ void CabbageContentComponent::openFile(String filename)
     editorConsole->editor->startThread();
     numberOfFiles = editorAndConsole.size();
 	currentFileIndex = editorAndConsole.size()-1;
-	
-    resized();
     addFileTabButton(openFiles[numberOfFiles-1]);
-
     getCurrentCodeEditor()->addChangeListener(this);
 	getCurrentCodeEditor()->setSavePoint();
     owner->setName("Cabbage " + openFiles[currentFileIndex].getFullPathName());
     addInstrumentsAndRegionsToCombobox();
     repaint();
+	resized();
 
 }
 //==============================================================================
@@ -758,4 +758,6 @@ void CabbageContentComponent::resized()
     {
         findPanel->setTopRightPosition (getWidth() - 16, 70);
     }
+	
+	arrangeFileTabButtons();
 }

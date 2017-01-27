@@ -264,7 +264,9 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
     for(int indx=0; indx<identArray.size(); indx++)
     {
 		//CabbageUtilities::debug(str);
-        int identPos = str.toLowerCase().indexOf(" "+identArray[indx]);
+        int identPos = jmax(str.toLowerCase().indexOf(" "+identArray[indx]), 
+							str.toLowerCase().indexOf(","+identArray[indx]),
+							str.toLowerCase().indexOf(")"+identArray[indx]));
 
         // int identPos = str.toLowerCase().indexOf(" "+identArray[indx]+"(");
         // if(identPos<0)

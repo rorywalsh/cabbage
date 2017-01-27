@@ -216,8 +216,10 @@ void CabbagePluginProcessor::createParameters()
                 else if(typeOfWidget.contains("range"))
                 {
                     const var channel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-                    addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[0], name+"_min", 0, 1, value));
-                    addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[1], name+"_max", 0, 1, value));
+					const int minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::minvalue);
+					const int maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::maxvalue);
+                    addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[0], name+"_min", 0, 1, minValue));
+                    addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[1], name+"_max", 0, 1, maxValue));
                 }
                 else
 				{
@@ -396,15 +398,17 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginProcessor::getParameterForXYPad(String name)
 {
-    const OwnedArray<AudioProcessorParameter>& params = getParameters();
-	
-    for( int i = 0 ; i < params.size() ; i++)
-    {
-        if(name==params[i]->getName(512))
-            return  dynamic_cast<CabbageAudioParameter*> (params[i]);
-    }
-	
-	return nullptr;
+	for(auto param : getParameters())
+	{
+		if(CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*>(param))
+		{
+        if(name==cabbageParam->getWidgetName())
+            return dynamic_cast<CabbageAudioParameter*> (cabbageParam);
+			
+		}
+	}
+
+    return nullptr;
 }
 
 

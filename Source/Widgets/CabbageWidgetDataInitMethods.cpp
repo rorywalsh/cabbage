@@ -49,10 +49,11 @@ void CabbageWidgetData::setHRangeSliderProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");
     setProperty(widgetData, CabbageIdentifierIds::top, 10);
     setProperty(widgetData, CabbageIdentifierIds::left, 10);
-    setProperty(widgetData, CabbageIdentifierIds::width, 50);
-    setProperty(widgetData, CabbageIdentifierIds::height, 150);
+    setProperty(widgetData, CabbageIdentifierIds::width, 250);
+    setProperty(widgetData, CabbageIdentifierIds::height, 40);
     var channels;
-    channels.append("rangeslider");
+    channels.append("rangesliderMin");
+    channels.append("rangesliderMax");
     setProperty(widgetData, CabbageIdentifierIds::channel, channels);
     setProperty(widgetData, CabbageIdentifierIds::min, 0);
     setProperty(widgetData, CabbageIdentifierIds::max, 1);
