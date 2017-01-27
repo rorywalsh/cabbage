@@ -628,13 +628,13 @@ void CsoundPluginProcessor::drawGraphCallback(CSOUND *csound, WINDAT *windat)
 
 void CsoundPluginProcessor::killGraphCallback(CSOUND *csound, WINDAT *windat)
 {
-    CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
+    //CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
     CabbageUtilities::debug("killGraphCallback");
 }
 
 int CsoundPluginProcessor::exitGraphCallback(CSOUND *csound)
 {
-    CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
+    //CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
     CabbageUtilities::debug("exitGraphCallback");
     return 0;
 }

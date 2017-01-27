@@ -76,7 +76,7 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 
     if(prop==CabbageIdentifierIds::value)
     {
-        bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
+        //bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
         //setToggleState(getValue(valueTree)==1 ? true : false, dontSendNotification);
     }
 

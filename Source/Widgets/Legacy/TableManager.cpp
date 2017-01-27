@@ -155,6 +155,7 @@ void TableManager::addTable(int sr, const Colour col, int gen, var ampRange, int
 void TableManager::setAmpRanges(var ampRange)
 {
     if(ampRange.size()>2)
+	{
         if(int(ampRange[2])==-1)
             for(int i=0; i<tables.size(); i++)
             {
@@ -166,6 +167,7 @@ void TableManager::setAmpRanges(var ampRange)
             if(getTableFromFtNumber(ampRange[2])!=nullptr)
                 getTableFromFtNumber(ampRange[2])->setAmpRanges(ampRange);
         }
+	}
 }
 //==============================================================================
 void TableManager::setZoomFactor(double newZoom)
@@ -348,8 +350,6 @@ void TableManager::resized()
                         height = getHeight()-yPos-5;
                         ySpacing = yPos;
                     }
-
-                    int width = getWidth();
 
                     getTableFromFtNumber(tableNumber)->setBounds(0, ySpacing, getWidth(), height);
                 }
@@ -657,10 +657,12 @@ void GenTable::resized()
         handleViewer->setSize(getWidth(), getHeight());
 
     if(scrollbar)
+	{
         if(showScroll)
             scrollbar->setBounds (getLocalBounds().withWidth(getWidth()-scrollbarReduction).removeFromBottom (mainFooterHeight-5).reduced(2));
         else
             scrollbar->setBounds (-1000, 0, 100, 10);
+	}
 }
 
 void GenTable::showScrollbar(bool show)
@@ -684,7 +686,7 @@ void GenTable::setFile (const File& file)
 {
     if (file.existsAsFile())
     {
-        genRoutine==1;
+        genRoutine=1;
         AudioFormatManager format;
         format.registerBasicFormats();
 
@@ -1027,7 +1029,6 @@ void GenTable::paint (Graphics& g)
     thumbArea = getLocalBounds();
     thumbArea.setHeight(getHeight()-paintFooterHeight);
     float prevY=0, prevX=0, currY=0, currX=0;
-    const double scrollingResolution = (zoom == 0 ? 1 : 0.1);
     const bool interp = (getWidth()<tableSize ? true : false);
     const double thumbHeight = thumbArea.getHeight()-(showScroll==true? 10 : 0);//scrollbar thickness
     numPixelsPerIndex = ((double)thumbArea.getWidth() / visibleLength);
@@ -1057,7 +1058,7 @@ void GenTable::paint (Graphics& g)
         thumbnail->drawChannels(g, thumbArea.reduced (2), visibleRange.getStart(), visibleRange.getEnd(), .8f);
         g.setColour(colour.contrasting(.5f).withAlpha(.7f));
         float zoomFactor = thumbnail->getTotalLength()/visibleRange.getLength();
-        regionWidth = (regionWidth=2 ? 2 : regionWidth*zoomFactor);
+        regionWidth = (regionWidth==2 ? 2 : regionWidth*zoomFactor);
     }
     //else draw the waveform directly onto this component
     //edit handles get placed on the handleViewer, which is placed on top of this component
@@ -1069,19 +1070,17 @@ void GenTable::paint (Graphics& g)
         float incr = (tableSize<=2 ? 1 : visibleLength/((double)thumbArea.getWidth()));
         prevY = ampToPixel(thumbHeight, minMax, waveformBuffer[0]);
         float midPoint;
-        bool drawTrace=true;
 
         if(genRoutine==7 || genRoutine==5 || genRoutine==2 || genRoutine==27)
         {
             midPoint = ampToPixel(thumbHeight, minMax, minMax.getStart());
-            drawTrace= false;
         }
 
         else
             midPoint = ampToPixel(thumbHeight, minMax, minMax.getLength()/2.f-minMax.getEnd());
 
         int gridIndex=ceil(visibleStart);
-        float lineDepth=1;
+
         for(double i=visibleStart; i<=visibleEnd; i+=incr)
         {
             //when qsteps == 1 we draw a grid
@@ -1294,7 +1293,6 @@ HandleViewer::~HandleViewer()
 void HandleViewer::addHandle(double x, double y, double width, double height, Colour colour, bool status)
 {
     //add a handle component to our handleViewer
-    int indx;
     GenTable* table = getParentTable();
     if(table)
     {
@@ -1465,7 +1463,6 @@ void HandleViewer::resized()
     for(int i=0; i<handles.size(); i++)
     {
         const float width = getWidth()/tableSize;
-        const float height = handles[i]->getHeight();
         handles[i]->setSize((width>10 ? width : FIXED_WIDTH), (width>10 ? 5 : FIXED_WIDTH));
         const double handleWidth = handles[i]->getWidth();
         handles[i]->setPosition(((double)getWidth()*handles[i]->xPosRelative), ((double)getHeight()*handles[i]->yPosRelative), (handleWidth==FIXED_WIDTH ? true : false));

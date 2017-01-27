@@ -183,7 +183,6 @@ void CabbageSignalDisplay::drawSpectroscope(Graphics& g)
         const int offset = isScrollbarShowing==true ? scrollbarHeight : 0;
         const int height = getHeight()-offset;
         const int amp = (signalFloatArray[i]*3*height);
-        const int lineWidth = jmax(1, scopeWidth/vectorSize);
         g.setColour(colour);
         g.drawVerticalLine(position, height-amp, height);
     }

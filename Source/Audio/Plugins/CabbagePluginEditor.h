@@ -50,7 +50,7 @@
 class CabbagePluginEditor;
 
 //==============================================================================
-static CabbagePluginEditor* getPluginEditor(Component* child)
+__attribute__((unused)) static CabbagePluginEditor* getPluginEditor(Component* child)
 {
     if(CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
         return c;

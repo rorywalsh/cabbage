@@ -133,7 +133,7 @@ public:
         return csound->GetCsound();
     }
 
-    int setGUIRefreshRate(int rate)
+    void setGUIRefreshRate(int rate)
     {
         guiRefreshRate = rate;
     }
@@ -144,9 +144,11 @@ public:
     class SignalDisplay
     {
     public:
-        float yScale;
-        int windid, min ,max, size;
         String caption;
+		int windid;
+		float yScale;
+        int min ,max, size;
+        
 
         SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
             caption(_caption),

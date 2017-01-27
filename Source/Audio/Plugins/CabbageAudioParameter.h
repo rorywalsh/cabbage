@@ -28,7 +28,7 @@ class CabbageAudioParameter : public AudioParameterFloat
 
 public:
     CabbageAudioParameter(ValueTree wData, Csound &csound, String channel, String name, float minValue, float maxValue, float def)
-        :widgetData(wData), currentValue(0), AudioParameterFloat(channel, channel, minValue, maxValue, def), widgetName(name), channel(channel), csound(csound)
+        : AudioParameterFloat(channel, channel, minValue, maxValue, def), widgetData(wData), currentValue(0), widgetName(name), channel(channel), csound(csound)
     {}
     ~CabbageAudioParameter() {}
 
@@ -46,11 +46,13 @@ public:
     }
 
 	const String getWidgetName(){	return widgetName;	}
-
-    String channel, widgetName;
+	
+	String channel;
+	String widgetName;
+	ValueTree widgetData;
 	float currentValue;
+
     Csound csound;
-    ValueTree widgetData;
 };
 
 #endif  // AUDIOPRAMATERS_H_INCLUDED

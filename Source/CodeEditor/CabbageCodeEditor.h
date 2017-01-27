@@ -103,7 +103,7 @@ public:
 	bool hasFileChanged(){					return getDocument().hasChangedSinceSavePoint();	}
 	void setSavePoint(){					getDocument().setSavePoint();						}
 	int getFontSize(){						return currentFontSize;								}
-	int setFontSize(int size){				currentFontSize = size;								}
+	void setFontSize(int size){				currentFontSize = size;								}
 	//=========================================================
 	
     void listBoxItemDoubleClicked(int row, const MouseEvent &e) {};

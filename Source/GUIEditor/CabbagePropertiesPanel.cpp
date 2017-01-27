@@ -97,34 +97,6 @@ static Array<PropertyComponent*> createChannelEditors(CabbagePropertiesPanel* ow
 }
 
 //==============================================================================
-static Array<PropertyComponent*> createButtons (int howMany)
-{
-    Array<PropertyComponent*> comps;
-
-    for (int i = 0; i < howMany; ++i)
-        comps.add (new BooleanPropertyComponent (Value (Random::getSystemRandom().nextBool()), "Toggle " + String (i + 1), "Description of toggleable thing"));
-
-    return comps;
-}
-//==============================================================================
-static Array<PropertyComponent*> createChoices (int howMany)
-{
-    Array<PropertyComponent*> comps;
-
-    StringArray choices;
-    Array<var> choiceVars;
-
-    for (int i = 0; i < howMany; ++i)
-    {
-        choices.add ("Item " + String (i));
-        choiceVars.add (i);
-    }
-
-    for (int i = 0; i < howMany; ++i)
-        comps.add (new ChoicePropertyComponent(Value (Random::getSystemRandom().nextInt (6)), "Choice Property " + String (i + 1), choices, choiceVars));
-    return comps;
-}
-//==============================================================================
 // Property Panel for editing widgets
 //==============================================================================
 CabbagePropertiesPanel::CabbagePropertiesPanel(ValueTree widgetData)

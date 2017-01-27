@@ -48,8 +48,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
 	setProperty(widgetData, CabbageIdentifierIds::arraysize, 0);
 	setProperty(widgetData, CabbageIdentifierIds::basechannel, "");
 
-
-    int top, left, width, height;
     StringArray strTokens;
     strTokens.addTokens(lineFromCsd, " ", "\"");
     setProperty(widgetData, CabbageIdentifierIds::widgetarray, "");
@@ -133,11 +131,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     else if(strTokens[0].trim() == "table")
     {
         setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 400;
-        height = 200;
-
         var tableColours;
         tableColours.append("white");
         tableColours.append("cornflowerblue");
@@ -167,11 +160,6 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     else if(strTokens[0].trim() == "stepper")
     {
         setProperty(widgetData, "basetype", "layout");
-        top = 10;
-        left = 10;
-        width = 180;
-        height = 2;
-
         setProperty(widgetData, CabbageIdentifierIds::top, 10);
         setProperty(widgetData, CabbageIdentifierIds::left, 10);
         setProperty(widgetData, CabbageIdentifierIds::width, 160);

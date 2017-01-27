@@ -398,7 +398,7 @@ public:
         return highResY;
     }
 
-    double setDoubleY(double y)
+    void setDoubleY(double y)
     {
         highResY = y;
     }

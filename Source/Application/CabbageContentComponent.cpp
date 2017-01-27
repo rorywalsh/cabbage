@@ -117,10 +117,12 @@ void CabbageContentComponent::buttonClicked(Button* button)
         else if(toolbarButton->getName()=="settings")
             showSettingsDialog();
         else if(toolbarButton->getName()=="togglePlay")
+		{
             if(toolbarButton->getToggleState())
                 this->runCsoundCode();
             else
                 this->stopCsoundCode();
+		}
     }
 }
 
@@ -133,7 +135,7 @@ void CabbageContentComponent::comboBoxChanged (ComboBox *comboBoxThatHasChanged)
 //==============================================================================
 void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
 {
-    if(CabbageSettings* settings = dynamic_cast<CabbageSettings*>(source)) // update lookandfeel whenever a user changes colour settings
+    if(dynamic_cast<CabbageSettings*>(source)) // update lookandfeel whenever a user changes colour settings
     {
         lookAndFeel->refreshLookAndFeel(cabbageSettings->getValueTree());
         lookAndFeelChanged();
@@ -169,7 +171,7 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
         }
     }
 
-    else if(CabbagePropertiesPanel* panel = dynamic_cast<CabbagePropertiesPanel*>(source)) // update code when a user changes a property
+    else if(dynamic_cast<CabbagePropertiesPanel*>(source)) // update code when a user changes a property
     {
         if(CabbagePluginEditor* editor = this->getCabbagePluginEditor())
         {
@@ -237,7 +239,7 @@ void CabbageContentComponent::updateEditorColourScheme()
     lookAndFeelChanged();
     propertyPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
     propertyPanel->setBorderColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour(50,50,50)));
-    int editorIndex = editorAndConsole.size()-1;
+    
     if(getCurrentEditorContainer()!=nullptr)
         getCurrentEditorContainer()->updateLookAndFeel();
     toolbar.setColour(Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour(50,50,50)));
@@ -344,8 +346,6 @@ void CabbageContentComponent::createEditorForAudioGraphNode()
 {
     if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
     {
-        AudioProcessor* const processor = f->getProcessor();
-
         PluginWindow::WindowFormatType type = audioGraph->getProcessor()->hasEditor() ? PluginWindow::Normal
                                               : PluginWindow::Generic;
 

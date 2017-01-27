@@ -71,7 +71,7 @@ public:
 
         CodeEditorComponent::ColourScheme cs;
 
-        for (int i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
+        for ( std::size_t i = 0; i < int(sizeof (types) / sizeof (types[0])); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
             cs.set (types[i].name, Colour (types[i].colour));
 
         return cs;
@@ -103,7 +103,7 @@ public:
 
         CodeEditorComponent::ColourScheme cs;
 
-        for (int i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
+        for ( std::size_t i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
             cs.set (types[i].name, Colour (types[i].colour));
 
         return cs;

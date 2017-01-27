@@ -176,8 +176,6 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
     if (alert.getAlertType() != AlertWindow::NoIcon)
     {
         Path icon;
-        uint32 colour;
-        char character;
 
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {

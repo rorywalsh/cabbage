@@ -252,7 +252,7 @@ public:
 
         if (CabbageContentComponent* contentComp = getOwner())
 		{
-            getOwner()->findNext(true);			
+            contentComp->findNext(true);			
 		}
     }
 
@@ -264,7 +264,7 @@ public:
 
         if (CabbageContentComponent* contentComp = getOwner())
 		{
-            getOwner()->findNext(true);			
+            contentComp->findNext(true);			
 		}
     }
 

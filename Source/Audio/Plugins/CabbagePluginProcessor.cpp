@@ -64,7 +64,6 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
     cabbageWidgets.removeAllChildren(0);
     linesFromCsd.addLines(csdText);
     String parentComponent, previousComponent;
-    bool withinPlantGroup = false;
 
     searchForMacros(linesFromCsd);
 
@@ -332,7 +331,7 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
                 if(identifierText.contains("tablenumber"))	//update even if table number has not changed
                     CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
 
-                getCsound()->SetChannel(identChannel.toUTF8(), "");
+                getCsound()->SetChannel(identChannel.toUTF8(), (char*)"");
             }
         }
     }

@@ -132,7 +132,7 @@ void CabbageEncoder::paint(Graphics &g)
 {
     float rotaryStartAngle = 0;
     float rotaryEndAngle = 2*3.14;
-    bool isEnabled=true;
+
     const float radius = jmin (slider.getWidth() / 2, slider.getHeight() / 2) - 2.0f;
     const float diameter = radius*2.f;
     const float centreX = getWidth() * 0.5f;

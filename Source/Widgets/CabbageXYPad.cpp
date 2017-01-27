@@ -75,7 +75,6 @@ void CabbageXYPad::mouseDown(const MouseEvent& e)
     owner->enableXYAutomator(getName(), false);
     ball.setTopLeftPosition(constrainPosition(e.getPosition().getX(), e.getPosition().getY()));
     mouseDownXY.setXY(ball.getPosition().getX()+ball.getWidth()*.5f, ball.getPosition().getY()+ball.getHeight()*.5f);
-    const Point<float> currentValues = getPositionAsValue(ball.getPosition().toFloat());
     isAutomating = false;
     repaint();
 }
@@ -83,7 +82,6 @@ void CabbageXYPad::mouseDown(const MouseEvent& e)
 void CabbageXYPad::mouseDrag(const MouseEvent& e)
 {
     ball.setTopLeftPosition(constrainPosition(mouseDownXY.getX()+e.getDistanceFromDragStartX(), mouseDownXY.getY()+e.getDistanceFromDragStartY()));
-    const Point<float> currentValues = getPositionAsValue(ball.getPosition().toFloat());
     repaint();
 
     currentMouseXY = ball.getPosition().toFloat();

@@ -87,7 +87,7 @@ void CabbageCodeEditorComponent::updateColourScheme()
     setColour(CaretComponent::ColourIds::caretColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::caret, Colours::white));
     setColour(CodeEditorComponent::ColourIds::highlightColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::selectTextBackground, Colours::white));
 
-    for (int i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
+    for (std::size_t i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
         cs.set (types[i].name, Colour (types[i].colour));
 
     this->setColourScheme(cs);
@@ -116,8 +116,6 @@ void CabbageCodeEditorComponent::timerCallback()
     if(isDebugModeEnabled() == true)
     {
         MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
-        Component* underMouse = mouse.getComponentUnderMouse();
-
         Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
 
         CodeDocument::Position start, end;

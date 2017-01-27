@@ -25,9 +25,9 @@
 
 class FrequencyRangeDisplayComponent : public Component
 {
-    int maxFreq, minFreq, resolution;
     Colour fontColour, backgroundColour;
-
+    int minFreq, maxFreq, resolution;
+	
 public:
     FrequencyRangeDisplayComponent(Colour fColour, Colour bgColour) :
         Component(),
@@ -43,14 +43,14 @@ public:
     void resized()
     {
         if(getWidth()<400)
-            resolution = resolution/2.f;
+            resolution = resolution/2;
     }
 
     void setResolution(int res)
     {
         resolution = res;
         if(getWidth()<400)
-            resolution = resolution/3.f;
+            resolution = resolution/3;
 
     }
 

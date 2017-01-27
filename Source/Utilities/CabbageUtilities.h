@@ -51,9 +51,10 @@ using namespace std;
 class SignalDisplay
 {
 public:
-    float yScale;
-    int windid, min ,max, size;
-    String caption;
+	String caption;
+    int windid;
+	float yScale;
+    int min ,max, size;
 
     SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
         caption(_caption),
@@ -296,7 +297,7 @@ public:
 
         if (stringWidth > availableWidth)
         {
-            int numCharsToInclude = ((availableWidth / charWidth)+0.5) - 2;
+            int numCharsToInclude = int(((availableWidth / charWidth)+0.5) - 2);
             newStr = input.substring (0, numCharsToInclude);
             newStr << "..";
             return newStr;
@@ -364,7 +365,7 @@ public:
 
     static Colour getDarkerBackgroundSkin()
     {
-        Colour skin = getBackgroundSkin().darker(0.4);
+        Colour skin = getBackgroundSkin().darker(0.4f);
         return skin;
     }
 	
@@ -376,7 +377,7 @@ public:
 
     static const Colour getBorderColour()
     {
-        return getComponentFontColour().withMultipliedAlpha(0.2);
+        return getComponentFontColour().withMultipliedAlpha(0.2f);
     }
 
     static const float getBorderWidth()
@@ -418,8 +419,7 @@ public:
 	//==========================================================================================
     static void addCustomPlantsToMenu (PopupMenu& m, Array<File> &plantFiles, String userDir)
     {
-        int menuSize = m.getNumItems();
-
+		
         PopupMenu menu;
         PopupMenu subMenu;
         int fileCnt=0;

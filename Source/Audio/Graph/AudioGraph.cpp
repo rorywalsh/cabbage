@@ -60,11 +60,11 @@ void AudioGraph::createPlugin(File inputFile)
 {
     AudioProcessorGraph::AudioGraphIOProcessor* outNode;
     outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-    AudioProcessorGraph::Node* outputNode = graph.addNode(outNode, NodeType::Input);
+    graph.addNode(outNode, NodeType::Input);
 
     AudioProcessorGraph::AudioGraphIOProcessor* midiNode;
     midiNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
-    AudioProcessorGraph::Node* midiInputNode = graph.addNode(midiNode, NodeType::MidiInput);
+    graph.addNode(midiNode, NodeType::MidiInput);
 
 
     AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
@@ -86,7 +86,7 @@ void AudioGraph::createPlugin(File inputFile)
     updateBusLayout(processor);
 
 
-    AudioProcessorGraph::Node* processorNode = graph.addNode(processor, NodeType::CabbageNode);
+    graph.addNode(processor, NodeType::CabbageNode);
 
     bool connection1 = graph.addConnection(NodeType::CabbageNode, 0, NodeType::Input, 0);
     bool connection2 = graph.addConnection(NodeType::CabbageNode, 1, NodeType::Input, 1);
@@ -99,13 +99,13 @@ void AudioGraph::createPlugin(File inputFile)
 
 void AudioGraph::updateBusLayout(AudioProcessor* selectedProcessor)
 {
-    if (AudioProcessor* filter = selectedProcessor)
-    {
-        if (AudioProcessor::Bus* bus = filter->getBus (isInput, currentBus))
-        {
-            bool test = bus->setNumberOfChannels(8);
-        }
-    }
+//    if (AudioProcessor* filter = selectedProcessor)
+//    {
+//        if (AudioProcessor::Bus* bus = filter->getBus (isInput, currentBus))
+//        {
+//            bool test = bus->setNumberOfChannels(8);
+//        }
+//    }
 }
 
 int AudioGraph::getNumberOfParameters()

@@ -220,15 +220,15 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics &g, int w, int h, 
 void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, bool isMouseOverButton, bool isButtonDown)
 {
     Image image;
-    bool drawFromFile = true;
+
 
     const File imgButtonOnFile(button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonon, "").toString());
     const File imgButtonOffFile(button.getProperties().getWithDefault(CabbageIdentifierIds::imgbuttonoff, "").toString());
     const int corners = button.getProperties().getWithDefault(CabbageIdentifierIds::corners, 2.f);
     const bool isRectangle = button.getProperties().getWithDefault(CabbageIdentifierIds::shape, false);
-    float fontSize = jmin (15.0f, button.getHeight() * 0.85f);
+    //float fontSize = jmin (30, button.getHeight());
     const float tickWidth = button.getHeight();
-    int imgHeight, imgWidth;
+
     bool toggleState = button.getToggleState();
 
     if (button.hasKeyboardFocus (true))
@@ -262,20 +262,20 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 
 
     g.setColour (toggleState == true ? button.findColour(TextButton::textColourOnId) : button.findColour(TextButton::textColourOffId));
-    g.setFont (fontSize);
+   // g.setFont (fontSize);
 
     if (! button.isEnabled())
         g.setOpacity (0.5f);
 
-    const int textX = (int) tickWidth+10;
-
-    int widthButton =  button.getWidth();
+    const int textX = (int) tickWidth+5;
 
     if(button.getButtonText().isNotEmpty())
+	{
         g.drawText(button.getButtonText(),
                          textX, 0,
                          button.getWidth(), button.getHeight(),
                          Justification::left, false);
+	}
 
 }
 
@@ -382,8 +382,6 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
 
     const int svgSliderWidthBg = slider.getProperties().getWithDefault("svgsliderbgwidth", 100);
     const int svgSliderHeightBg = slider.getProperties().getWithDefault("svgsliderbgheight", 100);
-    const int svgSliderWidth = slider.getProperties().getWithDefault("svgsliderwidth", 100);
-    const int svgSliderHeight = slider.getProperties().getWithDefault("svgsliderheight", 100);
 
     //if valid background SVG file....
     if(imgSliderBackground.existsAsFile() && imgSliderBackground.hasFileExtension(".csd")==false)
@@ -1047,8 +1045,6 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
     if (alert.getAlertType() != AlertWindow::NoIcon)
     {
         Path icon;
-        uint32 colour;
-        char character;
 
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
