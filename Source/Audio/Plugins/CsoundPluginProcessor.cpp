@@ -85,18 +85,16 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     if(csdCompiledWithoutError())
     {
         csdKsmps = csound->GetKsmps();
-		if(csound->GetSpout()==nullptr);
-
+        CSspout = csound->GetSpout();
+        CSspin  = csound->GetSpin();
+        cs_scale = csound->Get0dBFS();
+        csndIndex = csound->GetKsmps();
         //hack to allow tables to be set up correctly.
         //might be best to simply do an init run?
         csound->PerformKsmps();
         csound->SetScoreOffsetSeconds(0);
         csound->RewindScore();
-        CSspout = csound->GetSpout();
-        CSspin  = csound->GetSpin();
-        cs_scale = csound->Get0dBFS();
-        csndIndex = csound->GetKsmps();
-		
+
         this->setLatencySamples(csound->GetKsmps());
     }
     else
@@ -346,7 +344,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 {
     float** audioBuffers = buffer.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
-    float samp;
+    float newSamp;
     int result = -1;
 
 #if defined(Cabbage_Build_IDE) || defined(AndroidBuild)
@@ -404,12 +402,13 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                 pos = csndIndex * output_channel_count;
                 for(int channel = 0; channel < output_channel_count; ++channel)
                 {
-                    float *&current_buffer = audioBuffers[channel];
-                    samp = *current_buffer * cs_scale;
-                    CSspin[pos] = *current_buffer;
-                    *current_buffer = (CSspout[pos] / cs_scale);
-                    ++current_buffer;
+                    float *&current_sample = audioBuffers[channel];
+                    newSamp = *current_sample * cs_scale;
+                    CSspin[pos] = newSamp;
+                    *current_sample = (CSspout[pos] / cs_scale);
+                    ++current_sample;
                     ++pos;
+
                 }
             }
             else
