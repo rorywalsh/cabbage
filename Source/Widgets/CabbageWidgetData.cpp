@@ -360,10 +360,10 @@ void CabbageWidgetData::setCustomWidgetState(ValueTree widgetData, String inStr,
             else if(identArray[indx].equalsIgnoreCase("fontcolour")||
                     identArray[indx].equalsIgnoreCase("fontcolour:1"))
             {
-                if(typeOfWidget.contains("button"))
+                if(typeOfWidget.contains("button") || typeOfWidget.contains("checkbox"))
                     setProperty(widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
-                else
-                    setProperty(widgetData, CabbageIdentifierIds::fontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
+                
+				setProperty(widgetData, CabbageIdentifierIds::fontcolour, getColourFromText(strTokens.joinIntoString(",")).toString());
 
             }
             else if(identArray[indx].equalsIgnoreCase("fontcolour:0"))

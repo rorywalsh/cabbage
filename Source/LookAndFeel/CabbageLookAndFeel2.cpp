@@ -262,7 +262,6 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 
 
     g.setColour (toggleState == true ? button.findColour(TextButton::textColourOnId) : button.findColour(TextButton::textColourOffId));
-   // g.setFont (fontSize);
 
     if (! button.isEnabled())
         g.setOpacity (0.5f);

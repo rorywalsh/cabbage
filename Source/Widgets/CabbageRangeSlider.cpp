@@ -274,14 +274,14 @@ void RangeSlider::valueChanged()
         }
         else
         {
-            setMinValue(getMinValue() - minimalIntervalBetweenMinAndMax);
+            //setMinValue(getMinValue() - minimalIntervalBetweenMinAndMax);
         }
     }
 }
 
 void RangeSlider::mouseExit (const MouseEvent& event)
 {
-    owner->showPopup(0);
+    owner->showPopup(10);
 }
 
 void RangeSlider::mouseEnter(const MouseEvent &e)

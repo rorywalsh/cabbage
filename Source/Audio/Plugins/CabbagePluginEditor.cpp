@@ -478,14 +478,14 @@ void CabbagePluginEditor::sliderValueChanged(Slider* slider)
         if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_min"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost(slider->getValue());
+            param->setValueNotifyingHost(slider->getMinValue());
             param->endChangeGesture();
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()+"_max"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost(slider->getValue());
+            param->setValueNotifyingHost(slider->getMaxValue());
             param->endChangeGesture();
         }
     }
