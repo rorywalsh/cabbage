@@ -327,7 +327,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         if(typeOfWidget == "soundfiler")
             comps.add(new ColourPropertyComponent("Soundfiler Background", backgroundColour));
         else
-            comps.add(new ColourPropertyComponent("Outline Colour", outlineColourString));
+            comps.add(new ColourPropertyComponent("Outline", outlineColourString));
     }
     else if(typeOfWidget.contains("slider") || typeOfWidget=="encoder" || typeOfWidget.contains("range"))
     {

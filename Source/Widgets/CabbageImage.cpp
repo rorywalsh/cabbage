@@ -24,7 +24,7 @@ CabbageImage::CabbageImage(ValueTree wData, CabbagePluginEditor* owner) : Cabbag
     owner(owner),
     shape(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape)),
     corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
-    lineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linethickness)),
+    lineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness)),
     outlineColour(Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::outlinecolour))),
     mainColour(Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)))
 {
@@ -53,19 +53,21 @@ void CabbageImage::paint(Graphics& g)
     {
         g.fillAll(Colours::transparentBlack);
 
+
+        g.setColour(mainColour);
+
+        if(shape=="square")
+            g.fillRoundedRectangle(0,0, getWidth(), getHeight(), corners);
+        else
+            g.fillEllipse(lineThickness,lineThickness, getWidth(), getHeight());
+
+
         g.setColour(outlineColour);
 
         if(shape=="square")
             g.drawRoundedRectangle(0,0, jmax(1, getWidth()), jmax(1, getHeight()), corners, lineThickness);
         else
             g.drawEllipse(0,0, jmax(1, getWidth()), jmax(1, getHeight()), lineThickness);
-
-        g.setColour(mainColour);
-
-        if(shape=="square")
-            g.fillRoundedRectangle(lineThickness,lineThickness, getWidth()-(lineThickness*2), getHeight()-(lineThickness*2), corners);
-        else
-            g.fillEllipse(lineThickness,lineThickness, getWidth()-(lineThickness*2), getHeight()-(lineThickness*2));
     }
 }
 
@@ -80,7 +82,7 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         //setToggleState(getValue(valueTree)==1 ? true : false, dontSendNotification);
     }
 
-    lineThickness = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::linethickness),
+    lineThickness = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::outlinethickness),
     outlineColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour));
     mainColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
     shape = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape);

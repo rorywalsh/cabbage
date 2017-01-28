@@ -678,7 +678,8 @@ public:
         set("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set("Value Box", CabbageIdentifierIds::valuetextbox.toString());
 		set("Value Box Colour", CabbageIdentifierIds::textboxcolour.toString());
-        set("Outline Thickness", CabbageIdentifierIds::linethickness.toString());
+        set("Outline Thickness", CabbageIdentifierIds::outlinethickness.toString());
+		set("Line Thickness", CabbageIdentifierIds::linethickness.toString());
         set("Colour: On", CabbageIdentifierIds::oncolour.toString());
         set("White Notes", CabbageIdentifierIds::whitenotecolour.toString());
         set("Black Notes", CabbageIdentifierIds::blacknotecolour.toString());

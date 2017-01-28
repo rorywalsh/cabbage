@@ -256,8 +256,10 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 
     else	//if files don't exist, draw a native Cabbage checkbox
     {
-        image = drawToggleImage(tickWidth, button.getHeight(), button.getToggleState(), button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId), isRectangle, corners);
-        g.drawImage(image, 0.f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth(), tickWidth, 0, 0, button.getWidth(), button.getHeight(), false);
+		const int newTickWidth = (button.getButtonText().isEmpty()==true ? button.getWidth() : tickWidth);
+        image = drawToggleImage(newTickWidth, button.getHeight(), button.getToggleState(), button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId), isRectangle, corners);
+        
+		g.drawImage(image, 0.f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth(), button.getHeight(), 0, 0, button.getWidth(), button.getHeight(), false);
     }
 
 
