@@ -55,10 +55,7 @@ public:
 
     enum NodeType
     {
-        Output = 0,
-        Input,
-        MidiInput,
-        CabbageNode
+		CabbageNode = 9999
     };
 
 	int getNumPlugins() const noexcept;

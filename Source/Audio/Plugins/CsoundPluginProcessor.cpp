@@ -85,16 +85,18 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
     if(csdCompiledWithoutError())
     {
         csdKsmps = csound->GetKsmps();
-        CSspout = csound->GetSpout();
-        CSspin  = csound->GetSpin();
-        cs_scale = csound->Get0dBFS();
-        csndIndex = csound->GetKsmps();
+		if(csound->GetSpout()==nullptr);
+
         //hack to allow tables to be set up correctly.
         //might be best to simply do an init run?
         csound->PerformKsmps();
         csound->SetScoreOffsetSeconds(0);
         csound->RewindScore();
-
+        CSspout = csound->GetSpout();
+        CSspin  = csound->GetSpin();
+        cs_scale = csound->Get0dBFS();
+        csndIndex = csound->GetKsmps();
+		
         this->setLatencySamples(csound->GetKsmps());
     }
     else
@@ -347,7 +349,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     float samp;
     int result = -1;
 
-#if defined(Cabbage_Build_Standalone) || defined(AndroidBuild)
+#if defined(Cabbage_Build_IDE) || defined(AndroidBuild)
     const int output_channel_count = numCsoundChannels;
 #else
     const int output_channel_count = getTotalNumOutputChannels();
@@ -398,17 +400,16 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
             }
             if(result==0)
-            {
+            {							
                 pos = csndIndex * output_channel_count;
                 for(int channel = 0; channel < output_channel_count; ++channel)
                 {
                     float *&current_buffer = audioBuffers[channel];
                     samp = *current_buffer * cs_scale;
-                    CSspin[pos] = samp;
+                    CSspin[pos] = *current_buffer;
                     *current_buffer = (CSspout[pos] / cs_scale);
                     ++current_buffer;
                     ++pos;
-
                 }
             }
             else

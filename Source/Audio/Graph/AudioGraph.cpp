@@ -58,15 +58,23 @@ AudioGraph::~AudioGraph()
 //==============================================================================
 void AudioGraph::createPlugin(File inputFile)
 {
-    AudioProcessorGraph::AudioGraphIOProcessor* outNode;
-    outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-    graph.addNode(outNode, NodeType::Input);
-
+    
     AudioProcessorGraph::AudioGraphIOProcessor* midiNode;
     midiNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
-    graph.addNode(midiNode, NodeType::MidiInput);
+    const AudioProcessorGraph::Node* midiInputNode = graph.addNode(midiNode);
+
+	
+	AudioProcessorGraph::AudioGraphIOProcessor* inNode;
+    inNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
+    const AudioProcessorGraph::Node* inputNode = graph.addNode(inNode);	
+
+	
+    AudioProcessorGraph::AudioGraphIOProcessor* outNode;
+    outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+    const AudioProcessorGraph::Node* outputNode =  graph.addNode(outNode);
 
 
+		
     AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
     isCabbageFile = CabbageUtilities::hasCabbageTags(inputFile);
     if(isCabbageFile)
@@ -79,20 +87,23 @@ void AudioGraph::createPlugin(File inputFile)
 
     jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
-
     processor->disableNonMainBuses();
     processor->setRateAndBufferSizeDetails(44100, 512);
 
-    updateBusLayout(processor);
+    //updateBusLayout(processor);
 
-
+	CabbageUtilities::debug(processor->getTotalNumInputChannels());
+	
     graph.addNode(processor, NodeType::CabbageNode);
 
-    bool connection1 = graph.addConnection(NodeType::CabbageNode, 0, NodeType::Input, 0);
-    bool connection2 = graph.addConnection(NodeType::CabbageNode, 1, NodeType::Input, 1);
-    bool connection3 = graph.addConnection(NodeType::MidiInput, AudioProcessorGraph::midiChannelIndex, NodeType::CabbageNode, AudioProcessorGraph::midiChannelIndex);
+	bool connectInput1 = graph.addConnection(inputNode->nodeId, 0, NodeType::CabbageNode, 0);
+	bool connectInput2 = graph.addConnection(inputNode->nodeId, 1, NodeType::CabbageNode, 1);
 
-    if(connection1 == false || connection2 == false || connection3 == false)
+    bool connection1 = graph.addConnection(NodeType::CabbageNode, 0, outputNode->nodeId, 0);
+    bool connection2 = graph.addConnection(NodeType::CabbageNode, 1, outputNode->nodeId, 1);
+    bool connection3 = graph.addConnection(midiInputNode->nodeId, AudioProcessorGraph::midiChannelIndex, NodeType::CabbageNode, AudioProcessorGraph::midiChannelIndex);
+
+    if(connection1 == false || connection2 == false || connection3 == false || connectInput1 == false || connectInput2 == false)
         jassert(false);
 }
 
