@@ -167,7 +167,7 @@ void CabbageSignalDisplay::drawSonogram()
     for (int y = 0; y < imageHeight; y++)
     {
         const int index = jmap(y, 0, imageHeight, 0, vectorSize);
-        const float level = jmap (signalFloatArray[index], 0.0f, maxLevel.getEnd(), 0.0f, 1.0f);
+        const float level = jmap (signalFloatArray[index], 0.0f, jmax(maxLevel.getEnd(), signalFloatArray[index]+0.1f), 0.0f, 1.0f);
         g.setColour(Colour::fromHSV (level, 1.0f, level, 1.0f));
         g.drawHorizontalLine(imageHeight-y, rightHandEdge, rightHandEdge+2);
     }

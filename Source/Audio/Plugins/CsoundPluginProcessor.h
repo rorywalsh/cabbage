@@ -141,43 +141,40 @@ public:
     MidiKeyboardState keyboardState;
 
     //==================================================================================
-    class SignalDisplay
-    {
-    public:
-        String caption;
-		int windid;
+class SignalDisplay
+{
+	public:
 		float yScale;
-        int min ,max, size;
-        
+		int windid, min ,max, size;
+		String caption;
 
-        SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
-            caption(_caption),
-            windid(_id),
-            yScale(_scale),
-            min(_min),
-            max(_max),
-            size(_size)
-        {}
+		SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
+			caption(_caption),
+			windid(_id),
+			yScale(_scale),
+			min(_min),
+			max(_max),
+			size(_size)
+		{}
 
-        ~SignalDisplay()
-        {
-            points.clear();
-        }
+		~SignalDisplay()
+		{
+			points.clear();
+		}
 
-        Array<float, CriticalSection> getPoints()
-        {
-            return points;
-        }
+		Array<float, CriticalSection> getPoints()
+		{
+			return points;
+		}
 
-        void setPoints(Array <float, CriticalSection > tablePoints)
-        {
-            points.swapWith(tablePoints);
-			tablePoints.clear();
-        }
+		void setPoints(Array <float, CriticalSection > tablePoints)
+		{
+			points.swapWith(tablePoints);
+		}
 
-    private:
-        Array <float, CriticalSection > points;
-    };
+	private:
+		Array <float, CriticalSection > points;
+	};
 
     bool shouldUpdateSignalDisplay()
     {

@@ -474,7 +474,8 @@ CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray(Stri
 {
     for(int i=0; i<signalArrays.size(); i++)
     {
-        if(signalArrays[i]->caption.contains(variableName))
+		CabbageUtilities::debug(signalArrays[i]->caption);
+        if(signalArrays[i]->caption.isNotEmpty() && signalArrays[i]->caption.contains(variableName))
         {
             if(displayType.isEmpty())
                 return signalArrays[i];
@@ -599,7 +600,7 @@ int CsoundPluginProcessor::WriteMidiData(CSOUND* /*csound*/, void *_userData,
 void CsoundPluginProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, const char * /*name*/)
 {
     CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
-    ScopedPointer<CsoundPluginProcessor::SignalDisplay> display = new CsoundPluginProcessor::SignalDisplay(String(windat->caption),windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
+    SignalDisplay* display = new SignalDisplay(String(windat->caption),windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
 
     bool addDisplay = true;
     for(int i=0; i<ud->signalArrays.size(); i++)
@@ -610,34 +611,28 @@ void CsoundPluginProcessor::makeGraphCallback(CSOUND *csound, WINDAT *windat, co
 
     if(addDisplay)
         ud->signalArrays.add(display);
-	
 }
 
 void CsoundPluginProcessor::drawGraphCallback(CSOUND *csound, WINDAT *windat)
 {
     CsoundPluginProcessor *ud = (CsoundPluginProcessor *) csoundGetHostData(csound);
-
     Array<float, CriticalSection> tablePoints;
-    //only take all sample sif dealing with fft, waveforms and lissajous curves can be drawn with less samples
+    //only take all samples if dealing with fft, waveforms and lissajous curves can be drawn with less samples
     tablePoints = Array<float, CriticalSection>(&windat->fdata[0], windat->npts);
-
     ud->getSignalArray(windat->caption)->setPoints(tablePoints);
-    //ud->signalArrays.getUnchecked(windat->windid)->setPoints(tablePoints);
     ud->updateSignalDisplay = true;
 }
 
 void CsoundPluginProcessor::killGraphCallback(CSOUND *csound, WINDAT *windat)
 {
-    //CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
-    CabbageUtilities::debug("killGraphCallback");
+
 }
 
 int CsoundPluginProcessor::exitGraphCallback(CSOUND *csound)
 {
-    //CsoundPluginProcessor *udata = (CsoundPluginProcessor *) csoundGetHostData(csound);
-    CabbageUtilities::debug("exitGraphCallback");
     return 0;
 }
+
 
 
 
