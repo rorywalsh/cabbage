@@ -142,6 +142,7 @@ public:
     void addToEditorAndMakeVisible(Component* comp, ValueTree widgetData);
     void updateLayoutEditorFrames();
     void componentMovedOrResized (Component &component, bool wasMoved, bool wasResized);
+	void addPlantToPopupPlantsArray(ValueTree wData, Component* plant);
     //=============================================================================
     void buttonClicked(Button *button);
     void comboBoxChanged (ComboBox* combo);
@@ -156,7 +157,16 @@ public:
     Colour backgroundColour;
 	
 private:
-    OwnedArray<Component> components;
+
+	class PopupDocumentWindow : public DocumentWindow
+	{		
+		public:
+			PopupDocumentWindow(String caption)
+			: DocumentWindow(caption, Colours::transparentBlack, DocumentWindow::TitleBarButtons::allButtons)
+			{}
+			
+			void closeButtonPressed() override {	setVisible(false);	}
+	};
 
 	class MainComponent : public Component
 	{
@@ -167,6 +177,8 @@ private:
 			void paint(Graphics& g){		g.fillAll(colour);		}
 	};	
 	
+    OwnedArray<Component> components;
+	OwnedArray<PopupDocumentWindow> popupPlants;
 	MainComponent mainComponent;
     int keyboardCount=0;
     int xyPadIndex = 0;

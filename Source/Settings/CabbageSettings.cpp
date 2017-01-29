@@ -80,6 +80,7 @@ void CabbageSettings::setDefaultSettings()
 	defaultPropSet->setValue("SSHLocalDir", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory).getFullPathName());
     defaultPropSet->setValue("windowX", 100);
     defaultPropSet->setValue("windowY", 100);
+	defaultPropSet->setValue("numberOfLinesToScroll", 1);
     defaultPropSet->setValue("audioSetup", "");
 
 	defaultPropSet->setValue("IDE_LastKnownWidth", 1200);

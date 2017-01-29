@@ -90,6 +90,7 @@ public:
 	void showFindPanel(bool withReplace);
 	void hideFindPanel();
 	void findNext(bool forward);
+	void replaceText();
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -113,6 +114,7 @@ public:
 private:
 	bool fileNeedsSaving = false;
 	String searchString = String::empty;
+	String replaceString = String::empty;
 	bool isCaseSensitive = false;
 	File tempFile;	
     CabbageDocumentWindow* owner;
@@ -156,6 +158,7 @@ public:
         findEditor.setColour (CaretComponent::caretColourId, Colours::black);
 
         addAndMakeVisible (findEditor);
+		findEditor.setName("findEditor");
         findLabel.setText ("Find:", dontSendNotification);
         findLabel.setColour (Label::textColourId, Colours::white);
         findLabel.attachToComponent (&findEditor, false);
@@ -184,6 +187,7 @@ public:
         replaceEditor.setColour (CaretComponent::caretColourId, Colours::black);
 
         addAndMakeVisible (replaceEditor);
+		replaceEditor.setName("replaceEditor");
         replaceLabel.setText ("Replace:", dontSendNotification);
         replaceLabel.setColour (Label::textColourId, Colours::white);
         replaceLabel.attachToComponent (&replaceEditor, false);
@@ -237,23 +241,28 @@ public:
 
     void buttonClicked (Button* button) override
     {
-		if(button->getName() == caseButton.getName())
+		if(button->getName() == "Case-sensitive")
 			getOwner()->setCaseSensitiveSearch (caseButton.getToggleState());
-		else if(button->getName() == findNext.getName())
+		else if(button->getName() == ">")
 			getOwner()->findNext(true);	
-		else if(button->getName() == findPrev.getName())
-			getOwner()->findNext(false);		
+		else if(button->getName() == "<")
+			getOwner()->findNext(false);
+		else if(button->getName() == "Replace") 
+			getOwner()->replaceText();
 			
     }
 
-    void textEditorTextChanged (TextEditor&) override
+    void textEditorTextChanged (TextEditor& editor) override
     {
         getOwner()->setSearchString (findEditor.getText());
+		getOwner()->setReplaceString (replaceEditor.getText());
 
-        if (CabbageContentComponent* contentComp = getOwner())
+		if (CabbageContentComponent* contentComp = getOwner())
 		{
-            contentComp->findNext(true);			
+			if (editor.getName() == "findEditor")
+				contentComp->findNext(true);			
 		}
+
     }
 
     void textEditorFocusLost (TextEditor&) override {}
@@ -262,9 +271,12 @@ public:
     {
         getOwner()->setSearchString (findEditor.getText());
 
-        if (CabbageContentComponent* contentComp = getOwner())
+		if (editor.getName() == "findEditor")
 		{
-            contentComp->findNext(true);			
+			if (CabbageContentComponent* contentComp = getOwner())
+			{
+				contentComp->findNext(true);			
+			}
 		}
     }
 
@@ -281,7 +293,6 @@ public:
 
     TextEditor findEditor, replaceEditor;
     Label findLabel, replaceLabel;
-	String replaceString;
     ToggleButton caseButton;
 	bool showReplaceControls = false;
     TextButton findPrev, findNext, replace, replaceAll;

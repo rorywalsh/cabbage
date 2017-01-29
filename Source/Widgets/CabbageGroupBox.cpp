@@ -52,7 +52,17 @@ CabbageGroupBox::CabbageGroupBox(ValueTree wData)
 
 void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    getProperties().set("groupLine", var(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::linethickness)));
+	if(DocumentWindow* owner = dynamic_cast<DocumentWindow*>(getParentComponent()))
+	{
+		const int visible = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::visible);
+		if(visible==1)
+			owner->setVisible(true);
+		else
+			owner->setVisible(false);
+		
+	}
+	
+	getProperties().set("groupLine", var(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::linethickness)));
     getProperties().set("cornersize", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::corners));
     setTextLabelPosition(CabbageUtilities::getJustification(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::align)));
     setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));

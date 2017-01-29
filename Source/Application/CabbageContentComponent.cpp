@@ -670,6 +670,11 @@ void CabbageContentComponent::setSearchString (const String& s)
 	searchString = s; 
 }
 
+void CabbageContentComponent::setReplaceString (const String& s)   
+{ 
+	replaceString = s; 
+}
+
 bool CabbageContentComponent::isCaseSensitiveSearch()             
 { 
 	return isCaseSensitive; 
@@ -685,6 +690,15 @@ void CabbageContentComponent::findNext(bool forwards)
 	if(findPanel!=nullptr)
 	{
 		getCurrentCodeEditor()->findText(searchString, forwards, isCaseSensitiveSearch(), forwards);	
+	}
+}
+
+void CabbageContentComponent::replaceText(bool all)
+{
+	if(findPanel!=nullptr)
+	{
+		
+		getCurrentCodeEditor()->replaceText(searchString, forwards, isCaseSensitiveSearch(), forwards);	
 	}
 }
 //==============================================================================

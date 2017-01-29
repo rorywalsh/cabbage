@@ -36,15 +36,13 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, bool debugMode)
                      )
 #endif
 {
-	
-	 
+		 
     CabbageUtilities::debug("Plugin constructor");
     csound = new Csound();
 
     csound->SetHostImplementedMIDIIO(true);
-	csound->SetHostImplementedAudioIO(1, 32);
+	csound->SetHostImplementedAudioIO(1, 0);
     csound->SetHostData(this);
-
 
     csound->CreateMessageBuffer(0);
     csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
@@ -344,7 +342,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 {
     float** audioBuffers = buffer.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
-    float newSamp;
+    MYFLT newSamp;
     int result = -1;
 
 #if defined(Cabbage_Build_IDE) || defined(AndroidBuild)

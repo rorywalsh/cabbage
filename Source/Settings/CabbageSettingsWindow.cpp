@@ -101,7 +101,9 @@ void CabbageSettingsWindow::addColourProperties()
 
 void CabbageSettingsWindow::addMiscProperties()
 {
-    Array<PropertyComponent*> props;
+    Array<PropertyComponent*> editorProps;
+	Array<PropertyComponent*> dirProps;
+	Array<PropertyComponent*> sshProps;
 
     showLastOpenedFileValue.setValue(settings.getUserSettings()->getIntValue("OpenMostRecentFileOnStartup"));
     showLastOpenedFileValue.addListener(this);
@@ -110,27 +112,34 @@ void CabbageSettingsWindow::addMiscProperties()
     compileOnSaveValue.setValue(settings.getUserSettings()->getIntValue("CompileOnSave"));
     compileOnSaveValue.addListener(this);
 
-    props.add (new BooleanPropertyComponent(showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
-    props.add (new BooleanPropertyComponent(alwaysOnTopValue, "Plugin Window", "Always show plugin on top"));
-    props.add (new BooleanPropertyComponent(compileOnSaveValue, "Compiling", "Compile on save"));
+    editorProps.add (new BooleanPropertyComponent(showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
+    editorProps.add (new BooleanPropertyComponent(alwaysOnTopValue, "Plugin Window", "Always show plugin on top"));
+    editorProps.add (new BooleanPropertyComponent(compileOnSaveValue, "Compiling", "Compile on save"));
+	
+	const int scrollBy = settings.getUserSettings()->getIntValue("numberOfLinesToScroll");
+	editorProps.add(new TextPropertyComponent(Value (scrollBy), "Editor lines to scroll with MouseWheel", 10, false));
 
 	const String examplesDir = settings.getUserSettings()->getValue("CabbageExamplesDir");
 	const String manualDir = settings.getUserSettings()->getValue("CsoundManualDir");
 	const String plantDir = settings.getUserSettings()->getValue("CabbagePlantDir");
-    props.add (new CabbageFilePropertyComponent("Csound manual dir.", true, false,  "*", manualDir));
-    props.add (new CabbageFilePropertyComponent("Cabbage plants dir.", true, false, "*", plantDir));
-    props.add (new CabbageFilePropertyComponent("Cabbage examples dir.", true, false, "*", examplesDir));
+    dirProps.add (new CabbageFilePropertyComponent("Csound manual dir.", true, false,  "*", manualDir));
+    dirProps.add (new CabbageFilePropertyComponent("Cabbage plants dir.", true, false, "*", plantDir));
+    dirProps.add (new CabbageFilePropertyComponent("Cabbage examples dir.", true, false, "*", examplesDir));
 
     const String sshAddress = settings.getUserSettings()->getValue("SSHAddress");
-    props.add(new TextPropertyComponent(Value (sshAddress), "SSH Address", 200, false));
+    sshProps.add(new TextPropertyComponent(Value (sshAddress), "SSH Address", 200, false));
 
     const String sshHomeDir = settings.getUserSettings()->getValue("SSHHomeDir");
-    props.add(new TextPropertyComponent(Value (sshHomeDir), "SSH Home Directory", 200, false));
+    sshProps.add(new TextPropertyComponent(Value (sshHomeDir), "SSH Home Directory", 200, false));
 
 	
-    addCustomListener(props, this);
+    addCustomListener(editorProps, this);
+	addCustomListener(sshProps, this);
+	addCustomListener(dirProps, this);
     miscPanel.clear();
-    miscPanel.addProperties(props);
+    miscPanel.addSection("Editor", editorProps);
+	miscPanel.addSection("Directories", dirProps);
+	miscPanel.addSection("SSH", sshProps);
 }
 
 void CabbageSettingsWindow::textPropertyComponentChanged(TextPropertyComponent *comp)
@@ -139,6 +148,8 @@ void CabbageSettingsWindow::textPropertyComponentChanged(TextPropertyComponent *
         settings.getUserSettings()->setValue("SSHAddress", comp->getValue().toString());
     else if(comp->getName()=="SSH Home Directory")
         settings.getUserSettings()->setValue("SSHHomeDir", comp->getValue().toString());
+    else if(comp->getName()=="Editor lines to scroll with MouseWheel")
+        settings.getUserSettings()->setValue("numberOfLinesToScroll", comp->getValue().toString());
 }
 
 void CabbageSettingsWindow::resized()

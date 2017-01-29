@@ -47,7 +47,7 @@ void CabbageWidgetBase::handleCommonUpdates(Component* child, ValueTree data, bo
 {
     if(calledFromConstructor == false)
     {
-        if(getPluginEditor(child)->isEditModeEnabled() == false)
+        if(getPluginEditor(child) != nullptr && getPluginEditor(child)->isEditModeEnabled() == false)
             child->setBounds(CabbageWidgetData::getBounds(data));
 
         else if(CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::allowboundsupdate)==1)

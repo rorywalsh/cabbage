@@ -204,6 +204,28 @@ void CabbageCodeEditorComponent::findText(String text, bool forwards, bool caseS
     }
 
 }
+
+
+int CabbageCodeEditorComponent::replaceText(String text, String replaceWith)
+{
+    String fullText = editor[currentEditor]->getAllText();
+    Range<int> range = editor[currentEditor]->getHighlightedRegion();
+    if(range.getLength()==0)
+    {
+        if(findText(text)>0)
+        {
+            range = editor[currentEditor]->getHighlightedRegion();
+            editor[currentEditor]->getDocument().replaceSection(range.getStart(), range.getEnd(), replaceWith);
+            findText(text);
+        }
+    }
+    else
+    {
+        editor[currentEditor]->getDocument().replaceSection(range.getStart(), range.getEnd(), replaceWith);
+        findText(text);
+    }
+    return searchStartIndex;
+}
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)
 {
@@ -419,10 +441,11 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
 		zoomOut();		
     else
     {
+		const int numberOfLinesToScroll = owner->settings->getUserSettings()->getIntValue("numberOfLinesToScroll");
         if(mouse.deltaY<0)
-            scrollBy(1);
+            scrollBy(numberOfLinesToScroll);
         else
-            scrollBy(-1);
+            scrollBy(-numberOfLinesToScroll);
     }
 }
 

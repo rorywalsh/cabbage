@@ -44,7 +44,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
 CabbagePluginEditor::~CabbagePluginEditor()
 {
-
+	popupPlants.clear();
 }
 
 //==============================================================================
@@ -222,6 +222,7 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
     else if(widgetType==CabbageIdentifierIds::hrange
             || widgetType==CabbageIdentifierIds::vrange)
         insertRangeSlider(cabbageWidgetData);
+
 }
 
 void CabbagePluginEditor::insertCheckbox(ValueTree cabbageWidgetData)
@@ -254,14 +255,6 @@ void CabbagePluginEditor::insertRangeSlider(ValueTree cabbageWidgetData)
     rangeSlider->getSlider().addListener(this);
     addToEditorAndMakeVisible(rangeSlider, cabbageWidgetData);
 	addMouseListenerAndSetVisibility(rangeSlider, cabbageWidgetData);
-}
-
-void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
-{
-    CabbageImage* image;
-    components.add(image = new CabbageImage(cabbageWidgetData, this));
-    addToEditorAndMakeVisible(image, cabbageWidgetData);
-	addMouseListenerAndSetVisibility(image, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertLabel(ValueTree cabbageWidgetData)
@@ -366,14 +359,6 @@ void CabbagePluginEditor::insertGenTable(ValueTree cabbageWidgetData)
 	addMouseListenerAndSetVisibility(genTable, cabbageWidgetData);
 }
 
-void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
-{
-    CabbageGroupBox* groupBox;
-    components.add(groupBox = new CabbageGroupBox(cabbageWidgetData));
-    addToEditorAndMakeVisible(groupBox, cabbageWidgetData);
-	addMouseListenerAndSetVisibility(groupBox, cabbageWidgetData);
-}
-
 void CabbagePluginEditor::insertTextBox(ValueTree cabbageWidgetData)
 {
     CabbageTextBox* textBox;
@@ -407,12 +392,25 @@ void CabbagePluginEditor::insertMIDIKeyboard(ValueTree cabbageWidgetData)
     }
 }
 
-void CabbagePluginEditor::addMouseListenerAndSetVisibility(Component* comp, ValueTree wData)
+//======================================================================================================
+void CabbagePluginEditor::insertGroupBox(ValueTree cabbageWidgetData)
 {
-	comp->addMouseListener(this, true);
-	int visible = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::visible);
-	comp->setVisible(visible==1 ? true : 0);
+    CabbageGroupBox* groupBox;
+    components.add(groupBox = new CabbageGroupBox(cabbageWidgetData));
+    addToEditorAndMakeVisible(groupBox, cabbageWidgetData);
+	addMouseListenerAndSetVisibility(groupBox, cabbageWidgetData);	
+	addPlantToPopupPlantsArray(cabbageWidgetData, groupBox); // only groupboxes and images can be plants
 }
+
+void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
+{
+    CabbageImage* image;
+    components.add(image = new CabbageImage(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(image, cabbageWidgetData);
+	addMouseListenerAndSetVisibility(image, cabbageWidgetData);
+	addPlantToPopupPlantsArray(cabbageWidgetData, image); // only groupboxes and images can be plants
+}
+
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
@@ -421,8 +419,7 @@ CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const Stri
 		if(CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*>(param))
 		{
         if(name==cabbageParam->getWidgetName())
-            return dynamic_cast<CabbageAudioParameter*> (cabbageParam);
-			
+            return dynamic_cast<CabbageAudioParameter*> (cabbageParam);			
 		}
 	}
 
@@ -551,6 +548,26 @@ void CabbagePluginEditor::addToEditorAndMakeVisible(Component* comp, ValueTree w
         mainComponent.addAndMakeVisible(comp);
 }
 
+void CabbagePluginEditor::addMouseListenerAndSetVisibility(Component* comp, ValueTree wData)
+{
+	comp->addMouseListener(this, true);
+	int visible = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::visible);
+	comp->setVisible(visible==1 ? true : 0);
+}
+
+void CabbagePluginEditor::addPlantToPopupPlantsArray(ValueTree wData, Component* plant)
+{
+	const int isPopup = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::popup);
+	if (isPopup == 1)
+	{
+		const String caption = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::text);
+		const String name = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name);
+		PopupDocumentWindow* popupPlant;
+		popupPlants.add(popupPlant = new PopupDocumentWindow(caption));
+		popupPlant->setContentNonOwned(plant, true);
+		popupPlant->setName(name);
+	}
+}
 //======================================================================================================
 void CabbagePluginEditor::updatefTableData(GenTable* table)
 {
