@@ -85,12 +85,13 @@ public:
 	//==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
+	void setReplaceString (const String& s);
     bool isCaseSensitiveSearch();
     void setCaseSensitiveSearch (bool b);
 	void showFindPanel(bool withReplace);
 	void hideFindPanel();
-	void findNext(bool forward);
-	void replaceText();
+	int findNext(bool forward);
+	void replaceText(bool replaceAll);
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -150,7 +151,7 @@ public:
           findPrev ("<"),
           findNext (">"),
 		  replace("Replace"),
-		  replaceAll("Replace all"),
+		  replaceAll("Replace All"),
 		  showReplaceControls(withReplace)
     {
 		//find components...
@@ -203,9 +204,6 @@ public:
         setFocusContainer (true);
         replace.setWantsKeyboardFocus (false);
         replaceAll.setWantsKeyboardFocus (false);
-
-		
-        replaceEditor.setText (replaceString);
         replaceEditor.addListener (this);
 		
 		
@@ -248,7 +246,14 @@ public:
 		else if(button->getName() == "<")
 			getOwner()->findNext(false);
 		else if(button->getName() == "Replace") 
-			getOwner()->replaceText();
+		{
+			getOwner()->replaceText(false);	
+			getOwner()->findNext(true);			
+		}
+		else if(button->getName() == "Replace All") 
+		{
+			getOwner()->replaceText(true);	
+		}
 			
     }
 
@@ -267,7 +272,7 @@ public:
 
     void textEditorFocusLost (TextEditor&) override {}
 
-    void textEditorReturnKeyPressed (TextEditor&) override
+    void textEditorReturnKeyPressed (TextEditor& editor) override
     {
         getOwner()->setSearchString (findEditor.getText());
 

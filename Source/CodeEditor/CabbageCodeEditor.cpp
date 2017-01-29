@@ -152,21 +152,22 @@ var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
 }
 
 //==============================================================================
-void CabbageCodeEditorComponent::findText(String text, bool forwards, bool caseSensitive, bool skipCurrentSelection)
+int CabbageCodeEditorComponent::findText(String text, bool forwards, bool caseSensitive, bool skipCurrentSelection)
 {
     const Range<int> highlight (getHighlightedRegion());
     const CodeDocument::Position startPos (getDocument(), skipCurrentSelection ? highlight.getEnd()
                                                                                : highlight.getStart());
     int lineNum = startPos.getLineNumber();
     int linePos = startPos.getIndexInLine();
-
+	int index = -1;
+	
     const int totalLines = getDocument().getNumLines();
     const String searchText (text);
 
     for (int linesToSearch = totalLines; --linesToSearch >= 0;)
     {
         String line (getDocument().getLine (lineNum));
-        int index;
+        
 
         if (forwards)
         {
@@ -203,28 +204,19 @@ void CabbageCodeEditorComponent::findText(String text, bool forwards, bool caseS
         }
     }
 
+	return index;
 }
 
 
-int CabbageCodeEditorComponent::replaceText(String text, String replaceWith)
+void CabbageCodeEditorComponent::replaceText(String text, String replaceWith)
 {
-    String fullText = editor[currentEditor]->getAllText();
-    Range<int> range = editor[currentEditor]->getHighlightedRegion();
-    if(range.getLength()==0)
+    Range<int> range = getHighlightedRegion();
+	
+    if(range.getLength()>0)
     {
-        if(findText(text)>0)
-        {
-            range = editor[currentEditor]->getHighlightedRegion();
-            editor[currentEditor]->getDocument().replaceSection(range.getStart(), range.getEnd(), replaceWith);
-            findText(text);
-        }
+       getDocument().replaceSection(range.getStart(), range.getEnd(), replaceWith);
     }
-    else
-    {
-        editor[currentEditor]->getDocument().replaceSection(range.getStart(), range.getEnd(), replaceWith);
-        findText(text);
-    }
-    return searchStartIndex;
+
 }
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage(int lineNumber)

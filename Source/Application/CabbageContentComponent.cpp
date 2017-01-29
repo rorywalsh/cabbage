@@ -685,20 +685,28 @@ void CabbageContentComponent::setCaseSensitiveSearch (bool b)
 	isCaseSensitive = b; 
 }
 	
-void CabbageContentComponent::findNext(bool forwards)
+int CabbageContentComponent::findNext(bool forwards)
 {
 	if(findPanel!=nullptr)
 	{
-		getCurrentCodeEditor()->findText(searchString, forwards, isCaseSensitiveSearch(), forwards);	
+		return getCurrentCodeEditor()->findText(searchString, forwards, isCaseSensitiveSearch(), forwards);	
 	}
 }
 
-void CabbageContentComponent::replaceText(bool all)
+void CabbageContentComponent::replaceText(bool replaceAll)
 {
 	if(findPanel!=nullptr)
-	{
-		
-		getCurrentCodeEditor()->replaceText(searchString, forwards, isCaseSensitiveSearch(), forwards);	
+	{	
+		if ( replaceAll == false )
+			getCurrentCodeEditor()->replaceText(searchString, replaceString);	
+		else
+		{
+			do
+			{
+				getCurrentCodeEditor()->replaceText(searchString, replaceString);
+			}
+			while (findNext(true)>=0);
+		}
 	}
 }
 //==============================================================================

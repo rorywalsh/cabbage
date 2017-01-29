@@ -84,8 +84,8 @@ public:
     bool deleteBackwards (const bool moveInWholeWordSteps);
     void sendUpdateMessage(int lineNumber);
     StringArray getIdentifiersFromString(String code);
-	void findText(String text, bool forwards, bool caseSensitive, bool skipCurrentSelection);
-	int replaceText(String text, String replaceWith);
+	int findText(String text, bool forwards, bool caseSensitive, bool skipCurrentSelection);
+	void replaceText(String text, String replaceWith);
     //=========================================================
     NamedValueSet instrumentsAndRegions;
     //=========================================================
