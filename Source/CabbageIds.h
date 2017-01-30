@@ -85,7 +85,7 @@ enum
     nextError               = 0x4100b1,
     prevError               = 0x4100b2,
 
-    loginLogout             = 0x4100c1,
+    about             = 0x4100c1,
 
     undo			= 0x512011,
     redo			= 0x512012,

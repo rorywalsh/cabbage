@@ -292,7 +292,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
 void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 {
     menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::showGenericWidgetWindow);
+    menu.addCommandItem (&commandManager, CommandIDs::about);
 }
 
 void CabbageDocumentWindow::createBuildMenu (PopupMenu& menu)
@@ -388,6 +388,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 							  CommandIDs::showReplacePanel,
                               CommandIDs::redo,
                               CommandIDs::editMode,
+                              CommandIDs::about,
                               CommandIDs::startLiveDebugger,
                               CommandIDs::showGenericWidgetWindow
                             };
@@ -550,7 +551,12 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 		result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
 		break;
 
-	case CommandIDs::findPrevious:
+    case CommandIDs::about:
+        result.setInfo (TRANS ("About"), TRANS ("About."), CommandCategories::general, 0);
+        result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
+        break;
+        
+        case CommandIDs::findPrevious:
 		result.setInfo (TRANS ("Find Previous"), TRANS ("Searches for the previous occurrence of the current search-term."), "Editing", 0);
 		result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
 		result.defaultKeypresses.add (KeyPress ('d', ModifierKeys::commandModifier, 0));
@@ -570,6 +576,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
+    String title(CABBAGE_VERSION);
     switch (info.commandID)
     {
     case CommandIDs::newProject:        	getContentComponent()->createNewProject(); 							return true;
@@ -608,7 +615,9 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         getContentComponent()->stopCsoundCode();
         getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
         break;
-
+    case CommandIDs::about:
+        CabbageUtilities::showMessage(title, &getLookAndFeel());
+        break;
     case CommandIDs::editMode:
         getContentComponent()->setEditMode(isGUIEnabled =! isGUIEnabled);
         if(isGUIEnabled==false)

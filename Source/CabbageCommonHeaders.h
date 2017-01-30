@@ -20,6 +20,10 @@
 #ifndef CABBAGECOMMONHEADERS_H_INCLUDED
 #define CABBAGECOMMONHEADERS_H_INCLUDED
 
+
+#define CABBAGE_VERSION "Cabbage(64bit) v2.0.02a"
+
+
 #include "./Settings/CabbageSettings.h"
 #include "LookAndFeel/CabbageIDELookAndFeel.h"
 #include "LookAndFeel/CabbageLookAndFeel.h"
