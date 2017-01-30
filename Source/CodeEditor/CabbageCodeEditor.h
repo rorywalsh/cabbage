@@ -53,14 +53,32 @@ public:
     const StringArray getAllTextAsStringArray();
     const String getAllText();
     StringArray getSelectedTextArray();
-
-
+	
+	class CurrentLineMarker : public Component
+	{
+	public: 
+		CurrentLineMarker():Component(){}
+		void paint(Graphics& g)
+		{
+			g.fillAll(Colours::transparentBlack);
+			g.setColour(colour);
+			g.fillRoundedRectangle(getLocalBounds().toFloat(), 2.f);
+		}
+		void setColour(Colour col){	colour = col;	}
+		Colour colour;
+		
+	};
+	
+	CurrentLineMarker currentLineMarker;
+	
     void run() // thread for parsing text for variables on startup
     {
         if(parseForVariables==true)
             parseTextForVariables();
         parseForVariables = false;
     };
+
+	void updateCurrenLineMarker();
 
     void handleTabKey(String direction);
     void handleReturnKey();
@@ -114,6 +132,7 @@ public:
     bool allowUpdateOfPluginGUI = false;
 
 private:
+	int lastLinePosition = 0;
 	int searchStartIndex  = 0;
     Component* statusBar;
     int listBoxRowHeight = 18;

@@ -28,7 +28,7 @@ CabbageEditorContainer::CabbageEditorContainer(CabbageSettings* settings)
     addAndMakeVisible(editor = new CabbageCodeEditorComponent(this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
     addAndMakeVisible(outputConsole = new CabbageOutputConsole(settings->valueTree));
     editor->setLineNumbersShown(true);
-    
+    editor->addMouseListener(this, true);
 	Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor(CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
 	const int fontSize = settings->getUserSettings()->getIntValue("FontSize", 17);
 	editor->setFont(Font(fontPtr).withHeight(fontSize));
@@ -86,16 +86,28 @@ void CabbageEditorContainer::mouseExit(const MouseEvent& e)
 		statusBar.setMouseCursor(MouseCursor::NormalCursor);
 }
 
+void CabbageEditorContainer::mouseDown(const MouseEvent& e)
+{
+	editor->updateCurrenLineMarker();
+}
+	
+void CabbageEditorContainer::mouseUp(const MouseEvent& e)
+{
+	editor->updateCurrenLineMarker();
+}
+	
 void CabbageEditorContainer:: mouseEnter(const MouseEvent& e)
 {
 	startingDragPos = statusBar.getPosition().getY();
-	
+
 	if(e.eventComponent->getName()=="StatusBar")
 		statusBar.setMouseCursor(MouseCursor::UpDownResizeCursor);
 }
 
 void CabbageEditorContainer::mouseDrag(const MouseEvent& e)
 {
+	editor->updateCurrenLineMarker();
+	
 	if(e.eventComponent->getName()=="StatusBar")
 	{
 		statusBar.setBounds(0, jlimit(statusBar.getHeight(), getHeight()-statusBar.getHeight(), startingDragPos+e.getDistanceFromDragStartY()), getWidth(), statusBar.getHeight());

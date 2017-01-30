@@ -73,7 +73,8 @@ public:
     void resized();
 
     void updateEditorColourScheme();
-	
+	void mouseDown(const MouseEvent& e);
+	void mouseUp(const MouseEvent& e);
 	void mouseExit(const MouseEvent& e);
 	void mouseEnter(const MouseEvent& e);
 	void mouseDrag(const MouseEvent& e);

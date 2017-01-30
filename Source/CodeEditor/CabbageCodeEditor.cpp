@@ -30,7 +30,8 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(CabbageEditorContainer* o
       owner(owner),
       autoCompleteListBox(),
       Thread("parseVariablesThread"),
-      debugLabel("")
+      debugLabel(""),
+	  currentLineMarker()
 {
     setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File(File::getSpecialLocation(File::currentExecutableFile)).getParentDirectory().getFullPathName();
@@ -42,7 +43,8 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(CabbageEditorContainer* o
         setOpcodeStrings(File(opcodeFile).loadFileAsString());
 
     document.addListener(this);
-    this->setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70)));
+	const Colour lineNumberBackground = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground, Colour(70,70,70));
+    this->setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId, lineNumberBackground);
     this->setColour(CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
 
     autoCompleteListBox.setRowHeight (listBoxRowHeight);
@@ -54,6 +56,10 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(CabbageEditorContainer* o
     debugLabel.setColour(Label::backgroundColourId, Colours::whitesmoke);
     debugLabel.setFont(Font(String("DejaVu Sans Mono"), 17, 0));
 
+	currentLineMarker.setBounds(13, 0, 20, getFontSize());	
+	currentLineMarker.setColour(lineNumberBackground.contrasting().withAlpha(.3f));
+	addAndMakeVisible(currentLineMarker);
+	//currentLineMarker.setVisible(false);
 }
 
 void CabbageCodeEditorComponent::updateColourScheme()
@@ -106,6 +112,7 @@ void CabbageCodeEditorComponent::stopDebugMode()
     debugModeEnabled = false;
 }
 
+
 bool CabbageCodeEditorComponent::isDebugModeEnabled()
 {
     return debugModeEnabled;
@@ -149,6 +156,31 @@ void CabbageCodeEditorComponent::timerCallback()
 var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
 {
     return breakpointData.getChildWithName("Instrument1").getProperty(varName);
+}
+//==============================================================================
+void CabbageCodeEditorComponent::updateCurrenLineMarker()
+{
+	currentLineMarker.setVisible(true);
+	const Range<int> highlight (getHighlightedRegion());
+	CodeDocument::Position start;
+	CodeDocument::Position linePos(getDocument(), highlight.getEnd());
+	bool draggingBackwards = false;
+	
+	if( highlight.getLength()>0)
+	{
+		start = CodeDocument::Position(getDocument(), highlight.getStart());
+
+		if(start.getPosition()<lastLinePosition)
+		{
+			linePos = CodeDocument::Position(getDocument(), highlight.getStart());
+			currentLineMarker.setBounds(12, getCharacterBounds(linePos).getY(), 20, getFontSize());
+			return;
+		}
+		
+	}	
+	
+	currentLineMarker.setBounds(12, getCharacterBounds(linePos).getY(), 20, getFontSize());
+	lastLinePosition = start.getPosition();	
 }
 
 //==============================================================================
@@ -435,9 +467,15 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
     {
 		const int numberOfLinesToScroll = owner->settings->getUserSettings()->getIntValue("numberOfLinesToScroll");
         if(mouse.deltaY<0)
+		{
             scrollBy(numberOfLinesToScroll);
+			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()-numberOfLinesToScroll*getFontSize());
+		}
         else
+		{
             scrollBy(-numberOfLinesToScroll);
+			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()+numberOfLinesToScroll*getFontSize());
+		}
     }
 }
 
