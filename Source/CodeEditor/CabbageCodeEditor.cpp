@@ -150,7 +150,7 @@ void CabbageCodeEditorComponent::timerCallback()
 
         }
     }
-
+	
 }
 
 var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
@@ -158,16 +158,17 @@ var CabbageCodeEditorComponent::findValueForCsoundVariable(String varName)
     return breakpointData.getChildWithName("Instrument1").getProperty(varName);
 }
 //==============================================================================
-void CabbageCodeEditorComponent::updateCurrenLineMarker()
+void CabbageCodeEditorComponent::updateCurrenLineMarker(ArrowKeys arrowKey)
 {
 	currentLineMarker.setVisible(true);
 	const Range<int> highlight (getHighlightedRegion());
 	CodeDocument::Position start;
-	CodeDocument::Position linePos(getDocument(), highlight.getEnd());
+	CodeDocument::Position linePos(getDocument(), getCaretPos().getPosition());
 	bool draggingBackwards = false;
 	
 	if( highlight.getLength()>0)
 	{
+		linePos = CodeDocument::Position(getDocument(), highlight.getEnd());
 		start = CodeDocument::Position(getDocument(), highlight.getStart());
 
 		if(start.getPosition()<lastLinePosition)
@@ -179,7 +180,13 @@ void CabbageCodeEditorComponent::updateCurrenLineMarker()
 		
 	}	
 	
-	currentLineMarker.setBounds(12, getCharacterBounds(linePos).getY(), 20, getFontSize());
+	int xOffset=0;
+	if(arrowKey == ArrowKeys::Up)
+		xOffset = -getFontSize();
+	else if(arrowKey == ArrowKeys::Down)
+		xOffset = getFontSize();
+	
+	currentLineMarker.setBounds(12, getCharacterBounds(linePos).getY()+xOffset, 20, getFontSize());
 	lastLinePosition = start.getPosition();	
 }
 
@@ -658,15 +665,17 @@ void CabbageCodeEditorComponent::showAutoComplete(String currentWord)
 }
 //===========================================================================================================
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *originatingComponent)
-{
-
-	
+{	
     allowUpdateOfPluginGUI = true; 		//allow keystrokes to update GUI
-
-    if (key.getTextDescription().contains("cursor up") || key.getTextDescription().contains("cursor down"))
+	
+    if (key.getTextDescription().contains("cursor up"))
     {
-
+		updateCurrenLineMarker(ArrowKeys::Up);
     }
+	else if(key.getTextDescription().contains("cursor down"))
+	{
+		updateCurrenLineMarker(ArrowKeys::Down);
+	}
 
     if (key == KeyPress ('z', ModifierKeys::commandModifier, 0))
         undoText();
@@ -687,7 +696,7 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *ori
 
 
         else  if (key.isKeyCode (KeyPress::upKey || key.isKeyCode(KeyPress::downKey)))
-        {
+        {			
             if(autoCompleteListBox.isVisible())
             {
                 const int selectedRow = autoCompleteListBox.getSelectedRow();
@@ -719,9 +728,13 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *ori
         else if(key ==  KeyPress::tabKey)
             handleTabKey("forwards");
         else
-            return false;
+		{
+			return false;
+		}
+           
     }
 	
+	updateCurrenLineMarker();
     getParentComponent()->repaint();
     //handleUpdateNowIfNeeded();
     return true;
@@ -743,25 +756,12 @@ void CabbageCodeEditorComponent::handleTabKey(String direction)
         }
         else
         {
-            for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
-                csdArray.set(i, "\t"+csdArray[i]);
+            indentSelection();
         }
-
-        setAllText(csdArray.joinIntoString("\n"));
-        highlightLines(startPos.getLineNumber(), endPos.getLineNumber());
-
     }
     else if(direction.equalsIgnoreCase("backwards"))
     {
-        if(getHighlightedRegion().getLength()>0)
-        {
-            for(int i=startPos.getLineNumber(); i<endPos.getLineNumber()+1; i++)
-                if(csdArray[i].substring(0, 1).equalsIgnoreCase("\t"))
-                    csdArray.set(i, csdArray[i].substring(1));
-
-            setAllText(csdArray.joinIntoString("\n"));
-            highlightLines(startPos.getLineNumber(), endPos.getLineNumber());
-        }
+       unindentSelection();
     }
 
     autoCompleteListBox.setVisible(false);

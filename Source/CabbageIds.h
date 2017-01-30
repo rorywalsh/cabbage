@@ -225,7 +225,6 @@ public:
         add("gentable");
         add("csoundoutput");
         add("textbox");
-        add("line");
         add("label");
         add("hostbpm");
         add("hosttime");
@@ -240,6 +239,7 @@ public:
         add("groupbox");
         add("fftdisplay");
         add("signaldisplay");
+		add("line");
         //sample widget
         add("stepper");
     }
@@ -566,6 +566,7 @@ static const String timeSigDenom = "TIME_SIG_DENOM";
 static const String timeSigNum = "TIME_SIG_NUM";
 static const String mousex = "MOUSE_X";
 static const String mousey = "MOUSE_Y";
+static const String line = "line";
 static const String mousedownleft = "MOUSE_DOWN_LEFT";
 static const String mousedownright = "MOUSE_DOWN_RIGHT";
 static const String mousedownlmiddle = "MOUSE_DOWN_MIDDLE";

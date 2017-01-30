@@ -109,6 +109,9 @@ void CabbageWidgetData::setWidgetState(ValueTree widgetData, String lineFromCsd,
     else if(strTokens[0].trim() == "infobutton")
         setInfoButtonProperties(widgetData, ID);
 
+    else if(strTokens[0].trim() == "line")
+        setLineProperties(widgetData, ID);
+		
     else if((strTokens[0].trim() == "sourcebutton")||(strTokens[0].trim() == "loadbutton"))
         setLoadButtonProperties(widgetData, ID);
 

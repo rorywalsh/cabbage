@@ -54,6 +54,13 @@ public:
     const String getAllText();
     StringArray getSelectedTextArray();
 	
+	enum ArrowKeys
+    {
+		Up = 0,
+		Down,
+		None
+    };
+	
 	class CurrentLineMarker : public Component
 	{
 	public: 
@@ -78,7 +85,7 @@ public:
         parseForVariables = false;
     };
 
-	void updateCurrenLineMarker();
+	void updateCurrenLineMarker(ArrowKeys arrow= ArrowKeys::None);
 
     void handleTabKey(String direction);
     void handleReturnKey();

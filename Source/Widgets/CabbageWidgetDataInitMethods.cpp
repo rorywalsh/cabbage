@@ -119,6 +119,19 @@ void CabbageWidgetData::setVRangeSliderProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::imgsliderbg, "");
 }
 
+void CabbageWidgetData::setLineProperties(ValueTree widgetData, int ID)
+{
+	setProperty(widgetData, CabbageIdentifierIds::basetype, "layout");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 160);
+	setProperty(widgetData, CabbageIdentifierIds::height, 2);
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::type, "line");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString()+String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);	
+}
 void CabbageWidgetData::setRSliderProperties(ValueTree widgetData, int ID)
 {
     setProperty(widgetData, CabbageIdentifierIds::basetype, "interactive");

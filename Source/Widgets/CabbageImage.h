@@ -34,10 +34,11 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
     int lineThickness;
     ValueTree widgetData;
     Colour outlineColour, mainColour;
+	bool isLineWidget = false;
 
 public:
 
-    CabbageImage(ValueTree cAttr, CabbagePluginEditor* _owner);
+    CabbageImage(ValueTree cAttr, CabbagePluginEditor* _owner, bool isLineWidget=false);
     ~CabbageImage() {};
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);

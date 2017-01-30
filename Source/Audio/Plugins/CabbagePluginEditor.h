@@ -98,6 +98,7 @@ public:
     void insertMIDIKeyboard(ValueTree cabbageWidgetData);
     void insertFileButton(ValueTree cabbageWidgetData);
     void insertImage(ValueTree cabbageWidgetData);
+	void insertLine(ValueTree cabbageWidgetData);
     void insertLabel(ValueTree cabbageWidgetData);
     void insertTable(ValueTree cabbageWidgetData) {};
     void insertInfoButton(ValueTree cabbageWidgetData);

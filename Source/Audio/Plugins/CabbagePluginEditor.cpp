@@ -168,6 +168,9 @@ void CabbagePluginEditor::insertWidget(ValueTree cabbageWidgetData)
 
     else if(widgetType==CabbageIdentifierIds::image)
         insertImage(cabbageWidgetData);
+		
+    else if(widgetType==CabbageIdentifierIds::line)
+        insertLine(cabbageWidgetData);
 
     else if(widgetType==CabbageIdentifierIds::rslider
             || widgetType==CabbageIdentifierIds::vslider
@@ -411,6 +414,13 @@ void CabbagePluginEditor::insertImage(ValueTree cabbageWidgetData)
 	addPlantToPopupPlantsArray(cabbageWidgetData, image); // only groupboxes and images can be plants
 }
 
+void CabbagePluginEditor::insertLine(ValueTree cabbageWidgetData)
+{
+    CabbageImage* line;
+    components.add(line = new CabbageImage(cabbageWidgetData, this, true));
+    addToEditorAndMakeVisible(line, cabbageWidgetData);
+	addMouseListenerAndSetVisibility(line, cabbageWidgetData);
+}
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
