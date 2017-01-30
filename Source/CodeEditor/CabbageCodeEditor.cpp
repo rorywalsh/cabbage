@@ -716,8 +716,6 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress &key, Component *ori
                 moveCaretDown (key.getModifiers().isShiftDown());
         }
 
-
-        //else if (key == KeyPress (']', ModifierKeys::commandModifier, 0))   indentSelection();
         else if (key.getTextCharacter() >= ' ')
         {
             insertTextAtCaret (String::charToString (key.getTextCharacter()));
