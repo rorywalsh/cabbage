@@ -598,9 +598,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 	case CommandIDs::showFindPanel:     	getContentComponent()->showFindPanel(false); 						return true;
 	case CommandIDs::showReplacePanel:		getContentComponent()->showFindPanel(true); 						return true;
     case CommandIDs::exportAsFMODSoundPlugin:        	return true;
-    case CommandIDs::undo:        						return true;
-    case CommandIDs::redo:       						return true;
-    case CommandIDs::paste:         					return true;
+    case CommandIDs::copy:        			getContentComponent()->getCurrentCodeEditor()->copy();				return true;
+	case CommandIDs::cut:        			getContentComponent()->getCurrentCodeEditor()->cut();				return true;
+	case CommandIDs::undo:        			getContentComponent()->getCurrentCodeEditor()->undo();				return true;
+    case CommandIDs::redo:       			getContentComponent()->getCurrentCodeEditor()->redo();				return true;
+    case CommandIDs::paste:         		getContentComponent()->getCurrentCodeEditor()->paste();				return true;
 	
     case CommandIDs::saveDocument:
         getContentComponent()->saveDocument();

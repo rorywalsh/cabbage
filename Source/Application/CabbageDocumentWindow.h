@@ -32,7 +32,6 @@
 
 
 
-
 class CabbageDocumentWindow
     : public DocumentWindow,
       public ApplicationCommandTarget,
@@ -74,6 +73,7 @@ public:
 	
 private:
     //=======================================================
+	ApplicationCommandManager commandManager;
 	PopupMenu createExamplesMenu();
 	Array<File> exampleFiles;
 	const String getPluginId(File csdFile);
@@ -83,7 +83,7 @@ private:
 	void writePluginFileToDisk(File fc, File csdFile, File VSTData);
     //=======================================================
 
-    ApplicationCommandManager commandManager;
+    
     bool isGUIEnabled = false;
     ScopedPointer<CabbageContentComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)

@@ -60,6 +60,8 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent(CabbageEditorContainer* o
 	currentLineMarker.setColour(lineNumberBackground.contrasting().withAlpha(.3f));
 	addAndMakeVisible(currentLineMarker);
 	//currentLineMarker.setVisible(false);
+	
+	//setCommandManager (commandManager);
 }
 
 void CabbageCodeEditorComponent::updateColourScheme()

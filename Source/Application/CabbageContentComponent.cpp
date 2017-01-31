@@ -106,16 +106,14 @@ void CabbageContentComponent::buttonClicked(Button* button)
     }
     else if(const ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*>(button))
     {
-        if(toolbarButton->getName()=="new")
-            createNewProject();
-        else if(toolbarButton->getName()=="open")
-            openFile();
-        else if(toolbarButton->getName()=="save")
-            saveDocument(false);
-        else if(toolbarButton->getName()=="save as")
-            saveDocument(true);
-        else if(toolbarButton->getName()=="settings")
-            showSettingsDialog();
+        if(toolbarButton->getName()=="new")            	createNewProject();
+        else if(toolbarButton->getName()=="open")      	openFile();
+        else if(toolbarButton->getName()=="save")      	saveDocument(false);
+        else if(toolbarButton->getName()=="save as")   	saveDocument(true);
+        else if(toolbarButton->getName()=="settings")	showSettingsDialog();
+		else if(toolbarButton->getName()=="cut")		getCurrentCodeEditor()->cut();
+		else if(toolbarButton->getName()=="copy")		getCurrentCodeEditor()->copy();
+		else if(toolbarButton->getName()=="paste")		getCurrentCodeEditor()->paste();
         else if(toolbarButton->getName()=="togglePlay")
 		{
             if(toolbarButton->getToggleState())

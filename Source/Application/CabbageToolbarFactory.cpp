@@ -126,10 +126,12 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
         togglePlayButton = new ToolbarButton(itemId, text, drawableNormal, drawableOn);
         togglePlayButton->setClickingTogglesState(true);
         togglePlayButton->addListener(owner);
+		togglePlayButton->setTooltip("Toggle Playback");
         return togglePlayButton;
     }
 
     ToolbarButton* button = new ToolbarButton(itemId, text, drawableNormal, 0);
+	button->setTooltip(text);
     button->addListener(owner);
     return button;
 
