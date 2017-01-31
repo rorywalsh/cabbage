@@ -218,7 +218,26 @@ public:
 
         return Justification::centred;
     }
+	
+	//===========================================================================================
+	static StringArray getTokens(String code, char breakChar)
+	{
+		StringArray tokens;
 
+		const char* str = code.toUTF8().getAddress();
+		do
+		{
+			const char *begin = str;
+
+			while(*str != ' ' && *str)
+				str++;
+
+			tokens.add(string(begin, str));
+		}
+		while (0 != *str++);
+		return tokens;
+	}
+	
 	//===========================================================================================
     static void showMessage(double num)
     {

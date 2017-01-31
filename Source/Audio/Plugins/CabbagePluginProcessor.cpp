@@ -146,8 +146,10 @@ void CabbagePluginProcessor::searchForMacros(StringArray& linesFromCsd)
     for(String csdLine : linesFromCsd)	//deal with Cabbage macros
     {
         StringArray tokens;
-        tokens.addTokens(csdLine.trimEnd(), ", ", "\"");
-        if(tokens[0].containsIgnoreCase("#define"))
+		csdLine = csdLine.replace("\n", " ");
+        tokens.addTokens(csdLine, ", ");
+		CabbageUtilities::debug(tokens[0]);
+        if(tokens[0].containsIgnoreCase("define"))
         {
             tokens.removeEmptyStrings();
             if(tokens.size()>1)

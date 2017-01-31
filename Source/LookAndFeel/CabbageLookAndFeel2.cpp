@@ -274,7 +274,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics &g, ToggleButton &button, b
 	{
         g.drawText(button.getButtonText(),
                          textX, 0,
-                         button.getWidth(), button.getHeight(),
+                         button.getWidth(), button.getHeight()-3,
                          Justification::left, false);
 	}
 
