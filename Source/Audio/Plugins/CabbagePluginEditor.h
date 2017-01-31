@@ -63,6 +63,7 @@ class CabbagePluginEditor
     : public AudioProcessorEditor,
       public Button::Listener,
       public ChangeBroadcaster,
+	  public ActionBroadcaster,
       public ComboBoxListener,
       public Slider::Listener
 {

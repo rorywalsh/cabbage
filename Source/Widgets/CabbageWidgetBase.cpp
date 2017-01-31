@@ -38,6 +38,8 @@ void CabbageWidgetBase::initialiseCommonAttributes(Component* child, ValueTree d
     text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
     currentValue = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::value);
 	value = currentValue;
+	lineNumber = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::linenumber);
+	child->getProperties().set(CabbageIdentifierIds::linenumber, lineNumber);
     populateTextArrays(data);
     //now initialise everything that can be updated using ident channels
     handleCommonUpdates(child, data, true);

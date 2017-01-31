@@ -10,6 +10,7 @@
 
 #include "ComponentLayoutEditor.h"
 #include "ComponentOverlay.h"
+#include "../Application/CabbageContentComponent.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 /*
@@ -35,7 +36,7 @@ void SelectedComponents::itemDeselected (ComponentOverlay* item)
 
 //=============================================================================
 ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)
-    :   target (0), widgetData(valueTree)
+    :   target (0), widgetData(valueTree), lookAndFeel()
 {
     setInterceptsMouseClicks (false, true);
 }
@@ -49,6 +50,14 @@ ComponentLayoutEditor::~ComponentLayoutEditor ()
 CabbagePluginEditor* ComponentLayoutEditor::getPluginEditor()
 {
     if(CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
+        return c;
+    else
+        return nullptr;
+}
+
+CabbageContentComponent* ComponentLayoutEditor::getContentComponent()
+{
+    if(CabbageContentComponent* c = this->findParentComponentOfClass<CabbageContentComponent>())
         return c;
     else
         return nullptr;
@@ -136,17 +145,20 @@ void ComponentLayoutEditor::mouseDrag (const MouseEvent& e)
 void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 {
     selectedComponents.deselectAll();
+	
     resetAllInterest();
 
     if(e.mods.isPopupMenu())
     {
         PopupMenu menu;
+		menu.setLookAndFeel(&lookAndFeel);
         CabbagePopupWidgets widgets;
         for( int i = 0 ; i < widgets.size() ; i++ )
             menu.addItem(i+1, widgets.getAllKeys()[i]);
 
         const int result = menu.show();
-        getPluginEditor()->addNewWidget(widgets.getAllValues()[result-1], e.getPosition());
+		if(result>0)
+			getPluginEditor()->addNewWidget(widgets.getAllValues()[result-1], e.getPosition());
         currentMouseCoors = e.getPosition();
     }
     else

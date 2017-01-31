@@ -95,6 +95,7 @@ void CabbagePluginProcessor::parseCsdFile(String csdText)
 
 		const String expandedMacroText = getExpandedMacroText(currentLineOfCabbageCode, temp);
         CabbageWidgetData::setWidgetState(temp, currentLineOfCabbageCode + " " + expandedMacroText, lineNumber);
+		CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::linenumber, lineNumber);	
         CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());	
 		CabbageWidgetData::setStringProp(temp, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
 		
@@ -148,7 +149,6 @@ void CabbagePluginProcessor::searchForMacros(StringArray& linesFromCsd)
         StringArray tokens;
 		csdLine = csdLine.replace("\n", " ");
         tokens.addTokens(csdLine, ", ");
-		CabbageUtilities::debug(tokens[0]);
         if(tokens[0].containsIgnoreCase("define"))
         {
             tokens.removeEmptyStrings();

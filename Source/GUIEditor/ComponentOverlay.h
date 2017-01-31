@@ -60,6 +60,7 @@ private:
     ComponentDragger dragger;
     SafePointer<Component> target;
     Array<juce::Rectangle<int> > childBounds;
+	CabbageLookAndFeel2 lookAndFeel;
     String interest;
     bool userAdjusting;
     Rectangle<int> startBounds;

@@ -44,7 +44,7 @@ static TextLayout layoutTooltipText (const String& text, Colour colour) noexcept
 //Cabbage IDE look and feel class
 CabbageLookAndFeel2::CabbageLookAndFeel2()
 {
-
+	
 }
 
 //=========== ComboBox ============================================================================

@@ -37,6 +37,7 @@ class CabbageDocumentWindow;
 class CabbageContentComponent
     : public Component,
       public Button::Listener,
+	  public ActionListener,
       public ChangeListener,
       public Timer,
       public ComboBox::Listener
@@ -48,6 +49,7 @@ public:
     ~CabbageContentComponent();
     //==============================================================================
     void changeListenerCallback(ChangeBroadcaster* source);
+	void actionListenerCallback(const String &message);
     void buttonClicked(Button* button);
     void comboBoxChanged (ComboBox *comboBoxThatHasChanged);
     void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine);

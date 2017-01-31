@@ -11,7 +11,7 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEditor* owner)
-    :   target (targetChild), layoutEditor(owner)
+    :   target (targetChild), layoutEditor(owner), lookAndFeel()
 {
     resizeContainer = new ComponentBoundsConstrainer();
     resizeContainer->setMinimumSize(10, 10); //set minimum size so objects cant be resized too small
@@ -22,6 +22,7 @@ ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEdito
     interest = "none";
     userAdjusting = false;
     updateFromTarget ();
+	setLookAndFeel(&lookAndFeel);
     setRepaintsOnMouseActivity (true);
 }
 
@@ -119,13 +120,15 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
     if(e.mods.isPopupMenu())
     {
         PopupMenu menu;
+		menu.setLookAndFeel(&this->getLookAndFeel());
         menu.addItem(100, "Delete");
 
         const int r = menu.show();
 
         if(r==100)
         {
-
+			layoutEditor->getPluginEditor()->sendActionMessage("delete:"+target->getProperties().getWithDefault("linenumber", -1).toString());
+			//CabbageUtilities::debug(target->getProperties().getWithDefault("linenumber", -1).toString());
         }
     }
     else
@@ -147,7 +150,6 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
         userAdjusting = true;
         startBounds = getBounds ();
         userStartedChangingBounds ();
-        layoutEditor->updateCodeEditor();
 
         if(layoutEditor->getLassoSelection().getNumSelected()==1)
             layoutEditor->resetAllInterest();

@@ -155,10 +155,12 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
             csdArray.addLines(getCurrentCodeEditor()->getDocument().getAllContent());
             for( int i = 0 ; i < csdArray.size() ; i++ )
             {
-                if(csdArray[i].contains("</Cabbage>"))
+                if(csdArray[i].contains("</Cabbage>"))	//add new text just before the end of the Cabbage section of code
                 {
                     CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::linenumber, i);
-                    updateCodeInEditor(editor, false);
+					updateCodeInEditor(editor, false);
+					updateEditorColourScheme(); //keep look and feel updated..
+					return;
                 }
             }
         }
@@ -185,6 +187,14 @@ void CabbageContentComponent::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
+void CabbageContentComponent::actionListenerCallback(const String &message)	
+{
+	if(message.contains("delete:"))
+	{
+		const int lineNumber = String(message.replace("delete:", "")).getIntValue();
+		getCurrentCodeEditor()->removeLine(lineNumber);
+	}
+}
 //=======================================================================================
 void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bool replaceExistingLine)
 {
@@ -206,7 +216,7 @@ void CabbageContentComponent::updateCodeInEditor(CabbagePluginEditor* editor, bo
 		
         const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers(wData, currentLineText, macroText);
 
-        getCurrentCodeEditor()->insertCode(lineNumber, newText+macroNames, replaceExistingLine, parent.isEmpty() == true ? true : false);
+        getCurrentCodeEditor()->insertCode(lineNumber, newText+macroNames, replaceExistingLine, parent.isEmpty());
 
     }
 }
@@ -435,6 +445,7 @@ void CabbageContentComponent::setEditMode(bool enable)
         }
 
         getCabbagePluginEditor()->addChangeListener(this);
+		getCabbagePluginEditor()->addActionListener(this);
         if(enable==true)
         {
             audioGraph->stopPlaying();

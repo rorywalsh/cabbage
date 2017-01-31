@@ -28,7 +28,7 @@
 // in the derived class's constructor, and handleCommonUpdates() in its valueTreePropertyChanged() method.
 class CabbageWidgetBase
 {
-    int pivotx, pivoty, visible, active, value;
+    int pivotx, pivoty, visible, active, value, lineNumber;
     float rotate, alpha, currentValue;
     String tooltipText, text, channel, csdFile, file;
     File imgButtonOn, imgButtonOff, imgPath;

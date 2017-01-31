@@ -300,6 +300,14 @@ void CabbageCodeEditorComponent::insertTextAtCaret (const String &textToInsert)
         insertMultiLineTextAtCaret(textToInsert);
 }
 
+void CabbageCodeEditorComponent::removeLine(int lineNumber)
+{
+	allowUpdateOfPluginGUI = true;
+    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 5000), false);
+    moveCaretTo(CodeDocument::Position (getDocument(), lineNumber, 0), true);
+	getDocument().replaceSection(getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
+	sendUpdateMessage(lineNumber);
+}
 
 void CabbageCodeEditorComponent::insertText(String text)
 {
