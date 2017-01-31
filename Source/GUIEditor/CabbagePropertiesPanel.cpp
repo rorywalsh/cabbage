@@ -82,15 +82,18 @@ static void createMultiLineTextEditors(ValueTree valueTree, Array<PropertyCompon
 static Array<PropertyComponent*> createChannelEditors(CabbagePropertiesPanel* owner, ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
-    var channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-    var identChannel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::identchannel);
+    const var channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+    const var identChannel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::identchannel);
+	const String typeOfWidget = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 
-    const Array<var>* array = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::channel).getArray();
-    if(array && array->size()>1)
-        createMultiLineTextEditors(valueTree, comps, CabbageIdentifierIds::channel, "Channel");
-    else
-        comps.add (new TextPropertyComponent(Value(channel), "Channel", 200, false));
-
+	if( typeOfWidget != "gentable" &&  typeOfWidget != "groupbox")
+	{
+		const Array<var>* array = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::channel).getArray();
+		if(array && array->size()>1)
+			createMultiLineTextEditors(valueTree, comps, CabbageIdentifierIds::channel, "Channel");
+		else
+			comps.add (new TextPropertyComponent(Value(channel), "Channel", 200, false));
+	}
     comps.add (new TextPropertyComponent(Value(identChannel), "Ident Channel", 100, false));
     addListener(comps, owner);
     return comps;

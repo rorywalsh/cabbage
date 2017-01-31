@@ -18,6 +18,7 @@
 */
 
 #include "CabbageImage.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageImage::CabbageImage(ValueTree wData, CabbagePluginEditor* owner, bool isLineWidget) : CabbageWidgetBase(),
     widgetData(wData),
@@ -81,8 +82,12 @@ void CabbageImage::paint(Graphics& g)
 		}
 	}
 }
-
-
+//==============================================================================
+void CabbageImage::mouseDown(const MouseEvent& e)
+{
+	owner->sendChannelDataToCsound(getChannel(), currentToggleValue);
+	currentToggleValue != currentToggleValue;
+}
 //==============================================================================
 void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {

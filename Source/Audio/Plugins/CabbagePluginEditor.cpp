@@ -464,7 +464,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
     {
         const StringArray textItems = cabbageButton->getTextArray();
         if(textItems.size()>0)
-            cabbageButton->setButtonText( textItems[ buttonState == 0 ? 1 : 0]);
+            cabbageButton->setButtonText( textItems[ buttonState == false ? 0 : 1]);
     }
 }
 

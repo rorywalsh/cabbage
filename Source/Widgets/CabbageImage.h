@@ -35,6 +35,7 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
     ValueTree widgetData;
     Colour outlineColour, mainColour;
 	bool isLineWidget = false;
+	bool currentToggleValue = 0;
 
 public:
 
@@ -43,6 +44,7 @@ public:
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void paint(Graphics& g);
+	void mouseDown(const MouseEvent& e);
 
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
