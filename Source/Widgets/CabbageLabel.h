@@ -37,7 +37,7 @@ class CabbageLabel : public Component, public ValueTree::Listener, public Cabbag
 
 public:
 
-    CabbageLabel(ValueTree wData, CabbagePluginEditor* _owner);
+    CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageLabel() {};
 
     //ValueTree::Listener virtual methods....
@@ -50,9 +50,9 @@ public:
     ValueTree widgetData;
 
     void resized() {};
-    void paint(Graphics& g);
-    void mouseDown(const MouseEvent& e);
-    void setText(String _text);
+    void paint (Graphics& g);
+    void mouseDown (const MouseEvent& e);
+    void setText (String _text);
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLabel);

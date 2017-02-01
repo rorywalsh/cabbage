@@ -24,11 +24,11 @@
 #include "CabbageWidgetBase.h"
 
 class CabbagePluginEditor;
-class CabbageComboBox 
-	: public ComboBox, 
-	public ValueTree::Listener, 
-	public CabbageWidgetBase,
-	public ComboBox::Listener
+class CabbageComboBox
+    : public ComboBox,
+      public ValueTree::Listener,
+      public CabbageWidgetBase,
+      public ComboBox::Listener
 {
     int offX, offY, offWidth, offHeight, pivotx, pivoty, refresh;
     String name, tooltipText, caption, text, filetype;
@@ -37,17 +37,17 @@ class CabbageComboBox
     CabbagePluginEditor* owner;
     ValueTree widgetData;
     bool isPresetCombo = false;
-	Array<File> snapshotFiles;
+    Array<File> snapshotFiles;
 
 public:
 
-    CabbageComboBox(ValueTree cAttr, CabbagePluginEditor* _owner);
+    CabbageComboBox (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageComboBox();
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
-    void addItemsToCombobox(ValueTree wData);
+    void addItemsToCombobox (ValueTree wData);
 
-	void comboBoxChanged(ComboBox* combo);	//is preset combo use this listener
+    void comboBoxChanged (ComboBox* combo); //is preset combo use this listener
 
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}

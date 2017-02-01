@@ -19,49 +19,49 @@
 
 #include "CabbageButton.h"
 
-CabbageButton::CabbageButton(ValueTree wData)
-    : widgetData(wData),
+CabbageButton::CabbageButton (ValueTree wData)
+    : widgetData (wData),
       TextButton()
 {
-    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
-    setButtonText(getTextArray()[getValue()]);
+    widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+    setButtonText (getTextArray()[getValue()]);
 
-    setClickingTogglesState(true);
+    setClickingTogglesState (true);
 
-    setToggleState((bool)getValue(), dontSendNotification);
+    setToggleState ((bool)getValue(), dontSendNotification);
 
 
-    if(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup)!=0)
-        setRadioGroupId(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::radiogroup));
+    if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup) != 0)
+        setRadioGroupId (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup));
 
-    setImgProperties(*this, wData, "buttonon");
-    setImgProperties(*this, wData, "buttonoff");
-	
-	setLookAndFeelColours(wData);
+    setImgProperties (*this, wData, "buttonon");
+    setImgProperties (*this, wData, "buttonoff");
+
+    setLookAndFeelColours (wData);
 }
 
-void CabbageButton::setLookAndFeelColours(ValueTree wData)
+void CabbageButton::setLookAndFeelColours (ValueTree wData)
 {
-    setColour(TextButton::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-    setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-    setColour(TextButton::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
-    setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+    setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+    setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+    setColour (TextButton::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
+    setColour (TextButton::buttonOnColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::oncolour)));
 }
 
 void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 
-    if(prop==CabbageIdentifierIds::value)
+    if (prop == CabbageIdentifierIds::value)
     {
-        setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
-        setToggleState(getValue()==0 ? false : true, dontSendNotification);
+        setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
+        setToggleState (getValue() == 0 ? false : true, dontSendNotification);
     }
     else
     {
 
-        setLookAndFeelColours(valueTree);
-        handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
-        setButtonText(getTextArray()[getValue()]);
+        setLookAndFeelColours (valueTree);
+        handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        setButtonText (getTextArray()[getValue()]);
     }
 }

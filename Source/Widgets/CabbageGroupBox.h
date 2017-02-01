@@ -35,7 +35,7 @@ class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, publi
 
 public:
 
-    CabbageGroupBox(ValueTree wData);
+    CabbageGroupBox (ValueTree wData);
     ~CabbageGroupBox() {};
 
     //ValueTree::Listener virtual methods....

@@ -35,7 +35,7 @@ class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public 
 
 public:
 
-    CabbageCheckbox(ValueTree widgetData);
+    CabbageCheckbox (ValueTree widgetData);
     ~CabbageCheckbox() {};
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};

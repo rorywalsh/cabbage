@@ -30,7 +30,7 @@ class RangeSlider  : public Slider
 {
     CabbageRangeSlider* owner;
 public:
-    RangeSlider(CabbageRangeSlider* owner);
+    RangeSlider (CabbageRangeSlider* owner);
 
     ~RangeSlider();
 
@@ -43,9 +43,9 @@ private:
 
     bool mouseDragBetweenThumbs;
     float xMinAtThumbDown = 0;
-	float xMaxAtThumbDown = 0;
+    float xMaxAtThumbDown = 0;
     float yMinAtThumbDown = 0;
-	float yMaxAtThumbDown = 0;
+    float yMaxAtThumbDown = 0;
 };
 
 class CabbageRangeSlider  : public Component, public ValueTree::Listener, public CabbageWidgetBase
@@ -60,16 +60,16 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
     BubbleMessageComponent popupBubble;
 
     void createPopupBubble();
-    void setLookAndFeelColours(ValueTree wData);
-    void setSliderValues(ValueTree wData);
+    void setLookAndFeelColours (ValueTree wData);
+    void setSliderValues (ValueTree wData);
 
 public:
-    CabbageRangeSlider(ValueTree wData, CabbagePluginEditor* _owner);
+    CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageRangeSlider() {};
 
 
     void resized();
-    void showPopup(int displayTime);
+    void showPopup (int displayTime);
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};

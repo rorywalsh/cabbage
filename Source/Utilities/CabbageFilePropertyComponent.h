@@ -26,8 +26,8 @@ public:
                         String(), String())
     {
         addAndMakeVisible (filenameComp);
-        filenameComp.setCurrentFile(File(currentFile), true, dontSendNotification);
-        filenameComp.setTooltip(filenameComp.getCurrentFileText());
+        filenameComp.setCurrentFile (File (currentFile), true, dontSendNotification);
+        filenameComp.setTooltip (filenameComp.getCurrentFileText());
     }
 
     void refresh() {}

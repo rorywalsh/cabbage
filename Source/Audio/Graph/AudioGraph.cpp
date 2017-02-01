@@ -26,24 +26,25 @@ class PluginWindow;
 
 const int AudioGraph::midiChannelNumber = 0x1000;
 
-AudioGraph::AudioGraph(PropertySet* settingsToUse, File inputFile,
-                       bool takeOwnershipOfSettings,
-                       const String& preferredDefaultDeviceName,
-                       const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
+AudioGraph::AudioGraph (PropertySet* settingsToUse, File inputFile,
+                        bool takeOwnershipOfSettings,
+                        const String& preferredDefaultDeviceName,
+                        const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
 
-: 	settings (settingsToUse, takeOwnershipOfSettings), 
-	graph(), 
-	processor(nullptr),
-	FileBasedDocument (filenameSuffix,
-                         filenameWildcard,
-                         "Load a filter graph",
-                         "Save a filter graph")
+    :   settings (settingsToUse, takeOwnershipOfSettings),
+        graph(),
+        processor (nullptr),
+        FileBasedDocument (filenameSuffix,
+                           filenameWildcard,
+                           "Load a filter graph",
+                           "Save a filter graph")
 {
-    graph.prepareToPlay(44100, 512);
-    graph.setPlayConfigDetails(2, 2, 44100, 512);
-	if(inputFile.existsAsFile())
-		createPlugin(inputFile);
-		
+    graph.prepareToPlay (44100, 512);
+    graph.setPlayConfigDetails (2, 2, 44100, 512);
+
+    if (inputFile.existsAsFile())
+        createPlugin (inputFile);
+
     setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
     reloadPluginState();
     startPlaying();
@@ -56,31 +57,32 @@ AudioGraph::~AudioGraph()
 }
 
 //==============================================================================
-void AudioGraph::createPlugin(File inputFile)
+void AudioGraph::createPlugin (File inputFile)
 {
-    
+
     AudioProcessorGraph::AudioGraphIOProcessor* midiNode;
-    midiNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
-    const AudioProcessorGraph::Node* midiInputNode = graph.addNode(midiNode);
+    midiNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
+    const AudioProcessorGraph::Node* midiInputNode = graph.addNode (midiNode);
 
-	
-	AudioProcessorGraph::AudioGraphIOProcessor* inNode;
-    inNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
-    const AudioProcessorGraph::Node* inputNode = graph.addNode(inNode);	
 
-	
+    AudioProcessorGraph::AudioGraphIOProcessor* inNode;
+    inNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
+    const AudioProcessorGraph::Node* inputNode = graph.addNode (inNode);
+
+
     AudioProcessorGraph::AudioGraphIOProcessor* outNode;
-    outNode = new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-    const AudioProcessorGraph::Node* outputNode =  graph.addNode(outNode);
+    outNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+    const AudioProcessorGraph::Node* outputNode =  graph.addNode (outNode);
 
 
-		
+
     AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-    isCabbageFile = CabbageUtilities::hasCabbageTags(inputFile);
-    if(isCabbageFile)
-        processor = createCabbagePluginFilter(inputFile);
+    isCabbageFile = CabbageUtilities::hasCabbageTags (inputFile);
+
+    if (isCabbageFile)
+        processor = createCabbagePluginFilter (inputFile);
     else
-        processor = createGenericPluginFilter(inputFile);
+        processor = createGenericPluginFilter (inputFile);
 
     AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 
@@ -88,35 +90,35 @@ void AudioGraph::createPlugin(File inputFile)
     jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
     processor->disableNonMainBuses();
-    processor->setRateAndBufferSizeDetails(44100, 512);
+    processor->setRateAndBufferSizeDetails (44100, 512);
 
     //updateBusLayout(processor);
 
-	CabbageUtilities::debug(processor->getTotalNumInputChannels());
-	
-    graph.addNode(processor, NodeType::CabbageNode);
+    CabbageUtilities::debug (processor->getTotalNumInputChannels());
 
-	bool connectInput1 = graph.addConnection(inputNode->nodeId, 0, NodeType::CabbageNode, 0);
-	bool connectInput2 = graph.addConnection(inputNode->nodeId, 1, NodeType::CabbageNode, 1);
+    graph.addNode (processor, NodeType::CabbageNode);
 
-    bool connection1 = graph.addConnection(NodeType::CabbageNode, 0, outputNode->nodeId, 0);
-    bool connection2 = graph.addConnection(NodeType::CabbageNode, 1, outputNode->nodeId, 1);
-    bool connection3 = graph.addConnection(midiInputNode->nodeId, AudioProcessorGraph::midiChannelIndex, NodeType::CabbageNode, AudioProcessorGraph::midiChannelIndex);
+    bool connectInput1 = graph.addConnection (inputNode->nodeId, 0, NodeType::CabbageNode, 0);
+    bool connectInput2 = graph.addConnection (inputNode->nodeId, 1, NodeType::CabbageNode, 1);
 
-    if(connection1 == false || connection2 == false || connection3 == false || connectInput1 == false || connectInput2 == false)
-        jassert(false);
+    bool connection1 = graph.addConnection (NodeType::CabbageNode, 0, outputNode->nodeId, 0);
+    bool connection2 = graph.addConnection (NodeType::CabbageNode, 1, outputNode->nodeId, 1);
+    bool connection3 = graph.addConnection (midiInputNode->nodeId, AudioProcessorGraph::midiChannelIndex, NodeType::CabbageNode, AudioProcessorGraph::midiChannelIndex);
+
+    if (connection1 == false || connection2 == false || connection3 == false || connectInput1 == false || connectInput2 == false)
+        jassert (false);
 }
 
 
-void AudioGraph::updateBusLayout(AudioProcessor* selectedProcessor)
+void AudioGraph::updateBusLayout (AudioProcessor* selectedProcessor)
 {
-//    if (AudioProcessor* filter = selectedProcessor)
-//    {
-//        if (AudioProcessor::Bus* bus = filter->getBus (isInput, currentBus))
-//        {
-//            bool test = bus->setNumberOfChannels(8);
-//        }
-//    }
+    //    if (AudioProcessor* filter = selectedProcessor)
+    //    {
+    //        if (AudioProcessor::Bus* bus = filter->getBus (isInput, currentBus))
+    //        {
+    //            bool test = bus->setNumberOfChannels(8);
+    //        }
+    //    }
 }
 
 int AudioGraph::getNumberOfParameters()
@@ -140,7 +142,7 @@ String AudioGraph::getFilePatterns (const String& fileSuffix)
     return (fileSuffix.startsWithChar ('.') ? "*" : "*.") + fileSuffix;
 }
 
-void AudioGraph::setXmlAudioSettings(XmlElement* xmlSettingsString)
+void AudioGraph::setXmlAudioSettings (XmlElement* xmlSettingsString)
 {
     xmlSettings = xmlSettingsString;
     setupAudioDevices ( String(), nullptr);
@@ -149,27 +151,28 @@ void AudioGraph::setXmlAudioSettings(XmlElement* xmlSettingsString)
 
 AudioDeviceSelectorComponent* AudioGraph::getAudioDeviceSelector()
 {
-    const int numInputs = processor!=nullptr ? processor->getTotalNumInputChannels() : 2;
-    const int numOutputs = processor!=nullptr ? processor->getTotalNumOutputChannels() : 2;
-    
+    const int numInputs = processor != nullptr ? processor->getTotalNumInputChannels() : 2;
+    const int numOutputs = processor != nullptr ? processor->getTotalNumOutputChannels() : 2;
+
     return new AudioDeviceSelectorComponent (deviceManager,
-            numInputs,
-            numInputs,
-            numOutputs,
-            numOutputs,
-            true, false,
-            true, false);
+                                             numInputs,
+                                             numInputs,
+                                             numOutputs,
+                                             numOutputs,
+                                             true, false,
+                                             true, false);
 }
 
 String AudioGraph::getDeviceManagerSettings()
 {
-    if(deviceManager.getCurrentAudioDevice())
+    if (deviceManager.getCurrentAudioDevice())
     {
         ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
-        if(xml==nullptr)
+
+        if (xml == nullptr)
             return String::empty;
         else
-            return xml->createDocument("");
+            return xml->createDocument ("");
     }
     else return String::empty;
 }
@@ -186,7 +189,7 @@ void AudioGraph::stopPlaying()
 }
 
 void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceName,
-        const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
+                                         const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
 {
     ScopedPointer<XmlElement> savedState;
 
@@ -204,15 +207,15 @@ void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceNam
 //==============================================================================
 String AudioGraph::getCsoundOutput()
 {
-	if(getProcessor() != nullptr)
-	{
-		if(isCabbageFile)
-			return dynamic_cast<CabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
-		else
-			return dynamic_cast<GenericCabbagePluginProcessor*>(getProcessor())->getCsoundOutput();
-	}
-	
-	return String::empty;
+    if (getProcessor() != nullptr)
+    {
+        if (isCabbageFile)
+            return dynamic_cast<CabbagePluginProcessor*> (getProcessor())->getCsoundOutput();
+        else
+            return dynamic_cast<GenericCabbagePluginProcessor*> (getProcessor())->getCsoundOutput();
+    }
+
+    return String::empty;
 }
 
 //==============================================================================
@@ -288,21 +291,21 @@ const AudioProcessorGraph::Connection* AudioGraph::getConnection (const int inde
 }
 
 const AudioProcessorGraph::Connection* AudioGraph::getConnectionBetween (uint32 sourceFilterUID, int sourceFilterChannel,
-                                                                          uint32 destFilterUID, int destFilterChannel) const noexcept
+                                                                         uint32 destFilterUID, int destFilterChannel) const noexcept
 {
     return graph.getConnectionBetween (sourceFilterUID, sourceFilterChannel,
                                        destFilterUID, destFilterChannel);
 }
 
 bool AudioGraph::canConnect (uint32 sourceFilterUID, int sourceFilterChannel,
-                              uint32 destFilterUID, int destFilterChannel) const noexcept
+                             uint32 destFilterUID, int destFilterChannel) const noexcept
 {
     return graph.canConnect (sourceFilterUID, sourceFilterChannel,
                              destFilterUID, destFilterChannel);
 }
 
 bool AudioGraph::addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
-                                 uint32 destFilterUID, int destFilterChannel)
+                                uint32 destFilterUID, int destFilterChannel)
 {
     const bool result = graph.addConnection (sourceFilterUID, sourceFilterChannel,
                                              destFilterUID, destFilterChannel);
@@ -320,7 +323,7 @@ void AudioGraph::removeConnection (const int index)
 }
 
 void AudioGraph::removeConnection (uint32 sourceFilterUID, int sourceFilterChannel,
-                                    uint32 destFilterUID, int destFilterChannel)
+                                   uint32 destFilterUID, int destFilterChannel)
 {
     if (graph.removeConnection (sourceFilterUID, sourceFilterChannel,
                                 destFilterUID, destFilterChannel))
@@ -352,23 +355,24 @@ PluginWindow::PluginWindow (Component* const pluginEditor,
     setContentOwned (pluginEditor, true);
     setVisible (true);
 
-    setAlwaysOnTop(true);
+    setAlwaysOnTop (true);
     activePluginWindows.add (this);
 }
 
 void PluginWindow::closeCurrentlyOpenWindowsFor (const uint32 nodeId)
 {
     for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked(i)->owner->nodeId == nodeId)
+        if (activePluginWindows.getUnchecked (i)->owner->nodeId == nodeId)
             delete activePluginWindows.getUnchecked (i);
 }
 
-Point<int> PluginWindow::getPositionOfCurrentlyOpenWindow(const uint32 nodeId)
+Point<int> PluginWindow::getPositionOfCurrentlyOpenWindow (const uint32 nodeId)
 {
     for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked(i)->owner->nodeId == nodeId)
-            return Point<int>(activePluginWindows.getUnchecked(i)->getX(), activePluginWindows.getUnchecked(i)->getY());
-    return Point<int>(-1000, -1000);
+        if (activePluginWindows.getUnchecked (i)->owner->nodeId == nodeId)
+            return Point<int> (activePluginWindows.getUnchecked (i)->getX(), activePluginWindows.getUnchecked (i)->getY());
+
+    return Point<int> (-1000, -1000);
 }
 
 void PluginWindow::closeAllCurrentlyOpenWindows()
@@ -380,21 +384,21 @@ void PluginWindow::closeAllCurrentlyOpenWindows()
 
         Component dummyModalComp;
         dummyModalComp.enterModalState();
-        MessageManager::getInstance()->runDispatchLoopUntil(150);
+        MessageManager::getInstance()->runDispatchLoopUntil (150);
     }
 }
 
 //==============================================================================
 PluginWindow* PluginWindow::getWindowFor (AudioProcessorGraph::Node* const node,
-        WindowFormatType type,
-        AudioProcessorGraph& audioGraph)
+                                          WindowFormatType type,
+                                          AudioProcessorGraph& audioGraph)
 {
     jassert (node != nullptr);
 
     for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked(i)->owner == node
-                && activePluginWindows.getUnchecked(i)->type == type)
-            return activePluginWindows.getUnchecked(i);
+        if (activePluginWindows.getUnchecked (i)->owner == node
+            && activePluginWindows.getUnchecked (i)->type == type)
+            return activePluginWindows.getUnchecked (i);
 
     AudioProcessor* processor = node->getProcessor();
     AudioProcessorEditor* ui = nullptr;
@@ -411,10 +415,11 @@ PluginWindow* PluginWindow::getWindowFor (AudioProcessorGraph::Node* const node,
     {
         if (type == Generic || type == Parameters)
             ui = new GenericAudioProcessorEditor (processor);
-//        else if (type == Programs)
-//            ui = new ProgramAudioProcessorEditor (processor);
-//        else if (type == AudioIO)
-//            ui = new FilterIOConfigurationWindow (processor);
+
+        //        else if (type == Programs)
+        //            ui = new ProgramAudioProcessorEditor (processor);
+        //        else if (type == AudioIO)
+        //            ui = new FilterIOConfigurationWindow (processor);
     }
 
     if (ui != nullptr)
@@ -431,6 +436,7 @@ PluginWindow* PluginWindow::getWindowFor (AudioProcessorGraph::Node* const node,
 PluginWindow::~PluginWindow()
 {
     activePluginWindows.removeFirstMatchingValue (this);
+
     if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
     {
         owner->getProcessor()->editorBeingDeleted (ed);

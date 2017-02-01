@@ -38,7 +38,7 @@ class CabbageSettingsWindow :
 {
 
 public:
-    CabbageSettingsWindow(CabbageSettings &settings, AudioDeviceSelectorComponent* audioDevice);
+    CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice);
     ~CabbageSettingsWindow()
     {
         audioDeviceSelector = nullptr;
@@ -46,15 +46,15 @@ public:
         miscPanel.clear();
     };
 
-    void changeListenerCallback(ChangeBroadcaster *source);
+    void changeListenerCallback (ChangeBroadcaster* source);
     void addColourProperties();
     void addMiscProperties();
     void resized();
-    void buttonClicked(Button* button);
-    void paint(Graphics& g);
-    void valueChanged(Value& value);
+    void buttonClicked (Button* button);
+    void paint (Graphics& g);
+    void valueChanged (Value& value);
     void filenameComponentChanged (FilenameComponent*);
-    void textPropertyComponentChanged(TextPropertyComponent *comp);
+    void textPropertyComponentChanged (TextPropertyComponent* comp);
 
 
 private:
@@ -63,7 +63,7 @@ private:
     ValueTree valueTree;
     TextButton loadButton, saveButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
-    CabbageSettings &settings;
+    CabbageSettings& settings;
     Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue;
     LookAndFeel_V2 lookAndFeel;
 

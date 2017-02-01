@@ -31,7 +31,7 @@ class CabbageNumberBox : public Component, public ValueTree::Listener, public Ca
     String text, align;
 public:
 
-    CabbageNumberBox(ValueTree wData);
+    CabbageNumberBox (ValueTree wData);
     ~CabbageNumberBox() {};
 
     //ValueTree::Listener virtual methods....

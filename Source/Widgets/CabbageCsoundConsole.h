@@ -29,7 +29,7 @@ class CabbageCsoundConsole : public TextEditor, public Timer, public ValueTree::
 {
 public:
 
-    CabbageCsoundConsole(ValueTree wData, CabbagePluginEditor* _owner);
+    CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageCsoundConsole() {};
 
     CabbagePluginEditor* owner;

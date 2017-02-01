@@ -32,7 +32,7 @@ class Soundfiler : public Component,
     public ChangeListener
 {
 public:
-    Soundfiler(int sr, Colour col, Colour fcol);
+    Soundfiler (int sr, Colour col, Colour fcol);
     ~Soundfiler();
 
     double getCurrentPlayPos()
@@ -42,27 +42,27 @@ public:
 
     int getCurrentPlayPosInSamples()
     {
-        return currentPlayPosition*sampleRate;
+        return currentPlayPosition * sampleRate;
     }
 
     int getLoopLengthInSamples()
     {
-        return loopLength*sampleRate;
+        return loopLength * sampleRate;
     }
 
-    void setIsRangeSelectable(bool isSelectable)
+    void setIsRangeSelectable (bool isSelectable)
     {
         selectableRange = isSelectable;
     }
 
-    void shouldShowScrubber(bool show)
+    void shouldShowScrubber (bool show)
     {
         showScrubber = show;
-        currentPositionMarker->setVisible(show);
+        currentPositionMarker->setVisible (show);
     }
 
 
-    void setScrubberPos(double pos);
+    void setScrubberPos (double pos);
 
     float timeToX (const double time) const
     {
@@ -74,20 +74,20 @@ public:
         return (x / getWidth()) * (visibleRange.getLength()) + visibleRange.getStart();
     }
 
-    void setWaveformColour(String waveform)
+    void setWaveformColour (String waveform)
     {
-        colour = Colour::fromString(waveform);
+        colour = Colour::fromString (waveform);
     };
-    void setBackgroundColour(String tableColour)
+    void setBackgroundColour (String tableColour)
     {
-        bgColour = Colour::fromString(tableColour);
+        bgColour = Colour::fromString (tableColour);
     };
 
     void setZoomFactor (double amount);
     void setFile (const File& file);
     void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel);
-    void setWaveform(AudioSampleBuffer buffer, int channels);
-    void createImage(String filename);
+    void setWaveform (AudioSampleBuffer buffer, int channels);
+    void createImage (String filename);
 
 private:
     Image img;
@@ -99,18 +99,18 @@ private:
     double zoom;
     ScopedPointer<DrawableRectangle> currentPositionMarker;
     ScopedPointer<ScrollBar> scrollbar;
-    void setRange(Range<double> newRange);
+    void setRange (Range<double> newRange);
     void resized();
     void paint (Graphics& g);
     void mouseDown (const MouseEvent& e);
-    void mouseUp(const MouseEvent& e);
-    void mouseEnter(const MouseEvent& e);
-    void mouseDrag(const MouseEvent& e);
-    void mouseExit(const MouseEvent& e);
+    void mouseUp (const MouseEvent& e);
+    void mouseEnter (const MouseEvent& e);
+    void mouseDrag (const MouseEvent& e);
+    void mouseExit (const MouseEvent& e);
     bool reDraw;
     double scrubberPosition;
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void changeListenerCallback(ChangeBroadcaster *source);
+    void changeListenerCallback (ChangeBroadcaster* source);
     ScopedPointer<ZoomButton> zoomIn, zoomOut;
 
     AudioFormatManager formatManager;

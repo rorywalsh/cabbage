@@ -26,7 +26,7 @@
 
 
 class CabbageGraphComponent : public Component,
-                           public ChangeListener
+    public ChangeListener
 {
 public:
     CabbageGraphComponent (AudioGraph& graph);

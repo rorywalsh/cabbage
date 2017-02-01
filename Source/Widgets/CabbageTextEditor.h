@@ -32,30 +32,30 @@ public:
     class CustomTextEditor : public TextEditor //custom text editor with right-click popup menu
     {
     public:
-        CustomTextEditor(CabbageTextEditor* _owner):TextEditor(""), owner(_owner) {}
+        CustomTextEditor (CabbageTextEditor* _owner): TextEditor (""), owner (_owner) {}
         ~CustomTextEditor() {}
 
-        void addPopupMenuItems (PopupMenu &menuToAddTo, const MouseEvent *mouseClickEvent)
+        void addPopupMenuItems (PopupMenu& menuToAddTo, const MouseEvent* mouseClickEvent)
         {
-            menuToAddTo.addItem(1, "Cut");
-            menuToAddTo.addItem(2, "Copy");
-            menuToAddTo.addItem(3, "Paste");
-            menuToAddTo.addItem(4, "Select All");
+            menuToAddTo.addItem (1, "Cut");
+            menuToAddTo.addItem (2, "Copy");
+            menuToAddTo.addItem (3, "Paste");
+            menuToAddTo.addItem (4, "Select All");
             menuToAddTo.addSeparator();
-            menuToAddTo.addItem(5, "Send text");
+            menuToAddTo.addItem (5, "Send text");
         }
 
         void performPopupMenuAction (int menuItemID)
         {
-            if(menuItemID==1)
+            if (menuItemID == 1)
                 cutToClipboard();
-            else if(menuItemID==2)
+            else if (menuItemID == 2)
                 copyToClipboard();
-            else if(menuItemID==3)
+            else if (menuItemID == 3)
                 pasteFromClipboard();
-            else if(menuItemID==4)
+            else if (menuItemID == 4)
                 selectAll();
-            else if(menuItemID==5)
+            else if (menuItemID == 5)
                 owner->sendTextToCsound();
         }
 
@@ -64,7 +64,7 @@ public:
     };
 
 
-    CabbageTextEditor(ValueTree wData, CabbagePluginEditor* _owner);
+    CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageTextEditor() {};
 
     CabbagePluginEditor* owner;
@@ -79,7 +79,7 @@ public:
     ValueTree widgetData;
 
     void sendTextToCsound();
-    bool keyPressed(const juce::KeyPress &key,Component *);
+    bool keyPressed (const juce::KeyPress& key, Component*);
     void textEditorReturnKeyPressed (TextEditor&);
     void resized();
 

@@ -46,7 +46,7 @@ class CabbageGenTable : public Component, public ValueTree::Listener, public Cab
     var tables;
 public:
 
-    CabbageGenTable(ValueTree wData, CabbagePluginEditor* owner);
+    CabbageGenTable (ValueTree wData, CabbagePluginEditor* owner);
     ~CabbageGenTable() {};
 
     //ValueTree::Listener virtual methods....
@@ -55,8 +55,8 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-    void initialiseGenTable(ValueTree widgetData);
-    void changeListenerCallback(ChangeBroadcaster *source);
+    void initialiseGenTable (ValueTree widgetData);
+    void changeListenerCallback (ChangeBroadcaster* source);
 
 
     void resized();

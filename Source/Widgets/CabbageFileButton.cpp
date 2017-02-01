@@ -20,92 +20,95 @@
 #include "CabbageFileButton.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageFileButton::CabbageFileButton(ValueTree wData, CabbagePluginEditor* owner)
-    : widgetData(wData),
+CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner)
+    : widgetData (wData),
       TextButton(),
-      owner(owner)
+      owner (owner)
 {
-    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
-    setLookAndFeelColours(wData);
+    widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+    setLookAndFeelColours (wData);
 
-    setButtonText(getText());
+    setButtonText (getText());
 
-    mode = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mode);
-	filetype = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).removeCharacters("*.");
+    mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
+    filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).removeCharacters ("*.");
 
-    setImgProperties(*this, wData, "buttonon");
-    setImgProperties(*this, wData, "buttonoff");
-    addListener(this);
+    setImgProperties (*this, wData, "buttonon");
+    setImgProperties (*this, wData, "buttonoff");
+    addListener (this);
 
 }
 
 //===============================================================================
-void CabbageFileButton::buttonClicked(Button* button)
+void CabbageFileButton::buttonClicked (Button* button)
 {
 
-    if(mode=="file")
+    if (mode == "file")
     {
-        FileChooser fc("Open File", File(getCsdFile()).getChildFile(getFilename()).getFileNameWithoutExtension());
-		if(filetype == "snaps")
-		{
-			if (fc.browseForFileToSave(false))
-				{
-					if(fc.getResult().existsAsFile())
-					{
-						CabbageLookAndFeel2 lookAndFeel;
-						const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-						CabbageUtilities::debug("should save a snapshot file");
-						if(result==0)
-						{
-							owner->savePluginStateToFile(fc.getResult());
-						}
-					}
-					else
-					{
-						owner->savePluginStateToFile(fc.getResult());
-					}
-				}
-		}
-		else
-		{
-			if (fc.browseForFileToOpen())
-			{
-				owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
-				CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
-			}
+        FileChooser fc ("Open File", File (getCsdFile()).getChildFile (getFilename()).getFileNameWithoutExtension());
+
+        if (filetype == "snaps")
+        {
+            if (fc.browseForFileToSave (false))
+            {
+                if (fc.getResult().existsAsFile())
+                {
+                    CabbageLookAndFeel2 lookAndFeel;
+                    const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+                    CabbageUtilities::debug ("should save a snapshot file");
+
+                    if (result == 0)
+                    {
+                        owner->savePluginStateToFile (fc.getResult());
+                    }
+                }
+                else
+                {
+                    owner->savePluginStateToFile (fc.getResult());
+                }
+            }
+        }
+        else
+        {
+            if (fc.browseForFileToOpen())
+            {
+                owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
+                CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
+            }
         }
     }
 
-    else if(mode=="directory")
+    else if (mode == "directory")
     {
-        FileChooser fc ("Open Directory", File(getCsdFile()).getChildFile(getFilename()));
+        FileChooser fc ("Open Directory", File (getCsdFile()).getChildFile (getFilename()));
+
         if (fc.browseForDirectory())
         {
-            owner->sendChannelStringDataToCsound(getChannel(), fc.getResult().getFullPathName());
-			CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
+            owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
+            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
         }
     }
 
-    else if(mode=="snapshot")
+    else if (mode == "snapshot")
     {
-        CabbageUtilities::debug("Saving snapshot");
+        CabbageUtilities::debug ("Saving snapshot");
     }
 }
 
 //===============================================================================
-void CabbageFileButton::setLookAndFeelColours(ValueTree wData)
+void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 {
-    setColour(TextButton::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-    setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-    setColour(TextButton::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
-    setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+    setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+    setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+    setColour (TextButton::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
+    setColour (TextButton::buttonOnColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::oncolour)));
 }
 
 //===============================================================================
 void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    setLookAndFeelColours(valueTree);
-    handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
-    setButtonText(getText());
+    setLookAndFeelColours (valueTree);
+    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    setButtonText (getText());
 }

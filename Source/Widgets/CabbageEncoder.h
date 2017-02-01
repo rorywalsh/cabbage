@@ -33,27 +33,27 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     Rectangle<float> slider;
     Label textLabel, valueLabel;
     float sliderIncr = 0;
-	float value = 0;
-	float skew = 0;
-	float startingValue = 0;
-	float sliderPos = 0;
-	float currentEncValue = 0;
-	float max = 0;
-	float min = 0;
-	float maxEnabled = 0;
-	float minEnabled = 0;
-    int yAxis = 0; 
-	int shouldShowValueTextBox = 0; 
-	int height = 10;
-	int line = 1;
-	int progress = 0;
-	int decimalPlaces = 1;
+    float value = 0;
+    float skew = 0;
+    float startingValue = 0;
+    float sliderPos = 0;
+    float currentEncValue = 0;
+    float max = 0;
+    float min = 0;
+    float maxEnabled = 0;
+    float minEnabled = 0;
+    int yAxis = 0;
+    int shouldShowValueTextBox = 0;
+    int height = 10;
+    int line = 1;
+    int progress = 0;
+    int decimalPlaces = 1;
     String outlinecolour, colour, trackercolour, text, textcolour, popupText;
     BubbleMessageComponent popupBubble;
 
 public:
 
-    CabbageEncoder(ValueTree wData, CabbagePluginEditor* _owner);
+    CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageEncoder() {};
 
     CabbagePluginEditor* owner;
@@ -65,13 +65,13 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    void labelTextChanged (Label *label);
-    void mouseDown(const MouseEvent &e);
-    void mouseEnter(const MouseEvent &e);
-    void mouseDrag(const MouseEvent& e);
-    void mouseExit(const MouseEvent &e);
-    void paint(Graphics &g);
-    void showPopup(int displayTime=250);
+    void labelTextChanged (Label* label);
+    void mouseDown (const MouseEvent& e);
+    void mouseEnter (const MouseEvent& e);
+    void mouseDrag (const MouseEvent& e);
+    void mouseExit (const MouseEvent& e);
+    void paint (Graphics& g);
+    void showPopup (int displayTime = 250);
     void resized();
 
     void createPopupBubble();

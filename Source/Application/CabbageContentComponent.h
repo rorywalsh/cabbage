@@ -37,7 +37,7 @@ class CabbageDocumentWindow;
 class CabbageContentComponent
     : public Component,
       public Button::Listener,
-	  public ActionListener,
+      public ActionListener,
       public ChangeListener,
       public Timer,
       public ComboBox::Listener
@@ -45,55 +45,55 @@ class CabbageContentComponent
 public:
 
     //==============================================================================
-    CabbageContentComponent(CabbageDocumentWindow* owner, CabbageSettings* settings);
+    CabbageContentComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
     ~CabbageContentComponent();
     //==============================================================================
-    void changeListenerCallback(ChangeBroadcaster* source);
-	void actionListenerCallback(const String &message);
-    void buttonClicked(Button* button);
-    void comboBoxChanged (ComboBox *comboBoxThatHasChanged);
-    void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
+    void changeListenerCallback (ChangeBroadcaster* source);
+    void actionListenerCallback (const String& message);
+    void buttonClicked (Button* button);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void updateCodeInEditor (CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-    void resizeAllEditorAndConsoles(int height);
+    void resizeAllEditorAndConsoles (int height);
     void createEditorForAudioGraphNode();
     void createAudioGraph();
-    void addFileTabButton(File file);
-	void arrangeFileTabButtons();
-	void removeEditor();
+    void addFileTabButton (File file);
+    void arrangeFileTabButtons();
+    void removeEditor();
     Image createBackground();
     //==============================================================================
     void showAudioSettings();
     void createNewProject();
-    void launchSSHFileBrowser(String mode);
-    void setEditMode(bool enable);
-    void openFile(String filename="");
+    void launchSSHFileBrowser (String mode);
+    void setEditMode (bool enable);
+    void openFile (String filename = "");
     bool closeAllDocuments (bool askUserToSave);
-	void closeDocument();
+    void closeDocument();
     bool closeAllMainWindows();
     void showSettingsDialog();
-    void saveDocument(bool saveAs=false, bool recompile=true);
+    void saveDocument (bool saveAs = false, bool recompile = true);
     void runCsoundCode();
     void stopCsoundCode();
     void showGenericWidgetWindow();
-    void hideGenericWidgetWindow(bool freeContent=false);
+    void hideGenericWidgetWindow (bool freeContent = false);
     void createGenericCsoundPluginWrapper();
     void initSettings();
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
     void setLookAndFeelColours();
-	
-	//==============================================================================
+
+    //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
-	void setReplaceString (const String& s);
+    void setReplaceString (const String& s);
     bool isCaseSensitiveSearch();
     void setCaseSensitiveSearch (bool b);
-	void showFindPanel(bool withReplace);
-	void hideFindPanel();
-	int findNext(bool forward);
-	void replaceText(bool replaceAll);
+    void showFindPanel (bool withReplace);
+    void hideFindPanel();
+    int findNext (bool forward);
+    void replaceText (bool replaceAll);
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -102,7 +102,7 @@ public:
     //==============================================================================
     String getAudioDeviceSettings();
     void timerCallback();
-	int getStatusbarYPos();
+    int getStatusbarYPos();
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<TextButton> fileTabs;
     Array<File> openFiles;
@@ -111,15 +111,15 @@ public:
     CabbageEditorContainer* getCurrentEditorContainer();
     Toolbar toolbar;
 
-    bool setCurrentCsdFile(File file);
-	const File getCurrentCsdFile(){		return currentCsdFile;	}
+    bool setCurrentCsdFile (File file);
+    const File getCurrentCsdFile() {     return currentCsdFile;  }
 
 private:
-	bool fileNeedsSaving = false;
-	String searchString = String::empty;
-	String replaceString = String::empty;
-	bool isCaseSensitive = false;
-	File tempFile;	
+    bool fileNeedsSaving = false;
+    String searchString = String::empty;
+    String replaceString = String::empty;
+    bool isCaseSensitive = false;
+    File tempFile;
     CabbageDocumentWindow* owner;
     //ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     CabbageToolbarFactory factory;
@@ -130,13 +130,13 @@ private:
     int currentFileIndex = 0;
     int numberOfFiles = 0;
     ScopedPointer<AudioGraph> audioGraph;
-	ScopedPointer<CabbageGraphComponent> graphComponent;
+    ScopedPointer<CabbageGraphComponent> graphComponent;
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;
-	class FindPanel;
-	ScopedPointer<FindPanel> findPanel;
-	TooltipWindow tooltipWindow;
+    class FindPanel;
+    ScopedPointer<FindPanel> findPanel;
+    TooltipWindow tooltipWindow;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageContentComponent)
@@ -144,24 +144,24 @@ private:
 
 //==============================================================================
 class CabbageContentComponent::FindPanel  : public Component,
-                                               private TextEditor::Listener,
-                                               private ButtonListener
+    private TextEditor::Listener,
+    private ButtonListener
 {
 public:
-    FindPanel(String searchString, bool isCaseSensitive, bool withReplace)
+    FindPanel (String searchString, bool isCaseSensitive, bool withReplace)
         : caseButton ("Case-sensitive"),
           findPrev ("<"),
           findNext (">"),
-		  replace("Replace"),
-		  replaceAll("Replace All"),
-		  showReplaceControls(withReplace)
+          replace ("Replace"),
+          replaceAll ("Replace All"),
+          showReplaceControls (withReplace)
     {
-		//find components...
-		setSize (260, withReplace == false ? 90 : 180);
+        //find components...
+        setSize (260, withReplace == false ? 90 : 180);
         findEditor.setColour (CaretComponent::caretColourId, Colours::black);
 
         addAndMakeVisible (findEditor);
-		findEditor.setName("findEditor");
+        findEditor.setName ("findEditor");
         findLabel.setText ("Find:", dontSendNotification);
         findLabel.setColour (Label::textColourId, Colours::white);
         findLabel.attachToComponent (&findEditor, false);
@@ -175,8 +175,8 @@ public:
         findNext.setConnectedEdges (Button::ConnectedOnLeft);
         addAndMakeVisible (findPrev);
         addAndMakeVisible (findNext);
-		findNext.addListener(this);
-		findPrev.addListener(this);
+        findNext.addListener (this);
+        findPrev.addListener (this);
 
         setWantsKeyboardFocus (false);
         setFocusContainer (true);
@@ -185,12 +185,12 @@ public:
 
         findEditor.setText (searchString);
         findEditor.addListener (this);
-		
-		//replace components....
+
+        //replace components....
         replaceEditor.setColour (CaretComponent::caretColourId, Colours::black);
 
         addAndMakeVisible (replaceEditor);
-		replaceEditor.setName("replaceEditor");
+        replaceEditor.setName ("replaceEditor");
         replaceLabel.setText ("Replace:", dontSendNotification);
         replaceLabel.setColour (Label::textColourId, Colours::white);
         replaceLabel.attachToComponent (&replaceEditor, false);
@@ -199,16 +199,16 @@ public:
         replaceAll.setConnectedEdges (Button::ConnectedOnLeft);
         addAndMakeVisible (replace);
         addAndMakeVisible (replaceAll);
-		replace.addListener(this);
-		replaceAll.addListener(this);
-		
+        replace.addListener (this);
+        replaceAll.addListener (this);
+
         setWantsKeyboardFocus (false);
         setFocusContainer (true);
         replace.setWantsKeyboardFocus (false);
         replaceAll.setWantsKeyboardFocus (false);
         replaceEditor.addListener (this);
-		
-		
+
+
     }
 
     void paint (Graphics& g) override
@@ -231,44 +231,44 @@ public:
         findNext.setBounds (getWidth() - 40, y, 30, 22);
         findPrev.setBounds (getWidth() - 70, y, 30, 22);
 
-		y += 50;
+        y += 50;
         replaceEditor.setBounds (10, y, getWidth() - 20, 24);
         y += 30;
-        replace.setBounds (10, y, (getWidth()/2)-5, 22);
-        replaceAll.setBounds (getWidth()/2+5, y, getWidth()/2-15, 22);		
-		
+        replace.setBounds (10, y, (getWidth() / 2) - 5, 22);
+        replaceAll.setBounds (getWidth() / 2 + 5, y, getWidth() / 2 - 15, 22);
+
     }
 
     void buttonClicked (Button* button) override
     {
-		if(button->getName() == "Case-sensitive")
-			getOwner()->setCaseSensitiveSearch (caseButton.getToggleState());
-		else if(button->getName() == ">")
-			getOwner()->findNext(true);	
-		else if(button->getName() == "<")
-			getOwner()->findNext(false);
-		else if(button->getName() == "Replace") 
-		{
-			getOwner()->replaceText(false);	
-			getOwner()->findNext(true);			
-		}
-		else if(button->getName() == "Replace All") 
-		{
-			getOwner()->replaceText(true);	
-		}
-			
+        if (button->getName() == "Case-sensitive")
+            getOwner()->setCaseSensitiveSearch (caseButton.getToggleState());
+        else if (button->getName() == ">")
+            getOwner()->findNext (true);
+        else if (button->getName() == "<")
+            getOwner()->findNext (false);
+        else if (button->getName() == "Replace")
+        {
+            getOwner()->replaceText (false);
+            getOwner()->findNext (true);
+        }
+        else if (button->getName() == "Replace All")
+        {
+            getOwner()->replaceText (true);
+        }
+
     }
 
     void textEditorTextChanged (TextEditor& editor) override
     {
         getOwner()->setSearchString (findEditor.getText());
-		getOwner()->setReplaceString (replaceEditor.getText());
+        getOwner()->setReplaceString (replaceEditor.getText());
 
-		if (CabbageContentComponent* contentComp = getOwner())
-		{
-			if (editor.getName() == "findEditor")
-				contentComp->findNext(true);			
-		}
+        if (CabbageContentComponent* contentComp = getOwner())
+        {
+            if (editor.getName() == "findEditor")
+                contentComp->findNext (true);
+        }
 
     }
 
@@ -278,13 +278,13 @@ public:
     {
         getOwner()->setSearchString (findEditor.getText());
 
-		if (editor.getName() == "findEditor")
-		{
-			if (CabbageContentComponent* contentComp = getOwner())
-			{
-				contentComp->findNext(true);			
-			}
-		}
+        if (editor.getName() == "findEditor")
+        {
+            if (CabbageContentComponent* contentComp = getOwner())
+            {
+                contentComp->findNext (true);
+            }
+        }
     }
 
     void textEditorEscapeKeyPressed (TextEditor&) override
@@ -301,7 +301,7 @@ public:
     TextEditor findEditor, replaceEditor;
     Label findLabel, replaceLabel;
     ToggleButton caseButton;
-	bool showReplaceControls = false;
+    bool showReplaceControls = false;
     TextButton findPrev, findNext, replace, replaceAll;
 };
 

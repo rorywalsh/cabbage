@@ -26,34 +26,34 @@
 #include "../BinaryData/CabbageBinaryData.h"
 
 
-class CabbageIDELookAndFeel	: public LookAndFeel_V3
+class CabbageIDELookAndFeel : public LookAndFeel_V3
 {
 public:
     CabbageIDELookAndFeel();
     ~CabbageIDELookAndFeel() {};
 
-    void refreshLookAndFeel(ValueTree valueTree);
+    void refreshLookAndFeel (ValueTree valueTree);
 
-    void drawMenuBarBackground(Graphics &g, int width, int height, bool isMouseOverBar, MenuBarComponent &menuBar) override;
-    void drawMenuBarItem(Graphics & g, int width, int height, int itemIndex,
-                         const String &itemText,
-                         bool isMouseOverItem,
-                         bool isMenuOpen,
-                         bool isMouseOverBar,
-                         MenuBarComponent &menuBar) override;
+    void drawMenuBarBackground (Graphics& g, int width, int height, bool isMouseOverBar, MenuBarComponent& menuBar) override;
+    void drawMenuBarItem (Graphics& g, int width, int height, int itemIndex,
+                          const String& itemText,
+                          bool isMouseOverItem,
+                          bool isMenuOpen,
+                          bool isMouseOverBar,
+                          MenuBarComponent& menuBar) override;
     void drawPopupMenuBackground (Graphics& g, int width, int height) override;
-    void drawPopupMenuItem(Graphics& g, const Rectangle<int>& area,
-                           const bool isSeparator, const bool isActive,
-                           const bool isHighlighted, const bool isTicked,
-                           const bool hasSubMenu, const String& text,
-                           const String& shortcutKeyText,
-                           const Drawable* icon, const Colour* const textColourToUse) override;
+    void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
+                            const bool isSeparator, const bool isActive,
+                            const bool isHighlighted, const bool isTicked,
+                            const bool hasSubMenu, const String& text,
+                            const String& shortcutKeyText,
+                            const Drawable* icon, const Colour* const textColourToUse) override;
 
     void drawAlertBox (Graphics& g,
                        AlertWindow& alert,
                        const Rectangle<int>& textArea,
                        TextLayout& textLayout) override;
-    void drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
+    void drawScrollbar (Graphics& g, ScrollBar& scrollbar, int x, int y, int width,
                         int height,
                         bool isScrollbarVertical,
                         int thumbStartPosition,
@@ -64,9 +64,9 @@ public:
     ImageEffectFilter* getScrollbarEffect();
     int getMinimumScrollbarThumbSize (ScrollBar& scrollbar);
     int getDefaultScrollbarWidth();
-    int getScrollbarButtonSize(ScrollBar& scrollbar);
-	
-	Rectangle<int> getPropertyComponentContentPosition (PropertyComponent& component) override;	
+    int getScrollbarButtonSize (ScrollBar& scrollbar);
+
+    Rectangle<int> getPropertyComponentContentPosition (PropertyComponent& component) override;
 
 private:
     ValueTree colourTree;

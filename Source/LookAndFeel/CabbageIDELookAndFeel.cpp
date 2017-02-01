@@ -22,21 +22,21 @@
 //Cabbage IDE look and feel class
 CabbageIDELookAndFeel::CabbageIDELookAndFeel()
 {
-    setColour(TextButton::ColourIds::buttonColourId, Colour(50, 50, 50));
-    setColour(TextButton::ColourIds::textColourOffId, Colour(150, 150, 150));
-    setColour(TextButton::ColourIds::buttonOnColourId, Colour(150, 150, 150));
-    setColour(TextButton::ColourIds::textColourOnId, Colour(250, 250, 250));
+    setColour (TextButton::ColourIds::buttonColourId, Colour (50, 50, 50));
+    setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
+    setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
+    setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
 }
 
 //======== Update value tree ======================================================================
-void CabbageIDELookAndFeel::refreshLookAndFeel(ValueTree valueTree)
+void CabbageIDELookAndFeel::refreshLookAndFeel (ValueTree valueTree)
 {
     colourTree = valueTree;
 }
 //======== Menubar background ======================================================================
-void CabbageIDELookAndFeel::drawMenuBarBackground(Graphics &g, int width, int height, bool isMouseOverBar, MenuBarComponent &menuBar)
+void CabbageIDELookAndFeel::drawMenuBarBackground (Graphics& g, int width, int height, bool isMouseOverBar, MenuBarComponent& menuBar)
 {
-    const Colour bgColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::menuBarBackground, Colours::grey));
+    const Colour bgColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::menuBarBackground, Colours::grey));
     g.setColour (bgColour);
     g.fillAll();
 }
@@ -44,17 +44,17 @@ void CabbageIDELookAndFeel::drawMenuBarBackground(Graphics &g, int width, int he
 //======== drawPopupMenuBackground ======================================================================
 void CabbageIDELookAndFeel::drawPopupMenuBackground (Graphics& g, int width, int height)
 {
-    const Colour backgroundColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuBackground, Colours::grey.darker()));
+    const Colour backgroundColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::popupMenuBackground, Colours::grey.darker()));
     g.fillAll (backgroundColour);
 
 }
 //======== drawPopupMenuItem ======================================================================
 void CabbageIDELookAndFeel::drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
-        const bool isSeparator, const bool isActive,
-        const bool isHighlighted, const bool isTicked,
-        const bool hasSubMenu, const String& text,
-        const String& shortcutKeyText,
-        const Drawable* icon, const Colour* const textColourToUse)
+                                               const bool isSeparator, const bool isActive,
+                                               const bool isHighlighted, const bool isTicked,
+                                               const bool hasSubMenu, const String& text,
+                                               const String& shortcutKeyText,
+                                               const Drawable* icon, const Colour* const textColourToUse)
 {
     if (isSeparator)
     {
@@ -69,7 +69,7 @@ void CabbageIDELookAndFeel::drawPopupMenuItem (Graphics& g, const Rectangle<int>
     }
     else
     {
-        Colour textColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuText, Colours::white));
+        Colour textColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::popupMenuText, Colours::white));
 
         if (textColourToUse != nullptr)
             textColour = *textColourToUse;
@@ -78,10 +78,10 @@ void CabbageIDELookAndFeel::drawPopupMenuItem (Graphics& g, const Rectangle<int>
 
         if (isHighlighted)
         {
-            g.setColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuMouseOverBackground, Colours::grey));
+            g.setColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::popupMenuMouseOverBackground, Colours::grey));
             g.fillRect (r);
 
-            g.setColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::popupMenuHighlightedText, Colours::grey));
+            g.setColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::popupMenuHighlightedText, Colours::grey));
         }
         else
         {
@@ -142,16 +142,16 @@ void CabbageIDELookAndFeel::drawPopupMenuItem (Graphics& g, const Rectangle<int>
     }
 }
 //======== Menubar item background ======================================================================
-void CabbageIDELookAndFeel::drawMenuBarItem(Graphics & g, int width, int height, int itemIndex,
-        const String &itemText,
-        bool isMouseOverItem,
-        bool isMenuOpen,
-        bool isMouseOverBar,
-        MenuBarComponent &menuBar)
+void CabbageIDELookAndFeel::drawMenuBarItem (Graphics& g, int width, int height, int itemIndex,
+                                             const String& itemText,
+                                             bool isMouseOverItem,
+                                             bool isMenuOpen,
+                                             bool isMouseOverBar,
+                                             MenuBarComponent& menuBar)
 {
 
-    const Colour textColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::menuBarText, Colours::white));
-    const Colour itemColour(CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::menuBarMouseOverBackground, Colours::grey));
+    const Colour textColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::menuBarText, Colours::white));
+    const Colour itemColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::menuBarMouseOverBackground, Colours::grey));
 
     if ((isMouseOverItem == true) || (isMenuOpen == true))
     {
@@ -165,11 +165,11 @@ void CabbageIDELookAndFeel::drawMenuBarItem(Graphics & g, int width, int height,
 }
 
 void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
-        AlertWindow& alert,
-        const Rectangle<int>& textArea,
-        TextLayout& textLayout)
+                                          AlertWindow& alert,
+                                          const Rectangle<int>& textArea,
+                                          TextLayout& textLayout)
 {
-    g.fillAll (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::alertWindowBackground, Colour(250,250,250)));
+    g.fillAll (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::alertWindowBackground, Colour (250, 250, 250)));
 
     int iconSpaceUsed = 160;
 
@@ -179,40 +179,41 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
 
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
-            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed).toFloat());
-			
-            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed).toFloat());
+
+            const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(20));
         }
+
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
-            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
-            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
+            const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(25));
         }
-		    
-		MemoryInputStream svgStream(CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
-		ScopedPointer<XmlElement> svg (XmlDocument::parse(svgStream.readString()));
-			
-		if(svg == nullptr)
-			jassert(false);
 
-		ScopedPointer<Drawable> drawable;
+        MemoryInputStream svgStream (CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
+        ScopedPointer<XmlElement> svg (XmlDocument::parse (svgStream.readString()));
 
-		if (svg != nullptr)
-		{
-			drawable = Drawable::createFromSVG(*svg);
-			Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed-20).toFloat());
-			drawable->setTransformToFit(rect.reduced(30), RectanglePlacement::stretchToFit);
-			drawable->draw(g, 1.f, AffineTransform::identity);
-		}
+        if (svg == nullptr)
+            jassert (false);
+
+        ScopedPointer<Drawable> drawable;
+
+        if (svg != nullptr)
+        {
+            drawable = Drawable::createFromSVG (*svg);
+            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
+            drawable->setTransformToFit (rect.reduced (30), RectanglePlacement::stretchToFit);
+            drawable->draw (g, 1.f, AffineTransform::identity);
+        }
     }
 
     g.setColour (alert.findColour (AlertWindow::textColourId));
 
-    textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed-50,
+    textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed - 50,
                                         textArea.getY(),
-                                        textArea.getWidth() - iconSpaceUsed-40,
+                                        textArea.getWidth() - iconSpaceUsed - 40,
                                         textArea.getHeight()).toFloat());
 
     g.setColour (alert.findColour (AlertWindow::outlineColourId));
@@ -220,24 +221,24 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
 }
 
 //======== Scrollbars ==============================================================================
-void CabbageIDELookAndFeel::drawScrollbar (Graphics &g, ScrollBar &scrollbar, int x, int y, int width,
-        int height,
-        bool isScrollbarVertical,
-        int thumbStartPosition,
-        int thumbSize,
-        bool isMouseOver,
-        bool isMouseDown)
+void CabbageIDELookAndFeel::drawScrollbar (Graphics& g, ScrollBar& scrollbar, int x, int y, int width,
+                                           int height,
+                                           bool isScrollbarVertical,
+                                           int thumbStartPosition,
+                                           int thumbSize,
+                                           bool isMouseOver,
+                                           bool isMouseDown)
 {
     g.setColour (Colours::transparentBlack);
     g.fillAll();
 
-    g.setColour (CabbageSettings::getColourFromValueTree(colourTree, CabbageColourIds::codeBackground, Colour(250,250,250)).contrasting(.5f));
+    g.setColour (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::codeBackground, Colour (250, 250, 250)).contrasting (.5f));
     //g.drawRect (x, y, width, height);
 
     if (isScrollbarVertical == false) //horizontal
-        g.fillRoundedRectangle (thumbStartPosition+3, 3, jmax(0, thumbSize-2), height-6, 5);
+        g.fillRoundedRectangle (thumbStartPosition + 3, 3, jmax (0, thumbSize - 2), height - 6, 5);
     else //vertical
-        g.fillRoundedRectangle (3, thumbStartPosition+3, width-6, jmax(1, thumbSize-2), 5);
+        g.fillRoundedRectangle (3, thumbStartPosition + 3, width - 6, jmax (1, thumbSize - 2), 5);
 
 }
 
@@ -262,7 +263,7 @@ int CabbageIDELookAndFeel::getScrollbarButtonSize (ScrollBar& scrollbar)
                 : scrollbar.getHeight());
 }
 
-//=======================	PropertyComponent  =========================================
+//=======================   PropertyComponent  =========================================
 Rectangle<int> CabbageIDELookAndFeel::getPropertyComponentContentPosition (PropertyComponent& component)
 {
     const int textW = jmin (250, component.getWidth() / 2);

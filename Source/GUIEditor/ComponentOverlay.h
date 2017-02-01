@@ -39,7 +39,7 @@ public:
     void mouseUp (const MouseEvent& e);
     void mouseDrag (const MouseEvent& e);
 
-    void setInterest(String isInteresting)
+    void setInterest (String isInteresting)
     {
         interest = isInteresting;
     }
@@ -60,7 +60,7 @@ private:
     ComponentDragger dragger;
     SafePointer<Component> target;
     Array<juce::Rectangle<int> > childBounds;
-	CabbageLookAndFeel2 lookAndFeel;
+    CabbageLookAndFeel2 lookAndFeel;
     String interest;
     bool userAdjusting;
     Rectangle<int> startBounds;

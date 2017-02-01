@@ -35,7 +35,7 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
 
 public:
 
-    CabbageKeyboard(ValueTree wData, MidiKeyboardState &state);
+    CabbageKeyboard (ValueTree wData, MidiKeyboardState& state);
     ~CabbageKeyboard() {};
 
     //VlaueTree::Listener virtual methods....

@@ -20,8 +20,8 @@
 #include "CabbageToolbarFactory.h"
 #include "CabbageContentComponent.h"
 
-CabbageToolbarFactory::CabbageToolbarFactory(CabbageContentComponent* owner)
-    : owner(owner), togglePlayButton(nullptr), combo(nullptr)
+CabbageToolbarFactory::CabbageToolbarFactory (CabbageContentComponent* owner)
+    : owner (owner), togglePlayButton (nullptr), combo (nullptr)
 {
 
 }
@@ -39,7 +39,7 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
-	ids.add (system_prefs);
+    ids.add (system_prefs);
     ids.add (toggle_play);
     ids.add (custom_comboBox);
 }
@@ -56,15 +56,15 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
-	ids.add (system_prefs);
+    ids.add (system_prefs);
     ids.add (toggle_play);
     ids.add (custom_comboBox);
 
 }
 
-static const String getSVGTextFromMemory(const void* svg, size_t size)
+static const String getSVGTextFromMemory (const void* svg, size_t size)
 {
-	MemoryInputStream svgStream(svg, size, false);
+    MemoryInputStream svgStream (svg, size, false);
     return svgStream.readString();
 }
 
@@ -72,29 +72,39 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
 {
     switch (itemId)
     {
-	case doc_new:
-		return createButtonFromSVG(itemId, "new", getSVGTextFromMemory(CabbageBinaryData::documentnew_svg, CabbageBinaryData::documentnew_svgSize));
-    case doc_open:
-        return createButtonFromSVG(itemId, "open", getSVGTextFromMemory(CabbageBinaryData::documentopen_svg, CabbageBinaryData::documentopen_svgSize));
-    case doc_save:
-        return createButtonFromSVG(itemId, "save", getSVGTextFromMemory(CabbageBinaryData::documentsave_svg, CabbageBinaryData::documentsave_svgSize));
-    case doc_saveAs:
-        return createButtonFromSVG(itemId, "save as", getSVGTextFromMemory(CabbageBinaryData::documentsaveas_svg, CabbageBinaryData::documentsaveas_svgSize));
-    case edit_copy:
-        return createButtonFromSVG(itemId, "copy", getSVGTextFromMemory(CabbageBinaryData::editcopy_svg, CabbageBinaryData::editcopy_svgSize));
-    case edit_cut:
-        return createButtonFromSVG(itemId, "cut", getSVGTextFromMemory(CabbageBinaryData::editcut_svg, CabbageBinaryData::editcut_svgSize));
-    case edit_paste:
-        return createButtonFromSVG(itemId, "paste", getSVGTextFromMemory(CabbageBinaryData::editpaste_svg, CabbageBinaryData::editpaste_svgSize));
-    case system_prefs:
-        return createButtonFromSVG(itemId, "settings", getSVGTextFromMemory(CabbageBinaryData::emblemsystem_svg, CabbageBinaryData::emblemsystem_svgSize));
-    case custom_comboBox:
-        return(combo = new ToolbarComboBox (itemId));
-    case toggle_play:
-        return createButtonFromSVG(itemId, "togglePlay", getSVGTextFromMemory(CabbageBinaryData::mediaplaybackstart_svg, CabbageBinaryData::mediaplaybackstart_svgSize),
-														getSVGTextFromMemory(CabbageBinaryData::mediaplaybackstop_svg, CabbageBinaryData::mediaplaybackstop_svgSize));
-    default:
-        break;
+        case doc_new:
+            return createButtonFromSVG (itemId, "new", getSVGTextFromMemory (CabbageBinaryData::documentnew_svg, CabbageBinaryData::documentnew_svgSize));
+
+        case doc_open:
+            return createButtonFromSVG (itemId, "open", getSVGTextFromMemory (CabbageBinaryData::documentopen_svg, CabbageBinaryData::documentopen_svgSize));
+
+        case doc_save:
+            return createButtonFromSVG (itemId, "save", getSVGTextFromMemory (CabbageBinaryData::documentsave_svg, CabbageBinaryData::documentsave_svgSize));
+
+        case doc_saveAs:
+            return createButtonFromSVG (itemId, "save as", getSVGTextFromMemory (CabbageBinaryData::documentsaveas_svg, CabbageBinaryData::documentsaveas_svgSize));
+
+        case edit_copy:
+            return createButtonFromSVG (itemId, "copy", getSVGTextFromMemory (CabbageBinaryData::editcopy_svg, CabbageBinaryData::editcopy_svgSize));
+
+        case edit_cut:
+            return createButtonFromSVG (itemId, "cut", getSVGTextFromMemory (CabbageBinaryData::editcut_svg, CabbageBinaryData::editcut_svgSize));
+
+        case edit_paste:
+            return createButtonFromSVG (itemId, "paste", getSVGTextFromMemory (CabbageBinaryData::editpaste_svg, CabbageBinaryData::editpaste_svgSize));
+
+        case system_prefs:
+            return createButtonFromSVG (itemId, "settings", getSVGTextFromMemory (CabbageBinaryData::emblemsystem_svg, CabbageBinaryData::emblemsystem_svgSize));
+
+        case custom_comboBox:
+            return (combo = new ToolbarComboBox (itemId));
+
+        case toggle_play:
+            return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromMemory (CabbageBinaryData::mediaplaybackstart_svg, CabbageBinaryData::mediaplaybackstart_svgSize),
+                                        getSVGTextFromMemory (CabbageBinaryData::mediaplaybackstop_svg, CabbageBinaryData::mediaplaybackstop_svgSize));
+
+        default:
+            break;
     }
 
     return nullptr;
@@ -102,9 +112,10 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
 
 ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, const String& text, const String svgFile, const String onFile)
 {
-    ScopedPointer<XmlElement> svgNormal (XmlDocument::parse(svgFile));
-    if(svgNormal == nullptr)
-        jassert(false);
+    ScopedPointer<XmlElement> svgNormal (XmlDocument::parse (svgFile));
+
+    if (svgNormal == nullptr)
+        jassert (false);
 
     Drawable* drawableNormal = nullptr;
 
@@ -113,9 +124,10 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
         drawableNormal = Drawable::createFromSVG (*svgNormal);
     }
 
-	ScopedPointer<XmlElement> svgOn (XmlDocument::parse(onFile));
-	if(svgOn != nullptr)
-	{			
+    ScopedPointer<XmlElement> svgOn (XmlDocument::parse (onFile));
+
+    if (svgOn != nullptr)
+    {
         Drawable* drawableOn = nullptr;
 
         if (svgOn != nullptr)
@@ -123,16 +135,16 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
             drawableOn = Drawable::createFromSVG (*svgOn);
         }
 
-        togglePlayButton = new ToolbarButton(itemId, text, drawableNormal, drawableOn);
-        togglePlayButton->setClickingTogglesState(true);
-        togglePlayButton->addListener(owner);
-		togglePlayButton->setTooltip("Toggle Playback");
+        togglePlayButton = new ToolbarButton (itemId, text, drawableNormal, drawableOn);
+        togglePlayButton->setClickingTogglesState (true);
+        togglePlayButton->addListener (owner);
+        togglePlayButton->setTooltip ("Toggle Playback");
         return togglePlayButton;
     }
 
-    ToolbarButton* button = new ToolbarButton(itemId, text, drawableNormal, 0);
-	button->setTooltip(text);
-    button->addListener(owner);
+    ToolbarButton* button = new ToolbarButton (itemId, text, drawableNormal, 0);
+    button->setTooltip (text);
+    button->addListener (owner);
     return button;
 
 }

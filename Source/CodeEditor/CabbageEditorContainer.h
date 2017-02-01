@@ -33,53 +33,53 @@ public:
     class StatusBar : public Component
     {
     public:
-        StatusBar(ValueTree valueTree, CabbageEditorContainer* parent)
-		:	Component("StatusBar"), 
-			valueTree(valueTree),
-			owner(parent)
+        StatusBar (ValueTree valueTree, CabbageEditorContainer* parent)
+            :   Component ("StatusBar"),
+                valueTree (valueTree),
+                owner (parent)
         {
             String initString = (SystemStats::getOperatingSystemName() +
                                  "CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
                                  + "MHz  Cores: " + String (SystemStats::getNumCpus())
                                  + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
-            setText(StringArray(initString));
+            setText (StringArray (initString));
         }
 
-        void paint(Graphics &g);
-		
-        void setText(StringArray text)
+        void paint (Graphics& g);
+
+        void setText (StringArray text)
         {
             statusText = text;
             repaint();
         }
 
-		int getCurrentYPos(){	return currentYPos;	}
-		
+        int getCurrentYPos() {   return currentYPos; }
+
     private:
         ValueTree valueTree;
         StringArray statusText;
         int startingYPos;
         bool isActive = false;
-		int currentYPos=550;
-		CabbageEditorContainer* owner;
+        int currentYPos = 550;
+        CabbageEditorContainer* owner;
     };
 
-	CabbageContentComponent* getContentComponent();
+    CabbageContentComponent* getContentComponent();
     //=============================================================================
-    CabbageEditorContainer(CabbageSettings* settings);
+    CabbageEditorContainer (CabbageSettings* settings);
     ~CabbageEditorContainer();
     void updateLookAndFeel();
-    void openFile(File file);
+    void openFile (File file);
     void resized();
 
     void updateEditorColourScheme();
-	void mouseDown(const MouseEvent& e);
-	void mouseUp(const MouseEvent& e);
-	void mouseExit(const MouseEvent& e);
-	void mouseEnter(const MouseEvent& e);
-	void mouseDrag(const MouseEvent& e);
+    void mouseDown (const MouseEvent& e);
+    void mouseUp (const MouseEvent& e);
+    void mouseExit (const MouseEvent& e);
+    void mouseEnter (const MouseEvent& e);
+    void mouseDrag (const MouseEvent& e);
 
-	int getStatusBarPosition();
+    int getStatusBarPosition();
     ScopedPointer<CabbageCodeEditorComponent> editor;
     ScopedPointer<CabbageOutputConsole> outputConsole;
     //HorizontalResizerBar horizontalResizerBar;
@@ -87,12 +87,12 @@ public:
     CodeDocument csoundDocument;
     CsoundTokeniser csoundTokeniser;
     CabbageSettings* settings;
-	
+
 private:
-	bool fileNeedsSaving=false;
+    bool fileNeedsSaving = false;
     int horizontalBarPosition = 0;
     const int statusBarHeight = 25;
-	int startingDragPos;
+    int startingDragPos;
 
 };
 

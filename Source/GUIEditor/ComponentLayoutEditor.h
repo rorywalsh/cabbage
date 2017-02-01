@@ -49,14 +49,14 @@ public:
     void bindWithTarget ();
     void updateFrames ();
     void enablementChanged ();
-    void mouseUp(const MouseEvent& e);
-    void mouseDrag(const MouseEvent& e);
-    void mouseDown(const MouseEvent& e);
+    void mouseUp (const MouseEvent& e);
+    void mouseDrag (const MouseEvent& e);
+    void mouseDown (const MouseEvent& e);
     const Component* getTarget();
     void findLassoItemsInArea (Array <ComponentOverlay*>& results, const juce::Rectangle<int>& area);
     void updateCodeEditor();
     void updateSelectedComponentBounds();
-    void setComponentBoundsProperties(Component* child, Rectangle<int> bounds);
+    void setComponentBoundsProperties (Component* child, Rectangle<int> bounds);
 
     SelectedItemSet <ComponentOverlay*>& getLassoSelection();
     LassoComponent <ComponentOverlay*> lassoComp;
@@ -64,13 +64,13 @@ public:
     Point<int> currentMouseCoors;
     void resetAllInterest();
     CabbagePluginEditor* getPluginEditor();
-	CabbageContentComponent* getContentComponent();
+    CabbageContentComponent* getContentComponent();
 
 private:
     virtual ComponentOverlay* createAlias (Component* child);
     SafePointer<Component> target;
     OwnedArray<ComponentOverlay> frames;
-	CabbageLookAndFeel2 lookAndFeel;
+    CabbageLookAndFeel2 lookAndFeel;
 
 
 };

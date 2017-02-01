@@ -35,34 +35,34 @@ class CabbagePropertiesPanel :
     public FilenameComponentListener
 {
 public:
-    CabbagePropertiesPanel(ValueTree widgetData);
+    CabbagePropertiesPanel (ValueTree widgetData);
     void paint (Graphics& g) override;
     void resized() override;
-    void setPropertyByName(String name, var value);
-    void textPropertyComponentChanged (TextPropertyComponent * comp);
-    void changeListenerCallback(juce::ChangeBroadcaster *source);
-    void updateProperties(ValueTree widgetData);
-    void valueChanged(Value& value);
+    void setPropertyByName (String name, var value);
+    void textPropertyComponentChanged (TextPropertyComponent* comp);
+    void changeListenerCallback (juce::ChangeBroadcaster* source);
+    void updateProperties (ValueTree widgetData);
+    void valueChanged (Value& value);
     void filenameComponentChanged (FilenameComponent* fileComponent);
 
-    Array<PropertyComponent*> createPositionEditors(ValueTree valueTree);
-    Array<PropertyComponent*> createTextEditors(ValueTree valueTree);
+    Array<PropertyComponent*> createPositionEditors (ValueTree valueTree);
+    Array<PropertyComponent*> createTextEditors (ValueTree valueTree);
     Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
-    Array<PropertyComponent*> createMiscEditors(ValueTree valueTree);
-    Array<PropertyComponent*> createFileEditors(ValueTree valueTree);
-    Array<PropertyComponent*> createValueEditors(CabbagePropertiesPanel* owner, ValueTree valueTree);
-	Array<PropertyComponent*> createWidgetArrayEditors(CabbagePropertiesPanel* owner, ValueTree valueTree);
+    Array<PropertyComponent*> createMiscEditors (ValueTree valueTree);
+    Array<PropertyComponent*> createFileEditors (ValueTree valueTree);
+    Array<PropertyComponent*> createValueEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
+    Array<PropertyComponent*> createWidgetArrayEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
     Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue;
     Colour backgroundColour, borderColour;
 
 
-    void setBackgroundColour(Colour colour)
+    void setBackgroundColour (Colour colour)
     {
         backgroundColour = colour;
         repaint();
     }
 
-    void setBorderColour(Colour colour)
+    void setBorderColour (Colour colour)
     {
         borderColour = colour;
         repaint();

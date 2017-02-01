@@ -30,7 +30,7 @@ class DemoCabbageWidget : public Component, public ValueTree::Listener, public C
 {
 public:
 
-    DemoCabbageWidget(ValueTree wData);
+    DemoCabbageWidget (ValueTree wData);
     ~DemoCabbageWidget() {};
 
     //ValueTree::Listener virtual methods....

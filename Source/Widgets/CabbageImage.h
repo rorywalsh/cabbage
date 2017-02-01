@@ -34,17 +34,17 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
     int lineThickness;
     ValueTree widgetData;
     Colour outlineColour, mainColour;
-	bool isLineWidget = false;
-	bool currentToggleValue = 0;
+    bool isLineWidget = false;
+    bool currentToggleValue = 0;
 
 public:
 
-    CabbageImage(ValueTree cAttr, CabbagePluginEditor* _owner, bool isLineWidget=false);
+    CabbageImage (ValueTree cAttr, CabbagePluginEditor* _owner, bool isLineWidget = false);
     ~CabbageImage() {};
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
-    void paint(Graphics& g);
-	void mouseDown(const MouseEvent& e);
+    void paint (Graphics& g);
+    void mouseDown (const MouseEvent& e);
 
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
