@@ -69,6 +69,28 @@ public:
     }
 private:
     PropertyPanel propertyPanel;
+	String previousWidgetName="";
+	
+	struct SectionState {
+		SectionState(String name, XmlElement* xml):name(name), xmlElement(xml)
+		{}
+		String name;
+		ScopedPointer<XmlElement> xmlElement;
+	};
+	
+	OwnedArray<SectionState> sectionStates;
+	
+	SectionState* getSectionState(String name)
+	{
+		for ( auto section : sectionStates)
+		{
+			if ( section->name == name)
+				return section;
+		}
+		
+		return nullptr;
+	}
+	
     ValueTree widgetData;
 
 

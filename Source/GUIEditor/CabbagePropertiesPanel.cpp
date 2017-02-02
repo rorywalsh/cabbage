@@ -118,7 +118,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     const String typeOfWidget = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
 
     propertyPanel.addSection ("Bounds", createPositionEditors (widgetData));
-    propertyPanel.addSection ("Rotation", createRotationEditors (this, widgetData));
+    propertyPanel.addSection ("Rotation", createRotationEditors (this, widgetData), false);
     propertyPanel.addSection ("Channels", createChannelEditors (this, widgetData));
     propertyPanel.addSection ("Values", createValueEditors (this, widgetData));
     propertyPanel.addSection ("Text", createTextEditors (widgetData));
@@ -137,6 +137,22 @@ void CabbagePropertiesPanel::updateProperties (ValueTree wData)
     widgetData = wData;
 
     const String typeOfWidget = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
+	const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::name);
+	
+	CabbageUtilities::debug(sectionStates.size());
+	
+	if(getSectionState(name) == nullptr)
+		sectionStates.add(new SectionState(name, propertyPanel.getOpennessState()));
+	else
+		getSectionState(name)->xmlElement = propertyPanel.getOpennessState();	
+	
+	propertyPanel.getOpennessState()->writeToFile(File("/home/rory/Desktop/open.xml"), "HELLO");
+	
+	
+	if(getSectionState(name) != nullptr)
+		propertyPanel.restoreOpennessState(*getSectionState(name)->xmlElement);
+	
+	
 
     propertyPanel.clear();
     propertyPanel.addSection ("Bounds", createPositionEditors (widgetData));
@@ -148,8 +164,17 @@ void CabbagePropertiesPanel::updateProperties (ValueTree wData)
     propertyPanel.addSection ("Images", createFileEditors (widgetData));
     propertyPanel.addSection ("Widget Array", createWidgetArrayEditors (this, widgetData), false);
     propertyPanel.addSection ("Misc", createMiscEditors (widgetData));
+	
+	
     this->setVisible (true);
 
+
+
+		
+	previousWidgetName = name;
+		
+	
+	
 }
 void CabbagePropertiesPanel::paint (Graphics& g)
 {
@@ -506,6 +531,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
         comps.add (new ChoicePropertyComponent (shapeValue, "Shape", choices, choiceVars));
 
     }
+
 
     if (typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox")
     {
