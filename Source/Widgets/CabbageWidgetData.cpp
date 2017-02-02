@@ -530,7 +530,14 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String inStr
             {
                 setProperty (widgetData, CabbageIdentifierIds::textcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
             }
-
+            else if (identArray[indx].equalsIgnoreCase ("textboxcolour"))
+            {
+                setProperty (widgetData, CabbageIdentifierIds::textboxcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
+            }
+            else if (identArray[indx].equalsIgnoreCase ("textboxoutlinecolour"))
+            {
+                setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, getColourFromText (strTokens.joinIntoString (",")).toString());
+            }
             else if (identArray[indx].equalsIgnoreCase ("pluginid"))
             {
                 setProperty (widgetData, CabbageIdentifierIds::pluginid, strTokens[0].trim());
@@ -738,14 +745,13 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String inStr
                 }
                 else
                 {
-                    StringArray tempArray;
                     double min = strTokens[0].trim().getDoubleValue();// getFloatValue();
                     double max = strTokens[1].trim().getDoubleValue();//.getFloatValue();
                     setProperty (widgetData, CabbageIdentifierIds::min, strTokens[0].trim().getDoubleValue());
                     setProperty (widgetData, CabbageIdentifierIds::max, strTokens[1].trim().getDoubleValue());
-                    tempArray.add (strTokens[0].trim());
-                    tempArray.add (strTokens[1].trim());
 
+					int decimalPlaces = 2;
+					
                     if (strTokens.size() > 2)
                     {
                         if (strTokens[2].contains (":") && strTokens.size() > 0)
@@ -763,7 +769,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String inStr
                         else
                         {
                             setProperty (widgetData, CabbageIdentifierIds::value, strTokens[2].trim().getFloatValue());
-                            tempArray.add (strTokens[2].trim());
                         }
                     }
 
@@ -771,22 +776,18 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String inStr
                     if (strTokens.size() > 3)
                     {
                         setProperty (widgetData, CabbageIdentifierIds::sliderskew, strTokens[3].trim().getFloatValue());
-                        tempArray.add (strTokens[3].trim());
                     }
 
                     if (strTokens.size() > 4)
                     {
-                        tempArray.add (strTokens[4].trim());
+                        decimalPlaces = getNumberOfDecimalPlaces (strTokens[4].trim());
                         setProperty (widgetData, CabbageIdentifierIds::sliderincr, strTokens[4].trim().getFloatValue());
                     }
 
                     double sliderRange = max - min;
-                    int decimalPlaces = getNumberOfDecimalPlaces (tempArray);
+					
+                    
 
-                    if (decimalPlaces < 1 && max <= 1)
-                        decimalPlaces = 2;
-                    else
-                        decimalPlaces = getNumberOfDecimalPlaces (tempArray);
 
                     setProperty (widgetData, CabbageIdentifierIds::decimalplaces, decimalPlaces);
                     setProperty (widgetData, CabbageIdentifierIds::range, sliderRange);
@@ -1621,6 +1622,11 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         colourString = colourString << "textboxcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
+    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::textboxoutlinecolour) != CabbageWidgetData::getStringProp (tempData, CabbageIdentifierIds::textboxoutlinecolour))
+    {
+        const Colour col = Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::textboxoutlinecolour));
+        colourString = colourString << "textboxoutlinecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
     return colourString;
 }
 //===================================================================

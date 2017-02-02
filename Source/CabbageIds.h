@@ -254,6 +254,7 @@ public:
     {
         add ("tablebackgroundcolour");
         add ("arrowbackgroundcolour");
+		add ("textboxoutlinecolour");
         add ("mouseoeverkeycolour");
         add ("keyseparatorcolour");
         add ("currentnotecolour");
@@ -283,7 +284,6 @@ public:
         add ("tablenumbers");
         add ("identchannel");
         add ("fontcolour:0");
-        add ("outlinecolor");
         add ("tablecolour");
         add ("arrowcolour");
         add ("widgetarray");
@@ -427,6 +427,7 @@ namespace CabbageIdentifierIds
     static const Identifier imgbuttonoff = "imgbuttonoff";
     static const Identifier valuetextbox = "valuetextbox";
     static const Identifier textboxcolour = "textboxcolour";
+	static const Identifier textboxoutlinecolour = "textboxoutlinecolour";
     static const Identifier textbox = "textbox";
     static const Identifier name = "name";
     static const Identifier active = "active";
@@ -682,6 +683,7 @@ public:
         set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set ("Value Box", CabbageIdentifierIds::valuetextbox.toString());
         set ("Value Box Colour", CabbageIdentifierIds::textboxcolour.toString());
+		set ("Value Box Outline", CabbageIdentifierIds::textboxoutlinecolour.toString());
         set ("Outline Thickness", CabbageIdentifierIds::outlinethickness.toString());
         set ("Line Thickness", CabbageIdentifierIds::linethickness.toString());
         set ("Colour: On", CabbageIdentifierIds::oncolour.toString());

@@ -51,7 +51,7 @@ public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageSlider();
 
-
+	void setTextBoxWidth();
     void setSliderVelocity (ValueTree wData);
     void resized();
     void initialiseSlider (ValueTree wData);

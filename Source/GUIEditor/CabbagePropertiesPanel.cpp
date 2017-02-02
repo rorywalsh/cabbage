@@ -173,7 +173,7 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
 
         if (identifier == CabbageIdentifierIds::sliderincr.toString())
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::decimalplaces,
-                                            CabbageUtilities::getNumberOfDecimalPlaces (StringArray (value.toString())));
+                                            CabbageUtilities::getNumberOfDecimalPlaces (value.toString()));
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
@@ -345,6 +345,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String fontColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour);
         const String trackerColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::trackercolour);
         const String textboxColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textboxcolour);
+		const String textboxOutlineColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textboxoutlinecolour);
 
         comps.add (new ColourPropertyComponent ("Colour", colourString));
 
@@ -358,6 +359,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 
         comps.add (new ColourPropertyComponent ("Tracker", trackerColourString));
         comps.add (new ColourPropertyComponent ("Value Box Colour", textboxColourString));
+		comps.add (new ColourPropertyComponent ("Value Box Outline", textboxOutlineColourString));
 
     }
     else if (typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
