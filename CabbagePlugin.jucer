@@ -198,7 +198,8 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" externalLibraries="csound64&#10;sndfile">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" externalLibraries="csound64&#10;sndfile"
+                extraCompilerFlags="" extraDefs="" extraLinkerFlags="-Wall">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
                        headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
