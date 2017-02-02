@@ -39,6 +39,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     createPopupBubble();
     setImgProperties (this->slider, wData, "slider");
     setImgProperties (this->slider, wData, "sliderbg");
+	setTextBoxOrientation (sliderType, shouldShowTextBox);
     slider.setLookAndFeel (&owner->getLookAndFeel());
 }
 
@@ -86,9 +87,6 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     slider.setDoubleClickReturnValue (true, value);
     setSliderVelocity (wData);
     slider.addMouseListener (this, false);
-
-    setTextBoxOrientation (sliderType, shouldShowTextBox);
-
     slider.setRotaryParameters (float_Pi * 1.2f, float_Pi * 2.8f, false);
 
     if (sliderType.contains ("rotary"))
@@ -120,7 +118,7 @@ void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
 void CabbageSlider::setTextBoxWidth()
 {
         if (sliderType.contains ("horizontal"))
-            slider.setTextBoxStyle(Slider::TextBoxRight, false, 40, 15);
+            slider.setTextBoxStyle(Slider::TextBoxRight, false, jmin(55.f, getWidth()*.65f), 15);
         else
             slider.setTextBoxStyle (Slider::TextBoxBelow, false, jmin(55.f, getWidth()*.65f), 15);	
 			
