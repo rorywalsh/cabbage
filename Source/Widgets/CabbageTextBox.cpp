@@ -20,28 +20,29 @@
 #include "CabbageTextBox.h"
 
 
-CabbageTextBox::CabbageTextBox(ValueTree wData)
-    : widgetData(wData),
-      TextEditor(""),
-      filename(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file))
+CabbageTextBox::CabbageTextBox (ValueTree wData)
+    : widgetData (wData),
+      TextEditor (""),
+      filename (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file))
 {
-    setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
-    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
-    this->setMultiLine(true, false);
-    this->setScrollbarsShown(true);
+    setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
+    widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+    this->setMultiLine (true, false);
+    this->setScrollbarsShown (true);
 
-    setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-    setColour(TextEditor::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-    setColour(TextEditor::outlineColourId, Colours::transparentBlack);
-    setColour(TextEditor::focusedOutlineColourId, Colours::transparentBlack);
-    setColour(TextEditor::highlightColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)).contrasting(.5f));
+    setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+    setColour (TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+    setColour (TextEditor::outlineColourId, Colours::transparentBlack);
+    setColour (TextEditor::focusedOutlineColourId, Colours::transparentBlack);
+    setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
 
-	const File textFile(File(getCsdFile()).getParentDirectory().getChildFile(filename).getFullPathName());
-    if(textFile.existsAsFile())
-        setText(textFile.loadFileAsString(), false);
+    const File textFile (File (getCsdFile()).getParentDirectory().getChildFile (filename).getFullPathName());
+
+    if (textFile.existsAsFile())
+        setText (textFile.loadFileAsString(), false);
     else
-        setText("Could not open file: "+String(filename));
+        setText ("Could not open file: " + String (filename));
 
 }
 
@@ -49,9 +50,9 @@ CabbageTextBox::CabbageTextBox(ValueTree wData)
 
 void CabbageTextBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    setColour(TextEditor::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::fontcolour)));
-    setColour(TextEditor::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour)));
+    setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
+    setColour (TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
     lookAndFeelChanged();
     repaint();
-    handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 }

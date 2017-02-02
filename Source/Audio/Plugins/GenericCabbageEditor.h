@@ -50,7 +50,7 @@ public:
     void paint (Graphics& g) override
     {
         //g.setColour (Colour(58, 110, 182));
-        g.setColour(Colours::black.brighter(.4f));
+        g.setColour (Colours::black.brighter (.4f));
         g.fillRect (getLocalBounds());
     }
 
@@ -58,7 +58,7 @@ public:
     void sliderValueChanged (Slider* slider) override
     {
         if (AudioParameterFloat* param = getParameterForSlider (slider))
-            *param = (float) slider->getValue();
+            * param = (float) slider->getValue();
     }
 
     void sliderDragStarted (Slider* slider) override
@@ -86,24 +86,24 @@ public:
     }
 
 private:
-//    void timerCallback() override
-//    {
-//        const OwnedArray<AudioProcessorParameter>& params = getAudioProcessor()->getParameters();
-//
-//        for (int i = 0; i < controls.size(); ++i)
-//        {
-//            if (Slider* slider = dynamic_cast<Slider*> (controls[i]))
-//            {
-//                AudioParameterFloat* param = static_cast<AudioParameterFloat*> (params[i]);
-//                slider->setValue ((double) *param, dontSendNotification);
-//            }
-//            else if (Button* button = dynamic_cast<Button*> (controls[i]))
-//            {
-//                AudioParameterBool* param = static_cast<AudioParameterBool*> (params[i]);
-//                button->setToggleState (*param, dontSendNotification);
-//            }
-//        }
-//    }
+    //    void timerCallback() override
+    //    {
+    //        const OwnedArray<AudioProcessorParameter>& params = getAudioProcessor()->getParameters();
+    //
+    //        for (int i = 0; i < controls.size(); ++i)
+    //        {
+    //            if (Slider* slider = dynamic_cast<Slider*> (controls[i]))
+    //            {
+    //                AudioParameterFloat* param = static_cast<AudioParameterFloat*> (params[i]);
+    //                slider->setValue ((double) *param, dontSendNotification);
+    //            }
+    //            else if (Button* button = dynamic_cast<Button*> (controls[i]))
+    //            {
+    //                AudioParameterBool* param = static_cast<AudioParameterBool*> (params[i]);
+    //                button->setToggleState (*param, dontSendNotification);
+    //            }
+    //        }
+    //    }
 
     AudioParameterFloat* getParameterForSlider (Slider* slider)
     {

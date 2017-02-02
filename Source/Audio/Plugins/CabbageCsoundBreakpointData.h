@@ -28,18 +28,18 @@ class CabbageCsoundBreakpointData : public CabbageUtilities
 {
 
 public:
-    CabbageCsoundBreakpointData(): valueTree("BreakPointData")
+    CabbageCsoundBreakpointData(): valueTree ("BreakPointData")
     {};
     ~CabbageCsoundBreakpointData() {};
 
-    void set(String child, Identifier identifier, var value)
+    void set (String child, Identifier identifier, var value)
     {
-        if(valueTree.getChildWithName(child).isValid())
-            valueTree.getChildWithName(child).setProperty(identifier,  value, 0);
+        if (valueTree.getChildWithName (child).isValid())
+            valueTree.getChildWithName (child).setProperty (identifier,  value, 0);
         else
         {
-            valueTree.addChild(ValueTree(child), -1, 0);
-            valueTree.getChildWithName(child).setProperty(identifier,  value, 0);
+            valueTree.addChild (ValueTree (child), -1, 0);
+            valueTree.getChildWithName (child).setProperty (identifier,  value, 0);
         }
     }
 

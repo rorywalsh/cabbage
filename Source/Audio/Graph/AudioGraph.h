@@ -37,14 +37,14 @@ class AudioGraph :  public FileBasedDocument, public AudioProcessorListener
 
 public:
     // This creates new instances of the plugin..
-    GenericCabbagePluginProcessor* JUCE_CALLTYPE createGenericPluginFilter(File inputFile)
+    GenericCabbagePluginProcessor* JUCE_CALLTYPE createGenericPluginFilter (File inputFile)
     {
-        return new GenericCabbagePluginProcessor(inputFile);
+        return new GenericCabbagePluginProcessor (inputFile);
     }
 
-    CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter(File inputFile)
+    CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile)
     {
-        return new CabbagePluginProcessor(inputFile);
+        return new CabbagePluginProcessor (inputFile);
     }
 
     AudioGraph (PropertySet* settingsToUse, File inputFile,
@@ -55,22 +55,22 @@ public:
 
     enum NodeType
     {
-		CabbageNode = 9999
+        CabbageNode = 9999
     };
 
-	int getNumPlugins() const noexcept;
-    void createPlugin(File inputFile);
-    void updateBusLayout(AudioProcessor* selectedProcessor);
+    int getNumPlugins() const noexcept;
+    void createPlugin (File inputFile);
+    void updateBusLayout (AudioProcessor* selectedProcessor);
     int getNumberOfParameters();
     virtual void deletePlugin();
     static String getFilePatterns (const String& fileSuffix);
-    void setXmlAudioSettings(XmlElement* xmlSettingsString);
+    void setXmlAudioSettings (XmlElement* xmlSettingsString);
     AudioDeviceSelectorComponent* getAudioDeviceSelector();
     String getDeviceManagerSettings();
     void setNodePosition (uint32 nodeId, double x, double y);
     Point<double> getNodePosition (uint32 nodeId) const;
-	AudioProcessorGraph& getGraph() noexcept         { return graph; }
-	
+    AudioProcessorGraph& getGraph() noexcept         { return graph; }
+
     //==============================================================================
     int getNumConnections() const noexcept;
     const AudioProcessorGraph::Connection* getConnection (const int index) const noexcept;
@@ -103,20 +103,20 @@ public:
     //==============================================================================
     void audioProcessorParameterChanged (AudioProcessor*, int, float) override {}
     void audioProcessorChanged (AudioProcessor*) override { changed(); }
-	//==============================================================================
+    //==============================================================================
     void savePluginState();
     void reloadPluginState();
     AudioProcessor* getProcessor();
 
     //==============================================================================
     void newDocument();
-    String getDocumentTitle() override {	return String::empty;				};
-    Result loadDocument (const File& file) override {	return Result::ok();	};
-    Result saveDocument (const File& file) override {	return Result::ok();	};
-    File getLastDocumentOpened() override	{			return File();			}
+    String getDocumentTitle() override {    return String::empty;               };
+    Result loadDocument (const File& file) override {   return Result::ok();    };
+    Result saveDocument (const File& file) override {   return Result::ok();    };
+    File getLastDocumentOpened() override   {           return File();          }
     void setLastDocumentOpened (const File& file) override {};
     //==============================================================================
-	
+
     OptionalScopedPointer<PropertySet> settings;
     AudioProcessor* processor;
     AudioProcessorGraph graph;
@@ -131,7 +131,7 @@ public:
 
 private:
 
-    bool isCabbageFile=false;
+    bool isCabbageFile = false;
 
     void setupAudioDevices (const String& preferredDefaultDeviceName,
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
@@ -172,7 +172,7 @@ public:
 
     static void closeCurrentlyOpenWindowsFor (const uint32 nodeId);
     static void closeAllCurrentlyOpenWindows();
-    static Point<int> getPositionOfCurrentlyOpenWindow(const uint32 node);
+    static Point<int> getPositionOfCurrentlyOpenWindow (const uint32 node);
 
 
     void moved() override;

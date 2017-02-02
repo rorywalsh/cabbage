@@ -30,18 +30,18 @@ class CabbagePluginProcessor
     : public CsoundPluginProcessor
 {
 public:
-    CabbagePluginProcessor(File inputFile = File());
+    CabbagePluginProcessor (File inputFile = File());
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;
     void receiveChannelDataFromCsound();
-    void parseCsdFile(String csdText);
+    void parseCsdFile (String csdText);
     void createParameters();
-    void updateWidgets(String csdText);
-    void searchForMacros(StringArray& csdText);
-    const String getExpandedMacroText(const String line, ValueTree wData);
+    void updateWidgets (String csdText);
+    void searchForMacros (StringArray& csdText);
+    const String getExpandedMacroText (const String line, ValueTree wData);
 
-    CabbageAudioParameter* getParameterForXYPad(String name);
+    CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
@@ -54,21 +54,21 @@ public:
     StringArray getCurrentCsdFileAsStringArray()
     {
         StringArray csdArray;
-        csdArray.addLines(csdFile.loadFileAsString());
+        csdArray.addLines (csdFile.loadFileAsString());
         return csdArray;
     }
 
     //===== XYPad methods =========
-    void addXYAutomator(CabbageXYPad* xyPad, ValueTree wData);
-    void enableXYAutomator(String name, bool enable, Line<float> dragLine);
+    void addXYAutomator (CabbageXYPad* xyPad, ValueTree wData);
+    void enableXYAutomator (String name, bool enable, Line<float> dragLine);
 
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-	XmlElement savePluginState(String tag);
-	void restorePluginState(XmlElement* xmlElement);
-	//==============================================================================
-	
+    XmlElement savePluginState (String tag);
+    void restorePluginState (XmlElement* xmlElement);
+    //==============================================================================
+
 private:
 
 

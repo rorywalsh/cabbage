@@ -29,7 +29,7 @@ class CabbageContentComponent;
 class CabbageToolbarFactory   : public ToolbarItemFactory
 {
 public:
-    CabbageToolbarFactory(CabbageContentComponent* owner);
+    CabbageToolbarFactory (CabbageContentComponent* owner);
     ~CabbageToolbarFactory()
     {
     }
@@ -46,25 +46,25 @@ public:
         edit_copy       = 5,
         edit_cut        = 6,
         edit_paste      = 7,
-		system_prefs	= 8,
+        system_prefs    = 8,
         custom_comboBox  = 9,
-        toggle_play		= 10
+        toggle_play     = 10
     };
 
     void getAllToolbarItemIds (Array<int>& ids) override;
     void getDefaultItemSet (Array<int>& ids) override;
     ToolbarItemComponent* createItem (int itemId) override;
 
-    void togglePlay(bool enabled)
+    void togglePlay (bool enabled)
     {
-        togglePlayButton->setToggleState(enabled, dontSendNotification);
+        togglePlayButton->setToggleState (enabled, dontSendNotification);
     }
 
     ToolbarButton* togglePlayButton;
 
 private:
 
-    ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const String svgFile, const String onFile="");
+    ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const String svgFile, const String onFile = "");
 
 
     class ToolbarComboBox : public ToolbarItemComponent
@@ -102,15 +102,15 @@ private:
             comboBox.setCentrePosition (newArea.getCentreX(), newArea.getCentreY());
         }
 
-        void addItemsToComboBox(const String text, const int itemId)
+        void addItemsToComboBox (const String text, const int itemId)
         {
-            comboBox.addItem(text, itemId);
+            comboBox.addItem (text, itemId);
             comboBox.setSelectedId (1);
         }
 
         void clearItemsFromComboBox()
         {
-            comboBox.clear(dontSendNotification);
+            comboBox.clear (dontSendNotification);
         }
 
         ComboBox& getCombo()
@@ -125,7 +125,7 @@ private:
     CabbageContentComponent* owner;
 
 public:
-    ToolbarComboBox* combo;	//owner by toolbar factory...
+    ToolbarComboBox* combo; //owner by toolbar factory...
 };
 
 

@@ -26,34 +26,34 @@ class CabbageContentComponent;
 //==============================================================================
 class CabbageSSHFileBrowser   : public Component,
     public ListBoxModel,
-	public TextEditor::Listener
+    public TextEditor::Listener
 {
 public:
-    CabbageSSHFileBrowser(String ip, String homeDir, CabbageContentComponent* owner, String mode, String csdFilePath);
+    CabbageSSHFileBrowser (String ip, String homeDir, CabbageContentComponent* owner, String mode, String csdFilePath);
     ~CabbageSSHFileBrowser();
     void paint (Graphics& g) override;
     void resized() override;
     int getNumRows();
-    void listBoxItemDoubleClicked(int row, const MouseEvent &e);
+    void listBoxItemDoubleClicked (int row, const MouseEvent& e);
 
     void paintListBoxItem (int rowNumber, Graphics& g,
                            int width, int height, bool rowIsSelected);
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
     ListBox filesListBox;;
-    void launchChildProcess(const String command);
+    void launchChildProcess (const String command);
 
 private:
     String ipAddress, homeDirectory, currentLocalFilePath;
     TextEditor currentDirectoryLabel;
-    const String getFileOrFolderName(String text);
-	void textEditorReturnKeyPressed(TextEditor &);	
-	const String getSSHLsCommand(String directory);
+    const String getFileOrFolderName (String text);
+    void textEditorReturnKeyPressed (TextEditor&);
+    const String getSSHLsCommand (String directory);
 
     ChildProcess childProcess;
     StringArray filesAndFoldersToDisplay, filePath;
-	CabbageContentComponent* owner;
-	String labelPrefix = "Current Directory: ";
+    CabbageContentComponent* owner;
+    String labelPrefix = "Current Directory: ";
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSSHFileBrowser)

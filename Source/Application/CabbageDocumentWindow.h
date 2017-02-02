@@ -55,35 +55,35 @@ public:
     void getAllCommands (Array<CommandID>&) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo&) override;
     bool perform (const InvocationInfo&) override;
-    PopupMenu getMenuForIndex(int topLevelMenuIndex, const String& menuName);
+    PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
     void menuItemSelected (int menuItemID, int topLevelMenuIndex);
     //=======================================================
     bool closeAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
     void initSettings();
     void closeButtonPressed() override;
-	void maximiseButtonPressed();	
+    void maximiseButtonPressed();
 
-    void buttonClicked(Button* button);
+    void buttonClicked (Button* button);
     void focusGained (FocusChangeType cause); //grab focus when user clicks on editor
 
     ScopedPointer<CabbageSettings> cabbageSettings;
     ApplicationCommandTarget* getNextCommandTarget()    {        return findFirstTargetParentComponent();    }
-	ApplicationCommandManager& getCommandManager(){		return commandManager;	}	
-	
+    ApplicationCommandManager& getCommandManager() {     return commandManager;  }
+
 private:
     //=======================================================
-	ApplicationCommandManager commandManager;
-	PopupMenu createExamplesMenu();
-	Array<File> exampleFiles;
-	const String getPluginId(File csdFile);
-	void exportPlugin(String type, File csdFile);
-	int setUniquePluginId(File binFile, File csdFile);
-	long cabbageFindPluginId(unsigned char *buf, size_t len, const char *s);
-	void writePluginFileToDisk(File fc, File csdFile, File VSTData);
+    ApplicationCommandManager commandManager;
+    PopupMenu createExamplesMenu();
+    Array<File> exampleFiles;
+    const String getPluginId (File csdFile);
+    void exportPlugin (String type, File csdFile);
+    int setUniquePluginId (File binFile, File csdFile);
+    long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);
+    void writePluginFileToDisk (File fc, File csdFile, File VSTData);
     //=======================================================
 
-    
+
     bool isGUIEnabled = false;
     ScopedPointer<CabbageContentComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)

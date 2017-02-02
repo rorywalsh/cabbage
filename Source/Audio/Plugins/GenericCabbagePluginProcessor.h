@@ -18,7 +18,7 @@
 class GenericCabbagePluginProcessor  : public CsoundPluginProcessor
 {
 public:
-    GenericCabbagePluginProcessor(File inputFile);
+    GenericCabbagePluginProcessor (File inputFile);
     ~GenericCabbagePluginProcessor();
 
     controlChannelInfo_s* csoundChanList;

@@ -54,7 +54,7 @@ class CabbageSignalDisplay : public Component, public ValueTree::Listener, publi
 
 public:
 
-    CabbageSignalDisplay(ValueTree wData, CabbagePluginEditor* owner);
+    CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor* owner);
     ~CabbageSignalDisplay() {};
 
     //ValueTree::Listener virtual methods....
@@ -66,22 +66,22 @@ public:
 
     ValueTree widgetData;
 
-    void setBins(int min, int max);
+    void setBins (int min, int max);
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void changeListenerCallback(ChangeBroadcaster *source);
+    void changeListenerCallback (ChangeBroadcaster* source);
     void drawSonogram();
-    void drawSpectroscope(Graphics& g);
-    void drawWaveform(Graphics& g);
-    void drawLissajous(Graphics& g);
-    void paint(Graphics& g);
-    void setSignalFloatArray(Array<float, CriticalSection> _points);
-    void setSignalFloatArraysForLissajous(Array<float, CriticalSection> _points1, Array<float, CriticalSection> _points2);
+    void drawSpectroscope (Graphics& g);
+    void drawWaveform (Graphics& g);
+    void drawLissajous (Graphics& g);
+    void paint (Graphics& g);
+    void setSignalFloatArray (Array<float, CriticalSection> _points);
+    void setSignalFloatArraysForLissajous (Array<float, CriticalSection> _points1, Array<float, CriticalSection> _points2);
     void resized();
-    void mouseMove(const MouseEvent &e);
-    void showPopup(String text);
-    void showScrollbar(bool show);
-    void zoomOut(int factor=1);
-    void zoomIn(int factor=1);
+    void mouseMove (const MouseEvent& e);
+    void showPopup (String text);
+    void showScrollbar (bool show);
+    void zoomOut (int factor = 1);
+    void zoomIn (int factor = 1);
     void timerCallback();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSignalDisplay);

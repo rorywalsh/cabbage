@@ -20,91 +20,91 @@
 #include "CabbageImage.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageImage::CabbageImage(ValueTree wData, CabbagePluginEditor* owner, bool isLineWidget) : CabbageWidgetBase(),
-    widgetData(wData),
-    owner(owner),
-	isLineWidget(isLineWidget),
-    shape(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::shape)),
-    corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners)),
-    lineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness)),
-    outlineColour(Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::outlinecolour))),
-    mainColour(Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour)))
+CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool isLineWidget) : CabbageWidgetBase(),
+    widgetData (wData),
+    owner (owner),
+    isLineWidget (isLineWidget),
+    shape (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::shape)),
+    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
+    lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
+    outlineColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::outlinecolour))),
+    mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)))
 {
-    widgetData.addListener(this);
-    imgFile = File::getCurrentWorkingDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
-    this->setWantsKeyboardFocus(false);
-    initialiseCommonAttributes(this, wData);
+    widgetData.addListener (this);
+    imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file));
+    this->setWantsKeyboardFocus (false);
+    initialiseCommonAttributes (this, wData);
 }
 
 //==============================================================================
-void CabbageImage::paint(Graphics& g)
+void CabbageImage::paint (Graphics& g)
 {
-	if(isLineWidget)
-	{
+    if (isLineWidget)
+    {
         g.setColour (mainColour);
-        g.fillRoundedRectangle(0, 0, getWidth(), getHeight(), 1);
+        g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), 1);
 
         g.setColour (CabbageUtilities::getBackgroundSkin());
-        g.fillRoundedRectangle (0, 0, getWidth()-1, getHeight()-1, 1);		
-	}
-	else
-	{
-		if(imgFile.existsAsFile())
-		{
-			if(imgFile.hasFileExtension(".svg"))
-			{
-				CabbageLookAndFeel2::drawFromSVG(g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform::identity);
-			}
-			else
-				g.drawImage(ImageCache::getFromFile(imgFile), 0, 0, getWidth(), getHeight(), 0, 0,
-							ImageCache::getFromFile(imgFile).getWidth(),
-							ImageCache::getFromFile(imgFile).getHeight());
-		}
-		else
-		{
-			g.fillAll(Colours::transparentBlack);
+        g.fillRoundedRectangle (0, 0, getWidth() - 1, getHeight() - 1, 1);
+    }
+    else
+    {
+        if (imgFile.existsAsFile())
+        {
+            if (imgFile.hasFileExtension (".svg"))
+            {
+                CabbageLookAndFeel2::drawFromSVG (g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform::identity);
+            }
+            else
+                g.drawImage (ImageCache::getFromFile (imgFile), 0, 0, getWidth(), getHeight(), 0, 0,
+                             ImageCache::getFromFile (imgFile).getWidth(),
+                             ImageCache::getFromFile (imgFile).getHeight());
+        }
+        else
+        {
+            g.fillAll (Colours::transparentBlack);
 
 
-			g.setColour(mainColour);
+            g.setColour (mainColour);
 
-			if(shape=="square")
-				g.fillRoundedRectangle(0,0, getWidth(), getHeight(), corners);
-			else
-				g.fillEllipse(lineThickness,lineThickness, getWidth(), getHeight());
+            if (shape == "square")
+                g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), corners);
+            else
+                g.fillEllipse (lineThickness, lineThickness, getWidth(), getHeight());
 
 
-			g.setColour(outlineColour);
+            g.setColour (outlineColour);
 
-			if(shape=="square")
-				g.drawRoundedRectangle(0,0, jmax(1, getWidth()), jmax(1, getHeight()), corners, lineThickness);
-			else
-				g.drawEllipse(0,0, jmax(1, getWidth()), jmax(1, getHeight()), lineThickness);
-		}
-	}
+            if (shape == "square")
+                g.drawRoundedRectangle (0, 0, jmax (1, getWidth()), jmax (1, getHeight()), corners, lineThickness);
+            else
+                g.drawEllipse (0, 0, jmax (1, getWidth()), jmax (1, getHeight()), lineThickness);
+        }
+    }
 }
 //==============================================================================
-void CabbageImage::mouseDown(const MouseEvent& e)
+void CabbageImage::mouseDown (const MouseEvent& e)
 {
-	owner->sendChannelDataToCsound(getChannel(), currentToggleValue);
-	currentToggleValue != currentToggleValue;
+    owner->sendChannelDataToCsound (getChannel(), currentToggleValue);
+    currentToggleValue != currentToggleValue;
 }
 //==============================================================================
 void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 
-    if(prop==CabbageIdentifierIds::value)
+    if (prop == CabbageIdentifierIds::value)
     {
         //bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
         //setToggleState(getValue(valueTree)==1 ? true : false, dontSendNotification);
     }
 
-    lineThickness = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::outlinethickness),
-    outlineColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::outlinecolour));
-    mainColour = Colour::fromString(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::colour));
-    shape = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::shape);
-    imgFile = File::getCurrentWorkingDirectory().getChildFile(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file));
+    lineThickness = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness),
+    outlineColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour));
+    mainColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
+    shape = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::shape);
+    imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file));
 
-    handleCommonUpdates(this, valueTree);
+    handleCommonUpdates (this, valueTree);
     repaint();
 }
 

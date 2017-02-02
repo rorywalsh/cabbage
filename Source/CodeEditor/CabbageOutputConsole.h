@@ -26,26 +26,26 @@ class CabbageOutputConsole : public Component
 {
     ScopedPointer<TextEditor> textEditor;
 public:
-    CabbageOutputConsole(ValueTree valueTree): Component(), value(valueTree)
+    CabbageOutputConsole (ValueTree valueTree): Component(), value (valueTree)
     {
-        addAndMakeVisible(textEditor = new TextEditor(), true);
-        textEditor->setColour(Label::outlineColourId, Colours::white);
-        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleText, Colours::grey.darker()));
-        textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
-        textEditor->setMultiLine(true);
-        textEditor->setReadOnly(true);
-        textEditor->setFont(Font("Arial", 12, 1));
+        addAndMakeVisible (textEditor = new TextEditor(), true);
+        textEditor->setColour (Label::outlineColourId, Colours::white);
+        textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleText, Colours::grey.darker()));
+        textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
+        textEditor->setMultiLine (true);
+        textEditor->setReadOnly (true);
+        textEditor->setFont (Font ("Arial", 12, 1));
 
-        setText("Cabbage Csound IDE\n");
+        setText ("Cabbage Csound IDE\n");
     };
 
     ~CabbageOutputConsole() {};
 
 
-    void setText(String text)
+    void setText (String text)
     {
-        textEditor->insertTextAtCaret(text);
-        textEditor->setCaretPosition(textEditor->getText().length());
+        textEditor->insertTextAtCaret (text);
+        textEditor->setCaretPosition (textEditor->getText().length());
     }
 
     String getText()
@@ -56,28 +56,28 @@ public:
 
     void updateColourScheme()
     {
-        textEditor->setColour(TextEditor::textColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleText, Colours::grey.darker()));
-        textEditor->setColour(TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleBackground, Colours::grey.darker()));
+        textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleText, Colours::grey.darker()));
+        textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleBackground, Colours::grey.darker()));
         repaint();
     }
 
-    void setFontSize(int size)
+    void setFontSize (int size)
     {
-        textEditor->setFont(Font("Arial", size, 0));
+        textEditor->setFont (Font ("Arial", size, 0));
     }
 
     void resized()
     {
         Rectangle<int> area (getLocalBounds());
-        textEditor->setBounds(area.reduced(2).withY(0));
+        textEditor->setBounds (area.reduced (2).withY (0));
     }
 
-    void paint(Graphics& g)
+    void paint (Graphics& g)
     {
-        g.fillAll(CabbageSettings::getColourFromValueTree(value, CabbageColourIds::consoleOutline, Colours::grey.darker()));
-//        g.setColour(Colours::white);
-//        g.drawRoundedRectangle(getLocalBounds().toFloat(), 2, 2);
-//        g.drawFittedText("Csound output", getLocalBounds().withHeight(18), Justification::centred, 1, 1.f);
+        g.fillAll (CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleOutline, Colours::grey.darker()));
+        //        g.setColour(Colours::white);
+        //        g.drawRoundedRectangle(getLocalBounds().toFloat(), 2, 2);
+        //        g.drawFittedText("Csound output", getLocalBounds().withHeight(18), Justification::centred, 1, 1.f);
     }
 
 private:

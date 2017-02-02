@@ -32,8 +32,8 @@ class CabbageWidgetBase
     float rotate, alpha, currentValue;
     String tooltipText, text, channel, csdFile, file;
     File imgButtonOn, imgButtonOff, imgPath;
-    StringArray channelArray;	//can be used if widget supports multiple channels
-    StringArray textArray;		//can be used used if widget supports multiple text items
+    StringArray channelArray;   //can be used if widget supports multiple channels
+    StringArray textArray;      //can be used used if widget supports multiple text items
 
 public:
     CabbageWidgetBase() {}
@@ -107,200 +107,207 @@ public:
     {
         return channelArray;
     }
-    void setValue(float val)
+    void setValue (float val)
     {
         value = val;
     }
-    void setWidgetText(String val)
+    void setWidgetText (String val)
     {
         text = val;
     }
-    void setFilename(String val)
+    void setFilename (String val)
     {
         file = val;
     }
-    void initialiseCommonAttributes(Component* child, ValueTree valueTree);							//handles simple attributes on initialisation
-    void handleCommonUpdates(Component* child, ValueTree data, bool calledFromConstructor=false);	//handles all updates from ident channel message
+    void initialiseCommonAttributes (Component* child, ValueTree valueTree);                        //handles simple attributes on initialisation
+    void handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor = false); //handles all updates from ident channel message
 
     //see below file for implementation
     template< typename Type >
-    void setImgProperties(Type& comp, ValueTree widgetData, String type);
+    void setImgProperties (Type& comp, ValueTree widgetData, String type);
 
 
 
-    String getCurrentText(ValueTree data);
-    String getCurrentPopupText(ValueTree data);
+    String getCurrentText (ValueTree data);
+    String getCurrentPopupText (ValueTree data);
 
-    void populateTextArrays(ValueTree data);
-    void setChannel(ValueTree value);
-    float getCurrentValue(ValueTree data);
-    static int getSVGHeight(File svgFile);
-    static int getSVGWidth(File svgFile);
+    void populateTextArrays (ValueTree data);
+    void setChannel (ValueTree value);
+    float getCurrentValue (ValueTree data);
+    static int getSVGHeight (File svgFile);
+    static int getSVGWidth (File svgFile);
 
 
 };
 
 //================== setImgProperties ==========================
 template< typename Type >
-void CabbageWidgetBase::setImgProperties(Type& comp, ValueTree data, String imgType)
+void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String imgType)
 {
 
     File imgFile;
-	const String csdFile(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::csdfile));
-    const File imgPath(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::imgpath));
-    const String fileType(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::filetype));
+    const String csdFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::csdfile));
+    const File imgPath (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgpath));
+    const String fileType (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::filetype));
 
-    if(imgType=="groupbox")
+    if (imgType == "groupbox")
     {
-        imgFile = File(csdFile).getChildFile(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::imggroupbox));
-        if(imgFile.existsAsFile())
+        imgFile = File (csdFile).getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imggroupbox));
+
+        if (imgFile.existsAsFile())
         {
-            if(imgFile.getFileExtension().contains("svg"))
+            if (imgFile.getFileExtension().contains ("svg"))
             {
-                comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
+                comp.getProperties().set (CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
             }
             else
-                comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
+                comp.getProperties().set (CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
         }
-        else if(imgPath.exists())
+        else if (imgPath.exists())
         {
-            File filename = File(csdFile).getChildFile(imgPath.getFullPathName()+"/groupbox."+fileType);
+            File filename = File (csdFile).getChildFile (imgPath.getFullPathName() + "/groupbox." + fileType);
 
-            if(filename.existsAsFile())
+            if (filename.existsAsFile())
             {
-                if(imgFile.getFileExtension().contains("svg"))
+                if (imgFile.getFileExtension().contains ("svg"))
                 {
-                    comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
+                    comp.getProperties().set (CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
                 }
                 else
-                    comp.getProperties().set(CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
+                    comp.getProperties().set (CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
             }
         }
     }
-    else if(imgType=="buttonon")
+    else if (imgType == "buttonon")
     {
-        imgFile = File(csdFile).getChildFile(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::imgbuttonon));
-        if(imgFile.existsAsFile())
+        imgFile = File (csdFile).getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon));
+
+        if (imgFile.existsAsFile())
         {
 
-            if(imgFile.getFileExtension().contains("svg"))
+            if (imgFile.getFileExtension().contains ("svg"))
             {
-                comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
+                comp.getProperties().set (CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
             }
             else
-                comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
+                comp.getProperties().set (CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
         }
-        else if(imgPath.exists())
+        else if (imgPath.exists())
         {
-            File filename = File(csdFile).getChildFile(imgPath.getFullPathName()+"/buttonon."+fileType);
+            File filename = File (csdFile).getChildFile (imgPath.getFullPathName() + "/buttonon." + fileType);
 
-            if(filename.existsAsFile())
+            if (filename.existsAsFile())
             {
-                if(imgFile.getFileExtension().contains("svg"))
+                if (imgFile.getFileExtension().contains ("svg"))
                 {
-                    comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
+                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
                 }
                 else
-                    comp.getProperties().set(CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
+                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
             }
         }
     }
-    else if(imgType=="buttonoff")
+    else if (imgType == "buttonoff")
     {
-        imgFile = File(csdFile).getChildFile(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::imgbuttonoff));
-        if(imgFile.existsAsFile())
+        imgFile = File (csdFile).getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff));
+
+        if (imgFile.existsAsFile())
         {
-            if(imgFile.getFileExtension().contains("svg"))
+            if (imgFile.getFileExtension().contains ("svg"))
             {
-                comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, imgFile.getFullPathName());
+                comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, imgFile.getFullPathName());
             }
             else
-                comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, imgFile.getFullPathName());
+                comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, imgFile.getFullPathName());
         }
-        else if(imgPath.exists())
+        else if (imgPath.exists())
         {
-            File filename = File(csdFile).getChildFile(imgPath.getFullPathName()+"/buttonoff."+fileType);
+            File filename = File (csdFile).getChildFile (imgPath.getFullPathName() + "/buttonoff." + fileType);
 
-            if(filename.existsAsFile())
+            if (filename.existsAsFile())
             {
 
-                if(imgFile.getFileExtension().contains("svg"))
+                if (imgFile.getFileExtension().contains ("svg"))
                 {
-                    comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
+                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
                 }
                 else
-                    comp.getProperties().set(CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
+                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
             }
         }
     }
-    else if(imgType.contains("sliderbg"))
+    else if (imgType.contains ("sliderbg"))
     {
-        imgFile = File(csdFile).getChildFile(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::imgsliderbg));
-        if(imgFile.existsAsFile())
+        imgFile = File (csdFile).getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgsliderbg));
+
+        if (imgFile.existsAsFile())
         {
 
-            if(imgFile.getFileExtension().contains("svg"))
+            if (imgFile.getFileExtension().contains ("svg"))
             {
-                comp.getProperties().set("imgsliderbg", imgFile.getFullPathName());
+                comp.getProperties().set ("imgsliderbg", imgFile.getFullPathName());
             }
             else
-                comp.getProperties().set("imgsliderbg", imgFile.getFullPathName());
+                comp.getProperties().set ("imgsliderbg", imgFile.getFullPathName());
 
         }
-        else if(imgPath.exists())
+        else if (imgPath.exists())
         {
             File filename;
-            if(imgType=="rsliderbg")
-                filename = File(imgPath.getFullPathName()+"/rslider_background."+fileType);
-            else if(imgType=="hsliderbg")
-                filename = File(imgPath.getFullPathName()+"/hslider_background."+fileType);
-            else
-                filename = File(imgPath.getFullPathName()+"/vslider_background."+fileType);
 
-            if(filename.existsAsFile())
+            if (imgType == "rsliderbg")
+                filename = File (imgPath.getFullPathName() + "/rslider_background." + fileType);
+            else if (imgType == "hsliderbg")
+                filename = File (imgPath.getFullPathName() + "/hslider_background." + fileType);
+            else
+                filename = File (imgPath.getFullPathName() + "/vslider_background." + fileType);
+
+            if (filename.existsAsFile())
             {
 
-                if(imgFile.getFileExtension().contains("svg"))
+                if (imgFile.getFileExtension().contains ("svg"))
                 {
-                    comp.getProperties().set("imgsliderbg", filename.getFullPathName());
+                    comp.getProperties().set ("imgsliderbg", filename.getFullPathName());
                 }
                 else
-                    comp.getProperties().set("imgsliderbg", imgFile.getFullPathName());
+                    comp.getProperties().set ("imgsliderbg", imgFile.getFullPathName());
             }
         }
     }
-    else if(imgType.contains("slider"))
+    else if (imgType.contains ("slider"))
     {
-        imgFile = File(csdFile).getChildFile(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::imgslider));
-        if(imgFile.existsAsFile())
+        imgFile = File (csdFile).getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgslider));
+
+        if (imgFile.existsAsFile())
         {
 
-            if(imgFile.getFileExtension().contains("svg"))
+            if (imgFile.getFileExtension().contains ("svg"))
             {
-                comp.getProperties().set("imgslider", imgFile.getFullPathName());
+                comp.getProperties().set ("imgslider", imgFile.getFullPathName());
             }
             else
-                comp.getProperties().set("imgslider", imgFile.getFullPathName());
+                comp.getProperties().set ("imgslider", imgFile.getFullPathName());
         }
-        else if(imgPath.exists())
+        else if (imgPath.exists())
         {
             File filename;
-            if(imgType=="rslider")
-                filename = File(imgPath.getFullPathName()+"/rslider."+fileType);
-            else if(imgType=="hslider")
-                filename = File(imgPath.getFullPathName()+"/hslider."+fileType);
-            else
-                filename = File(imgPath.getFullPathName()+"/vslider."+fileType);
 
-            if(filename.existsAsFile())
+            if (imgType == "rslider")
+                filename = File (imgPath.getFullPathName() + "/rslider." + fileType);
+            else if (imgType == "hslider")
+                filename = File (imgPath.getFullPathName() + "/hslider." + fileType);
+            else
+                filename = File (imgPath.getFullPathName() + "/vslider." + fileType);
+
+            if (filename.existsAsFile())
             {
 
-                if(imgFile.getFileExtension().contains("svg"))
+                if (imgFile.getFileExtension().contains ("svg"))
                 {
-                    comp.getProperties().set("imgslider", filename.getFullPathName());
+                    comp.getProperties().set ("imgslider", filename.getFullPathName());
                 }
                 else
-                    comp.getProperties().set("imgslider", filename.getFullPathName());
+                    comp.getProperties().set ("imgslider", filename.getFullPathName());
             }
         }
     }

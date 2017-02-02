@@ -41,13 +41,13 @@ class CabbageSoundfiler : public Component, public ValueTree::Listener, public C
     CabbagePluginEditor* owner;
 public:
 
-    CabbageSoundfiler(ValueTree wData, CabbagePluginEditor* _owner);
+    CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageSoundfiler() {};
 
     void resized();
 
-    void setFile(String newFile);
-    void setWaveform(AudioSampleBuffer buffer, int channels);
+    void setFile (String newFile);
+    void setWaveform (AudioSampleBuffer buffer, int channels);
     int getScrubberPosition();
     int getLoopLength();
 
@@ -58,7 +58,7 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    void changeListenerCallback(ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source);
 
     ValueTree widgetData;
 

@@ -53,42 +53,42 @@ public:
     TableManager();
     ~TableManager() {};
     void paint (Graphics& g);
-    void setGridColour(Colour col);
-    void setOutlineThickness(float thickness);
-    void setFill(bool fill );
-    void setBackgroundColour(Colour col);
+    void setGridColour (Colour col);
+    void setOutlineThickness (float thickness);
+    void setFill (bool fill );
+    void setBackgroundColour (Colour col);
     void repaintAllTables();
     void resized();
-    void setZoomFactor(double zoom);
-    void setDrawMode(String mode);
-    void showScrollbar(bool show);
+    void setZoomFactor (double zoom);
+    void setDrawMode (String mode);
+    void showScrollbar (bool show);
     void bringButtonsToFront();
-    void setAmpRanges(var ampRange);
+    void setAmpRanges (var ampRange);
     void timerCallback();
     void updateScrollbars();
-    void setRange(double start, double end);
+    void setRange (double start, double end);
     ScopedPointer<DrawableRectangle> currentPositionMarker;
     double getLengthInSamples();
-    void setScrubberPos(double pos, int tableNum);
-    void scroll(double newRangeStart);
-    void addTable(int sr, const Colour col, int gen, var ampRange, int ftnumber, ChangeListener* listener);
-    void setWaveform(AudioSampleBuffer buffer, int ftNumber);
+    void setScrubberPos (double pos, int tableNum);
+    void scroll (double newRangeStart);
+    void addTable (int sr, const Colour col, int gen, var ampRange, int ftnumber, ChangeListener* listener);
+    void setWaveform (AudioSampleBuffer buffer, int ftNumber);
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void setWaveform(Array<float, CriticalSection> buffer, int ftNumber, bool updateRange = true);
-    void setFile(const File file);
-    void enableEditMode(StringArray pFields, int ftnumber);
-    void toggleEditMode(bool enable);
+    void setWaveform (Array<float, CriticalSection> buffer, int ftNumber, bool updateRange = true);
+    void setFile (const File file);
+    void enableEditMode (StringArray pFields, int ftnumber);
+    void toggleEditMode (bool enable);
     ScopedPointer<RoundButton> zoomIn, zoomOut;
     OwnedArray<RoundButton> tableButtons;
     OwnedArray<GenTable> tables;
-    void showZoomButtons(bool show);
-    void showTableButtons(bool show);
-    void changeListenerCallback(ChangeBroadcaster *source);
-    void bringTableToFront(int ftNumber);
-    void configTableSizes(var tableConfig);
-    void setVUGradient(Array<Colour> colour);
+    void showZoomButtons (bool show);
+    void showTableButtons (bool show);
+    void changeListenerCallback (ChangeBroadcaster* source);
+    void bringTableToFront (int ftNumber);
+    void configTableSizes (var tableConfig);
+    void setVUGradient (Array<Colour> colour);
     GenTable* getLargestTable();
-    GenTable* getTableFromFtNumber(int ftnumber);
+    GenTable* getTableFromFtNumber (int ftnumber);
 };
 
 //=================================================================
@@ -110,15 +110,15 @@ public:
 
     int getCurrentPlayPosInSamples()
     {
-        return currentPlayPosition*sampleRate;
+        return currentPlayPosition * sampleRate;
     }
 
     int getLoopLengthInSamples()
     {
-        return loopLength*sampleRate;
+        return loopLength * sampleRate;
     }
 
-    void setScrubberPos(double pos);
+    void setScrubberPos (double pos);
 
     float timeToX (const double time) const
     {
@@ -130,23 +130,23 @@ public:
         return (x / getWidth()) * (visibleRange.getLength()) + visibleRange.getStart();
     }
 
-    void setSampleRange(double pos, double end);
+    void setSampleRange (double pos, double end);
     void setZoomFactor (double amount);
     void setFile (const File& file);
     void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel);
-    void setWaveform(AudioSampleBuffer buffer);
-    void enableEditMode(StringArray pFields);
+    void setWaveform (AudioSampleBuffer buffer);
+    void enableEditMode (StringArray pFields);
     Point<int> tableTopAndHeight;
-    void setWaveform(Array<float, CriticalSection> buffer, bool updateRange = true);
-    void createImage(String filename);
-    void addTable(int sr, const Colour col, int gen, var ampRange);
-    static float ampToPixel(int height, Range<float> minMax, float sampleVal);
-    static float pixelToAmp(int height, Range<float> minMax, float sampleVal);
+    void setWaveform (Array<float, CriticalSection> buffer, bool updateRange = true);
+    void createImage (String filename);
+    void addTable (int sr, const Colour col, int gen, var ampRange);
+    static float ampToPixel (int height, Range<float> minMax, float sampleVal);
+    static float pixelToAmp (int height, Range<float> minMax, float sampleVal);
     Array<double> getPfields();
     String changeMessage;
     Colour gridColour;
     int tableNumber, tableSize, genRoutine, realGenRoutine;
-    void setRange(Range<double> newRange, bool isScrolling = false);
+    void setRange (Range<double> newRange, bool isScrolling = false);
     Range<double> globalRange;
     bool isTableOnTop;
     ScopedPointer<ScrollBar> scrollbar;
@@ -154,7 +154,7 @@ public:
     Range<double> visibleRange;
     bool drawGrid;
     int scrollbarReduction;
-    void showScrollbar(bool show);
+    void showScrollbar (bool show);
     int mainFooterHeight, paintFooterHeight, zoomButtonsOffset;
 
     HandleViewer* getHandleViewer()
@@ -163,17 +163,17 @@ public:
     }
 
     double quantiseSpace;
-    void setAmpRanges(var ampRange);
-    void setXPosition(double pos);
+    void setAmpRanges (var ampRange);
+    void setXPosition (double pos);
     bool drawAsVUMeter;
 
     HandleComponent* getCurrentHandle()
     {
-        if(currentHandle)
+        if (currentHandle)
             return currentHandle;
         else
         {
-            jassert(false);
+            jassert (false);
             return nullptr;
         }
 
@@ -189,7 +189,7 @@ public:
         return newRangeStart;
     }
 
-    void shouldDrawGrid(bool val)
+    void shouldDrawGrid (bool val)
     {
         drawGrid = val;
     }
@@ -199,24 +199,24 @@ public:
         return qsteps;
     }
 
-    void setTraceThickness(float thickness)
+    void setTraceThickness (float thickness)
     {
         traceThickness = thickness;
     }
 
-    void shouldFillTable(bool fill)
+    void shouldFillTable (bool fill)
     {
         shouldFill = fill;
     }
 
-    void setBackgroundColour(Colour col)
+    void setBackgroundColour (Colour col)
     {
         backgroundColour = col;
     }
 
-    void setVUGradient(ColourGradient grad)
+    void setVUGradient (ColourGradient grad)
     {
-        vuGradient=grad;
+        vuGradient = grad;
     }
 
 private:
@@ -245,14 +245,14 @@ private:
     juce::Rectangle<int> handleViewerRect;
     void paint (Graphics& g);
     void mouseDown (const MouseEvent& e);
-    void mouseUp(const MouseEvent& e);
-    void mouseEnter(const MouseEvent& e);
-    void mouseDrag(const MouseEvent& e);
-    void mouseExit(const MouseEvent& e);
+    void mouseUp (const MouseEvent& e);
+    void mouseEnter (const MouseEvent& e);
+    void mouseDrag (const MouseEvent& e);
+    void mouseExit (const MouseEvent& e);
     bool reDraw;
     double scrubberPosition;
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void changeListenerCallback(ChangeBroadcaster *source);
+    void changeListenerCallback (ChangeBroadcaster* source);
     ScopedPointer<HandleViewer> handleViewer;
     AudioFormatManager formatManager;
     double sampleRate;
@@ -269,23 +269,26 @@ private:
     bool drawWaveform;
     ColourGradient vuGradient;
 
-    const Image drawGridImage(bool redraw, double width=0.0, double height=0.0, double offset=0.0);
+    const Image drawGridImage (bool redraw, double width = 0.0, double height = 0.0, double offset = 0.0);
 
     Array<float, CriticalSection> waveformBuffer;
     double visibleLength, visibleStart, visibleEnd, maxAmp;
     Range<float> minMax;
 
-    Range<float> findMinMax(Array<float, CriticalSection> buffer)
+    Range<float> findMinMax (Array<float, CriticalSection> buffer)
     {
-        float min=buffer[0],max=buffer[0];
-        for(int i=0; i<buffer.size(); i++)
+        float min = buffer[0], max = buffer[0];
+
+        for (int i = 0; i < buffer.size(); i++)
         {
-            if(buffer[i]>max)
-                max=buffer[i];
-            if(buffer[i]<min)
-                min=buffer[i];
+            if (buffer[i] > max)
+                max = buffer[i];
+
+            if (buffer[i] < min)
+                min = buffer[i];
         }
-        return Range<float>(min, max);
+
+        return Range<float> (min, max);
     }
 
 };
@@ -301,22 +304,22 @@ public:
     ~HandleViewer();
     ScopedPointer<TextButton> button1;
     ScopedPointer<TextButton> button2;
-    void mouseDown(const MouseEvent& e);
-    void mouseDrag(const MouseEvent& e);
-    void positionHandle(const MouseEvent& e);
-    void repaint(Graphics &g);
+    void mouseDown (const MouseEvent& e);
+    void mouseDrag (const MouseEvent& e);
+    void positionHandle (const MouseEvent& e);
+    void repaint (Graphics& g);
     void resized();
-    void addHandle(double x, double y, double width, double height, Colour colour, bool status=false);
-    void insertHandle(double x, double y, Colour colour);
-    double getSnapYPosition(const double y);
-    double getSnapXPosition(const double x);
-    HandleComponent* getPreviousHandle(HandleComponent* thisHandle);
-    HandleComponent* getNextHandle(HandleComponent* thisHandle);
-    int getHandleIndex(HandleComponent* thisHandle);
+    void addHandle (double x, double y, double width, double height, Colour colour, bool status = false);
+    void insertHandle (double x, double y, Colour colour);
+    double getSnapYPosition (const double y);
+    double getSnapXPosition (const double x);
+    HandleComponent* getPreviousHandle (HandleComponent* thisHandle);
+    HandleComponent* getNextHandle (HandleComponent* thisHandle);
+    int getHandleIndex (HandleComponent* thisHandle);
     void removeHandle (HandleComponent* thisHandle);
     OwnedArray<HandleComponent, CriticalSection> handles;
-    void fixEdgePoints(int gen);
-    void showHandles(bool show);
+    void fixEdgePoints (int gen);
+    void showHandles (bool show);
     int handleIndex;
     bool showingGrid;
     double tableSize;
@@ -329,7 +332,7 @@ public:
         return showingGrid;
     }
 
-    void setShowingGrid(bool val)
+    void setShowingGrid (bool val)
     {
         showingGrid = val;
     }
@@ -349,11 +352,11 @@ class HandleComponent : public Component,
     public ChangeBroadcaster
 {
 public:
-    HandleComponent(double xPos, double yPos, int index, bool fixed, int gen, Colour colour);
+    HandleComponent (double xPos, double yPos, int index, bool fixed, int gen, Colour colour);
     ~HandleComponent();
 
 
-    void setPosition(double x, double y, bool circularEnv);
+    void setPosition (double x, double y, bool circularEnv);
 
     void paint (Graphics& g);
     void removeThisHandle();
@@ -364,9 +367,9 @@ public:
     void mouseExit (const MouseEvent& e);
     int index;
     int height, width;
-    int x,y;
-    void setColour(Colour icolour);
-    void setRelativePosition(Point<double> point);
+    int x, y;
+    void setColour (Colour icolour);
+    void setRelativePosition (Point<double> point);
 
     HandleViewer* getParentHandleViewer()
     {
@@ -388,7 +391,7 @@ public:
         return uniqueID;
     }
 
-    void setUniqueID(int id)
+    void setUniqueID (int id)
     {
         uniqueID = id;
     }
@@ -398,7 +401,7 @@ public:
         return highResY;
     }
 
-    void setDoubleY(double y)
+    void setDoubleY (double y)
     {
         highResY = y;
     }

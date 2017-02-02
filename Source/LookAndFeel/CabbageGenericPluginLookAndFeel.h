@@ -30,23 +30,23 @@
 #include "../BinaryData/CabbageBinaryData.h"
 
 
-class CabbageGenericPluginLookAndFeel	: public LookAndFeel_V3
+class CabbageGenericPluginLookAndFeel   : public LookAndFeel_V3
 {
 public:
     CabbageGenericPluginLookAndFeel();
     ~CabbageGenericPluginLookAndFeel() {};
 
-    void drawLinearSliderThumb (Graphics &g, int x, int y, int width, int height, float sliderPos,
+    void drawLinearSliderThumb (Graphics& g, int x, int y, int width, int height, float sliderPos,
                                 float minSliderPos,
                                 float maxSliderPos,
                                 const Slider::SliderStyle style,
-                                Slider &slider) override;
+                                Slider& slider) override;
 
     void drawThumb (Graphics& g, const float x, const float y,
                     const float diameter, const Colour& colour,
                     const float outlineThickness) noexcept;
 
-    void refreshLookAndFeel(ValueTree valueTree);
+    void refreshLookAndFeel (ValueTree valueTree);
 
 
 private:

@@ -1,7 +1,7 @@
 /*
   This file is part of the JUCE library.
   Copyright (c) 2015 - ROLI Ltd.
-  
+
   Permission is granted to use this software under the terms of either:
    a) the GPL v2 (or any later version)
    b) the Affero GPL v3
@@ -36,14 +36,14 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
     {
         PopupMenu m;
 
-//        if (MainHostWindow* const mainWindow = findParentComponentOfClass<MainHostWindow>())
-//        {
-//            mainWindow->addPluginsToMenu (m);
-//
-//            const int r = m.show();
-//
-//            createNewPlugin (mainWindow->getChosenType (r), e.x, e.y);
-//        }
+        //        if (MainHostWindow* const mainWindow = findParentComponentOfClass<MainHostWindow>())
+        //        {
+        //            mainWindow->addPluginsToMenu (m);
+        //
+        //            const int r = m.show();
+        //
+        //            createNewPlugin (mainWindow->getChosenType (r), e.x, e.y);
+        //        }
     }
 }
 
@@ -70,9 +70,9 @@ ConnectorComponent* CabbageGraphComponent::getComponentForConnection (const Audi
     {
         if (ConnectorComponent* const c = dynamic_cast<ConnectorComponent*> (getChildComponent (i)))
             if (c->sourceFilterID == conn.sourceNodeId
-                 && c->destFilterID == conn.destNodeId
-                 && c->sourceFilterChannel == conn.sourceChannelIndex
-                 && c->destFilterChannel == conn.destChannelIndex)
+                && c->destFilterID == conn.destNodeId
+                && c->sourceFilterChannel == conn.sourceChannelIndex
+                && c->destFilterChannel == conn.destChannelIndex)
                 return c;
     }
 
@@ -158,8 +158,8 @@ void CabbageGraphComponent::updateComponents()
 }
 
 void CabbageGraphComponent::beginConnectorDrag (const uint32 sourceFilterID, const int sourceFilterChannel,
-                                           const uint32 destFilterID, const int destFilterChannel,
-                                           const MouseEvent& e)
+                                                const uint32 destFilterID, const int destFilterChannel,
+                                                const MouseEvent& e)
 {
     draggingConnector = dynamic_cast<ConnectorComponent*> (e.originalComponent);
 

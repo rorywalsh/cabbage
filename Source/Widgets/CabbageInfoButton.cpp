@@ -20,49 +20,50 @@
 #include "CabbageInfoButton.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageInfoButton::CabbageInfoButton(ValueTree wData)
-    : widgetData(wData),
+CabbageInfoButton::CabbageInfoButton (ValueTree wData)
+    : widgetData (wData),
       TextButton()
 {
-    widgetData.addListener(this); 				//add listener to valueTree so it gets notified when a widget's property changes
-    initialiseCommonAttributes(this, wData); 	//initialise common attributes such as bounds, name, rotation, etc..
-    setLookAndFeelColours(wData);
+    widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+    setLookAndFeelColours (wData);
 
-    setButtonText(getText());
+    setButtonText (getText());
 
-    filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+    filename = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file);
 
-    setImgProperties(*this, wData, "buttonon");
-    setImgProperties(*this, wData, "buttonoff");
-    addListener(this);
+    setImgProperties (*this, wData, "buttonon");
+    setImgProperties (*this, wData, "buttonoff");
+    addListener (this);
 
 }
 
 //===============================================================================
-void CabbageInfoButton::buttonClicked(Button* button)
+void CabbageInfoButton::buttonClicked (Button* button)
 {
-    CabbageUtilities::debug(File(getCsdFile()).getParentDirectory().getChildFile(filename).getFullPathName());
-    if(File(getCsdFile()).getParentDirectory().getChildFile(filename).existsAsFile())
+    CabbageUtilities::debug (File (getCsdFile()).getParentDirectory().getChildFile (filename).getFullPathName());
+
+    if (File (getCsdFile()).getParentDirectory().getChildFile (filename).existsAsFile())
     {
-        URL url(filename);
+        URL url (filename);
         url.launchInDefaultBrowser();
     }
 }
 
 //===============================================================================
-void CabbageInfoButton::setLookAndFeelColours(ValueTree wData)
+void CabbageInfoButton::setLookAndFeelColours (ValueTree wData)
 {
-    setColour(TextButton::textColourOffId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
-    setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
-    setColour(TextButton::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
-    setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+    setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+    setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+    setColour (TextButton::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
+    setColour (TextButton::buttonOnColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::oncolour)));
 }
 
 //===============================================================================
 void CabbageInfoButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    setLookAndFeelColours(valueTree);
-    handleCommonUpdates(this, valueTree);		//handle comon updates such as bounds, alpha, rotation, visible, etc
+    setLookAndFeelColours (valueTree);
+    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 
-    setButtonText(getText());
+    setButtonText (getText());
 }

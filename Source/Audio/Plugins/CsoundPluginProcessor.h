@@ -35,7 +35,7 @@ class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 
 public:
     //==============================================================================
-    CsoundPluginProcessor(File csoundInputFile, bool debugMode = false);
+    CsoundPluginProcessor (File csoundInputFile, bool debugMode = false);
     ~CsoundPluginProcessor();
 
     //==============================================================================
@@ -72,22 +72,22 @@ public:
 
     //==============================================================================
     //Csound API functions for deailing with midi input
-    static int OpenMidiInputDevice(CSOUND * csnd, void **userData, const char *devName);
-    static int OpenMidiOutputDevice(CSOUND * csnd, void **userData, const char *devName);
-    static int ReadMidiData(CSOUND *csound, void *userData, unsigned char *mbuf, int nbytes);
-    static int WriteMidiData(CSOUND *csound, void *userData, const unsigned char *mbuf, int nbytes);
+    static int OpenMidiInputDevice (CSOUND* csnd, void** userData, const char* devName);
+    static int OpenMidiOutputDevice (CSOUND* csnd, void** userData, const char* devName);
+    static int ReadMidiData (CSOUND* csound, void* userData, unsigned char* mbuf, int nbytes);
+    static int WriteMidiData (CSOUND* csound, void* userData, const unsigned char* mbuf, int nbytes);
 
     //graphing functions
-    static void makeGraphCallback(CSOUND *csound, WINDAT *windat, const char *name);
-    static void drawGraphCallback(CSOUND *csound, WINDAT *windat);
-    static void killGraphCallback(CSOUND *csound, WINDAT *windat);
-    static int exitGraphCallback(CSOUND *csound);
+    static void makeGraphCallback (CSOUND* csound, WINDAT* windat, const char* name);
+    static void drawGraphCallback (CSOUND* csound, WINDAT* windat);
+    static void killGraphCallback (CSOUND* csound, WINDAT* windat);
+    static int exitGraphCallback (CSOUND* csound);
 
 
 
     void handleAsyncUpdate();
     //csound breakpint function
-    static void breakpointCallback(CSOUND *csound, debug_bkpt_info_t *bkpt_info, void *udata);
+    static void breakpointCallback (CSOUND* csound, debug_bkpt_info_t* bkpt_info, void* udata);
     CabbageCsoundBreakpointData breakPointData;
 
     ValueTree getBreakpointData()
@@ -95,9 +95,9 @@ public:
         return breakPointData.valueTree;
     }
 
-    StringArray getTableStatement(int tableNum);
-    const Array<float, CriticalSection> getTableFloats(int tableNum);
-    int checkTable(int tableNum);
+    StringArray getTableStatement (int tableNum);
+    const Array<float, CriticalSection> getTableFloats (int tableNum);
+    int checkTable (int tableNum);
     std::vector<MYFLT> temp;
 
     //=============================================================================
@@ -108,19 +108,19 @@ public:
     //as is done in CabbagePluginprocessor.
     virtual void sendChannelDataToCsound() {};
     virtual void receiveChannelDataFromCsound() {};
-    virtual void initAllCsoundChannels(ValueTree cabbageData);
+    virtual void initAllCsoundChannels (ValueTree cabbageData);
     //=============================================================================
-    void addMacros(String csdText);
+    void addMacros (String csdText);
     const String getCsoundOutput();
 
-    void compileCsdFile(File csdFile)
+    void compileCsdFile (File csdFile)
     {
-        csCompileResult = csound->Compile(const_cast<char*>(csdFile.getFullPathName().toUTF8().getAddress()));
+        csCompileResult = csound->Compile (const_cast<char*> (csdFile.getFullPathName().toUTF8().getAddress()));
     }
 
     bool csdCompiledWithoutError()
     {
-        return csCompileResult==0 ? true : false;
+        return csCompileResult == 0 ? true : false;
     }
 
     Csound* getCsound()
@@ -133,7 +133,7 @@ public:
         return csound->GetCsound();
     }
 
-    void setGUIRefreshRate(int rate)
+    void setGUIRefreshRate (int rate)
     {
         guiRefreshRate = rate;
     }
@@ -141,40 +141,40 @@ public:
     MidiKeyboardState keyboardState;
 
     //==================================================================================
-class SignalDisplay
-{
-	public:
-		float yScale;
-		int windid, min ,max, size;
-		String caption;
+    class SignalDisplay
+    {
+    public:
+        float yScale;
+        int windid, min , max, size;
+        String caption;
 
-		SignalDisplay(String _caption, int _id, float _scale, int _min, int _max, int _size):
-			caption(_caption),
-			windid(_id),
-			yScale(_scale),
-			min(_min),
-			max(_max),
-			size(_size)
-		{}
+        SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
+            caption (_caption),
+            windid (_id),
+            yScale (_scale),
+            min (_min),
+            max (_max),
+            size (_size)
+        {}
 
-		~SignalDisplay()
-		{
-			points.clear();
-		}
+        ~SignalDisplay()
+        {
+            points.clear();
+        }
 
-		Array<float, CriticalSection> getPoints()
-		{
-			return points;
-		}
+        Array<float, CriticalSection> getPoints()
+        {
+            return points;
+        }
 
-		void setPoints(Array <float, CriticalSection > tablePoints)
-		{
-			points.swapWith(tablePoints);
-		}
+        void setPoints (Array <float, CriticalSection > tablePoints)
+        {
+            points.swapWith (tablePoints);
+        }
 
-	private:
-		Array <float, CriticalSection > points;
-	};
+    private:
+        Array <float, CriticalSection > points;
+    };
 
     bool shouldUpdateSignalDisplay()
     {
@@ -183,8 +183,8 @@ class SignalDisplay
         return returnVal;
     };
 
-    OwnedArray <SignalDisplay, CriticalSection> signalArrays;	//holds values from FFT function table created using dispfft
-    CsoundPluginProcessor::SignalDisplay* getSignalArray(String variableName, String displayType="");
+    OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
+    CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "");
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
@@ -194,9 +194,9 @@ private:
     String csoundOutput;
     ScopedPointer<CSOUND_PARAMS> csoundParams;
     int csCompileResult, numCsoundChannels, pos;
-    bool updateSignalDisplay=false;
+    bool updateSignalDisplay = false;
     MYFLT cs_scale;
-    MYFLT *CSspin, *CSspout;
+    MYFLT* CSspin, *CSspout;
     int csndIndex;
     int csdKsmps;
     ScopedPointer<Csound> csound;

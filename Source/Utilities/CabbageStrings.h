@@ -26,7 +26,7 @@ public:
 
     static String getNewCsoundFileText()
     {
-        String newCsoundFile = 	"<CsoundSynthesizer>\n"
+        String newCsoundFile =  "<CsoundSynthesizer>\n"
                                 "<CsOptions>\n"
                                 "-n -d \n"
                                 "</CsOptions>\n"
@@ -130,34 +130,34 @@ public:
     static const StringArray getColourIDStrings()
     {
         StringArray colours;
-        colours.add("Interface - MenuBar Background");
-        colours.add("Interface - MenuBar Text");
-        colours.add("Interface - MenuBar MouseOver Background");
-        colours.add("Interface - PopupMenu MouseOver Background");
-        colours.add("Interface - PopupMenu Background");
-        colours.add("Interface - PopupMenu Text");
-        colours.add("Interface - PopupMenu Highlighted Text");
-        colours.add("Interface - Main Background");
-        colours.add("Interface - Status Bar");
-        colours.add("Interface - Status Bar Text");
-        colours.add("Interface - Property Panel Background");
-        colours.add("Interface - Property Label Background");
-        colours.add("Interface - Property Label Text");
-        colours.add("Interface - Alart Window Background");
-        colours.add("Editor - Code Background");
-        colours.add("Editor - Line Numbers Background");
-        colours.add("Editor - Line Numbers");
-        colours.add("Editor - Selected Text Background");
-        colours.add("Editor - Caret");
-        colours.add("Editor - Identifier");
-        colours.add("Editor - Strings");
-        colours.add("Editor - Keyword");
-        colours.add("Editor - Comment");
-        colours.add("Editor - Numbers");
-        colours.add("Editor - Csd Tags");
-        colours.add("Console - Text");
-        colours.add("Console - Background");
-        colours.add("Console - Outline");
+        colours.add ("Interface - MenuBar Background");
+        colours.add ("Interface - MenuBar Text");
+        colours.add ("Interface - MenuBar MouseOver Background");
+        colours.add ("Interface - PopupMenu MouseOver Background");
+        colours.add ("Interface - PopupMenu Background");
+        colours.add ("Interface - PopupMenu Text");
+        colours.add ("Interface - PopupMenu Highlighted Text");
+        colours.add ("Interface - Main Background");
+        colours.add ("Interface - Status Bar");
+        colours.add ("Interface - Status Bar Text");
+        colours.add ("Interface - Property Panel Background");
+        colours.add ("Interface - Property Label Background");
+        colours.add ("Interface - Property Label Text");
+        colours.add ("Interface - Alart Window Background");
+        colours.add ("Editor - Code Background");
+        colours.add ("Editor - Line Numbers Background");
+        colours.add ("Editor - Line Numbers");
+        colours.add ("Editor - Selected Text Background");
+        colours.add ("Editor - Caret");
+        colours.add ("Editor - Identifier");
+        colours.add ("Editor - Strings");
+        colours.add ("Editor - Keyword");
+        colours.add ("Editor - Comment");
+        colours.add ("Editor - Numbers");
+        colours.add ("Editor - Csd Tags");
+        colours.add ("Console - Text");
+        colours.add ("Console - Background");
+        colours.add ("Console - Outline");
         return colours;
     }
 };

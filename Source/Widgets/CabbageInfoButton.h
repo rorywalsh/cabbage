@@ -31,7 +31,7 @@ class CabbageInfoButton : public TextButton, public ValueTree::Listener, public 
 
 public:
 
-    CabbageInfoButton(ValueTree wData);
+    CabbageInfoButton (ValueTree wData);
     ~CabbageInfoButton() {};
 
     //ValueTree::Listener virtual methods....
@@ -41,9 +41,9 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    void setLookAndFeelColours(ValueTree wData);
+    void setLookAndFeelColours (ValueTree wData);
 
-    void buttonClicked(Button* button);
+    void buttonClicked (Button* button);
     ValueTree widgetData;
 
 

@@ -36,7 +36,7 @@ void SelectedComponents::itemDeselected (ComponentOverlay* item)
 
 //=============================================================================
 ComponentLayoutEditor::ComponentLayoutEditor (ValueTree valueTree)
-    :   target (0), widgetData(valueTree), lookAndFeel()
+    :   target (0), widgetData (valueTree), lookAndFeel()
 {
     setInterceptsMouseClicks (false, true);
 }
@@ -49,7 +49,7 @@ ComponentLayoutEditor::~ComponentLayoutEditor ()
 
 CabbagePluginEditor* ComponentLayoutEditor::getPluginEditor()
 {
-    if(CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
+    if (CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
         return c;
     else
         return nullptr;
@@ -57,7 +57,7 @@ CabbagePluginEditor* ComponentLayoutEditor::getPluginEditor()
 
 CabbageContentComponent* ComponentLayoutEditor::getContentComponent()
 {
-    if(CabbageContentComponent* c = this->findParentComponentOfClass<CabbageContentComponent>())
+    if (CabbageContentComponent* c = this->findParentComponentOfClass<CabbageContentComponent>())
         return c;
     else
         return nullptr;
@@ -65,9 +65,9 @@ CabbageContentComponent* ComponentLayoutEditor::getContentComponent()
 
 void ComponentLayoutEditor::resized ()
 {
-    for (int i=0; i<frames.size(); i++)
+    for (int i = 0; i < frames.size(); i++)
     {
-        frames.getUnchecked(i)->updateFromTarget ();
+        frames.getUnchecked (i)->updateFromTarget ();
     }
 }
 
@@ -77,30 +77,31 @@ void ComponentLayoutEditor::paint (Graphics& g)
 
 void ComponentLayoutEditor::resetAllInterest()
 {
-    for(int i=0; i<frames.size(); i++)
+    for (int i = 0; i < frames.size(); i++)
     {
-        if(ComponentOverlay* child = dynamic_cast<ComponentOverlay*>(frames[i]))
-            child->setInterest("none");
+        if (ComponentOverlay* child = dynamic_cast<ComponentOverlay*> (frames[i]))
+            child->setInterest ("none");
     }
+
     repaint();
 }
 //==================================================================================================================
 void ComponentLayoutEditor::updateSelectedComponentBounds()
 {
-    for(ComponentOverlay* child : selectedComponents)
+    for (ComponentOverlay* child : selectedComponents)
     {
-        child->setInterest("selected");
+        child->setInterest ("selected");
         child->repaint();
-        setComponentBoundsProperties(child, child->getBounds());
+        setComponentBoundsProperties (child, child->getBounds());
     }
 }
 
-void ComponentLayoutEditor::setComponentBoundsProperties(Component* child, Rectangle<int> bounds)
+void ComponentLayoutEditor::setComponentBoundsProperties (Component* child, Rectangle<int> bounds)
 {
-    child->getProperties().set("originalX", bounds.getX());
-    child->getProperties().set("originalY", bounds.getY());
-    child->getProperties().set("originalWidth", bounds.getWidth());
-    child->getProperties().set("originalHeight", bounds.getHeight());
+    child->getProperties().set ("originalX", bounds.getX());
+    child->getProperties().set ("originalY", bounds.getY());
+    child->getProperties().set ("originalWidth", bounds.getWidth());
+    child->getProperties().set ("originalHeight", bounds.getHeight());
 }
 
 //==================================================================================================================
@@ -108,26 +109,27 @@ void ComponentLayoutEditor::updateCodeEditor()
 {
     StringArray compNames;
 
-    if(getLassoSelection().getNumSelected()>0)
+    if (getLassoSelection().getNumSelected() > 0)
         for ( ComponentOverlay* child : getLassoSelection() )
         {
-            compNames.add(child->getName());
-            for( int i = 0 ; i < child->getTarget()->getNumChildComponents() ; i++)
+            compNames.add (child->getName());
+
+            for ( int i = 0 ; i < child->getTarget()->getNumChildComponents() ; i++)
             {
-                if(child->getTarget()->getChildComponent(i)->getName().isNotEmpty())
-                    compNames.add(child->getTarget()->getChildComponent(i)->getName());
+                if (child->getTarget()->getChildComponent (i)->getName().isNotEmpty())
+                    compNames.add (child->getTarget()->getChildComponent (i)->getName());
             }
         }
     else
-        compNames.add(getName());
+        compNames.add (getName());
 
 
-    getPluginEditor()->setCurrentlySelectedComponents(compNames);
+    getPluginEditor()->setCurrentlySelectedComponents (compNames);
     getPluginEditor()->sendChangeMessage();
 }
 
 //==================================================================================================================
-void ComponentLayoutEditor::mouseUp(const MouseEvent& e)
+void ComponentLayoutEditor::mouseUp (const MouseEvent& e)
 {
 
     updateSelectedComponentBounds();
@@ -145,20 +147,23 @@ void ComponentLayoutEditor::mouseDrag (const MouseEvent& e)
 void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 {
     selectedComponents.deselectAll();
-	
+
     resetAllInterest();
 
-    if(e.mods.isPopupMenu())
+    if (e.mods.isPopupMenu())
     {
         PopupMenu menu;
-		menu.setLookAndFeel(&lookAndFeel);
+        menu.setLookAndFeel (&lookAndFeel);
         CabbagePopupWidgets widgets;
-        for( int i = 0 ; i < widgets.size() ; i++ )
-            menu.addItem(i+1, widgets.getAllKeys()[i]);
+
+        for ( int i = 0 ; i < widgets.size() ; i++ )
+            menu.addItem (i + 1, widgets.getAllKeys()[i]);
 
         const int result = menu.show();
-		if(result>0)
-			getPluginEditor()->addNewWidget(widgets.getAllValues()[result-1], e.getPosition());
+
+        if (result > 0)
+            getPluginEditor()->addNewWidget (widgets.getAllValues()[result - 1], e.getPosition());
+
         currentMouseCoors = e.getPosition();
     }
     else
@@ -173,16 +178,17 @@ void ComponentLayoutEditor::findLassoItemsInArea (Array <ComponentOverlay*>& res
 {
     const Rectangle<int> lasso (area);
 
-    for (int i = 0; i < getNumChildComponents()-1; i++)
+    for (int i = 0; i < getNumChildComponents() - 1; i++)
     {
-        ComponentOverlay* c = (ComponentOverlay*)getChildComponent(i);
+        ComponentOverlay* c = (ComponentOverlay*)getChildComponent (i);
+
         if (c->getBounds().intersects (lasso))
         {
-            results.addIfNotAlreadyThere(c);
-            selectedComponents.addToSelection(c);
+            results.addIfNotAlreadyThere (c);
+            selectedComponents.addToSelection (c);
         }
         else
-            selectedComponents.deselect(c);
+            selectedComponents.deselect (c);
     }
 }
 
@@ -196,11 +202,14 @@ void ComponentLayoutEditor::setTargetComponent (Component* targetComp)
 {
     jassert (targetComp);
     jassert (targetComp->getParentComponent() == getParentComponent());
+
     if (target)
     {
         if (target.getComponent() == targetComp) return;
+
         deleteAndZero (target);
     }
+
     target = targetComp;
     bindWithTarget ();
 }
@@ -221,20 +230,24 @@ void ComponentLayoutEditor::updateFrames ()
 {
     selectedComponents.deselectAll();
     frames.clear ();
+
     if (target != NULL)
     {
         Component* t = (Component*) target.getComponent ();
         int n = t->getNumChildComponents ();
-        for (int i=0; i<n; i++)
+
+        for (int i = 0; i < n; i++)
         {
             Component* c = t->getChildComponent (i);
+
             if (c)
             {
                 ComponentOverlay* alias = createAlias (c);
+
                 if (alias)
                 {
-                    alias->setName(c->getName());
-                    setComponentBoundsProperties(alias, alias->getBounds());
+                    alias->setName (c->getName());
+                    setComponentBoundsProperties (alias, alias->getBounds());
                     frames.add (alias);
                     addAndMakeVisible (alias);
                 }
@@ -258,6 +271,7 @@ void ComponentLayoutEditor::enablementChanged ()
 const Component* ComponentLayoutEditor::getTarget ()
 {
     if (target) return target.getComponent ();
+
     return 0;
 }
 

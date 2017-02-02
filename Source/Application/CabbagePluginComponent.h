@@ -46,7 +46,7 @@ private:
 
 //==============================================================================
 class ConnectorComponent   : public Component,
-                             public SettableTooltipClient
+    public SettableTooltipClient
 {
 public:
     ConnectorComponent (AudioGraph& graph_);
@@ -90,7 +90,7 @@ private:
 
 //=============================================================================
 class PinComponent   : public Component,
-                       public SettableTooltipClient
+    public SettableTooltipClient
 {
 public:
     PinComponent (AudioGraph& graph_, const uint32 filterID_, const int index_, const bool isInput_);
