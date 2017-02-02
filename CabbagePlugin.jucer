@@ -73,10 +73,10 @@
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.cpp"/>
         <FILE id="gK4jsl" name="CabbageGenericPluginLookAndFeel.h" compile="0"
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.h"/>
-        <FILE id="wLenuR" name="CabbageLookAndFeel.cpp" compile="1" resource="0"
-              file="Source/LookAndFeel/CabbageLookAndFeel.cpp"/>
-        <FILE id="V3gj4W" name="CabbageLookAndFeel.h" compile="0" resource="0"
-              file="Source/LookAndFeel/CabbageLookAndFeel.h"/>
+        <FILE id="fI7PZm" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/CabbageIDELookAndFeel.cpp"/>
+        <FILE id="CDZnOr" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/CabbageIDELookAndFeel.h"/>
         <FILE id="xYvPFw" name="CabbageLookAndFeel2.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="MLgcCk" name="CabbageLookAndFeel2.h" compile="0" resource="0"
