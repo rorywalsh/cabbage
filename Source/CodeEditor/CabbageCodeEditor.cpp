@@ -487,11 +487,15 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
 		{
             scrollBy(numberOfLinesToScroll);
 			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()-numberOfLinesToScroll*getFontSize());
+            MouseWheelDetails w(mouse);
+            w.deltaY = 0;
 		}
         else
 		{
             scrollBy(-numberOfLinesToScroll);
 			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()+numberOfLinesToScroll*getFontSize());
+            MouseWheelDetails w(mouse);
+            w.deltaY = 0;
 		}
     }
 }
