@@ -59,7 +59,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         }
     }
 
-    if ( rotate != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate))
+    if ( rotate != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate) || calledFromConstructor)
     {
         rotate = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate);
         child->setTransform (AffineTransform::rotation ( rotate, child->getX() + CabbageWidgetData::getNumProp (data,
@@ -67,31 +67,31 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
                                                          child->getY() + CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::pivoty)));
     }
 
-    if ( visible != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible))
+    if ( visible != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible) || calledFromConstructor)
     {
         visible = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible);
         child->setVisible ( visible == 1 ? true : false);
         child->setEnabled ( visible == 1 ? true : false);
     }
 
-    if (text != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text))
+    if (text != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text) || calledFromConstructor)
     {
         text = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text);
     }
 
-    if ( active != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active))
+    if ( active != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active) || calledFromConstructor)
     {
         active = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active);
         child->setEnabled ( active == 1 ? true : false);
     }
 
-    if ( alpha != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::alpha))
+    if ( alpha != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::alpha) || calledFromConstructor)
     {
         alpha = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::alpha);
         child->setAlpha ( alpha);
     }
 
-    if ( file != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file))
+    if ( file != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file) || calledFromConstructor)
     {
         file = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file);
     }

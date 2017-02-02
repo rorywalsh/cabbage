@@ -504,6 +504,9 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
             currentLineMarker.setTopLeftPosition (13, currentLineMarker.getY() + numberOfLinesToScroll * getFontSize());
         }
     }
+	
+	MouseWheelDetails w(mouse);
+	w.deltaY = 0;	
 }
 
 void CabbageCodeEditorComponent::zoomIn()
