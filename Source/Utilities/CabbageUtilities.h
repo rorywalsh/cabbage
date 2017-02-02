@@ -331,27 +331,16 @@ public:
     }
 
     //===================================================================================
-    static int getNumberOfDecimalPlaces (StringArray array)
+    static int getNumberOfDecimalPlaces (String incr)
     {
-        int longest = 0;
-        int index = 0;
 
-        for (int i = 0; i < array.size(); i++)
+        if (incr.indexOf (".") >= 0)
         {
-            if (array[i].length() > longest)
-            {
-                longest = array[i].length();
-                index = i;
-            }
-        }
-
-        if (array[index].indexOf (".") >= 0)
-        {
-            String subTemp = array[index].substring (array[index].indexOf ("."), 10);
+            String subTemp = incr.substring (incr.indexOf ("."), 10);
             return subTemp.length() - 1;
         }
-        else return 0;
-
+        
+		return 2;
 
     }
 

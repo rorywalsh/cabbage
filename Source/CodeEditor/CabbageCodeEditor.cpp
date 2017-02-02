@@ -507,6 +507,9 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
             w.deltaY = 0;
 		}
     }
+	
+	MouseWheelDetails w(mouse);
+	w.deltaY = 0;	
 }
 
 void CabbageCodeEditorComponent::zoomIn()
