@@ -127,55 +127,50 @@ CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     propertyPanel.addSection ("Widget Array", createWidgetArrayEditors (this, widgetData), false);
     propertyPanel.addSection ("Misc", createMiscEditors (widgetData));
 
-
-    //ropertyPanel.addSection ("Channels", createChoices (16));
-    //propertyPanel.addSection ("Buttons & Toggles", createButtons (20));
 }
 
-void CabbagePropertiesPanel::updateProperties (ValueTree wData)
+CabbagePropertiesPanel::~CabbagePropertiesPanel()
 {
-    widgetData = wData;
+	for(auto open : sectionStates)
+		open->xmlElement  = nullptr;
+	
+	sectionStates.clear();
+}
 
-    const String typeOfWidget = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
+void CabbagePropertiesPanel::saveOpenessState()
+{
 	const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::name);
-	
-	CabbageUtilities::debug(sectionStates.size());
-	
 	if(getSectionState(name) == nullptr)
 		sectionStates.add(new SectionState(name, propertyPanel.getOpennessState()));
 	else
 		getSectionState(name)->xmlElement = propertyPanel.getOpennessState();	
+
+}
+
+void CabbagePropertiesPanel::updateProperties (ValueTree wData)
+{
+	widgetData = wData;	
+	propertyPanel.clear();
+    propertyPanel.addSection ("Bounds", createPositionEditors (wData));
+    propertyPanel.addSection ("Rotation", createRotationEditors (this, wData), false);
+    propertyPanel.addSection ("Channels", createChannelEditors (this, wData));
+    propertyPanel.addSection ("Values", createValueEditors (this, wData));
+    propertyPanel.addSection ("Text", createTextEditors (wData));
+    propertyPanel.addSection ("Colours", createColourChoosers (wData));
+    propertyPanel.addSection ("Images", createFileEditors (wData));
+    propertyPanel.addSection ("Widget Array", createWidgetArrayEditors (this, wData), false);
+    propertyPanel.addSection ("Misc", createMiscEditors (wData));
 	
-	propertyPanel.getOpennessState()->writeToFile(File("/home/rory/Desktop/open.xml"), "HELLO");
-	
+	const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::name);
 	
 	if(getSectionState(name) != nullptr)
-		propertyPanel.restoreOpennessState(*getSectionState(name)->xmlElement);
+		propertyPanel.restoreOpennessState(*getSectionState(name)->xmlElement);		
 	
-	
-
-    propertyPanel.clear();
-    propertyPanel.addSection ("Bounds", createPositionEditors (widgetData));
-    propertyPanel.addSection ("Rotation", createRotationEditors (this, widgetData), false);
-    propertyPanel.addSection ("Channels", createChannelEditors (this, widgetData));
-    propertyPanel.addSection ("Values", createValueEditors (this, widgetData));
-    propertyPanel.addSection ("Text", createTextEditors (widgetData));
-    propertyPanel.addSection ("Colours", createColourChoosers (widgetData));
-    propertyPanel.addSection ("Images", createFileEditors (widgetData));
-    propertyPanel.addSection ("Widget Array", createWidgetArrayEditors (this, widgetData), false);
-    propertyPanel.addSection ("Misc", createMiscEditors (widgetData));
-	
-	
-    this->setVisible (true);
-
-
-
-		
-	previousWidgetName = name;
-		
-	
+    this->setVisible (true);	
 	
 }
+
+//==============================================================================
 void CabbagePropertiesPanel::paint (Graphics& g)
 {
     g.fillAll (backgroundColour.withAlpha (1.f));

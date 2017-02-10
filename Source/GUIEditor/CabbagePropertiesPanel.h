@@ -36,6 +36,7 @@ class CabbagePropertiesPanel :
 {
 public:
     CabbagePropertiesPanel (ValueTree widgetData);
+	~CabbagePropertiesPanel();	
     void paint (Graphics& g) override;
     void resized() override;
     void setPropertyByName (String name, var value);
@@ -44,7 +45,7 @@ public:
     void updateProperties (ValueTree widgetData);
     void valueChanged (Value& value);
     void filenameComponentChanged (FilenameComponent* fileComponent);
-
+	void saveOpenessState();
     Array<PropertyComponent*> createPositionEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTextEditors (ValueTree valueTree);
     Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);

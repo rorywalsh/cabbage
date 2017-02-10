@@ -148,6 +148,7 @@ void CabbageContentComponent::changeListenerCallback (ChangeBroadcaster* source)
         propertyPanel->setEnabled (true);
         resized();
         ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
+		propertyPanel->saveOpenessState();	
         propertyPanel->updateProperties (widgetData);
 
         if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
