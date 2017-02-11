@@ -48,11 +48,13 @@ public:
 	void saveOpenessState();
     Array<PropertyComponent*> createPositionEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTextEditors (ValueTree valueTree);
+	Array<PropertyComponent*> createNumberEditors (ValueTree valueTree);
     Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
     Array<PropertyComponent*> createMiscEditors (ValueTree valueTree);
     Array<PropertyComponent*> createFileEditors (ValueTree valueTree);
     Array<PropertyComponent*> createValueEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
     Array<PropertyComponent*> createWidgetArrayEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
+	Array<PropertyComponent*> createAmpRangeEditors (ValueTree valueTree);
     Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue;
     Colour backgroundColour, borderColour;
 

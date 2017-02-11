@@ -37,8 +37,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
     //Logger::writeToLog (opcodeFile);
-
-
+	setScrollbarThickness(20);
     if (File (opcodeFile).existsAsFile())
         setOpcodeStrings (File (opcodeFile).loadFileAsString());
 

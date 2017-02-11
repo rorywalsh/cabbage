@@ -68,7 +68,7 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
             items.add (array->getReference (i).toString());
         }
 
-        comps.add (new TextPropertyComponent (Value (var (items.joinIntoString ("\n"))), label, 1000, true));
+        comps.add (new TextPropertyComponent( Value (var (items.joinIntoString ("\n"))), label, 1000, true));
     }
     else
     {
@@ -77,6 +77,8 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
         stringArray.addLines (text.toString());
         comps.add (new TextPropertyComponent (Value (var (stringArray.joinIntoString ("\n"))), label, 1000, true));
     }
+	
+	comps[comps.size()-1]->setPreferredHeight(60);
 }
 
 //==============================================================================
@@ -114,7 +116,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     addAndMakeVisible (propertyPanel);
     //setColour(TextEditor::highlightColourId, Colour(100, 100, 100));
     propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::black);
-
+	CabbageImageWidgetStrings imageWidgets;
     const String typeOfWidget = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
 
     propertyPanel.addSection ("Bounds", createPositionEditors (widgetData));
@@ -123,7 +125,7 @@ CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     propertyPanel.addSection ("Values", createValueEditors (this, widgetData));
     propertyPanel.addSection ("Text", createTextEditors (widgetData));
     propertyPanel.addSection ("Colours", createColourChoosers (widgetData));
-    propertyPanel.addSection ("Images", createFileEditors (widgetData));
+	propertyPanel.addSection ("Images", createFileEditors (widgetData));		
     propertyPanel.addSection ("Widget Array", createWidgetArrayEditors (this, widgetData), false);
     propertyPanel.addSection ("Misc", createMiscEditors (widgetData));
 
@@ -150,19 +152,34 @@ void CabbagePropertiesPanel::saveOpenessState()
 void CabbagePropertiesPanel::updateProperties (ValueTree wData)
 {
 	widgetData = wData;	
+	const String name = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name);
+	const String typeOfWidget = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::type);
+	CabbageImageWidgetStrings imageWidgets;
 	propertyPanel.clear();
+	
     propertyPanel.addSection ("Bounds", createPositionEditors (wData));
     propertyPanel.addSection ("Rotation", createRotationEditors (this, wData), false);
     propertyPanel.addSection ("Channels", createChannelEditors (this, wData));
     propertyPanel.addSection ("Values", createValueEditors (this, wData));
-    propertyPanel.addSection ("Text", createTextEditors (wData));
-    propertyPanel.addSection ("Colours", createColourChoosers (wData));
-    propertyPanel.addSection ("Images", createFileEditors (wData));
+	
+	if(typeOfWidget == "gentable")
+	{
+		propertyPanel.addSection ("AmpRange", createAmpRangeEditors (wData));	
+		propertyPanel.addSection ("Tables", createTextEditors (wData));		
+	}
+	else
+		propertyPanel.addSection ("Text", createTextEditors (wData));
+    
+	propertyPanel.addSection ("Colours", createColourChoosers (wData));
+	
+	if(imageWidgets.contains(typeOfWidget))
+		propertyPanel.addSection ("Images", createFileEditors (wData));
+
+		
     propertyPanel.addSection ("Widget Array", createWidgetArrayEditors (this, wData), false);
     propertyPanel.addSection ("Misc", createMiscEditors (wData));
 	
-	const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::name);
-	
+
 	if(getSectionState(name) != nullptr)
 		propertyPanel.restoreOpennessState(*getSectionState(name)->xmlElement);		
 	
@@ -186,14 +203,15 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
 {
     CabbageIdentifierPropertyStringPairs propertyStringPairs;
     const String identifier = propertyStringPairs.getValue (name, "");
+	
 
     if (identifier.isNotEmpty())
     {
-        CabbageWidgetData::setProperty (widgetData, identifier, value);
-
-        if (identifier == CabbageIdentifierIds::sliderincr.toString())
+		if (identifier == CabbageIdentifierIds::sliderincr.toString())
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::decimalplaces,
                                             CabbageUtilities::getNumberOfDecimalPlaces (value.toString()));
+		else
+			CabbageWidgetData::setProperty (widgetData, identifier, value);
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
@@ -274,6 +292,7 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
 
 void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
 {
+	CabbageUtilities::debug(fileComponent->getCurrentFileText());
     if (File (fileComponent->getCurrentFileText()).existsAsFile())
     {
         const String csdFile = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::csdfile);
@@ -296,11 +315,12 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors (ValueTree v
     Array<PropertyComponent*> comps;
     const String typeOfWidget = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
 
-    const bool isMultiline = typeOfWidget == "combobox" || typeOfWidget.contains ("button") ? true : false;
+    const bool isMultiline = typeOfWidget == "combobox" || typeOfWidget.contains ("button") || typeOfWidget == "gentable" ? true : false;
 
     if (isMultiline == true)
-    {
-        createMultiLineTextEditors (valueTree, comps, CabbageIdentifierIds::text, "Text");
+    {		
+        createMultiLineTextEditors(valueTree, comps,  typeOfWidget == "gentable" ? CabbageIdentifierIds::tablenumber : CabbageIdentifierIds::text, 
+																					typeOfWidget == "gentable" ? "Table Numbers" : "Text");
     }
     else
     {
@@ -308,8 +328,12 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors (ValueTree v
         comps.add (new TextPropertyComponent (Value (var (text)), "Text", 1000, isMultiline));
     }
 
-    const String popupText = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::popuptext);
-    comps.add (new TextPropertyComponent (Value (var (popupText)), "popup Text", 100, false));
+	if(typeOfWidget != "gentable")
+	{
+		const String popupText = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::popuptext);
+		comps.add (new TextPropertyComponent (Value (var (popupText)), "popup Text", 100, false));	
+	}
+	
     addListener (comps, this);
     return comps;
 }
@@ -466,11 +490,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
 {
     Array<PropertyComponent*> comps;
     const String typeOfWidget = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
+	const String csdFile = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::csdfile);
 
     if (typeOfWidget == "checkbox" || typeOfWidget == "button")
     {
-        const String onFile = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonon);
-        const String offFile = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonoff);
+        const String onFile = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonon));
+        const String offFile = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonoff));
+		
         comps.add (new CabbageFilePropertyComponent ("On Image", false, true, "*", onFile));
         comps.add (new CabbageFilePropertyComponent ("Off Image", false, true, "*", offFile));
     }
@@ -480,20 +506,45 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
     }
     else if (typeOfWidget.contains ("slider"))
     {
-        const String sliderFile = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgslider);
-        const String sliderBgFile = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgsliderbg);
-        comps.add (new CabbageFilePropertyComponent ("Thumb Image", false, true, "*", sliderFile));
+        const String sliderFile = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgslider));
+        const String sliderBgFile = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgsliderbg));
+        comps.add (new CabbageFilePropertyComponent ("Rotary Image", false, true, "*", sliderFile));
         comps.add (new CabbageFilePropertyComponent ("Background Image", false, true, "*", sliderBgFile));
     }
 
     else if (typeOfWidget == "image")
     {
-        const String file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
+        const String file = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file));
         comps.add (new CabbageFilePropertyComponent ("Image File", false, true, "*", file));
+    }
+	
+    else if (typeOfWidget == "groupbox")
+    {
+        const String file = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imggroupbox));
+        comps.add (new CabbageFilePropertyComponent ("Groupbox Image", false, true, "*", file));
     }
 
     addListener (comps, this);
     return comps;
+}
+
+Array<PropertyComponent*> CabbagePropertiesPanel::createAmpRangeEditors (ValueTree valueTree)
+{
+	Array<PropertyComponent*> comps;
+	
+	var amprange = valueTree.getProperty (CabbageIdentifierIds::amprange);
+
+	if(amprange.size()==4)
+	{
+		comps.add (new TextPropertyComponent (Value (amprange[0]), "Min Amp", 200, false));
+		comps.add (new TextPropertyComponent (Value (amprange[1]), "Max Amp", 200, false));
+		comps.add (new TextPropertyComponent (Value (amprange[2]), "Table", 200, false));
+		const String quantiseString = String(float(amprange[3]), 4);
+		comps.add (new TextPropertyComponent (Value(quantiseString), "Quantise", 200, false));
+	}
+	
+	addListener (comps, this);
+	return comps;
 }
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree valueTree)
@@ -582,7 +633,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
             comps.add (new TextPropertyComponent (Value (zoomValue), "Zoom", 200, false));
         }
     }
-
+	
     else if (typeOfWidget == "image" || typeOfWidget == "groupbox")
     {
         var outline = valueTree.getProperty (CabbageIdentifierIds::outlinethickness);

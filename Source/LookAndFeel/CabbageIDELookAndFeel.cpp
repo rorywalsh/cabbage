@@ -254,7 +254,7 @@ int CabbageIDELookAndFeel::getMinimumScrollbarThumbSize (ScrollBar& scrollbar)
 
 int CabbageIDELookAndFeel::getDefaultScrollbarWidth()
 {
-    return 18;
+    return 25;
 }
 
 int CabbageIDELookAndFeel::getScrollbarButtonSize (ScrollBar& scrollbar)

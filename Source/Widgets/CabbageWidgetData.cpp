@@ -1139,23 +1139,21 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String inStr
                 if (strTokens.size() < 3)
                     warningMessages += "Not enough paramters passed to amprange(): usage amprange(min, max, tablenumber, quantise\")\n";
 
-                var value;
-                var temp = getProperty (widgetData, CabbageIdentifierIds::amprange);
-
-                for (int i = 0; i < temp.size(); i++)
-                    value.append (temp[i]);
+                var array = getProperty (widgetData, CabbageIdentifierIds::amprange);
 
                 for (int i = 0; i < strTokens.size(); i++)
                 {
                     //add table modes to val array
-                    value.append (strTokens[i].trim().getFloatValue());
+                    array[i] = strTokens[i].trim().getFloatValue();
                 }
 
-                //set default quantise space..
-                if (strTokens.size() == 3)
-                    value.append (0.01);
 
-                setProperty (widgetData, CabbageIdentifierIds::amprange, value);
+                setProperty (widgetData, CabbageIdentifierIds::amprange, array);
+				setProperty (widgetData, CabbageIdentifierIds::amprange_min, array[0]);
+				setProperty (widgetData, CabbageIdentifierIds::amprange_max, array[1]);
+				setProperty (widgetData, CabbageIdentifierIds::amprange_tablenumber, array[2]);
+				setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, array[3]);
+				
                 //identifiers that appear more than once need to use indx-- so we can check for another instance
                 indx--;
             }
@@ -1245,6 +1243,27 @@ void CabbageWidgetData::setStringProp (ValueTree widgetData, Identifier name, co
 
 void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, const var& value)
 {
+	
+	var amprange = getProperty(widgetData, CabbageIdentifierIds::amprange);
+	if(name.toString() == "amprange") //assigning amprange values to unique properties for GUI property panel
+	{		
+		widgetData.setProperty(CabbageIdentifierIds::amprange_min, value[0], 0);
+		widgetData.setProperty(CabbageIdentifierIds::amprange_max, value[1], 0);
+		widgetData.setProperty(CabbageIdentifierIds::amprange_tablenumber, value[2], 0);
+		widgetData.setProperty(CabbageIdentifierIds::amprange_quantise, value[3], 0);
+		widgetData.setProperty (name, value, 0);
+	}
+	else if(name.toString() == CabbageIdentifierIds::amprange_min.toString())		
+		amprange[0] = value;
+	else if(name.toString() == CabbageIdentifierIds::amprange_max.toString())		
+		amprange[1] = value;
+	else if(name.toString() == CabbageIdentifierIds::amprange_tablenumber.toString())		
+		amprange[2] = value;
+	else if(name.toString() == CabbageIdentifierIds::amprange_quantise.toString())		
+		amprange[3] = value;	
+
+	widgetData.setProperty (CabbageIdentifierIds::amprange, amprange, 0);
+			
     widgetData.setProperty (name, value, 0);
 }
 
@@ -1446,35 +1465,109 @@ String CabbageWidgetData::getImagesTextAsCabbageCode (ValueTree widgetData, cons
         returnText = returnText + "imgfile(\"Off\", \"" + text + "\"), ";
     }
 
+    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::imgslider)
+        != CabbageWidgetData::getStringProp (tempData, CabbageIdentifierIds::imgslider))
+    {
+        const String text = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::imgslider);
+        returnText = returnText + "imgfile(\"Slider\", \"" + text + "\"), ";
+    }
+	
+    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::imgsliderbg)
+        != CabbageWidgetData::getStringProp (tempData, CabbageIdentifierIds::imgsliderbg))
+    {
+        const String text = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::imgsliderbg);
+        returnText = returnText + "imgfile(\"Background\", \"" + text + "\"), ";
+    }
+	
+    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::imggroupbox)
+        != CabbageWidgetData::getStringProp (tempData, CabbageIdentifierIds::imggroupbox))
+    {
+        const String text = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::imggroupbox);
+        returnText = returnText + "imgfile(\"" + text + "\"), ";
+    }	
+	
     return returnText;
 }
 //===================================================================
+String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
+{
+    var items = CabbageWidgetData::getProperty (widgetData, identifier);
+    const Array<var>* array = items.getArray();
+	ValueTree tempData ("tempTree");
+	const String type = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
+	CabbageWidgetData::setWidgetState (tempData, type + " " + macroText, -99);
+	var tempItems = CabbageWidgetData::getProperty (tempData, identifier);
+	
+    if (array)
+    {		
+		if(identifier == "amprange")
+		{
+			if (getProperty(widgetData, CabbageIdentifierIds::amprange) != getProperty(tempData, CabbageIdentifierIds::amprange))
+			{
+				return identifier + "(" + array->getReference (0).toString() + ", "
+						+ array->getReference (1).toString() + ", "
+						+ array->getReference (2).toString() + ", "
+						+ String(float(array->getReference (3)), 4) + "), ";
+			}
+			
+			return String::empty;
+		}					
+    }	
+}
+
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
 {
     var items = CabbageWidgetData::getProperty (widgetData, identifier);
-    String channelString = "";
+    String itemString = "";
 
     const Array<var>* array = items.getArray();
 
     if (array)
     {
-        for (int i = 0 ; i < array->size() - 1 ; i++)
-        {
-            const String text = array->getReference (array->size() - 1).toString();
-            channelString = channelString + "\"" + array->getReference (i).toString() + "\", ";
-        }
 
-        if ( array->size() == 1)
-            return identifier + "(\"" + channelString + array->getReference (array->size() - 1).toString() + "\"), ";
-        else
-            return identifier + "(" + channelString + "\"" + array->getReference (array->size() - 1).toString() + "\"), ";
+		if(identifier == "tablenumber")
+		{
+			for (int i = 0 ; i < array->size()-1 ; i++)
+			{
+				const String text = array->getReference (array->size() - 1).toString();
+				itemString = itemString + array->getReference (i).toString() + ", ";
+			}
+			
+			itemString = itemString + array->getReference (array->size()-1).toString();
+								
+			if ( array->size() == 1)
+				return identifier + "(" + itemString + "), ";
+			else
+				return identifier + "(" + itemString + "), ";			
+		}
+		else
+		{
+			for (int i = 0 ; i < array->size() - 1 ; i++)
+			{
+				const String text = array->getReference (array->size() - 1).toString();
+				itemString = itemString + "\"" + array->getReference (i).toString() + "\", ";
+			}
+			
+			if ( array->size() == 1)
+				return identifier + "(\"" + itemString + array->getReference (array->size() - 1).toString() + "\"), ";
+			else
+				return identifier + "(" + itemString + "\"" + array->getReference (array->size() - 1).toString() + "\"), ";
+				
+		}
     }
 
     StringArray stringArray;
     stringArray.addLines (items.toString());
 
-    for ( int i = 0 ; i < stringArray.size(); i++)
-        stringArray.set (i, "\"" + stringArray[i] + "\"");
+	if(identifier == "tablenumber")
+	{
+		for ( int i = 0 ; i < stringArray.size(); i++)
+			stringArray.set (i, stringArray[i]);
+	}
+	else
+		for ( int i = 0 ; i < stringArray.size(); i++)
+			stringArray.set (i, "\"" + stringArray[i] + "\"");
+
 
     //CabbageUtilities::debug(stringArray.joinIntoString(", "));
 
@@ -1640,6 +1733,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getMultiItemTextAsCabbageCode (widgetData, "text", macroText)
                          + getColoursTextAsCabbageCode (widgetData, macroText)
                          + getRotateTextAsCabbageCode (widgetData, macroText)
+						 + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)
@@ -1652,9 +1746,11 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getSimpleTextAsCabbageCode (widgetData, "align", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "file", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "shape", macroText)
+						 + getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
                          + getWidgetArrayAsCabbageCode (widgetData, macroText)
                          + getImagesTextAsCabbageCode (widgetData, macroText)
+						 
 
                          //lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
                          + (getNumProp (widgetData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
