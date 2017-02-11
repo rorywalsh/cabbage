@@ -216,6 +216,7 @@ void TableManager::setGridColour (Colour col)
     for (int i = 0; i < tables.size(); i++)
     {
         tables[i]->gridColour = col;
+		tables[i]->repaint();
 
         if (col.getAlpha() == 0x00)
             tables[i]->drawGrid = false;

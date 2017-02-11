@@ -247,6 +247,9 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
     else if (value.refersToSameSourceAs (sliderNumberBoxValue))
         setPropertyByName ("Value Box", value.getValue());
 
+    else if (value.refersToSameSourceAs (fillTableWaveform))
+        setPropertyByName ("Fill", value.getValue());
+		
     else if (value.refersToSameSourceAs (shapeValue))
     {
         if (value.getValue().isInt())
@@ -406,6 +409,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 		comps.add (new ColourPropertyComponent ("Value Box Outline", textboxOutlineColourString));
 
     }
+	
     else if (typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
     {
         const String fontColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour);
@@ -438,6 +442,18 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 
     }
 
+    else if (typeOfWidget == "gentable")
+    {
+        const String tableGridColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour);
+        const String tableBackgroundColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour);
+        const String tableColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablecolour);
+
+        comps.add (new ColourPropertyComponent ("Table Grid", tableGridColour));
+        comps.add (new ColourPropertyComponent ("Table Colour", tableColour));
+        comps.add (new ColourPropertyComponent ("Table Background", tableBackgroundColour));
+
+    }
+	
     else if (typeOfWidget == "xypad")
     {
         const String colour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour);
@@ -538,7 +554,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createAmpRangeEditors (ValueTr
 	{
 		comps.add (new TextPropertyComponent (Value (amprange[0]), "Min Amp", 200, false));
 		comps.add (new TextPropertyComponent (Value (amprange[1]), "Max Amp", 200, false));
-		comps.add (new TextPropertyComponent (Value (amprange[2]), "Table", 200, false));
+		comps.add (new TextPropertyComponent (Value (amprange[2]), "Table No.", 200, false));
 		const String quantiseString = String(float(amprange[3]), 4);
 		comps.add (new TextPropertyComponent (Value(quantiseString), "Quantise", 200, false));
 	}
@@ -640,6 +656,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
         comps.add (new TextPropertyComponent (Value (outline), "Outline Thickness", 200, false));
     }
 
+    else if (typeOfWidget == "gentable")
+    {
+		fillTableWaveform.addListener(this);
+		fillTableWaveform.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
+		comps.add (new BooleanPropertyComponent (fillTableWaveform, "Waveform", "Fill"));
+    }
+	
     else if (typeOfWidget.contains ("slider") || typeOfWidget == "encoder")
     {
         sliderNumberBoxValue.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuetextbox));

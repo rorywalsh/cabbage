@@ -552,7 +552,7 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     channels.append ("end");
 	
 	var amprange;
-	amprange.append(0);
+	amprange.append(-1);
 	amprange.append(1);
 	amprange.append(-1);
 	amprange.append(0.01);

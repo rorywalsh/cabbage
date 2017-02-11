@@ -749,9 +749,13 @@ public:
         set ("Mouse Over", CabbageIdentifierIds::mouseoeverkeycolour.toString());
 		set ("Max Amp", CabbageIdentifierIds::amprange_max.toString());
 		set ("Min Amp", CabbageIdentifierIds::amprange_min.toString());
-		set ("Table", CabbageIdentifierIds::amprange_tablenumber.toString());
+		set ("Table No.", CabbageIdentifierIds::amprange_tablenumber.toString());
 		set ("Quantise", CabbageIdentifierIds::amprange_quantise.toString());
 		set ("Table Numbers", CabbageIdentifierIds::tablenumber.toString());
+		set ("Table Colour", CabbageIdentifierIds::tablecolour.toString());
+		set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
+		set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
+		set ("Fill", CabbageIdentifierIds::fill.toString());
     }
 };
 

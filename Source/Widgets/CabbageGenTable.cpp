@@ -205,6 +205,11 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     }
     else
     {
+		table.setGridColour (Colour::fromString(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour)));
+		table.setBackgroundColour (Colour::fromString(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour)));
+		table.setFill(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
+		table.repaint();
+		
         if (scrubberPos != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition))
         {
             var scrubPosition = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::scrubberposition);
@@ -242,6 +247,7 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
         if (zoom != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom))
             zoom = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom);
+
 
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     }

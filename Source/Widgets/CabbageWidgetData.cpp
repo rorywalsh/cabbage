@@ -1690,7 +1690,12 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         colourString = colourString << "backgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
-
+    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::tablegridcolour) != CabbageWidgetData::getStringProp (tempData, CabbageIdentifierIds::tablegridcolour))
+    {
+        const Colour col = Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::tablegridcolour));
+        colourString = colourString << "tablegridcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+	
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::tablebackgroundcolour) != CabbageWidgetData::getStringProp (tempData, CabbageIdentifierIds::tablebackgroundcolour))
     {
         const Colour col = Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::tablebackgroundcolour));
@@ -1737,6 +1742,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "fill", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "visible", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "valuetextbox", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
