@@ -36,7 +36,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
-    Logger::writeToLog (opcodeFile);
+    //Logger::writeToLog (opcodeFile);
 
 
     if (File (opcodeFile).existsAsFile())
@@ -941,6 +941,6 @@ StringArray CabbageCodeEditorComponent::getSelectedTextArray()
     StringArray tempArray;
     String selectedText = getTextInRange (this->getHighlightedRegion());
     tempArray.addLines (selectedText);
-    Logger::writeToLog (selectedText);
+    //Logger::writeToLog (selectedText);
     return tempArray;
 }

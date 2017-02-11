@@ -59,9 +59,12 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     addAndMakeVisible (colourSettingsButton);
     addAndMakeVisible (audioDeviceSelector);
     audioSettingsButton.addListener (this);
+	audioSettingsButton.addMouseListener(this, false);
     miscSettingsButton.addListener (this);
+	miscSettingsButton.addMouseListener(this, false);
     colourSettingsButton.addListener (this);
-
+	colourSettingsButton.addMouseListener(this, false);
+	
     const Image audioSettingsImage = ImageCache::getFromMemory (CabbageBinaryData::AudioSettingsButton_png, CabbageBinaryData::AudioSettingsButton_pngSize);
     CabbageUtilities::setImagesForButton (&audioSettingsButton, audioSettingsImage);
 
@@ -162,16 +165,28 @@ void CabbageSettingsWindow::resized()
     colourSettingsButton.setBounds (10, 150, 60, 60);
 
     if (audioDeviceSelector)
-        audioDeviceSelector->setBounds (100, 10, r.getWidth() - 100, r.getHeight() - 20);
+        audioDeviceSelector->setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
 
-    colourPanel.setBounds (100, 10, r.getWidth() - 100, r.getHeight() - 20);
-    miscPanel.setBounds (100, 10, r.getWidth() - 100, r.getHeight() - 20);
+    colourPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
+    miscPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
 
 }
 
 void CabbageSettingsWindow::paint (Graphics& g)
 {
+	Rectangle<int> r (getLocalBounds());
     g.fillAll (Colour (147, 210, 0));
+	g.setColour(Colours::black.withAlpha(.1f));
+	g.fillRect(r.withLeft(90));
+	g.setFont(Font(18, 1));
+	g.setColour(Colours::black);
+	
+	if(miscPanel.isVisible())
+		g.drawFittedText("Miscellaneous", 100, 10, r.getWidth()-100, 20, Justification::centred, 1);
+	else if(colourPanel.isVisible())
+		g.drawFittedText("Colours", 100, 10, r.getWidth()-100, 20, Justification::centred, 1);
+	else if(audioDeviceSelector->isVisible())
+		g.drawFittedText("Audio and MIDI", 100, 10, r.getWidth()-100, 20, Justification::centred, 1);
 }
 //=====================================================================
 void CabbageSettingsWindow::valueChanged (Value& value)
@@ -199,28 +214,41 @@ void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileCom
 
 }
 
-void CabbageSettingsWindow::buttonClicked (Button* button)
+void CabbageSettingsWindow::selectPanel(String button)
 {
-    if (button->getName() == "AudioSettingsButton")
+    if (button == "AudioSettingsButton")
     {
         audioDeviceSelector->setVisible (true);
         colourPanel.setVisible (false);
         miscPanel.setVisible (false);
     }
-    else if (button->getName() == "ColourSettingsButton")
+    else if (button == "ColourSettingsButton")
     {
         audioDeviceSelector->setVisible (false);
         colourPanel.setVisible (true);
         miscPanel.setVisible (false);
     }
-    else if (button->getName() == "MiscSettingsButton")
+    else if (button == "MiscSettingsButton")
     {
         audioDeviceSelector->setVisible (false);
         colourPanel.setVisible (false);
         miscPanel.setVisible (true);
-    }
+    }	
+	
+	repaint();
+}
+
+void CabbageSettingsWindow::buttonClicked (Button* button)
+{
+	selectPanel(button->getName());
 
 }
+
+void CabbageSettingsWindow::mouseEnter(const MouseEvent& e)
+{
+	selectPanel(e.eventComponent->getName());
+}
+
 
 void CabbageSettingsWindow::changeListenerCallback (ChangeBroadcaster* source)
 {

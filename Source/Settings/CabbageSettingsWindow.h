@@ -53,6 +53,8 @@ public:
     void buttonClicked (Button* button);
     void paint (Graphics& g);
     void valueChanged (Value& value);
+	void mouseEnter(const MouseEvent& e) override;
+	void selectPanel(String button);
     void filenameComponentChanged (FilenameComponent*);
     void textPropertyComponentChanged (TextPropertyComponent* comp);
 

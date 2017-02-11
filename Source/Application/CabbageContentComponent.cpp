@@ -482,7 +482,7 @@ void CabbageContentComponent::showSettingsDialog()
     o.escapeKeyTriggersCloseButton = true;
     o.useNativeTitleBar = true;
     o.resizable = false;
-    o.launchAsync();
+    o.runModal();
 }
 
 //==============================================================================

@@ -602,7 +602,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::open:
-            getContentComponent()->openFile();
+            //getContentComponent()->openFile();
+            Logger::writeToLog("Hello=============");
             return true;
 
         case CommandIDs::openFromRPi:
