@@ -32,6 +32,10 @@ static void addListener (Array<PropertyComponent*> comps, CabbagePropertiesPanel
         {
             colourProperty->addChangeListener (owner);
         }
+        else if (ColourMultiPropertyComponent* colourProperty = dynamic_cast<ColourMultiPropertyComponent*> (comps[i]))
+        {
+            colourProperty->addChangeListener (owner);
+        }
         else if (CabbageFilePropertyComponent* fileComp = dynamic_cast<CabbageFilePropertyComponent*> (comps[i]))
         {
             fileComp->filenameComp.addListener (owner);
@@ -232,7 +236,6 @@ void CabbagePropertiesPanel::getAmpRangeForTable(String identifier, var value)
 		amprange[3] = value;	
 
 	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::amprange, amprange);
-
 }
 
 void CabbagePropertiesPanel::getScrubberPositionForTable(String identifier, var value)
@@ -248,7 +251,6 @@ void CabbagePropertiesPanel::getScrubberPositionForTable(String identifier, var 
 	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberPosition[0]);
 	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberPosition[1]);
 	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::scrubberposition, scrubberPosition);
-
 }
 //=============================================================================================
 
@@ -257,6 +259,14 @@ void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
     if (ColourPropertyComponent* colourProperty = dynamic_cast<ColourPropertyComponent*> (source))
     {
         setPropertyByName (colourProperty->getName(), colourProperty->getCurrentColourString());
+    }
+	else if (ColourMultiPropertyComponent* colourProperty = dynamic_cast<ColourMultiPropertyComponent*> (source))
+    {
+		var colours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
+		var tableColours = colours.clone();
+		tableColours[colourProperty->currentColourIndex] = colourProperty->getCurrentColourString();
+		CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::tablecolour, tableColours);		
+		sendChangeMessage();    //update code in editor when changes are made...
     }
 }
 
@@ -333,7 +343,6 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
 
 void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
 {
-	CabbageUtilities::debug(fileComponent->getCurrentFileText());
     if (File (fileComponent->getCurrentFileText()).existsAsFile())
     {
         const String csdFile = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::csdfile);
@@ -484,11 +493,12 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
     {
         const String tableGridColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour);
         const String tableBackgroundColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour);
-        const String tableColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablecolour);
+        const var tableColour = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::tablecolour);
 
+		comps.add (new ColourMultiPropertyComponent ("Tables", tableColour));
         comps.add (new ColourPropertyComponent ("Table Grid", tableGridColour));
-        comps.add (new ColourPropertyComponent ("Table Colour", tableColour));
         comps.add (new ColourPropertyComponent ("Table Background", tableBackgroundColour));
+		
 
     }
 	

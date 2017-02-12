@@ -38,6 +38,7 @@ class CabbageGenTable : public Component, public ValueTree::Listener, public Cab
     double sampleRate = 0;
     double scrubberPos = 0;
     var ampRanges;
+	var tableColours;
     CabbagePluginEditor* owner;
     TableManager table;
     double scrubberPosition;

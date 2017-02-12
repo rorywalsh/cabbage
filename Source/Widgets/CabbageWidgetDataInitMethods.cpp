@@ -531,18 +531,9 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, "basetype", "layout");
     var tableColours;
-    tableColours.append ("white");
-    tableColours.append ("cornflowerblue");
-    tableColours.append ("yellow");
-    tableColours.append ("lime");
-    tableColours.append ("green");
-    tableColours.append ("pink");
-    tableColours.append ("brown");
-    tableColours.append ("purple");
-    tableColours.append ("lightblue");
-    tableColours.append ("darkgreen");
-    tableColours.append ("lightgreen");
-    tableColours.append ("mango");
+    for( int i = 0 ; i < 10 ; i++)
+		tableColours.append(Colours::lime.toString());
+
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 300);

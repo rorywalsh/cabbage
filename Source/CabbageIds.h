@@ -334,8 +334,9 @@ public:
         add ("tablenumbers");
         add ("identchannel");
         add ("fontcolour:0");
-		add ("widgetarray");
+        add ("tablecolour:");
         add ("tablecolour");
+		add ("widgetarray");
         add ("arrowcolour");
         add ("widgetarray");
         add ("channeltype");
@@ -781,12 +782,12 @@ public:
 		set ("Table No.", CabbageIdentifierIds::amprange_tablenumber.toString());
 		set ("Quantise", CabbageIdentifierIds::amprange_quantise.toString());
 		set ("Table Numbers", CabbageIdentifierIds::tablenumber.toString());
-		set ("Table Colour", CabbageIdentifierIds::tablecolour.toString());
+		set ("Tables", CabbageIdentifierIds::tablecolour.toString());
 		set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
 		set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
 		set ("Fill", CabbageIdentifierIds::fill.toString());
 		set ("Zoom", CabbageIdentifierIds::zoom.toString());
-		set ("Start Pos", CabbageIdentifierIds::startpos.toString());
+		set ("Start Index", CabbageIdentifierIds::startpos.toString());
 		set ("End Index", CabbageIdentifierIds::endpos.toString());
 		set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
 		set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());

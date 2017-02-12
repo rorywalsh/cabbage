@@ -64,7 +64,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
         table.addTable (44100,
-                        Colours::findColourForName (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[0].toString(), Colours::white),
+                        Colour::fromString(CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[0].toString()),
                         1,
                         ampRanges,
                         0, this);
@@ -91,7 +91,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
             if (owner->csdCompiledWithoutError())
             {
                 table.addTable (44100,
-                                Colours::findColourForName (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[0].toString(), Colours::white),
+                                Colour::fromString(CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[y].toString()),
                                 (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine),
                                 ampRanges,
                                 tableNumber, this);
@@ -127,6 +127,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
         }
     }
 
+	tableColours = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour);
     var tableConfigArray = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tableconfig);
 
     if (fileTable == 1)
@@ -159,7 +160,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
     }
 
     table.setVUGradient (gradient);
-
+		
     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) != 1)
         table.toggleEditMode (false);
 }
@@ -198,7 +199,6 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 table.enableEditMode (pFields, tableNumber);
             }
         }
-
 
         CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::update, 0); //reset value for further updates
 
@@ -253,6 +253,13 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 			table.showZoomButtons(zoom > 0 ? true : false);
 		}
 
+		if(tableColours != CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour))
+		{
+			tableColours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
+			table.setTableColours(tableColours);
+		}
+		
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     }
+
 }
