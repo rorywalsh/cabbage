@@ -112,23 +112,8 @@ CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
 {
     setOpaque (true);
     setSize (300, 500);
-
     addAndMakeVisible (propertyPanel);
-    //setColour(TextEditor::highlightColourId, Colour(100, 100, 100));
     propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::black);
-	CabbageImageWidgetStrings imageWidgets;
-    const String typeOfWidget = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
-
-    propertyPanel.addSection ("Bounds", createPositionEditors (widgetData));
-    propertyPanel.addSection ("Rotation", createRotationEditors (this, widgetData), false);
-    propertyPanel.addSection ("Channels", createChannelEditors (this, widgetData));
-    propertyPanel.addSection ("Values", createValueEditors (this, widgetData));
-    propertyPanel.addSection ("Text", createTextEditors (widgetData));
-    propertyPanel.addSection ("Colours", createColourChoosers (widgetData));
-	propertyPanel.addSection ("Images", createFileEditors (widgetData));		
-    propertyPanel.addSection ("Widget Array", createWidgetArrayEditors (this, widgetData), false);
-    propertyPanel.addSection ("Misc", createMiscEditors (widgetData));
-
 }
 
 CabbagePropertiesPanel::~CabbagePropertiesPanel()
@@ -159,13 +144,18 @@ void CabbagePropertiesPanel::updateProperties (ValueTree wData)
 	
     propertyPanel.addSection ("Bounds", createPositionEditors (wData));
     propertyPanel.addSection ("Rotation", createRotationEditors (this, wData), false);
-    propertyPanel.addSection ("Channels", createChannelEditors (this, wData));
-    propertyPanel.addSection ("Values", createValueEditors (this, wData));
+	
+	if(typeOfWidget != "gentable")
+		propertyPanel.addSection ("Channels", createChannelEditors (this, wData));
+    
+	propertyPanel.addSection ("Values", createValueEditors (this, wData));
 	
 	if(typeOfWidget == "gentable")
 	{
 		propertyPanel.addSection ("AmpRange", createAmpRangeEditors (wData));	
 		propertyPanel.addSection ("Tables", createTextEditors (wData));		
+		propertyPanel.addSection ("Sample Range", createTwoValueEditors (wData, CabbageIdentifierIds::samplerange));	
+		propertyPanel.addSection ("Scrubber Position", createTwoValueEditors (wData, CabbageIdentifierIds::scrubberposition));		
 	}
 	else
 		propertyPanel.addSection ("Text", createTextEditors (wData));
@@ -204,18 +194,62 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
     CabbageIdentifierPropertyStringPairs propertyStringPairs;
     const String identifier = propertyStringPairs.getValue (name, "");
 	
-
+	CabbageAmpRangeIdentifiers ampRangeIdentifiers;
+	CabbageScrubberPositionIdentifiers scrubberIdentifiers;
+	
     if (identifier.isNotEmpty())
     {
 		if (identifier == CabbageIdentifierIds::sliderincr.toString())
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::decimalplaces,
                                             CabbageUtilities::getNumberOfDecimalPlaces (value.toString()));
+											
+		else if(ampRangeIdentifiers.contains(identifier))
+			getAmpRangeForTable(identifier, value);
+		
+		else if(scrubberIdentifiers.contains(identifier))
+			getScrubberPositionForTable(identifier, value);
+		
 		else
 			CabbageWidgetData::setProperty (widgetData, identifier, value);
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
 }
+
+//=============================================================================================
+void CabbagePropertiesPanel::getAmpRangeForTable(String identifier, var value)
+{	
+	var amprange = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::amprange);
+
+	if(identifier == CabbageIdentifierIds::amprange_min.toString())		
+		amprange[0] = value;
+	else if(identifier == CabbageIdentifierIds::amprange_max.toString())		
+		amprange[1] = value;
+	else if(identifier == CabbageIdentifierIds::amprange_tablenumber.toString())		
+		amprange[2] = value;
+	else if(identifier == CabbageIdentifierIds::amprange_quantise.toString())		
+		amprange[3] = value;	
+
+	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::amprange, amprange);
+
+}
+
+void CabbagePropertiesPanel::getScrubberPositionForTable(String identifier, var value)
+{	
+	var scrubberPosition = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::scrubberposition);
+
+	if(identifier == CabbageIdentifierIds::scrubberposition_sample.toString())		
+		scrubberPosition[0] = value;
+	else if(identifier == CabbageIdentifierIds::scrubberposition_table.toString())		
+		scrubberPosition[1] = value;
+
+
+	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberPosition[0]);
+	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberPosition[1]);
+	CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::scrubberposition, scrubberPosition);
+
+}
+//=============================================================================================
 
 void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
 {
@@ -244,10 +278,13 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
     else if (value.refersToSameSourceAs (alphaValue))
         setPropertyByName ("Alpha", value.getValue());
 
+    else if (value.refersToSameSourceAs (zoomValue))
+        setPropertyByName ("Zoom", value.getValue());
+		
     else if (value.refersToSameSourceAs (sliderNumberBoxValue))
         setPropertyByName ("Value Box", value.getValue());
 
-    else if (value.refersToSameSourceAs (fillTableWaveform))
+    else if (value.refersToSameSourceAs (fillTableWaveformValue))
         setPropertyByName ("Fill", value.getValue());
 		
     else if (value.refersToSameSourceAs (shapeValue))
@@ -543,7 +580,31 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
     addListener (comps, this);
     return comps;
 }
-
+//==============================================================================
+Array<PropertyComponent*> CabbagePropertiesPanel::createTwoValueEditors (ValueTree valueTree, Identifier identifier)
+{
+	Array<PropertyComponent*> comps;
+	const String typeOfWidget = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
+	if(identifier.toString() == "samplerange")
+	{
+		const int startPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos);
+		comps.add (new TextPropertyComponent (Value (startPos), "Start Index", 200, false));	
+		comps[comps.size()-1]->setTooltip("Startng value of indeex");
+		const int endPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos);
+		comps.add (new TextPropertyComponent (Value (endPos), "End Index", 200, false));
+	}
+	else if(identifier.toString() == "scrubberposition")
+	{
+		const int startPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition_sample);
+		comps.add (new TextPropertyComponent (Value (startPos), "Scrubber Pos", 200, false));	
+		const int table = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition_table);
+		comps.add (new TextPropertyComponent (Value (table), "Scrubber Table", 200, false));		
+	}
+	
+	addListener (comps, this);
+	return comps;	
+}
+//==============================================================================		
 Array<PropertyComponent*> CabbagePropertiesPanel::createAmpRangeEditors (ValueTree valueTree)
 {
 	Array<PropertyComponent*> comps;
@@ -658,9 +719,13 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
 
     else if (typeOfWidget == "gentable")
     {
-		fillTableWaveform.addListener(this);
-		fillTableWaveform.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
-		comps.add (new BooleanPropertyComponent (fillTableWaveform, "Waveform", "Fill"));
+		fillTableWaveformValue.addListener(this);
+		fillTableWaveformValue.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
+		comps.add (new BooleanPropertyComponent (fillTableWaveformValue, "Waveform", "Fill"));
+
+		zoomValue.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom));
+		zoomValue.addListener (this);
+		comps.add (new SliderPropertyComponent (zoomValue, "Zoom", -1, 1, .01, 1, 1));
     }
 	
     else if (typeOfWidget.contains ("slider") || typeOfWidget == "encoder")

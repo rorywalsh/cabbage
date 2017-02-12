@@ -39,6 +39,8 @@ public:
 	~CabbagePropertiesPanel();	
     void paint (Graphics& g) override;
     void resized() override;
+	void getAmpRangeForTable(String identifier, var value);
+	void getScrubberPositionForTable(String identifier, var value);
     void setPropertyByName (String name, var value);
     void textPropertyComponentChanged (TextPropertyComponent* comp);
     void changeListenerCallback (juce::ChangeBroadcaster* source);
@@ -55,7 +57,8 @@ public:
     Array<PropertyComponent*> createValueEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
     Array<PropertyComponent*> createWidgetArrayEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
 	Array<PropertyComponent*> createAmpRangeEditors (ValueTree valueTree);
-    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue, fillTableWaveform;
+	Array<PropertyComponent*> createTwoValueEditors (ValueTree valueTree, Identifier identifier);
+    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue, fillTableWaveformValue, zoomValue;
     Colour backgroundColour, borderColour;
 
 
@@ -71,6 +74,7 @@ public:
         repaint();
     }
 private:
+	TooltipWindow tooltipWindow;
     PropertyPanel propertyPanel;
 	String previousWidgetName="";
 	

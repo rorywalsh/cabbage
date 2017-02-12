@@ -1008,7 +1008,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String inStr
                 }
 
                 setProperty (widgetData, CabbageIdentifierIds::scrubberposition, scrubberInfo);
-
+				setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberInfo[0]);
+				setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
             }
 
             else if (identArray[indx].equalsIgnoreCase ("logger"))
@@ -1242,28 +1243,7 @@ void CabbageWidgetData::setStringProp (ValueTree widgetData, Identifier name, co
 }
 
 void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, const var& value)
-{
-	
-	var amprange = getProperty(widgetData, CabbageIdentifierIds::amprange);
-	if(name.toString() == "amprange") //assigning amprange values to unique properties for GUI property panel
-	{		
-		widgetData.setProperty(CabbageIdentifierIds::amprange_min, value[0], 0);
-		widgetData.setProperty(CabbageIdentifierIds::amprange_max, value[1], 0);
-		widgetData.setProperty(CabbageIdentifierIds::amprange_tablenumber, value[2], 0);
-		widgetData.setProperty(CabbageIdentifierIds::amprange_quantise, value[3], 0);
-		widgetData.setProperty (name, value, 0);
-	}
-	else if(name.toString() == CabbageIdentifierIds::amprange_min.toString())		
-		amprange[0] = value;
-	else if(name.toString() == CabbageIdentifierIds::amprange_max.toString())		
-		amprange[1] = value;
-	else if(name.toString() == CabbageIdentifierIds::amprange_tablenumber.toString())		
-		amprange[2] = value;
-	else if(name.toString() == CabbageIdentifierIds::amprange_quantise.toString())		
-		amprange[3] = value;	
-
-	widgetData.setProperty (CabbageIdentifierIds::amprange, amprange, 0);
-			
+{			
     widgetData.setProperty (name, value, 0);
 }
 
@@ -1395,6 +1375,31 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + String (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::valuey))
                + "), ";
     }
+	
+    else if (type == "gentable" && identifier == "samplerange")
+    {
+		if(getProperty(widgetData, CabbageIdentifierIds::startpos) != getProperty(tempData, CabbageIdentifierIds::startpos) 
+		|| getProperty(widgetData, CabbageIdentifierIds::endpos) != getProperty(tempData, CabbageIdentifierIds::endpos) )
+		{
+			return "samplerange(" + String (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::startpos))
+				   + ", "
+				   + String (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::endpos))
+				   + "), ";	
+		}
+	}
+	
+    else if (type == "gentable" && identifier == "scrubberposition")
+    {
+		if(getProperty(widgetData, CabbageIdentifierIds::scrubberposition) != getProperty(tempData, CabbageIdentifierIds::scrubberposition))
+		{
+			return "scrubberposition(" + String (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::scrubberposition_sample))
+				   + ", "
+				   + String (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::scrubberposition_table))
+				   + "), ";	
+			   
+		}
+	}
+	
     else
     {
         if (CabbageWidgetData::getNumProp (widgetData, identifier) != CabbageWidgetData::getNumProp (tempData, identifier))
@@ -1518,7 +1523,12 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
 {
     var items = CabbageWidgetData::getProperty (widgetData, identifier);
-    String itemString = "";
+    const String typeOfWidget = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::type);
+	
+	if(typeOfWidget == "gentable" && identifier == "channel")
+		return String::empty;
+		
+	String itemString = "";
 
     const Array<var>* array = items.getArray();
 
@@ -1739,13 +1749,14 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getColoursTextAsCabbageCode (widgetData, macroText)
                          + getRotateTextAsCabbageCode (widgetData, macroText)
 						 + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
+						 //+ getMultiItemTextAsCabbageCode (widgetData, "samplerange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)
 						 + getNumericalValueTextAsCabbageCode (widgetData, "fill", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "visible", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "valuetextbox", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
@@ -1753,6 +1764,8 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getSimpleTextAsCabbageCode (widgetData, "file", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "shape", macroText)
 						 + getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "samplerange", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
                          + getWidgetArrayAsCabbageCode (widgetData, macroText)
                          + getImagesTextAsCabbageCode (widgetData, macroText)

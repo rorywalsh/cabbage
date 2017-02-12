@@ -246,8 +246,12 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         }
 
         if (zoom != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom))
+		{
             zoom = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom);
-
+			table.setZoomFactor(zoom);
+			table.showScrollbar(zoom > 0 ? true : false);
+			table.showZoomButtons(zoom > 0 ? true : false);
+		}
 
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     }

@@ -374,13 +374,8 @@ void TableManager::resized()
 void TableManager::showZoomButtons (bool show)
 {
     shouldShowZoomButtons = show;
-
-    if (show == false)
-    {
-        this->zoomIn->setVisible (false);
-        this->zoomOut->setVisible (false);
-    }
-
+    zoomIn->setVisible (show);
+    zoomOut->setVisible (show);
     resized();
 }
 

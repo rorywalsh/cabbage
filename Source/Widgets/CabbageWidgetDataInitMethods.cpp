@@ -547,9 +547,6 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 300);
     setProperty (widgetData, CabbageIdentifierIds::height, 200);
-    var channels;
-    channels.append ("pos");
-    channels.append ("end");
 	
 	var amprange;
 	amprange.append(-1);
@@ -557,7 +554,6 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
 	amprange.append(-1);
 	amprange.append(0.01);
 	
-    setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "gentable");
@@ -566,9 +562,12 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::amprange, amprange);
 	setProperty (widgetData, CabbageIdentifierIds::tablenumber, 0);
 	setProperty (widgetData, CabbageIdentifierIds::amprange_max, 1);
-	setProperty (widgetData, CabbageIdentifierIds::amprange_min, 0);
+	setProperty (widgetData, CabbageIdentifierIds::amprange_min, -1);
 	setProperty (widgetData, CabbageIdentifierIds::amprange_tablenumber, -1);
 	setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
+	setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
+	setProperty (widgetData, CabbageIdentifierIds::startpos, 0);
+	setProperty (widgetData, CabbageIdentifierIds::endpos, -1);
     setProperty (widgetData, CabbageIdentifierIds::drawmode, "");
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
@@ -576,11 +575,11 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::active, 0);
 
-    var tables;
-    tables.append (0);
-    tables.append (0);
+    var scrubInfo;
+    scrubInfo.append (0);
+    scrubInfo.append (-1);
 
-    setProperty (widgetData, CabbageIdentifierIds::scrubberposition, tables);
+    setProperty (widgetData, CabbageIdentifierIds::scrubberposition, scrubInfo);
     setProperty (widgetData, CabbageIdentifierIds::zoom, -1);
     setProperty (widgetData, CabbageIdentifierIds::startpos, 0);
     setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1.f);

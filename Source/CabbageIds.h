@@ -247,7 +247,7 @@ public:
     ~CabbageLayoutWidgetStrings() {}
 };
 
-// this array holds the names of all widgets that can be controlled via a host and plugin editor GUI
+// utility string arrays
 class CabbageImageWidgetStrings : public StringArray
 {
 public:
@@ -266,12 +266,39 @@ public:
     ~CabbageImageWidgetStrings() {}
 };
 
+class CabbageAmpRangeIdentifiers : public StringArray
+{
+public:
+    CabbageAmpRangeIdentifiers()
+    {
+        add ("amprange_min");
+        add ("amprange_tablenumber");
+        add ("amprange_quantise");
+        add ("amprange_max");
+    }
+
+    ~CabbageAmpRangeIdentifiers() {}
+};
+
+class CabbageScrubberPositionIdentifiers : public StringArray
+{
+public:
+    CabbageScrubberPositionIdentifiers()
+    {
+        add ("scrubberposition_sample");
+        add ("scrubberposition_table");
+    }
+
+    ~CabbageScrubberPositionIdentifiers() {}
+};
 // this array holds all identifier strings
 class CabbageIdentifierStrings : public StringArray
 {
 public:
     CabbageIdentifierStrings()  // longest strings appear first otherwise identifiers will be missed in parsing
     {
+		add ("scrubberposition_sample");
+		add ("scrubberposition_table");
         add ("tablebackgroundcolour");
         add ("arrowbackgroundcolour");
 		add ("amprange_tablenumber");
@@ -445,7 +472,7 @@ namespace CabbageIdentifierIds
 	static const Identifier amprange_min = "amprange_min";
 	static const Identifier amprange_max = "amprange_max";
 	static const Identifier amprange_tablenumber = "amprange_tablenumber";
-	static const Identifier amprange_quantise = "amprange_quatinse";
+	static const Identifier amprange_quantise = "amprange_quantise";
     static const Identifier caption = "caption";
     static const Identifier basetype = "basetype";
     static const Identifier imgslider = "imgslider";
@@ -530,6 +557,8 @@ namespace CabbageIdentifierIds
     static const Identifier visible = "visible";
     static const Identifier linenumber = "linenumber";
     static const Identifier scrubberposition = "scrubberposition";
+	static const Identifier scrubberposition_sample = "scrubberposition_sample";
+	static const Identifier scrubberposition_table = "scrubberposition_table";
     static const Identifier startpoint = "startpoint";
     static const Identifier endpoint = "endpoint";
     static const Identifier zoom = "zoom";
@@ -756,6 +785,12 @@ public:
 		set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
 		set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
 		set ("Fill", CabbageIdentifierIds::fill.toString());
+		set ("Zoom", CabbageIdentifierIds::zoom.toString());
+		set ("Start Pos", CabbageIdentifierIds::startpos.toString());
+		set ("End Index", CabbageIdentifierIds::endpos.toString());
+		set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
+		set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
+		
     }
 };
 
