@@ -1800,9 +1800,42 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          //lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
                          + (getNumProp (widgetData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
 
-    return cabbageCode;
+
+	return updateIdentifiers(oldIdentifiers, newIdentifiers);
 }
 
+String CabbageWidgetData::updateIdentifiers(String cabbageCode, String currentLineText)
+{
+	//makes sure we preserve the order in which the widgets appear in the text..
+	StringArray newIdentifiers = CabbageUtilities::getTokens(cabbageCode.substring(0, cabbageCode.lastIndexOf(")")).trimCharactersAtStart("), "), ')');	
+	StringArray oldIdentifiers = CabbageUtilities::getTokens(currentLineText.substring(0, currentLineText.lastIndexOf(")")).trimCharactersAtStart("), "), ')');	
+	
+	for( int i = 0 ; i < newIdentifiers.size() ; i++)
+		newIdentifiers.set(i, newIdentifiers[i].trim().trimCharactersAtStart(" ,")+")");	
+	
+	for( int i = 0 ; i < oldIdentifiers.size() ; i++)
+		oldIdentifiers.set(i, oldIdentifiers[i].trim().trimCharactersAtStart(" ,")+"),");
+		
+	for( int i = 0 ; i < oldIdentifiers.size() ; i++)
+	{
+		const String ident = oldIdentifiers[i].substring(0, oldIdentifiers[i].indexOf("("));
+		
+		for( int y = newIdentifiers.size() ; y >= 0 ; y--)
+		{
+			const String newIdent = newIdentifiers[y].substring(0, newIdentifiers[y].indexOf("("));
+			if(newIdent == ident)
+			{
+				oldIdentifiers.set(i, newIdentifiers[y]);
+				newIdentifiers.remove(y);
+			}				
+		}
+	}
+	
+	for( auto str : newIdentifiers)
+		oldIdentifiers.add(str);
+	
+	return oldIdentifiers.joinIntoString(", ");	
+}
 
 String CabbageWidgetData::removeWidgetFromValueTree (ValueTree wData, int lineNumber)
 {

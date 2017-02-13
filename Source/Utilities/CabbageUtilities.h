@@ -232,7 +232,7 @@ public:
         {
             const char* begin = str;
 
-            while (*str != ' ' && *str)
+            while (*str != breakChar && *str)
                 str++;
 
             tokens.add (string (begin, str));
