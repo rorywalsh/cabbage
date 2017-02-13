@@ -216,6 +216,7 @@ void TableManager::setGridColour (Colour col)
     for (int i = 0; i < tables.size(); i++)
     {
         tables[i]->gridColour = col;
+		tables[i]->repaint();
 
         if (col.getAlpha() == 0x00)
             tables[i]->drawGrid = false;
@@ -231,6 +232,20 @@ void TableManager::setBackgroundColour (Colour col)
     //      if(col.getAlpha()==0xff)
     //          tables[i]->setOpaque(true);
     //    }
+}
+
+//==============================================================================
+void TableManager::setTableColours (var colours)
+{
+	const Array<var>* coloursArray = colours.getArray();
+	if(coloursArray)
+	{
+		for (int i = 0; i < tables.size(); i++)
+		{
+			tables[i]->setColour(Colour::fromString(coloursArray->getReference(i).toString()));
+			tables[i]->repaint();
+		}
+	}
 }
 //==============================================================================
 void TableManager::setRange (double start, double end)
@@ -373,13 +388,8 @@ void TableManager::resized()
 void TableManager::showZoomButtons (bool show)
 {
     shouldShowZoomButtons = show;
-
-    if (show == false)
-    {
-        this->zoomIn->setVisible (false);
-        this->zoomOut->setVisible (false);
-    }
-
+    zoomIn->setVisible (show);
+    zoomOut->setVisible (show);
     resized();
 }
 

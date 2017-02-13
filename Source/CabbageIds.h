@@ -185,7 +185,7 @@ namespace CabbageColourIds
     static const Identifier genericPluginInterface = "Generic Plugin - Background";
 }
 
-// this array holds the names of all widgets taht can be controlled via a host and plugin editor GUI
+// this array holds the names of all widgets that can be controlled via a host and plugin editor GUI
 class CabbageControlWidgetStrings : public StringArray
 {
 public:
@@ -247,16 +247,65 @@ public:
     ~CabbageLayoutWidgetStrings() {}
 };
 
+// utility string arrays
+class CabbageImageWidgetStrings : public StringArray
+{
+public:
+    CabbageImageWidgetStrings()
+    {
+        add ("rslider");
+        add ("vslider");
+        add ("hslider");
+        add ("checkbox");
+        add ("button");
+		add ("filebutton");
+		add ("groupbox");
+		add ("image");
+    }
+
+    ~CabbageImageWidgetStrings() {}
+};
+
+class CabbageAmpRangeIdentifiers : public StringArray
+{
+public:
+    CabbageAmpRangeIdentifiers()
+    {
+        add ("amprange_min");
+        add ("amprange_tablenumber");
+        add ("amprange_quantise");
+        add ("amprange_max");
+    }
+
+    ~CabbageAmpRangeIdentifiers() {}
+};
+
+class CabbageScrubberPositionIdentifiers : public StringArray
+{
+public:
+    CabbageScrubberPositionIdentifiers()
+    {
+        add ("scrubberposition_sample");
+        add ("scrubberposition_table");
+    }
+
+    ~CabbageScrubberPositionIdentifiers() {}
+};
+// this array holds all identifier strings
 class CabbageIdentifierStrings : public StringArray
 {
 public:
     CabbageIdentifierStrings()  // longest strings appear first otherwise identifiers will be missed in parsing
     {
+		add ("scrubberposition_sample");
+		add ("scrubberposition_table");
         add ("tablebackgroundcolour");
         add ("arrowbackgroundcolour");
+		add ("amprange_tablenumber");
 		add ("textboxoutlinecolour");
         add ("mouseoeverkeycolour");
         add ("keyseparatorcolour");
+		add ("amprange_quantise");
         add ("currentnotecolour");
         add ("expandedmacrotext");
         add ("backgroundcolour");
@@ -278,13 +327,16 @@ public:
         add ("trackercolour");
         add ("valuetextbox");
         add ("fontcolour:1");
-        add ("widgetarray");
+		add ("amprange_min");
+		add ("amprange_max");
         add ("trackercolor");
         add ("refreshfiles");
         add ("tablenumbers");
         add ("identchannel");
         add ("fontcolour:0");
+        add ("tablecolour:");
         add ("tablecolour");
+		add ("widgetarray");
         add ("arrowcolour");
         add ("widgetarray");
         add ("channeltype");
@@ -418,6 +470,10 @@ namespace CabbageIdentifierIds
     static const Identifier range = "range";
     static const Identifier sliderrange = "sliderrange";
     static const Identifier amprange = "amprange";
+	static const Identifier amprange_min = "amprange_min";
+	static const Identifier amprange_max = "amprange_max";
+	static const Identifier amprange_tablenumber = "amprange_tablenumber";
+	static const Identifier amprange_quantise = "amprange_quantise";
     static const Identifier caption = "caption";
     static const Identifier basetype = "basetype";
     static const Identifier imgslider = "imgslider";
@@ -502,6 +558,8 @@ namespace CabbageIdentifierIds
     static const Identifier visible = "visible";
     static const Identifier linenumber = "linenumber";
     static const Identifier scrubberposition = "scrubberposition";
+	static const Identifier scrubberposition_sample = "scrubberposition_sample";
+	static const Identifier scrubberposition_table = "scrubberposition_table";
     static const Identifier startpoint = "startpoint";
     static const Identifier endpoint = "endpoint";
     static const Identifier zoom = "zoom";
@@ -713,11 +771,27 @@ public:
         set ("Mode", CabbageIdentifierIds::mode.toString());
         set ("Base Channel", CabbageIdentifierIds::basechannel.toString());
         set ("Array Size", CabbageIdentifierIds::arraysize.toString());
-        set ("Thumb Image", CabbageIdentifierIds::imgslider.toString());
+        set ("Rotary Image", CabbageIdentifierIds::imgslider.toString());
         set ("Background Image", CabbageIdentifierIds::imgsliderbg.toString());
+		set ("Groupbox Image", CabbageIdentifierIds::imggroupbox.toString());
         set ("On Image", CabbageIdentifierIds::imgbuttonon.toString());
         set ("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
         set ("Mouse Over", CabbageIdentifierIds::mouseoeverkeycolour.toString());
+		set ("Max Amp", CabbageIdentifierIds::amprange_max.toString());
+		set ("Min Amp", CabbageIdentifierIds::amprange_min.toString());
+		set ("Table No.", CabbageIdentifierIds::amprange_tablenumber.toString());
+		set ("Quantise", CabbageIdentifierIds::amprange_quantise.toString());
+		set ("Table Numbers", CabbageIdentifierIds::tablenumber.toString());
+		set ("Tables", CabbageIdentifierIds::tablecolour.toString());
+		set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
+		set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
+		set ("Fill", CabbageIdentifierIds::fill.toString());
+		set ("Zoom", CabbageIdentifierIds::zoom.toString());
+		set ("Start Index", CabbageIdentifierIds::startpos.toString());
+		set ("End Index", CabbageIdentifierIds::endpos.toString());
+		set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
+		set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
+		
     }
 };
 

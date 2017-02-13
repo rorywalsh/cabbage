@@ -88,6 +88,7 @@ public:
     static String getSimpleTextAsCabbageCode (ValueTree widgetData, String identfier, const String macroText);
     static String getImagesTextAsCabbageCode (ValueTree widgetData, const String macroText);
     static String getWidgetArrayAsCabbageCode (ValueTree widgetData, const String macroText);
+	static String getMultiItemNumbersAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
     //============================================================================
     static String removeWidgetFromValueTree (ValueTree widgetData, int lineNumber);
     //============================================================================

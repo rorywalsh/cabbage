@@ -156,8 +156,8 @@ public:
 
     static void setImagesForButton (ImageButton* button, const Image image)
     {
-        button->setImages (true, true, true, image, 1, Colours::transparentBlack, image,
-                           1, Colours::transparentBlack, image, .8f, Colours::transparentBlack, 0.f);
+        button->setImages(true, true, true, image, 1, Colours::transparentBlack, image,
+                           1, Colours::transparentBlack, image, .6f, Colours::transparentBlack, 0.f);
     }
 
     //==========================================================
@@ -330,6 +330,14 @@ public:
             return input;
     }
 
+
+	static String getFileAndPath(File csdFile, String filename)
+	{
+		if(filename.isEmpty())
+			return String::empty;
+			
+		return File(csdFile).getParentDirectory().getChildFile(filename).getFullPathName();
+	}
     //===================================================================================
     static int getNumberOfDecimalPlaces (String incr)
     {

@@ -225,8 +225,6 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
 void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, bool isMouseOverButton, bool isButtonDown)
 {
     Image image;
-
-
     const File imgButtonOnFile (button.getProperties().getWithDefault (CabbageIdentifierIds::imgbuttonon, "").toString());
     const File imgButtonOffFile (button.getProperties().getWithDefault (CabbageIdentifierIds::imgbuttonoff, "").toString());
     const int corners = button.getProperties().getWithDefault (CabbageIdentifierIds::corners, 2.f);

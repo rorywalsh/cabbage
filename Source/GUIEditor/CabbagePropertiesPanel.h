@@ -36,23 +36,29 @@ class CabbagePropertiesPanel :
 {
 public:
     CabbagePropertiesPanel (ValueTree widgetData);
+	~CabbagePropertiesPanel();	
     void paint (Graphics& g) override;
     void resized() override;
+	void getAmpRangeForTable(String identifier, var value);
+	void getScrubberPositionForTable(String identifier, var value);
     void setPropertyByName (String name, var value);
     void textPropertyComponentChanged (TextPropertyComponent* comp);
     void changeListenerCallback (juce::ChangeBroadcaster* source);
     void updateProperties (ValueTree widgetData);
     void valueChanged (Value& value);
     void filenameComponentChanged (FilenameComponent* fileComponent);
-
+	void saveOpenessState();
     Array<PropertyComponent*> createPositionEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTextEditors (ValueTree valueTree);
+	Array<PropertyComponent*> createNumberEditors (ValueTree valueTree);
     Array<PropertyComponent*> createColourChoosers (ValueTree valueTree);
     Array<PropertyComponent*> createMiscEditors (ValueTree valueTree);
     Array<PropertyComponent*> createFileEditors (ValueTree valueTree);
     Array<PropertyComponent*> createValueEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
     Array<PropertyComponent*> createWidgetArrayEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
-    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue;
+	Array<PropertyComponent*> createAmpRangeEditors (ValueTree valueTree);
+	Array<PropertyComponent*> createTwoValueEditors (ValueTree valueTree, Identifier identifier);
+    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue, fillTableWaveformValue, zoomValue;
     Colour backgroundColour, borderColour;
 
 
@@ -68,7 +74,30 @@ public:
         repaint();
     }
 private:
+	TooltipWindow tooltipWindow;
     PropertyPanel propertyPanel;
+	String previousWidgetName="";
+	
+	struct SectionState {
+		SectionState(String name, XmlElement* xml):name(name), xmlElement(xml)
+		{}
+		String name;
+		ScopedPointer<XmlElement> xmlElement;
+	};
+	
+	OwnedArray<SectionState> sectionStates;
+	
+	SectionState* getSectionState(String name)
+	{
+		for ( auto section : sectionStates)
+		{
+			if ( section->name == name)
+				return section;
+		}
+		
+		return nullptr;
+	}
+	
     ValueTree widgetData;
 
 

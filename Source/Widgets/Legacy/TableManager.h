@@ -56,6 +56,7 @@ public:
     void setGridColour (Colour col);
     void setOutlineThickness (float thickness);
     void setFill (bool fill );
+	void setTableColours (var colours);
     void setBackgroundColour (Colour col);
     void repaintAllTables();
     void resized();
@@ -118,6 +119,7 @@ public:
         return loopLength * sampleRate;
     }
 
+	void setColour(Colour col){	colour = col; repaint();	}
     void setScrubberPos (double pos);
 
     float timeToX (const double time) const

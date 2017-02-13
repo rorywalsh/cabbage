@@ -36,9 +36,8 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
-    Logger::writeToLog (opcodeFile);
-
-
+    //Logger::writeToLog (opcodeFile);
+	setScrollbarThickness(20);
     if (File (opcodeFile).existsAsFile())
         setOpcodeStrings (File (opcodeFile).loadFileAsString());
 
@@ -617,7 +616,7 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this i
         }
 
 
-        else if (csdArray[i].indexOf ("instr ") != -1)
+        else if (csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr	") != -1)
         {
             int commentInLine = csdArray[i].indexOf (";");
             String line = csdArray[i];
@@ -669,8 +668,9 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
         }
     }
 
-    variableNamesToShow.clear();
-    autoCompleteListBox.setVisible (false);
+    //variableNamesToShow.clear();
+    removeUnlikelyVariables (currentWord);
+	autoCompleteListBox.setVisible (false);
 
     if (currentWord.isNotEmpty())
     {
@@ -679,6 +679,16 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
     }
 }
 
+void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
+{
+    for (const String item : variableNamesToShow)
+    {
+        if (item.startsWith (currentWord) == false)
+        {	
+			variableNamesToShow.removeString(item);
+		}
+	}
+}
 
 void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
 {
@@ -686,11 +696,13 @@ void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
     {
         if (item.startsWith (currentWord))
         {
+			CabbageUtilities::debug("currentWord", currentWord);
+			CabbageUtilities::debug("variableNamesToShow[0]", variableNamesToShow[0]);
             variableNamesToShow.addIfNotAlreadyThere (item.trim());
             autoCompleteListBox.updateContent();
 
-            if (variableNamesToShow.size() != 1 && variableNamesToShow[0] != currentWord)
-                autoCompleteListBox.setVisible (true);
+            //if (variableNamesToShow[0] != currentWord)
+			autoCompleteListBox.setVisible (true);
         }
     }
 }
@@ -944,6 +956,6 @@ StringArray CabbageCodeEditorComponent::getSelectedTextArray()
     StringArray tempArray;
     String selectedText = getTextInRange (this->getHighlightedRegion());
     tempArray.addLines (selectedText);
-    Logger::writeToLog (selectedText);
+    //Logger::writeToLog (selectedText);
     return tempArray;
 }

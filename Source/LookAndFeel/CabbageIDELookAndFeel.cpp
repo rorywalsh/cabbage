@@ -254,7 +254,7 @@ int CabbageIDELookAndFeel::getMinimumScrollbarThumbSize (ScrollBar& scrollbar)
 
 int CabbageIDELookAndFeel::getDefaultScrollbarWidth()
 {
-    return 18;
+    return 25;
 }
 
 int CabbageIDELookAndFeel::getScrollbarButtonSize (ScrollBar& scrollbar)
@@ -269,4 +269,3 @@ Rectangle<int> CabbageIDELookAndFeel::getPropertyComponentContentPosition (Prope
     const int textW = jmin (250, component.getWidth() / 2);
     return Rectangle<int> (textW, 1, component.getWidth() - textW - 1, component.getHeight() - 3);
 }
-
