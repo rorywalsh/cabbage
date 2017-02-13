@@ -1526,7 +1526,9 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
 			
 			return String::empty;
 		}					
-    }	
+    }
+
+	return String::empty;
 }
 
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
