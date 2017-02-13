@@ -357,7 +357,7 @@ void TableManager::resized()
             for (int y = 0; y < tableConfigList[i].size(); y++)
             {
                 int tableNumber = tableConfigList[i].getArray()->getReference (y);
-                int ySpacing, yPos, height;
+                int ySpacing, yPos = 0, height;
 
                 //if not the bottom table..
                 if (getTableFromFtNumber (tableNumber) != nullptr)
@@ -1340,7 +1340,7 @@ HandleViewer::~HandleViewer()
 };
 
 //==============================================================================
-void HandleViewer::addHandle (double x, double y, double width, double height, Colour colour, bool status)
+void HandleViewer::addHandle (double x, double y, double /*width*/, double height, Colour colour, bool status)
 {
     //add a handle component to our handleViewer
     GenTable* table = getParentTable();

@@ -577,7 +577,7 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (ValueTree wData, Component
         const String caption = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text);
         const String name = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name);
         PopupDocumentWindow* popupPlant;
-        popupPlants.add (popupPlant = new PopupDocumentWindow (caption));
+        popupPlants.add (popupPlant = new PopupDocumentWindow (caption, backgroundColour));
         popupPlant->setContentNonOwned (plant, true);
         popupPlant->setName (name);
     }

@@ -723,6 +723,8 @@ int CabbageContentComponent::findNext (bool forwards)
     {
         return getCurrentCodeEditor()->findText (searchString, forwards, isCaseSensitiveSearch(), forwards);
     }
+
+	return -1;
 }
 
 void CabbageContentComponent::replaceText (bool replaceAll)

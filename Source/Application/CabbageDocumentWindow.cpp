@@ -760,8 +760,8 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
         {
             if (fc.getResult().existsAsFile())
             {
-                CabbageIDELookAndFeel lookAndFeel;
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+                CabbageIDELookAndFeel lookAndFeelTemp;
+                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
 
                 if (result == 0)
                     writePluginFileToDisk (fc.getResult(), csdFile, VSTData);

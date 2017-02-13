@@ -162,12 +162,16 @@ private:
 
     class PopupDocumentWindow : public DocumentWindow
     {
+		Colour colour;
     public:
-        PopupDocumentWindow (String caption)
-            : DocumentWindow (caption, Colours::transparentBlack, DocumentWindow::TitleBarButtons::allButtons)
-        {}
+        PopupDocumentWindow (String caption, Colour backgroundColour)
+            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour)
+        {
+			setOpaque(false);
+		}
 
         void closeButtonPressed() override {    setVisible (false);  }
+		void paint(Graphics& g) { g.fillAll(colour); }
     };
 
     class MainComponent : public Component
