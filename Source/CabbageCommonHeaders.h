@@ -21,7 +21,7 @@
 #define CABBAGECOMMONHEADERS_H_INCLUDED
 
 
-#define CABBAGE_VERSION "Cabbage(64bit) v2.0.04a"
+#define CABBAGE_VERSION "Cabbage(64bit) v2.0.05a"
 
 
 #include "./Settings/CabbageSettings.h"

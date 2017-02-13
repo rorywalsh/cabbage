@@ -41,9 +41,11 @@ void CabbageSettings::setDefaultSettings()
     ScopedPointer<XmlElement> xml;
     xml = new XmlElement ("PLANTS");
     String homeDir = getCommonSettings (true)->getFile().getParentDirectory().getFullPathName();
-    String manualPath;
+    String manualPath, examplesDir;
+    examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
 #if !defined(MACOSX)
     manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
+    
 #else
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
 #endif
@@ -52,7 +54,7 @@ void CabbageSettings::setDefaultSettings()
 
     defaultPropSet->setValue ("CsoundManualDir", manualPath);
     defaultPropSet->setValue ("CabbagePlantDir", homeDir + "/Plants");
-    defaultPropSet->setValue ("CabbageExamplesDir", homeDir + "/Examples/Examples");
+    defaultPropSet->setValue ("CabbageExamplesDir", examplesDir);
     defaultPropSet->setValue ("MostRecentDirectory", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);
     defaultPropSet->setValue ("ShowEditorConsole", 1);
