@@ -176,9 +176,9 @@ void CabbageContentComponent::changeListenerCallback (ChangeBroadcaster* source)
 
     else if (dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
     {
-        if (CabbagePluginEditor* editor = this->getCabbagePluginEditor())
+        if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
-            updateCodeInEditor (editor, true);
+            updateCodeInEditor (ed, true);
         }
     }
 

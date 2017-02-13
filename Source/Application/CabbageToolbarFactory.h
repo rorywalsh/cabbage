@@ -102,9 +102,9 @@ private:
             comboBox.setCentrePosition (newArea.getCentreX(), newArea.getCentreY());
         }
 
-        void addItemsToComboBox (const String text, const int itemId)
+        void addItemsToComboBox (const String newText, const int id)
         {
-            comboBox.addItem (text, itemId);
+            comboBox.addItem (newText, id);
             comboBox.setSelectedId (1);
         }
 

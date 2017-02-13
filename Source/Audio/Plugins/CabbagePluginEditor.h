@@ -167,7 +167,7 @@ private:
         PopupDocumentWindow (String caption, Colour backgroundColour)
             : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour)
         {
-			setOpaque(false);
+
 		}
 
         void closeButtonPressed() override {    setVisible (false);  }

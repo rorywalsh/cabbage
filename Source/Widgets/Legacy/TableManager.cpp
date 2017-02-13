@@ -1340,7 +1340,7 @@ HandleViewer::~HandleViewer()
 };
 
 //==============================================================================
-void HandleViewer::addHandle (double x, double y, double /*width*/, double height, Colour colour, bool status)
+void HandleViewer::addHandle (double x, double y, double /*width*/, double height, Colour handleColour, bool status)
 {
     //add a handle component to our handleViewer
     GenTable* table = getParentTable();
@@ -1348,7 +1348,7 @@ void HandleViewer::addHandle (double x, double y, double /*width*/, double heigh
     if (table)
     {
         //set up handle, and pass relative x and y values as well as gen and colour
-        HandleComponent* handle = new HandleComponent (x, y / getHeight(), handles.size(), false, table->genRoutine, colour);
+        HandleComponent* handle = new HandleComponent (x, y / getHeight(), handles.size(), false, table->genRoutine, handleColour);
         const double width = (getWidth() / tableSize);
         handle->setSize ((width > 10 ? width + 1 : FIXED_WIDTH), (width > 10 ? 5 : FIXED_WIDTH));
         handle->setPosition (getWidth()*x, y, (handle->getWidth() == FIXED_WIDTH ? true : false));
@@ -1740,7 +1740,7 @@ void HandleComponent::mouseDrag (const MouseEvent& e)
     HandleComponent* previousHandle = getPreviousHandle();
     HandleComponent* nextHandle = getNextHandle();
 
-    bool fixed = this->getProperties().getWithDefault ("fixedPos", false);
+    const bool isFixed = this->getProperties().getWithDefault ("fixedPos", false);
     double xPos = x + e.getDistanceFromDragStartX();
     double yPos = y + e.getDistanceFromDragStartY();
 
@@ -1775,12 +1775,12 @@ void HandleComponent::mouseDrag (const MouseEvent& e)
             const int previousX = previousHandle == 0 ? 0 : previousHandle->getX() + 1;
             const int nextX = nextHandle == 0 ? getParentWidth() : nextHandle->getX() - 1;
 
-            if (fixed && xPos > viewer->getWidth() / 2.f)
+            if (isFixed && xPos > viewer->getWidth() / 2.f)
             {
                 xPos = x + getWidth() / 2.f + handleViewerWidth / genTableWidth;
             }
 
-            else if (fixed && xPos < viewer->getWidth() / 2.f)
+            else if (isFixed && xPos < viewer->getWidth() / 2.f)
                 xPos = 1.f;
 
             else if (xPos - (getWidth() / 2) <= previousX + getWidth())

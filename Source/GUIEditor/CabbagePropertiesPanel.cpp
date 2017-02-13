@@ -32,9 +32,9 @@ static void addListener (Array<PropertyComponent*> comps, CabbagePropertiesPanel
         {
             colourProperty->addChangeListener (owner);
         }
-        else if (ColourMultiPropertyComponent* colourProperty = dynamic_cast<ColourMultiPropertyComponent*> (comps[i]))
+        else if (ColourMultiPropertyComponent* colourPropMulti = dynamic_cast<ColourMultiPropertyComponent*> (comps[i]))
         {
-            colourProperty->addChangeListener (owner);
+			colourPropMulti->addChangeListener (owner);
         }
         else if (CabbageFilePropertyComponent* fileComp = dynamic_cast<CabbageFilePropertyComponent*> (comps[i]))
         {
@@ -260,11 +260,11 @@ void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
     {
         setPropertyByName (colourProperty->getName(), colourProperty->getCurrentColourString());
     }
-	else if (ColourMultiPropertyComponent* colourProperty = dynamic_cast<ColourMultiPropertyComponent*> (source))
+	else if (ColourMultiPropertyComponent* colourPropertyMulti = dynamic_cast<ColourMultiPropertyComponent*> (source))
     {
 		var colours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
 		var tableColours = colours.clone();
-		tableColours[colourProperty->currentColourIndex] = colourProperty->getCurrentColourString();
+		tableColours[colourPropertyMulti->currentColourIndex] = colourPropertyMulti->getCurrentColourString();
 		CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::tablecolour, tableColours);		
 		sendChangeMessage();    //update code in editor when changes are made...
     }
@@ -422,15 +422,15 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
     }
     else if (typeOfWidget == "image" || typeOfWidget == "soundfiler")
     {
-        const String outlineColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour);
-        const String backgroundColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour);
+        const String imgOutlineColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour);
+        const String imgBackgroundColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour);
 
         comps.add (new ColourPropertyComponent ("Colour", colourString));
 
         if (typeOfWidget == "soundfiler")
-            comps.add (new ColourPropertyComponent ("Soundfiler Background", backgroundColour));
+            comps.add (new ColourPropertyComponent ("Soundfiler Background", imgBackgroundColour));
         else
-            comps.add (new ColourPropertyComponent ("Outline", outlineColourString));
+            comps.add (new ColourPropertyComponent ("Outline", imgOutlineColourString));
     }
     else if (typeOfWidget.contains ("slider") || typeOfWidget == "encoder" || typeOfWidget.contains ("range"))
     {

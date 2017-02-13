@@ -594,7 +594,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
     String title (CABBAGE_VERSION);
-    CabbageIDELookAndFeel lookAndFeel;
+    CabbageIDELookAndFeel tempLookAndFeel;
     
     switch (info.commandID)
     {
@@ -709,7 +709,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
 
         case CommandIDs::about:
-            CabbageUtilities::showMessage(title, &lookAndFeel);
+            CabbageUtilities::showMessage(title, &tempLookAndFeel);
             break;
 
         case CommandIDs::editMode:
@@ -886,8 +886,8 @@ int CabbageDocumentWindow::setUniquePluginId (File binFile, File csdFile)
 long CabbageDocumentWindow::cabbageFindPluginId (unsigned char* buf, size_t len, const char* s)
 {
     long i, j;
-    int slen = strlen (s);
-    long imax = len - slen - 1;
+    size_t slen = strlen (s);
+    size_t imax = len - slen - 1;
     long ret = -1;
     int match;
 

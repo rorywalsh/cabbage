@@ -76,7 +76,7 @@ public:
     {
         return getColourSwatches()[index];
     }
-    void setSwatchColour (const int index, const Colour& newColour) const
+    void setSwatchColour (const int index, const Colour& newColour) const override
     {
         getColourSwatches().set (index, newColour);
     }

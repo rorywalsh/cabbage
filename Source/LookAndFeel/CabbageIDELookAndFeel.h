@@ -42,12 +42,10 @@ public:
                           bool isMouseOverBar,
                           MenuBarComponent& menuBar) override;
     void drawPopupMenuBackground (Graphics& g, int width, int height) override;
-    void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
-                            const bool isSeparator, const bool isActive,
-                            const bool isHighlighted, const bool isTicked,
-                            const bool hasSubMenu, const String& text,
-                            const String& shortcutKeyText,
-                            const Drawable* icon, const Colour* const textColourToUse) override;
+    void drawPopupMenuItem(Graphics&, const Rectangle<int>& area,
+						bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
+						const String& text, const String& shortcutKeyText,
+						const Drawable* icon, const Colour* textColour) override;
 
     void drawAlertBox (Graphics& g,
                        AlertWindow& alert,
