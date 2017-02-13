@@ -594,6 +594,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
     String title (CABBAGE_VERSION);
+	CabbageIDELookAndFeel lookAndFeel;
 
     switch (info.commandID)
     {
@@ -708,7 +709,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
 
         case CommandIDs::about:
-            CabbageUtilities::showMessage (title, &getLookAndFeel());
+            CabbageUtilities::showMessage (title, &lookAndFeel);
             break;
 
         case CommandIDs::editMode:

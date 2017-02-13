@@ -1364,7 +1364,7 @@ void HandleViewer::addHandle (double x, double y, double width, double height, C
     }
 }
 
-void HandleViewer::insertHandle (double x, double y, Colour colour)
+void HandleViewer::insertHandle (double x, double y, Colour handleColour)
 {
     //add a handle component to our handleViewer. This should be combined with
     //above function...
@@ -1382,7 +1382,7 @@ void HandleViewer::insertHandle (double x, double y, Colour colour)
             }
         }
 
-        HandleComponent* handle = new HandleComponent (x, y / getHeight(), handles.size(), false, table->genRoutine, colour);
+        HandleComponent* handle = new HandleComponent (x, y / getHeight(), handles.size(), false, table->genRoutine, handleColour);
 
         const double width = (getWidth() / tableSize);
         handle->setSize ((width > 10 ? width + 1 : FIXED_WIDTH), (width > 10 ? 5 : FIXED_WIDTH));
@@ -1477,10 +1477,10 @@ double HandleViewer::getSnapXPosition (const double x)
     if (getWidth() < getParentTable()->tableSize)
         return x;
 
-    double tableSize = getParentTable()->tableSize;
+    double curTableSize = getParentTable()->tableSize;
     double jump = (double)getWidth() / (double)getParentTable()->tableSize;
 
-    for (double i = 0; i <= tableSize; i++)
+    for (double i = 0; i <= curTableSize; i++)
     {
         if (x > i * jump && x < (i + 1)*jump)
         {
@@ -1708,12 +1708,12 @@ void HandleComponent::mouseDown (const MouseEvent& e)
     sendChangeMessage();
 }
 //==================================================================================
-void HandleComponent::setPosition (double x, double y, bool circularEnv)
+void HandleComponent::setPosition (double posX, double posY, bool circularEnv)
 {
     if (circularEnv)
-        setTopLeftPosition (x - getWidth() / 2.f, y - getHeight() / 2.f);
+        setTopLeftPosition (posX - getWidth() / 2.f, y - getHeight() / 2.f);
     else
-        setTopLeftPosition (x, y - getHeight() / 2.f);
+        setTopLeftPosition (posX, posY - getHeight() / 2.f);
 }
 //==================================================================================
 HandleComponent* HandleComponent::getPreviousHandle()

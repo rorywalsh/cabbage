@@ -140,8 +140,8 @@ void ColourMultiPropertyComponent::buttonClicked(Button* button)
 {
 	if(button->getName()=="+")
 	{
-		Colour colour = Colour(Random().nextInt()*255, Random().nextInt()*255, Random().nextInt()*255);
-		addNewColour(colour);
+		Colour curColour = Colour(Random().nextInt()*255, Random().nextInt()*255, Random().nextInt()*255);
+		addNewColour(curColour);
 	}
 	else 
 	{

@@ -393,9 +393,9 @@ public:
         return uniqueID;
     }
 
-    void setUniqueID (int id)
+    void setUniqueID (int _id)
     {
-        uniqueID = id;
+        uniqueID = _id;
     }
 
     double getDoubleY()
@@ -403,9 +403,9 @@ public:
         return highResY;
     }
 
-    void setDoubleY (double y)
+    void setDoubleY (double _y)
     {
-        highResY = y;
+        highResY = _y;
     }
 
     HandleComponent* getPreviousHandle();

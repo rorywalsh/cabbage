@@ -200,6 +200,7 @@ private:
     int csndIndex;
     int csdKsmps;
     ScopedPointer<Csound> csound;
+	ScopedPointer<FileLogger> fileLogger;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginProcessor)
 
 };

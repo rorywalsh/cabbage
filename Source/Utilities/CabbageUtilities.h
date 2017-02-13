@@ -23,6 +23,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#pragma warning(disable: 4244) // possible loss of data
+#pragma warning(disable: 4100) // possible loss of data
 
 using namespace std;
 
@@ -444,7 +446,6 @@ public:
     {
 
         PopupMenu menu;
-        PopupMenu subMenu;
         int fileCnt = 0;
 
         if (File (userDir).exists())

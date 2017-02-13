@@ -21,6 +21,9 @@
 #define CABBAGECOMMONHEADERS_H_INCLUDED
 
 
+#pragma warning(disable: 4244) // possible loss of data
+#pragma warning(disable: 4100) // possible loss of data
+
 #define CABBAGE_VERSION "Cabbage(64bit) v2.0.04a"
 
 

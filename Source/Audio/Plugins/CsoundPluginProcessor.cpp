@@ -37,6 +37,10 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
 #endif
 {
 
+	String logFileName = csdFile.getParentDirectory().getFullPathName() + String("/") + csdFile.getFileNameWithoutExtension() + String("_Log.txt");
+	fileLogger = new FileLogger(File(logFileName), String("Cabbage Log.."));
+	Logger::setCurrentLogger(fileLogger);
+
     CabbageUtilities::debug ("Plugin constructor");
     csound = new Csound();
 
@@ -247,6 +251,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
             csound->PopFirstMessage();
         }
 
+		Logger::writeToLog(csoundOutput+"\n");
         return csoundOutput;
     }
 
