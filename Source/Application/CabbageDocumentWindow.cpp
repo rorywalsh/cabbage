@@ -164,7 +164,7 @@ static void addExamples (PopupMenu& m, const String menuName, String dir, Array<
         for ( int i = 0 ; i < folders.size() ; i++ )
         {
             subMenu2.clear();
-            File searchDir (dir + CabbageUtilities::correctPathSlashes ("/" + menuName + "/" + folders[i]));
+            File searchDir (dir + "/" + menuName + "/" + folders[i]);
             Array<File> exampleFilesArray;
             searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
             exampleFilesArray.sort();
@@ -184,7 +184,7 @@ static void addExamples (PopupMenu& m, const String menuName, String dir, Array<
     else
     {
         subMenu2.clear();
-        File searchDir (dir + CabbageUtilities::correctPathSlashes ("/" + menuName));
+        File searchDir (dir + "/" + menuName);
         Array<File> exampleFilesArray;
         searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
         exampleFilesArray.sort();
@@ -594,8 +594,8 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
     String title (CABBAGE_VERSION);
-	CabbageIDELookAndFeel lookAndFeel;
-
+    CabbageIDELookAndFeel lookAndFeel;
+    
     switch (info.commandID)
     {
         case CommandIDs::newProject:
@@ -709,7 +709,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
 
         case CommandIDs::about:
-            CabbageUtilities::showMessage (title, &lookAndFeel);
+            CabbageUtilities::showMessage(title, &lookAndFeel);
             break;
 
         case CommandIDs::editMode:

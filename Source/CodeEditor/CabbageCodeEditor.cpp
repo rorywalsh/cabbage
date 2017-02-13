@@ -490,18 +490,21 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
         zoomOut();
     else
     {
-        const int numberOfLinesToScroll = owner->settings->getUserSettings()->getIntValue ("numberOfLinesToScroll");
-
-        if (mouse.deltaY < 0)
-        {
-            scrollBy (numberOfLinesToScroll);
-            currentLineMarker.setTopLeftPosition (13, currentLineMarker.getY() - numberOfLinesToScroll * getFontSize());
-        }
+		const int numberOfLinesToScroll = owner->settings->getUserSettings()->getIntValue("numberOfLinesToScroll");
+        if(mouse.deltaY<0)
+		{
+            scrollBy(numberOfLinesToScroll);
+			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()-numberOfLinesToScroll*getFontSize());
+            MouseWheelDetails w(mouse);
+            w.deltaY = 0;
+		}
         else
-        {
-            scrollBy (-numberOfLinesToScroll);
-            currentLineMarker.setTopLeftPosition (13, currentLineMarker.getY() + numberOfLinesToScroll * getFontSize());
-        }
+		{
+            scrollBy(-numberOfLinesToScroll);
+			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()+numberOfLinesToScroll*getFontSize());
+            MouseWheelDetails w(mouse);
+            w.deltaY = 0;
+		}
     }
 	
 	MouseWheelDetails w(mouse);
