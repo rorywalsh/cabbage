@@ -102,6 +102,7 @@ public:
     void toggleComments();
     void handleAutoComplete (String text);
     void showAutoComplete (String currentWord);
+	void removeUnlikelyVariables (String currentWord);
     void parseTextForVariables();
     void parseTextForInstrumentsAndRegions();
     void zoomIn();

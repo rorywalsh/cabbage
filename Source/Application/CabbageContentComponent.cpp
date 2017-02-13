@@ -640,48 +640,53 @@ void CabbageContentComponent::saveDocument (bool saveAs, bool recompile)
 
 void CabbageContentComponent::closeDocument()
 {
-    if (getCurrentCodeEditor()->hasFileChanged() == true)
-    {
-        const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
+	if(editorAndConsole.size() > 0)
+	{
+		if (getCurrentCodeEditor()->hasFileChanged() == true)
+		{
+			const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
 
-        if (result == 0 || result == 1)
-        {
-            if (result == 0)
-                saveDocument (false, false);
+			if (result == 0 || result == 1)
+			{
+				if (result == 0)
+					saveDocument (false, false);
 
-            removeEditor();
-        }
+				removeEditor();
+			}
 
-    }
-    else
-    {
-        removeEditor();
-    }
+		}
+		else
+		{
+				removeEditor();
+		}
+	}
 }
 
 void CabbageContentComponent::removeEditor()
 {
     editorAndConsole.removeObject (getCurrentEditorContainer());
-    this->fileTabs.remove (currentFileIndex);
+    fileTabs.remove (currentFileIndex);
     openFiles.remove (currentFileIndex);
     currentFileIndex = (currentFileIndex > 0 ? currentFileIndex - 1 : 0);
 
-    if (currentFileIndex > -1)
-    {
-        editorAndConsole[currentFileIndex]->toFront (true);
-    }
+	if (editorAndConsole.size()!= 0)
+	{
+		if (currentFileIndex > -1)
+		{
+			editorAndConsole[currentFileIndex]->toFront (true);
+		}
 
-    if (fileTabs.size() > 0)
-    {
-        fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
-        owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
-        arrangeFileTabButtons();
-    }
-    else
-    {
-        owner->setName ("Cabbage Csound IDE");
-    }
-
+		if (fileTabs.size() > 0)
+		{
+			fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
+			owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
+			arrangeFileTabButtons();
+		}
+		else
+		{
+			owner->setName ("Cabbage Csound IDE");
+		}
+	}
     repaint();
 
 
