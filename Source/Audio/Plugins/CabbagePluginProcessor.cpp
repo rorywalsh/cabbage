@@ -99,6 +99,7 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         CabbageWidgetData::setWidgetState (temp, currentLineOfCabbageCode + " " + expandedMacroText, lineNumber);
         CabbageWidgetData::setNumProp (temp, CabbageIdentifierIds::linenumber, lineNumber);
         CabbageWidgetData::setStringProp (temp, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
+		//CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::csdfile));
         CabbageWidgetData::setStringProp (temp, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
 
         if (currentLineOfCabbageCode.contains ("}"))

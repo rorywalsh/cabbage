@@ -139,6 +139,7 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
     ValueTree newWidget (widgetTreeIdentifier);
 
     CabbageWidgetData::setWidgetState (newWidget, widgetType, newlyAddedWidgetIndex);
+	CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, processor.getCsdFile().getFullPathName());
     newWidget.setProperty (CabbageIdentifierIds::top, position.getY(), 0);
     newWidget.setProperty (CabbageIdentifierIds::left, position.getX(), 0);
 
