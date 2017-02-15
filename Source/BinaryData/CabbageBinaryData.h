@@ -8,6 +8,9 @@ namespace CabbageBinaryData
     extern const char*  WarningIcon_png;
     const int           WarningIcon_pngSize = 8612;
 
+    extern const char*  Audiovolumehigh_svg;
+    const int           Audiovolumehigh_svgSize = 23087;
+
     extern const char*  editdelete_svg;
     const int           editdelete_svgSize = 54604;
 
@@ -73,6 +76,9 @@ namespace CabbageBinaryData
 
     extern const char*  documentopen_svg;
     const int           documentopen_svgSize = 30745;
+
+    extern const char*  Audiovolumemuted_svg;
+    const int           Audiovolumemuted_svgSize = 39916;
 
     extern const char*  editundo_svg;
     const int           editundo_svgSize = 9241;

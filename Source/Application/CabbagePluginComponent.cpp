@@ -120,6 +120,7 @@ void CabbagePluginComponent::mouseDrag (const MouseEvent& e)
                                (pos.getY() + getHeight() / 2) / (double) getParentHeight());
 
         getCabbageGraphComponent()->updateComponents();
+		getCabbageGraphComponent()->repaint();
     }
 }
 
@@ -148,21 +149,25 @@ bool CabbagePluginComponent::hitTest (int x, int y)
 
 void CabbagePluginComponent::paint (Graphics& g)
 {
-    g.setColour (Colours::lightgrey);
-
     const int x = 4;
     const int y = pinSize;
     const int w = getWidth() - x * 2;
     const int h = getHeight() - pinSize * 2;
 
-    g.fillRect (x, y, w, h);
+    g.setColour(CabbageUtilities::getComponentSkin());
+    //g.setColour(Colour(220, 220, 220));
+    g.fillRoundedRectangle(x, y, w, h, 5);
 
-    g.setColour (Colours::black);
-    g.setFont (font);
-    g.drawFittedText (getName(), getLocalBounds().reduced (4, 2), Justification::centred, 2);
+    g.drawRoundedRectangle(x, y, w, h, 5, 1.f);
+    g.setColour (Colour(120, 120, 120));
+    g.setFont (CabbageUtilities::getComponentFont());
+    g.drawFittedText (getName(),
+                      x + 4, y - 2, w - 8, h - 4,
+                      Justification::centred, 2);
 
-    g.setColour (Colours::grey);
-    g.drawRect (x, y, w, h);
+    g.setOpacity(0.2);
+    g.setColour(Colours::green.withAlpha(.3f));
+    g.drawRoundedRectangle(x+0.5, y+0.5, w-1, h-1, 5, 1.0f);
 }
 
 void CabbagePluginComponent::resized()
@@ -245,7 +250,10 @@ void CabbagePluginComponent::update()
 
     setSize (w, h);
 
-    setName (f->getProcessor()->getName());
+	if(CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
+		setName (cabbagePlugin->getPluginName());
+	else
+		setName (f->getProcessor()->getName());
 
     {
         Point<double> p = graph.getNodePosition (filterID);
@@ -275,6 +283,8 @@ void CabbagePluginComponent::update()
 
         resized();
     }
+	
+	repaint();
 }
 
 CabbageGraphComponent* CabbagePluginComponent::getCabbageGraphComponent() const noexcept
@@ -543,10 +553,9 @@ void PinComponent::paint (Graphics& g)
 
     p.addRectangle (w * 0.4f, isInput ? (0.5f * h) : 0.0f, w * 0.2f, h * 0.5f);
 
-    Colour colour = (index == AudioGraph::midiChannelNumber ? Colours::red : Colours::green);
-
-    g.setColour (colour.withRotatedHue (static_cast<float> (busIdx) / 5.0f));
+    g.setColour (index == AudioGraph::midiChannelNumber ? Colours::cornflowerblue : Colours::green);
     g.fillPath (p);
+	
 }
 
 void PinComponent::mouseDown (const MouseEvent& e)

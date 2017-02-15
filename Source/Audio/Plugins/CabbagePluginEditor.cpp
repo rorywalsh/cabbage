@@ -84,8 +84,8 @@ void CabbagePluginEditor::mouseUp (const MouseEvent& e)
 void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
 {
     int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
-    int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y;
-
+	int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
+    int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y - yOffset; //27 is the height of the standalone window frame
     sendChannelDataToCsound (CabbageIdentifierIds::mousex, x);
     sendChannelDataToCsound (CabbageIdentifierIds::mousey, y);
 }
@@ -139,7 +139,7 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
     ValueTree newWidget (widgetTreeIdentifier);
 
     CabbageWidgetData::setWidgetState (newWidget, widgetType, newlyAddedWidgetIndex);
-	CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, processor.getCsdFile().getFullPathName());
+    CabbageWidgetData::setStringProp (newWidget, CabbageIdentifierIds::csdfile, processor.getCsdFile().getFullPathName());
     newWidget.setProperty (CabbageIdentifierIds::top, position.getY(), 0);
     newWidget.setProperty (CabbageIdentifierIds::left, position.getX(), 0);
 
@@ -579,7 +579,7 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (ValueTree wData, Component
         const String name = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name);
         PopupDocumentWindow* popupPlant;
         popupPlants.add (popupPlant = new PopupDocumentWindow (caption, backgroundColour));
-		popupPlant->setLookAndFeel(&getLookAndFeel());
+        popupPlant->setLookAndFeel (&getLookAndFeel());
 
         popupPlant->setContentNonOwned (plant, true);
         popupPlant->setName (name);
@@ -724,8 +724,8 @@ void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {
-#ifndef Cabbage_IDE_Build
-    return processor.getCsoundOutput();
-#endif
-    return String ("You are currently in 'Standalone' mode.\nThe csoundoutput widget will only be filled\nwith Csound messages when used in a plugin.");
+	if(CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
+		return processor.getCsoundOutput();
+	else
+		return String ("You are currently in 'Standalone' mode.\nThe csoundoutput widget will only be filled\nwith Csound messages when used in a plugin.");
 }

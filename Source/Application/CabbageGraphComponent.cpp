@@ -10,12 +10,13 @@
 */
 
 #include "CabbageGraphComponent.h"
+#include "../Audio/Plugins/CabbagePluginProcessor.h"
 
 CabbageGraphComponent::CabbageGraphComponent (AudioGraph& graph_)
     : graph (graph_)
 {
     graph.addChangeListener (this);
-    setOpaque (true);
+    setOpaque (false);
 }
 
 CabbageGraphComponent::~CabbageGraphComponent()
@@ -27,7 +28,7 @@ CabbageGraphComponent::~CabbageGraphComponent()
 
 void CabbageGraphComponent::paint (Graphics& g)
 {
-    g.fillAll (Colours::white);
+	g.fillAll (Colour(uint8(20), uint8(20), uint8(20)));
 }
 
 void CabbageGraphComponent::mouseDown (const MouseEvent& e)

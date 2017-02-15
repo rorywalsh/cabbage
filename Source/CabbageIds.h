@@ -35,6 +35,7 @@ namespace CommandIDs
         saveDocumentAs          = 0x200041,
         settings                = 0x200042,
         examples                = 0x200043,
+		showGraph               = 0x200044,
 
         closeProject            = 0x200051,
         saveProject             = 0x200060,
@@ -43,11 +44,11 @@ namespace CommandIDs
         saveAndOpenInIDE        = 0x200073,
         createNewExporter       = 0x20007d,
 
-        runCsoundCode           = 0x200076,
+        startAudioGraph         = 0x200076,
         exportAsSynth           = 0x200077,
         exportAsEffect          = 0x200074,
         exportAsFMODSoundPlugin = 0x200078,
-        stopCsoundCode          = 0x200079,
+        stopAudioGraph          = 0x200079,
         showProjectSettings     = 0x20007a,
         showProjectModules      = 0x20007b,
         startLiveDebugger       = 0x20007c,

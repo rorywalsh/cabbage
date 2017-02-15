@@ -51,7 +51,7 @@ void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 250);
     setProperty (widgetData, CabbageIdentifierIds::height, 40);
-	setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, Colour(0xb2808080).toString());
+    setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, Colour (0xb2808080).toString());
     var channels;
     channels.append ("rangesliderMin");
     channels.append ("rangesliderMax");
@@ -90,7 +90,7 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 50);
     setProperty (widgetData, CabbageIdentifierIds::height, 150);
-	setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, Colour(0xb2808080).toString());
+    setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, Colour (0xb2808080).toString());
     var channels;
     channels.append ("rangeslider");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
@@ -128,7 +128,7 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 60);
     setProperty (widgetData, CabbageIdentifierIds::height, 60);
-	setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, Colour(0xb2808080).toString());
+    setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, Colour (0xb2808080).toString());
     var channels;
     channels.append ("rslider");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
@@ -531,34 +531,35 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, "basetype", "layout");
     var tableColours;
-    for( int i = 0 ; i < 10 ; i++)
-		tableColours.append(Colours::lime.toString());
+
+    for ( int i = 0 ; i < 10 ; i++)
+        tableColours.append (Colours::lime.toString());
 
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 300);
     setProperty (widgetData, CabbageIdentifierIds::height, 200);
-	
-	var amprange;
-	amprange.append(-1);
-	amprange.append(1);
-	amprange.append(-1);
-	amprange.append(0.01);
-	
+
+    var amprange;
+    amprange.append (-1);
+    amprange.append (1);
+    amprange.append (-1);
+    amprange.append (0.01);
+
     setProperty (widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "gentable");
     setProperty (widgetData, CabbageIdentifierIds::tablecolour, tableColours);
     setProperty (widgetData, CabbageIdentifierIds::name, "gentable");
     setProperty (widgetData, CabbageIdentifierIds::amprange, amprange);
-	setProperty (widgetData, CabbageIdentifierIds::tablenumber, 0);
-	setProperty (widgetData, CabbageIdentifierIds::amprange_max, 1);
-	setProperty (widgetData, CabbageIdentifierIds::amprange_min, -1);
-	setProperty (widgetData, CabbageIdentifierIds::amprange_tablenumber, -1);
-	setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
-	setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
-	setProperty (widgetData, CabbageIdentifierIds::startpos, 0);
-	setProperty (widgetData, CabbageIdentifierIds::endpos, -1);
+    setProperty (widgetData, CabbageIdentifierIds::tablenumber, 0);
+    setProperty (widgetData, CabbageIdentifierIds::amprange_max, 1);
+    setProperty (widgetData, CabbageIdentifierIds::amprange_min, -1);
+    setProperty (widgetData, CabbageIdentifierIds::amprange_tablenumber, -1);
+    setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
+    setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
+    setProperty (widgetData, CabbageIdentifierIds::startpos, 0);
+    setProperty (widgetData, CabbageIdentifierIds::endpos, -1);
     setProperty (widgetData, CabbageIdentifierIds::drawmode, "");
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));

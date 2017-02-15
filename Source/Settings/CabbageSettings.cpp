@@ -45,7 +45,7 @@ void CabbageSettings::setDefaultSettings()
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
 
 #if !defined(MACOSX)
-    manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs"; 
+    manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
 #else
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
 #endif

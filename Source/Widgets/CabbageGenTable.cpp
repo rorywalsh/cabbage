@@ -64,7 +64,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
         table.addTable (44100,
-                        Colour::fromString(CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[0].toString()),
+                        Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[0].toString()),
                         1,
                         ampRanges,
                         0, this);
@@ -91,7 +91,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
             if (owner->csdCompiledWithoutError())
             {
                 table.addTable (44100,
-                                Colour::fromString(CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[y].toString()),
+                                Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[y].toString()),
                                 (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine),
                                 ampRanges,
                                 tableNumber, this);
@@ -127,7 +127,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
         }
     }
 
-	tableColours = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour);
+    tableColours = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour);
     var tableConfigArray = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tableconfig);
 
     if (fileTable == 1)
@@ -160,7 +160,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
     }
 
     table.setVUGradient (gradient);
-		
+
     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) != 1)
         table.toggleEditMode (false);
 }
@@ -205,11 +205,11 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     }
     else
     {
-		table.setGridColour (Colour::fromString(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour)));
-		table.setBackgroundColour (Colour::fromString(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour)));
-		table.setFill(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
-		table.repaint();
-		
+        table.setGridColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour)));
+        table.setBackgroundColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour)));
+        table.setFill (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
+        table.repaint();
+
         if (scrubberPos != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition))
         {
             var scrubPosition = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::scrubberposition);
@@ -246,19 +246,19 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         }
 
         if (zoom != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom))
-		{
+        {
             zoom = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom);
-			table.setZoomFactor(zoom);
-			table.showScrollbar(zoom > 0 ? true : false);
-			table.showZoomButtons(zoom > 0 ? true : false);
-		}
+            table.setZoomFactor (zoom);
+            table.showScrollbar (zoom > 0 ? true : false);
+            table.showZoomButtons (zoom > 0 ? true : false);
+        }
 
-		if(tableColours != CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour))
-		{
-			tableColours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
-			table.setTableColours(tableColours);
-		}
-		
+        if (tableColours != CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour))
+        {
+            tableColours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
+            table.setTableColours (tableColours);
+        }
+
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     }
 

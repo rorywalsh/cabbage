@@ -37,12 +37,14 @@ CabbageCsoundConsole::CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor
     setColour (TextEditor::focusedOutlineColourId, Colours::transparentBlack);
     setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
 
-#ifdef Cabbage_IDE_Build
-    String initText ("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
-    setText (initText);
-#else
-    startTimer (100);
-#endif
+	if(CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
+	{
+		String initText ("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
+		setText (initText);
+	}
+	else
+		startTimer (100);
+
 }
 
 void CabbageCsoundConsole::timerCallback()

@@ -33,6 +33,7 @@
 #include "CabbageGraphComponent.h"
 
 class CabbageDocumentWindow;
+class FileTabButton;
 
 class CabbageContentComponent
     : public Component,
@@ -74,8 +75,10 @@ public:
     bool closeAllMainWindows();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);
-    void runCsoundCode();
-    void stopCsoundCode();
+    void runCsoundForNode(String file);
+	void stopCsoundForNode(String file);
+    void stopAudioGraph();
+	void startAudioGraph();
     void showGenericWidgetWindow();
     void hideGenericWidgetWindow (bool freeContent = false);
     void createGenericCsoundPluginWrapper();
@@ -83,7 +86,7 @@ public:
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
     void setLookAndFeelColours();
-
+	void showGraph();
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -104,7 +107,7 @@ public:
     void timerCallback();
     int getStatusbarYPos();
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
-    OwnedArray<TextButton> fileTabs;
+    OwnedArray<FileTabButton> fileTabs;
     Array<File> openFiles;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
@@ -137,9 +140,95 @@ private:
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
+	NamedValueSet nodeIdsForFiles;
+
+	class AudioGraphDocumentWindow : public DocumentWindow
+	{
+		Colour colour;
+	public:
+		AudioGraphDocumentWindow (String caption, Colour backgroundColour)
+			: DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour)
+		{
+			setSize(600, 600);
+			setName(caption);
+			this->setResizable(false, true);
+		}
+
+		void closeButtonPressed() override {    setVisible (false);  }
+		void paint(Graphics& g) { g.fillAll(colour); }
+	};
+	
+	ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageContentComponent)
+};
+
+class FileTabButton : public TextButton
+{
+	DrawableButton play, mute;
+	CabbageLookAndFeel2 lookAndFeel;
+	
+public:
+
+	static const Image drawPlayIcon(int width, int height, bool isPlaying)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		Path p;
+		if(isPlaying == false)
+		{
+			g.setColour(Colours::whitesmoke);
+			p.addTriangle(0, 0, width, height/2, 0, height);
+		}
+		else
+		{
+			g.setColour(Colours::whitesmoke);
+			p.addRectangle(0, 0, width, height);
+		}
+			
+		p.closeSubPath();
+		g.fillPath(p);
+		g.setColour(Colours::whitesmoke.darker());
+		g.strokePath(p, PathStrokeType(1));
+		return img;
+	}
+	
+	FileTabButton(String name, String tooltip): 
+		TextButton(name, tooltip),
+		play("", DrawableButton::ButtonStyle::ImageStretched), 
+		lookAndFeel(),
+		mute("", DrawableButton::ButtonStyle::ImageStretched)
+	{
+		addAndMakeVisible(play);
+		addAndMakeVisible(mute);
+		play.setClickingTogglesState(true);
+		play.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+		play.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+		play.setClickingTogglesState(true);
+		play.setTooltip(tooltip);
+		setGraphImages(play, 16, 16, "play");
+	}
+	
+	void resized()
+	{		
+		play.setBounds(getWidth()-25, 4, 16, 16);
+	}
+	
+	void setGraphImages(DrawableButton& button, int width, int height, String type)
+	{
+		DrawableImage imageNormal;
+		DrawableImage imageDown;
+		
+		imageNormal.setImage(drawPlayIcon(width, height, false));		
+		imageDown.setImage(drawPlayIcon(width, height, true));
+		
+		button.setImages(&imageNormal, &imageNormal, &imageNormal, &imageNormal, &imageDown);
+	}
+	
+	DrawableButton& getPlayButton(){	return play;	}
+	
 };
 
 //==============================================================================

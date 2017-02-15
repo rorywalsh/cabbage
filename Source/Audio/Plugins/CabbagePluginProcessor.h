@@ -39,6 +39,8 @@ public:
     void createParameters();
     void updateWidgets (String csdText);
     void searchForMacros (StringArray& csdText);
+	void setPluginName(String name){	pluginName = name;	}
+	String getPluginName(){	return pluginName;	}
     const String getExpandedMacroText (const String line, ValueTree wData);
 
     CabbageAudioParameter* getParameterForXYPad (String name);
@@ -71,7 +73,7 @@ public:
 
 private:
 
-
+	String pluginName;
     File csdFile;
     NamedValueSet macroText;
     bool xyAutosCreated = false;

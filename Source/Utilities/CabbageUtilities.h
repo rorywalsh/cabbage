@@ -86,6 +86,77 @@ private:
     Array <float, CriticalSection > points;
 };
 
+class CabbageImages
+{
+public:
+	CabbageImages(){}
+	
+	static const Image drawBypassIcon(int width, int height, bool isActive)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		const float x = 0;
+		const float y = 0;
+		const float w = width-5.f;
+		const float h = height;
+		const float d = 5;
+		g.setColour(isActive ? Colours::cornflowerblue.darker(.8f) : Colours::lime);
+		Path p;
+		p.startNewSubPath(x+5, y+h/2.f+d/2.f);
+		g.drawEllipse(x, y+h/2.f, d, d, 2);
+		g.drawEllipse(x+w, y+h/2.f, d, d, 2.f);
+
+		if(!isActive)
+		{
+			p.lineTo(x+w, y+h/2.f+d/2.f);
+		}
+		else
+		{
+			p.addArc(x+w, y+h/2.f+d/2.f, 5, 5, 3.14, 3.14);
+		}
+
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(2));
+		
+		return img;
+	}
+	
+	
+	static const Image drawMuteIcon(int width, int height, bool muted)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		const float x = 0;
+		const float y = 0;
+		const float w = width-5.f;
+		const float h = height;
+		g.setColour(Colours::whitesmoke);
+		Path p;
+		p.startNewSubPath(x, y+h*.33);
+		p.lineTo(x+w/2.f, y+h*.33);
+		p.lineTo(x+w, y+0.f);
+		p.lineTo(x+w, y+h);
+		p.lineTo(x+w/2.f, y+h*.66);
+		p.lineTo(x, y+h*.66);
+		p.lineTo(x, y+h*.33);
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(1));
+
+		if(muted)
+		{
+			g.setColour(Colours::lime);
+			g.drawLine(x+0, y+0, x+w, y+h, 3);
+			g.drawLine(x+0, y+h, x+w, y+0, 3);
+		}
+		else
+			g.fillPath(p);
+			
+		return img;
+	}	
+};
+
 //===========================================================================================
 //some utility functions used across classes...
 //===========================================================================================
@@ -94,7 +165,34 @@ class CabbageUtilities
 public:
     CabbageUtilities() {};
     ~CabbageUtilities() {};
+	
+	enum TargetTypes
+	{
+		IDE = 0,
+		PluginSynth,
+		PluginEffect,
+		Unknown
+	};
 
+	//==============================================================
+	static int getTarget()
+	{
+#ifdef Cabbage_IDE_Build
+		return TargetTypes::IDE;
+#elif Cabbage_Plugin_Synth
+		return TargetTypes::PluginSynth;
+#else
+		return TargetTypes::PluginEffect;
+#endif
+		return TargetTypes::Unknown;
+	}
+
+	//==============================================================
+	static const String getSVGTextFromMemory (const void* svg, size_t size)
+	{
+		MemoryInputStream svgStream (svg, size, false);
+		return svgStream.readString();
+	}	
     //==============================================================
     static void debug (String message)
     {

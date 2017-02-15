@@ -99,9 +99,15 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode + " " + expandedMacroText, lineNumber);
         CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber);
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
-		//CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::csdfile));
+        //CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::csdfile));
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
-
+		
+		if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == CabbageIdentifierIds::form)
+		{
+			const String caption = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::caption);
+			this->setPluginName(caption.length()>0 ? caption : "Untitled");
+		}
+		
         if (currentLineOfCabbageCode.contains ("}"))
         {
             parentComponent = "";

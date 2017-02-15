@@ -294,6 +294,7 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 {
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::about);
+    menu.addCommandItem (&commandManager, CommandIDs::showGraph);
 }
 
 void CabbageDocumentWindow::createBuildMenu (PopupMenu& menu)
@@ -328,8 +329,8 @@ void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (&commandManager, CommandIDs::runCsoundCode);
-    menu.addCommandItem (&commandManager, CommandIDs::stopCsoundCode);
+    menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
+    menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
     menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
@@ -373,8 +374,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::saveDocumentAs,
                               CommandIDs::examples,
                               CommandIDs::settings,
-                              CommandIDs::runCsoundCode,
-                              CommandIDs::stopCsoundCode,
+                              CommandIDs::startAudioGraph,
+                              CommandIDs::stopAudioGraph,
                               CommandIDs::exportAsSynth,
                               CommandIDs::exportAsEffect,
                               CommandIDs::exportAsFMODSoundPlugin,
@@ -389,6 +390,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::showReplacePanel,
                               CommandIDs::redo,
                               CommandIDs::editMode,
+                              CommandIDs::showGraph,
                               CommandIDs::about,
                               CommandIDs::startLiveDebugger,
                               CommandIDs::showGenericWidgetWindow
@@ -449,13 +451,13 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
             break;
 
-        case CommandIDs::runCsoundCode:
-            result.setInfo ("Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+        case CommandIDs::startAudioGraph:
+            result.setInfo ("Start graph", "Starts the audio signal graph", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress (KeyPress::F4Key, ModifierKeys::noModifiers, 0));
             break;
 
-        case CommandIDs::stopCsoundCode:
-            result.setInfo ("Cancel Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+        case CommandIDs::stopAudioGraph:
+            result.setInfo ("Stop graph", "Stop the audio signal graph", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress (KeyPress::F5Key, ModifierKeys::noModifiers, 0));
             break;
 
@@ -569,6 +571,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
         case CommandIDs::about:
             result.setInfo (TRANS ("About"), TRANS ("About."), CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::showGraph:
+            result.setInfo (TRANS ("Show Graph"), TRANS ("Graph."), CommandCategories::view, 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
             break;
 
@@ -595,7 +601,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
     String title (CABBAGE_VERSION);
     CabbageIDELookAndFeel tempLookAndFeel;
-    
+
     switch (info.commandID)
     {
         case CommandIDs::newProject:
@@ -625,8 +631,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->showSettingsDialog();
             return true;
 
-        case CommandIDs::runCsoundCode:
-            getContentComponent()->runCsoundCode();
+        case CommandIDs::startAudioGraph:
+            getContentComponent()->startAudioGraph();
             return true;
 
         case CommandIDs::exportAsEffect:
@@ -703,15 +709,19 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->launchSSHFileBrowser ("save");
             break;
 
-        case CommandIDs::stopCsoundCode:
-            getContentComponent()->stopCsoundCode();
-            getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
+        case CommandIDs::stopAudioGraph:
+            getContentComponent()->stopAudioGraph();
+            //getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
             break;
 
         case CommandIDs::about:
-            CabbageUtilities::showMessage(title, &tempLookAndFeel);
+            CabbageUtilities::showMessage (title, &tempLookAndFeel);
             break;
 
+        case CommandIDs::showGraph:
+            getContentComponent()->showGraph();
+            break;
+			
         case CommandIDs::editMode:
             getContentComponent()->setEditMode (isGUIEnabled = ! isGUIEnabled);
 

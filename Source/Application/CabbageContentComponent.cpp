@@ -36,7 +36,9 @@ CabbageContentComponent::CabbageContentComponent (CabbageDocumentWindow* owner, 
     setSize (1200, 800);
 
     bgImage = createBackground();
-
+	audioGraphWindow = new AudioGraphDocumentWindow("Audio Graph", Colours::white);
+	audioGraphWindow->setVisible(false);
+	
     addAndMakeVisible (toolbar);
     toolbar.addDefaultItems (factory);
     propertyPanel->addChangeListener (this);
@@ -49,6 +51,7 @@ CabbageContentComponent::CabbageContentComponent (CabbageDocumentWindow* owner, 
 CabbageContentComponent::~CabbageContentComponent()
 {
     editorAndConsole.clear();
+	graphComponent = nullptr;
     audioGraph = nullptr;
 
     if (tempFile.existsAsFile())
@@ -86,14 +89,18 @@ bool CabbageContentComponent::setCurrentCsdFile (File file)
         return false;
     }
     else
+    {
         currentCsdFile = file;
+        Uuid uniqueID;
+        nodeIdsForFiles.set (file.getFullPathName(), int32 (*uniqueID.getRawData()));
+    }
 
     return true;
 }
 //==============================================================================
 void CabbageContentComponent::buttonClicked (Button* button)
 {
-    if (const TextButton* tabButton = dynamic_cast<TextButton*> (button))
+    if (const FileTabButton* tabButton = dynamic_cast<FileTabButton*> (button))
     {
         currentFileIndex = fileTabs.indexOf (tabButton);
         editorAndConsole[currentFileIndex]->toFront (true);
@@ -118,11 +125,22 @@ void CabbageContentComponent::buttonClicked (Button* button)
         else if (toolbarButton->getName() == "togglePlay")
         {
             if (toolbarButton->getToggleState())
-                this->runCsoundCode();
+                this->stopAudioGraph();
             else
-                this->stopCsoundCode();
+                this->startAudioGraph();
         }
     }
+	else if(DrawableButton* runButton = dynamic_cast<DrawableButton*>(button))
+	{
+		
+		if(runButton->getToggleState() == true)
+		{
+			runCsoundForNode(runButton->getTooltip());
+		}
+		else
+			stopCsoundForNode(runButton->getTooltip());
+			
+	}
 }
 
 void CabbageContentComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
@@ -148,7 +166,7 @@ void CabbageContentComponent::changeListenerCallback (ChangeBroadcaster* source)
         propertyPanel->setEnabled (true);
         resized();
         ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
-		propertyPanel->saveOpenessState();	
+        propertyPanel->saveOpenessState();
         propertyPanel->updateProperties (widgetData);
 
         if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
@@ -227,21 +245,22 @@ void CabbageContentComponent::updateCodeInEditor (CabbagePluginEditor* editor, b
 //==============================================================================
 void CabbageContentComponent::timerCallback()
 {
-    if (audioGraph->getProcessor()->isSuspended() == true)
-    {
-        stopCsoundCode();
-        stopTimer();
-    }
-
-    if (currentCsdFile.existsAsFile())
-    {
-        const String csoundOutputString = audioGraph->getCsoundOutput();
-        consoleMessages += csoundOutputString;
-
-        if (csoundOutputString.length() > 0)
-            getCurrentOutputConsole()->setText (csoundOutputString);
-
-    }
+//    int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));	
+//    if (audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+//    {
+//        stopCsoundForNode("");
+//        stopTimer();
+//    }
+//
+//    if (currentCsdFile.existsAsFile())
+//    {
+//        const String csoundOutputString = audioGraph->getCsoundOutput(nodeId);
+//        consoleMessages += csoundOutputString;
+//
+//        if (csoundOutputString.length() > 0)
+//            getCurrentOutputConsole()->setText (csoundOutputString);
+//
+//    }
 }
 //==============================================================================
 void CabbageContentComponent::updateEditorColourScheme()
@@ -288,8 +307,8 @@ Image CabbageContentComponent::createBackground()
 //==============================================================================
 void CabbageContentComponent::addFileTabButton (File file)
 {
-    TextButton* fileButton;
-    fileTabs.add (fileButton = new TextButton (file.getFileName(), file.getFullPathName()));
+    FileTabButton* fileButton;
+    fileTabs.add (fileButton = new FileTabButton (file.getFileName(), file.getFullPathName()));
 
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
@@ -298,6 +317,7 @@ void CabbageContentComponent::addFileTabButton (File file)
     fileButton->setLookAndFeel (lookAndFeel);
     fileButton->setToggleState (true, dontSendNotification);
     currentFileIndex = fileTabs.size() - 1;
+	fileButton->getPlayButton().addListener(this);
 }
 
 void CabbageContentComponent::arrangeFileTabButtons()
@@ -307,9 +327,9 @@ void CabbageContentComponent::arrangeFileTabButtons()
 
     for ( auto fileButton : fileTabs)
     {
-        const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 15 : getWidth() - 5;
-        fileButton->setBounds (xPos, toolbarThickness + 3, width / numTabs, 20);
-        xPos += width / numTabs + 5;
+        const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 15 : getWidth() - 25;
+        fileButton->setBounds (xPos, toolbarThickness + 3, width / numTabs, 25);
+        xPos += width / numTabs + 4;
     }
 }
 
@@ -350,20 +370,29 @@ void CabbageContentComponent::createAudioGraph()
         cabbageSettings->setProperty ("windowY", lastPoint.getY());
     }
 
-    audioGraph = new AudioGraph (cabbageSettings->getUserSettings(), currentCsdFile, false);
+    audioGraph = new AudioGraph (cabbageSettings->getUserSettings(), false);
     audioGraph->setXmlAudioSettings (cabbageSettings->getUserSettings()->getXmlValue ("audioSetup"));
-    createEditorForAudioGraphNode();
+    graphComponent = new CabbageGraphComponent (*audioGraph);
+	audioGraphWindow->setContentNonOwned(graphComponent, false);
 
-    //graphComponent = new CabbageGraphComponent(*audioGraph);
-
+	
 }
 
+void CabbageContentComponent::showGraph()
+{
+	audioGraphWindow->setUsingNativeTitleBar (true);
+	audioGraphWindow->setVisible(true);
+	audioGraphWindow->setTopLeftPosition(getWidth()-audioGraphWindow->getWidth(), 10);
+	audioGraphWindow->toFront(true);
+}
 //==============================================================================
 void CabbageContentComponent::createEditorForAudioGraphNode()
 {
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
+    int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));
+
+    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
     {
-        PluginWindow::WindowFormatType type = audioGraph->getProcessor()->hasEditor() ? PluginWindow::Normal
+        PluginWindow::WindowFormatType type = f->getProcessor()->hasEditor() ? PluginWindow::Normal
                                               : PluginWindow::Generic;
 
         if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
@@ -415,7 +444,9 @@ CabbagePluginEditor* CabbageContentComponent::getCabbagePluginEditor()
 {
     if (audioGraph != nullptr)
     {
-        if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
+        int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));
+
+        if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
         {
             AudioProcessor* const processor = f->getProcessor();
 
@@ -430,7 +461,9 @@ CabbagePluginEditor* CabbageContentComponent::getCabbagePluginEditor()
 
 CabbagePluginProcessor* CabbageContentComponent::getCabbagePluginProcessor()
 {
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (AudioGraph::NodeType::CabbageNode))
+    int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));
+
+    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
     {
         if (CabbagePluginProcessor* const processor = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
             return processor;
@@ -451,7 +484,9 @@ void CabbageContentComponent::setEditMode (bool enable)
     {
         if (!getCabbagePluginEditor())
         {
-            createAudioGraph();
+            //createAudioGraph();
+            audioGraph->addPlugin (currentCsdFile, nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));
+            createEditorForAudioGraphNode();
         }
 
         getCabbagePluginEditor()->addChangeListener (this);
@@ -525,9 +560,9 @@ void CabbageContentComponent::openFile (String filename)
 {
 
     stopTimer();
-    stopCsoundCode();
+    stopCsoundForNode(filename);
 
-    PluginWindow::closeAllCurrentlyOpenWindows();
+    //PluginWindow::closeAllCurrentlyOpenWindows();
 
 
     if (File (filename).existsAsFile() == false)
@@ -579,7 +614,7 @@ void CabbageContentComponent::saveDocument (bool saveAs, bool recompile)
 
     if (saveAs == true)
     {
-        stopCsoundCode();
+        stopCsoundForNode(currentCsdFile.getFullPathName());
 
         isGUIEnabled = false;
 
@@ -619,7 +654,7 @@ void CabbageContentComponent::saveDocument (bool saveAs, bool recompile)
     }
     else
     {
-        stopCsoundCode();
+        stopCsoundForNode(currentCsdFile.getFullPathName());;
         isGUIEnabled = false;
 
         if (getCabbagePluginEditor() != nullptr)
@@ -633,33 +668,33 @@ void CabbageContentComponent::saveDocument (bool saveAs, bool recompile)
             propertyPanel->setEnabled (false);
 
             if (recompile == true)
-                runCsoundCode();
+                runCsoundForNode(currentCsdFile.getFullPathName());
         }
     }
 }
 
 void CabbageContentComponent::closeDocument()
 {
-	if(editorAndConsole.size() > 0)
-	{
-		if (getCurrentCodeEditor()->hasFileChanged() == true)
-		{
-			const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
+    if (editorAndConsole.size() > 0)
+    {
+        if (getCurrentCodeEditor()->hasFileChanged() == true)
+        {
+            const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
 
-			if (result == 0 || result == 1)
-			{
-				if (result == 0)
-					saveDocument (false, false);
+            if (result == 0 || result == 1)
+            {
+                if (result == 0)
+                    saveDocument (false, false);
 
-				removeEditor();
-			}
+                removeEditor();
+            }
 
-		}
-		else
-		{
-				removeEditor();
-		}
-	}
+        }
+        else
+        {
+            removeEditor();
+        }
+    }
 }
 
 void CabbageContentComponent::removeEditor()
@@ -669,24 +704,25 @@ void CabbageContentComponent::removeEditor()
     openFiles.remove (currentFileIndex);
     currentFileIndex = (currentFileIndex > 0 ? currentFileIndex - 1 : 0);
 
-	if (editorAndConsole.size()!= 0)
-	{
-		if (currentFileIndex > -1)
-		{
-			editorAndConsole[currentFileIndex]->toFront (true);
-		}
+    if (editorAndConsole.size() != 0)
+    {
+        if (currentFileIndex > -1)
+        {
+            editorAndConsole[currentFileIndex]->toFront (true);
+        }
 
-		if (fileTabs.size() > 0)
-		{
-			fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
-			owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
-			arrangeFileTabButtons();
-		}
-		else
-		{
-			owner->setName ("Cabbage Csound IDE");
-		}
-	}
+        if (fileTabs.size() > 0)
+        {
+            fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
+            owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
+            arrangeFileTabButtons();
+        }
+        else
+        {
+            owner->setName ("Cabbage Csound IDE");
+        }
+    }
+
     repaint();
 
 
@@ -724,7 +760,7 @@ int CabbageContentComponent::findNext (bool forwards)
         return getCurrentCodeEditor()->findText (searchString, forwards, isCaseSensitiveSearch(), forwards);
     }
 
-	return -1;
+    return -1;
 }
 
 void CabbageContentComponent::replaceText (bool replaceAll)
@@ -744,31 +780,44 @@ void CabbageContentComponent::replaceText (bool replaceAll)
     }
 }
 //==============================================================================
-void CabbageContentComponent::runCsoundCode()
+void CabbageContentComponent::runCsoundForNode(String file)
 {
-    if (currentCsdFile.existsAsFile())
+    if (File(file).existsAsFile())
     {
-        PluginWindow::closeAllCurrentlyOpenWindows();
-        audioGraph = nullptr;
-        createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
-
+        //PluginWindow::closeAllCurrentlyOpenWindows();
+        //audioGraph = nullptr;
+        //createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
+        int32 node = nodeIdsForFiles.getWithDefault (file, -99);
+        PluginWindow::closeCurrentlyOpenWindowsFor (node);
+        audioGraph->addPlugin (currentCsdFile, node);
+        createEditorForAudioGraphNode();
         startTimer (100);
         factory.togglePlay (true);
+		graphComponent->updateComponents();
     }
     else
         CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel);
 }
 
-void CabbageContentComponent::stopCsoundCode()
+void CabbageContentComponent::stopCsoundForNode(String file)
 {
-    if (currentCsdFile.existsAsFile())
-    {
-        stopTimer();
-        factory.togglePlay (false);
+	int32 node = nodeIdsForFiles.getWithDefault (file, -99);
+}
 
-        if (audioGraph)
-            audioGraph->stopPlaying();
-    }
+void CabbageContentComponent::startAudioGraph()
+{
+	factory.togglePlay (false);
+	audioGraph->startPlaying();
+}
+
+void CabbageContentComponent::stopAudioGraph()
+{
+    stopTimer();
+    factory.togglePlay (true);
+
+    if (audioGraph)
+        audioGraph->stopPlaying();
+
 }
 
 //==============================================================================
@@ -797,12 +846,8 @@ void CabbageContentComponent::hideFindPanel()
 //==============================================================================
 void CabbageContentComponent::resized()
 {
-    const int heightOfTabButtons = (editorAndConsole.size() > 0) ? 25 : 0;
-
-    if (toolbar.isVertical())
-        toolbar.setBounds (getLocalBounds().removeFromLeft (toolbarThickness));
-    else
-        toolbar.setBounds (getLocalBounds().removeFromTop  (toolbarThickness));
+    const int heightOfTabButtons = (editorAndConsole.size() > 0) ? 30 : 0;
+    toolbar.setBounds (getLocalBounds().removeFromTop  (toolbarThickness));
 
     if (propertyPanel->isVisible())
     {
@@ -817,4 +862,5 @@ void CabbageContentComponent::resized()
     }
 
     arrangeFileTabButtons();
+	
 }
