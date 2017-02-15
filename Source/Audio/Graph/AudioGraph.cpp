@@ -73,15 +73,20 @@ void AudioGraph::createInternalFilters()
 void AudioGraph::addPlugin (File inputFile, int32 nodeId)
 {
     for ( int i = 0 ; i < graph.getNumNodes() ; i++)
-	if (graph.getNode (i)->nodeId == nodeId)
 	{
-		XmlElement* xml = this->createXml();
-		xml->writeToFile(File("/home/rory/Desktop/test.xml"), "");
-		this->restoreFromXml(*xml);
-		return;
+		if (graph.getNode (i)->nodeId == nodeId)
+		{
+			Point<double> position = this->getNodePosition(nodeId);
+			XmlElement* xml = createConnectionsXml();	
+			graph.removeNode(nodeId);
+			AudioProcessorGraph::Node::Ptr node = createNode(getPluginDescriptor("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);	
+			setNodePosition(nodeId, position.getX(), position.getY());
+			restoreConnectionsFromXml(*xml);
+			return;
+		}		
 	}
 	
-	createNode(getPluginDescriptor("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);		
+	createNode(getPluginDescriptor("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);	
 	setDefaultConnections(nodeId);
 }
 //==============================================================================
@@ -495,6 +500,19 @@ void AudioGraph::restoreFromXml (const XmlElement& xml)
     graph.removeIllegalConnections();
 }
 
+void AudioGraph::restoreConnectionsFromXml (const XmlElement& xml)
+{	
+    forEachXmlChildElementWithTagName (xml, e, "CONNECTION")
+    {
+        addConnection ((uint32) e->getIntAttribute ("srcFilter"),
+                       e->getIntAttribute ("srcChannel"),
+                       (uint32) e->getIntAttribute ("dstFilter"),
+                       e->getIntAttribute ("dstChannel"));
+    }
+
+    graph.removeIllegalConnections();
+}
+
 void AudioGraph::createNodeFromXml (const XmlElement& xml)
 {
     PluginDescription desc;
@@ -550,6 +568,26 @@ XmlElement* AudioGraph::createXml() const
     return xml;
 }
 
+XmlElement* AudioGraph::createConnectionsXml() const
+{
+    XmlElement* xml = new XmlElement ("FILTERGRAPH");
+
+    for (int i = 0; i < graph.getNumConnections(); ++i)
+    {
+        const AudioProcessorGraph::Connection* const fc = graph.getConnection(i);
+
+        XmlElement* e = new XmlElement ("CONNECTION");
+
+        e->setAttribute ("srcFilter", (int) fc->sourceNodeId);
+        e->setAttribute ("srcChannel", fc->sourceChannelIndex);
+        e->setAttribute ("dstFilter", (int) fc->destNodeId);
+        e->setAttribute ("dstChannel", fc->destChannelIndex);
+
+        xml->addChildElement (e);
+    }
+
+    return xml;
+}
 //========================================================================================
 
 static Array <PluginWindow*> activePluginWindows;

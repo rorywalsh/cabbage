@@ -122,7 +122,9 @@ public:
     void setLastDocumentOpened (const File& file) override {};
     //==============================================================================
     XmlElement* createXml() const;
+	XmlElement* createConnectionsXml() const;
     void restoreFromXml (const XmlElement& xml);
+	void restoreConnectionsFromXml (const XmlElement& xml);
 	
     OptionalScopedPointer<PropertySet> settings;
 

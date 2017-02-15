@@ -36,7 +36,7 @@ CabbageContentComponent::CabbageContentComponent (CabbageDocumentWindow* owner, 
     setSize (1200, 800);
 
     bgImage = createBackground();
-	audioGraphWindow = new AudioGraphDocumentWindow("Audio Graph", Colours::white);
+	audioGraphWindow = new AudioGraphDocumentWindow("Cabbage Patcher", Colours::white);
 	audioGraphWindow->setVisible(false);
 	
     addAndMakeVisible (toolbar);
@@ -801,7 +801,9 @@ void CabbageContentComponent::runCsoundForNode(String file)
 
 void CabbageContentComponent::stopCsoundForNode(String file)
 {
-	int32 node = nodeIdsForFiles.getWithDefault (file, -99);
+	int32 nodeId = nodeIdsForFiles.getWithDefault (file, -99);
+	if(audioGraph->getNodeForId(nodeId) != nullptr)
+		audioGraph->getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
 }
 
 void CabbageContentComponent::startAudioGraph()

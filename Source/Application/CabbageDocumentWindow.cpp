@@ -574,7 +574,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
 
         case CommandIDs::showGraph:
-            result.setInfo (TRANS ("Show Graph"), TRANS ("Graph."), CommandCategories::view, 0);
+            result.setInfo (TRANS ("Show Cabbage Patcher"), TRANS ("Graph."), CommandCategories::view, 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
             break;
 
