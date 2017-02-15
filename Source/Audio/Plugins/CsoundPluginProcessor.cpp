@@ -107,7 +107,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
     CabbageUtilities::debug ("Plugin destructor");
-	fileLogger = nullptr;
+	Logger::setCurrentLogger (nullptr);
 
     if (csound)
     {
