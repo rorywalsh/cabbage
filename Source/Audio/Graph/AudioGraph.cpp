@@ -41,29 +41,8 @@ AudioGraph::AudioGraph (PropertySet* settingsToUse,
 {
     graph.prepareToPlay (44100, 512);
     graph.setPlayConfigDetails (2, 2, 44100, 512);
-
     AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-
-    AudioProcessorGraph::AudioGraphIOProcessor* midiNode;
-    midiNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
-    const AudioProcessorGraph::Node* midiInputNode = graph.addNode (midiNode);
-
-    internalNodeIds.add (midiInputNode->nodeId);
-	setNodePosition(internalNodeIds[InternalNodes::MIDIInput], .8, .1);
-
-    AudioProcessorGraph::AudioGraphIOProcessor* inNode;
-    inNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
-    const AudioProcessorGraph::Node* inputNode = graph.addNode (inNode);
-    internalNodeIds.add (inputNode->nodeId);
-	setNodePosition(internalNodeIds[InternalNodes::AudioInput], .7, .1);
-
-
-    AudioProcessorGraph::AudioGraphIOProcessor* outNode;
-    outNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-    const AudioProcessorGraph::Node* outputNode =  graph.addNode (outNode);
-    internalNodeIds.add (outputNode->nodeId);
-	setNodePosition(internalNodeIds[InternalNodes::AudioOutput], .8, .8);
-
+	createInternalFilters();
     setupAudioDevices (preferredDefaultDeviceName, preferredSetupOptions);
     startPlaying();
 }
@@ -74,12 +53,25 @@ AudioGraph::~AudioGraph()
     shutDownAudioDevices();
 }
 
+void AudioGraph::createInternalFilters()
+{
+	AudioProcessorGraph::Node* midiInputNode = createNode(getPluginDescriptor("Internal", "Midi Input", internalNodeIds[InternalNodes::MIDIInput]), internalNodeIds[InternalNodes::MIDIInput]);
+    internalNodeIds.add (midiInputNode->nodeId);
+	setNodePosition(internalNodeIds[InternalNodes::MIDIInput], .8, .1);
+	
+	
+	AudioProcessorGraph::Node* inputNode =  createNode(getPluginDescriptor("Internal", "Audio Input", internalNodeIds[InternalNodes::MIDIInput]), internalNodeIds[InternalNodes::AudioInput]);
+    internalNodeIds.add (inputNode->nodeId);
+	setNodePosition(internalNodeIds[InternalNodes::AudioInput], .7, .1);
+
+	AudioProcessorGraph::Node* outputNode =  createNode(getPluginDescriptor("Internal", "Audio Output", internalNodeIds[InternalNodes::MIDIInput]), internalNodeIds[InternalNodes::AudioOutput]);
+    internalNodeIds.add (outputNode->nodeId);
+	setNodePosition(internalNodeIds[InternalNodes::AudioOutput], .8, .8);	
+}
+
 //==============================================================================
-
-
 void AudioGraph::addPlugin (File inputFile, int32 nodeId)
 {
-	
     for ( int i = 0 ; i < graph.getNumNodes() ; i++)
 	if (graph.getNode (i)->nodeId == nodeId)
 	{
@@ -89,59 +81,93 @@ void AudioGraph::addPlugin (File inputFile, int32 nodeId)
 		return;
 	}
 	
-	createNode(nodeId, inputFile);
-	
+	createNode(getPluginDescriptor("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);		
 	setDefaultConnections(nodeId);
-
 }
-
-void AudioGraph::createNode(int32 nodeId, File inputFile)
-{
-	AudioProcessor* processor;		
-		
-    isCabbageFile = CabbageUtilities::hasCabbageTags (inputFile);
-
-    if (isCabbageFile)
-        processor = createCabbagePluginFilter (inputFile);
-    else
-        processor = createGenericPluginFilter (inputFile);
-
-    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
-
-    jassert (processor != nullptr); 
-
-    processor->disableNonMainBuses();
-    processor->setRateAndBufferSizeDetails (44100, 512);
-	graph.addNode (processor, nodeId);
-	
-	String name  = "Csound";
-	if(CabbagePluginProcessor* plugin = dynamic_cast<CabbagePluginProcessor*>(processor))
-		name = plugin->getPluginName();
-	
-	fillPluginDescriptor(nodeId, inputFile, name, isCabbageFile == true ? "CabbagePlugin" : "CsoundPlugin"); 
-
-}
-
-void AudioGraph::fillPluginDescriptor(int32 nodeId, File inputFile, String name, String pluginType)
+//==============================================================================
+const PluginDescription AudioGraph::getPluginDescriptor(String type, String name, int32 nodeId, String inputFile )
 {
 	PluginDescription descript;
-	descript.fileOrIdentifier = inputFile.getFileNameWithoutExtension();;
-	descript.descriptiveName = pluginType+":"+inputFile.getFileNameWithoutExtension();
-	descript.name = inputFile.getFileNameWithoutExtension();
+	descript.fileOrIdentifier = inputFile;
+	descript.descriptiveName = type+":"+inputFile;
+	descript.name = name;
+	descript.numInputChannels = 2;
+	descript.numOutputChannels = 2;
+	descript.isInstrument = true;
+	descript.uid = nodeId;
+	
 	descript.manufacturerName = "CabbageAudio";
-	descript.pluginFormatName = "Cabbage";
-	ScopedPointer<XmlElement> xmlElem;
-	xmlElem = descript.createXml();
-	String xmlInfo = xmlElem->createDocument("");
-	graph.getNodeForId(nodeId)->properties.set("pluginType", pluginType);
-	graph.getNodeForId(nodeId)->properties.set("pluginName", name);
-	graph.getNodeForId(nodeId)->properties.set("pluginDesc", xmlInfo);		
-}
+	descript.pluginFormatName = type;
 
-void AudioGraph::setDefaultConnections(int32 nodeId)
+	return descript;	
+}
+//==============================================================================
+AudioProcessorGraph::Node::Ptr AudioGraph::createNode(const PluginDescription& desc, int32 nodeId)
+{		
+	if(desc.pluginFormatName == "Cabbage")
+	{
+		AudioProcessor* processor;
+		isCabbageFile = CabbageUtilities::hasCabbageTags (File(desc.fileOrIdentifier));
+
+		if (isCabbageFile)
+			processor = createCabbagePluginFilter (File(desc.fileOrIdentifier));
+		else
+			processor = createGenericPluginFilter (File(desc.fileOrIdentifier));
+
+		AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
+		jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
+
+		processor->disableNonMainBuses();
+		processor->setRateAndBufferSizeDetails (44100, 512);
+		
+		AudioProcessorGraph::Node* node = graph.addNode (processor, nodeId);
+		ScopedPointer<XmlElement> xmlElem;
+		xmlElem = desc.createXml();			
+		node->properties.set("pluginType", "Cabbage");
+		node->properties.set("pluginName", "Test");
+		node->properties.set("pluginDesc", xmlElem->createDocument(""));
+		
+		return node;
+		
+	}
+	else if(desc.pluginFormatName == "Internal")
+	{
+		ScopedPointer<XmlElement> xmlElem;
+		xmlElem = desc.createXml();	
+		
+		if(desc.name == "Midi Input")
+		{
+			AudioProcessorGraph::AudioGraphIOProcessor* midiNode;
+			midiNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
+			AudioProcessorGraph::Node* node = graph.addNode (midiNode, nodeId);
+			node->properties.set("pluginDesc", xmlElem->createDocument(""));
+			return node;
+		}
+		else if(desc.name == "Audio Input")
+		{
+			AudioProcessorGraph::AudioGraphIOProcessor* inNode;
+			inNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
+			AudioProcessorGraph::Node* node = graph.addNode (inNode, nodeId);
+			node->properties.set("pluginDesc", xmlElem->createDocument(""));
+			return node;
+		}
+		else if(desc.name == "Audio Output")
+		{
+			AudioProcessorGraph::AudioGraphIOProcessor* outNode;
+			outNode = new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+			//outNode->properties.set("pluginDesc", xmlElem->createDocument(""));
+			AudioProcessorGraph::Node* node = graph.addNode (outNode, nodeId);
+			node->properties.set("pluginDesc", xmlElem->createDocument(""));
+			return node;
+		}		
+	}
+
+}
+//==============================================================================
+void AudioGraph::setDefaultConnections(int nodeId)
 {
 	setNodePosition(nodeId, .7+(graph.getNumNodes()-3)*.05, .5);
-	
+
     bool connectInput1 = graph.addConnection (internalNodeIds[InternalNodes::AudioInput], 0, nodeId, 0);
     bool connectInput2 = graph.addConnection (internalNodeIds[InternalNodes::AudioInput], 1, nodeId, 1);
 
@@ -151,7 +177,7 @@ void AudioGraph::setDefaultConnections(int32 nodeId)
     bool connection3 = graph.addConnection (internalNodeIds[InternalNodes::MIDIInput], AudioProcessorGraph::midiChannelIndex, nodeId, AudioProcessorGraph::midiChannelIndex);
 
     if (connection1 == false || connection2 == false || connection3 == false || connectInput1 == false || connectInput2 == false)
-        jassertfalse;	
+        jassertfalse;
 }
 
 void AudioGraph::updateBusLayout (AudioProcessor* selectedProcessor)
@@ -165,6 +191,7 @@ void AudioGraph::updateBusLayout (AudioProcessor* selectedProcessor)
     //    }
 }
 
+//==============================================================================
 void AudioGraph::deletePlugin()
 {
     PluginWindow::closeAllCurrentlyOpenWindows();
@@ -447,35 +474,43 @@ static XmlElement* createNodeXml (AudioProcessorGraph::Node* const node) noexcep
     return e;
 }
 
+void AudioGraph::restoreFromXml (const XmlElement& xml)
+{
+    clear();
+
+    forEachXmlChildElementWithTagName (xml, e, "FILTER")
+    {
+        createNodeFromXml (*e);
+        changed();
+    }
+
+    forEachXmlChildElementWithTagName (xml, e, "CONNECTION")
+    {
+        addConnection ((uint32) e->getIntAttribute ("srcFilter"),
+                       e->getIntAttribute ("srcChannel"),
+                       (uint32) e->getIntAttribute ("dstFilter"),
+                       e->getIntAttribute ("dstChannel"));
+    }
+
+    graph.removeIllegalConnections();
+}
+
 void AudioGraph::createNodeFromXml (const XmlElement& xml)
 {
-    PluginDescription pd;
+    PluginDescription desc;
 
     forEachXmlChildElement (xml, e)
     {
-        if (pd.loadFromXml (*e))
+        if (desc.loadFromXml (*e))
             break;
     }
 
-    String errorMessage;
+	xml.writeToFile(File("/home/rory/Desktop/NodeTest.xml"), "");
+    AudioProcessorGraph::Node::Ptr node = createNode(desc, xml.getIntAttribute ("uid"));
 
-    AudioPluginInstance* instance = formatManager->createPluginInstance (pd, graph.getSampleRate(), graph.getBlockSize(), errorMessage);
-
-    if (instance == nullptr)
-        return;
-
-    if (const XmlElement* const layoutEntity = xml.getChildByName ("LAYOUT"))
-    {
-        AudioProcessor::BusesLayout layout = instance->getBusesLayout();
-
-        for (bool isInput : { true, false })
-            readBusLayoutFromXml (layout, instance, *layoutEntity, isInput);
-
-        instance->setBusesLayout (layout);
-    }
-
-    AudioProcessorGraph::Node::Ptr node (graph.addNode (instance, (uint32) xml.getIntAttribute ("uid")));
-
+	if(node == nullptr)
+		jassertfalse;
+		
     if (const XmlElement* const state = xml.getChildByName ("STATE"))
     {
         MemoryBlock m;
@@ -486,26 +521,9 @@ void AudioGraph::createNodeFromXml (const XmlElement& xml)
 
     node->properties.set ("x", xml.getDoubleAttribute ("x"));
     node->properties.set ("y", xml.getDoubleAttribute ("y"));
-
-    for (int i = 0; i < PluginWindow::NumTypes; ++i)
-    {
-        PluginWindow::WindowFormatType type = (PluginWindow::WindowFormatType) i;
-
-//        if (xml.hasAttribute (getOpenProp (type)))
-//        {
-//            node->properties.set (getLastXProp (type), xml.getIntAttribute (getLastXProp (type)));
-//            node->properties.set (getLastYProp (type), xml.getIntAttribute (getLastYProp (type)));
-//            node->properties.set (getOpenProp (type), xml.getIntAttribute (getOpenProp (type)));
-//
-//            if (node->properties[getOpenProp (type)])
-//            {
-//                jassert (node->getProcessor() != nullptr);
-//
-//                if (PluginWindow* const w = PluginWindow::getWindowFor (node, type, graph))
-//                    w->toFront (true);
-//            }
-//        }
-    }
+    node->properties.set ("uiLastX", xml.getIntAttribute ("uiLastX"));
+    node->properties.set ("uiLastY", xml.getIntAttribute ("uiLastY"));
+    node->properties.set ("pluginName", desc.name);
 }
 
 XmlElement* AudioGraph::createXml() const
@@ -530,27 +548,6 @@ XmlElement* AudioGraph::createXml() const
     }
 
     return xml;
-}
-
-void AudioGraph::restoreFromXml (const XmlElement& xml)
-{
-    clear();
-
-    forEachXmlChildElementWithTagName (xml, e, "FILTER")
-    {
-        createNodeFromXml (*e);
-        changed();
-    }
-
-    forEachXmlChildElementWithTagName (xml, e, "CONNECTION")
-    {
-        addConnection ((uint32) e->getIntAttribute ("srcFilter"),
-                       e->getIntAttribute ("srcChannel"),
-                       (uint32) e->getIntAttribute ("dstFilter"),
-                       e->getIntAttribute ("dstChannel"));
-    }
-
-    graph.removeIllegalConnections();
 }
 
 //========================================================================================

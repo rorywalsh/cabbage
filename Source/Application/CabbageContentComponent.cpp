@@ -383,7 +383,7 @@ void CabbageContentComponent::showGraph()
 	audioGraphWindow->setUsingNativeTitleBar (true);
 	audioGraphWindow->setVisible(true);
 	audioGraphWindow->setTopLeftPosition(getWidth()-audioGraphWindow->getWidth(), 10);
-	audioGraphWindow->toFront(true);
+	audioGraphWindow->setAlwaysOnTop(true);
 }
 //==============================================================================
 void CabbageContentComponent::createEditorForAudioGraphNode()

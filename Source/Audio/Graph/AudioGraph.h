@@ -63,6 +63,13 @@ public:
 
     int getNumPlugins() const noexcept;
     void addPlugin (File inputFile, int32 nodeId);
+	AudioProcessorGraph::Node::Ptr createNode(const PluginDescription& desc, int32 uid);
+	AudioProcessorGraph::Node* createCabbageNode(const PluginDescription& desc, int32 nodeId);
+	AudioProcessorGraph::Node* createInternalNode(const PluginDescription& desc, int32 nodeId);
+	
+	const PluginDescription getPluginDescriptor(String type, String name, int32 nodeId, String inputfile = "");
+	void setDefaultConnections(int nodeId);
+	void createInternalFilters();
     void updateBusLayout (AudioProcessor* selectedProcessor);
     int getNumberOfParameters();
     virtual void deletePlugin();
@@ -73,9 +80,7 @@ public:
     void setNodePosition (uint32 nodeId, double x, double y);
     Point<double> getNodePosition (uint32 nodeId) const;
     AudioProcessorGraph& getGraph() noexcept         { return graph; }
-	void createNode(int32 uid, File inputFile);
-	void setDefaultConnections(int32 nodeId);
-	void fillPluginDescriptor(int32 nodeId, File inputFile, String name, String pluginType);
+
     //==============================================================================
     int getNumConnections() const noexcept;
     const AudioProcessorGraph::Connection* getConnection (const int index) const noexcept;
