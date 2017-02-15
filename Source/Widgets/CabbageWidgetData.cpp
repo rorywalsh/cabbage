@@ -1801,7 +1801,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + (getNumProp (widgetData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
 
 
-	return updateIdentifiers(oldIdentifiers, newIdentifiers);
+	return updateIdentifiers(cabbageCode, currentLineText);
 }
 
 String CabbageWidgetData::updateIdentifiers(String cabbageCode, String currentLineText)
