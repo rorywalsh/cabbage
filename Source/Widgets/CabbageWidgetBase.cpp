@@ -97,9 +97,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
     }
 
     populateTextArrays (data);
-
 }
-
 
 String CabbageWidgetBase::getCurrentText (ValueTree data)
 {

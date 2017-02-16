@@ -109,6 +109,7 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
     Logger::setCurrentLogger (nullptr);
 
     CabbageUtilities::debug ("Plugin destructor");
+    Logger::setCurrentLogger (nullptr);
 
     if (csound)
     {

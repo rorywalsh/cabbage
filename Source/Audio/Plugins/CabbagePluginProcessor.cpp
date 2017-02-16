@@ -96,7 +96,12 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         }
 
         const String expandedMacroText = getExpandedMacroText (currentLineOfCabbageCode, tempWidget);
-        CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode + " " + expandedMacroText, lineNumber);
+		
+		if ( currentLineOfCabbageCode.indexOf(";")> -1)
+			currentLineOfCabbageCode = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(";"));
+			
+		const String comments = currentLineOfCabbageCode.substring(currentLineOfCabbageCode.indexOf(";"));
+        CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode + " " + expandedMacroText + comments, lineNumber);
         CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber);
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
         //CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::csdfile));
@@ -187,10 +192,10 @@ const String CabbagePluginProcessor::getExpandedMacroText (const String line, Va
 
     CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::macronames, macroNames);
 
-    return csdLine;;
+    return csdLine;
 }
 
-//right now we rebuild the entire GUi each time something changes,
+//rebuild the entire GUi each time something changes.
 void CabbagePluginProcessor::updateWidgets (String csdText)
 {
     CabbagePluginEditor* editor = static_cast<CabbagePluginEditor*> (this->getActiveEditor());

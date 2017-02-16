@@ -975,6 +975,28 @@ void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, con
         g.fillRoundedRectangle (0, 0, width * 0.95, height * 0.95, height * 0.1);
     }
 }
+
+void CabbageLookAndFeel2::drawButtonText (Graphics& g, TextButton& button, bool isMouseOverButton, bool isButtonDown)
+{
+    Font font (getTextButtonFont (button, button.getHeight()));
+    g.setFont (font);
+    g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
+                                                            : TextButton::textColourOffId)
+                       .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
+
+    const int yIndent = jmin (4, button.proportionOfHeight (0.3f));
+    const int cornerSize = jmin (button.getHeight(), button.getWidth()) / 2;
+
+    const int fontHeight = roundToInt (font.getHeight() * 0.6f);
+    const int leftIndent  = jmin (fontHeight, 2 + cornerSize / (button.isConnectedOnLeft() ? 4 : 2));
+    const int rightIndent = jmin (fontHeight, 2 + cornerSize / (button.isConnectedOnRight() ? 4 : 2));
+    const int textWidth = button.getWidth() - leftIndent - rightIndent;
+
+    if (textWidth > 0)
+        g.drawFittedText (button.getButtonText(),
+                          leftIndent, yIndent, textWidth - (isButtonDown == true ? 5 : 0), button.getHeight() - yIndent * 2,
+                          Justification::centred, 2);
+}
 //==========================================================================================================================================
 void CabbageLookAndFeel2::drawSphericalThumb (Graphics& g, const float x, const float y,
                                               const float w, const float h, const Colour& colour,

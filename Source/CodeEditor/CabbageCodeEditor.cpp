@@ -694,6 +694,8 @@ void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
 	
 	for( int i = indices.size(); i >= 0 ; i-- )
 		variableNamesToShow.remove(indices[i]);
+
+
 }
 
 void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
@@ -702,8 +704,6 @@ void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
     {
         if (item.startsWith (currentWord))
         {
-            //CabbageUtilities::debug ("currentWord", currentWord);
-            //CabbageUtilities::debug ("variableNamesToShow[0]", variableNamesToShow[0]);
             variableNamesToShow.addIfNotAlreadyThere (item.trim());
             autoCompleteListBox.updateContent();
 

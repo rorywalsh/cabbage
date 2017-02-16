@@ -51,11 +51,18 @@ public:
     Image drawCheckMark();
 
     static void drawFromSVG (Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine);
+	
     void drawSphericalThumb (Graphics& g, const float x, const float y, const float w, const float h, const Colour& colour, const float outlineThickness);
+	
     void drawTwoValueThumb (Graphics& g, float x, float y, float diameter, const Colour& colour, float outlineThickness, int direction);
+	
     int getMinimumScrollbarThumbSize (ScrollBar& scrollbar) override;
+	
     int getDefaultScrollbarWidth() override;
+	
     int getScrollbarButtonSize (ScrollBar& scrollbar) override;
+	
+	void drawButtonText (Graphics& g, TextButton& button, bool /*isMouseOverButton*/, bool /*isButtonDown*/) override;
 
 private:
 
