@@ -43,8 +43,9 @@ class CabbageSlider
     void mouseDrag (const MouseEvent& event);
     void mouseMove (const MouseEvent& event);
     void mouseEnter (const MouseEvent& event);
+	void mouseExit (const MouseEvent& event);
     void createPopupBubble();
-    void showPopupBubble();
+    void showPopupBubble(int time);
     void setLookAndFeelColours (ValueTree wData);
 
 public:

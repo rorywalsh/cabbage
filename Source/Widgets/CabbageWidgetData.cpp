@@ -664,6 +664,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("rotate"):
+			    setProperty (widgetData, CabbageIdentifierIds::rotate, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::pivotx, strTokens[1].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::pivoty, strTokens[2].trim().getFloatValue());
                 break;
@@ -791,8 +792,10 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             default:
-                CabbageUtilities::debug (identifier);
+
                 break;
+				
+				//check ident addray....
 
         }
     }
@@ -822,11 +825,7 @@ NamedValueSet CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOf
 
     }
 
-    CabbageUtilities::debug (identifiersInLine.joinIntoString ("\n"));
-    CabbageUtilities::debug (parameters.joinIntoString ("\n"));
-    CabbageUtilities::debug ("END");
     NamedValueSet valueSet;
-
     identifiersInLine.removeEmptyStrings();
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
@@ -1471,7 +1470,7 @@ String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentL
     for ( auto str : newIdentifiers)
         oldIdentifiers.add (str);
 
-    return oldIdentifiers.joinIntoString (", ");
+    return oldIdentifiers.joinIntoString (" ");
 }
 
 String CabbageWidgetData::removeWidgetFromValueTree (ValueTree wData, int lineNumber)

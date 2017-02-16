@@ -212,10 +212,10 @@ void CabbageContentComponent::updateCodeInEditor (CabbagePluginEditor* editor, b
 
         const String macroText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::expandedmacrotext);
 
-        String macroNames (String::empty);
+        String macroNames (" ");
 
         for ( int i = 0 ; i < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames).size() ; i++ )
-            macroNames += CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames)[i].toString() + ", ";
+            macroNames += CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames)[i].toString() + " ";
 
 
         const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText);

@@ -207,34 +207,40 @@ void CabbageSlider::resized()
     slider.setValue (value, dontSendNotification);
 }
 
-void CabbageSlider::showPopupBubble()
-{
+void CabbageSlider::showPopupBubble(int time)
+{	
     if (getTooltipText().isNotEmpty())
         popupText = getTooltipText();
     else
         popupText = channel + ": " + String (slider.getValue(), decimalPlaces);
 
-    popupBubble.showAt (&slider, AttributedString (popupText), 150);
+    popupBubble.showAt (&slider, AttributedString (popupText), time);
 
 }
 
 void CabbageSlider::mouseDrag (const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble();
+        showPopupBubble(150);
 }
 
 void CabbageSlider::mouseMove (const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble();
+        showPopupBubble(150);
 }
 
 void CabbageSlider::mouseEnter (const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble();
+        showPopupBubble(1000);
 }
+
+void CabbageSlider::mouseExit (const MouseEvent& event)
+{
+    if (shouldDisplayPopup)
+		popupBubble.setVisible(false);
+} 
 
 void CabbageSlider::setSliderVelocity (ValueTree wData)
 {
