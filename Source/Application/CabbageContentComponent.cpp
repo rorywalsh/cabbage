@@ -148,7 +148,7 @@ void CabbageContentComponent::changeListenerCallback (ChangeBroadcaster* source)
         propertyPanel->setEnabled (true);
         resized();
         ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
-		propertyPanel->saveOpenessState();	
+        propertyPanel->saveOpenessState();
         propertyPanel->updateProperties (widgetData);
 
         if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
@@ -640,26 +640,26 @@ void CabbageContentComponent::saveDocument (bool saveAs, bool recompile)
 
 void CabbageContentComponent::closeDocument()
 {
-	if(editorAndConsole.size() > 0)
-	{
-		if (getCurrentCodeEditor()->hasFileChanged() == true)
-		{
-			const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
+    if (editorAndConsole.size() > 0)
+    {
+        if (getCurrentCodeEditor()->hasFileChanged() == true)
+        {
+            const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
 
-			if (result == 0 || result == 1)
-			{
-				if (result == 0)
-					saveDocument (false, false);
+            if (result == 0 || result == 1)
+            {
+                if (result == 0)
+                    saveDocument (false, false);
 
-				removeEditor();
-			}
+                removeEditor();
+            }
 
-		}
-		else
-		{
-				removeEditor();
-		}
-	}
+        }
+        else
+        {
+            removeEditor();
+        }
+    }
 }
 
 void CabbageContentComponent::removeEditor()
@@ -669,24 +669,25 @@ void CabbageContentComponent::removeEditor()
     openFiles.remove (currentFileIndex);
     currentFileIndex = (currentFileIndex > 0 ? currentFileIndex - 1 : 0);
 
-	if (editorAndConsole.size()!= 0)
-	{
-		if (currentFileIndex > -1)
-		{
-			editorAndConsole[currentFileIndex]->toFront (true);
-		}
+    if (editorAndConsole.size() != 0)
+    {
+        if (currentFileIndex > -1)
+        {
+            editorAndConsole[currentFileIndex]->toFront (true);
+        }
 
-		if (fileTabs.size() > 0)
-		{
-			fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
-			owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
-			arrangeFileTabButtons();
-		}
-		else
-		{
-			owner->setName ("Cabbage Csound IDE");
-		}
-	}
+        if (fileTabs.size() > 0)
+        {
+            fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
+            owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
+            arrangeFileTabButtons();
+        }
+        else
+        {
+            owner->setName ("Cabbage Csound IDE");
+        }
+    }
+
     repaint();
 
 
@@ -724,7 +725,7 @@ int CabbageContentComponent::findNext (bool forwards)
         return getCurrentCodeEditor()->findText (searchString, forwards, isCaseSensitiveSearch(), forwards);
     }
 
-	return -1;
+    return -1;
 }
 
 void CabbageContentComponent::replaceText (bool replaceAll)

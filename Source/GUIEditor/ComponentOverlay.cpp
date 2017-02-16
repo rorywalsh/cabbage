@@ -153,7 +153,7 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
         userAdjusting = true;
         startBounds = getBounds ();
         userStartedChangingBounds ();
-		layoutEditor->updateCodeEditor();
+        layoutEditor->updateCodeEditor();
 
         if (layoutEditor->getLassoSelection().getNumSelected() == 1)
             layoutEditor->resetAllInterest();

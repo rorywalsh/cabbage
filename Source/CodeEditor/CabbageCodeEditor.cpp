@@ -37,7 +37,8 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
     //Logger::writeToLog (opcodeFile);
-	setScrollbarThickness(20);
+    setScrollbarThickness (20);
+
     if (File (opcodeFile).existsAsFile())
         setOpcodeStrings (File (opcodeFile).loadFileAsString());
 
@@ -490,25 +491,26 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
         zoomOut();
     else
     {
-		const int numberOfLinesToScroll = owner->settings->getUserSettings()->getIntValue("numberOfLinesToScroll");
-        if(mouse.deltaY<0)
-		{
-            scrollBy(numberOfLinesToScroll);
-			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()-numberOfLinesToScroll*getFontSize());
-            MouseWheelDetails w(mouse);
+        const int numberOfLinesToScroll = owner->settings->getUserSettings()->getIntValue ("numberOfLinesToScroll");
+
+        if (mouse.deltaY < 0)
+        {
+            scrollBy (numberOfLinesToScroll);
+            currentLineMarker.setTopLeftPosition (13, currentLineMarker.getY() - numberOfLinesToScroll * getFontSize());
+            MouseWheelDetails w (mouse);
             w.deltaY = 0;
-		}
+        }
         else
-		{
-            scrollBy(-numberOfLinesToScroll);
-			currentLineMarker.setTopLeftPosition(13, currentLineMarker.getY()+numberOfLinesToScroll*getFontSize());
-            MouseWheelDetails w(mouse);
+        {
+            scrollBy (-numberOfLinesToScroll);
+            currentLineMarker.setTopLeftPosition (13, currentLineMarker.getY() + numberOfLinesToScroll * getFontSize());
+            MouseWheelDetails w (mouse);
             w.deltaY = 0;
-		}
+        }
     }
-	
-	MouseWheelDetails w(mouse);
-	w.deltaY = 0;	
+
+    MouseWheelDetails w (mouse);
+    w.deltaY = 0;
 }
 
 void CabbageCodeEditorComponent::zoomIn()
@@ -670,7 +672,7 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
 
     //variableNamesToShow.clear();
     removeUnlikelyVariables (currentWord);
-	autoCompleteListBox.setVisible (false);
+    autoCompleteListBox.setVisible (false);
 
     if (currentWord.isNotEmpty())
     {
@@ -684,10 +686,10 @@ void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
     for (const String item : variableNamesToShow)
     {
         if (item.startsWith (currentWord) == false)
-        {	
-			variableNamesToShow.removeString(item);
-		}
-	}
+        {
+            variableNamesToShow.removeString (item);
+        }
+    }
 }
 
 void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
@@ -696,13 +698,13 @@ void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
     {
         if (item.startsWith (currentWord))
         {
-			CabbageUtilities::debug("currentWord", currentWord);
-			CabbageUtilities::debug("variableNamesToShow[0]", variableNamesToShow[0]);
+            CabbageUtilities::debug ("currentWord", currentWord);
+            CabbageUtilities::debug ("variableNamesToShow[0]", variableNamesToShow[0]);
             variableNamesToShow.addIfNotAlreadyThere (item.trim());
             autoCompleteListBox.updateContent();
 
             //if (variableNamesToShow[0] != currentWord)
-			autoCompleteListBox.setVisible (true);
+            autoCompleteListBox.setVisible (true);
         }
     }
 }

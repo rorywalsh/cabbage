@@ -39,7 +39,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     createPopupBubble();
     setImgProperties (this->slider, wData, "slider");
     setImgProperties (this->slider, wData, "sliderbg");
-	setTextBoxOrientation (sliderType, shouldShowTextBox);
+    setTextBoxOrientation (sliderType, shouldShowTextBox);
     slider.setLookAndFeel (&owner->getLookAndFeel());
 }
 
@@ -72,7 +72,7 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     slider.getProperties().set ("trackerthickness", trackerThickness);
 
     slider.setSkewFactor (sliderSkew);
-    slider.setRange(min, max, sliderIncrement);
+    slider.setRange (min, max, sliderIncrement);
 
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext) == "0")
         shouldDisplayPopup = false;
@@ -104,8 +104,8 @@ void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
     if (shouldShowTextBox > 0)
     {
         shouldDisplayPopup = false;
-		setTextBoxWidth();
-        
+        setTextBoxWidth();
+
 
     }
     else
@@ -117,12 +117,12 @@ void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
 
 void CabbageSlider::setTextBoxWidth()
 {
-        if (sliderType.contains ("horizontal"))
-            slider.setTextBoxStyle(Slider::TextBoxRight, false, jmin(55.f, getWidth()*.65f), 15);
-        else
-            slider.setTextBoxStyle (Slider::TextBoxBelow, false, jmin(55.f, getWidth()*.65f), 15);	
-			
-	
+    if (sliderType.contains ("horizontal"))
+        slider.setTextBoxStyle (Slider::TextBoxRight, false, jmin (55.f, getWidth()*.65f), 15);
+    else
+        slider.setTextBoxStyle (Slider::TextBoxBelow, false, jmin (55.f, getWidth()*.65f), 15);
+
+
 }
 
 void CabbageSlider::resized()
@@ -150,7 +150,7 @@ void CabbageSlider::resized()
         else
             slider.setBounds (0, 0, getWidth(), getHeight());
 
-		setTextBoxWidth();
+        setTextBoxWidth();
     }
 
     //else if vertical
@@ -266,7 +266,7 @@ void CabbageSlider::setLookAndFeelColours (ValueTree wData)
     slider.setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxcolour)));
     slider.setColour (Slider::textBoxHighlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxcolour)).contrasting());
-	slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxoutlinecolour)));
+    slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxoutlinecolour)));
 
     slider.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     slider.setColour (Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());

@@ -216,7 +216,7 @@ void TableManager::setGridColour (Colour col)
     for (int i = 0; i < tables.size(); i++)
     {
         tables[i]->gridColour = col;
-		tables[i]->repaint();
+        tables[i]->repaint();
 
         if (col.getAlpha() == 0x00)
             tables[i]->drawGrid = false;
@@ -237,15 +237,16 @@ void TableManager::setBackgroundColour (Colour col)
 //==============================================================================
 void TableManager::setTableColours (var colours)
 {
-	const Array<var>* coloursArray = colours.getArray();
-	if(coloursArray)
-	{
-		for (int i = 0; i < tables.size(); i++)
-		{
-			tables[i]->setColour(Colour::fromString(coloursArray->getReference(i).toString()));
-			tables[i]->repaint();
-		}
-	}
+    const Array<var>* coloursArray = colours.getArray();
+
+    if (coloursArray)
+    {
+        for (int i = 0; i < tables.size(); i++)
+        {
+            tables[i]->setColour (Colour::fromString (coloursArray->getReference (i).toString()));
+            tables[i]->repaint();
+        }
+    }
 }
 //==============================================================================
 void TableManager::setRange (double start, double end)

@@ -24,6 +24,9 @@
 #include "../Utilities/CabbageUtilities.h"
 #include "../CabbageIds.h"
 
+#include <type_traits>
+ 
+#include <cstdint>
 
 class CabbageWidgetData : public CabbageUtilities
 {
@@ -75,7 +78,19 @@ public:
     static void setProperty (ValueTree widgetData, Identifier name, const var& value);
     static var getProperty (ValueTree widgetData, Identifier name);
     //============================================================================
-
+	static NamedValueSet getSetofIdentifiersAndParameters(String lineOfText);
+	static var getVarArrayFromTokens(StringArray strTokens);
+	static void setChannelArrays(StringArray strTokens, ValueTree widgetData, String identifier);
+	static void setTextItemArrays(StringArray strTokens, ValueTree widgetData, String typeOfWidget);
+	static void setTableColourArrays(StringArray strTokens, ValueTree widgetData, String identifier);
+	static void setImageFiles(StringArray strTokens, ValueTree widgetData, String typeOfWidget);
+	static void setShapes(StringArray strTokens, ValueTree widgetData);
+	static void setBounds(StringArray strTokens, ValueTree widgetData);
+	static void setRange(StringArray strTokens, ValueTree widgetData, String identifier);
+	static void setFontStyle(StringArray strTokens, ValueTree widgetData);
+	static void setScrubberPosition(StringArray strTokens, ValueTree widgetData);
+	static void setAmpRange(StringArray strTokens, ValueTree widgetData);
+	static void setTableNumberArrays(StringArray strTokens, ValueTree widgetData);
     //============================================================================
     static Colour getColourFromText (String text);
     static String getCabbageCodeFromIdentifiers (ValueTree props, const String, const String macroText);
@@ -95,7 +110,6 @@ public:
     //============================================================================
     static ValueTree getValueTreeForComponent (ValueTree widgetData, String name);
     static Rectangle<int> getBoundsFromText (String text);
-
 
 };
 

@@ -139,7 +139,7 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
     ValueTree newWidget (widgetTreeIdentifier);
 
     CabbageWidgetData::setWidgetState (newWidget, widgetType, newlyAddedWidgetIndex);
-	CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, processor.getCsdFile().getFullPathName());
+    CabbageWidgetData::setStringProp (newWidget, CabbageIdentifierIds::csdfile, processor.getCsdFile().getFullPathName());
     newWidget.setProperty (CabbageIdentifierIds::top, position.getY(), 0);
     newWidget.setProperty (CabbageIdentifierIds::left, position.getX(), 0);
 
@@ -579,7 +579,7 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (ValueTree wData, Component
         const String name = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name);
         PopupDocumentWindow* popupPlant;
         popupPlants.add (popupPlant = new PopupDocumentWindow (caption, backgroundColour));
-		popupPlant->setLookAndFeel(&getLookAndFeel());
+        popupPlant->setLookAndFeel (&getLookAndFeel());
 
         popupPlant->setContentNonOwned (plant, true);
         popupPlant->setName (name);

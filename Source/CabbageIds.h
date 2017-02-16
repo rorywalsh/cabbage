@@ -245,6 +245,7 @@ public:
     }
 
     ~CabbageLayoutWidgetStrings() {}
+	
 };
 
 // utility string arrays
@@ -413,10 +414,14 @@ public:
 
     }
 
-    ~CabbageIdentifierStrings()
-    {
-
-    }
+	NamedValueSet getValueSet()
+	{
+		NamedValueSet valueSet;
+		for(int i = 0 ; i < this->size() ; i++)
+		{
+			valueSet.set(this->getReference(i), i);
+		}
+	}
 
 };
 

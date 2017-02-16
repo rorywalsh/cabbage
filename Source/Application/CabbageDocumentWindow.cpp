@@ -595,7 +595,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
     String title (CABBAGE_VERSION);
     CabbageIDELookAndFeel tempLookAndFeel;
-    
+
     switch (info.commandID)
     {
         case CommandIDs::newProject:
@@ -709,7 +709,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
 
         case CommandIDs::about:
-            CabbageUtilities::showMessage(title, &tempLookAndFeel);
+            CabbageUtilities::showMessage (title, &tempLookAndFeel);
             break;
 
         case CommandIDs::editMode:
