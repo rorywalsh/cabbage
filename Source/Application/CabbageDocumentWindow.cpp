@@ -168,70 +168,6 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
 
 }
 
-
-static void addExamples (PopupMenu& m, const String menuName, String dir, Array<File>& filesArray, StringArray folders, int indexOffset)
-{
-    PopupMenu subMenu1, subMenu2;
-    int noOfFiles = filesArray.size();
-    int fileCnt = 0;
-
-    if (folders.size() > 0)
-    {
-        for ( int i = 0 ; i < folders.size() ; i++ )
-        {
-            subMenu2.clear();
-            File searchDir (dir + "/" + menuName + "/" + folders[i]);
-            Array<File> exampleFilesArray;
-            searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
-            exampleFilesArray.sort();
-            filesArray.addArray (exampleFilesArray);
-
-            for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
-            {
-                subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
-            }
-
-            subMenu1.addSubMenu (folders[i], subMenu2);
-            noOfFiles = filesArray.size();
-        }
-
-        m.addSubMenu (menuName, subMenu1);
-    }
-    else
-    {
-        subMenu2.clear();
-        File searchDir (dir + "/" + menuName);
-        Array<File> exampleFilesArray;
-        searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
-        exampleFilesArray.sort();
-        filesArray.addArray (exampleFilesArray);
-
-        for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
-        {
-            subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
-        }
-
-        m.addSubMenu (menuName, subMenu2);
-
-    }
-
-
-}
-
-static void addFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
-{
-    filesArray.clear();
-    addExamples (m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);
-    addExamples (m, "Instruments", dir, filesArray, CabbageExamplesFolder::getInstruments(), indexOffset);
-    addExamples (m, "LiveSampling", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "MIDI", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "Instructional", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "Utilities", dir, filesArray, StringArray(), indexOffset);
-}
-
 void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::newFile);
@@ -247,7 +183,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     const String examplesDir = cabbageSettings->getUserSettings()->getValue ("CabbageExamplesDir", "");
 
     PopupMenu examplesMenu;
-    addFilesToPopupMenu (examplesMenu, exampleFiles, examplesDir, "*.csd", examplesMenuBaseID);
+    CabbageUtilities::addFilesToPopupMenu (examplesMenu, exampleFiles, examplesDir, "*.csd", examplesMenuBaseID);
 
     menu.addSubMenu ("Examples", examplesMenu);
     menu.addSeparator();
@@ -363,7 +299,11 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
 {
     if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
     {
-        getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
+		const File file =cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName();
+		if(file.hasFileExtension(".csd"))
+			getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
+		if(file.hasFileExtension(".cabbage"))
+			getContentComponent()->openGraph (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
     }
     else if (menuItemID >= examplesMenuBaseID && menuItemID < exampleFiles.size() + examplesMenuBaseID)
     {
@@ -663,11 +603,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::saveGraph:
-            getContentComponent()->getAudioGraph()->saveGraph();
+            getContentComponent()->saveGraph(false);
             return true;
 			
 		case CommandIDs::saveGraphAs:
-            getContentComponent()->getAudioGraph()->saveGraph(true);
+            getContentComponent()->saveGraph(true);
             return true;
 			
 			

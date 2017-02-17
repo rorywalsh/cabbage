@@ -630,8 +630,7 @@ FileBasedDocument::SaveResult AudioGraph::saveGraph(bool saveAs)
 	else
 	{
 		if (fc.browseForFileToSave (false))
-		{
-			
+		{			
 			if (fc.getResult().existsAsFile())
 			{
 				CabbageIDELookAndFeel lookAndFeel;

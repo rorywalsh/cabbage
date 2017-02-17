@@ -81,23 +81,6 @@ void CabbageContentComponent::setLookAndFeelColours()
     lookAndFeelChanged();
     toolbar.repaint();
 }
-
-bool CabbageContentComponent::setCurrentCsdFile (File file)
-{
-    if (currentCsdFile == file && currentFileIndex > -1)
-    {
-        CabbageUtilities::showMessage ("File is already open", lookAndFeel);
-        return false;
-    }
-    else
-    {
-        currentCsdFile = file;
-        Uuid uniqueID;
-        nodeIdsForFiles.set (file.getFullPathName(), int32 (*uniqueID.getRawData()));
-    }
-
-    return true;
-}
 //==============================================================================
 void CabbageContentComponent::buttonClicked (Button* button)
 {
@@ -246,22 +229,22 @@ void CabbageContentComponent::updateCodeInEditor (CabbagePluginEditor* editor, b
 //==============================================================================
 void CabbageContentComponent::timerCallback()
 {
-//    int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));	
-//    if (audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
-//    {
-//        stopCsoundForNode("");
-//        stopTimer();
-//    }
-//
-//    if (currentCsdFile.existsAsFile())
-//    {
-//        const String csoundOutputString = audioGraph->getCsoundOutput(nodeId);
-//        consoleMessages += csoundOutputString;
-//
-//        if (csoundOutputString.length() > 0)
-//            getCurrentOutputConsole()->setText (csoundOutputString);
-//
-//    }
+    int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));	
+    if (audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+    {
+        stopCsoundForNode("");
+        stopTimer();
+    }
+
+    if (currentCsdFile.existsAsFile())
+    {
+        const String csoundOutputString = audioGraph->getCsoundOutput(nodeId);
+        consoleMessages += csoundOutputString;
+
+        if (csoundOutputString.length() > 0)
+            getCurrentOutputConsole()->setText (csoundOutputString);
+
+    }
 }
 //==============================================================================
 void CabbageContentComponent::updateEditorColourScheme()
@@ -373,7 +356,7 @@ void CabbageContentComponent::createAudioGraph()
 
     audioGraph = new AudioGraph (cabbageSettings->getUserSettings(), false);
     audioGraph->setXmlAudioSettings (cabbageSettings->getUserSettings()->getXmlValue ("audioSetup"));
-    graphComponent = new CabbageGraphComponent (*audioGraph);
+    graphComponent = new CabbageGraphComponent (*audioGraph, *this);
 	audioGraphWindow->setContentNonOwned(graphComponent, false);
 
 	
@@ -557,14 +540,72 @@ void CabbageContentComponent::launchSSHFileBrowser (String mode)
     o.launchAsync();
 }
 //==============================================================================
-void CabbageContentComponent::openGraph()
+void CabbageContentComponent::openGraph(File fileToOpen)
 {
-	FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*.cabbage");
-
-	if (fc.browseForFileToOpen())
+	if(fileToOpen.existsAsFile() == false)
 	{
-		
+		FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*.cabbage");
+
+		if (fc.browseForFileToOpen())
+		{
+			fileToOpen = fc.getResult();
+		}
 	}
+
+	nodeIdsForFiles.clear();
+	XmlDocument doc (fileToOpen);
+	ScopedPointer<XmlElement> xml (doc.getDocumentElement());
+
+	if (xml == nullptr || ! xml->hasTagName ("FILTERGRAPH"))
+		return;
+
+	cabbageSettings->updateRecentFilesList (fileToOpen);
+	PluginDescription desc;
+	
+	Array<int32> uuids;
+	Array<File> files;
+	
+	forEachXmlChildElementWithTagName (*xml, filter, "FILTER")
+		uuids.add(filter->getIntAttribute("uid"));
+
+	forEachXmlChildElementWithTagName (*xml, filter, "FILTER")
+		forEachXmlChildElementWithTagName (*filter, plugin, "PLUGIN")
+		{
+			const String pluginFile = plugin->getStringAttribute("file");	
+			files.add(File(pluginFile));
+		}
+
+	for( int i = 0 ; i < files.size() ; i++)
+	{
+		if(files[i].existsAsFile() && openFiles.contains(files[i]) == false)
+		{
+			CabbageUtilities::debug(files[i].getFullPathName()+":"+String(uuids[i]));
+			nodeIdsForFiles.set (files[i].getFullPathName(), uuids[i]);
+			openFile(files[i].getFullPathName());
+		}
+	}
+		
+	audioGraph->loadDocument(fileToOpen);
+}
+
+bool CabbageContentComponent::setCurrentCsdFile (File file)
+{
+    if (openFiles.contains(file) && currentFileIndex > -1)
+    {
+        CabbageUtilities::showMessage ("File is already open", lookAndFeel);
+        return false;
+    }
+    else
+    {
+        currentCsdFile = file;
+    }
+
+    return true;
+}
+
+void CabbageContentComponent::saveGraph(bool saveAs)
+{
+	audioGraph->saveGraph(saveAs);
 }
 
 void CabbageContentComponent::openFile (String filename)
@@ -572,9 +613,6 @@ void CabbageContentComponent::openFile (String filename)
 
     stopTimer();
     stopCsoundForNode(filename);
-
-    //PluginWindow::closeAllCurrentlyOpenWindows();
-
 
     if (File (filename).existsAsFile() == false)
     {
@@ -591,7 +629,7 @@ void CabbageContentComponent::openFile (String filename)
     else if (setCurrentCsdFile (File (filename)) == false)
         return;
 
-
+		
     cabbageSettings->updateRecentFilesList (currentCsdFile);
 
     CabbageEditorContainer* editorConsole;
@@ -812,9 +850,12 @@ void CabbageContentComponent::runCsoundForNode(String file)
 
 void CabbageContentComponent::stopCsoundForNode(String file)
 {
-	int32 nodeId = nodeIdsForFiles.getWithDefault (file, -99);
-	if(audioGraph->getNodeForId(nodeId) != nullptr)
-		audioGraph->getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
+	if(nodeIdsForFiles.size()>0)
+	{
+		int32 nodeId = nodeIdsForFiles.getWithDefault (file, -99);
+		if(audioGraph->getNodeForId(nodeId) != nullptr)
+			audioGraph->getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);		
+	}
 }
 
 void CabbageContentComponent::startAudioGraph()

@@ -86,6 +86,40 @@ private:
     Array <float, CriticalSection > points;
 };
 
+//================================================================================
+class CabbageExamplesFolder
+{
+public:
+
+    CabbageExamplesFolder() {}
+
+    static StringArray getEffects()
+    {
+        StringArray directories;
+        directories.add ("Distortion");
+        directories.add ("Dynamics");
+        directories.add ("Filters");
+        directories.add ("Miscellaneous");
+        directories.add ("Modulation");
+        directories.add ("Reverbs");
+        directories.add ("Spectral");
+        directories.add ("Time");
+        return directories;
+    }
+
+    static StringArray getInstruments()
+    {
+        StringArray directories;
+        directories.add ("Drum Machines");
+        directories.add ("Miscellaneous");
+        directories.add ("Noise");
+        directories.add ("Physical Modelling");
+        directories.add ("Synths");
+        return directories;
+    }
+
+};
+//================================================================================
 class CabbageImages
 {
 public:
@@ -236,6 +270,69 @@ public:
 #endif
     }
     //===========================================================================================
+	static void addExamples (PopupMenu& m, const String menuName, String dir, Array<File>& filesArray, StringArray folders, int indexOffset)
+	{
+		PopupMenu subMenu1, subMenu2;
+		int noOfFiles = filesArray.size();
+		int fileCnt = 0;
+
+		if (folders.size() > 0)
+		{
+			for ( int i = 0 ; i < folders.size() ; i++ )
+			{
+				subMenu2.clear();
+				File searchDir (dir + "/" + menuName + "/" + folders[i]);
+				Array<File> exampleFilesArray;
+				searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
+				exampleFilesArray.sort();
+				filesArray.addArray (exampleFilesArray);
+
+				for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+				{
+					subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+				}
+
+				subMenu1.addSubMenu (folders[i], subMenu2);
+				noOfFiles = filesArray.size();
+			}
+
+			m.addSubMenu (menuName, subMenu1);
+		}
+		else
+		{
+			subMenu2.clear();
+			File searchDir (dir + "/" + menuName);
+			Array<File> exampleFilesArray;
+			searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
+			exampleFilesArray.sort();
+			filesArray.addArray (exampleFilesArray);
+
+			for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+			{
+				subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+			}
+
+			m.addSubMenu (menuName, subMenu2);
+
+		}
+
+
+	}
+
+	static void addFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
+	{
+		filesArray.clear();
+		addExamples (m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);
+		addExamples (m, "Instruments", dir, filesArray, CabbageExamplesFolder::getInstruments(), indexOffset);
+		addExamples (m, "LiveSampling", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "MIDI", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "Instructional", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "Utilities", dir, filesArray, StringArray(), indexOffset);
+	}
+//======================================================================================
     static void showMessage (String message)
     {
         AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,

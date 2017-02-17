@@ -70,7 +70,6 @@ public:
     void launchSSHFileBrowser (String mode);
     void setEditMode (bool enable);
     void openFile (String filename = "");
-	void openGraph ();
     bool closeAllDocuments (bool askUserToSave);
     void closeDocument();
     bool closeAllMainWindows();
@@ -88,6 +87,8 @@ public:
     void addInstrumentsAndRegionsToCombobox();
     void setLookAndFeelColours();
 	void showGraph();
+	void saveGraph(bool saveAs);
+	void openGraph(File fileToOpen = File());
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -104,21 +105,23 @@ public:
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();
     //==============================================================================
-    String getAudioDeviceSettings();
-    void timerCallback();
-    int getStatusbarYPos();
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<FileTabButton> fileTabs;
     Array<File> openFiles;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
-    CabbageEditorContainer* getCurrentEditorContainer();
-	AudioGraph* getAudioGraph(){	return audioGraph;	}
     Toolbar toolbar;
-
-    bool setCurrentCsdFile (File file);
-    const File getCurrentCsdFile() {     return currentCsdFile;  }
-
+    bool setCurrentCsdFile (File file);	
+	//==============================================================================
+	CabbageEditorContainer* getCurrentEditorContainer();
+    String getAudioDeviceSettings();
+    void timerCallback();
+    int getStatusbarYPos();
+	CabbageSettings* getCabbageSettings(){		return cabbageSettings;	}
+    const File getCurrentCsdFile(){			    return currentCsdFile;  }
+	AudioGraph* getAudioGraph(){				return audioGraph;	}
+	NamedValueSet& getNodeIds(){					return nodeIdsForFiles;	}	
+	//==============================================================================
 private:
     bool fileNeedsSaving = false;
     String searchString = String::empty;
