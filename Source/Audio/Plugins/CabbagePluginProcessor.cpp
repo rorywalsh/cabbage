@@ -334,8 +334,9 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
         const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
         const String identChannel = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannel);
         const String identChannelMessage = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannelmessage);
+		const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
-        if (getCsound()->GetChannel (channel.toUTF8()) != value)
+        if (getCsound()->GetChannel (channel.toUTF8()) != value && typeOfWidget != "combobox")
             CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channel.toUTF8()));
 
         if (identChannel.isNotEmpty())

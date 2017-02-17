@@ -51,7 +51,9 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     initialiseCommonAttributes (this, wData);
 
     addItemsToCombobox (wData);
-    setSelectedItemIndex (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value) - 1, isPresetCombo ? sendNotification : dontSendNotification);
+	CabbageUtilities::debug(getValue());
+	owner->sendChannelDataToCsound(getChannel(), getValue());
+    setSelectedItemIndex (getValue()-1, isPresetCombo ? sendNotification : dontSendNotification);
 
 }
 //---------------------------------------------
@@ -121,9 +123,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     setJustificationType (justify);
 }
 
-void CabbageComboBox::comboBoxChanged (ComboBox* combo)
+void CabbageComboBox::comboBoxChanged (ComboBox* combo)	//this listener is only enabled when combo is loading presets...
 {
-    //  CabbageUtilities::debug(snapshotFiles[combo->getSelectedItemIndex()-1].getFullPathName());
     owner->restorePluginStateFrom (snapshotFiles[combo->getSelectedItemIndex() - 1]);
 }
 
