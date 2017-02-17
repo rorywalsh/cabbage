@@ -533,7 +533,7 @@ NamedValueSet CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOf
     identifiersInLine.removeEmptyStrings();
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
-        valueSet.set (identifiersInLine[i], parameters[i]);
+        valueSet.set (identifiersInLine[i], parameters[i].removeCharacters("\""));
 
     return valueSet;
 
