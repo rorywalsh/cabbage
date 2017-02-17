@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2016 Rory Walsh, Damien Rennick
+  Copyright (C) 2016 Rory Walsh
 
   Cabbage is free software; you can redistribute it
   and/or modify it under the terms of the GNU General Public
@@ -16,6 +16,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
 
+  Based on the XYPad by Damien Rennick
 
 */
 
@@ -57,24 +58,24 @@ class CabbageXYPad
         Colour colour;
 
     public:
-        void setColour (Colour col)
+        void setColour(Colour col)
         {
             colour = col;
             repaint();
         }
         XYBall() {}
-        void paint (Graphics& g)
+        void paint(Graphics& g)
         {
-            g.fillAll (Colours::transparentBlack);
-            g.setColour (colour);
-            g.fillEllipse (getLocalBounds().toFloat());
+            g.fillAll(Colours::transparentBlack);
+            g.setColour(colour);
+            g.fillEllipse(getLocalBounds().toFloat());
         }
     };
 
     XYBall ball;
 public:
 
-    CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor);
+    CabbageXYPad(ValueTree wData, CabbagePluginEditor* editor);
     ~CabbageXYPad() {}
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -83,14 +84,14 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback(ChangeBroadcaster* source);
     ValueTree widgetData;
 
-    void paint (Graphics& g);
+    void paint(Graphics& g);
     void resized();
-    void mouseDown (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
-    void mouseUp (const MouseEvent& e);
+    void mouseDown(const MouseEvent& e);
+    void mouseDrag(const MouseEvent& e);
+    void mouseUp(const MouseEvent& e);
 
     Slider& getSliderX()
     {
@@ -105,11 +106,11 @@ public:
         return xyPadRect;
     }
 
-    void setValues (float x, float y);
+    void setValues(float x, float y);
 
-    Point<int> constrainPosition (float x, float y);
-    Point<float> getPositionAsValue (Point<float> position);
-    Point<float> getValueAsPosition (Point<float> position);
+    Point<int> constrainPosition(float x, float y);
+    Point<float> getPositionAsValue(Point<float> position);
+    Point<float> getValueAsPosition(Point<float> position);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageXYPad);
 };
@@ -118,7 +119,7 @@ public:
 class XYPadAutomator : public ChangeBroadcaster, public Timer
 {
     String name;
-    CabbageAudioParameter* xParam, *yParam;
+    CabbageAudioParameter *xParam, *yParam;
     float xValue = 0;
     float yValue = 0;
     float xValueIncrement = 1;
@@ -130,8 +131,8 @@ class XYPadAutomator : public ChangeBroadcaster, public Timer
     float xMin, xMax, yMin, yMax, velocity;
 
 public:
-    XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam)
-        : name (name), xParam (xParam), yParam (yParam) {}
+    XYPadAutomator(String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam)
+        :name(name), xParam(xParam), yParam(yParam) {}
 
     ~XYPadAutomator()
     {
@@ -144,61 +145,61 @@ public:
     {
         return name;
     }
-    void setDragLine (const Line<float>& _dragLine)
+    void setDragLine(const Line<float>& dragLine)
     {
-        this->dragLine = _dragLine;
+        this->dragLine = dragLine;
     }
-    void setIsPluginEditorOpen (bool _isPluginEditorOpen)
+    void setIsPluginEditorOpen(bool isPluginEditorOpen)
     {
-        this->isPluginEditorOpen = _isPluginEditorOpen;
+        this->isPluginEditorOpen = isPluginEditorOpen;
     }
-    void setName (const String& _name)
+    void setName(const String& name)
     {
-        this->name = _name;
+        this->name = name;
     }
-    void setPosition (const Point<double>& _position)
+    void setPosition(const Point<double>& position)
     {
-        this->position = _position;
+        this->position = position;
     }
-    void setRepaintBackground (bool _paintBackground)
+    void setRepaintBackground(bool repaintBackground)
     {
-        this->repaintBackground = _paintBackground;
+        this->repaintBackground = repaintBackground;
     }
-    void setVelocity (float _velocity)
+    void setVelocity(float velocity)
     {
-        this->velocity = _velocity;
+        this->velocity = velocity;
     }
-    void setXMax (float _xMax)
+    void setXMax(float xMax)
     {
-        this->xMax = _xMax;
+        this->xMax = xMax;
     }
-    void setXMin (float _xMin)
+    void setXMin(float xMin)
     {
-        this->xMin = _xMin;
+        this->xMin = xMin;
     }
-    void setXValue (float _xValue)
+    void setXValue(float xValue)
     {
-        this->xValue = _xValue;
+        this->xValue = xValue;
     }
-    void setXValueIncrement (float _xValueIncrement)
+    void setXValueIncrement(float xValueIncrement)
     {
-        this->xValueIncrement = _xValueIncrement;
+        this->xValueIncrement = xValueIncrement;
     }
-    void setYMax (float _yMax)
+    void setYMax(float yMax)
     {
-        this->yMax = _yMax;
+        this->yMax = yMax;
     }
-    void setYMin (float _yMin)
+    void setYMin(float yMin)
     {
-        this->yMin = _yMin;
+        this->yMin = yMin;
     }
-    void setYValue (float _yValue)
+    void setYValue(float yValue)
     {
-        this->yValue = _yValue;
+        this->yValue = yValue;
     }
-    void setYValueIncrement (float _yValueIncrement)
+    void setYValueIncrement(float yValueIncrement)
     {
-        this->yValueIncrement = _yValueIncrement;
+        this->yValueIncrement = yValueIncrement;
     }
     bool getIsPluginEditorOpen() const
     {

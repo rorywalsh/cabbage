@@ -75,7 +75,7 @@ private:
     File csdFile;
     NamedValueSet macroText;
     bool xyAutosCreated = false;
-    OwnedArray<XYPadAutomator> xyAutomator;
+    OwnedArray<XYPadAutomator> xyAutomators;
 
 };
 

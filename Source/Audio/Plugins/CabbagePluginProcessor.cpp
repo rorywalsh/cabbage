@@ -56,7 +56,10 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
 
 CabbagePluginProcessor::~CabbagePluginProcessor()
 {
-    xyAutomator.clear();
+	for( auto xyAuto : xyAutomators)
+		xyAuto->removeAllChangeListeners();
+    
+	xyAutomators.clear();
 }
 
 //==============================================================================
@@ -358,9 +361,9 @@ void CabbagePluginProcessor::addXYAutomator (CabbageXYPad* xyPad, ValueTree wDat
 {
     int indexOfAutomator = -1;
 
-    for ( int i = 0 ; i < xyAutomator.size() ; i++ )
+    for ( int i = 0 ; i < xyAutomators.size() ; i++ )
     {
-        if (xyPad->getName() == xyAutomator[i]->getName())
+        if (xyPad->getName() == xyAutomators[i]->getName())
             indexOfAutomator = i;
     }
 
@@ -372,7 +375,8 @@ void CabbagePluginProcessor::addXYAutomator (CabbageXYPad* xyPad, ValueTree wDat
 
         if (xParameter && yParameter)
         {
-            xyAutomator.add (xyAuto = new XYPadAutomator (xyPad->getName(), xParameter, yParameter));
+			CabbageUtilities::debug(xyPad->getName());
+            xyAutomators.add (xyAuto = new XYPadAutomator (xyPad->getName(), xParameter, yParameter));
             xyAuto->setXMin (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx));
             xyAuto->setYMin (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::miny));
             xyAuto->setXMax (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxx));
@@ -382,14 +386,14 @@ void CabbagePluginProcessor::addXYAutomator (CabbageXYPad* xyPad, ValueTree wDat
     }
     else
     {
-        xyAutomator[indexOfAutomator]->addChangeListener (xyPad);
+        xyAutomators[indexOfAutomator]->addChangeListener (xyPad);
     }
 }
 
 void CabbagePluginProcessor::enableXYAutomator (String name, bool enable, Line<float> dragLine)
 {
 
-    for ( XYPadAutomator* xyAuto : xyAutomator)
+    for ( XYPadAutomator* xyAuto : xyAutomators)
     {
         if (name == xyAuto->getName())
         {
