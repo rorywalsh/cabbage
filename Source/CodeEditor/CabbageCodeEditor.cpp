@@ -670,7 +670,6 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
         }
     }
 
-    //variableNamesToShow.clear();
     removeUnlikelyVariables (currentWord);
     autoCompleteListBox.setVisible (false);
 
@@ -683,11 +682,11 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
 
 void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
 {
-    for (const String item : variableNamesToShow)
+    for ( int i = variableNamesToShow.size() ; i >= 0 ; i--)
     {
-        if (item.startsWith (currentWord) == false)
-        {
-            variableNamesToShow.removeString (item);
+        if (variableNamesToShow[i].startsWith (currentWord) == false)
+        {			
+				variableNamesToShow.removeString (variableNamesToShow[i]);
         }
     }
 }
@@ -698,8 +697,6 @@ void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
     {
         if (item.startsWith (currentWord))
         {
-            CabbageUtilities::debug ("currentWord", currentWord);
-            CabbageUtilities::debug ("variableNamesToShow[0]", variableNamesToShow[0]);
             variableNamesToShow.addIfNotAlreadyThere (item.trim());
             autoCompleteListBox.updateContent();
 

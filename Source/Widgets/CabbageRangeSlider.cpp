@@ -193,6 +193,10 @@ void RangeSlider::mouseDown (const MouseEvent& event)
 {
     if (getSliderStyle() == Slider::TwoValueHorizontal)
     {
+		CabbageUtilities::debug(getMinValue());
+		CabbageUtilities::debug(getMaxValue());
+		
+		
         const float currentMouseX = event.getPosition().getX();
         const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
         xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();
@@ -263,23 +267,6 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
     }
 
     owner->showPopup (1000);
-}
-
-void RangeSlider::valueChanged()
-{
-    if (getMinValue() == getMaxValue())
-    {
-        const int minimalIntervalBetweenMinAndMax = 1;
-
-        if (getMaxValue() + minimalIntervalBetweenMinAndMax <= getMaximum())
-        {
-            setMaxValue (getMaxValue() + minimalIntervalBetweenMinAndMax);
-        }
-        else
-        {
-            //setMinValue(getMinValue() - minimalIntervalBetweenMinAndMax);
-        }
-    }
 }
 
 void RangeSlider::mouseExit (const MouseEvent& event)

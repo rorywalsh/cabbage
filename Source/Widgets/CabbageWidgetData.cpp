@@ -244,7 +244,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
     for ( int indx = 0 ; indx < identifierValueSet.size() ; indx++)
     {
         StringArray strTokens;
-        String identifier = identifierValueSet.getName (indx).toString();
+        String identifier = identifierValueSet.getName (indx).toString().trimCharactersAtStart(" ");
 
         if (identifier.indexOf (":") != -1)
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
