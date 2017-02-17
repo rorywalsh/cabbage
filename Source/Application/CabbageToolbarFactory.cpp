@@ -36,6 +36,8 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (doc_open);
     ids.add (doc_save);
     ids.add (doc_saveAs);
+	ids.add (doc_save_graph);
+	ids.add (doc_saveAs_graph);
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
@@ -53,6 +55,8 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (doc_open);
     ids.add (doc_save);
     ids.add (doc_saveAs);
+	ids.add (doc_save_graph);
+	ids.add (doc_saveAs_graph);
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);

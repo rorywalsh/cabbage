@@ -50,6 +50,7 @@ CabbageContentComponent::CabbageContentComponent (CabbageDocumentWindow* owner, 
 
 CabbageContentComponent::~CabbageContentComponent()
 {
+
     editorAndConsole.clear();
 	graphComponent = nullptr;
     audioGraph = nullptr;
@@ -556,6 +557,16 @@ void CabbageContentComponent::launchSSHFileBrowser (String mode)
     o.launchAsync();
 }
 //==============================================================================
+void CabbageContentComponent::openGraph()
+{
+	FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*.cabbage");
+
+	if (fc.browseForFileToOpen())
+	{
+		
+	}
+}
+
 void CabbageContentComponent::openFile (String filename)
 {
 

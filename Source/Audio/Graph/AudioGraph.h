@@ -115,11 +115,12 @@ public:
     void audioProcessorChanged (AudioProcessor*) override { changed(); }
     //==============================================================================
     void newDocument();
-    String getDocumentTitle() override {    return String::empty;               };
-    Result loadDocument (const File& file) override {   return Result::ok();    };
-    Result saveDocument (const File& file) override {   return Result::ok();    };
-    File getLastDocumentOpened() override   {           return File();          }
-    void setLastDocumentOpened (const File& file) override {};
+    String getDocumentTitle() override;
+    Result loadDocument (const File& file) override;
+    Result saveDocument (const File& file) override;
+    File getLastDocumentOpened() override;
+    void setLastDocumentOpened (const File& file) override;
+	FileBasedDocument::SaveResult saveGraph(bool saveAs = false);
     //==============================================================================
     XmlElement* createXml() const;
 	XmlElement* createConnectionsXml() const;

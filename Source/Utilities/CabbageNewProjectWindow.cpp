@@ -80,18 +80,11 @@ void CabbageProjectWindow::createNewFile (String type)
             if (result == 0)
             {
                 writeNewFile (fc.getResult().withFileExtension (".csd"), csdText);
-                //
-                //              fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-                //              owner->openFile (fc.getResult().getFullPathName());
-                //              delete this->getParentComponent();
             }
         }
         else
         {
             writeNewFile (fc.getResult().withFileExtension (".csd"), csdText);
-            //          fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-            //          owner->openFile (fc.getResult().getFullPathName());
-            //          delete this->getParentComponent();
         }
     }
 }

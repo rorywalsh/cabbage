@@ -26,8 +26,9 @@ namespace CommandIDs
 {
     enum
     {
-        newProject              = 0x200010,
-        open                    = 0x200020,
+        openCabbagePatch        = 0x200010,
+        newFile		            = 0x200020,
+		open		            = 0x200023,
         openFromRPi             = 0x200021,
         closeDocument           = 0x200030,
         saveDocumentToRPi       = 0x200039,
@@ -36,6 +37,8 @@ namespace CommandIDs
         settings                = 0x200042,
         examples                = 0x200043,
 		showGraph               = 0x200044,
+		saveGraph               = 0x200045,
+		saveGraphAs             = 0x200046,
 
         closeProject            = 0x200051,
         saveProject             = 0x200060,
@@ -168,7 +171,7 @@ namespace CabbageColourIds
     static const Identifier propertyPanelBackground = "Interface - Property Panel Background";
     static const Identifier propertyLabelBackground = "Interface - Property Label Background";
     static const Identifier propertyLabelText = "Interface - Property Label Text";
-    static const Identifier alertWindowBackground = "Editor - Alart Window Background";
+    static const Identifier alertWindowBackground = "Interface - Alert Window Background";
     static const Identifier codeBackground = "Editor - Code Background";
     static const Identifier lineNumberBackground = "Editor - Line Numbers Background";
     static const Identifier lineNumbers = "Editor - Line Numbers";

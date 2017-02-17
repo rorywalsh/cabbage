@@ -70,6 +70,7 @@ public:
     void launchSSHFileBrowser (String mode);
     void setEditMode (bool enable);
     void openFile (String filename = "");
+	void openGraph ();
     bool closeAllDocuments (bool askUserToSave);
     void closeDocument();
     bool closeAllMainWindows();
@@ -112,6 +113,7 @@ public:
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     CabbageEditorContainer* getCurrentEditorContainer();
+	AudioGraph* getAudioGraph(){	return audioGraph;	}
     Toolbar toolbar;
 
     bool setCurrentCsdFile (File file);
@@ -177,27 +179,37 @@ public:
 		Graphics g(img);
 		
 		Path p;
+		p.addRoundedRectangle(0, 0, width, height, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		//g.strokePath(p, PathStrokeType(1));
+		g.fillPath(p);
+		//g.strokePath(p, PathStrokeType(1));
+		
+
+		p.clear();
 		if(isPlaying == false)
 		{
-			g.setColour(Colours::whitesmoke);
-			p.addTriangle(0, 0, width, height/2, 0, height);
+			g.setColour(Colours::lime.darker());
+			p.addTriangle(width*.62f, 2, width-5, height/2, width*.62f, height-3);
 		}
 		else
 		{
-			g.setColour(Colours::whitesmoke);
-			p.addRectangle(0, 0, width, height);
+			g.setColour(Colours::lime.darker(.7f));
+			p.addRectangle(width*.62f, 2, width*.3, height-3);
 		}
 			
 		p.closeSubPath();
 		g.fillPath(p);
 		g.setColour(Colours::whitesmoke.darker());
-		g.strokePath(p, PathStrokeType(1));
+		g.setColour(Colours::whitesmoke);
+		g.drawFittedText(isPlaying == true ? "Stop" : "Play", 0, 0, width*.6, height-1, Justification::centred, 1);
 		return img;
 	}
 	
 	FileTabButton(String name, String tooltip): 
 		TextButton(name, tooltip),
-		play("", DrawableButton::ButtonStyle::ImageStretched), 
+		play("Play", DrawableButton::ButtonStyle::ImageStretched), 
 		lookAndFeel(),
 		mute("", DrawableButton::ButtonStyle::ImageStretched)
 	{
@@ -208,12 +220,12 @@ public:
 		play.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
 		play.setClickingTogglesState(true);
 		play.setTooltip(tooltip);
-		setGraphImages(play, 16, 16, "play");
+		setGraphImages(play, 60, 16, "play");
 	}
 	
 	void resized()
 	{		
-		play.setBounds(getWidth()-25, 4, 16, 16);
+		play.setBounds(getWidth()-65, 4, 60, 16);
 	}
 	
 	void setGraphImages(DrawableButton& button, int width, int height, String type)

@@ -58,7 +58,7 @@ public:
     PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
     void menuItemSelected (int menuItemID, int topLevelMenuIndex);
     //=======================================================
-    bool closeAllDocuments (bool askUserToSave);
+    bool caseAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
     void initSettings();
     void closeButtonPressed() override;

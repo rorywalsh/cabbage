@@ -39,16 +39,18 @@ public:
     // are the ones we'll use in this demo.
     enum ToolbarItemIds
     {
-        doc_new         = 1,
-        doc_open        = 2,
-        doc_save        = 3,
-        doc_saveAs      = 4,
-        edit_copy       = 5,
-        edit_cut        = 6,
-        edit_paste      = 7,
-        system_prefs    = 8,
+        doc_new          = 1,
+        doc_open         = 2,
+        doc_save         = 3,
+        doc_saveAs       = 4,
+        edit_copy        = 5,
+        edit_cut         = 6,
+        edit_paste       = 7,
+        system_prefs     = 8,
         custom_comboBox  = 9,
-        toggle_play     = 10
+        toggle_play      = 10,
+        doc_save_graph   = 11,
+        doc_saveAs_graph = 12,
     };
 
     void getAllToolbarItemIds (Array<int>& ids) override;
