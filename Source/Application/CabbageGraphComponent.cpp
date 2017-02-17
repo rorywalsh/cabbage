@@ -47,7 +47,6 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
 		if( r > 0 )
 		{
 			Uuid uniqueID;
-			CabbageUtilities::debug(exampleFiles[r - 3000].getFullPathName());
 			owner.getNodeIds().set (exampleFiles[r - 3000].getFullPathName(), int32 (*uniqueID.getRawData()));
 			owner.openFile (exampleFiles[r - 3000].getFullPathName());
 			owner.runCsoundForNode(exampleFiles[r - 3000].getFullPathName());

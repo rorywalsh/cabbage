@@ -229,8 +229,10 @@ void CabbageContentComponent::updateCodeInEditor (CabbagePluginEditor* editor, b
 //==============================================================================
 void CabbageContentComponent::timerCallback()
 {
-    int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));	
-    if (audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+    
+	int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));	
+	
+    if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
     {
         stopCsoundForNode("");
         stopTimer();
@@ -354,7 +356,7 @@ void CabbageContentComponent::createAudioGraph()
         cabbageSettings->setProperty ("windowY", lastPoint.getY());
     }
 
-    audioGraph = new AudioGraph (cabbageSettings->getUserSettings(), false);
+    audioGraph = new AudioGraph (*this, cabbageSettings->getUserSettings(), false);
     audioGraph->setXmlAudioSettings (cabbageSettings->getUserSettings()->getXmlValue ("audioSetup"));
     graphComponent = new CabbageGraphComponent (*audioGraph, *this);
 	audioGraphWindow->setContentNonOwned(graphComponent, false);
@@ -542,6 +544,10 @@ void CabbageContentComponent::launchSSHFileBrowser (String mode)
 //==============================================================================
 void CabbageContentComponent::openGraph(File fileToOpen)
 {
+	PluginDescription desc;	
+	Array<int32> uuids;
+	Array<File> files;
+	
 	if(fileToOpen.existsAsFile() == false)
 	{
 		FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*.cabbage");
@@ -560,10 +566,6 @@ void CabbageContentComponent::openGraph(File fileToOpen)
 		return;
 
 	cabbageSettings->updateRecentFilesList (fileToOpen);
-	PluginDescription desc;
-	
-	Array<int32> uuids;
-	Array<File> files;
 	
 	forEachXmlChildElementWithTagName (*xml, filter, "FILTER")
 		uuids.add(filter->getIntAttribute("uid"));
@@ -628,7 +630,6 @@ void CabbageContentComponent::openFile (String filename)
     }
     else if (setCurrentCsdFile (File (filename)) == false)
         return;
-
 		
     cabbageSettings->updateRecentFilesList (currentCsdFile);
 
@@ -837,6 +838,13 @@ void CabbageContentComponent::runCsoundForNode(String file)
         //audioGraph = nullptr;
         //createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
         int32 node = nodeIdsForFiles.getWithDefault (file, -99);
+		if(node == -99)
+		{
+			Uuid uniqueID;
+			node = int32 (*uniqueID.getRawData());
+			nodeIdsForFiles.set (file, node);			
+		}
+		
         PluginWindow::closeCurrentlyOpenWindowsFor (node);
         audioGraph->addPlugin (currentCsdFile, node);
         createEditorForAudioGraphNode();

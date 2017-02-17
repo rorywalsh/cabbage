@@ -18,7 +18,7 @@
 */
 
 #include "AudioGraph.h"
-
+#include "../../Application/CabbageContentComponent.h"
 
 //==============================================================================
 class PluginWindow;
@@ -26,13 +26,14 @@ class PluginWindow;
 
 const int AudioGraph::midiChannelNumber = 0x1000;
 
-AudioGraph::AudioGraph (PropertySet* settingsToUse,
+AudioGraph::AudioGraph (CabbageContentComponent& owner_, PropertySet* settingsToUse,
                         bool takeOwnershipOfSettings,
                         const String& preferredDefaultDeviceName,
                         const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
 
     :   settings (settingsToUse, takeOwnershipOfSettings),
         graph(),
+		owner(owner_),
         FileBasedDocument (filenameSuffix,
                            filenameWildcard,
                            "Load a filter graph",
@@ -281,7 +282,8 @@ void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceNam
 String AudioGraph::getCsoundOutput(int32 nodeId)
 {
 	
-    if (graph.getNodeForId(nodeId)->getProcessor() != nullptr)
+    if (graph.getNodeForId(nodeId) != nullptr && 
+			graph.getNodeForId(nodeId)->getProcessor() != nullptr)
     {
         if (isCabbageFile)
             return dynamic_cast<CabbagePluginProcessor*> (graph.getNodeForId(nodeId)->getProcessor())->getCsoundOutput();
@@ -361,6 +363,32 @@ bool AudioGraph::addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
         changed();
 
     return result;
+}
+
+void AudioGraph::removeFilter (const uint32 id)
+{
+    PluginWindow::closeCurrentlyOpenWindowsFor (id);
+
+    if (graph.removeNode (id))
+	{
+		for( int i = 0; i < owner.getNodeIds().size() ; i++)
+		{
+			if( int32(owner.getNodeIds().getValueAt(i)) == id)
+			{
+				owner.getNodeIds().remove(owner.getNodeIds().getName(i));
+				break;
+			}
+		}
+	
+	changed();
+		
+	}
+}
+
+void AudioGraph::disconnectFilter (const uint32 id)
+{
+    if (graph.disconnectNode (id))
+        changed();
 }
 
 void AudioGraph::removeConnection (const int index)

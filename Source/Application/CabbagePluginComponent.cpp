@@ -19,7 +19,8 @@ CabbagePluginComponent::CabbagePluginComponent (AudioGraph& graph_, const uint32
       pinSize (16),
       font (13.0f, Font::bold),
       numIns (0),
-      numOuts (0)
+      numOuts (0),
+	  lookAndFeel()
 {
     shadow.setShadowProperties (DropShadow (Colours::black.withAlpha (0.5f), 3, Point<int> (0, 1)));
     setComponentEffect (&shadow);
@@ -41,67 +42,38 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
     if (e.mods.isPopupMenu())
     {
         PopupMenu m;
+		m.setLookAndFeel(&lookAndFeel);
+
+        m.addItem (3, "Show plugin UI");
+        m.addItem (4, "Show code in editor");
+		m.addSeparator();
         m.addItem (1, "Delete this filter");
         m.addItem (2, "Disconnect all pins");
-        m.addSeparator();
-        m.addItem (3, "Show plugin UI");
-        m.addItem (4, "Show all programs");
-        m.addItem (5, "Show all parameters");
-        m.addSeparator();
-        m.addItem (6, "Configure Audio I/O");
-        m.addItem (7, "Test state save/load");
-
+        
         const int r = m.show();
 
         if (r == 1)
         {
-            //graph.removeFilter (filterID);
+            graph.removeFilter (filterID);
             return;
         }
         else if (r == 2)
         {
-            //graph.disconnectFilter (filterID);
+            graph.disconnectFilter (filterID);
         }
-        else
+        else if( r == 3)
         {
-            if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
-            {
-                AudioProcessor* const processor = f->getProcessor();
-                jassert (processor != nullptr);
-
-                if (r == 7)
-                {
-                    MemoryBlock state;
-                    processor->getStateInformation (state);
-                    processor->setStateInformation (state.getData(), (int) state.getSize());
-                }
-                else
-                {
-                    PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
-                                                          : PluginWindow::Generic;
-
-                    switch (r)
-                    {
-                        case 4:
-                            type = PluginWindow::Programs;
-                            break;
-
-                        case 5:
-                            type = PluginWindow::Parameters;
-                            break;
-
-                        case 6:
-                            type = PluginWindow::AudioIO;
-                            break;
-
-                        default:
-                            break;
-                    };
-
-                    if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
-                        w->toFront (true);
-                }
-            }
+			if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
+			{
+				AudioProcessor* const processor = f->getProcessor();
+				jassert (processor != nullptr);
+				
+				PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
+													  : PluginWindow::Generic;
+				if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
+					w->toFront (true);
+					
+			}
         }
     }
 }
