@@ -557,7 +557,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
         case CommandIDs::showReplacePanel:
             result.setInfo (TRANS ("Replace"), TRANS ("Replaces text in the current document."), "Editing", 0);
-            result.defaultKeypresses.add (KeyPress ('h', ModifierKeys::commandModifier, 0));
+            result.defaultKeypresses.add (KeyPress ('r', ModifierKeys::commandModifier, 0));
             break;
 
         case CommandIDs::findNext:

@@ -66,6 +66,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("UsingCabbageCsound", 1);
     defaultPropSet->setValue ("AudioEnabled", 1);
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
+    defaultPropSet->setValue ("DisableAutoComplete", 0);
     defaultPropSet->setValue ("SetAlwaysOnTop", 1);
     defaultPropSet->setValue ("GridSize", 4);
     defaultPropSet->setValue ("CompileOnSave", 1);

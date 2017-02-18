@@ -66,7 +66,7 @@ private:
     TextButton loadButton, saveButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
     CabbageSettings& settings;
-    Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue;
+    Value alwaysOnTopValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
     LookAndFeel_V2 lookAndFeel;
 
 };

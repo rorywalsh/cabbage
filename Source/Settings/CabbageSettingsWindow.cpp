@@ -117,10 +117,14 @@ void CabbageSettingsWindow::addMiscProperties()
     compileOnSaveValue.setValue (settings.getUserSettings()->getIntValue ("CompileOnSave"));
     compileOnSaveValue.addListener (this);
 
+    autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("DisableAutoComplete"));
+    autoCompleteValue.addListener (this);
+    
     editorProps.add (new BooleanPropertyComponent (showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopValue, "Plugin Window", "Always show plugin on top"));
     editorProps.add (new BooleanPropertyComponent (compileOnSaveValue, "Compiling", "Compile on save"));
-
+    editorProps.add (new BooleanPropertyComponent (autoCompleteValue, "Auto-complete", "Show auto complete popup"));
+    
     const int scrollBy = settings.getUserSettings()->getIntValue ("numberOfLinesToScroll");
     editorProps.add (new TextPropertyComponent (Value (scrollBy), "Editor lines to scroll with MouseWheel", 10, false));
 
@@ -199,6 +203,8 @@ void CabbageSettingsWindow::valueChanged (Value& value)
         settings.getUserSettings()->setValue ("CompileOnSave", value.getValue().toString());
     else if (value.refersToSameSourceAs (breakLinesValue))
         settings.getUserSettings()->setValue ("IdentifiersBeforeLineBreak", value.getValue().toString());
+    else if (value.refersToSameSourceAs (autoCompleteValue))
+        settings.getUserSettings()->setValue ("DisableAutoComplete", value.getValue().toString());
 }
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)

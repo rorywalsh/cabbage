@@ -51,6 +51,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     autoCompleteListBox.setModel (this);
     autoCompleteListBox.addKeyListener (this);
     this->addKeyListener (this);
+    
     owner->addChildComponent (autoCompleteListBox);
     owner->addChildComponent (debugLabel);
     debugLabel.setColour (Label::backgroundColourId, Colours::whitesmoke);
@@ -655,28 +656,31 @@ void CabbageCodeEditorComponent::parseTextForVariables()    //this is called on 
 
 void CabbageCodeEditorComponent::handleAutoComplete (String text)
 {
-    const CodeDocument::Position pos1 = getDocument().findWordBreakBefore (getCaretPos());
-    const CodeDocument::Position pos2 = getDocument().findWordBreakAfter (getCaretPos());
-    const String currentWord = getDocument().getTextBetween (pos1, pos2).trim();
-
-    if (currentWord.startsWith ("a") || currentWord.startsWith ("i") ||
-        currentWord.startsWith ("k") || currentWord.startsWith ("S") ||
-        currentWord.startsWith ("f") || currentWord.startsWith ("g"))
+    if(owner->settings->getUserSettings()->getIntValue ("DisableAutoComplete"))
     {
-        if (text == " " && currentWord.isNotEmpty())
+        const CodeDocument::Position pos1 = getDocument().findWordBreakBefore (getCaretPos());
+        const CodeDocument::Position pos2 = getDocument().findWordBreakAfter (getCaretPos());
+        const String currentWord = getDocument().getTextBetween (pos1, pos2).trim();
+
+        if (currentWord.startsWith ("a") || currentWord.startsWith ("i") ||
+            currentWord.startsWith ("k") || currentWord.startsWith ("S") ||
+            currentWord.startsWith ("f") || currentWord.startsWith ("g"))
         {
-            variableNames.addIfNotAlreadyThere (currentWord);
-            autoCompleteListBox.updateContent();
+            if (text == " " && currentWord.isNotEmpty())
+            {
+                variableNames.addIfNotAlreadyThere (currentWord);
+                autoCompleteListBox.updateContent();
+            }
         }
-    }
 
-    removeUnlikelyVariables (currentWord);
-    autoCompleteListBox.setVisible (false);
+        removeUnlikelyVariables (currentWord);
+        autoCompleteListBox.setVisible (false);
 
-    if (currentWord.isNotEmpty())
-    {
-        if (text != " ")
-            showAutoComplete (currentWord);
+        if (currentWord.isNotEmpty())
+        {
+            if (text != " ")
+                showAutoComplete (currentWord);
+        }
     }
 }
 
@@ -700,7 +704,6 @@ void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
             variableNamesToShow.addIfNotAlreadyThere (item.trim());
             autoCompleteListBox.updateContent();
 
-            //if (variableNamesToShow[0] != currentWord)
             autoCompleteListBox.setVisible (true);
         }
     }
