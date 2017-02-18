@@ -125,7 +125,12 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
 void CabbageComboBox::comboBoxChanged (ComboBox* combo)	//this listener is only enabled when combo is loading presets...
 {
-    owner->restorePluginStateFrom (snapshotFiles[combo->getSelectedItemIndex() - 1]);
+	if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
+		owner->restorePluginStateFrom (snapshotFiles[combo->getSelectedItemIndex() - 1]);
+	else if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
+	{
+		owner->sendChannelStringDataToCsound(getChannel(), combo->getText());
+	}
 }
 
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
