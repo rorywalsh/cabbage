@@ -285,9 +285,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
 
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
-    menu.addCommandItem (&commandManager, CommandIDs::findSelection);
-    menu.addCommandItem (&commandManager, CommandIDs::findNext);
-    menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
+    menu.addCommandItem (&commandManager, CommandIDs::showReplacePanel);
 }
 
 void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
@@ -569,13 +567,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
         case CommandIDs::about:
             result.setInfo (TRANS ("About"), TRANS ("About."), CommandCategories::general, 0);
-            result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
             break;
 
         case CommandIDs::findPrevious:
             result.setInfo (TRANS ("Find Previous"), TRANS ("Searches for the previous occurrence of the current search-term."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
-            result.defaultKeypresses.add (KeyPress ('d', ModifierKeys::commandModifier, 0));
             break;
 
         case CommandIDs::startLiveDebugger:

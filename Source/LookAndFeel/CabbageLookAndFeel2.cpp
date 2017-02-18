@@ -994,7 +994,7 @@ void CabbageLookAndFeel2::drawButtonText (Graphics& g, TextButton& button, bool 
 
     if (textWidth > 0)
         g.drawFittedText (button.getButtonText(),
-                          leftIndent, yIndent, textWidth - (isButtonDown == true ? 5 : 0), button.getHeight() - yIndent * 2,
+                          leftIndent, yIndent, textWidth - (isButtonDown == true ? 3 : 0), button.getHeight() - yIndent * 2,
                           Justification::centred, 2);
 }
 //==========================================================================================================================================
