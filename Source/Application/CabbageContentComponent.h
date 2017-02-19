@@ -182,8 +182,7 @@ public:
 		lookAndFeel(),
 		close("", DrawableButton::ButtonStyle::ImageStretched),
 		showEditor("", DrawableButton::ButtonStyle::ImageStretched)
-	{
-		
+	{	
 		
 		play.setClickingTogglesState(true);
 		play.setName("playButton");

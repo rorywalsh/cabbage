@@ -81,7 +81,7 @@ void AudioGraph::addPlugin (File inputFile, int32 nodeId)
 		if (graph.getNode (i)->nodeId == nodeId)
 		{
 			Point<double> position = this->getNodePosition(nodeId);
-			XmlElement* xml = createConnectionsXml();	
+			ScopedPointer<XmlElement> xml = createConnectionsXml();	
 			graph.removeNode(nodeId);
 			AudioProcessorGraph::Node::Ptr node = createNode(getPluginDescriptor("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);	
 			setNodePosition(nodeId, position.getX(), position.getY());
