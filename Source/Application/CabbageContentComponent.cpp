@@ -114,15 +114,26 @@ void CabbageContentComponent::buttonClicked (Button* button)
                 this->startAudioGraph();
         }
     }
-	else if(DrawableButton* runButton = dynamic_cast<DrawableButton*>(button))
-	{
-		
-		if(runButton->getToggleState() == true)
+	else if(DrawableButton* drawableButton = dynamic_cast<DrawableButton*>(button))
+	{		
+		if(drawableButton->getName() == "playButton")
 		{
-			runCsoundForNode(runButton->getTooltip());
+			if(drawableButton->getToggleState() == true)
+			{
+				runCsoundForNode(drawableButton->getProperties().getWithDefault("filename", ""));
+			}
+			else
+				stopCsoundForNode(drawableButton->getProperties().getWithDefault("filename", ""));
+			
 		}
-		else
-			stopCsoundForNode(runButton->getTooltip());
+		else if(drawableButton->getName() == "closeButton")
+		{
+			closeDocument();
+		}
+		else if(drawableButton->getName() == "showEditorButton")
+		{
+			createEditorForAudioGraphNode();
+		}
 			
 	}
 }
@@ -304,6 +315,8 @@ void CabbageContentComponent::addFileTabButton (File file)
     fileButton->setToggleState (true, dontSendNotification);
     currentFileIndex = fileTabs.size() - 1;
 	fileButton->getPlayButton().addListener(this);
+	fileButton->getShowEditorButton().addListener(this);
+	fileButton->getCloseFileEditorButton().addListener(this);
 }
 
 void CabbageContentComponent::arrangeFileTabButtons()
@@ -314,7 +327,7 @@ void CabbageContentComponent::arrangeFileTabButtons()
     for ( auto fileButton : fileTabs)
     {
         const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 15 : getWidth() - 25;
-        fileButton->setBounds (xPos, toolbarThickness + 3, width / numTabs, 25);
+        fileButton->setBounds (xPos, toolbarThickness + 3, width / numTabs, 30);
         xPos += width / numTabs + 4;
     }
 }
@@ -772,6 +785,8 @@ void CabbageContentComponent::removeEditor()
             owner->setName ("Cabbage Csound IDE");
         }
     }
+	
+	currentCsdFile = openFiles[currentFileIndex];
 
     repaint();
 
@@ -858,7 +873,7 @@ void CabbageContentComponent::runCsoundForNode(String file)
 
 void CabbageContentComponent::stopCsoundForNode(String file)
 {
-	if(nodeIdsForFiles.size()>0)
+	if(nodeIdsForFiles.size()>0 && File(file).existsAsFile())
 	{
 		int32 nodeId = nodeIdsForFiles.getWithDefault (file, -99);
 		if(audioGraph->getNodeForId(nodeId) != nullptr)
@@ -908,7 +923,7 @@ void CabbageContentComponent::hideFindPanel()
 //==============================================================================
 void CabbageContentComponent::resized()
 {
-    const int heightOfTabButtons = (editorAndConsole.size() > 0) ? 30 : 0;
+    const int heightOfTabButtons = (editorAndConsole.size() > 0) ? 35 : 0;
     toolbar.setBounds (getLocalBounds().removeFromTop  (toolbarThickness));
 
     if (propertyPanel->isVisible())

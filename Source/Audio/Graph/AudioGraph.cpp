@@ -54,6 +54,7 @@ AudioGraph::~AudioGraph()
 {
     deletePlugin();
     shutDownAudioDevices();
+	xmlSettings = nullptr;
 }
 
 void AudioGraph::createInternalFilters()
@@ -85,6 +86,7 @@ void AudioGraph::addPlugin (File inputFile, int32 nodeId)
 			AudioProcessorGraph::Node::Ptr node = createNode(getPluginDescriptor("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);	
 			setNodePosition(nodeId, position.getX(), position.getY());
 			restoreConnectionsFromXml(*xml);
+			xml = nullptr;
 			return;
 		}		
 	}

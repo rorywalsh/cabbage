@@ -156,6 +156,103 @@ public:
 		return img;
 	}
 	
+	static const Image drawPlayStopIcon(int width, int height, bool isPlaying, bool isPressed = false)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		Path p;
+		
+		const int newWidth = (isPressed == true ? width-1 : width);
+		const int newHeight = (isPressed == true ? height-1 : height);
+		
+		p.addRoundedRectangle(0, 0, newWidth, newHeight, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);
+		p.clear();
+
+		
+		if(isPlaying == false)
+		{
+			g.setColour(Colours::lime.darker());
+			p.addTriangle(newWidth*.62f, 2, newWidth-5, newHeight/2, newWidth*.62f, newHeight-3);
+		}
+		else
+		{
+			g.setColour(Colours::lime.darker(.7f));
+			p.addRectangle(newWidth*.62f, 4, newWidth*.3, newHeight-8);
+		}
+			
+		p.closeSubPath();
+		g.fillPath(p);
+		g.setColour(Colours::whitesmoke.darker());
+		g.setColour(Colours::whitesmoke);
+		g.drawFittedText(isPlaying == true ? "Stop" : "Play", 0, 0, width*.6, height-1, Justification::centred, 1);
+		return img;
+	}
+
+	static const Image drawCloseIcon(int width, int height)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		Path p;
+		p.addRoundedRectangle(0, 0, width-5, height-5, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);
+		p.clear();
+		g.setColour(Colours::red);
+		p.startNewSubPath(5, 5);
+		p.lineTo(width-10, height-10);
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(3));
+
+		p.startNewSubPath(5, height-10);
+		p.lineTo(width-10, 5);
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(3));
+		return img;
+	}
+
+	static const Image drawEditorIcon(int width, int height)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		Path p;
+		
+		
+		p.addRoundedRectangle(0, 0, width, height, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);		
+		p.clear();
+		
+		g.setColour(Colours::cornflowerblue.darker());
+		for( int i = 0 ; i < 3; i++)
+		{			
+			p.startNewSubPath(6+(i*6), 3);
+			p.lineTo(6+(i*6), height-3);
+			g.strokePath(p, PathStrokeType(2));
+			p.closeSubPath();
+			p.clear();		
+		}
+		
+		Random rand;
+		g.setColour(Colours::lime.darker());
+		for( int i = 0 ; i < 3; i++)
+		{
+			const int heightOfTHumb = rand.nextInt(Range<int>(5, height-5));			
+			p.startNewSubPath(4+(i*6), heightOfTHumb);
+			p.lineTo(9+(i*6), heightOfTHumb);
+			g.strokePath(p, PathStrokeType(2));
+			p.closeSubPath();
+			p.clear();		
+		}
+	
+		return img;
+	}
 	
 	static const Image drawMuteIcon(int width, int height, bool muted)
 	{

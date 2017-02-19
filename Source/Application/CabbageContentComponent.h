@@ -171,79 +171,89 @@ private:
 
 class FileTabButton : public TextButton
 {
-	DrawableButton play, mute;
+	DrawableButton play, close, showEditor;
 	CabbageLookAndFeel2 lookAndFeel;
 	
 public:
-
-	static const Image drawPlayIcon(int width, int height, bool isPlaying)
-	{
-		Image img = Image(Image::ARGB, width, height, true);
-		Graphics g(img);
-		
-		Path p;
-		p.addRoundedRectangle(0, 0, width, height, 2);
-		g.setColour(Colour(30, 30, 30));
-		p.closeSubPath();
-		//g.strokePath(p, PathStrokeType(1));
-		g.fillPath(p);
-		//g.strokePath(p, PathStrokeType(1));
-		
-
-		p.clear();
-		if(isPlaying == false)
-		{
-			g.setColour(Colours::lime.darker());
-			p.addTriangle(width*.62f, 2, width-5, height/2, width*.62f, height-3);
-		}
-		else
-		{
-			g.setColour(Colours::lime.darker(.7f));
-			p.addRectangle(width*.62f, 2, width*.3, height-3);
-		}
-			
-		p.closeSubPath();
-		g.fillPath(p);
-		g.setColour(Colours::whitesmoke.darker());
-		g.setColour(Colours::whitesmoke);
-		g.drawFittedText(isPlaying == true ? "Stop" : "Play", 0, 0, width*.6, height-1, Justification::centred, 1);
-		return img;
-	}
 	
-	FileTabButton(String name, String tooltip): 
-		TextButton(name, tooltip),
+	FileTabButton(String name, String filename): 
+		TextButton(name, filename),
 		play("Play", DrawableButton::ButtonStyle::ImageStretched), 
 		lookAndFeel(),
-		mute("", DrawableButton::ButtonStyle::ImageStretched)
+		close("", DrawableButton::ButtonStyle::ImageStretched),
+		showEditor("", DrawableButton::ButtonStyle::ImageStretched)
 	{
-		addAndMakeVisible(play);
-		addAndMakeVisible(mute);
+		
+		
 		play.setClickingTogglesState(true);
+		play.setName("playButton");
+		
+		addAndMakeVisible(close);
+		close.setName("closeButton");
+		close.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+		close.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+		close.setTooltip("Close file");
+		
+		addAndMakeVisible(play);
 		play.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
 		play.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
 		play.setClickingTogglesState(true);
-		play.setTooltip(tooltip);
-		setGraphImages(play, 60, 16, "play");
+		play.getProperties().set("filename", filename);
+		
+		addAndMakeVisible(showEditor);
+		showEditor.setName("showEditorButton");
+		showEditor.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+		showEditor.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+		showEditor.setClickingTogglesState(true);
+		showEditor.setTooltip("Show plugin Editor");	
+	
+		
+		setDrawableImages(play, 60, 25, "play");
+		setDrawableImages(close, 25, 25, "close");
+		setDrawableImages(showEditor, 25, 25, "showEditor");
 	}
 	
 	void resized()
 	{		
-		play.setBounds(getWidth()-65, 4, 60, 16);
+		play.setBounds(5, 3, 60, 25);
+		close.setBounds(getWidth()-22, 3, 20, 20);
+		showEditor.setBounds(70, 3, 30, 25);
 	}
 	
-	void setGraphImages(DrawableButton& button, int width, int height, String type)
+	void setDrawableImages(DrawableButton& button, int width, int height, String type)
 	{
-		DrawableImage imageNormal;
-		DrawableImage imageDown;
+		DrawableImage imageNormal, imageNormalPressed, imageDownPressed;
 		
-		imageNormal.setImage(drawPlayIcon(width, height, false));		
-		imageDown.setImage(drawPlayIcon(width, height, true));
-		
-		button.setImages(&imageNormal, &imageNormal, &imageNormal, &imageNormal, &imageDown);
+		if(type == "play")
+		{		
+			DrawableImage imageDown;
+			imageNormalPressed.setImage(CabbageImages::drawPlayStopIcon(width, height, false, true));
+			imageDownPressed.setImage(CabbageImages::drawPlayStopIcon(width, height, true, true));
+			imageNormal.setImage(CabbageImages::drawPlayStopIcon(width, height, false));		
+			imageDown.setImage(CabbageImages::drawPlayStopIcon(width, height, true));		
+			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageDown, nullptr,  &imageDownPressed, &imageDownPressed);
+		}
+		else if(type == "close")
+		{
+			imageNormal.setImage(CabbageImages::drawCloseIcon(width, height));	
+			imageNormalPressed.setImage(CabbageImages::drawCloseIcon(width-3, height-3));
+			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal);
+		}
+		else if(type == "showEditor")
+		{
+			imageNormal.setImage(CabbageImages::drawEditorIcon(width, height));	
+			imageNormalPressed.setImage(CabbageImages::drawEditorIcon(width-1, height-1));
+			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);		
+		}
+		else if(type == "editGUI")
+		{
+			
+		}
 	}
 	
 	DrawableButton& getPlayButton(){	return play;	}
-	
+	DrawableButton& getShowEditorButton(){	return showEditor;	}
+	DrawableButton& getCloseFileEditorButton(){	return close;	}
 };
 
 //==============================================================================

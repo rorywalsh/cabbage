@@ -686,6 +686,7 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
 
 void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
 {
+	
     for ( int i = variableNamesToShow.size() ; i >= 0 ; i--)
     {
         if (variableNamesToShow[i].startsWith (currentWord) == false)
@@ -693,10 +694,6 @@ void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
 				variableNamesToShow.removeString (variableNamesToShow[i]);
         }
     }
-	
-	for( int i = indices.size(); i >= 0 ; i-- )
-		variableNamesToShow.remove(indices[i]);
-
 
 }
 
