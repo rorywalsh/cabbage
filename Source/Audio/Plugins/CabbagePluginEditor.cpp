@@ -243,7 +243,8 @@ void CabbagePluginEditor::insertComboBox (ValueTree cabbageWidgetData)
     CabbageComboBox* combobox;
     components.add (combobox = new CabbageComboBox (cabbageWidgetData, this));
 
-    if (CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
+    if (CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::filetype).contains ("snaps")
+		|| CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::channeltype).contains ("string"))
         combobox->addListener (combobox);
     else
         combobox->addListener (this);

@@ -695,6 +695,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::text, array);
+	setProperty (widgetData, CabbageIdentifierIds::align, "left");
     setProperty (widgetData, CabbageIdentifierIds::value, 1);
     setProperty (widgetData, CabbageIdentifierIds::currenttext, "");
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
@@ -755,7 +756,7 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     var channels;
     channels.append ("checkchan");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
-    setProperty (widgetData, CabbageIdentifierIds::text, "Check");
+    setProperty (widgetData, CabbageIdentifierIds::text, "");
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::shape, "square");

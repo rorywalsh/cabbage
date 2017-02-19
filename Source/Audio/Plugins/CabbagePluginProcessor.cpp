@@ -104,7 +104,7 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
 			currentLineOfCabbageCode = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(";"));
 			
 		const String comments = currentLineOfCabbageCode.substring(currentLineOfCabbageCode.indexOf(";"));
-        CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode + " " + expandedMacroText + comments, lineNumber);
+        CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart(" \t") + " " + expandedMacroText + comments, lineNumber);
         CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber);
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
         //CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::csdfile));
@@ -340,8 +340,9 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
         const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
         const String identChannel = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannel);
         const String identChannelMessage = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannelmessage);
+		const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
-        if (getCsound()->GetChannel (channel.toUTF8()) != value)
+        if (getCsound()->GetChannel (channel.toUTF8()) != value && typeOfWidget != "combobox")
             CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channel.toUTF8()));
 
         if (identChannel.isNotEmpty())

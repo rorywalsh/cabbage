@@ -238,6 +238,8 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
 
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
+	menu.addCommandItem (&commandManager, CommandIDs::showReplacePanel);
+
     menu.addCommandItem (&commandManager, CommandIDs::findSelection);
     menu.addCommandItem (&commandManager, CommandIDs::findNext);
     menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
@@ -539,7 +541,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
         case CommandIDs::showReplacePanel:
             result.setInfo (TRANS ("Replace"), TRANS ("Replaces text in the current document."), "Editing", 0);
-            result.defaultKeypresses.add (KeyPress ('h', ModifierKeys::commandModifier, 0));
+            result.defaultKeypresses.add (KeyPress ('r', ModifierKeys::commandModifier, 0));
             break;
 
         case CommandIDs::findNext:
@@ -553,13 +555,12 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
         case CommandIDs::showGraph:
             result.setInfo (TRANS ("Show Cabbage Patcher"), TRANS ("Graph."), CommandCategories::view, 0);
-            result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
+            result.defaultKeypresses.add (KeyPress ('p', ModifierKeys::commandModifier, 0));
             break;
 
         case CommandIDs::findPrevious:
             result.setInfo (TRANS ("Find Previous"), TRANS ("Searches for the previous occurrence of the current search-term."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
-            result.defaultKeypresses.add (KeyPress ('d', ModifierKeys::commandModifier, 0));
             break;
 
         case CommandIDs::startLiveDebugger:
