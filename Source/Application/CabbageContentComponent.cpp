@@ -84,58 +84,84 @@ void CabbageContentComponent::setLookAndFeelColours()
 //==============================================================================
 void CabbageContentComponent::buttonClicked (Button* button)
 {
-    if (const FileTabButton* tabButton = dynamic_cast<FileTabButton*> (button))
-    {
-        currentFileIndex = fileTabs.indexOf (tabButton);
-        editorAndConsole[currentFileIndex]->toFront (true);
-
-        if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
-        {
-            docWindow->setName (openFiles[currentFileIndex].getFullPathName());
-            currentCsdFile = openFiles[currentFileIndex];
-            addInstrumentsAndRegionsToCombobox();
-        }
-    }
-    else if (const ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*> (button))
-    {
-        if (toolbarButton->getName() == "new")             createNewProject();
-        else if (toolbarButton->getName() == "open")       openFile();
-        else if (toolbarButton->getName() == "save")       saveDocument (false);
-        else if (toolbarButton->getName() == "save as")    saveDocument (true);
-        else if (toolbarButton->getName() == "settings")   showSettingsDialog();
-        else if (toolbarButton->getName() == "cut")        getCurrentCodeEditor()->cut();
-        else if (toolbarButton->getName() == "copy")       getCurrentCodeEditor()->copy();
-        else if (toolbarButton->getName() == "paste")      getCurrentCodeEditor()->paste();
-        else if (toolbarButton->getName() == "togglePlay")
-        {
-            if (toolbarButton->getToggleState())
-                this->stopAudioGraph();
-            else
-                this->startAudioGraph();
-        }
-    }
+    if (FileTabButton* tabButton = dynamic_cast<FileTabButton*> (button))
+		handleFileTab(tabButton);
+    else if (ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*> (button))
+		handleToolbarButtons(toolbarButton);
 	else if(DrawableButton* drawableButton = dynamic_cast<DrawableButton*>(button))
-	{		
-		if(drawableButton->getName() == "playButton")
-		{
-			if(drawableButton->getToggleState() == true)
-			{
-				runCsoundForNode(drawableButton->getProperties().getWithDefault("filename", ""));
-			}
-			else
-				stopCsoundForNode(drawableButton->getProperties().getWithDefault("filename", ""));
-			
-		}
-		else if(drawableButton->getName() == "closeButton")
-		{
-			closeDocument();
-		}
-		else if(drawableButton->getName() == "showEditorButton")
-		{
-			createEditorForAudioGraphNode();
-		}
-			
+		handleFileTabButtons(drawableButton);
+}
+
+void CabbageContentComponent::handleFileTab(FileTabButton* tabButton) 
+{
+	currentFileIndex = fileTabs.indexOf (tabButton);
+	editorAndConsole[currentFileIndex]->toFront (true);
+
+	if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
+	{
+		docWindow->setName (openFiles[currentFileIndex].getFullPathName());
+		currentCsdFile = openFiles[currentFileIndex];
+		addInstrumentsAndRegionsToCombobox();
 	}
+	
+	for( auto button : fileTabs )
+	{
+		if(button != tabButton)
+			button->disableButtons(true);
+		else
+			button->disableButtons(false);
+	}	
+}
+
+void CabbageContentComponent::handleToolbarButtons(ToolbarButton* toolbarButton)
+{
+	if (toolbarButton->getName() == "new")             createNewProject();
+	else if (toolbarButton->getName() == "open")       openFile();
+	else if (toolbarButton->getName() == "save")       saveDocument (false);
+	else if (toolbarButton->getName() == "save as")    saveDocument (true);
+	else if (toolbarButton->getName() == "settings")   showSettingsDialog();
+	else if (toolbarButton->getName() == "cut")        getCurrentCodeEditor()->cut();
+	else if (toolbarButton->getName() == "copy")       getCurrentCodeEditor()->copy();
+	else if (toolbarButton->getName() == "paste")      getCurrentCodeEditor()->paste();
+	else if (toolbarButton->getName() == "togglePlay")
+	{
+		if (toolbarButton->getToggleState())
+			this->stopAudioGraph();
+		else
+			this->startAudioGraph();
+	}	
+}
+
+void CabbageContentComponent::handleFileTabButtons(DrawableButton* drawableButton)
+{
+	if(drawableButton->getName() == "playButton")
+	{
+		if(drawableButton->getToggleState() == true)
+		{
+			runCsoundForNode(drawableButton->getProperties().getWithDefault("filename", ""));
+		}
+		else
+			stopCsoundForNode(drawableButton->getProperties().getWithDefault("filename", ""));
+		
+	}
+	else if(drawableButton->getName() == "closeButton")
+	{
+		if(FileTabButton* tabButton = drawableButton->findParentComponentOfClass<FileTabButton>())
+		{
+			currentFileIndex = fileTabs.indexOf (tabButton);
+			editorAndConsole[currentFileIndex]->toFront (true);
+			closeDocument();
+		}		
+	}
+	else if(drawableButton->getName() == "showEditorButton")
+	{
+		createEditorForAudioGraphNode();
+	}
+	else if(drawableButton->getName() == "editGUIButton")
+	{
+		this->saveDocument();
+		setEditMode(true);
+	}	
 }
 
 void CabbageContentComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
@@ -241,23 +267,26 @@ void CabbageContentComponent::updateCodeInEditor (CabbagePluginEditor* editor, b
 void CabbageContentComponent::timerCallback()
 {
     
-	int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));	
-	
-    if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
-    {
-        stopCsoundForNode("");
-        stopTimer();
-    }
+	if(openFiles.size()>0)
+	{
+		int32 nodeId = int32 (nodeIdsForFiles.getWithDefault (currentCsdFile.getFullPathName(), -99));	
+		
+		if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+		{
+			stopCsoundForNode("");
+			stopTimer();
+		}
 
-    if (currentCsdFile.existsAsFile())
-    {
-        const String csoundOutputString = audioGraph->getCsoundOutput(nodeId);
-        consoleMessages += csoundOutputString;
+		if (currentCsdFile.existsAsFile())
+		{
+			const String csoundOutputString = audioGraph->getCsoundOutput(nodeId);
+			consoleMessages += csoundOutputString;
 
-        if (csoundOutputString.length() > 0)
-            getCurrentOutputConsole()->setText (csoundOutputString);
+			if (csoundOutputString.length() > 0)
+				getCurrentOutputConsole()->setText (csoundOutputString);
 
-    }
+		}	
+	}
 }
 //==============================================================================
 void CabbageContentComponent::updateEditorColourScheme()
@@ -314,9 +343,14 @@ void CabbageContentComponent::addFileTabButton (File file)
     fileButton->setLookAndFeel (lookAndFeel);
     fileButton->setToggleState (true, dontSendNotification);
     currentFileIndex = fileTabs.size() - 1;
-	fileButton->getPlayButton().addListener(this);
-	fileButton->getShowEditorButton().addListener(this);
-	fileButton->getCloseFileEditorButton().addListener(this);
+	fileButton->addButtonListeners(this);
+
+	for( auto button : fileTabs )
+	{
+		if(button != fileButton)
+			button->disableButtons(true);
+	}
+	
 }
 
 void CabbageContentComponent::arrangeFileTabButtons()

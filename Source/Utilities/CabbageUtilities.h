@@ -155,6 +155,36 @@ public:
 		
 		return img;
 	}
+
+	static const Image drawEditGUIIcon(int width, int height)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		Path p, dashedP;
+		p.addRoundedRectangle(0, 0, width, height, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);
+		p.clear();
+		
+		g.setColour(Colours::cornflowerblue);
+		p.addEllipse(4, 4, width-8, height-8);	
+		const float dashLengths[] = { 3.0f, 3.0f };
+        PathStrokeType(6.0, PathStrokeType::mitered).createDashedStroke(dashedP, p, dashLengths, 2);
+		g.fillPath(dashedP);
+		p.clear();
+		
+		g.setColour(Colours::cornflowerblue.darker());
+		p.addEllipse(3, 3, width-6, height-6);
+		g.fillPath(p);
+		p.clear();
+
+		g.setColour(Colour(30, 30, 30));
+		p.addEllipse(6, 6, width-12, height-12);
+		g.fillPath(p);
+		return img;
+	}
 	
 	static const Image drawPlayStopIcon(int width, int height, bool isPlaying, bool isPressed = false)
 	{

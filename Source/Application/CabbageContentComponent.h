@@ -89,6 +89,10 @@ public:
 	void showGraph();
 	void saveGraph(bool saveAs);
 	void openGraph(File fileToOpen = File());
+	//==============================================================================
+	void handleToolbarButtons(ToolbarButton* toolbarButton);
+	void handleFileTabButtons(DrawableButton* button);
+	void handleFileTab(FileTabButton* drawableButton) ;
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -171,19 +175,32 @@ private:
 
 class FileTabButton : public TextButton
 {
-	DrawableButton play, close, showEditor;
-	CabbageLookAndFeel2 lookAndFeel;
+	DrawableButton play, close, showEditor, editGUI;
+
+	class Overlay : public Component
+	{
+	public:
+		Overlay():Component(){}
+		void paint(Graphics &g)
+		{
+			g.fillAll(Colours::black.withAlpha(.5f));
+		}
+	};
 	
+	Overlay overlay;
 public:
+
 	
 	FileTabButton(String name, String filename): 
 		TextButton(name, filename),
 		play("Play", DrawableButton::ButtonStyle::ImageStretched), 
-		lookAndFeel(),
 		close("", DrawableButton::ButtonStyle::ImageStretched),
-		showEditor("", DrawableButton::ButtonStyle::ImageStretched)
+		showEditor("", DrawableButton::ButtonStyle::ImageStretched), 
+		editGUI("", DrawableButton::ButtonStyle::ImageStretched),
+		overlay()
 	{	
-		
+		addChildComponent(overlay);
+		overlay.setVisible(false);
 		play.setClickingTogglesState(true);
 		play.setName("playButton");
 		
@@ -192,6 +209,7 @@ public:
 		close.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
 		close.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
 		close.setTooltip("Close file");
+		close.getProperties().set("filename", filename);
 		
 		addAndMakeVisible(play);
 		play.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
@@ -206,17 +224,48 @@ public:
 		showEditor.setClickingTogglesState(true);
 		showEditor.setTooltip("Show plugin Editor");	
 	
+		addAndMakeVisible(editGUI);
+		editGUI.setName("editGUIButton");
+		editGUI.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+		editGUI.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+		editGUI.setClickingTogglesState(true);
+		editGUI.setTooltip("Edit Plugin GUI");	
 		
 		setDrawableImages(play, 60, 25, "play");
 		setDrawableImages(close, 25, 25, "close");
 		setDrawableImages(showEditor, 25, 25, "showEditor");
+		setDrawableImages(editGUI, 25, 25, "editGUI");
+
+		
+	}
+	
+	void addButtonListeners(Button::Listener* listener)
+	{
+		play.addListener(listener);
+		close.addListener(listener);
+		showEditor.addListener(listener);
+		editGUI.addListener(listener);
+	}
+	
+	void disableButtons(bool disable)
+	{
+		if(disable)
+		{
+			overlay.setVisible(true);
+			overlay.toFront(true);					
+		}
+		else
+			overlay.setVisible(false);
+			
 	}
 	
 	void resized()
-	{		
+	{	
+		overlay.setBounds(5,3,125, 25);	
 		play.setBounds(5, 3, 60, 25);
 		close.setBounds(getWidth()-22, 3, 20, 20);
-		showEditor.setBounds(70, 3, 30, 25);
+		showEditor.setBounds(67, 3, 30, 25);
+		editGUI.setBounds(99, 3, 30, 25);
 	}
 	
 	void setDrawableImages(DrawableButton& button, int width, int height, String type)
@@ -246,13 +295,16 @@ public:
 		}
 		else if(type == "editGUI")
 		{
-			
+			imageNormal.setImage(CabbageImages::drawEditGUIIcon(width, height));	
+			imageNormalPressed.setImage(CabbageImages::drawEditGUIIcon(width-1, height-1));
+			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);				
 		}
 	}
 	
 	DrawableButton& getPlayButton(){	return play;	}
 	DrawableButton& getShowEditorButton(){	return showEditor;	}
 	DrawableButton& getCloseFileEditorButton(){	return close;	}
+	DrawableButton& getEditGUIButton(){	return editGUI;	}
 };
 
 //==============================================================================
