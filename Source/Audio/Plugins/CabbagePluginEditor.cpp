@@ -84,7 +84,7 @@ void CabbagePluginEditor::mouseUp (const MouseEvent& e)
 void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
 {
     int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
-	int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
+    int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
     int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y - yOffset; //27 is the height of the standalone window frame
     sendChannelDataToCsound (CabbageIdentifierIds::mousex, x);
     sendChannelDataToCsound (CabbageIdentifierIds::mousey, y);
@@ -244,7 +244,7 @@ void CabbagePluginEditor::insertComboBox (ValueTree cabbageWidgetData)
     components.add (combobox = new CabbageComboBox (cabbageWidgetData, this));
 
     if (CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::filetype).contains ("snaps")
-		|| CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::channeltype).contains ("string"))
+        || CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::channeltype).contains ("string"))
         combobox->addListener (combobox);
     else
         combobox->addListener (this);
@@ -725,8 +725,8 @@ void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {
-	if(CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
-		return processor.getCsoundOutput();
-	else
-		return String ("You are currently in 'Standalone' mode.\nThe csoundoutput widget will only be filled\nwith Csound messages when used in a plugin.");
+    if (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
+        return processor.getCsoundOutput();
+    else
+        return String ("You are currently in 'Standalone' mode.\nThe csoundoutput widget will only be filled\nwith Csound messages when used in a plugin.");
 }

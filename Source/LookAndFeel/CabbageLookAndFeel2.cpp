@@ -981,8 +981,8 @@ void CabbageLookAndFeel2::drawButtonText (Graphics& g, TextButton& button, bool 
     Font font (getTextButtonFont (button, button.getHeight()));
     g.setFont (font);
     g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
-                                                            : TextButton::textColourOffId)
-                       .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
+                                    : TextButton::textColourOffId)
+                 .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
 
     const int yIndent = jmin (4, button.proportionOfHeight (0.3f));
     const int cornerSize = jmin (button.getHeight(), button.getWidth()) / 2;

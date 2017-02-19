@@ -26,7 +26,7 @@ CabbageIDELookAndFeel::CabbageIDELookAndFeel()
     setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
     setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
     setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
-	setColour (AlertWindow::textColourId, Colours::whitesmoke);
+    setColour (AlertWindow::textColourId, Colours::whitesmoke);
 }
 
 //======== Update value tree ======================================================================
@@ -210,8 +210,8 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
         }
     }
 
-	
-    g.setColour(alert.findColour (AlertWindow::textColourId));
+
+    g.setColour (alert.findColour (AlertWindow::textColourId));
     textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed - 50,
                                         textArea.getY(),
                                         textArea.getWidth() - iconSpaceUsed - 40,

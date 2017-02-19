@@ -51,7 +51,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     autoCompleteListBox.setModel (this);
     autoCompleteListBox.addKeyListener (this);
     this->addKeyListener (this);
-    
+
     owner->addChildComponent (autoCompleteListBox);
     owner->addChildComponent (debugLabel);
     debugLabel.setColour (Label::backgroundColourId, Colours::whitesmoke);
@@ -656,7 +656,7 @@ void CabbageCodeEditorComponent::parseTextForVariables()    //this is called on 
 
 void CabbageCodeEditorComponent::handleAutoComplete (String text)
 {
-    if(owner->settings->getUserSettings()->getIntValue ("DisableAutoComplete"))
+    if (owner->settings->getUserSettings()->getIntValue ("DisableAutoComplete"))
     {
         const CodeDocument::Position pos1 = getDocument().findWordBreakBefore (getCaretPos());
         const CodeDocument::Position pos2 = getDocument().findWordBreakAfter (getCaretPos());
@@ -686,12 +686,12 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
 
 void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
 {
-	
+
     for ( int i = variableNamesToShow.size() ; i >= 0 ; i--)
     {
         if (variableNamesToShow[i].startsWith (currentWord) == false)
-        {			
-				variableNamesToShow.removeString (variableNamesToShow[i]);
+        {
+            variableNamesToShow.removeString (variableNamesToShow[i]);
         }
     }
 

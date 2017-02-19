@@ -15,8 +15,8 @@
 
 CabbageGraphComponent::CabbageGraphComponent (AudioGraph& graph_, CabbageContentComponent& owner_)
     : graph (graph_),
-	owner(owner_),
-	lookAndFeel()
+      owner (owner_),
+      lookAndFeel()
 {
     graph.addChangeListener (this);
     setOpaque (false);
@@ -31,7 +31,7 @@ CabbageGraphComponent::~CabbageGraphComponent()
 
 void CabbageGraphComponent::paint (Graphics& g)
 {
-	g.fillAll (Colour(uint8(20), uint8(20), uint8(20)));
+    g.fillAll (Colour (uint8 (20), uint8 (20), uint8 (20)));
 }
 
 void CabbageGraphComponent::mouseDown (const MouseEvent& e)
@@ -39,19 +39,19 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
     if (e.mods.isPopupMenu())
     {
         PopupMenu m;
-		m.setLookAndFeel(&lookAndFeel);
-		const String examplesDir = owner.getCabbageSettings()->getUserSettings()->getValue ("CabbageExamplesDir", "");
-		CabbageUtilities::addFilesToPopupMenu (m, exampleFiles, examplesDir, "*.csd", 3000);
-		const int r = m.show();
-		
-		if( r > 0 )
-		{
-			Uuid uniqueID;
-			owner.getNodeIds().set (exampleFiles[r - 3000].getFullPathName(), int32 (*uniqueID.getRawData()));
-			owner.openFile (exampleFiles[r - 3000].getFullPathName());
-			owner.runCsoundForNode(exampleFiles[r - 3000].getFullPathName());
-		}
-        
+        m.setLookAndFeel (&lookAndFeel);
+        const String examplesDir = owner.getCabbageSettings()->getUserSettings()->getValue ("CabbageExamplesDir", "");
+        CabbageUtilities::addFilesToPopupMenu (m, exampleFiles, examplesDir, "*.csd", 3000);
+        const int r = m.show();
+
+        if ( r > 0 )
+        {
+            Uuid uniqueID;
+            owner.getNodeIds().set (exampleFiles[r - 3000].getFullPathName(), int32 (*uniqueID.getRawData()));
+            owner.openFile (exampleFiles[r - 3000].getFullPathName());
+            owner.runCsoundForNode (exampleFiles[r - 3000].getFullPathName());
+        }
+
     }
 }
 

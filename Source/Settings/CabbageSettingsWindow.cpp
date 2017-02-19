@@ -119,12 +119,12 @@ void CabbageSettingsWindow::addMiscProperties()
 
     autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("DisableAutoComplete"));
     autoCompleteValue.addListener (this);
-    
+
     editorProps.add (new BooleanPropertyComponent (showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopValue, "Plugin Window", "Always show plugin on top"));
     editorProps.add (new BooleanPropertyComponent (compileOnSaveValue, "Compiling", "Compile on save"));
     editorProps.add (new BooleanPropertyComponent (autoCompleteValue, "Auto-complete", "Show auto complete popup"));
-    
+
     const int scrollBy = settings.getUserSettings()->getIntValue ("numberOfLinesToScroll");
     editorProps.add (new TextPropertyComponent (Value (scrollBy), "Editor lines to scroll with MouseWheel", 10, false));
 

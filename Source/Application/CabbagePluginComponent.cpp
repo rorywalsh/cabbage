@@ -20,7 +20,7 @@ CabbagePluginComponent::CabbagePluginComponent (AudioGraph& graph_, const uint32
       font (13.0f, Font::bold),
       numIns (0),
       numOuts (0),
-	  lookAndFeel()
+      lookAndFeel()
 {
     shadow.setShadowProperties (DropShadow (Colours::black.withAlpha (0.5f), 3, Point<int> (0, 1)));
     setComponentEffect (&shadow);
@@ -42,14 +42,14 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
     if (e.mods.isPopupMenu())
     {
         PopupMenu m;
-		m.setLookAndFeel(&lookAndFeel);
+        m.setLookAndFeel (&lookAndFeel);
 
         m.addItem (3, "Show plugin UI");
         m.addItem (4, "Show code in editor");
-		m.addSeparator();
+        m.addSeparator();
         m.addItem (1, "Delete this filter");
         m.addItem (2, "Disconnect all pins");
-        
+
         const int r = m.show();
 
         if (r == 1)
@@ -61,19 +61,20 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
         {
             graph.disconnectFilter (filterID);
         }
-        else if( r == 3)
+        else if ( r == 3)
         {
-			if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
-			{
-				AudioProcessor* const processor = f->getProcessor();
-				jassert (processor != nullptr);
-				
-				PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
-													  : PluginWindow::Generic;
-				if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
-					w->toFront (true);
-					
-			}
+            if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
+            {
+                AudioProcessor* const processor = f->getProcessor();
+                jassert (processor != nullptr);
+
+                PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
+                                                      : PluginWindow::Generic;
+
+                if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
+                    w->toFront (true);
+
+            }
         }
     }
 }
@@ -92,7 +93,7 @@ void CabbagePluginComponent::mouseDrag (const MouseEvent& e)
                                (pos.getY() + getHeight() / 2) / (double) getParentHeight());
 
         getCabbageGraphComponent()->updateComponents();
-		getCabbageGraphComponent()->repaint();
+        getCabbageGraphComponent()->repaint();
     }
 }
 
@@ -126,20 +127,20 @@ void CabbagePluginComponent::paint (Graphics& g)
     const int w = getWidth() - x * 2;
     const int h = getHeight() - pinSize * 2;
 
-    g.setColour(CabbageUtilities::getComponentSkin());
+    g.setColour (CabbageUtilities::getComponentSkin());
     //g.setColour(Colour(220, 220, 220));
-    g.fillRoundedRectangle(x, y, w, h, 5);
+    g.fillRoundedRectangle (x, y, w, h, 5);
 
-    g.drawRoundedRectangle(x, y, w, h, 5, 1.f);
-    g.setColour (Colour(120, 120, 120));
+    g.drawRoundedRectangle (x, y, w, h, 5, 1.f);
+    g.setColour (Colour (120, 120, 120));
     g.setFont (CabbageUtilities::getComponentFont());
     g.drawFittedText (getName(),
                       x + 4, y - 2, w - 8, h - 4,
                       Justification::centred, 2);
 
-    g.setOpacity(0.2);
-    g.setColour(Colours::green.withAlpha(.3f));
-    g.drawRoundedRectangle(x+0.5, y+0.5, w-1, h-1, 5, 1.0f);
+    g.setOpacity (0.2);
+    g.setColour (Colours::green.withAlpha (.3f));
+    g.drawRoundedRectangle (x + 0.5, y + 0.5, w - 1, h - 1, 5, 1.0f);
 }
 
 void CabbagePluginComponent::resized()
@@ -222,10 +223,10 @@ void CabbagePluginComponent::update()
 
     setSize (w, h);
 
-	if(CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
-		setName (cabbagePlugin->getPluginName());
-	else
-		setName (f->getProcessor()->getName());
+    if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
+        setName (cabbagePlugin->getPluginName());
+    else
+        setName (f->getProcessor()->getName());
 
     {
         Point<double> p = graph.getNodePosition (filterID);
@@ -255,8 +256,8 @@ void CabbagePluginComponent::update()
 
         resized();
     }
-	
-	repaint();
+
+    repaint();
 }
 
 CabbageGraphComponent* CabbagePluginComponent::getCabbageGraphComponent() const noexcept
@@ -527,7 +528,7 @@ void PinComponent::paint (Graphics& g)
 
     g.setColour (index == AudioGraph::midiChannelNumber ? Colours::cornflowerblue : Colours::green);
     g.fillPath (p);
-	
+
 }
 
 void PinComponent::mouseDown (const MouseEvent& e)

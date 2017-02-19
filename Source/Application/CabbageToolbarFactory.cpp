@@ -36,8 +36,8 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (doc_open);
     ids.add (doc_save);
     ids.add (doc_saveAs);
-	ids.add (doc_save_graph);
-	ids.add (doc_saveAs_graph);
+    ids.add (doc_save_graph);
+    ids.add (doc_saveAs_graph);
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
@@ -55,8 +55,8 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (doc_open);
     ids.add (doc_save);
     ids.add (doc_saveAs);
-	ids.add (doc_save_graph);
-	ids.add (doc_saveAs_graph);
+    ids.add (doc_save_graph);
+    ids.add (doc_saveAs_graph);
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
@@ -142,7 +142,7 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
         togglePlayButton = new ToolbarButton (itemId, text, drawableNormal, drawableOn);
         togglePlayButton->setClickingTogglesState (true);
         togglePlayButton->addListener (owner);
-		togglePlayButton->setToggleState(true, false);
+        togglePlayButton->setToggleState (true, false);
         togglePlayButton->setTooltip ("Start/Stop Audio Graph");
         return togglePlayButton;
     }

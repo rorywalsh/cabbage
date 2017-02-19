@@ -207,8 +207,8 @@ void CabbageSlider::resized()
     slider.setValue (value, dontSendNotification);
 }
 
-void CabbageSlider::showPopupBubble(int time)
-{	
+void CabbageSlider::showPopupBubble (int time)
+{
     if (getTooltipText().isNotEmpty())
         popupText = getTooltipText();
     else
@@ -221,26 +221,26 @@ void CabbageSlider::showPopupBubble(int time)
 void CabbageSlider::mouseDrag (const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble(150);
+        showPopupBubble (150);
 }
 
 void CabbageSlider::mouseMove (const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble(150);
+        showPopupBubble (150);
 }
 
 void CabbageSlider::mouseEnter (const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble(1000);
+        showPopupBubble (1000);
 }
 
 void CabbageSlider::mouseExit (const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-		popupBubble.setVisible(false);
-} 
+        popupBubble.setVisible (false);
+}
 
 void CabbageSlider::setSliderVelocity (ValueTree wData)
 {

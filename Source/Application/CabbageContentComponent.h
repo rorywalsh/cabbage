@@ -58,7 +58,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void resizeAllEditorAndConsoles (int height);
-    void createEditorForAudioGraphNode();
+    void createEditorForAudioGraphNode(Point<int> position);
     void createAudioGraph();
     void addFileTabButton (File file);
     void arrangeFileTabButtons();
@@ -124,7 +124,7 @@ public:
 	CabbageSettings* getCabbageSettings(){		return cabbageSettings;	}
     const File getCurrentCsdFile(){			    return currentCsdFile;  }
 	AudioGraph* getAudioGraph(){				return audioGraph;	}
-	NamedValueSet& getNodeIds(){					return nodeIdsForFiles;	}	
+	NamedValueSet& getNodeIds(){					return nodeIdsForCsoundOrchestras;	}	
 	//==============================================================================
 private:
     bool fileNeedsSaving = false;
@@ -149,7 +149,7 @@ private:
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
-	NamedValueSet nodeIdsForFiles;
+	NamedValueSet nodeIdsForCsoundOrchestras;
 
 	class AudioGraphDocumentWindow : public DocumentWindow
 	{
@@ -176,6 +176,7 @@ private:
 class FileTabButton : public TextButton
 {
 	DrawableButton play, close, showEditor, editGUI;
+	String filename;
 
 	class Overlay : public Component
 	{
@@ -193,6 +194,7 @@ public:
 	
 	FileTabButton(String name, String filename): 
 		TextButton(name, filename),
+		filename(filename),
 		play("Play", DrawableButton::ButtonStyle::ImageStretched), 
 		close("", DrawableButton::ButtonStyle::ImageStretched),
 		showEditor("", DrawableButton::ButtonStyle::ImageStretched), 
@@ -238,6 +240,8 @@ public:
 
 		
 	}
+	
+	const String getFilename(){	return filename;	}
 	
 	void addButtonListeners(Button::Listener* listener)
 	{

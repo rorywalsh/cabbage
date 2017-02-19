@@ -126,23 +126,25 @@ void CabbageDocumentWindow::maximiseButtonPressed()
 
 void CabbageDocumentWindow::closeButtonPressed()
 {
-	CabbageIDELookAndFeel lookAndFeel;
-	if(getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
-	{
-		const int result = CabbageUtilities::showYesNoMessage("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
-		if(result==0)
-		{
-			if(getContentComponent()->getAudioGraph()->saveGraph()==FileBasedDocument::SaveResult::userCancelledSave)
-				return;
-		}
-		else if(result==1)
-			JUCEApplicationBase::quit();
-		else
-			return;
-	}
+    CabbageIDELookAndFeel lookAndFeel;
 
-	JUCEApplicationBase::quit();
-			
+    if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
+    {
+        const int result = CabbageUtilities::showYesNoMessage ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
+
+        if (result == 0)
+        {
+            if (getContentComponent()->getAudioGraph()->saveGraph() == FileBasedDocument::SaveResult::userCancelledSave)
+                return;
+        }
+        else if (result == 1)
+            JUCEApplicationBase::quit();
+        else
+            return;
+    }
+
+    JUCEApplicationBase::quit();
+
 }
 
 StringArray CabbageDocumentWindow::getMenuBarNames()
@@ -172,7 +174,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::newFile);
     menu.addSeparator();
-	menu.addCommandItem (&commandManager, CommandIDs::open);
+    menu.addCommandItem (&commandManager, CommandIDs::open);
     menu.addCommandItem (&commandManager, CommandIDs::openCabbagePatch);
 
     PopupMenu recentFilesMenu;
@@ -189,10 +191,10 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
-	menu.addSeparator();
+    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveGraph);
-    menu.addCommandItem (&commandManager, CommandIDs::saveGraphAs);	
-	menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::saveGraphAs);
+    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
@@ -238,12 +240,12 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
 
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
-	menu.addCommandItem (&commandManager, CommandIDs::showReplacePanel);
+    menu.addCommandItem (&commandManager, CommandIDs::showReplacePanel);
 
     menu.addCommandItem (&commandManager, CommandIDs::findSelection);
     menu.addCommandItem (&commandManager, CommandIDs::findNext);
     menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
-	menu.addSeparator();
+    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::settings);
 
 }
@@ -301,11 +303,13 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
 {
     if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
     {
-		const File file =cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName();
-		if(file.hasFileExtension(".csd"))
-			getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
-		if(file.hasFileExtension(".cabbage"))
-			getContentComponent()->openGraph (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
+        const File file = cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName();
+
+        if (file.hasFileExtension (".csd"))
+            getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
+
+        if (file.hasFileExtension (".cabbage"))
+            getContentComponent()->openGraph (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
     }
     else if (menuItemID >= examplesMenuBaseID && menuItemID < exampleFiles.size() + examplesMenuBaseID)
     {
@@ -327,14 +331,14 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 {
 
     const CommandID ids[] = { CommandIDs::openCabbagePatch,
-							  CommandIDs::newFile,	
+                              CommandIDs::newFile,
                               CommandIDs::open,
                               CommandIDs::openFromRPi,
                               CommandIDs::closeAllDocuments,
                               CommandIDs::closeDocument,
                               CommandIDs::saveDocument,
-							  CommandIDs::saveGraph,
-							  CommandIDs::saveGraphAs,
+                              CommandIDs::saveGraph,
+                              CommandIDs::saveGraphAs,
                               CommandIDs::saveDocumentToRPi,
                               CommandIDs::saveDocumentAs,
                               CommandIDs::examples,
@@ -373,11 +377,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
     switch (commandID)
     {
-		case CommandIDs::newFile:
+        case CommandIDs::newFile:
             result.setInfo ("New Csound file", "Create a new Csound file", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier, 0));
             break;
-		
+
         case CommandIDs::openCabbagePatch:
             result.setInfo ("Open Cabbage patch...", "Opens a Cabbage patch", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
@@ -406,7 +410,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Save Csound file", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
             break;
-			
+
         case CommandIDs::saveGraph:
             result.setInfo ("Save Cabbage patch", "Save a patch document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
@@ -416,7 +420,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Save Cabbage patch as...", "Save a patch document as", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier | ModifierKeys::shiftModifier, 0));
             break;
-			
+
         case CommandIDs::saveDocumentToRPi:
             result.setInfo ("Save Csound file to RPi", "Save a document to RPi", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
@@ -587,10 +591,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->createNewProject();
             return true;
 
-       case CommandIDs::openCabbagePatch:
+        case CommandIDs::openCabbagePatch:
             getContentComponent()->openGraph();
             return true;
-			
+
         case CommandIDs::open:
             getContentComponent()->openFile();
             return true;
@@ -604,20 +608,20 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::saveGraph:
-            getContentComponent()->saveGraph(false);
+            getContentComponent()->saveGraph (false);
             return true;
-			
-		case CommandIDs::saveGraphAs:
-            getContentComponent()->saveGraph(true);
+
+        case CommandIDs::saveGraphAs:
+            getContentComponent()->saveGraph (true);
             return true;
-			
-			
+
+
         case CommandIDs::saveDocument:
             getContentComponent()->saveDocument();
             getContentComponent()->setEditMode (false);
             isGUIEnabled = false;
             break;
-			
+
         case CommandIDs::closeDocument:
             getContentComponent()->closeDocument();
             return true;
@@ -713,7 +717,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::showGraph:
             getContentComponent()->showGraph();
             break;
-			
+
         case CommandIDs::editMode:
             getContentComponent()->setEditMode (isGUIEnabled = ! isGUIEnabled);
 
