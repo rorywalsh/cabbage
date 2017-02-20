@@ -139,7 +139,7 @@ public:
     ScopedPointer<XmlElement> xmlSettings;
     bool isInput;
     int currentBus;
-    bool getIsCabbageFile()    {        return isCabbageFile;    }
+    //bool getIsCabbageFile()    {        return isCabbageFile;    }
 
     static const int midiChannelNumber;
 	CabbageMainComponent* getParent(){	return &owner;	}
@@ -147,7 +147,7 @@ private:
 	CabbageMainComponent& owner;
 	Array<int> internalNodeIds;
 	ScopedPointer<AudioPluginFormatManager> formatManager;
-    bool isCabbageFile = false;
+    //bool isCabbageFile = false;
 	void createNodeFromXml (const XmlElement& xml);
     void setupAudioDevices (const String& preferredDefaultDeviceName,
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)

@@ -438,6 +438,7 @@ void CabbageMainComponent::showGraph()
 //==============================================================================
 void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
 {
+	
     int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
 
     if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
@@ -530,7 +531,9 @@ void CabbageMainComponent::setEditMode (bool enable)
     if ( nodeId == -99)
         return;
 
-    if (audioGraph->getIsCabbageFile() == true)
+	const bool isCabbageFile = CabbageUtilities::hasCabbageTags(getCurrentCsdFile());
+
+    if (isCabbageFile == true)
     {
         if (!getCabbagePluginEditor())
         {
@@ -665,7 +668,7 @@ void CabbageMainComponent::saveGraph (bool saveAs)
     audioGraph->saveGraph (saveAs);
 }
 //==================================================================================
-void CabbageMainComponent::openFile (String filename)
+const File CabbageMainComponent::openFile (String filename)
 {
 
     stopTimer();
@@ -680,19 +683,20 @@ void CabbageMainComponent::openFile (String filename)
             if (openFiles.contains (File(filename)) && currentFileIndex > -1)
 			{
 				CabbageUtilities::showMessage ("File is already open", lookAndFeel);
-				return;
+				return File();
 			}
 			else
 				currentCsdFile = fc.getResult();
         }
         else
-            return;
+            return File();
     }
     else 
 		currentCsdFile = File(filename);
 
     cabbageSettings->updateRecentFilesList (currentCsdFile);
 	createCodeEditorForFile(currentCsdFile);
+	return currentCsdFile;
 
 }
 //==================================================================================

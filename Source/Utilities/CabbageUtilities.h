@@ -446,7 +446,8 @@ public:
 
 	}
 
-	static void addFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
+
+	static void addExampleFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
 	{
 		filesArray.clear();
 		addExamples (m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);
@@ -458,6 +459,23 @@ public:
 		addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
 		addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
 		addExamples (m, "Utilities", dir, filesArray, StringArray(), indexOffset);
+	}
+	
+	static void addFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, int indexOffset)
+	{
+		
+		File searchDir (dir);
+		Array<File> searchFilesArray;
+		PopupMenu subMenu;
+		searchDir.findChildFiles(searchFilesArray, File::findFiles, false, "*.csd");
+		searchFilesArray.sort();
+		filesArray.addArray (searchFilesArray);
+
+		for (int fileCnt = 0; fileCnt < filesArray.size(); fileCnt++)
+		{
+		m.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+		}
+
 	}
 //======================================================================================
     static void showMessage (String message)

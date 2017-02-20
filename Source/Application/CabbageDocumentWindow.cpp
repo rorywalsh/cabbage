@@ -185,7 +185,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     const String examplesDir = cabbageSettings->getUserSettings()->getValue ("CabbageExamplesDir", "");
 
     PopupMenu examplesMenu;
-    CabbageUtilities::addFilesToPopupMenu (examplesMenu, exampleFiles, examplesDir, "*.csd", examplesMenuBaseID);
+    CabbageUtilities::addExampleFilesToPopupMenu (examplesMenu, exampleFiles, examplesDir, "*.csd", examplesMenuBaseID);
 
     menu.addSubMenu ("Examples", examplesMenu);
     menu.addSeparator();

@@ -69,7 +69,7 @@ public:
     void showAudioSettings();
     void launchSSHFileBrowser (String mode);
     void setEditMode (bool enable);
-    void openFile (String filename = "");
+    const File openFile (String filename = "");
     bool closeAllDocuments (bool askUserToSave);
     void closeDocument();
     bool closeAllMainWindows();

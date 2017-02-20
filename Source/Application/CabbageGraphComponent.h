@@ -56,6 +56,7 @@ public:
     //==============================================================================
 private:
 	Array<File> exampleFiles;
+	Array<File> userFiles;
 	CabbageLookAndFeel2 lookAndFeel;
     AudioGraph& graph;
 	CabbageMainComponent& owner;

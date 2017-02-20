@@ -82,6 +82,7 @@ void AudioGraph::addPlugin (File inputFile, int32 nodeId)
         {
             Point<double> position = this->getNodePosition (nodeId);
             ScopedPointer<XmlElement> xml = createConnectionsXml();
+			//delete graph.getNodeForId(nodeId)->getProcessor();
             graph.removeNode (nodeId);
             AudioProcessorGraph::Node::Ptr node = createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
             setNodePosition (nodeId, position.getX(), position.getY());
@@ -130,7 +131,7 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
     if (desc.pluginFormatName == "Cabbage")
     {
         AudioProcessor* processor;
-        isCabbageFile = CabbageUtilities::hasCabbageTags (File (desc.fileOrIdentifier));
+        bool isCabbageFile = CabbageUtilities::hasCabbageTags (File (desc.fileOrIdentifier));
 
         if (isCabbageFile)
             processor = createCabbagePluginFilter (File (desc.fileOrIdentifier));
@@ -140,13 +141,22 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
         jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
+		const int inputs = processor->getBusCount(true);
+		const int outputs = processor->getBusCount(false);
+	
+//		AudioProcessor::Bus* ins = processor->getBus (true, 0);
+//		ins->setCurrentLayout(AudioChannelSet::mono());
+//		
+//		AudioProcessor::Bus* outs = processor->getBus (false, 0);
+//		outs->setCurrentLayout(AudioChannelSet::mono());
+		
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails (44100, 512);
 
         AudioProcessorGraph::Node* node = graph.addNode (processor, nodeId);
         ScopedPointer<XmlElement> xmlElem;
         xmlElem = desc.createXml();
-        node->properties.set ("pluginType", "Cabbage");
+        node->properties.set ("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
         node->properties.set ("pluginName", "Test");
         node->properties.set ("pluginDesc", xmlElem->createDocument (""));
 
@@ -295,11 +305,10 @@ void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceNam
 //==============================================================================
 String AudioGraph::getCsoundOutput (int32 nodeId)
 {
-
     if (graph.getNodeForId (nodeId) != nullptr &&
         graph.getNodeForId (nodeId)->getProcessor() != nullptr)
     {
-        if (isCabbageFile)
+        if (graph.getNodeForId (nodeId)->properties.getWithDefault("pluginType", "").toString() == "Cabbage")
             return dynamic_cast<CabbagePluginProcessor*> (graph.getNodeForId (nodeId)->getProcessor())->getCsoundOutput();
         else
             return dynamic_cast<GenericCabbagePluginProcessor*> (graph.getNodeForId (nodeId)->getProcessor())->getCsoundOutput();

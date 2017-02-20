@@ -131,9 +131,12 @@ void CabbageSettingsWindow::addMiscProperties()
     const String examplesDir = settings.getUserSettings()->getValue ("CabbageExamplesDir");
     const String manualDir = settings.getUserSettings()->getValue ("CsoundManualDir");
     const String plantDir = settings.getUserSettings()->getValue ("CabbagePlantDir");
+	const String userFilesDir = settings.getUserSettings()->getValue("UserFilesDir");
+	
     dirProps.add (new CabbageFilePropertyComponent ("Csound manual dir.", true, false,  "*", manualDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage plants dir.", true, false, "*", plantDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage examples dir.", true, false, "*", examplesDir));
+	dirProps.add (new CabbageFilePropertyComponent ("User files dir.", true, false, "*", userFilesDir));
 
     const String sshAddress = settings.getUserSettings()->getValue ("SSHAddress");
     sshProps.add (new TextPropertyComponent (Value (sshAddress), "SSH Address", 200, false));
@@ -217,7 +220,8 @@ void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileCom
         settings.getUserSettings()->setValue ("CabbagePlantDir", fileComponent->getCurrentFileText());
     else if (fileComponent->getName() == "Cabbage examples dir.")
         settings.getUserSettings()->setValue ("CabbageExamplesDir", fileComponent->getCurrentFileText());
-
+    else if (fileComponent->getName() == "User files dir.")
+        settings.getUserSettings()->setValue ("UserFilesDir", fileComponent->getCurrentFileText());
 }
 
 void CabbageSettingsWindow::selectPanel (String button)

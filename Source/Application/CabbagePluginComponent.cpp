@@ -44,10 +44,10 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
         PopupMenu m;
         m.setLookAndFeel (&lookAndFeel);
 
-        m.addItem (3, "Show plugin UI");
-        m.addItem (4, "Show code in editor");
+        m.addItem (3, "Show plugin interface");
+        m.addItem (4, "Show source code in editor");
         m.addSeparator();
-        m.addItem (1, "Delete this filter");
+        m.addItem (1, "Delete this plugin");
         m.addItem (2, "Disconnect all pins");
 
         const int r = m.show();
@@ -109,7 +109,10 @@ void CabbagePluginComponent::mouseUp (const MouseEvent& e)
     {
         if (const AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
             if (PluginWindow* const w = PluginWindow::getWindowFor (f, PluginWindow::Normal, graph.getGraph()))
+			{
                 w->toFront (true);
+				graph.showCodeEditorForNode(filterID);
+			}
     }
 }
 

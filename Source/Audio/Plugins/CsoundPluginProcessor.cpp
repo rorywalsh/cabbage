@@ -77,6 +77,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
         csoundParams->ksmps_override = 4410;
     }
 
+	const int channels = this->getChannelCountOfBus(true, 0);
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
     numCsoundChannels = csound->GetNchnls();
@@ -250,7 +251,8 @@ const String CsoundPluginProcessor::getCsoundOutput()
 
         for (int i = 0; i < messageCnt; i++)
         {
-            csoundOutput += csound->GetFirstMessage();
+			const char* message = csound->GetFirstMessage();
+            csoundOutput += String();
             csound->PopFirstMessage();
         }
 
