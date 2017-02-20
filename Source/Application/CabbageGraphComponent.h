@@ -24,13 +24,13 @@
 #include "../Audio/Graph/AudioGraph.h"
 #include "CabbagePluginComponent.h"
 
-class CabbageContentComponent;
+class CabbageMainComponent;
 
 class CabbageGraphComponent : public Component,
     public ChangeListener
 {
 public:
-    CabbageGraphComponent (AudioGraph& graph, CabbageContentComponent& owner);
+    CabbageGraphComponent (AudioGraph& graph, CabbageMainComponent& owner);
     ~CabbageGraphComponent();
 
     void paint (Graphics& g);
@@ -58,7 +58,7 @@ private:
 	Array<File> exampleFiles;
 	CabbageLookAndFeel2 lookAndFeel;
     AudioGraph& graph;
-	CabbageContentComponent& owner;
+	CabbageMainComponent& owner;
     ScopedPointer<ConnectorComponent> draggingConnector;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageGraphComponent)

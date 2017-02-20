@@ -6,10 +6,10 @@
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
-        <FILE id="XD0L4e" name="CabbageContentComponent.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageContentComponent.cpp"/>
-        <FILE id="OQA69B" name="CabbageContentComponent.h" compile="0" resource="0"
-              file="Source/Application/CabbageContentComponent.h"/>
+        <FILE id="XD0L4e" name="CabbageMainComponent.cpp" compile="1" resource="0"
+              file="Source/Application/CabbageMainComponent.cpp"/>
+        <FILE id="OQA69B" name="CabbageMainComponent.h" compile="0" resource="0"
+              file="Source/Application/CabbageMainComponent.h"/>
         <FILE id="IobAxt" name="CabbageDocumentWindow.cpp" compile="1" resource="0"
               file="Source/Application/CabbageDocumentWindow.cpp"/>
         <FILE id="su6diz" name="CabbageDocumentWindow.h" compile="0" resource="0"

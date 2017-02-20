@@ -18,12 +18,12 @@
 */
 
 #include "CabbageNewProjectWindow.h"
-#include "../Application/CabbageContentComponent.h"
+#include "../Application/CabbageMainComponent.h"
 #include "CabbageStrings.h"
 #include "CabbageUtilities.h"
 
 
-CabbageProjectWindow::CabbageProjectWindow (CabbageContentComponent* owner):
+CabbageProjectWindow::CabbageProjectWindow (CabbageMainComponent* owner):
     owner (owner),
     newInstrumentButton ("newInstrument", this),
     newEffectButton ("newEffect", this),

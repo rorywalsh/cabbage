@@ -18,7 +18,7 @@
 */
 
 #include "AudioGraph.h"
-#include "../../Application/CabbageContentComponent.h"
+#include "../../Application/CabbageMainComponent.h"
 
 //==============================================================================
 class PluginWindow;
@@ -26,7 +26,7 @@ class PluginWindow;
 
 const int AudioGraph::midiChannelNumber = 0x1000;
 
-AudioGraph::AudioGraph (CabbageContentComponent& owner_, PropertySet* settingsToUse,
+AudioGraph::AudioGraph (CabbageMainComponent& owner_, PropertySet* settingsToUse,
                         bool takeOwnershipOfSettings,
                         const String& preferredDefaultDeviceName,
                         const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
@@ -111,6 +111,18 @@ const PluginDescription AudioGraph::getPluginDescriptor (String type, String nam
     descript.pluginFormatName = type;
 
     return descript;
+}
+//==============================================================================
+void AudioGraph::showCodeEditorForNode(int32 nodeId)
+{
+	for( int i = 0 ; i < owner.getNodeIds().size() ; i++)
+	{
+		if(int32(owner.getNodeIds().getValueAt(i)) == nodeId)
+		{
+			const String nodeFilename = owner.getNodeIds().getName(i).toString(); 
+			owner.bringCodeEditorToFront(File(nodeFilename));
+		}
+	}		
 }
 //==============================================================================
 AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& desc, int32 nodeId)

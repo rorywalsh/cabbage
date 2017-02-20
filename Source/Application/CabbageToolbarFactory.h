@@ -24,12 +24,12 @@
 #ifndef CODEEDITORTOOLBARFACTORY_H_INCLUDED
 #define CODEEDITORTOOLBARFACTORY_H_INCLUDED
 
-class CabbageContentComponent;
+class CabbageMainComponent;
 
 class CabbageToolbarFactory   : public ToolbarItemFactory
 {
 public:
-    CabbageToolbarFactory (CabbageContentComponent* owner);
+    CabbageToolbarFactory (CabbageMainComponent* owner);
     ~CabbageToolbarFactory()
     {
     }
@@ -124,7 +124,7 @@ private:
         ComboBox comboBox;
     };
 
-    CabbageContentComponent* owner;
+    CabbageMainComponent* owner;
 
 public:
     ToolbarComboBox* combo; //owner by toolbar factory...

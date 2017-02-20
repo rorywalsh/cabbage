@@ -18,9 +18,9 @@
 */
 
 #include "CabbageToolbarFactory.h"
-#include "CabbageContentComponent.h"
+#include "CabbageMainComponent.h"
 
-CabbageToolbarFactory::CabbageToolbarFactory (CabbageContentComponent* owner)
+CabbageToolbarFactory::CabbageToolbarFactory (CabbageMainComponent* owner)
     : owner (owner), togglePlayButton (nullptr), combo (nullptr)
 {
 

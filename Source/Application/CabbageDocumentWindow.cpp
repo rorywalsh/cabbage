@@ -41,7 +41,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (na
 
 
     initSettings();
-    setContentOwned (content = new CabbageContentComponent (this, cabbageSettings), true);
+    setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
     content->propertyPanel->setVisible (false);
     cabbageSettings->addChangeListener (content);
     setMenuBar (this, 25);
@@ -114,7 +114,7 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
 
 }
 //=======================================================================================
-CabbageContentComponent* CabbageDocumentWindow::getContentComponent()
+CabbageMainComponent* CabbageDocumentWindow::getContentComponent()
 {
     return content;
 }
@@ -427,7 +427,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
 
         case CommandIDs::saveDocumentAs:
-            result.setInfo ("Save Csound as...", "Save a document", CommandCategories::general, 0);
+            result.setInfo ("Save Csound file as...", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
             break;
 

@@ -28,7 +28,7 @@
 #include "../Plugins/CabbagePluginEditor.h"
 #include "../../Settings/CabbageSettings.h"
 
-class CabbageContentComponent;
+class CabbageMainComponent;
 const char* const filenameSuffix = ".cabbagepatch";
 const char* const filenameWildcard = "*.cabbagepatch";
 
@@ -47,7 +47,7 @@ public:
         return new CabbagePluginProcessor (inputFile);
     }
 
-    AudioGraph (CabbageContentComponent& owner, PropertySet* settingsToUse,
+    AudioGraph (CabbageMainComponent& owner, PropertySet* settingsToUse,
                 bool takeOwnershipOfSettings = true,
                 const String& preferredDefaultDeviceName = String(),
                 const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr);
@@ -70,6 +70,7 @@ public:
 	const PluginDescription getPluginDescriptor(String type, String name, int32 nodeId, String inputfile = "");
 	void setDefaultConnections(int nodeId);
 	void createInternalFilters();
+	void showCodeEditorForNode(int32 nodeId);
     void updateBusLayout (AudioProcessor* selectedProcessor);
     int getNumberOfParameters();
     virtual void deletePlugin();
@@ -141,9 +142,9 @@ public:
     bool getIsCabbageFile()    {        return isCabbageFile;    }
 
     static const int midiChannelNumber;
-
+	CabbageMainComponent* getParent(){	return &owner;	}
 private:
-	CabbageContentComponent& owner;
+	CabbageMainComponent& owner;
 	Array<int> internalNodeIds;
 	ScopedPointer<AudioPluginFormatManager> formatManager;
     bool isCabbageFile = false;

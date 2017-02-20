@@ -76,6 +76,8 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
 
             }
         }
+		else if ( r == 4)
+			graph.showCodeEditorForNode(filterID);
     }
 }
 

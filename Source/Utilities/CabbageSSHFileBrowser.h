@@ -22,14 +22,14 @@
 
 #include "../CabbageCommonHeaders.h"
 
-class CabbageContentComponent;
+class CabbageMainComponent;
 //==============================================================================
 class CabbageSSHFileBrowser   : public Component,
     public ListBoxModel,
     public TextEditor::Listener
 {
 public:
-    CabbageSSHFileBrowser (String ip, String homeDir, CabbageContentComponent* owner, String mode, String csdFilePath);
+    CabbageSSHFileBrowser (String ip, String homeDir, CabbageMainComponent* owner, String mode, String csdFilePath);
     ~CabbageSSHFileBrowser();
     void paint (Graphics& g) override;
     void resized() override;
@@ -52,7 +52,7 @@ private:
 
     ChildProcess childProcess;
     StringArray filesAndFoldersToDisplay, filePath;
-    CabbageContentComponent* owner;
+    CabbageMainComponent* owner;
     String labelPrefix = "Current Directory: ";
 
 

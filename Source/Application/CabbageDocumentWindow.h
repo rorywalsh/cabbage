@@ -25,7 +25,7 @@
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../GUIEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"
-#include "CabbageContentComponent.h"
+#include "CabbageMainComponent.h"
 #include "../CodeEditor/CabbageOutputConsole.h"
 #include "../Settings/CabbageSettingsWindow.h"
 #include "../Settings/CabbageSettings.h"
@@ -41,7 +41,7 @@ public:
     //==========================================================
     CabbageDocumentWindow (String name);
     ~CabbageDocumentWindow();
-    CabbageContentComponent* getContentComponent();
+    CabbageMainComponent* getContentComponent();
     //=======================================================
     StringArray getMenuBarNames();
     void createMenu (PopupMenu&, const String& menuName);
@@ -85,7 +85,7 @@ private:
 
 
     bool isGUIEnabled = false;
-    ScopedPointer<CabbageContentComponent> content;
+    ScopedPointer<CabbageMainComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };
 

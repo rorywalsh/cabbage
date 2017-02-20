@@ -10,10 +10,10 @@
 */
 
 #include "CabbageGraphComponent.h"
-#include "CabbageContentComponent.h"
+#include "CabbageMainComponent.h"
 #include "../Audio/Plugins/CabbagePluginProcessor.h"
 
-CabbageGraphComponent::CabbageGraphComponent (AudioGraph& graph_, CabbageContentComponent& owner_)
+CabbageGraphComponent::CabbageGraphComponent (AudioGraph& graph_, CabbageMainComponent& owner_)
     : graph (graph_),
       owner (owner_),
       lookAndFeel()

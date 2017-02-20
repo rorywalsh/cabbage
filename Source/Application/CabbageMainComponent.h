@@ -35,7 +35,7 @@
 class CabbageDocumentWindow;
 class FileTabButton;
 
-class CabbageContentComponent
+class CabbageMainComponent
     : public Component,
       public Button::Listener,
       public ActionListener,
@@ -46,8 +46,8 @@ class CabbageContentComponent
 public:
 
     //==============================================================================
-    CabbageContentComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
-    ~CabbageContentComponent();
+    CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
+    ~CabbageMainComponent();
     //==============================================================================
     void changeListenerCallback (ChangeBroadcaster* source);
     void actionListenerCallback (const String& message);
@@ -60,13 +60,13 @@ public:
     void resizeAllEditorAndConsoles (int height);
     void createEditorForAudioGraphNode(Point<int> position);
     void createAudioGraph();
-    void addFileTabButton (File file);
-    void arrangeFileTabButtons();
-    void removeEditor();
+    void createCodeEditorForFile(File file);
+	void createNewProject();
+    void createGenericCsoundPluginWrapper();
     Image createBackground();
+    void removeEditor();
     //==============================================================================
     void showAudioSettings();
-    void createNewProject();
     void launchSSHFileBrowser (String mode);
     void setEditMode (bool enable);
     void openFile (String filename = "");
@@ -80,8 +80,8 @@ public:
     void stopAudioGraph();
 	void startAudioGraph();
     void showGenericWidgetWindow();
+	void bringCodeEditorToFront(File file);
     void hideGenericWidgetWindow (bool freeContent = false);
-    void createGenericCsoundPluginWrapper();
     void initSettings();
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
@@ -89,10 +89,14 @@ public:
 	void showGraph();
 	void saveGraph(bool saveAs);
 	void openGraph(File fileToOpen = File());
+	File getCurrentCsdFile ();	
+	void writeFileToDisk(File file);
 	//==============================================================================
 	void handleToolbarButtons(ToolbarButton* toolbarButton);
 	void handleFileTabButtons(DrawableButton* button);
 	void handleFileTab(FileTabButton* drawableButton) ;
+    void addFileTabButton (File file);
+    void arrangeFileTabButtons();
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -108,25 +112,23 @@ public:
     CabbagePluginProcessor* getCabbagePluginProcessor();
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();
+	CabbageEditorContainer* getCurrentEditorContainer();
+    String getAudioDeviceSettings();
+    int getStatusbarYPos();
+	CabbageSettings* getCabbageSettings(){		return cabbageSettings;	}
+	AudioGraph* getAudioGraph(){				return audioGraph;	}
+	NamedValueSet& getNodeIds(){					return nodeIdsForPlugins;	}	
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
-    OwnedArray<FileTabButton> fileTabs;
-    Array<File> openFiles;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
-    bool setCurrentCsdFile (File file);	
 	//==============================================================================
-	CabbageEditorContainer* getCurrentEditorContainer();
-    String getAudioDeviceSettings();
-    void timerCallback();
-    int getStatusbarYPos();
-	CabbageSettings* getCabbageSettings(){		return cabbageSettings;	}
-    const File getCurrentCsdFile(){			    return currentCsdFile;  }
-	AudioGraph* getAudioGraph(){				return audioGraph;	}
-	NamedValueSet& getNodeIds(){					return nodeIdsForCsoundOrchestras;	}	
-	//==============================================================================
+	void timerCallback();
+	
 private:
+	OwnedArray<FileTabButton> fileTabs;  
+	Array<File> openFiles;
     bool fileNeedsSaving = false;
     String searchString = String::empty;
     String replaceString = String::empty;
@@ -136,7 +138,7 @@ private:
     //ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     CabbageToolbarFactory factory;
     Image bgImage;
-    File currentCsdFile;
+    //File currentCsdFile;
     const int statusBarHeight = 25;
     CabbageSettings* cabbageSettings;
     int currentFileIndex = 0;
@@ -149,7 +151,7 @@ private:
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
-	NamedValueSet nodeIdsForCsoundOrchestras;
+	NamedValueSet nodeIdsForPlugins;
 
 	class AudioGraphDocumentWindow : public DocumentWindow
 	{
@@ -170,7 +172,7 @@ private:
 	ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageContentComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainComponent)
 };
 
 class FileTabButton : public TextButton
@@ -312,7 +314,7 @@ public:
 };
 
 //==============================================================================
-class CabbageContentComponent::FindPanel  : public Component,
+class CabbageMainComponent::FindPanel  : public Component,
     private TextEditor::Listener,
     private ButtonListener
 {
@@ -433,7 +435,7 @@ public:
         getOwner()->setSearchString (findEditor.getText());
         getOwner()->setReplaceString (replaceEditor.getText());
 
-        if (CabbageContentComponent* contentComp = getOwner())
+        if (CabbageMainComponent* contentComp = getOwner())
         {
             if (editor.getName() == "findEditor")
                 contentComp->findNext (true);
@@ -449,7 +451,7 @@ public:
 
         if (editor.getName() == "findEditor")
         {
-            if (CabbageContentComponent* contentComp = getOwner())
+            if (CabbageMainComponent* contentComp = getOwner())
             {
                 contentComp->findNext (true);
             }
@@ -458,13 +460,13 @@ public:
 
     void textEditorEscapeKeyPressed (TextEditor&) override
     {
-        if (CabbageContentComponent* contentComp = getOwner())
+        if (CabbageMainComponent* contentComp = getOwner())
             contentComp->hideFindPanel();
     }
 
-    CabbageContentComponent* getOwner() const
+    CabbageMainComponent* getOwner() const
     {
-        return findParentComponentOfClass <CabbageContentComponent>();
+        return findParentComponentOfClass <CabbageMainComponent>();
     }
 
     TextEditor findEditor, replaceEditor;
