@@ -77,11 +77,16 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
         csoundParams->ksmps_override = 4410;
     }
 
-	const int channels = this->getChannelCountOfBus(true, 0);
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
     numCsoundChannels = csound->GetNchnls();
 
+	AudioProcessor::Bus* ins = getBus (true, 0);
+	ins->setCurrentLayout(AudioChannelSet::mono());
+	
+	AudioProcessor::Bus* outs = getBus (false, 0);
+	outs->setCurrentLayout(AudioChannelSet::mono());
+	
     addMacros (csdFile.getFullPathName());
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
 
@@ -369,11 +374,11 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     MYFLT newSamp;
     int result = -1;
 
-#if defined(Cabbage_Build_IDE) || defined(AndroidBuild)
-    const int output_channel_count = numCsoundChannels;
-#else
+//#if defined(Cabbage_Build_IDE) || defined(AndroidBuild)
+//    const int output_channel_count = numCsoundChannels;
+//#else
     const int output_channel_count = getTotalNumOutputChannels();
-#endif
+//#endif
 
     //if no inputs are used clear buffer in case it's not empty..
     if (getTotalNumInputChannels() == 0)
@@ -455,6 +460,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     }
 }
 
+//==============================================================================
 void CsoundPluginProcessor::breakpointCallback (CSOUND* csound, debug_bkpt_info_t* bkpt_info, void* userdata)
 {
 
