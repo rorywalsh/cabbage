@@ -64,7 +64,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
-  $(JUCE_OBJDIR)/CabbageContentComponent_ee810147.o \
+  $(JUCE_OBJDIR)/CabbageMainComponent_bb67f2ab.o \
   $(JUCE_OBJDIR)/CabbageDocumentWindow_3af539ae.o \
   $(JUCE_OBJDIR)/CabbageGraphComponent_5cbe6212.o \
   $(JUCE_OBJDIR)/CabbagePluginComponent_22f65af1.o \
@@ -154,9 +154,9 @@ strip:
 	@echo Stripping Cabbage
 	-@$(STRIP) --strip-unneeded $(JUCE_OUTDIR)/$(TARGET)
 
-$(JUCE_OBJDIR)/CabbageContentComponent_ee810147.o: ../../Source/Application/CabbageContentComponent.cpp
+$(JUCE_OBJDIR)/CabbageMainComponent_bb67f2ab.o: ../../Source/Application/CabbageMainComponent.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageContentComponent.cpp"
+	@echo "Compiling CabbageMainComponent.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbageDocumentWindow_3af539ae.o: ../../Source/Application/CabbageDocumentWindow.cpp
