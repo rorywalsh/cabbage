@@ -29,14 +29,14 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-                      .withInput  ("Input",  AudioChannelSet::stereo(), true)
+                      .withInput  ("Input",  AudioChannelSet::octagonal(), true)
 #endif
-                      .withOutput ("Output", AudioChannelSet::stereo(), true)
+                      .withOutput ("Output", AudioChannelSet::octagonal(), true)
 #endif
                      )
 #endif
 {
-
+	
     String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");
     fileLogger = new FileLogger (File (logFileName), String ("Cabbage Log.."));
     Logger::setCurrentLogger (fileLogger);
@@ -81,11 +81,11 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
     compileCsdFile (csdFile);
     numCsoundChannels = csound->GetNchnls();
 
-	AudioProcessor::Bus* ins = getBus (true, 0);
-	ins->setCurrentLayout(AudioChannelSet::mono());
+//	AudioProcessor::Bus* ins = getBus (true, 0);
+//	ins->setCurrentLayout(AudioChannelSet::mono());
 	
-	AudioProcessor::Bus* outs = getBus (false, 0);
-	outs->setCurrentLayout(AudioChannelSet::mono());
+//	AudioProcessor::Bus* outs = getBus (false, 0);
+//	outs->setCurrentLayout(AudioChannelSet::mono());
 	
     addMacros (csdFile.getFullPathName());
     csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
@@ -342,6 +342,8 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     return true;
 #else
 
+	
+	return true; 
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()

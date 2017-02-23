@@ -138,6 +138,11 @@ public:
         guiRefreshRate = rate;
     }
 
+	int getNumberOfCsoundChannels()
+	{
+		return numCsoundChannels;
+	}
+	
     MidiKeyboardState keyboardState;
 
     //==================================================================================
