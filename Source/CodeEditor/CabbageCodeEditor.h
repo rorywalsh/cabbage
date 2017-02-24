@@ -120,8 +120,8 @@ public:
     void cut() {     this->cutToClipboard();     }
     void copy() {    this->copyToClipboard();    }
     void paste() {   this->pasteFromClipboard(); }
-    void undo() {    this->undo();               }
-    void redo() {    this->redo();               }
+    //void undo() {    this->undo();               }
+    //void redo() {    this->redo();               }
     //=========================================================
     void timerCallback();
     ValueTree breakpointData;
