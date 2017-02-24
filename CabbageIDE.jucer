@@ -64,6 +64,8 @@
         </GROUP>
       </GROUP>
       <GROUP id="{32AD2C91-57CE-D3EF-F185-2CD9A89DD7E1}" name="BinaryData">
+        <FILE id="vNeY7N" name="cabbage.png" compile="0" resource="1" file="Images/cabbage.png"
+              xcodeResource="1"/>
         <FILE id="T2eFRA" name="CabbageBinaryData.cpp" compile="1" resource="0"
               file="Source/BinaryData/CabbageBinaryData.cpp"/>
         <FILE id="LjmfNy" name="CabbageBinaryData.h" compile="0" resource="0"
@@ -279,7 +281,8 @@
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
-               extraDefs="MACOSX=1&#10;Cabbage_Build_IDE=1">
+               extraDefs="MACOSX=1&#10;Cabbage_Build_IDE=1" smallIcon="vNeY7N"
+               bigIcon="vNeY7N">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"/>

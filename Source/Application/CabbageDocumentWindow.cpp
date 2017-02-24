@@ -138,7 +138,10 @@ void CabbageDocumentWindow::closeButtonPressed()
                 return;
         }
         else if (result == 1)
+        {
             JUCEApplicationBase::quit();
+            return;
+        }
         else
             return;
     }

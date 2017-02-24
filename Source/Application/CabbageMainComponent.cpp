@@ -489,7 +489,7 @@ String CabbageMainComponent::getAudioDeviceSettings()
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
-    if (audioGraph != nullptr)
+    if (audioGraph != nullptr && nodeIdsForPlugins.size() > 0)
     {
         const int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
 		if(nodeId != 99)

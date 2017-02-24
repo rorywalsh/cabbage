@@ -214,8 +214,8 @@ void AudioGraph::setDefaultConnections (int nodeId)
 
     bool connection3 = graph.addConnection (internalNodeIds[InternalNodes::MIDIInput], AudioProcessorGraph::midiChannelIndex, nodeId, AudioProcessorGraph::midiChannelIndex);
 
-    if (connection1 == false  || connectInput1 == false )
-        jassertfalse;
+    //if (connection1 == false  || connectInput1 == false )
+    //    jassertfalse;
 }
 
 void AudioGraph::updateBusLayout (AudioProcessor* selectedProcessor)

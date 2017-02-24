@@ -29,9 +29,9 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-                      .withInput  ("Input",  AudioChannelSet::octagonal(), true)
+                      .withInput  ("Input",  AudioChannelSet::discreteChannels(8), true)
 #endif
-                      .withOutput ("Output", AudioChannelSet::octagonal(), true)
+                      .withOutput ("Output", AudioChannelSet::discreteChannels(8), true)
 #endif
                      )
 #endif
@@ -384,7 +384,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 //    const int output_channel_count = numCsoundChannels;
 //#else
     const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
-	//const int outputs = getTotalNumOutputChannels();;
+	const int outputs = getTotalNumOutputChannels();;
 //#endif
 
 	
