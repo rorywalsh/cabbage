@@ -344,11 +344,14 @@ void CsoundPluginProcessor::releaseResources()
 //
 //	const int inputs = layouts.getNumChannels(true, 0);
 //	const int outputs = layouts.getNumChannels(false, 0);
-//	return true; 
+//	
+//	if(layouts.getMainOutputChannelSet() == AudioChannelSet::octagonal())
+//		jassertfalse;
+//	//return true; 
 //    // This is the place where you check if the layout is supported.
 //    // In this template code we only support mono or stereo.
-//    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-//        && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+//    if (layouts.getMainOutputChannelSet() == AudioChannelSet::mono()
+//        && layouts.getMainOutputChannelSet() == AudioChannelSet::stereo())
 //        return false;
 //
 //    // This checks if the input layout matches the output layout
@@ -380,8 +383,11 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 //#if defined(Cabbage_Build_IDE) || defined(AndroidBuild)
 //    const int output_channel_count = numCsoundChannels;
 //#else
-    const int output_channel_count = getTotalNumOutputChannels();
+    const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
+	//const int outputs = getTotalNumOutputChannels();;
 //#endif
+
+	
 
     //if no inputs are used clear buffer in case it's not empty..
     if (getTotalNumInputChannels() == 0)
@@ -402,6 +408,12 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
             midiMessages.clear();
 
 #endif
+
+		//mute unused channels
+		for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
+		{
+			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
+		}
 
         for (int i = 0; i < numSamples; i++, ++csndIndex)
         {
@@ -453,12 +465,9 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     }//if not compiled just mute output
     else
     {
-        for (int channel = 0; channel < output_channel_count; ++channel)
+        for (int channel = 0; channel < getTotalNumOutputChannels(); ++channel)
         {
-            for (int i = 0; i < numSamples; ++i, ++csndIndex)
-            {
-                audioBuffers[channel][i] = 0;
-            }
+            buffer.clear(channel, 0, buffer.getNumSamples());
         }
     }
 }

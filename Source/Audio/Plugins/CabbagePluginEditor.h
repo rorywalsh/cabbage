@@ -24,7 +24,10 @@
 #include "CabbagePluginProcessor.h"
 #include "CabbageAudioParameter.h"
 
+#ifdef Cabbage_IDE_Build
 #include "../../GUIEditor/ComponentLayoutEditor.h"
+#endif
+
 #include "../../Widgets/CabbageCheckbox.h"
 #include "../../Widgets/CabbageComboBox.h"
 #include "../../Widgets/CabbageImage.h"
@@ -154,7 +157,10 @@ public:
     //=============================================================================
     void updatefTableData (GenTable* table);
 
+#ifdef Cabbage_IDE_Build
     ComponentLayoutEditor& getLayoutEditor() {       return layoutEditor;    }
+#endif
+
     bool isEditModeEnabled() {                       return editModeEnabled; }
     Colour backgroundColour;
 
@@ -194,7 +200,11 @@ private:
     TooltipWindow tooltipWindow;
     bool editModeEnabled = false;
     CabbagePluginProcessor& processor;
+	
+#ifdef Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
+#endif	
+	
     StringArray currentlySelectedComponentNames;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)

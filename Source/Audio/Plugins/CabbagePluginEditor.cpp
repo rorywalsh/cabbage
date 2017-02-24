@@ -25,21 +25,27 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
       processor (p),
       lookAndFeel(),
+#ifdef Cabbage_IDE_Build
       layoutEditor (processor.cabbageWidgets),
+#endif
       mainComponent()
 {
     setName ("PluginEditor");
     setSize (400, 300);
     setLookAndFeel (&lookAndFeel);
     createEditorInterface (processor.cabbageWidgets);
-    addAndMakeVisible (layoutEditor);
+   
     addAndMakeVisible (mainComponent);
     mainComponent.setInterceptsMouseClicks (false, true);
+	
+#ifdef Cabbage_IDE_Build	
+	addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&mainComponent);
     layoutEditor.updateFrames();
     layoutEditor.setEnabled (false);
     layoutEditor.toFront (false);
     layoutEditor.setInterceptsMouseClicks (true, true);
+#endif
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -56,8 +62,10 @@ void CabbagePluginEditor::paint (Graphics& g)
 
 void CabbagePluginEditor::resized()
 {
+#ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
-    mainComponent.setBounds (getLocalBounds());
+#endif
+     mainComponent.setBounds (getLocalBounds());
 }
 
 //======================================================================================================
@@ -503,9 +511,11 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
 //======================================================================================================
 void CabbagePluginEditor::enableEditMode (bool enable)
 {
+#ifdef Cabbage_IDE_Build
     layoutEditor.setEnabled (enable);
     editModeEnabled = enable;
     layoutEditor.toFront (false);
+#endif
 }
 //======================================================================================================
 void CabbagePluginEditor::setCurrentlySelectedComponents (StringArray componentNames)
@@ -546,8 +556,10 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
 {
+#ifdef Cabbage_IDE_Bulid
     if (editModeEnabled)
         layoutEditor.updateFrames();
+#endif
 }
 
 //======================================================================================================

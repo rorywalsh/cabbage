@@ -33,12 +33,12 @@ ifeq ($(CONFIG),Debug)
     TARGET_ARCH := -march=native
   endif
 
-  JUCE_CPPFLAGS := $(DEPFLAGS) -DLINUX=1 -DDEBUG=1 -D_DEBUG=1 -DCabbage_IDE_Build=1 -DJUCER_LINUX_MAKE_6D53C8B4=1 -DJUCE_APP_VERSION=1.0.0 -DJUCE_APP_VERSION_HEX=0x10000 $(shell pkg-config --cflags alsa freetype2 libcurl x11 xext xinerama) -pthread -I../../JuceLibraryCode -I../../JuceLibraryCode/modules -I"/usr/local/include/csound" $(CPPFLAGS)
-  JUCE_CFLAGS += $(JUCE_CPPFLAGS) $(TARGET_ARCH) -g -ggdb -O0 $(CFLAGS)
+  JUCE_CPPFLAGS := $(DEPFLAGS) -DLINUX=1 -DDEBUG=1 -D_DEBUG=1 -DCabbage_Plugin_Synth=1 -DJUCER_LINUX_MAKE_6D53C8B4=1 -DJUCE_APP_VERSION=1.0.0 -DJUCE_APP_VERSION_HEX=0x10000 $(shell pkg-config --cflags alsa freetype2 libcurl x11 xext xinerama) -pthread -I../../JuceLibraryCode -I../../JuceLibraryCode/modules -I"/usr/local/include/csound" $(CPPFLAGS)
+  JUCE_CFLAGS += $(JUCE_CPPFLAGS) $(TARGET_ARCH) -g -ggdb -fPIC -O0 $(CFLAGS)
   JUCE_CXXFLAGS += $(JUCE_CFLAGS) -std=c++11 $(CXXFLAGS)
-  JUCE_LDFLAGS += $(TARGET_ARCH) -L$(JUCE_BINDIR) -L$(JUCE_LIBDIR) -L"/usr/local/lib" $(shell pkg-config --libs alsa freetype2 libcurl x11 xext xinerama) -lGL -ldl -lpthread -lrt -lcsound64 -lsndfile  $(LDFLAGS)
+  JUCE_LDFLAGS += $(TARGET_ARCH) -L$(JUCE_BINDIR) -L$(JUCE_LIBDIR) -Wl,--no-undefined -shared -L"/usr/local/lib" $(shell pkg-config --libs alsa freetype2 libcurl x11 xext xinerama) -lGL -ldl -lpthread -lrt -lcsound64 -lsndfile -Wall $(LDFLAGS)
 
-  TARGET := Cabbage
+  TARGET := CabbagePluginEffect.so
   BLDCMD = $(CXX) -o $(JUCE_OUTDIR)/$(TARGET) $(OBJECTS) $(JUCE_LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
   CLEANCMD = rm -rf $(JUCE_OUTDIR)/$(TARGET) $(JUCE_OBJDIR)
 endif
@@ -53,23 +53,17 @@ ifeq ($(CONFIG),Release)
     TARGET_ARCH := -march=native
   endif
 
-  JUCE_CPPFLAGS := $(DEPFLAGS) -DLINUX=1 -DNDEBUG=1 -DCabbage_IDE_Build=1 -DJUCER_LINUX_MAKE_6D53C8B4=1 -DJUCE_APP_VERSION=1.0.0 -DJUCE_APP_VERSION_HEX=0x10000 $(shell pkg-config --cflags alsa freetype2 libcurl x11 xext xinerama) -pthread -I../../JuceLibraryCode -I../../JuceLibraryCode/modules -I"/usr/local/include/csound" $(CPPFLAGS)
-  JUCE_CFLAGS += $(JUCE_CPPFLAGS) $(TARGET_ARCH) -O3 $(CFLAGS)
+  JUCE_CPPFLAGS := $(DEPFLAGS) -DLINUX=1 -DNDEBUG=1 -DCabbage_Plugin_Synth=1 -DJUCER_LINUX_MAKE_6D53C8B4=1 -DJUCE_APP_VERSION=1.0.0 -DJUCE_APP_VERSION_HEX=0x10000 $(shell pkg-config --cflags alsa freetype2 libcurl x11 xext xinerama) -pthread -I../../JuceLibraryCode -I../../JuceLibraryCode/modules -I"/usr/local/include/csound" $(CPPFLAGS)
+  JUCE_CFLAGS += $(JUCE_CPPFLAGS) $(TARGET_ARCH) -fPIC -O3 $(CFLAGS)
   JUCE_CXXFLAGS += $(JUCE_CFLAGS) -std=c++11 $(CXXFLAGS)
-  JUCE_LDFLAGS += $(TARGET_ARCH) -L$(JUCE_BINDIR) -L$(JUCE_LIBDIR) -fvisibility=hidden -L"/usr/local/lib" $(shell pkg-config --libs alsa freetype2 libcurl x11 xext xinerama) -lGL -ldl -lpthread -lrt -lcsound64 -lsndfile  $(LDFLAGS)
+  JUCE_LDFLAGS += $(TARGET_ARCH) -L$(JUCE_BINDIR) -L$(JUCE_LIBDIR) -Wl,--no-undefined -shared -fvisibility=hidden -L"/usr/local/lib" $(shell pkg-config --libs alsa freetype2 libcurl x11 xext xinerama) -lGL -ldl -lpthread -lrt -lcsound64 -lsndfile -Wall $(LDFLAGS)
 
-  TARGET := Cabbage
+  TARGET := CabbagePluginEffect.so
   BLDCMD = $(CXX) -o $(JUCE_OUTDIR)/$(TARGET) $(OBJECTS) $(JUCE_LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
   CLEANCMD = rm -rf $(JUCE_OUTDIR)/$(TARGET) $(JUCE_OBJDIR)
 endif
 
 OBJECTS := \
-  $(JUCE_OBJDIR)/CabbageContentComponent_ee810147.o \
-  $(JUCE_OBJDIR)/CabbageDocumentWindow_3af539ae.o \
-  $(JUCE_OBJDIR)/CabbageGraphComponent_5cbe6212.o \
-  $(JUCE_OBJDIR)/CabbagePluginComponent_22f65af1.o \
-  $(JUCE_OBJDIR)/CabbageToolbarFactory_a8f7dbd2.o \
-  $(JUCE_OBJDIR)/AudioGraph_b22f6a5b.o \
   $(JUCE_OBJDIR)/CabbagePluginEditor_4348213a.o \
   $(JUCE_OBJDIR)/CabbagePluginProcessor_8a6343af.o \
   $(JUCE_OBJDIR)/CsoundPluginEditor_3f0e809d.o \
@@ -77,19 +71,9 @@ OBJECTS := \
   $(JUCE_OBJDIR)/GenericCabbageEditor_50c74848.o \
   $(JUCE_OBJDIR)/GenericCabbagePluginProcessor_7befc9ee.o \
   $(JUCE_OBJDIR)/CabbageBinaryData_812f3f1.o \
-  $(JUCE_OBJDIR)/CabbageCodeEditor_72bb40f.o \
-  $(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o \
-  $(JUCE_OBJDIR)/CabbagePropertiesPanel_cced81c0.o \
-  $(JUCE_OBJDIR)/ComponentLayoutEditor_752a6c4e.o \
-  $(JUCE_OBJDIR)/ComponentOverlay_554fade3.o \
   $(JUCE_OBJDIR)/CabbageGenericPluginLookAndFeel_f8a44125.o \
-  $(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o \
   $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o \
-  $(JUCE_OBJDIR)/CabbageSettings_d59022e1.o \
-  $(JUCE_OBJDIR)/CabbageSettingsWindow_8ea691f1.o \
   $(JUCE_OBJDIR)/CabbageColourProperty_a06c91be.o \
-  $(JUCE_OBJDIR)/CabbageNewProjectWindow_b55ea6.o \
-  $(JUCE_OBJDIR)/CabbageSSHFileBrowser_34e09761.o \
   $(JUCE_OBJDIR)/Soundfiler_587b384e.o \
   $(JUCE_OBJDIR)/TableManager_fa647506.o \
   $(JUCE_OBJDIR)/CabbageButton_effd6014.o \
@@ -116,11 +100,11 @@ OBJECTS := \
   $(JUCE_OBJDIR)/CabbageWidgetData_ba1d0870.o \
   $(JUCE_OBJDIR)/CabbageWidgetDataInitMethods_a1a6cd7c.o \
   $(JUCE_OBJDIR)/CabbageXYPad_f88302da.o \
-  $(JUCE_OBJDIR)/Cabbage_6fb7db02.o \
   $(JUCE_OBJDIR)/juce_audio_basics_6b797ca1.o \
   $(JUCE_OBJDIR)/juce_audio_devices_a742c38b.o \
   $(JUCE_OBJDIR)/juce_audio_formats_5a29c68a.o \
   $(JUCE_OBJDIR)/juce_audio_plugin_client_utils_35fbf7.o \
+  $(JUCE_OBJDIR)/juce_audio_plugin_client_VST2_fd137df.o \
   $(JUCE_OBJDIR)/juce_audio_processors_dea3173d.o \
   $(JUCE_OBJDIR)/juce_audio_utils_c7eb679f.o \
   $(JUCE_OBJDIR)/juce_core_75b14332.o \
@@ -136,7 +120,7 @@ OBJECTS := \
 .PHONY: clean
 
 $(JUCE_OUTDIR)/$(TARGET): check-pkg-config $(OBJECTS) $(RESOURCES)
-	@echo Linking Cabbage
+	@echo Linking CabbagePlugin
 	-@mkdir -p $(JUCE_BINDIR)
 	-@mkdir -p $(JUCE_LIBDIR)
 	-@mkdir -p $(JUCE_OUTDIR)
@@ -147,42 +131,12 @@ check-pkg-config:
 	@pkg-config --print-errors alsa freetype2 libcurl x11 xext xinerama
 
 clean:
-	@echo Cleaning Cabbage
+	@echo Cleaning CabbagePlugin
 	$(V_AT)$(CLEANCMD)
 
 strip:
-	@echo Stripping Cabbage
+	@echo Stripping CabbagePlugin
 	-@$(STRIP) --strip-unneeded $(JUCE_OUTDIR)/$(TARGET)
-
-$(JUCE_OBJDIR)/CabbageContentComponent_ee810147.o: ../../Source/Application/CabbageContentComponent.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageContentComponent.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageDocumentWindow_3af539ae.o: ../../Source/Application/CabbageDocumentWindow.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageDocumentWindow.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageGraphComponent_5cbe6212.o: ../../Source/Application/CabbageGraphComponent.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageGraphComponent.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbagePluginComponent_22f65af1.o: ../../Source/Application/CabbagePluginComponent.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbagePluginComponent.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageToolbarFactory_a8f7dbd2.o: ../../Source/Application/CabbageToolbarFactory.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageToolbarFactory.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/AudioGraph_b22f6a5b.o: ../../Source/Audio/Graph/AudioGraph.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling AudioGraph.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbagePluginEditor_4348213a.o: ../../Source/Audio/Plugins/CabbagePluginEditor.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
@@ -219,39 +173,9 @@ $(JUCE_OBJDIR)/CabbageBinaryData_812f3f1.o: ../../Source/BinaryData/CabbageBinar
 	@echo "Compiling CabbageBinaryData.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/CabbageCodeEditor_72bb40f.o: ../../Source/CodeEditor/CabbageCodeEditor.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageCodeEditor.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageEditorContainer_522299a9.o: ../../Source/CodeEditor/CabbageEditorContainer.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageEditorContainer.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbagePropertiesPanel_cced81c0.o: ../../Source/GUIEditor/CabbagePropertiesPanel.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbagePropertiesPanel.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/ComponentLayoutEditor_752a6c4e.o: ../../Source/GUIEditor/ComponentLayoutEditor.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling ComponentLayoutEditor.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/ComponentOverlay_554fade3.o: ../../Source/GUIEditor/ComponentOverlay.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling ComponentOverlay.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
 $(JUCE_OBJDIR)/CabbageGenericPluginLookAndFeel_f8a44125.o: ../../Source/LookAndFeel/CabbageGenericPluginLookAndFeel.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageGenericPluginLookAndFeel.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageIDELookAndFeel_8b919965.o: ../../Source/LookAndFeel/CabbageIDELookAndFeel.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageIDELookAndFeel.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o: ../../Source/LookAndFeel/CabbageLookAndFeel2.cpp
@@ -259,29 +183,9 @@ $(JUCE_OBJDIR)/CabbageLookAndFeel2_1e182065.o: ../../Source/LookAndFeel/CabbageL
 	@echo "Compiling CabbageLookAndFeel2.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/CabbageSettings_d59022e1.o: ../../Source/Settings/CabbageSettings.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageSettings.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageSettingsWindow_8ea691f1.o: ../../Source/Settings/CabbageSettingsWindow.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageSettingsWindow.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
 $(JUCE_OBJDIR)/CabbageColourProperty_a06c91be.o: ../../Source/Utilities/CabbageColourProperty.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CabbageColourProperty.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageNewProjectWindow_b55ea6.o: ../../Source/Utilities/CabbageNewProjectWindow.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageNewProjectWindow.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/CabbageSSHFileBrowser_34e09761.o: ../../Source/Utilities/CabbageSSHFileBrowser.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling CabbageSSHFileBrowser.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Soundfiler_587b384e.o: ../../Source/Widgets/Legacy/Soundfiler.cpp
@@ -414,11 +318,6 @@ $(JUCE_OBJDIR)/CabbageXYPad_f88302da.o: ../../Source/Widgets/CabbageXYPad.cpp
 	@echo "Compiling CabbageXYPad.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/Cabbage_6fb7db02.o: ../../Source/Cabbage.cpp
-	-@mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling Cabbage.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
-
 $(JUCE_OBJDIR)/juce_audio_basics_6b797ca1.o: ../../JuceLibraryCode/juce_audio_basics.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling juce_audio_basics.cpp"
@@ -437,6 +336,11 @@ $(JUCE_OBJDIR)/juce_audio_formats_5a29c68a.o: ../../JuceLibraryCode/juce_audio_f
 $(JUCE_OBJDIR)/juce_audio_plugin_client_utils_35fbf7.o: ../../JuceLibraryCode/juce_audio_plugin_client_utils.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling juce_audio_plugin_client_utils.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/juce_audio_plugin_client_VST2_fd137df.o: ../../JuceLibraryCode/juce_audio_plugin_client_VST2.cpp
+	-@mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling juce_audio_plugin_client_VST2.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/juce_audio_processors_dea3173d.o: ../../JuceLibraryCode/juce_audio_processors.cpp
