@@ -256,8 +256,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
 
         for (int i = 0; i < messageCnt; i++)
         {
-			const char* message = csound->GetFirstMessage();
-            csoundOutput += String();
+            csoundOutput += csound->GetFirstMessage();
             csound->PopFirstMessage();
         }
 
@@ -345,6 +344,8 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 	const int inputs = layouts.getNumChannels(true, 0);
 	const int outputs = layouts.getNumChannels(false, 0);
 	
+	return true;
+
     if(outputs>numCsoundChannels)
         return false;
 	if(layouts.getMainOutputChannelSet() == AudioChannelSet::octagonal())
@@ -382,7 +383,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     MYFLT newSamp;
     int result = -1;
 
-//#if defined(Cabbage_Build_IDE) || defined(AndroidBuild)
+//#if defined(Cabbage_IDE_Build) || defined(AndroidBuild)
 //    const int output_channel_count = numCsoundChannels;
 //#else
     const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);

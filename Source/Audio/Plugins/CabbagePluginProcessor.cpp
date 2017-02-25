@@ -23,7 +23,6 @@
 char tmp_string[4096] = {0};
 char channelMessage[4096] = {0};
 
-#ifndef Cabbage_IDE_Build
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     const File csdFile = File::getSpecialLocation (File::currentExecutableFile).withFileExtension (String (".csd")).getFullPathName();
@@ -35,7 +34,6 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
     return new CabbagePluginProcessor (csdFile);
 };
-#endif
 
 //============================================================================
 CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)

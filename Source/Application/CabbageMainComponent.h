@@ -90,6 +90,7 @@ public:
 	void saveGraph(bool saveAs);
 	void openGraph(File fileToOpen = File());
 	File getCurrentCsdFile ();	
+	void setCurrentCsdFile(File file);
 	void writeFileToDisk(File file);
 	//==============================================================================
 	void handleToolbarButtons(ToolbarButton* toolbarButton);

@@ -197,6 +197,8 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
         }
     }
 
+	return nullptr;
+
 }
 //==============================================================================
 void AudioGraph::setDefaultConnections (int nodeId)

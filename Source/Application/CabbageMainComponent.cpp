@@ -662,6 +662,11 @@ File CabbageMainComponent::getCurrentCsdFile ()
 {
 	return openFiles[currentFileIndex];
 }
+
+void CabbageMainComponent::setCurrentCsdFile(File file)
+{
+	openFiles.set(currentFileIndex , file);
+}
 //==================================================================================
 void CabbageMainComponent::saveGraph (bool saveAs)
 {
@@ -737,7 +742,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (getCabbagePluginEditor() != nullptr)
             getCabbagePluginEditor()->enableEditMode (false);
 
-        FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "*.csd");
+        FileChooser fc ("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd");
 
         if (fc.browseForFileToSave (false))
         {
@@ -774,7 +779,9 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk(File file)
 {
-	getCurrentCsdFile() = file;
+	setCurrentCsdFile(file);
+	CabbageUtilities::debug(file.getFullPathName());
+	CabbageUtilities::debug(getCurrentCsdFile().getFullPathName());
 	getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
 	owner->setName ("Cabbage " + getCurrentCsdFile().getFullPathName());
 	addInstrumentsAndRegionsToCombobox();
