@@ -174,7 +174,7 @@ void CabbageMainComponent::handleFileTabButtons (DrawableButton* drawableButton)
                 createEditorForAudioGraphNode (pos);
             }
         }
-
+		  
     }
     else if (drawableButton->getName() == "editGUIButton")
     {
@@ -405,7 +405,7 @@ void CabbageMainComponent::resizeAllEditorAndConsoles (int height)
     for ( CabbageEditorContainer* editor : editorAndConsole )
     {
         editor->statusBar.setSize (getWidth(), 28);
-        editor->setBounds (0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight());
+        editor->setBounds (0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight()-5);
     }
 
     arrangeFileTabButtons();
@@ -665,7 +665,7 @@ File CabbageMainComponent::getCurrentCsdFile ()
 
 void CabbageMainComponent::setCurrentCsdFile(File file)
 {
-	openFiles.set(currentFileIndex , file);
+	openFiles.set(currentFileIndex, file);
 }
 //==================================================================================
 void CabbageMainComponent::saveGraph (bool saveAs)
@@ -675,7 +675,6 @@ void CabbageMainComponent::saveGraph (bool saveAs)
 //==================================================================================
 const File CabbageMainComponent::openFile (String filename)
 {
-
     stopTimer();
     stopCsoundForNode (filename);
 	File currentCsdFile;
