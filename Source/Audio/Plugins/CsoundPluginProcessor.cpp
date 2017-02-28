@@ -208,23 +208,15 @@ const Array<float, CriticalSection> CsoundPluginProcessor::getTableFloats (int t
 
     if (csCompileResult == OK)
     {
-        points.clear();
 
-        int tableSize = 0;
-#ifndef Cabbage_No_Csound
+        const int tableSize = csound->TableLength(tableNum);;
 
-        tableSize = csound->TableLength (tableNum);
-        temp.clear();
-
-        //not good if table size is -1!
         if (tableSize < 0)
             return points;
 
-        temp.reserve (tableSize);
+		std::vector<double> temp(tableSize);
+
         csound->TableCopyOut (tableNum, &temp[0]);
-#else
-        float* temp;
-#endif
 
         if (tableSize > 0)
             points = Array<float, CriticalSection> (&temp[0], tableSize);
@@ -235,11 +227,7 @@ const Array<float, CriticalSection> CsoundPluginProcessor::getTableFloats (int t
 
 int CsoundPluginProcessor::checkTable (int tableNum)
 {
-#ifndef Cabbage_No_Csound
     return  csound->TableLength (tableNum);
-#else
-    return -1;
-#endif
 }
 
 
