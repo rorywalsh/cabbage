@@ -1487,7 +1487,8 @@ String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentL
     for ( auto str : newIdentifiers)
         oldIdentifiers.add (str);
 
-    return oldIdentifiers.joinIntoString (" ");
+	const String newLine = oldIdentifiers.joinIntoString(" ").trimCharactersAtStart(" ");
+	return newLine;
 }
 
 String CabbageWidgetData::removeWidgetFromValueTree (ValueTree wData, int lineNumber)

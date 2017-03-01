@@ -185,19 +185,21 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             tableValues.clear();
             tableValues = owner->getTableFloats (tableNumber);
 
-
-            if (table.getTableFromFtNumber (tableNumber)->tableSize >= MAX_TABLE_SIZE)
-            {
-                tableBuffer.clear();
-                tableBuffer.addFrom (y, 0, tableValues.getRawDataPointer(), tableValues.size());
-                table.setWaveform (tableBuffer, tableNumber);
-            }
-            else
-            {
-                table.setWaveform (tableValues, tableNumber, false);
-                StringArray pFields = owner->getTableStatement (tableNumber);
-                table.enableEditMode (pFields, tableNumber);
-            }
+			if (table.getTableFromFtNumber(tableNumber) != nullptr)
+			{
+				if (table.getTableFromFtNumber(tableNumber)->tableSize >= MAX_TABLE_SIZE)
+				{
+					tableBuffer.clear();
+					tableBuffer.addFrom(y, 0, tableValues.getRawDataPointer(), tableValues.size());
+					table.setWaveform(tableBuffer, tableNumber);
+				}
+				else
+				{
+					table.setWaveform(tableValues, tableNumber, false);
+					StringArray pFields = owner->getTableStatement(tableNumber);
+					table.enableEditMode(pFields, tableNumber);
+				}
+			}
         }
 
         CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::update, 0); //reset value for further updates

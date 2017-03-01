@@ -556,7 +556,7 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
 {
-#ifdef Cabbage_IDE_Bulid
+#ifdef Cabbage_IDE_Build
     if (editModeEnabled)
         layoutEditor.updateFrames();
 #endif
