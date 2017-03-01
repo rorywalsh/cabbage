@@ -134,10 +134,11 @@ public:
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
-
+	String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
     //=============================================================================
+	void refreshComboBoxContents();
     void enableEditMode (bool enable);
     void setCurrentlySelectedComponents (StringArray componentNames);
     void resetCurrentlySelectedComponents();

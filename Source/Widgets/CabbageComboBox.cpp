@@ -66,10 +66,11 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 {
     Array<File> dirFiles;
     StringArray fileNames;
-
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
+	clear (dontSendNotification);
+	snapshotFiles.clear();
+    
+	if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        clear (dontSendNotification);
         String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
         StringArray lines = StringArray::fromLines (file);
 
@@ -81,7 +82,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
-        clear (dontSendNotification);
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
 
         for (int i = 0; i < items.size(); i++)
@@ -92,8 +92,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     }
     else
     {
-        clear (dontSendNotification);
-
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
         pluginDir = File (getCsdFile()).getChildFile (workingDir).getParentDirectory();
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");

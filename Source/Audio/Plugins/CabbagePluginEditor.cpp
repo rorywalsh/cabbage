@@ -726,13 +726,71 @@ void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
 {
     const File csdFile (processor.getCsdFile());
     XmlElement xml = processor.savePluginState (csdFile.getFileNameWithoutExtension().replace (" ", "_"));
-    xml.writeToFile (snapshotFile, "");
+    xml.writeToFile (snapshotFile.withFileExtension(".snaps"), "");
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
 {
     ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (snapshotFile);
     processor.restorePluginState (xmlElement);
+}
+
+void CabbagePluginEditor::refreshComboBoxContents()
+{
+	for( int i = 0 ; i < processor.cabbageWidgets.getNumChildren() ; i++)
+	{
+		const String type = CabbageWidgetData::getStringProp(processor.cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+
+		if( type == "combobox")
+		{
+			const String name = CabbageWidgetData::getStringProp(processor.cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
+			
+			if(CabbageComboBox* combo = dynamic_cast<CabbageComboBox*>(getComponentFromName(name)))
+			{
+				combo->addItemsToCombobox(processor.cabbageWidgets.getChild(i));
+			}
+		}
+	}
+}
+
+String CabbagePluginEditor::createNewGenericNameForPresetFile()
+{
+	Array<File> dirFiles;
+	File pluginDir = processor.getCsdFile().getParentDirectory().getFullPathName();
+	pluginDir.findChildFiles(dirFiles, 2, false, "*.snaps");
+	String newFileName;
+	//now check existing files in directory and make sure we use a unique name
+	for(int i=0; i<dirFiles.size(); i++)
+	{
+		String newName = processor.getCsdFile().getFileNameWithoutExtension()+"_"+String(i+1);
+		if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
+			newFileName = pluginDir.getFullPathName()+"\\"+newName+".snaps";
+		else
+			newFileName  = pluginDir.getFullPathName()+"/"+newName+".snaps";
+
+		bool allowSave = true;
+		for(auto file : dirFiles)
+		{
+			CabbageUtilities::debug(file.getFullPathName());
+			CabbageUtilities::debug(newName);
+			
+			if(file.getFileNameWithoutExtension().equalsIgnoreCase(newName))
+				allowSave = false;
+		}
+		
+		if(allowSave)
+			return newFileName;
+	}
+
+	const String firstPresetFile = processor.getCsdFile().getFileNameWithoutExtension()+"_0";		
+	
+	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
+			return pluginDir.getFullPathName()+"\\"+firstPresetFile+".snaps";
+	else
+			return pluginDir.getFullPathName()+"/"+firstPresetFile+".snaps";
+	
+	return "";
+
 }
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()

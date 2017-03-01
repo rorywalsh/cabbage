@@ -913,9 +913,6 @@ void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, con
     float opacity = 0.1;
     const bool toggleState = button.getToggleState();
 
-	CabbageUtilities::debug(button.getProperties().getWithDefault ("imgbuttonon", "").toString());
-	CabbageUtilities::debug(button.getProperties().getWithDefault ("imgbuttonoff", "").toString());
-
     File imgButtonOnFile = File (button.getProperties().getWithDefault ("imgbuttonon", "").toString());
     File imgButtonOffFile = File (button.getProperties().getWithDefault ("imgbuttonoff", "").toString());
 
