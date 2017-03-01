@@ -236,21 +236,24 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
     String typeOfWidget = lineOfText.substring (0, lineOfText.indexOf (" "));
     lineOfText = lineOfText.substring (lineOfText.indexOf (" ") + 1);
 
-    NamedValueSet identifierValueSet = getSetofIdentifiersAndParameters (lineOfText);
+    IdentifiersAndParameters identifierValueSet = getSetofIdentifiersAndParameters (lineOfText);
 
+	for(int i = 0 ; i < identifierValueSet.identifier.size() ; i++)
+		CabbageUtilities::debug(identifierValueSet.identifier[i]);
 
     CabbageIdentifierStrings identifierArray;
 
-    for ( int indx = 0 ; indx < identifierValueSet.size() ; indx++)
+
+    for ( int indx = 0 ; indx < identifierValueSet.identifier.size() ; indx++)
     {
         StringArray strTokens;
-        String identifier = identifierValueSet.getName (indx).toString().trimCharactersAtStart (" ");
-
+        String identifier = identifierValueSet.identifier[indx].trimCharactersAtStart (" ");
+		
         if (identifier.indexOf (":") != -1)
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
-        strTokens.addTokens (identifierValueSet.getValueAt (indx).toString(), ",", ",");
-
+        strTokens.addTokens (identifierValueSet.parameter[indx], ",", ",");
+		
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
             //======== strings ===============================
@@ -450,13 +453,13 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("colour"):
             case HashStringToInt ("fontcolour:"):
             case HashStringToInt ("fontcolour"):
-                setColourByNumber (strTokens, widgetData, identifierValueSet.getName (indx).toString());
+                setColourByNumber (strTokens, widgetData, identifierValueSet.identifier[indx]);
                 break;
 
             case HashStringToInt ("tablecolour"):
             case HashStringToInt ("tablecolours"):
             case HashStringToInt ("tablecolour:"):
-                setTableColourArrays (strTokens, widgetData, identifierValueSet.getName (indx).toString());
+                setTableColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx]);
                 break;
 
 
@@ -470,10 +473,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             default:
-
                 break;
-
-                //check ident addray....
 
         }
     }
@@ -493,10 +493,11 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
     return array;
 }
 
-NamedValueSet CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
+CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
     StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
-    StringArray parameters;
+	
+	StringArray parameters;
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
         identifiersInLine.set (i, identifiersInLine[i].trim().trimCharactersAtStart (" ,") + ")");
@@ -512,14 +513,18 @@ NamedValueSet CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOf
     {
         const String newToken = identifiersInLine[i];
         identifiersInLine.set (i, newToken.substring (0, newToken.indexOf ("(")));
-
     }
 
-    NamedValueSet valueSet;
+    IdentifiersAndParameters valueSet;
     identifiersInLine.removeEmptyStrings();
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
-        valueSet.set (identifiersInLine[i], parameters[i].removeCharacters ("\""));
+	{
+        valueSet.identifier.add(identifiersInLine[i]);
+		valueSet.parameter.add(parameters[i].removeCharacters ("\""));
+	}
+
+	//problem with duplicates, set will set a parameter by name, so two can't exist in the array...
 
     return valueSet;
 

@@ -36,6 +36,12 @@ class CabbageWidgetData : public CabbageUtilities
     //    bool refreshFromDisk;
 
 public:
+	
+	struct IdentifiersAndParameters {
+	  StringArray identifier;
+	  StringArray parameter;
+	};
+
     CabbageWidgetData() {};
     ~CabbageWidgetData() {};
     //============================================================================
@@ -78,7 +84,7 @@ public:
     static void setProperty (ValueTree widgetData, Identifier name, const var& value);
     static var getProperty (ValueTree widgetData, Identifier name);
     //============================================================================
-	static NamedValueSet getSetofIdentifiersAndParameters(String lineOfText);
+	static IdentifiersAndParameters getSetofIdentifiersAndParameters(String lineOfText);
 	static var getVarArrayFromTokens(StringArray strTokens);
 	static void setChannelArrays(StringArray strTokens, ValueTree widgetData, String identifier);
 	static void setTextItemArrays(StringArray strTokens, ValueTree widgetData, String typeOfWidget);

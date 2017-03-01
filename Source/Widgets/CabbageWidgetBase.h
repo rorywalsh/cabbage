@@ -179,6 +179,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
     }
     else if (imgType == "buttonon")
     {
+		String test = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon);
         imgFile = File(csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon));
 
         if (imgFile.existsAsFile())
@@ -208,6 +209,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
     }
     else if (imgType == "buttonoff")
     {
+		String test2 = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff);
         imgFile = File(csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff));
 
         if (imgFile.existsAsFile())
