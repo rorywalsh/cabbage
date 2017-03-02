@@ -1,4 +1,4 @@
-; TR-808.csd
+ ; TR-808.csd
 ; Written by Iain McCurdy, 2012
 ; 
 ; Saving patterns saves tables as text file to the pwd. Each save to a new pattern number creates a new text file on disk for that pattern.
