@@ -348,6 +348,15 @@ public:
 		return TargetTypes::Unknown;
 	}
 
+	static bool shouldUseNativeBrowser()
+	{
+#ifdef Use_Native_File_Browser
+		return true;
+#else
+		return false;
+#endif
+	}
+
 	//==============================================================
 	static const String getSVGTextFromMemory (const void* svg, size_t size)
 	{

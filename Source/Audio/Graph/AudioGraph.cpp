@@ -680,7 +680,7 @@ Result AudioGraph::loadDocument (const File& file)
 
 FileBasedDocument::SaveResult AudioGraph::saveGraph (bool saveAs)
 {
-    FileChooser fc ("Save file as", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory));
+    FileChooser fc ("Save file as", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
     if (getFile().existsAsFile() && saveAs == false)
     {

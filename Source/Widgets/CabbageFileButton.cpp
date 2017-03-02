@@ -46,7 +46,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     if (mode == "file")
     {
-        FileChooser fc ("Save File", File(getCsdFile()).getParentDirectory());
+        FileChooser fc("Save File", File(getCsdFile()).getParentDirectory(), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (filetype == "snaps")
         {
@@ -83,7 +83,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "directory")
     {
-        FileChooser fc ("Open Directory", File (getCsdFile()).getChildFile (getFilename()));
+        FileChooser fc ("Open Directory", File (getCsdFile()).getChildFile (getFilename()), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
