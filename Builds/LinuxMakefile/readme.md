@@ -18,7 +18,7 @@ Make sure that the VST SDK resides in a folder called SDKs in your home director
 
 To build Cabbage, run this command from the current directory:
 
-./bulidCabbage
+./buildCabbage
 
 If you really need to use custom paths for Csound and the VST SDKs, you will need to:
   - Download the latest version of JUCE
