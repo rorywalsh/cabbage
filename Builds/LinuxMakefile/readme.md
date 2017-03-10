@@ -6,22 +6,7 @@ Requirements
 
 The following are dependencies you may need, you can simply copy and past the following as needed.
 
-sudo apt-get install libfreetype6-dev
-sudo apt-get install libx11-dev
-sudo apt-get install libxinerama-dev
-sudo apt-get install libxcursor-dev
-sudo apt-get install mesa-common-dev
-sudo apt-get install libasound2-dev
-sudo apt-get install freeglut3-dev
-sudo apt-get install libxcomposite-dev
-sudo apt-get install csound
-sudo apt-get install libcsound64-dev
-sudo apt-get install libcsnd-dev
-sudo apt-get install libsndfile1
-sudo apt-get install libsndfile1-dev
-sudo apt-get install libjack-dev
-sudo apt-get install libxrandr-dev
-sudo apt-get install msttcorefonts
+sudo apt-get install libfreetype6-dev libx11-dev libxinerama-dev libxcursor-dev mesa-common-dev libasound2-dev freeglut3-dev libxcomposite-dev csound libcsound64-dev libcsnd-dev libsndfile1 libsndfile1-dev libjack-dev libxrandr-dev msttcorefonts
 
 Please make sure that the version of Csound you use is 6.07 or newer, otherwise you will get build problems. 
 Cabbage needs the VST SDK in order to build its plugins libraries. The VST SDK can be downloed from [here](https://www.steinberg.net/en/company/developers.html)
@@ -33,7 +18,7 @@ Make sure that the VST SDK resides in a folder called SDKs in your home director
 
 To build Cabbage, run this command from the current directory:
 
-./bulidCabbage
+./buildCabbage
 
 If you really need to use custom paths for Csound and the VST SDKs, you will need to:
   - Download the latest version of JUCE

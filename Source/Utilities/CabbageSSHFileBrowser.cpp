@@ -106,7 +106,7 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked (int row, const MouseEvent&
     else
     {
         String command;
-        FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory));
+        FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
         CabbageIDELookAndFeel lookAndFeel;
 
         if (fc.browseForFileToSave (false))

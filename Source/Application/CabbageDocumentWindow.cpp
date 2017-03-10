@@ -763,7 +763,7 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
             CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
         }
 
-        FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), ".so");
+        FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), ".so", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToSave (false))
         {
