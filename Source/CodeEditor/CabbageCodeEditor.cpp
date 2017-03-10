@@ -265,6 +265,7 @@ void CabbageCodeEditorComponent::replaceText (String text, String replaceWith)
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage (int lineNumber)
 {
+	allowUpdateOfPluginGUI = false;
     const StringArray csdArray = getAllTextAsStringArray();
     const int cabbageSectionClosingLineNumber = csdArray.indexOf ("</Cabbage>");
 

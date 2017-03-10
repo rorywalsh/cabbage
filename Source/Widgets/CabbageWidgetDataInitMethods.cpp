@@ -190,10 +190,10 @@ void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::width, 200);
     setProperty (widgetData, CabbageIdentifierIds::height, 200);
     setProperty (widgetData, CabbageIdentifierIds::minx, 0);
-    setProperty (widgetData, CabbageIdentifierIds::maxx, 200);
+    setProperty (widgetData, CabbageIdentifierIds::maxx, 1);
     setProperty (widgetData, CabbageIdentifierIds::text, "");
     setProperty (widgetData, CabbageIdentifierIds::miny, 0);
-    setProperty (widgetData, CabbageIdentifierIds::maxy, 200);
+    setProperty (widgetData, CabbageIdentifierIds::maxy, 1);
     setProperty (widgetData, CabbageIdentifierIds::valuex, 0);
     setProperty (widgetData, CabbageIdentifierIds::valuey, 0);
     setProperty (widgetData, CabbageIdentifierIds::ballcolour, Colours::lime.toString());

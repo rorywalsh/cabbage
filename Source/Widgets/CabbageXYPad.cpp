@@ -75,7 +75,6 @@ void CabbageXYPad::mouseDown (const MouseEvent& e)
     owner->enableXYAutomator (getName(), false);
     ball.setTopLeftPosition (constrainPosition (e.getPosition().getX(), e.getPosition().getY()));
     mouseDownXY.setXY (ball.getPosition().getX() + ball.getWidth()*.5f, ball.getPosition().getY() + ball.getHeight()*.5f);
-    const Point<float> currentValues = getPositionAsValue (ball.getPosition().toFloat());
     isAutomating = false;
     repaint();
 }
@@ -129,7 +128,7 @@ void CabbageXYPad::changeListenerCallback (ChangeBroadcaster* source)
 //==================================================================
 void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    if (prop != CabbageIdentifierIds::value)
+	if (prop != CabbageIdentifierIds::valuex && prop!=CabbageIdentifierIds::valuey)	//not updating xy values here...
     {
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
         fontColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour));
@@ -140,9 +139,18 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         xValueLabel.setColour (Label::textColourId, fontColour);
         yValueLabel.setColour (Label::textColourId, fontColour);
         ball.setColour (ballColour);
-        ball.repaint();
+		ball.repaint();
         repaint();
     }
+	else
+	{
+		const float xPos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuex);
+		const float yPos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuey);
+		Point<float> pos(getValueAsPosition(Point<float>(xPos, yPos)));
+		pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
+		ball.setTopLeftPosition(constrainPosition(pos.getX(), pos.getY()));
+		repaint();
+	}
 }
 
 //==================================================================

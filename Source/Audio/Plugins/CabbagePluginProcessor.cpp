@@ -334,15 +334,37 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 {
     for ( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
-        const String channel = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
+        const var chanArray = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
+		Array<var>* channelArray = chanArray.getArray();
+		StringArray channels;
+		if (!channelArray)
+			channels.add(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel));
+		else
+		{
+			for (int i = 0; i < channelArray->size(); i++)
+				channels.add(var(channelArray->getReference(i)));
+		}
+
         const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
+		const float valuex = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex);
+		const float valuey = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey);
         const String identChannel = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannel);
         const String identChannelMessage = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannelmessage);
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
-        if (getCsound()->GetChannel (channel.toUTF8()) != value && typeOfWidget != "combobox")
-            CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channel.toUTF8()));
-
+		if (getCsound()->GetChannel(channels[0].toUTF8()) != value
+			|| getCsound()->GetChannel(channels[0].toUTF8()) != valuex
+			|| getCsound()->GetChannel(channels[1].toUTF8()) != valuey)
+		{
+			if (typeOfWidget != "combobox" && typeOfWidget != "xypad")
+				CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value, getCsound()->GetChannel(channels[0].toUTF8()));
+			else
+			{
+				CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex, getCsound()->GetChannel(channels[0].toUTF8()));
+				CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey, getCsound()->GetChannel(channels[1].toUTF8()));
+			}
+		}
+		
         if (identChannel.isNotEmpty())
         {
             getCsound()->GetStringChannel (identChannel.toUTF8(), tmp_string);
@@ -394,6 +416,7 @@ void CabbagePluginProcessor::addXYAutomator (CabbageXYPad* xyPad, ValueTree wDat
         xyAutomators[indexOfAutomator]->addChangeListener (xyPad);
     }
 }
+
 
 void CabbagePluginProcessor::enableXYAutomator (String name, bool enable, Line<float> dragLine)
 {

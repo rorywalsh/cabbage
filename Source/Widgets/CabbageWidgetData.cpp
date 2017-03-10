@@ -334,6 +334,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("linethickness"):
             case HashStringToInt ("trackerthickness"):
             case HashStringToInt ("value"):
+			case HashStringToInt ("valuex"):
+			case HashStringToInt ("valuey"):
             case HashStringToInt ("zoom"):
             case HashStringToInt ("wrap"):
             case HashStringToInt ("readonly"):
@@ -354,7 +356,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
             case HashStringToInt ("range"):
             case HashStringToInt ("rangex"):
-            case HashStringToInt ("rangey"):
+			case HashStringToInt ("rangey"):
                 setRange (strTokens, widgetData, identifier);
                 break;
 
