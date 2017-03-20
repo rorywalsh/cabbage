@@ -8,12 +8,23 @@ echo "should be located in /user/local/include/csound while the Csound library i
 echo "located in /user/local/lib It is also assumed that the VST SDK is located in ~/SDKs/"
 echo ""
 
+if [ $1 == "debug" ]
+then
+make -f MakeCabbageIDE clean CONFIG=Debug
+make -f MakeCabbageIDE -j6 CONFIG=Debug
+make -f MakePluginEffect clean CONFIG=Debug
+make -f MakePluginEffect -j6 CONFIG=Debug
+make -f MakePluginSynth clean CONFIG=Debug
+make -f MakePluginSynth -j6 CONFIG=Debug
+else
 make -f MakeCabbageIDE clean CONFIG=Release
 make -f MakeCabbageIDE -j6 CONFIG=Release
 make -f MakePluginEffect clean CONFIG=Release
 make -f MakePluginEffect -j6 CONFIG=Release
 make -f MakePluginSynth clean CONFIG=Release
 make -f MakePluginSynth -j6 CONFIG=Release
+fi
+
 
 rm -rf CabbageBuild
 mkdir CabbageBuild
