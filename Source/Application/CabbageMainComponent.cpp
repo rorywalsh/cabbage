@@ -772,7 +772,10 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
             propertyPanel->setEnabled (false);
 
             if (recompile == true)
+			{
                 runCsoundForNode (getCurrentCsdFile().getFullPathName());
+				fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
+			}
         }
     }
 }

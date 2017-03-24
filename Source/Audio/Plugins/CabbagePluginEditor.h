@@ -165,9 +165,8 @@ public:
     bool isEditModeEnabled() {                       return editModeEnabled; }
     Colour backgroundColour;
 
-private:
-
-    class PopupDocumentWindow : public DocumentWindow
+	//---- popup plant window ----
+    class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
     {
 		Colour colour;
     public:
@@ -177,10 +176,13 @@ private:
 
 		}
 
-        void closeButtonPressed() override {    setVisible (false);  }
+        void closeButtonPressed() override {    setVisible (false); sendChangeMessage();  }
 		void paint(Graphics& g) { g.fillAll(colour); }
     };
 
+private:
+
+	//---- main component that holds widgets -----
     class MainComponent : public Component
     {
         Colour colour;

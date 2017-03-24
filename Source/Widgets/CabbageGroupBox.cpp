@@ -18,6 +18,7 @@
 */
 
 #include "CabbageGroupBox.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageGroupBox::CabbageGroupBox (ValueTree wData)
     : widgetData (wData),
@@ -50,16 +51,26 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData)
     setImgProperties (*this, wData, "groupbox");
 }
 
+void CabbageGroupBox::changeListenerCallback (ChangeBroadcaster* source)
+{
+	CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::visible, 0);
+}
+
 void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    if (DocumentWindow* owner = dynamic_cast<DocumentWindow*> (getParentComponent()))
+    if (CabbagePluginEditor::PopupDocumentWindow* owner = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
     {
         const int visible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
-
+		owner->addChangeListener(this);
         if (visible == 1)
+		{
             owner->setVisible (true);
+			owner->toFront(true);
+		}
         else
+		{
             owner->setVisible (false);
+		}
 
     }
 

@@ -92,10 +92,19 @@ void CabbageImage::mouseDown (const MouseEvent& e)
 void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 
-    if (prop == CabbageIdentifierIds::value)
+    if (DocumentWindow* owner = dynamic_cast<DocumentWindow*> (getParentComponent()))
     {
-        //bool state = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)==1 ? true : false;
-        //setToggleState(getValue(valueTree)==1 ? true : false, dontSendNotification);
+        const int visible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
+
+        if (visible == 1)
+		{
+            owner->setVisible (true);
+		}
+        else
+		{
+            owner->setVisible (false);
+		}
+
     }
 
     lineThickness = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness),

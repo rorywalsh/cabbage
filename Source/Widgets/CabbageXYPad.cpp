@@ -73,7 +73,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
 void CabbageXYPad::mouseDown (const MouseEvent& e)
 {
     owner->enableXYAutomator (getName(), false);
-    ball.setTopLeftPosition (constrainPosition (e.getPosition().getX(), e.getPosition().getY()));
+    ball.setTopLeftPosition (constrainPosition (e.getPosition().getX()+ ball.getWidth()*.5f, e.getPosition().getY() + ball.getWidth()*.5f));
     mouseDownXY.setXY (ball.getPosition().getX() + ball.getWidth()*.5f, ball.getPosition().getY() + ball.getHeight()*.5f);
     isAutomating = false;
     repaint();
