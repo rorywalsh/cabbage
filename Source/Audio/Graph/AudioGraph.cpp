@@ -764,7 +764,6 @@ PluginWindow::PluginWindow (Component* const pluginEditor,
     setContentOwned (pluginEditor, true);
     setVisible (true);
 
-    setAlwaysOnTop (true);
     activePluginWindows.add (this);
 }
 

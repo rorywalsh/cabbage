@@ -112,8 +112,10 @@ void CabbageSettingsWindow::addMiscProperties()
 
     showLastOpenedFileValue.setValue (settings.getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup"));
     showLastOpenedFileValue.addListener (this);
-    alwaysOnTopValue.setValue (settings.getUserSettings()->getIntValue ("SetAlwaysOnTop"));
-    alwaysOnTopValue.addListener (this);
+    alwaysOnTopPluginValue.setValue (settings.getUserSettings()->getIntValue ("SetAlwaysOnTopPlugin"));
+    alwaysOnTopPluginValue.addListener (this);
+    alwaysOnTopGraphValue.setValue (settings.getUserSettings()->getIntValue ("SetAlwaysOnTopGraph"));
+    alwaysOnTopGraphValue.addListener (this);
     compileOnSaveValue.setValue (settings.getUserSettings()->getIntValue ("CompileOnSave"));
     compileOnSaveValue.addListener (this);
 
@@ -121,7 +123,8 @@ void CabbageSettingsWindow::addMiscProperties()
     autoCompleteValue.addListener (this);
 
     editorProps.add (new BooleanPropertyComponent (showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
-    editorProps.add (new BooleanPropertyComponent (alwaysOnTopValue, "Plugin Window", "Always show plugin on top"));
+    editorProps.add (new BooleanPropertyComponent (alwaysOnTopPluginValue, "Plugin Window", "Always show plugin on top"));
+	editorProps.add (new BooleanPropertyComponent (alwaysOnTopGraphValue, "Graph Window", "Always show graph on top"));
     editorProps.add (new BooleanPropertyComponent (compileOnSaveValue, "Compiling", "Compile on save"));
     editorProps.add (new BooleanPropertyComponent (autoCompleteValue, "Auto-complete", "Show auto complete popup"));
 
@@ -200,8 +203,10 @@ void CabbageSettingsWindow::valueChanged (Value& value)
 {
     if (value.refersToSameSourceAs (showLastOpenedFileValue))
         settings.getUserSettings()->setValue ("OpenMostRecentFileOnStartup", value.getValue().toString());
-    else if (value.refersToSameSourceAs (alwaysOnTopValue))
-        settings.getUserSettings()->setValue ("SetAlwaysOnTop", value.getValue().toString());
+    else if (value.refersToSameSourceAs (alwaysOnTopPluginValue))
+        settings.getUserSettings()->setValue ("SetAlwaysOnTopPlugin", value.getValue().toString());
+    else if (value.refersToSameSourceAs (alwaysOnTopGraphValue))
+        settings.getUserSettings()->setValue ("SetAlwaysOnTopGraph", value.getValue().toString());
     else if (value.refersToSameSourceAs (compileOnSaveValue))
         settings.getUserSettings()->setValue ("CompileOnSave", value.getValue().toString());
     else if (value.refersToSameSourceAs (breakLinesValue))

@@ -450,6 +450,14 @@ void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
         if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
         {
             w->toFront (true);
+			
+			const int alwaysOnTop = cabbageSettings->getUserSettings()->getIntValue ("SetAlwaysOnTopPlugin");
+			
+			if(alwaysOnTop==1)
+				w->setAlwaysOnTop(true);
+			else
+				w->setAlwaysOnTop(false);
+				
             if (position.getY() > 0 && position.getX() > 0)
                 w->setTopLeftPosition (position.getX(), position.getY());
         }
