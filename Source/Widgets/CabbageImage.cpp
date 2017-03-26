@@ -88,24 +88,27 @@ void CabbageImage::mouseDown (const MouseEvent& e)
     owner->sendChannelDataToCsound (getChannel(), currentToggleValue);
     currentToggleValue != currentToggleValue;
 }
+
+void CabbageImage::changeListenerCallback(ChangeBroadcaster* source)
+{
+	CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::visible, 0);
+}
 //==============================================================================
 void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 
-    if (DocumentWindow* owner = dynamic_cast<DocumentWindow*> (getParentComponent()))
-    {
-        const int visible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
-
-        if (visible == 1)
+	if (CabbagePluginEditor::PopupDocumentWindow* owner = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
+	{
+		const int visible = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::visible);
+		owner->addChangeListener(this);
+		if (visible == 1)
 		{
-            owner->setVisible (true);
+			owner->setVisible(true);
+			owner->toFront(true);
 		}
-        else
-		{
-            owner->setVisible (false);
-		}
-
-    }
+		else
+			owner->setVisible(false);
+	}
 
     lineThickness = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness),
     outlineColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour));
