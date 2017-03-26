@@ -1,0 +1,30 @@
+
+**********************************************************
+Cabbage Log..
+Log started: 28 Feb 2017 6:38:18pm
+
+Plugin constructor
+Str.1
+Str.2
+Str.3
+Str.4
+Str.5
+Str.6
+Str.7
+Str.8
+Mute
+Mute
+Mute
+Mute
+Mute
+Mute
+Mute
+Mute
+Solo
+Solo
+Solo
+Solo
+Solo
+Solo
+Solo
+Solo

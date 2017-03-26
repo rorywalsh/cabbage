@@ -1,0 +1,141 @@
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Mar 2017 9:34:01am
+
+Plugin constructor
+caption
+size
+colour
+pluginID
+form caption
+size
+colour
+pluginID
+bounds
+keyboard bounds
+bounds
+channel
+range
+text
+rslider bounds
+channel
+range
+text
+Att.
+Att.
+bounds
+channel
+range
+text
+rslider bounds
+channel
+range
+text
+Dec.
+Dec.
+bounds
+channel
+range
+text
+rslider bounds
+channel
+range
+text
+Sus.
+Sus.
+bounds
+channel
+range
+text
+rslider bounds
+channel
+range
+text
+Rel.
+Rel.
+bounds
+populate
+combobox bounds
+populate
+bounds
+text
+populate
+mode
+filebutton bounds
+text
+populate
+mode
+Save
+Save
+1
+WARNING: could not open library 'C:\Program Files\Cabbage64\msvcp140d.dll' (-1)
+UnifiedCSD:  C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: PortAudio module enabled ... 
+using callback interface
+Elapsed time at end of orchestra compile: real: 0.002s, CPU: 0.002s
+sorting score ...
+	... done
+Elapsed time at end of score sort: real: 0.002s, CPU: 0.002s
+midi channel 1 using instr 1
+midi channel 2 using instr 1
+midi channel 3 using instr 1
+midi channel 4 using instr 1
+midi channel 5 using instr 1
+midi channel 6 using instr 1
+midi channel 7 using instr 1
+midi channel 8 using instr 1
+midi channel 9 using instr 1
+midi channel 10 using instr 1
+midi channel 11 using instr 1
+midi channel 12 using instr 1
+midi channel 13 using instr 1
+midi channel 14 using instr 1
+midi channel 15 using instr 1
+midi channel 16 using instr 1
+displays suppressed
+0dBFS level = 1.0
+orch now loaded
+audio buffered in 4096 sample-frame blocks
+SECTION 1:
+end of section 1	 sect peak amps:  0.00000  0.00000
+SECTION 1:
+
+
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_0.snaps
+Presets_1
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_1.snaps
+Presets_1
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_2.snaps
+Presets_1
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_3.snaps
+Presets_1
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_0.snaps
+Presets_2
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_1.snaps
+Presets_2
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_2.snaps
+Presets_2
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_3.snaps
+Presets_2
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_0.snaps
+Presets_3
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_1.snaps
+Presets_3
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_2.snaps
+Presets_3
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_3.snaps
+Presets_3
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_0.snaps
+Presets_4
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_1.snaps
+Presets_4
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_2.snaps
+Presets_4
+C:\Users\rory\sourcecode\cabaiste\Examples\Instructional\Presets_3.snaps
+Presets_4
+Shutdown
