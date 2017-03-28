@@ -59,10 +59,10 @@ public:
                         bool isMouseOver,
                         bool isMouseDown) override;
 
-    ImageEffectFilter* getScrollbarEffect();
-    int getMinimumScrollbarThumbSize (ScrollBar& scrollbar);
-    int getDefaultScrollbarWidth();
-    int getScrollbarButtonSize (ScrollBar& scrollbar);
+    ImageEffectFilter* getScrollbarEffect() override;
+    int getMinimumScrollbarThumbSize (ScrollBar& scrollbar) override;
+    int getDefaultScrollbarWidth() override;
+    int getScrollbarButtonSize (ScrollBar& scrollbar) override;
 
     Rectangle<int> getPropertyComponentContentPosition (PropertyComponent& component) override;
 

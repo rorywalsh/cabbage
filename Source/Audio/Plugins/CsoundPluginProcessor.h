@@ -85,7 +85,7 @@ public:
 
 
 
-    void handleAsyncUpdate();
+    void handleAsyncUpdate() override;
     //csound breakpint function
     static void breakpointCallback (CSOUND* csound, debug_bkpt_info_t* bkpt_info, void* udata);
     CabbageCsoundBreakpointData breakPointData;

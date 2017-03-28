@@ -22,6 +22,7 @@
 
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "../BinaryData/CabbageBinaryData.h"
 
 #pragma warning(disable: 4244) // possible loss of data
 #pragma warning(disable: 4100) // possible loss of data
@@ -716,7 +717,13 @@ public:
         return font;
     }
 
-
+    static Font getEmbeddedFont()
+    {
+        MemoryInputStream is(CabbageBinaryData::DroidSansMono_ttf, CabbageBinaryData::DroidSansMono_ttfSize, false);
+        CustomTypeface *newTypeface = new CustomTypeface(is);
+        Font myFont(newTypeface);
+        return myFont;
+    }
     //===================================================================
     static Font getTitleFont()
     {

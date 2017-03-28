@@ -117,7 +117,7 @@ public:
     //============================================================================
     static ValueTree getValueTreeForComponent (ValueTree widgetData, String name);
     static Rectangle<int> getBoundsFromText (String text);
-
+    const CabbageIdentifierStrings identifierArray;
 };
 
 #endif

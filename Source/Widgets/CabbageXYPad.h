@@ -78,20 +78,20 @@ public:
     CabbageXYPad(ValueTree wData, CabbagePluginEditor* editor);
     ~CabbageXYPad() {}
     //ValueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    void changeListenerCallback(ChangeBroadcaster* source);
+    void changeListenerCallback(ChangeBroadcaster* source) override;
     ValueTree widgetData;
 
-    void paint(Graphics& g);
-    void resized();
-    void mouseDown(const MouseEvent& e);
-    void mouseDrag(const MouseEvent& e);
-    void mouseUp(const MouseEvent& e);
+    void paint(Graphics& g) override;
+    void resized() override;
+    void mouseDown(const MouseEvent& e) override;
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseUp(const MouseEvent& e) override;
 
     Slider& getSliderX()
     {

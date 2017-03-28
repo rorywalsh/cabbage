@@ -39,7 +39,7 @@ CabbageCsoundConsole::CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor
 
     if (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
     {
-        String initText ("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
+        const String initText ("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
         setText (initText);
     }
     else
@@ -49,11 +49,19 @@ CabbageCsoundConsole::CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor
 
 void CabbageCsoundConsole::timerCallback()
 {
-    const String csoundOutputString = owner->getCsoundOutputFromProcessor();
-
-    if (csoundOutputString.isNotEmpty())
+    if (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
     {
-        insertTextAtCaret (csoundOutputString);
+        const String initText ("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
+        setText (initText);
+    }
+    else
+    {        
+        const String csoundOutputString = owner->getCsoundOutputFromProcessor();
+        
+        if (csoundOutputString.isNotEmpty())
+        {
+            insertTextAtCaret (csoundOutputString);
+        }
     }
 }
 

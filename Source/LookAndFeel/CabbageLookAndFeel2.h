@@ -63,6 +63,8 @@ public:
     int getScrollbarButtonSize (ScrollBar& scrollbar) override;
 	
 	void drawButtonText (Graphics& g, TextButton& button, bool /*isMouseOverButton*/, bool /*isButtonDown*/) override;
+    
+    Font getLabelFont(Label& label) override;
 
 private:
 

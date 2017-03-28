@@ -795,8 +795,5 @@ String CabbagePluginEditor::createNewGenericNameForPresetFile()
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {
-    if (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
-        return processor.getCsoundOutput();
-    else
-        return String ("You are currently in 'Standalone' mode.\nThe csoundoutput widget will only be filled\nwith Csound messages when used in a plugin.");
+    return processor.getCsoundOutput();
 }

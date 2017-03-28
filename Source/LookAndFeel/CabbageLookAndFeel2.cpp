@@ -1146,3 +1146,9 @@ int CabbageLookAndFeel2::getScrollbarButtonSize (ScrollBar& scrollbar)
     return 2 + (scrollbar.isVertical() ? scrollbar.getWidth()
                 : scrollbar.getHeight());
 }
+
+Font CabbageLookAndFeel2::getLabelFont (Label& label)
+{
+    return CabbageUtilities::getComponentFont();
+}
+
