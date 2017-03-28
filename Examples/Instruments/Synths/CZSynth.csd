@@ -66,10 +66,10 @@
 form caption("CZ Synthesiser") size(1075,365), pluginID("RMSy")
 
 ; PHASE DISTORTION
-image      bounds(  5,  5,500,130), colour(0,0,0,0), plant("ShapeAmount"), outlinecolour("white"), outlinethickness(1), shape("sharp") {
-label      bounds(  5,  2,500, 12), text(". PHASE DISTORTION ."), fontcolour(255,255,100)
+image      bounds(  5,  5,500,130), colour(0,0,0,0), plant("ShapeAmount"), outlinecolour("white"), outlinethickness(1), shape("sharp") 
+label      bounds(  5,  5,500, 12), text(". PHASE DISTORTION ."), fontcolour(255,255,100)
 rslider    bounds(  0, 40, 80, 80), textbox(1), text("Distort"), channel("ShapeAmount"),  range(-1,  1, 0), $SLIDER_STYLE
-checkbox   bounds( 80, 25, 80, 10), text("Retrig."), channel("SARetrig"), value(1), identchannel("SARetrigID"), visible(0), $CHECKBOX_STYLE
+checkbox   bounds( 80, 25, 80, 10), text("Retrig."), channel("SARetrig"), value(1), identchannel("SARetrigID"), visible(0), colour(255,255,100)
 rslider    bounds( 60, 40, 80, 80), textbox(1), text("Env."), channel("SAEnv"),  range(0,  1, 1), $SLIDER_STYLE
 rslider    bounds(120, 40, 80, 80), textbox(1), text("Att."), channel("SAAtt"),  range(0, 16, 0,0.5), $SLIDER_STYLE
 rslider    bounds(180, 40, 80, 80), textbox(1), text("Dec."), channel("SADec"),  range(0, 16, 2,0.5), $SLIDER_STYLE
@@ -78,7 +78,7 @@ combobox   bounds(325, 20, 85, 20), channel("SALFOShape"), value(2), text("Tri."
 rslider    bounds(300, 40, 80, 80), textbox(1), text("LFO"),  channel("SALFO"),  range(0,  1, 0.09), $SLIDER_STYLE
 rslider    bounds(360, 40, 80, 80), textbox(1), text("Rate"), channel("SARate"), range(0, 14, 1), $SLIDER_STYLE
 rslider    bounds(420, 40, 80, 80), textbox(1), text("Kybd.Scal."), channel("KybdScal"), range(0, 1, 0), $SLIDER_STYLE
-}
+
 
 ; FILTER
 image      bounds(510,  5,560,130), plant("Filter"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp") {

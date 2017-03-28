@@ -1,0 +1,6990 @@
+
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.1
+fco.1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.2
+fco.2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.3
+fco.3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.4
+fco.4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 1
+Gain 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 2
+Gain 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 3
+Gain 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Gain 4
+Gain 4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 1
+Q 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 2
+Q 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 3
+Q 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 4
+Q 4
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+text
+colour
+channel
+range
+textcolour
+Level
+Level
+bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+{ image      bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+bounds
+text
+fontcolour
+label      bounds
+text
+fontcolour
+PRESETS
+PRESETS
+bounds
+channel
+value
+text
+combobox   bounds
+channel
+value
+text
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+bounds
+keyboard bounds
+bounds
+text
+FontColour
+label bounds
+text
+FontColour
+Iain McCurdy |2013|
+Iain McCurdy |2013|
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Mar 2017 12:12:21pm
+
+Plugin constructor
+- neck pickup only 
+CA - neck pickup only 
+- bridge pickup only 
+CB - bridge pickup only 
+- bridge pickup 
+180 degrees out of phase w.r.t the neck pickup  DB - bridge pickup 
+A - position of the first pickup 
+. Typically referred to as the 'neck' pickup Pick A - position of the first pickup 
+B - position of the second pickup 
+. Typically referred to as the 'bridge' pickup Pick B - position of the second pickup 
+- The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+. The envelope always ends at zero. Env.A - The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+- location of the 'pluck' 
+. Should be close to zero for a typical clavinet behaviour Pluck - location of the 'pluck' 
+- a tone control applied to the release 'pluck' 
+Tone - a tone control applied to the release 'pluck' 
+- time it takes for full damping to be applied 
+D.Time - time it takes for full damping to be applied 
+. Note that the 'Damp' released 
+frequencies 
+levels and Q values for each of the four filters can be adjusted.  Cutoff frequencies 
+caption
+size
+pluginID
+colour
+guirefresh
+form caption
+size
+pluginID
+colour
+guirefresh
+RSliderStyle #textcolour
+outlinecolour
+# #define RSliderStyle #textcolour
+outlinecolour
+bounds
+colour
+shape
+image bounds
+colour
+shape
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Brilliant
+Brilliant
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+Treble
+Treble
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Medium
+Medium
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Soft
+Soft
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+C/D
+C/D
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+A/B
+A/B
+bounds
+channel
+text
+button bounds
+channel
+text
+Setup
+Setup
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick A
+Pick A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick B
+Pick B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod A
+Mod A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod B
+Mod B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate A
+Rate A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate B
+Rate B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.A
+Env.A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.B
+Env.B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time A
+Time A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time B
+Time B
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pluck
+Pluck
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+HPF
+HPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+LPF
+LPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Inharm.
+Inharm.
+bounds
+channel
+text
+button bounds
+channel
+text
+Release
+Release
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Ampl.
+Ampl.
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle     #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Tone
+Tone
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+D.Time
+D.Time
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+A.Time
+A.Time
+bounds
+channel
+text
+button bounds
+channel
+text
+Filters
+Filters
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Brilliant
+Brilliant
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Treble
+Treble
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Medium
+Medium
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Soft
+Soft
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.1
+fco.1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.2
+fco.2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.3
+fco.3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.4
+fco.4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 1
+Gain 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 2
+Gain 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 3
+Gain 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Gain 4
+Gain 4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 1
+Q 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 2
+Q 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 3
+Q 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 4
+Q 4
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+text
+colour
+channel
+range
+textcolour
+Level
+Level
+bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+{ image      bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+bounds
+text
+fontcolour
+label      bounds
+text
+fontcolour
+PRESETS
+PRESETS
+bounds
+channel
+value
+text
+combobox   bounds
+channel
+value
+text
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+bounds
+keyboard bounds
+bounds
+text
+FontColour
+label bounds
+text
+FontColour
+Iain McCurdy |2013|
+Iain McCurdy |2013|
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Mar 2017 12:13:48pm
+
+Plugin constructor
+- neck pickup only 
+CA - neck pickup only 
+- bridge pickup only 
+CB - bridge pickup only 
+- bridge pickup 
+180 degrees out of phase w.r.t the neck pickup  DB - bridge pickup 
+A - position of the first pickup 
+. Typically referred to as the 'neck' pickup Pick A - position of the first pickup 
+B - position of the second pickup 
+. Typically referred to as the 'bridge' pickup Pick B - position of the second pickup 
+- The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+. The envelope always ends at zero. Env.A - The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+- location of the 'pluck' 
+. Should be close to zero for a typical clavinet behaviour Pluck - location of the 'pluck' 
+- a tone control applied to the release 'pluck' 
+Tone - a tone control applied to the release 'pluck' 
+- time it takes for full damping to be applied 
+D.Time - time it takes for full damping to be applied 
+. Note that the 'Damp' released 
+frequencies 
+levels and Q values for each of the four filters can be adjusted.  Cutoff frequencies 
+caption
+size
+pluginID
+colour
+guirefresh
+form caption
+size
+pluginID
+colour
+guirefresh
+RSliderStyle #textcolour
+outlinecolour
+# #define RSliderStyle #textcolour
+outlinecolour
+bounds
+colour
+shape
+image bounds
+colour
+shape
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Brilliant
+Brilliant
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+Treble
+Treble
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Medium
+Medium
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Soft
+Soft
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+C/D
+C/D
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+A/B
+A/B
+bounds
+channel
+text
+button bounds
+channel
+text
+Setup
+Setup
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick A
+Pick A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick B
+Pick B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod A
+Mod A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod B
+Mod B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate A
+Rate A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate B
+Rate B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.A
+Env.A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.B
+Env.B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time A
+Time A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time B
+Time B
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pluck
+Pluck
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+HPF
+HPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+LPF
+LPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Inharm.
+Inharm.
+bounds
+channel
+text
+button bounds
+channel
+text
+Release
+Release
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Ampl.
+Ampl.
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle     #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Tone
+Tone
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+D.Time
+D.Time
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+A.Time
+A.Time
+bounds
+channel
+text
+button bounds
+channel
+text
+Filters
+Filters
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Brilliant
+Brilliant
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Treble
+Treble
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Medium
+Medium
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Soft
+Soft
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.1
+fco.1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.2
+fco.2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.3
+fco.3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.4
+fco.4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 1
+Gain 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 2
+Gain 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 3
+Gain 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Gain 4
+Gain 4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 1
+Q 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 2
+Q 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 3
+Q 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 4
+Q 4
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+text
+colour
+channel
+range
+textcolour
+Level
+Level
+bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+{ image      bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+bounds
+text
+fontcolour
+label      bounds
+text
+fontcolour
+PRESETS
+PRESETS
+bounds
+channel
+value
+text
+combobox   bounds
+channel
+value
+text
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+bounds
+keyboard bounds
+bounds
+text
+FontColour
+label bounds
+text
+FontColour
+Iain McCurdy |2013|
+Iain McCurdy |2013|
+1
+UnifiedCSD:  /home/rory/sourcecode/cabaiste/Examples/Instruments/Physical Modelling/Clavinet.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: ALSA module enabled
+defining argument `SEND_SETTINGS``N as...#1#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...# 1#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...# 0.25                #
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003        #
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012        #
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012        #
+defining argument `SEND_SETTINGS``RateA as...#0.200000003         #
+defining argument `SEND_SETTINGS``RateB as...#0.150000006         #
+defining argument `SEND_SETTINGS``EnvA as...#0                   #
+defining argument `SEND_SETTINGS``EnvB as...#0                   #
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007        #
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``plk as...#0.00499999989       #
+defining argument `SEND_SETTINGS``SusDamp as...#0           #
+defining argument `SEND_SETTINGS``HPF as...#0                   #
+defining argument `SEND_SETTINGS``LPF as...#72                  #
+defining argument `SEND_SETTINGS``inharm as...#0                   #
+defining argument `SEND_SETTINGS``RelAmpl as...#2           #
+defining argument `SEND_SETTINGS``RelTone as...#1000        #
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988 #
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997 #
+defining argument `SEND_SETTINGS``brilliant as...#0           #
+defining argument `SEND_SETTINGS``treble as...#1           #
+defining argument `SEND_SETTINGS``medium as...#0                   #
+defining argument `SEND_SETTINGS``soft as...#0                   #
+defining argument `SEND_SETTINGS``fco1 as...#2500                #
+defining argument `SEND_SETTINGS``fco2 as...#1000                #
+defining argument `SEND_SETTINGS``fco3 as...#500                 #
+defining argument `SEND_SETTINGS``fco4 as...#200                 #
+defining argument `SEND_SETTINGS``gain1 as...#3                   #
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995          #
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995          #
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998          #
+defining argument `SEND_SETTINGS``Q1 as...#1.25                #
+defining argument `SEND_SETTINGS``Q2 as...#1                   #
+defining argument `SEND_SETTINGS``Q3 as...#1                   #
+defining argument `SEND_SETTINGS``Q4 as...#2                   #
+defining argument `SEND_SETTINGS``level as...#0.5                 #
+defining argument `SEND_SETTINGS``N as...#2#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...# 1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...# 0.938000023         #
+defining argument `SEND_SETTINGS``pickB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012        #
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012        #
+defining argument `SEND_SETTINGS``RateA as...#0.200000003         #
+defining argument `SEND_SETTINGS``RateB as...#0.150000006         #
+defining argument `SEND_SETTINGS``EnvA as...#0                   #
+defining argument `SEND_SETTINGS``EnvB as...#0                   #
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007        #
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``plk as...#0.165399998 #
+defining argument `SEND_SETTINGS``SusDamp as...#0.50999999          #
+defining argument `SEND_SETTINGS``HPF as...#0                   #
+defining argument `SEND_SETTINGS``LPF as...#39.6390991          #
+defining argument `SEND_SETTINGS``inharm as...#0           #
+defining argument `SEND_SETTINGS``RelAmpl as...#0           #
+defining argument `SEND_SETTINGS``RelTone as...#1000        #
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.359999985 #
+defining argument `SEND_SETTINGS``RelATime as...#4.01999998  #
+defining argument `SEND_SETTINGS``brilliant as...#0           #
+defining argument `SEND_SETTINGS``treble as...#0                   #
+defining argument `SEND_SETTINGS``medium as...#1                   #
+defining argument `SEND_SETTINGS``soft as...#0                   #
+defining argument `SEND_SETTINGS``fco1 as...#2500                #
+defining argument `SEND_SETTINGS``fco2 as...#1000                #
+defining argument `SEND_SETTINGS``fco3 as...#500                 #
+defining argument `SEND_SETTINGS``fco4 as...#200                 #
+defining argument `SEND_SETTINGS``gain1 as...#3                   #
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995          #
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995          #
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998          #
+defining argument `SEND_SETTINGS``Q1 as...#1.25                #
+defining argument `SEND_SETTINGS``Q2 as...#1                   #
+defining argument `SEND_SETTINGS``Q3 as...#1                   #
+defining argument `SEND_SETTINGS``Q4 as...#2                   #
+defining argument `SEND_SETTINGS``level as...#0.925000072#
+defining argument `SEND_SETTINGS``N as...#3#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.120000005#
+defining argument `SEND_SETTINGS``pickB as...#0.252000004#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00079999998#
+defining argument `SEND_SETTINGS``SusDamp as...#0.0799999759#
+defining argument `SEND_SETTINGS``HPF as...#2.04999995#
+defining argument `SEND_SETTINGS``LPF as...#8.57209969#
+defining argument `SEND_SETTINGS``inharm as...#-0.50999999#
+defining argument `SEND_SETTINGS``RelAmpl as...#2.15999985#
+defining argument `SEND_SETTINGS``RelTone as...#2358.80005#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0650000051#
+defining argument `SEND_SETTINGS``RelDamp as...#0.300000012#
+defining argument `SEND_SETTINGS``RelATime as...#8#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.21700001#
+defining argument `SEND_SETTINGS``N as...#4#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.530000031#
+defining argument `SEND_SETTINGS``pickB as...#0.462000012#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.269099981#
+defining argument `SEND_SETTINGS``SusDamp as...#-1#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.2099991#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.879999995#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.5#
+defining argument `SEND_SETTINGS``N as...#5#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#1#
+defining argument `SEND_SETTINGS``C_D as...#0#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...#0.398000032#
+defining argument `SEND_SETTINGS``pickB as...#0.522000015#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.285899997#
+defining argument `SEND_SETTINGS``SusDamp as...#0.0999999791#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#31.4514999#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.579999983#
+defining argument `SEND_SETTINGS``RelATime as...#3.91999984#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#1#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.461000025#
+defining argument `SEND_SETTINGS``N as...#6#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...#0.0940000042#
+defining argument `SEND_SETTINGS``pickB as...#0.398000032#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.128700003#
+defining argument `SEND_SETTINGS``SusDamp as...#0.299999982#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#72#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.280000001#
+defining argument `SEND_SETTINGS``RelATime as...#1.39999998#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.5#
+defining argument `SEND_SETTINGS``N as...#7#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.00200000009#
+defining argument `SEND_SETTINGS``pickB as...#0.950000048#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.128700003#
+defining argument `SEND_SETTINGS``SusDamp as...#0.299999982#
+defining argument `SEND_SETTINGS``HPF as...#3.46000004#
+defining argument `SEND_SETTINGS``LPF as...#24.0676003#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.280000001#
+defining argument `SEND_SETTINGS``RelATime as...#3.32999992#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#4.26300001#
+defining argument `SEND_SETTINGS``N as...#8#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.584000051#
+defining argument `SEND_SETTINGS``pickB as...#0.450000018#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.23709999#
+defining argument `SEND_SETTINGS``SusDamp as...#0.459999979#
+defining argument `SEND_SETTINGS``HPF as...#1.46999991#
+defining argument `SEND_SETTINGS``LPF as...#16.7103996#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.140000001#
+defining argument `SEND_SETTINGS``RelATime as...#3.58999991#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.720000029#
+defining argument `SEND_SETTINGS``N as...#9#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#0#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.25#
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00499999989#
+defining argument `SEND_SETTINGS``SusDamp as...#0#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.5985985#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.92100012#
+defining argument `SEND_SETTINGS``N as...#10#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.25#
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00499999989#
+defining argument `SEND_SETTINGS``SusDamp as...#0#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.5985985#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.92100012#
+defining argument `LAUNCH_PLANT``name as...#setup#
+defining argument `LAUNCH_PLANT``name as...#release#
+defining argument `LAUNCH_PLANT``name as...#filters#
+sorting score ...
+	... done
+midi channel 1 using instr 1
+midi channel 2 using instr 2
+midi channel 3 using instr 3
+midi channel 4 using instr 1
+midi channel 5 using instr 1
+midi channel 6 using instr 1
+midi channel 7 using instr 1
+midi channel 8 using instr 1
+midi channel 9 using instr 1
+midi channel 10 using instr 1
+midi channel 11 using instr 1
+midi channel 12 using instr 1
+midi channel 13 using instr 1
+midi channel 14 using instr 1
+midi channel 15 using instr 1
+midi channel 16 using instr 1
+displays suppressed
+0dBFS level = 1.0
+chnl 1 using instr 2
+chnl 2 using instr 2
+chnl 3 using instr 2
+chnl 4 using instr 2
+chnl 5 using instr 2
+chnl 6 using instr 2
+chnl 7 using instr 2
+chnl 8 using instr 2
+chnl 9 using instr 2
+chnl 10 using instr 2
+chnl 11 using instr 2
+chnl 12 using instr 2
+chnl 13 using instr 2
+chnl 14 using instr 2
+chnl 15 using instr 2
+chnl 16 using instr 2
+orch now loaded
+audio buffered in 256 sample-frame blocks
+SECTION 1:
+end of section 1	 sect peak amps:  0.00000  0.00000
+SECTION 1:
+
+
+visible
+pos
+visible
+pos
+visible
+pos
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Mar 2017 12:13:57pm
+
+Plugin constructor
+- neck pickup only 
+CA - neck pickup only 
+- bridge pickup only 
+CB - bridge pickup only 
+- bridge pickup 
+180 degrees out of phase w.r.t the neck pickup  DB - bridge pickup 
+A - position of the first pickup 
+. Typically referred to as the 'neck' pickup Pick A - position of the first pickup 
+B - position of the second pickup 
+. Typically referred to as the 'bridge' pickup Pick B - position of the second pickup 
+- The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+. The envelope always ends at zero. Env.A - The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+- location of the 'pluck' 
+. Should be close to zero for a typical clavinet behaviour Pluck - location of the 'pluck' 
+- a tone control applied to the release 'pluck' 
+Tone - a tone control applied to the release 'pluck' 
+- time it takes for full damping to be applied 
+D.Time - time it takes for full damping to be applied 
+. Note that the 'Damp' released 
+frequencies 
+levels and Q values for each of the four filters can be adjusted.  Cutoff frequencies 
+caption
+size
+pluginID
+colour
+guirefresh
+form caption
+size
+pluginID
+colour
+guirefresh
+RSliderStyle #textcolour
+outlinecolour
+# #define RSliderStyle #textcolour
+outlinecolour
+bounds
+colour
+shape
+image bounds
+colour
+shape
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Brilliant
+Brilliant
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+Treble
+Treble
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Medium
+Medium
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Soft
+Soft
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+C/D
+C/D
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+A/B
+A/B
+bounds
+channel
+text
+button bounds
+channel
+text
+Setup
+Setup
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick A
+Pick A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick B
+Pick B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod A
+Mod A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod B
+Mod B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate A
+Rate A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate B
+Rate B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.A
+Env.A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.B
+Env.B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time A
+Time A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time B
+Time B
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pluck
+Pluck
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+HPF
+HPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+LPF
+LPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Inharm.
+Inharm.
+bounds
+channel
+text
+button bounds
+channel
+text
+Release
+Release
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Ampl.
+Ampl.
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle     #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Tone
+Tone
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+D.Time
+D.Time
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+A.Time
+A.Time
+bounds
+channel
+text
+button bounds
+channel
+text
+Filters
+Filters
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Brilliant
+Brilliant
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Treble
+Treble
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Medium
+Medium
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Soft
+Soft
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.1
+fco.1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.2
+fco.2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.3
+fco.3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.4
+fco.4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 1
+Gain 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 2
+Gain 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 3
+Gain 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Gain 4
+Gain 4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 1
+Q 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 2
+Q 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 3
+Q 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 4
+Q 4
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+text
+colour
+channel
+range
+textcolour
+Level
+Level
+bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+{ image      bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+bounds
+text
+fontcolour
+label      bounds
+text
+fontcolour
+PRESETS
+PRESETS
+bounds
+channel
+value
+text
+combobox   bounds
+channel
+value
+text
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+bounds
+keyboard bounds
+bounds
+text
+FontColour
+label bounds
+text
+FontColour
+Iain McCurdy |2013|
+Iain McCurdy |2013|
+1
+UnifiedCSD:  /home/rory/sourcecode/cabaiste/Examples/Instruments/Physical Modelling/Clavinet.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: ALSA module enabled
+defining argument `SEND_SETTINGS``N as...#1#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...# 1#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...# 0.25                #
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003        #
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012        #
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012        #
+defining argument `SEND_SETTINGS``RateA as...#0.200000003         #
+defining argument `SEND_SETTINGS``RateB as...#0.150000006         #
+defining argument `SEND_SETTINGS``EnvA as...#0                   #
+defining argument `SEND_SETTINGS``EnvB as...#0                   #
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007        #
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``plk as...#0.00499999989       #
+defining argument `SEND_SETTINGS``SusDamp as...#0           #
+defining argument `SEND_SETTINGS``HPF as...#0                   #
+defining argument `SEND_SETTINGS``LPF as...#72                  #
+defining argument `SEND_SETTINGS``inharm as...#0                   #
+defining argument `SEND_SETTINGS``RelAmpl as...#2           #
+defining argument `SEND_SETTINGS``RelTone as...#1000        #
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988 #
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997 #
+defining argument `SEND_SETTINGS``brilliant as...#0           #
+defining argument `SEND_SETTINGS``treble as...#1           #
+defining argument `SEND_SETTINGS``medium as...#0                   #
+defining argument `SEND_SETTINGS``soft as...#0                   #
+defining argument `SEND_SETTINGS``fco1 as...#2500                #
+defining argument `SEND_SETTINGS``fco2 as...#1000                #
+defining argument `SEND_SETTINGS``fco3 as...#500                 #
+defining argument `SEND_SETTINGS``fco4 as...#200                 #
+defining argument `SEND_SETTINGS``gain1 as...#3                   #
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995          #
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995          #
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998          #
+defining argument `SEND_SETTINGS``Q1 as...#1.25                #
+defining argument `SEND_SETTINGS``Q2 as...#1                   #
+defining argument `SEND_SETTINGS``Q3 as...#1                   #
+defining argument `SEND_SETTINGS``Q4 as...#2                   #
+defining argument `SEND_SETTINGS``level as...#0.5                 #
+defining argument `SEND_SETTINGS``N as...#2#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...# 1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...# 0.938000023         #
+defining argument `SEND_SETTINGS``pickB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012        #
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012        #
+defining argument `SEND_SETTINGS``RateA as...#0.200000003         #
+defining argument `SEND_SETTINGS``RateB as...#0.150000006         #
+defining argument `SEND_SETTINGS``EnvA as...#0                   #
+defining argument `SEND_SETTINGS``EnvB as...#0                   #
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007        #
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``plk as...#0.165399998 #
+defining argument `SEND_SETTINGS``SusDamp as...#0.50999999          #
+defining argument `SEND_SETTINGS``HPF as...#0                   #
+defining argument `SEND_SETTINGS``LPF as...#39.6390991          #
+defining argument `SEND_SETTINGS``inharm as...#0           #
+defining argument `SEND_SETTINGS``RelAmpl as...#0           #
+defining argument `SEND_SETTINGS``RelTone as...#1000        #
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.359999985 #
+defining argument `SEND_SETTINGS``RelATime as...#4.01999998  #
+defining argument `SEND_SETTINGS``brilliant as...#0           #
+defining argument `SEND_SETTINGS``treble as...#0                   #
+defining argument `SEND_SETTINGS``medium as...#1                   #
+defining argument `SEND_SETTINGS``soft as...#0                   #
+defining argument `SEND_SETTINGS``fco1 as...#2500                #
+defining argument `SEND_SETTINGS``fco2 as...#1000                #
+defining argument `SEND_SETTINGS``fco3 as...#500                 #
+defining argument `SEND_SETTINGS``fco4 as...#200                 #
+defining argument `SEND_SETTINGS``gain1 as...#3                   #
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995          #
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995          #
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998          #
+defining argument `SEND_SETTINGS``Q1 as...#1.25                #
+defining argument `SEND_SETTINGS``Q2 as...#1                   #
+defining argument `SEND_SETTINGS``Q3 as...#1                   #
+defining argument `SEND_SETTINGS``Q4 as...#2                   #
+defining argument `SEND_SETTINGS``level as...#0.925000072#
+defining argument `SEND_SETTINGS``N as...#3#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.120000005#
+defining argument `SEND_SETTINGS``pickB as...#0.252000004#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00079999998#
+defining argument `SEND_SETTINGS``SusDamp as...#0.0799999759#
+defining argument `SEND_SETTINGS``HPF as...#2.04999995#
+defining argument `SEND_SETTINGS``LPF as...#8.57209969#
+defining argument `SEND_SETTINGS``inharm as...#-0.50999999#
+defining argument `SEND_SETTINGS``RelAmpl as...#2.15999985#
+defining argument `SEND_SETTINGS``RelTone as...#2358.80005#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0650000051#
+defining argument `SEND_SETTINGS``RelDamp as...#0.300000012#
+defining argument `SEND_SETTINGS``RelATime as...#8#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.21700001#
+defining argument `SEND_SETTINGS``N as...#4#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.530000031#
+defining argument `SEND_SETTINGS``pickB as...#0.462000012#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.269099981#
+defining argument `SEND_SETTINGS``SusDamp as...#-1#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.2099991#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.879999995#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.5#
+defining argument `SEND_SETTINGS``N as...#5#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#1#
+defining argument `SEND_SETTINGS``C_D as...#0#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...#0.398000032#
+defining argument `SEND_SETTINGS``pickB as...#0.522000015#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.285899997#
+defining argument `SEND_SETTINGS``SusDamp as...#0.0999999791#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#31.4514999#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.579999983#
+defining argument `SEND_SETTINGS``RelATime as...#3.91999984#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#1#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.461000025#
+defining argument `SEND_SETTINGS``N as...#6#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...#0.0940000042#
+defining argument `SEND_SETTINGS``pickB as...#0.398000032#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.128700003#
+defining argument `SEND_SETTINGS``SusDamp as...#0.299999982#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#72#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.280000001#
+defining argument `SEND_SETTINGS``RelATime as...#1.39999998#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.5#
+defining argument `SEND_SETTINGS``N as...#7#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.00200000009#
+defining argument `SEND_SETTINGS``pickB as...#0.950000048#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.128700003#
+defining argument `SEND_SETTINGS``SusDamp as...#0.299999982#
+defining argument `SEND_SETTINGS``HPF as...#3.46000004#
+defining argument `SEND_SETTINGS``LPF as...#24.0676003#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.280000001#
+defining argument `SEND_SETTINGS``RelATime as...#3.32999992#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#4.26300001#
+defining argument `SEND_SETTINGS``N as...#8#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.584000051#
+defining argument `SEND_SETTINGS``pickB as...#0.450000018#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.23709999#
+defining argument `SEND_SETTINGS``SusDamp as...#0.459999979#
+defining argument `SEND_SETTINGS``HPF as...#1.46999991#
+defining argument `SEND_SETTINGS``LPF as...#16.7103996#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.140000001#
+defining argument `SEND_SETTINGS``RelATime as...#3.58999991#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.720000029#
+defining argument `SEND_SETTINGS``N as...#9#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#0#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.25#
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00499999989#
+defining argument `SEND_SETTINGS``SusDamp as...#0#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.5985985#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.92100012#
+defining argument `SEND_SETTINGS``N as...#10#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.25#
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00499999989#
+defining argument `SEND_SETTINGS``SusDamp as...#0#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.5985985#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.92100012#
+defining argument `LAUNCH_PLANT``name as...#setup#
+defining argument `LAUNCH_PLANT``name as...#release#
+defining argument `LAUNCH_PLANT``name as...#filters#
+sorting score ...
+	... done
+midi channel 1 using instr 1
+midi channel 2 using instr 2
+midi channel 3 using instr 3
+midi channel 4 using instr 1
+midi channel 5 using instr 1
+midi channel 6 using instr 1
+midi channel 7 using instr 1
+midi channel 8 using instr 1
+midi channel 9 using instr 1
+midi channel 10 using instr 1
+midi channel 11 using instr 1
+midi channel 12 using instr 1
+midi channel 13 using instr 1
+midi channel 14 using instr 1
+midi channel 15 using instr 1
+midi channel 16 using instr 1
+displays suppressed
+0dBFS level = 1.0
+chnl 1 using instr 2
+chnl 2 using instr 2
+chnl 3 using instr 2
+chnl 4 using instr 2
+chnl 5 using instr 2
+chnl 6 using instr 2
+chnl 7 using instr 2
+chnl 8 using instr 2
+chnl 9 using instr 2
+chnl 10 using instr 2
+chnl 11 using instr 2
+chnl 12 using instr 2
+chnl 13 using instr 2
+chnl 14 using instr 2
+chnl 15 using instr 2
+chnl 16 using instr 2
+orch now loaded
+audio buffered in 256 sample-frame blocks
+SECTION 1:
+end of section 1	 sect peak amps:  0.00000  0.00000
+SECTION 1:
+
+
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Mar 2017 12:14:09pm
+
+Plugin constructor
+- neck pickup only 
+CA - neck pickup only 
+- bridge pickup only 
+CB - bridge pickup only 
+- bridge pickup 
+180 degrees out of phase w.r.t the neck pickup  DB - bridge pickup 
+A - position of the first pickup 
+. Typically referred to as the 'neck' pickup Pick A - position of the first pickup 
+B - position of the second pickup 
+. Typically referred to as the 'bridge' pickup Pick B - position of the second pickup 
+- The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+. The envelope always ends at zero. Env.A - The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+- location of the 'pluck' 
+. Should be close to zero for a typical clavinet behaviour Pluck - location of the 'pluck' 
+- a tone control applied to the release 'pluck' 
+Tone - a tone control applied to the release 'pluck' 
+- time it takes for full damping to be applied 
+D.Time - time it takes for full damping to be applied 
+. Note that the 'Damp' released 
+frequencies 
+levels and Q values for each of the four filters can be adjusted.  Cutoff frequencies 
+caption
+size
+pluginID
+colour
+guirefresh
+form caption
+size
+pluginID
+colour
+guirefresh
+RSliderStyle #textcolour
+outlinecolour
+# #define RSliderStyle #textcolour
+outlinecolour
+bounds
+colour
+shape
+image bounds
+colour
+shape
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Brilliant
+Brilliant
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+Treble
+Treble
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Medium
+Medium
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Soft
+Soft
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+C/D
+C/D
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+A/B
+A/B
+bounds
+channel
+text
+button bounds
+channel
+text
+Setup
+Setup
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick A
+Pick A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick B
+Pick B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod A
+Mod A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod B
+Mod B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate A
+Rate A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate B
+Rate B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.A
+Env.A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.B
+Env.B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time A
+Time A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time B
+Time B
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pluck
+Pluck
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+HPF
+HPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+LPF
+LPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Inharm.
+Inharm.
+bounds
+channel
+text
+button bounds
+channel
+text
+Release
+Release
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Ampl.
+Ampl.
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle     #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Tone
+Tone
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+D.Time
+D.Time
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+A.Time
+A.Time
+bounds
+channel
+text
+button bounds
+channel
+text
+Filters
+Filters
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Brilliant
+Brilliant
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Treble
+Treble
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Medium
+Medium
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Soft
+Soft
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.1
+fco.1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.2
+fco.2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.3
+fco.3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.4
+fco.4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 1
+Gain 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 2
+Gain 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 3
+Gain 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Gain 4
+Gain 4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 1
+Q 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 2
+Q 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 3
+Q 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 4
+Q 4
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+text
+colour
+channel
+range
+textcolour
+Level
+Level
+bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+{ image      bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+bounds
+text
+fontcolour
+label      bounds
+text
+fontcolour
+PRESETS
+PRESETS
+bounds
+channel
+value
+text
+combobox   bounds
+channel
+value
+text
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+bounds
+keyboard bounds
+bounds
+text
+FontColour
+label bounds
+text
+FontColour
+Iain McCurdy |2013|
+Iain McCurdy |2013|
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Mar 2017 12:16:28pm
+
+Plugin constructor
+- neck pickup only 
+CA - neck pickup only 
+- bridge pickup only 
+CB - bridge pickup only 
+- bridge pickup 
+180 degrees out of phase w.r.t the neck pickup  DB - bridge pickup 
+A - position of the first pickup 
+. Typically referred to as the 'neck' pickup Pick A - position of the first pickup 
+B - position of the second pickup 
+. Typically referred to as the 'bridge' pickup Pick B - position of the second pickup 
+- The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+. The envelope always ends at zero. Env.A - The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+- location of the 'pluck' 
+. Should be close to zero for a typical clavinet behaviour Pluck - location of the 'pluck' 
+- a tone control applied to the release 'pluck' 
+Tone - a tone control applied to the release 'pluck' 
+- time it takes for full damping to be applied 
+D.Time - time it takes for full damping to be applied 
+. Note that the 'Damp' released 
+frequencies 
+levels and Q values for each of the four filters can be adjusted.  Cutoff frequencies 
+caption
+size
+pluginID
+colour
+guirefresh
+form caption
+size
+pluginID
+colour
+guirefresh
+RSliderStyle #textcolour
+outlinecolour
+# #define RSliderStyle #textcolour
+outlinecolour
+bounds
+colour
+shape
+image bounds
+colour
+shape
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Brilliant
+Brilliant
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+Treble
+Treble
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Medium
+Medium
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Soft
+Soft
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+C/D
+C/D
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+A/B
+A/B
+bounds
+channel
+text
+button bounds
+channel
+text
+Setup
+Setup
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick A
+Pick A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick B
+Pick B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod A
+Mod A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod B
+Mod B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate A
+Rate A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate B
+Rate B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.A
+Env.A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.B
+Env.B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time A
+Time A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time B
+Time B
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pluck
+Pluck
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+HPF
+HPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+LPF
+LPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Inharm.
+Inharm.
+bounds
+channel
+text
+button bounds
+channel
+text
+Release
+Release
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Ampl.
+Ampl.
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle     #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Tone
+Tone
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+D.Time
+D.Time
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+A.Time
+A.Time
+bounds
+channel
+text
+button bounds
+channel
+text
+Filters
+Filters
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Brilliant
+Brilliant
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Treble
+Treble
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Medium
+Medium
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Soft
+Soft
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.1
+fco.1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.2
+fco.2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.3
+fco.3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.4
+fco.4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 1
+Gain 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 2
+Gain 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 3
+Gain 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Gain 4
+Gain 4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 1
+Q 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 2
+Q 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 3
+Q 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 4
+Q 4
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+text
+colour
+channel
+range
+textcolour
+Level
+Level
+bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+{ image      bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+bounds
+text
+fontcolour
+label      bounds
+text
+fontcolour
+PRESETS
+PRESETS
+bounds
+channel
+value
+text
+combobox   bounds
+channel
+value
+text
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+bounds
+keyboard bounds
+bounds
+text
+FontColour
+label bounds
+text
+FontColour
+Iain McCurdy |2013|
+Iain McCurdy |2013|
+1
+UnifiedCSD:  /home/rory/sourcecode/cabaiste/Examples/Instruments/Physical Modelling/Clavinet.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: ALSA module enabled
+defining argument `SEND_SETTINGS``N as...#1#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...# 1#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...# 0.25                #
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003        #
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012        #
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012        #
+defining argument `SEND_SETTINGS``RateA as...#0.200000003         #
+defining argument `SEND_SETTINGS``RateB as...#0.150000006         #
+defining argument `SEND_SETTINGS``EnvA as...#0                   #
+defining argument `SEND_SETTINGS``EnvB as...#0                   #
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007        #
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``plk as...#0.00499999989       #
+defining argument `SEND_SETTINGS``SusDamp as...#0           #
+defining argument `SEND_SETTINGS``HPF as...#0                   #
+defining argument `SEND_SETTINGS``LPF as...#72                  #
+defining argument `SEND_SETTINGS``inharm as...#0                   #
+defining argument `SEND_SETTINGS``RelAmpl as...#2           #
+defining argument `SEND_SETTINGS``RelTone as...#1000        #
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988 #
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997 #
+defining argument `SEND_SETTINGS``brilliant as...#0           #
+defining argument `SEND_SETTINGS``treble as...#1           #
+defining argument `SEND_SETTINGS``medium as...#0                   #
+defining argument `SEND_SETTINGS``soft as...#0                   #
+defining argument `SEND_SETTINGS``fco1 as...#2500                #
+defining argument `SEND_SETTINGS``fco2 as...#1000                #
+defining argument `SEND_SETTINGS``fco3 as...#500                 #
+defining argument `SEND_SETTINGS``fco4 as...#200                 #
+defining argument `SEND_SETTINGS``gain1 as...#3                   #
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995          #
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995          #
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998          #
+defining argument `SEND_SETTINGS``Q1 as...#1.25                #
+defining argument `SEND_SETTINGS``Q2 as...#1                   #
+defining argument `SEND_SETTINGS``Q3 as...#1                   #
+defining argument `SEND_SETTINGS``Q4 as...#2                   #
+defining argument `SEND_SETTINGS``level as...#0.5                 #
+defining argument `SEND_SETTINGS``N as...#2#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...# 1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...# 0.938000023         #
+defining argument `SEND_SETTINGS``pickB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012        #
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012        #
+defining argument `SEND_SETTINGS``RateA as...#0.200000003         #
+defining argument `SEND_SETTINGS``RateB as...#0.150000006         #
+defining argument `SEND_SETTINGS``EnvA as...#0                   #
+defining argument `SEND_SETTINGS``EnvB as...#0                   #
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007        #
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007        #
+defining argument `SEND_SETTINGS``plk as...#0.165399998 #
+defining argument `SEND_SETTINGS``SusDamp as...#0.50999999          #
+defining argument `SEND_SETTINGS``HPF as...#0                   #
+defining argument `SEND_SETTINGS``LPF as...#39.6390991          #
+defining argument `SEND_SETTINGS``inharm as...#0           #
+defining argument `SEND_SETTINGS``RelAmpl as...#0           #
+defining argument `SEND_SETTINGS``RelTone as...#1000        #
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.359999985 #
+defining argument `SEND_SETTINGS``RelATime as...#4.01999998  #
+defining argument `SEND_SETTINGS``brilliant as...#0           #
+defining argument `SEND_SETTINGS``treble as...#0                   #
+defining argument `SEND_SETTINGS``medium as...#1                   #
+defining argument `SEND_SETTINGS``soft as...#0                   #
+defining argument `SEND_SETTINGS``fco1 as...#2500                #
+defining argument `SEND_SETTINGS``fco2 as...#1000                #
+defining argument `SEND_SETTINGS``fco3 as...#500                 #
+defining argument `SEND_SETTINGS``fco4 as...#200                 #
+defining argument `SEND_SETTINGS``gain1 as...#3                   #
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995          #
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995          #
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998          #
+defining argument `SEND_SETTINGS``Q1 as...#1.25                #
+defining argument `SEND_SETTINGS``Q2 as...#1                   #
+defining argument `SEND_SETTINGS``Q3 as...#1                   #
+defining argument `SEND_SETTINGS``Q4 as...#2                   #
+defining argument `SEND_SETTINGS``level as...#0.925000072#
+defining argument `SEND_SETTINGS``N as...#3#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.120000005#
+defining argument `SEND_SETTINGS``pickB as...#0.252000004#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00079999998#
+defining argument `SEND_SETTINGS``SusDamp as...#0.0799999759#
+defining argument `SEND_SETTINGS``HPF as...#2.04999995#
+defining argument `SEND_SETTINGS``LPF as...#8.57209969#
+defining argument `SEND_SETTINGS``inharm as...#-0.50999999#
+defining argument `SEND_SETTINGS``RelAmpl as...#2.15999985#
+defining argument `SEND_SETTINGS``RelTone as...#2358.80005#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0650000051#
+defining argument `SEND_SETTINGS``RelDamp as...#0.300000012#
+defining argument `SEND_SETTINGS``RelATime as...#8#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#1#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.21700001#
+defining argument `SEND_SETTINGS``N as...#4#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.530000031#
+defining argument `SEND_SETTINGS``pickB as...#0.462000012#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.269099981#
+defining argument `SEND_SETTINGS``SusDamp as...#-1#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.2099991#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.879999995#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.5#
+defining argument `SEND_SETTINGS``N as...#5#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#1#
+defining argument `SEND_SETTINGS``C_D as...#0#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...#0.398000032#
+defining argument `SEND_SETTINGS``pickB as...#0.522000015#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.285899997#
+defining argument `SEND_SETTINGS``SusDamp as...#0.0999999791#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#31.4514999#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.579999983#
+defining argument `SEND_SETTINGS``RelATime as...#3.91999984#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#1#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.461000025#
+defining argument `SEND_SETTINGS``N as...#6#
+defining argument `SEND_SETTINGS``brilliant as...# 0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#1#
+defining argument `SEND_SETTINGS``pickA as...#0.0940000042#
+defining argument `SEND_SETTINGS``pickB as...#0.398000032#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.128700003#
+defining argument `SEND_SETTINGS``SusDamp as...#0.299999982#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#72#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.280000001#
+defining argument `SEND_SETTINGS``RelATime as...#1.39999998#
+defining argument `SEND_SETTINGS``brilliant as...#0#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.5#
+defining argument `SEND_SETTINGS``N as...#7#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.00200000009#
+defining argument `SEND_SETTINGS``pickB as...#0.950000048#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.128700003#
+defining argument `SEND_SETTINGS``SusDamp as...#0.299999982#
+defining argument `SEND_SETTINGS``HPF as...#3.46000004#
+defining argument `SEND_SETTINGS``LPF as...#24.0676003#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.280000001#
+defining argument `SEND_SETTINGS``RelATime as...#3.32999992#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#4.26300001#
+defining argument `SEND_SETTINGS``N as...#8#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.584000051#
+defining argument `SEND_SETTINGS``pickB as...#0.450000018#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.23709999#
+defining argument `SEND_SETTINGS``SusDamp as...#0.459999979#
+defining argument `SEND_SETTINGS``HPF as...#1.46999991#
+defining argument `SEND_SETTINGS``LPF as...#16.7103996#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#0#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.140000001#
+defining argument `SEND_SETTINGS``RelATime as...#3.58999991#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#1#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#0.720000029#
+defining argument `SEND_SETTINGS``N as...#9#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#0#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.25#
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00499999989#
+defining argument `SEND_SETTINGS``SusDamp as...#0#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.5985985#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.92100012#
+defining argument `SEND_SETTINGS``N as...#10#
+defining argument `SEND_SETTINGS``brilliant as...# 1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``C_D as...#1#
+defining argument `SEND_SETTINGS``A_B as...#0#
+defining argument `SEND_SETTINGS``pickA as...#0.25#
+defining argument `SEND_SETTINGS``pickB as...#0.0700000003#
+defining argument `SEND_SETTINGS``ModA as...#0.0300000012#
+defining argument `SEND_SETTINGS``ModB as...#0.0300000012#
+defining argument `SEND_SETTINGS``RateA as...#0.200000003#
+defining argument `SEND_SETTINGS``RateB as...#0.150000006#
+defining argument `SEND_SETTINGS``EnvA as...#0#
+defining argument `SEND_SETTINGS``EnvB as...#0#
+defining argument `SEND_SETTINGS``TimeA as...#0.0500000007#
+defining argument `SEND_SETTINGS``TimeB as...#0.0500000007#
+defining argument `SEND_SETTINGS``plk as...#0.00499999989#
+defining argument `SEND_SETTINGS``SusDamp as...#0#
+defining argument `SEND_SETTINGS``HPF as...#0#
+defining argument `SEND_SETTINGS``LPF as...#25.5985985#
+defining argument `SEND_SETTINGS``inharm as...#0#
+defining argument `SEND_SETTINGS``RelAmpl as...#2#
+defining argument `SEND_SETTINGS``RelTone as...#1000#
+defining argument `SEND_SETTINGS``RelDTime as...#0.0100000007#
+defining argument `SEND_SETTINGS``RelDamp as...#0.949999988#
+defining argument `SEND_SETTINGS``RelATime as...#0.049999997#
+defining argument `SEND_SETTINGS``brilliant as...#1#
+defining argument `SEND_SETTINGS``treble as...#0#
+defining argument `SEND_SETTINGS``medium as...#0#
+defining argument `SEND_SETTINGS``soft as...#0#
+defining argument `SEND_SETTINGS``fco1 as...#2500#
+defining argument `SEND_SETTINGS``fco2 as...#1000#
+defining argument `SEND_SETTINGS``fco3 as...#500#
+defining argument `SEND_SETTINGS``fco4 as...#200#
+defining argument `SEND_SETTINGS``gain1 as...#3#
+defining argument `SEND_SETTINGS``gain2 as...#2.29999995#
+defining argument `SEND_SETTINGS``gain3 as...#1.29999995#
+defining argument `SEND_SETTINGS``gain4 as...#1.39999998#
+defining argument `SEND_SETTINGS``Q1 as...#1.25#
+defining argument `SEND_SETTINGS``Q2 as...#1#
+defining argument `SEND_SETTINGS``Q3 as...#1#
+defining argument `SEND_SETTINGS``Q4 as...#2#
+defining argument `SEND_SETTINGS``level as...#1.92100012#
+defining argument `LAUNCH_PLANT``name as...#setup#
+defining argument `LAUNCH_PLANT``name as...#release#
+defining argument `LAUNCH_PLANT``name as...#filters#
+sorting score ...
+	... done
+midi channel 1 using instr 1
+midi channel 2 using instr 2
+midi channel 3 using instr 3
+midi channel 4 using instr 1
+midi channel 5 using instr 1
+midi channel 6 using instr 1
+midi channel 7 using instr 1
+midi channel 8 using instr 1
+midi channel 9 using instr 1
+midi channel 10 using instr 1
+midi channel 11 using instr 1
+midi channel 12 using instr 1
+midi channel 13 using instr 1
+midi channel 14 using instr 1
+midi channel 15 using instr 1
+midi channel 16 using instr 1
+displays suppressed
+0dBFS level = 1.0
+chnl 1 using instr 2
+chnl 2 using instr 2
+chnl 3 using instr 2
+chnl 4 using instr 2
+chnl 5 using instr 2
+chnl 6 using instr 2
+chnl 7 using instr 2
+chnl 8 using instr 2
+chnl 9 using instr 2
+chnl 10 using instr 2
+chnl 11 using instr 2
+chnl 12 using instr 2
+chnl 13 using instr 2
+chnl 14 using instr 2
+chnl 15 using instr 2
+chnl 16 using instr 2
+orch now loaded
+audio buffered in 256 sample-frame blocks
+SECTION 1:
+end of section 1	 sect peak amps:  0.00000  0.00000
+SECTION 1:
+
+
+visible
+pos
+visible
+pos
+visible
+pos
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Mar 2017 12:16:36pm
+
+Plugin constructor
+- neck pickup only 
+CA - neck pickup only 
+- bridge pickup only 
+CB - bridge pickup only 
+- bridge pickup 
+180 degrees out of phase w.r.t the neck pickup  DB - bridge pickup 
+A - position of the first pickup 
+. Typically referred to as the 'neck' pickup Pick A - position of the first pickup 
+B - position of the second pickup 
+. Typically referred to as the 'bridge' pickup Pick B - position of the second pickup 
+- The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+. The envelope always ends at zero. Env.A - The pickup position can be modulated by a simple single segment envelope. This is typically used to add an particualar attack nuance to the sound. This control controls the initial amplitude of this envelope 
+- location of the 'pluck' 
+. Should be close to zero for a typical clavinet behaviour Pluck - location of the 'pluck' 
+- a tone control applied to the release 'pluck' 
+Tone - a tone control applied to the release 'pluck' 
+- time it takes for full damping to be applied 
+D.Time - time it takes for full damping to be applied 
+. Note that the 'Damp' released 
+frequencies 
+levels and Q values for each of the four filters can be adjusted.  Cutoff frequencies 
+caption
+size
+pluginID
+colour
+guirefresh
+form caption
+size
+pluginID
+colour
+guirefresh
+RSliderStyle #textcolour
+outlinecolour
+# #define RSliderStyle #textcolour
+outlinecolour
+bounds
+colour
+shape
+image bounds
+colour
+shape
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Brilliant
+Brilliant
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+Treble
+Treble
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Medium
+Medium
+bounds
+text
+channel
+FontColour
+colour
+checkbox bounds
+text
+channel
+FontColour
+colour
+Soft
+Soft
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+C/D
+C/D
+bounds
+text
+channel
+FontColour
+colour
+value
+checkbox bounds
+text
+channel
+FontColour
+colour
+value
+A/B
+A/B
+bounds
+channel
+text
+button bounds
+channel
+text
+Setup
+Setup
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick A
+Pick A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pick B
+Pick B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod A
+Mod A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Mod B
+Mod B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate A
+Rate A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Rate B
+Rate B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.A
+Env.A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Env.B
+Env.B
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time A
+Time A
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Time B
+Time B
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Pluck
+Pluck
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+HPF
+HPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+LPF
+LPF
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Inharm.
+Inharm.
+bounds
+channel
+text
+button bounds
+channel
+text
+Release
+Release
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Ampl.
+Ampl.
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle     #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Tone
+Tone
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+D.Time
+D.Time
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+Damp
+Damp
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+text
+colour
+channel
+range
+textcolour
+A.Time
+A.Time
+bounds
+channel
+text
+button bounds
+channel
+text
+Filters
+Filters
+bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+groupbox bounds
+colour
+plant
+outlinethickness
+popup
+identchannel
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Brilliant
+Brilliant
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Treble
+Treble
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Medium
+Medium
+bounds
+text
+colour
+FontColour
+label    bounds
+text
+colour
+FontColour
+Soft
+Soft
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+colour
+value
+shape
+checkbox bounds
+channel
+colour
+value
+shape
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.1
+fco.1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.2
+fco.2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.3
+fco.3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+fco.4
+fco.4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 1
+Gain 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 2
+Gain 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+channel
+text
+colour
+range
+textcolour
+Gain 3
+Gain 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Gain 4
+Gain 4
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 1
+Q 1
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 2
+Q 2
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 3
+Q 3
+bounds
+channel
+text
+colour
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider bounds
+channel
+text
+colour
+range
+textcolour
+Q 4
+Q 4
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+colour
+line bounds
+colour
+bounds
+text
+colour
+channel
+range
+textcolour
+$RSliderStyle   #textcolour
+outlinecolour
+#  rslider  bounds
+text
+colour
+channel
+range
+textcolour
+Level
+Level
+bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+{ image      bounds
+colour
+outlinecolour
+outlinethickness
+shape
+plant
+bounds
+text
+fontcolour
+label      bounds
+text
+fontcolour
+PRESETS
+PRESETS
+bounds
+channel
+value
+text
+combobox   bounds
+channel
+value
+text
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+Clavinet 1
+ Clavinet 2
+ Clavinet 3
+ Clavinet 4
+ Clavinet 5
+ Clavinet 6
+ Clavinet 7
+ Clavinet 8
+ Clavinet 9
+ Clavinet 10
+bounds
+keyboard bounds
+bounds
+text
+FontColour
+label bounds
+text
+FontColour
+Iain McCurdy |2013|
+Iain McCurdy |2013|
+1
