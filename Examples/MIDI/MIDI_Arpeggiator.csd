@@ -29,7 +29,7 @@ rslider  bounds(375, 30, 60, 60), text("Octave"),   channel("octave"),   range(-
 rslider  bounds(430, 30, 60, 60), text("Semitone"), channel("semitone"), range(-11,11,0,1,1), $RSliderStyle
 rslider  bounds(485, 30, 60, 60), text("Duration"), channel("duration"), range(0.25,4,1,0.5,0.01), $RSliderStyle
 
-label    bounds(550, 29, 78, 13), text("Clock Source")
+label    bounds(550, 29, 78, 13), text("Clock Source")  
 button   bounds(550, 42, 80, 20), text("Internal","External"), channel("ClockSource"), value(0)
 checkbox bounds(645, 35, 60, 15), colour("Cyan"),   channel("onoff"),  text("On/Off"), value(1)
 checkbox bounds(645, 55, 60, 15), colour("yellow"), channel("hold"),   text("Hold"),   value(1)
