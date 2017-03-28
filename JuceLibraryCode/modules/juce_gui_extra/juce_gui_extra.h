@@ -33,7 +33,7 @@
 
   ID:               juce_gui_extra
   vendor:           juce
-  version:          4.3.0
+  version:          4.3.1
   name:             JUCE extended GUI classes
   description:      Miscellaneous GUI classes for specialised tasks.
   website:          http://www.juce.com/juce
@@ -47,7 +47,7 @@
 *******************************************************************************/
 
 
-#ifndef JUCE_GUI_EXTRA_H_INCLUDED
+#pragma once
 #define JUCE_GUI_EXTRA_H_INCLUDED
 
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -99,5 +99,3 @@ namespace juce
 #include "misc/juce_AnimatedAppComponent.h"
 
 }
-
-#endif   // JUCE_GUI_EXTRA_H_INCLUDED

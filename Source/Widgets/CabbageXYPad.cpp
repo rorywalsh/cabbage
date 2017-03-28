@@ -73,22 +73,26 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
 void CabbageXYPad::mouseDown (const MouseEvent& e)
 {
     owner->enableXYAutomator (getName(), false);
-    ball.setTopLeftPosition (constrainPosition (e.getPosition().getX()+ ball.getWidth()*.5f, e.getPosition().getY() + ball.getWidth()*.5f));
+    ball.setTopLeftPosition (Point<int>(e.getPosition().getX() - ball.getWidth()*.5f, e.getPosition().getY() - ball.getWidth()*.5f));
     mouseDownXY.setXY (ball.getPosition().getX() + ball.getWidth()*.5f, ball.getPosition().getY() + ball.getHeight()*.5f);
+    setPositionAsValue (ball.getPosition().toFloat());
     isAutomating = false;
     repaint();
 }
 
 void CabbageXYPad::mouseDrag (const MouseEvent& e)
 {
-    ball.setTopLeftPosition (constrainPosition (mouseDownXY.getX() + e.getDistanceFromDragStartX(), mouseDownXY.getY() + e.getDistanceFromDragStartY()));
-    const Point<float> currentValues = getPositionAsValue (ball.getPosition().toFloat());
-    repaint();
+    if (e.mouseWasDraggedSinceMouseDown())
+    {
+        ball.setTopLeftPosition (constrainPosition (mouseDownXY.getX() + e.getDistanceFromDragStartX(), mouseDownXY.getY() + e.getDistanceFromDragStartY()));
+        setPositionAsValue (ball.getPosition().toFloat());
+        repaint();
 
-    currentMouseXY = ball.getPosition().toFloat();
+        currentMouseXY = ball.getPosition().toFloat();
 
-    if (e.mods.isRightButtonDown())
-        rightMouseButtonDown = true;
+        if (e.mods.isRightButtonDown())
+            rightMouseButtonDown = true;
+    }
 }
 
 void CabbageXYPad::mouseUp (const MouseEvent& e)
@@ -147,7 +151,7 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 		const float xPos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuex);
 		const float yPos = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuey);
 		Point<float> pos(getValueAsPosition(Point<float>(xPos, yPos)));
-		pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
+		//pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
 		ball.setTopLeftPosition(constrainPosition(pos.getX(), pos.getY()));
 		repaint();
 	}
@@ -241,6 +245,13 @@ Point<float> CabbageXYPad::getPositionAsValue (Point<float> position)
     setValues (xVal, yVal);
 
     return Point<float> (xVal, yVal);
+}
+
+void CabbageXYPad::setPositionAsValue (Point<float> position)
+{
+    const float xVal = jlimit (minX, maxX, jmap (position.getX(), xyPadRect.getX(), xyPadRect.getWidth() - ball.getWidth(), minX, maxX));
+    const float yVal = jlimit (minY, maxY, jmap (position.getY(), xyPadRect.getY(), xyPadRect.getHeight() - ball.getHeight(), minY, maxY));
+    setValues (xVal, yVal);
 }
 
 Point<float> CabbageXYPad::getValueAsPosition (Point<float> position)

@@ -11,8 +11,7 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_CXJYJD__
-#define __JUCE_APPCONFIG_CXJYJD__
+#pragma once
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -163,25 +162,24 @@
 // [END_USER_CODE_SECTION]
 
 //==============================================================================
-#define JUCE_MODULE_AVAILABLE_juce_audio_basics             1
-#define JUCE_MODULE_AVAILABLE_juce_audio_devices            1
-#define JUCE_MODULE_AVAILABLE_juce_audio_formats            1
-#define JUCE_MODULE_AVAILABLE_juce_audio_plugin_client      1
-#define JUCE_MODULE_AVAILABLE_juce_audio_processors         1
-#define JUCE_MODULE_AVAILABLE_juce_audio_utils              1
-#define JUCE_MODULE_AVAILABLE_juce_core                     1
-#define JUCE_MODULE_AVAILABLE_juce_cryptography             1
-#define JUCE_MODULE_AVAILABLE_juce_data_structures          1
-#define JUCE_MODULE_AVAILABLE_juce_events                   1
-#define JUCE_MODULE_AVAILABLE_juce_graphics                 1
-#define JUCE_MODULE_AVAILABLE_juce_gui_basics               1
-#define JUCE_MODULE_AVAILABLE_juce_gui_extra                1
-#define JUCE_MODULE_AVAILABLE_juce_opengl                   1
-#define JUCE_MODULE_AVAILABLE_juce_video                    1
+#define JUCE_MODULE_AVAILABLE_juce_audio_basics          1
+#define JUCE_MODULE_AVAILABLE_juce_audio_devices         1
+#define JUCE_MODULE_AVAILABLE_juce_audio_formats         1
+#define JUCE_MODULE_AVAILABLE_juce_audio_processors      1
+#define JUCE_MODULE_AVAILABLE_juce_audio_utils           1
+#define JUCE_MODULE_AVAILABLE_juce_core                  1
+#define JUCE_MODULE_AVAILABLE_juce_cryptography          1
+#define JUCE_MODULE_AVAILABLE_juce_data_structures       1
+#define JUCE_MODULE_AVAILABLE_juce_events                1
+#define JUCE_MODULE_AVAILABLE_juce_graphics              1
+#define JUCE_MODULE_AVAILABLE_juce_gui_basics            1
+#define JUCE_MODULE_AVAILABLE_juce_gui_extra             1
+#define JUCE_MODULE_AVAILABLE_juce_opengl                1
+#define JUCE_MODULE_AVAILABLE_juce_video                 1
 
 //==============================================================================
 #ifndef    JUCE_STANDALONE_APPLICATION
- #ifdef JucePlugin_Build_Standalone
+ #if defined(JucePlugin_Name) && defined(JucePlugin_Build_Standalone)
   #define  JUCE_STANDALONE_APPLICATION JucePlugin_Build_Standalone
  #else
   #define  JUCE_STANDALONE_APPLICATION 1
@@ -221,6 +219,10 @@
  //#define JUCE_USE_ANDROID_OPENSLES
 #endif
 
+#ifndef    JUCE_USE_WINRT_MIDI
+ //#define JUCE_USE_WINRT_MIDI
+#endif
+
 //==============================================================================
 // juce_audio_formats flags:
 
@@ -242,17 +244,6 @@
 
 #ifndef    JUCE_USE_WINDOWS_MEDIA_FORMAT
  //#define JUCE_USE_WINDOWS_MEDIA_FORMAT
-#endif
-
-//==============================================================================
-// juce_audio_plugin_client flags:
-
-#ifndef    JUCE_FORCE_USE_LEGACY_PARAM_IDS
- //#define JUCE_FORCE_USE_LEGACY_PARAM_IDS
-#endif
-
-#ifndef    JUCE_USE_STUDIO_ONE_COMPATIBLE_PARAMETERS
- //#define JUCE_USE_STUDIO_ONE_COMPATIBLE_PARAMETERS
 #endif
 
 //==============================================================================
@@ -317,6 +308,13 @@
 #endif
 
 //==============================================================================
+// juce_events flags:
+
+#ifndef    JUCE_EXECUTE_APP_SUSPEND_ON_IOS_BACKGROUND_TASK
+ //#define JUCE_EXECUTE_APP_SUSPEND_ON_IOS_BACKGROUND_TASK
+#endif
+
+//==============================================================================
 // juce_graphics flags:
 
 #ifndef    JUCE_USE_COREIMAGE_LOADER
@@ -344,6 +342,10 @@
 
 #ifndef    JUCE_USE_XCURSOR
  //#define JUCE_USE_XCURSOR
+#endif
+
+#ifndef    JUCE_USE_WINDOWS_POINTER_API
+ //#define JUCE_USE_WINDOWS_POINTER_API
 #endif
 
 //==============================================================================
@@ -375,6 +377,3 @@
 #ifndef    JUCE_USE_CAMERA
  //#define JUCE_USE_CAMERA
 #endif
-
-
-#endif  // __JUCE_APPCONFIG_CXJYJD__

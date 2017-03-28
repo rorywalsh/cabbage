@@ -111,6 +111,7 @@ public:
     Point<int> constrainPosition(float x, float y);
     Point<float> getPositionAsValue(Point<float> position);
     Point<float> getValueAsPosition(Point<float> position);
+    void setPositionAsValue (Point<float> position);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageXYPad);
 };
