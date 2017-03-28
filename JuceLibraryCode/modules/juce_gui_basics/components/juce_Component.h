@@ -22,8 +22,7 @@
   ==============================================================================
 */
 
-#ifndef JUCE_COMPONENT_H_INCLUDED
-#define JUCE_COMPONENT_H_INCLUDED
+#pragma once
 
 
 //==============================================================================
@@ -1209,6 +1208,11 @@ public:
           parent instead, unless it's a top-level component without a parent,
           in which case it just takes the focus itself.
 
+        Important note! It's obviously not possible for a component to be focused
+        unless it's actually visible, on-screen, and inside a window that is also
+        visible. So there's no point trying to call this in the component's own
+        constructor or before all of its parent hierarchy has been fully instantiated.
+
         @see setWantsKeyboardFocus, getWantsKeyboardFocus, hasKeyboardFocus,
              getCurrentlyFocusedComponent, focusGained, focusLost,
              keyPressed, keyStateChanged
@@ -2300,9 +2304,9 @@ private:
     //==============================================================================
     void internalMouseEnter (MouseInputSource, Point<float>, Time);
     void internalMouseExit  (MouseInputSource, Point<float>, Time);
-    void internalMouseDown  (MouseInputSource, Point<float>, Time, float);
-    void internalMouseUp    (MouseInputSource, Point<float>, Time, const ModifierKeys oldModifiers, float);
-    void internalMouseDrag  (MouseInputSource, Point<float>, Time, float);
+    void internalMouseDown  (MouseInputSource, Point<float>, Time, float, float, float, float, float);
+    void internalMouseUp    (MouseInputSource, Point<float>, Time, const ModifierKeys oldModifiers, float, float, float, float, float);
+    void internalMouseDrag  (MouseInputSource, Point<float>, Time, float, float, float, float, float);
     void internalMouseMove  (MouseInputSource, Point<float>, Time);
     void internalMouseWheel (MouseInputSource, Point<float>, Time, const MouseWheelDetails&);
     void internalMagnifyGesture (MouseInputSource, Point<float>, Time, float);
@@ -2358,6 +2362,3 @@ protected:
     virtual ComponentPeer* createNewPeer (int styleFlags, void* nativeWindowToAttachTo);
    #endif
 };
-
-
-#endif   // JUCE_COMPONENT_H_INCLUDED

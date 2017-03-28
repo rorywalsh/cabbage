@@ -33,7 +33,7 @@
 
   ID:               juce_gui_basics
   vendor:           juce
-  version:          4.3.0
+  version:          4.3.1
   name:             JUCE GUI core classes
   description:      Basic user-interface components and related classes.
   website:          http://www.juce.com/juce
@@ -49,7 +49,7 @@
 *******************************************************************************/
 
 
-#ifndef JUCE_GUI_BASICS_H_INCLUDED
+#pragma once
 #define JUCE_GUI_BASICS_H_INCLUDED
 
 #include <juce_graphics/juce_graphics.h>
@@ -107,6 +107,14 @@
  #define JUCE_USE_XCURSOR 1
 #endif
 
+/** Config: JUCE_USE_WINDOWS_POINTER_API
+    Enables the Windows pointer input API for advanced touch and pen input. This is only available on Windows 8
+    and above so disable this if you are using earlier versions of Windows.
+*/
+#ifndef JUCE_USE_WINDOWS_POINTER_API
+ #define JUCE_USE_WINDOWS_POINTER_API 0
+#endif
+
 //==============================================================================
 namespace juce
 {
@@ -120,6 +128,7 @@ class MarkerList;
 class RelativeRectangle;
 class MouseEvent;
 struct MouseWheelDetails;
+struct PenDetails;
 class ToggleButton;
 class TextButton;
 class AlertWindow;
@@ -282,12 +291,14 @@ class FlexBox;
 #include "lookandfeel/juce_LookAndFeel_V1.h"
 #include "lookandfeel/juce_LookAndFeel_V3.h"
 
+#if JUCE_LINUX
+ #include "native/juce_linux_X11.h"
+#endif
+
 // these classes are C++11-only
-#if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS && JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS && JUCE_COMPILER_SUPPORTS_LAMBDAS
+#if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS && JUCE_COMPILER_SUPPORTS_LAMBDAS
 #include "layout/juce_FlexItem.h"
 #include "layout/juce_FlexBox.h"
 #endif
 
 }
-
-#endif   // JUCE_GUI_BASICS_H_INCLUDED

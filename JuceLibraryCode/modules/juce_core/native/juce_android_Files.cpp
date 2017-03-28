@@ -45,7 +45,7 @@ bool File::isOnRemovableDrive() const
 
 String File::getVersion() const
 {
-    return String();
+    return {};
 }
 
 static File getSpecialFile (jmethodID type)
@@ -98,7 +98,7 @@ bool File::moveToTrash() const
     return false;
 }
 
-JUCE_API bool JUCE_CALLTYPE Process::openDocument (const String& fileName, const String& parameters)
+JUCE_API bool JUCE_CALLTYPE Process::openDocument (const String& fileName, const String&)
 {
     const LocalRef<jstring> t (javaString (fileName));
     android.activity.callVoidMethod (JuceAppActivity.launchURL, t.get());

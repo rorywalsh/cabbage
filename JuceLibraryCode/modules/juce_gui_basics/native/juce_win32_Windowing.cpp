@@ -105,6 +105,26 @@ bool Desktop::canUseSemiTransparentWindows() noexcept
 
 #endif
 
+#ifndef WM_NCPOINTERUPDATE
+enum
+{
+    WM_NCPOINTERUPDATE             = 0x241,
+    WM_NCPOINTERDOWN               = 0x242,
+    WM_NCPOINTERUP                 = 0x243,
+    WM_POINTERUPDATE               = 0x245,
+    WM_POINTERDOWN                 = 0x246,
+    WM_POINTERUP                   = 0x247,
+    WM_POINTERENTER                = 0x249,
+    WM_POINTERLEAVE                = 0x24A,
+    WM_POINTERACTIVATE             = 0x24B,
+    WM_POINTERCAPTURECHANGED       = 0x24C,
+    WM_TOUCHHITTESTING             = 0x24D,
+    WM_POINTERWHEEL                = 0x24E,
+    WM_POINTERHWHEEL               = 0x24F,
+    WM_POINTERHITTEST              = 0x250
+};
+#endif
+
 #ifndef MONITOR_DPI_TYPE
   enum Monitor_DPI_Type
   {
@@ -590,7 +610,8 @@ struct UUIDGetter<ITipInvocation>
 
 const CLSID ITipInvocation::clsid = {0x4CE576FA, 0x83DC, 0x4f88, {0x95, 0x1C, 0x9D, 0x07, 0x82, 0xB4, 0xE3, 0x76}};
 //==============================================================================
-class OnScreenKeyboard : private Timer
+class OnScreenKeyboard :   public DeletedAtShutdown,
+                           private Timer
 {
 public:
 
@@ -658,6 +679,152 @@ private:
 juce_ImplementSingleton_SingleThreaded (OnScreenKeyboard)
 
 //==============================================================================
+struct HSTRING_PRIVATE;
+typedef HSTRING_PRIVATE* HSTRING;
+
+class IInspectable : public IUnknown
+{
+public:
+    virtual ::HRESULT STDMETHODCALLTYPE GetIids (ULONG* ,IID**) = 0;
+    virtual ::HRESULT STDMETHODCALLTYPE GetRuntimeClassName(HSTRING*) = 0;
+    virtual ::HRESULT STDMETHODCALLTYPE GetTrustLevel(void*) = 0;
+};
+
+class
+   #if (! JUCE_MINGW)
+    __declspec (uuid ("3694dbf9-8f68-44be-8ff5-195c98ede8a6"))
+   #endif
+    IUIViewSettingsInterop     : public IInspectable
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE GetForWindow(HWND hwnd, REFIID riid, void **ppv) = 0;
+};
+
+class
+   #if (! JUCE_MINGW)
+    __declspec (uuid ("C63657F6-8850-470D-88F8-455E16EA2C26"))
+   #endif
+    IUIViewSettings     : public IInspectable
+{
+public:
+    enum UserInteractionMode
+    {
+        Mouse = 0,
+        Touch = 1
+    };
+
+    virtual HRESULT STDMETHODCALLTYPE GetUserInteractionMode (UserInteractionMode *value) = 0;
+};
+
+#if JUCE_MINGW || (! (defined (_MSC_VER) || defined (__uuidof)))
+template <>
+struct UUIDGetter<IUIViewSettingsInterop>
+{
+    static CLSID get()
+    {
+        GUID g = {0x3694dbf9, 0x8f68, 0x44be, {0x8f, 0xf5, 0x19, 0x5c, 0x98, 0xed, 0xe8, 0xa6}};
+        return g;
+    }
+};
+
+template <>
+struct UUIDGetter<IUIViewSettings>
+{
+    static CLSID get()
+    {
+        GUID g = {0xC63657F6, 0x8850, 0x470D, {0x88, 0xf8, 0x45, 0x5e, 0x16, 0xea, 0x2c, 0x26}};
+        return g;
+    }
+};
+#endif
+
+class UWPUIViewSettings
+{
+public:
+    UWPUIViewSettings()
+    {
+        ComBaseModule dll (L"api-ms-win-core-winrt-l1-1-0");
+
+        if (dll.h != nullptr)
+        {
+            roInitialize           = (RoInitializeFuncPtr)           ::GetProcAddress (dll.h, "RoInitialize");
+            roGetActivationFactory = (RoGetActivationFactoryFuncPtr) ::GetProcAddress (dll.h, "RoGetActivationFactory");
+            createHString          = (WindowsCreateStringFuncPtr)    ::GetProcAddress (dll.h, "WindowsCreateString");
+            deleteHString          = (WindowsDeleteStringFuncPtr)    ::GetProcAddress (dll.h, "WindowsDeleteString");
+
+            if (roInitialize == nullptr || roGetActivationFactory == nullptr
+            || createHString == nullptr || deleteHString == nullptr)
+                return;
+
+            ::HRESULT status = roInitialize (1);
+            if (status != S_OK && status != S_FALSE && status != 0x80010106L)
+                return;
+
+            LPCWSTR uwpClassName = L"Windows.UI.ViewManagement.UIViewSettings";
+            HSTRING uwpClassId;
+
+            if (createHString (uwpClassName, (::UINT32) wcslen (uwpClassName), &uwpClassId) != S_OK
+             || uwpClassId == nullptr)
+                return;
+
+            status = roGetActivationFactory (uwpClassId, __uuidof (IUIViewSettingsInterop), (void**) viewSettingsInterop.resetAndGetPointerAddress());
+            deleteHString (uwpClassId);
+
+            if (status != S_OK || viewSettingsInterop == nullptr)
+                return;
+
+            // move dll into member var
+            comBaseDLL = static_cast<ComBaseModule&&> (dll);
+        }
+    }
+
+    bool isTabletModeActivatedForWindow (::HWND hWnd) const
+    {
+        if (viewSettingsInterop == nullptr)
+            return false;
+
+        ComSmartPtr<IUIViewSettings> viewSettings;
+        if (viewSettingsInterop->GetForWindow(hWnd, __uuidof (IUIViewSettings), (void**) viewSettings.resetAndGetPointerAddress()) == S_OK
+            && viewSettings != nullptr)
+        {
+            IUIViewSettings::UserInteractionMode mode;
+
+            if (viewSettings->GetUserInteractionMode (&mode) == S_OK)
+                return (mode == IUIViewSettings::Touch);
+        }
+
+        return false;
+    }
+
+private:
+    //==============================================================================
+    struct ComBaseModule
+    {
+        ::HMODULE h;
+
+        ComBaseModule() : h (nullptr) {}
+        ComBaseModule(LPCWSTR libraryName) : h (::LoadLibrary (libraryName)) {}
+        ComBaseModule(ComBaseModule&& o) : h (o.h) { o.h = nullptr; }
+        ~ComBaseModule() { if (h != nullptr) ::FreeLibrary (h); h = nullptr; }
+
+        ComBaseModule& operator=(ComBaseModule&& o) { h = o.h; o.h = nullptr; return *this; }
+    };
+
+    typedef HRESULT (WINAPI* RoInitializeFuncPtr) (int);
+    typedef HRESULT (WINAPI* RoGetActivationFactoryFuncPtr) (HSTRING, REFIID, void**);
+    typedef HRESULT (WINAPI* WindowsCreateStringFuncPtr) (LPCWSTR,UINT32, HSTRING*);
+    typedef HRESULT (WINAPI* WindowsDeleteStringFuncPtr) (HSTRING);
+
+    ComBaseModule comBaseDLL;
+    ComSmartPtr<IUIViewSettingsInterop> viewSettingsInterop;
+
+    RoInitializeFuncPtr roInitialize;
+    RoGetActivationFactoryFuncPtr roGetActivationFactory;
+    WindowsCreateStringFuncPtr createHString;
+    WindowsDeleteStringFuncPtr deleteHString;
+};
+
+//==============================================================================
 class HWNDComponentPeer  : public ComponentPeer,
                            private Timer
    #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
@@ -704,6 +871,9 @@ public:
             if (shadower != nullptr)
                 shadower->setOwner (&component);
         }
+
+        // make sure that the on-screen keyboard code is loaded
+        OnScreenKeyboard::getInstance();
     }
 
     ~HWNDComponentPeer()
@@ -1019,13 +1189,16 @@ public:
         ShowCaret (hwnd);
         SetCaretPos (0, 0);
 
-        OnScreenKeyboard::getInstance()->activate();
+        if (uwpViewSettings.isTabletModeActivatedForWindow (hwnd))
+            OnScreenKeyboard::getInstance()->activate();
     }
 
     void dismissPendingTextInput() override
     {
         imeHandler.handleSetContext (hwnd, false);
-        OnScreenKeyboard::getInstance()->deactivate();
+
+        if (uwpViewSettings.isTabletModeActivatedForWindow (hwnd))
+            OnScreenKeyboard::getInstance()->deactivate();
     }
 
     void repaint (const Rectangle<int>& area) override
@@ -1283,6 +1456,7 @@ private:
     HICON currentWindowIcon;
     JuceDropTarget* dropTarget;
     uint8 updateLayeredWindowAlpha;
+    UWPUIViewSettings uwpViewSettings;
     MultiTouchMapper<DWORD> currentTouches;
    #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
     ModifierKeyProvider* modProvider;
@@ -1371,7 +1545,7 @@ private:
         static bool isHWNDBlockedByModalComponents (HWND h)
         {
             for (int i = Desktop::getInstance().getNumComponents(); --i >= 0;)
-                if (Component* const c = Desktop::getInstance().getComponent (i))
+                if (auto* c = Desktop::getInstance().getComponent (i))
                     if ((! c->isCurrentlyBlockedByAnotherModalComponent())
                           && IsChild ((HWND) c->getWindowHandle(), h))
                         return false;
@@ -1401,12 +1575,13 @@ private:
                 case WM_NCMOUSEHOVER:
                 case WM_MOUSEHOVER:
                 case WM_TOUCH:
-               #ifdef WM_POINTERUPDATE
                 case WM_POINTERUPDATE:
-                case WM_POINTERDOWN:
+                case WM_NCPOINTERUPDATE:
+                case WM_POINTERWHEEL:
+                case WM_POINTERHWHEEL:
                 case WM_POINTERUP:
-               #endif
-                    return isHWNDBlockedByModalComponents (m.hwnd);
+                case WM_POINTERACTIVATE:
+                    return isHWNDBlockedByModalComponents(m.hwnd);
                 case WM_NCLBUTTONDOWN:
                 case WM_NCLBUTTONDBLCLK:
                 case WM_NCRBUTTONDOWN:
@@ -1421,9 +1596,11 @@ private:
                 case WM_RBUTTONDBLCLK:
                 case WM_KEYDOWN:
                 case WM_SYSKEYDOWN:
+                case WM_NCPOINTERDOWN:
+                case WM_POINTERDOWN:
                     if (isHWNDBlockedByModalComponents (m.hwnd))
                     {
-                        if (Component* const modal = Component::getCurrentlyModalComponent (0))
+                        if (auto* modal = Component::getCurrentlyModalComponent (0))
                             modal->inputAttemptWhenModal();
 
                         return true;
@@ -1796,9 +1973,9 @@ private:
     }
 
     //==============================================================================
-    void doMouseEvent (Point<float> position, float pressure)
+    void doMouseEvent (Point<float> position, float pressure, float orientation = 0.0f, ModifierKeys mods = currentModifiers)
     {
-        handleMouseEvent (0, position, currentModifiers, pressure, getMouseEventTime());
+        handleMouseEvent (MouseInputSource::InputSourceType::mouse, position, mods, pressure, orientation, getMouseEventTime());
     }
 
     StringArray getAvailableRenderingEngines() override
@@ -1859,10 +2036,22 @@ private:
         return (GetMessageExtraInfo() & 0xFFFFFF80 /*SIGNATURE_MASK*/) == 0xFF515780 /*MI_WP_SIGNATURE*/;
     }
 
+    static bool areOtherTouchSourcesActive()
+    {
+        for (auto& ms : Desktop::getInstance().getMouseSources())
+            if (ms.isDragging() && (ms.getType() == MouseInputSource::InputSourceType::touch
+                                     || ms.getType() == MouseInputSource::InputSourceType::pen))
+                return true;
+
+        return false;
+    }
+
     void doMouseMove (Point<float> position, bool isMouseDownEvent)
     {
+        ModifierKeys modsToSend (currentModifiers);
+
         // this will be handled by WM_TOUCH
-        if (isTouchEvent())
+        if (isTouchEvent() || areOtherTouchSourcesActive())
             return;
 
         if (! isMouseOver)
@@ -1903,17 +2092,21 @@ private:
         static int minTimeBetweenMouses = getMinTimeBetweenMouseMoves();
         const uint32 now = Time::getMillisecondCounter();
 
+        if (! Desktop::getInstance().getMainMouseSource().isDragging())
+            modsToSend = modsToSend.withoutMouseButtons();
+
         if (now >= lastMouseTime + minTimeBetweenMouses)
         {
             lastMouseTime = now;
-            doMouseEvent (position, MouseInputSource::invalidPressure);
+            doMouseEvent (position, MouseInputSource::invalidPressure,
+                          MouseInputSource::invalidOrientation, modsToSend);
         }
     }
 
     void doMouseDown (Point<float> position, const WPARAM wParam)
     {
         // this will be handled by WM_TOUCH
-        if (isTouchEvent())
+        if (isTouchEvent() || areOtherTouchSourcesActive())
             return;
 
         if (GetCapture() != hwnd)
@@ -1939,7 +2132,7 @@ private:
     void doMouseUp (Point<float> position, const WPARAM wParam)
     {
         // this will be handled by WM_TOUCH
-        if (isTouchEvent())
+        if (isTouchEvent() || areOtherTouchSourcesActive())
             return;
 
         updateModifiersFromWParam (wParam);
@@ -1979,7 +2172,9 @@ private:
     void doMouseExit()
     {
         isMouseOver = false;
-        doMouseEvent (getCurrentMousePos(), MouseInputSource::invalidPressure);
+
+        if (! areOtherTouchSourcesActive())
+            doMouseEvent (getCurrentMousePos(), MouseInputSource::invalidPressure);
     }
 
     ComponentPeer* findPeerUnderMouse (Point<float>& localPos)
@@ -1998,6 +2193,21 @@ private:
         return peer;
     }
 
+    static MouseInputSource::InputSourceType getPointerType (WPARAM wParam)
+    {
+       #if JUCE_USE_WINDOWS_POINTER_API
+        POINTER_INPUT_TYPE pointerType;
+
+        if (GetPointerType (GET_POINTERID_WPARAM (wParam), &pointerType))
+            if (pointerType == 3)
+                return MouseInputSource::InputSourceType::pen;
+       #else
+        ignoreUnused (wParam);
+       #endif
+
+        return MouseInputSource::InputSourceType::mouse;
+    }
+
     void doMouseWheel (const WPARAM wParam, const bool isVertical)
     {
         updateKeyModifiers();
@@ -2011,8 +2221,8 @@ private:
         wheel.isInertial = false;
 
         Point<float> localPos;
-        if (ComponentPeer* const peer = findPeerUnderMouse (localPos))
-            peer->handleMouseWheel (0, localPos, getMouseEventTime(), wheel);
+        if (auto* peer = findPeerUnderMouse (localPos))
+            peer->handleMouseWheel (getPointerType (wParam), localPos, getMouseEventTime(), wheel);
     }
 
     bool doGestureEvent (LPARAM lParam)
@@ -2032,7 +2242,7 @@ private:
                 {
                     case 3: /*GID_ZOOM*/
                         if (gi.dwFlags != 1 /*GF_BEGIN*/ && lastMagnifySize > 0)
-                            peer->handleMagnifyGesture (0, localPos, getMouseEventTime(),
+                            peer->handleMagnifyGesture (MouseInputSource::InputSourceType::touch, localPos, getMouseEventTime(),
                                                         (float) (gi.ullArguments / (double) lastMagnifySize));
 
                         lastMagnifySize = gi.ullArguments;
@@ -2054,7 +2264,7 @@ private:
     LRESULT doTouchEvent (const int numInputs, HTOUCHINPUT eventHandle)
     {
         if ((styleFlags & windowIgnoresMouseClicks) != 0)
-            if (HWNDComponentPeer* const parent = getOwnerOfWindow (GetParent (hwnd)))
+            if (auto* parent = getOwnerOfWindow (GetParent (hwnd)))
                 if (parent != this)
                     return parent->doTouchEvent (numInputs, eventHandle);
 
@@ -2076,7 +2286,9 @@ private:
         return 0;
     }
 
-    bool handleTouchInput (const TOUCHINPUT& touch, const bool isDown, const bool isUp)
+    bool handleTouchInput (const TOUCHINPUT& touch, const bool isDown, const bool isUp,
+                           const float touchPressure = MouseInputSource::invalidPressure,
+                           const float orientation = 0.0f)
     {
         bool isCancel = false;
 
@@ -2084,7 +2296,7 @@ private:
         const int64 time = getMouseEventTime();
         const Point<float> pos (globalToLocal (Point<float> (touch.x / 100.0f,
                                                              touch.y / 100.0f)));
-        const float pressure = MouseInputSource::invalidPressure;
+        const float pressure = touchPressure;
         ModifierKeys modsToSend (currentModifiers);
 
         if (isDown)
@@ -2093,7 +2305,7 @@ private:
             modsToSend = currentModifiers;
 
             // this forces a mouse-enter/up event, in case for some reason we didn't get a mouse-up before.
-            handleMouseEvent (touchIndex, pos, modsToSend.withoutMouseButtons(), pressure, time);
+            handleMouseEvent (MouseInputSource::InputSourceType::touch, pos, modsToSend.withoutMouseButtons(), pressure, orientation, time, PenDetails(), touchIndex);
 
             if (! isValidPeer (this)) // (in case this component was deleted by the event)
                 return false;
@@ -2117,14 +2329,14 @@ private:
             currentModifiers = currentModifiers.withoutMouseButtons();
         }
 
-        handleMouseEvent (touchIndex, pos, modsToSend, pressure, time);
+        handleMouseEvent (MouseInputSource::InputSourceType::touch, pos, modsToSend, pressure, orientation, time, PenDetails(), touchIndex);
 
         if (! isValidPeer (this)) // (in case this component was deleted by the event)
             return false;
 
         if (isUp || isCancel)
         {
-            handleMouseEvent (touchIndex, Point<float> (-10.0f, -10.0f), currentModifiers, pressure, time);
+            handleMouseEvent (MouseInputSource::InputSourceType::touch, Point<float> (-10.0f, -10.0f), currentModifiers, pressure, orientation, time, PenDetails(), touchIndex);
 
             if (! isValidPeer (this))
                 return false;
@@ -2133,7 +2345,48 @@ private:
         return true;
     }
 
-   #ifdef WM_POINTERUPDATE
+   #if JUCE_USE_WINDOWS_POINTER_API
+    bool handlePointerInput (WPARAM wParam, LPARAM lParam, const bool isDown, const bool isUp)
+    {
+        POINTER_INPUT_TYPE pointerType;
+        if (! GetPointerType (GET_POINTERID_WPARAM (wParam), &pointerType))
+            return false;
+
+        if (pointerType == 0x00000002) // PT_TOUCH
+        {
+            POINTER_TOUCH_INFO touchInfo;
+            if (! GetPointerTouchInfo (GET_POINTERID_WPARAM (wParam), &touchInfo))
+                return false;
+
+            const float pressure = touchInfo.touchMask & TOUCH_MASK_PRESSURE ? touchInfo.pressure : MouseInputSource::invalidPressure;
+            const float orientation = touchInfo.touchMask & TOUCH_MASK_ORIENTATION ? degreesToRadians (static_cast<float> (touchInfo.orientation))
+                                                                                   : MouseInputSource::invalidOrientation;
+
+            if (! handleTouchInput (emulateTouchEventFromPointer (lParam, wParam),
+                                    isDown, isUp, pressure, orientation))
+                return false;
+        }
+        else if (pointerType == 0x00000003) // PT_PEN
+        {
+            POINTER_PEN_INFO penInfo;
+            if (! GetPointerPenInfo (GET_POINTERID_WPARAM (wParam), &penInfo))
+                return false;
+
+            const float pressure = (penInfo.penMask & PEN_MASK_PRESSURE) ? penInfo.pressure / 1024.0f : MouseInputSource::invalidPressure;
+
+            if (! handlePenInput (penInfo, globalToLocal (Point<float> (static_cast<float> (GET_X_LPARAM(lParam)),
+                                                                        static_cast<float> (GET_Y_LPARAM(lParam)))),
+                                  pressure, isDown, isUp))
+                return false;
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     TOUCHINPUT emulateTouchEventFromPointer (LPARAM lParam, WPARAM wParam)
     {
         TOUCHINPUT touchInput;
@@ -2144,6 +2397,58 @@ private:
 
         return touchInput;
     }
+
+    bool handlePenInput (POINTER_PEN_INFO penInfo, Point<float> pos, const float pressure, bool isDown, bool isUp)
+    {
+        const int64 time = getMouseEventTime();
+        ModifierKeys modsToSend (currentModifiers);
+        PenDetails penDetails;
+
+        penDetails.rotation = (penInfo.penMask & PEN_MASK_ROTATION) ? degreesToRadians (static_cast<float> (penInfo.rotation)) : MouseInputSource::invalidRotation;
+        penDetails.tiltX = (penInfo.penMask & PEN_MASK_TILT_X) ? penInfo.tiltX / 90.0f : MouseInputSource::invalidTiltX;
+        penDetails.tiltY = (penInfo.penMask & PEN_MASK_TILT_Y) ? penInfo.tiltY / 90.0f : MouseInputSource::invalidTiltY;
+
+        auto pInfoFlags = penInfo.pointerInfo.pointerFlags;
+
+        if ((pInfoFlags & POINTER_FLAG_FIRSTBUTTON) != 0)
+            currentModifiers = currentModifiers.withoutMouseButtons().withFlags (ModifierKeys::leftButtonModifier);
+        else if ((pInfoFlags & POINTER_FLAG_SECONDBUTTON) != 0)
+            currentModifiers = currentModifiers.withoutMouseButtons().withFlags (ModifierKeys::rightButtonModifier);
+
+        if (isDown)
+        {
+            modsToSend = currentModifiers;
+
+            // this forces a mouse-enter/up event, in case for some reason we didn't get a mouse-up before.
+            handleMouseEvent (MouseInputSource::InputSourceType::pen, pos, modsToSend.withoutMouseButtons(),
+                              pressure, MouseInputSource::invalidOrientation, time, penDetails);
+
+            if (! isValidPeer (this)) // (in case this component was deleted by the event)
+                return false;
+        }
+        else if (isUp || ! (pInfoFlags & POINTER_FLAG_INCONTACT))
+        {
+            modsToSend = modsToSend.withoutMouseButtons();
+        }
+
+        handleMouseEvent (MouseInputSource::InputSourceType::pen, pos, modsToSend, pressure,
+                          MouseInputSource::invalidOrientation, time, penDetails);
+
+        if (! isValidPeer (this)) // (in case this component was deleted by the event)
+            return false;
+
+        if (isUp)
+        {
+            handleMouseEvent (MouseInputSource::InputSourceType::pen, { -10.0f, -10.0f }, currentModifiers,
+                              pressure, MouseInputSource::invalidOrientation, time, penDetails);
+
+            if (! isValidPeer (this))
+                return false;
+        }
+
+        return true;
+    }
+
    #endif
 
     //==============================================================================
@@ -2424,7 +2729,8 @@ private:
 
         if (contains (pos.roundToInt(), false))
         {
-            doMouseEvent (pos, MouseInputSource::invalidPressure);
+            if (! areOtherTouchSourcesActive())
+                doMouseEvent (pos, MouseInputSource::invalidPressure);
 
             if (! isValidPeer (this))
                 return true;
@@ -2565,7 +2871,7 @@ private:
 public:
     static LRESULT CALLBACK windowProc (HWND h, UINT message, WPARAM wParam, LPARAM lParam)
     {
-        if (HWNDComponentPeer* const peer = getOwnerOfWindow (h))
+        if (auto* peer = getOwnerOfWindow (h))
         {
             jassert (isValidPeer (peer));
             return peer->peerWindowProc (h, message, wParam, lParam);
@@ -2635,13 +2941,27 @@ private:
                 return 1;
 
             //==============================================================================
-           #ifdef WM_POINTERUPDATE
-            case WM_POINTERUPDATE:      handleTouchInput (emulateTouchEventFromPointer (lParam, wParam), false, false); return 0;
-            case WM_POINTERDOWN:        handleTouchInput (emulateTouchEventFromPointer (lParam, wParam), true, false);  return 0;
-            case WM_POINTERUP:          handleTouchInput (emulateTouchEventFromPointer (lParam, wParam), false, true);  return 0;
+           #if JUCE_USE_WINDOWS_POINTER_API
+            case WM_POINTERUPDATE:
+                if (handlePointerInput (wParam, lParam, false, false))
+                    return 0;
+                break;
+
+            case WM_POINTERDOWN:
+                if (handlePointerInput (wParam, lParam, true, false))
+                    return 0;
+                break;
+
+            case WM_POINTERUP:
+                if (handlePointerInput (wParam, lParam, false, true))
+                    return 0;
+                break;
            #endif
 
+            //==============================================================================
             case WM_MOUSEMOVE:          doMouseMove (getPointFromLParam (lParam), false); return 0;
+
+            case WM_POINTERLEAVE:
             case WM_MOUSELEAVE:         doMouseExit(); return 0;
 
             case WM_LBUTTONDOWN:
@@ -2652,11 +2972,15 @@ private:
             case WM_MBUTTONUP:
             case WM_RBUTTONUP:          doMouseUp (getPointFromLParam (lParam), wParam); return 0;
 
+            case WM_POINTERWHEEL:
             case 0x020A: /* WM_MOUSEWHEEL */   doMouseWheel (wParam, true);  return 0;
+
+            case WM_POINTERHWHEEL:
             case 0x020E: /* WM_MOUSEHWHEEL */  doMouseWheel (wParam, false); return 0;
 
             case WM_CAPTURECHANGED:     doCaptureChanged(); return 0;
 
+            case WM_NCPOINTERUPDATE:
             case WM_NCMOUSEMOVE:
                 if (hasTitleBar())
                     break;
@@ -2769,6 +3093,7 @@ private:
 
                 break;
 
+            case WM_POINTERACTIVATE:
             case WM_MOUSEACTIVATE:
                 if (! component.getMouseClickGrabsKeyboardFocus())
                     return MA_NOACTIVATE;
@@ -2895,6 +3220,7 @@ private:
 
                 break;
 
+            case WM_NCPOINTERDOWN:
             case WM_NCLBUTTONDOWN:
                 handleLeftClickInNCArea (wParam);
                 break;
@@ -3050,7 +3376,7 @@ private:
                 return String (buffer);
             }
 
-            return String();
+            return {};
         }
 
         int getCompositionCaretPos (HIMC hImc, LPARAM lParam, const String& currentIMEString) const
@@ -3305,7 +3631,7 @@ public:
     int getResult() const
     {
         const int r = MessageBox (owner, message.toWideCharPointer(), title.toWideCharPointer(), flags);
-        return (r == IDYES || r == IDOK) ? 1 : (r == IDNO ? 2 : 0);
+        return (r == IDYES || r == IDOK) ? 1 : (r == IDNO && (flags & 1) != 0 ? 2 : 0);
     }
 
     void handleAsyncUpdate() override
@@ -3391,6 +3717,20 @@ int JUCE_CALLTYPE NativeMessageBox::showYesNoCancelBox (AlertWindow::AlertIconTy
     return 0;
 }
 
+int JUCE_CALLTYPE NativeMessageBox::showYesNoBox (AlertWindow::AlertIconType iconType,
+                                                  const String& title, const String& message,
+                                                  Component* associatedComponent,
+                                                  ModalComponentManager::Callback* callback)
+{
+    ScopedPointer<WindowsMessageBox> mb (new WindowsMessageBox (iconType, title, message, associatedComponent,
+                                                                MB_YESNO, callback, callback != nullptr));
+    if (callback == nullptr)
+        return mb->getResult();
+
+    mb.release();
+    return 0;
+}
+
 //==============================================================================
 bool MouseInputSource::SourceList::addSource()
 {
@@ -3398,11 +3738,17 @@ bool MouseInputSource::SourceList::addSource()
 
     if (numSources == 0 || canUseMultiTouch())
     {
-        addSource (numSources, numSources == 0);
+        addSource (numSources, numSources == 0 ? MouseInputSource::InputSourceType::mouse
+                                               : MouseInputSource::InputSourceType::touch);
         return true;
     }
 
     return false;
+}
+
+bool MouseInputSource::SourceList::canUseTouch()
+{
+    return canUseMultiTouch();
 }
 
 Point<float> MouseInputSource::getCurrentRawMousePosition()
