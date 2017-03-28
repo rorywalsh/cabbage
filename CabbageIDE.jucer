@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="4.3.0">
+              jucerVersion="4.3.1">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
@@ -277,17 +277,18 @@
         <MODULEPATH id="juce_audio_formats" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_utils" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
-               extraDefs="MACOSX=1&#10;Cabbage_Build_IDE=1" smallIcon="vNeY7N"
+               extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="vNeY7N"
                bigIcon="vNeY7N">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
-                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"/>
+                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
-                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"/>
+                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_video" path="../../juce"/>
@@ -301,7 +302,6 @@
         <MODULEPATH id="juce_core" path="../../juce"/>
         <MODULEPATH id="juce_audio_utils" path="../../juce"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce"/>
         <MODULEPATH id="juce_audio_devices" path="../../juce"/>
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
@@ -329,7 +329,6 @@
         <MODULEPATH id="juce_core" path="../../juce"/>
         <MODULEPATH id="juce_audio_utils" path="../../juce"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce"/>
         <MODULEPATH id="juce_audio_devices" path="../../juce"/>
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
@@ -340,7 +339,6 @@
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
