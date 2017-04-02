@@ -783,19 +783,22 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
 
 void CabbageDocumentWindow::writePluginFileToDisk (File fc, File csdFile, File VSTData)
 {
-    File dll (fc.withFileExtension (".so").getFullPathName());
+	if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+	{
+		File dll(fc.withFileExtension(".so").getFullPathName());
 
-    if (!VSTData.copyFileTo (dll))
-        CabbageUtilities::showMessage ("Can copy plugin lib, is it in use?", &getLookAndFeel());
+		if (!VSTData.copyFileTo(dll))
+			CabbageUtilities::showMessage("Can copy plugin lib, is it in use?", &getLookAndFeel());
 
-    if (fc.withFileExtension (".csd").existsAsFile() == false)
-    {
-        File exportedCsdFile (fc.withFileExtension (".csd").getFullPathName());
-        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-        setUniquePluginId (dll, exportedCsdFile);
-        //bunlde all auxilary files
-        //addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
-    }
+		if (fc.withFileExtension(".csd").existsAsFile() == false)
+		{
+			File exportedCsdFile(fc.withFileExtension(".csd").getFullPathName());
+			exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+			setUniquePluginId(dll, exportedCsdFile);
+			//bunlde all auxilary files
+			//addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
+		}
+	}
 }
 
 const String CabbageDocumentWindow::getPluginId (File csdFile)
