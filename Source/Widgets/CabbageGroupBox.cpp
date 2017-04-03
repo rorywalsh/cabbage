@@ -68,10 +68,7 @@ void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 			owner->toFront(true);
 		}
         else
-		{
             owner->setVisible (false);
-		}
-
     }
 
     getProperties().set ("groupLine", var (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::linethickness)));
