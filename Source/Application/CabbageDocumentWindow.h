@@ -80,7 +80,7 @@ private:
     void exportPlugin (String type, File csdFile);
     int setUniquePluginId (File binFile, File csdFile);
     long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);
-    void writePluginFileToDisk (File fc, File csdFile, File VSTData);
+    void writePluginFileToDisk (File fc, File csdFile, File VSTData, String ext);
     //=======================================================
 
 
