@@ -42,11 +42,13 @@ void CabbageSettings::setDefaultSettings()
     xml = new XmlElement ("PLANTS");
     String homeDir = File::getSpecialLocation (File::userHomeDirectory).getFullPathName();
     String manualPath, examplesDir;
+    
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
 
 #if !defined(MACOSX)
     manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
 #else
+    examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
 #endif
 

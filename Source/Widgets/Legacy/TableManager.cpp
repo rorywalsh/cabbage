@@ -1142,6 +1142,7 @@ void GenTable::paint (Graphics& g)
             else
             {
                 //minMax is the range of the current waveforms amplitude
+                float testSample = waveformBuffer[i];
                 currY = ampToPixel (thumbHeight, minMax, waveformBuffer[i]);
 
                 if (tableSize <= 2)

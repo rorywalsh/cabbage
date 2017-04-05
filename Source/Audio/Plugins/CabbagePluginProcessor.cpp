@@ -25,8 +25,16 @@ char channelMessage[4096] = {0};
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    const File csdFile = File::getSpecialLocation (File::currentExecutableFile).withFileExtension (String (".csd")).getFullPathName();
-
+    File csdFile;
+#ifndef JUCE_MAC
+    csdFile = File::getSpecialLocation (File::currentExecutableFile).withFileExtension (String (".csd")).getFullPathName();
+#else
+    //read .csd file from the correct location within the .vst bundle.
+    const String dir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
+    const String filename(File::getSpecialLocation (File::currentExecutableFile).withFileExtension (String (".csd")).getFileName());
+    csdFile = File(dir+"/"+filename);
+    
+#endif
     if (!csdFile.existsAsFile())
     {
         CabbageUtilities::debug (csdFile.getFullPathName());

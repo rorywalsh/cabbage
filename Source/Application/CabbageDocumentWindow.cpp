@@ -743,36 +743,32 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
     File thisFile;
     if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
     {
-        fileExtension = ".so";
+        fileExtension = "so";
         thisFile = File::getSpecialLocation (File::currentExecutableFile);
         currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
     }
-    else if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX_10_8
-            || SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX_10_9
-            || SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX_10_10
-            || SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX_10_11
-            || SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX_10_12)
+    else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
-        fileExtension = ".vst";
+        fileExtension = "vst";
         thisFile = File::getSpecialLocation (File::currentApplicationFile);
         currentApplicationDirectory = thisFile.getFullPathName()+"/Contents";
     }
     else
     {
-        fileExtension = ".dll";
+        fileExtension = "dll";
         thisFile = File::getSpecialLocation (File::currentApplicationFile);
         currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
     }
     
     
     if (type.contains ("VSTi"))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth"+fileExtension);
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth."+fileExtension);
     else if (type.contains (String ("VST")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect"+fileExtension);
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect."+fileExtension);
     else if (type.contains (String ("LV2-ins")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2"+fileExtension);
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2."+fileExtension);
     else if (type.contains (String ("LV2-fx")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2"+fileExtension);
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2."+fileExtension);
   
     File VSTData (pluginFilename);
 
@@ -801,22 +797,49 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
 
 void CabbageDocumentWindow::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension)
 {
-	if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
-	{
 		File dll(fc.withFileExtension(fileExtension).getFullPathName());
 
 		if (!VSTData.copyFileTo(dll))
-			CabbageUtilities::showMessage("Can copy plugin lib, is it in use?", &getLookAndFeel());
+			CabbageUtilities::showMessage("Can't copy plugin lib, is it currently in use?", &getLookAndFeel());
 
-		if (fc.withFileExtension(".csd").existsAsFile() == false)
-		{
-			File exportedCsdFile(fc.withFileExtension(".csd").getFullPathName());
-			exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
-			setUniquePluginId(dll, exportedCsdFile);
+    
+            File exportedCsdFile;
+            
+            if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+            {
+                exportedCsdFile = dll.getFullPathName()+String("/Contents/")+fc.getFileNameWithoutExtension()+String(".csd");
+                exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+                
+                File bin(dll.getFullPathName()+String("/Contents/MacOS/CabbagePlugin"));
+                    //if(bin.exists())showMessage("binary exists");
+                    
+                    
+                File pluginBinary(dll.getFullPathName()+String("/Contents/MacOS/")+fc.getFileNameWithoutExtension());
+                    
+                if(bin.moveFileTo(pluginBinary) == false)
+                        CabbageUtilities::showMessage("Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &this->getLookAndFeel());
+                
+                setUniquePluginId(pluginBinary, exportedCsdFile);
+                
+                File pl(dll.getFullPathName()+String("/Contents/Info.plist"));
+                String newPList = pl.loadFileAsString();
+                //write our identifiers to the plist file
+                newPList = newPList.replace("CabbagePlugin", fc.getFileNameWithoutExtension());
+                
+                //write plist file
+                pl.replaceWithText(newPList);
+     
+                
+            }
+            else
+            {
+                exportedCsdFile = fc.withFileExtension(".csd").getFullPathName();
+                exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+                setUniquePluginId(dll, exportedCsdFile);
+            }
 			//bunlde all auxilary files
 			//addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
-		}
-	}
+
 }
 
 const String CabbageDocumentWindow::getPluginId (File csdFile)
