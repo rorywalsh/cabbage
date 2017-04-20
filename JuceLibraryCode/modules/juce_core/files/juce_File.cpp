@@ -698,7 +698,7 @@ bool File::hasFileExtension (StringRef possibleSuffix) const
 File File::withFileExtension (StringRef newExtension) const
 {
     if (fullPath.isEmpty())
-        return File();
+        return {};
 
     String filePart (getFileName());
 
@@ -770,8 +770,7 @@ bool File::appendText (const String& text,
     if (out.failedToOpen())
         return false;
 
-    out.writeText (text, asUnicode, writeUnicodeHeaderBytes);
-    return true;
+    return out.writeText (text, asUnicode, writeUnicodeHeaderBytes);
 }
 
 bool File::replaceWithText (const String& textToWrite,

@@ -68,6 +68,16 @@
  #include <X11/Xutil.h>
  #undef SIZEOF
  #undef KeyPress
+
+ #if JUCE_WEB_BROWSER
+  #include <unistd.h>
+  #include <fcntl.h>
+  #include <sys/wait.h>
+  #include <gtk/gtk.h>
+  #include <gtk/gtkx.h>
+  #include <glib-unix.h>
+  #include <webkit/webkit.h>
+ #endif
 #endif
 
 //==============================================================================
@@ -123,6 +133,7 @@ namespace juce
 
 //==============================================================================
 #elif JUCE_LINUX
+  #include "native/juce_linux_XEmbedComponent.cpp"
  #if JUCE_WEB_BROWSER
   #include "native/juce_linux_X11_WebBrowserComponent.cpp"
  #endif

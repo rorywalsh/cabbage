@@ -41,6 +41,7 @@
 
   dependencies:     juce_gui_basics
   OSXFrameworks:    WebKit
+  linuxPackages:    webkitgtk-3.0 gtk+-x11-3.0
 
  END_JUCE_MODULE_DECLARATION
 
@@ -86,6 +87,7 @@ namespace juce
 #include "embedding/juce_ActiveXControlComponent.h"
 #include "embedding/juce_NSViewComponent.h"
 #include "embedding/juce_UIViewComponent.h"
+#include "embedding/juce_XEmbedComponent.h"
 #include "misc/juce_AppleRemote.h"
 #include "misc/juce_BubbleMessageComponent.h"
 #include "misc/juce_ColourSelector.h"
