@@ -38,6 +38,8 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
     text = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text);
     currentValue = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::value);
     value = currentValue;
+	valuex = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::valuex);
+	valuey = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::valuey);
     lineNumber = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::linenumber);
     child->getProperties().set (CabbageIdentifierIds::linenumber, lineNumber);
     populateTextArrays (data);

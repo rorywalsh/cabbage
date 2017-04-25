@@ -587,8 +587,6 @@ void CabbageMainComponent::showSettingsDialog()
 //==============================================================================
 void CabbageMainComponent::createNewProject()
 {
-    Logger::writeToLog ("CreateNewProject");
-
     DialogWindow::LaunchOptions o;
     o.content.setOwned (new CabbageProjectWindow (this));
     o.content->setSize (650, 350);
@@ -658,7 +656,6 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     {
         if (files[i].existsAsFile() && openFiles.contains (files[i]) == false)
         {
-            CabbageUtilities::debug (files[i].getFullPathName() + ":" + String (uuids[i]));
             nodeIdsForPlugins.set (files[i].getFullPathName(), uuids[i]);
             openFile (files[i].getFullPathName());
         }
@@ -791,8 +788,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 void CabbageMainComponent::writeFileToDisk(File file)
 {
 	setCurrentCsdFile(file);
-	CabbageUtilities::debug(file.getFullPathName());
-	CabbageUtilities::debug(getCurrentCsdFile().getFullPathName());
+
 	getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
 	owner->setName ("Cabbage " + getCurrentCsdFile().getFullPathName());
 	addInstrumentsAndRegionsToCombobox();

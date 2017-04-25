@@ -35,11 +35,6 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     csdFile = File(dir+"/"+filename);
     
 #endif
-    if (!csdFile.existsAsFile())
-    {
-        CabbageUtilities::debug (csdFile.getFullPathName());
-    }
-
     return new CabbagePluginProcessor (csdFile);
 };
 
@@ -113,10 +108,9 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart (" \t") + " " + expandedMacroText + comments, lineNumber);
         CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber);
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
-        //CabbageUtilities::debug(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::csdfile));
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
 
-        if (CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::type) == CabbageIdentifierIds::form)
+        if (CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
         {
             const String caption = CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::caption);
             this->setPluginName (caption.length() > 0 ? caption : "Untitled");
@@ -234,7 +228,7 @@ void CabbagePluginProcessor::createParameters()
             if (controlWidgetTypes.contains (CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type)))
             {
 
-                if (typeOfWidget == CabbageIdentifierIds::xypad)
+                if (typeOfWidget == CabbageWidgetTypes::xypad)
                 {
                     const var channel = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
                     addParameter (new CabbageAudioParameter (cabbageWidgets.getChild (i), *getCsound(), channel[0] , name + "_x", 0, 1, value));
@@ -293,12 +287,12 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 
         const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
 
-        if (type == CabbageIdentifierIds::texteditor)
+        if (type == CabbageWidgetTypes::texteditor)
         {
             const String text = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::text);
             xml.setAttribute (widgetName, text);
         }
-        else if (type == CabbageIdentifierIds::filebutton)
+        else if (type == CabbageWidgetTypes::filebutton)
         {
             const String file = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::file);
             xml.setAttribute (widgetName, file);
@@ -319,9 +313,9 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
             ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, xmlState->getAttributeName (i));
             const String type = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
-            if (type == CabbageIdentifierIds::texteditor)
+            if (type == CabbageWidgetTypes::texteditor)
                 CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, xmlState->getAttributeValue (i));
-            else if (type == CabbageIdentifierIds::filebutton)
+            else if (type == CabbageWidgetTypes::filebutton)
             {
                 CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, xmlState->getAttributeValue (i));
             }
@@ -410,7 +404,6 @@ void CabbagePluginProcessor::addXYAutomator (CabbageXYPad* xyPad, ValueTree wDat
 
         if (xParameter && yParameter)
         {
-            CabbageUtilities::debug (xyPad->getName());
             xyAutomators.add (xyAuto = new XYPadAutomator (xyPad->getName(), xParameter, yParameter));
             xyAuto->setXMin (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx));
             xyAuto->setYMin (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::miny));

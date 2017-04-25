@@ -217,7 +217,6 @@ void CabbageSettingsWindow::valueChanged (Value& value)
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)
 {
-    CabbageUtilities::debug (fileComponent->getName());
 
     if (fileComponent->getName() == "Csound manual dir.")
         settings.getUserSettings()->setValue ("CsoundManualDir", fileComponent->getCurrentFileText());

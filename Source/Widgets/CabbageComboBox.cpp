@@ -51,7 +51,6 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     initialiseCommonAttributes (this, wData);
 
     addItemsToCombobox (wData);
-    CabbageUtilities::debug (getValue());
     owner->sendChannelDataToCsound (getChannel(), getValue());
     setSelectedItemIndex (getValue() - 1, isPresetCombo ? sendNotification : dontSendNotification);
 

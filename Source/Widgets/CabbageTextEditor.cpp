@@ -65,7 +65,6 @@ void CabbageTextEditor::sendTextToCsound()
 
 bool CabbageTextEditor::keyPressed (const juce::KeyPress& key, Component*)
 {
-    //Logger::writeToLog(String(key.getKeyCode()));
     if (key.getTextDescription().contains ("cursor up"))
     {
         textEditor.setText (strings[jmax (0, stringIndex--)]);

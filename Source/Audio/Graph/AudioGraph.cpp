@@ -139,7 +139,7 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
             processor = createGenericPluginFilter (File (desc.fileOrIdentifier));
 
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
-        jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
+        jassert (processor != nullptr); 
 
 		const int inputs = processor->getBusCount(true);
 		const int outputs = processor->getBusCount(false);

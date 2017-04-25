@@ -101,8 +101,7 @@ void CabbageXYPad::mouseUp (const MouseEvent& e)
     {
         const float xDistance = mouseDownXY.getX() - e.getPosition().getX();
         const float yDistance = mouseDownXY.getY() - e.getPosition().getY();
-        CabbageUtilities::debug ("X", xDistance);
-        CabbageUtilities::debug ("Y", yDistance);
+
         rightMouseButtonDown = false;
 
         const Point<float> valueStart (getPositionAsValue (mouseDownXY));

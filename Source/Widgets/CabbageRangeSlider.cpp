@@ -193,10 +193,6 @@ void RangeSlider::mouseDown (const MouseEvent& event)
 {
     if (getSliderStyle() == Slider::TwoValueHorizontal)
     {
-        CabbageUtilities::debug (getMinValue());
-        CabbageUtilities::debug (getMaxValue());
-
-
         const float currentMouseX = event.getPosition().getX();
         const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
         xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();

@@ -429,6 +429,47 @@ public:
 
 };
 
+namespace CabbageWidgetTypes
+{
+    //list of static consts for types of widgets
+    static const String combobox = "combobox";
+    static const String numberbox = "numberbox";
+    static const String rslider = "rslider";
+    static const String hslider = "hslider";
+    static const String hslider2 = "hslider2";
+    static const String hslider3 = "hslider3";
+    static const String vslider = "vslider";
+    static const String vslider2 = "vslider2";
+    static const String vslider3 = "vslider3";
+    static const String vrange = "vrange";
+    static const String hrange = "hrange";
+    static const String checkbox = "checkbox";
+    static const String soundfiler = "soundfiler";
+    static const String button = "button";
+    static const String listbox = "listbox";
+    static const String infobutton = "infobutton";
+    static const String filebutton = "filebutton";
+    static const String loadbutton = "loadbutton";
+    static const String sourcebutton = "sourcebutton";
+    static const String texteditor = "texteditor";
+    static const String encoder = "encoder";
+    static const String table = "table";
+    static const String gentable = "gentable";
+    static const String groupbox = "groupbox";
+    static const String image = "image";
+    static const String popupmenu = "popupmenu";
+    static const String label = "label";
+    static const String keyboard = "keyboard";
+    static const String oscserver = "oscserver";
+    static const String form = "form";
+	static const Identifier textbox = "textbox";
+    static const String directorylist = "directorylist";
+    static const String xypad = "xypad";
+    static const String csoundoutput = "csoundoutput";
+    static const String fftdisplay = "fftdisplay";
+    static const String signaldisplay = "signaldisplay";	
+    static const String line = "line";
+};
 namespace CabbageIdentifierIds
 {
     // list of static consts for each identifiers
@@ -493,7 +534,6 @@ namespace CabbageIdentifierIds
     static const Identifier valuetextbox = "valuetextbox";
     static const Identifier textboxcolour = "textboxcolour";
 	static const Identifier textboxoutlinecolour = "textboxoutlinecolour";
-    static const Identifier textbox = "textbox";
     static const Identifier name = "name";
     static const Identifier active = "active";
     static const Identifier type = "type";
@@ -592,40 +632,8 @@ namespace CabbageIdentifierIds
     static const Identifier refreshfiles = "refreshfiles";
     static const Identifier currenttext = "currenttext";
     static const Identifier titlebarcolour =  "titlebarcolour";
-    //list of static consts for types of widgets
-    static const String combobox = "combobox";
-    static const String numberbox = "numberbox";
-    static const String rslider = "rslider";
-    static const String hslider = "hslider";
-    static const String hslider2 = "hslider2";
-    static const String hslider3 = "hslider3";
-    static const String vslider = "vslider";
-    static const String vslider2 = "vslider2";
-    static const String vslider3 = "vslider3";
-    static const String vrange = "vrange";
-    static const String hrange = "hrange";
-    static const String checkbox = "checkbox";
-    static const String soundfiler = "soundfiler";
-    static const String button = "button";
-    static const String listbox = "listbox";
-    static const String infobutton = "infobutton";
-    static const String filebutton = "filebutton";
-    static const String loadbutton = "loadbutton";
-    static const String sourcebutton = "sourcebutton";
-    static const String texteditor = "texteditor";
-    static const String encoder = "encoder";
-    static const String table = "table";
-    static const String gentable = "gentable";
-    static const String groupbox = "groupbox";
-    static const String image = "image";
-    static const String popupmenu = "popupmenu";
-    static const String label = "label";
-    static const String keyboard = "keyboard";
-    static const String oscserver = "oscserver";
-    static const String form = "form";
-    static const String directorylist = "directorylist";
+    static const String csdfile = "csdfile";
     static const String index = "index";
-    static const String xypad = "xypad";
     static const String stringchannel = "string";
     static const String hostbpm = "HOST_BPM";
     static const String timeinseconds = "TIME_IN_SECONDS";
@@ -637,16 +645,10 @@ namespace CabbageIdentifierIds
     static const String timeSigNum = "TIME_SIG_NUM";
     static const String mousex = "MOUSE_X";
     static const String mousey = "MOUSE_Y";
-    static const String line = "line";
     static const String mousedownleft = "MOUSE_DOWN_LEFT";
     static const String mousedownright = "MOUSE_DOWN_RIGHT";
     static const String mousedownlmiddle = "MOUSE_DOWN_MIDDLE";
     static const String updaterate = "updaterate";
-    static const String csoundoutput = "csoundoutput";
-    static const String fftdisplay = "fftdisplay";
-    static const String signaldisplay = "signaldisplay";
-
-    static const String csdfile = "csdfile";
 };
 
 
@@ -656,29 +658,29 @@ class CabbagePopupWidgets : public StringPairArray
 public:
     CabbagePopupWidgets()
     {
-        set ("Button", CabbageIdentifierIds::button);
-        set ("Button - File", CabbageIdentifierIds::filebutton);
-        set ("Button - Info", CabbageIdentifierIds::infobutton);
-        set ("Checkbox", CabbageIdentifierIds::checkbox);
-        set ("ComboBox", CabbageIdentifierIds::combobox);
-        set ("Csound Output", CabbageIdentifierIds::csoundoutput);
-        set ("Endless Encoder", CabbageIdentifierIds::encoder);
-        set ("Gentable", CabbageIdentifierIds::gentable);
-        set ("Groupbox", CabbageIdentifierIds::groupbox);
-        set ("Horizontal Range Slider", CabbageIdentifierIds::hrange);
-        set ("Image", CabbageIdentifierIds::image);
-        set ("Keyboard", CabbageIdentifierIds::keyboard);
-        set ("Label", CabbageIdentifierIds::label);
-        set ("Numberbox", CabbageIdentifierIds::numberbox);
-        set ("Signal Display", CabbageIdentifierIds::signaldisplay);
-        set ("Slider - Horizontal", CabbageIdentifierIds::hslider);
-        set ("Slider - Rotary", CabbageIdentifierIds::rslider);
-        set ("Slider - Vertical", CabbageIdentifierIds::vslider);
-        set ("Soundfiler", CabbageIdentifierIds::soundfiler);
-        set ("Text Box", CabbageIdentifierIds::textbox.toString());
-        set ("Text Editor", CabbageIdentifierIds::texteditor);
-        set ("Vertical Range Slider", CabbageIdentifierIds::vrange);
-        set ("XY Pad", CabbageIdentifierIds::xypad);
+        set ("Button", CabbageWidgetTypes::button);
+        set ("Button - File", CabbageWidgetTypes::filebutton);
+        set ("Button - Info", CabbageWidgetTypes::infobutton);
+        set ("Checkbox", CabbageWidgetTypes::checkbox);
+        set ("ComboBox", CabbageWidgetTypes::combobox);
+        set ("Csound Output", CabbageWidgetTypes::csoundoutput);
+        set ("Endless Encoder", CabbageWidgetTypes::encoder);
+        set ("Gentable", CabbageWidgetTypes::gentable);
+        set ("Groupbox", CabbageWidgetTypes::groupbox);
+        set ("Horizontal Range Slider", CabbageWidgetTypes::hrange);
+        set ("Image", CabbageWidgetTypes::image);
+        set ("Keyboard", CabbageWidgetTypes::keyboard);
+        set ("Label", CabbageWidgetTypes::label);
+        set ("Numberbox", CabbageWidgetTypes::numberbox);
+        set ("Signal Display", CabbageWidgetTypes::signaldisplay);
+        set ("Slider - Horizontal", CabbageWidgetTypes::hslider);
+        set ("Slider - Rotary", CabbageWidgetTypes::rslider);
+        set ("Slider - Vertical", CabbageWidgetTypes::vslider);
+        set ("Soundfiler", CabbageWidgetTypes::soundfiler);
+        set ("Text Box", CabbageWidgetTypes::textbox.toString());
+        set ("Text Editor", CabbageWidgetTypes::texteditor);
+        set ("Vertical Range Slider", CabbageWidgetTypes::vrange);
+        set ("XY Pad", CabbageWidgetTypes::xypad);
     }
 };
 

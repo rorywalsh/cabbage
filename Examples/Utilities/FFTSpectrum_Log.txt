@@ -1,0 +1,5019 @@
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Apr 2017 4:19:57pm
+
+Plugin constructor
+caption
+size
+colour
+pluginID
+guirefresh
+form caption
+size
+colour
+pluginID
+guirefresh
+outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+gentable outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+Y Zoom
+Y Zoom
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+Smooth
+Smooth
+bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+label bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+bounds
+text
+label    bounds
+text
+FFT Size
+FFT Size
+bounds
+channel
+text
+value
+combobox bounds
+channel
+text
+value
+512
+1024
+2048
+4096
+8192
+512
+1024
+2048
+4096
+8192
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+Bypass
+Bypass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Lowpass
+Lowpass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Highpass
+Highpass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Bandpass
+Bandpass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Bandreject
+Bandreject
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Lowpass Res.
+Lowpass Res.
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Phaser
+Phaser
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Comb
+Comb
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Freq.
+Freq.
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Res./F.back
+Res./F.back
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Ordinates
+Ordinates
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Q
+Q
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Separation
+Separation
+bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+Mode 1
+Mode 1
+bounds
+channel
+text
+radiogroup
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+identchannel
+visible
+Mode 2
+Mode 2
+bounds
+colour
+line bounds
+colour
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Osc. Freq.
+Osc. Freq.
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Pulse Width
+Pulse Width
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Num. Harms.
+Num. Harms.
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Lowest Harm.
+Lowest Harm.
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Power Mult.
+Power Mult.
+bounds
+channel
+text
+textBox
+range
+rslider bounds
+channel
+text
+textBox
+range
+Audio Gain
+Audio Gain
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+Live
+Live
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+White Noise
+White Noise
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Pink Noise
+Pink Noise
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Sawtooth
+Sawtooth
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Square
+Square
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Pulse
+Pulse
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Buzz
+Buzz
+=  kMode1 + 
+kMode =  kMode1 + 
+changed
+==1 then  if changed
+"visible
+","OscFreqID"    chnset "visible
+"visible
+","OscFreqID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","PWID"    chnset "visible
+"visible
+","PWID"    chnset "visible
+changed
+==1 then  if changed
+i
+==1 then  if i
+i
+==1 then  elseif i
+i
+==1 then  elseif i
+butbp aSig,acf,kcf*abs
+aSig butbp aSig,acf,kcf*abs
+i
+==1 then  elseif i
+butbr aSig,acf,kcf*abs
+aSig butbr aSig,acf,kcf*abs
+i
+==1 then   elseif i
+moogladder aSig,kcf,abs
+aSig moogladder aSig,kcf,abs
+i
+==1 then   elseif i
+changed
+==1 then    if changed
+i
+==1 then   elseif i
+changed
+==1 then  if changed
+= i
+iTabSize = i
+metro
+==1 then  if metro
+"tablenumber
+", "ampFFT"    chnset "tablenumber
+changed
+==1 then  if changed
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"    chnset "visible
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","ResID"    chnset "visible
+"visible
+","ResID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","CFID"    chnset "visible
+"visible
+","CFID"    chnset "visible
+changed
+==1 then  if changed
+= 
+* 
+kMOUSEFreq = 
+* 
+sprintfk "pos
+text
+visible
+",limit:k
+kMOUSE_Y-10,kMOUSEFreq    Spos sprintfk "pos
+text
+visible
+",limit:k
+%d Hz
+%d Hz
+"visible
+","MOUSEFreqID"      chnset  "visible
+-1
+2
+UnifiedCSD:  /home/rory/sourcecode/cabaiste/Examples/Utilities/FFTSpectrum.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: ALSA module enabled
+rtmidi: ALSA Raw MIDI module enabled
+sorting score ...
+	... done
+displays suppressed
+0dBFS level = 1.0
+orch now loaded
+audio buffered in 256 sample-frame blocks
+SECTION 1:
+instr 1:  iTabSize = 1024.000
+instr 1:  iTabSize = 1024.000
+end of section 1	 sect peak amps:  0.00000  0.00000
+SECTION 1:
+
+
+tablenumber
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+instr 1:  iTabSize = 1024.000
+instr 1:  iTabSize = 1024.000
+
+
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+visible
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+tablenumber
+tablenumber
+instr 1:  iTabSize = 1024.000
+instr 1:  iTabSize = 1024.000
+
+
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Apr 2017 4:24:45pm
+
+Plugin constructor
+caption
+size
+colour
+pluginID
+guirefresh
+form caption
+size
+colour
+pluginID
+guirefresh
+outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+gentable outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+Y Zoom
+Y Zoom
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+Smooth
+Smooth
+bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+label bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+bounds
+text
+label    bounds
+text
+FFT Size
+FFT Size
+bounds
+channel
+text
+value
+combobox bounds
+channel
+text
+value
+512
+1024
+2048
+4096
+8192
+512
+1024
+2048
+4096
+8192
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+Bypass
+Bypass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Lowpass
+Lowpass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Highpass
+Highpass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Bandpass
+Bandpass
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Bandreject
+Bandreject
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Lowpass Res.
+Lowpass Res.
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Phaser
+Phaser
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Comb
+Comb
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Freq.
+Freq.
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Res./F.back
+Res./F.back
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Ordinates
+Ordinates
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Q
+Q
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+Separation
+Separation
+bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+Mode 1
+Mode 1
+bounds
+channel
+text
+radiogroup
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+identchannel
+visible
+Mode 2
+Mode 2
+bounds
+colour
+line bounds
+colour
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Osc. Freq.
+Osc. Freq.
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Pulse Width
+Pulse Width
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Num. Harms.
+Num. Harms.
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Lowest Harm.
+Lowest Harm.
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+Power Mult.
+Power Mult.
+bounds
+channel
+text
+textBox
+range
+rslider bounds
+channel
+text
+textBox
+range
+Audio Gain
+Audio Gain
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+Live
+Live
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+White Noise
+White Noise
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Pink Noise
+Pink Noise
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Sawtooth
+Sawtooth
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Square
+Square
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Pulse
+Pulse
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+Buzz
+Buzz
+=  kMode1 + 
+kMode =  kMode1 + 
+changed
+==1 then  if changed
+"visible
+","OscFreqID"    chnset "visible
+"visible
+","OscFreqID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","PWID"    chnset "visible
+"visible
+","PWID"    chnset "visible
+changed
+==1 then  if changed
+i
+==1 then  if i
+i
+==1 then  elseif i
+i
+==1 then  elseif i
+butbp aSig,acf,kcf*abs
+aSig butbp aSig,acf,kcf*abs
+i
+==1 then  elseif i
+butbr aSig,acf,kcf*abs
+aSig butbr aSig,acf,kcf*abs
+i
+==1 then   elseif i
+moogladder aSig,kcf,abs
+aSig moogladder aSig,kcf,abs
+i
+==1 then   elseif i
+changed
+==1 then    if changed
+i
+==1 then   elseif i
+changed
+==1 then  if changed
+= i
+iTabSize = i
+metro
+==1 then  if metro
+"tablenumber
+", "ampFFT"    chnset "tablenumber
+changed
+==1 then  if changed
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"    chnset "visible
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","ResID"    chnset "visible
+"visible
+","ResID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","CFID"    chnset "visible
+"visible
+","CFID"    chnset "visible
+changed
+==1 then  if changed
+= 
+* 
+kMOUSEFreq = 
+* 
+sprintfk "pos
+text
+visible
+",limit:k
+kMOUSE_Y-10,kMOUSEFreq    Spos sprintfk "pos
+text
+visible
+",limit:k
+%d Hz
+%d Hz
+"visible
+","MOUSEFreqID"      chnset  "visible
+2
+UnifiedCSD:  /home/rory/sourcecode/cabaiste/Examples/Utilities/FFTSpectrum.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: ALSA module enabled
+rtmidi: ALSA Raw MIDI module enabled
+sorting score ...
+	... done
+displays suppressed
+0dBFS level = 1.0
+orch now loaded
+audio buffered in 256 sample-frame blocks
+SECTION 1:
+instr 1:  iTabSize = 1024.000
+instr 1:  iTabSize = 1024.000
+end of section 1	 sect peak amps:  0.00000  0.00000
+SECTION 1:
+
+
+tablenumber
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+instr 1:  iTabSize = 1024.000
+instr 1:  iTabSize = 1024.000
+
+
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Apr 2017 4:31:16pm
+
+Plugin constructor
+caption
+size
+colour
+pluginID
+guirefresh
+form caption
+size
+colour
+pluginID
+guirefresh
+outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+gentable outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+label bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+bounds
+text
+label    bounds
+text
+bounds
+channel
+text
+value
+combobox bounds
+channel
+text
+value
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+bounds
+channel
+text
+radiogroup
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+identchannel
+visible
+bounds
+colour
+line bounds
+colour
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+rslider bounds
+channel
+text
+textBox
+range
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+=  kMode1 + 
+kMode =  kMode1 + 
+changed
+==1 then  if changed
+"visible
+","OscFreqID"    chnset "visible
+"visible
+","OscFreqID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","PWID"    chnset "visible
+"visible
+","PWID"    chnset "visible
+changed
+==1 then  if changed
+i
+==1 then  if i
+i
+==1 then  elseif i
+i
+==1 then  elseif i
+butbp aSig,acf,kcf*abs
+aSig butbp aSig,acf,kcf*abs
+i
+==1 then  elseif i
+butbr aSig,acf,kcf*abs
+aSig butbr aSig,acf,kcf*abs
+i
+==1 then   elseif i
+moogladder aSig,kcf,abs
+aSig moogladder aSig,kcf,abs
+i
+==1 then   elseif i
+changed
+==1 then    if changed
+i
+==1 then   elseif i
+changed
+==1 then  if changed
+= i
+iTabSize = i
+metro
+==1 then  if metro
+"tablenumber
+", "ampFFT"    chnset "tablenumber
+changed
+==1 then  if changed
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"    chnset "visible
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","ResID"    chnset "visible
+"visible
+","ResID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","CFID"    chnset "visible
+"visible
+","CFID"    chnset "visible
+changed
+==1 then  if changed
+= 
+* 
+kMOUSEFreq = 
+* 
+sprintfk "pos
+text
+visible
+",limit:k
+kMOUSE_Y-10,kMOUSEFreq    Spos sprintfk "pos
+text
+visible
+",limit:k
+"visible
+","MOUSEFreqID"      chnset  "visible
+tablenumber
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Apr 2017 4:31:54pm
+
+Plugin constructor
+caption
+size
+colour
+pluginID
+guirefresh
+form caption
+size
+colour
+pluginID
+guirefresh
+outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+gentable outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+label bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+bounds
+text
+label    bounds
+text
+bounds
+channel
+text
+value
+combobox bounds
+channel
+text
+value
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+bounds
+channel
+text
+radiogroup
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+identchannel
+visible
+bounds
+colour
+line bounds
+colour
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+rslider bounds
+channel
+text
+textBox
+range
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+=  kMode1 + 
+kMode =  kMode1 + 
+changed
+==1 then  if changed
+"visible
+","OscFreqID"    chnset "visible
+"visible
+","OscFreqID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","PWID"    chnset "visible
+"visible
+","PWID"    chnset "visible
+changed
+==1 then  if changed
+i
+==1 then  if i
+i
+==1 then  elseif i
+i
+==1 then  elseif i
+butbp aSig,acf,kcf*abs
+aSig butbp aSig,acf,kcf*abs
+i
+==1 then  elseif i
+butbr aSig,acf,kcf*abs
+aSig butbr aSig,acf,kcf*abs
+i
+==1 then   elseif i
+moogladder aSig,kcf,abs
+aSig moogladder aSig,kcf,abs
+i
+==1 then   elseif i
+changed
+==1 then    if changed
+i
+==1 then   elseif i
+changed
+==1 then  if changed
+= i
+iTabSize = i
+metro
+==1 then  if metro
+"tablenumber
+", "ampFFT"    chnset "tablenumber
+changed
+==1 then  if changed
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"    chnset "visible
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","ResID"    chnset "visible
+"visible
+","ResID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","CFID"    chnset "visible
+"visible
+","CFID"    chnset "visible
+changed
+==1 then  if changed
+= 
+* 
+kMOUSEFreq = 
+* 
+sprintfk "pos
+text
+visible
+",limit:k
+kMOUSE_Y-10,kMOUSEFreq    Spos sprintfk "pos
+text
+visible
+",limit:k
+"visible
+","MOUSEFreqID"      chnset  "visible
+tablenumber
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Apr 2017 4:32:17pm
+
+Plugin constructor
+caption
+size
+colour
+pluginID
+guirefresh
+form caption
+size
+colour
+pluginID
+guirefresh
+outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+gentable outlinethickness
+bounds
+tablenumber
+tablebackgroundcolour
+tablegridcolour
+tablecolour
+identchannel
+amprange
+outlinethickness
+samplerange
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+bounds
+channel
+text
+textBox
+range
+hslider bounds
+channel
+text
+textBox
+range
+bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+label bounds
+text
+align
+identchannel
+visible
+fontcolour
+colour
+bounds
+text
+label    bounds
+text
+bounds
+channel
+text
+value
+combobox bounds
+channel
+text
+value
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+rslider bounds
+channel
+text
+textBox
+range
+identchannel
+visible
+bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+value
+identchannel
+visible
+bounds
+channel
+text
+radiogroup
+identchannel
+visible
+checkbox bounds
+channel
+text
+radiogroup
+identchannel
+visible
+bounds
+colour
+line bounds
+colour
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+rslider bounds
+channel
+text
+textBox
+range
+visible
+identchannel
+bounds
+channel
+text
+textBox
+range
+rslider bounds
+channel
+text
+textBox
+range
+bounds
+channel
+text
+radiogroup
+value
+checkbox bounds
+channel
+text
+radiogroup
+value
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+bounds
+channel
+text
+radiogroup
+checkbox bounds
+channel
+text
+radiogroup
+=  kMode1 + 
+kMode =  kMode1 + 
+changed
+==1 then  if changed
+"visible
+","OscFreqID"    chnset "visible
+"visible
+","OscFreqID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+"visible
+","Buzz1ID"    chnset "visible
+"visible
+","Buzz2ID"    chnset "visible
+"visible
+","Buzz3ID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","PWID"    chnset "visible
+"visible
+","PWID"    chnset "visible
+changed
+==1 then  if changed
+i
+==1 then  if i
+i
+==1 then  elseif i
+i
+==1 then  elseif i
+butbp aSig,acf,kcf*abs
+aSig butbp aSig,acf,kcf*abs
+i
+==1 then  elseif i
+butbr aSig,acf,kcf*abs
+aSig butbr aSig,acf,kcf*abs
+i
+==1 then   elseif i
+moogladder aSig,kcf,abs
+aSig moogladder aSig,kcf,abs
+i
+==1 then   elseif i
+changed
+==1 then    if changed
+i
+==1 then   elseif i
+changed
+==1 then  if changed
+= i
+iTabSize = i
+metro
+==1 then  if metro
+"tablenumber
+", "ampFFT"    chnset "tablenumber
+changed
+==1 then  if changed
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"    chnset "visible
+"visible
+","Phs1ID"    chnset "visible
+"visible
+","Phs2ID"    chnset "visible
+"visible
+","Phs3ID"    chnset "visible
+"visible
+","Phs4ID"    chnset "visible
+"visible
+","Phs5ID"      chnset "visible
+changed
+==1 then  if changed
+"visible
+","ResID"    chnset "visible
+"visible
+","ResID"    chnset "visible
+changed
+==1 then  if changed
+"visible
+","CFID"    chnset "visible
+"visible
+","CFID"    chnset "visible
+changed
+==1 then  if changed
+= 
+* 
+kMOUSEFreq = 
+* 
+sprintfk "pos
+text
+visible
+",limit:k
+kMOUSE_Y-10,kMOUSEFreq    Spos sprintfk "pos
+text
+visible
+",limit:k
+"visible
+","MOUSEFreqID"      chnset  "visible
+tablenumber
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+visible
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+tablenumber
+
+**********************************************************
+Cabbage Log..
+Log started: 24 Apr 2017 4:37:26pm
+
+Plugin constructor
+Shutdown
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:33:52am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:33:59am
+
+Plugin constructor
+Shutdown
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:34:14am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:39:41am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:40:22am
+
+Plugin constructor

@@ -97,11 +97,6 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
         CSspin  = csound->GetSpin();
         cs_scale = csound->Get0dBFS();
         csndIndex = csound->GetKsmps();
-        //hack to allow tables to be set up correctly.
-        //might be best to simply do an init run?
-        csound->PerformKsmps();
-        csound->SetScoreOffsetSeconds (0);
-        csound->RewindScore();
 
         this->setLatencySamples (csound->GetKsmps());
     }
@@ -139,11 +134,25 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         }
         else
         {
+			if(CabbageWidgetData::getStringProp(cabbageData.getChild (i), CabbageIdentifierIds::type) == CabbageWidgetTypes::xypad)
+			{
+					csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::xchannel).getCharPointer(),
+                                CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::valuex));
+					csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::ychannel).getCharPointer(),
+                                CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::valuey));
+			}
+			else
             csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
                                 CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::value));
         }
 
     }
+	
+	//post init hack to allow tables to be set up correctly
+	csound->PerformKsmps();
+	csound->SetScoreOffsetSeconds (0);
+	csound->RewindScore();
+
 }
 //==============================================================================
 void CsoundPluginProcessor::addMacros (String csdText)
@@ -248,7 +257,6 @@ const String CsoundPluginProcessor::getCsoundOutput()
             csound->PopFirstMessage();
         }
 
-        Logger::writeToLog (csoundOutput + "\n");
         return csoundOutput;
     }
 
@@ -513,8 +521,6 @@ CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray (Str
 {
     for (int i = 0; i < signalArrays.size(); i++)
     {
-        CabbageUtilities::debug (signalArrays[i]->caption);
-
         if (signalArrays[i]->caption.isNotEmpty() && signalArrays[i]->caption.contains (variableName))
         {
             if (displayType.isEmpty())

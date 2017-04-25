@@ -1,0 +1,102 @@
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:44:39am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:45:21am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:45:34am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:45:57am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:46:17am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:46:48am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:46:51am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:47:18am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:47:56am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:48:44am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:49:14am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:49:17am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:49:43am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:50:10am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:53:47am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:53:53am
+
+Plugin constructor
+
+**********************************************************
+Cabbage Log..
+Log started: 25 Apr 2017 10:54:00am
+
+Plugin constructor

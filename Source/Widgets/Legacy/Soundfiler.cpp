@@ -104,7 +104,6 @@ void Soundfiler::changeListenerCallback (ChangeBroadcaster* source)
     }
 
     repaint();
-    //Logger::writeToLog("soundfiler Change listener:"+String(thumbnail->getTotalLength()));
 }
 //==============================================================================
 void Soundfiler::resized()
@@ -126,11 +125,6 @@ void Soundfiler::setFile (const File& file)
 {
     if (! file.isDirectory())
     {
-
-        //buffer.clear();
-        //
-        //buffer.addFrom(0, 0, tableValues.getRawDataPointer(), tableValues.size());
-        //buffer.addFrom(1, 0, tableValues.getRawDataPointer(), tableValues.size());
         AudioFormatManager format;
         format.registerBasicFormats();
         //registers wav and aif format (just nescearry one time if you alays use the "getInstance()" method)
@@ -147,12 +141,6 @@ void Soundfiler::setFile (const File& file)
         }
 
         delete reader;
-
-
-        // thumbnail->setSource (new FileInputSource (file));
-        //    const Range<double> newRange (0.0, thumbnail->getTotalLength());
-        //    scrollbar->setRangeLimits (newRange);
-        //    setRange (newRange);
     }
 
     repaint (0, 0, getWidth(), getHeight());
@@ -171,7 +159,6 @@ void Soundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
     setRange (newRange);
     setZoomFactor (zoom);
     repaint();
-    //Logger::writeToLog("updating waveform");
 }
 
 //==============================================================================
@@ -211,7 +198,6 @@ void Soundfiler::paint (Graphics& g)
     g.fillAll (bgColour);
     g.setColour (colour);
 
-    //Logger::writeToLog(String(thumbnail->getTotalLength()));
     if (thumbnail->getTotalLength() != 0.0)
     {
         //if(GEN01 then draw thumbnail)
@@ -256,8 +242,6 @@ void Soundfiler::mouseWheelMove (const MouseEvent&, const MouseWheelDetails& whe
 //==============================================================================
 void Soundfiler::mouseDown (const MouseEvent& e)
 {
-    //Logger::writeToLog("mouseDown soundfiler");
-
     if (!e.mods.isPopupMenu())
     {
         regionWidth = (1.01 - zoom) * 1.5;
@@ -271,17 +255,12 @@ void Soundfiler::mouseDown (const MouseEvent& e)
 //==============================================================================
 void Soundfiler::mouseEnter (const MouseEvent& e)
 {
-    //Logger::writeToLog("mouseOver soundfiler");
-    //if(thumbnail->getTotalLength()>0.01){
-    //  zoomIn->setVisible(true);
-    //  zoomOut->setVisible(true);
-    //}
+
 }
 //==============================================================================
 void Soundfiler::mouseExit (const MouseEvent& e)
 {
-    //  zoomIn->setVisible(false);
-    //  zoomOut->setVisible(false);
+
 }
 //==============================================================================
 void Soundfiler::mouseDrag (const MouseEvent& e)
@@ -295,7 +274,6 @@ void Soundfiler::mouseDrag (const MouseEvent& e)
                 double zoomFactor = visibleRange.getLength() / thumbnail->getTotalLength();
                 regionWidth = abs (e.getDistanceFromDragStartX()) * zoomFactor;
 
-                //Logger::writeToLog(String(e.getDistanceFromDragStartX()));
                 if (e.getDistanceFromDragStartX() < 0)
                     currentPlayPosition = jmax (0.0, xToTime (loopStart + (float)e.getDistanceFromDragStartX()));
 

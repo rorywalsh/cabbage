@@ -110,7 +110,7 @@ rslider  bounds(100, 25, 55, 55), text("Rate"),  channel("FRte"), range(0, 16.00
 rslider  bounds(150, 25, 55, 55), text("Depth"), channel("FDep"), range(0, 4.00, 0),        trackercolour("white") colour(LightBlue)
 rslider  bounds(200, 25, 55, 55), text("Delay"), channel("FDel"), range(0, 2.00, 0, 0.5),   trackercolour("white") colour(LightBlue)
 rslider  bounds(250, 25, 55, 55), text("Rise"),  channel("FRis"), range(0, 2.00, 0.1, 0.5), trackercolour("white") colour(LightBlue)
-
+}
 ;REVERB
 groupbox bounds(310,170,165, 85), text("Reverb"), plant("Reverb"), fontcolour("white"){
 rslider  bounds(  5, 25, 55, 55), fontcolour("white"), text("Send"),   channel("RvbMix"),  range(0, 1.00, 0.5),  trackercolour("white") colour(LightBlue)

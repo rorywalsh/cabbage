@@ -1,0 +1,4837 @@
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:39:15pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:41:25pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:45:17pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:45:44pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:46:54pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:48:34pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:48:56pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:49:55pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:50:42pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:51:45pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:51:45pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+
+**********************************************************
+Cabbage Log..
+Log started: 5 Apr 2017 6:52:02pm
+
+Plugin constructor
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+-1
+-1
+-1
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 12 Apr 2017 11:22:21am
+
+Plugin constructor
+Csound could not compile your file?
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+1
+UnifiedCSD:  /home/rory/sourcecode/cabaiste/Examples/Utilities/Log_Curves.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: ALSA module enabled
+rtmidi: ALSA Raw MIDI module enabled
+
+error: syntax error, unexpected THEN_TOKEN  (token "then") from file /home/rory/sourcecode/cabaiste/Examples/Utilities/Log_Curves.csd (1)
+ line 69:
+>>>1) then <<<
+Parsing failed due to invalid input!
+Stopping on parser failure
+cannot compile orchestra
+
+
+
+**********************************************************
+Cabbage Log..
+Log started: 12 Apr 2017 11:22:35am
+
+Plugin constructor
+Csound could not compile your file?
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 12 Apr 2017 11:22:45am
+
+Plugin constructor
+Csound could not compile your file?
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 12 Apr 2017 11:22:54am
+
+Plugin constructor
+Csound could not compile your file?
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 12 Apr 2017 11:23:19am
+
+Plugin constructor
+Csound could not compile your file?
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+1
+
+**********************************************************
+Cabbage Log..
+Log started: 12 Apr 2017 1:53:55pm
+
+Plugin constructor
+Csound could not compile your file?
+size
+text
+form size
+text
+Log Curves
+Log Curves
+bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+gentable bounds
+tablenumber
+tablecolour
+identchannel
+amprange
+zoom
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+1. log
+1. log
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+2. log2
+2. log2
+bounds
+align
+text
+fontcolour
+label    bounds
+align
+text
+fontcolour
+3. log10
+3. log10
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-1
+-1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-2
+-2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-3
+-3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-4
+-4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+-5
+-5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+1
+1
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+2
+2
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+3
+3
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+4
+4
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+5
+5
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+6
+6
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+7
+7
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+8
+8
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+9
+9
+bounds
+text
+fontcolour
+label    bounds
+text
+fontcolour
+10
+10
+bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+{ image    bounds
+shape
+colour
+outlinecolour
+outlinethickness
+plant
+bounds
+text
+channel
+value
+combobox bounds
+text
+channel
+value
+log
+log2
+log10
+log
+log2
+log10
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Input
+Input
+bounds
+text
+channel
+range
+textcolour
+numberbox bounds
+text
+channel
+range
+textcolour
+Output
+Output
+1
+UnifiedCSD:  /home/rory/sourcecode/cabaiste/Examples/Utilities/Log_Curves.csd
+STARTING FILE
+Creating options
+Creating orchestra
+Creating score
+rtaudio: ALSA module enabled
+rtmidi: ALSA Raw MIDI module enabled
+
+error: syntax error, unexpected THEN_TOKEN  (token "then") from file /home/rory/sourcecode/cabaiste/Examples/Utilities/Log_Curves.csd (1)
+ line 69:
+>>>1) then <<<
+Parsing failed due to invalid input!
+Stopping on parser failure
+cannot compile orchestra
+
+
+Shutdown

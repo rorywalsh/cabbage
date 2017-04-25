@@ -66,7 +66,10 @@ instr 1
   iy	=	log(ix)                                 ; apply formula to derive y                                 
   	tableiw iy,icount,gi1                           ; write y value to table                                    
   loop_lt,icount,1,iftlen,loop1                         ; loop back and increment counter if we are not yet finished
-  	chnset	"tablenumber(1)","table"		; update table
+  	
+ if metro(1) then
+ 	chnset	"tablenumber(1)","table"		; update table
+ endif
  
  icount		=	0			        ; reset counter. (Moves for each index of the function table)
   loop2:						; loop beginning                                            

@@ -83,8 +83,6 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
 
         if (tableNumber > 0 && tableValues.size() > 0)
         {
-            //Logger::writeToLog("Table Number:"+String(tableNumber));
-
             StringArray pFields = owner->getTableStatement (tableNumber);
             int genRoutine = pFields[4].getIntValue();
 
@@ -112,7 +110,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
                     //only enable editing for gen05, 07, and 02
                     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom) != 0)
                     {
-                        CabbageUtilities::debug (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom));
+
                         table.setZoomFactor (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom));
                     }
 

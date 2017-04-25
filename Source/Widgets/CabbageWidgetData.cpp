@@ -238,9 +238,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
     IdentifiersAndParameters identifierValueSet = getSetofIdentifiersAndParameters (lineOfText);
 
-	for(int i = 0 ; i < identifierValueSet.identifier.size() ; i++)
-		CabbageUtilities::debug(identifierValueSet.identifier[i]);
-
     CabbageIdentifierStrings identifierArray;
 
 
@@ -543,6 +540,13 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     }
 
     setProperty (widgetData, CabbageIdentifierIds::channel, array);
+	
+	if(array.size() == 2)
+	{
+		setProperty (widgetData, CabbageIdentifierIds::xchannel, array[0]);
+		setProperty (widgetData, CabbageIdentifierIds::ychannel, array[1]);
+	}
+		
 
     if (identifier == "widgetarray")
     {
@@ -570,7 +574,6 @@ void CabbageWidgetData::setTextItemArrays (StringArray strTokens, ValueTree widg
 
     for (int i = 0; i < strTokens.size(); i++)
     {
-        CabbageUtilities::debug (strTokens[i]);
         value.append (strTokens[i].trim().trimCharactersAtEnd ("\"").trimCharactersAtStart ("\""));
         comboRange = i + 1;
     }
@@ -1242,9 +1245,6 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
         for ( int i = 0 ; i < stringArray.size(); i++)
             stringArray.set (i, "\"" + stringArray[i] + "\"");
 
-
-    //CabbageUtilities::debug(stringArray.joinIntoString(", "));
-
     if (stringArray.joinIntoString ("\n").length() > 0)
         return identifier + "(" + stringArray.joinIntoString (", ") + "), ";
     else
@@ -1384,7 +1384,6 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         {
             if (colours[i] != originalColours[i])
             {
-                //CabbageUtilities::debug(colours[i].toString());
                 const Colour col = Colour::fromString (colours[i].toString());
                 colourString = colourString << "tablecolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
             }

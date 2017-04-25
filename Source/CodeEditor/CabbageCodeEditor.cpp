@@ -36,7 +36,6 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
-    //Logger::writeToLog (opcodeFile);
     setScrollbarThickness (20);
 
     if (File (opcodeFile).existsAsFile())
@@ -749,8 +748,6 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
             {
                 const int selectedRow = autoCompleteListBox.getSelectedRow();
 
-                CabbageUtilities::debug (selectedRow);
-
                 if (key.getTextDescription().contains ("cursor down"))
                     autoCompleteListBox.selectRow (jmax (0, selectedRow) + 1);
                 else if (key.getTextDescription().contains ("cursor up"))
@@ -961,6 +958,5 @@ StringArray CabbageCodeEditorComponent::getSelectedTextArray()
     StringArray tempArray;
     String selectedText = getTextInRange (this->getHighlightedRegion());
     tempArray.addLines (selectedText);
-    //Logger::writeToLog (selectedText);
     return tempArray;
 }

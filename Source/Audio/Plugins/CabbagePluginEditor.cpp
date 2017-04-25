@@ -116,7 +116,7 @@ void CabbagePluginEditor::createEditorInterface (ValueTree widgets)
     {
         const String widgetType = widgets.getChild (widget).getProperty (CabbageIdentifierIds::type).toString();
 
-        if (widgetType == CabbageIdentifierIds::form)
+        if (widgetType == CabbageWidgetTypes::form)
             setupWindow (widgets.getChild (widget));
         else
         {
@@ -169,70 +169,70 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
 {
     const String widgetType = cabbageWidgetData.getProperty (CabbageIdentifierIds::type).toString();
 
-    if (widgetType == CabbageIdentifierIds::checkbox)
+    if (widgetType == CabbageWidgetTypes::checkbox)
         insertCheckbox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::combobox)
+    else if (widgetType == CabbageWidgetTypes::combobox)
         insertComboBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::image)
+    else if (widgetType == CabbageWidgetTypes::image)
         insertImage (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::line)
+    else if (widgetType == CabbageWidgetTypes::line)
         insertLine (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::rslider
-             || widgetType == CabbageIdentifierIds::vslider
-             || widgetType == CabbageIdentifierIds::hslider)
+    else if (widgetType == CabbageWidgetTypes::rslider
+             || widgetType == CabbageWidgetTypes::vslider
+             || widgetType == CabbageWidgetTypes::hslider)
         insertSlider (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::label)
+    else if (widgetType == CabbageWidgetTypes::label)
         insertLabel (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::groupbox)
+    else if (widgetType == CabbageWidgetTypes::groupbox)
         insertGroupBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::keyboard)
+    else if (widgetType == CabbageWidgetTypes::keyboard)
         insertMIDIKeyboard (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::csoundoutput)
+    else if (widgetType == CabbageWidgetTypes::csoundoutput)
         insertCsoundOutputConsole (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::numberbox)
+    else if (widgetType == CabbageWidgetTypes::numberbox)
         insertNumberBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::textbox.toString())
+    else if (widgetType == CabbageWidgetTypes::textbox.toString())
         insertTextBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::texteditor)
+    else if (widgetType == CabbageWidgetTypes::texteditor)
         insertTextEditor (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::encoder)
+    else if (widgetType == CabbageWidgetTypes::encoder)
         insertEncoder (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::soundfiler)
+    else if (widgetType == CabbageWidgetTypes::soundfiler)
         insertSoundfiler (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::button)
+    else if (widgetType == CabbageWidgetTypes::button)
         insertButton (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::filebutton)
+    else if (widgetType == CabbageWidgetTypes::filebutton)
         insertFileButton (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::infobutton)
+    else if (widgetType == CabbageWidgetTypes::infobutton)
         insertInfoButton (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::signaldisplay)
+    else if (widgetType == CabbageWidgetTypes::signaldisplay)
         insertSignalDisplay (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::gentable)
+    else if (widgetType == CabbageWidgetTypes::gentable)
         insertGenTable (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::xypad)
+    else if (widgetType == CabbageWidgetTypes::xypad)
         insertXYPad (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::hrange
-             || widgetType == CabbageIdentifierIds::vrange)
+    else if (widgetType == CabbageWidgetTypes::hrange
+             || widgetType == CabbageWidgetTypes::vrange)
         insertRangeSlider (cabbageWidgetData);
 
 }
@@ -770,10 +770,7 @@ String CabbagePluginEditor::createNewGenericNameForPresetFile()
 
 		bool allowSave = true;
 		for(auto file : dirFiles)
-		{
-			CabbageUtilities::debug(file.getFullPathName());
-			CabbageUtilities::debug(newName);
-			
+		{			
 			if(file.getFileNameWithoutExtension().equalsIgnoreCase(newName))
 				allowSave = false;
 		}

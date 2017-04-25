@@ -316,7 +316,6 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
     }
     else if (menuItemID >= examplesMenuBaseID && menuItemID < exampleFiles.size() + examplesMenuBaseID)
     {
-        //CabbageUtilities::debug(exampleFiles[menuItemID-examplesMenuBaseID].getFullPathName());
         getContentComponent()->openFile (exampleFiles[menuItemID - examplesMenuBaseID].getFullPathName());
     }
 }
@@ -852,7 +851,7 @@ const String CabbageDocumentWindow::getPluginId (File csdFile)
         ValueTree temp ("temp");
         CabbageWidgetData::setWidgetState (temp, line, 0);
 
-        if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageIdentifierIds::form)
+        if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
             return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
     }
 
