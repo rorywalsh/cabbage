@@ -736,10 +736,10 @@ void CabbageMainComponent::createCodeEditorForFile(File file)
 //==============================================================================
 void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 {
-    getCurrentCodeEditor()->setSavePoint();
 
     if (saveAs == true)
     {
+		
         stopCsoundForNode (getCurrentCsdFile().getFullPathName());
 
         isGUIEnabled = false;
@@ -759,6 +759,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
             }
             else
                 writeFileToDisk(fc.getResult().withFileExtension (".csd"));
+			
+			getCurrentCodeEditor()->setSavePoint();
         }
     }
     else
@@ -769,8 +771,11 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (getCabbagePluginEditor() != nullptr)
             getCabbagePluginEditor()->enableEditMode (false);
 
-        if (getCurrentCsdFile().existsAsFile())
-            getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
+		if(getCurrentCodeEditor()->hasFileChanged())
+		{
+			if (getCurrentCsdFile().existsAsFile())
+				getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
+		}
 
         if (cabbageSettings->getUserSettings()->getIntValue ("CompileOnSave") == 1)
         {
