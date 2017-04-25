@@ -105,6 +105,8 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
                 else
                 {
                     //cUtils::showMessage(tableValues.size());
+					for( int v = 0 ; v < tableValues.size() ; v++)
+						CabbageUtilities::debug(tableValues[v]);
                     table.setWaveform (tableValues, tableNumber);
 
                     //only enable editing for gen05, 07, and 02

@@ -36,10 +36,6 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
                      )
 #endif
 {
-	
-    String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");
-    fileLogger = new FileLogger (File (logFileName), String ("Cabbage Log.."));
-    Logger::setCurrentLogger (fileLogger);
 
     CabbageUtilities::debug ("Plugin constructor");
     csound = new Csound();
@@ -118,6 +114,14 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
         csoundParams = nullptr;
         editorBeingDeleted (this->getActiveEditor());
     }
+}
+
+//==============================================================================
+void CsoundPluginProcessor::createFileLogger(File csdFile)
+{
+	String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");
+	fileLogger = new FileLogger (File (logFileName), String ("Cabbage Log.."));
+	Logger::setCurrentLogger (fileLogger);
 }
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
@@ -257,6 +261,8 @@ const String CsoundPluginProcessor::getCsoundOutput()
             csound->PopFirstMessage();
         }
 
+
+		Logger::writeToLog(csoundOutput);
         return csoundOutput;
     }
 

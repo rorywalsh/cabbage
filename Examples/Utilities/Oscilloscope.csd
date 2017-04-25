@@ -519,7 +519,7 @@ instr 1000				; launches plant popups
  #
  kpressed	chnget 		"$name._Button"
  if changed(kpressed)==1 then
-   Smsg 	sprintfk 	"show(%d), pos(1, 19)", klaunch
+   Smsg 	sprintfk 	"visible(%d), pos(1, 19)", klaunch
    		chnset 		Smsg, "$name.Plant"
  endif
  #

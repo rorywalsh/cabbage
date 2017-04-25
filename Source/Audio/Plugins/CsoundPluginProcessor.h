@@ -83,7 +83,8 @@ public:
     static void killGraphCallback (CSOUND* csound, WINDAT* windat);
     static int exitGraphCallback (CSOUND* csound);
 
-
+	//logger
+	void createFileLogger(File csdFile);
 
     void handleAsyncUpdate() override;
     //csound breakpint function
@@ -98,8 +99,7 @@ public:
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     int checkTable (int tableNum);
-    //std::vector<MYFLT> temp;
-	//MYFLT temp[650000];
+
     //=============================================================================
     //Implement these to init, send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel

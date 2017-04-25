@@ -7,10 +7,10 @@ Slider can be used to create an on-screen slider. Data can be sent to Csound on 
 hslider bounds(x, y, width, height), channel("chan"), \
 text("name"), textbox(val), range(min, max, value, skew, incr), \
 min(val), max(val), textcolour("colour"), fontcolour("colour"), \
-trackercolour("colour"), outlinecolour("colour"), trackerthickness(val)
-identchannel("channel"), alpha(val), visible(val), caption("caption"), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val), svgfile("type", "file"), velocity(val)
+trackercolour("colour"), outlinecolour("colour"), trackerthickness(val) \
+textboxcolour("colour"), textboxoutlinecolour("colour"), identchannel("channel"), \
+alpha(val), visible(val), caption("caption"), rotate(radians, pivotx, pivoty), \
+widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "file"), velocity(val)
 ```
 <!--(End of syntax)/-->
 
@@ -33,7 +33,11 @@ active(val), svgfile("type", "file"), velocity(val)
 
 **textcolour("colour")** This set the colour of the text passed to text(). If you wish to change the colour of the numbers being displayed use fontcolour(). See below. See above for details on valid colours. 
 
-**fontcolour("colour")** Sets the colour of the text used to display the slider's value when textbox is enable. See above for details on valid colours. .
+**fontcolour("colour")** Sets the colour of the text used to display the slider's value when textbox is enable. See above for details on valid colours. 
+
+**textboxcolour("colour")** Sets the colour of the background of the value text box used to display the slider's value when textbox is enable. See above for details on valid colours.
+
+**textboxoutlinecolour("colour")** Sets the colour of the outline of the value text box used to display the slider's value when textbox is enable. See above for details on valid colours.
 
 **trackercolour("colour")** Sets the colour of the slider's tracker. This is the line that follows the slider when you move it. See above for details on valid colours. To disable the tracker you can set this colour to something with alpha 0, or set the tracker's thickness to 0. 
 

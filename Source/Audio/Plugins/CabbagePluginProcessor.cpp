@@ -114,6 +114,8 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         {
             const String caption = CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::caption);
             this->setPluginName (caption.length() > 0 ? caption : "Untitled");
+			if(CabbageWidgetData::getNumProp(tempWidget, CabbageIdentifierIds::logger) == 1)
+				createFileLogger(this->csdFile);
         }
 
         if (currentLineOfCabbageCode.contains ("}"))

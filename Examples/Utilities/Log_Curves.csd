@@ -3,7 +3,7 @@
 
 <Cabbage>
 form size(1015,510), text("Log Curves")
-gentable bounds( 15,  5,990,500), tablenumber(1,2,3), tablecolour("red","green","silver"), identchannel("table"), amprange(-5,5,-1), zoom(-1)
+;gentable bounds( 15,  5,990,500), tablenumber(1,2,3), tablecolour("red","green","silver"), identchannel("table"), amprange(-5,5,-1), zoom(-1)
 label    bounds( 22,  6, 80, 15), align("left"), text("1. log"),   fontcolour("red")
 label    bounds( 22, 22, 80, 15), align("left"), text("2. log2"),  fontcolour("green")
 label    bounds( 22, 38, 80, 15), align("left"), text("3. log10"), fontcolour("silver")
@@ -64,10 +64,11 @@ instr 1
   loop1:						; loop beginning                                            
   ix	=	(icount/iftlen) * iscale                ; shift x range to -1 to 1                                  
   iy	=	log(ix)                                 ; apply formula to derive y                                 
-  	tableiw iy,icount,gi1                           ; write y value to table                                    
+  	tableiw iy,icount,gi1                           ; write y value to table 
+  print iy                                   
   loop_lt,icount,1,iftlen,loop1                         ; loop back and increment counter if we are not yet finished
   	
- if metro(1) then
+ if metro(1) == 1 then
  	chnset	"tablenumber(1)","table"		; update table
  endif
  
