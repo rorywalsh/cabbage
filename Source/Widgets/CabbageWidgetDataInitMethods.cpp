@@ -664,6 +664,10 @@ void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 160);
     setProperty (widgetData, CabbageIdentifierIds::height, 120);
+    setProperty (widgetData, CabbageIdentifierIds::cropx, 0);
+    setProperty (widgetData, CabbageIdentifierIds::cropy, 0);
+    setProperty (widgetData, CabbageIdentifierIds::cropwidth, 0);
+    setProperty (widgetData, CabbageIdentifierIds::cropheight, 0);
     setProperty (widgetData, CabbageIdentifierIds::shape, "square");
     setProperty (widgetData, CabbageIdentifierIds::corners, 0);
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());

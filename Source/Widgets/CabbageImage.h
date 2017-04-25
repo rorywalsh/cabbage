@@ -30,7 +30,7 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
     String name, tooltipText, shape;
     File imgFile;
     CabbagePluginEditor* owner;
-    float corners;
+    float corners, cropx, cropy, cropwidth, cropheight;
     int lineThickness;
     ValueTree widgetData;
     Colour outlineColour, mainColour;

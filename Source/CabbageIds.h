@@ -406,6 +406,7 @@ public:
         add ("file");
         add ("wrap");
         add ("text");
+		add ("crop");
         add ("zoom");
         add ("size");
         add ("show");
@@ -535,6 +536,11 @@ namespace CabbageIdentifierIds
     static const Identifier textboxcolour = "textboxcolour";
 	static const Identifier textboxoutlinecolour = "textboxoutlinecolour";
     static const Identifier name = "name";
+	static const Identifier crop = "crop";
+	static const Identifier cropx = "cropx";
+	static const Identifier cropy = "cropy";
+	static const Identifier cropwidth = "cropwidth";
+	static const Identifier cropheight = "cropheight";
     static const Identifier active = "active";
     static const Identifier type = "type";
     static const Identifier imgdebug = "imgdebug";

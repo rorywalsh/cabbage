@@ -339,8 +339,14 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("scrollbars"):
                 setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
                 break;
-                break;
 
+			case HashStringToInt ("crop"):
+				setProperty (widgetData, CabbageIdentifierIds::cropx, strTokens[0].trim().getFloatValue());
+				setProperty (widgetData, CabbageIdentifierIds::cropy, strTokens[1].trim().getFloatValue());
+				setProperty (widgetData, CabbageIdentifierIds::cropwidth, strTokens[2].trim().getFloatValue());
+				setProperty (widgetData, CabbageIdentifierIds::cropheight, strTokens[3].trim().getFloatValue());
+				break;
+				
             case HashStringToInt ("max"):
                 setProperty (widgetData, CabbageIdentifierIds::maxenabled, 1);
                 setProperty (widgetData, CabbageIdentifierIds::maxvalue, strTokens[0].trim().getFloatValue());
