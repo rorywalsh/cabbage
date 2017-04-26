@@ -739,6 +739,7 @@ public:
         set ("Corners", CabbageIdentifierIds::corners.toString());
         set ("Shape", CabbageIdentifierIds::shape.toString());
         set ("File", CabbageIdentifierIds::file.toString());
+		set ("Image File", CabbageIdentifierIds::file.toString());
         set ("Text Align", CabbageIdentifierIds::align.toString());
         set ("Align", CabbageIdentifierIds::align.toString());
         set ("Velocity", CabbageIdentifierIds::velocity.toString());

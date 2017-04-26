@@ -560,6 +560,7 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
     setProperty (widgetData, CabbageIdentifierIds::startpos, 0);
     setProperty (widgetData, CabbageIdentifierIds::endpos, -1);
+	setProperty (widgetData, CabbageIdentifierIds::fill, 1);
     setProperty (widgetData, CabbageIdentifierIds::drawmode, "");
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));

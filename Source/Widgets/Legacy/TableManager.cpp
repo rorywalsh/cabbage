@@ -1152,7 +1152,7 @@ void GenTable::paint (Graphics& g)
                 {
                     if (shouldFill)
                     {
-                        g.setColour (colour.withAlpha (.2f));
+                        g.setColour (colour);
                         g.drawVerticalLine (prevX, (prevY < midPoint ? prevY : midPoint),  (prevY > midPoint ? prevY : midPoint));
                     }
 
