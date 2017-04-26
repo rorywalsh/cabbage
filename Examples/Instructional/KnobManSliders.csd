@@ -19,7 +19,7 @@ rslider bounds(324, 74, 50, 50) channel("rslider3") range(0, 1, 0, 1, 0.001) alp
 image bounds(390, 74, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent4")
 rslider bounds(390, 74, 50, 50) channel("rslider4") range(0, 1, 0, 1, 0.001) alpha(0)
 
-image bounds(190, 18, 120, 120), file("meter_black.png"), crop(0, 0, 128, 128)
+image bounds(190, 18, 120, 120) crop(0, 0, 128, 128), file("meter_black.png") identchannel("vuMeterIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -66,6 +66,11 @@ filmStrip "rsliderIdent1", int(krSlider1*30)*110, 110, 110
 filmStrip "rsliderIdent2", int(krSlider2*30)*110, 110, 110
 filmStrip "rsliderIdent3", int(krSlider3*30)*110, 110, 110
 filmStrip "rsliderIdent4", int(krSlider4*30)*110, 110, 110
+
+kVuMeter randi 1, 5
+filmStrip "vuMeterIdent", int(abs(kVuMeter)*30)*128, 128, 128
+
+
 endin
 
 </CsInstruments>
