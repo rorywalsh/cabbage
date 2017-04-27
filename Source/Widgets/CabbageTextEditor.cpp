@@ -90,4 +90,5 @@ void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Id
     lookAndFeelChanged();
     repaint();
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+	textEditor.setText (getText(), dontSendNotification);
 }
