@@ -124,13 +124,34 @@ void CabbageDocumentWindow::maximiseButtonPressed()
     getContentComponent()->resizeAllEditorAndConsoles (getHeight());
 }
 
+int showYesNoMessage2 (String message, LookAndFeel* feel, int cancel = 0)
+{
+	AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
+	alert.setLookAndFeel (feel);
+	alert.addButton ("Yes", 0);
+	alert.addButton ("No", 1);
+
+	if (cancel == 1)
+		alert.addButton ("Cancel", 2);
+
+#if !defined(AndroidBuild)
+	int result = alert.runModalLoop();
+#else
+	int result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
+#endif
+	return result;
+}
+	
 void CabbageDocumentWindow::closeButtonPressed()
 {
     CabbageIDELookAndFeel lookAndFeel;
 
     if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
     {
-        const int result = CabbageUtilities::showYesNoMessage ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
+        //const int result = showYesNoMessage2 ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
+
+		const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::NoIcon,
+			"Warning", "Save changes made to Cabbage\npatch?", nullptr, nullptr);	
 
         if (result == 0)
         {
@@ -776,7 +797,7 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
         CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
     }
 
-    FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), fileExtension, CabbageUtilities::shouldUseNativeBrowser());
+    FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*."+fileExtension, CabbageUtilities::shouldUseNativeBrowser());
 
     if (fc.browseForFileToSave(false))
     {

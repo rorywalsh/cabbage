@@ -388,12 +388,9 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     MYFLT newSamp;
     int result = -1;
 
-//#if defined(Cabbage_IDE_Build) || defined(AndroidBuild)
-//    const int output_channel_count = numCsoundChannels;
-//#else
+
     const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
 	const int outputs = getTotalNumOutputChannels();;
-//#endif
 
 	
 
