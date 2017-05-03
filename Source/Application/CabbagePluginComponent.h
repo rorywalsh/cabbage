@@ -38,6 +38,7 @@ private:
     Font font;
     int numIns, numOuts;
     DropShadowEffect shadow;
+	CabbageLookAndFeel2 lookAndFeel;
 
     CabbageGraphComponent* getCabbageGraphComponent() const noexcept;
     CabbagePluginComponent (const CabbagePluginComponent&);

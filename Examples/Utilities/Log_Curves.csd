@@ -3,7 +3,7 @@
 
 <Cabbage>
 form size(1015,510), text("Log Curves")
-gentable bounds( 15,  5,990,500), tablenumber(1,2,3), tablecolour("red","green","silver"), identchannel("table"), amprange(-5,5,-1), zoom(-1)
+gentable bounds( 15,  5,990,500), tablenumber(1,2,3), tablecolour:0("red") tablecolour:1("green") tablecolour:2("silver"), identchannel("table"), amprange(-5,5,-1), zoom(-1)
 label    bounds( 22,  6, 80, 15), align("left"), text("1. log"),   fontcolour("red")
 label    bounds( 22, 22, 80, 15), align("left"), text("2. log2"),  fontcolour("green")
 label    bounds( 22, 38, 80, 15), align("left"), text("3. log10"), fontcolour("silver")
@@ -62,16 +62,21 @@ instr 1
 
  icount		=	0			        ; reset counter. (Moves for each index of the function table)
   loop1:						; loop beginning                                            
-  ix	=	(icount/iftlen) * iscale                ; shift x range to -1 to 1                                  
-  iy	=	log(ix)                                 ; apply formula to derive y                                 
-  	tableiw iy,icount,gi1                           ; write y value to table                                    
+  ix	=	(icount/iftlen) * iscale                ; shift x range to -1 to 1   
+  iy  limit  log(ix), -5, 5                         ; apply formula to derive y         
+                                                            
+  	tableiw iy,icount,gi1                           ; write y value to table 
+  print iy                                   
   loop_lt,icount,1,iftlen,loop1                         ; loop back and increment counter if we are not yet finished
-  	chnset	"tablenumber(1)","table"		; update table
+  	
+ if metro(1) == 1 then
+ 	chnset	"tablenumber(1)","table"		; update table
+ endif
  
  icount		=	0			        ; reset counter. (Moves for each index of the function table)
   loop2:						; loop beginning                                            
   ix	=	(icount/iftlen) * iscale                ; shift x range to -1 to 1                                  
-  iy	=	log2(ix)                                ; apply formula to derive y                                 
+  iy  limit  log2(ix), -5, 5                                ; apply formula to derive y                                 
   	tableiw iy,icount,gi2                           ; write y value to table                                    
   loop_lt,icount,1,iftlen,loop2                         ; loop back and increment counter if we are not yet finished
   	chnset	"tablenumber(2)","table"		; update table
@@ -79,7 +84,7 @@ instr 1
  icount		=	0			        ; reset counter. (Moves for each index of the function table)
   loop3:						; loop beginning                                            
   ix	=	(icount/iftlen) * iscale                ; shift x range to -1 to 1                                  
-  iy	=	log10(ix)                               ; apply formula to derive y                                 
+  iy  limit  log10(ix), -5, 5                               ; apply formula to derive y                                 
   ;iy	log	ix, 10                                  ; apply formula to derive y                                 
   	tableiw iy,icount,gi3                           ; write y value to table                                    
   loop_lt,icount,1,iftlen,loop3                         ; loop back and increment counter if we are not yet finished

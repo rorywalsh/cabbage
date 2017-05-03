@@ -16,7 +16,7 @@
 
 <Cabbage>
 form caption("FFT Spectrum"), size(610,620), colour( 50, 50, 50), pluginID("spec"), guirefresh(16)
-gentable outlinethickness(1), bounds(  0,  0, 610,300), tablenumber(1), tablebackgroundcolour("white"), tablegridcolour("WhiteSmoke"), tablecolour("black"), identchannel("ampFFT"), amprange(0,1,-1), outlinethickness(0), samplerange(0, 512) 
+gentable bounds(0, 0, 610, 300) tablenumber(1) tablebackgroundcolour(255, 255, 255, 255) tablegridcolour(245, 245, 245, 255) tablecolour("black"), identchannel("ampFFT") amprange(0, 1, -1, 0.0100) outlinethickness(0) samplerange(0, 512) tablecolour:0(0,0,0, 255)
 
 hslider bounds(105,300,250, 30), channel("gain"), text("Y Zoom"), textBox(1), range(0,99.00,6,0.5,0.01)
 hslider bounds(105,330,250, 30), channel("smooth"), text("Smooth"), textBox(1), range(0,5,0.5)

@@ -636,7 +636,7 @@ void GenTable::setAmpRanges (var ampRange)
         if (ampRange.size() > 3)
         {
             quantiseSpace = ampRange[3];
-            //CabbageUtilities::debug(minMax.getEnd());
+
             qsteps = quantiseSpace / minMax.getEnd();
 
             if (qsteps == 1)
@@ -665,7 +665,7 @@ void GenTable::changeListenerCallback (ChangeBroadcaster* source)
         coordinates << roundToIntAccurate (currentHandle->xPosRelative * waveformBuffer.size()) <<
                     ", " << curY;
 
-        //CabbageUtilities::debug("coordinates", coordinates);
+
         //no need to update function table no movement has taken place
         if (currentHandle->mouseStatus != "mouseEnter")
         {
@@ -802,7 +802,6 @@ void GenTable::setWaveform (AudioSampleBuffer buffer)
         scrollbar->setRangeLimits (newRange);
         setRange (newRange);
         //setZoomFactor(zoom);
-        //Logger::writeToLog("updating waveform:Length "+String(thumbnail->getTotalLength()));
         repaint();
     }
 }
@@ -890,13 +889,11 @@ void GenTable::enableEditMode (StringArray m_pFields)
             float pFieldAmpValue = (normalised < 0 ? pFields[5].getFloatValue() : pFields[5].getFloatValue() / pFieldMinMax.getEnd());
             handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->colour, pFieldAmpValue == 1 ? true : false);
 
-            //CabbageUtilities::debug("PFiledAmp:"+String(pFieldAmpValue));
             for (double i = 6; i < pFields.size(); i++)
             {
                 pfieldCount++;
                 xPos = (i - 5.0) / (double (tableSize)) * tableSize;
                 pFieldAmpValue = (normalised < 0 ? pFields[i].getFloatValue() : pFields[i].getFloatValue() / pFieldMinMax.getEnd());
-                //CabbageUtilities::debug("PFiledAmp:"+String(pFieldAmpValue));
                 handleViewer->addHandle (xPos / tableSize, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->colour, pFieldAmpValue == 1 ? true : false);
             }
 
@@ -1042,12 +1039,12 @@ void GenTable::setRange (Range<double> newRange, bool isScrolling)
 
 
             visibleStart = visibleRange.getStart() * sampleRate;
-            //Logger::writeToLog("VisibleStart:"+String(visibleRange.getStart()));
+
             visibleEnd = visibleRange.getEnd() * sampleRate;
-            //Logger::writeToLog("visibleEnd:"+String(visibleRange.getEnd()));
+
             visibleLength = visibleRange.getLength() * sampleRate;
 
-            //Logger::writeToLog("Table Number:"+String(tableNumber)+String(" VisibleLength:")+String(visibleRange.getLength()));
+
             if (!isScrolling)
             {
                 double newWidth = double (getWidth()) * (double (waveformBuffer.size()) / visibleLength);
@@ -1142,6 +1139,7 @@ void GenTable::paint (Graphics& g)
             else
             {
                 //minMax is the range of the current waveforms amplitude
+                float testSample = waveformBuffer[i];
                 currY = ampToPixel (thumbHeight, minMax, waveformBuffer[i]);
 
                 if (tableSize <= 2)
@@ -1154,7 +1152,7 @@ void GenTable::paint (Graphics& g)
                 {
                     if (shouldFill)
                     {
-                        g.setColour (colour.withAlpha (.2f));
+                        g.setColour (colour);
                         g.drawVerticalLine (prevX, (prevY < midPoint ? prevY : midPoint),  (prevY > midPoint ? prevY : midPoint));
                     }
 
@@ -1167,7 +1165,6 @@ void GenTable::paint (Graphics& g)
                     }
                 }
 
-                //CabbageUtilities::debug(i, currY);
 
                 prevX = jmax (0.0, (i - visibleStart) * numPixelsPerIndex);
                 prevY = currY;
@@ -1357,8 +1354,6 @@ void HandleViewer::addHandle (double x, double y, double /*width*/, double heigh
         handle->addChangeListener (table);
         handle->status = status;
 
-
-        //CabbageUtilities::debug("Top"+String(handle.getPosition().getY()));
         handles.add (handle);
         addAndMakeVisible (handles[handles.size() - 1]);
 
@@ -1447,7 +1442,6 @@ void HandleViewer::positionHandle (const MouseEvent& e)
         {
             if (steps == 1) //if toggle mode is enabled..
             {
-                //CabbageUtilities::debug(getSnapYPosition(getHeight()*int(handles[i]->status));
                 handles[i]->status = !handles[i]->status;
                 handles[i]->setTopLeftPosition (handles[i]->getPosition().withY (getSnapYPosition (getHeight()*int (handles[i]->status))));
                 handles[i]->setRelativePosition (handles[i]->getPosition().toDouble().withY (getSnapYPosition (getHeight()*double (handles[i]->status))));
@@ -1800,8 +1794,6 @@ void HandleComponent::mouseDrag (const MouseEvent& e)
         //with a gen02 each handle is fixed in place.
         xPos = x;
     }
-
-    //CabbageUtilities::debug("Handle height", getHeight());
 
     yPos = jlimit (0.0, getParentComponent()->getHeight() + 0.0, yPos + (getHeight() / 2.f));
 

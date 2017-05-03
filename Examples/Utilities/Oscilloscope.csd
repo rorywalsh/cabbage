@@ -122,7 +122,7 @@ rslider  bounds(230,  20,  80, 80), channel("GPitchRnd"), text("Pitch Rand."), t
 
 ; FFT pop-up panel
 button bounds(820,255, 100, 30), channel("fft_Button"), text("FFT View")
-groupbox bounds(0, 0,510,400), plant("FFT"), outlinethickness(0), popup(1), identchannel("fftPlant")
+groupbox bounds(0, 0,510,400), plant("FFT"), colour("black"), outlinethickness(0), popup(1), identchannel("fftPlant")
 {
 label      bounds(  5, 25,100, 12), text("View Format")
 combobox   bounds(  5, 38,100, 25), channel("displaytype"), text("Spectrogram","Lissajous"), value(1)
@@ -519,7 +519,7 @@ instr 1000				; launches plant popups
  #
  kpressed	chnget 		"$name._Button"
  if changed(kpressed)==1 then
-   Smsg 	sprintfk 	"show(%d), pos(1, 19)", klaunch
+   Smsg 	sprintfk 	"visible(%d), pos(1, 19)", klaunch
    		chnset 		Smsg, "$name.Plant"
  endif
  #

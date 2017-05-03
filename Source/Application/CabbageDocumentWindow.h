@@ -25,7 +25,7 @@
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../GUIEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"
-#include "CabbageContentComponent.h"
+#include "CabbageMainComponent.h"
 #include "../CodeEditor/CabbageOutputConsole.h"
 #include "../Settings/CabbageSettingsWindow.h"
 #include "../Settings/CabbageSettings.h"
@@ -41,7 +41,7 @@ public:
     //==========================================================
     CabbageDocumentWindow (String name);
     ~CabbageDocumentWindow();
-    CabbageContentComponent* getContentComponent();
+    CabbageMainComponent* getContentComponent();
     //=======================================================
     StringArray getMenuBarNames();
     void createMenu (PopupMenu&, const String& menuName);
@@ -58,7 +58,7 @@ public:
     PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
     void menuItemSelected (int menuItemID, int topLevelMenuIndex);
     //=======================================================
-    bool closeAllDocuments (bool askUserToSave);
+    bool caseAllDocuments (bool askUserToSave);
     bool closeAllMainWindows();
     void initSettings();
     void closeButtonPressed() override;
@@ -80,12 +80,12 @@ private:
     void exportPlugin (String type, File csdFile);
     int setUniquePluginId (File binFile, File csdFile);
     long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);
-    void writePluginFileToDisk (File fc, File csdFile, File VSTData);
+    void writePluginFileToDisk (File fc, File csdFile, File VSTData, String ext);
     //=======================================================
 
 
     bool isGUIEnabled = false;
-    ScopedPointer<CabbageContentComponent> content;
+    ScopedPointer<CabbageMainComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };
 

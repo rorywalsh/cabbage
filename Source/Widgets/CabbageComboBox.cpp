@@ -51,9 +51,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     initialiseCommonAttributes (this, wData);
 
     addItemsToCombobox (wData);
-	CabbageUtilities::debug(getValue());
-	owner->sendChannelDataToCsound(getChannel(), getValue());
-    setSelectedItemIndex (getValue()-1, isPresetCombo ? sendNotification : dontSendNotification);
+    owner->sendChannelDataToCsound (getChannel(), getValue());
+    setSelectedItemIndex (getValue() - 1, isPresetCombo ? sendNotification : dontSendNotification);
 
 }
 //---------------------------------------------
@@ -66,10 +65,11 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 {
     Array<File> dirFiles;
     StringArray fileNames;
-
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
+	clear (dontSendNotification);
+	snapshotFiles.clear();
+    
+	if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        clear (dontSendNotification);
         String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
         StringArray lines = StringArray::fromLines (file);
 
@@ -81,7 +81,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
-        clear (dontSendNotification);
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
 
         for (int i = 0; i < items.size(); i++)
@@ -92,8 +91,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     }
     else
     {
-        clear (dontSendNotification);
-
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
         pluginDir = File (getCsdFile()).getChildFile (workingDir).getParentDirectory();
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
@@ -123,14 +120,14 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     setJustificationType (justify);
 }
 
-void CabbageComboBox::comboBoxChanged (ComboBox* combo)	//this listener is only enabled when combo is loading presets...
+void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets...
 {
-	if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
-		owner->restorePluginStateFrom (snapshotFiles[combo->getSelectedItemIndex() - 1]);
-	else if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
-	{
-		owner->sendChannelStringDataToCsound(getChannel(), combo->getText());
-	}
+    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
+        owner->restorePluginStateFrom (snapshotFiles[combo->getSelectedItemIndex() - 1]);
+    else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
+    {
+        owner->sendChannelStringDataToCsound (getChannel(), combo->getText());
+    }
 }
 
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)

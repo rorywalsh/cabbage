@@ -18,7 +18,7 @@
 */
 
 #include "CabbageEditorContainer.h"
-#include "../Application/CabbageContentComponent.h"
+#include "../Application/CabbageMainComponent.h"
 
 CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings)
     : settings (settings),
@@ -57,9 +57,9 @@ CabbageEditorContainer::~CabbageEditorContainer()
     outputConsole = nullptr;
 }
 
-CabbageContentComponent* CabbageEditorContainer::getContentComponent()
+CabbageMainComponent* CabbageEditorContainer::getContentComponent()
 {
-    return this->findParentComponentOfClass<CabbageContentComponent>();
+    return this->findParentComponentOfClass<CabbageMainComponent>();
 }
 
 void CabbageEditorContainer::openFile (File file)

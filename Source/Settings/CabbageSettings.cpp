@@ -40,22 +40,23 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet = new PropertySet();
     ScopedPointer<XmlElement> xml;
     xml = new XmlElement ("PLANTS");
-    String homeDir = getCommonSettings (true)->getFile().getParentDirectory().getFullPathName();
+    String homeDir = File::getSpecialLocation (File::userHomeDirectory).getFullPathName();
     String manualPath, examplesDir;
+    
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
 
 #if !defined(MACOSX)
     manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
 #else
+    examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
 #endif
-
-
 
     defaultPropSet->setValue ("CsoundManualDir", manualPath);
     defaultPropSet->setValue ("CabbagePlantDir", homeDir + "/Plants");
     defaultPropSet->setValue ("CabbageExamplesDir", examplesDir);
     defaultPropSet->setValue ("MostRecentDirectory", homeDir);
+	defaultPropSet->setValue ("UserFilesDir", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);
     defaultPropSet->setValue ("ShowEditorConsole", 1);
     defaultPropSet->setValue ("ExternalEditor", 0);
@@ -67,7 +68,8 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("AudioEnabled", 1);
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue ("DisableAutoComplete", 0);
-    defaultPropSet->setValue ("SetAlwaysOnTop", 1);
+    defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 0);
+	defaultPropSet->setValue ("SetAlwaysOnTopGraph", 0);
     defaultPropSet->setValue ("GridSize", 4);
     defaultPropSet->setValue ("CompileOnSave", 1);
     defaultPropSet->setValue ("PlantRepository", xml);
@@ -106,7 +108,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyPanelBackground, "ff222222");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelText, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelBackground, "ffd4d4d4");
-    defaultPropSet->setValue ("Colours_" + CabbageColourIds::alertWindowBackground, Colour (147, 210, 0).toString());
+    defaultPropSet->setValue ("Colours_" + CabbageColourIds::alertWindowBackground, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::codeBackground,  "ff222222");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::lineNumberBackground,  "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::lineNumbers,  "E9B2B2B2");

@@ -83,8 +83,6 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
 
         if (tableNumber > 0 && tableValues.size() > 0)
         {
-            //Logger::writeToLog("Table Number:"+String(tableNumber));
-
             StringArray pFields = owner->getTableStatement (tableNumber);
             int genRoutine = pFields[4].getIntValue();
 
@@ -107,12 +105,14 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
                 else
                 {
                     //cUtils::showMessage(tableValues.size());
+					for( int v = 0 ; v < tableValues.size() ; v++)
+						CabbageUtilities::debug(tableValues[v]);
                     table.setWaveform (tableValues, tableNumber);
 
                     //only enable editing for gen05, 07, and 02
                     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom) != 0)
                     {
-                        CabbageUtilities::debug (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom));
+
                         table.setZoomFactor (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom));
                     }
 
@@ -185,19 +185,21 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             tableValues.clear();
             tableValues = owner->getTableFloats (tableNumber);
 
-
-            if (table.getTableFromFtNumber (tableNumber)->tableSize >= MAX_TABLE_SIZE)
-            {
-                tableBuffer.clear();
-                tableBuffer.addFrom (y, 0, tableValues.getRawDataPointer(), tableValues.size());
-                table.setWaveform (tableBuffer, tableNumber);
-            }
-            else
-            {
-                table.setWaveform (tableValues, tableNumber, false);
-                StringArray pFields = owner->getTableStatement (tableNumber);
-                table.enableEditMode (pFields, tableNumber);
-            }
+			if (table.getTableFromFtNumber(tableNumber) != nullptr)
+			{
+				if (table.getTableFromFtNumber(tableNumber)->tableSize >= MAX_TABLE_SIZE)
+				{
+					tableBuffer.clear();
+					tableBuffer.addFrom(y, 0, tableValues.getRawDataPointer(), tableValues.size());
+					table.setWaveform(tableBuffer, tableNumber);
+				}
+				else
+				{
+					table.setWaveform(tableValues, tableNumber, false);
+					StringArray pFields = owner->getTableStatement(tableNumber);
+					table.enableEditMode(pFields, tableNumber);
+				}
+			}
         }
 
         CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::update, 0); //reset value for further updates

@@ -28,7 +28,7 @@
 #include "../Plugins/CabbagePluginEditor.h"
 #include "../../Settings/CabbageSettings.h"
 
-
+class CabbageMainComponent;
 const char* const filenameSuffix = ".cabbagepatch";
 const char* const filenameWildcard = "*.cabbagepatch";
 
@@ -47,19 +47,30 @@ public:
         return new CabbagePluginProcessor (inputFile);
     }
 
-    AudioGraph (PropertySet* settingsToUse, File inputFile,
+    AudioGraph (CabbageMainComponent& owner, PropertySet* settingsToUse,
                 bool takeOwnershipOfSettings = true,
                 const String& preferredDefaultDeviceName = String(),
                 const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr);
     ~AudioGraph();
 
-    enum NodeType
-    {
-        CabbageNode = 9999
-    };
+	enum InternalNodes
+	{
+		MIDIInput = 0,
+		AudioInput,
+		AudioOutput
+	};
+
 
     int getNumPlugins() const noexcept;
-    void createPlugin (File inputFile);
+    void addPlugin (File inputFile, int32 nodeId);
+	AudioProcessorGraph::Node::Ptr createNode(const PluginDescription& desc, int32 uid);
+	AudioProcessorGraph::Node* createCabbageNode(const PluginDescription& desc, int32 nodeId);
+	AudioProcessorGraph::Node* createInternalNode(const PluginDescription& desc, int32 nodeId);
+	
+	const PluginDescription getPluginDescriptor(String type, String name, int32 nodeId, String inputfile = "");
+	void setDefaultConnections(int nodeId);
+	void createInternalFilters();
+	void showCodeEditorForNode(int32 nodeId);
     void updateBusLayout (AudioProcessor* selectedProcessor);
     int getNumberOfParameters();
     virtual void deletePlugin();
@@ -89,14 +100,17 @@ public:
     void removeConnection (uint32 sourceFilterUID, int sourceFilterChannel,
                            uint32 destFilterUID, int destFilterChannel);
 
+	void removeFilter (const uint32 id);
+	void disconnectFilter (const uint32 id);
     void clear();
+	
     //==============================================================================
     void startPlaying();
     void stopPlaying();
     void reloadAudioDeviceState (const String& preferredDefaultDeviceName,
                                  const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions);
     //==============================================================================
-    String getCsoundOutput();
+    String getCsoundOutput(int32 nodeId);
     //==============================================================================
     const AudioProcessorGraph::Node::Ptr getNode (const int index) const noexcept;
     const AudioProcessorGraph::Node::Ptr getNodeForId (const uint32 uid) const noexcept;
@@ -104,35 +118,37 @@ public:
     void audioProcessorParameterChanged (AudioProcessor*, int, float) override {}
     void audioProcessorChanged (AudioProcessor*) override { changed(); }
     //==============================================================================
-    void savePluginState();
-    void reloadPluginState();
-    AudioProcessor* getProcessor();
-
-    //==============================================================================
     void newDocument();
-    String getDocumentTitle() override {    return String::empty;               };
-    Result loadDocument (const File& file) override {   return Result::ok();    };
-    Result saveDocument (const File& file) override {   return Result::ok();    };
-    File getLastDocumentOpened() override   {           return File();          }
-    void setLastDocumentOpened (const File& file) override {};
+    String getDocumentTitle() override;
+    Result loadDocument (const File& file) override;
+    Result saveDocument (const File& file) override;
+    File getLastDocumentOpened() override;
+    void setLastDocumentOpened (const File& file) override;
+	FileBasedDocument::SaveResult saveGraph(bool saveAs = false);
     //==============================================================================
-
+    XmlElement* createXml() const;
+	XmlElement* createConnectionsXml() const;
+    void restoreFromXml (const XmlElement& xml);
+	void restoreConnectionsFromXml (const XmlElement& xml);
+	
     OptionalScopedPointer<PropertySet> settings;
-    AudioProcessor* processor;
+
     AudioProcessorGraph graph;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
     ScopedPointer<XmlElement> xmlSettings;
     bool isInput;
     int currentBus;
-    bool getIsCabbageFile()    {        return isCabbageFile;    }
+    //bool getIsCabbageFile()    {        return isCabbageFile;    }
 
     static const int midiChannelNumber;
-
+	CabbageMainComponent* getParent(){	return &owner;	}
 private:
-
-    bool isCabbageFile = false;
-
+	CabbageMainComponent& owner;
+	Array<int> internalNodeIds;
+	ScopedPointer<AudioPluginFormatManager> formatManager;
+    //bool isCabbageFile = false;
+	void createNodeFromXml (const XmlElement& xml);
     void setupAudioDevices (const String& preferredDefaultDeviceName,
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
     {

@@ -46,7 +46,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     if (mode == "file")
     {
-        FileChooser fc ("Open File", File (getCsdFile()).getChildFile (getFilename()).getFileNameWithoutExtension());
+        FileChooser fc("Save File", File(getCsdFile()).getParentDirectory(), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (filetype == "snaps")
         {
@@ -56,16 +56,17 @@ void CabbageFileButton::buttonClicked (Button* button)
                 {
                     CabbageLookAndFeel2 lookAndFeel;
                     const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-                    CabbageUtilities::debug ("should save a snapshot file");
 
                     if (result == 0)
                     {
                         owner->savePluginStateToFile (fc.getResult());
+						owner->refreshComboBoxContents();
                     }
                 }
                 else
                 {
                     owner->savePluginStateToFile (fc.getResult());
+					owner->refreshComboBoxContents();
                 }
             }
         }
@@ -75,13 +76,14 @@ void CabbageFileButton::buttonClicked (Button* button)
             {
                 owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
                 CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
-            }
+				owner->refreshComboBoxContents();
+			}
         }
     }
 
     else if (mode == "directory")
     {
-        FileChooser fc ("Open Directory", File (getCsdFile()).getChildFile (getFilename()));
+        FileChooser fc ("Open Directory", File (getCsdFile()).getChildFile (getFilename()), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
@@ -92,7 +94,9 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "snapshot")
     {
-        CabbageUtilities::debug ("Saving snapshot");
+		const String newFileName = owner->createNewGenericNameForPresetFile();
+		owner->savePluginStateToFile (File(newFileName));
+		owner->refreshComboBoxContents();		
     }
 }
 

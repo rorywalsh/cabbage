@@ -263,7 +263,6 @@ void CabbageEncoder::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         outlinecolour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour);
         shouldShowValueTextBox = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuetextbox);
         text = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::text);
-        CabbageUtilities::debug (text);
         textcolour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour);
         textLabel.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour)));
         valueLabel.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));

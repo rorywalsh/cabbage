@@ -19,7 +19,8 @@ CabbagePluginComponent::CabbagePluginComponent (AudioGraph& graph_, const uint32
       pinSize (16),
       font (13.0f, Font::bold),
       numIns (0),
-      numOuts (0)
+      numOuts (0),
+      lookAndFeel()
 {
     shadow.setShadowProperties (DropShadow (Colours::black.withAlpha (0.5f), 3, Point<int> (0, 1)));
     setComponentEffect (&shadow);
@@ -41,68 +42,42 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
     if (e.mods.isPopupMenu())
     {
         PopupMenu m;
-        m.addItem (1, "Delete this filter");
+        m.setLookAndFeel (&lookAndFeel);
+
+        m.addItem (3, "Show plugin interface");
+        m.addItem (4, "Show source code in editor");
+        m.addSeparator();
+        m.addItem (1, "Delete this plugin");
         m.addItem (2, "Disconnect all pins");
-        m.addSeparator();
-        m.addItem (3, "Show plugin UI");
-        m.addItem (4, "Show all programs");
-        m.addItem (5, "Show all parameters");
-        m.addSeparator();
-        m.addItem (6, "Configure Audio I/O");
-        m.addItem (7, "Test state save/load");
 
         const int r = m.show();
 
         if (r == 1)
         {
-            //graph.removeFilter (filterID);
+            graph.removeFilter (filterID);
             return;
         }
         else if (r == 2)
         {
-            //graph.disconnectFilter (filterID);
+            graph.disconnectFilter (filterID);
         }
-        else
+        else if ( r == 3)
         {
             if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
             {
                 AudioProcessor* const processor = f->getProcessor();
                 jassert (processor != nullptr);
 
-                if (r == 7)
-                {
-                    MemoryBlock state;
-                    processor->getStateInformation (state);
-                    processor->setStateInformation (state.getData(), (int) state.getSize());
-                }
-                else
-                {
-                    PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
-                                                          : PluginWindow::Generic;
+                PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
+                                                      : PluginWindow::Generic;
 
-                    switch (r)
-                    {
-                        case 4:
-                            type = PluginWindow::Programs;
-                            break;
+                if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
+                    w->toFront (true);
 
-                        case 5:
-                            type = PluginWindow::Parameters;
-                            break;
-
-                        case 6:
-                            type = PluginWindow::AudioIO;
-                            break;
-
-                        default:
-                            break;
-                    };
-
-                    if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
-                        w->toFront (true);
-                }
             }
         }
+		else if ( r == 4)
+			graph.showCodeEditorForNode(filterID);
     }
 }
 
@@ -120,6 +95,7 @@ void CabbagePluginComponent::mouseDrag (const MouseEvent& e)
                                (pos.getY() + getHeight() / 2) / (double) getParentHeight());
 
         getCabbageGraphComponent()->updateComponents();
+        getCabbageGraphComponent()->repaint();
     }
 }
 
@@ -133,7 +109,10 @@ void CabbagePluginComponent::mouseUp (const MouseEvent& e)
     {
         if (const AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
             if (PluginWindow* const w = PluginWindow::getWindowFor (f, PluginWindow::Normal, graph.getGraph()))
+			{
                 w->toFront (true);
+				graph.showCodeEditorForNode(filterID);
+			}
     }
 }
 
@@ -148,21 +127,25 @@ bool CabbagePluginComponent::hitTest (int x, int y)
 
 void CabbagePluginComponent::paint (Graphics& g)
 {
-    g.setColour (Colours::lightgrey);
-
     const int x = 4;
     const int y = pinSize;
     const int w = getWidth() - x * 2;
     const int h = getHeight() - pinSize * 2;
 
-    g.fillRect (x, y, w, h);
+    g.setColour (CabbageUtilities::getComponentSkin());
+    //g.setColour(Colour(220, 220, 220));
+    g.fillRoundedRectangle (x, y, w, h, 5);
 
-    g.setColour (Colours::black);
-    g.setFont (font);
-    g.drawFittedText (getName(), getLocalBounds().reduced (4, 2), Justification::centred, 2);
+    g.drawRoundedRectangle (x, y, w, h, 5, 1.f);
+    g.setColour (Colour (120, 120, 120));
+    g.setFont (CabbageUtilities::getComponentFont());
+    g.drawFittedText (getName(),
+                      x + 4, y - 2, w - 8, h - 4,
+                      Justification::centred, 2);
 
-    g.setColour (Colours::grey);
-    g.drawRect (x, y, w, h);
+    g.setOpacity (0.2);
+    g.setColour (Colours::green.withAlpha (.3f));
+    g.drawRoundedRectangle (x + 0.5, y + 0.5, w - 1, h - 1, 5, 1.0f);
 }
 
 void CabbagePluginComponent::resized()
@@ -245,7 +228,10 @@ void CabbagePluginComponent::update()
 
     setSize (w, h);
 
-    setName (f->getProcessor()->getName());
+    if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
+        setName (cabbagePlugin->getPluginName());
+    else
+        setName (f->getProcessor()->getName());
 
     {
         Point<double> p = graph.getNodePosition (filterID);
@@ -275,6 +261,8 @@ void CabbagePluginComponent::update()
 
         resized();
     }
+
+    repaint();
 }
 
 CabbageGraphComponent* CabbagePluginComponent::getCabbageGraphComponent() const noexcept
@@ -543,10 +531,9 @@ void PinComponent::paint (Graphics& g)
 
     p.addRectangle (w * 0.4f, isInput ? (0.5f * h) : 0.0f, w * 0.2f, h * 0.5f);
 
-    Colour colour = (index == AudioGraph::midiChannelNumber ? Colours::red : Colours::green);
-
-    g.setColour (colour.withRotatedHue (static_cast<float> (busIdx) / 5.0f));
+    g.setColour (index == AudioGraph::midiChannelNumber ? Colours::cornflowerblue : Colours::green);
     g.fillPath (p);
+
 }
 
 void PinComponent::mouseDown (const MouseEvent& e)

@@ -8,6 +8,9 @@ namespace CabbageBinaryData
     extern const char*  WarningIcon_png;
     const int           WarningIcon_pngSize = 8612;
 
+    extern const char*  Audiovolumehigh_svg;
+    const int           Audiovolumehigh_svgSize = 23087;
+
     extern const char*  editdelete_svg;
     const int           editdelete_svgSize = 54604;
 
@@ -74,6 +77,9 @@ namespace CabbageBinaryData
     extern const char*  documentopen_svg;
     const int           documentopen_svgSize = 30745;
 
+    extern const char*  Audiovolumemuted_svg;
+    const int           Audiovolumemuted_svgSize = 39916;
+
     extern const char*  editundo_svg;
     const int           editundo_svgSize = 9241;
 
@@ -85,6 +91,9 @@ namespace CabbageBinaryData
 
     extern const char*  editcopy_svg;
     const int           editcopy_svgSize = 15598;
+
+    extern const char*  documentsavegraph_svg;
+    const int           documentsavegraph_svgSize = 28871;
 
     extern const char*  DejaVuSansMonoOblique_ttf;
     const int           DejaVuSansMonoOblique_ttfSize = 245948;
@@ -100,6 +109,9 @@ namespace CabbageBinaryData
 
     extern const char*  preferencessystem_svg;
     const int           preferencessystem_svgSize = 19139;
+
+    extern const char*  documentsaveasgraph_svg;
+    const int           documentsaveasgraph_svgSize = 34611;
 
     extern const char*  documentsave_svg;
     const int           documentsave_svgSize = 29861;

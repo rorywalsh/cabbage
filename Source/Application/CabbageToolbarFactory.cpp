@@ -18,9 +18,9 @@
 */
 
 #include "CabbageToolbarFactory.h"
-#include "CabbageContentComponent.h"
+#include "CabbageMainComponent.h"
 
-CabbageToolbarFactory::CabbageToolbarFactory (CabbageContentComponent* owner)
+CabbageToolbarFactory::CabbageToolbarFactory (CabbageMainComponent* owner)
     : owner (owner), togglePlayButton (nullptr), combo (nullptr)
 {
 
@@ -36,6 +36,8 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (doc_open);
     ids.add (doc_save);
     ids.add (doc_saveAs);
+    ids.add (doc_save_graph);
+    ids.add (doc_saveAs_graph);
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
@@ -53,6 +55,8 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (doc_open);
     ids.add (doc_save);
     ids.add (doc_saveAs);
+    ids.add (doc_save_graph);
+    ids.add (doc_saveAs_graph);
     ids.add (edit_copy);
     ids.add (edit_cut);
     ids.add (edit_paste);
@@ -100,8 +104,8 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
             return (combo = new ToolbarComboBox (itemId));
 
         case toggle_play:
-            return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromMemory (CabbageBinaryData::mediaplaybackstart_svg, CabbageBinaryData::mediaplaybackstart_svgSize),
-                                        getSVGTextFromMemory (CabbageBinaryData::mediaplaybackstop_svg, CabbageBinaryData::mediaplaybackstop_svgSize));
+            return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromMemory (CabbageBinaryData::Audiovolumemuted_svg, CabbageBinaryData::Audiovolumemuted_svgSize),
+                                        getSVGTextFromMemory (CabbageBinaryData::Audiovolumehigh_svg, CabbageBinaryData::Audiovolumehigh_svgSize));
 
         default:
             break;
@@ -138,7 +142,8 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
         togglePlayButton = new ToolbarButton (itemId, text, drawableNormal, drawableOn);
         togglePlayButton->setClickingTogglesState (true);
         togglePlayButton->addListener (owner);
-        togglePlayButton->setTooltip ("Toggle Playback");
+        togglePlayButton->setToggleState (true, false);
+        togglePlayButton->setTooltip ("Start/Stop Audio Graph");
         return togglePlayButton;
     }
 

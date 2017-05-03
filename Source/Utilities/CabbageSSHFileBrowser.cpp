@@ -18,9 +18,9 @@
 */
 
 #include "CabbageSSHFileBrowser.h"
-#include "../Application/CabbageContentComponent.h"
+#include "../Application/CabbageMainComponent.h"
 
-CabbageSSHFileBrowser::CabbageSSHFileBrowser (String ip, String homeDir, CabbageContentComponent* owner, String mode, String currentFileFilePath)
+CabbageSSHFileBrowser::CabbageSSHFileBrowser (String ip, String homeDir, CabbageMainComponent* owner, String mode, String currentFileFilePath)
     : ipAddress (ip), homeDirectory (homeDir), owner (owner), currentLocalFilePath (currentFileFilePath)
 {
     setOpaque (true);
@@ -106,7 +106,7 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked (int row, const MouseEvent&
     else
     {
         String command;
-        FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory));
+        FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
         CabbageIDELookAndFeel lookAndFeel;
 
         if (fc.browseForFileToSave (false))

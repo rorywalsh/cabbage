@@ -39,6 +39,8 @@ public:
     void createParameters();
     void updateWidgets (String csdText);
     void searchForMacros (StringArray& csdText);
+	void setPluginName(String name){	pluginName = name;	}
+	String getPluginName(){	return pluginName;	}
     const String getExpandedMacroText (const String line, ValueTree wData);
 
     CabbageAudioParameter* getParameterForXYPad (String name);
@@ -61,7 +63,6 @@ public:
     //===== XYPad methods =========
     void addXYAutomator (CabbageXYPad* xyPad, ValueTree wData);
     void enableXYAutomator (String name, bool enable, Line<float> dragLine);
-
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
@@ -71,7 +72,7 @@ public:
 
 private:
 
-
+	String pluginName;
     File csdFile;
     NamedValueSet macroText;
     bool xyAutosCreated = false;

@@ -112,28 +112,34 @@ void CabbageSettingsWindow::addMiscProperties()
 
     showLastOpenedFileValue.setValue (settings.getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup"));
     showLastOpenedFileValue.addListener (this);
-    alwaysOnTopValue.setValue (settings.getUserSettings()->getIntValue ("SetAlwaysOnTop"));
-    alwaysOnTopValue.addListener (this);
+    alwaysOnTopPluginValue.setValue (settings.getUserSettings()->getIntValue ("SetAlwaysOnTopPlugin"));
+    alwaysOnTopPluginValue.addListener (this);
+    alwaysOnTopGraphValue.setValue (settings.getUserSettings()->getIntValue ("SetAlwaysOnTopGraph"));
+    alwaysOnTopGraphValue.addListener (this);
     compileOnSaveValue.setValue (settings.getUserSettings()->getIntValue ("CompileOnSave"));
     compileOnSaveValue.addListener (this);
 
     autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("DisableAutoComplete"));
     autoCompleteValue.addListener (this);
-    
+
     editorProps.add (new BooleanPropertyComponent (showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
-    editorProps.add (new BooleanPropertyComponent (alwaysOnTopValue, "Plugin Window", "Always show plugin on top"));
+    editorProps.add (new BooleanPropertyComponent (alwaysOnTopPluginValue, "Plugin Window", "Always show plugin on top"));
+	editorProps.add (new BooleanPropertyComponent (alwaysOnTopGraphValue, "Graph Window", "Always show graph on top"));
     editorProps.add (new BooleanPropertyComponent (compileOnSaveValue, "Compiling", "Compile on save"));
     editorProps.add (new BooleanPropertyComponent (autoCompleteValue, "Auto-complete", "Show auto complete popup"));
-    
+
     const int scrollBy = settings.getUserSettings()->getIntValue ("numberOfLinesToScroll");
     editorProps.add (new TextPropertyComponent (Value (scrollBy), "Editor lines to scroll with MouseWheel", 10, false));
 
     const String examplesDir = settings.getUserSettings()->getValue ("CabbageExamplesDir");
     const String manualDir = settings.getUserSettings()->getValue ("CsoundManualDir");
     const String plantDir = settings.getUserSettings()->getValue ("CabbagePlantDir");
+	const String userFilesDir = settings.getUserSettings()->getValue("UserFilesDir");
+	
     dirProps.add (new CabbageFilePropertyComponent ("Csound manual dir.", true, false,  "*", manualDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage plants dir.", true, false, "*", plantDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage examples dir.", true, false, "*", examplesDir));
+	dirProps.add (new CabbageFilePropertyComponent ("User files dir.", true, false, "*", userFilesDir));
 
     const String sshAddress = settings.getUserSettings()->getValue ("SSHAddress");
     sshProps.add (new TextPropertyComponent (Value (sshAddress), "SSH Address", 200, false));
@@ -197,8 +203,10 @@ void CabbageSettingsWindow::valueChanged (Value& value)
 {
     if (value.refersToSameSourceAs (showLastOpenedFileValue))
         settings.getUserSettings()->setValue ("OpenMostRecentFileOnStartup", value.getValue().toString());
-    else if (value.refersToSameSourceAs (alwaysOnTopValue))
-        settings.getUserSettings()->setValue ("SetAlwaysOnTop", value.getValue().toString());
+    else if (value.refersToSameSourceAs (alwaysOnTopPluginValue))
+        settings.getUserSettings()->setValue ("SetAlwaysOnTopPlugin", value.getValue().toString());
+    else if (value.refersToSameSourceAs (alwaysOnTopGraphValue))
+        settings.getUserSettings()->setValue ("SetAlwaysOnTopGraph", value.getValue().toString());
     else if (value.refersToSameSourceAs (compileOnSaveValue))
         settings.getUserSettings()->setValue ("CompileOnSave", value.getValue().toString());
     else if (value.refersToSameSourceAs (breakLinesValue))
@@ -209,7 +217,6 @@ void CabbageSettingsWindow::valueChanged (Value& value)
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)
 {
-    CabbageUtilities::debug (fileComponent->getName());
 
     if (fileComponent->getName() == "Csound manual dir.")
         settings.getUserSettings()->setValue ("CsoundManualDir", fileComponent->getCurrentFileText());
@@ -217,7 +224,8 @@ void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileCom
         settings.getUserSettings()->setValue ("CabbagePlantDir", fileComponent->getCurrentFileText());
     else if (fileComponent->getName() == "Cabbage examples dir.")
         settings.getUserSettings()->setValue ("CabbageExamplesDir", fileComponent->getCurrentFileText());
-
+    else if (fileComponent->getName() == "User files dir.")
+        settings.getUserSettings()->setValue ("UserFilesDir", fileComponent->getCurrentFileText());
 }
 
 void CabbageSettingsWindow::selectPanel (String button)

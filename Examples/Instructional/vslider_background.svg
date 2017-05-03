@@ -13,7 +13,7 @@
    width="30"
    height="300"
    id="svg2"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="vslider_background.svg">
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -24,15 +24,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1366"
-     inkscape:window-height="744"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
      id="namedview2990"
      showgrid="false"
      inkscape:zoom="1.6857143"
-     inkscape:cx="41.371844"
+     inkscape:cx="-47.314596"
      inkscape:cy="149.86548"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <defs
@@ -50,12 +50,21 @@
     </rdf:RDF>
   </metadata>
   <rect
-     style="fill:#4d4d4d;fill-opacity:1;stroke:#808080;stroke-width:0.43198219;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+     style="fill:#4d4d4d;fill-opacity:1;stroke:#808080;stroke-width:0.42086655;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1"
      id="rect2981"
-     width="7.600018"
-     height="295.33072"
-     x="11.099991"
-     y="4.7872901"
-     ry="9.6000004"
-     rx="2.0211983" />
+     width="7.6111336"
+     height="279.91812"
+     x="11.094433"
+     y="-3.5233521"
+     ry="9.098999"
+     rx="2.0241547" />
+  <rect
+     style="fill:none;fill-opacity:1;stroke:#666666;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     id="rect4133"
+     width="30.847458"
+     height="305.50845"
+     x="-0.59322029"
+     y="-4.9152517"
+     rx="2.02531"
+     ry="9.0468435" />
 </svg>

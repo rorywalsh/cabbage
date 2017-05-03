@@ -24,7 +24,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
 {
     int outlineThickness, corners, svgDebug;
     String text, colour, fontColour, justification, outlineColour;
@@ -44,6 +44,8 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
+	
+	void changeListenerCallback (ChangeBroadcaster* source);
 
     ValueTree widgetData;
 

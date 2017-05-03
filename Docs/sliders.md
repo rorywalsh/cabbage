@@ -5,12 +5,12 @@ Slider can be used to create an on-screen slider. Data can be sent to Csound on 
 
 ```csharp
 hslider bounds(x, y, width, height), channel("chan"), \
-text("name"), textbox(val), range(min, max, value, skew, incr), \
+text("name"), valuetextbox(val), range(min, max, value, skew, incr), \
 min(val), max(val), textcolour("colour"), fontcolour("colour"), \
-trackercolour("colour"), outlinecolour("colour"), trackerthickness(val)
-identchannel("channel"), alpha(val), visible(val), caption("caption"), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val), svgfile("type", "file"), velocity(val)
+trackercolour("colour"), outlinecolour("colour"), trackerthickness(val) \
+textboxcolour("colour"), textboxoutlinecolour("colour"), identchannel("channel"), \
+alpha(val), visible(val), caption("caption"), rotate(radians, pivotx, pivoty), \
+widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "file"), velocity(val)
 ```
 <!--(End of syntax)/-->
 
@@ -27,13 +27,17 @@ active(val), svgfile("type", "file"), velocity(val)
 
 **text("name")** The string passed in for "name" will appear on a label beside the slider. This is useful for naming sliders.   
 
-**textbox(on/off)** textbox takes a 0 or a 1. 1 will cause a text box to appear with the sliders values. Leaving this out will result in the numbers appearing automatically when you hover over the sliders with your mouse.
+**valuetextbox(val)** textbox takes a 0 or a 1. 1 will cause a text box to appear with the sliders values. Leaving this out will result in the numbers appearing automatically when you hover over the sliders with your mouse.
 
 **colour("colour")** This sets the slider. Any CSS or HTML colour string can be passed to this identifier. The colour identifier can also be passed an RBG, or RGBA value. All channel values must be between 0 and 255. For instance colour(0, 0, 255) will create a blue, while colour(0, 255, 0, 255) will create a green with an alpha channel set to full. 
 
 **textcolour("colour")** This set the colour of the text passed to text(). If you wish to change the colour of the numbers being displayed use fontcolour(). See below. See above for details on valid colours. 
 
-**fontcolour("colour")** Sets the colour of the text used to display the slider's value when textbox is enable. See above for details on valid colours. .
+**fontcolour("colour")** Sets the colour of the text used to display the slider's value when textbox is enable. See above for details on valid colours. 
+
+**textboxcolour("colour")** Sets the colour of the background of the value text box used to display the slider's value when textbox is enable. See above for details on valid colours.
+
+**textboxoutlinecolour("colour")** Sets the colour of the outline of the value text box used to display the slider's value when textbox is enable. See above for details on valid colours.
 
 **trackercolour("colour")** Sets the colour of the slider's tracker. This is the line that follows the slider when you move it. See above for details on valid colours. To disable the tracker you can set this colour to something with alpha 0, or set the tracker's thickness to 0. 
 

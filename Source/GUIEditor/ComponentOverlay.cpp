@@ -131,7 +131,6 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
         if (r == 100)
         {
             layoutEditor->getPluginEditor()->sendActionMessage ("delete:" + target->getProperties().getWithDefault ("linenumber", -1).toString());
-            //CabbageUtilities::debug(target->getProperties().getWithDefault("linenumber", -1).toString());
         }
     }
     else

@@ -83,9 +83,10 @@ public:
     static void killGraphCallback (CSOUND* csound, WINDAT* windat);
     static int exitGraphCallback (CSOUND* csound);
 
+	//logger
+	void createFileLogger(File csdFile);
 
-
-    void handleAsyncUpdate();
+    void handleAsyncUpdate() override;
     //csound breakpint function
     static void breakpointCallback (CSOUND* csound, debug_bkpt_info_t* bkpt_info, void* udata);
     CabbageCsoundBreakpointData breakPointData;
@@ -98,7 +99,6 @@ public:
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     int checkTable (int tableNum);
-    std::vector<MYFLT> temp;
 
     //=============================================================================
     //Implement these to init, send and receive channel data to Csound. Typically used when
@@ -138,6 +138,11 @@ public:
         guiRefreshRate = rate;
     }
 
+	int getNumberOfCsoundChannels()
+	{
+		return numCsoundChannels;
+	}
+	
     MidiKeyboardState keyboardState;
 
     //==================================================================================

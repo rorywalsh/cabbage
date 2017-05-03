@@ -10,12 +10,16 @@
 */
 
 #include "CabbageGraphComponent.h"
+#include "CabbageMainComponent.h"
+#include "../Audio/Plugins/CabbagePluginProcessor.h"
 
-CabbageGraphComponent::CabbageGraphComponent (AudioGraph& graph_)
-    : graph (graph_)
+CabbageGraphComponent::CabbageGraphComponent (AudioGraph& graph_, CabbageMainComponent& owner_)
+    : graph (graph_),
+      owner (owner_),
+      lookAndFeel()
 {
     graph.addChangeListener (this);
-    setOpaque (true);
+    setOpaque (false);
 }
 
 CabbageGraphComponent::~CabbageGraphComponent()
@@ -27,23 +31,52 @@ CabbageGraphComponent::~CabbageGraphComponent()
 
 void CabbageGraphComponent::paint (Graphics& g)
 {
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (uint8 (20), uint8 (20), uint8 (20)));
 }
 
 void CabbageGraphComponent::mouseDown (const MouseEvent& e)
 {
     if (e.mods.isPopupMenu())
     {
-        PopupMenu m;
+		Uuid uniqueID;
+        PopupMenu m, subMenu1, subMenu2;
+        m.setLookAndFeel (&lookAndFeel);
+        const String examplesDir = owner.getCabbageSettings()->getUserSettings()->getValue ("CabbageExamplesDir", "");
+        CabbageUtilities::addExampleFilesToPopupMenu (subMenu1, exampleFiles, examplesDir, "*.csd", 3000);
+        
+		const String userFilesDir = owner.getCabbageSettings()->getUserSettings()->getValue ("UserFilesDir", "");
+		CabbageUtilities::addFilesToPopupMenu (subMenu2, userFiles, userFilesDir, 10000);
 
-        //        if (MainHostWindow* const mainWindow = findParentComponentOfClass<MainHostWindow>())
-        //        {
-        //            mainWindow->addPluginsToMenu (m);
-        //
-        //            const int r = m.show();
-        //
-        //            createNewPlugin (mainWindow->getChosenType (r), e.x, e.y);
-        //        }
+		m.addItem(1, "Open file..");
+		m.addSubMenu("Examples", subMenu1);
+		m.addSubMenu("User files", subMenu2);
+		const int r = m.show();	
+
+        if ( r  == 1 )
+        {
+			File newlyOpenedFile = owner.openFile ();
+			
+			if(newlyOpenedFile.existsAsFile())
+			{
+				owner.getNodeIds().set (newlyOpenedFile.getFullPathName(), int32 (*uniqueID.getRawData()));
+				owner.runCsoundForNode (newlyOpenedFile.getFullPathName());
+			}
+		}
+		
+		else if( r > 1 && r < 10000)
+		{            
+            owner.openFile (exampleFiles[r - 3000].getFullPathName());
+			owner.getNodeIds().set (exampleFiles[r - 3000].getFullPathName(), int32 (*uniqueID.getRawData()));
+            owner.runCsoundForNode (exampleFiles[r - 3000].getFullPathName());
+        }
+		
+		else if( r >= 10000)
+		{
+            owner.getNodeIds().set (userFiles[r - 10000].getFullPathName(), int32 (*uniqueID.getRawData()));
+            owner.openFile (userFiles[r - 10000].getFullPathName());
+            owner.runCsoundForNode (userFiles[r - 10000].getFullPathName());			
+		}
+
     }
 }
 
