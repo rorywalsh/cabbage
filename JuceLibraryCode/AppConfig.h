@@ -183,7 +183,7 @@
  #if defined(JucePlugin_Name) && defined(JucePlugin_Build_Standalone)
   #define  JUCE_STANDALONE_APPLICATION JucePlugin_Build_Standalone
  #else
-  #define  JUCE_STANDALONE_APPLICATION 0
+  #define  JUCE_STANDALONE_APPLICATION 1
  #endif
 #endif
 
@@ -379,148 +379,9 @@
 #endif
 
 #ifndef    JUCE_QUICKTIME
- #define   JUCE_QUICKTIME 0
+ //#define JUCE_QUICKTIME
 #endif
 
 #ifndef    JUCE_USE_CAMERA
  //#define JUCE_USE_CAMERA
-#endif
-
-//==============================================================================
-// Audio plugin settings..
-
-#ifndef  JucePlugin_Build_VST
- #define JucePlugin_Build_VST              1
-#endif
-#ifndef  JucePlugin_Build_VST3
- #define JucePlugin_Build_VST3             0
-#endif
-#ifndef  JucePlugin_Build_AU
- #define JucePlugin_Build_AU               0
-#endif
-#ifndef  JucePlugin_Build_AUv3
- #define JucePlugin_Build_AUv3             0
-#endif
-#ifndef  JucePlugin_Build_RTAS
- #define JucePlugin_Build_RTAS             0
-#endif
-#ifndef  JucePlugin_Build_AAX
- #define JucePlugin_Build_AAX              0
-#endif
-#ifndef  JucePlugin_Build_STANDALONE
- #define JucePlugin_Build_STANDALONE       0
-#endif
-#ifndef  JucePlugin_Enable_IAA
- #define JucePlugin_Enable_IAA             0
-#endif
-#ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "CabbageEffectNam"
-#endif
-#ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "CabbagePlugin"
-#endif
-#ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "CabbageAudio"
-#endif
-#ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    ""
-#endif
-#ifndef  JucePlugin_ManufacturerEmail
- #define JucePlugin_ManufacturerEmail      ""
-#endif
-#ifndef  JucePlugin_ManufacturerCode
- #define JucePlugin_ManufacturerCode       0x43616262 // 'Cabb'
-#endif
-#ifndef  JucePlugin_PluginCode
- #define JucePlugin_PluginCode             0x524f5259 // 'RORY'
-#endif
-#ifndef  JucePlugin_IsSynth
- #define JucePlugin_IsSynth                0
-#endif
-#ifndef  JucePlugin_WantsMidiInput
- #define JucePlugin_WantsMidiInput         1
-#endif
-#ifndef  JucePlugin_ProducesMidiOutput
- #define JucePlugin_ProducesMidiOutput     1
-#endif
-#ifndef  JucePlugin_IsMidiEffect
- #define JucePlugin_IsMidiEffect           1
-#endif
-#ifndef  JucePlugin_EditorRequiresKeyboardFocus
- #define JucePlugin_EditorRequiresKeyboardFocus  0
-#endif
-#ifndef  JucePlugin_Version
- #define JucePlugin_Version                1.0.0
-#endif
-#ifndef  JucePlugin_VersionCode
- #define JucePlugin_VersionCode            0x10000
-#endif
-#ifndef  JucePlugin_VersionString
- #define JucePlugin_VersionString          "1.0.0"
-#endif
-#ifndef  JucePlugin_VSTUniqueID
- #define JucePlugin_VSTUniqueID            JucePlugin_PluginCode
-#endif
-#ifndef  JucePlugin_VSTCategory
- #define JucePlugin_VSTCategory            kPlugCategEffect
-#endif
-#ifndef  JucePlugin_AUMainType
- #define JucePlugin_AUMainType             'aumi'
-#endif
-#ifndef  JucePlugin_AUSubType
- #define JucePlugin_AUSubType              JucePlugin_PluginCode
-#endif
-#ifndef  JucePlugin_AUExportPrefix
- #define JucePlugin_AUExportPrefix         CabbagePluginAU
-#endif
-#ifndef  JucePlugin_AUExportPrefixQuoted
- #define JucePlugin_AUExportPrefixQuoted   "CabbagePluginAU"
-#endif
-#ifndef  JucePlugin_AUManufacturerCode
- #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
-#endif
-#ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.cabbageaudio.CabbagePlugin
-#endif
-#ifndef  JucePlugin_RTASCategory
- #define JucePlugin_RTASCategory           ePlugInCategory_None
-#endif
-#ifndef  JucePlugin_RTASManufacturerCode
- #define JucePlugin_RTASManufacturerCode   JucePlugin_ManufacturerCode
-#endif
-#ifndef  JucePlugin_RTASProductId
- #define JucePlugin_RTASProductId          JucePlugin_PluginCode
-#endif
-#ifndef  JucePlugin_RTASDisableBypass
- #define JucePlugin_RTASDisableBypass      0
-#endif
-#ifndef  JucePlugin_RTASDisableMultiMono
- #define JucePlugin_RTASDisableMultiMono   0
-#endif
-#ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.yourcompany.CabbagePlugin
-#endif
-#ifndef  JucePlugin_AAXManufacturerCode
- #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
-#endif
-#ifndef  JucePlugin_AAXProductId
- #define JucePlugin_AAXProductId           JucePlugin_PluginCode
-#endif
-#ifndef  JucePlugin_AAXCategory
- #define JucePlugin_AAXCategory            AAX_ePlugInCategory_Dynamics
-#endif
-#ifndef  JucePlugin_AAXDisableBypass
- #define JucePlugin_AAXDisableBypass       0
-#endif
-#ifndef  JucePlugin_AAXDisableMultiMono
- #define JucePlugin_AAXDisableMultiMono    0
-#endif
-#ifndef  JucePlugin_IAAType
- #define JucePlugin_IAAType                0x6175726d // 'aurm'
-#endif
-#ifndef  JucePlugin_IAASubType
- #define JucePlugin_IAASubType             JucePlugin_PluginCode
-#endif
-#ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "CabbageAudio: CabbageEffectNam"
 #endif

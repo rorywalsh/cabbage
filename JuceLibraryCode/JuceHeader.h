@@ -40,7 +40,7 @@
 #if ! JUCE_DONT_DECLARE_PROJECTINFO
 namespace ProjectInfo
 {
-    const char* const  projectName    = "CabbagePlugin";
+    const char* const  projectName    = "Cabbage";
     const char* const  versionString  = "1.0.0";
     const int          versionNumber  = 0x10000;
 }
