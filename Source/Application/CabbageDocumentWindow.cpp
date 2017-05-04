@@ -148,10 +148,10 @@ void CabbageDocumentWindow::closeButtonPressed()
 
     if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
     {
-        //const int result = showYesNoMessage2 ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
+        const int result = showYesNoMessage2 ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
 
-		const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::NoIcon,
-			"Warning", "Save changes made to Cabbage\npatch?", nullptr, nullptr);	
+		//const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::NoIcon,
+		//	"Warning", "Save changes made to Cabbage\npatch?", nullptr, nullptr);	
 
         if (result == 0)
         {

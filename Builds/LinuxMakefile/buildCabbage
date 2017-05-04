@@ -8,32 +8,37 @@ echo "should be located in /user/local/include/csound while the Csound library i
 echo "located in /user/local/lib It is also assumed that the VST SDK is located in ~/SDKs/"
 echo ""
 
+rm -rf CabbageBuild
+mkdir CabbageBuild
+
 if [ $1 == "debug" ]
 then
 make -f MakeCabbageIDE clean CONFIG=Debug
 make -f MakeCabbageIDE -j6 CONFIG=Debug
+cp ./build/Cabbage CabbageBuild/Cabbage
 make -f MakePluginEffect clean CONFIG=Debug
 make -f MakePluginEffect -j6 CONFIG=Debug
+cp ./build/CabbagePluginEffect.so CabbageBuild/CabbagePluginEffect.so
 make -f MakePluginSynth clean CONFIG=Debug
 make -f MakePluginSynth -j6 CONFIG=Debug
+cp ./build/CabbagePluginSynth.so CabbageBuild/CabbagePluginSynth.so
 else
 make -f MakeCabbageIDE clean CONFIG=Release
 make -f MakeCabbageIDE -j6 CONFIG=Release
+cp ./build/Cabbage CabbageBuild/Cabbage
 make -f MakePluginEffect clean CONFIG=Release
 make -f MakePluginEffect -j6 CONFIG=Release
+cp ./build/CabbagePluginEffect.so CabbageBuild/CabbagePluginEffect.so
 make -f MakePluginSynth clean CONFIG=Release
 make -f MakePluginSynth -j6 CONFIG=Release
+cp ./build/CabbagePluginSynth.so CabbageBuild/CabbagePluginSynth.so
 fi
 
-
-rm -rf CabbageBuild
-mkdir CabbageBuild
-cp ./build/Cabbage CabbageBuild/Cabbage
 cp ./../opcodes.txt CabbageBuild/opcodes.txt
 cp ./../../Images/cabbage.png CabbageBuild/cabbage.png
-cp ./build/CabbagePluginSynth.so CabbageBuild/CabbagePluginSynth.so
-cp ./build/CabbagePluginEffect.so CabbageBuild/CabbagePluginEffect.so
+cp -rf ../../Examples/ CabbageBuild/Examples
+
 #cp -rf ../../Docs/_book CabbageBuild/Docs
-#cp -rf ../../Examples/ CabbageBuild/Examples
+
 sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > CabbageBuild/cabbage.desktop
 cp CabbageBuild/cabbage.desktop ~/.local/share/applications/

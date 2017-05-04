@@ -5,7 +5,7 @@ Slider can be used to create an on-screen slider. Data can be sent to Csound on 
 
 ```csharp
 hslider bounds(x, y, width, height), channel("chan"), \
-text("name"), textbox(val), range(min, max, value, skew, incr), \
+text("name"), valuetextbox(val), range(min, max, value, skew, incr), \
 min(val), max(val), textcolour("colour"), fontcolour("colour"), \
 trackercolour("colour"), outlinecolour("colour"), trackerthickness(val) \
 textboxcolour("colour"), textboxoutlinecolour("colour"), identchannel("channel"), \
@@ -27,7 +27,7 @@ widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "fil
 
 **text("name")** The string passed in for "name" will appear on a label beside the slider. This is useful for naming sliders.   
 
-**textbox(on/off)** textbox takes a 0 or a 1. 1 will cause a text box to appear with the sliders values. Leaving this out will result in the numbers appearing automatically when you hover over the sliders with your mouse.
+**valuetextbox(val)** textbox takes a 0 or a 1. 1 will cause a text box to appear with the sliders values. Leaving this out will result in the numbers appearing automatically when you hover over the sliders with your mouse.
 
 **colour("colour")** This sets the slider. Any CSS or HTML colour string can be passed to this identifier. The colour identifier can also be passed an RBG, or RGBA value. All channel values must be between 0 and 255. For instance colour(0, 0, 255) will create a blue, while colour(0, 255, 0, 255) will create a green with an alpha channel set to full. 
 
