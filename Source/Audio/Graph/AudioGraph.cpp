@@ -693,9 +693,11 @@ FileBasedDocument::SaveResult AudioGraph::saveGraph (bool saveAs)
             if (fc.getResult().existsAsFile())
             {
                 CabbageIDELookAndFeel lookAndFeel;
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+               // const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+				const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+					"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
 
-                if (result == 0)
+                if (result == 1)
                 {
                     saveDocument (fc.getResult().withFileExtension (".cabbage"));
                     return FileBasedDocument::SaveResult::savedOk;

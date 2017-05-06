@@ -642,24 +642,24 @@ public:
 #endif
     }
 
-    static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
-    {
-        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
-        alert.setLookAndFeel (feel);
-        alert.addButton ("Yes", 0);
-        alert.addButton ("No", 1);
-
-        if (cancel == 1)
-            alert.addButton ("Cancel", 2);
-
-#if !defined(AndroidBuild)
-        int result = alert.runModalLoop();
-#else
-        int result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
-#endif
-        return result;
-    }
-
+//    static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
+//    {
+//        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
+//        alert.setLookAndFeel (feel);
+//        alert.addButton ("Yes", 0);
+//        alert.addButton ("No", 1);
+//
+//        if (cancel == 1)
+//            alert.addButton ("Cancel", 2);
+//
+//#if !defined(AndroidBuild)
+//        int result = alert.runModalLoop();
+//#else
+//        int result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
+//#endif
+//        return result;
+//    }
+//
     //==========================================================================================
     static String cabbageString (String input, Font font, float availableWidth)
     {
