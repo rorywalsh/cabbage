@@ -818,6 +818,8 @@ void CabbageMainComponent::closeDocument()
                 saveDocument (false, false);
                 removeEditor();
             }
+			else if(result == 2)
+				removeEditor();
         }
         else
         {

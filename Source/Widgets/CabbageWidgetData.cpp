@@ -1071,8 +1071,8 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
 
         }
     }
-
-    else
+	
+	else
     {
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
         {
@@ -1475,15 +1475,20 @@ String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentL
     for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
         oldIdentifiers.set (i, oldIdentifiers[i].trim().trimCharactersAtStart (" ,") + "),");
 
+	//get rid of identifiers are using default values..
+	for (int i = oldIdentifiers.size(); i >= 0; i--)
+		if (newIdentifiers.indexOf(oldIdentifiers[i].substring(0, oldIdentifiers[i].indexOf("("))) == -1)
+			oldIdentifiers.remove(i);
+
     for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
     {
-        const String ident = oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("));
+        const String oldIdent = oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("));
 
         for ( int y = newIdentifiers.size() ; y >= 0 ; y--)
         {
             const String newIdent = newIdentifiers[y].substring (0, newIdentifiers[y].indexOf ("("));
 
-            if (newIdent == ident)
+            if (newIdent == oldIdent)
             {
                 oldIdentifiers.set (i, newIdentifiers[y]);
                 newIdentifiers.remove (y);

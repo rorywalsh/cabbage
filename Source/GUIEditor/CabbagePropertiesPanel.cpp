@@ -281,11 +281,17 @@ void CabbagePropertiesPanel::textPropertyComponentChanged (TextPropertyComponent
 
 void CabbagePropertiesPanel::valueChanged (Value& value)
 {
-    if (value.refersToSameSourceAs (isActiveValue))
-        setPropertyByName ("Active", value.getValue());
+	if (value.refersToSameSourceAs(isActiveValue))
+	{
+		bool val = value.getValue();
+		setPropertyByName("Active", val == true ? 1 : 0);
+	}
 
-    else if (value.refersToSameSourceAs (isVisibleValue))
-        setPropertyByName ("Visible", value.getValue());
+	else if (value.refersToSameSourceAs(isVisibleValue))
+	{
+		bool val = value.getValue();
+		setPropertyByName("Visible", val == true ? 1 : 0);
+	}
 
     else if (value.refersToSameSourceAs (alphaValue))
         setPropertyByName ("Alpha", value.getValue());
