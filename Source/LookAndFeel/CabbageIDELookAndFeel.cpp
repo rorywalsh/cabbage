@@ -26,6 +26,7 @@ CabbageIDELookAndFeel::CabbageIDELookAndFeel()
     setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
     setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
     setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
+    setColour (AlertWindow::textColourId, Colours::whitesmoke);
 }
 
 //======== Update value tree ======================================================================
@@ -169,7 +170,7 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
                                           const Rectangle<int>& textArea,
                                           TextLayout& textLayout)
 {
-    g.fillAll (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::alertWindowBackground, Colour (250, 250, 250)));
+    g.fillAll (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::alertWindowBackground, Colour (100, 100, 100)));
 
     int iconSpaceUsed = 160;
 
@@ -203,14 +204,14 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
         if (svg != nullptr)
         {
             drawable = Drawable::createFromSVG (*svg);
-            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
-            drawable->setTransformToFit (rect.reduced (30), RectanglePlacement::stretchToFit);
+            Rectangle<float> rect (20, 20, 80, 80);//alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).withHeight(130).toFloat());
+            drawable->setTransformToFit (rect, RectanglePlacement::stretchToFit);
             drawable->draw (g, 1.f, AffineTransform::identity);
         }
     }
 
-    g.setColour (alert.findColour (AlertWindow::textColourId));
 
+    g.setColour (alert.findColour (AlertWindow::textColourId));
     textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed - 50,
                                         textArea.getY(),
                                         textArea.getWidth() - iconSpaceUsed - 40,

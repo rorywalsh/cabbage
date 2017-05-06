@@ -25,9 +25,7 @@ nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 instr	1
 kTrig chnget "but1"
 if changed:k(kTrig)==1 then
-	printks "Hello", 0
-	Smess sprintfk "show(%d), pos(1, 19)", kTrig
-	chnset Smess, "pops"
+	chnset "visible(1)", "pops"
 endif
 endin
 		

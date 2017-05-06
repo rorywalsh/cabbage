@@ -23,7 +23,7 @@
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../LookAndFeel/CabbageIDELookAndFeel.h"
 
-class CabbageContentComponent;
+class CabbageMainComponent;
 
 class CabbageProjectWindow : public Component, public Button::Listener
 {
@@ -59,7 +59,7 @@ class CabbageProjectWindow : public Component, public Button::Listener
 
     };
 public:
-    CabbageProjectWindow (CabbageContentComponent* owner);
+    CabbageProjectWindow (CabbageMainComponent* owner);
     ~CabbageProjectWindow() {}
 
     void setInformationString (String informationStr)
@@ -89,7 +89,7 @@ public:
 private:
     void writeNewFile (File fc, String fileText);
     void createNewFile (String type);
-    CabbageContentComponent* owner;
+    CabbageMainComponent* owner;
     String information;
     SimpleImageButton newInstrumentButton, newEffectButton, newCsoundFileButton;
 };

@@ -18,12 +18,12 @@
 */
 
 #include "CabbageNewProjectWindow.h"
-#include "../Application/CabbageContentComponent.h"
+#include "../Application/CabbageMainComponent.h"
 #include "CabbageStrings.h"
 #include "CabbageUtilities.h"
 
 
-CabbageProjectWindow::CabbageProjectWindow (CabbageContentComponent* owner):
+CabbageProjectWindow::CabbageProjectWindow (CabbageMainComponent* owner):
     owner (owner),
     newInstrumentButton ("newInstrument", this),
     newEffectButton ("newEffect", this),
@@ -59,7 +59,7 @@ void CabbageProjectWindow::writeNewFile (File fc, String fileText)
 void CabbageProjectWindow::createNewFile (String type)
 {
 
-    FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory));
+    FileChooser fc("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
     if (fc.browseForFileToSave (false))
     {
@@ -75,23 +75,17 @@ void CabbageProjectWindow::createNewFile (String type)
         if (fc.getResult().existsAsFile())
         {
             CabbageIDELookAndFeel lookAndFeel;
-            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-
-            if (result == 0)
+            //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+			const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+				"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+            if (result == 1)
             {
                 writeNewFile (fc.getResult().withFileExtension (".csd"), csdText);
-                //
-                //              fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-                //              owner->openFile (fc.getResult().getFullPathName());
-                //              delete this->getParentComponent();
             }
         }
         else
         {
             writeNewFile (fc.getResult().withFileExtension (".csd"), csdText);
-            //          fc.getResult().replaceWithText(CabbageStrings::getNewCsoundFileText());
-            //          owner->openFile (fc.getResult().getFullPathName());
-            //          delete this->getParentComponent();
         }
     }
 }

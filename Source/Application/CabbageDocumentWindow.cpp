@@ -41,7 +41,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (na
 
 
     initSettings();
-    setContentOwned (content = new CabbageContentComponent (this, cabbageSettings), true);
+    setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
     content->propertyPanel->setVisible (false);
     cabbageSettings->addChangeListener (content);
     setMenuBar (this, 25);
@@ -114,7 +114,7 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
 
 }
 //=======================================================================================
-CabbageContentComponent* CabbageDocumentWindow::getContentComponent()
+CabbageMainComponent* CabbageDocumentWindow::getContentComponent()
 {
     return content;
 }
@@ -126,7 +126,31 @@ void CabbageDocumentWindow::maximiseButtonPressed()
 
 void CabbageDocumentWindow::closeButtonPressed()
 {
+    CabbageIDELookAndFeel lookAndFeel;
+
+    if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
+    {
+        //const int result = showYesNoMessage2 ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
+
+		const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+			"Warning", "Save changes made to Cabbage\npatch?", nullptr, nullptr);	
+
+        if (result == 1)
+        {
+            if (getContentComponent()->getAudioGraph()->saveGraph() == FileBasedDocument::SaveResult::userCancelledSave)
+                return;
+        }
+        else if (result == 2)
+        {
+            JUCEApplicationBase::quit();
+            return;
+        }
+        else
+            return;
+    }
+
     JUCEApplicationBase::quit();
+
 }
 
 StringArray CabbageDocumentWindow::getMenuBarNames()
@@ -152,75 +176,12 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
 
 }
 
-
-static void addExamples (PopupMenu& m, const String menuName, String dir, Array<File>& filesArray, StringArray folders, int indexOffset)
-{
-    PopupMenu subMenu1, subMenu2;
-    int noOfFiles = filesArray.size();
-    int fileCnt = 0;
-
-    if (folders.size() > 0)
-    {
-        for ( int i = 0 ; i < folders.size() ; i++ )
-        {
-            subMenu2.clear();
-            File searchDir (dir + "/" + menuName + "/" + folders[i]);
-            Array<File> exampleFilesArray;
-            searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
-            exampleFilesArray.sort();
-            filesArray.addArray (exampleFilesArray);
-
-            for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
-            {
-                subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
-            }
-
-            subMenu1.addSubMenu (folders[i], subMenu2);
-            noOfFiles = filesArray.size();
-        }
-
-        m.addSubMenu (menuName, subMenu1);
-    }
-    else
-    {
-        subMenu2.clear();
-        File searchDir (dir + "/" + menuName);
-        Array<File> exampleFilesArray;
-        searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
-        exampleFilesArray.sort();
-        filesArray.addArray (exampleFilesArray);
-
-        for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
-        {
-            subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
-        }
-
-        m.addSubMenu (menuName, subMenu2);
-
-    }
-
-
-}
-
-static void addFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
-{
-    filesArray.clear();
-    addExamples (m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);
-    addExamples (m, "Instruments", dir, filesArray, CabbageExamplesFolder::getInstruments(), indexOffset);
-    addExamples (m, "LiveSampling", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "MIDI", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "Instructional", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
-    addExamples (m, "Utilities", dir, filesArray, StringArray(), indexOffset);
-}
-
 void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (&commandManager, CommandIDs::newProject);
+    menu.addCommandItem (&commandManager, CommandIDs::newFile);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::open);
+    menu.addCommandItem (&commandManager, CommandIDs::openCabbagePatch);
 
     PopupMenu recentFilesMenu;
     cabbageSettings->updateRecentFilesList();
@@ -230,15 +191,17 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     const String examplesDir = cabbageSettings->getUserSettings()->getValue ("CabbageExamplesDir", "");
 
     PopupMenu examplesMenu;
-    addFilesToPopupMenu (examplesMenu, exampleFiles, examplesDir, "*.csd", examplesMenuBaseID);
+    CabbageUtilities::addExampleFilesToPopupMenu (examplesMenu, exampleFiles, examplesDir, "*.csd", examplesMenuBaseID);
 
     menu.addSubMenu ("Examples", examplesMenu);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
-    menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
+    menu.addCommandItem (&commandManager, CommandIDs::saveGraph);
+    menu.addCommandItem (&commandManager, CommandIDs::saveGraphAs);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
@@ -253,9 +216,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::closeProject);
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
     menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::settings);
-    menu.addSeparator();
-
+    menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
 #if ! JUCE_MAC
     menu.addSeparator();
     menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
@@ -286,12 +247,20 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
 
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (&commandManager, CommandIDs::showReplacePanel);
+
+    menu.addCommandItem (&commandManager, CommandIDs::findSelection);
+    menu.addCommandItem (&commandManager, CommandIDs::findNext);
+    menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::settings);
+
 }
 
 void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 {
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::about);
+    menu.addCommandItem (&commandManager, CommandIDs::showGraph);
 }
 
 void CabbageDocumentWindow::createBuildMenu (PopupMenu& menu)
@@ -326,8 +295,8 @@ void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (&commandManager, CommandIDs::runCsoundCode);
-    menu.addCommandItem (&commandManager, CommandIDs::stopCsoundCode);
+    menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
+    menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
     menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
@@ -340,11 +309,16 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
 {
     if (menuItemID >= recentProjectsBaseID && menuItemID < recentProjectsBaseID + 100)
     {
-        getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
+        const File file = cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName();
+
+        if (file.hasFileExtension (".csd"))
+            getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
+
+        if (file.hasFileExtension (".cabbage"))
+            getContentComponent()->openGraph (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
     }
     else if (menuItemID >= examplesMenuBaseID && menuItemID < exampleFiles.size() + examplesMenuBaseID)
     {
-        //CabbageUtilities::debug(exampleFiles[menuItemID-examplesMenuBaseID].getFullPathName());
         getContentComponent()->openFile (exampleFiles[menuItemID - examplesMenuBaseID].getFullPathName());
     }
 }
@@ -361,18 +335,21 @@ void CabbageDocumentWindow::focusGained (FocusChangeType cause) //grab focus whe
 void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 {
 
-    const CommandID ids[] = { CommandIDs::newProject,
+    const CommandID ids[] = { CommandIDs::openCabbagePatch,
+                              CommandIDs::newFile,
                               CommandIDs::open,
                               CommandIDs::openFromRPi,
                               CommandIDs::closeAllDocuments,
                               CommandIDs::closeDocument,
                               CommandIDs::saveDocument,
+                              CommandIDs::saveGraph,
+                              CommandIDs::saveGraphAs,
                               CommandIDs::saveDocumentToRPi,
                               CommandIDs::saveDocumentAs,
                               CommandIDs::examples,
                               CommandIDs::settings,
-                              CommandIDs::runCsoundCode,
-                              CommandIDs::stopCsoundCode,
+                              CommandIDs::startAudioGraph,
+                              CommandIDs::stopAudioGraph,
                               CommandIDs::exportAsSynth,
                               CommandIDs::exportAsEffect,
                               CommandIDs::exportAsFMODSoundPlugin,
@@ -387,6 +364,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::showReplacePanel,
                               CommandIDs::redo,
                               CommandIDs::editMode,
+                              CommandIDs::showGraph,
                               CommandIDs::about,
                               CommandIDs::startLiveDebugger,
                               CommandIDs::showGenericWidgetWindow
@@ -404,13 +382,18 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
     switch (commandID)
     {
-        case CommandIDs::newProject:
-            result.setInfo ("New Project...", "Creates a new Jucer project", CommandCategories::general, 0);
+        case CommandIDs::newFile:
+            result.setInfo ("New Csound file", "Create a new Csound file", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier, 0));
             break;
 
+        case CommandIDs::openCabbagePatch:
+            result.setInfo ("Open Cabbage patch...", "Opens a Cabbage patch", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
+            break;
+
         case CommandIDs::open:
-            result.setInfo ("Open...", "Opens a project", CommandCategories::general, 0);
+            result.setInfo ("Open Csound file", "Opens a project", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
             break;
 
@@ -424,22 +407,32 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
 
         case CommandIDs::openFromRPi:
-            result.setInfo ("Open from RPi", "Opens a file from a RPi", CommandCategories::general, 0);
+            result.setInfo ("Open Csound file from RPi", "Opens a file from a RPi", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
             break;
 
         case CommandIDs::saveDocument:
-            result.setInfo ("Save file...", "Save a document", CommandCategories::general, 0);
+            result.setInfo ("Save Csound file", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
             break;
 
+        case CommandIDs::saveGraph:
+            result.setInfo ("Save Cabbage patch", "Save a patch document", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
+            break;
+
+        case CommandIDs::saveGraphAs:
+            result.setInfo ("Save Cabbage patch as...", "Save a patch document as", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier | ModifierKeys::shiftModifier, 0));
+            break;
+
         case CommandIDs::saveDocumentToRPi:
-            result.setInfo ("Save file to RPi", "Save a document to RPi", CommandCategories::general, 0);
+            result.setInfo ("Save Csound file to RPi", "Save a document to RPi", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
             break;
 
         case CommandIDs::saveDocumentAs:
-            result.setInfo ("Save as...", "Save a document", CommandCategories::general, 0);
+            result.setInfo ("Save Csound file as...", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
             break;
 
@@ -447,13 +440,13 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
             break;
 
-        case CommandIDs::runCsoundCode:
-            result.setInfo ("Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+        case CommandIDs::startAudioGraph:
+            result.setInfo ("Start graph", "Starts the audio signal graph", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress (KeyPress::F4Key, ModifierKeys::noModifiers, 0));
             break;
 
-        case CommandIDs::stopCsoundCode:
-            result.setInfo ("Cancel Compile", "Starts Csound and runs code", CommandCategories::general, 0);
+        case CommandIDs::stopAudioGraph:
+            result.setInfo ("Stop graph", "Stop the audio signal graph", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress (KeyPress::F5Key, ModifierKeys::noModifiers, 0));
             break;
 
@@ -569,6 +562,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo (TRANS ("About"), TRANS ("About."), CommandCategories::general, 0);
             break;
 
+        case CommandIDs::showGraph:
+            result.setInfo (TRANS ("Show Cabbage Patcher"), TRANS ("Graph."), CommandCategories::view, 0);
+            result.defaultKeypresses.add (KeyPress ('p', ModifierKeys::commandModifier, 0));
+            break;
+
         case CommandIDs::findPrevious:
             result.setInfo (TRANS ("Find Previous"), TRANS ("Searches for the previous occurrence of the current search-term."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
@@ -594,8 +592,12 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 
     switch (info.commandID)
     {
-        case CommandIDs::newProject:
+        case CommandIDs::newFile:
             getContentComponent()->createNewProject();
+            return true;
+
+        case CommandIDs::openCabbagePatch:
+            getContentComponent()->openGraph();
             return true;
 
         case CommandIDs::open:
@@ -610,6 +612,21 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->saveDocument (true);
             return true;
 
+        case CommandIDs::saveGraph:
+            getContentComponent()->saveGraph (false);
+            return true;
+
+        case CommandIDs::saveGraphAs:
+            getContentComponent()->saveGraph (true);
+            return true;
+
+
+        case CommandIDs::saveDocument:
+            getContentComponent()->saveDocument();
+            getContentComponent()->setEditMode (false);
+            isGUIEnabled = false;
+            break;
+
         case CommandIDs::closeDocument:
             getContentComponent()->closeDocument();
             return true;
@@ -621,8 +638,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->showSettingsDialog();
             return true;
 
-        case CommandIDs::runCsoundCode:
-            getContentComponent()->runCsoundCode();
+        case CommandIDs::startAudioGraph:
+            getContentComponent()->startAudioGraph();
             return true;
 
         case CommandIDs::exportAsEffect:
@@ -688,24 +705,22 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->getCurrentCodeEditor()->paste();
             return true;
 
-        case CommandIDs::saveDocument:
-            getContentComponent()->saveDocument();
-            getContentComponent()->setEditMode (false);
-            isGUIEnabled = false;
-            break;
-
         case CommandIDs::saveDocumentToRPi:
             getContentComponent()->saveDocument();
             getContentComponent()->launchSSHFileBrowser ("save");
             break;
 
-        case CommandIDs::stopCsoundCode:
-            getContentComponent()->stopCsoundCode();
-            getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
+        case CommandIDs::stopAudioGraph:
+            getContentComponent()->stopAudioGraph();
+            //getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
             break;
 
         case CommandIDs::about:
             CabbageUtilities::showMessage (title, &tempLookAndFeel);
+            break;
+
+        case CommandIDs::showGraph:
+            getContentComponent()->showGraph();
             break;
 
         case CommandIDs::editMode:
@@ -726,63 +741,109 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 //================================================================================
 void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
 {
-    File thisFile (File::getSpecialLocation (File::currentExecutableFile));
-    const String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-
+    String pluginFilename, fileExtension, currentApplicationDirectory;
+    File thisFile;
     if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
     {
-        String pluginFilename;
-
-        if (type.contains ("VSTi"))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth.so");
-        else if (type.contains (String ("VST")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect.so");
-        else if (type.contains (String ("LV2-ins")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2.so");
-        else if (type.contains (String ("LV2-fx")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2.so");
-
-
-        File VSTData (pluginFilename);
-
-        if (!VSTData.exists())
-        {
-            CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
-        }
-
-        FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), ".so");
-
-        if (fc.browseForFileToSave (false))
-        {
-            if (fc.getResult().existsAsFile())
-            {
-                CabbageIDELookAndFeel lookAndFeelTemp;
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
-
-                if (result == 0)
-                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData);
-            }
-            else
-                writePluginFileToDisk (fc.getResult(), csdFile, VSTData);
-        }
+        fileExtension = "so";
+        thisFile = File::getSpecialLocation (File::currentExecutableFile);
+        currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
     }
+    else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+    {
+        fileExtension = "vst";
+        thisFile = File::getSpecialLocation (File::currentApplicationFile);
+        currentApplicationDirectory = thisFile.getFullPathName()+"/Contents";
+    }
+    else
+    {
+        fileExtension = "dll";
+        thisFile = File::getSpecialLocation (File::currentApplicationFile);
+        currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+    }
+    
+    
+    if (type.contains ("VSTi"))
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth."+fileExtension);
+    else if (type.contains (String ("VST")))
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect."+fileExtension);
+    else if (type.contains (String ("LV2-ins")))
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2."+fileExtension);
+    else if (type.contains (String ("LV2-fx")))
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2."+fileExtension);
+  
+    File VSTData (pluginFilename);
+
+    if (!VSTData.exists())
+    {
+        CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
+    }
+
+    FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*."+fileExtension, CabbageUtilities::shouldUseNativeBrowser());
+
+    if (fc.browseForFileToSave(false))
+    {
+        if (fc.getResult().existsAsFile())
+        {
+            CabbageIDELookAndFeel lookAndFeelTemp;
+            //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
+			const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+				"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+
+            if (result == 1)
+                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension);
+        }
+        else
+            writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension);
+    }
+    
 }
 
-void CabbageDocumentWindow::writePluginFileToDisk (File fc, File csdFile, File VSTData)
+void CabbageDocumentWindow::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension)
 {
-    File dll (fc.withFileExtension (".so").getFullPathName());
+		File dll(fc.withFileExtension(fileExtension).getFullPathName());
 
-    if (!VSTData.copyFileTo (dll))
-        CabbageUtilities::showMessage ("Can copy plugin lib, is it in use?", &getLookAndFeel());
+		if (!VSTData.copyFileTo(dll))
+			CabbageUtilities::showMessage("Can't copy plugin lib, is it currently in use?", &getLookAndFeel());
 
-    if (fc.withFileExtension (".csd").existsAsFile() == false)
-    {
-        File exportedCsdFile (fc.withFileExtension (".csd").getFullPathName());
-        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-        setUniquePluginId (dll, exportedCsdFile);
-        //bunlde all auxilary files
-        //addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
-    }
+    
+            File exportedCsdFile;
+            
+            if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+            {
+                exportedCsdFile = dll.getFullPathName()+String("/Contents/")+fc.getFileNameWithoutExtension()+String(".csd");
+                exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+                
+                File bin(dll.getFullPathName()+String("/Contents/MacOS/CabbagePlugin"));
+                    //if(bin.exists())showMessage("binary exists");
+                    
+                    
+                File pluginBinary(dll.getFullPathName()+String("/Contents/MacOS/")+fc.getFileNameWithoutExtension());
+                    
+                if(bin.moveFileTo(pluginBinary) == false)
+                        CabbageUtilities::showMessage("Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &this->getLookAndFeel());
+                
+                setUniquePluginId(pluginBinary, exportedCsdFile);
+                
+                File pl(dll.getFullPathName()+String("/Contents/Info.plist"));
+                String newPList = pl.loadFileAsString();
+                //write our identifiers to the plist file
+                newPList = newPList.replace("CabbagePlugin", fc.getFileNameWithoutExtension());
+                
+                //write plist file
+                pl.replaceWithText(newPList);
+     
+                
+            }
+            else
+            {
+                exportedCsdFile = fc.withFileExtension(".csd").getFullPathName();
+                exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+                setUniquePluginId(dll, exportedCsdFile);
+            }
+			//bunlde all auxilary files
+			//addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
+
 }
 
 const String CabbageDocumentWindow::getPluginId (File csdFile)
@@ -795,7 +856,7 @@ const String CabbageDocumentWindow::getPluginId (File csdFile)
         ValueTree temp ("temp");
         CabbageWidgetData::setWidgetState (temp, line, 0);
 
-        if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageIdentifierIds::form)
+        if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
             return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
     }
 

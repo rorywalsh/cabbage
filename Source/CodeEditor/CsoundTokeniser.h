@@ -291,7 +291,8 @@ private:
             "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
             "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
             "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
-            "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", 0
+            "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm",
+            0
         };
 
 
@@ -321,7 +322,7 @@ private:
     int parseIdentifier (CodeDocument::Iterator& source) noexcept
     {
         int tokenLength = 0;
-        String::CharPointerType::CharType possibleIdentifier [100];
+        String::CharPointerType::CharType possibleIdentifier [20];
         String::CharPointerType possible (possibleIdentifier);
 
         while (isIdentifierBody (source.peekNextChar()))

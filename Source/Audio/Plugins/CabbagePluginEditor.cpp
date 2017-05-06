@@ -25,21 +25,27 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
       processor (p),
       lookAndFeel(),
+#ifdef Cabbage_IDE_Build
       layoutEditor (processor.cabbageWidgets),
+#endif
       mainComponent()
 {
     setName ("PluginEditor");
     setSize (400, 300);
     setLookAndFeel (&lookAndFeel);
     createEditorInterface (processor.cabbageWidgets);
-    addAndMakeVisible (layoutEditor);
+   
     addAndMakeVisible (mainComponent);
     mainComponent.setInterceptsMouseClicks (false, true);
+	
+#ifdef Cabbage_IDE_Build	
+	addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&mainComponent);
     layoutEditor.updateFrames();
     layoutEditor.setEnabled (false);
     layoutEditor.toFront (false);
     layoutEditor.setInterceptsMouseClicks (true, true);
+#endif
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -56,8 +62,10 @@ void CabbagePluginEditor::paint (Graphics& g)
 
 void CabbagePluginEditor::resized()
 {
+#ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
-    mainComponent.setBounds (getLocalBounds());
+#endif
+     mainComponent.setBounds (getLocalBounds());
 }
 
 //======================================================================================================
@@ -84,8 +92,8 @@ void CabbagePluginEditor::mouseUp (const MouseEvent& e)
 void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
 {
     int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
-    int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y;
-
+    int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
+    int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y - yOffset; //27 is the height of the standalone window frame
     sendChannelDataToCsound (CabbageIdentifierIds::mousex, x);
     sendChannelDataToCsound (CabbageIdentifierIds::mousey, y);
 }
@@ -108,7 +116,7 @@ void CabbagePluginEditor::createEditorInterface (ValueTree widgets)
     {
         const String widgetType = widgets.getChild (widget).getProperty (CabbageIdentifierIds::type).toString();
 
-        if (widgetType == CabbageIdentifierIds::form)
+        if (widgetType == CabbageWidgetTypes::form)
             setupWindow (widgets.getChild (widget));
         else
         {
@@ -161,70 +169,70 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
 {
     const String widgetType = cabbageWidgetData.getProperty (CabbageIdentifierIds::type).toString();
 
-    if (widgetType == CabbageIdentifierIds::checkbox)
+    if (widgetType == CabbageWidgetTypes::checkbox)
         insertCheckbox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::combobox)
+    else if (widgetType == CabbageWidgetTypes::combobox)
         insertComboBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::image)
+    else if (widgetType == CabbageWidgetTypes::image)
         insertImage (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::line)
+    else if (widgetType == CabbageWidgetTypes::line)
         insertLine (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::rslider
-             || widgetType == CabbageIdentifierIds::vslider
-             || widgetType == CabbageIdentifierIds::hslider)
+    else if (widgetType == CabbageWidgetTypes::rslider
+             || widgetType == CabbageWidgetTypes::vslider
+             || widgetType == CabbageWidgetTypes::hslider)
         insertSlider (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::label)
+    else if (widgetType == CabbageWidgetTypes::label)
         insertLabel (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::groupbox)
+    else if (widgetType == CabbageWidgetTypes::groupbox)
         insertGroupBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::keyboard)
+    else if (widgetType == CabbageWidgetTypes::keyboard)
         insertMIDIKeyboard (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::csoundoutput)
+    else if (widgetType == CabbageWidgetTypes::csoundoutput)
         insertCsoundOutputConsole (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::numberbox)
+    else if (widgetType == CabbageWidgetTypes::numberbox)
         insertNumberBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::textbox.toString())
+    else if (widgetType == CabbageWidgetTypes::textbox.toString())
         insertTextBox (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::texteditor)
+    else if (widgetType == CabbageWidgetTypes::texteditor)
         insertTextEditor (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::encoder)
+    else if (widgetType == CabbageWidgetTypes::encoder)
         insertEncoder (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::soundfiler)
+    else if (widgetType == CabbageWidgetTypes::soundfiler)
         insertSoundfiler (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::button)
+    else if (widgetType == CabbageWidgetTypes::button)
         insertButton (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::filebutton)
+    else if (widgetType == CabbageWidgetTypes::filebutton)
         insertFileButton (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::infobutton)
+    else if (widgetType == CabbageWidgetTypes::infobutton)
         insertInfoButton (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::signaldisplay)
+    else if (widgetType == CabbageWidgetTypes::signaldisplay)
         insertSignalDisplay (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::gentable)
+    else if (widgetType == CabbageWidgetTypes::gentable)
         insertGenTable (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::xypad)
+    else if (widgetType == CabbageWidgetTypes::xypad)
         insertXYPad (cabbageWidgetData);
 
-    else if (widgetType == CabbageIdentifierIds::hrange
-             || widgetType == CabbageIdentifierIds::vrange)
+    else if (widgetType == CabbageWidgetTypes::hrange
+             || widgetType == CabbageWidgetTypes::vrange)
         insertRangeSlider (cabbageWidgetData);
 
 }
@@ -244,7 +252,7 @@ void CabbagePluginEditor::insertComboBox (ValueTree cabbageWidgetData)
     components.add (combobox = new CabbageComboBox (cabbageWidgetData, this));
 
     if (CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::filetype).contains ("snaps")
-		|| CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::channeltype).contains ("string"))
+        || CabbageWidgetData::getStringProp (cabbageWidgetData, CabbageIdentifierIds::channeltype).contains ("string"))
         combobox->addListener (combobox);
     else
         combobox->addListener (this);
@@ -503,9 +511,11 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
 //======================================================================================================
 void CabbagePluginEditor::enableEditMode (bool enable)
 {
+#ifdef Cabbage_IDE_Build
     layoutEditor.setEnabled (enable);
     editModeEnabled = enable;
     layoutEditor.toFront (false);
+#endif
 }
 //======================================================================================================
 void CabbagePluginEditor::setCurrentlySelectedComponents (StringArray componentNames)
@@ -546,8 +556,10 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
 {
+#ifdef Cabbage_IDE_Build
     if (editModeEnabled)
         layoutEditor.updateFrames();
+#endif
 }
 
 //======================================================================================================
@@ -714,7 +726,7 @@ void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
 {
     const File csdFile (processor.getCsdFile());
     XmlElement xml = processor.savePluginState (csdFile.getFileNameWithoutExtension().replace (" ", "_"));
-    xml.writeToFile (snapshotFile, "");
+    xml.writeToFile (snapshotFile.withFileExtension(".snaps"), "");
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
@@ -722,11 +734,63 @@ void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
     ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (snapshotFile);
     processor.restorePluginState (xmlElement);
 }
+
+void CabbagePluginEditor::refreshComboBoxContents()
+{
+	for( int i = 0 ; i < processor.cabbageWidgets.getNumChildren() ; i++)
+	{
+		const String type = CabbageWidgetData::getStringProp(processor.cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+
+		if( type == "combobox")
+		{
+			const String name = CabbageWidgetData::getStringProp(processor.cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
+			
+			if(CabbageComboBox* combo = dynamic_cast<CabbageComboBox*>(getComponentFromName(name)))
+			{
+				combo->addItemsToCombobox(processor.cabbageWidgets.getChild(i));
+			}
+		}
+	}
+}
+
+String CabbagePluginEditor::createNewGenericNameForPresetFile()
+{
+	Array<File> dirFiles;
+	File pluginDir = processor.getCsdFile().getParentDirectory().getFullPathName();
+	pluginDir.findChildFiles(dirFiles, 2, false, "*.snaps");
+	String newFileName;
+	//now check existing files in directory and make sure we use a unique name
+	for(int i=0; i<dirFiles.size(); i++)
+	{
+		String newName = processor.getCsdFile().getFileNameWithoutExtension()+"_"+String(i+1);
+		if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
+			newFileName = pluginDir.getFullPathName()+"\\"+newName+".snaps";
+		else
+			newFileName  = pluginDir.getFullPathName()+"/"+newName+".snaps";
+
+		bool allowSave = true;
+		for(auto file : dirFiles)
+		{			
+			if(file.getFileNameWithoutExtension().equalsIgnoreCase(newName))
+				allowSave = false;
+		}
+		
+		if(allowSave)
+			return newFileName;
+	}
+
+	const String firstPresetFile = processor.getCsdFile().getFileNameWithoutExtension()+"_0";		
+	
+	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
+			return pluginDir.getFullPathName()+"\\"+firstPresetFile+".snaps";
+	else
+			return pluginDir.getFullPathName()+"/"+firstPresetFile+".snaps";
+	
+	return "";
+
+}
 //======================================================================================================
 const String CabbagePluginEditor::getCsoundOutputFromProcessor()
 {
-#ifndef Cabbage_IDE_Build
     return processor.getCsoundOutput();
-#endif
-    return String ("You are currently in 'Standalone' mode.\nThe csoundoutput widget will only be filled\nwith Csound messages when used in a plugin.");
 }

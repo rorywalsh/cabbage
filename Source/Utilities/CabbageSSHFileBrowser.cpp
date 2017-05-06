@@ -18,9 +18,9 @@
 */
 
 #include "CabbageSSHFileBrowser.h"
-#include "../Application/CabbageContentComponent.h"
+#include "../Application/CabbageMainComponent.h"
 
-CabbageSSHFileBrowser::CabbageSSHFileBrowser (String ip, String homeDir, CabbageContentComponent* owner, String mode, String currentFileFilePath)
+CabbageSSHFileBrowser::CabbageSSHFileBrowser (String ip, String homeDir, CabbageMainComponent* owner, String mode, String currentFileFilePath)
     : ipAddress (ip), homeDirectory (homeDir), owner (owner), currentLocalFilePath (currentFileFilePath)
 {
     setOpaque (true);
@@ -106,7 +106,7 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked (int row, const MouseEvent&
     else
     {
         String command;
-        FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory));
+        FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
         CabbageIDELookAndFeel lookAndFeel;
 
         if (fc.browseForFileToSave (false))
@@ -115,11 +115,14 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked (int row, const MouseEvent&
 
             if (fc.getResult().existsAsFile())
             {
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-                command = ("scp " + ipAddress + ":" + filePath.joinIntoString ("") + "/" + getFileOrFolderName (name) + " "
+                //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+				const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+					"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+				
+				command = ("scp " + ipAddress + ":" + filePath.joinIntoString ("") + "/" + getFileOrFolderName (name) + " "
                            + newFile.getFullPathName());
 
-                if (result == 0)
+                if (result == 1)
                 {
                     launchChildProcess (command);
                     owner->openFile (newFile.getFullPathName());

@@ -3,7 +3,7 @@ form caption("Arpeggiator") size(700, 440), pluginID("arpe")
 
 #define RSliderStyle #trackercolour(0,255,255), colour(100,100,140), outlinecolour(20,20,20)#
                       
-groupbox bounds( 5,  0, 690, 100), text("Arpeggiator"),{
+groupbox bounds( 5,  0, 690, 100), text("Arpeggiator")
 rslider  bounds( 10, 30, 60, 60), text("Interval"), channel("intvl"), range(-36, 36, 7, 1, 1), $RSliderStyle
 rslider  bounds( 60, 30, 60, 60), text("Cycles"), channel("cycles"), range(0, 32, 5, 1, 1), $RSliderStyle
 label    bounds(122, 29, 65, 12), text("Cycle Mode") 
@@ -22,9 +22,9 @@ checkbox bounds(597, 40, 30, 30), colour("red"), channel("pause"), value(0)
 label    bounds(595, 77, 35, 12), text("Pause")
 checkbox bounds(647, 40, 30, 30), colour("Cyan"), channel("onoff"),  value(1)
 label    bounds(643, 77, 40, 12), text("On/Off")
-}
 
-groupbox bounds(  5,105, 690, 220), text("Synth"), {
+
+groupbox bounds(  5,105, 690, 220), text("Synth")
 label    bounds(101,132, 25,  12), text("VCA")
 rslider  bounds( 10,150, 60, 60), text("Att."), channel("Aatt"),range(0.001, 2, 0.001, 0.5), $RSliderStyle
 rslider  bounds( 60,150, 60, 60), text("Dec."), channel("Adec"),range(0.001, 2, 0.001, 0.5), $RSliderStyle
@@ -39,7 +39,7 @@ rslider  bounds(340,150, 60, 60), text("Dec."), channel("dec"), 		range(0.001, 2
 rslider  bounds(390,150, 60, 60), text("Sus."), channel("sus"), 		range(0,     1.00, 0.5), $RSliderStyle
 rslider  bounds(440,150, 60, 60), text("Rel."), channel("rel"),		range(0.001, 2, 0.1, 0.5), $RSliderStyle
 rslider  bounds(490,150, 60, 60), text("Res."), channel("res"),		range(0,     1.00, 0.5), $RSliderStyle
-rslider  bounds(540,150, 60, 60), text("Dist."), channel("dist"), 		range(0,     1.00, 0), $RSliderStyle
+rslider  bounds(540,150, 60, 60), text("Dist.") channel("dist") range(0, 1, 0, 1, 0.001) rslider bounds(540, 150, 60, 60) range(0, 1, 0, 1, 0.001), $RSliderStyle 
 checkbox bounds(600,158, 30, 30), colour("yellow"), channel("KybdTrk"),  value(1)
 label    bounds(597,198, 35, 12), text("Track")
 label    bounds(645,147, 35, 12), text("Type")
@@ -73,7 +73,6 @@ label    bounds(585,230, 40, 12), text("Delay")
 rslider  bounds(530,250, 60, 60), text("Mix"), channel("DryWet"),	range(0,  1.00,   0.1), $RSliderStyle
 rslider  bounds(580,250, 60, 60), text("Time"), channel("DlyTim"),	range(1, 16,   4,1,1), $RSliderStyle
 rslider  bounds(630,250, 60, 60), text("F.back"), channel("DlyFB"),	range(0,  1.00,   0.5), $RSliderStyle
-}
 
 keyboard pos(5, 330), size(690, 80)
 infobutton bounds(5,415, 70, 20), text("Help"), file("ArpeggiatorHelp.html")

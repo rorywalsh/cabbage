@@ -41,8 +41,6 @@ CabbageInfoButton::CabbageInfoButton (ValueTree wData)
 //===============================================================================
 void CabbageInfoButton::buttonClicked (Button* button)
 {
-    CabbageUtilities::debug (File (getCsdFile()).getParentDirectory().getChildFile (filename).getFullPathName());
-
     if (File (getCsdFile()).getParentDirectory().getChildFile (filename).existsAsFile())
     {
         URL url (filename);

@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="1.0.0"
-              bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
-              buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
+              bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
+              buildVST="1" buildVST3="0" buildAU="0" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
               pluginManufacturer="CabbageAudio" pluginManufacturerCode="Cabb"
-              pluginCode="RORY" pluginChannelConfigs="{1,1}, {2,2}" pluginIsSynth="0"
-              pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1"
-              pluginEditorRequiresKeys="0" pluginAUExportPrefix="CabbagePluginAU"
-              pluginRTASCategory="" aaxIdentifier="com.yourcompany.CabbagePlugin"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.0">
+              pluginCode="RORY" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="1"
+              pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
+              pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
+              aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
+              jucerVersion="4.3.1" buildStandalone="0" enableIAA="0">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
-        <GROUP id="{A1DE9F67-2A02-8C13-A110-A07609FA019D}" name="Graph">
-          <FILE id="GaSIEn" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/Graph/AudioGraph.cpp"/>
-          <FILE id="WkN3C1" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/Graph/AudioGraph.h"/>
-        </GROUP>
         <GROUP id="{4B714BDB-49F2-8D6E-A0E6-DD0C6491ADBA}" name="Plugins">
           <FILE id="xYBUzH" name="CabbageAudioParameter.h" compile="0" resource="0"
                 file="Source/Audio/Plugins/CabbageAudioParameter.h"/>
@@ -54,29 +50,11 @@
         <FILE id="HctRIv" name="CabbageBinaryData.h" compile="0" resource="0"
               file="Source/BinaryData/CabbageBinaryData.h"/>
       </GROUP>
-      <GROUP id="{45D93C48-B839-C383-813B-2A9DEB7A08F6}" name="GUIEditor">
-        <FILE id="NE4oCA" name="CabbagePropertiesPanel.cpp" compile="1" resource="0"
-              file="Source/GUIEditor/CabbagePropertiesPanel.cpp"/>
-        <FILE id="fScvfa" name="CabbagePropertiesPanel.h" compile="0" resource="0"
-              file="Source/GUIEditor/CabbagePropertiesPanel.h"/>
-        <FILE id="mZoNOm" name="ComponentLayoutEditor.cpp" compile="1" resource="0"
-              file="Source/GUIEditor/ComponentLayoutEditor.cpp"/>
-        <FILE id="hAadtM" name="ComponentLayoutEditor.h" compile="0" resource="0"
-              file="Source/GUIEditor/ComponentLayoutEditor.h"/>
-        <FILE id="eWxQhk" name="ComponentOverlay.cpp" compile="1" resource="0"
-              file="Source/GUIEditor/ComponentOverlay.cpp"/>
-        <FILE id="w4gVVm" name="ComponentOverlay.h" compile="0" resource="0"
-              file="Source/GUIEditor/ComponentOverlay.h"/>
-      </GROUP>
       <GROUP id="{583547E2-9EA9-D831-D13A-6A25772627BE}" name="LookAndFeel">
         <FILE id="nHVUyj" name="CabbageGenericPluginLookAndFeel.cpp" compile="1"
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.cpp"/>
         <FILE id="gK4jsl" name="CabbageGenericPluginLookAndFeel.h" compile="0"
               resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.h"/>
-        <FILE id="fI7PZm" name="CabbageIDELookAndFeel.cpp" compile="1" resource="0"
-              file="Source/LookAndFeel/CabbageIDELookAndFeel.cpp"/>
-        <FILE id="CDZnOr" name="CabbageIDELookAndFeel.h" compile="0" resource="0"
-              file="Source/LookAndFeel/CabbageIDELookAndFeel.h"/>
         <FILE id="xYvPFw" name="CabbageLookAndFeel2.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="MLgcCk" name="CabbageLookAndFeel2.h" compile="0" resource="0"
@@ -226,6 +204,63 @@
         <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
+    <XCODE_MAC targetFolder="Builds/MacOSX" vst3Folder="" extraDefs="MACOSX=1"
+               extraFrameworks="/Library/Frameworks/CsoundLib64">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
+                       headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
+                       osxArchitecture="64BitUniversal" osxSDK="default" osxCompatibility="10.9 SDK"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
+                       headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="MSVC=1&#10;CABBAGE=1"
+            externalLibraries="csound64.lib">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound"
+                       libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound"
+                       libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </VS2015>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>
@@ -244,7 +279,8 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="enabled" JUCE_JACK="enabled"/>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="enabled" JUCE_JACK="enabled"
+               JUCE_WEB_BROWSER="disabled"/>
   <LIVE_SETTINGS>
     <LINUX/>
   </LIVE_SETTINGS>

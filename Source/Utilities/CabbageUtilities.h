@@ -22,6 +22,7 @@
 
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "../BinaryData/CabbageBinaryData.h"
 
 #pragma warning(disable: 4244) // possible loss of data
 #pragma warning(disable: 4100) // possible loss of data
@@ -86,6 +87,238 @@ private:
     Array <float, CriticalSection > points;
 };
 
+//================================================================================
+class CabbageExamplesFolder
+{
+public:
+
+    CabbageExamplesFolder() {}
+
+    static StringArray getEffects()
+    {
+        StringArray directories;
+        directories.add ("Distortion");
+        directories.add ("Dynamics");
+        directories.add ("Filters");
+        directories.add ("Miscellaneous");
+        directories.add ("Modulation");
+        directories.add ("Reverbs");
+        directories.add ("Spectral");
+        directories.add ("Time");
+        return directories;
+    }
+
+    static StringArray getInstruments()
+    {
+        StringArray directories;
+        directories.add ("Drum Machines");
+        directories.add ("Miscellaneous");
+        directories.add ("Noise");
+        directories.add ("Physical Modelling");
+        directories.add ("Synths");
+        return directories;
+    }
+
+};
+//================================================================================
+class CabbageImages
+{
+public:
+	CabbageImages(){}
+	
+	static const Image drawBypassIcon(int width, int height, bool isActive)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		const float x = 0;
+		const float y = 0;
+		const float w = width-5.f;
+		const float h = height;
+		const float d = 5;
+		g.setColour(isActive ? Colours::cornflowerblue.darker(.8f) : Colours::lime);
+		Path p;
+		p.startNewSubPath(x+5, y+h/2.f+d/2.f);
+		g.drawEllipse(x, y+h/2.f, d, d, 2);
+		g.drawEllipse(x+w, y+h/2.f, d, d, 2.f);
+
+		if(!isActive)
+		{
+			p.lineTo(x+w, y+h/2.f+d/2.f);
+		}
+		else
+		{
+			p.addArc(x+w, y+h/2.f+d/2.f, 5, 5, 3.14, 3.14);
+		}
+
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(2));
+		
+		return img;
+	}
+
+	static const Image drawEditGUIIcon(int width, int height)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		Path p, dashedP;
+		p.addRoundedRectangle(0, 0, width, height, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);
+		p.clear();
+		
+		g.setColour(Colours::cornflowerblue);
+		p.addEllipse(4, 4, width-8, height-8);	
+		const float dashLengths[] = { 3.0f, 3.0f };
+        PathStrokeType(6.0, PathStrokeType::mitered).createDashedStroke(dashedP, p, dashLengths, 2);
+		g.fillPath(dashedP);
+		p.clear();
+		
+		g.setColour(Colours::cornflowerblue.darker());
+		p.addEllipse(3, 3, width-6, height-6);
+		g.fillPath(p);
+		p.clear();
+
+		g.setColour(Colour(30, 30, 30));
+		p.addEllipse(6, 6, width-12, height-12);
+		g.fillPath(p);
+		return img;
+	}
+	
+	static const Image drawPlayStopIcon(int width, int height, bool isPlaying, bool isPressed = false)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		Path p;
+		
+		const int newWidth = (isPressed == true ? width-1 : width);
+		const int newHeight = (isPressed == true ? height-1 : height);
+		
+		p.addRoundedRectangle(0, 0, newWidth, newHeight, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);
+		p.clear();
+
+		
+		if(isPlaying == false)
+		{
+			g.setColour(Colours::lime.darker());
+			p.addTriangle(newWidth*.62f, 2, newWidth-5, newHeight/2, newWidth*.62f, newHeight-3);
+		}
+		else
+		{
+			g.setColour(Colours::lime.darker(.7f));
+			p.addRectangle(newWidth*.62f, 4, newWidth*.3, newHeight-8);
+		}
+			
+		p.closeSubPath();
+		g.fillPath(p);
+		g.setColour(Colours::whitesmoke.darker());
+		g.setColour(Colours::whitesmoke);
+		g.drawFittedText(isPlaying == true ? "Stop" : "Play", 0, 0, width*.6, height-1, Justification::centred, 1);
+		return img;
+	}
+
+	static const Image drawCloseIcon(int width, int height)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		Path p;
+		p.addRoundedRectangle(0, 0, width-5, height-5, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);
+		p.clear();
+		g.setColour(Colours::red);
+		p.startNewSubPath(5, 5);
+		p.lineTo(width-10, height-10);
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(3));
+
+		p.startNewSubPath(5, height-10);
+		p.lineTo(width-10, 5);
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(3));
+		return img;
+	}
+
+	static const Image drawEditorIcon(int width, int height)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		Path p;
+		
+		
+		p.addRoundedRectangle(0, 0, width, height, 2);
+		g.setColour(Colour(30, 30, 30));
+		p.closeSubPath();
+		g.fillPath(p);		
+		p.clear();
+		
+		g.setColour(Colours::cornflowerblue.darker());
+		for( int i = 0 ; i < 3; i++)
+		{			
+			p.startNewSubPath(6+(i*6), 3);
+			p.lineTo(6+(i*6), height-3);
+			g.strokePath(p, PathStrokeType(2));
+			p.closeSubPath();
+			p.clear();		
+		}
+		
+		Random rand;
+		g.setColour(Colours::lime.darker());
+		for( int i = 0 ; i < 3; i++)
+		{
+			const int heightOfTHumb = rand.nextInt(Range<int>(5, height-5));			
+			p.startNewSubPath(4+(i*6), heightOfTHumb);
+			p.lineTo(9+(i*6), heightOfTHumb);
+			g.strokePath(p, PathStrokeType(2));
+			p.closeSubPath();
+			p.clear();		
+		}
+	
+		return img;
+	}
+	
+	static const Image drawMuteIcon(int width, int height, bool muted)
+	{
+		Image img = Image(Image::ARGB, width, height, true);
+		Graphics g(img);
+		
+		const float x = 0;
+		const float y = 0;
+		const float w = width-5.f;
+		const float h = height;
+		g.setColour(Colours::whitesmoke);
+		Path p;
+		p.startNewSubPath(x, y+h*.33);
+		p.lineTo(x+w/2.f, y+h*.33);
+		p.lineTo(x+w, y+0.f);
+		p.lineTo(x+w, y+h);
+		p.lineTo(x+w/2.f, y+h*.66);
+		p.lineTo(x, y+h*.66);
+		p.lineTo(x, y+h*.33);
+		p.closeSubPath();
+		g.strokePath(p, PathStrokeType(1));
+
+		if(muted)
+		{
+			g.setColour(Colours::lime);
+			g.drawLine(x+0, y+0, x+w, y+h, 3);
+			g.drawLine(x+0, y+h, x+w, y+0, 3);
+		}
+		else
+			g.fillPath(p);
+			
+		return img;
+	}	
+};
+
 //===========================================================================================
 //some utility functions used across classes...
 //===========================================================================================
@@ -94,7 +327,43 @@ class CabbageUtilities
 public:
     CabbageUtilities() {};
     ~CabbageUtilities() {};
+	
+	enum TargetTypes
+	{
+		IDE = 0,
+		PluginSynth,
+		PluginEffect,
+		Unknown
+	};
 
+	//==============================================================
+	static int getTarget()
+	{
+#ifdef Cabbage_IDE_Build
+		return TargetTypes::IDE;
+#elif Cabbage_Plugin_Synth
+		return TargetTypes::PluginSynth;
+#else
+		return TargetTypes::PluginEffect;
+#endif
+		return TargetTypes::Unknown;
+	}
+
+	static bool shouldUseNativeBrowser()
+	{
+#ifdef Use_Native_File_Browser
+		return true;
+#else
+		return false;
+#endif
+	}
+
+	//==============================================================
+	static const String getSVGTextFromMemory (const void* svg, size_t size)
+	{
+		MemoryInputStream svgStream (svg, size, false);
+		return svgStream.readString();
+	}	
     //==============================================================
     static void debug (String message)
     {
@@ -138,6 +407,87 @@ public:
 #endif
     }
     //===========================================================================================
+	static void addExamples (PopupMenu& m, const String menuName, String dir, Array<File>& filesArray, StringArray folders, int indexOffset)
+	{
+		PopupMenu subMenu1, subMenu2;
+		int noOfFiles = filesArray.size();
+		int fileCnt = 0;
+
+		if (folders.size() > 0)
+		{
+			for ( int i = 0 ; i < folders.size() ; i++ )
+			{
+				subMenu2.clear();
+				File searchDir (dir + "/" + menuName + "/" + folders[i]);
+				Array<File> exampleFilesArray;
+				searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
+				exampleFilesArray.sort();
+				filesArray.addArray (exampleFilesArray);
+
+				for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+				{
+					subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+				}
+
+				subMenu1.addSubMenu (folders[i], subMenu2);
+				noOfFiles = filesArray.size();
+			}
+
+			m.addSubMenu (menuName, subMenu1);
+		}
+		else
+		{
+			subMenu2.clear();
+			File searchDir (dir + "/" + menuName);
+			Array<File> exampleFilesArray;
+			searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
+			exampleFilesArray.sort();
+			filesArray.addArray (exampleFilesArray);
+
+			for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+			{
+				subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+			}
+
+			m.addSubMenu (menuName, subMenu2);
+
+		}
+
+
+	}
+
+
+	static void addExampleFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
+	{
+		filesArray.clear();
+		addExamples (m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);
+		addExamples (m, "Instruments", dir, filesArray, CabbageExamplesFolder::getInstruments(), indexOffset);
+		addExamples (m, "LiveSampling", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "MIDI", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "Instructional", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
+		addExamples (m, "Utilities", dir, filesArray, StringArray(), indexOffset);
+	}
+	
+	static void addFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, int indexOffset)
+	{
+		
+		File searchDir (dir);
+		Array<File> searchFilesArray;
+		PopupMenu subMenu;
+		searchDir.findChildFiles(searchFilesArray, File::findFiles, false, "*.csd");
+		searchFilesArray.sort();
+		filesArray.addArray (searchFilesArray);
+
+		for (int fileCnt = 0; fileCnt < filesArray.size(); fileCnt++)
+		{
+		m.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
+		}
+
+	}
+//======================================================================================
     static void showMessage (String message)
     {
         AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
@@ -292,24 +642,24 @@ public:
 #endif
     }
 
-    static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
-    {
-        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
-        alert.setLookAndFeel (feel);
-        alert.addButton ("Yes", 0);
-        alert.addButton ("No", 1);
-
-        if (cancel == 1)
-            alert.addButton ("Cancel", 2);
-
-#if !defined(AndroidBuild)
-        int result = alert.runModalLoop();
-#else
-        int result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
-#endif
-        return result;
-    }
-
+//    static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
+//    {
+//        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
+//        alert.setLookAndFeel (feel);
+//        alert.addButton ("Yes", 0);
+//        alert.addButton ("No", 1);
+//
+//        if (cancel == 1)
+//            alert.addButton ("Cancel", 2);
+//
+//#if !defined(AndroidBuild)
+//        int result = alert.runModalLoop();
+//#else
+//        int result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
+//#endif
+//        return result;
+//    }
+//
     //==========================================================================================
     static String cabbageString (String input, Font font, float availableWidth)
     {
@@ -367,7 +717,13 @@ public:
         return font;
     }
 
-
+    static Font getEmbeddedFont()
+    {
+        MemoryInputStream is(CabbageBinaryData::DroidSansMono_ttf, CabbageBinaryData::DroidSansMono_ttfSize, false);
+        CustomTypeface *newTypeface = new CustomTypeface(is);
+        Font myFont(newTypeface);
+        return myFont;
+    }
     //===================================================================
     static Font getTitleFont()
     {

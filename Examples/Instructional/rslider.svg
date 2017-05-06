@@ -13,7 +13,7 @@
    width="100"
    height="100"
    id="svg2"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="rslider.svg">
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -29,7 +29,7 @@
      id="namedview17"
      showgrid="false"
      inkscape:zoom="2.2061732"
-     inkscape:cx="253.9808"
+     inkscape:cx="186.2164"
      inkscape:cy="52.280419"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -106,5 +106,13 @@
      height="39.5779"
      x="41.06303"
      y="0.094946407"
+     rx="4.4029999" />
+  <rect
+     style="fill:none;fill-opacity:1;stroke:#666666;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     id="rect4145"
+     width="100"
+     height="100"
+     x="-0.45327356"
+     y="-0.17345873"
      rx="4.4029999" />
 </svg>

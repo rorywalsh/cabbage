@@ -10,8 +10,7 @@
 
 */
 
-#ifndef __APPHEADERFILE_CXJYJD__
-#define __APPHEADERFILE_CXJYJD__
+#pragma once
 
 #include "AppConfig.h"
 
@@ -46,5 +45,3 @@ namespace ProjectInfo
     const int          versionNumber  = 0x10000;
 }
 #endif
-
-#endif   // __APPHEADERFILE_CXJYJD__

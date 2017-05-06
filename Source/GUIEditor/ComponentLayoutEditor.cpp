@@ -10,7 +10,7 @@
 
 #include "ComponentLayoutEditor.h"
 #include "ComponentOverlay.h"
-#include "../Application/CabbageContentComponent.h"
+#include "../Application/CabbageMainComponent.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 /*
@@ -55,9 +55,9 @@ CabbagePluginEditor* ComponentLayoutEditor::getPluginEditor()
         return nullptr;
 }
 
-CabbageContentComponent* ComponentLayoutEditor::getContentComponent()
+CabbageMainComponent* ComponentLayoutEditor::getContentComponent()
 {
-    if (CabbageContentComponent* c = this->findParentComponentOfClass<CabbageContentComponent>())
+    if (CabbageMainComponent* c = this->findParentComponentOfClass<CabbageMainComponent>())
         return c;
     else
         return nullptr;

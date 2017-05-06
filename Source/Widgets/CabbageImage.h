@@ -25,12 +25,12 @@
 
 class CabbagePluginEditor;
 
-class CabbageImage : public Component, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageImage : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
 {
     String name, tooltipText, shape;
     File imgFile;
     CabbagePluginEditor* owner;
-    float corners;
+    float corners, cropx, cropy, cropwidth, cropheight;
     int lineThickness;
     ValueTree widgetData;
     Colour outlineColour, mainColour;
@@ -50,7 +50,7 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {}
-
+	void changeListenerCallback(ChangeBroadcaster* source);
     String getTooltip()
     {
         return tooltipText;

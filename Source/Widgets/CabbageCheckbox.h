@@ -37,8 +37,8 @@ public:
 
     CabbageCheckbox (ValueTree widgetData);
     ~CabbageCheckbox() {};
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
+    void valueTreeChildAdded (ValueTree&, ValueTree&) override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};

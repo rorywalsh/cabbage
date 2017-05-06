@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F45EEC13DDAED07EAC00F34AA3EB25D439E91056",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DEBAC9C6799FD4E8074B3BAF720718E3C3499FA0" : 0,
+    "F45EEC13DDAED07EAC00F34AA3EB25D439E91056" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "41A19E42-92DE-4857-96A2-42C10FD1AE5E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DEBAC9C6799FD4E8074B3BAF720718E3C3499FA0" : "JUCE\/",
+    "F45EEC13DDAED07EAC00F34AA3EB25D439E91056" : "cabaiste\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CabbagePlugin",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Builds\/MacOSX\/CabbagePlugin.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/julianstorer\/JUCE.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DEBAC9C6799FD4E8074B3BAF720718E3C3499FA0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/rorywalsh\/cabaiste.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F45EEC13DDAED07EAC00F34AA3EB25D439E91056"
+    }
+  ]
+}

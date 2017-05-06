@@ -276,7 +276,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, b
     if (button.getButtonText().isNotEmpty())
     {
         g.drawText (button.getButtonText(),
-                    textX, 0,
+                    textX, 1,
                     button.getWidth(), button.getHeight() - 3,
                     Justification::left, false);
     }
@@ -381,7 +381,6 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
     bool useSliderSVG = false;
     Image image;
     const File imgSlider (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgslider, "").toString());
-    //CabbageUtilities::debug(slider.getProperties().getWithDefault(CabbageIdentifierIds::imgsliderbg, "").toString());
     const File imgSliderBackground (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgsliderbg, "").toString());
 
     const int svgSliderWidthBg = slider.getProperties().getWithDefault ("svgsliderbgwidth", 100);
@@ -981,8 +980,8 @@ void CabbageLookAndFeel2::drawButtonText (Graphics& g, TextButton& button, bool 
     Font font (getTextButtonFont (button, button.getHeight()));
     g.setFont (font);
     g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
-                                                            : TextButton::textColourOffId)
-                       .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
+                                    : TextButton::textColourOffId)
+                 .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
 
     const int yIndent = jmin (4, button.proportionOfHeight (0.3f));
     const int cornerSize = jmin (button.getHeight(), button.getWidth()) / 2;
@@ -1146,3 +1145,9 @@ int CabbageLookAndFeel2::getScrollbarButtonSize (ScrollBar& scrollbar)
     return 2 + (scrollbar.isVertical() ? scrollbar.getWidth()
                 : scrollbar.getHeight());
 }
+
+Font CabbageLookAndFeel2::getLabelFont (Label& label)
+{
+    return CabbageUtilities::getComponentFont();
+}
+

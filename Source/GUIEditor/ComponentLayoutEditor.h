@@ -26,7 +26,7 @@
 class ComponentOverlay;
 class CabbagePluginEditor;
 class ComponentLayoutEditor;
-class CabbageContentComponent;
+class CabbageMainComponent;
 //=============================================================================
 class SelectedComponents   : public SelectedItemSet<ComponentOverlay*>
 {
@@ -64,7 +64,7 @@ public:
     Point<int> currentMouseCoors;
     void resetAllInterest();
     CabbagePluginEditor* getPluginEditor();
-    CabbageContentComponent* getContentComponent();
+    CabbageMainComponent* getContentComponent();
 
 private:
     virtual ComponentOverlay* createAlias (Component* child);

@@ -36,7 +36,6 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
-    //Logger::writeToLog (opcodeFile);
     setScrollbarThickness (20);
 
     if (File (opcodeFile).existsAsFile())
@@ -51,7 +50,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     autoCompleteListBox.setModel (this);
     autoCompleteListBox.addKeyListener (this);
     this->addKeyListener (this);
-    
+
     owner->addChildComponent (autoCompleteListBox);
     owner->addChildComponent (debugLabel);
     debugLabel.setColour (Label::backgroundColourId, Colours::whitesmoke);
@@ -265,6 +264,7 @@ void CabbageCodeEditorComponent::replaceText (String text, String replaceWith)
 //==============================================================================
 void CabbageCodeEditorComponent::sendUpdateMessage (int lineNumber)
 {
+	allowUpdateOfPluginGUI = false;
     const StringArray csdArray = getAllTextAsStringArray();
     const int cabbageSectionClosingLineNumber = csdArray.indexOf ("</Cabbage>");
 
@@ -638,7 +638,7 @@ void CabbageCodeEditorComponent::parseTextForVariables()    //this is called on 
 
     StringArray tokens;
     variableNames.clear();
-    tokens.addTokens (csdText, "  \n(),*%=\t", "");
+    tokens.addTokens (csdText, "  \n( ) ` ~ ! @ # $ % ^ & * - + = | \ { } [ ] : ; ' < > , . ? /\t", "");
 
 
 
@@ -656,7 +656,7 @@ void CabbageCodeEditorComponent::parseTextForVariables()    //this is called on 
 
 void CabbageCodeEditorComponent::handleAutoComplete (String text)
 {
-    if(owner->settings->getUserSettings()->getIntValue ("DisableAutoComplete"))
+    if (owner->settings->getUserSettings()->getIntValue ("DisableAutoComplete"))
     {
         const CodeDocument::Position pos1 = getDocument().findWordBreakBefore (getCaretPos());
         const CodeDocument::Position pos2 = getDocument().findWordBreakAfter (getCaretPos());
@@ -686,13 +686,15 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
 
 void CabbageCodeEditorComponent::removeUnlikelyVariables (String currentWord)
 {
+
     for ( int i = variableNamesToShow.size() ; i >= 0 ; i--)
     {
         if (variableNamesToShow[i].startsWith (currentWord) == false)
-        {			
-				variableNamesToShow.removeString (variableNamesToShow[i]);
+        {
+            variableNamesToShow.removeString (variableNamesToShow[i]);
         }
     }
+
 }
 
 void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
@@ -745,8 +747,6 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
             if (autoCompleteListBox.isVisible())
             {
                 const int selectedRow = autoCompleteListBox.getSelectedRow();
-
-                CabbageUtilities::debug (selectedRow);
 
                 if (key.getTextDescription().contains ("cursor down"))
                     autoCompleteListBox.selectRow (jmax (0, selectedRow) + 1);
@@ -958,6 +958,5 @@ StringArray CabbageCodeEditorComponent::getSelectedTextArray()
     StringArray tempArray;
     String selectedText = getTextInRange (this->getHighlightedRegion());
     tempArray.addLines (selectedText);
-    //Logger::writeToLog (selectedText);
     return tempArray;
 }

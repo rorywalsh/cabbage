@@ -28,8 +28,7 @@
   ==============================================================================
 */
 
-#ifndef JUCE_ANDROID_JNIHELPERS_H_INCLUDED
-#define JUCE_ANDROID_JNIHELPERS_H_INCLUDED
+#pragma once
 
 #if ! (defined (JUCE_ANDROID_ACTIVITY_CLASSNAME) && defined (JUCE_ANDROID_ACTIVITY_CLASSPATH))
  #error "The JUCE_ANDROID_ACTIVITY_CLASSNAME and JUCE_ANDROID_ACTIVITY_CLASSPATH macros must be set!"
@@ -150,7 +149,7 @@ private:
 //==============================================================================
 namespace
 {
-    String juceString (JNIEnv* env, jstring s)
+    inline String juceString (JNIEnv* env, jstring s)
     {
         const char* const utf8 = env->GetStringUTFChars (s, nullptr);
         CharPointer_UTF8 utf8CP (utf8);
@@ -159,17 +158,17 @@ namespace
         return result;
     }
 
-    String juceString (jstring s)
+    inline String juceString (jstring s)
     {
         return juceString (getEnv(), s);
     }
 
-    LocalRef<jstring> javaString (const String& s)
+    inline LocalRef<jstring> javaString (const String& s)
     {
         return LocalRef<jstring> (getEnv()->NewStringUTF (s.toUTF8()));
     }
 
-    LocalRef<jstring> javaStringFromChar (const juce_wchar c)
+    inline LocalRef<jstring> javaStringFromChar (const juce_wchar c)
     {
         char utf8[8] = { 0 };
         CharPointer_UTF8 (utf8).write (c);
@@ -224,6 +223,7 @@ private:
     \
         void initialiseFields (JNIEnv* env) \
         { \
+            ignoreUnused (env); \
             JNI_CLASS_MEMBERS (CREATE_JNI_METHOD, CREATE_JNI_STATICMETHOD, CREATE_JNI_FIELD, CREATE_JNI_STATICFIELD); \
         } \
     \
@@ -272,11 +272,11 @@ extern AndroidSystem android;
  METHOD (getClipboardContent,    "getClipboardContent",  "()Ljava/lang/String;") \
  METHOD (setClipboardContent,    "setClipboardContent",  "(Ljava/lang/String;)V") \
  METHOD (excludeClipRegion,      "excludeClipRegion",    "(Landroid/graphics/Canvas;FFFF)V") \
- METHOD (renderGlyph,            "renderGlyph",          "(CLandroid/graphics/Paint;Landroid/graphics/Matrix;Landroid/graphics/Rect;)[I") \
+ METHOD (renderGlyph,            "renderGlyph",          "(CCLandroid/graphics/Paint;Landroid/graphics/Matrix;Landroid/graphics/Rect;)[I") \
  STATICMETHOD (createHTTPStream, "createHTTPStream",     "(Ljava/lang/String;Z[BLjava/lang/String;I[ILjava/lang/StringBuffer;ILjava/lang/String;)L" JUCE_ANDROID_ACTIVITY_CLASSPATH "$HTTPStream;") \
  METHOD (launchURL,              "launchURL",            "(Ljava/lang/String;)V") \
  METHOD (showMessageBox,         "showMessageBox",       "(Ljava/lang/String;Ljava/lang/String;J)V") \
- METHOD (showOkCancelBox,        "showOkCancelBox",      "(Ljava/lang/String;Ljava/lang/String;J)V") \
+ METHOD (showOkCancelBox,        "showOkCancelBox",      "(Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;)V") \
  METHOD (showYesNoCancelBox,     "showYesNoCancelBox",   "(Ljava/lang/String;Ljava/lang/String;J)V") \
  STATICMETHOD (getLocaleValue,   "getLocaleValue",       "(Z)Ljava/lang/String;") \
  STATICMETHOD (getDocumentsFolder, "getDocumentsFolder", "()Ljava/lang/String;") \
@@ -299,6 +299,7 @@ extern AndroidSystem android;
  METHOD (requestRuntimePermission, "requestRuntimePermission", "(IJ)V" ) \
  METHOD (isPermissionGranted,     "isPermissionGranted", "(I)Z" ) \
  METHOD (isPermissionDeclaredInManifest, "isPermissionDeclaredInManifest", "(I)Z" ) \
+ METHOD (getSystemService,        "getSystemService",     "(Ljava/lang/String;)Ljava/lang/Object;") \
 
 DECLARE_JNI_CLASS (JuceAppActivity, JUCE_ANDROID_ACTIVITY_CLASSPATH);
 #undef JNI_CLASS_MEMBERS
@@ -351,5 +352,3 @@ DECLARE_JNI_CLASS (JuceThread, "java/lang/Thread");
 
 DECLARE_JNI_CLASS (RectClass, "android/graphics/Rect");
 #undef JNI_CLASS_MEMBERS
-
-#endif   // JUCE_ANDROID_JNIHELPERS_H_INCLUDED

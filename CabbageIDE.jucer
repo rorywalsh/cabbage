@@ -2,14 +2,14 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="4.3.0">
+              jucerVersion="4.3.1">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
-        <FILE id="XD0L4e" name="CabbageContentComponent.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageContentComponent.cpp"/>
-        <FILE id="OQA69B" name="CabbageContentComponent.h" compile="0" resource="0"
-              file="Source/Application/CabbageContentComponent.h"/>
+        <FILE id="XD0L4e" name="CabbageMainComponent.cpp" compile="1" resource="0"
+              file="Source/Application/CabbageMainComponent.cpp"/>
+        <FILE id="OQA69B" name="CabbageMainComponent.h" compile="0" resource="0"
+              file="Source/Application/CabbageMainComponent.h"/>
         <FILE id="IobAxt" name="CabbageDocumentWindow.cpp" compile="1" resource="0"
               file="Source/Application/CabbageDocumentWindow.cpp"/>
         <FILE id="su6diz" name="CabbageDocumentWindow.h" compile="0" resource="0"
@@ -64,6 +64,8 @@
         </GROUP>
       </GROUP>
       <GROUP id="{32AD2C91-57CE-D3EF-F185-2CD9A89DD7E1}" name="BinaryData">
+        <FILE id="vNeY7N" name="cabbage.png" compile="0" resource="1" file="Images/cabbage.png"
+              xcodeResource="1"/>
         <FILE id="T2eFRA" name="CabbageBinaryData.cpp" compile="1" resource="0"
               file="Source/BinaryData/CabbageBinaryData.cpp"/>
         <FILE id="LjmfNy" name="CabbageBinaryData.h" compile="0" resource="0"
@@ -279,12 +281,16 @@
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
-               extraDefs="MACOSX=1&#10;Cabbage_Build_IDE=1">
+               extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="vNeY7N"
+               bigIcon="vNeY7N">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
-                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"/>
+                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
+                       osxCompatibility="10.9 SDK" osxArchitecture="64BitUniversal"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
-                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"/>
+                       libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_video" path="../../juce"/>
@@ -298,21 +304,21 @@
         <MODULEPATH id="juce_core" path="../../juce"/>
         <MODULEPATH id="juce_audio_utils" path="../../juce"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce"/>
         <MODULEPATH id="juce_audio_devices" path="../../juce"/>
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="Cabbage_Build_IDE=1&#10;MSVC=1&#10;CABBAGE=1"
+    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
             externalLibraries="csound64.lib">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="Cabbage" headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound"
+                       isDebug="1" optimisation="1" targetName="Cabbage" headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"
                        libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="0" optimisation="3" targetName="Cabbage" libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"
-                       headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound"/>
+                       headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_video" path="../../juce"/>
@@ -326,10 +332,10 @@
         <MODULEPATH id="juce_core" path="../../juce"/>
         <MODULEPATH id="juce_audio_utils" path="../../juce"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce"/>
         <MODULEPATH id="juce_audio_devices" path="../../juce"/>
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </VS2015>
   </EXPORTFORMATS>
@@ -350,5 +356,6 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_ALSA="enabled" JUCE_JACK="enabled"/>
+  <JUCEOPTIONS JUCE_ALSA="enabled" JUCE_JACK="enabled" JUCE_WEB_BROWSER="disabled"
+               JUCE_ASIO="enabled"/>
 </JUCERPROJECT>
