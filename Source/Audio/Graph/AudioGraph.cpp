@@ -210,8 +210,8 @@ void AudioGraph::setDefaultConnections (int nodeId)
 
     bool connection1 = graph.addConnection (nodeId, 0, internalNodeIds[InternalNodes::AudioOutput], 0);
     bool connection2 = graph.addConnection (nodeId, 1, internalNodeIds[InternalNodes::AudioOutput], 1);
-	if(connection2 == false && connection1 == true)
-		graph.addConnection (nodeId, 0, internalNodeIds[InternalNodes::AudioOutput], 1);
+	//if(connection2 == false && connection1 == true)
+	//	graph.addConnection (nodeId, 0, internalNodeIds[InternalNodes::AudioOutput], 1);
 
 
     bool connection3 = graph.addConnection (internalNodeIds[InternalNodes::MIDIInput], AudioProcessorGraph::midiChannelIndex, nodeId, AudioProcessorGraph::midiChannelIndex);

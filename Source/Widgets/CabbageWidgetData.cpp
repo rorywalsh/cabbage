@@ -53,6 +53,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
+
     setProperty (widgetData, CabbageIdentifierIds::widgetarray, "");
 
     if (strTokens[0].trim() == "hslider")
@@ -525,7 +526,7 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
 	{
-        valueSet.identifier.add(identifiersInLine[i]);
+        valueSet.identifier.add(identifiersInLine[i].substring(identifiersInLine[i].indexOf(" ")));
 		valueSet.parameter.add(parameters[i].removeCharacters ("\""));
 	}
 

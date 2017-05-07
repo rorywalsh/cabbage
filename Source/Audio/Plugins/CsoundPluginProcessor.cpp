@@ -77,7 +77,8 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
 
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
-    numCsoundChannels = csound->GetNchnls();
+	//instrument must at least be stereo
+    numCsoundChannels = (csound->GetNchnls() == 1 ? 2 : csound->GetNchnls());
 
 //	AudioProcessor::Bus* ins = getBus (true, 0);
 //	ins->setCurrentLayout(AudioChannelSet::mono());
