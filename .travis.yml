@@ -1,7 +1,8 @@
 sudo: required
-dist: xenial
+dist: trusty
 
 language: cpp
+compiler: gcc
 
 git:
     depth: 10
@@ -18,11 +19,11 @@ before_install:
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - gcc-4.8
-    - g++-4.8
-    - clang
+      - gcc-6
+      - g++-6
+      - cmake
   coverity_scan:
     project:
       name: "rorywalsh/cabaiste"
@@ -77,4 +78,7 @@ before_script:
     - cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/
 
 script:
+    - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+    - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+    - gcc -v && g++ -v && cmake --version
     - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make -f MakeCabbageIDE ; fi    
