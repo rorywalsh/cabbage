@@ -279,7 +279,7 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
         const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText);
 		macroNames = macroNames.length() > 1 ? macroNames : "";
 
-        getCurrentCodeEditor()->insertCode (lineNumber, newText + macroNames, replaceExistingLine, parent.isEmpty());
+        getCurrentCodeEditor()->insertCode (lineNumber, newText + " " + macroNames, replaceExistingLine, parent.isEmpty());
 
     }
 }
