@@ -88,11 +88,12 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
 
             if (owner->csdCompiledWithoutError())
             {
-                table.addTable (44100,
-                                Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[y].toString()),
-                                (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine),
-                                ampRanges,
-                                tableNumber, this);
+				const int numberOfColours = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size();
+				const Colour tableCol = (y <= CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size() ?
+					Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[y].toString()) :
+					Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[numberOfColours].toString()));
+
+                table.addTable(44100, tableCol, (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine), ampRanges, tableNumber, this);
 
                 if (abs (genRoutine) == 1 || tableValues.size() >= MAX_TABLE_SIZE)
                 {
@@ -152,11 +153,9 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
     //set VU gradients based on tablecolours, take only the first three colours.
     Array<Colour> gradient;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size(); i++)
     {
-        //cUtils::debug(cAttr.getStringArrayPropValue(CabbageIDs::tablecolour, i));
-        gradient.add (Colours::red);
-        gradient.add (Colours::white);
+        gradient.add (Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[i].toString()));
     }
 
     table.setVUGradient (gradient);
