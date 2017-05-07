@@ -73,11 +73,11 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
 
     searchForMacros (linesFromCsd);
 
-	for (int i = linesFromCsd.size(); i >= 0;  i--)
-	{
-		if (linesFromCsd[i].trimStart().startsWith("#define"))
-			linesFromCsd.remove(i);
-	}
+	//for (int i = linesFromCsd.size(); i >= 0;  i--)
+	//{
+	//	if (linesFromCsd[i].trimStart().startsWith("#define"))
+	//		linesFromCsd.remove(i);
+	//}
 
     for ( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
     {
