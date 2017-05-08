@@ -101,8 +101,11 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == "encoder")
         setEncoderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "meter")
-        setMeterProperties (widgetData, ID);
+	else if (strTokens[0].trim() == "hmeter")
+		setMeterProperties(widgetData, ID, false);
+
+    else if (strTokens[0].trim() == "vmeter")
+        setMeterProperties (widgetData, ID, false);
 		
     else if (strTokens[0].trim() == "button")
         setButtonProperties (widgetData, ID);

@@ -61,10 +61,10 @@ CabbageMeter::CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner):
         gradientColours.add (Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::metercolour)[i].toString()));
     }	
 	
-    ColourGradient gradient (gradientColours[0], 0.f, 0.f, gradientColours[gradientColours.size()-1], getWidth(), getHeight(), false);
+
+    ColourGradient gradient(gradientColours[0], 0.f, 0.f, gradientColours[gradientColours.size()-1], getWidth(), getHeight(), false);
 	for (int i = 1; i < gradientColours.size()-1; i++)
-		gradient.addColour((float)i/(float)gradientColours.size(), gradientColours[i]);
-	
+		gradient.addColour((float)i/(float)gradientColours.size(), gradientColours[i]);	
 	colourGradient = gradient;
 	
 	addAndMakeVisible(rect);

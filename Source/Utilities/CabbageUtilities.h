@@ -645,9 +645,9 @@ public:
     static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
     {
 #if !defined(LINUX)
-			int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+			int messageBoxResult = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
 			"Warning", message, nullptr, nullptr);
-			return result;
+			return messageBoxResult;
 #endif
 
 		AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
@@ -658,10 +658,11 @@ public:
 		if (cancel == 1)
 			alert.addButton ("Cancel", 0);
 
+		int result; 
 #if !defined(AndroidBuild)
-		int result = alert.runModalLoop();
+		result = alert.runModalLoop();
 #else
-		int result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
+		result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
 #endif
 		return result;
 

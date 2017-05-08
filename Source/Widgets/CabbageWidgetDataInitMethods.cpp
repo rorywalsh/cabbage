@@ -427,7 +427,7 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
 
-void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID)
+void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool isisVertical)
 {
 	var meterColours;
     meterColours.append (Colours::lime.toString());
@@ -438,6 +438,8 @@ void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::height, 16);
     setProperty (widgetData, CabbageIdentifierIds::name, "meter");
     setProperty (widgetData, CabbageIdentifierIds::type, "meter");
+	setProperty(widgetData, CabbageIdentifierIds::orientation, isVertical == true : "vertical" : "horizontal");
+
     setProperty (widgetData, CabbageIdentifierIds::type, getProperty (widgetData, "name").toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::meterbackgroundcolour, Colours::transparentBlack.toString());

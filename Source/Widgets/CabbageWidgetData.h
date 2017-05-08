@@ -75,7 +75,7 @@ public:
     static void setHRangeSliderProperties (ValueTree widgetData, int ID);
     static void setVRangeSliderProperties (ValueTree widgetData, int ID);
     static void setLineProperties (ValueTree widgetData, int ID);
-	static void setMeterProperties (ValueTree widgetData, int ID);
+	static void setMeterProperties (ValueTree widgetData, int ID, bool isVertical);
     //============================================================================
     static float getNumProp (ValueTree widgetData, Identifier prop);
     static void setNumProp (ValueTree widgetData, Identifier prop, float val);

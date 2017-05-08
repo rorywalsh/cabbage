@@ -210,7 +210,6 @@ public:
         add ("numberbox");
         add ("xypad");
         add ("button");
-		add ("meter");
     }
 
     ~CabbageControlWidgetStrings() {}
@@ -245,6 +244,8 @@ public:
         add ("fftdisplay");
         add ("signaldisplay");
         add ("line");
+		add("vmeter");
+		add("hmeter");
         //sample widget
         add ("stepper");
     }
@@ -475,7 +476,8 @@ namespace CabbageWidgetTypes
     static const String fftdisplay = "fftdisplay";
     static const String signaldisplay = "signaldisplay";	
     static const String line = "line";
-	static const String meter = "meter";
+	static const String vmeter = "vmeter";
+	static const String hmeter = "hmeter";
 };
 namespace CabbageIdentifierIds
 {
