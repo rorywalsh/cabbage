@@ -427,6 +427,30 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
 
+void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID)
+{
+	var meterColours;
+    meterColours.append (Colours::lime.toString());
+    setProperty (widgetData, "basetype", "layout");
+    setProperty (widgetData, CabbageIdentifierIds::top, 10);
+    setProperty (widgetData, CabbageIdentifierIds::left, 10);
+    setProperty (widgetData, CabbageIdentifierIds::width, 80);
+    setProperty (widgetData, CabbageIdentifierIds::height, 16);
+    setProperty (widgetData, CabbageIdentifierIds::name, "meter");
+    setProperty (widgetData, CabbageIdentifierIds::type, "meter");
+    setProperty (widgetData, CabbageIdentifierIds::type, getProperty (widgetData, "name").toString());
+    setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
+    setProperty (widgetData, CabbageIdentifierIds::meterbackgroundcolour, Colours::transparentBlack.toString());
+	setProperty (widgetData, CabbageIdentifierIds::metercolour, meterColours);
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+    setProperty (widgetData, CabbageIdentifierIds::align, "centre");
+    setProperty (widgetData, CabbageIdentifierIds::fontstyle, 1);
+    setProperty (widgetData, CabbageIdentifierIds::channel, "");
+    setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
+    setProperty (widgetData, CabbageIdentifierIds::corners, 3);
+    setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+}
+
 void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, "basetype", "layout");
@@ -532,9 +556,7 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, "basetype", "layout");
     var tableColours;
-
-   // for ( int i = 0 ; i < 10 ; i++)
-        tableColours.append (Colours::lime.toString());
+    tableColours.append (Colours::lime.toString());
 
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);

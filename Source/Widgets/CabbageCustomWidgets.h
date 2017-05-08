@@ -23,6 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+class CabbagePluginEditor;
 
 // Add any new custom widgets here to avoid having to edit makefiles and projects
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
@@ -49,12 +50,27 @@ public:
 //add any new class declarations below this line..
 class CabbageMeter : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
+	CabbagePluginEditor* owner;
+	float level = 0;
+	Array<Colour> gradientColours;
+	ColourGradient colourGradient;
+	
+	class Overlay : public Component
+	{
+	public:
+		Colour colour;
+		Overlay(Colour colour):Component(), colour(colour) {}
+		void paint(Graphics& g){ 	g.fillAll(colour);	};
+	};
+	
+	Overlay rect;
 public:
 
-    CabbageMeter (ValueTree wData);
+    CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageMeter() {};
 
 	void paint (Graphics& g);
+	void resized();
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -64,10 +80,6 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
 
     ValueTree widgetData;
-	
-private:
-	float level = 0;
-	Array<Colour> gradientColours;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMeter);

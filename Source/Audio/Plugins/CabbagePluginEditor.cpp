@@ -231,6 +231,9 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::xypad)
         insertXYPad (cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::meter)
+        insertMeter (cabbageWidgetData);
+		
     else if (widgetType == CabbageWidgetTypes::hrange
              || widgetType == CabbageWidgetTypes::vrange)
         insertRangeSlider (cabbageWidgetData);
@@ -276,6 +279,14 @@ void CabbagePluginEditor::insertLabel (ValueTree cabbageWidgetData)
     components.add (label = new CabbageLabel (cabbageWidgetData, this));
     addToEditorAndMakeVisible (label, cabbageWidgetData);
     addMouseListenerAndSetVisibility (label, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertMeter (ValueTree cabbageWidgetData)
+{
+    CabbageMeter* meter;
+    components.add (meter = new CabbageMeter (cabbageWidgetData, this));
+    addToEditorAndMakeVisible (meter, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (meter, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertTextEditor (ValueTree cabbageWidgetData)

@@ -110,6 +110,7 @@ public:
     void insertTextBox (ValueTree cabbageWidgetData);
     void insertSignalDisplay (ValueTree cabbageWidgetData);
     void insertStepper (ValueTree cabbageWidgetData) {};
+	void insertMeter (ValueTree cabbageWidgetData);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
     // all these methods expose public methods in CabagePluginProcessor

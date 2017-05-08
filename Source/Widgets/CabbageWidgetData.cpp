@@ -101,6 +101,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == "encoder")
         setEncoderProperties (widgetData, ID);
 
+    else if (strTokens[0].trim() == "meter")
+        setMeterProperties (widgetData, ID);
+		
     else if (strTokens[0].trim() == "button")
         setButtonProperties (widgetData, ID);
 
@@ -435,6 +438,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("fontcolour:0"):
             case HashStringToInt ("menucolour"):
             case HashStringToInt ("tablebackgroundcolour"):
+			case HashStringToInt ("meterbackgroundcolour"):
             case HashStringToInt ("backgroundcolour"):
             case HashStringToInt ("keyseparatorcolour"):
             case HashStringToInt ("blacknotecolour"):
@@ -465,10 +469,14 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("tablecolour"):
             case HashStringToInt ("tablecolours"):
             case HashStringToInt ("tablecolour:"):
-                setTableColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx]);
+                setColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx]);
                 break;
 
-
+			case HashStringToInt ("metercolour"):
+			case HashStringToInt ("metercolour:"):
+                setColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx], false);
+                break;
+				
             //=================== sample identifiers for tutorial stepper class =============================
             case HashStringToInt ("numberofsteps"):
                 setProperty (widgetData, "numberofsteps", strTokens[0].trim().getFloatValue());
@@ -628,16 +636,18 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
     }
 }
 
-void CabbageWidgetData::setTableColourArrays (StringArray strTokens, ValueTree widgetData, String identifier)
+void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable)
 {
     const int colourIndex = identifier.substring (identifier.indexOf (":") + 1).getIntValue();
-    const var colours = getProperty (widgetData, CabbageIdentifierIds::tablecolour);
+    const var colours = getProperty (widgetData, isTable==true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour );
     var newColours = colours.clone();
 	for (int i = newColours.size(); i < colourIndex + 1; i++)
 		newColours.append(new Colour(0, 0, 0));
     newColours[colourIndex] = getColourFromText (strTokens.joinIntoString (",")).toString();
-    setProperty (widgetData, CabbageIdentifierIds::tablecolour, newColours);
+	setProperty (widgetData, isTable==true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour, newColours);
+
 }
+
 
 void CabbageWidgetData::setShapes (StringArray strTokens, ValueTree widgetData)
 {
@@ -1387,15 +1397,11 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
     if (getProperty (widgetData, CabbageIdentifierIds::tablecolour) != getProperty (tempData, CabbageIdentifierIds::tablecolour))
     {
         var colours = getProperty (widgetData, CabbageIdentifierIds::tablecolour);
-        var originalColours = getProperty (tempData, CabbageIdentifierIds::tablecolour);
 
         for ( int i = 0 ; i < colours.size() ; i++)
         {
-//            if (colours[i] != originalColours[i])
-//            {
                 const Colour col = Colour::fromString (colours[i].toString());
                 colourString = colourString << "tablecolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
-//            }
         }
     }
 

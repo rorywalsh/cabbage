@@ -18,6 +18,8 @@
 */
 
 #include "CabbageCustomWidgets.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
+
 
 DemoCabbageWidget::DemoCabbageWidget (ValueTree wData):
     widgetData (wData)
@@ -25,11 +27,6 @@ DemoCabbageWidget::DemoCabbageWidget (ValueTree wData):
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-	
-    for (int i = 0; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size(); i++)
-    {
-        //gradient.add (Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[i].toString()));
-    }
 	
 }
 
@@ -49,17 +46,35 @@ void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Id
 }
 //add any new custom widgets here to avoid having to edit makefiles and projects
 // ===========================================================================
-CabbageMeter::CabbageMeter (ValueTree wData):
-	widgetData (wData)
+CabbageMeter::CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner):
+	widgetData (wData),
+	owner(_owner),
+	rect(Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::meterbackgroundcolour).toString()))
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+	
+	CabbageUtilities::debug(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::metercolour).size());
+    for (int i = 0; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::metercolour).size(); i++)
+    {
+        gradientColours.add (Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::metercolour)[i].toString()));
+    }	
+	
+    ColourGradient gradient (gradientColours[0], 0.f, 0.f, gradientColours[gradientColours.size()-1], getWidth(), getHeight(), false);
+	for (int i = 1; i < gradientColours.size()-1; i++)
+		gradient.addColour((float)i/(float)gradientColours.size(), gradientColours[i]);
+	
+	colourGradient = gradient;
+	
+	addAndMakeVisible(rect);
+	
 }
 
 void CabbageMeter::paint (Graphics& g)
 {
-		
+	g.setGradientFill(colourGradient);
+	g.fillAll();
 }
 
 void CabbageMeter::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -67,6 +82,8 @@ void CabbageMeter::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     if (prop == CabbageIdentifierIds::value)
     {
         //set value. This is only needed for widgets that can have their value changed directly using a chnset
+		const float val = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+		rect.setBounds(0, 0, getWidth(), getHeight()*(1.f-val));
     }
     else
     {
@@ -75,4 +92,9 @@ void CabbageMeter::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 
         handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
 	}
+}
+
+void CabbageMeter::resized()
+{
+	rect.setBounds(0, 0, getWidth(), getHeight());
 }

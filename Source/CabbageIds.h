@@ -210,6 +210,7 @@ public:
         add ("numberbox");
         add ("xypad");
         add ("button");
+		add ("meter");
     }
 
     ~CabbageControlWidgetStrings() {}
@@ -305,6 +306,7 @@ public:
 		add ("scrubberposition_sample");
 		add ("scrubberposition_table");
         add ("tablebackgroundcolour");
+		add ("meterbackgroundcolour");
         add ("arrowbackgroundcolour");
 		add ("amprange_tablenumber");
 		add ("textboxoutlinecolour");
@@ -340,7 +342,10 @@ public:
         add ("identchannel");
         add ("fontcolour:0");
         add ("tablecolour:");
+		add ("metercolour:");
+		add ("orientation");
         add ("tablecolour");
+		add ("metercolour");
 		add ("widgetarray");
         add ("arrowcolour");
         add ("widgetarray");
@@ -470,6 +475,7 @@ namespace CabbageWidgetTypes
     static const String fftdisplay = "fftdisplay";
     static const String signaldisplay = "signaldisplay";	
     static const String line = "line";
+	static const String meter = "meter";
 };
 namespace CabbageIdentifierIds
 {
@@ -506,12 +512,14 @@ namespace CabbageIdentifierIds
     static const Identifier textcolour = "textcolour";
     static const Identifier trackercolour = "trackercolour";
     static const Identifier tablecolour = "tablecolour";
+	static const Identifier metercolour = "metercolour";
     static const Identifier fontcolour = "fontcolour";
     static const Identifier onfontcolour = "onfontcolour";
     static const Identifier menucolour = "menucolour";
     static const Identifier colour = "colour";
     static const Identifier oncolour = "oncolour";
     static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
+	static const Identifier meterbackgroundcolour = "meterbackgroundcolour";
     static const Identifier backgroundcolour = "backgroundcolour";
     static const Identifier items = "items";
     static const Identifier text = "text";
@@ -546,6 +554,7 @@ namespace CabbageIdentifierIds
     static const Identifier imgdebug = "imgdebug";
     static const Identifier imgfile = "imgfile";
     static const Identifier parentdir = "parentdir";
+    static const Identifier orientation = "orientation";
     static const Identifier corners = "corners";
     static const Identifier tablegridcolour = "tablegridcolour";
     static const Identifier sliderskew = "sliderskew";
@@ -768,14 +777,17 @@ public:
 		set ("Quantise", CabbageIdentifierIds::amprange_quantise.toString());
 		set ("Table Numbers", CabbageIdentifierIds::tablenumber.toString());
 		set ("Tables", CabbageIdentifierIds::tablecolour.toString());
+		set ("Meter", CabbageIdentifierIds::metercolour.toString());
 		set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
 		set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
+		set ("Meter Background", CabbageIdentifierIds::meterbackgroundcolour.toString());
 		set ("Fill", CabbageIdentifierIds::fill.toString());
 		set ("Zoom", CabbageIdentifierIds::zoom.toString());
 		set ("Start Index", CabbageIdentifierIds::startpos.toString());
 		set ("End Index", CabbageIdentifierIds::endpos.toString());
 		set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
 		set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
+		set ("Orientation", CabbageIdentifierIds::orientation.toString());
 		
     }
 };

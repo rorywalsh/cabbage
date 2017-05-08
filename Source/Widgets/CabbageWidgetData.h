@@ -75,6 +75,7 @@ public:
     static void setHRangeSliderProperties (ValueTree widgetData, int ID);
     static void setVRangeSliderProperties (ValueTree widgetData, int ID);
     static void setLineProperties (ValueTree widgetData, int ID);
+	static void setMeterProperties (ValueTree widgetData, int ID);
     //============================================================================
     static float getNumProp (ValueTree widgetData, Identifier prop);
     static void setNumProp (ValueTree widgetData, Identifier prop, float val);
@@ -88,7 +89,7 @@ public:
 	static var getVarArrayFromTokens(StringArray strTokens);
 	static void setChannelArrays(StringArray strTokens, ValueTree widgetData, String identifier);
 	static void setTextItemArrays(StringArray strTokens, ValueTree widgetData, String typeOfWidget);
-	static void setTableColourArrays(StringArray strTokens, ValueTree widgetData, String identifier);
+	static void setColourArrays(StringArray strTokens, ValueTree widgetData, String identifier, bool isTable = true);
 	static void setImageFiles(StringArray strTokens, ValueTree widgetData, String typeOfWidget);
 	static void setShapes(StringArray strTokens, ValueTree widgetData);
 	static void setBounds(StringArray strTokens, ValueTree widgetData);
