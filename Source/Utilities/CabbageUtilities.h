@@ -645,9 +645,9 @@ public:
     static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
     {
 #if !defined(LINUX)
-			int messageBoxResult = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
-			"Warning", message, nullptr, nullptr);
-			return messageBoxResult;
+		int messageBoxResult = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+		"Warning", message, nullptr, nullptr);
+		return messageBoxResult;
 #endif
 
 		AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
