@@ -518,6 +518,7 @@ void CabbageWidgetData::setGroupBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::plant, "");
     setProperty (widgetData, CabbageIdentifierIds::child, 0);
     setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1);
+	setProperty (widgetData, CabbageIdentifierIds::linethickness, 1);
     setProperty (widgetData, CabbageIdentifierIds::align, "centre");
     setProperty (widgetData, CabbageIdentifierIds::type, "groupbox");
     setProperty (widgetData, CabbageIdentifierIds::name, "groupbox");

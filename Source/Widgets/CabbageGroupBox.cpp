@@ -47,7 +47,7 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData)
     setTextLabelPosition (CabbageUtilities::getJustification (justification));
 
     getProperties().set ("outlinethickness", outlineThickness);
-	getProperties().set ("outlinethickness", lineThickness);
+	getProperties().set ("linethickness", lineThickness);
 
     getProperties().set ("cornersize", corners);
     setImgProperties (*this, wData, "groupbox");

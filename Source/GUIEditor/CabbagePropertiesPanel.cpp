@@ -608,7 +608,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTwoValueEditors (ValueTr
     {
         const int startPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos);
         comps.add (new TextPropertyComponent (Value (startPos), "Start Index", 200, false));
-        comps[comps.size() - 1]->setTooltip ("Startng value of indeex");
+        comps[comps.size() - 1]->setTooltip ("Starting value of index");
         const int endPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos);
         comps.add (new TextPropertyComponent (Value (endPos), "End Index", 200, false));
     }
