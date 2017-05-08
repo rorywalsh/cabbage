@@ -55,9 +55,7 @@ void CabbageFileButton::buttonClicked (Button* button)
                 if (fc.getResult().existsAsFile())
                 {
                     CabbageLookAndFeel2 lookAndFeel;
-                    //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-					const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
-						"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+                    const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
 
                     if (result == 1)
                     {

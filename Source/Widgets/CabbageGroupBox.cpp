@@ -28,6 +28,7 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData)
       outlineColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
       GroupComponent (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
       outlineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
+	  lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
       corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
       justification (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align))
 {
@@ -46,6 +47,7 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData)
     setTextLabelPosition (CabbageUtilities::getJustification (justification));
 
     getProperties().set ("outlinethickness", outlineThickness);
+	getProperties().set ("outlinethickness", lineThickness);
 
     getProperties().set ("cornersize", corners);
     setImgProperties (*this, wData, "groupbox");
@@ -80,6 +82,7 @@ void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     setText (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::text));
     getProperties().set ("cornersize", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::corners));
     getProperties().set ("outlinethickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness));
+	getProperties().set ("linethickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::linethickness));
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 }
 

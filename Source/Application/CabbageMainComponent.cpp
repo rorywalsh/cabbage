@@ -753,9 +753,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         {
             if (fc.getResult().withFileExtension ("csd").existsAsFile())
             {
-                //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", lookAndFeel);
-				const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
-					"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", lookAndFeel);
+				
                 if (result == 1)
 					writeFileToDisk(fc.getResult().withFileExtension (".csd"));
             }
@@ -809,9 +808,7 @@ void CabbageMainComponent::closeDocument()
     {
         if (getCurrentCodeEditor()->hasFileChanged() == true)
         {
-            //const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
-			const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
-				"Warning", "File has been modified, do you wish to save?", nullptr, nullptr);
+            const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
 
             if (result == 1)
             {

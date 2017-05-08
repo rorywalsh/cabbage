@@ -728,6 +728,8 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
     {
         var outline = valueTree.getProperty (CabbageIdentifierIds::outlinethickness);
         comps.add (new TextPropertyComponent (Value (outline), "Outline Thickness", 200, false));
+        var line = valueTree.getProperty (CabbageIdentifierIds::linethickness);
+        comps.add (new TextPropertyComponent (Value (line), "Line Thickness", 200, false));
     }
 
     else if (typeOfWidget == "gentable")
