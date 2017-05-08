@@ -37,6 +37,8 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
 #endif
 {
 
+    //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
+    
     CabbageUtilities::debug ("Plugin constructor");
     csound = new Csound();
 
@@ -75,7 +77,8 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
 
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
-    numCsoundChannels = csound->GetNchnls();
+	//instrument must at least be stereo
+    numCsoundChannels = (csound->GetNchnls() == 1 ? 2 : csound->GetNchnls());
 
 //	AudioProcessor::Bus* ins = getBus (true, 0);
 //	ins->setCurrentLayout(AudioChannelSet::mono());
@@ -343,34 +346,13 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     return true;
 #else
 
-	const int inputs = layouts.getNumChannels(true, 0);
-	const int outputs = layouts.getNumChannels(false, 0);
-    const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
-    const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
-    
-    if (mainInput.size() == numCsoundChannels && mainOutput.size() == numCsoundChannels)
+	const int inputs = layouts.getNumChannels(true, busIndex);
+	const int outputs = layouts.getNumChannels(false, busIndex);
+    //CabbageUtilities::debug("inputs:"+String(inputs)+" outputs:"+String(outputs));
+
+    if (inputs == numCsoundChannels && outputs == numCsoundChannels)
         return true;
 
-    //if(outputs>numCsoundChannels)
-    //    return false;
-	//if(layouts.getMainOutputChannelSet() == AudioChannelSet::octagonal())
-	//	jassertfalse;
-	//return true; 
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-//    if (layouts.getMainOutputChannelSet() == AudioChannelSet::mono()
-//        && layouts.getMainOutputChannelSet() == AudioChannelSet::stereo())
-//        return false;
-
-    // This checks if the input layout matches the output layout
-#if ! JucePlugin_IsSynth
-
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-
-#endif
-    
-    return true;
 #endif
 }
 #endif

@@ -1,7 +1,8 @@
 sudo: required
-dist: xenial
+dist: trusty
 
 language: cpp
+compiler: gcc
 
 git:
     depth: 10
@@ -16,6 +17,13 @@ before_install:
       - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-6
+      - g++-6
+      - cmake
   coverity_scan:
     project:
       name: "rorywalsh/cabaiste"
@@ -46,6 +54,7 @@ before_install:
         libasound2-dev
         libsndfile1
         libjack-dev
+        libwebkitgtk-3.0-dev
 
     - sudo apt-get update --fix-missing
     
@@ -69,4 +78,7 @@ before_script:
     - cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/
 
 script:
+    - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+    - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+    - gcc -v && g++ -v && cmake --version
     - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make -f MakeCabbageIDE ; fi    

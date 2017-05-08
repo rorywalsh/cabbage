@@ -53,6 +53,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
+
     setProperty (widgetData, CabbageIdentifierIds::widgetarray, "");
 
     if (strTokens[0].trim() == "hslider")
@@ -525,7 +526,7 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
 	{
-        valueSet.identifier.add(identifiersInLine[i]);
+        valueSet.identifier.add(identifiersInLine[i].substring(identifiersInLine[i].indexOf(" ")));
 		valueSet.parameter.add(parameters[i].removeCharacters ("\""));
 	}
 
@@ -632,6 +633,8 @@ void CabbageWidgetData::setTableColourArrays (StringArray strTokens, ValueTree w
     const int colourIndex = identifier.substring (identifier.indexOf (":") + 1).getIntValue();
     const var colours = getProperty (widgetData, CabbageIdentifierIds::tablecolour);
     var newColours = colours.clone();
+	for (int i = newColours.size(); i < colourIndex + 1; i++)
+		newColours.append(new Colour(0, 0, 0));
     newColours[colourIndex] = getColourFromText (strTokens.joinIntoString (",")).toString();
     setProperty (widgetData, CabbageIdentifierIds::tablecolour, newColours);
 }
@@ -1071,8 +1074,8 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
 
         }
     }
-
-    else
+	
+	else
     {
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
         {
@@ -1475,15 +1478,20 @@ String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentL
     for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
         oldIdentifiers.set (i, oldIdentifiers[i].trim().trimCharactersAtStart (" ,") + "),");
 
+	//get rid of identifiers are using default values..
+	for (int i = oldIdentifiers.size(); i >= 0; i--)
+		if (newIdentifiers.indexOf(oldIdentifiers[i].substring(0, oldIdentifiers[i].indexOf("("))) == -1)
+			oldIdentifiers.remove(i);
+
     for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
     {
-        const String ident = oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("));
+        const String oldIdent = oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("));
 
         for ( int y = newIdentifiers.size() ; y >= 0 ; y--)
         {
             const String newIdent = newIdentifiers[y].substring (0, newIdentifiers[y].indexOf ("("));
 
-            if (newIdent == ident)
+            if (newIdent == oldIdent)
             {
                 oldIdentifiers.set (i, newIdentifiers[y]);
                 newIdentifiers.remove (y);

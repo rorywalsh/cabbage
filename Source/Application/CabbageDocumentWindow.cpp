@@ -124,41 +124,23 @@ void CabbageDocumentWindow::maximiseButtonPressed()
     getContentComponent()->resizeAllEditorAndConsoles (getHeight());
 }
 
-int showYesNoMessage2 (String message, LookAndFeel* feel, int cancel = 0)
-{
-	AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
-	alert.setLookAndFeel (feel);
-	alert.addButton ("Yes", 0);
-	alert.addButton ("No", 1);
-
-	if (cancel == 1)
-		alert.addButton ("Cancel", 2);
-
-#if !defined(AndroidBuild)
-	int result = alert.runModalLoop();
-#else
-	int result = alert.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
-#endif
-	return result;
-}
-	
 void CabbageDocumentWindow::closeButtonPressed()
 {
     CabbageIDELookAndFeel lookAndFeel;
 
     if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
     {
-        const int result = showYesNoMessage2 ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
+        //const int result = showYesNoMessage2 ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
 
-		//const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::NoIcon,
-		//	"Warning", "Save changes made to Cabbage\npatch?", nullptr, nullptr);	
+		const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+			"Warning", "Save changes made to Cabbage\npatch?", nullptr, nullptr);	
 
-        if (result == 0)
+        if (result == 1)
         {
             if (getContentComponent()->getAudioGraph()->saveGraph() == FileBasedDocument::SaveResult::userCancelledSave)
                 return;
         }
-        else if (result == 1)
+        else if (result == 2)
         {
             JUCEApplicationBase::quit();
             return;
@@ -804,9 +786,11 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
         if (fc.getResult().existsAsFile())
         {
             CabbageIDELookAndFeel lookAndFeelTemp;
-            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
+            //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
+			const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+				"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
 
-            if (result == 0)
+            if (result == 1)
                 writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension);
         }
         else

@@ -115,11 +115,14 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked (int row, const MouseEvent&
 
             if (fc.getResult().existsAsFile())
             {
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-                command = ("scp " + ipAddress + ":" + filePath.joinIntoString ("") + "/" + getFileOrFolderName (name) + " "
+                //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+				const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
+					"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+				
+				command = ("scp " + ipAddress + ":" + filePath.joinIntoString ("") + "/" + getFileOrFolderName (name) + " "
                            + newFile.getFullPathName());
 
-                if (result == 0)
+                if (result == 1)
                 {
                     launchChildProcess (command);
                     owner->openFile (newFile.getFullPathName());

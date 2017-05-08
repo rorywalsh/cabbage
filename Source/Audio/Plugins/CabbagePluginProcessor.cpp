@@ -73,6 +73,12 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
 
     searchForMacros (linesFromCsd);
 
+	//for (int i = linesFromCsd.size(); i >= 0;  i--)
+	//{
+	//	if (linesFromCsd[i].trimStart().startsWith("#define"))
+	//		linesFromCsd.remove(i);
+	//}
+
     for ( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
     {
         if (linesFromCsd[lineNumber].equalsIgnoreCase ("</Cabbage>"))
@@ -104,7 +110,7 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         if ( currentLineOfCabbageCode.indexOf (";") > -1)
             currentLineOfCabbageCode = currentLineOfCabbageCode.substring (0, currentLineOfCabbageCode.indexOf (";"));
 
-        const String comments = currentLineOfCabbageCode.substring (currentLineOfCabbageCode.indexOf (";"));
+        const String comments = currentLineOfCabbageCode.indexOf(";") == -1 ? "" : currentLineOfCabbageCode.substring (currentLineOfCabbageCode.indexOf (";"));
         CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart (" \t") + " " + expandedMacroText + comments, lineNumber);
         CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber);
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
@@ -169,12 +175,15 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
         csdLine = csdLine.replace ("\n", " ");
         tokens.addTokens (csdLine, ", ");
 
+		CabbageUtilities::debug(tokens.joinIntoString(" "));
+
         if (tokens[0].containsIgnoreCase ("define"))
         {
             tokens.removeEmptyStrings();
 
             if (tokens.size() > 1)
             {
+				CabbageUtilities::debug(csdLine.substring(csdLine.indexOf(tokens[1]) + tokens[1].length()) + " ");
                 macroText.set ("$" + tokens[1], " " + csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ");
             }
         }
