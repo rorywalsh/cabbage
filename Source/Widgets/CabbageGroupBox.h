@@ -26,7 +26,7 @@
 
 class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
 {
-    int outlineThickness, corners, svgDebug;
+    int outlineThickness, lineThickness, corners, svgDebug;
     String text, colour, fontColour, justification, outlineColour;
     float rotate;
 

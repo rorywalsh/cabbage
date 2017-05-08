@@ -75,9 +75,8 @@ void CabbageProjectWindow::createNewFile (String type)
         if (fc.getResult().existsAsFile())
         {
             CabbageIDELookAndFeel lookAndFeel;
-            //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-			const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
-				"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+
             if (result == 1)
             {
                 writeNewFile (fc.getResult().withFileExtension (".csd"), csdText);

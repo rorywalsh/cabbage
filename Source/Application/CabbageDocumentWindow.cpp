@@ -130,10 +130,7 @@ void CabbageDocumentWindow::closeButtonPressed()
 
     if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
     {
-        //const int result = showYesNoMessage2 ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
-
-		const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
-			"Warning", "Save changes made to Cabbage\npatch?", nullptr, nullptr);	
+        const int result = CabbageUtilities::showYesNoMessage("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
 
         if (result == 1)
         {
@@ -786,9 +783,7 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
         if (fc.getResult().existsAsFile())
         {
             CabbageIDELookAndFeel lookAndFeelTemp;
-            //const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
-			const int result = NativeMessageBox::showYesNoCancelBox(AlertWindow::AlertIconType::WarningIcon,
-				"Warning", "Do you wish to overwrite\nexiting file?", nullptr, nullptr);
+            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
 
             if (result == 1)
                 writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension);

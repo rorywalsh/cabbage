@@ -176,6 +176,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
     g.fillAll (Colours::transparentBlack);
     File imgFile (group.getProperties().getWithDefault ("imggroupbox", "").toString());
     const int outlineThickness = group.getProperties().getWithDefault ("outlinethickness", 1);
+	const int lineThickness = group.getProperties().getWithDefault ("linethickness", 1);
 
 
     //if valid SVG file....
@@ -193,7 +194,6 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
     }
     else
     {
-
         int corners = group.getProperties().getWithDefault ("cornersize", 5);
         Colour col;
         g.setColour (group.findColour (TextButton::buttonColourId));
@@ -203,7 +203,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
         g.setColour (group.findColour (GroupComponent::outlineColourId));
         g.drawRoundedRectangle (0.5, 0.5, w - 1, h - 1, corners, outlineThickness);
 
-        if (outlineThickness > 0)
+        if (lineThickness > 0)
         {
             g.drawLine (10, 20, w - 10, 20, outlineThickness);
         }
