@@ -46,5 +46,30 @@ public:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoCabbageWidget);
 };
 
+//add any new class declarations below this line..
+class CabbageMeter : public Component, public ValueTree::Listener, public CabbageWidgetBase
+{
+public:
 
+    CabbageMeter (ValueTree wData);
+    ~CabbageMeter() {};
+
+	void paint (Graphics& g);
+
+    //ValueTree::Listener virtual methods....
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
+    void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
+    void valueTreeParentChanged (ValueTree&) override {};
+
+    ValueTree widgetData;
+	
+private:
+	float level = 0;
+	Array<Colour> gradientColours;
+
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMeter);
+};
 #endif  // CABBAGECUSTOMWIDGETS_H_INCLUDED

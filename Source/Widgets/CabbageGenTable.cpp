@@ -89,9 +89,9 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
             if (owner->csdCompiledWithoutError())
             {
 				const int numberOfColours = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size();
-				const Colour tableCol = (y <= CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size() ?
+				const Colour tableCol = (y < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size() ?
 					Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[y].toString()) :
-					Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[numberOfColours].toString()));
+					Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[numberOfColours-1].toString()));
 
                 table.addTable(44100, tableCol, (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine), ampRanges, tableNumber, this);
 

@@ -265,7 +265,12 @@ void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
     {
         var colours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
         var tableColours = colours.clone();
-        tableColours[colourPropertyMulti->currentColourIndex] = colourPropertyMulti->getCurrentColourString();
+		
+		if(colourPropertyMulti->currentColourIndex > tableColours.size()-1)
+			tableColours.append(colourPropertyMulti->getCurrentColourString());
+		else			
+			tableColours[colourPropertyMulti->currentColourIndex] = colourPropertyMulti->getCurrentColourString();
+			
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::tablecolour, tableColours);
         sendChangeMessage();    //update code in editor when changes are made...
     }

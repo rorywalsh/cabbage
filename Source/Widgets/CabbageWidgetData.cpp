@@ -1391,11 +1391,11 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
 
         for ( int i = 0 ; i < colours.size() ; i++)
         {
-            if (colours[i] != originalColours[i])
-            {
+//            if (colours[i] != originalColours[i])
+//            {
                 const Colour col = Colour::fromString (colours[i].toString());
                 colourString = colourString << "tablecolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
-            }
+//            }
         }
     }
 

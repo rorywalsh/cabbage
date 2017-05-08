@@ -25,6 +25,12 @@ DemoCabbageWidget::DemoCabbageWidget (ValueTree wData):
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+	
+    for (int i = 0; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size(); i++)
+    {
+        //gradient.add (Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[i].toString()));
+    }
+	
 }
 
 void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -41,4 +47,32 @@ void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Id
         handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
     }
 }
-//add any new custom widgets here to avoid having to eidt makefiles and projects
+//add any new custom widgets here to avoid having to edit makefiles and projects
+// ===========================================================================
+CabbageMeter::CabbageMeter (ValueTree wData):
+	widgetData (wData)
+{
+    setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
+    widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+}
+
+void CabbageMeter::paint (Graphics& g)
+{
+		
+}
+
+void CabbageMeter::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+{
+    if (prop == CabbageIdentifierIds::value)
+    {
+        //set value. This is only needed for widgets that can have their value changed directly using a chnset
+    }
+    else
+    {
+
+
+
+        handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
+	}
+}
