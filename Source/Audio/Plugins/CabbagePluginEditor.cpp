@@ -231,7 +231,7 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::xypad)
         insertXYPad (cabbageWidgetData);
 
-    else if (widgetType == CabbageWidgetTypes::meter)
+    else if (widgetType == CabbageWidgetTypes::vmeter || widgetType == CabbageWidgetTypes::vmeter)
         insertMeter (cabbageWidgetData);
 		
     else if (widgetType == CabbageWidgetTypes::hrange
