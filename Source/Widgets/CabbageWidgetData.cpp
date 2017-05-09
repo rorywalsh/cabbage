@@ -105,7 +105,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
 		setMeterProperties(widgetData, ID, false);
 
     else if (strTokens[0].trim() == "vmeter")
-        setMeterProperties (widgetData, ID, false);
+        setMeterProperties (widgetData, ID, true);
 		
     else if (strTokens[0].trim() == "button")
         setButtonProperties (widgetData, ID);
@@ -441,7 +441,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("fontcolour:0"):
             case HashStringToInt ("menucolour"):
             case HashStringToInt ("tablebackgroundcolour"):
-			case HashStringToInt ("meterbackgroundcolour"):
+			case HashStringToInt ("overlaycolour"):
             case HashStringToInt ("backgroundcolour"):
             case HashStringToInt ("keyseparatorcolour"):
             case HashStringToInt ("blacknotecolour"):
@@ -1397,6 +1397,12 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         colourString = colourString << "tablebackgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
 
+    if (getStringProp (widgetData, CabbageIdentifierIds::overlaycolour) != getStringProp (tempData, CabbageIdentifierIds::overlaycolour))
+    {
+        const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::overlaycolour));
+        colourString = colourString << "overlaycolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+    }
+	
     if (getProperty (widgetData, CabbageIdentifierIds::tablecolour) != getProperty (tempData, CabbageIdentifierIds::tablecolour))
     {
         var colours = getProperty (widgetData, CabbageIdentifierIds::tablecolour);
@@ -1408,6 +1414,17 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         }
     }
 
+    if (getProperty (widgetData, CabbageIdentifierIds::metercolour) != getProperty (tempData, CabbageIdentifierIds::metercolour))
+    {
+        var colours = getProperty (widgetData, CabbageIdentifierIds::metercolour);
+
+        for ( int i = 0 ; i < colours.size() ; i++)
+        {
+                const Colour col = Colour::fromString (colours[i].toString());
+                colourString = colourString << "metercolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        }
+    }
+	
     if (getStringProp (widgetData, CabbageIdentifierIds::textcolour) != getStringProp (tempData, CabbageIdentifierIds::textcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::textcolour));

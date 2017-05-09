@@ -244,8 +244,8 @@ public:
         add ("fftdisplay");
         add ("signaldisplay");
         add ("line");
-		add("vmeter");
-		add("hmeter");
+		add ("vmeter");
+		add ("hmeter");
         //sample widget
         add ("stepper");
     }
@@ -307,7 +307,6 @@ public:
 		add ("scrubberposition_sample");
 		add ("scrubberposition_table");
         add ("tablebackgroundcolour");
-		add ("meterbackgroundcolour");
         add ("arrowbackgroundcolour");
 		add ("amprange_tablenumber");
 		add ("textboxoutlinecolour");
@@ -328,6 +327,7 @@ public:
         add ("titlebarcolour");
         add ("tablegridcolor");
         add ("signalvariable");
+		add ("overlaycolour");
         add ("linethickness");
         add ("outlinecolour");
         add ("numberofsteps");
@@ -521,7 +521,7 @@ namespace CabbageIdentifierIds
     static const Identifier colour = "colour";
     static const Identifier oncolour = "oncolour";
     static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
-	static const Identifier meterbackgroundcolour = "meterbackgroundcolour";
+	static const Identifier overlaycolour = "overlaycolour";
     static const Identifier backgroundcolour = "backgroundcolour";
     static const Identifier items = "items";
     static const Identifier text = "text";
@@ -782,7 +782,7 @@ public:
 		set ("Meter", CabbageIdentifierIds::metercolour.toString());
 		set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
 		set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
-		set ("Meter Background", CabbageIdentifierIds::meterbackgroundcolour.toString());
+		set ("Overlay Colour", CabbageIdentifierIds::overlaycolour.toString());
 		set ("Fill", CabbageIdentifierIds::fill.toString());
 		set ("Zoom", CabbageIdentifierIds::zoom.toString());
 		set ("Start Index", CabbageIdentifierIds::startpos.toString());

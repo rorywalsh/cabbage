@@ -436,20 +436,20 @@ void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool i
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 80);
     setProperty (widgetData, CabbageIdentifierIds::height, 16);
-    setProperty (widgetData, CabbageIdentifierIds::name, "meter");
-    setProperty (widgetData, CabbageIdentifierIds::type, "meter");
+    setProperty (widgetData, CabbageIdentifierIds::name, isVertical == true ? "vmeter" : "hmeter");
+    setProperty (widgetData, CabbageIdentifierIds::name, isVertical == true ? "vmeter" : "hmeter");
 	setProperty(widgetData, CabbageIdentifierIds::orientation, isVertical == true ? "vertical" : "horizontal");
 
     setProperty (widgetData, CabbageIdentifierIds::type, getProperty (widgetData, "name").toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
-    setProperty (widgetData, CabbageIdentifierIds::meterbackgroundcolour, Colours::transparentBlack.toString());
+    setProperty (widgetData, CabbageIdentifierIds::overlaycolour, Colours::transparentBlack.toString());
 	setProperty (widgetData, CabbageIdentifierIds::metercolour, meterColours);
-    setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
-    setProperty (widgetData, CabbageIdentifierIds::align, "centre");
-    setProperty (widgetData, CabbageIdentifierIds::fontstyle, 1);
+	setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::white.toString());
+	setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1);
+	setProperty (widgetData, CabbageIdentifierIds::value, 1);
+	setProperty (widgetData, CabbageIdentifierIds::corners, 3);
     setProperty (widgetData, CabbageIdentifierIds::channel, "");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
-    setProperty (widgetData, CabbageIdentifierIds::corners, 3);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
 

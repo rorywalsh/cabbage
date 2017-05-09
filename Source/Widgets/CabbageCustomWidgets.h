@@ -54,6 +54,10 @@ class CabbageMeter : public Component, public ValueTree::Listener, public Cabbag
 	float level = 0;
 	Array<Colour> gradientColours;
 	ColourGradient colourGradient;
+	Colour outlineColour;
+	float outlineThickness = 1; 
+	int corners = 2;
+	bool isVertical = true;
 	
 	class Overlay : public Component
 	{
@@ -63,7 +67,7 @@ class CabbageMeter : public Component, public ValueTree::Listener, public Cabbag
 		void paint(Graphics& g){ 	g.fillAll(colour);	};
 	};
 	
-	Overlay rect;
+	Overlay overlayRect;
 public:
 
     CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner);
@@ -78,7 +82,7 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-
+	void setValue(ValueTree& valueTree);
     ValueTree widgetData;
 
 
