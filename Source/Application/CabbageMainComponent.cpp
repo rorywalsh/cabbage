@@ -93,6 +93,10 @@ void CabbageMainComponent::buttonClicked (Button* button)
 
 void CabbageMainComponent::handleFileTab (FileTabButton* tabButton)
 {
+	CabbageUtilities::debug(tabButton->getFilename());
+	if(tabButton->getName().contains("html"))
+		jassert(false);
+		
     currentFileIndex = fileTabs.indexOf (tabButton);
 	editorAndConsole[currentFileIndex]->toFront(true);
 	//bringCodeEditorToFront(openFiles[currentFileIndex]);
@@ -354,7 +358,9 @@ Image CabbageMainComponent::createBackground()
 void CabbageMainComponent::addFileTabButton (File file)
 {
     FileTabButton* fileButton;
-    fileTabs.add (fileButton = new FileTabButton (file.getFileName(), file.getFullPathName()));
+	CabbageUtilities::debug(file.getFullPathName());
+    fileTabs.add (fileButton = new FileTabButton(file.getFileName(), file.getFullPathName(), file.hasFileExtension(".html") ? false : true));
+	
 
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
@@ -399,7 +405,7 @@ void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
     }
 }
 //==============================================================================
-void CabbageMainComponent::resizeAllEditorAndConsoles (int height)
+void CabbageMainComponent::resizeAllWindows (int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
 
@@ -407,6 +413,11 @@ void CabbageMainComponent::resizeAllEditorAndConsoles (int height)
     {
         editor->statusBar.setSize (getWidth(), 28);
         editor->setBounds (0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight()-5);
+    }
+	
+    for ( WebBrowserComponent* browser : htmlHelpPages )
+    {
+        browser->setBounds (0, height, getWidth(), getHeight()-5);
     }
 
     arrangeFileTabButtons();
@@ -710,6 +721,32 @@ const File CabbageMainComponent::openFile (String filename)
 
 }
 //==================================================================================
+void CabbageMainComponent::launchHelpfile()
+{
+	CodeDocument::Position pos1, pos2;
+	pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
+	pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
+	String opcode = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2);
+	CabbageUtilities::debug(opcode);
+	
+	WebBrowserComponent* htmlPage;
+	htmlHelpPages.add(htmlPage = new WebBrowserComponent());
+	addAndMakeVisible(htmlPage);
+	const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue("CsoundManualDir");
+	const String url = csoundHelpDir+"/"+opcode.trim()+String(".html");
+	openFiles.add(url);
+	if(File(url).existsAsFile())
+		htmlPage->goToURL("file://" + url);
+	htmlPage->setVisible(true);
+	
+	numberOfFiles = editorAndConsole.size() + htmlHelpPages.size();
+    currentFileIndex = editorAndConsole.size() + htmlHelpPages.size() - 1;
+	addFileTabButton (openFiles[numberOfFiles - 1]);
+	repaint();
+	resized();
+}
+
+//==================================================================================
 void CabbageMainComponent::createCodeEditorForFile(File file)
 {
     CabbageEditorContainer* editorConsole;
@@ -1005,7 +1042,8 @@ void CabbageMainComponent::resized()
         propertyPanel->setBounds (getWidth() - 200, toolbar.getHeight(), 200, getHeight() - toolbar.getHeight());
     }
 
-    resizeAllEditorAndConsoles (toolbarThickness + heightOfTabButtons);
+    resizeAllWindows (toolbarThickness + heightOfTabButtons);
+	
 
     if (findPanel != nullptr)
     {

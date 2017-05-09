@@ -89,7 +89,10 @@ namespace CommandIDs
         nextError               = 0x4100b1,
         prevError               = 0x4100b2,
 
-        about             = 0x4100c1,
+        about             		= 0x4100c1,
+		cabbageHelp             = 0x4100c2,
+		csoundHelp	            = 0x4100c3,
+		contextHelp				= 0x4100c4,
 
         undo            = 0x512011,
         redo            = 0x512012,
