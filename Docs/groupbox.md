@@ -4,9 +4,9 @@ Groupbox creates a container for other GUI widgets. They do not communicate with
 
 ```csharp
 groupbox bounds(x, y, width, height), text("Caption"), \
-colour("colour"), fontcolour("colour"), line(value), plant("name"), \
+colour("colour"), fontcolour("colour"), linethinckness(value), plant("name"), \
 popup(val), child(val), visible(val), alpha(val), show(val), \
-identchannel("channel"), rotate(radians, pivotx, pivoty), \
+identchannel("channel"), rotate(radians, pivotx, pivoty), outlinethickness(val) \
 widgetarray("chan", number), active(val), svgfile("filename")
 ```
 <!--(End of syntax)/-->
@@ -20,7 +20,9 @@ widgetarray("chan", number), active(val), svgfile("filename")
 
 **fontcolour("colour")** Sets the colour of the font to appear on the groupbox. See above for details on valid colours. .
 
-**linethickess(value)** Sets the thickness of the line that appears on a groupbox. Set to 0 to disable the line. 
+**outlinethickess(value)** Sets the thickness of the line that appears around a groupbox. Set to 0 to disable. 
+
+**linethickess(value)** Sets the thickness of the line that appears under the groupbox name. Set to 0 to disable. 
 
 **plant("name")** Sets the name of the plant. No two plants can have the same name. See [Plants](./plants.md)
 

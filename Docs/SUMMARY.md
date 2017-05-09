@@ -22,6 +22,7 @@
 	* [Keyboard](keyboard.md)
 	* [Labels](label.md)
 	* [Listbox](listbox.md)
+	* [Meteres](meter.md)
 	* [SignalDisplay](signaldisplay.md)
 	* [Sliders](sliders.md)	
 	* [Soundfiler](soundfiler.md)
