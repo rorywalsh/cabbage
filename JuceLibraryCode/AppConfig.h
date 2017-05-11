@@ -193,7 +193,7 @@
 // juce_audio_devices flags:
 
 #ifndef    JUCE_ASIO
- //#define JUCE_ASIO
+ #define   JUCE_ASIO 1
 #endif
 
 #ifndef    JUCE_WASAPI
@@ -360,7 +360,7 @@
 // juce_gui_extra flags:
 
 #ifndef    JUCE_WEB_BROWSER
- #define   JUCE_WEB_BROWSER 0
+ #define   JUCE_WEB_BROWSER 1
 #endif
 
 #ifndef    JUCE_ENABLE_LIVE_CONSTANT_EDITOR
