@@ -356,6 +356,6 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_ALSA="enabled" JUCE_JACK="enabled" JUCE_WEB_BROWSER="disabled"
+  <JUCEOPTIONS JUCE_ALSA="enabled" JUCE_JACK="enabled" JUCE_WEB_BROWSER="enabled"
                JUCE_ASIO="enabled"/>
 </JUCERPROJECT>
