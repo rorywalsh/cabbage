@@ -1,5 +1,0 @@
-Cabbage widgets can loosly be split into two groups, interactive widgets and non-interactive widgets. Each interactive widget, such as a slider, a button, etc., will be accessible in a plugin host. The non-interactive widgets, such as group boxes and images, can only be controlled manually, or via Csound. The name that appears beside each native slider in the plugin host will be the assigned channel name for that widget. 
-
-Each Cabbage widget has a corresponding set of identifiers that can be set to control its appearance and behaviour. Not all widgets support the same identifiers however. For example, a groupbox will never need to have a channel assigned to it because it's a static control. Likewise buttons don't need to use the range() identifier. Parameters within quotation marks represent string values, while those without represent floating point decimals, or integer values. Below is a detailed overview of each widget available in Cabbage, and the corresponding identifiers that can be used with it.
-
-bounds() must be set for every widget. All other identifiers will be given default values if none are set.  

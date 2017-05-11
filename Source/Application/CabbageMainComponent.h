@@ -57,7 +57,7 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-    void resizeAllEditorAndConsoles (int height);
+    void resizeAllWindows (int height);
     void createEditorForAudioGraphNode(Point<int> position);
     void createAudioGraph();
     void createCodeEditorForFile(File file);
@@ -122,10 +122,12 @@ public:
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
+	OwnedArray<WebBrowserComponent> htmlHelpPages;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
 	//==============================================================================
 	void timerCallback();
+	void launchHelpfile();
 	
 private:
 	OwnedArray<FileTabButton> fileTabs;  
@@ -153,6 +155,7 @@ private:
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
 	NamedValueSet nodeIdsForPlugins;
+	
 
 	class AudioGraphDocumentWindow : public DocumentWindow
 	{
@@ -180,6 +183,7 @@ class FileTabButton : public TextButton
 {
 	DrawableButton play, close, showEditor, editGUI;
 	String filename;
+	bool isCsdFile;
 
 	class Overlay : public Component
 	{
@@ -195,14 +199,15 @@ class FileTabButton : public TextButton
 public:
 
 	
-	FileTabButton(String name, String filename): 
+	FileTabButton(String name, String filename, bool csdFile = true): 
 		TextButton(name, filename),
 		filename(filename),
 		play("Play", DrawableButton::ButtonStyle::ImageStretched), 
 		close("", DrawableButton::ButtonStyle::ImageStretched),
 		showEditor("", DrawableButton::ButtonStyle::ImageStretched), 
 		editGUI("", DrawableButton::ButtonStyle::ImageStretched),
-		overlay()
+		overlay(),
+		isCsdFile(csdFile)
 	{	
 		addChildComponent(overlay);
 		overlay.setVisible(false);
@@ -268,11 +273,14 @@ public:
 	
 	void resized()
 	{	
-		overlay.setBounds(5,3,125, 25);	
-		play.setBounds(5, 3, 60, 25);
+		if(isCsdFile == true)
+		{
+			overlay.setBounds(5,3,125, 25);	
+			play.setBounds(5, 3, 60, 25);
+			showEditor.setBounds(67, 3, 30, 25);
+			editGUI.setBounds(99, 3, 30, 25);
+		}
 		close.setBounds(getWidth()-22, 3, 20, 20);
-		showEditor.setBounds(67, 3, 30, 25);
-		editGUI.setBounds(99, 3, 30, 25);
 	}
 	
 	void setDrawableImages(DrawableButton& button, int width, int height, String type)

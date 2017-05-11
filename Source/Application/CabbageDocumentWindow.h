@@ -48,6 +48,7 @@ public:
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);
+	void createHelpMenu(PopupMenu&);
     void createBuildMenu (PopupMenu&);
     void createColourSchemeItems (PopupMenu&);
     void createWindowMenu (PopupMenu&);

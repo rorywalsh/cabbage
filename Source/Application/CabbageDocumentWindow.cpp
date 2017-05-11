@@ -121,7 +121,7 @@ CabbageMainComponent* CabbageDocumentWindow::getContentComponent()
 
 void CabbageDocumentWindow::maximiseButtonPressed()
 {
-    getContentComponent()->resizeAllEditorAndConsoles (getHeight());
+    getContentComponent()->resizeAllWindows (getHeight());
 }
 
 void CabbageDocumentWindow::closeButtonPressed()
@@ -152,7 +152,7 @@ void CabbageDocumentWindow::closeButtonPressed()
 
 StringArray CabbageDocumentWindow::getMenuBarNames()
 {
-    const char* const names[] = { "File", "Edit", "Tools", "View", nullptr };
+    const char* const names[] = { "File", "Edit", "Tools", "View", "Help", nullptr };
     return StringArray (names);
 }
 
@@ -167,6 +167,7 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
     else if (menuName == "Build")       createBuildMenu  (menu);
     else if (menuName == "Window")      createWindowMenu (menu);
     else if (menuName == "Tools")       createToolsMenu  (menu);
+	else if (menuName == "Help")        createHelpMenu   (menu);
     else                                jassertfalse; // names have changed?
 
     return menu;
@@ -301,6 +302,14 @@ void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
     menu.addSeparator();
 }
 
+void CabbageDocumentWindow::createHelpMenu (PopupMenu& menu)
+{
+    menu.addCommandItem (&commandManager, CommandIDs::cabbageHelp);
+    menu.addCommandItem (&commandManager, CommandIDs::csoundHelp);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::contextHelp);
+    menu.addSeparator();
+}
 
 void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIndex)
 {
@@ -364,6 +373,9 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::showGraph,
                               CommandIDs::about,
                               CommandIDs::startLiveDebugger,
+							  CommandIDs::csoundHelp,
+							  CommandIDs::cabbageHelp,
+							  CommandIDs::contextHelp,
                               CommandIDs::showGenericWidgetWindow
                             };
 
@@ -575,7 +587,23 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setTicked (getContentComponent()->getCurrentCodeEditor() == nullptr ? false : getContentComponent()->getCurrentCodeEditor()->isDebugModeEnabled());
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
+			
+		// help command
+        case CommandIDs::csoundHelp:
+            result.setInfo (TRANS ("Csound Manual"), TRANS ("Open Csound manual"), "Help", 0);
+            result.defaultKeypresses.add (KeyPress ('2', ModifierKeys::commandModifier, 0));
+            break;
+			
+		case CommandIDs::cabbageHelp:
+            result.setInfo (TRANS ("Cabbage Manual"), TRANS ("Open Cabbage manual"), "Help", 0);
+            result.defaultKeypresses.add (KeyPress ('3', ModifierKeys::commandModifier, 0));
+            break;
 
+		case CommandIDs::contextHelp:
+            result.setInfo (TRANS ("Context Help"), TRANS ("Context Help"), "Help", 0);
+            result.defaultKeypresses.add (KeyPress ('1', ModifierKeys::commandModifier, 0));
+            break;
+			
         default:
 
             break;
@@ -719,6 +747,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::showGraph:
             getContentComponent()->showGraph();
             break;
+			
+		case CommandIDs::contextHelp:
+            getContentComponent()->launchHelpfile();
+            break;
+
 
         case CommandIDs::editMode:
             getContentComponent()->setEditMode (isGUIEnabled = ! isGUIEnabled);

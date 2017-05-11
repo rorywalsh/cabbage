@@ -5,7 +5,7 @@ Gentable displays the contents of a function table, multiple tables, or files. F
 
 ```csharp
 gentable bounds(x, y, width, height), tableNumber(1, 2, ...), \
-tablecolour("colour1", "colour2", ...), amprange(min, max, tablenumber, y-quantise),\
+tablecolour:N("colour1"), amprange(min, max, tablenumber, y-quantise),\
 tablegridcolour("colour"), tablebackgroundcolour("colour"), samplerange(min, max),\
 zoom(val), outlinethickness(val), identchannel("channel"), \
 alpha(val), visible(val), scrubberposition(val), \
@@ -28,8 +28,7 @@ rotate(radians, pivotx, pivoty), widgetarray("chan", number), active(val)
 
 **tablegridcolour("colour")** Sets the colour of the grid to be drawn. If you don't want a grid to be drawn set this colour to transparent, i.e., 0,0,0,0. See above for details on valid colours.
 
-**tablecolour("colour1", "colour2", ...)** Sets the colour of the table. If you leave this identifier out default colours will be chosen for the tables. If the table size is equal or less than two, the colours passed to tablecolour() will form a gradient fill or three colours.  
->The tablecolour() identifier will not work with RGBA/RGB values. You must instead use a valid CSS colour name. 
+**tablecolour:N("colour1")** Sets the colour of the table N. If you leave this identifier out default colours will be chosen for the tables. 
 
 **file("filename")** Sets a file for the table to display. Unlike the tablenumber() identifier, which depends on the existence of a valid function table, file() will simply display a file from disk. This can be useful if you are using one of Csound's file reading opcodes. File are always shown as table 0, and will always be the first table created. Therefore it will always take the first colour passed to the tablecolour list. If you wish to load a file after the gentable widget has been created you will need to pass a dummy filename to file() so that the underlying table gets created. If not, calling the file() identifier with an identchannel() will not work.  
 >The background grid is disabled when working with a table that use the file() identifier. 
