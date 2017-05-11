@@ -95,7 +95,6 @@ void CabbageMainComponent::handleFileTab (FileTabButton* tabButton)
 {
     currentFileIndex = fileTabs.indexOf (tabButton);
 	editorAndConsole[currentFileIndex]->toFront(true);
-	CabbageUtilities::debug(getCurrentCodeEditor()->getFirstLineNumber());
 	//getCurrentCodeEditor()->scrollToLine(10);
 	
 	//bringCodeEditorToFront(openFiles[currentFileIndex]);

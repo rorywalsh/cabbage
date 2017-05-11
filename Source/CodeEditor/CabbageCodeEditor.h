@@ -37,7 +37,6 @@ class CabbageCodeEditorComponent :
 {
 	
 	int lastLinePosition = 0;
-	int firstLineOnScreen = 0;
     int searchStartIndex  = 0;
     Component* statusBar;
     int listBoxRowHeight = 18;
@@ -129,7 +128,6 @@ public:
     StringArray getIdentifiersFromString (String code);
     int findText (String text, bool forwards, bool caseSensitive, bool skipCurrentSelection);
     void replaceText (String text, String replaceWith);
-	int getFirstLineNumber(){	return firstLineOnScreen;	}
     //=========================================================
     NamedValueSet instrumentsAndRegions;
     //=========================================================
