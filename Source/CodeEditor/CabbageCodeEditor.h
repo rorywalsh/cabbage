@@ -35,6 +35,21 @@ class CabbageCodeEditorComponent :
     public ChangeBroadcaster,
     public Timer
 {
+	
+	int lastLinePosition = 0;
+	int firstLineOnScreen = 0;
+    int searchStartIndex  = 0;
+    Component* statusBar;
+    int listBoxRowHeight = 18;
+    StringArray opcodeStrings;
+    bool parseForVariables = true;
+    bool columnEditMode = false;
+    ListBox autoCompleteListBox;
+    StringArray variableNamesToShow, variableNames;
+    CabbageEditorContainer* owner;
+    int updateGUICounter = 0;
+    int currentFontSize = 17;
+	
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);
     ~CabbageCodeEditorComponent() {};
@@ -114,6 +129,7 @@ public:
     StringArray getIdentifiersFromString (String code);
     int findText (String text, bool forwards, bool caseSensitive, bool skipCurrentSelection);
     void replaceText (String text, String replaceWith);
+	int getFirstLineNumber(){	return firstLineOnScreen;	}
     //=========================================================
     NamedValueSet instrumentsAndRegions;
     //=========================================================
@@ -147,19 +163,6 @@ public:
     String lastAction;
     bool allowUpdateOfPluginGUI = false;
 
-private:
-    int lastLinePosition = 0;
-    int searchStartIndex  = 0;
-    Component* statusBar;
-    int listBoxRowHeight = 18;
-    StringArray opcodeStrings;
-    bool parseForVariables = true;
-    bool columnEditMode = false;
-    ListBox autoCompleteListBox;
-    StringArray variableNamesToShow, variableNames;
-    CabbageEditorContainer* owner;
-    int updateGUICounter = 0;
-    int currentFontSize = 17;
 };
 
 template <class CallbackClass>

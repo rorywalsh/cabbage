@@ -109,6 +109,7 @@ void CabbageNumberBox::valueTreePropertyChanged (ValueTree& valueTree, const Ide
         slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
         align = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::align);
+		label.setText (getText(), dontSendNotification);
         resized();
     }
 }

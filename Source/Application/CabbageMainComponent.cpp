@@ -95,6 +95,9 @@ void CabbageMainComponent::handleFileTab (FileTabButton* tabButton)
 {
     currentFileIndex = fileTabs.indexOf (tabButton);
 	editorAndConsole[currentFileIndex]->toFront(true);
+	CabbageUtilities::debug(getCurrentCodeEditor()->getFirstLineNumber());
+	//getCurrentCodeEditor()->scrollToLine(10);
+	
 	//bringCodeEditorToFront(openFiles[currentFileIndex]);
 
     if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
@@ -395,7 +398,7 @@ void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
 
     for ( int i = 0 ; i < instrRegions.size() ; i++)
     {
-        factory.combo->addItemsToComboBox (instrRegions.getName (i).toString(), i + 1);
+        factory.combo->addItemsToComboBox(instrRegions.getName (i).toString(), i + 1);
     }
 }
 //==============================================================================

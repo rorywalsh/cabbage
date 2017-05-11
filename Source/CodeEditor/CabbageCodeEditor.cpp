@@ -33,7 +33,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
       debugLabel (""),
       currentLineMarker()
 {
-    setMouseClickGrabsKeyboardFocus (true);
+    //setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
     setScrollbarThickness (20);
