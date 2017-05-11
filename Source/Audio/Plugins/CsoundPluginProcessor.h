@@ -99,6 +99,7 @@ public:
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     int checkTable (int tableNum);
+	AudioPlayHead::CurrentPositionInfo hostInfo;
 
     //=============================================================================
     //Implement these to init, send and receive channel data to Csound. Typically used when
@@ -106,7 +107,7 @@ public:
     //is updated in the Csound orchestra and we need to update the Cabbage components.
     //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
     //as is done in CabbagePluginprocessor.
-    virtual void sendChannelDataToCsound() {};
+    virtual void sendChannelDataToCsound();
     virtual void receiveChannelDataFromCsound() {};
     virtual void initAllCsoundChannels (ValueTree cabbageData);
     //=============================================================================
@@ -204,6 +205,7 @@ private:
     MYFLT* CSspin, *CSspout;
     int csndIndex;
     int csdKsmps;
+	File csdFile;
     ScopedPointer<Csound> csound;
 	ScopedPointer<FileLogger> fileLogger;
     int busIndex = 0;

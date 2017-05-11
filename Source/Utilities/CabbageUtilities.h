@@ -332,8 +332,14 @@ public:
 	{
 		IDE = 0,
 		PluginSynth,
-		PluginEffect,
-		Unknown
+		PluginEffect
+	};
+	
+	enum TargetPlatformTypes
+	{
+		Win32 = 0,
+		Linux,
+		OSX
 	};
 
 	//==============================================================
@@ -346,9 +352,19 @@ public:
 #else
 		return TargetTypes::PluginEffect;
 #endif
-		return TargetTypes::Unknown;
 	}
 
+	static int getTargetPlatform()
+	{
+#ifdef WIN32
+		return TargetPlatformTypes::Win32;
+#elif Linux
+		return TargetPlatformTypes::Linux;
+#else
+		return TargetPlatformTypes::OSX;
+#endif
+	}
+	
 	static bool shouldUseNativeBrowser()
 	{
 #ifdef Use_Native_File_Browser

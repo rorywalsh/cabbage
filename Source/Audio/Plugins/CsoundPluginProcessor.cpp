@@ -26,7 +26,7 @@
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
 #ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor (BusesProperties()
+    : csdFile(csdFile), AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                       .withInput  ("Input",  AudioChannelSet::discreteChannels(2), true)
@@ -155,6 +155,46 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     }
 	
+	char path[8192] = {0};
+
+	if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
+	{
+
+        csound->GetStringChannel("CSD_PATH", path);
+        if(String(path).isNotEmpty())
+            File(path).getParentDirectory().setAsCurrentWorkingDirectory();
+        else
+            csound->SetChannel("CSD_PATH", File(csdFile).getParentDirectory().getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
+	}
+	else
+	{
+        csound->GetStringChannel("CSD_PATH", path);
+        if(String(path).isNotEmpty())
+            File(path).getParentDirectory().setAsCurrentWorkingDirectory();
+        else
+            csound->SetChannel("CSD_PATH", File(csdFile).getParentDirectory().getFullPathName().toUTF8().getAddress());
+	}
+
+
+	if(CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
+	{
+		csound->SetChannel("IS_A_PLUGIN", 1.0);
+		if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (hostInfo))
+		{
+			csound->SetChannel(CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
+			csound->SetChannel(CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
+			csound->SetChannel(CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
+			csound->SetChannel(CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
+			csound->SetChannel(CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
+			csound->SetChannel(CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
+			csound->SetChannel(CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
+			csound->SetChannel(CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
+		}
+	}	
+	else
+		csound->SetChannel("IS_A_PLUGIN", 0.0);
+
+	
 	//post init hack to allow tables to be set up correctly
 	csound->PerformKsmps();
 	csound->SetScoreOffsetSeconds (0);
@@ -164,7 +204,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 //==============================================================================
 void CsoundPluginProcessor::addMacros (String csdText)
 {
-    StringArray csdArray;
+	StringArray csdArray;
     String macroName, macroText;
 
     csdArray.addLines (csdText);
@@ -363,6 +403,23 @@ void CsoundPluginProcessor::handleAsyncUpdate()
     sendChannelDataToCsound();
 }
 
+void CsoundPluginProcessor::sendChannelDataToCsound()
+{
+	if(CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
+	{
+		if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (hostInfo))
+		{
+			csound->SetChannel(CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
+			csound->SetChannel(CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
+			csound->SetChannel(CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
+			csound->SetChannel(CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
+			csound->SetChannel(CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
+			csound->SetChannel(CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
+			csound->SetChannel(CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
+			csound->SetChannel(CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
+		}
+	}
+}
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
     float** audioBuffers = buffer.getArrayOfWritePointers();

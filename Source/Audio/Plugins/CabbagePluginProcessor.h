@@ -42,7 +42,7 @@ public:
 	void setPluginName(String name){	pluginName = name;	}
 	String getPluginName(){	return pluginName;	}
     const String getExpandedMacroText (const String line, ValueTree wData);
-
+	
     CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
