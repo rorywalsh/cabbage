@@ -145,6 +145,8 @@ float CabbageWidgetBase::getCurrentValue (ValueTree data)
 
 void CabbageWidgetBase::populateTextArrays (ValueTree data)
 {
+	channelArray.clear();
+	textArray.clear();
     const Array<var>* channelArrayVar = CabbageWidgetData::getProperty (data, CabbageIdentifierIds::channel).getArray();
 
     if (channelArrayVar && channelArrayVar->size() > 1)
@@ -167,9 +169,9 @@ void CabbageWidgetBase::populateTextArrays (ValueTree data)
         }
     }
     else
-        channelArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel));  //make sure we have at least two items in array
+		textArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text));  //make sure we have at least two items in array
 
-    channelArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel));
+	textArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text));
 }
 
 int CabbageWidgetBase::getSVGWidth (File svgFile)
