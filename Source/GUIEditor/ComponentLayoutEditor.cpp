@@ -85,6 +85,7 @@ void ComponentLayoutEditor::resetAllInterest()
 
     repaint();
 }
+
 //==================================================================================================================
 void ComponentLayoutEditor::updateSelectedComponentBounds()
 {

@@ -19,7 +19,7 @@ class CabbagePluginEditor;
 class ComponentLayoutEditor;
 
 //=============================================================================
-class ComponentOverlay   :   public Component
+class ComponentOverlay   :   public Component, public KeyListener
 {
 public:
     ComponentOverlay (Component* targetChild, ComponentLayoutEditor* layoutEditor);
@@ -33,6 +33,8 @@ public:
     virtual void userStartedChangingBounds () {};
     virtual void userStoppedChangingBounds () {};
     bool boundsChangedSinceStart ();
+	bool keyPressed(const KeyPress &key, Component *originatingComponent);
+
     void mouseEnter (const MouseEvent& e);
     void mouseExit (const MouseEvent& e);
     void mouseDown (const MouseEvent& e);

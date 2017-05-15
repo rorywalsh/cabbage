@@ -24,6 +24,8 @@ ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEdito
     updateFromTarget ();
     setLookAndFeel (&lookAndFeel);
     setRepaintsOnMouseActivity (true);
+	addKeyListener(this);
+	
 }
 
 ComponentOverlay::~ComponentOverlay ()
@@ -33,6 +35,8 @@ ComponentOverlay::~ComponentOverlay ()
 
 void ComponentOverlay::resized ()
 {
+	setWantsKeyboardFocus(true);
+
     resizer->setBounds (0, 0, getWidth(), getHeight());
 
     if (resizer->isMouseButtonDown ())
@@ -120,6 +124,7 @@ bool ComponentOverlay::boundsChangedSinceStart ()
 //===========================================================================
 void ComponentOverlay::mouseDown (const MouseEvent& e)
 {
+	
     if (e.mods.isPopupMenu())
     {
         PopupMenu menu;
@@ -226,6 +231,47 @@ void ComponentOverlay::mouseExit (const MouseEvent& e)
     repaint ();
 }
 
+//==================================================================================================================
+bool ComponentOverlay::keyPressed(const KeyPress &key, Component *originatingComponent)
+{
+	bool multipleSelection = false;
+	const int gridSize =  2;
+
+	for (ComponentOverlay* child : layoutEditor->getLassoSelection())
+	{
+		if (key == KeyPress::leftKey || key == KeyPress::rightKey)
+			child->setTopLeftPosition(child->getPosition().getX() + (key == KeyPress::leftKey ? -gridSize : gridSize), child->getPosition().getY());
+
+		else if(key == KeyPress::upKey || key == KeyPress::downKey)
+			child->setTopLeftPosition(child->getPosition().getX(), child->getPosition().getY() + (key == KeyPress::upKey ? -gridSize : gridSize));
+
+		else if (key == KeyPress(KeyPress::leftKey, ModifierKeys::shiftModifier, 0))
+			child->setTopLeftPosition(child->getPosition().getX() -gridSize * 4, child->getPosition().getY());
+
+		else if (key == KeyPress(KeyPress::rightKey, ModifierKeys::shiftModifier, 0))
+			child->setTopLeftPosition(child->getPosition().getX() + gridSize * 4, child->getPosition().getY());
+		
+		else if (key == KeyPress(KeyPress::upKey, ModifierKeys::shiftModifier, 0))
+			child->setTopLeftPosition(child->getPosition().getX(), child->getPosition().getY() - gridSize * 4);
+
+		else if (key == KeyPress(KeyPress::downKey, ModifierKeys::shiftModifier, 0))
+			child->setTopLeftPosition(child->getPosition().getX(), child->getPosition().getY() + gridSize * 4);
+
+
+		child->applyToTarget();
+		multipleSelection = true;
+		layoutEditor->updateSelectedComponentBounds();
+	}
+
+	if (multipleSelection == false)
+	{
+		setTopLeftPosition(getPosition().getX() - gridSize, getPosition().getY());
+		applyToTarget();
+	}
+
+
+	return false;
+}
 //===========================================================================
 CabbagePluginEditor* ComponentOverlay::getPluginEditor()
 {
