@@ -210,10 +210,11 @@
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal" osxSDK="default" osxCompatibility="10.9 SDK"/>
+                       osxArchitecture="64BitUniversal" osxSDK="default" osxCompatibility="10.8 SDK"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
-                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"/>
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
+                       osxCompatibility="10.8 SDK" osxArchitecture="64BitUniversal"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_video" path="../../juce"/>
