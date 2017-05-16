@@ -23,6 +23,7 @@
 	* [Labels](label.md)
 	* [Listbox](listbox.md)
 	* [Meteres](meter.md)
+	* [Numberbox](numberbox.md)
 	* [SignalDisplay](signaldisplay.md)
 	* [Sliders](sliders.md)	
 	* [Soundfiler](soundfiler.md)
