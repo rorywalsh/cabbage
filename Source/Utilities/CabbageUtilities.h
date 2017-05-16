@@ -358,7 +358,7 @@ public:
 	{
 #ifdef WIN32
 		return TargetPlatformTypes::Win32;
-#elif Linux
+#elif LINUX
 		return TargetPlatformTypes::Linux;
 #else
 		return TargetPlatformTypes::OSX;

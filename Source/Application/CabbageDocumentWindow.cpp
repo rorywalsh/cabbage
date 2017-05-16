@@ -591,17 +591,26 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 		// help command
         case CommandIDs::csoundHelp:
             result.setInfo (TRANS ("Csound Manual"), TRANS ("Open Csound manual"), "Help", 0);
-            result.defaultKeypresses.add (KeyPress ('2', ModifierKeys::commandModifier, 0));
+			if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
+				result.defaultKeypresses.add (KeyPress ('2', ModifierKeys::commandModifier, 0));
+			else
+				result.defaultKeypresses.add(KeyPress(KeyPress::F2Key));
             break;
 			
 		case CommandIDs::cabbageHelp:
             result.setInfo (TRANS ("Cabbage Manual"), TRANS ("Open Cabbage manual"), "Help", 0);
-            result.defaultKeypresses.add (KeyPress ('3', ModifierKeys::commandModifier, 0));
+			if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
+				result.defaultKeypresses.add (KeyPress ('3', ModifierKeys::commandModifier, 0));
+			else
+				result.defaultKeypresses.add(KeyPress(KeyPress::F3Key));
             break;
 
 		case CommandIDs::contextHelp:
             result.setInfo (TRANS ("Context Help"), TRANS ("Context Help"), "Help", 0);
-            result.defaultKeypresses.add (KeyPress ('1', ModifierKeys::commandModifier, 0));
+			if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
+				result.defaultKeypresses.add (KeyPress ('1', ModifierKeys::commandModifier, 0));
+			else
+				result.defaultKeypresses.add(KeyPress(KeyPress::F1Key));
             break;
 			
         default:

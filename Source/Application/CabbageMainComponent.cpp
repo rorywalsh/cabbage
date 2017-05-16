@@ -731,21 +731,19 @@ void CabbageMainComponent::launchHelpfile()
 	String opcode = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2);
 	CabbageUtilities::debug(opcode);
 	
-	WebBrowserComponent* htmlPage;
-	htmlHelpPages.add(htmlPage = new WebBrowserComponent());
-	addAndMakeVisible(htmlPage);
+	if(helpWindow == nullptr)
+	{
+		helpWindow = new HtmlHelpDocumentWindow("Help", Colour(20, 20, 20));
+	}
+	
 	const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue("CsoundManualDir");
 	const String url = csoundHelpDir+"/"+opcode.trim()+String(".html");
-	openFiles.add(url);
 	if(File(url).existsAsFile())
-		htmlPage->goToURL("file://" + url);
-	htmlPage->setVisible(true);
-	
-	numberOfFiles = editorAndConsole.size() + htmlHelpPages.size();
-    currentFileIndex = editorAndConsole.size() + htmlHelpPages.size() - 1;
-	addFileTabButton (openFiles[numberOfFiles - 1]);
-	repaint();
-	resized();
+	{
+		helpWindow->loadPage("file://" + url);
+		helpWindow->setVisible(true);
+	}
+
 }
 
 //==================================================================================

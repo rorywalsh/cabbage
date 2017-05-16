@@ -175,6 +175,32 @@ private:
 	
 	ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
 
+	class HtmlHelpDocumentWindow : public DocumentWindow
+	{
+		Colour colour;
+		ScopedPointer<WebBrowserComponent> htmlPage;
+	public:
+		HtmlHelpDocumentWindow (String caption, Colour backgroundColour)
+			: DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour)
+		{
+			setName(caption);
+			htmlPage = new WebBrowserComponent();
+			htmlPage->setSize(1000, 800);
+			this->setResizable(false, true);
+			setContentOwned(htmlPage, true);
+			setSize(1000, 800);
+		}
+
+		void loadPage(String url)
+		{
+			htmlPage->goToURL(url);			
+		}
+
+		void closeButtonPressed() override {    setVisible (false);  }
+	};
+	
+	ScopedPointer<HtmlHelpDocumentWindow> helpWindow;
+	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainComponent)
 };
