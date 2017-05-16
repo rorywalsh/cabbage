@@ -758,10 +758,17 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
 			
 		case CommandIDs::contextHelp:
-            getContentComponent()->launchHelpfile();
+            getContentComponent()->launchHelpfile("context");
             break;
 
-
+		case CommandIDs::csoundHelp:
+            getContentComponent()->launchHelpfile("csound");
+            break;
+			
+		case CommandIDs::cabbageHelp:
+            getContentComponent()->launchHelpfile("cabbage");
+            break;
+			
         case CommandIDs::editMode:
             getContentComponent()->setEditMode (isGUIEnabled = ! isGUIEnabled);
 

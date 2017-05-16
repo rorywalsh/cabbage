@@ -127,7 +127,7 @@ public:
     Toolbar toolbar;
 	//==============================================================================
 	void timerCallback();
-	void launchHelpfile();
+	void launchHelpfile(String type);
 	
 private:
 	OwnedArray<FileTabButton> fileTabs;  

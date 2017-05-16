@@ -723,27 +723,55 @@ const File CabbageMainComponent::openFile (String filename)
 
 }
 //==================================================================================
-void CabbageMainComponent::launchHelpfile()
+void CabbageMainComponent::launchHelpfile(String type)
 {
-	CodeDocument::Position pos1, pos2;
-	pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
-	pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
-	String opcode = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2);
-	CabbageUtilities::debug(opcode);
+	String url = "";
 	
 	if(helpWindow == nullptr)
 	{
 		helpWindow = new HtmlHelpDocumentWindow("Help", Colour(20, 20, 20));
-	}
+	}	
+	
+	CodeDocument::Position pos1, pos2;
+	pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
+	pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
+	String keyword = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2).trim();
 	
 	const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue("CsoundManualDir");
-	const String url = csoundHelpDir+"/"+opcode.trim()+String(".html");
+	const String cabbageHelpDir = cabbageSettings->getUserSettings()->getValue("CabbageManualDir");
+	
+	if(type=="context")
+	{
+		CabbageControlWidgetStrings controlWidgets;
+		CabbageLayoutWidgetStrings layoutWidgets;
+		
+		if(controlWidgets.contains(keyword) || layoutWidgets.contains(keyword))
+		{
+			if(keyword.contains("slider"))
+				url = cabbageHelpDir+"/sliders.html";	
+			else if(keyword=="filebutton")
+				url = cabbageHelpDir+"/filebutton.html";	
+			else if(keyword=="infobutton")
+				url = cabbageHelpDir+"/infobutton.html";	
+			else
+				url = cabbageHelpDir+"/"+keyword+String(".html");
+		}
+		else
+			url = csoundHelpDir+"/"+keyword+String(".html");
+	}	
+	else if(type == "csound")
+		url = csoundHelpDir+"/index.html";
+		
+	else
+		url = cabbageHelpDir+"/index.html";
+		
 	if(File(url).existsAsFile())
 	{
 		helpWindow->loadPage("file://" + url);
 		helpWindow->setVisible(true);
+		helpWindow->toFront(true);
+		
 	}
-
 }
 
 //==================================================================================
