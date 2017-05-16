@@ -67,8 +67,8 @@ public:
     void changeProgramName (int index, const String& newName) override;
 
     //==============================================================================
-    void getStateInformation (MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    virtual void getStateInformation (MemoryBlock& destData) override;
+    virtual void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
     //Csound API functions for deailing with midi input

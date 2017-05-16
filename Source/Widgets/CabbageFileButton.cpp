@@ -98,6 +98,8 @@ void CabbageFileButton::buttonClicked (Button* button)
 		owner->savePluginStateToFile (File(newFileName));
 		owner->refreshComboBoxContents();		
     }
+    
+    owner->getProcessor().updateHostDisplay();
 }
 
 //===============================================================================

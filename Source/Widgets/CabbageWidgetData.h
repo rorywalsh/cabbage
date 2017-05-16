@@ -24,9 +24,6 @@
 #include "../Utilities/CabbageUtilities.h"
 #include "../CabbageIds.h"
 
-#include <type_traits>
- 
-#include <cstdint>
 
 class CabbageWidgetData : public CabbageUtilities
 {
