@@ -117,7 +117,7 @@ void CabbageSSHFileBrowser::listBoxItemDoubleClicked (int row, const MouseEvent&
             {
                 const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
 
-				command = ("scp " + ipAddress + ":" + filePath.joinIntoString ("") + "/" + getFileOrFolderName (name) + " "
+                command = ("scp " + ipAddress + ":" + filePath.joinIntoString ("") + "/" + getFileOrFolderName (name) + " "
                            + newFile.getFullPathName());
 
                 if (result == 1)

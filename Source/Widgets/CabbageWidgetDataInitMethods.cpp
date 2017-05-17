@@ -429,7 +429,7 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool isVertical)
 {
-	var meterColours;
+    var meterColours;
     meterColours.append (Colours::lime.toString());
     setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
@@ -438,16 +438,16 @@ void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool i
     setProperty (widgetData, CabbageIdentifierIds::height, 16);
     setProperty (widgetData, CabbageIdentifierIds::name, isVertical == true ? "vmeter" : "hmeter");
     setProperty (widgetData, CabbageIdentifierIds::name, isVertical == true ? "vmeter" : "hmeter");
-	setProperty(widgetData, CabbageIdentifierIds::orientation, isVertical == true ? "vertical" : "horizontal");
+    setProperty (widgetData, CabbageIdentifierIds::orientation, isVertical == true ? "vertical" : "horizontal");
 
     setProperty (widgetData, CabbageIdentifierIds::type, getProperty (widgetData, "name").toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::overlaycolour, Colours::transparentBlack.toString());
-	setProperty (widgetData, CabbageIdentifierIds::metercolour, meterColours);
-	setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::white.toString());
-	setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1);
-	setProperty (widgetData, CabbageIdentifierIds::value, 1);
-	setProperty (widgetData, CabbageIdentifierIds::corners, 3);
+    setProperty (widgetData, CabbageIdentifierIds::metercolour, meterColours);
+    setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1);
+    setProperty (widgetData, CabbageIdentifierIds::value, 1);
+    setProperty (widgetData, CabbageIdentifierIds::corners, 3);
     setProperty (widgetData, CabbageIdentifierIds::channel, "");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
@@ -544,7 +544,7 @@ void CabbageWidgetData::setGroupBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::plant, "");
     setProperty (widgetData, CabbageIdentifierIds::child, 0);
     setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1);
-	setProperty (widgetData, CabbageIdentifierIds::linethickness, 1);
+    setProperty (widgetData, CabbageIdentifierIds::linethickness, 1);
     setProperty (widgetData, CabbageIdentifierIds::align, "centre");
     setProperty (widgetData, CabbageIdentifierIds::type, "groupbox");
     setProperty (widgetData, CabbageIdentifierIds::name, "groupbox");
@@ -585,7 +585,7 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, 0.01);
     setProperty (widgetData, CabbageIdentifierIds::startpos, 0);
     setProperty (widgetData, CabbageIdentifierIds::endpos, -1);
-	setProperty (widgetData, CabbageIdentifierIds::fill, 1);
+    setProperty (widgetData, CabbageIdentifierIds::fill, 1);
     setProperty (widgetData, CabbageIdentifierIds::drawmode, "");
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));

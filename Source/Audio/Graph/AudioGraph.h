@@ -53,24 +53,24 @@ public:
                 const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions = nullptr);
     ~AudioGraph();
 
-	enum InternalNodes
-	{
-		MIDIInput = 0,
-		AudioInput,
-		AudioOutput
-	};
+    enum InternalNodes
+    {
+        MIDIInput = 0,
+        AudioInput,
+        AudioOutput
+    };
 
 
     int getNumPlugins() const noexcept;
     void addPlugin (File inputFile, int32 nodeId);
-	AudioProcessorGraph::Node::Ptr createNode(const PluginDescription& desc, int32 uid);
-	AudioProcessorGraph::Node* createCabbageNode(const PluginDescription& desc, int32 nodeId);
-	AudioProcessorGraph::Node* createInternalNode(const PluginDescription& desc, int32 nodeId);
-	
-	const PluginDescription getPluginDescriptor(String type, String name, int32 nodeId, String inputfile = "");
-	void setDefaultConnections(int nodeId);
-	void createInternalFilters();
-	void showCodeEditorForNode(int32 nodeId);
+    AudioProcessorGraph::Node::Ptr createNode (const PluginDescription& desc, int32 uid);
+    AudioProcessorGraph::Node* createCabbageNode (const PluginDescription& desc, int32 nodeId);
+    AudioProcessorGraph::Node* createInternalNode (const PluginDescription& desc, int32 nodeId);
+
+    const PluginDescription getPluginDescriptor (String type, String name, int32 nodeId, String inputfile = "");
+    void setDefaultConnections (int nodeId);
+    void createInternalFilters();
+    void showCodeEditorForNode (int32 nodeId);
     void updateBusLayout (AudioProcessor* selectedProcessor);
     int getNumberOfParameters();
     virtual void deletePlugin();
@@ -100,17 +100,17 @@ public:
     void removeConnection (uint32 sourceFilterUID, int sourceFilterChannel,
                            uint32 destFilterUID, int destFilterChannel);
 
-	void removeFilter (const uint32 id);
-	void disconnectFilter (const uint32 id);
+    void removeFilter (const uint32 id);
+    void disconnectFilter (const uint32 id);
     void clear();
-	
+
     //==============================================================================
     void startPlaying();
     void stopPlaying();
     void reloadAudioDeviceState (const String& preferredDefaultDeviceName,
                                  const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions);
     //==============================================================================
-    String getCsoundOutput(int32 nodeId);
+    String getCsoundOutput (int32 nodeId);
     //==============================================================================
     const AudioProcessorGraph::Node::Ptr getNode (const int index) const noexcept;
     const AudioProcessorGraph::Node::Ptr getNodeForId (const uint32 uid) const noexcept;
@@ -124,13 +124,13 @@ public:
     Result saveDocument (const File& file) override;
     File getLastDocumentOpened() override;
     void setLastDocumentOpened (const File& file) override;
-	FileBasedDocument::SaveResult saveGraph(bool saveAs = false);
+    FileBasedDocument::SaveResult saveGraph (bool saveAs = false);
     //==============================================================================
     XmlElement* createXml() const;
-	XmlElement* createConnectionsXml() const;
+    XmlElement* createConnectionsXml() const;
     void restoreFromXml (const XmlElement& xml);
-	void restoreConnectionsFromXml (const XmlElement& xml);
-	
+    void restoreConnectionsFromXml (const XmlElement& xml);
+
     OptionalScopedPointer<PropertySet> settings;
 
     AudioProcessorGraph graph;
@@ -142,13 +142,13 @@ public:
     //bool getIsCabbageFile()    {        return isCabbageFile;    }
 
     static const int midiChannelNumber;
-	CabbageMainComponent* getParent(){	return &owner;	}
+    CabbageMainComponent* getParent() {  return &owner;  }
 private:
-	CabbageMainComponent& owner;
-	Array<int> internalNodeIds;
-	ScopedPointer<AudioPluginFormatManager> formatManager;
+    CabbageMainComponent& owner;
+    Array<int> internalNodeIds;
+    ScopedPointer<AudioPluginFormatManager> formatManager;
     //bool isCabbageFile = false;
-	void createNodeFromXml (const XmlElement& xml);
+    void createNodeFromXml (const XmlElement& xml);
     void setupAudioDevices (const String& preferredDefaultDeviceName,
                             const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
     {

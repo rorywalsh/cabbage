@@ -130,7 +130,7 @@ void CabbageDocumentWindow::closeButtonPressed()
 
     if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
     {
-        const int result = CabbageUtilities::showYesNoMessage("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
+        const int result = CabbageUtilities::showYesNoMessage ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
 
         if (result == 1)
         {
@@ -167,7 +167,7 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
     else if (menuName == "Build")       createBuildMenu  (menu);
     else if (menuName == "Window")      createWindowMenu (menu);
     else if (menuName == "Tools")       createToolsMenu  (menu);
-	else if (menuName == "Help")        createHelpMenu   (menu);
+    else if (menuName == "Help")        createHelpMenu   (menu);
     else                                jassertfalse; // names have changed?
 
     return menu;
@@ -373,9 +373,9 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::showGraph,
                               CommandIDs::about,
                               CommandIDs::startLiveDebugger,
-							  CommandIDs::csoundHelp,
-							  CommandIDs::cabbageHelp,
-							  CommandIDs::contextHelp,
+                              CommandIDs::csoundHelp,
+                              CommandIDs::cabbageHelp,
+                              CommandIDs::contextHelp,
                               CommandIDs::showGenericWidgetWindow
                             };
 
@@ -587,32 +587,38 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setTicked (getContentComponent()->getCurrentCodeEditor() == nullptr ? false : getContentComponent()->getCurrentCodeEditor()->isDebugModeEnabled());
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
-			
-		// help command
+
+        // help command
         case CommandIDs::csoundHelp:
             result.setInfo (TRANS ("Csound Manual"), TRANS ("Open Csound manual"), "Help", 0);
-			if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
-				result.defaultKeypresses.add (KeyPress ('2', ModifierKeys::commandModifier, 0));
-			else
-				result.defaultKeypresses.add(KeyPress(KeyPress::F2Key));
-            break;
-			
-		case CommandIDs::cabbageHelp:
-            result.setInfo (TRANS ("Cabbage Manual"), TRANS ("Open Cabbage manual"), "Help", 0);
-			if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
-				result.defaultKeypresses.add (KeyPress ('3', ModifierKeys::commandModifier, 0));
-			else
-				result.defaultKeypresses.add(KeyPress(KeyPress::F3Key));
+
+            if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
+                result.defaultKeypresses.add (KeyPress ('2', ModifierKeys::commandModifier, 0));
+            else
+                result.defaultKeypresses.add (KeyPress (KeyPress::F2Key));
+
             break;
 
-		case CommandIDs::contextHelp:
-            result.setInfo (TRANS ("Context Help"), TRANS ("Context Help"), "Help", 0);
-			if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
-				result.defaultKeypresses.add (KeyPress ('1', ModifierKeys::commandModifier, 0));
-			else
-				result.defaultKeypresses.add(KeyPress(KeyPress::F1Key));
+        case CommandIDs::cabbageHelp:
+            result.setInfo (TRANS ("Cabbage Manual"), TRANS ("Open Cabbage manual"), "Help", 0);
+
+            if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
+                result.defaultKeypresses.add (KeyPress ('3', ModifierKeys::commandModifier, 0));
+            else
+                result.defaultKeypresses.add (KeyPress (KeyPress::F3Key));
+
             break;
-			
+
+        case CommandIDs::contextHelp:
+            result.setInfo (TRANS ("Context Help"), TRANS ("Context Help"), "Help", 0);
+
+            if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
+                result.defaultKeypresses.add (KeyPress ('1', ModifierKeys::commandModifier, 0));
+            else
+                result.defaultKeypresses.add (KeyPress (KeyPress::F1Key));
+
+            break;
+
         default:
 
             break;
@@ -756,19 +762,19 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::showGraph:
             getContentComponent()->showGraph();
             break;
-			
-		case CommandIDs::contextHelp:
-            getContentComponent()->launchHelpfile("context");
+
+        case CommandIDs::contextHelp:
+            getContentComponent()->launchHelpfile ("context");
             break;
 
-		case CommandIDs::csoundHelp:
-            getContentComponent()->launchHelpfile("csound");
+        case CommandIDs::csoundHelp:
+            getContentComponent()->launchHelpfile ("csound");
             break;
-			
-		case CommandIDs::cabbageHelp:
-            getContentComponent()->launchHelpfile("cabbage");
+
+        case CommandIDs::cabbageHelp:
+            getContentComponent()->launchHelpfile ("cabbage");
             break;
-			
+
         case CommandIDs::editMode:
             getContentComponent()->setEditMode (isGUIEnabled = ! isGUIEnabled);
 
@@ -789,6 +795,7 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
 {
     String pluginFilename, fileExtension, currentApplicationDirectory;
     File thisFile;
+
     if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
     {
         fileExtension = "so";
@@ -799,7 +806,7 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
     {
         fileExtension = "vst";
         thisFile = File::getSpecialLocation (File::currentApplicationFile);
-        currentApplicationDirectory = thisFile.getFullPathName()+"/Contents";
+        currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
     }
     else
     {
@@ -807,17 +814,17 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
         thisFile = File::getSpecialLocation (File::currentApplicationFile);
         currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
     }
-    
-    
+
+
     if (type.contains ("VSTi"))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth."+fileExtension);
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
     else if (type.contains (String ("VST")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect."+fileExtension);
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
     else if (type.contains (String ("LV2-ins")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2."+fileExtension);
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
     else if (type.contains (String ("LV2-fx")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2."+fileExtension);
-  
+        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
+
     File VSTData (pluginFilename);
 
     if (!VSTData.exists())
@@ -825,9 +832,9 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
         CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
     }
 
-    FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*."+fileExtension, CabbageUtilities::shouldUseNativeBrowser());
+    FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
 
-    if (fc.browseForFileToSave(false))
+    if (fc.browseForFileToSave (false))
     {
         if (fc.getResult().existsAsFile())
         {
@@ -840,53 +847,54 @@ void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
         else
             writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension);
     }
-    
+
 }
 
 void CabbageDocumentWindow::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension)
 {
-		File dll(fc.withFileExtension(fileExtension).getFullPathName());
+    File dll (fc.withFileExtension (fileExtension).getFullPathName());
 
-		if (!VSTData.copyFileTo(dll))
-			CabbageUtilities::showMessage("Can't copy plugin lib, is it currently in use?", &getLookAndFeel());
+    if (!VSTData.copyFileTo (dll))
+        CabbageUtilities::showMessage ("Can't copy plugin lib, is it currently in use?", &getLookAndFeel());
 
-    
-            File exportedCsdFile;
-            
-            if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
-            {
-                exportedCsdFile = dll.getFullPathName()+String("/Contents/")+fc.getFileNameWithoutExtension()+String(".csd");
-                exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
-                
-                File bin(dll.getFullPathName()+String("/Contents/MacOS/CabbagePlugin"));
-                    //if(bin.exists())showMessage("binary exists");
-                    
-                    
-                File pluginBinary(dll.getFullPathName()+String("/Contents/MacOS/")+fc.getFileNameWithoutExtension());
-                    
-                if(bin.moveFileTo(pluginBinary) == false)
-                        CabbageUtilities::showMessage("Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &this->getLookAndFeel());
-                
-                setUniquePluginId(pluginBinary, exportedCsdFile);
-                
-                File pl(dll.getFullPathName()+String("/Contents/Info.plist"));
-                String newPList = pl.loadFileAsString();
-                //write our identifiers to the plist file
-                newPList = newPList.replace("CabbagePlugin", fc.getFileNameWithoutExtension());
-                
-                //write plist file
-                pl.replaceWithText(newPList);
-     
-                
-            }
-            else
-            {
-                exportedCsdFile = fc.withFileExtension(".csd").getFullPathName();
-                exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
-                setUniquePluginId(dll, exportedCsdFile);
-            }
-			//bunlde all auxilary files
-			//addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
+
+    File exportedCsdFile;
+
+    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+    {
+        exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
+        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+
+        File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
+        //if(bin.exists())showMessage("binary exists");
+
+
+        File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
+
+        if (bin.moveFileTo (pluginBinary) == false)
+            CabbageUtilities::showMessage ("Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &this->getLookAndFeel());
+
+        setUniquePluginId (pluginBinary, exportedCsdFile);
+
+        File pl (dll.getFullPathName() + String ("/Contents/Info.plist"));
+        String newPList = pl.loadFileAsString();
+        //write our identifiers to the plist file
+        newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
+
+        //write plist file
+        pl.replaceWithText (newPList);
+
+
+    }
+    else
+    {
+        exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
+        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+        setUniquePluginId (dll, exportedCsdFile);
+    }
+
+    //bunlde all auxilary files
+    //addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
 
 }
 

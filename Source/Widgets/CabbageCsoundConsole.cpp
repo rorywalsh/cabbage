@@ -55,9 +55,9 @@ void CabbageCsoundConsole::timerCallback()
         setText (initText);
     }
     else
-    {        
+    {
         const String csoundOutputString = owner->getCsoundOutputFromProcessor();
-        
+
         if (csoundOutputString.isNotEmpty())
         {
             insertTextAtCaret (csoundOutputString);

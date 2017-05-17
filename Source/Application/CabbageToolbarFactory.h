@@ -106,8 +106,8 @@ private:
 
         void addItemsToComboBox (const String newText, const int id)
         {
-            comboBox.addItem(newText, id);
-            comboBox.setSelectedId(1, dontSendNotification);
+            comboBox.addItem (newText, id);
+            comboBox.setSelectedId (1, dontSendNotification);
         }
 
         void clearItemsFromComboBox()

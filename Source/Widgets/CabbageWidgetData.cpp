@@ -101,12 +101,12 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == "encoder")
         setEncoderProperties (widgetData, ID);
 
-	else if (strTokens[0].trim() == "hmeter")
-		setMeterProperties(widgetData, ID, false);
+    else if (strTokens[0].trim() == "hmeter")
+        setMeterProperties (widgetData, ID, false);
 
     else if (strTokens[0].trim() == "vmeter")
         setMeterProperties (widgetData, ID, true);
-		
+
     else if (strTokens[0].trim() == "button")
         setButtonProperties (widgetData, ID);
 
@@ -252,12 +252,12 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
     {
         StringArray strTokens;
         String identifier = identifierValueSet.identifier[indx].trimCharactersAtStart (" ");
-		
+
         if (identifier.indexOf (":") != -1)
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
         strTokens.addTokens (identifierValueSet.parameter[indx], ",", ",");
-		
+
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
             //======== strings ===============================
@@ -338,8 +338,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("linethickness"):
             case HashStringToInt ("trackerthickness"):
             case HashStringToInt ("value"):
-			case HashStringToInt ("valuex"):
-			case HashStringToInt ("valuey"):
+            case HashStringToInt ("valuex"):
+            case HashStringToInt ("valuey"):
             case HashStringToInt ("zoom"):
             case HashStringToInt ("wrap"):
             case HashStringToInt ("readonly"):
@@ -347,13 +347,13 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
                 break;
 
-			case HashStringToInt ("crop"):
-				setProperty (widgetData, CabbageIdentifierIds::cropx, strTokens[0].trim().getFloatValue());
-				setProperty (widgetData, CabbageIdentifierIds::cropy, strTokens[1].trim().getFloatValue());
-				setProperty (widgetData, CabbageIdentifierIds::cropwidth, strTokens[2].trim().getFloatValue());
-				setProperty (widgetData, CabbageIdentifierIds::cropheight, strTokens[3].trim().getFloatValue());
-				break;
-				
+            case HashStringToInt ("crop"):
+                setProperty (widgetData, CabbageIdentifierIds::cropx, strTokens[0].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::cropy, strTokens[1].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::cropwidth, strTokens[2].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::cropheight, strTokens[3].trim().getFloatValue());
+                break;
+
             case HashStringToInt ("max"):
                 setProperty (widgetData, CabbageIdentifierIds::maxenabled, 1);
                 setProperty (widgetData, CabbageIdentifierIds::maxvalue, strTokens[0].trim().getFloatValue());
@@ -366,7 +366,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
             case HashStringToInt ("range"):
             case HashStringToInt ("rangex"):
-			case HashStringToInt ("rangey"):
+            case HashStringToInt ("rangey"):
                 setRange (strTokens, widgetData, identifier);
                 break;
 
@@ -441,7 +441,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("fontcolour:0"):
             case HashStringToInt ("menucolour"):
             case HashStringToInt ("tablebackgroundcolour"):
-			case HashStringToInt ("overlaycolour"):
+            case HashStringToInt ("overlaycolour"):
             case HashStringToInt ("backgroundcolour"):
             case HashStringToInt ("keyseparatorcolour"):
             case HashStringToInt ("blacknotecolour"):
@@ -475,11 +475,11 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx]);
                 break;
 
-			case HashStringToInt ("metercolour"):
-			case HashStringToInt ("metercolour:"):
+            case HashStringToInt ("metercolour"):
+            case HashStringToInt ("metercolour:"):
                 setColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx], false);
                 break;
-				
+
             //=================== sample identifiers for tutorial stepper class =============================
             case HashStringToInt ("numberofsteps"):
                 setProperty (widgetData, "numberofsteps", strTokens[0].trim().getFloatValue());
@@ -513,8 +513,8 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
     StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
-	
-	StringArray parameters;
+
+    StringArray parameters;
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
         identifiersInLine.set (i, identifiersInLine[i].trim().trimCharactersAtStart (" ,") + ")");
@@ -536,12 +536,12 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
     identifiersInLine.removeEmptyStrings();
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
-	{
-        valueSet.identifier.add(identifiersInLine[i].substring(identifiersInLine[i].indexOf(" ")));
-		valueSet.parameter.add(parameters[i].removeCharacters ("\""));
-	}
+    {
+        valueSet.identifier.add (identifiersInLine[i].substring (identifiersInLine[i].indexOf (" ")));
+        valueSet.parameter.add (parameters[i].removeCharacters ("\""));
+    }
 
-	//problem with duplicates, set will set a parameter by name, so two can't exist in the array...
+    //problem with duplicates, set will set a parameter by name, so two can't exist in the array...
 
     return valueSet;
 
@@ -558,13 +558,13 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     }
 
     setProperty (widgetData, CabbageIdentifierIds::channel, array);
-	
-	if(array.size() == 2)
-	{
-		setProperty (widgetData, CabbageIdentifierIds::xchannel, array[0]);
-		setProperty (widgetData, CabbageIdentifierIds::ychannel, array[1]);
-	}
-		
+
+    if (array.size() == 2)
+    {
+        setProperty (widgetData, CabbageIdentifierIds::xchannel, array[0]);
+        setProperty (widgetData, CabbageIdentifierIds::ychannel, array[1]);
+    }
+
 
     if (identifier == "widgetarray")
     {
@@ -642,12 +642,14 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
 void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable)
 {
     const int colourIndex = identifier.substring (identifier.indexOf (":") + 1).getIntValue();
-    const var colours = getProperty (widgetData, isTable==true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour );
+    const var colours = getProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour );
     var newColours = colours.clone();
-	for (int i = newColours.size(); i < colourIndex + 1; i++)
-		newColours.append(new Colour(0, 0, 0));
+
+    for (int i = newColours.size(); i < colourIndex + 1; i++)
+        newColours.append (new Colour (0, 0, 0));
+
     newColours[colourIndex] = getColourFromText (strTokens.joinIntoString (",")).toString();
-	setProperty (widgetData, isTable==true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour, newColours);
+    setProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour, newColours);
 
 }
 
@@ -1087,8 +1089,8 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
 
         }
     }
-	
-	else
+
+    else
     {
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
         {
@@ -1402,15 +1404,15 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::overlaycolour));
         colourString = colourString << "overlaycolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
     }
-	
+
     if (getProperty (widgetData, CabbageIdentifierIds::tablecolour) != getProperty (tempData, CabbageIdentifierIds::tablecolour))
     {
         var colours = getProperty (widgetData, CabbageIdentifierIds::tablecolour);
 
         for ( int i = 0 ; i < colours.size() ; i++)
         {
-                const Colour col = Colour::fromString (colours[i].toString());
-                colourString = colourString << "tablecolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+            const Colour col = Colour::fromString (colours[i].toString());
+            colourString = colourString << "tablecolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
         }
     }
 
@@ -1420,11 +1422,11 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
 
         for ( int i = 0 ; i < colours.size() ; i++)
         {
-                const Colour col = Colour::fromString (colours[i].toString());
-                colourString = colourString << "metercolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+            const Colour col = Colour::fromString (colours[i].toString());
+            colourString = colourString << "metercolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
         }
     }
-	
+
     if (getStringProp (widgetData, CabbageIdentifierIds::textcolour) != getStringProp (tempData, CabbageIdentifierIds::textcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::textcolour));
@@ -1471,7 +1473,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "fill", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "visible", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "valuetextbox", macroText)
-						 + getNumericalValueTextAsCabbageCode (widgetData, "linethickness", macroText)
+                         + getNumericalValueTextAsCabbageCode (widgetData, "linethickness", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
@@ -1505,10 +1507,10 @@ String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentL
     for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
         oldIdentifiers.set (i, oldIdentifiers[i].trim().trimCharactersAtStart (" ,") + "),");
 
-	//get rid of identifiers are using default values..
-	for (int i = oldIdentifiers.size(); i >= 0; i--)
-		if (newIdentifiers.indexOf(oldIdentifiers[i].substring(0, oldIdentifiers[i].indexOf("("))) == -1)
-			oldIdentifiers.remove(i);
+    //get rid of identifiers are using default values..
+    for (int i = oldIdentifiers.size(); i >= 0; i--)
+        if (newIdentifiers.indexOf (oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("))) == -1)
+            oldIdentifiers.remove (i);
 
     for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
     {
@@ -1529,8 +1531,8 @@ String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentL
     for ( auto str : newIdentifiers)
         oldIdentifiers.add (str);
 
-	const String newLine = oldIdentifiers.joinIntoString(" ").trimCharactersAtStart(" ");
-	return newLine;
+    const String newLine = oldIdentifiers.joinIntoString (" ").trimCharactersAtStart (" ");
+    return newLine;
 }
 
 String CabbageWidgetData::removeWidgetFromValueTree (ValueTree wData, int lineNumber)

@@ -38,44 +38,44 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
 {
     if (e.mods.isPopupMenu())
     {
-		Uuid uniqueID;
+        Uuid uniqueID;
         PopupMenu m, subMenu1, subMenu2;
         m.setLookAndFeel (&lookAndFeel);
         const String examplesDir = owner.getCabbageSettings()->getUserSettings()->getValue ("CabbageExamplesDir", "");
         CabbageUtilities::addExampleFilesToPopupMenu (subMenu1, exampleFiles, examplesDir, "*.csd", 3000);
-        
-		const String userFilesDir = owner.getCabbageSettings()->getUserSettings()->getValue ("UserFilesDir", "");
-		CabbageUtilities::addFilesToPopupMenu (subMenu2, userFiles, userFilesDir, 10000);
 
-		m.addItem(1, "Open file..");
-		m.addSubMenu("Examples", subMenu1);
-		m.addSubMenu("User files", subMenu2);
-		const int r = m.show();	
+        const String userFilesDir = owner.getCabbageSettings()->getUserSettings()->getValue ("UserFilesDir", "");
+        CabbageUtilities::addFilesToPopupMenu (subMenu2, userFiles, userFilesDir, 10000);
+
+        m.addItem (1, "Open file..");
+        m.addSubMenu ("Examples", subMenu1);
+        m.addSubMenu ("User files", subMenu2);
+        const int r = m.show();
 
         if ( r  == 1 )
         {
-			File newlyOpenedFile = owner.openFile ();
-			
-			if(newlyOpenedFile.existsAsFile())
-			{
-				owner.getNodeIds().set (newlyOpenedFile.getFullPathName(), int32 (*uniqueID.getRawData()));
-				owner.runCsoundForNode (newlyOpenedFile.getFullPathName());
-			}
-		}
-		
-		else if( r > 1 && r < 10000)
-		{            
+            File newlyOpenedFile = owner.openFile ();
+
+            if (newlyOpenedFile.existsAsFile())
+            {
+                owner.getNodeIds().set (newlyOpenedFile.getFullPathName(), int32 (*uniqueID.getRawData()));
+                owner.runCsoundForNode (newlyOpenedFile.getFullPathName());
+            }
+        }
+
+        else if ( r > 1 && r < 10000)
+        {
             owner.openFile (exampleFiles[r - 3000].getFullPathName());
-			owner.getNodeIds().set (exampleFiles[r - 3000].getFullPathName(), int32 (*uniqueID.getRawData()));
+            owner.getNodeIds().set (exampleFiles[r - 3000].getFullPathName(), int32 (*uniqueID.getRawData()));
             owner.runCsoundForNode (exampleFiles[r - 3000].getFullPathName());
         }
-		
-		else if( r >= 10000)
-		{
+
+        else if ( r >= 10000)
+        {
             owner.getNodeIds().set (userFiles[r - 10000].getFullPathName(), int32 (*uniqueID.getRawData()));
             owner.openFile (userFiles[r - 10000].getFullPathName());
-            owner.runCsoundForNode (userFiles[r - 10000].getFullPathName());			
-		}
+            owner.runCsoundForNode (userFiles[r - 10000].getFullPathName());
+        }
 
     }
 }

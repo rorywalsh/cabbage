@@ -263,31 +263,31 @@ void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
     }
     else if (ColourMultiPropertyComponent* colourPropertyMulti = dynamic_cast<ColourMultiPropertyComponent*> (source))
     {
-		if(colourPropertyMulti->getName() == "Tables")
-		{
-			var colours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
-			var tableColours = colours.clone();
-			
-			if(colourPropertyMulti->currentColourIndex > tableColours.size()-1)
-				tableColours.append(colourPropertyMulti->getCurrentColourString());
-			else			
-				tableColours[colourPropertyMulti->currentColourIndex] = colourPropertyMulti->getCurrentColourString();
-				
-			CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::tablecolour, tableColours);
-		}
-		else
-		{
-			var mColours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::metercolour);
-			var meterColours = mColours.clone();
-			
-			if(colourPropertyMulti->currentColourIndex > meterColours.size()-1)
-				meterColours.append(colourPropertyMulti->getCurrentColourString());
-			else			
-				meterColours[colourPropertyMulti->currentColourIndex] = colourPropertyMulti->getCurrentColourString();
-				
-			CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::metercolour, meterColours);			
-		}
-		
+        if (colourPropertyMulti->getName() == "Tables")
+        {
+            var colours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::tablecolour);
+            var tableColours = colours.clone();
+
+            if (colourPropertyMulti->currentColourIndex > tableColours.size() - 1)
+                tableColours.append (colourPropertyMulti->getCurrentColourString());
+            else
+                tableColours[colourPropertyMulti->currentColourIndex] = colourPropertyMulti->getCurrentColourString();
+
+            CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::tablecolour, tableColours);
+        }
+        else
+        {
+            var mColours = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::metercolour);
+            var meterColours = mColours.clone();
+
+            if (colourPropertyMulti->currentColourIndex > meterColours.size() - 1)
+                meterColours.append (colourPropertyMulti->getCurrentColourString());
+            else
+                meterColours[colourPropertyMulti->currentColourIndex] = colourPropertyMulti->getCurrentColourString();
+
+            CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::metercolour, meterColours);
+        }
+
         sendChangeMessage();    //update code in editor when changes are made...
     }
 }
@@ -302,17 +302,17 @@ void CabbagePropertiesPanel::textPropertyComponentChanged (TextPropertyComponent
 
 void CabbagePropertiesPanel::valueChanged (Value& value)
 {
-	if (value.refersToSameSourceAs(isActiveValue))
-	{
-		bool val = value.getValue();
-		setPropertyByName("Active", val == true ? 1 : 0);
-	}
+    if (value.refersToSameSourceAs (isActiveValue))
+    {
+        bool val = value.getValue();
+        setPropertyByName ("Active", val == true ? 1 : 0);
+    }
 
-	else if (value.refersToSameSourceAs(isVisibleValue))
-	{
-		bool val = value.getValue();
-		setPropertyByName("Visible", val == true ? 1 : 0);
-	}
+    else if (value.refersToSameSourceAs (isVisibleValue))
+    {
+        bool val = value.getValue();
+        setPropertyByName ("Visible", val == true ? 1 : 0);
+    }
 
     else if (value.refersToSameSourceAs (alphaValue))
         setPropertyByName ("Alpha", value.getValue());
@@ -766,12 +766,12 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
     {
         var outline = valueTree.getProperty (CabbageIdentifierIds::outlinethickness);
         comps.add (new TextPropertyComponent (Value (outline), "Outline Thickness", 200, false));
-		
-		if (typeOfWidget == "image" || typeOfWidget == "groupbox")
-		{
-			var line = valueTree.getProperty (CabbageIdentifierIds::linethickness);
-			comps.add (new TextPropertyComponent (Value (line), "Line Thickness", 200, false));
-		}
+
+        if (typeOfWidget == "image" || typeOfWidget == "groupbox")
+        {
+            var line = valueTree.getProperty (CabbageIdentifierIds::linethickness);
+            comps.add (new TextPropertyComponent (Value (line), "Line Thickness", 200, false));
+        }
     }
 
     else if (typeOfWidget == "gentable")

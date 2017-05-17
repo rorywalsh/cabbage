@@ -58,24 +58,24 @@ class CabbageXYPad
         Colour colour;
 
     public:
-        void setColour(Colour col)
+        void setColour (Colour col)
         {
             colour = col;
             repaint();
         }
         XYBall() {}
-        void paint(Graphics& g)
+        void paint (Graphics& g)
         {
-            g.fillAll(Colours::transparentBlack);
-            g.setColour(colour);
-            g.fillEllipse(getLocalBounds().toFloat());
+            g.fillAll (Colours::transparentBlack);
+            g.setColour (colour);
+            g.fillEllipse (getLocalBounds().toFloat());
         }
     };
 
     XYBall ball;
 public:
 
-    CabbageXYPad(ValueTree wData, CabbagePluginEditor* editor);
+    CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor);
     ~CabbageXYPad() {}
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -84,14 +84,14 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    void changeListenerCallback(ChangeBroadcaster* source) override;
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     ValueTree widgetData;
 
-    void paint(Graphics& g) override;
+    void paint (Graphics& g) override;
     void resized() override;
-    void mouseDown(const MouseEvent& e) override;
-    void mouseDrag(const MouseEvent& e) override;
-    void mouseUp(const MouseEvent& e) override;
+    void mouseDown (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
 
     Slider& getSliderX()
     {
@@ -106,11 +106,11 @@ public:
         return xyPadRect;
     }
 
-    void setValues(float x, float y);
+    void setValues (float x, float y);
 
-    Point<int> constrainPosition(float x, float y);
-    Point<float> getPositionAsValue(Point<float> position);
-    Point<float> getValueAsPosition(Point<float> position);
+    Point<int> constrainPosition (float x, float y);
+    Point<float> getPositionAsValue (Point<float> position);
+    Point<float> getValueAsPosition (Point<float> position);
     void setPositionAsValue (Point<float> position);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageXYPad);
@@ -120,7 +120,7 @@ public:
 class XYPadAutomator : public ChangeBroadcaster, public Timer
 {
     String name;
-    CabbageAudioParameter *xParam, *yParam;
+    CabbageAudioParameter* xParam, *yParam;
     float xValue = 0;
     float yValue = 0;
     float xValueIncrement = 1;
@@ -132,8 +132,8 @@ class XYPadAutomator : public ChangeBroadcaster, public Timer
     float xMin, xMax, yMin, yMax, velocity;
 
 public:
-    XYPadAutomator(String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam)
-        :name(name), xParam(xParam), yParam(yParam) {}
+    XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam)
+        : name (name), xParam (xParam), yParam (yParam) {}
 
     ~XYPadAutomator()
     {
@@ -146,59 +146,59 @@ public:
     {
         return name;
     }
-    void setDragLine(const Line<float>& dragLine)
+    void setDragLine (const Line<float>& dragLine)
     {
         this->dragLine = dragLine;
     }
-    void setIsPluginEditorOpen(bool isPluginEditorOpen)
+    void setIsPluginEditorOpen (bool isPluginEditorOpen)
     {
         this->isPluginEditorOpen = isPluginEditorOpen;
     }
-    void setName(const String& name)
+    void setName (const String& name)
     {
         this->name = name;
     }
-    void setPosition(const Point<double>& position)
+    void setPosition (const Point<double>& position)
     {
         this->position = position;
     }
-    void setRepaintBackground(bool repaintBackground)
+    void setRepaintBackground (bool repaintBackground)
     {
         this->repaintBackground = repaintBackground;
     }
-    void setVelocity(float velocity)
+    void setVelocity (float velocity)
     {
         this->velocity = velocity;
     }
-    void setXMax(float xMax)
+    void setXMax (float xMax)
     {
         this->xMax = xMax;
     }
-    void setXMin(float xMin)
+    void setXMin (float xMin)
     {
         this->xMin = xMin;
     }
-    void setXValue(float xValue)
+    void setXValue (float xValue)
     {
         this->xValue = xValue;
     }
-    void setXValueIncrement(float xValueIncrement)
+    void setXValueIncrement (float xValueIncrement)
     {
         this->xValueIncrement = xValueIncrement;
     }
-    void setYMax(float yMax)
+    void setYMax (float yMax)
     {
         this->yMax = yMax;
     }
-    void setYMin(float yMin)
+    void setYMin (float yMin)
     {
         this->yMin = yMin;
     }
-    void setYValue(float yValue)
+    void setYValue (float yValue)
     {
         this->yValue = yValue;
     }
-    void setYValueIncrement(float yValueIncrement)
+    void setYValueIncrement (float yValueIncrement)
     {
         this->yValueIncrement = yValueIncrement;
     }

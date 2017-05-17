@@ -58,10 +58,10 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void resizeAllWindows (int height);
-    void createEditorForAudioGraphNode(Point<int> position);
+    void createEditorForAudioGraphNode (Point<int> position);
     void createAudioGraph();
-    void createCodeEditorForFile(File file);
-	void createNewProject();
+    void createCodeEditorForFile (File file);
+    void createNewProject();
     void createGenericCsoundPluginWrapper();
     Image createBackground();
     void removeEditor();
@@ -75,27 +75,27 @@ public:
     bool closeAllMainWindows();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);
-    void runCsoundForNode(String file);
-	void stopCsoundForNode(String file);
+    void runCsoundForNode (String file);
+    void stopCsoundForNode (String file);
     void stopAudioGraph();
-	void startAudioGraph();
+    void startAudioGraph();
     void showGenericWidgetWindow();
-	void bringCodeEditorToFront(File file);
+    void bringCodeEditorToFront (File file);
     void hideGenericWidgetWindow (bool freeContent = false);
     void initSettings();
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
     void setLookAndFeelColours();
-	void showGraph();
-	void saveGraph(bool saveAs);
-	void openGraph(File fileToOpen = File());
-	File getCurrentCsdFile ();	
-	void setCurrentCsdFile(File file);
-	void writeFileToDisk(File file);
-	//==============================================================================
-	void handleToolbarButtons(ToolbarButton* toolbarButton);
-	void handleFileTabButtons(DrawableButton* button);
-	void handleFileTab(FileTabButton* drawableButton) ;
+    void showGraph();
+    void saveGraph (bool saveAs);
+    void openGraph (File fileToOpen = File());
+    File getCurrentCsdFile ();
+    void setCurrentCsdFile (File file);
+    void writeFileToDisk (File file);
+    //==============================================================================
+    void handleToolbarButtons (ToolbarButton* toolbarButton);
+    void handleFileTabButtons (DrawableButton* button);
+    void handleFileTab (FileTabButton* drawableButton) ;
     void addFileTabButton (File file);
     void arrangeFileTabButtons();
     //==============================================================================
@@ -113,25 +113,25 @@ public:
     CabbagePluginProcessor* getCabbagePluginProcessor();
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();
-	CabbageEditorContainer* getCurrentEditorContainer();
+    CabbageEditorContainer* getCurrentEditorContainer();
     String getAudioDeviceSettings();
     int getStatusbarYPos();
-	CabbageSettings* getCabbageSettings(){		return cabbageSettings;	}
-	AudioGraph* getAudioGraph(){				return audioGraph;	}
-	NamedValueSet& getNodeIds(){					return nodeIdsForPlugins;	}	
+    CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
+    AudioGraph* getAudioGraph() {                return audioGraph;  }
+    NamedValueSet& getNodeIds() {                    return nodeIdsForPlugins;   }
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
-	OwnedArray<WebBrowserComponent> htmlHelpPages;
+    OwnedArray<WebBrowserComponent> htmlHelpPages;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
-	//==============================================================================
-	void timerCallback();
-	void launchHelpfile(String type);
-	
+    //==============================================================================
+    void timerCallback();
+    void launchHelpfile (String type);
+
 private:
-	OwnedArray<FileTabButton> fileTabs;  
-	Array<File> openFiles;
+    OwnedArray<FileTabButton> fileTabs;
+    Array<File> openFiles;
     bool fileNeedsSaving = false;
     String searchString = String::empty;
     String replaceString = String::empty;
@@ -154,198 +154,199 @@ private:
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
-	NamedValueSet nodeIdsForPlugins;
-	
+    NamedValueSet nodeIdsForPlugins;
 
-	class AudioGraphDocumentWindow : public DocumentWindow
-	{
-		Colour colour;
-	public:
-		AudioGraphDocumentWindow (String caption, Colour backgroundColour)
-			: DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour)
-		{
-			setSize(600, 600);
-			setName(caption);
-			this->setResizable(false, true);
-		}
 
-		void closeButtonPressed() override {    setVisible (false);  }
-		void paint(Graphics& g) { g.fillAll(colour); }
-	};
-	
-	ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
+    class AudioGraphDocumentWindow : public DocumentWindow
+    {
+        Colour colour;
+    public:
+        AudioGraphDocumentWindow (String caption, Colour backgroundColour)
+            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
+        {
+            setSize (600, 600);
+            setName (caption);
+            this->setResizable (false, true);
+        }
 
-	class HtmlHelpDocumentWindow : public DocumentWindow
-	{
-		Colour colour;
-		ScopedPointer<WebBrowserComponent> htmlPage;
-	public:
-		HtmlHelpDocumentWindow (String caption, Colour backgroundColour)
-			: DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour)
-		{
-			setName(caption);
-			htmlPage = new WebBrowserComponent();
-			htmlPage->setSize(1000, 800);
-			this->setResizable(false, true);
-			setContentOwned(htmlPage, true);
-			setSize(1000, 800);
-		}
+        void closeButtonPressed() override {    setVisible (false);  }
+        void paint (Graphics& g) { g.fillAll (colour); }
+    };
 
-		void loadPage(String url)
-		{
-			htmlPage->goToURL(url);			
-		}
+    ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
 
-		void closeButtonPressed() override {    setVisible (false);  }
-	};
-	
-	ScopedPointer<HtmlHelpDocumentWindow> helpWindow;
-	
+    class HtmlHelpDocumentWindow : public DocumentWindow
+    {
+        Colour colour;
+        ScopedPointer<WebBrowserComponent> htmlPage;
+    public:
+        HtmlHelpDocumentWindow (String caption, Colour backgroundColour)
+            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
+        {
+            setName (caption);
+            htmlPage = new WebBrowserComponent();
+            htmlPage->setSize (1000, 800);
+            this->setResizable (false, true);
+            setContentOwned (htmlPage, true);
+            setSize (1000, 800);
+        }
+
+        void loadPage (String url)
+        {
+            htmlPage->goToURL (url);
+        }
+
+        void closeButtonPressed() override {    setVisible (false);  }
+    };
+
+    ScopedPointer<HtmlHelpDocumentWindow> helpWindow;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainComponent)
 };
 
 class FileTabButton : public TextButton
 {
-	DrawableButton play, close, showEditor, editGUI;
-	String filename;
-	bool isCsdFile;
+    DrawableButton play, close, showEditor, editGUI;
+    String filename;
+    bool isCsdFile;
 
-	class Overlay : public Component
-	{
-	public:
-		Overlay():Component(){}
-		void paint(Graphics &g)
-		{
-			g.fillAll(Colours::black.withAlpha(.5f));
-		}
-	};
-	
-	Overlay overlay;
+    class Overlay : public Component
+    {
+    public:
+        Overlay(): Component() {}
+        void paint (Graphics& g)
+        {
+            g.fillAll (Colours::black.withAlpha (.5f));
+        }
+    };
+
+    Overlay overlay;
 public:
 
-	
-	FileTabButton(String name, String filename, bool csdFile = true): 
-		TextButton(name, filename),
-		filename(filename),
-		play("Play", DrawableButton::ButtonStyle::ImageStretched), 
-		close("", DrawableButton::ButtonStyle::ImageStretched),
-		showEditor("", DrawableButton::ButtonStyle::ImageStretched), 
-		editGUI("", DrawableButton::ButtonStyle::ImageStretched),
-		overlay(),
-		isCsdFile(csdFile)
-	{	
-		addChildComponent(overlay);
-		overlay.setVisible(false);
-		play.setClickingTogglesState(true);
-		play.setName("playButton");
-		
-		addAndMakeVisible(close);
-		close.setName("closeButton");
-		close.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-		close.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-		close.setTooltip("Close file");
-		close.getProperties().set("filename", filename);
-		
-		addAndMakeVisible(play);
-		play.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-		play.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-		play.setClickingTogglesState(true);
-		play.getProperties().set("filename", filename);
-		
-		addAndMakeVisible(showEditor);
-		showEditor.setName("showEditorButton");
-		showEditor.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-		showEditor.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-		showEditor.setClickingTogglesState(true);
-		showEditor.setTooltip("Show plugin Editor");	
-	
-		addAndMakeVisible(editGUI);
-		editGUI.setName("editGUIButton");
-		editGUI.setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-		editGUI.setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-		editGUI.setClickingTogglesState(true);
-		editGUI.setTooltip("Edit Plugin GUI");	
-		
-		setDrawableImages(play, 60, 25, "play");
-		setDrawableImages(close, 25, 25, "close");
-		setDrawableImages(showEditor, 25, 25, "showEditor");
-		setDrawableImages(editGUI, 25, 25, "editGUI");
 
-		
-	}
-	
-	const String getFilename(){	return filename;	}
-	
-	void addButtonListeners(Button::Listener* listener)
-	{
-		play.addListener(listener);
-		close.addListener(listener);
-		showEditor.addListener(listener);
-		editGUI.addListener(listener);
-	}
-	
-	void disableButtons(bool disable)
-	{
-		if(disable)
-		{
-			overlay.setVisible(true);
-			overlay.toFront(true);					
-		}
-		else
-			overlay.setVisible(false);
-			
-	}
-	
-	void resized()
-	{	
-		if(isCsdFile == true)
-		{
-			overlay.setBounds(5,3,125, 25);	
-			play.setBounds(5, 3, 60, 25);
-			showEditor.setBounds(67, 3, 30, 25);
-			editGUI.setBounds(99, 3, 30, 25);
-		}
-		close.setBounds(getWidth()-22, 3, 20, 20);
-	}
-	
-	void setDrawableImages(DrawableButton& button, int width, int height, String type)
-	{
-		DrawableImage imageNormal, imageNormalPressed, imageDownPressed;
-		
-		if(type == "play")
-		{		
-			DrawableImage imageDown;
-			imageNormalPressed.setImage(CabbageImages::drawPlayStopIcon(width, height, false, true));
-			imageDownPressed.setImage(CabbageImages::drawPlayStopIcon(width, height, true, true));
-			imageNormal.setImage(CabbageImages::drawPlayStopIcon(width, height, false));		
-			imageDown.setImage(CabbageImages::drawPlayStopIcon(width, height, true));		
-			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageDown, nullptr,  &imageDownPressed, &imageDownPressed);
-		}
-		else if(type == "close")
-		{
-			imageNormal.setImage(CabbageImages::drawCloseIcon(width, height));	
-			imageNormalPressed.setImage(CabbageImages::drawCloseIcon(width-3, height-3));
-			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal);
-		}
-		else if(type == "showEditor")
-		{
-			imageNormal.setImage(CabbageImages::drawEditorIcon(width, height));	
-			imageNormalPressed.setImage(CabbageImages::drawEditorIcon(width-1, height-1));
-			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);		
-		}
-		else if(type == "editGUI")
-		{
-			imageNormal.setImage(CabbageImages::drawEditGUIIcon(width, height));	
-			imageNormalPressed.setImage(CabbageImages::drawEditGUIIcon(width-1, height-1));
-			button.setImages(&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);				
-		}
-	}
-	
-	DrawableButton& getPlayButton(){	return play;	}
-	DrawableButton& getShowEditorButton(){	return showEditor;	}
-	DrawableButton& getCloseFileEditorButton(){	return close;	}
-	DrawableButton& getEditGUIButton(){	return editGUI;	}
+    FileTabButton (String name, String filename, bool csdFile = true):
+        TextButton (name, filename),
+        filename (filename),
+        play ("Play", DrawableButton::ButtonStyle::ImageStretched),
+        close ("", DrawableButton::ButtonStyle::ImageStretched),
+        showEditor ("", DrawableButton::ButtonStyle::ImageStretched),
+        editGUI ("", DrawableButton::ButtonStyle::ImageStretched),
+        overlay(),
+        isCsdFile (csdFile)
+    {
+        addChildComponent (overlay);
+        overlay.setVisible (false);
+        play.setClickingTogglesState (true);
+        play.setName ("playButton");
+
+        addAndMakeVisible (close);
+        close.setName ("closeButton");
+        close.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+        close.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+        close.setTooltip ("Close file");
+        close.getProperties().set ("filename", filename);
+
+        addAndMakeVisible (play);
+        play.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+        play.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+        play.setClickingTogglesState (true);
+        play.getProperties().set ("filename", filename);
+
+        addAndMakeVisible (showEditor);
+        showEditor.setName ("showEditorButton");
+        showEditor.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+        showEditor.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+        showEditor.setClickingTogglesState (true);
+        showEditor.setTooltip ("Show plugin Editor");
+
+        addAndMakeVisible (editGUI);
+        editGUI.setName ("editGUIButton");
+        editGUI.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+        editGUI.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+        editGUI.setClickingTogglesState (true);
+        editGUI.setTooltip ("Edit Plugin GUI");
+
+        setDrawableImages (play, 60, 25, "play");
+        setDrawableImages (close, 25, 25, "close");
+        setDrawableImages (showEditor, 25, 25, "showEditor");
+        setDrawableImages (editGUI, 25, 25, "editGUI");
+
+
+    }
+
+    const String getFilename() { return filename;    }
+
+    void addButtonListeners (Button::Listener* listener)
+    {
+        play.addListener (listener);
+        close.addListener (listener);
+        showEditor.addListener (listener);
+        editGUI.addListener (listener);
+    }
+
+    void disableButtons (bool disable)
+    {
+        if (disable)
+        {
+            overlay.setVisible (true);
+            overlay.toFront (true);
+        }
+        else
+            overlay.setVisible (false);
+
+    }
+
+    void resized()
+    {
+        if (isCsdFile == true)
+        {
+            overlay.setBounds (5, 3, 125, 25);
+            play.setBounds (5, 3, 60, 25);
+            showEditor.setBounds (67, 3, 30, 25);
+            editGUI.setBounds (99, 3, 30, 25);
+        }
+
+        close.setBounds (getWidth() - 22, 3, 20, 20);
+    }
+
+    void setDrawableImages (DrawableButton& button, int width, int height, String type)
+    {
+        DrawableImage imageNormal, imageNormalPressed, imageDownPressed;
+
+        if (type == "play")
+        {
+            DrawableImage imageDown;
+            imageNormalPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, false, true));
+            imageDownPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, true, true));
+            imageNormal.setImage (CabbageImages::drawPlayStopIcon (width, height, false));
+            imageDown.setImage (CabbageImages::drawPlayStopIcon (width, height, true));
+            button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageDown, nullptr,  &imageDownPressed, &imageDownPressed);
+        }
+        else if (type == "close")
+        {
+            imageNormal.setImage (CabbageImages::drawCloseIcon (width, height));
+            imageNormalPressed.setImage (CabbageImages::drawCloseIcon (width - 3, height - 3));
+            button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal);
+        }
+        else if (type == "showEditor")
+        {
+            imageNormal.setImage (CabbageImages::drawEditorIcon (width, height));
+            imageNormalPressed.setImage (CabbageImages::drawEditorIcon (width - 1, height - 1));
+            button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);
+        }
+        else if (type == "editGUI")
+        {
+            imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
+            imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));
+            button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);
+        }
+    }
+
+    DrawableButton& getPlayButton() {    return play;    }
+    DrawableButton& getShowEditorButton() {  return showEditor;  }
+    DrawableButton& getCloseFileEditorButton() { return close;   }
+    DrawableButton& getEditGUIButton() { return editGUI; }
 };
 
 //==============================================================================

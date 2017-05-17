@@ -38,8 +38,8 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
     text = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text);
     currentValue = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::value);
     value = currentValue;
-	valuex = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::valuex);
-	valuey = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::valuey);
+    valuex = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::valuex);
+    valuey = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::valuey);
     lineNumber = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::linenumber);
     child->getProperties().set (CabbageIdentifierIds::linenumber, lineNumber);
     populateTextArrays (data);
@@ -145,8 +145,8 @@ float CabbageWidgetBase::getCurrentValue (ValueTree data)
 
 void CabbageWidgetBase::populateTextArrays (ValueTree data)
 {
-	channelArray.clear();
-	textArray.clear();
+    channelArray.clear();
+    textArray.clear();
     const Array<var>* channelArrayVar = CabbageWidgetData::getProperty (data, CabbageIdentifierIds::channel).getArray();
 
     if (channelArrayVar && channelArrayVar->size() > 1)
@@ -169,9 +169,9 @@ void CabbageWidgetBase::populateTextArrays (ValueTree data)
         }
     }
     else
-		textArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text));  //make sure we have at least two items in array
+        textArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text));  //make sure we have at least two items in array
 
-	textArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text));
+    textArray.add (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text));
 }
 
 int CabbageWidgetBase::getSVGWidth (File svgFile)

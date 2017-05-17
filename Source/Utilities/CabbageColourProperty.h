@@ -117,25 +117,25 @@ public :
 class ColourMultiPropertyComponent : public PropertyComponent, public ChangeListener, public Button::Listener, public ChangeBroadcaster
 {
     bool colourSettings;
-	TextEditor editor;
-	
-	class OverlayComponent : public Component
-	{
-		Colour overlayColour;
-	public:
-		OverlayComponent(String name):Component(name){}
-		void setColour(Colour colour){	overlayColour = colour;	repaint();}
-		void paint(Graphics& g){	g.fillAll(overlayColour);	}
-	};
-	
-	OwnedArray<OverlayComponent> overlayComponents;
-	LookAndFeel_V2 lookAndFeel;
-	Viewport viewport;
-	Component overlayComponentContainer; 
-	TextButton addColour, removeColour;
-	Array<Colour> colours;
-	
-	void addNewColour(Colour colour);
+    TextEditor editor;
+
+    class OverlayComponent : public Component
+    {
+        Colour overlayColour;
+    public:
+        OverlayComponent (String name): Component (name) {}
+        void setColour (Colour colour) {  overlayColour = colour; repaint();}
+        void paint (Graphics& g) {    g.fillAll (overlayColour);   }
+    };
+
+    OwnedArray<OverlayComponent> overlayComponents;
+    LookAndFeel_V2 lookAndFeel;
+    Viewport viewport;
+    Component overlayComponentContainer;
+    TextButton addColour, removeColour;
+    Array<Colour> colours;
+
+    void addNewColour (Colour colour);
 public :
     //======= ColourPropertyComponent =======
     ColourMultiPropertyComponent (String name, var colours, bool colourSettings = false);
@@ -144,12 +144,12 @@ public :
     void mouseDown (const MouseEvent& e);
     void changeListenerCallback (juce::ChangeBroadcaster* source);
     void refresh() override {}
-	void resized();
-	void buttonClicked(Button* button) override;
+    void resized();
+    void buttonClicked (Button* button) override;
     String getCurrentColourString();
     Colour colour;
     String name;
-	int currentColourIndex = 0;
+    int currentColourIndex = 0;
 
 
 };

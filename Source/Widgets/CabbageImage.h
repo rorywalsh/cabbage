@@ -50,7 +50,7 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {}
-	void changeListenerCallback(ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source);
     String getTooltip()
     {
         return tooltipText;

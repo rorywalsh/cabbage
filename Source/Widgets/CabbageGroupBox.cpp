@@ -28,7 +28,7 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData)
       outlineColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
       GroupComponent (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
       outlineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
-	  lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
+      lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
       corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
       justification (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align))
 {
@@ -47,7 +47,7 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData)
     setTextLabelPosition (CabbageUtilities::getJustification (justification));
 
     getProperties().set ("outlinethickness", outlineThickness);
-	getProperties().set ("linethickness", lineThickness);
+    getProperties().set ("linethickness", lineThickness);
 
     getProperties().set ("cornersize", corners);
     setImgProperties (*this, wData, "groupbox");
@@ -55,7 +55,7 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData)
 
 void CabbageGroupBox::changeListenerCallback (ChangeBroadcaster* source)
 {
-	CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::visible, 0);
+    CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::visible, 0);
 }
 
 void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -63,12 +63,13 @@ void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     if (CabbagePluginEditor::PopupDocumentWindow* owner = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
     {
         const int visible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
-		owner->addChangeListener(this);
+        owner->addChangeListener (this);
+
         if (visible == 1)
-		{
+        {
             owner->setVisible (true);
-			owner->toFront(true);
-		}
+            owner->toFront (true);
+        }
         else
             owner->setVisible (false);
     }
@@ -82,7 +83,7 @@ void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     setText (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::text));
     getProperties().set ("cornersize", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::corners));
     getProperties().set ("outlinethickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness));
-	getProperties().set ("linethickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::linethickness));
+    getProperties().set ("linethickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::linethickness));
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 }
 

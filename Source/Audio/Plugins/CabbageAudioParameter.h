@@ -30,8 +30,8 @@ public:
     CabbageAudioParameter (ValueTree wData, Csound& csound, String channel, String name, float minValue, float maxValue, float def)
         : AudioParameterFloat (channel, channel, minValue, maxValue, def), widgetData (wData), currentValue (0), widgetName (name), channel (channel), csound (csound)
     {
-		widgetType = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
-	}
+        widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
+    }
     ~CabbageAudioParameter() {}
 
     float getValue() const override
@@ -50,7 +50,7 @@ public:
     String channel;
     String widgetName;
     ValueTree widgetData;
-	String widgetType;
+    String widgetType;
     float currentValue;
 
     Csound csound;

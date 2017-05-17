@@ -33,11 +33,12 @@ class CabbageWidgetData : public CabbageUtilities
     //    bool refreshFromDisk;
 
 public:
-	
-	struct IdentifiersAndParameters {
-	  StringArray identifier;
-	  StringArray parameter;
-	};
+
+    struct IdentifiersAndParameters
+    {
+        StringArray identifier;
+        StringArray parameter;
+    };
 
     CabbageWidgetData() {};
     ~CabbageWidgetData() {};
@@ -72,7 +73,7 @@ public:
     static void setHRangeSliderProperties (ValueTree widgetData, int ID);
     static void setVRangeSliderProperties (ValueTree widgetData, int ID);
     static void setLineProperties (ValueTree widgetData, int ID);
-	static void setMeterProperties (ValueTree widgetData, int ID, bool isVertical);
+    static void setMeterProperties (ValueTree widgetData, int ID, bool isVertical);
     //============================================================================
     static float getNumProp (ValueTree widgetData, Identifier prop);
     static void setNumProp (ValueTree widgetData, Identifier prop, float val);
@@ -82,24 +83,24 @@ public:
     static void setProperty (ValueTree widgetData, Identifier name, const var& value);
     static var getProperty (ValueTree widgetData, Identifier name);
     //============================================================================
-	static IdentifiersAndParameters getSetofIdentifiersAndParameters(String lineOfText);
-	static var getVarArrayFromTokens(StringArray strTokens);
-	static void setChannelArrays(StringArray strTokens, ValueTree widgetData, String identifier);
-	static void setTextItemArrays(StringArray strTokens, ValueTree widgetData, String typeOfWidget);
-	static void setColourArrays(StringArray strTokens, ValueTree widgetData, String identifier, bool isTable = true);
-	static void setImageFiles(StringArray strTokens, ValueTree widgetData, String typeOfWidget);
-	static void setShapes(StringArray strTokens, ValueTree widgetData);
-	static void setBounds(StringArray strTokens, ValueTree widgetData);
-	static void setRange(StringArray strTokens, ValueTree widgetData, String identifier);
-	static void setFontStyle(StringArray strTokens, ValueTree widgetData);
-	static void setScrubberPosition(StringArray strTokens, ValueTree widgetData);
-	static void setAmpRange(StringArray strTokens, ValueTree widgetData);
-	static void setTableNumberArrays(StringArray strTokens, ValueTree widgetData);
-	static void setColourByNumber(StringArray strTokens, ValueTree widgetData, String identifier);
+    static IdentifiersAndParameters getSetofIdentifiersAndParameters (String lineOfText);
+    static var getVarArrayFromTokens (StringArray strTokens);
+    static void setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier);
+    static void setTextItemArrays (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
+    static void setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable = true);
+    static void setImageFiles (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
+    static void setShapes (StringArray strTokens, ValueTree widgetData);
+    static void setBounds (StringArray strTokens, ValueTree widgetData);
+    static void setRange (StringArray strTokens, ValueTree widgetData, String identifier);
+    static void setFontStyle (StringArray strTokens, ValueTree widgetData);
+    static void setScrubberPosition (StringArray strTokens, ValueTree widgetData);
+    static void setAmpRange (StringArray strTokens, ValueTree widgetData);
+    static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
+    static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
     //============================================================================
     static Colour getColourFromText (String text);
     static String getCabbageCodeFromIdentifiers (ValueTree props, const String, const String macroText);
-	static String updateIdentifiers(String cabbageCode, String currentLineText);
+    static String updateIdentifiers (String cabbageCode, String currentLineText);
     //============================================================================
     static String getBoundsTextAsCabbageCode (Rectangle<int> rect);
     static String getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
@@ -109,7 +110,7 @@ public:
     static String getSimpleTextAsCabbageCode (ValueTree widgetData, String identfier, const String macroText);
     static String getImagesTextAsCabbageCode (ValueTree widgetData, const String macroText);
     static String getWidgetArrayAsCabbageCode (ValueTree widgetData, const String macroText);
-	static String getMultiItemNumbersAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
+    static String getMultiItemNumbersAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
     //============================================================================
     static String removeWidgetFromValueTree (ValueTree widgetData, int lineNumber);
     //============================================================================

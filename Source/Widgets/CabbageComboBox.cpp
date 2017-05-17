@@ -65,10 +65,10 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 {
     Array<File> dirFiles;
     StringArray fileNames;
-	clear (dontSendNotification);
-	snapshotFiles.clear();
-    
-	if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
+    clear (dontSendNotification);
+    snapshotFiles.clear();
+
+    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
         String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
         StringArray lines = StringArray::fromLines (file);

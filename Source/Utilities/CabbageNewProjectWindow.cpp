@@ -59,7 +59,7 @@ void CabbageProjectWindow::writeNewFile (File fc, String fileText)
 void CabbageProjectWindow::createNewFile (String type)
 {
 
-    FileChooser fc("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+    FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
     if (fc.browseForFileToSave (false))
     {

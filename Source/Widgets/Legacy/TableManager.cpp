@@ -285,9 +285,10 @@ void TableManager::setFill (bool fill)
 void TableManager::setVUGradient (Array<Colour> colours)
 {
 
-    ColourGradient vuGradient (colours[0], 0.f, 0.f, colours[colours.size()-1], getWidth(), getHeight(), false);
-	for (int i = 1; i < colours.size()-1; i++)
-		vuGradient.addColour((float)i/(float)colours.size(), colours[i]);
+    ColourGradient vuGradient (colours[0], 0.f, 0.f, colours[colours.size() - 1], getWidth(), getHeight(), false);
+
+    for (int i = 1; i < colours.size() - 1; i++)
+        vuGradient.addColour ((float)i / (float)colours.size(), colours[i]);
 
     for (int i = 0; i < tables.size(); i++)
     {

@@ -62,11 +62,11 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 
         setLookAndFeelColours (valueTree);
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-		populateTextArrays(valueTree);
-		CabbageUtilities::debug(getTextArray()[1]);
-		CabbageUtilities::debug(getTextArray()[0]);
-		//const String newText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
-		//if(newText != getTextArray()[getValue()])
-		setButtonText (getTextArray()[getValue()]);
+        populateTextArrays (valueTree);
+        CabbageUtilities::debug (getTextArray()[1]);
+        CabbageUtilities::debug (getTextArray()[0]);
+        //const String newText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
+        //if(newText != getTextArray()[getValue()])
+        setButtonText (getTextArray()[getValue()]);
     }
 }

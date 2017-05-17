@@ -55,11 +55,11 @@ public:
 
     //==============================================================================
 private:
-	Array<File> exampleFiles;
-	Array<File> userFiles;
-	CabbageLookAndFeel2 lookAndFeel;
+    Array<File> exampleFiles;
+    Array<File> userFiles;
+    CabbageLookAndFeel2 lookAndFeel;
     AudioGraph& graph;
-	CabbageMainComponent& owner;
+    CabbageMainComponent& owner;
     ScopedPointer<ConnectorComponent> draggingConnector;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageGraphComponent)

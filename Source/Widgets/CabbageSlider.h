@@ -43,16 +43,16 @@ class CabbageSlider
     void mouseDrag (const MouseEvent& event);
     void mouseMove (const MouseEvent& event);
     void mouseEnter (const MouseEvent& event);
-	void mouseExit (const MouseEvent& event);
+    void mouseExit (const MouseEvent& event);
     void createPopupBubble();
-    void showPopupBubble(int time);
+    void showPopupBubble (int time);
     void setLookAndFeelColours (ValueTree wData);
 
 public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageSlider();
 
-	void setTextBoxWidth();
+    void setTextBoxWidth();
     void setSliderVelocity (ValueTree wData);
     void resized();
     void initialiseSlider (ValueTree wData);

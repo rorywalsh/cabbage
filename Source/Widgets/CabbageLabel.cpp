@@ -49,7 +49,7 @@ void CabbageLabel::paint (Graphics& g)
     g.setColour (Colour::fromString (fontcolour));
     g.setFont (CabbageUtilities::getComponentFont (fontstyle));
     g.setFont (getHeight());
-    g.drawFittedText (text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, 1, 1);
+    g.drawFittedText (text, 0, 0, jmax (1, getWidth()), jmax (1, getHeight()), textAlign, 1, 1);
 }
 
 void CabbageLabel::setText (String _text)

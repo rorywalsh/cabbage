@@ -35,8 +35,8 @@ class CabbageCodeEditorComponent :
     public ChangeBroadcaster,
     public Timer
 {
-	
-	int lastLinePosition = 0;
+
+    int lastLinePosition = 0;
     int searchStartIndex  = 0;
     Component* statusBar;
     int listBoxRowHeight = 18;
@@ -48,7 +48,7 @@ class CabbageCodeEditorComponent :
     CabbageEditorContainer* owner;
     int updateGUICounter = 0;
     int currentFontSize = 17;
-	
+
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);
     ~CabbageCodeEditorComponent() {};
@@ -116,7 +116,7 @@ public:
     void toggleComments();
     void handleAutoComplete (String text);
     void showAutoComplete (String currentWord);
-	void removeUnlikelyVariables (String currentWord);
+    void removeUnlikelyVariables (String currentWord);
     void parseTextForVariables();
     void parseTextForInstrumentsAndRegions();
     void zoomIn();

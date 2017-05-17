@@ -34,12 +34,12 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     setSize (400, 300);
     setLookAndFeel (&lookAndFeel);
     createEditorInterface (processor.cabbageWidgets);
-   
+
     addAndMakeVisible (mainComponent);
     mainComponent.setInterceptsMouseClicks (false, true);
-	
-#ifdef Cabbage_IDE_Build	
-	addAndMakeVisible (layoutEditor);
+
+#ifdef Cabbage_IDE_Build
+    addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&mainComponent);
     layoutEditor.updateFrames();
     layoutEditor.setEnabled (false);
@@ -65,7 +65,7 @@ void CabbagePluginEditor::resized()
 #ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
 #endif
-     mainComponent.setBounds (getLocalBounds());
+    mainComponent.setBounds (getLocalBounds());
 }
 
 //======================================================================================================
@@ -233,7 +233,7 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
 
     else if (widgetType == CabbageWidgetTypes::hmeter || widgetType == CabbageWidgetTypes::vmeter)
         insertMeter (cabbageWidgetData);
-		
+
     else if (widgetType == CabbageWidgetTypes::hrange
              || widgetType == CabbageWidgetTypes::vrange)
         insertRangeSlider (cabbageWidgetData);
@@ -568,8 +568,10 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
 void CabbagePluginEditor::updateLayoutEditorFrames()
 {
 #ifdef Cabbage_IDE_Build
+
     if (editModeEnabled)
         layoutEditor.updateFrames();
+
 #endif
 }
 
@@ -737,7 +739,7 @@ void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
 {
     const File csdFile (processor.getCsdFile());
     XmlElement xml = processor.savePluginState (csdFile.getFileNameWithoutExtension().replace (" ", "_"));
-    xml.writeToFile (snapshotFile.withFileExtension(".snaps"), "");
+    xml.writeToFile (snapshotFile.withFileExtension (".snaps"), "");
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
@@ -748,56 +750,59 @@ void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
 
 void CabbagePluginEditor::refreshComboBoxContents()
 {
-	for( int i = 0 ; i < processor.cabbageWidgets.getNumChildren() ; i++)
-	{
-		const String type = CabbageWidgetData::getStringProp(processor.cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+    for ( int i = 0 ; i < processor.cabbageWidgets.getNumChildren() ; i++)
+    {
+        const String type = CabbageWidgetData::getStringProp (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
-		if( type == "combobox")
-		{
-			const String name = CabbageWidgetData::getStringProp(processor.cabbageWidgets.getChild(i), CabbageIdentifierIds::name);
-			
-			if(CabbageComboBox* combo = dynamic_cast<CabbageComboBox*>(getComponentFromName(name)))
-			{
-				combo->addItemsToCombobox(processor.cabbageWidgets.getChild(i));
-			}
-		}
-	}
+        if ( type == "combobox")
+        {
+            const String name = CabbageWidgetData::getStringProp (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
+
+            if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
+            {
+                combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i));
+            }
+        }
+    }
 }
 
 String CabbagePluginEditor::createNewGenericNameForPresetFile()
 {
-	Array<File> dirFiles;
-	File pluginDir = processor.getCsdFile().getParentDirectory().getFullPathName();
-	pluginDir.findChildFiles(dirFiles, 2, false, "*.snaps");
-	String newFileName;
-	//now check existing files in directory and make sure we use a unique name
-	for(int i=0; i<dirFiles.size(); i++)
-	{
-		String newName = processor.getCsdFile().getFileNameWithoutExtension()+"_"+String(i+1);
-		if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
-			newFileName = pluginDir.getFullPathName()+"\\"+newName+".snaps";
-		else
-			newFileName  = pluginDir.getFullPathName()+"/"+newName+".snaps";
+    Array<File> dirFiles;
+    File pluginDir = processor.getCsdFile().getParentDirectory().getFullPathName();
+    pluginDir.findChildFiles (dirFiles, 2, false, "*.snaps");
+    String newFileName;
 
-		bool allowSave = true;
-		for(auto file : dirFiles)
-		{			
-			if(file.getFileNameWithoutExtension().equalsIgnoreCase(newName))
-				allowSave = false;
-		}
-		
-		if(allowSave)
-			return newFileName;
-	}
+    //now check existing files in directory and make sure we use a unique name
+    for (int i = 0; i < dirFiles.size(); i++)
+    {
+        String newName = processor.getCsdFile().getFileNameWithoutExtension() + "_" + String (i + 1);
 
-	const String firstPresetFile = processor.getCsdFile().getFileNameWithoutExtension()+"_0";		
-	
-	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
-			return pluginDir.getFullPathName()+"\\"+firstPresetFile+".snaps";
-	else
-			return pluginDir.getFullPathName()+"/"+firstPresetFile+".snaps";
-	
-	return "";
+        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
+            newFileName = pluginDir.getFullPathName() + "\\" + newName + ".snaps";
+        else
+            newFileName  = pluginDir.getFullPathName() + "/" + newName + ".snaps";
+
+        bool allowSave = true;
+
+        for (auto file : dirFiles)
+        {
+            if (file.getFileNameWithoutExtension().equalsIgnoreCase (newName))
+                allowSave = false;
+        }
+
+        if (allowSave)
+            return newFileName;
+    }
+
+    const String firstPresetFile = processor.getCsdFile().getFileNameWithoutExtension() + "_0";
+
+    if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
+        return pluginDir.getFullPathName() + "\\" + firstPresetFile + ".snaps";
+    else
+        return pluginDir.getFullPathName() + "/" + firstPresetFile + ".snaps";
+
+    return "";
 
 }
 //======================================================================================================

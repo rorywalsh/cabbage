@@ -151,7 +151,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
 
     if (imgType == "groupbox")
     {
-        imgFile = File(csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imggroupbox));
+        imgFile = File (csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imggroupbox));
 
         if (imgFile.existsAsFile())
         {
@@ -164,7 +164,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
         }
         else if (imgPath.exists())
         {
-            File filename = File(csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/groupbox." + fileType);
+            File filename = File (csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/groupbox." + fileType);
 
             if (filename.existsAsFile())
             {
@@ -179,8 +179,8 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
     }
     else if (imgType == "buttonon")
     {
-		String test = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon);
-        imgFile = File(csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon));
+        String test = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon);
+        imgFile = File (csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon));
 
         if (imgFile.existsAsFile())
         {
@@ -194,7 +194,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
         }
         else if (imgPath.exists())
         {
-            File filename = File(csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonon." + fileType);
+            File filename = File (csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonon." + fileType);
 
             if (filename.existsAsFile())
             {
@@ -209,8 +209,8 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
     }
     else if (imgType == "buttonoff")
     {
-		String test2 = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff);
-        imgFile = File(csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff));
+        String test2 = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff);
+        imgFile = File (csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff));
 
         if (imgFile.existsAsFile())
         {
@@ -223,7 +223,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
         }
         else if (imgPath.exists())
         {
-            File filename = File(csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonoff." + fileType);
+            File filename = File (csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonoff." + fileType);
 
             if (filename.existsAsFile())
             {
@@ -239,7 +239,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
     }
     else if (imgType.contains ("sliderbg"))
     {
-        imgFile = File(csdfile).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgsliderbg));
+        imgFile = File (csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgsliderbg));
 
         if (imgFile.existsAsFile())
         {
@@ -277,7 +277,7 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
     }
     else if (imgType.contains ("slider"))
     {
-        imgFile = File(csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgslider));
+        imgFile = File (csdfile).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgslider));
 
         if (imgFile.existsAsFile())
         {

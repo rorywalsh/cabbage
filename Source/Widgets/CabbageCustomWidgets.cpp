@@ -27,7 +27,7 @@ DemoCabbageWidget::DemoCabbageWidget (ValueTree wData):
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-	
+
 }
 
 void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -47,75 +47,81 @@ void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Id
 //add any new custom widgets here to avoid having to edit makefiles and projects
 // ===========================================================================
 CabbageMeter::CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner):
-	widgetData (wData),
-	owner(_owner),
-	overlayRect(Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::overlaycolour).toString())),
-	isVertical(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::orientation).toString() == "vertical" ? true : false),
-	outlineColour(Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::outlinecolour).toString())),
-	outlineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness)),
-	corners(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners))
+    widgetData (wData),
+    owner (_owner),
+    overlayRect (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::overlaycolour).toString())),
+    isVertical (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::orientation).toString() == "vertical" ? true : false),
+    outlineColour (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::outlinecolour).toString())),
+    outlineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
+    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners))
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-	
-	CabbageUtilities::debug(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::metercolour).size());
-    for (int i = 0; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::metercolour).size(); i++)
+
+    CabbageUtilities::debug (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::metercolour).size());
+
+    for (int i = 0; i < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::metercolour).size(); i++)
     {
-        gradientColours.add (Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::metercolour)[i].toString()));
-    }	
-	
-	if(isVertical)
-	{
-		ColourGradient vGradient(gradientColours[0], 0.f, 0.f, gradientColours[gradientColours.size()-1], getWidth(), getHeight(), false);
-		for (int i = 1; i < gradientColours.size()-1; i++)
-			vGradient.addColour((float)i/(float)gradientColours.size(), gradientColours[i]);	
-		colourGradient = vGradient;
-	}
-	else
-	{
-		ColourGradient hGradient(gradientColours[0], 0.f, getHeight(), gradientColours[gradientColours.size()-1], getWidth(), getHeight(), false);
-		for (int i = 1; i < gradientColours.size()-1; i++)
-			hGradient.addColour((float)i/(float)gradientColours.size(), gradientColours[i]);	
-		colourGradient = hGradient;		
-	}
-	
-	addAndMakeVisible(overlayRect);
-	
+        gradientColours.add (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::metercolour)[i].toString()));
+    }
+
+    if (isVertical)
+    {
+        ColourGradient vGradient (gradientColours[0], 0.f, 0.f, gradientColours[gradientColours.size() - 1], getWidth(), getHeight(), false);
+
+        for (int i = 1; i < gradientColours.size() - 1; i++)
+            vGradient.addColour ((float)i / (float)gradientColours.size(), gradientColours[i]);
+
+        colourGradient = vGradient;
+    }
+    else
+    {
+        ColourGradient hGradient (gradientColours[0], 0.f, getHeight(), gradientColours[gradientColours.size() - 1], getWidth(), getHeight(), false);
+
+        for (int i = 1; i < gradientColours.size() - 1; i++)
+            hGradient.addColour ((float)i / (float)gradientColours.size(), gradientColours[i]);
+
+        colourGradient = hGradient;
+    }
+
+    addAndMakeVisible (overlayRect);
+
 }
 
 void CabbageMeter::resized()
 {
-	overlayRect.setBounds(0, 0, getWidth(), getHeight());
-	setValue(widgetData);
+    overlayRect.setBounds (0, 0, getWidth(), getHeight());
+    setValue (widgetData);
 }
 
 void CabbageMeter::paint (Graphics& g)
-{	
-	g.setColour(outlineColour);
-	g.fillRoundedRectangle(0, 0, getWidth(), getHeight(), corners);
-	g.setGradientFill(colourGradient);
-	g.fillRoundedRectangle(outlineThickness, outlineThickness, getWidth()-outlineThickness*2, getHeight()-outlineThickness*2, corners);	
+{
+    g.setColour (outlineColour);
+    g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), corners);
+    g.setGradientFill (colourGradient);
+    g.fillRoundedRectangle (outlineThickness, outlineThickness, getWidth() - outlineThickness * 2, getHeight() - outlineThickness * 2, corners);
 }
 
-void CabbageMeter::setValue(ValueTree& valueTree)
+void CabbageMeter::setValue (ValueTree& valueTree)
 {
-	const float val = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-	if(isVertical)
-		overlayRect.setBounds(outlineThickness, outlineThickness, getWidth()-outlineThickness*2, (getHeight()*(1.f-val))-outlineThickness*2);
-	else
-		overlayRect.setBounds(outlineThickness+getWidth()*(val), outlineThickness, getWidth()-getWidth()*(val)-outlineThickness*2, getHeight()-outlineThickness*2);	
+    const float val = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+
+    if (isVertical)
+        overlayRect.setBounds (outlineThickness, outlineThickness, getWidth() - outlineThickness * 2, (getHeight() * (1.f - val)) - outlineThickness * 2);
+    else
+        overlayRect.setBounds (outlineThickness + getWidth() * (val), outlineThickness, getWidth() - getWidth() * (val) - outlineThickness * 2, getHeight() - outlineThickness * 2);
 }
 
 void CabbageMeter::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     if (prop == CabbageIdentifierIds::value)
     {
-		setValue(valueTree);
+        setValue (valueTree);
     }
     else
     {
-		overlayRect.colour = Colour::fromString(CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::overlaycolour).toString());
+        overlayRect.colour = Colour::fromString (CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::overlaycolour).toString());
         handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
-	}
+    }
 }

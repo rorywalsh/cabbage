@@ -33,7 +33,7 @@ public:
     virtual void userStartedChangingBounds () {};
     virtual void userStoppedChangingBounds () {};
     bool boundsChangedSinceStart ();
-	bool keyPressed(const KeyPress &key, Component *originatingComponent);
+    bool keyPressed (const KeyPress& key, Component* originatingComponent);
 
     void mouseEnter (const MouseEvent& e);
     void mouseExit (const MouseEvent& e);

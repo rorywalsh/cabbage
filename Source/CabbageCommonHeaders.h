@@ -20,8 +20,8 @@
 #ifndef CABBAGECOMMONHEADERS_H_INCLUDED
 #define CABBAGECOMMONHEADERS_H_INCLUDED
 
-#pragma warning(disable: 4244) 
-#pragma warning(disable: 4100) 
+#pragma warning(disable: 4244)
+#pragma warning(disable: 4100)
 #pragma warning(disable: 4305)
 
 #define CABBAGE_VERSION "Cabbage(64bit) v2.0.11a"

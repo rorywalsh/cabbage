@@ -42,29 +42,29 @@ public:
 
     void drawPopupMenuBackground (Graphics& g, int width, int height) override;
 
-	void drawPopupMenuItem(Graphics&, const Rectangle<int>& area,
-		bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
-		const String& text, const String& shortcutKeyText,
-		const Drawable* icon, const Colour* textColour) override;
+    void drawPopupMenuItem (Graphics&, const Rectangle<int>& area,
+                            bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
+                            const String& text, const String& shortcutKeyText,
+                            const Drawable* icon, const Colour* textColour) override;
 
     void drawAlertBox (Graphics& g, AlertWindow& alert, const Rectangle<int>& textArea, TextLayout& textLayout) override;
     Image drawCheckMark();
 
     static void drawFromSVG (Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine);
-	
+
     void drawSphericalThumb (Graphics& g, const float x, const float y, const float w, const float h, const Colour& colour, const float outlineThickness);
-	
+
     void drawTwoValueThumb (Graphics& g, float x, float y, float diameter, const Colour& colour, float outlineThickness, int direction);
-	
+
     int getMinimumScrollbarThumbSize (ScrollBar& scrollbar) override;
-	
+
     int getDefaultScrollbarWidth() override;
-	
+
     int getScrollbarButtonSize (ScrollBar& scrollbar) override;
-	
-	void drawButtonText (Graphics& g, TextButton& button, bool /*isMouseOverButton*/, bool /*isButtonDown*/) override;
-    
-    Font getLabelFont(Label& label) override;
+
+    void drawButtonText (Graphics& g, TextButton& button, bool /*isMouseOverButton*/, bool /*isButtonDown*/) override;
+
+    Font getLabelFont (Label& label) override;
 
 private:
 

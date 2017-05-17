@@ -50,31 +50,31 @@ public:
 //add any new class declarations below this line..
 class CabbageMeter : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
-	CabbagePluginEditor* owner;
-	float level = 0;
-	Array<Colour> gradientColours;
-	ColourGradient colourGradient;
-	Colour outlineColour;
-	float outlineThickness = 1; 
-	int corners = 2;
-	bool isVertical = true;
-	
-	class Overlay : public Component
-	{
-	public:
-		Colour colour;
-		Overlay(Colour colour):Component(), colour(colour) {}
-		void paint(Graphics& g){ 	g.fillAll(colour);	};
-	};
-	
-	Overlay overlayRect;
+    CabbagePluginEditor* owner;
+    float level = 0;
+    Array<Colour> gradientColours;
+    ColourGradient colourGradient;
+    Colour outlineColour;
+    float outlineThickness = 1;
+    int corners = 2;
+    bool isVertical = true;
+
+    class Overlay : public Component
+    {
+    public:
+        Colour colour;
+        Overlay (Colour colour): Component(), colour (colour) {}
+        void paint (Graphics& g) {    g.fillAll (colour);  };
+    };
+
+    Overlay overlayRect;
 public:
 
     CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageMeter() {};
 
-	void paint (Graphics& g);
-	void resized();
+    void paint (Graphics& g);
+    void resized();
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -82,7 +82,7 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-	void setValue(ValueTree& valueTree);
+    void setValue (ValueTree& valueTree);
     ValueTree widgetData;
 
 

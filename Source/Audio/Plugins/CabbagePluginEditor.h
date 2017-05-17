@@ -25,7 +25,7 @@
 #include "CabbageAudioParameter.h"
 
 #ifdef Cabbage_IDE_Build
-#include "../../GUIEditor/ComponentLayoutEditor.h"
+    #include "../../GUIEditor/ComponentLayoutEditor.h"
 #endif
 
 #include "../../Widgets/CabbageCheckbox.h"
@@ -110,7 +110,7 @@ public:
     void insertTextBox (ValueTree cabbageWidgetData);
     void insertSignalDisplay (ValueTree cabbageWidgetData);
     void insertStepper (ValueTree cabbageWidgetData) {};
-	void insertMeter (ValueTree cabbageWidgetData);
+    void insertMeter (ValueTree cabbageWidgetData);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
@@ -135,11 +135,11 @@ public:
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
-	String createNewGenericNameForPresetFile();
+    String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, Point<int> point);
     ValueTree getValueTreeForlastWidgetAdded();
     //=============================================================================
-	void refreshComboBoxContents();
+    void refreshComboBoxContents();
     void enableEditMode (bool enable);
     void setCurrentlySelectedComponents (StringArray componentNames);
     void resetCurrentlySelectedComponents();
@@ -166,24 +166,24 @@ public:
     bool isEditModeEnabled() {                       return editModeEnabled; }
     Colour backgroundColour;
 
-	//---- popup plant window ----
+    //---- popup plant window ----
     class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
     {
-		Colour colour;
+        Colour colour;
     public:
         PopupDocumentWindow (String caption, Colour backgroundColour)
-            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour)
+            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
         {
 
-		}
+        }
 
         void closeButtonPressed() override {    setVisible (false); sendChangeMessage();  }
-		void paint(Graphics& g) { g.fillAll(colour); }
+        void paint (Graphics& g) { g.fillAll (colour); }
     };
 
 private:
 
-	//---- main component that holds widgets -----
+    //---- main component that holds widgets -----
     class MainComponent : public Component
     {
         Colour colour;
@@ -204,11 +204,11 @@ private:
     TooltipWindow tooltipWindow;
     bool editModeEnabled = false;
     CabbagePluginProcessor& processor;
-	
+
 #ifdef Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
-#endif	
-	
+#endif
+
     StringArray currentlySelectedComponentNames;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)

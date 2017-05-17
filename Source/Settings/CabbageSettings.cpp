@@ -42,25 +42,25 @@ void CabbageSettings::setDefaultSettings()
     xml = new XmlElement ("PLANTS");
     String homeDir = File::getSpecialLocation (File::userHomeDirectory).getFullPathName();
     String manualPath, examplesDir, cabbageHelp;
-    
+
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
-	cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Docs";
-	
+    cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Docs";
+
 
 #if !defined(MACOSX)
     manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
 #else
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
-	cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Docs";
+    cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Docs";
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
 #endif
 
     defaultPropSet->setValue ("CsoundManualDir", manualPath);
     defaultPropSet->setValue ("CabbagePlantDir", homeDir + "/Plants");
     defaultPropSet->setValue ("CabbageExamplesDir", examplesDir);
-	defaultPropSet->setValue ("CabbageManualDir", cabbageHelp);
+    defaultPropSet->setValue ("CabbageManualDir", cabbageHelp);
     defaultPropSet->setValue ("MostRecentDirectory", homeDir);
-	defaultPropSet->setValue ("UserFilesDir", homeDir);
+    defaultPropSet->setValue ("UserFilesDir", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);
     defaultPropSet->setValue ("ShowEditorConsole", 1);
     defaultPropSet->setValue ("ExternalEditor", 0);
@@ -73,7 +73,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue ("DisableAutoComplete", 0);
     defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 0);
-	defaultPropSet->setValue ("SetAlwaysOnTopGraph", 0);
+    defaultPropSet->setValue ("SetAlwaysOnTopGraph", 0);
     defaultPropSet->setValue ("GridSize", 4);
     defaultPropSet->setValue ("CompileOnSave", 1);
     defaultPropSet->setValue ("PlantRepository", xml);

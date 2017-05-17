@@ -76,8 +76,8 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
 
             }
         }
-		else if ( r == 4)
-			graph.showCodeEditorForNode(filterID);
+        else if ( r == 4)
+            graph.showCodeEditorForNode (filterID);
     }
 }
 
@@ -109,10 +109,10 @@ void CabbagePluginComponent::mouseUp (const MouseEvent& e)
     {
         if (const AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
             if (PluginWindow* const w = PluginWindow::getWindowFor (f, PluginWindow::Normal, graph.getGraph()))
-			{
+            {
                 w->toFront (true);
-				graph.showCodeEditorForNode(filterID);
-			}
+                graph.showCodeEditorForNode (filterID);
+            }
     }
 }
 

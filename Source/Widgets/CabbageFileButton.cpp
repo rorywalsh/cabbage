@@ -46,7 +46,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     if (mode == "file")
     {
-        FileChooser fc("Save File", File(getCsdFile()).getParentDirectory(), "", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Save File", File (getCsdFile()).getParentDirectory(), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (filetype == "snaps")
         {
@@ -60,13 +60,13 @@ void CabbageFileButton::buttonClicked (Button* button)
                     if (result == 1)
                     {
                         owner->savePluginStateToFile (fc.getResult());
-						owner->refreshComboBoxContents();
+                        owner->refreshComboBoxContents();
                     }
                 }
                 else
                 {
                     owner->savePluginStateToFile (fc.getResult());
-					owner->refreshComboBoxContents();
+                    owner->refreshComboBoxContents();
                 }
             }
         }
@@ -76,8 +76,8 @@ void CabbageFileButton::buttonClicked (Button* button)
             {
                 owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
                 CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
-				owner->refreshComboBoxContents();
-			}
+                owner->refreshComboBoxContents();
+            }
         }
     }
 
@@ -94,11 +94,11 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "snapshot")
     {
-		const String newFileName = owner->createNewGenericNameForPresetFile();
-		owner->savePluginStateToFile (File(newFileName));
-		owner->refreshComboBoxContents();		
+        const String newFileName = owner->createNewGenericNameForPresetFile();
+        owner->savePluginStateToFile (File (newFileName));
+        owner->refreshComboBoxContents();
     }
-    
+
     owner->getProcessor().updateHostDisplay();
 }
 

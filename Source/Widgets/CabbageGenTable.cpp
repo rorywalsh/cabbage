@@ -88,12 +88,12 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
 
             if (owner->csdCompiledWithoutError())
             {
-				const int numberOfColours = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size();
-				const Colour tableCol = (y < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size() ?
-					Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[y].toString()) :
-					Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[numberOfColours-1].toString()));
+                const int numberOfColours = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour).size();
+                const Colour tableCol = (y < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour).size() ?
+                                         Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[y].toString()) :
+                                         Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[numberOfColours - 1].toString()));
 
-                table.addTable(44100, tableCol, (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine), ampRanges, tableNumber, this);
+                table.addTable (44100, tableCol, (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine), ampRanges, tableNumber, this);
 
                 if (abs (genRoutine) == 1 || tableValues.size() >= MAX_TABLE_SIZE)
                 {
@@ -106,8 +106,9 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
                 else
                 {
                     //cUtils::showMessage(tableValues.size());
-					for( int v = 0 ; v < tableValues.size() ; v++)
-						CabbageUtilities::debug(tableValues[v]);
+                    for ( int v = 0 ; v < tableValues.size() ; v++)
+                        CabbageUtilities::debug (tableValues[v]);
+
                     table.setWaveform (tableValues, tableNumber);
 
                     //only enable editing for gen05, 07, and 02
@@ -153,9 +154,9 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
     //set VU gradients based on tablecolours, take only the first three colours.
     Array<Colour> gradient;
 
-    for (int i = 0; i < CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour).size(); i++)
+    for (int i = 0; i < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour).size(); i++)
     {
-        gradient.add (Colour::fromString(CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::tablecolour)[i].toString()));
+        gradient.add (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[i].toString()));
     }
 
     table.setVUGradient (gradient);
@@ -184,21 +185,21 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             tableValues.clear();
             tableValues = owner->getTableFloats (tableNumber);
 
-			if (table.getTableFromFtNumber(tableNumber) != nullptr)
-			{
-				if (table.getTableFromFtNumber(tableNumber)->tableSize >= MAX_TABLE_SIZE)
-				{
-					tableBuffer.clear();
-					tableBuffer.addFrom(y, 0, tableValues.getRawDataPointer(), tableValues.size());
-					table.setWaveform(tableBuffer, tableNumber);
-				}
-				else
-				{
-					table.setWaveform(tableValues, tableNumber, false);
-					StringArray pFields = owner->getTableStatement(tableNumber);
-					table.enableEditMode(pFields, tableNumber);
-				}
-			}
+            if (table.getTableFromFtNumber (tableNumber) != nullptr)
+            {
+                if (table.getTableFromFtNumber (tableNumber)->tableSize >= MAX_TABLE_SIZE)
+                {
+                    tableBuffer.clear();
+                    tableBuffer.addFrom (y, 0, tableValues.getRawDataPointer(), tableValues.size());
+                    table.setWaveform (tableBuffer, tableNumber);
+                }
+                else
+                {
+                    table.setWaveform (tableValues, tableNumber, false);
+                    StringArray pFields = owner->getTableStatement (tableNumber);
+                    table.enableEditMode (pFields, tableNumber);
+                }
+            }
         }
 
         CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::update, 0); //reset value for further updates
