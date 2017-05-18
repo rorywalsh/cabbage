@@ -425,7 +425,7 @@ void CsoundPluginProcessor::releaseResources()
     // spare memory, etc.
 }
 
-#ifndef JucePlugin_PreferredChannelConfigurations
+
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
 #if JucePlugin_IsMidiEffect
@@ -440,9 +440,10 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     if (inputs == numCsoundChannels && outputs == numCsoundChannels)
         return true;
 
+    return false;
 #endif
 }
-#endif
+
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
