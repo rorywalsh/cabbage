@@ -689,10 +689,11 @@ public:
         set ("Gentable", CabbageWidgetTypes::gentable);
         set ("Groupbox", CabbageWidgetTypes::groupbox);
         set ("Horizontal Range Slider", CabbageWidgetTypes::hrange);
+		set ("Horizontal Meter", CabbageWidgetTypes::hmeter);
         set ("Image", CabbageWidgetTypes::image);
         set ("Keyboard", CabbageWidgetTypes::keyboard);
         set ("Label", CabbageWidgetTypes::label);
-        set ("Numberbox", CabbageWidgetTypes::numberbox);
+        set ("Numberbox", CabbageWidgetTypes::numberbox);		
         set ("Signal Display", CabbageWidgetTypes::signaldisplay);
         set ("Slider - Horizontal", CabbageWidgetTypes::hslider);
         set ("Slider - Rotary", CabbageWidgetTypes::rslider);
@@ -701,6 +702,7 @@ public:
         set ("Text Box", CabbageWidgetTypes::textbox.toString());
         set ("Text Editor", CabbageWidgetTypes::texteditor);
         set ("Vertical Range Slider", CabbageWidgetTypes::vrange);
+		set ("Vertical Meter", CabbageWidgetTypes::vmeter);
         set ("XY Pad", CabbageWidgetTypes::xypad);
     }
 };

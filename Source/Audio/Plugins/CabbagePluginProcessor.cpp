@@ -313,6 +313,22 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 				const String file = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::file);
 				xml.setAttribute (channelName, file);
 			}
+			else if(type.contains("range"))//double channel range widgets
+			{
+				var channels = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
+				const float minValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::minvalue);
+				const float maxValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::maxvalue);
+				xml.setAttribute (channels[0].toString(), minValue);
+				xml.setAttribute (channels[1].toString(), maxValue);
+			}
+			else if(type == CabbageWidgetTypes::xypad)//double channel xypad widget
+			{
+				var channels = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
+				const float xValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuex);
+				const float yValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuey);
+				xml.setAttribute (channels[0].toString(), xValue);
+				xml.setAttribute (channels[1].toString(), yValue);
+			}
 			else
 				xml.setAttribute (channelName, value);
 		}
@@ -328,7 +344,7 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
         for (int i = 0; i < xmlState->getNumAttributes(); i++)
         {
             ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, xmlState->getAttributeName (i), true);
-            const String type = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
+            const String type = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
 
             if (type == CabbageWidgetTypes::texteditor)
                 CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, xmlState->getAttributeValue (i));
@@ -336,6 +352,18 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
             {
                 CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, xmlState->getAttributeValue (i));
             }
+			else if(type == CabbageWidgetTypes::hrange || type == CabbageWidgetTypes::vrange)//double channel range widgets
+			{
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::minvalue, xmlState->getAttributeValue (i).getFloatValue());
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::maxvalue, xmlState->getAttributeValue (i+1).getFloatValue());
+				i++;
+			}
+			else if(type == CabbageWidgetTypes::xypad)//double channel range widgets
+			{
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuex, xmlState->getAttributeValue (i).getFloatValue());
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuey, xmlState->getAttributeValue (i+1).getFloatValue());
+				i++;
+			}			
             else
             {
                 CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue (i).getFloatValue());

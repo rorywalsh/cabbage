@@ -86,6 +86,14 @@ void CabbageRangeSlider::setSliderValues (ValueTree wData)
     slider.setMinAndMaxValues (minValue, maxValue);
 }
 
+void CabbageRangeSlider::setCurrentValues(float min, float max)
+{
+	minValue = min;
+	maxValue = max;
+	CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::minvalue, minValue);
+	CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::maxvalue, maxValue);
+}
+
 void CabbageRangeSlider::createPopupBubble()
 {
     //create popup display for showing value of sliders.
@@ -261,6 +269,8 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
         }
 
     }
+
+	owner->setCurrentValues(getMinValue(), getMaxValue());
 
     owner->showPopup (1000);
 }

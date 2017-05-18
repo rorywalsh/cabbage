@@ -952,7 +952,7 @@ ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, Str
     {
 		if(searchByChannel == true)
 		{
-			//currently only support widgets that take only one channels
+			//only need first channel from multichannel widgets..see CabbagePluginProcessor::restorePluginState()
 			var channels = widgetData.getChild (i).getProperty (CabbageIdentifierIds::channel);
 			if(channels.size()>0)
 				if (name == channels[0].toString())
