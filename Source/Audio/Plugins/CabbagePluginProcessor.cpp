@@ -294,23 +294,28 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 
     for (int i = 0 ; i < cabbageWidgets.getNumChildren() ; i++)
     {
-        const String widgetName = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
+        const String channelName = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
+		//const String widgetName = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
+		
         const String type = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
-
         const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
 
-        if (type == CabbageWidgetTypes::texteditor)
-        {
-            const String text = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::text);
-            xml.setAttribute (widgetName, text);
-        }
-        else if (type == CabbageWidgetTypes::filebutton)
-        {
-            const String file = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::file);
-            xml.setAttribute (widgetName, file);
-        }
-        else
-            xml.setAttribute (widgetName, value);
+		//only write values for widgets that have channels
+		if(channelName.isNotEmpty())
+		{
+			if (type == CabbageWidgetTypes::texteditor)
+			{
+				const String text = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::text);
+				xml.setAttribute (channelName, text);
+			}
+			else if (type == CabbageWidgetTypes::filebutton)
+			{
+				const String file = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::file);
+				xml.setAttribute (channelName, file);
+			}
+			else
+				xml.setAttribute (channelName, value);
+		}
     }
 
     return xml;
@@ -322,7 +327,7 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
     {
         for (int i = 0; i < xmlState->getNumAttributes(); i++)
         {
-            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, xmlState->getAttributeName (i));
+            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, xmlState->getAttributeName (i), true);
             const String type = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
             if (type == CabbageWidgetTypes::texteditor)

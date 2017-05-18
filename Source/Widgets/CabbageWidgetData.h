@@ -114,7 +114,7 @@ public:
     //============================================================================
     static String removeWidgetFromValueTree (ValueTree widgetData, int lineNumber);
     //============================================================================
-    static ValueTree getValueTreeForComponent (ValueTree widgetData, String name);
+    static ValueTree getValueTreeForComponent (ValueTree widgetData, String name, bool byChannel=false);
     static Rectangle<int> getBoundsFromText (String text);
     const CabbageIdentifierStrings identifierArray;
 };

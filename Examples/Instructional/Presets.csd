@@ -32,4 +32,3 @@ endin
 f0 z
 </CsScore>
 </CsoundSynthesizer>
-Guillermo

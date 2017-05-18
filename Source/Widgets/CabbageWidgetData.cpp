@@ -945,14 +945,28 @@ var CabbageWidgetData::getProperty (ValueTree widgetData, Identifier name)
     return widgetData.getProperty (name);
 }
 
-ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, String name)
+//================================================================================================
+ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, String name, bool searchByChannel)
 {
     for (int i = 0; i < widgetData.getNumChildren(); i++)
     {
-        if (name == widgetData.getChild (i).getProperty (CabbageIdentifierIds::name).toString())
-        {
-            return widgetData.getChild (i);
-        }
+		if(searchByChannel == true)
+		{
+			//currently only support widgets that take only one channels
+			var channels = widgetData.getChild (i).getProperty (CabbageIdentifierIds::channel);
+			if(channels.size()>0)
+				if (name == channels[0].toString())
+				{
+					return widgetData.getChild (i);
+				}			
+		}
+		else
+		{
+			if (name == widgetData.getChild (i).getProperty (CabbageIdentifierIds::name).toString())
+			{
+				return widgetData.getChild (i);
+			}
+		}
     }
 
     return ValueTree ("empty");
