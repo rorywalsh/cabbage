@@ -450,7 +450,7 @@ void CabbagePluginProcessor::addXYAutomator (CabbageXYPad* xyPad, ValueTree wDat
 
         if (xParameter && yParameter)
         {
-            xyAutomators.add (xyAuto = new XYPadAutomator (xyPad->getName(), xParameter, yParameter));
+            xyAutomators.add (xyAuto = new XYPadAutomator (xyPad->getName(), xParameter, yParameter, this));
             xyAuto->setXMin (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx));
             xyAuto->setYMin (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::miny));
             xyAuto->setXMax (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxx));

@@ -69,6 +69,10 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
     addAndMakeVisible (yValueLabel);
 }
 
+CabbageXYPad::~CabbageXYPad()
+{
+	CabbageUtilities::debug("Existing xypad");
+}
 //==================================================================
 void CabbageXYPad::mouseDown (const MouseEvent& e)
 {
@@ -121,6 +125,8 @@ void CabbageXYPad::changeListenerCallback (ChangeBroadcaster* source)
         pos.addXY (-ball.getWidth() / 2, -ball.getWidth() / 2);
         ball.setBounds (pos.getX(), pos.getY(), 20, 20);
 
+		setValues (xyAuto->getPosition().getX(), xyAuto->getPosition().getY());
+
         if (xyAuto->getShouldRepaintBackground() == true)
         {
             repaint();
@@ -149,7 +155,8 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     {
         const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
         const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
-        Point<float> pos (getValueAsPosition (Point<float> (xPos, yPos)));
+		//setValues(xPos, maxY - yPos);
+        Point<float> pos (getValueAsPosition (Point<float> (xPos, maxY - yPos)));
         //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
         ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
         repaint();
@@ -255,21 +262,26 @@ void CabbageXYPad::setPositionAsValue (Point<float> position)
 
 Point<float> CabbageXYPad::getValueAsPosition (Point<float> position)
 {
-    setValues (position.getX(), position.getY());
+    //setValues (position.getX(), maxY - position.getY());
     const float xPos = jmap (position.getX(), minX, maxX, xyPadRect.getX() + ball.getWidth() / 2, xyPadRect.getWidth() - ball.getWidth() / 2);
     const float yPos = jmap (position.getY(), minY, maxY, xyPadRect.getY() + ball.getWidth() / 2, xyPadRect.getHeight() - ball.getWidth() / 2);
 
     return Point<float> (xPos, yPos);
 }
 
-void CabbageXYPad::setValues (float x, float y)
+void CabbageXYPad::setValues (float x, float y, bool notify)
 {
     xAxis.setValue (x, sendNotification);
-    yAxis.setValue (y, sendNotification);
+    yAxis.setValue (maxY - y, sendNotification);
     xValueLabel.setText (String (x, 3), dontSendNotification);
-    yValueLabel.setText (String (y, 3), dontSendNotification);
+    yValueLabel.setText (String (maxY - y, 3), dontSendNotification);
 }
 //========================================================================
+XYPadAutomator::XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam, AudioProcessor* _owner)
+        : name (name), xParam (xParam), yParam (yParam), owner(_owner)
+{}
+		
+		
 void XYPadAutomator::timerCallback()
 {
     xValue += xValueIncrement;
@@ -301,7 +313,7 @@ void XYPadAutomator::timerCallback()
         yValueIncrement *= -1;
     }
 
-    if (isPluginEditorOpen) //only update GUI is editor is open
+    if (owner->getActiveEditor() != nullptr) //only update GUI is editor is open
         sendChangeMessage();
     else
     {
