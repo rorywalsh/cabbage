@@ -471,25 +471,53 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 //======================================================================================================
 void CabbagePluginEditor::buttonClicked (Button* button)
 {
-
     const bool buttonState = button->getToggleState();
-
-    if (CabbageAudioParameter* param = getParameterForComponent (button->getName())) //only update parameters for normal buttons
-    {
-        param->beginChangeGesture();
-        param->setValueNotifyingHost (buttonState == true ? 1 : 0);
-        param->endChangeGesture();
-    }
 
     if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
     {
         const StringArray textItems = cabbageButton->getTextArray();
+		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
+		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
         if (textItems.size() > 0)
             cabbageButton->setButtonText ( textItems[ buttonState == false ? 0 : 1]);
+		
+		if(latched == 1)	
+			toggleButtonState(button, buttonState); 
+		
+		return;
     }
+
+    toggleButtonState(button, buttonState);
 }
 
+void CabbagePluginEditor::buttonStateChanged(Button* button)
+{
+	if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
+	{
+		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
+		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);	
+		
+		if (latched==0)
+		{
+			if(button->isMouseButtonDown())
+				toggleButtonState(button, true);
+			else
+				toggleButtonState(button, false);
+		}
+	}
+
+}
+
+void CabbagePluginEditor::toggleButtonState(Button* button, bool state)
+{
+	if (CabbageAudioParameter* param = getParameterForComponent (button->getName())) 
+	{
+		param->beginChangeGesture();
+		param->setValueNotifyingHost (state == true ? 1 : 0);
+		param->endChangeGesture();
+	}		
+}
 //======================================================================================================
 void CabbagePluginEditor::sliderValueChanged (Slider* slider)
 {

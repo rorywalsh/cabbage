@@ -152,6 +152,8 @@ public:
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
     //=============================================================================
     void buttonClicked (Button* button);
+	void buttonStateChanged(Button* button);
+	void toggleButtonState(Button* button, bool state);
     void comboBoxChanged (ComboBox* combo);
     void sliderValueChanged (Slider* slider);
     //=============================================================================
