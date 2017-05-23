@@ -29,6 +29,7 @@
 
 class CabbagePluginEditor;
 class CabbageAudioParameter;
+class AudioProccessor;
 
 // Add any new custom widgets here to avoid having to edit makefiles and projects
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
@@ -76,7 +77,7 @@ class CabbageXYPad
 public:
 
     CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor);
-    ~CabbageXYPad() {}
+    ~CabbageXYPad();
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
@@ -106,7 +107,7 @@ public:
         return xyPadRect;
     }
 
-    void setValues (float x, float y);
+    void setValues (float x, float y, bool notify=true);
 
     Point<int> constrainPosition (float x, float y);
     Point<float> getPositionAsValue (Point<float> position);
@@ -130,10 +131,10 @@ class XYPadAutomator : public ChangeBroadcaster, public Timer
     bool repaintBackground = false;
     Point<double> position;
     float xMin, xMax, yMin, yMax, velocity;
+	AudioProcessor* owner;
 
 public:
-    XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam)
-        : name (name), xParam (xParam), yParam (yParam) {}
+    XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam, AudioProcessor* _owner);
 
     ~XYPadAutomator()
     {
