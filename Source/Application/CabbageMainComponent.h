@@ -271,12 +271,22 @@ public:
         setDrawableImages (close, 25, 25, "close");
         setDrawableImages (showEditor, 25, 25, "showEditor");
         setDrawableImages (editGUI, 25, 25, "editGUI");
+        
+        
 
 
     }
 
     const String getFilename() { return filename;    }
 
+//    void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown)
+//    {
+//        g.setColour(Colour(20, 20, 20));
+//        g.fillRoundedRectangle(0, 0, getWidth(), getHeight()+10, 4);
+//        g.setColour(Colour(80, 80, 80));
+//        g.drawRoundedRectangle(0, 0, getWidth(), getHeight()+10, 4, 4);
+//    }
+    
     void addButtonListeners (Button::Listener* listener)
     {
         play.addListener (listener);
