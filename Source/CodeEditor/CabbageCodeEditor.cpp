@@ -36,7 +36,9 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     //setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
-    setScrollbarThickness (20);
+    this->setLookAndFeel(&lAf);
+	setScrollbarThickness (20);
+	
 
     if (File (opcodeFile).existsAsFile())
         setOpcodeStrings (File (opcodeFile).loadFileAsString());
@@ -59,7 +61,6 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     currentLineMarker.setBounds (13, 0, 20, getFontSize());
     currentLineMarker.setColour (lineNumberBackground.contrasting().withAlpha (.3f));
     addAndMakeVisible (currentLineMarker);
-    //currentLineMarker.setVisible(false);
 
     //setCommandManager (commandManager);
 }

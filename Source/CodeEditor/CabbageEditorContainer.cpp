@@ -27,14 +27,17 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings)
     addAndMakeVisible (statusBar);
     addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
     addAndMakeVisible (outputConsole = new CabbageOutputConsole (settings->valueTree));
+	
     editor->setLineNumbersShown (true);
     editor->addMouseListener (this, true);
     Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
     const int fontSize = settings->getUserSettings()->getIntValue ("FontSize", 17);
+	const int fontSizeConsole = settings->getUserSettings()->getIntValue ("FontSizeConsole", 14);
     editor->setFont (Font (fontPtr).withHeight (fontSize));
     editor->setFontSize (fontSize);
     editor->setVisible (true);
     outputConsole->setVisible (true);
+	outputConsole->setFontSize(fontSizeConsole);	
     statusBar.addMouseListener (this, true);
 
     const int width = settings->getUserSettings()->getIntValue ("IDE_LastKnownWidth");
@@ -53,6 +56,7 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings)
 CabbageEditorContainer::~CabbageEditorContainer()
 {
     settings->getUserSettings()->setValue ("FontSize", editor->getFontSize());
+	settings->getUserSettings()->setValue ("FontSizeConsole", outputConsole->getFontSize());
     editor = nullptr;
     outputConsole = nullptr;
 }
@@ -131,7 +135,6 @@ void CabbageEditorContainer::updateEditorColourScheme()
     statusBar.repaint();
 }
 
-
 void CabbageEditorContainer::StatusBar::paint (Graphics& g)
 {
     const Colour background = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::statusBar, Colours::black);
@@ -157,10 +160,6 @@ void CabbageEditorContainer::StatusBar::paint (Graphics& g)
     }
     else
     {
-        //      g.setColour(opcodeColour);
-        //      g.setFont(Font(14, Font::bold));
-        //      const String opcodeText = statusText[0].replace("\"", "");
-        //      g.drawFittedText (opcodeText, getLocalBounds().withLeft(25), Justification::left, 2);
         g.setColour (syntaxColour);
         const int opcodeTextWidth = 10;//Font(14).getStringWidth(opcodeText)+10;
         const String opcodeSyntaxText = statusText[3].replaceSection (0, 1, "").replaceSection (statusText[3].length() - 2, 1, "");

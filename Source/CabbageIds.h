@@ -52,7 +52,7 @@ enum
     exportAsEffect          = 0x200074,
     exportAsFMODSoundPlugin = 0x200078,
     stopAudioGraph          = 0x200079,
-    showProjectSettings     = 0x20007a,
+    clearConsole            = 0x20007a,
     showProjectModules      = 0x20007b,
     startLiveDebugger       = 0x20007c,
 
@@ -83,6 +83,8 @@ enum
     enableSnapToGrid        = 0x410016,
     zoomIn                  = 0x410017,
     zoomOut                 = 0x410018,
+    zoomInConsole           = 0x410117,
+    zoomOutConsole          = 0x410118,
     zoomNormal              = 0x410019,
     spaceBarDrag            = 0x4100a1,
 

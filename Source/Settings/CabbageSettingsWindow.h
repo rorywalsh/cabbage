@@ -67,7 +67,7 @@ private:
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
     CabbageSettings& settings;
     Value alwaysOnTopPluginValue, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
-    LookAndFeel_V2 lookAndFeel;
+    LookAndFeel_V3 lookAndFeel;
 
 };
 

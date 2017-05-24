@@ -48,6 +48,7 @@ class CabbageCodeEditorComponent :
     CabbageEditorContainer* owner;
     int updateGUICounter = 0;
     int currentFontSize = 17;
+	LookAndFeel_V3 lAf;
 
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);

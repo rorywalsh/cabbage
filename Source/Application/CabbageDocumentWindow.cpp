@@ -242,13 +242,21 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::zoomIn);
     menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
-
+	
+	subMenu.addCommandItem (&commandManager, CommandIDs::zoomInConsole);
+    subMenu.addCommandItem (&commandManager, CommandIDs::zoomOutConsole);
+	subMenu.addCommandItem (&commandManager, CommandIDs::clearConsole);
+	
+	
     menu.addCommandItem (&commandManager, CommandIDs::showFindPanel);
     menu.addCommandItem (&commandManager, CommandIDs::showReplacePanel);
 
     menu.addCommandItem (&commandManager, CommandIDs::findSelection);
     menu.addCommandItem (&commandManager, CommandIDs::findNext);
     menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
+	menu.addSeparator();
+	menu.addSubMenu("Console", subMenu);
+	menu.addSeparator();	
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::settings);
 
@@ -361,9 +369,12 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::exportAsFMODSoundPlugin,
                               CommandIDs::copy,
                               CommandIDs::cut,
+							  CommandIDs::clearConsole,
                               CommandIDs::toggleComments,
                               CommandIDs::zoomIn,
                               CommandIDs::zoomOut,
+                              CommandIDs::zoomInConsole,
+                              CommandIDs::zoomOutConsole,
                               CommandIDs::paste,
                               CommandIDs::undo,
                               CommandIDs::showFindPanel,
@@ -540,7 +551,25 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.addDefaultKeypress (']', ModifierKeys::commandModifier);
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
+			
+        case CommandIDs::zoomInConsole:
+            result.setInfo (String ("Zoom in console"), String ("Zoom in console"), CommandCategories::edit, 0);
+            result.addDefaultKeypress ('{', ModifierKeys::shiftModifier | ModifierKeys::commandModifier);
+            result.setActive ((shouldShowEditMenu ? true : false));
+            break;
 
+        case CommandIDs::zoomOutConsole:
+            result.setInfo (String ("Zoom out console"), String ("Zoom out console"), CommandCategories::edit, 0);
+            result.addDefaultKeypress ('}', ModifierKeys::shiftModifier | ModifierKeys::commandModifier);
+            result.setActive ((shouldShowEditMenu ? true : false));
+            break;
+
+        case CommandIDs::clearConsole:
+            result.setInfo (String ("Clear console"), String ("Clear console"), CommandCategories::edit, 0);
+            result.addDefaultKeypress ('W', ModifierKeys::shiftModifier | ModifierKeys::commandModifier);
+            result.setActive ((shouldShowEditMenu ? true : false));
+            break;
+			
         case CommandIDs::showGenericWidgetWindow:
             result.setInfo (String ("Show Generic Widget Window"), String ("Show genric channel based widgets"), CommandCategories::general, 0);
             break;
@@ -705,6 +734,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::zoomOut:
             getContentComponent()->getCurrentCodeEditor()->zoomOut();
             return true;
+			
+        case CommandIDs::zoomInConsole:
+            getContentComponent()->getCurrentOutputConsole()->zoom(true);
+            return true;
+
+        case CommandIDs::zoomOutConsole:
+            getContentComponent()->getCurrentOutputConsole()->zoom(false);
+            return true;
 
         case CommandIDs::findNext:
             getContentComponent()->findNext (true);
@@ -722,6 +759,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->showFindPanel (true);
             return true;
 
+        case CommandIDs::clearConsole:
+            getContentComponent()->getCurrentOutputConsole()->clearText();
+            return true;
+			
         case CommandIDs::exportAsFMODSoundPlugin:
             return true;
 

@@ -790,9 +790,10 @@ void PluginWindow::closeAllCurrentlyOpenWindows()
         for (int i = activePluginWindows.size(); --i >= 0;)
             delete activePluginWindows.getUnchecked (i);
 
-        Component dummyModalComp;
-        dummyModalComp.enterModalState();
-        MessageManager::getInstance()->runDispatchLoopUntil (150);
+// fixed issue with focus in JUCE 4, doesn't seem to be need in JUCE 5
+//        Component dummyModalComp;
+//        dummyModalComp.enterModalState();
+//        MessageManager::getInstance()->runDispatchLoopUntil (150);
     }
 }
 

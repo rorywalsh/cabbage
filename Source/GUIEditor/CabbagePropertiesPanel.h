@@ -77,6 +77,7 @@ private:
     TooltipWindow tooltipWindow;
     PropertyPanel propertyPanel;
     String previousWidgetName = "";
+	LookAndFeel_V3 lAf;
 
     struct SectionState
     {
