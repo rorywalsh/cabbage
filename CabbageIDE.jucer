@@ -2,10 +2,14 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="4.3.1">
+              jucerVersion="5.0.1" displaySplashScreen="1" reportAppUsage="1"
+              splashScreenColour="Dark">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
+        <FILE id="LrRPa8" name="FileTabButton.h" compile="0" resource="0" file="Source/Application/FileTabButton.h"/>
+        <FILE id="DLROLQ" name="FileTabButton.cpp" compile="1" resource="0"
+              file="Source/Application/FileTabButton.cpp"/>
         <FILE id="XD0L4e" name="CabbageMainComponent.cpp" compile="1" resource="0"
               file="Source/Application/CabbageMainComponent.cpp"/>
         <FILE id="OQA69B" name="CabbageMainComponent.h" compile="0" resource="0"
