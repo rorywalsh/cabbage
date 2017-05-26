@@ -625,14 +625,18 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
             setProperty (widgetData, CabbageIdentifierIds::colour, getColourFromText (strTokens.joinIntoString (",")).toString());
     }
 
-    else if (identifier == "fontcolour" || identifier == "fontcolour:1")
-    {
-        if (typeOfWidget.contains ("button"))
-            setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
-        else
-            setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
+    else if (identifier == "fontcolour")
+	{
+		setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
+		setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
 
+	}
+	
+	else if(identifier == "fontcolour:1")
+    {
+       setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
     }
+	
     else if (identifier == "fontcolour:0")
     {
         setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
@@ -791,8 +795,14 @@ void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree wi
     }
 
     setProperty (widgetData, CabbageIdentifierIds::scrubberposition, scrubberInfo);
-    setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberInfo[0]);
-    setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
+	
+	const String typeOfWidget = getStringProp (widgetData, CabbageIdentifierIds::type);
+	
+	if(typeOfWidget == CabbageWidgetTypes::gentable)
+	{	
+		setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberInfo[0]);
+		setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
+	}
 }
 void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, String identifier)
 {

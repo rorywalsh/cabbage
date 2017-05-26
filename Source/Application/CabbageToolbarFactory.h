@@ -78,7 +78,6 @@ private:
         {
             addAndMakeVisible (comboBox);
             comboBox.setEditableText (false);
-			comboBox.setLookAndFeel(&lAf);
         }
 
         bool getToolbarItemSizes (int /*toolbarDepth*/, bool isVertical,
@@ -123,7 +122,6 @@ private:
 
     private:
         ComboBox comboBox;
-		LookAndFeel_V3 lAf;
     };
 
     CabbageMainComponent* owner;

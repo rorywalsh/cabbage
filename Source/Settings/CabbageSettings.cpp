@@ -247,10 +247,10 @@ void CabbageSettings::updateRecentFilesList()
     getUserSettings()->setValue ("recentlyOpenedFiles", recentFiles.toString());
 }
 
-File CabbageSettings::getMostRecentFile()
+File CabbageSettings::getMostRecentFile(int index)
 {
-    recentFiles.restoreFromString (getUserSettings()->getValue ("recentlyOpenedFiles"));
-    return recentFiles.getFile (0);
+    //recentFiles.restoreFromString (getUserSettings()->getValue ("recentlyOpenedFiles"));
+    return recentFiles.getFile (index);
 }
 
 

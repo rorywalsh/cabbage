@@ -114,7 +114,6 @@ static Array<PropertyComponent*> createChannelEditors (CabbagePropertiesPanel* o
 CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     : widgetData (widgetData)
 {
-	setLookAndFeel(&lAf);
     //addAndMakeVisible(tooltipWindow);
     setOpaque (true);
     setSize (300, 500);

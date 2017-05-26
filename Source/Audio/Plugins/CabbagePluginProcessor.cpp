@@ -404,13 +404,20 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
             || getCsound()->GetChannel (channels[0].toUTF8()) != valuex
             || getCsound()->GetChannel (channels[1].toUTF8()) != valuey)
         {
-            if (typeOfWidget != "combobox" && typeOfWidget != "xypad")
-                CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
-            else
+            if(typeOfWidget == CabbageWidgetTypes::xypad)
             {
                 CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuex, getCsound()->GetChannel (channels[0].toUTF8()));
                 CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuey, getCsound()->GetChannel (channels[1].toUTF8()));
             }
+			else if(typeOfWidget.contains("range"))
+			{
+				const float minValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::minvalue);
+				const float maxValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::maxvalue);		
+				CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::minvalue, getCsound()->GetChannel (channels[0].toUTF8()));
+				CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::maxvalue, getCsound()->GetChannel (channels[1].toUTF8()));
+			}
+			else if (typeOfWidget != "combobox")	// don't update combobox in here, it will enter a recursive loop
+                CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
         }
 
         if (identChannel.isNotEmpty())

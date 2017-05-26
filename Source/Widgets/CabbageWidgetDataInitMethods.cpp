@@ -730,7 +730,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::currenttext, "");
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
-    setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::menucolour, Colours::whitesmoke.toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "combobox");
     setProperty (widgetData, CabbageIdentifierIds::comborange, 4);

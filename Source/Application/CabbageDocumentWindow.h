@@ -85,6 +85,7 @@ private:
     //=======================================================
 
 
+	ScopedPointer<LookAndFeel_V3> lookAndFeel;
     bool isGUIEnabled = false;
     ScopedPointer<CabbageMainComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
