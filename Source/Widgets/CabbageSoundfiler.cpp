@@ -105,6 +105,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
         soundfiler.setZoomFactor (zoom);
     }
 
+	soundfiler.setScrubberPos(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
     soundfiler.setWaveformColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     soundfiler.setBackgroundColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour));
     soundfiler.repaint();

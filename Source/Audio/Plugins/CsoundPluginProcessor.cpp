@@ -207,9 +207,18 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
 
     //post init hack to allow tables to be set up correctly
+	try{
     csound->PerformKsmps();
     csound->SetScoreOffsetSeconds (0);
     csound->RewindScore();
+	}
+	catch(int e)
+	{
+		CabbageUtilities::debug("Exception raised");
+		this->suspendProcessing(true);
+		csound = nullptr;
+	   // .. handle error - log, resume, exit, whatever
+	}
 
 }
 //==============================================================================

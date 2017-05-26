@@ -979,40 +979,65 @@ void CabbageMainComponent::replaceText (bool replaceAll)
     }
 }
 //==============================================================================
+int CabbageMainComponent::testFileForErrors(String file)
+{
+	ChildProcess process;
+	const String applicationDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName();
+	process.start(applicationDir+"/testCsoundFile "+file);
+
+	process.readAllProcessOutput();
+	
+	const int exitCode = process.getExitCode();
+
+	if(exitCode==1)
+	{
+		process.start("csound "+file);
+		this->getCurrentOutputConsole()->setText(process.readAllProcessOutput());
+		stopCsoundForNode (file);
+		return 1;
+	}
+	
+	return exitCode;
+	
+}
 void CabbageMainComponent::runCsoundForNode (String file)
 {
-    if (File (file).existsAsFile())
-    {
-        //PluginWindow::closeAllCurrentlyOpenWindows();
-        //audioGraph = nullptr;
-        //createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
-        int32 node = nodeIdsForPlugins.getWithDefault (file, -99);
+	
+	if(testFileForErrors(file)==0) //if Csound seg faults it will take Cabbage down. best to test the instrumnet in a seperate process first. 
+	{
+		if (File (file).existsAsFile())
+		{
+			//PluginWindow::closeAllCurrentlyOpenWindows();
+			//audioGraph = nullptr;
+			//createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
+			int32 node = nodeIdsForPlugins.getWithDefault (file, -99);
 
-        if (node == -99)
-        {
-            Uuid uniqueID;
-            node = int32 (*uniqueID.getRawData());
-            nodeIdsForPlugins.set (file, node);
-        }
+			if (node == -99)
+			{
+				Uuid uniqueID;
+				node = int32 (*uniqueID.getRawData());
+				nodeIdsForPlugins.set (file, node);
+			}
 
-        Point<int> pos (PluginWindow::getPositionOfCurrentlyOpenWindow (node));
-        PluginWindow::closeCurrentlyOpenWindowsFor (node);
+			Point<int> pos (PluginWindow::getPositionOfCurrentlyOpenWindow (node));
+			PluginWindow::closeCurrentlyOpenWindowsFor (node);
 
-        if (pos.getX() == -1000 && pos.getY() == -1000)
-        {
-            Random rand;//nextInt();
-            pos.setX (rand.nextInt (Range<int> (getWidth() / 2, getWidth() / 1.8)));
-            pos.setY (rand.nextInt (Range<int> (getHeight() / 2, (getHeight() / 2) + 100)));
-        }
+			if (pos.getX() == -1000 && pos.getY() == -1000)
+			{
+				Random rand;//nextInt();
+				pos.setX (rand.nextInt (Range<int> (getWidth() / 2, getWidth() / 1.8)));
+				pos.setY (rand.nextInt (Range<int> (getHeight() / 2, (getHeight() / 2) + 100)));
+			}
 
-        audioGraph->addPlugin (getCurrentCsdFile(), node);
-        createEditorForAudioGraphNode (pos);
-        startTimer (100);
-        factory.togglePlay (true);
-        graphComponent->updateComponents();
-    }
-    else
-        CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel);
+			audioGraph->addPlugin (getCurrentCsdFile(), node);
+			createEditorForAudioGraphNode (pos);
+			startTimer (100);
+			factory.togglePlay (true);
+			graphComponent->updateComponents();
+		}
+		else
+			CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel);
+	}
 }
 
 void CabbageMainComponent::stopCsoundForNode (String file)

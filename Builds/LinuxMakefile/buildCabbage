@@ -38,6 +38,8 @@ cp ./../opcodes.txt CabbageBuild/opcodes.txt
 cp ./../../Images/cabbage.png CabbageBuild/cabbage.png
 cp -rf ../../Examples/ CabbageBuild/Examples
 
+g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csound" -lcsound64
+
 #cp -rf ../../Docs/_book CabbageBuild/Docs
 
 sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > CabbageBuild/cabbage.desktop

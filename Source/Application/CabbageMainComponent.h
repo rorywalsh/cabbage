@@ -92,6 +92,7 @@ public:
     File getCurrentCsdFile ();
     void setCurrentCsdFile (File file);
     void writeFileToDisk (File file);
+	int testFileForErrors(String file);
     //==============================================================================
     void handleToolbarButtons (ToolbarButton* toolbarButton);
     void handleFileTabButtons (DrawableButton* button);

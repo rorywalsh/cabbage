@@ -791,8 +791,14 @@ void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree wi
     }
 
     setProperty (widgetData, CabbageIdentifierIds::scrubberposition, scrubberInfo);
-    setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberInfo[0]);
-    setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
+	
+	const String typeOfWidget = getProperty (widgetData, CabbageIdentifierIds::type);
+	
+	if(typeOfWidget == CabbageWidgetTypes::gentable)
+	{
+		setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberInfo[0]);
+		setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
+	}
 }
 void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, String identifier)
 {

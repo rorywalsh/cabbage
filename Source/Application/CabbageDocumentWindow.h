@@ -64,7 +64,6 @@ public:
     void initSettings();
     void closeButtonPressed() override;
     void maximiseButtonPressed();
-
     void buttonClicked (Button* button);
     void focusGained (FocusChangeType cause); //grab focus when user clicks on editor
 
