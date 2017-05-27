@@ -6,7 +6,7 @@ Requirements
 
 The following are dependencies you may need, you can simply copy and past the following as needed.
 
-sudo apt-get install libfreetype6-dev libx11-dev libxinerama-dev libxcursor-dev mesa-common-dev libasound2-dev freeglut3-dev libxcomposite-dev csound libcsound64-dev libcsnd-dev libsndfile1 libsndfile1-dev libjack-dev libxrandr-dev msttcorefonts         libwebkitgtk-3.0-dev
+sudo apt-get install libfreetype6-dev libx11-dev libxinerama-dev libxcursor-dev mesa-common-dev libasound2-dev freeglut3-dev libxcomposite-dev csound libcsound64-dev libcsnd-dev libsndfile1 libsndfile1-dev libjack-dev libxrandr-dev msttcorefonts webkit2gtk-4.0
 
 Please make sure that the version of Csound you use is 6.07 or newer, otherwise you will get build problems. 
 Cabbage needs the VST SDK in order to build its plugins libraries. The VST SDK can be downloed from [here](https://www.steinberg.net/en/company/developers.html)
