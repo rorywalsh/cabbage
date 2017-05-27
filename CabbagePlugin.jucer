@@ -9,7 +9,7 @@
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
-              jucerVersion="5.0.1" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
+              jucerVersion="4.3.1" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
               reportAppUsage="1" splashScreenColour="Dark">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
@@ -239,8 +239,8 @@
             externalLibraries="csound64.lib">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound"
-                       libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"/>
+                       isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
+                       libraryPath="C:\Program Files\Csound6_x64\lib"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound"
                        libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"/>
