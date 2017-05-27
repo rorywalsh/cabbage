@@ -54,7 +54,7 @@ before_install:
         libasound2-dev
         libsndfile1
         libjack-dev
-        libwebkitgtk-4.0
+        webkit2gtk-4.0
 
     - sudo apt-get update --fix-missing
     
