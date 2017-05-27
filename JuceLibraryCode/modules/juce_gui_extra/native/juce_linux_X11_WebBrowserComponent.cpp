@@ -1,26 +1,32 @@
 /*
   ==============================================================================
 
-  This file is part of the JUCE library.
-  Copyright (c) 2015 - ROLI Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2017 - ROLI Ltd.
 
-  Permission is granted to use this software under the terms of either:
-  a) the GPL v2 (or any later version)
-  b) the Affero GPL v3
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-  Details of these licenses can be found at: www.gnu.org/licenses
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   27th April 2017).
 
-  JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
-  ------------------------------------------------------------------------------
+   Or: You may also use this code under the terms of the GPL v3 (see
+   www.gnu.org/licenses).
 
-  To release a closed-source product which uses JUCE, commercial licenses are
-  available: visit www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
+
+//==============================================================================
+extern int juce_gtkWebkitMain (int argc, const char* argv[]);
+
 class CommandReceiver
 {
 public:
@@ -150,34 +156,51 @@ public:
         : outChannel (outChannelToUse), receiver (this, inChannel)
     {}
 
-    void entry()
+    typedef void (*SetHardwareAcclPolicyFunctionPtr) (WebKitSettings*, int);
+
+    int entry()
     {
+        CommandReceiver::setBlocking (outChannel,      true);
+
         gtk_init (nullptr, nullptr);
+
+        WebKitSettings* settings = webkit_settings_new();
+
+        // webkit_settings_set_hardware_acceleration_policy was only added recently to webkit2
+        // but is needed when running a WebBrowserComponent in a Parallels VM with 3D acceleration enabled
+        auto setHardwarePolicy
+            = reinterpret_cast<SetHardwareAcclPolicyFunctionPtr> (dlsym (RTLD_DEFAULT, "webkit_settings_set_hardware_acceleration_policy"));
+
+        if (setHardwarePolicy != nullptr)
+            setHardwarePolicy (settings, 2 /*WEBKIT_HARDWARE_ACCELERATION_POLICY_NEVER*/);
+
         GtkWidget *plug;
 
         plug = gtk_plug_new(0);
         GtkWidget* container;
         container = gtk_scrolled_window_new (nullptr, nullptr);
 
-        webview = webkit_web_view_new();
-        gtk_container_add (GTK_CONTAINER (container), webview);
+        GtkWidget* webviewWidget = webkit_web_view_new_with_settings (settings);
+        webview = WEBKIT_WEB_VIEW (webviewWidget);
+
+
+        gtk_container_add (GTK_CONTAINER (container), webviewWidget);
         gtk_container_add (GTK_CONTAINER (plug),      container);
 
-        webkit_web_view_load_uri (WEBKIT_WEB_VIEW (webview), "about:blank");
+        webkit_web_view_load_uri (webview, "about:blank");
 
-        g_signal_connect (WEBKIT_WEB_VIEW (webview), "navigation-policy-decision-requested",
-                          G_CALLBACK (navigationPolicyDecisionCallback), this);
+        g_signal_connect (webview, "decide-policy",
+                          G_CALLBACK (decidePolicyCallback), this);
 
-        g_signal_connect (WEBKIT_WEB_VIEW (webview), "new-window-policy-decision-requested",
-                          G_CALLBACK (newWindowPolicyDecisionCallback), this);
+        g_signal_connect (webview, "load-changed",
+                          G_CALLBACK (loadChangedCallback), this);
 
-        g_signal_connect (WEBKIT_WEB_VIEW (webview), "document-load-finished",
-                          G_CALLBACK (documentLoadFinishedCallback), this);
+        g_signal_connect (webview, "load-failed",
+                          G_CALLBACK (loadFailedCallback), this);
 
         gtk_widget_show_all (plug);
         unsigned long wID = (unsigned long) gtk_plug_get_id (GTK_PLUG (plug));
 
-        CommandReceiver::setBlocking (outChannel,      true);
 
         ssize_t ret;
 
@@ -189,6 +212,7 @@ public:
         receiver.tryNextRead();
 
         gtk_main();
+        return 0;
     }
 
     void goToURL (const var& params)
@@ -196,21 +220,21 @@ public:
         static Identifier urlIdentifier ("url");
         String url (params.getProperty (urlIdentifier, var()).toString());
 
-        webkit_web_view_load_uri (WEBKIT_WEB_VIEW (webview), url.toRawUTF8());
+        webkit_web_view_load_uri (webview, url.toRawUTF8());
     }
 
     void handleDecisionResponse (const var& params)
     {
-        WebKitWebPolicyDecision* decision
-            = (WebKitWebPolicyDecision*) ((int64) params.getProperty ("decision_id", var (0)));
+        WebKitPolicyDecision* decision
+            = (WebKitPolicyDecision*) ((int64) params.getProperty ("decision_id", var (0)));
         bool allow = params.getProperty ("allow", var (false));
 
         if (decision != nullptr && decisions.contains (decision))
         {
             if (allow)
-                webkit_web_policy_decision_use (decision);
+                webkit_policy_decision_use (decision);
             else
-                webkit_web_policy_decision_ignore (decision);
+                webkit_policy_decision_ignore (decision);
 
             decisions.removeAllInstancesOf (decision);
             g_object_unref (decision);
@@ -222,10 +246,10 @@ public:
     {
         if      (cmd == "quit")      quit();
         else if (cmd == "goToURL")   goToURL (params);
-        else if (cmd == "goBack")    webkit_web_view_go_back      (WEBKIT_WEB_VIEW (webview));
-        else if (cmd == "goForward") webkit_web_view_go_forward   (WEBKIT_WEB_VIEW (webview));
-        else if (cmd == "refresh")   webkit_web_view_reload       (WEBKIT_WEB_VIEW (webview));
-        else if (cmd == "stop")      webkit_web_view_stop_loading (WEBKIT_WEB_VIEW (webview));
+        else if (cmd == "goBack")    webkit_web_view_go_back      (webview);
+        else if (cmd == "goForward") webkit_web_view_go_forward   (webview);
+        else if (cmd == "refresh")   webkit_web_view_reload       (webview);
+        else if (cmd == "stop")      webkit_web_view_stop_loading (webview);
         else if (cmd == "decision")  handleDecisionResponse (params);
     }
 
@@ -248,22 +272,21 @@ public:
 
     void quit()
     {
-        exit (-1);
+        gtk_main_quit();
     }
 
-    bool onNavigation (WebKitWebFrame* webFrame,
-                       WebKitNetworkRequest* /*request*/,
-                       WebKitWebNavigationAction* action,
-                       WebKitWebPolicyDecision* decision)
+    bool onNavigation (String frameName,
+                       WebKitNavigationAction* action,
+                       WebKitPolicyDecision* decision)
     {
-        if (decision != nullptr && webkit_web_frame_find_frame (webFrame, "_top") == webFrame)
+        if (decision != nullptr && frameName.isEmpty())
         {
             g_object_ref (decision);
             decisions.add (decision);
 
             DynamicObject::Ptr params = new DynamicObject;
 
-            params->setProperty ("url", String (webkit_web_navigation_action_get_original_uri (action)));
+            params->setProperty ("url", String (webkit_uri_request_get_uri (webkit_navigation_action_get_request (action))));
             params->setProperty ("decision_id", (int64) decision);
             CommandReceiver::sendCommand (outChannel, "pageAboutToLoad", var (params));
 
@@ -273,20 +296,19 @@ public:
         return false;
     }
 
-    bool onNewWindow (WebKitWebFrame* /*webFrame*/,
-                      WebKitNetworkRequest* /*request*/,
-                      WebKitWebNavigationAction* action,
-                      WebKitWebPolicyDecision* decision)
+    bool onNewWindow (String /*frameName*/,
+                      WebKitNavigationAction* action,
+                      WebKitPolicyDecision* decision)
     {
         if (decision != nullptr)
         {
             DynamicObject::Ptr params = new DynamicObject;
 
-            params->setProperty ("url", String (webkit_web_navigation_action_get_original_uri (action)));
+            params->setProperty ("url", String (webkit_uri_request_get_uri (webkit_navigation_action_get_request (action))));
             CommandReceiver::sendCommand (outChannel, "newWindowAttemptingToLoad", var (params));
 
             // never allow new windows
-            webkit_web_policy_decision_ignore (decision);
+            webkit_policy_decision_ignore (decision);
 
             return true;
         }
@@ -294,15 +316,65 @@ public:
         return false;
     }
 
-    void onLoadFinished (WebKitWebFrame* webFrame)
+    void onLoadChanged (WebKitLoadEvent loadEvent)
     {
-        if (webkit_web_frame_find_frame (webFrame, "_top") == webFrame)
+        if (loadEvent == WEBKIT_LOAD_FINISHED)
         {
             DynamicObject::Ptr params = new DynamicObject;
 
-            params->setProperty ("url", String (webkit_web_frame_get_uri (webFrame)));
+            params->setProperty ("url", String (webkit_web_view_get_uri (webview)));
             CommandReceiver::sendCommand (outChannel, "pageFinishedLoading", var (params));
         }
+    }
+
+    bool onDecidePolicy (WebKitPolicyDecision*    decision,
+                         WebKitPolicyDecisionType decisionType)
+    {
+        switch (decisionType)
+        {
+        case WEBKIT_POLICY_DECISION_TYPE_NAVIGATION_ACTION:
+            {
+                WebKitNavigationPolicyDecision* navigationDecision = WEBKIT_NAVIGATION_POLICY_DECISION (decision);
+                const char* frameName = webkit_navigation_policy_decision_get_frame_name (navigationDecision);
+
+                return onNavigation (String (frameName != nullptr ? frameName : ""),
+                                     webkit_navigation_policy_decision_get_navigation_action (navigationDecision),
+                                     decision);
+            }
+            break;
+        case WEBKIT_POLICY_DECISION_TYPE_NEW_WINDOW_ACTION:
+            {
+                WebKitNavigationPolicyDecision* navigationDecision = WEBKIT_NAVIGATION_POLICY_DECISION (decision);
+                const char* frameName = webkit_navigation_policy_decision_get_frame_name (navigationDecision);
+
+                return onNewWindow  (String (frameName != nullptr ? frameName : ""),
+                                     webkit_navigation_policy_decision_get_navigation_action (navigationDecision),
+                                     decision);
+            }
+            break;
+        case WEBKIT_POLICY_DECISION_TYPE_RESPONSE:
+            {
+                WebKitResponsePolicyDecision *response = WEBKIT_RESPONSE_POLICY_DECISION (decision);
+
+                // for now just always allow response requests
+                ignoreUnused (response);
+                webkit_policy_decision_use (decision);
+                return true;
+            }
+            break;
+        default:
+            break;
+        }
+
+        return false;
+    }
+
+    void onLoadFailed (GError* error)
+    {
+        DynamicObject::Ptr params = new DynamicObject;
+
+        params->setProperty ("error", String (error != nullptr ? error->message : "unknown error"));
+        CommandReceiver::sendCommand (outChannel, "pageLoadHadNetworkError", var (params));
     }
 
 private:
@@ -311,40 +383,37 @@ private:
         return (reinterpret_cast<GtkChildProcess*> (user)->pipeReady (fd, condition) ? TRUE : FALSE);
     }
 
-    static gboolean navigationPolicyDecisionCallback (WebKitWebView*,
-                                                      WebKitWebFrame* webFrame,
-                                                      WebKitNetworkRequest* request,
-                                                      WebKitWebNavigationAction* action,
-                                                      WebKitWebPolicyDecision* decision,
-                                                      gpointer user)
+    static gboolean decidePolicyCallback (WebKitWebView*,
+                                          WebKitPolicyDecision*    decision,
+                                          WebKitPolicyDecisionType decisionType,
+                                          gpointer user)
     {
         GtkChildProcess& owner = *reinterpret_cast<GtkChildProcess*> (user);
-        return (owner.onNavigation (webFrame, request, action, decision) ? TRUE : FALSE);
+        return (owner.onDecidePolicy (decision, decisionType) ? TRUE : FALSE);
     }
 
-    static gboolean newWindowPolicyDecisionCallback (WebKitWebView*,
-                                                     WebKitWebFrame* webFrame,
-                                                     WebKitNetworkRequest* request,
-                                                     WebKitWebNavigationAction* action,
-                                                     WebKitWebPolicyDecision* decision,
-                                                     gpointer user)
+    static void loadChangedCallback (WebKitWebView*,
+                                     WebKitLoadEvent loadEvent,
+                                     gpointer        user)
     {
         GtkChildProcess& owner = *reinterpret_cast<GtkChildProcess*> (user);
-        return (owner.onNewWindow (webFrame, request, action, decision) ? TRUE : FALSE);
+        owner.onLoadChanged (loadEvent);
     }
 
-    static void documentLoadFinishedCallback (WebKitWebView*,
-                                              WebKitWebFrame* webFrame,
-                                              gpointer        user)
+    static void loadFailedCallback (WebKitWebView*,
+                                    WebKitLoadEvent /*loadEvent*/,
+                                    gchar*          /*failing_uri*/,
+                                    GError*         error,
+                                    gpointer        user)
     {
         GtkChildProcess& owner = *reinterpret_cast<GtkChildProcess*> (user);
-        owner.onLoadFinished (webFrame);
+        owner.onLoadFailed (error);
     }
 
     int outChannel;
     CommandReceiver receiver;
-    GtkWidget* webview = nullptr;
-    Array<WebKitWebPolicyDecision*> decisions;
+    WebKitWebView* webview = nullptr;
+    Array<WebKitPolicyDecision*> decisions;
 };
 
 //==============================================================================
@@ -449,12 +518,25 @@ private:
         {
             xembed = nullptr;
 
-            kill (childProcess, SIGTERM);
+            int status = 0, result;
 
-            int status = 0;
+            result = waitpid (childProcess, &status, WNOHANG);
+            for (int i = 0; i < 15 && (! WIFEXITED(status) || result != childProcess); ++i)
+            {
+                Thread::sleep (100);
+                result = waitpid (childProcess, &status, WNOHANG);
+            }
 
-            while (! WIFEXITED(status))
-                waitpid (childProcess, &status, 0);
+            // clean-up any zombies
+            status = 0;
+            if (! WIFEXITED(status) || result != childProcess)
+            {
+                do
+                {
+                    kill (childProcess, SIGTERM);
+                    waitpid (childProcess, &status, 0);
+                } while (! WIFEXITED(status));
+            }
 
             childProcess = 0;
         }
@@ -477,8 +559,24 @@ private:
             close (inPipe[0]);
             close (outPipe[1]);
 
-            GtkChildProcess child (outPipe[0], inPipe[1]);
-            child.entry();
+            HeapBlock<const char*> argv (5);
+            StringArray arguments;
+
+            arguments.add (File::getSpecialLocation (File::currentExecutableFile).getFullPathName());
+            arguments.add ("--juce-gtkwebkitfork-child");
+            arguments.add (String (outPipe[0]));
+            arguments.add (String (inPipe [1]));
+
+            for (int i = 0; i < arguments.size(); ++i)
+                argv[i] = arguments[i].toRawUTF8();
+
+            argv[4] = nullptr;
+
+           #if JUCE_STANDALONE_APPLICATION
+            execv (arguments[0].toRawUTF8(), (char**) argv.getData());
+           #else
+            juce_gtkWebkitMain (4, (const char**) argv.getData());
+           #endif
             exit (0);
         }
 
@@ -534,6 +632,7 @@ private:
         else if (cmd == "pageFinishedLoading")       owner.pageFinishedLoading (url);
         else if (cmd == "windowCloseRequest")        owner.windowCloseRequest();
         else if (cmd == "newWindowAttemptingToLoad") owner.newWindowAttemptingToLoad (url);
+        else if (cmd == "pageLoadHadNetworkError")   handlePageLoadHadNetworkError (params);
 
         threadBlocker.signal();
     }
@@ -551,6 +650,14 @@ private:
 
             CommandReceiver::sendCommand (outChannel, "decision", var (params));
         }
+    }
+
+    void handlePageLoadHadNetworkError (const var& params)
+    {
+        String error = params.getProperty ("error", "Unknown error");
+
+        if (owner.pageLoadHadNetworkError (error))
+            goToURL (String ("data:text/plain,") + error, nullptr, nullptr);
     }
 
     void handleCommand (const String& cmd, const var& params) override
@@ -696,4 +803,21 @@ void WebBrowserComponent::visibilityChanged()
 
 void WebBrowserComponent::focusGained (FocusChangeType)
 {
+}
+
+void WebBrowserComponent::clearCookies()
+{
+    // Currently not implemented on linux as WebBrowserComponent currently does not
+    // store cookies on linux
+    jassertfalse;
+}
+
+int juce_gtkWebkitMain (int argc, const char* argv[])
+{
+    if (argc != 4) return -1;
+
+
+    GtkChildProcess child (String (argv[2]).getIntValue(),
+                           String (argv[3]).getIntValue());
+    return child.entry();
 }

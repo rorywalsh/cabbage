@@ -2,28 +2,20 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2017 - ROLI Ltd.
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
@@ -100,23 +92,90 @@ jfieldID JNIClassBase::resolveStaticField (JNIEnv* env, const char* fieldName, c
 }
 
 //==============================================================================
-ThreadLocalValue<JNIEnv*> androidJNIEnv;
+JavaVM* androidJNIJavaVM = nullptr;
 
-JNIEnv* getEnv() noexcept
+class JniEnvThreadHolder
 {
-    JNIEnv* env = androidJNIEnv.get();
-    jassert (env != nullptr);
+public:
+    static JniEnvThreadHolder& getInstance() noexcept
+    {
+        // You cann only use JNI functions AFTER JNI_OnLoad was called
+        jassert (androidJNIJavaVM != nullptr);
 
-    return env;
-}
+        try
+        {
+            if (instance == nullptr)
+                instance = new JniEnvThreadHolder;
+        }
+        catch (...)
+        {
+            jassertfalse;
+            std::terminate();
+        }
 
-void setEnv (JNIEnv* env) noexcept
+        return *instance;
+    }
+
+    static JNIEnv* getEnv()
+    {
+        JNIEnv* env = reinterpret_cast<JNIEnv*> (pthread_getspecific (getInstance().threadKey));
+
+        // You are trying to use a JUCE function on a thread that was not created by JUCE.
+        // You need to first call setEnv on this thread before using JUCE
+        jassert (env != nullptr);
+
+        return env;
+    }
+
+    static void setEnv (JNIEnv* env)
+    {
+        // env must not be a nullptr
+        jassert (env != nullptr);
+
+       #if JUCE_DEBUG
+        JNIEnv* oldenv = reinterpret_cast<JNIEnv*> (pthread_getspecific (getInstance().threadKey));
+
+        // This thread is already attached to the JavaVM and you trying to attach
+        // it to a different instance of the VM.
+        jassert (oldenv == nullptr || oldenv == env);
+       #endif
+
+        pthread_setspecific (getInstance().threadKey, env);
+    }
+
+private:
+    pthread_key_t threadKey;
+
+    static void threadDetach (void* p)
+    {
+        if (JNIEnv* env = reinterpret_cast<JNIEnv*> (p))
+        {
+            ignoreUnused (env);
+
+            androidJNIJavaVM->DetachCurrentThread();
+        }
+    }
+
+    JniEnvThreadHolder()
+    {
+        pthread_key_create (&threadKey, threadDetach);
+    }
+
+    static JniEnvThreadHolder* instance;
+};
+
+JniEnvThreadHolder* JniEnvThreadHolder::instance = nullptr;
+
+//==============================================================================
+JNIEnv* getEnv() noexcept            { return JniEnvThreadHolder::getEnv(); }
+void setEnv (JNIEnv* env) noexcept   { JniEnvThreadHolder::setEnv (env); }
+
+extern "C" jint JNI_OnLoad (JavaVM* vm, void*)
 {
-    androidJNIEnv.get() = env;
-}
+    // Huh? JNI_OnLoad was called two times!
+    jassert (androidJNIJavaVM == nullptr);
 
-extern "C" jint JNI_OnLoad (JavaVM*, void*)
-{
+    androidJNIJavaVM = vm;
     return JNI_VERSION_1_2;
 }
 
@@ -127,6 +186,8 @@ AndroidSystem::AndroidSystem() : screenWidth (0), screenHeight (0), dpi (160)
 
 void AndroidSystem::initialise (JNIEnv* env, jobject act, jstring file, jstring dataDir)
 {
+    setEnv (env);
+
     screenWidth = screenHeight = 0;
     dpi = 160;
     JNIClassBase::initialiseAllClasses (env);
@@ -282,7 +343,36 @@ String SystemStats::getDisplayLanguage() { return getUserLanguage() + "-" + getU
 //==============================================================================
 void CPUInformation::initialise() noexcept
 {
-    numPhysicalCPUs = numLogicalCPUs = jmax ((int) 1, (int) sysconf (_SC_NPROCESSORS_ONLN));
+    numPhysicalCPUs = numLogicalCPUs = jmax ((int) 1, (int) android_getCpuCount());
+
+    auto cpuFamily   = android_getCpuFamily();
+    auto cpuFeatures = android_getCpuFeatures();
+
+    if (cpuFamily == ANDROID_CPU_FAMILY_X86 || cpuFamily == ANDROID_CPU_FAMILY_X86_64)
+    {
+        hasMMX = hasSSE = hasSSE2 = (cpuFamily == ANDROID_CPU_FAMILY_X86_64);
+
+        hasSSSE3 = ((cpuFeatures & ANDROID_CPU_X86_FEATURE_SSSE3)  != 0);
+        hasSSE41 = ((cpuFeatures & ANDROID_CPU_X86_FEATURE_SSE4_1) != 0);
+        hasSSE42 = ((cpuFeatures & ANDROID_CPU_X86_FEATURE_SSE4_2) != 0);
+        hasAVX   = ((cpuFeatures & ANDROID_CPU_X86_FEATURE_AVX)    != 0);
+        hasAVX2  = ((cpuFeatures & ANDROID_CPU_X86_FEATURE_AVX2)   != 0);
+
+        // Google does not distinguish between MMX, SSE, SSE2, SSE3 and SSSE3. So
+        // I assume (and quick Google searches seem to confirm this) that there are
+        // only devices out there that either support all of this or none of this.
+        if (hasSSSE3)
+            hasMMX = hasSSE = hasSSE2 = hasSSE3 = true;
+    }
+    else if (cpuFamily == ANDROID_CPU_FAMILY_ARM)
+    {
+        hasNeon = ((cpuFeatures & ANDROID_CPU_ARM_FEATURE_NEON) != 0);
+    }
+    else if (cpuFamily == ANDROID_CPU_FAMILY_ARM64)
+    {
+        // all arm 64-bit cpus have neon
+        hasNeon = true;
+    }
 }
 
 //==============================================================================

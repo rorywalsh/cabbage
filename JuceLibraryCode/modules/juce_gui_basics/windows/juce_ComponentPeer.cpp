@@ -2,22 +2,24 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2015 - ROLI Ltd.
+   Copyright (c) 2017 - ROLI Ltd.
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   27th April 2017).
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
-   ------------------------------------------------------------------------------
+   Or: You may also use this code under the terms of the GPL v3 (see
+   www.gnu.org/licenses).
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
@@ -25,7 +27,7 @@
 static uint32 lastUniquePeerID = 1;
 
 //==============================================================================
-ComponentPeer::ComponentPeer (Component& comp, const int flags)
+ComponentPeer::ComponentPeer (Component& comp, int flags)
     : component (comp),
       styleFlags (flags),
       uniqueID (lastUniquePeerID += 2) // increment by 2 so that this can never hit 0
@@ -154,7 +156,7 @@ void ComponentPeer::handlePaint (LowLevelGraphicsContext& contextToPaintTo)
 
 Component* ComponentPeer::getTargetForKeyPress()
 {
-    Component* c = Component::getCurrentlyFocusedComponent();
+    auto* c = Component::getCurrentlyFocusedComponent();
 
     if (c == nullptr)
         c = &component;
@@ -180,7 +182,7 @@ bool ComponentPeer::handleKeyPress (const KeyPress& keyInfo)
 {
     bool keyWasUsed = false;
 
-    for (Component* target = getTargetForKeyPress(); target != nullptr; target = target->getParentComponent())
+    for (auto* target = getTargetForKeyPress(); target != nullptr; target = target->getParentComponent())
     {
         const WeakReference<Component> deletionChecker (target);
 
@@ -226,7 +228,7 @@ bool ComponentPeer::handleKeyUpOrDown (const bool isKeyDown)
     ModifierKeys::updateCurrentModifiers();
     bool keyWasUsed = false;
 
-    for (Component* target = getTargetForKeyPress(); target != nullptr; target = target->getParentComponent())
+    for (auto* target = getTargetForKeyPress(); target != nullptr; target = target->getParentComponent())
     {
         const WeakReference<Component> deletionChecker (target);
 
@@ -235,7 +237,7 @@ bool ComponentPeer::handleKeyUpOrDown (const bool isKeyDown)
         if (keyWasUsed || deletionChecker == nullptr)
             break;
 
-        if (const Array<KeyListener*>* const keyListeners = target->keyListeners)
+        if (auto* keyListeners = target->keyListeners.get())
         {
             for (int i = keyListeners->size(); --i >= 0;)
             {
@@ -264,8 +266,7 @@ void ComponentPeer::handleModifierKeysChange()
     if (target == nullptr)
         target = &component;
 
-    if (target != nullptr)
-        target->internalModifierKeysChanged();
+    target->internalModifierKeysChanged();
 }
 
 TextInputTarget* ComponentPeer::findCurrentTextInputTarget()
@@ -273,7 +274,7 @@ TextInputTarget* ComponentPeer::findCurrentTextInputTarget()
     auto* c = Component::getCurrentlyFocusedComponent();
 
     if (c == &component || component.isParentOf (c))
-        if (TextInputTarget* const ti = dynamic_cast<TextInputTarget*> (c))
+        if (auto* ti = dynamic_cast<TextInputTarget*> (c))
             if (ti->isTextInputActive())
                 return ti;
 
