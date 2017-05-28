@@ -144,9 +144,9 @@ void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
     else if (toolbarButton->getName() == "togglePlay")
     {
         if (toolbarButton->getToggleState())
-            this->stopAudioGraph();
-        else
             this->startAudioGraph();
+        else
+            this->stopAudioGraph();
     }
 }
 
@@ -615,6 +615,17 @@ void CabbageMainComponent::createNewProject()
 
     o.launchAsync();
 }
+bool CabbageMainComponent::isInterestedInFileDrag(const StringArray & 	files)
+{
+	CabbageUtilities::debug("Hello");
+	return true;
+}
+
+void CabbageMainComponent::filesDropped(const StringArray &files, int x, int y)
+{
+	for (auto file : files)
+		openFile(file);
+}
 //==============================================================================
 void CabbageMainComponent::launchSSHFileBrowser (String mode)
 {
@@ -1053,14 +1064,14 @@ void CabbageMainComponent::stopCsoundForNode (String file)
 //==================================================================================
 void CabbageMainComponent::startAudioGraph()
 {
-    factory.togglePlay (false);
+    factory.togglePlay (true);
     audioGraph->startPlaying();
 }
 //==================================================================================
 void CabbageMainComponent::stopAudioGraph()
 {
     stopTimer();
-    factory.togglePlay (true);
+    factory.togglePlay (false);
 
     if (audioGraph)
         audioGraph->stopPlaying();

@@ -68,6 +68,7 @@ private:
     CabbageSettings& settings;
     Value alwaysOnTopPluginValue, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
     LookAndFeel_V3 lookAndFeel;
+	Viewport viewport;
 
 };
 

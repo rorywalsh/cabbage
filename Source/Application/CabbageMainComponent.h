@@ -42,7 +42,8 @@ class CabbageMainComponent
       public ActionListener,
       public ChangeListener,
       public Timer,
-      public ComboBox::Listener
+      public ComboBox::Listener,
+	  public FileDragAndDropTarget
 {
 public:
 
@@ -63,27 +64,22 @@ public:
     void createAudioGraph();
     void createCodeEditorForFile (File file);
     void createNewProject();
-    void createGenericCsoundPluginWrapper();
+	bool isInterestedInFileDrag(const StringArray &files);
+	void filesDropped(const StringArray &files, int x, int y);
     Image createBackground();
     void removeEditor();
     //==============================================================================
-    void showAudioSettings();
     void launchSSHFileBrowser (String mode);
     void setEditMode (bool enable);
     const File openFile (String filename = "");
-    bool closeAllDocuments (bool askUserToSave);
     void closeDocument();
-    bool closeAllMainWindows();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);
     void runCsoundForNode (String file);
     void stopCsoundForNode (String file);
     void stopAudioGraph();
     void startAudioGraph();
-    void showGenericWidgetWindow();
     void bringCodeEditorToFront (File file);
-    void hideGenericWidgetWindow (bool freeContent = false);
-    void initSettings();
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
     void setLookAndFeelColours();

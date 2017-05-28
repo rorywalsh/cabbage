@@ -45,7 +45,8 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     audioSettingsButton ("AudioSettingsButton"),
     miscSettingsButton ("MiscSettingsButton"),
     colourSettingsButton ("ColourSettingsButton"),
-    audioDeviceSelector (audioDevice)
+    audioDeviceSelector (audioDevice),
+	viewport("AudioSettingsViewport")
 {
     setLookAndFeel (&lookAndFeel);
     addColourProperties();
@@ -57,7 +58,12 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     addAndMakeVisible (audioSettingsButton);
     addAndMakeVisible (miscSettingsButton);
     addAndMakeVisible (colourSettingsButton);
-    addAndMakeVisible (audioDeviceSelector);
+	viewport.setViewedComponent(audioDeviceSelector, false);
+
+	audioDeviceSelector->setVisible(true);
+	viewport.setScrollBarsShown(true, false);
+	viewport.setViewPosition(0, 0);
+	addAndMakeVisible(viewport);
     audioSettingsButton.addListener (this);
     audioSettingsButton.addMouseListener (this, false);
     miscSettingsButton.addListener (this);
@@ -176,8 +182,11 @@ void CabbageSettingsWindow::resized()
     miscSettingsButton.setBounds (10, 80, 60, 60);
     colourSettingsButton.setBounds (10, 150, 60, 60);
 
-    if (audioDeviceSelector)
-        audioDeviceSelector->setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
+	if (audioDeviceSelector)
+	{
+		audioDeviceSelector->setBounds(0, 0, r.getWidth() - 120, 1000);
+		viewport.setBounds(100, 30, r.getWidth() - 100, r.getHeight() - 30);
+	}
 
     colourPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
     miscPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
@@ -197,7 +206,7 @@ void CabbageSettingsWindow::paint (Graphics& g)
         g.drawFittedText ("Miscellaneous", 100, 10, r.getWidth() - 100, 20, Justification::centred, 1);
     else if (colourPanel.isVisible())
         g.drawFittedText ("Colours", 100, 10, r.getWidth() - 100, 20, Justification::centred, 1);
-    else if (audioDeviceSelector->isVisible())
+    else if (viewport.isVisible())
         g.drawFittedText ("Audio and MIDI", 100, 10, r.getWidth() - 100, 20, Justification::centred, 1);
 }
 //=====================================================================
@@ -236,19 +245,19 @@ void CabbageSettingsWindow::selectPanel (String button)
 {
     if (button == "AudioSettingsButton")
     {
-        audioDeviceSelector->setVisible (true);
+        viewport.setVisible (true);
         colourPanel.setVisible (false);
         miscPanel.setVisible (false);
     }
     else if (button == "ColourSettingsButton")
     {
-        audioDeviceSelector->setVisible (false);
+		viewport.setVisible (false);
         colourPanel.setVisible (true);
         miscPanel.setVisible (false);
     }
     else if (button == "MiscSettingsButton")
     {
-        audioDeviceSelector->setVisible (false);
+		viewport.setVisible (false);
         colourPanel.setVisible (false);
         miscPanel.setVisible (true);
     }

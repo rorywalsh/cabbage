@@ -44,13 +44,11 @@ public:
     CabbageMainComponent* getContentComponent();
     //=======================================================
     StringArray getMenuBarNames();
-    void createMenu (PopupMenu&, const String& menuName);
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);
     void createHelpMenu (PopupMenu&);
     void createBuildMenu (PopupMenu&);
-    void createColourSchemeItems (PopupMenu&);
     void createWindowMenu (PopupMenu&);
     void createToolsMenu (PopupMenu&);
     void getAllCommands (Array<CommandID>&) override;
@@ -59,12 +57,9 @@ public:
     PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
     void menuItemSelected (int menuItemID, int topLevelMenuIndex);
     //=======================================================
-    bool caseAllDocuments (bool askUserToSave);
-    bool closeAllMainWindows();
     void initSettings();
     void closeButtonPressed() override;
     void maximiseButtonPressed();
-    void buttonClicked (Button* button);
     void focusGained (FocusChangeType cause); //grab focus when user clicks on editor
 
     ScopedPointer<CabbageSettings> cabbageSettings;
