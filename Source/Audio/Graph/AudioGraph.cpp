@@ -92,7 +92,7 @@ void AudioGraph::addPlugin (File inputFile, int32 nodeId)
         }
     }
 
-    setChangedFlag (true);
+    setChangedFlag (true);  
     createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
     setDefaultConnections (nodeId);
 }
