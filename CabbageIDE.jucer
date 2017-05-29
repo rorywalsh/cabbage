@@ -320,8 +320,8 @@
                        isDebug="1" optimisation="1" targetName="Cabbage" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="Cabbage" libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"
-                       headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"/>
+                       isDebug="0" optimisation="3" targetName="Cabbage" libraryPath="C:\Program Files\Csound6_x64\lib"
+                       headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_video" path="../../juce"/>

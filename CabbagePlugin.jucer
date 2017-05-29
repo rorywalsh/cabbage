@@ -242,8 +242,8 @@
                        isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
                        libraryPath="C:\Program Files\Csound6_x64\lib"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\include\csound"
-                       libraryPath="C:\Users\rory\sourcecode\csound64\csound\mingw64\csound-mingw64\dist\bin"/>
+                       isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
+                       libraryPath="C:\Program Files\Csound6_x64\lib"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_video" path="../../juce"/>
