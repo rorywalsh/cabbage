@@ -2,28 +2,20 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2017 - ROLI Ltd.
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
@@ -1941,8 +1933,8 @@ template <typename Type>
 static String hexToString (Type v)
 {
     String::CharPointerType::CharType buffer[32];
-    String::CharPointerType::CharType* const end = buffer + numElementsInArray (buffer) - 1;
-    String::CharPointerType::CharType* t = end;
+    auto* end = buffer + numElementsInArray (buffer) - 1;
+    auto* t = end;
     *t = 0;
 
     do
@@ -1956,9 +1948,10 @@ static String hexToString (Type v)
                    String::CharPointerType (end));
 }
 
-String String::toHexString (int number)       { return hexToString ((unsigned int) number); }
-String String::toHexString (int64 number)     { return hexToString ((uint64) number); }
-String String::toHexString (short number)     { return toHexString ((int) (unsigned short) number); }
+String String::createHex (uint8 n)    { return hexToString (n); }
+String String::createHex (uint16 n)   { return hexToString (n); }
+String String::createHex (uint32 n)   { return hexToString (n); }
+String String::createHex (uint64 n)   { return hexToString (n); }
 
 String String::toHexString (const void* const d, const int size, const int groupSize)
 {
@@ -1971,7 +1964,7 @@ String String::toHexString (const void* const d, const int size, const int group
 
     String s (PreallocationBytes (sizeof (CharPointerType::CharType) * (size_t) numChars));
 
-    const unsigned char* data = static_cast<const unsigned char*> (d);
+    auto* data = static_cast<const unsigned char*> (d);
     CharPointerType dest (s.text);
 
     for (int i = 0; i < size; ++i)
@@ -2005,7 +1998,7 @@ static String getStringFromWindows1252Codepage (const char* data, size_t num)
 
 String String::createStringFromData (const void* const unknownData, int size)
 {
-    const uint8* const data = static_cast<const uint8*> (unknownData);
+    auto* data = static_cast<const uint8*> (unknownData);
 
     if (size <= 0 || data == nullptr)
         return {};
@@ -2037,7 +2030,7 @@ String String::createStringFromData (const void* const unknownData, int size)
         return builder.result;
     }
 
-    const char* start = (const char*) data;
+    auto* start = (const char*) data;
 
     if (size >= 3 && CharPointer_UTF8::isByteOrderMark (data))
     {
@@ -2060,7 +2053,7 @@ struct StringEncodingConverter
 {
     static CharPointerType_Dest convert (const String& s)
     {
-        String& source = const_cast<String&> (s);
+        auto& source = const_cast<String&> (s);
 
         typedef typename CharPointerType_Dest::CharType DestChar;
 
@@ -2512,6 +2505,12 @@ public:
             expect (String::toHexString (0x1234abcd).equalsIgnoreCase ("1234abcd"));
             expect (String::toHexString ((int64) 0x1234abcd).equalsIgnoreCase ("1234abcd"));
             expect (String::toHexString ((short) 0x12ab).equalsIgnoreCase ("12ab"));
+            expect (String::toHexString ((size_t) 0x12ab).equalsIgnoreCase ("12ab"));
+            expect (String::toHexString ((long) 0x12ab).equalsIgnoreCase ("12ab"));
+            expect (String::toHexString ((int8)  -1).equalsIgnoreCase ("ff"));
+            expect (String::toHexString ((int16) -1).equalsIgnoreCase ("ffff"));
+            expect (String::toHexString ((int32) -1).equalsIgnoreCase ("ffffffff"));
+            expect (String::toHexString ((int64) -1).equalsIgnoreCase ("ffffffffffffffff"));
 
             unsigned char data[] = { 1, 2, 3, 4, 0xa, 0xb, 0xc, 0xd };
             expect (String::toHexString (data, 8, 0).equalsIgnoreCase ("010203040a0b0c0d"));

@@ -2,22 +2,24 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2015 - ROLI Ltd.
+   Copyright (c) 2017 - ROLI Ltd.
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   27th April 2017).
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
-   ------------------------------------------------------------------------------
+   Or: You may also use this code under the terms of the GPL v3 (see
+   www.gnu.org/licenses).
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
@@ -248,9 +250,8 @@ namespace
 
         {
             ScopedXDisplay xDisplay;
-            ::Display* display = xDisplay.get();
 
-            XGetWindowProperty (display, handle, atom, 0, 1, false, AnyPropertyType,
+            XGetWindowProperty (xDisplay.display, handle, atom, 0, 1, false, AnyPropertyType,
                                 &userType,  &userSize, &userCount, &bytes, &data);
         }
 
@@ -267,9 +268,7 @@ namespace
 
         {
             ScopedXDisplay xDisplay;
-            ::Display* display = xDisplay.get();
-
-            XQueryTree (display, windowToCheck, &rootWindow, &parentWindow, &childWindows, &numChildren);
+            XQueryTree (xDisplay.display, windowToCheck, &rootWindow, &parentWindow, &childWindows, &numChildren);
         }
 
         if (numChildren > 0)
@@ -600,7 +599,8 @@ class VSTPluginInstance     : public AudioPluginInstance,
                               private AsyncUpdater
 {
 private:
-    VSTPluginInstance (const ModuleHandle::Ptr& mh, const BusesProperties& ioConfig, VstEffectInterface* effect)
+    VSTPluginInstance (const ModuleHandle::Ptr& mh, const BusesProperties& ioConfig, VstEffectInterface* effect,
+                       double sampleRateToUse, int blockSizeToUse)
         : AudioPluginInstance (ioConfig),
           vstEffect (effect),
           vstModule (mh),
@@ -609,7 +609,9 @@ private:
           wantsMidiMessages (false),
           initialised (false),
           isPowerOn (false)
-    {}
+    {
+        setRateAndBufferSizeDetails (sampleRateToUse, blockSizeToUse);
+    }
 
 public:
     ~VSTPluginInstance()
@@ -676,17 +678,15 @@ public:
 
             newEffect->dispatchFunction (newEffect, plugInOpcodeIdentify, 0, 0, 0, 0);
 
+            auto blockSize = jmax (32, initialBlockSize);
+
             newEffect->dispatchFunction (newEffect, plugInOpcodeSetSampleRate, 0, 0, 0, static_cast<float> (initialSampleRate));
-            newEffect->dispatchFunction (newEffect, plugInOpcodeSetBlockSize,  0, jmax (32, initialBlockSize), 0, 0);
+            newEffect->dispatchFunction (newEffect, plugInOpcodeSetBlockSize,  0, blockSize, 0, 0);
 
             newEffect->dispatchFunction (newEffect, plugInOpcodeOpen, 0, 0, 0, 0);
             BusesProperties ioConfig = queryBusIO (newEffect);
-            newEffect->dispatchFunction (newEffect, plugInOpcodeClose, 0, 0, 0, 0);
 
-            newEffect = constructEffect (newModule);
-
-            if (newEffect != nullptr)
-                return new VSTPluginInstance (newModule, ioConfig, newEffect);
+            return new VSTPluginInstance (newModule, ioConfig, newEffect, initialSampleRate, blockSize);
         }
 
         return nullptr;
@@ -845,12 +845,10 @@ public:
     {
         setRateAndBufferSizeDetails (rate, samplesPerBlockExpected);
 
-        VstSpeakerConfiguration inArr, outArr;
+        SpeakerMappings::VstSpeakerConfigurationHolder inArr  (getChannelLayoutOfBus (true,  0));
+        SpeakerMappings::VstSpeakerConfigurationHolder outArr (getChannelLayoutOfBus (false, 0));
 
-        SpeakerMappings::channelSetToVstArrangement (getChannelLayoutOfBus (true,  0), inArr);
-        SpeakerMappings::channelSetToVstArrangement (getChannelLayoutOfBus (false, 0), outArr);
-
-        dispatch (plugInOpcodeSetSpeakerConfiguration, 0, reinterpret_cast<pointer_sized_int> (&inArr), &outArr, 0.0f);
+        dispatch (plugInOpcodeSetSpeakerConfiguration, 0, (pointer_sized_int) &inArr.get(), (void*) &outArr.get(), 0.0f);
 
         vstHostTime.tempoBPM = 120.0;
         vstHostTime.timeSignatureNumerator = 4;
@@ -2039,7 +2037,6 @@ public:
 
        #elif JUCE_LINUX
         pluginWindow = None;
-        pluginProc = None;
         display = XWindowSystem::getInstance()->displayRef();
 
        #elif JUCE_MAC
@@ -2174,16 +2171,10 @@ public:
             {
                 const Rectangle<int> clip (g.getClipBounds());
 
-                XEvent ev = { 0 };
-                ev.xexpose.type = Expose;
-                ev.xexpose.display = display;
-                ev.xexpose.window = pluginWindow;
-                ev.xexpose.x = clip.getX();
-                ev.xexpose.y = clip.getY();
-                ev.xexpose.width = clip.getWidth();
-                ev.xexpose.height = clip.getHeight();
-
-                sendEventToChild (ev);
+                XClearArea (display, pluginWindow,
+                            clip.getX(), clip.getY(),
+                            static_cast<unsigned int> (clip.getWidth()), static_cast<unsigned int> (clip.getHeight()),
+                            True);
             }
            #endif
         }
@@ -2233,19 +2224,7 @@ public:
     {
         ignoreUnused (e);
 
-       #if JUCE_LINUX
-        if (pluginWindow == 0)
-            return;
-
-        toFront (true);
-
-        XEvent ev;
-        prepareXEvent (ev, e);
-        ev.xbutton.type = ButtonPress;
-        translateJuceToXButtonModifiers (e, ev);
-        sendEventToChild (ev);
-
-       #elif JUCE_WINDOWS
+       #if JUCE_WINDOWS || JUCE_LINUX
         toFront (true);
        #endif
     }
@@ -2273,7 +2252,6 @@ private:
    #elif JUCE_LINUX
     ::Display* display;
     Window pluginWindow;
-    EventProcPtr pluginProc;
    #endif
 
     // This is a workaround for old Mackie plugins that crash if their
@@ -2471,7 +2449,6 @@ private:
             pluginHWND = 0;
            #elif JUCE_LINUX
             pluginWindow = 0;
-            pluginProc = 0;
            #endif
         }
     }
@@ -2531,128 +2508,12 @@ private:
     }
 #endif
 
-#if JUCE_LINUX
-    //==============================================================================
-    // overload mouse/keyboard events to forward them to the plugin's inner window..
-    void sendEventToChild (XEvent& event)
-    {
-        if (pluginProc != 0)
-        {
-            // if the plugin publishes an event procedure, pass the event directly..
-            pluginProc (&event);
-        }
-        else if (pluginWindow != 0)
-        {
-            // if the plugin has a window, then send the event to the window so that
-            // its message thread will pick it up..
-            XSendEvent (display, pluginWindow, False, NoEventMask, &event);
-            XFlush (display);
-        }
-    }
-
-    void prepareXEvent (XEvent& ev, const MouseEvent& e) const noexcept
-    {
-        zerostruct (ev);
-        ev.xcrossing.display = display;
-        ev.xcrossing.window = pluginWindow;
-        ev.xcrossing.root = RootWindow (display, DefaultScreen (display));
-        ev.xcrossing.time = CurrentTime;
-        ev.xcrossing.x = e.x;
-        ev.xcrossing.y = e.y;
-        ev.xcrossing.x_root = e.getScreenX();
-        ev.xcrossing.y_root = e.getScreenY();
-    }
-
-    void mouseEnter (const MouseEvent& e) override
-    {
-        if (pluginWindow != 0)
-        {
-            XEvent ev;
-            prepareXEvent (ev, e);
-            ev.xcrossing.type = EnterNotify;
-            ev.xcrossing.mode = NotifyNormal;
-            ev.xcrossing.detail = NotifyAncestor;
-            translateJuceToXCrossingModifiers (e, ev);
-            sendEventToChild (ev);
-        }
-    }
-
-    void mouseExit (const MouseEvent& e) override
-    {
-        if (pluginWindow != 0)
-        {
-            XEvent ev;
-            prepareXEvent (ev, e);
-            ev.xcrossing.type = LeaveNotify;
-            ev.xcrossing.mode = NotifyNormal;
-            ev.xcrossing.detail = NotifyAncestor;
-            ev.xcrossing.focus = hasKeyboardFocus (true);
-            translateJuceToXCrossingModifiers (e, ev);
-            sendEventToChild (ev);
-        }
-    }
-
-    void mouseMove (const MouseEvent& e) override
-    {
-        if (pluginWindow != 0)
-        {
-            XEvent ev;
-            prepareXEvent (ev, e);
-            ev.xmotion.type = MotionNotify;
-            ev.xmotion.is_hint = NotifyNormal;
-            sendEventToChild (ev);
-        }
-    }
-
-    void mouseDrag (const MouseEvent& e) override
-    {
-        if (pluginWindow != 0)
-        {
-            XEvent ev;
-            prepareXEvent (ev, e);
-            ev.xmotion.type = MotionNotify;
-            ev.xmotion.is_hint = NotifyNormal;
-            translateJuceToXMotionModifiers (e, ev);
-            sendEventToChild (ev);
-        }
-    }
-
-    void mouseUp (const MouseEvent& e) override
-    {
-        if (pluginWindow != 0)
-        {
-            XEvent ev;
-            prepareXEvent (ev, e);
-            ev.xbutton.type = ButtonRelease;
-            translateJuceToXButtonModifiers (e, ev);
-            sendEventToChild (ev);
-        }
-    }
-
-    void mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& wheel) override
-    {
-        if (pluginWindow != 0)
-        {
-            XEvent ev;
-            prepareXEvent (ev, e);
-            ev.xbutton.type = ButtonPress;
-            translateJuceToXMouseWheelModifiers (e, wheel.deltaY, ev);
-            sendEventToChild (ev);
-
-            ev.xbutton.type = ButtonRelease;
-            sendEventToChild (ev);
-        }
-    }
-
+   #if JUCE_LINUX
     void updatePluginWindowHandle()
     {
         pluginWindow = getChildWindow ((Window) getWindowHandle());
-
-        if (pluginWindow != 0)
-            pluginProc = (EventProcPtr) getPropertyFromXWindow (pluginWindow,
-                                                                XInternAtom (display, "_XEventProc", False));
     }
-#endif
+   #endif
 
     //==============================================================================
 #if JUCE_MAC

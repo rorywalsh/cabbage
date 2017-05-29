@@ -39,6 +39,7 @@ CabbageGenTable::CabbageGenTable (ValueTree wData, CabbagePluginEditor* owner)
     addAndMakeVisible (table);
 
     ampRanges = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::amprange);
+	
     initialiseGenTable (wData);
 
 }
@@ -50,8 +51,6 @@ void CabbageGenTable::changeListenerCallback (ChangeBroadcaster* source)
 
     if (genTable)
     {
-        //   if((genTable->getCurrentHandle() && genTable->displayAsGrid()!=1))
-        //       popupBubble->showAt(genTable->getCurrentHandle(), AttributedString(genTable->getCoordinates()), 1050);
         if (genTable->changeMessage == "updateFunctionTable")
             owner->updatefTableData (genTable);
     }

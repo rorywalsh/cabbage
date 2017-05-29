@@ -994,21 +994,25 @@ int CabbageMainComponent::testFileForErrors(String file)
 {
 	ChildProcess process;
 	const String applicationDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName();
-	process.start(applicationDir+"/testCsoundFile "+file);
-
-	process.readAllProcessOutput();
-	
-	const int exitCode = process.getExitCode();
-
-	if(exitCode==1)
+	const String processName = applicationDir+"/testCsoundFile "+file;
+	if(File(processName).existsAsFile())
 	{
-		process.start("csound "+file);
-		this->getCurrentOutputConsole()->setText(process.readAllProcessOutput());
-		stopCsoundForNode (file);
-		return 1;
+		process.start(processName);
+
+		process.readAllProcessOutput();
+		
+		const int exitCode = process.getExitCode();
+
+		if(exitCode==1)
+		{
+			process.start("csound "+file);
+			this->getCurrentOutputConsole()->setText(process.readAllProcessOutput());
+			stopCsoundForNode (file);
+			return 1;
+		}
 	}
 	
-	return exitCode;
+	return 0;
 	
 }
 void CabbageMainComponent::runCsoundForNode (String file)
