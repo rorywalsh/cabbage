@@ -6,7 +6,13 @@ Requirements
 
 The following are dependencies you may need, you can simply copy and past the following as needed.
 
-sudo apt-get install libfreetype6-dev libx11-dev libxinerama-dev libxcursor-dev mesa-common-dev libasound2-dev freeglut3-dev libxcomposite-dev csound libcsound64-dev libcsnd-dev libsndfile1 libsndfile1-dev libjack-dev libxrandr-dev msttcorefonts webkit2gtk-4.0
+sudo apt-get install libfreetype6-dev libx11-dev libxinerama-dev libxcursor-dev mesa-common-dev libasound2-dev freeglut3-dev libxcomposite-dev csound libcsound64-dev libcsnd-dev libsndfile1 libsndfile1-dev libjack-dev libxrandr-dev msttcorefonts 
+
+In order to build the integrated help, you will need to install libwdgetkit. The latest version can be installed using these commands:
+
+sudo add-apt-repository ppa:webkit-team/ppa
+sudo apt-get update
+sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
 
 Please make sure that the version of Csound you use is 6.07 or newer, otherwise you will get build problems. 
 Cabbage needs the VST SDK in order to build its plugins libraries. The VST SDK can be downloed from [here](https://www.steinberg.net/en/company/developers.html)
