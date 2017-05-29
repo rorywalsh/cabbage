@@ -867,7 +867,7 @@ void GenTable::enableEditMode (StringArray m_pFields)
     const double thumbHeight = getHeight() - paintFooterHeight - zoomButtonsOffset;
     int pfieldCount = 0;
 
-
+		
     if (pFields.size() > 0)
     {
         const double width = (double (getWidth()) / (double)tableSize);
@@ -875,6 +875,7 @@ void GenTable::enableEditMode (StringArray m_pFields)
         if (genRoutine == 7 || genRoutine == 5)
         {
             float pFieldAmpValue = (normalised < 0 ? pFields[5].getFloatValue() : pFields[5].getFloatValue() / pFieldMinMax.getEnd());
+			const float amp = ampToPixel (thumbHeight, minMax, pFieldAmpValue);
             handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->colour);
 
             for (int i = 6; i < pFields.size(); i += 2)
@@ -1708,7 +1709,7 @@ void HandleComponent::mouseDown (const MouseEvent& e)
 void HandleComponent::setPosition (double posX, double posY, bool circularEnv)
 {
     if (circularEnv)
-        setTopLeftPosition (posX - getWidth() / 2.f, y - getHeight() / 2.f);
+        setTopLeftPosition (posX - getWidth() / 2.f, posY - getHeight() / 2.f);
     else
         setTopLeftPosition (posX, posY - getHeight() / 2.f);
 }
