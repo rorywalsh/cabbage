@@ -29,7 +29,7 @@ enum
 };
 
 //=================================================================================================================
-CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (name,
+CabbageDocumentWindow::CabbageDocumentWindow (String name)  : lookAndFeelv3(new LookAndFeel_V3()), DocumentWindow (name,
                                                                                   Colours::lightgrey,
                                                                                   DocumentWindow::allButtons)
 {
@@ -39,7 +39,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (na
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
 
-
+	Desktop::getInstance().setDefaultLookAndFeel (lookAndFeelv3);
     initSettings();
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
     content->propertyPanel->setVisible (false);

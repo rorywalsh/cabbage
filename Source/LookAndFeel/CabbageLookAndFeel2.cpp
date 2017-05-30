@@ -177,6 +177,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
     File imgFile (group.getProperties().getWithDefault ("imggroupbox", "").toString());
     const int outlineThickness = group.getProperties().getWithDefault ("outlinethickness", 1);
     const int lineThickness = group.getProperties().getWithDefault ("linethickness", 1);
+	const int justift = group.getProperties().getWithDefault ("justify", 1);
 
 
     //if valid SVG file....
@@ -219,7 +220,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
 
     g.setColour (group.findColour (GroupComponent::textColourId));
     name = CabbageUtilities::cabbageString (name, font, group.getWidth());
-    g.drawText (name, 0, 5, w, font.getHeight(), 36, false);
+    g.drawFittedText(name, (position == Justification::left ? 10 : 0), 5, w - (position == Justification::right ? 10 : 0), font.getHeight(), position, 36, false);
 }
 //===========================================================================================
 void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, bool isMouseOverButton, bool isButtonDown)
