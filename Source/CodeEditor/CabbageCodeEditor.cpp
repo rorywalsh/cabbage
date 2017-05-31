@@ -779,7 +779,7 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
     }
 
     updateCurrenLineMarker();
-    getParentComponent()->repaint();
+    //getParentComponent()->repaint();
     //handleUpdateNowIfNeeded();
     return true;
 }

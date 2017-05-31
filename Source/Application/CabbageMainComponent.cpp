@@ -104,8 +104,6 @@ void CabbageMainComponent::buttonClicked (Button* button)
 		const int result = menu.show();
 		if( result > 0 )
 		{
-			int fileIndex = getTabFileIndex(fileTabs[result-1]->getFile());
-			
 			fileTabs.move(result-1, fileTabs.size()-1);
 			editorAndConsole.move(result-1, fileTabs.size()-1);
 			arrangeFileTabs();
@@ -113,7 +111,6 @@ void CabbageMainComponent::buttonClicked (Button* button)
 			setCurrentCsdFile(fileTabs[fileTabs.size()-1]->getFile());				
 		}
 	}
-
 }
 
 void CabbageMainComponent::handleFileTab (FileTab* tabButton)

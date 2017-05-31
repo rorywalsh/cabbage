@@ -97,14 +97,14 @@ void FileTab::drawButtonText (Graphics& g)
     const int cornerSize = jmin (getHeight(), getWidth()) / 2;
 
     const int fontHeight = roundToInt (font.getHeight() * 0.6f);
-    const int leftIndent  = 120;
-    const int rightIndent = jmin (fontHeight, 2 + cornerSize / (isConnectedOnRight() ? 4 : 2));
-    const int textWidth = getWidth() - leftIndent - rightIndent;
+    const int leftIndent  = 140;
+
+    const int textWidth = getWidth() - 165;
 
     if (textWidth > 0)
         g.drawFittedText (getButtonText(),
                           leftIndent, yIndent, textWidth, getHeight() - yIndent * 2,
-                          Justification::centred, 2);
+                          Justification::centred, 1);
 }
 						  
 void FileTab::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown)
