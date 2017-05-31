@@ -66,7 +66,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS_APP := \
-  $(JUCE_OBJDIR)/FileTabButton_ed77f9cd.o \
+  $(JUCE_OBJDIR)/FileTab_96ff6bfb.o \
   $(JUCE_OBJDIR)/CabbageMainComponent_bb67f2ab.o \
   $(JUCE_OBJDIR)/CabbageDocumentWindow_3af539ae.o \
   $(JUCE_OBJDIR)/CabbageGraphComponent_5cbe6212.o \
@@ -145,9 +145,9 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) : check-pkg-config $(OBJECTS_APP) $(RESOURCES)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
 	$(V_AT)$(CXX) -o $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) $(OBJECTS_APP) $(JUCE_LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 
-$(JUCE_OBJDIR)/FileTabButton_ed77f9cd.o: ../../Source/Application/FileTabButton.cpp
+$(JUCE_OBJDIR)/FileTab_96ff6bfb.o: ../../Source/Application/FileTab.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FileTabButton.cpp"
+	@echo "Compiling FileTab.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CabbageMainComponent_bb67f2ab.o: ../../Source/Application/CabbageMainComponent.cpp
