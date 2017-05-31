@@ -64,7 +64,7 @@ rotate(radians, pivotx, pivoty), widgetarray("chan", number), active(val)
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-gentable bounds(10, 10, 380, 200), tablenumber(1, 2), tablecolour("yellow", "red"), tablegridcolour(60, 60,60)
+gentable bounds(10, 10, 380, 200), tablenumber(1, 2), tablecolour:0("yellow") tablecolour:1("red"), tablegridcolour(60, 60,60)
 </Cabbage>
 ```
 ![](images/gentableExample.png)
