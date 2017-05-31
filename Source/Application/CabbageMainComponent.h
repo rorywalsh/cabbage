@@ -127,11 +127,11 @@ public:
     //==============================================================================
     void timerCallback();
     void launchHelpfile (String type);
+	TextButton cycleTabsButton;
 
 private:
 	int getTabFileIndex(File file);
     OwnedArray<FileTab> fileTabs;
-    Array<File> openFiles;
     bool fileNeedsSaving = false;
     String searchString = String::empty;
     String replaceString = String::empty;

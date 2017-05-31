@@ -29,9 +29,11 @@ enum
 };
 
 //=================================================================================================================
-CabbageDocumentWindow::CabbageDocumentWindow (String name)  : lookAndFeelv3(new LookAndFeel_V3()), DocumentWindow (name,
+CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (name,
                                                                                   Colours::lightgrey,
-                                                                                  DocumentWindow::allButtons)
+                                                                                  DocumentWindow::allButtons),
+																				  lookAndFeel(new LookAndFeel_V3())
+																				  
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
     setUsingNativeTitleBar (true);
@@ -39,7 +41,10 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : lookAndFeelv3(new 
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
 
-	Desktop::getInstance().setDefaultLookAndFeel (lookAndFeelv3);
+
+	Desktop::getInstance().setDefaultLookAndFeel (lookAndFeel);	//set default look and feel for project
+	getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, Colour(200, 200, 200));
+
     initSettings();
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
     content->propertyPanel->setVisible (false);
@@ -51,7 +56,10 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : lookAndFeelv3(new 
     if (cabbageSettings->getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup") == 1)
     {
         cabbageSettings->updateRecentFilesList();
-        content->openFile (cabbageSettings->getMostRecentFile().getFullPathName());
+		for( int i = 0 ; i < 4 ; i++ )
+		{
+			content->openFile (cabbageSettings->getMostRecentFile(i).getFullPathName());
+		}
     }
 
     setApplicationCommandManagerToWatch (&commandManager);
@@ -264,9 +272,8 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 {
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::about);
     menu.addCommandItem (&commandManager, CommandIDs::showGraph);
+    menu.addSeparator();
 }
 
 void CabbageDocumentWindow::createBuildMenu (PopupMenu& menu)
@@ -317,6 +324,7 @@ void CabbageDocumentWindow::createHelpMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::contextHelp);
     menu.addSeparator();
+	menu.addCommandItem (&commandManager, CommandIDs::about);
 }
 
 void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIndex)

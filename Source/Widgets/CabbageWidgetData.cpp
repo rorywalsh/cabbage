@@ -625,14 +625,18 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
             setProperty (widgetData, CabbageIdentifierIds::colour, getColourFromText (strTokens.joinIntoString (",")).toString());
     }
 
-    else if (identifier == "fontcolour" || identifier == "fontcolour:1")
-    {
-        if (typeOfWidget.contains ("button"))
-            setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
-        else
-            setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
+    else if (identifier == "fontcolour")
+	{
+		setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
+		setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
 
+	}
+	
+	else if(identifier == "fontcolour:1")
+    {
+       setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
     }
+	
     else if (identifier == "fontcolour:0")
     {
         setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
@@ -792,6 +796,7 @@ void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree wi
 
     setProperty (widgetData, CabbageIdentifierIds::scrubberposition, scrubberInfo);
 	
+
 	const String typeOfWidget = getProperty (widgetData, CabbageIdentifierIds::type);
 	
 	if(typeOfWidget == CabbageWidgetTypes::gentable)

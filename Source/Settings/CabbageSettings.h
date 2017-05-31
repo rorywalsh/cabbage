@@ -51,7 +51,7 @@ public:
     ScopedPointer<PropertySet> defaultPropSet;
     ValueTree valueTree;
     RecentlyOpenedFilesList recentFiles;
-    File getMostRecentFile();
+    File getMostRecentFile(int index);
 
     String getAudioSettingsXml()
     {

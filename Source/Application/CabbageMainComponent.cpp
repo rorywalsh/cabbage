@@ -28,8 +28,10 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     : cabbageSettings (settings),
       owner (owner),
       factory (this),
-      tooltipWindow (this, 300)
+      tooltipWindow (this, 300),
+	  cycleTabsButton("...")
 {
+	cycleTabsButton.setColour(TextButton::ColourIds::buttonColourId, Colour(100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
     addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (cabbageSettings->valueTree));
     propertyPanel->setVisible (false);
@@ -43,9 +45,11 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     toolbar.addDefaultItems (factory);
     propertyPanel->addChangeListener (this);
     factory.combo->getCombo().addListener (this);
-
+	cycleTabsButton.setSize(50, 28);
+	cycleTabsButton.addListener(this);
     setLookAndFeelColours();
     createAudioGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
+	
 }
 
 CabbageMainComponent::~CabbageMainComponent()
@@ -89,11 +93,31 @@ void CabbageMainComponent::buttonClicked (Button* button)
         handleToolbarButtons (toolbarButton);
     else if (DrawableButton* drawableButton = dynamic_cast<DrawableButton*> (button))
         handleFileTabs (drawableButton);
+	else if (TextButton* textButton = dynamic_cast<TextButton*> (button))
+	{
+		PopupMenu menu;
+		
+		for( int i = 0 ; i < fileTabs.size() ; i++)
+			if(fileTabs[i]->isVisible()==false)
+			menu.addItem(i+1, fileTabs[i]->getName());
+			
+		const int result = menu.show();
+		if( result > 0 )
+		{
+			int fileIndex = getTabFileIndex(fileTabs[result-1]->getFile());
+			
+			fileTabs.move(result-1, fileTabs.size()-1);
+			editorAndConsole.move(result-1, fileTabs.size()-1);
+			arrangeFileTabs();
+			fileTabs[fileTabs.size()-1]->setToggleState (true, sendNotification);
+			setCurrentCsdFile(fileTabs[fileTabs.size()-1]->getFile());				
+		}
+	}
+
 }
 
 void CabbageMainComponent::handleFileTab (FileTab* tabButton)
 {
-    CabbageUtilities::debug (tabButton->getFilename());
 
     if (tabButton->getName().contains ("html"))
         jassert (false);
@@ -104,7 +128,7 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton)
 
     if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
     {
-        docWindow->setName (openFiles[currentFileIndex].getFullPathName());
+        docWindow->setName (fileTabs[currentFileIndex]->getFile().getFullPathName());
         addInstrumentsAndRegionsToCombobox();
     }
 
@@ -115,6 +139,8 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton)
         else
             button->disableButtons (false);
     }
+	
+
 }
 
 int CabbageMainComponent::getTabFileIndex(File file)
@@ -379,10 +405,9 @@ Image CabbageMainComponent::createBackground()
 //==============================================================================
 void CabbageMainComponent::addFileTab (File file)
 {
-    FileTab* fileButton;
-    CabbageUtilities::debug (file.getFullPathName());
-    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName()));
 
+    FileTab* fileButton;
+    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName()));
 
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
@@ -399,19 +424,41 @@ void CabbageMainComponent::addFileTab (File file)
             button->disableButtons (true);
     }
 
+
+	arrangeFileTabs();
 }
 
 void CabbageMainComponent::arrangeFileTabs()
 {
     int xPos = 10;
-    const int numTabs = jmax (3, fileTabs.size());
+    const int numTabs = 5;
+	int tabIndex = 0;
+	const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 30 : getWidth() - 25;
+	const int size = fileTabs.size(); 
+	int startTabIndex = jmax(0, fileTabs.size() - 4);
+	
+	for ( auto fileButton : fileTabs)
+	{
+		if(tabIndex>=startTabIndex && tabIndex < startTabIndex+4)
+		{
+			fileButton->setBounds (xPos, toolbarThickness + 3, width / numTabs, 30);
+			xPos += width / numTabs + 4;
+			fileButton->setVisible(true);
+		}
+		else
+			fileButton->setVisible(false);
+			
+		tabIndex++;
+	}
 
-    for ( auto fileButton : fileTabs)
-    {
-        const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 15 : getWidth() - 25;
-        fileButton->setBounds (xPos, toolbarThickness + 3, width / numTabs, 30);
-        xPos += width / numTabs + 4;
-    }
+	if(fileTabs.size() > 4)
+	{
+		if(cycleTabsButton.isVisible() == false)
+			addAndMakeVisible(cycleTabsButton);
+		cycleTabsButton.setBounds(xPos, toolbarThickness + 3, 50, 30);
+	}
+	
+	
 }
 
 //==============================================================================
@@ -670,7 +717,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 
     if (fileToOpen.existsAsFile() == false)
     {
-        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*.cabbage", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.cabbage", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {
@@ -726,17 +773,18 @@ void CabbageMainComponent::saveGraph (bool saveAs)
 //==================================================================================
 const File CabbageMainComponent::openFile (String filename)
 {
+	//CabbageUtilities::debug(filename);
     stopTimer();
     stopCsoundForNode (filename);
     File currentCsdFile;
 
     if (File (filename).existsAsFile() == false)
     {
-        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile().getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {
-            if (openFiles.contains (File (filename)) && currentFileIndex > -1)
+            if (getTabFileIndex(File (filename))>=0 && currentFileIndex > -1)
             {
                 CabbageUtilities::showMessage ("File is already open", lookAndFeel);
                 return File();
@@ -817,16 +865,15 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     propertyPanel->setVisible (false);
     editorConsole->setVisible (true);
     editorConsole->toFront (true);
-    openFiles.add (file);
     editorConsole->editor->loadContent (file.loadFileAsString());
     editorConsole->editor->parseTextForInstrumentsAndRegions();
     editorConsole->editor->startThread();
     numberOfFiles = editorAndConsole.size();
     currentFileIndex = editorAndConsole.size() - 1;
-    addFileTab (openFiles[numberOfFiles - 1]);
+    addFileTab (file);
     getCurrentCodeEditor()->addChangeListener (this);
     getCurrentCodeEditor()->setSavePoint();
-    owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
+    owner->setName ("Cabbage " + file.getFullPathName());
     addInstrumentsAndRegionsToCombobox();
     repaint();
     resized();
@@ -927,7 +974,6 @@ void CabbageMainComponent::removeEditor()
 {
     editorAndConsole.removeObject (getCurrentEditorContainer());
     fileTabs.remove (currentFileIndex);
-    openFiles.remove (currentFileIndex);
     currentFileIndex = (currentFileIndex > 0 ? currentFileIndex - 1 : 0);
 
     if (editorAndConsole.size() != 0)
@@ -940,7 +986,7 @@ void CabbageMainComponent::removeEditor()
         if (fileTabs.size() > 0)
         {
             fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
-            owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
+            owner->setName ("Cabbage " + fileTabs[currentFileIndex]->getFile().getFullPathName());
             arrangeFileTabs();
         }
         else
