@@ -17,18 +17,18 @@
   02111-1307 USA
 */
 
-#include "FileTabButton.h"
+#include "FileTab.h"
 
-FileTabButton::FileTabButton (String name, String filename, bool csdFile):
+FileTab::FileTab (String name, String filename):
         TextButton (name, filename),
-        filename (filename),
+        csdFile (filename),
         play ("Play", DrawableButton::ButtonStyle::ImageStretched),
         close ("", DrawableButton::ButtonStyle::ImageStretched),
         showEditor ("", DrawableButton::ButtonStyle::ImageStretched),
         editGUI ("", DrawableButton::ButtonStyle::ImageStretched),
-        overlay(),
-        isCsdFile (csdFile)
+        overlay()
 {
+	
 	addChildComponent (overlay);
 	overlay.setVisible (false);
 	play.setClickingTogglesState (true);
@@ -39,13 +39,13 @@ FileTabButton::FileTabButton (String name, String filename, bool csdFile):
 	close.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
 	close.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
 	close.setTooltip ("Close file");
-	close.getProperties().set ("filename", filename);
+	close.getProperties().set ("filename", csdFile.getFullPathName());
 
 	addAndMakeVisible (play);
 	play.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
 	play.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
 	play.setClickingTogglesState (true);
-	play.getProperties().set ("filename", filename);
+	play.getProperties().set ("filename", csdFile.getFullPathName());
 
 	addAndMakeVisible (showEditor);
 	showEditor.setName ("showEditorButton");
@@ -67,7 +67,7 @@ FileTabButton::FileTabButton (String name, String filename, bool csdFile):
 	setDrawableImages (editGUI, 25, 25, "editGUI"); 
 }
 
-void FileTabButton::drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height)
+void FileTab::drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height)
 {
 	const float mainBrightness = baseColour.getBrightness();
 	const float mainAlpha = baseColour.getFloatAlpha();
@@ -85,7 +85,7 @@ void FileTabButton::drawButtonShape (Graphics& g, const Path& outline, Colour ba
 }
 
 
-void FileTabButton::drawButtonText (Graphics& g)
+void FileTab::drawButtonText (Graphics& g)
 {
 	Font font(jmin (15.0f, getHeight() * 0.6f));
     g.setFont (font);
@@ -107,7 +107,7 @@ void FileTabButton::drawButtonText (Graphics& g)
                           Justification::centred, 2);
 }
 						  
-void FileTabButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown)
+void FileTab::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown)
 {
 	const Colour backgroundColour = Colour(100, 100, 100);
 	
@@ -144,7 +144,7 @@ void FileTabButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButt
 	drawButtonText(g);
 }
 
-void FileTabButton::addButtonListeners (Button::Listener* listener)
+void FileTab::addButtonListeners (Button::Listener* listener)
 {
 	play.addListener (listener);
 	close.addListener (listener);
@@ -152,7 +152,7 @@ void FileTabButton::addButtonListeners (Button::Listener* listener)
 	editGUI.addListener (listener);
 }
 
-void FileTabButton::disableButtons (bool disable)
+void FileTab::disableButtons (bool disable)
 {
 	if (disable)
 	{
@@ -164,20 +164,16 @@ void FileTabButton::disableButtons (bool disable)
 
 }
 
-void FileTabButton::resized()
+void FileTab::resized()
 {
-	if (isCsdFile == true)
-	{
-		overlay.setBounds (5, 3, 125, 25);
-		play.setBounds (5, 3, 60, 25);
-		showEditor.setBounds (67, 3, 30, 25);
-		editGUI.setBounds (99, 3, 30, 25);
-	}
-
+	overlay.setBounds (5, 3, 125, 25);
+	play.setBounds (5, 3, 60, 25);
+	showEditor.setBounds (67, 3, 30, 25);
+	editGUI.setBounds (99, 3, 30, 25);
 	close.setBounds (getWidth() - 22, 3, 20, 20);
 }
 
-void FileTabButton::setDrawableImages (DrawableButton& button, int width, int height, String type)
+void FileTab::setDrawableImages (DrawableButton& button, int width, int height, String type)
 {
 	DrawableImage imageNormal, imageNormalPressed, imageDownPressed;
 

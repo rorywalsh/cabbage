@@ -83,15 +83,15 @@ void CabbageMainComponent::setLookAndFeelColours()
 //==============================================================================
 void CabbageMainComponent::buttonClicked (Button* button)
 {
-    if (FileTabButton* tabButton = dynamic_cast<FileTabButton*> (button))
+    if (FileTab* tabButton = dynamic_cast<FileTab*> (button))
         handleFileTab (tabButton);
     else if (ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*> (button))
         handleToolbarButtons (toolbarButton);
     else if (DrawableButton* drawableButton = dynamic_cast<DrawableButton*> (button))
-        handleFileTabButtons (drawableButton);
+        handleFileTabs (drawableButton);
 }
 
-void CabbageMainComponent::handleFileTab (FileTabButton* tabButton)
+void CabbageMainComponent::handleFileTab (FileTab* tabButton)
 {
     CabbageUtilities::debug (tabButton->getFilename());
 
@@ -100,9 +100,7 @@ void CabbageMainComponent::handleFileTab (FileTabButton* tabButton)
 
     currentFileIndex = fileTabs.indexOf (tabButton);
     editorAndConsole[currentFileIndex]->toFront (true);
-    //getCurrentCodeEditor()->scrollToLine(10);
 
-    //bringCodeEditorToFront(openFiles[currentFileIndex]);
 
     if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
     {
@@ -119,9 +117,29 @@ void CabbageMainComponent::handleFileTab (FileTabButton* tabButton)
     }
 }
 
+int CabbageMainComponent::getTabFileIndex(File file)
+{
+	bool foundFile = false;
+	int fileIndex = 0;
+	for ( auto tab : fileTabs)
+	{
+		if(tab->getFilename() == file.getFullPathName())
+		{
+			foundFile = true;
+			break;
+		}
+			else
+				fileIndex++;	
+	}
+	
+	return foundFile == false ? -1 : fileIndex;
+	
+}
+
 void CabbageMainComponent::bringCodeEditorToFront (File file)
 {
-    const int fileIndex = openFiles.indexOf (file);
+		
+	const int fileIndex = getTabFileIndex(file);
 
     if (fileIndex >= 0)
     {
@@ -150,7 +168,7 @@ void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
     }
 }
 
-void CabbageMainComponent::handleFileTabButtons (DrawableButton* drawableButton)
+void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 {
     if (drawableButton->getName() == "playButton")
     {
@@ -162,7 +180,7 @@ void CabbageMainComponent::handleFileTabButtons (DrawableButton* drawableButton)
     }
     else if (drawableButton->getName() == "closeButton")
     {
-        if (FileTabButton* tabButton = drawableButton->findParentComponentOfClass<FileTabButton>())
+        if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
         {
             currentFileIndex = fileTabs.indexOf (tabButton);
             editorAndConsole[currentFileIndex]->toFront (true);
@@ -171,7 +189,7 @@ void CabbageMainComponent::handleFileTabButtons (DrawableButton* drawableButton)
     }
     else if (drawableButton->getName() == "showEditorButton")
     {
-        if (FileTabButton* tabButton = drawableButton->findParentComponentOfClass<FileTabButton>())
+        if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
         {
             const String filename = tabButton->getFilename();
             const int nodeId = nodeIdsForPlugins.getWithDefault (filename, -99);
@@ -295,7 +313,7 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
 void CabbageMainComponent::timerCallback()
 {
 
-    if (openFiles.size() > 0)
+    if (fileTabs.size() > 0)
     {
         int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
 
@@ -359,11 +377,11 @@ Image CabbageMainComponent::createBackground()
 }
 
 //==============================================================================
-void CabbageMainComponent::addFileTabButton (File file)
+void CabbageMainComponent::addFileTab (File file)
 {
-    FileTabButton* fileButton;
+    FileTab* fileButton;
     CabbageUtilities::debug (file.getFullPathName());
-    fileTabs.add (fileButton = new FileTabButton (file.getFileName(), file.getFullPathName(), file.hasFileExtension (".html") ? false : true));
+    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName()));
 
 
     addAndMakeVisible (fileButton);
@@ -383,7 +401,7 @@ void CabbageMainComponent::addFileTabButton (File file)
 
 }
 
-void CabbageMainComponent::arrangeFileTabButtons()
+void CabbageMainComponent::arrangeFileTabs()
 {
     int xPos = 10;
     const int numTabs = jmax (3, fileTabs.size());
@@ -424,7 +442,7 @@ void CabbageMainComponent::resizeAllWindows (int height)
         browser->setBounds (0, height, getWidth(), getHeight() - 5);
     }
 
-    arrangeFileTabButtons();
+    arrangeFileTabs();
 }
 
 //==============================================================================
@@ -681,7 +699,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 
     for ( int i = 0 ; i < files.size() ; i++)
     {
-        if (files[i].existsAsFile() && openFiles.contains (files[i]) == false)
+        if (files[i].existsAsFile() && getTabFileIndex(files[i]) == -1)
         {
             nodeIdsForPlugins.set (files[i].getFullPathName(), uuids[i]);
             openFile (files[i].getFullPathName());
@@ -693,12 +711,12 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 //==================================================================================
 File CabbageMainComponent::getCurrentCsdFile ()
 {
-    return openFiles[currentFileIndex];
+    return fileTabs[currentFileIndex]->getFile();
 }
 
 void CabbageMainComponent::setCurrentCsdFile (File file)
 {
-    openFiles.set (currentFileIndex, file);
+    fileTabs[currentFileIndex]->setFile(file);
 }
 //==================================================================================
 void CabbageMainComponent::saveGraph (bool saveAs)
@@ -805,7 +823,7 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     editorConsole->editor->startThread();
     numberOfFiles = editorAndConsole.size();
     currentFileIndex = editorAndConsole.size() - 1;
-    addFileTabButton (openFiles[numberOfFiles - 1]);
+    addFileTab (openFiles[numberOfFiles - 1]);
     getCurrentCodeEditor()->addChangeListener (this);
     getCurrentCodeEditor()->setSavePoint();
     owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
@@ -923,7 +941,7 @@ void CabbageMainComponent::removeEditor()
         {
             fileTabs[currentFileIndex]->setToggleState (true, dontSendNotification);
             owner->setName ("Cabbage " + openFiles[currentFileIndex].getFullPathName());
-            arrangeFileTabButtons();
+            arrangeFileTabs();
         }
         else
         {
@@ -1122,5 +1140,5 @@ void CabbageMainComponent::resized()
         findPanel->setTopRightPosition (getWidth() - 16, 70);
     }
 
-    arrangeFileTabButtons();
+    arrangeFileTabs();
 }

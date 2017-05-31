@@ -22,11 +22,10 @@
 #include "../Utilities/CabbageUtilities.h"
 
 
-class FileTabButton : public TextButton
+class FileTab : public TextButton
 {
     DrawableButton play, close, showEditor, editGUI;
-    String filename;
-    bool isCsdFile;
+	File csdFile;
 
     class Overlay : public Component
     {
@@ -42,8 +41,8 @@ class FileTabButton : public TextButton
 public:
 
 
-    FileTabButton (String name, String filename, bool csdFile = true);
-    const String getFilename() { return filename;    }
+    FileTab (String name, String filename);
+    const String getFilename() { return csdFile.getFullPathName();    }
 
 	void drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height);
     void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown);
@@ -53,6 +52,8 @@ public:
     void setDrawableImages (DrawableButton& button, int width, int height, String type);
 	void drawButtonText (Graphics& g);
 
+	File getFile(){		return csdFile;	}
+	void setFile(File file){		csdFile=file;	}
     DrawableButton& getPlayButton() {    return play;    }
     DrawableButton& getShowEditorButton() {  return showEditor;  }
     DrawableButton& getCloseFileEditorButton() { return close;   }

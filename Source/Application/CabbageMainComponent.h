@@ -31,10 +31,10 @@
 #include "../Settings/CabbageSettings.h"
 #include "CabbagePluginComponent.h"
 #include "CabbageGraphComponent.h"
-#include "FileTabButton.h"
+#include "FileTab.h"
 
 class CabbageDocumentWindow;
-class FileTabButton;
+class FileTab;
 
 class CabbageMainComponent
     : public Component,
@@ -92,10 +92,10 @@ public:
 	int testFileForErrors(String file);
     //==============================================================================
     void handleToolbarButtons (ToolbarButton* toolbarButton);
-    void handleFileTabButtons (DrawableButton* button);
-    void handleFileTab (FileTabButton* drawableButton) ;
-    void addFileTabButton (File file);
-    void arrangeFileTabButtons();
+    void handleFileTabs (DrawableButton* button);
+    void handleFileTab (FileTab* drawableButton) ;
+    void addFileTab (File file);
+    void arrangeFileTabs();
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -106,6 +106,7 @@ public:
     void hideFindPanel();
     int findNext (bool forward);
     void replaceText (bool replaceAll);
+	
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -128,7 +129,8 @@ public:
     void launchHelpfile (String type);
 
 private:
-    OwnedArray<FileTabButton> fileTabs;
+	int getTabFileIndex(File file);
+    OwnedArray<FileTab> fileTabs;
     Array<File> openFiles;
     bool fileNeedsSaving = false;
     String searchString = String::empty;
