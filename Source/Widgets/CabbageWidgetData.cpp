@@ -911,15 +911,14 @@ float CabbageWidgetData::getNumProp (ValueTree widgetData, Identifier prop)
 
 String CabbageWidgetData::getStringProp (ValueTree widgetData, Identifier prop)
 {
-    var string = getProperty (widgetData, prop);
-    const Array<var>* array = string.getArray();
+    var strings = getProperty (widgetData, prop);
 
-    if (array)
+    if (strings.size() > 0)
     {
-        return array->getReference (0).toString();
+        return strings[0].toString ();
     }
     else
-        return string.toString();
+        return strings.toString();
 
 }
 
