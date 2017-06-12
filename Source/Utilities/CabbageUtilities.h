@@ -600,12 +600,21 @@ public:
         {
             const char* begin = str;
 
-            while (*str != breakChar && *str)
+            while (*str != ')' && *str)
+			{
+				if(*str == '\"')	//excuse anything in quotes..
+				{
+					str++;
+					while(*str != '\"')
+						str++;
+				}
                 str++;
-
+			}
+			
             tokens.add (string (begin, str));
         }
         while (0 != *str++);
+	
 
         return tokens;
     }

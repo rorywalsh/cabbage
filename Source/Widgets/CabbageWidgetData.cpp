@@ -512,8 +512,7 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
-    StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
-
+    StringArray identifiersInLine = CabbageUtilities::getTokens(lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
     StringArray parameters;
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
@@ -522,7 +521,7 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
     {
         String parameter = identifiersInLine[i];
-        parameter = parameter.substring (parameter.indexOf ("(") + 1, parameter.indexOf (")")).trimCharactersAtStart ("\"").trimCharactersAtEnd ("\"");
+        parameter = parameter.substring (parameter.indexOf ("(") + 1, parameter.lastIndexOf (")")).trimCharactersAtStart ("\"").trimCharactersAtEnd ("\"");
         parameters.add (parameter);
     }
 
