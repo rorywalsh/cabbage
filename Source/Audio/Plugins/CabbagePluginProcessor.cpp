@@ -176,8 +176,6 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
         csdLine = csdLine.replace ("\n", " ");
         tokens.addTokens (csdLine, ", ");
 
-        CabbageUtilities::debug (tokens.joinIntoString (" "));
-
         if (tokens[0].containsIgnoreCase ("define"))
         {
             tokens.removeEmptyStrings();

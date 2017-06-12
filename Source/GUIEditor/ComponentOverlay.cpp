@@ -269,7 +269,9 @@ bool ComponentOverlay::keyPressed (const KeyPress& key, Component* originatingCo
         applyToTarget();
     }
 
-
+	updateBoundsDataForTarget();
+	layoutEditor->updateCodeEditor();
+	
     return false;
 }
 //===========================================================================

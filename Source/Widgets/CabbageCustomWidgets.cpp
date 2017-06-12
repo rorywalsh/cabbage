@@ -59,8 +59,6 @@ CabbageMeter::CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner):
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
-    CabbageUtilities::debug (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::metercolour).size());
-
     for (int i = 0; i < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::metercolour).size(); i++)
     {
         gradientColours.add (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::metercolour)[i].toString()));

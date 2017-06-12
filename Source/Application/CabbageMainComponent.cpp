@@ -677,9 +677,9 @@ void CabbageMainComponent::createNewProject()
 
     o.launchAsync();
 }
+
 bool CabbageMainComponent::isInterestedInFileDrag(const StringArray & 	files)
 {
-	CabbageUtilities::debug("Hello");
 	return true;
 }
 
@@ -770,7 +770,6 @@ void CabbageMainComponent::saveGraph (bool saveAs)
 //==================================================================================
 const File CabbageMainComponent::openFile (String filename)
 {
-	//CabbageUtilities::debug(filename);
     stopTimer();
     stopCsoundForNode (filename);
     File currentCsdFile;
