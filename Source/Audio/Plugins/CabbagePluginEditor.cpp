@@ -153,8 +153,11 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
 
     processor.cabbageWidgets.addChild (newWidget, -1, 0);
 	const String channel = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::channel);
-	CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, channel+String(processor.cabbageWidgets.getNumChildren()));
-    setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
+	
+	if(channel.isNotEmpty())
+		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, channel+String(processor.cabbageWidgets.getNumChildren()));
+    
+	setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
 
     insertWidget (newWidget);
     updateLayoutEditorFrames();

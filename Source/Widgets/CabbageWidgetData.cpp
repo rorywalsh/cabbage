@@ -1508,11 +1508,10 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
                          + getWidgetArrayAsCabbageCode (widgetData, macroText)
-                         + getImagesTextAsCabbageCode (widgetData, macroText)
-
-
-                         //lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
-                         + (getNumProp (widgetData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
+                         + getImagesTextAsCabbageCode (widgetData, macroText);
+						//lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
+						 
+						 //CabbageUtilities::debug(getNumProp (widgetData, "containsOpeningCurlyBracket"));
 
 
     return updateIdentifiers (cabbageCode, currentLineText);

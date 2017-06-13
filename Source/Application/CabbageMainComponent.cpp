@@ -325,7 +325,9 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
             macroNames += CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames)[i].toString() + " ";
 
 
-        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText);
+        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText) + String(CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
+		
+		
         macroNames = macroNames.length() > 1 ? macroNames : "";
 
         getCurrentCodeEditor()->insertCode (lineNumber, newText + " " + macroNames, replaceExistingLine, parent.isEmpty());
