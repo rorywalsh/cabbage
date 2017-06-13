@@ -183,6 +183,7 @@ void ComponentOverlay::mouseUp (const MouseEvent& e)
 
     layoutEditor->getLassoSelection().addToSelectionOnMouseUp (this, e.mods, true, mouseDownSelectStatus);
     layoutEditor->updateSelectedComponentBounds();
+    updateBoundsDataForTarget();
 }
 
 void ComponentOverlay::mouseDrag (const MouseEvent& e)
@@ -211,9 +212,8 @@ void ComponentOverlay::mouseDrag (const MouseEvent& e)
             }
 
         }
+        
     }
-
-    updateBoundsDataForTarget();
 }
 
 void ComponentOverlay::mouseEnter (const MouseEvent& e)
