@@ -76,7 +76,6 @@ public:
 
     void createEditorInterface (ValueTree widgets);
     //==============================================================================
-    void paint (Graphics&) override;
     void resized() override;
     //==============================================================================
     void setupWindow (ValueTree cabbageWidgetData);
@@ -137,7 +136,6 @@ public:
     //=============================================================================
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, Point<int> point);
-    ValueTree getValueTreeForlastWidgetAdded();
     //=============================================================================
     void refreshComboBoxContents();
     void enableEditMode (bool enable);
@@ -148,7 +146,6 @@ public:
     Component* getComponentFromName (String name);
     void addToEditorAndMakeVisible (Component* comp, ValueTree widgetData);
     void updateLayoutEditorFrames();
-    void componentMovedOrResized (Component& component, bool wasMoved, bool wasResized);
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
     //=============================================================================
     void buttonClicked (Button* button);
@@ -190,9 +187,9 @@ private:
     {
         Colour colour;
     public:
-        MainComponent(): Component() {                            }
+		MainComponent() : Component() { setOpaque(false); }
         void setColour (Colour col) {     colour = col;           }
-        void paint (Graphics& g) {        g.fillAll (colour);      }
+		void paint(Graphics& g) { g.setOpacity(0);  g.fillAll(colour); }
     };
 
     OwnedArray<Component> components;

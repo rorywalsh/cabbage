@@ -53,13 +53,6 @@ CabbagePluginEditor::~CabbagePluginEditor()
     popupPlants.clear();
 }
 
-//==============================================================================
-void CabbagePluginEditor::paint (Graphics& g)
-{
-    g.fillAll (backgroundColour.withAlpha (0.f));
-    //g.fillAll(Colour(uint8(0),uint8(0),uint8(0),0.f));
-}
-
 void CabbagePluginEditor::resized()
 {
 #ifdef Cabbage_IDE_Build
