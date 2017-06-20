@@ -1490,6 +1490,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
                          //+ getMultiItemTextAsCabbageCode (widgetData, "samplerange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
+                         + getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)
