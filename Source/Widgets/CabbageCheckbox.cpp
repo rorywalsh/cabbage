@@ -36,6 +36,7 @@ CabbageCheckbox::CabbageCheckbox (ValueTree wData) : CabbageWidgetBase(),
     setButtonText (buttonText);
     setTooltip (tooltipText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext));
 
+	const int radioID = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup);
     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup) != 0)
         setRadioGroupId (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup));
 
