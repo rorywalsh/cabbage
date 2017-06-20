@@ -397,7 +397,7 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
         const String identChannelMessage = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannelmessage);
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
-		if (chanArray.size() == 0 && channels[0].isNotEmpty())
+		if (chanArray.size() == 1 && channels[0].isNotEmpty())
 		{
 			if (getCsound()->GetChannel (channels[0].toUTF8()) != value)
 			{

@@ -527,7 +527,7 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
             param->endChangeGesture();
         }
     }
-    else
+	else
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
