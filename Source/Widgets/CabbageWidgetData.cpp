@@ -1488,7 +1488,6 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getColoursTextAsCabbageCode (widgetData, macroText)
                          + getRotateTextAsCabbageCode (widgetData, macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
-                         //+ getMultiItemTextAsCabbageCode (widgetData, "samplerange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
@@ -1510,9 +1509,6 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
                          + getWidgetArrayAsCabbageCode (widgetData, macroText)
                          + getImagesTextAsCabbageCode (widgetData, macroText);
-						//lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
-						 
-						 //CabbageUtilities::debug(getNumProp (widgetData, "containsOpeningCurlyBracket"));
 
 
     return updateIdentifiers (cabbageCode, currentLineText);

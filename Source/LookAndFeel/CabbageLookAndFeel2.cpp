@@ -338,7 +338,7 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
                                               width * 0.8, height * 0.8, false);
         g.setGradientFill (base);
         g.fillEllipse (0, 0, width, height);
-        g.setColour (Colours::black);
+        g.setColour (colour);
         g.fillEllipse (width * 0.09, height * 0.09, width * 0.82, height * 0.82);
         Colour outline = Colour::fromRGB (70, 70, 70);
         g.setColour (outline.withAlpha (colour.getAlpha()));
@@ -351,7 +351,7 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
         }
         else   //off
         {
-            g.setColour (Colours::black);
+            g.setColour (colour);
             g.fillEllipse (width * 0.09, height * 0.09, width * 0.82, height * 0.82);
 
             Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);
