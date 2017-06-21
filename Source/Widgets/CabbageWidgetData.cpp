@@ -928,7 +928,9 @@ void CabbageWidgetData::setNumProp (ValueTree widgetData, Identifier prop, float
 
 void CabbageWidgetData::setStringProp (ValueTree widgetData, Identifier name, const String value)
 {
-    widgetData.setProperty (name, value, 0);
+	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+    if(widgetData.getProperty("channel").size()==1)
+		widgetData.setProperty (name, value, 0);
 }
 
 void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, const var& value)

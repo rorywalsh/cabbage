@@ -248,10 +248,13 @@ void CabbagePluginProcessor::createParameters()
                 else if (typeOfWidget.contains ("range"))
                 {
                     const var channel = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
-                    const int minValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::minvalue);
-                    const int maxValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::maxvalue);
-                    addParameter (new CabbageAudioParameter (cabbageWidgets.getChild (i), *getCsound(), channel[0], name + "_min", 0, 1, minValue));
-                    addParameter (new CabbageAudioParameter (cabbageWidgets.getChild (i), *getCsound(), channel[1], name + "_max", 0, 1, maxValue));
+					if (channel.size() > 1)
+					{
+						const int minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::minvalue);
+						const int maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::maxvalue);
+						addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[0], name + "_min", 0, 1, minValue));
+						addParameter(new CabbageAudioParameter(cabbageWidgets.getChild(i), *getCsound(), channel[1], name + "_max", 0, 1, maxValue));
+					}
                 }
                 else
                 {

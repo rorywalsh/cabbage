@@ -793,7 +793,7 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::corners, float (getProperty (widgetData, CabbageIdentifierIds::height))*.1f);
     setProperty (widgetData, CabbageIdentifierIds::type, "checkbox");
     setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::lime.toString());
-    setProperty (widgetData, CabbageIdentifierIds::colour, Colours::red.toString());
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::onfontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::name, "checkbox");
