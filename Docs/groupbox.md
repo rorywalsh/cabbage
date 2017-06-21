@@ -30,7 +30,7 @@ widgetarray("chan", number), active(val), svgfile("filename")
 
 **visible(val)** A value of 0 will cause the widget to become invisible. Widgets have their visibility set to 1 by default. 
 
-**popup(val)** (Deprecated) If the groupbox is a plant, a value of 1 will cause the groupbox to open in a new window when show(1) is called. popup() should always be used in conjunction with the show() identifier. See [Plants](./plants.md)
+**popup(val)** If the groupbox is a plant, a value of 1 will cause the groupbox to open in a new window when show(1) is called. popup() should always be used in conjunction with the show() identifier. See [Plants](./plants.md)
 
 **show(val)** A value of 1 will cause the popup plant to show. A value of 0 will close the popup plant. See [Plants](./plants.md)
 
