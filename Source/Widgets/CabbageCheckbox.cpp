@@ -62,7 +62,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     if (prop == CabbageIdentifierIds::value)
     {
         bool state = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value) == 1 ? true : false;
-        setToggleState (state, dontSendNotification);
+        setToggleState (state, sendNotification);
     }
 
     else
