@@ -22,7 +22,7 @@
 
 #pragma once
 
-struct iOSAudioIODeviceType;
+class iOSAudioIODeviceType;
 
 class iOSAudioIODevice : public AudioIODevice
 {
@@ -36,52 +36,63 @@ public:
 
     Array<double> getAvailableSampleRates() override;
     Array<int> getAvailableBufferSizes() override;
-
     bool setAudioPreprocessingEnabled (bool) override;
 
     //==============================================================================
-    bool isPlaying() override;
-    bool isOpen() override;
-    String getLastError() override;
+    bool isPlaying() override                             { return isRunning && callback != nullptr; }
+    bool isOpen() override                                { return isRunning; }
+    String getLastError() override                        { return lastError; }
 
     //==============================================================================
-    StringArray getOutputChannelNames() override;
-    StringArray getInputChannelNames() override;
-
-    int getDefaultBufferSize() override;
-    int getCurrentBufferSizeSamples() override;
-
-    double getCurrentSampleRate() override;
-
-    int getCurrentBitDepth() override;
-
-    BigInteger getActiveOutputChannels() const override;
-    BigInteger getActiveInputChannels() const override;
-
+    StringArray getOutputChannelNames() override          { return { "Left", "Right" }; }
+    StringArray getInputChannelNames() override           { return audioInputIsAvailable ? getOutputChannelNames() : StringArray(); }
+    int getDefaultBufferSize() override                   { return defaultBufferSize; }
+    int getCurrentBufferSizeSamples() override            { return actualBufferSize; }
+    double getCurrentSampleRate() override                { return sampleRate; }
+    int getCurrentBitDepth() override                     { return 16; }
+    BigInteger getActiveOutputChannels() const override   { return activeOutputChans; }
+    BigInteger getActiveInputChannels() const override    { return activeInputChans; }
     int getOutputLatencyInSamples() override;
     int getInputLatencyInSamples() override;
 
     //==============================================================================
-    void setMidiMessageCollector (MidiMessageCollector*);
-    AudioPlayHead* getAudioPlayHead() const;
+    void handleStatusChange (bool enabled, const char* reason);
+    void handleRouteChange (const char* reason);
 
     //==============================================================================
-    bool isInterAppAudioConnected() const;
-   #if JUCE_MODULE_AVAILABLE_juce_graphics
-    Image getIcon (int size);
-   #endif
-    void switchApplication();
+    virtual void setMidiMessageCollector (MidiMessageCollector* collector)     { messageCollector = collector; }
+    virtual AudioPlayHead* getAudioPlayHead() const;
 
+    //==============================================================================
+    virtual bool isInterAppAudioConnected() const                              { return interAppAudioConnected; }
+   #if JUCE_MODULE_AVAILABLE_juce_graphics
+    virtual Image getIcon (int size);
+   #endif
+    virtual void switchApplication();
 private:
     //==============================================================================
-    iOSAudioIODevice (const String&);
+    void updateSampleRateAndAudioInput();
 
     //==============================================================================
-    friend struct iOSAudioIODeviceType;
-    friend struct AudioSessionHolder;
+    friend class iOSAudioIODeviceType;
+    iOSAudioIODevice (const String& deviceName);
 
-    struct Pimpl;
-    friend struct Pimpl;
+    //==============================================================================
+    const int defaultBufferSize;
+    double sampleRate;
+    int numInputChannels, numOutputChannels;
+    int preferredBufferSize, actualBufferSize;
+    bool isRunning;
+    String lastError;
+
+    bool audioInputIsAvailable, interAppAudioConnected;
+    BigInteger activeOutputChans, activeInputChans;
+
+    AudioIODeviceCallback* callback;
+    MidiMessageCollector* messageCollector;
+
+    class Pimpl;
+    friend class Pimpl;
     ScopedPointer<Pimpl> pimpl;
 
     JUCE_DECLARE_NON_COPYABLE (iOSAudioIODevice)
