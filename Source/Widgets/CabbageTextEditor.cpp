@@ -60,7 +60,7 @@ void CabbageTextEditor::resized()
 void CabbageTextEditor::sendTextToCsound()
 {
     strings.add (textEditor.getText());
-    strings.removeDuplicates (false);
+    strings.removeDuplicates (false);  
     stringIndex = strings.size() - 1;
     setWidgetText (textEditor.getText());
     CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::text, getText());
