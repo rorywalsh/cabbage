@@ -87,6 +87,7 @@ public:
 
 private:
     CustomTextEditor textEditor;
+	bool isMultiline = false;
     int stringIndex = 0;
     StringArray strings;
 };

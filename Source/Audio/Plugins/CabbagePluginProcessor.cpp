@@ -409,8 +409,6 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 				if (typeOfWidget != "combobox")	// don't update combobox in here, it will enter a recursive loop
 				{
 					CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
-					//CabbageUtilities::debug(channels[0]);
-					//CabbageUtilities::debug(getCsound()->GetChannel (channels[0].toUTF8()));
 				}
 			}
 		}

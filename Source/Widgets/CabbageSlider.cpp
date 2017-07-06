@@ -287,7 +287,7 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 
     if (prop == CabbageIdentifierIds::value)
     {
-        slider.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), dontSendNotification);
+        slider.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), sendNotification);
     }
     else
     {
