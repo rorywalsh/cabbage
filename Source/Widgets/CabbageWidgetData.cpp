@@ -322,7 +322,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("pivoty"):
             case HashStringToInt ("ffttablenumber"):
             case HashStringToInt ("pivotx"):
-            case HashStringToInt ("sliderincr"):
+            case HashStringToInt ("increment"):
             case HashStringToInt ("sliderskew"):
             case HashStringToInt ("visible"):
             case HashStringToInt ("active"):
@@ -356,12 +356,12 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
             case HashStringToInt ("max"):
                 setProperty (widgetData, CabbageIdentifierIds::maxenabled, 1);
-                setProperty (widgetData, CabbageIdentifierIds::maxvalue, strTokens[0].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::max, strTokens[0].trim().getFloatValue());
                 break;
 
             case HashStringToInt ("min"):
                 setProperty (widgetData, CabbageIdentifierIds::minenabled, 1);
-                setProperty (widgetData, CabbageIdentifierIds::minvalue, strTokens[0].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::min, strTokens[0].trim().getFloatValue());
                 break;
 
             case HashStringToInt ("range"):
@@ -847,7 +847,7 @@ void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, S
             if (strTokens.size() > 4)
             {
                 decimalPlaces = getNumberOfDecimalPlaces (strTokens[4].trim());
-                setProperty (widgetData, CabbageIdentifierIds::sliderincr, strTokens[4].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::increment, strTokens[4].trim().getFloatValue());
             }
 
             double sliderRange = max - min;
@@ -1056,7 +1056,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + ", "
                + String (getNumProp (widgetData, CabbageIdentifierIds::sliderskew))
                + ", "
-               + String (getNumProp (widgetData, CabbageIdentifierIds::sliderincr))
+               + String (getNumProp (widgetData, CabbageIdentifierIds::increment))
                + "), ";
     }
 
@@ -1072,7 +1072,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + ", "
                + String (getNumProp (widgetData, CabbageIdentifierIds::sliderskew))
                + ", "
-               + String (getNumProp (widgetData, CabbageIdentifierIds::sliderincr))
+               + String (getNumProp (widgetData, CabbageIdentifierIds::increment))
                + "), ";
     }
     else if (type == "xypad" && identifier == "value")
@@ -1492,6 +1492,9 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "max", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "min", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "increment", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)

@@ -205,9 +205,12 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
 
     if (identifier.isNotEmpty())
     {
-        if (identifier == CabbageIdentifierIds::sliderincr.toString())
+        if (identifier == CabbageIdentifierIds::increment.toString())
+		{
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::decimalplaces,
                                             CabbageUtilities::getNumberOfDecimalPlaces (value.toString()));
+			CabbageWidgetData::setProperty (widgetData, identifier, value);								
+		}
 
         else if (ampRangeIdentifiers.contains (identifier))
             getAmpRangeForTable (identifier, value);
@@ -845,7 +848,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors (CabbagePro
         const String min = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::min), decimalPlaces);
         const String max = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::max), decimalPlaces);
         const String skew = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::sliderskew), decimalPlaces);
-        const String incr = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::sliderincr), decimalPlaces);
+        const String incr = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::increment), decimalPlaces);
 
         comps.add (new TextPropertyComponent (Value (min), "Minimum", 8, false));
         comps.add (new TextPropertyComponent (Value (max), "Maximum", 8, false));

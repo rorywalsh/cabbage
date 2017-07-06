@@ -29,7 +29,7 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     textLabel.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)));
     min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
-    sliderIncr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderincr);
+    sliderIncr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
     addAndMakeVisible (textLabel);
@@ -93,10 +93,10 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
         sliderPos = sliderPos + (e.getOffsetFromDragStart().getY() < yAxis ? -50 : 50);
         currentEncValue = CabbageUtilities::roundToPrec (currentEncValue + (e.getOffsetFromDragStart().getY() < yAxis ? sliderIncr : -sliderIncr), 5);
 
-        if (minEnabled == 1)
+        if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::minenabled) == 1)
             currentEncValue = jmax (min, currentEncValue);
 
-        if (maxEnabled == 1)
+        if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::maxenabled) == 1)
             currentEncValue = jmin (max, currentEncValue);
 
         yAxis = e.getOffsetFromDragStart().getY();
