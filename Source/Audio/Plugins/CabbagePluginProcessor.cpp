@@ -73,11 +73,6 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
 
     searchForMacros (linesFromCsd);
 
-    //for (int i = linesFromCsd.size(); i >= 0;  i--)
-    //{
-    //  if (linesFromCsd[i].trimStart().startsWith("#define"))
-    //      linesFromCsd.remove(i);
-    //}
 
     for ( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
     {
@@ -133,23 +128,23 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         if (parentComponent.isNotEmpty())
             CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::parentcomponent, parentComponent);
 
-        if (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::basetype).toString() == "interactive" ||
-            CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::basetype).toString() == "layout" )
-        {
-            cabbageWidgets.addChild (tempWidget, -1, 0);
+		const String widgetName = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::name);
 
-            if (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray).size() > 0 &&
-                CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray).size() > 0)
-            {
-                for (int i = 0; i < CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray).size(); i++)
-                {
-                    ValueTree copy = tempWidget.createCopy();
-                    CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::channel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i]);
-                    CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::identchannel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i]);
-                    cabbageWidgets.addChild (copy, -1, 0);
-                }
-            }
-        }
+		if(widgetName.isNotEmpty())
+			cabbageWidgets.addChild (tempWidget, -1, 0);
+
+		if (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray).size() > 0 &&
+			CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray).size() > 0)
+		{
+			for (int i = 0; i < CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray).size(); i++)
+			{
+				ValueTree copy = tempWidget.createCopy();
+				CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::channel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i]);
+				CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::identchannel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i]);
+				cabbageWidgets.addChild (copy, -1, 0);
+			}
+		}
+
 
         if (currentLineOfCabbageCode.contains ("{"))
         {
