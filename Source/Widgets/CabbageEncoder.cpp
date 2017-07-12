@@ -67,6 +67,25 @@ void CabbageEncoder::labelTextChanged (Label* label)
     showPopup();
 }
 
+void CabbageEncoder::mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel)
+{
+	if (wheel.deltaY < 0)
+	{
+		currentEncValue -= sliderIncr;
+		sliderPos = sliderPos + 50;
+		
+	}
+	else
+	{
+		currentEncValue += sliderIncr;
+		sliderPos = sliderPos - 50;
+	}
+
+	
+	repaint();
+	owner->sendChannelDataToCsound(getChannel(), currentEncValue);
+	showPopup();
+}
 
 void CabbageEncoder::mouseDown (const MouseEvent& e)
 {
