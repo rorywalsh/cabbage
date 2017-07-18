@@ -11,8 +11,8 @@ msbuild CabbagePlugin.vcxproj /p:Configuration=Release /property:Platform=x64
 
 cp ".\x64\Release\CabbagePlugin.dll" ".\x64\CabbagePluginEffect.dll"
 
-C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2015\\x64\\Debug\\Projucer.exe --resave ../../CabbagePlugin.jucer
-msbuild CabbagePlugin.vcxproj /p:Configuration=Release /property:Platform=x64 /p:Cabbage_Plugin_Synth=1
+C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2015\\x64\\Debug\\Projucer.exe --resave ../../CabbagePluginSynth.jucer
+msbuild CabbagePlugin.vcxproj /p:Configuration=Release /property:Platform=x64
 
 cp ".\x64\Release\CabbagePlugin.dll" ".\x64\CabbagePluginSynth.dll"
 
