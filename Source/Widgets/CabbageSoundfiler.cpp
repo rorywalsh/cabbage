@@ -73,7 +73,7 @@ void CabbageSoundfiler::resized()
 
 void CabbageSoundfiler::setFile (String newFile)
 {
-    soundfiler.setFile (File (newFile));
+	soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile (newFile));
 }
 
 void CabbageSoundfiler::setWaveform (AudioSampleBuffer buffer, int channels)

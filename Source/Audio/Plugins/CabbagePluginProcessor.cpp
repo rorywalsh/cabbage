@@ -359,7 +359,7 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
 				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuex, xmlState->getAttributeValue (i).getFloatValue());
 				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuey, xmlState->getAttributeValue (i+1).getFloatValue());
 				i++;
-			}			
+			}
             else
             {
                 CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue (i).getFloatValue());

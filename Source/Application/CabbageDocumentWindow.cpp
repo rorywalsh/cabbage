@@ -58,7 +58,8 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (na
         cabbageSettings->updateRecentFilesList();
 		for( int i = 0 ; i < 4 ; i++ )
 		{
-			content->openFile (cabbageSettings->getMostRecentFile(i).getFullPathName());
+			if(File(cabbageSettings->getMostRecentFile(i).getFullPathName()).existsAsFile())
+				content->openFile (cabbageSettings->getMostRecentFile(i).getFullPathName());
 		}
     }
 
