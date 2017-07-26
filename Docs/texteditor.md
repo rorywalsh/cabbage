@@ -1,10 +1,10 @@
 # Text Editor
 
-Texteditor creates a single line text editor that can be used to send strings to Csound. Hitting return will send the string to Csound on a named string channel. Pressing the up and down buttons when the texteditor is in focus will toggle through the previous strings that have been sent.
+Texteditor creates a single line text editor that can be used to send strings to Csound. Hitting return when in single line mode will send the string to Csound on a named string channel while pressing the up and down buttons when the texteditor is in focus will toggle through the previous strings that have been sent. When in "multiline" mode, press command and return to send the string data to Csound. 
 
 ```csharp
 texteditor bounds(x, y, width, height), channel("channel"), \
-text("text"), colour("colour"), fontcolour("colour"), alpha(val), \
+text("text"), colour("colour"), fontcolour("colour"), alpha(val), mode("mode")\
 visible(val), rotate(radians, pivotx, pivoty), widgetarray("chan", number) \ popuptext("text"), active(val)
 ```
 <!--(End of syntax)/-->
@@ -33,6 +33,7 @@ visible(val), rotate(radians, pivotx, pivoty), widgetarray("chan", number) \ pop
 
 **active(val)** Will deactivate a control if 0 is passed. Controls which are deactivate can still be updated from Csound.
 
+**mode("mode")** Set the number of lines. Use "mutli" for a multiline texteditor. Defaults to "single".
 <!--(End of identifiers)/-->
 
 ##Example
