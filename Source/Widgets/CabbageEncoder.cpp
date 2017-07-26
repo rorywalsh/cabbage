@@ -32,6 +32,7 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     sliderIncr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+	currentEncValue = value;
     addAndMakeVisible (textLabel);
     addAndMakeVisible (valueLabel);
     valueLabel.setVisible (true);
@@ -72,8 +73,7 @@ void CabbageEncoder::mouseWheelMove(const MouseEvent &event, const MouseWheelDet
 	if (wheel.deltaY < 0)
 	{
 		currentEncValue -= sliderIncr;
-		sliderPos = sliderPos + 50;
-		
+		sliderPos = sliderPos + 50;		
 	}
 	else
 	{
