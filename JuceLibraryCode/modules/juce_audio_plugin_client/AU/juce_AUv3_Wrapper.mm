@@ -198,10 +198,13 @@ private:
         {
             addIvar<JuceAudioUnitv3Base*> ("cppObject");
 
+           #pragma clang diagnostic push
+           #pragma clang diagnostic ignored "-Wundeclared-selector"
             addMethod (@selector (initWithComponentDescription:options:error:juceClass:),
                        initWithComponentDescriptionAndJuceClass, "@@:",
                        @encode (AudioComponentDescription),
                        @encode (AudioComponentInstantiationOptions), "^@@");
+           #pragma clang diagnostic pop
 
             addMethod (@selector (initWithComponentDescription:options:error:),
                        initWithComponentDescription, "@@:",
@@ -688,6 +691,7 @@ public:
         ignoreUnused (processor);
 
         [au willChangeValueForKey: @"allParameterValues"];
+        addPresets();
         [au didChangeValueForKey: @"allParameterValues"];
     }
 
@@ -978,7 +982,7 @@ private:
                                                                                        address: address
                                                                                            min: 0.0f
                                                                                            max: 1.0f
-                                                                                          unit: kAudioUnitParameterUnit_Generic
+                                                                                          unit: unit
                                                                                       unitName: nullptr
                                                                                          flags: flags
                                                                                   valueStrings: nullptr
