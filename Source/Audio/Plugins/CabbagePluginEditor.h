@@ -77,6 +77,7 @@ public:
     void createEditorInterface (ValueTree widgets);
     //==============================================================================
     void resized() override;
+	void paint(Graphics& g){}
     //==============================================================================
     void setupWindow (ValueTree cabbageWidgetData);
 

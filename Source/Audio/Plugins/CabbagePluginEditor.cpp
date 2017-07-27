@@ -523,7 +523,7 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName()))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (slider->getValue());
+            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getValue()));
             param->endChangeGesture();
         }
     }
@@ -532,14 +532,14 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (slider->getMinValue());
+            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getMinValue()));
             param->endChangeGesture();
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_max"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (slider->getMaxValue());
+            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getMaxValue()));
             param->endChangeGesture();
         }
     }

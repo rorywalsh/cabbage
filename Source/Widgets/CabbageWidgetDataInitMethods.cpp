@@ -311,6 +311,8 @@ void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
     channels.append ("buttonchan");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
+	setProperty (widgetData, CabbageIdentifierIds::min, 0);
+	setProperty (widgetData, CabbageIdentifierIds::max, 1);
     setProperty (widgetData, CabbageIdentifierIds::text, array);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
@@ -788,6 +790,8 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::text, "");
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
+	setProperty (widgetData, CabbageIdentifierIds::min, 0);
+	setProperty (widgetData, CabbageIdentifierIds::max, 1);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::shape, "square");
     setProperty (widgetData, CabbageIdentifierIds::corners, float (getProperty (widgetData, CabbageIdentifierIds::height))*.1f);
