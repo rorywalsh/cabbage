@@ -177,8 +177,9 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
 
             if (tokens.size() > 1)
             {
-                CabbageUtilities::debug (csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ");
-                macroText.set ("$" + tokens[1], " " + csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ");
+                const String currentMacroText = csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ";
+                //first identifiers are not being used for some reason. This hack fixes that, but should be tidied up..
+				macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText );
             }
         }
     }
