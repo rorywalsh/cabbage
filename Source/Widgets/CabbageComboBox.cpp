@@ -135,7 +135,10 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     if (prop == CabbageIdentifierIds::value)
     {
         int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-        setSelectedItemIndex (value - 1, sendNotification);
+		if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
+			setSelectedItemIndex (value - 1, sendNotification);
+		else
+			setSelectedItemIndex (value - 1, dontSendNotification);
     }
 
     else

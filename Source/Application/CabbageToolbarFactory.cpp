@@ -130,7 +130,7 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromPNG (const int itemId, con
     button->addListener (owner);
     return button;
 }
-
+  
 ToolbarButton* CabbageToolbarFactory::createToggleButtonFromPNG(const int itemId, const String& text, const void* png1, size_t size1, const void* png2, size_t size2)
 {
 	Drawable* drawableNormal = nullptr;
