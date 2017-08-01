@@ -461,7 +461,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     {
         param->beginChangeGesture();
         const int value = combo->getSelectedItemIndex() + 1;
-        param->setValueNotifyingHost (value);
+        param->setValueNotifyingHost (param->range.convertTo0to1(value));
         param->endChangeGesture();
     }
 }
