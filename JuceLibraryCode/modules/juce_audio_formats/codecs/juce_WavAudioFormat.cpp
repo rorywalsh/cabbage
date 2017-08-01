@@ -71,6 +71,7 @@ const char* const WavAudioFormat::riffInfoArtist                = "IART";
 const char* const WavAudioFormat::riffInfoBaseURL               = "IBSU";
 const char* const WavAudioFormat::riffInfoCinematographer       = "ICNM";
 const char* const WavAudioFormat::riffInfoComment               = "CMNT";
+const char* const WavAudioFormat::riffInfoComment2              = "ICMT";
 const char* const WavAudioFormat::riffInfoComments              = "COMM";
 const char* const WavAudioFormat::riffInfoCommissioned          = "ICMS";
 const char* const WavAudioFormat::riffInfoCopyright             = "ICOP";
@@ -111,6 +112,7 @@ const char* const WavAudioFormat::riffInfoNumberOfParts         = "PRT2";
 const char* const WavAudioFormat::riffInfoOrganisation          = "TORG";
 const char* const WavAudioFormat::riffInfoPart                  = "PRT1";
 const char* const WavAudioFormat::riffInfoProducedBy            = "IPRO";
+const char* const WavAudioFormat::riffInfoProductName           = "IPRD";
 const char* const WavAudioFormat::riffInfoProductionDesigner    = "IPDS";
 const char* const WavAudioFormat::riffInfoProductionStudio      = "ISDT";
 const char* const WavAudioFormat::riffInfoRate                  = "RATE";
@@ -136,6 +138,7 @@ const char* const WavAudioFormat::riffInfoTechnician            = "ITCH";
 const char* const WavAudioFormat::riffInfoThirdLanguage         = "IAS3";
 const char* const WavAudioFormat::riffInfoTimeCode              = "ISMP";
 const char* const WavAudioFormat::riffInfoTitle                 = "INAM";
+const char* const WavAudioFormat::riffInfoTrackNo               = "IPRT";
 const char* const WavAudioFormat::riffInfoTrackNumber           = "TRCK";
 const char* const WavAudioFormat::riffInfoURL                   = "TURL";
 const char* const WavAudioFormat::riffInfoVegasVersionMajor     = "VMAJ";
@@ -224,6 +227,21 @@ namespace WavFileHelpers
         }
 
     } JUCE_PACKED;
+
+    //==============================================================================
+    AudioChannelSet canonicalWavChannelSet (int numChannels)
+    {
+        if (numChannels == 1)  return AudioChannelSet::mono();
+        if (numChannels == 2)  return AudioChannelSet::stereo();
+        if (numChannels == 3)  return AudioChannelSet::createLCR();
+        if (numChannels == 4)  return AudioChannelSet::quadraphonic();
+        if (numChannels == 5)  return AudioChannelSet::create5point0();
+        if (numChannels == 6)  return AudioChannelSet::create5point1();
+        if (numChannels == 7)  return AudioChannelSet::create7point0SDDS();
+        if (numChannels == 8)  return AudioChannelSet::create7point1SDDS();
+
+        return AudioChannelSet::discreteChannels (numChannels);
+    }
 
     //==============================================================================
     struct SMPLChunk
@@ -562,6 +580,7 @@ namespace WavFileHelpers
             WavAudioFormat::riffInfoCinematographer,
             WavAudioFormat::riffInfoComment,
             WavAudioFormat::riffInfoComments,
+            WavAudioFormat::riffInfoComment2,
             WavAudioFormat::riffInfoCommissioned,
             WavAudioFormat::riffInfoCopyright,
             WavAudioFormat::riffInfoCostumeDesigner,
@@ -601,6 +620,7 @@ namespace WavFileHelpers
             WavAudioFormat::riffInfoOrganisation,
             WavAudioFormat::riffInfoPart,
             WavAudioFormat::riffInfoProducedBy,
+            WavAudioFormat::riffInfoProductName,
             WavAudioFormat::riffInfoProductionDesigner,
             WavAudioFormat::riffInfoProductionStudio,
             WavAudioFormat::riffInfoRate,
@@ -626,6 +646,7 @@ namespace WavFileHelpers
             WavAudioFormat::riffInfoThirdLanguage,
             WavAudioFormat::riffInfoTimeCode,
             WavAudioFormat::riffInfoTitle,
+            WavAudioFormat::riffInfoTrackNo,
             WavAudioFormat::riffInfoTrackNumber,
             WavAudioFormat::riffInfoURL,
             WavAudioFormat::riffInfoVegasVersionMajor,
@@ -871,7 +892,7 @@ namespace WavFileHelpers
 
             return xml.getMemoryBlock();
         }
-    }
+    };
 
     //==============================================================================
     struct ExtensibleWavSubFormat
@@ -994,7 +1015,17 @@ public:
                         else
                         {
                             input->skipNextBytes (4); // skip over size and bitsPerSample
-                            metadataValues.set ("ChannelMask", String (input->readInt()));
+                            auto channelMask = input->readInt();
+                            metadataValues.set ("ChannelMask", String (channelMask));
+
+                            // AudioChannelSet and wav's dwChannelMask are compatible
+                            BigInteger channelBits (channelMask);
+
+                            for (auto bit = channelBits.findNextSetBit (0); bit >= 0; bit = channelBits.findNextSetBit (bit + 1))
+                                channelLayout.addChannel (static_cast<AudioChannelSet::ChannelType> (bit + 1));
+
+                            // channel layout and number of channels do not match
+                            jassert (channelLayout.size() == static_cast<int> (numChannels));
 
                             ExtensibleWavSubFormat subFormat;
                             subFormat.data1 = (uint32) input->readInt();
@@ -1199,10 +1230,19 @@ public:
         }
     }
 
+    AudioChannelSet getChannelLayout() override
+    {
+        if (channelLayout.size() == static_cast<int> (numChannels))
+            return channelLayout;
+
+        return WavFileHelpers::canonicalWavChannelSet (static_cast<int> (numChannels));
+    }
+
     int64 bwavChunkStart = 0, bwavSize = 0;
     int64 dataChunkStart = 0, dataLength = 0;
     int bytesPerFrame = 0;
     bool isRF64 = false;
+    AudioChannelSet channelLayout;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WavAudioFormatReader)
@@ -1212,9 +1252,10 @@ private:
 class WavAudioFormatWriter  : public AudioFormatWriter
 {
 public:
-    WavAudioFormatWriter (OutputStream* out, double rate, unsigned int numChans,
-                          unsigned int bits, const StringPairArray& metadataValues)
-        : AudioFormatWriter (out, wavFormatName, rate, numChans, bits)
+    WavAudioFormatWriter (OutputStream* const out, const double rate,
+                          const AudioChannelSet& channelLayoutToUse, const unsigned int bits,
+                          const StringPairArray& metadataValues)
+        : AudioFormatWriter (out, wavFormatName, rate, channelLayoutToUse, bits)
     {
         using namespace WavFileHelpers;
 
@@ -1301,24 +1342,6 @@ private:
     int64 headerPosition = 0;
     bool writeFailed = false;
 
-    static int getChannelMask (const int numChannels) noexcept
-    {
-        switch (numChannels)
-        {
-            case 1:   return 0;
-            case 2:   return 1 + 2;                                 // SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT
-            case 3:   return 1 + 2 + 4;                             // SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER
-            case 4:   return 1 + 2 + 16 + 32;                       // SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT
-            case 5:   return 1 + 2 + 4 + 16 + 32;                   // SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT
-            case 6:   return 1 + 2 + 4 + 8 + 16 + 32;               // SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT
-            case 7:   return 1 + 2 + 4 + 16 + 32 + 512 + 1024;      // SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_SIDE_LEFT | SPEAKER_SIDE_RIGHT
-            case 8:   return 1 + 2 + 4 + 8 + 16 + 32 + 512 + 1024;  // SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_SIDE_LEFT | SPEAKER_SIDE_RIGHT
-            default:  break;
-        }
-
-        return 0;
-    }
-
     void writeHeader()
     {
         if ((bytesWritten & 1) != 0) // pad to an even length
@@ -1336,9 +1359,10 @@ private:
 
         const size_t bytesPerFrame = numChannels * bitsPerSample / 8;
         uint64 audioDataSize = bytesPerFrame * lengthInSamples;
+        auto channelMask = getChannelMaskFromChannelLayout (channelLayout);
 
         const bool isRF64 = (bytesWritten >= 0x100000000LL);
-        const bool isWaveFmtEx = isRF64 || (numChannels > 2);
+        const bool isWaveFmtEx = isRF64 || (channelMask != 0);
 
         int64 riffChunkSize = (int64) (4 /* 'RIFF' */ + 8 + 40 /* WAVEFORMATEX */
                                        + 8 + audioDataSize + (audioDataSize & 1)
@@ -1414,7 +1438,7 @@ private:
         {
             output->writeShort (22); // cbSize (size of the extension)
             output->writeShort ((short) bitsPerSample); // wValidBitsPerSample
-            output->writeInt (getChannelMask ((int) numChannels));
+            output->writeInt (channelMask);
 
             const ExtensibleWavSubFormat& subFormat = bitsPerSample < 32 ? pcmFormat : IEEEFloatFormat;
 
@@ -1454,6 +1478,30 @@ private:
             writeChunkHeader (chunkType, size != 0 ? size : (int) data.getSize());
             *output << data;
         }
+    }
+
+    static int getChannelMaskFromChannelLayout (const AudioChannelSet& channelLayout)
+    {
+        if (channelLayout.isDiscreteLayout())
+            return 0;
+
+        // Don't add an extended format chunk for mono and stereo. Basically, all wav players
+        // interpret a wav file with only one or two channels to be mono or stereo anyway.
+        if (channelLayout == AudioChannelSet::mono() || channelLayout == AudioChannelSet::stereo())
+            return 0;
+
+        auto channels = channelLayout.getChannelTypes();
+        auto wavChannelMask = 0;
+
+        for (auto channel : channels)
+        {
+            int wavChannelBit = static_cast<int> (channel) - 1;
+            jassert (wavChannelBit >= 0 && wavChannelBit <= 31);
+
+            wavChannelMask |= (1 << wavChannelBit);
+        }
+
+        return wavChannelMask;
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WavAudioFormatWriter)
@@ -1573,6 +1621,22 @@ Array<int> WavAudioFormat::getPossibleBitDepths()
 bool WavAudioFormat::canDoStereo()  { return true; }
 bool WavAudioFormat::canDoMono()    { return true; }
 
+bool WavAudioFormat::isChannelLayoutSupported (const AudioChannelSet& channelSet)
+{
+    auto channelTypes = channelSet.getChannelTypes();
+
+    // When
+    if (channelSet.isDiscreteLayout())
+        return true;
+
+    // WAV supports all channel types from left ... topRearRight
+    for (auto channel : channelTypes)
+        if (channel < AudioChannelSet::left || channel > AudioChannelSet::topRearRight)
+            return false;
+
+    return true;
+}
+
 AudioFormatReader* WavAudioFormat::createReaderFor (InputStream* sourceStream,
                                                     const bool deleteStreamIfOpeningFails)
 {
@@ -1607,10 +1671,21 @@ MemoryMappedAudioFormatReader* WavAudioFormat::createMemoryMappedReader (FileInp
 
 AudioFormatWriter* WavAudioFormat::createWriterFor (OutputStream* out, double sampleRate,
                                                     unsigned int numChannels, int bitsPerSample,
-                                                    const StringPairArray& metadataValues, int /*qualityOptionIndex*/)
+                                                    const StringPairArray& metadataValues, int qualityOptionIndex)
 {
-    if (out != nullptr && getPossibleBitDepths().contains (bitsPerSample))
-        return new WavAudioFormatWriter (out, sampleRate, (unsigned int) numChannels,
+    return createWriterFor (out, sampleRate, WavFileHelpers::canonicalWavChannelSet (static_cast<int> (numChannels)),
+                            bitsPerSample, metadataValues, qualityOptionIndex);
+}
+
+AudioFormatWriter* WavAudioFormat::createWriterFor (OutputStream* out,
+                                                    double sampleRate,
+                                                    const AudioChannelSet& channelLayout,
+                                                    int bitsPerSample,
+                                                    const StringPairArray& metadataValues,
+                                                    int /*qualityOptionIndex*/)
+{
+    if (out != nullptr && getPossibleBitDepths().contains (bitsPerSample) && isChannelLayoutSupported (channelLayout))
+        return new WavAudioFormatWriter (out, sampleRate, channelLayout,
                                          (unsigned int) bitsPerSample, metadataValues);
 
     return nullptr;
@@ -1691,7 +1766,7 @@ bool WavAudioFormat::replaceMetadataInFile (const File& wavFile, const StringPai
 
 struct WaveAudioFormatTests : public UnitTest
 {
-    WaveAudioFormatTests() : UnitTest ("Wave audio format tests", "Audio") {}
+    WaveAudioFormatTests() : UnitTest ("Wave audio format tests") {}
 
     void runTest() override
     {
