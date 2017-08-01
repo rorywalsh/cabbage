@@ -620,8 +620,10 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this i
         }
 
 
-        else if (csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr	") != -1)
+        else if ((csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr	") != -1) &&
+		csdArray[i].substring(0, csdArray[i].indexOf ("instr")).isEmpty())
         {
+			CabbageUtilities::debug(csdArray[i]);
             int commentInLine = csdArray[i].indexOf (";");
             String line = csdArray[i];
             String instrumentNameOrNumber = line.substring (csdArray[i].indexOf ("instr") + 6, commentInLine == -1 ? 1024 : commentInLine);
