@@ -77,7 +77,7 @@ void CabbageFileButton::buttonClicked (Button* button)
             {
                 owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
                 CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
-                owner->refreshComboBoxContents();
+                //owner->refreshComboBoxContents();
             }
         }
 		

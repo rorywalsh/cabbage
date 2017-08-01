@@ -34,8 +34,6 @@ widgetarray("chan", number), active(val), svgfile("filename")
 
 **show(val)** A value of 1 will cause the popup plant to show. A value of 0 will close the popup plant. See [Plants](./plants.md)
 
-**child(0)** A value of 1 will cause the popup plant to be a child of the main form. By default, popup plants are not children of the main form and can therefore appear anywhere on screen. If the popup plant is a child of the main form, it can only appear within the bounds of the main form. 
-
 **identchannel("channel")** Sets the channel which messages from Csound are sent to the widget on. When used with a chnset opcode users can override widget attributes. See [Identifier channels](./identchannels.md)  
 
 **rotate(radians, pivotx, pivoty)** Rotates the widget by a number of radians(2xPI=full rotation). pivotx and pivoty will determine the rotation pivot points, where 0, 0 represents the component's top-left position. 

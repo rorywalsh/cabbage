@@ -45,7 +45,7 @@ public:
     ~CabbageComboBox();
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
-    void addItemsToCombobox (ValueTree wData);
+    void addItemsToCombobox (ValueTree wData, bool refreshedFromDisk = false);
 
     void comboBoxChanged (ComboBox* combo); //is preset combo use this listener
 

@@ -61,7 +61,7 @@ CabbageComboBox::~CabbageComboBox()
 
 }
 
-void CabbageComboBox::addItemsToCombobox (ValueTree wData)
+void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDisk)
 {
     Array<File> dirFiles;
     StringArray fileNames;
@@ -106,6 +106,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         {
             addItem (snapshotFiles[i].getFileNameWithoutExtension(), i + 2);
         }
+		
+		CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, snapshotFiles.size()-1);
     }
 
     Justification justify (Justification::centred);
