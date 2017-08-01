@@ -120,6 +120,7 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton)
         jassert (false);
 
     currentFileIndex = fileTabs.indexOf (tabButton);
+	hideFindPanel();
     editorAndConsole[currentFileIndex]->toFront (true);
 
 
