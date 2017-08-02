@@ -72,6 +72,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ShowConsoleWithEditor", 1);
     defaultPropSet->setValue ("UsingCabbageCsound", 1);
     defaultPropSet->setValue ("AudioEnabled", 1);
+	defaultPropSet->setValue ("NumberOfOpenFiles", 1);
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue ("DisableAutoComplete", 0);
     defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 0);

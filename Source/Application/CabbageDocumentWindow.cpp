@@ -55,12 +55,18 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (na
 
     if (cabbageSettings->getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup") == 1)
     {
+		const String lastOpenedFile = cabbageSettings->getUserSettings()->getValue("MostRecentFile", "");
         cabbageSettings->updateRecentFilesList();
-		for( int i = 0 ; i < 4 ; i++ )
+		const int numberOfFileToOpen = cabbageSettings->getUserSettings()->getIntValue ("NumberOfOpenFiles");
+		for( int i = 0 ; i < numberOfFileToOpen  ; i++ )
 		{
 			if(File(cabbageSettings->getMostRecentFile(i).getFullPathName()).existsAsFile())
 				content->openFile (cabbageSettings->getMostRecentFile(i).getFullPathName());
 		}
+		
+		
+		if(File(lastOpenedFile).existsAsFile())
+			content->bringCodeEditorToFront(File(lastOpenedFile));
     }
 
     setApplicationCommandManagerToWatch (&commandManager);

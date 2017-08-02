@@ -122,6 +122,7 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton)
     currentFileIndex = fileTabs.indexOf (tabButton);
 	hideFindPanel();
     editorAndConsole[currentFileIndex]->toFront (true);
+	cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
 
 
     if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
@@ -171,6 +172,7 @@ void CabbageMainComponent::bringCodeEditorToFront (File file)
     }
     else
         this->openFile (file.getFullPathName());
+	
 }
 
 void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
@@ -798,6 +800,7 @@ const File CabbageMainComponent::openFile (String filename)
         currentCsdFile = File (filename);
 
     cabbageSettings->updateRecentFilesList (currentCsdFile);
+	cabbageSettings->setProperty("MostRecentFile", currentCsdFile.getFullPathName());
     createCodeEditorForFile (currentCsdFile);
     return currentCsdFile;
 
@@ -876,6 +879,8 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     addInstrumentsAndRegionsToCombobox();
     repaint();
     resized();
+	
+	cabbageSettings->setProperty("NumberOfOpenFiles", int(editorAndConsole.size()));
 }
 //==============================================================================
 void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
@@ -967,6 +972,9 @@ void CabbageMainComponent::closeDocument()
             removeEditor();
         }
     }
+	
+	cabbageSettings->setProperty("NumberOfOpenFiles", int(editorAndConsole.size()));
+	
 }
 //==================================================================================
 void CabbageMainComponent::removeEditor()
@@ -995,7 +1003,7 @@ void CabbageMainComponent::removeEditor()
     }
 
     //currentCsdFile = openFiles[currentFileIndex];
-
+	cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
     repaint();
 
 

@@ -107,7 +107,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
             addItem (snapshotFiles[i].getFileNameWithoutExtension(), i + 2);
         }
 		
-		CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, snapshotFiles.size()-1);
     }
 
     Justification justify (Justification::centred);

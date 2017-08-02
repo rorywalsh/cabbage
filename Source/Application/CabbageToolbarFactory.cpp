@@ -135,10 +135,8 @@ ToolbarButton* CabbageToolbarFactory::createToggleButtonFromPNG(const int itemId
 {
 	Drawable* drawableNormal = nullptr;
 	drawableNormal = Drawable::createFromImageData(png1, size1); 
-
 	Drawable* drawableOn = nullptr;
 	drawableOn = Drawable::createFromImageData(png2, size2); 
-
 	togglePlayButton = new ToolbarButton (itemId, text, drawableNormal, drawableOn);
 	togglePlayButton->setClickingTogglesState (true);
 	togglePlayButton->addListener (owner);
