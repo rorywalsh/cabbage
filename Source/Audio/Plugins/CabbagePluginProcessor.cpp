@@ -325,10 +325,11 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 				const String text = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::text);
 				xml.setAttribute (channelName, text);
 			}
-			else if (type == CabbageWidgetTypes::filebutton)
+			else if (type == CabbageWidgetTypes::filebutton && !CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype).contains("snaps"))
 			{
 				const String file = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::file);
-				xml.setAttribute (channelName, file);
+				const String relativePath = File (file).getRelativePathFrom (File (csdFile));
+				xml.setAttribute (channelName, relativePath);
 			}
 			else if(type.contains("range"))//double channel range widgets
 			{
