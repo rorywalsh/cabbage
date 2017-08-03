@@ -121,7 +121,7 @@ void CabbagePluginEditor::createEditorInterface (ValueTree widgets)
 //======================================================================================================
 void CabbagePluginEditor::setupWindow (ValueTree widgetData)
 {
-    const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption);
+    instrumentName = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption);
     setName (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption));
     const int width = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::height);
@@ -807,7 +807,7 @@ String CabbagePluginEditor::createNewGenericNameForPresetFile()
     //now check existing files in directory and make sure we use a unique name
     for (int i = 0; i < dirFiles.size(); i++)
     {
-        String newName = processor.getCsdFile().getFileNameWithoutExtension() + "_" + String (i + 1);
+        String newName = instrumentName + "_" + String (i + 1);
 
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
             newFileName = pluginDir.getFullPathName() + "\\" + newName + ".snaps";

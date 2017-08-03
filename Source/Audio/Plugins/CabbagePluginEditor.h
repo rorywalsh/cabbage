@@ -204,6 +204,7 @@ private:
     TooltipWindow tooltipWindow;
     bool editModeEnabled = false;
     CabbagePluginProcessor& processor;
+	String instrumentName;
 
 #ifdef Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;

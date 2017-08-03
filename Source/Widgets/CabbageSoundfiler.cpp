@@ -96,7 +96,8 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
     {
         file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
-        setFile (file);
+		const String fullPath = File(getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
+        setFile (fullPath);
     }
 
     if (zoom != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom))
