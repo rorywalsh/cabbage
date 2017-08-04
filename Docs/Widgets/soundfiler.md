@@ -41,7 +41,7 @@ rotate(radians, pivotx, pivoty), widgetarray("chan", number), active(val)
 
 {% include "./Properties/visible.md"  %}
 
-{% include "./Properties/Widget_array_property.md" %} 
+{% include "./Properties/widgetarray.md" %} 
 
 <!--(End of identifiers)/-->
 

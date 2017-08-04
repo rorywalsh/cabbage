@@ -48,7 +48,7 @@ active(val), svgfile("type", "file")
 
 {% include "./Properties/visible.md" %}
 
-{% include "./Properties/Widget_array_property.md" %}
+{% include "./Properties/widgetarray.md" %}
 
 <!--(End of identifiers)/-->
 

@@ -43,7 +43,7 @@ active(val)
 
 {% include "./Properties/alpha.md" %}  
 
-{% include "./Properties/Widget_array_property.md" %} 
+{% include "./Properties/widgetarray.md" %} 
 
 > XY pads range identifiers do not permit the setting of skew factors, or increments. If you wish to set a custom skew factor, or increment value, you will need to do so using Csound code.  
 

@@ -60,7 +60,7 @@ active(val)
 
 {% include "./Properties/visible.md" %}
 
-{% include "./Properties/Widget_array_property.md" %} 
+{% include "./Properties/widgetarray.md" %} 
  
 <!--(End of identifiers)/-->
 

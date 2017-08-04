@@ -36,7 +36,7 @@ visible(val), rotate(radians, pivotx, pivoty), widgetarray("chan", number) \ pop
 
 {% include "./Properties/visible.md" %}
 
-{% include "./Properties/Widget_array_property.md" %} 
+{% include "./Properties/widgetarray.md" %} 
 
 <!--(End of identifiers)/-->
 

@@ -49,7 +49,7 @@ widgetarray("chan", number), popuptext("text"), active(val), svgfile("type", "fi
 
 {% include "./Properties/visible.md" %}
 
-{% include "./Properties/Widget_array_property.md" %}
+{% include "./Properties/widgetarray.md" %}
 
 <!--(End of identifiers)/-->
 >colour:1() and fontcolour:1() can be set using colour() and fontcolour(). However, it's recommended that you use the numerated colour identifiers in order to make your code as readable a possible. 
