@@ -1,0 +1,1 @@
+**scrubberposition(val)** Sets the scrubber position where val is an integer value in samples. If you wish to update the scrubberposition in real time use an identchannel identifier.

@@ -1,0 +1,1 @@
+**channel("start", "end")** The soundfiler widget takes two channel parameters which relate to the currently selected region. The first channel will provide the starting position, in samples, of the selected region. The second channel will be the end position, in samples.

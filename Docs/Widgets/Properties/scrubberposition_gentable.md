@@ -1,0 +1,1 @@
+**scrubberposition(val, tableNum)** Sets the scrubber position in samples, from the start of the file. Only valid when displaying a sound file or a GEN01 table. tableNum will determine which table the scrubber will be placed on. If you wish to display a scrubber with other table types(non GEN01) use an image and an identchannel. See the GridSequencer instrument as an example.

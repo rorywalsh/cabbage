@@ -14,41 +14,41 @@ active(val), svgfile("type", "file")
 
 ##Identifiers
 
-#include "./Properties/active.md"
+{% include "./Properties/active.md" %}
 
-#include "./Properties/alpha.md"
+{% include "./Properties/alpha.md" %}
 
-#include "./Properties/bounds.md"
+{% include "./Properties/bounds.md" %}
 
-#include "./Properties/caption.md"
+{% include "./Properties/caption.md" %}
 
-#include "./Properties/channel.md"
+{% include "./Properties/channel.md" %}
 
-#include "./Properties/colour_0.md"
+{% include "./Properties/colour_0.md" %}
 
-#include "./Properties/colour_1.md"
+{% include "./Properties/colour_1.md" %}
 
-#include "./Properties/fontcolour_0.md"
+{% include "./Properties/fontcolour_0.md" %}
 
-#include "./Properties/fontcolour_1.md"
+{% include "./Properties/fontcolour_1.md" %}
 
-#include "./Properties/identchannel.md"
+{% include "./Properties/identchannel.md" %}
 
-#include "./Properties/latched.md"
+{% include "./Properties/latched.md" %}
 
-#include "./Properties/popup.md"
+{% include "./Properties/popup.md" %}
 
-#include "./Properties/rotate.md"
+{% include "./Properties/rotate.md" %}
 
-#include "./Properties/svgfile.md"
+{% include "./Properties/svgfile.md" %}
 
-#include "./Properties/text.md"
+{% include "./Properties/text.md" %}
 
-#include "./Properties/value.md"
+{% include "./Properties/value.md" %}
 
-#include "./Properties/visible.md"
+{% include "./Properties/visible.md" %}
 
-#include "./Properties/Widget_array_property.md"
+{% include "./Properties/Widget_array_property.md" %}
 
 <!--(End of identifiers)/-->
 
