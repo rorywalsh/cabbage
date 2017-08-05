@@ -714,6 +714,47 @@ void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
     }
 }
 //===========================================================================================================
+void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
+{
+    if (e.mods.isPopupMenu())
+    {
+        PopupMenu m;
+        m.setLookAndFeel (&owner->getLookAndFeel());
+        addPopupMenuItems (m, &e);
+		m.addItem(10, "Toggle Bookmark");
+		
+		const int menuItemID = m.show();
+		
+		if(menuItemID==1)
+			this->cutToClipboard();
+		else if(menuItemID==2)
+			this->copyToClipboard();
+		else if(menuItemID==3)
+			this->pasteFromClipboard();
+		else if(menuItemID==4)
+			this->deleteForwards(true);
+		else if(menuItemID==5)
+			this->selectAll();
+		else if(menuItemID==6)
+			this->undo();
+		else if(menuItemID==7)
+			this->redo();
+			
+		else if(menuItemID==10)
+			toggleBookmark();
+	
+			
+	
+	
+		
+    }
+}
+
+void CabbageCodeEditorComponent::toggleBookmark()
+{
+	
+}
+//===========================================================================================================
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     allowUpdateOfPluginGUI = true;      //allow keystrokes to update GUI

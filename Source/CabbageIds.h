@@ -755,6 +755,7 @@ public:
         set ("Arrows", CabbageIdentifierIds::arrowcolour.toString());
         set ("Alpha", CabbageIdentifierIds::alpha.toString());
         set ("Zoom", CabbageIdentifierIds::zoom.toString());
+		set ("Radio Group", CabbageIdentifierIds::radiogroup.toString());
         set ("Corners", CabbageIdentifierIds::corners.toString());
         set ("Shape", CabbageIdentifierIds::shape.toString());
         set ("File", CabbageIdentifierIds::file.toString());

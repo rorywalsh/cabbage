@@ -101,8 +101,9 @@ public:
         parseForVariables = false;
     };
 
+	void toggleBookmark();
     void updateCurrenLineMarker (ArrowKeys arrow = ArrowKeys::None);
-
+	void mouseDown (const MouseEvent& e) override;
     void handleTabKey (String direction);
     void handleReturnKey();
     void handleEscapeKey();

@@ -58,7 +58,9 @@ public:
     Array<PropertyComponent*> createWidgetArrayEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
     Array<PropertyComponent*> createAmpRangeEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTwoValueEditors (ValueTree valueTree, Identifier identifier);
-    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, sliderNumberBoxValue, alignValue, velocityValue, fileModeValue, fillTableWaveformValue, zoomValue;
+    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, 
+			sliderNumberBoxValue, alignValue, velocityValue, fileModeValue, 
+			fillTableWaveformValue, zoomValue;
     Colour backgroundColour, borderColour;
 
 

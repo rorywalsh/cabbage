@@ -884,6 +884,11 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors (CabbagePro
         comps.add (new TextPropertyComponent (Value (valuex), "Value X", 8, false));
         comps.add (new TextPropertyComponent (Value (valuey), "Value Y", 8, false));
     }
+	else if (typeOfWidget == CabbageWidgetTypes::button || typeOfWidget == CabbageWidgetTypes::checkbox)
+	{
+        const int radioGroup = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::radiogroup);
+        comps.add (new TextPropertyComponent (Value (radioGroup), "Radio Group", 8, false));		
+	}
     else
     {
         const String value = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), decimalPlaces);

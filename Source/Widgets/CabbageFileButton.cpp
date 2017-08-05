@@ -23,8 +23,7 @@
 CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner)
     : widgetData (wData),
       TextButton(),
-      owner (owner),
-	  lastKnownDir("")
+      owner (owner)
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -47,7 +46,8 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     if (mode == "file")
     {
-        FileChooser fc ("Choose File", lastKnownDir.isEmpty() ? File (getCsdFile()).getParentDirectory() : File(lastKnownDir), "", CabbageUtilities::shouldUseNativeBrowser());
+		const String lastKnownDirectory = owner->getLastOpenedDirectory();
+        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File(lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (filetype == "snaps")
         {
@@ -81,12 +81,13 @@ void CabbageFileButton::buttonClicked (Button* button)
             }
         }
 		
-		lastKnownDir = fc.getResult().getParentDirectory().getFullPathName();
+		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
     }
 
     else if (mode == "directory")
     {
-        FileChooser fc ("Open Directory", lastKnownDir.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File(lastKnownDir), "", CabbageUtilities::shouldUseNativeBrowser());
+		const String lastKnownDirectory = owner->getLastOpenedDirectory();
+        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File(lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
@@ -94,7 +95,7 @@ void CabbageFileButton::buttonClicked (Button* button)
             CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
         }
 		
-		lastKnownDir = fc.getResult().getParentDirectory().getFullPathName();
+		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
     }
 
     else if (mode == "snapshot")
