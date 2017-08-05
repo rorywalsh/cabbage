@@ -618,12 +618,17 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this i
         {
             instrumentsAndRegions.set ("<CsoundSynthesizer>", i);
         }
+		
+		else if ( csdArray[i].indexOf(";- Region:") != -1)
+		{
+			const String region = csdArray[i].replace(";- Region:", "");
+			instrumentsAndRegions.set (region, i);
+		}
 
 
         else if ((csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr	") != -1) &&
 		csdArray[i].substring(0, csdArray[i].indexOf ("instr")).isEmpty())
         {
-			CabbageUtilities::debug(csdArray[i]);
             int commentInLine = csdArray[i].indexOf (";");
             String line = csdArray[i];
             String instrumentNameOrNumber = line.substring (csdArray[i].indexOf ("instr") + 6, commentInLine == -1 ? 1024 : commentInLine);
@@ -742,12 +747,9 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
 			
 		else if(menuItemID==10)
 			toggleBookmark();
-	
-			
-	
-	
-		
     }
+	else
+		moveCaretTo (getPositionAt (e.x, e.y), e.mods.isShiftDown());
 }
 
 void CabbageCodeEditorComponent::toggleBookmark()
