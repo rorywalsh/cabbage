@@ -97,6 +97,7 @@ public:
     static void setAmpRange (StringArray strTokens, ValueTree widgetData);
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
     static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
+	static void setPopulateProps( StringArray strTokens, ValueTree widgetData);
     //============================================================================
     static Colour getColourFromText (String text);
     static String getCabbageCodeFromIdentifiers (ValueTree props, const String, const String macroText);

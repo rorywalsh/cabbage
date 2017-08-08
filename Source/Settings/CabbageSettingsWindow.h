@@ -58,9 +58,37 @@ public:
     void filenameComponentChanged (FilenameComponent*);
     void textPropertyComponentChanged (TextPropertyComponent* comp);
 
+	class RepoListBox	:	public Component, ListBoxModel
+	{
+		int currentRow;
+		Colour bgColour;
+		Justification justify;
+		int refresh;
 
+	public:
+		RepoListBox(CabbageSettingsWindow* _owner);
+		~RepoListBox();
+		void paint (Graphics& g) override;
+		void resized() override;
+		int getNumRows() override;
+		void listBoxItemDoubleClicked(int row, const MouseEvent &e);
+		void paintListBoxItem (int rowNumber, Graphics& g,
+							   int width, int height, bool rowIsSelected) override;
+		void selectedRowsChanged (int /*lastRowselected*/) override;
+		void update();
+		ListBox listBox;
+		StringArray items;
+		int getCurrentRow()
+		{
+			return currentRow;
+		}
+	};
+	
+	//RepoListBox listBox;
+	
 private:
     PropertyPanel colourPanel, miscPanel;
+	
     ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
     TextButton loadButton, saveButton;

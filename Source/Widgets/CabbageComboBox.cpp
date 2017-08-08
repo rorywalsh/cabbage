@@ -52,7 +52,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
 
     addItemsToCombobox (wData);
     owner->sendChannelDataToCsound (getChannel(), getValue());
-    setSelectedItemIndex (getValue() - 1, isPresetCombo ? sendNotification : dontSendNotification);
+	CabbageUtilities::debug(getValue() - 1);
+    setSelectedItemIndex (getValue() - 1, isPresetCombo ?sendNotification : dontSendNotification);
 
 }
 //---------------------------------------------
@@ -135,11 +136,14 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {
     if (prop == CabbageIdentifierIds::value)
     {
-        int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-		if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
-			setSelectedItemIndex (value - 1, sendNotification);
-		else
-			setSelectedItemIndex (value - 1, dontSendNotification);
+		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
+		{
+			float value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+			if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
+				setSelectedItemIndex (value - 1, sendNotification);
+			else
+				setSelectedItemIndex (value - 1, dontSendNotification);
+		}
     }
 
     else

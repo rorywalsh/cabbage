@@ -69,7 +69,7 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
     {
         for ( int i = 0 ; i < array->size(); i++)
         {
-            items.add (array->getReference (i).toString());
+			items.add (array->getReference (i).toString());
         }
 
         comps.add (new TextPropertyComponent ( Value (var (items.joinIntoString ("\n"))), label, 1000, true));
@@ -763,6 +763,11 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
             const String zoomValue = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::min), 2);
             comps.add (new TextPropertyComponent (Value (zoomValue), "Zoom", 200, false));
         }
+		
+		if(typeOfWidget == "combobox")
+		{
+			createMultiLineTextEditors(valueTree, comps, CabbageIdentifierIds::populate, "Populate"); 
+		}
     }
 
     else if (typeOfWidget == "image" || typeOfWidget == "groupbox" || typeOfWidget == "vmeter" || typeOfWidget == "hmeter")

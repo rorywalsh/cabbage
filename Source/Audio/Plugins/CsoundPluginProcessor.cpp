@@ -157,8 +157,10 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                                     CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::valuey));
             }
             else
-                csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
+			{
+				csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
                                     CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::value));
+			}
         }
 
     }

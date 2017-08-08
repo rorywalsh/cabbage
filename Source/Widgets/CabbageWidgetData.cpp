@@ -298,11 +298,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("populate"):
-                setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
-
-                if (strTokens.size() > 1)
-                    setProperty (widgetData, CabbageIdentifierIds::workingdir, strTokens[1].trim());
-
+				setPopulateProps(strTokens, widgetData);  
                 break;
 
             case HashStringToInt ("imgfile"):
@@ -337,17 +333,17 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("outlinethickness"):
             case HashStringToInt ("linethickness"):
             case HashStringToInt ("trackerthickness"):
-            case HashStringToInt ("value"):
             case HashStringToInt ("valuex"):
             case HashStringToInt ("valuey"):
             case HashStringToInt ("zoom"):
             case HashStringToInt ("wrap"):
             case HashStringToInt ("readonly"):
-            case HashStringToInt ("scrollbars"):
+            case HashStringToInt ("value"):
+			case HashStringToInt ("scrollbars"):
                 setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
                 break;
 
-            case HashStringToInt ("crop"):
+			case HashStringToInt ("crop"):
                 setProperty (widgetData, CabbageIdentifierIds::cropx, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::cropy, strTokens[1].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::cropwidth, strTokens[2].trim().getFloatValue());
@@ -546,6 +542,22 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
 }
 
+void CabbageWidgetData::setPopulateProps(StringArray strTokens, ValueTree widgetData)
+{
+	var array;
+	for ( auto str : strTokens)
+    array.append (str.trim());
+	setProperty(widgetData, CabbageIdentifierIds::populate, array);
+
+    setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
+
+    if (strTokens.size() > 1)
+		setProperty (widgetData, CabbageIdentifierIds::workingdir, strTokens[1].trim());
+		
+	//remove default items for text array if filetype is known ...
+	CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::text, "");
+	
+}
 void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier)
 {
     var array;
@@ -1485,6 +1497,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getBoundsTextAsCabbageCode (getBounds (widgetData))
                          + getMultiItemTextAsCabbageCode (widgetData, "channel", macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText)
+						 + getMultiItemTextAsCabbageCode (widgetData, "populate", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "value", macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "text", macroText)
                          + getColoursTextAsCabbageCode (widgetData, macroText)

@@ -430,7 +430,8 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 				else
 				{
 					CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 0);
-					CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+					CabbageUtilities::debug(CabbageWidgetData::getStringProp(cabbageWidgets.getChild (i), CabbageIdentifierIds::channeltype));
+					CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
 				}
 			}
 		}
