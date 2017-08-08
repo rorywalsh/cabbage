@@ -32,9 +32,12 @@ class CabbageComboBox
 {
     int offX, offY, offWidth, offHeight, pivotx, pivoty, refresh;
     String name, tooltipText, caption, text, filetype;
+	StringArray textItems;
     float rotate;
     File pluginDir;
     CabbagePluginEditor* owner;
+	String currentValueInText ="";
+	bool isStringCombo = false;
     ValueTree widgetData;
     bool isPresetCombo = false;
     Array<File> snapshotFiles;

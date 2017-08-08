@@ -49,11 +49,22 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     setWantsKeyboardFocus (false);
 
     initialiseCommonAttributes (this, wData);
-
     addItemsToCombobox (wData);
-    owner->sendChannelDataToCsound (getChannel(), getValue());
-	CabbageUtilities::debug(getValue() - 1);
-    setSelectedItemIndex (getValue() - 1, isPresetCombo ?sendNotification : dontSendNotification);
+
+	if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
+	{
+		isStringCombo = true;
+		currentValueInText = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value);
+		owner->sendChannelStringDataToCsound(getChannel(), currentValueInText);
+		const int itemIndex = textItems.indexOf(currentValueInText);
+		if(itemIndex>-1)
+			setSelectedItemIndex (itemIndex, dontSendNotification);	
+	}
+	else
+	{
+		owner->sendChannelDataToCsound (getChannel(), getValue());
+		setSelectedItemIndex (getValue() - 1, isPresetCombo ?sendNotification : dontSendNotification);
+	}
 
 }
 //---------------------------------------------
@@ -88,6 +99,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
         {
             const String item  = items[i].toString();
             addItem (item, i + 1);
+			textItems.add(item);
         }
     }
     else
@@ -136,7 +148,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {
     if (prop == CabbageIdentifierIds::value)
     {
-		if(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
+		if(isStringCombo == false)
 		{
 			float value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
 			if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
@@ -144,8 +156,14 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 			else
 				setSelectedItemIndex (value - 1, dontSendNotification);
 		}
+		else
+		{
+			currentValueInText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value);
+			const int itemIndex = textItems.indexOf(currentValueInText);
+			if(itemIndex>-1)
+				setSelectedItemIndex (itemIndex, dontSendNotification);		
+		}
     }
-
     else
     {
         handleCommonUpdates (this, valueTree);

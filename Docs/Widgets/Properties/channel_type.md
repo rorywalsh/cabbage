@@ -1,1 +1,3 @@
 **channeltype("type")** Specifies the type of channel. Default is "float". If you wish to send the text contained in the combobox, for examples the names of a set of audio samples, set type to "string". If type is not set to string the index of the selected item will be sent to Csound on the named channel. 
+
+>Note that if you are using 'string' channels, you must use this identifier before setting the initial value. 

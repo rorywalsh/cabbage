@@ -410,7 +410,7 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
                 channels.add (var (chanArray[j]));
         }
 
-        const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
+        const var value = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
         const float valuex = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuex);
         const float valuey = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuey);
         const String identChannel = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannel);
@@ -420,18 +420,29 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 		
 		if (chanArray.size() == 1 && channels[0].isNotEmpty())
 		{
-			
-			if (getCsound()->GetChannel (channels[0].toUTF8()) != value)
+			if(value.isDouble())
 			{
-				if (typeOfWidget != "combobox")	// don't update combobox in here, it will enter a recursive loop
+				if (getCsound()->GetChannel (channels[0].toUTF8()) != float(value))
 				{
-					CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+					if (typeOfWidget != "combobox")	// don't update combobox in here, it will enter a recursive loop
+					{
+						CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+					}
+					else
+					{
+						CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 0);
+						CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+					}
 				}
-				else
+			}
+			else
+			{
+				char str[8192] = {0};
+				getCsound()->GetStringChannel(channels[0].toUTF8(), str);
+				if(strcmp(str, value.toString().toUTF8().getAddress()) != 0)
 				{
-					CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 0);
-					CabbageUtilities::debug(CabbageWidgetData::getStringProp(cabbageWidgets.getChild (i), CabbageIdentifierIds::channeltype));
-					CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+						CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, str);
+					
 				}
 			}
 		}

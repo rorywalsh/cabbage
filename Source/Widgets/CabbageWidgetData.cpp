@@ -340,7 +340,10 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("readonly"):
             case HashStringToInt ("value"):
 			case HashStringToInt ("scrollbars"):
-                setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
+				if(getProperty(widgetData, CabbageIdentifierIds::channeltype) != "string")
+					setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
+				else
+					setProperty (widgetData, identifier, strTokens[0].trim());
                 break;
 
 			case HashStringToInt ("crop"):
