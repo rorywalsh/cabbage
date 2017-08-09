@@ -49,6 +49,7 @@ public:
     void changeListenerCallback (ChangeBroadcaster* source);
     void addColourProperties();
     void addMiscProperties();
+	void addCodeRepoProperties();
     void resized();
     void buttonClicked (Button* button);
     void paint (Graphics& g);
@@ -58,13 +59,44 @@ public:
     void filenameComponentChanged (FilenameComponent*);
     void textPropertyComponentChanged (TextPropertyComponent* comp);
 
+	class RepoListBox	:	public Component, ListBoxModel
+	{
+		int currentRow;
+		Colour bgColour;
+		int refresh;
+		CabbageSettingsWindow* owner;
 
+	public:
+		RepoListBox(CabbageSettingsWindow* _owner);
+		~RepoListBox();
+		void paint (Graphics& g) override 
+		{
+			listBox.setBounds(0, 0, getWidth(), getHeight());	
+		};
+		void resized() override {};
+		int getNumRows() override { return items.size();};
+		void listBoxItemDoubleClicked(int row, const MouseEvent &e);
+		void paintListBoxItem (int rowNumber, Graphics& g,
+							   int width, int height, bool rowIsSelected) override;
+		void selectedRowsChanged (int /*lastRowselected*/) override {};
+		void update();
+		ListBox listBox;
+		StringArray items;
+		int getCurrentRow()
+		{
+			return currentRow;
+		}
+	};
+	
+	RepoListBox listBox;
+	
 private:
     PropertyPanel colourPanel, miscPanel;
+	
     ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
     TextButton loadButton, saveButton;
-    ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton;
+    ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
     CabbageSettings& settings;
     Value alwaysOnTopPluginValue, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
     LookAndFeel_V3 lookAndFeel;

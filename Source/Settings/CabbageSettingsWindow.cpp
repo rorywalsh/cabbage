@@ -41,10 +41,12 @@ static void addCustomListener (Array<PropertyComponent*> comps, CabbageSettingsW
 CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice):
     Component (""),
     settings (settings),
+	listBox(this),
     valueTree (settings.getValueTree()),
     audioSettingsButton ("AudioSettingsButton"),
     miscSettingsButton ("MiscSettingsButton"),
     colourSettingsButton ("ColourSettingsButton"),
+	codeRepoButton ("CodeRepoButton"),
     audioDeviceSelector (audioDevice),
 	viewport("AudioSettingsViewport")
 {
@@ -55,9 +57,13 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     addAndMakeVisible (miscPanel);
     colourPanel.setVisible (false);
     miscPanel.setVisible (false);
+	addAndMakeVisible(listBox);
+	listBox.setVisible (false);
+	
     addAndMakeVisible (audioSettingsButton);
     addAndMakeVisible (miscSettingsButton);
     addAndMakeVisible (colourSettingsButton);
+	addAndMakeVisible (codeRepoButton);
 	viewport.setViewedComponent(audioDeviceSelector, false);
 
 	audioDeviceSelector->setVisible(true);
@@ -70,7 +76,9 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     miscSettingsButton.addMouseListener (this, false);
     colourSettingsButton.addListener (this);
     colourSettingsButton.addMouseListener (this, false);
-
+    codeRepoButton.addListener (this);
+    codeRepoButton.addMouseListener (this, false);
+	
     const Image audioSettingsImage = ImageCache::getFromMemory (CabbageBinaryData::AudioSettingsButton_png, CabbageBinaryData::AudioSettingsButton_pngSize);
     CabbageUtilities::setImagesForButton (&audioSettingsButton, audioSettingsImage);
 
@@ -80,6 +88,7 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     const Image colourSettingsImage = ImageCache::getFromMemory (CabbageBinaryData::ColourSettingsButton_png, CabbageBinaryData::ColourSettingsButton_pngSize);
     CabbageUtilities::setImagesForButton (&colourSettingsButton, colourSettingsImage);
 
+    CabbageUtilities::setImagesForButton (&codeRepoButton, colourSettingsImage);
 }
 
 void CabbageSettingsWindow::addColourProperties()
@@ -108,6 +117,44 @@ void CabbageSettingsWindow::addColourProperties()
     colourPanel.addSection ("Editor", editorProps);
     colourPanel.addSection ("Console", consoleProps);
 
+}
+
+
+CabbageSettingsWindow::RepoListBox::RepoListBox(CabbageSettingsWindow* _owner):owner(_owner)
+{
+    addAndMakeVisible(listBox);
+    listBox.setRowHeight (20);
+    listBox.setModel (this);   // Tell the listbox where to get its data model
+	for( int i = 0 ; i < 10 ; i++)
+		items.add("Item:"+String(i));
+	listBox.updateContent();
+}
+
+CabbageSettingsWindow::RepoListBox::~RepoListBox()
+{
+
+}
+
+void CabbageSettingsWindow::RepoListBox::paintListBoxItem (int rowNumber, Graphics& g,
+                                       int width, int height, bool rowIsSelected)
+{
+    if (rowIsSelected)
+        g.fillAll (Colour(255, 0, 0));
+    else
+        g.fillAll(Colour(0, 255, 0));
+
+    g.setColour(Colours::whitesmoke);
+    g.drawFittedText(items[rowNumber], Rectangle<int> (width, height), Justification::left, 0);
+}
+
+void CabbageSettingsWindow::RepoListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
+{
+
+}
+
+void CabbageSettingsWindow::addCodeRepoProperties()
+{
+	
 }
 
 void CabbageSettingsWindow::addMiscProperties()
@@ -181,6 +228,7 @@ void CabbageSettingsWindow::resized()
     audioSettingsButton.setBounds (10, 10, 60, 60);
     miscSettingsButton.setBounds (10, 80, 60, 60);
     colourSettingsButton.setBounds (10, 150, 60, 60);
+	codeRepoButton.setBounds (10, 220, 60, 60);
 
 	if (audioDeviceSelector)
 	{
@@ -190,7 +238,7 @@ void CabbageSettingsWindow::resized()
 
     colourPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
     miscPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
-
+	listBox.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
 }
 
 void CabbageSettingsWindow::paint (Graphics& g)
@@ -248,27 +296,35 @@ void CabbageSettingsWindow::selectPanel (String button)
         viewport.setVisible (true);
         colourPanel.setVisible (false);
         miscPanel.setVisible (false);
+		listBox.setVisible(false);
     }
     else if (button == "ColourSettingsButton")
     {
 		viewport.setVisible (false);
         colourPanel.setVisible (true);
         miscPanel.setVisible (false);
+		listBox.setVisible(false);
     }
     else if (button == "MiscSettingsButton")
     {
 		viewport.setVisible (false);
         colourPanel.setVisible (false);
         miscPanel.setVisible (true);
+		listBox.setVisible(false);
     }
-
+    else if (button == "CodeRepoButton")
+    {
+		viewport.setVisible (false);
+        colourPanel.setVisible (false);
+        miscPanel.setVisible (false);
+		listBox.setVisible(true);		
+    }
     repaint();
 }
 
 void CabbageSettingsWindow::buttonClicked (Button* button)
 {
     selectPanel (button->getName());
-
 }
 
 void CabbageSettingsWindow::mouseEnter (const MouseEvent& e)
