@@ -1131,6 +1131,11 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
         }
     }
 
+    else if (type == "combobox" && getProperty (widgetData, CabbageIdentifierIds::channeltype).toString() == "string")
+    {
+		return identifier + "(\"" + getProperty (widgetData, identifier).toString() + "\"), ";
+	}
+	
     else
     {
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
@@ -1255,7 +1260,8 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
 {
     var items = getProperty (widgetData, identifier);
-    const String typeOfWidget = getProperty (widgetData, CabbageIdentifierIds::type);
+	
+	const String typeOfWidget = getProperty (widgetData, CabbageIdentifierIds::type);
 
     if (typeOfWidget == "gentable" && identifier == "channel")
         return String::empty;
@@ -1263,6 +1269,8 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
     String itemString = "";
 
     const Array<var>* array = items.getArray();
+
+
 
     if (array)
     {
@@ -1500,6 +1508,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     String cabbageCode = getStringProp (widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode (getBounds (widgetData))
                          + getMultiItemTextAsCabbageCode (widgetData, "channel", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "channeltype", macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "value", macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "text", macroText)

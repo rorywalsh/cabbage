@@ -69,7 +69,7 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
     {
         for ( int i = 0 ; i < array->size(); i++)
         {
-			items.add (array->getReference (i).toString());
+			items.add (array->getReference (i).toString().trim());
         }
 
         comps.add (new TextPropertyComponent ( Value (var (items.joinIntoString ("\n"))), label, 1000, true));
@@ -83,29 +83,6 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
     }
 
     comps[comps.size() - 1]->setPreferredHeight (60);
-}
-
-//==============================================================================
-static Array<PropertyComponent*> createChannelEditors (CabbagePropertiesPanel* owner, ValueTree valueTree)
-{
-    Array<PropertyComponent*> comps;
-    const var channel = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::channel);
-    const var identChannel = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::identchannel);
-    const String typeOfWidget = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
-
-    if ( typeOfWidget != "gentable" &&  typeOfWidget != "groupbox")
-    {
-        const Array<var>* array = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::channel).getArray();
-
-        if (array && array->size() > 1)
-            createMultiLineTextEditors (valueTree, comps, CabbageIdentifierIds::channel, "Channel");
-        else
-            comps.add (new TextPropertyComponent (Value (channel), "Channel", 200, false));
-    }
-
-    comps.add (new TextPropertyComponent (Value (identChannel), "Ident Channel", 100, false));
-    addListener (comps, owner);
-    return comps;
 }
 
 //==============================================================================
@@ -152,7 +129,7 @@ void CabbagePropertiesPanel::updateProperties (ValueTree wData)
     propertyPanel.addSection ("Rotation", createRotationEditors (this, wData), false);
 
     if (typeOfWidget != "gentable")
-        propertyPanel.addSection ("Channels", createChannelEditors (this, wData));
+        propertyPanel.addSection ("Channels", createChannelEditors (wData));
 
     propertyPanel.addSection ("Values", createValueEditors (this, wData));
 
@@ -329,6 +306,17 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
     else if (value.refersToSameSourceAs (fillTableWaveformValue))
         setPropertyByName ("Fill", value.getValue());
 
+    else if (value.refersToSameSourceAs (channelTypeValue))
+	{
+		if (value.getValue().isInt())
+        {
+				if(value.getValue()=="0")
+					setPropertyByName ("Channel Type", "number");
+				else
+					setPropertyByName ("Channel Type", "string");
+		}
+	}
+		
     else if (value.refersToSameSourceAs (shapeValue))
     {
         if (value.getValue().isInt())
@@ -389,6 +377,48 @@ void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileCo
         setPropertyByName (fileComponent->getName(), fileComponent->getCurrentFileText());
 
     }
+}
+//==============================================================================
+Array<PropertyComponent*> CabbagePropertiesPanel::createChannelEditors (ValueTree valueTree)
+{
+    Array<PropertyComponent*> comps;
+    const var channel = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::channel);
+    const var identChannel = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::identchannel);
+    const String typeOfWidget = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
+
+    if ( typeOfWidget != "gentable" &&  typeOfWidget != "groupbox")
+    {
+        const Array<var>* array = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::channel).getArray();
+
+        if (array && array->size() > 1)
+            createMultiLineTextEditors (valueTree, comps, CabbageIdentifierIds::channel, "Channel");
+        else
+            comps.add (new TextPropertyComponent (Value (channel), "Channel", 200, false));
+    }
+
+    comps.add (new TextPropertyComponent (Value (identChannel), "Ident Channel", 100, false));
+	
+	if (typeOfWidget == "combobox")
+	{
+		channelTypeValue.addListener (this);
+		StringArray choices;
+		Array<var> choiceVars;
+
+		choices.add ("Number");
+		choices.add ("String");
+		choiceVars.add (0);
+		choiceVars.add (1);
+
+		if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::channeltype) == "number")
+			channelTypeValue.setValue (0);
+		else
+			channelTypeValue.setValue (1);
+
+		comps.add (new ChoicePropertyComponent (channelTypeValue, "Channel Type", choices, choiceVars));	
+	}
+
+    addListener (comps, this);
+    return comps;
 }
 //==============================================================================
 Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors (ValueTree valueTree)

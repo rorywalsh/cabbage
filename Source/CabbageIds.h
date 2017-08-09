@@ -800,6 +800,7 @@ public:
         set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
         set ("Orientation", CabbageIdentifierIds::orientation.toString());
 		set ("Populate", CabbageIdentifierIds::populate.toString());
+		set ("Channel Type", CabbageIdentifierIds::channeltype.toString());
 
     }
 };

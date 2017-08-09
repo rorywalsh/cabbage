@@ -51,14 +51,33 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
 	
 	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).isNotEmpty())
 		CabbageWidgetData::setProperty(wData, CabbageIdentifierIds::text, "");
-		
+	
+	addItemsToCombobox (wData);
+	
 	if (CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channeltype) == "string")
+	{
 		isStringCombo = true;
-
-    addItemsToCombobox (wData);
-    owner->sendChannelDataToCsound (getChannel(), getValue());
-    setSelectedItemIndex (getValue() - 1, dontSendNotification);
-
+		currentValueAsText = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::value).toString();
+		owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
+		const int index = stringItems.indexOf(currentValueAsText);
+		if(index != -1)
+			setSelectedItemIndex (index, dontSendNotification);
+	}
+	else
+	{
+		
+		if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).contains("snaps"))
+		{
+			isPresetCombo = true;
+			setSelectedItemIndex (0, dontSendNotification);
+		}
+		else
+		{
+			owner->sendChannelDataToCsound (getChannel(), getValue());
+			setSelectedItemIndex (getValue() - 1, dontSendNotification);
+		}
+	}
+    
 }
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
@@ -92,6 +111,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
         {
             const String item  = items[i].toString();
             addItem (item, i + 1);
+			stringItems.add(item);
         }
     }
     else
@@ -140,11 +160,26 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {
     if (prop == CabbageIdentifierIds::value)
     {
-        int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-		if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
-			setSelectedItemIndex (value - 1, sendNotification);
-		else
-			setSelectedItemIndex (value - 1, dontSendNotification);
+		if(isPresetCombo == false)
+		{
+			if(isStringCombo == false)
+			{
+				int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+				if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
+					setSelectedItemIndex (value - 1, sendNotification);
+				else
+					setSelectedItemIndex (value - 1, dontSendNotification);
+			}
+			else
+			{
+				currentValueAsText = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString();
+				const int index = stringItems.indexOf(currentValueAsText);
+				if(index != -1)
+					setSelectedItemIndex (index, dontSendNotification);	
+					
+				CabbageWidgetData::setProperty(valueTree, CabbageIdentifierIds::value, currentValueAsText);
+			}
+		}
     }
 
     else
