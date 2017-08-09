@@ -799,6 +799,7 @@ public:
         set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
         set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
         set ("Orientation", CabbageIdentifierIds::orientation.toString());
+		set ("Populate", CabbageIdentifierIds::populate.toString());
 
     }
 };

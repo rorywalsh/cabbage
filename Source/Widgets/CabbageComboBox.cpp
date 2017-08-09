@@ -34,7 +34,6 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     widgetData (wData)
 {
     widgetData.addListener (this);
-    isPresetCombo = false;
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
     setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     setTooltip (tooltipText = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
@@ -49,10 +48,13 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     setWantsKeyboardFocus (false);
 
     initialiseCommonAttributes (this, wData);
+	
+	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).isNotEmpty())
+		CabbageWidgetData::setProperty(wData, CabbageIdentifierIds::text, "");
 
     addItemsToCombobox (wData);
     owner->sendChannelDataToCsound (getChannel(), getValue());
-    setSelectedItemIndex (getValue() - 1, isPresetCombo ? sendNotification : dontSendNotification);
+    setSelectedItemIndex (getValue() - 1, dontSendNotification);
 
 }
 //---------------------------------------------

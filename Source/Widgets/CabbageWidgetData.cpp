@@ -1487,6 +1487,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "value", macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "text", macroText)
+						 + getMultiItemTextAsCabbageCode (widgetData, "populate", macroText)
                          + getColoursTextAsCabbageCode (widgetData, macroText)
                          + getRotateTextAsCabbageCode (widgetData, macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
