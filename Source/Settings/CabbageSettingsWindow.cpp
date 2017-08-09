@@ -63,7 +63,7 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     addAndMakeVisible (audioSettingsButton);
     addAndMakeVisible (miscSettingsButton);
     addAndMakeVisible (colourSettingsButton);
-	addAndMakeVisible (codeRepoButton);
+	//addAndMakeVisible (codeRepoButton);
 	viewport.setViewedComponent(audioDeviceSelector, false);
 
 	audioDeviceSelector->setVisible(true);
@@ -317,7 +317,7 @@ void CabbageSettingsWindow::selectPanel (String button)
 		viewport.setVisible (false);
         colourPanel.setVisible (false);
         miscPanel.setVisible (false);
-		listBox.setVisible(true);		
+		//listBox.setVisible(true);		
     }
     repaint();
 }
