@@ -298,11 +298,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("populate"):
-                setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
-
-                if (strTokens.size() > 1)
-                    setProperty (widgetData, CabbageIdentifierIds::workingdir, strTokens[1].trim());
-
+				setPopulateProps(strTokens, widgetData);  
                 break;
 
             case HashStringToInt ("imgfile"):
@@ -804,6 +800,26 @@ void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree wi
 		setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
 	}
 }
+
+void CabbageWidgetData::setPopulateProps(StringArray strTokens, ValueTree widgetData)
+{
+	var array;
+	for ( auto str : strTokens)
+    array.append (str.trim());
+	setProperty(widgetData, CabbageIdentifierIds::populate, array);
+
+    setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
+
+    if (strTokens.size() > 1)
+		setProperty (widgetData, CabbageIdentifierIds::workingdir, strTokens[1].trim());
+		
+	//remove default items for text array if filetype is known ...
+	if (CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type) == CabbageWidgetTypes::combobox
+		&& strTokens[0].trim().isNotEmpty())
+			CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::text, "");
+	
+}
+
 void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, String identifier)
 {
     if (identifier == "range")
