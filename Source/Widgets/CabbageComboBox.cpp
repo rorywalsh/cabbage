@@ -51,6 +51,9 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
 	
 	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).isNotEmpty())
 		CabbageWidgetData::setProperty(wData, CabbageIdentifierIds::text, "");
+		
+	if (CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channeltype) == "string")
+		isStringCombo = true;
 
     addItemsToCombobox (wData);
     owner->sendChannelDataToCsound (getChannel(), getValue());

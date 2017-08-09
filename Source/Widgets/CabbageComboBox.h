@@ -36,7 +36,7 @@ class CabbageComboBox
     File pluginDir;
     CabbagePluginEditor* owner;
     ValueTree widgetData;
-    bool isPresetCombo = false;
+    bool isStringCombo = false;
     Array<File> snapshotFiles;
 
 public:
