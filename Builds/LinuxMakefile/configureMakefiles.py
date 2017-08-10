@@ -34,9 +34,9 @@ process.wait()
 with open("Makefile", "rt") as file:
 	lines = file.read().splitlines()
 	for lineIndex in range(0, len(lines)):
-		if "$(JUCE_OBJDIR)/juce_audio_plugin_client_utils_35fbf7.o \\" in lines[lineIndex]:
+		if "$(JUCE_OBJDIR)/include_juce_audio_plugin_client_utils \\" in lines[lineIndex]:
 			lines[lineIndex] = " \\"
-		if "$(JUCE_OBJDIR)/juce_audio_plugin_client_utils_35fbf7.o: ../../JuceLibraryCode/juce_audio_plugin_client_utils.cpp" in lines[lineIndex]:
+		if "../../JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp" in lines[lineIndex]:
 			lines[lineIndex] = ""
 			lines[lineIndex+1] = ""
 			lines[lineIndex+2] = ""
