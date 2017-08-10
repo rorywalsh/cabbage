@@ -57,9 +57,12 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     addAndMakeVisible (miscPanel);
     colourPanel.setVisible (false);
     miscPanel.setVisible (false);
-	addAndMakeVisible(listBox);
+	//addAndMakeVisible(listBox);
 	listBox.setVisible (false);
-	
+	addAndMakeVisible(codeEditor = new CodeEditorComponent(document, &csoundTokeniser));	
+	codeEditor->setVisible(false);
+	listBox.getLookAndFeel().setColour(ListBox::backgroundColourId, Colours::transparentWhite);
+	updateColourScheme();
     addAndMakeVisible (audioSettingsButton);
     addAndMakeVisible (miscSettingsButton);
     addAndMakeVisible (colourSettingsButton);
@@ -125,8 +128,22 @@ CabbageSettingsWindow::RepoListBox::RepoListBox(CabbageSettingsWindow* _owner):o
     addAndMakeVisible(listBox);
     listBox.setRowHeight (20);
     listBox.setModel (this);   // Tell the listbox where to get its data model
-	for( int i = 0 ; i < 10 ; i++)
-		items.add("Item:"+String(i));
+	
+	StringArray customCodeSnippets;
+	ScopedPointer<XmlElement> repoXml;
+	XmlElement *newEntryXml, *newEntryXml1;
+	
+	repoXml = owner->settings.getUserSettings()->getXmlValue("CopeRepoXmlData");
+	
+	if(repoXml)
+	{	
+		for( int i = 0 ; i<repoXml->getNumAttributes() ; i++)
+		{
+			items.add(repoXml->getAttributeName(i));
+			codeSnippets.add(repoXml->getAttributeValue(i));
+		}
+	}	
+	
 	listBox.updateContent();
 }
 
@@ -135,26 +152,73 @@ CabbageSettingsWindow::RepoListBox::~RepoListBox()
 
 }
 
+void CabbageSettingsWindow::updateColourScheme()
+{
+    struct Type
+    {
+        const char* name;
+        uint32 colour;
+    };
+
+    const Type types[] =
+    {
+        { "Error",              CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::numbers, Colours::grey.darker()).getARGB() },
+        { "Comment",            CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::comment, Colours::grey.darker()).getARGB() },
+        { "Keyword",            CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::keyword, Colours::grey.darker()).getARGB() },
+        { "Identifier",         CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::identifierLiteral, Colours::grey.darker()).getARGB() },
+        { "Integer",            Colours::grey.darker().getARGB() },
+        { "Float",              Colours::grey.darker().getARGB() },
+        { "String",             CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::stringLiteral, Colours::grey.darker()).getARGB() },
+        { "Operator",           Colours::grey.darker().getARGB() },
+        { "Bracket",            Colours::grey.darker().getARGB() },
+        { "Punctuation",        Colours::grey.darker().getARGB() },
+        { "Preprocessor Text",  Colours::grey.darker().getARGB() },
+        { "Csd Tag",            CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::csdtags, Colours::grey.darker()).getARGB()}
+    };
+
+    CodeEditorComponent::ColourScheme cs;
+    codeEditor->setColour (CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground, Colour (70, 70, 70)));
+    codeEditor->setColour (CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumbers, Colours::white));
+    codeEditor->setColour (CodeEditorComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::codeBackground, Colours::white));
+    codeEditor->setColour (CaretComponent::ColourIds::caretColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::caret, Colours::white));
+    codeEditor->setColour (CodeEditorComponent::ColourIds::highlightColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground, Colours::white));
+
+    for (std::size_t i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
+        cs.set (types[i].name, Colour (types[i].colour));
+
+    codeEditor->setColourScheme (cs);
+}
+
 void CabbageSettingsWindow::RepoListBox::paintListBoxItem (int rowNumber, Graphics& g,
                                        int width, int height, bool rowIsSelected)
 {
     if (rowIsSelected)
-        g.fillAll (Colour(255, 0, 0));
+        g.fillAll (Colours::black.withAlpha(.1f));
     else
-        g.fillAll(Colour(0, 255, 0));
+        g.fillAll(Colours::white.withAlpha(.3f));//CabbageSettings::getColourFromValueTree (owner->valueTree, CabbageColourIds::codeBackground, Colours::white));
 
-    g.setColour(Colours::whitesmoke);
+    g.setColour(Colour(20, 20, 20));
     g.drawFittedText(items[rowNumber], Rectangle<int> (width, height), Justification::left, 0);
 }
 
 void CabbageSettingsWindow::RepoListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 {
+	
+}
 
+void CabbageSettingsWindow::RepoListBox::listBoxItemClicked (int row, const MouseEvent &)
+{
+	owner->loadRepoCode(codeSnippets[row]);
 }
 
 void CabbageSettingsWindow::addCodeRepoProperties()
 {
 	
+}
+
+void CabbageSettingsWindow::loadRepoCode(String snippet)
+{
+	codeEditor->loadContent(snippet);
 }
 
 void CabbageSettingsWindow::addMiscProperties()
@@ -238,7 +302,8 @@ void CabbageSettingsWindow::resized()
 
     colourPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
     miscPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
-	listBox.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
+	listBox.setBounds (100, 30, r.getWidth() - 120, listBox.getNumRows()*22);
+	codeEditor->setBounds(100, 140, r.getWidth() - 120, 200);
 }
 
 void CabbageSettingsWindow::paint (Graphics& g)
@@ -256,6 +321,8 @@ void CabbageSettingsWindow::paint (Graphics& g)
         g.drawFittedText ("Colours", 100, 10, r.getWidth() - 100, 20, Justification::centred, 1);
     else if (viewport.isVisible())
         g.drawFittedText ("Audio and MIDI", 100, 10, r.getWidth() - 100, 20, Justification::centred, 1);
+    else if (listBox.isVisible())
+        g.drawFittedText ("Code Repository", 100, 10, r.getWidth() - 100, 20, Justification::centred, 1);
 }
 //=====================================================================
 void CabbageSettingsWindow::valueChanged (Value& value)
@@ -297,6 +364,7 @@ void CabbageSettingsWindow::selectPanel (String button)
         colourPanel.setVisible (false);
         miscPanel.setVisible (false);
 		listBox.setVisible(false);
+		codeEditor->setVisible(false);
     }
     else if (button == "ColourSettingsButton")
     {
@@ -304,6 +372,7 @@ void CabbageSettingsWindow::selectPanel (String button)
         colourPanel.setVisible (true);
         miscPanel.setVisible (false);
 		listBox.setVisible(false);
+		codeEditor->setVisible(false);
     }
     else if (button == "MiscSettingsButton")
     {
@@ -311,13 +380,15 @@ void CabbageSettingsWindow::selectPanel (String button)
         colourPanel.setVisible (false);
         miscPanel.setVisible (true);
 		listBox.setVisible(false);
+		codeEditor->setVisible(false);
     }
     else if (button == "CodeRepoButton")
     {
 		viewport.setVisible (false);
         colourPanel.setVisible (false);
         miscPanel.setVisible (false);
-		//listBox.setVisible(true);		
+		listBox.setVisible(true);	
+		codeEditor->setVisible(true);
     }
     repaint();
 }

@@ -26,6 +26,7 @@
 #include "../Utilities/CabbageFilePropertyComponent.h"
 #include "../Utilities/CabbageUtilities.h"
 #include "../BinaryData/CabbageBinaryData.h"
+#include "../CodeEditor/CsoundTokeniser.h"
 
 
 class CabbageSettingsWindow :
@@ -41,11 +42,13 @@ public:
     CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice);
     ~CabbageSettingsWindow()
     {
+		codeEditor =nullptr;
         audioDeviceSelector = nullptr;
         colourPanel.clear();
         miscPanel.clear();
     };
 
+	CabbageSettings& settings;
     void changeListenerCallback (ChangeBroadcaster* source);
     void addColourProperties();
     void addMiscProperties();
@@ -54,10 +57,12 @@ public:
     void buttonClicked (Button* button);
     void paint (Graphics& g);
     void valueChanged (Value& value);
+	void updateColourScheme();
     void mouseEnter (const MouseEvent& e) override;
     void selectPanel (String button);
     void filenameComponentChanged (FilenameComponent*);
     void textPropertyComponentChanged (TextPropertyComponent* comp);
+	void loadRepoCode(String codeSnippetName);
 
 	class RepoListBox	:	public Component, ListBoxModel
 	{
@@ -76,12 +81,14 @@ public:
 		void resized() override {};
 		int getNumRows() override { return items.size();};
 		void listBoxItemDoubleClicked(int row, const MouseEvent &e);
+		void listBoxItemClicked (int row, const MouseEvent &);
 		void paintListBoxItem (int rowNumber, Graphics& g,
 							   int width, int height, bool rowIsSelected) override;
 		void selectedRowsChanged (int /*lastRowselected*/) override {};
 		void update();
 		ListBox listBox;
 		StringArray items;
+		StringArray codeSnippets;
 		int getCurrentRow()
 		{
 			return currentRow;
@@ -89,6 +96,9 @@ public:
 	};
 	
 	RepoListBox listBox;
+	ScopedPointer<CodeEditorComponent> codeEditor;
+	CodeDocument document;
+	CsoundTokeniser csoundTokeniser;
 	
 private:
     PropertyPanel colourPanel, miscPanel;
@@ -97,7 +107,7 @@ private:
     ValueTree valueTree;
     TextButton loadButton, saveButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
-    CabbageSettings& settings;
+   
     Value alwaysOnTopPluginValue, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
     LookAndFeel_V3 lookAndFeel;
 	Viewport viewport;

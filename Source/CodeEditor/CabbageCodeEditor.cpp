@@ -815,18 +815,6 @@ void CabbageCodeEditorComponent::addToGUIEditorContextMenu()
 StringArray CabbageCodeEditorComponent::addItemsToPopupMenu(PopupMenu& m)
 {
 	StringArray customCodeSnippets;
-//    PropertiesFile::Options options;
-//    options.applicationName     = "Cabbage2";
-//    options.filenameSuffix      = "settings";
-//    options.osxLibrarySubFolder = "Preferences";
-//#if JUCE_LINUX
-//    options.folderName          = "~/.config/Cabbage2";
-//#else
-//    options.folderName          = "Cabbage2";
-//#endif
-//
-//	CabbageSettings cabbageSettings;
-//    cabbageSettings.setStorageParameters (options);
 	ScopedPointer<XmlElement> repoXml;
 	XmlElement *newEntryXml, *newEntryXml1;
 	
