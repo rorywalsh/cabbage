@@ -229,7 +229,7 @@ void CabbagePluginProcessor::createParameters()
         {
             const String name = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
             const String channel = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
-            const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
+            const var value = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
 
             if (controlWidgetTypes.contains (CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type)))
             {
@@ -315,7 +315,7 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 		//const String widgetName = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
 		
         const String type = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
-        const float value = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
+        const var value = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value);
 
 		//only write values for widgets that have channels
 		if(channelName.isNotEmpty())
@@ -348,7 +348,7 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 				xml.setAttribute (channels[1].toString(), yValue);
 			}
 			else
-				xml.setAttribute (channelName, value);
+				xml.setAttribute (channelName, float(value));
 		}
     }
 

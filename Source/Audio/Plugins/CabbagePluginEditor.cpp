@@ -762,8 +762,8 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
 {
-    const File csdFile (processor.getCsdFile());
-    XmlElement xml = processor.savePluginState (csdFile.getFileNameWithoutExtension().replace (" ", "_"));
+    //const File csdFile (processor.getCsdFile());
+    XmlElement xml = processor.savePluginState (instrumentName.replace(" ", "_"));
     xml.writeToFile (snapshotFile.withFileExtension (".snaps"), "");
 }
 
@@ -826,7 +826,7 @@ String CabbagePluginEditor::createNewGenericNameForPresetFile()
             return newFileName;
     }
 
-    const String firstPresetFile = processor.getCsdFile().getFileNameWithoutExtension() + "_0";
+    const String firstPresetFile = instrumentName + "_0";
 
     if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
         return pluginDir.getFullPathName() + "\\" + firstPresetFile + ".snaps";
