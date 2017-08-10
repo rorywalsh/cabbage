@@ -52,7 +52,6 @@ public:
     void changeListenerCallback (ChangeBroadcaster* source);
     void addColourProperties();
     void addMiscProperties();
-	void addCodeRepoProperties();
     void resized();
     void buttonClicked (Button* button);
     void paint (Graphics& g);
@@ -70,6 +69,7 @@ public:
 		Colour bgColour;
 		int refresh;
 		CabbageSettingsWindow* owner;
+		int currentIndex;
 
 	public:
 		RepoListBox(CabbageSettingsWindow* _owner);
@@ -80,7 +80,7 @@ public:
 		};
 		void resized() override {};
 		int getNumRows() override { return items.size();};
-		void listBoxItemDoubleClicked(int row, const MouseEvent &e);
+		void setDefaultItem();
 		void listBoxItemClicked (int row, const MouseEvent &);
 		void paintListBoxItem (int rowNumber, Graphics& g,
 							   int width, int height, bool rowIsSelected) override;
@@ -93,6 +93,10 @@ public:
 		{
 			return currentRow;
 		}
+		
+		void updateEntry(String updatedCode);
+		void removeEntry();
+		
 	};
 	
 	RepoListBox listBox;
@@ -105,7 +109,7 @@ private:
 	
     ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
-    TextButton loadButton, saveButton;
+    TextButton deleteRepoButton, saveRepoButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
    
     Value alwaysOnTopPluginValue, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;

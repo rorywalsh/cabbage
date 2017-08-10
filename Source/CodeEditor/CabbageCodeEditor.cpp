@@ -765,7 +765,7 @@ void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKe
 	if(editor.getText() !="Enter name for GUI code")
 	{
 		ScopedPointer<XmlElement> repoXml;
-		XmlElement *newEntryXml, *newEntryXml1;
+		XmlElement *newEntryXml;
 		repoXml = owner->owner->settings->getUserSettings()->getXmlValue("CopeRepoXmlData");
 		
 		if(!repoXml)
@@ -789,18 +789,12 @@ void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKe
 		}
 		else
 		{
-			newEntryXml = new XmlElement(editor.getText());
-			newEntryXml->setAttribute(editor.getText(), owner->getSelectedText());
 			repoXml->setAttribute(editor.getText(), owner->getSelectedText());
 			owner->owner->settings->getUserSettings()->setValue("CopeRepoXmlData", repoXml);
 
 		}
 
-		repoXml = nullptr;
-		newEntryXml = nullptr;				
-		newEntryXml1 = nullptr;				
-		
-
+		repoXml = nullptr;			
 	}
 	
 	setVisible(false);	
