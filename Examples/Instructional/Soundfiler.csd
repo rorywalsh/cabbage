@@ -70,5 +70,6 @@ endin
 <CsScore>
 ;causes Csound to run for about 7000 years...
 i1 0 z
+i"LoadSoundFile" 0 0
 </CsScore>
 </CsoundSynthesizer>
