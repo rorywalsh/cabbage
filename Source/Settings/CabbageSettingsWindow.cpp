@@ -99,7 +99,8 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     const Image colourSettingsImage = ImageCache::getFromMemory (CabbageBinaryData::ColourSettingsButton_png, CabbageBinaryData::ColourSettingsButton_pngSize);
     CabbageUtilities::setImagesForButton (&colourSettingsButton, colourSettingsImage);
 
-    CabbageUtilities::setImagesForButton (&codeRepoButton, colourSettingsImage);
+    const Image codeSettingsImage = ImageCache::getFromMemory (CabbageBinaryData::CodeSettingsButton_png, CabbageBinaryData::CodeSettingsButton_pngSize);
+    CabbageUtilities::setImagesForButton (&codeRepoButton, codeSettingsImage);
 	
 	listBox.setDefaultItem();
 }
@@ -348,10 +349,11 @@ void CabbageSettingsWindow::resized()
 
     colourPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
     miscPanel.setBounds (100, 30, r.getWidth() - 100, r.getHeight() - 30);
-	listBox.setBounds (100, 30, r.getWidth() - 110, 100 );
-	codeEditor->setBounds(100, 140, r.getWidth() - 120, 200);
-	deleteRepoButton.setBounds(r.getWidth()-230, 350, 100, 20);
-	saveRepoButton.setBounds(r.getWidth()-130, 350, 100, 20);
+	
+	codeEditor->setBounds(100, 30, r.getWidth() - 120, 200);
+	listBox.setBounds (100, 280, r.getWidth() - 110, 100 );
+	deleteRepoButton.setBounds(r.getWidth()-220, 230, 100, 20);
+	saveRepoButton.setBounds(r.getWidth()-120, 230, 100, 20);
 }
 
 void CabbageSettingsWindow::paint (Graphics& g)

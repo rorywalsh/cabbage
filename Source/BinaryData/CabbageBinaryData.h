@@ -1,6 +1,7 @@
 /* (Auto-generated binary data file). */
 
-#pragma once
+#ifndef BINARY_CABBAGEBINARYDATA_H
+#define BINARY_CABBAGEBINARYDATA_H
 
 namespace CabbageBinaryData
 {
@@ -141,6 +142,9 @@ namespace CabbageBinaryData
 
     extern const char*  editfind_svg;
     const int           editfind_svgSize = 35348;
+
+    extern const char*  CodeSettingsButton_png;
+    const int           CodeSettingsButton_pngSize = 3139;
 
     extern const char*  goup_png;
     const int           goup_pngSize = 1193;
@@ -347,3 +351,5 @@ namespace CabbageBinaryData
     const int           mediarecord_svgSize = 11643;
 
 }
+
+#endif

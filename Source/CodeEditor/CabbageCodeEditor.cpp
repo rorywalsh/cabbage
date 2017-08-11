@@ -40,7 +40,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     this->setLookAndFeel(&lookAndFeel3);
 	setScrollbarThickness (20);
 	
-	addToGUIEditorPopup = new AddCodeToGUIEditorComponent(this, "Add code to GUI Editor contenxt menu", Colour(25, 25, 25));
+	addToGUIEditorPopup = new AddCodeToGUIEditorComponent(this, "Add to code repository", Colour(25, 25, 25));
 	addToGUIEditorPopup->setVisible(false);
 
     if (File (opcodeFile).existsAsFile())
@@ -728,10 +728,10 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
         PopupMenu m, subM;
         m.setLookAndFeel (&owner->getLookAndFeel());
         addPopupMenuItems (m, &e);
-		m.addItem(10, "Add code to repo");
+		m.addItem(10, "Add to code repository");
 		
 		StringArray codeSnippets = addItemsToPopupMenu(subM);
-		m.addSubMenu("Insert from Code Repository", subM);
+		m.addSubMenu("Insert from code repository", subM);
 		
 		const int menuItemID = m.show();
 		

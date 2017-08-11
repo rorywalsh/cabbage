@@ -368,6 +368,7 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
                 CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, xmlState->getAttributeValue (i));
             else if (type == CabbageWidgetTypes::filebutton)
             {
+				CabbageUtilities::debug(xmlState->getAttributeValue (i));
                 CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, xmlState->getAttributeValue (i));
             }
 			else if(type == CabbageWidgetTypes::hrange || type == CabbageWidgetTypes::vrange)//double channel range widgets
