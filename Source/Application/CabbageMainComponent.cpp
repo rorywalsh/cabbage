@@ -459,6 +459,8 @@ void CabbageMainComponent::arrangeFileTabs()
 			addAndMakeVisible(cycleTabsButton);
 		cycleTabsButton.setBounds(xPos, toolbarThickness + 3, 50, 30);
 	}
+	else
+		cycleTabsButton.setVisible(false);
 	
 	
 }
