@@ -460,7 +460,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     if (CabbageAudioParameter* param = getParameterForComponent (combo->getName()))
     {
         param->beginChangeGesture();
-        const int value = combo->getSelectedItemIndex() + 1;
+        const int value = combo->getSelectedItemIndex();
         param->setValueNotifyingHost (param->range.convertTo0to1(value));
         param->endChangeGesture();
     }
