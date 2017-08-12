@@ -1,4 +1,4 @@
 
-# Cabbage quickstart and Reference Manual
+# Cabbage User Manual
 
-Cabbage version 2
+

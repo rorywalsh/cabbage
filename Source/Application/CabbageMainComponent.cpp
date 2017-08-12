@@ -218,13 +218,21 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
         {
             const String filename = tabButton->getFilename();
-            const int nodeId = nodeIdsForPlugins.getWithDefault (filename, -99);
+			int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
 
-            if (nodeId != -99)
-            {
-                const Point<int> pos (PluginWindow::getPositionOfCurrentlyOpenWindow (nodeId));
-                createEditorForAudioGraphNode (pos);
-            }
+			if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
+			{
+				PluginWindow::WindowFormatType type = f->getProcessor()->hasEditor() ? PluginWindow::Normal
+													  : PluginWindow::Generic;
+
+				if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
+				{
+					if(w->isVisible())
+						w->setVisible(false);
+					else
+						w->setVisible(true);
+				}
+			}
         }
 
     }
@@ -537,7 +545,7 @@ void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
 
         if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
         {
-			if(f->getProcessor()->getNumParameters()==0)
+			if(GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
 				w->setVisible(false);
 			else
 				w->toFront (true);
@@ -937,8 +945,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
         }
 
-        if (cabbageSettings->getUserSettings()->getIntValue ("CompileOnSave") == 1)
-        {
+        //if (cabbageSettings->getUserSettings()->getIntValue ("CompileOnSave") == 1)
+        //{
             propertyPanel->setEnabled (false);
 
             if (recompile == true)
@@ -946,7 +954,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 runCsoundForNode (getCurrentCsdFile().getFullPathName());
                 fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
             }
-        }
+        //}
     }
 }
 //==================================================================================
@@ -1009,11 +1017,13 @@ void CabbageMainComponent::removeEditor()
         else
         {
             owner->setName ("Cabbage Csound IDE");
+			propertyPanel->setVisible(false);
         }
+		
+		cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
     }
 
-    //currentCsdFile = openFiles[currentFileIndex];
-	cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
+    
     repaint();
 
 

@@ -315,7 +315,9 @@ void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
+	menu.addCommandItem(&commandManager, CommandIDs::buildNow);
+    menu.addSeparator();
+	menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
     menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
@@ -371,6 +373,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::closeAllDocuments,
                               CommandIDs::closeDocument,
                               CommandIDs::saveDocument,
+							  CommandIDs::buildNow,
                               CommandIDs::saveGraph,
                               CommandIDs::saveGraphAs,
                               CommandIDs::saveDocumentToRPi,
@@ -475,6 +478,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::buildNow:
+            result.setInfo ("Build instrument", "Builds the current instrument", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+			
         case CommandIDs::startAudioGraph:
             result.setInfo ("Start graph", "Starts the audio signal graph", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress (KeyPress::F4Key, ModifierKeys::noModifiers, 0));
@@ -704,7 +712,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->saveGraph (true);
             return true;
 
-
+		case CommandIDs::buildNow:
         case CommandIDs::saveDocument:
             getContentComponent()->saveDocument();
             getContentComponent()->setEditMode (false);
