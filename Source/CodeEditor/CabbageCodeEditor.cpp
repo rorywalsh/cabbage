@@ -608,7 +608,7 @@ bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps
 void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this is called on a separate thread..
 {
     StringArray csdArray = this->getAllTextAsStringArray();
-
+	instrumentsAndRegions.clear();
     for (int i = 0 ; i < csdArray.size() ; i++)
     {
         if (csdArray[i].indexOf ("<Cabbage>") != -1)

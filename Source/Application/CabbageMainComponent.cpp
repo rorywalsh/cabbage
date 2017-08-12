@@ -481,7 +481,7 @@ void CabbageMainComponent::arrangeFileTabs()
 void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
 {
     factory.combo->clearItemsFromComboBox();
-
+	getCurrentCodeEditor()->parseTextForInstrumentsAndRegions();
     const NamedValueSet instrRegions = getCurrentCodeEditor()->instrumentsAndRegions;
 
     for ( int i = 0 ; i < instrRegions.size() ; i++)
@@ -930,6 +930,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
             getCurrentCodeEditor()->setSavePoint();
         }
+		addInstrumentsAndRegionsToCombobox();
     }
     else
     {
@@ -945,8 +946,6 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
         }
 
-        //if (cabbageSettings->getUserSettings()->getIntValue ("CompileOnSave") == 1)
-        //{
             propertyPanel->setEnabled (false);
 
             if (recompile == true)
@@ -954,7 +953,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 runCsoundForNode (getCurrentCsdFile().getFullPathName());
                 fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
             }
-        //}
+			
+			addInstrumentsAndRegionsToCombobox();
     }
 }
 //==================================================================================

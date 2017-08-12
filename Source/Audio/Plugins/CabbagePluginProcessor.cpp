@@ -328,8 +328,11 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 			else if (type == CabbageWidgetTypes::filebutton && !CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype).contains("snaps"))
 			{
 				const String file = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::file);
-				const String relativePath = File (file).getRelativePathFrom (File (csdFile));
-				xml.setAttribute (channelName, relativePath);
+				if(file.length()>2)
+				{
+					const String relativePath = File (file).getRelativePathFrom (File (csdFile));
+					xml.setAttribute (channelName, relativePath);
+				}
 			}
 			else if(type.contains("range"))//double channel range widgets
 			{
