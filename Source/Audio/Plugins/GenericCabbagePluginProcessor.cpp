@@ -11,10 +11,10 @@
 #include "GenericCabbagePluginProcessor.h"
 #include "GenericCabbageEditor.h"
 
-GenericCabbagePluginProcessor::GenericCabbagePluginProcessor (File intputFile)
-    : CsoundPluginProcessor (intputFile)
+GenericCabbagePluginProcessor::GenericCabbagePluginProcessor (File inputFile)
+    : CsoundPluginProcessor (inputFile)
 {
-
+	this->setPluginName(inputFile.getFileNameWithoutExtension());
     csoundChanList = NULL;
     int numberOfChannels = csoundListChannels (getCsoundStruct(), &csoundChanList);
 

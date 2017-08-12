@@ -27,7 +27,7 @@ GenericCabbageEditor::GenericCabbageEditor (AudioProcessor& parent)
 
     setLookAndFeel (&lookAndFeel);
     const OwnedArray<AudioProcessorParameter>& params = parent.getParameters();
-
+	
     for (int i = 0; i < params.size(); ++i)
     {
         if (const AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]))

@@ -77,6 +77,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
 
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
+	
     //instrument must at least be stereo
     numCsoundChannels = (csound->GetNchnls() == 1 ? 2 : csound->GetNchnls());
     numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());

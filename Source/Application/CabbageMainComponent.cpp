@@ -302,7 +302,11 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
 void CabbageMainComponent::actionListenerCallback (const String& message)
 {
-    if (message.contains ("delete:"))
+	if(message.contains(".csd"))
+	{
+		openFile(message.replace("file://", ""));
+	}
+    else if (message.contains ("delete:"))
     {
         const int lineNumber = String (message.replace ("delete:", "")).getIntValue();
         getCurrentCodeEditor()->removeLine (lineNumber);
@@ -533,7 +537,10 @@ void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
 
         if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
         {
-            w->toFront (true);
+			if(f->getProcessor()->getNumParameters()==0)
+				w->setVisible(false);
+			else
+				w->toFront (true);
 
             const int alwaysOnTop = cabbageSettings->getUserSettings()->getIntValue ("SetAlwaysOnTopPlugin");
 
@@ -815,6 +822,7 @@ void CabbageMainComponent::launchHelpfile (String type)
     if (helpWindow == nullptr)
     {
         helpWindow = new HtmlHelpDocumentWindow ("Help", Colour (20, 20, 20));
+		helpWindow->getHtmlHelpBrowser()->addActionListener(this);
     }
 
     CodeDocument::Position pos1, pos2;
