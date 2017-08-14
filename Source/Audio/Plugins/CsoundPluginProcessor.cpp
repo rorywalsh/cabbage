@@ -460,7 +460,7 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-    receiveChannelDataFromCsound();
+    getChannelDataFromCsound();
     sendChannelDataToCsound();
 }
 

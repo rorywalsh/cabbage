@@ -399,7 +399,7 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
 }
 
 //==============================================================================
-void CabbagePluginProcessor::receiveChannelDataFromCsound()
+void CabbagePluginProcessor::getChannelDataFromCsound()
 {
     for ( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
@@ -433,8 +433,13 @@ void CabbagePluginProcessor::receiveChannelDataFromCsound()
 					else
 					{
 						CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 0);
-						if(value.isDouble())
-							CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+						if(value.isString() == false)
+						{
+							if (getCsound()->GetChannel (channels[0].toUTF8()) != float(value))
+							{
+								CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+							}
+						}
 						else
 						{
 							char tmp_str[4096] = {0};
