@@ -75,12 +75,12 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
         csoundParams->ksmps_override = 4410;
     }
 
+    //instrument must at least be stereo
+	numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
+	csoundParams->nchnls_override = numCsoundChannels;
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
 	
-    //instrument must at least be stereo
-    numCsoundChannels = (csound->GetNchnls() == 1 ? 2 : csound->GetNchnls());
-    numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
     //  AudioProcessor::Bus* ins = getBus (true, 0);
     //  ins->setCurrentLayout(AudioChannelSet::mono());
 
@@ -323,12 +323,11 @@ const String CsoundPluginProcessor::getCsoundOutput()
         if (messageCnt == 0)
             return csoundOutput;
 
-        for (int i = 0; i < messageCnt; i++)
-        {
-            csoundOutput += csound->GetFirstMessage();
-            csound->PopFirstMessage();
-        }
-
+		while(csound->GetMessageCnt()>0)
+		{
+			csoundOutput += csound->GetFirstMessage();
+			csound->PopFirstMessage();
+		}
 
         Logger::writeToLog (csoundOutput);
         return csoundOutput;
