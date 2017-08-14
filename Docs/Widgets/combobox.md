@@ -47,7 +47,7 @@ active(val)
 
 {% include "./Properties/rotate.md" %}  
 
-{% include "./Properties/value.md" %}  
+{% include "./Properties/value.md" %} Comboboxes indices start at 1, not 0. If you set the initial value to 0 the combobox will not show any items.  
 
 {% include "./Properties/visible.md" %}  
 

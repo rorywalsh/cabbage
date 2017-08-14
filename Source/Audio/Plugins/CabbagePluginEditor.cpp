@@ -459,9 +459,12 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
     if (CabbageAudioParameter* param = getParameterForComponent (combo->getName()))
     {
-        param->beginChangeGesture();
-        const int value = combo->getSelectedItemIndex();
-        param->setValueNotifyingHost (param->range.convertTo0to1(value));
+		param->beginChangeGesture();
+		//preset combos work with 0 index, Cabbage combos start at 1..
+        if(CabbageWidgetData::getStringProp(getValueTreeForComponent(combo->getName()), CabbageIdentifierIds::filetype).contains("snaps"))
+			param->setValueNotifyingHost (param->range.convertTo0to1(combo->getSelectedItemIndex()));
+		else
+			param->setValueNotifyingHost (param->range.convertTo0to1(combo->getSelectedItemIndex()+1));
         param->endChangeGesture();
     }
 }
