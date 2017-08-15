@@ -31,7 +31,7 @@ class CabbageComboBox
       public ComboBox::Listener
 {
     int offX, offY, offWidth, offHeight, pivotx, pivoty, refresh;
-    String name, tooltipText, caption, text, filetype;
+    String name, tooltipText, caption, text, filetype, workingDir;
     float rotate;
     File pluginDir;
     CabbagePluginEditor* owner;

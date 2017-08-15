@@ -786,8 +786,7 @@ void CabbagePluginEditor::refreshComboBoxContents()
         {
             const String name = CabbageWidgetData::getStringProp (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
 			const String fileType = CabbageWidgetData::getProperty (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype);
-            
-			CabbageUtilities::debug(fileType);
+       
 			
 			if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
             {
