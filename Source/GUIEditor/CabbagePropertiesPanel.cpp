@@ -310,10 +310,10 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
 	{
 		if (value.getValue().isInt())
         {
-				if(value.getValue()=="0")
-					setPropertyByName ("Channel Type", "number");
-				else
+				if(int (value.getValue()) == 1)
 					setPropertyByName ("Channel Type", "string");
+//				else
+//					setPropertyByName ("Channel Type", "string");
 		}
 	}
 		
