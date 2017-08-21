@@ -1,0 +1,1 @@
+**file("file name")** Set the file that will be opened. This file must reside in the same directory as the current .csd file. Do not pass a full path. Cabbage only needs the name and extension, for example file("help.txt"). 

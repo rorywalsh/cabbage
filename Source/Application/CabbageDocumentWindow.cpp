@@ -55,11 +55,18 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (na
 
     if (cabbageSettings->getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup") == 1)
     {
+		const String lastOpenedFile = cabbageSettings->getUserSettings()->getValue("MostRecentFile", "");
         cabbageSettings->updateRecentFilesList();
-		for( int i = 0 ; i < 4 ; i++ )
+		const int numberOfFileToOpen = cabbageSettings->getUserSettings()->getIntValue ("NumberOfOpenFiles");
+		for( int i = 0 ; i < numberOfFileToOpen  ; i++ )
 		{
-			content->openFile (cabbageSettings->getMostRecentFile(i).getFullPathName());
+			if(File(cabbageSettings->getMostRecentFile(i).getFullPathName()).existsAsFile())
+				content->openFile (cabbageSettings->getMostRecentFile(i).getFullPathName());
 		}
+		
+		
+		if(File(lastOpenedFile).existsAsFile())
+			content->bringCodeEditorToFront(File(lastOpenedFile));
     }
 
     setApplicationCommandManagerToWatch (&commandManager);
@@ -308,7 +315,9 @@ void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
-    menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
+	menu.addCommandItem(&commandManager, CommandIDs::buildNow);
+    menu.addSeparator();
+	menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
     menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
@@ -364,6 +373,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::closeAllDocuments,
                               CommandIDs::closeDocument,
                               CommandIDs::saveDocument,
+							  CommandIDs::buildNow,
                               CommandIDs::saveGraph,
                               CommandIDs::saveGraphAs,
                               CommandIDs::saveDocumentToRPi,
@@ -468,6 +478,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Settings", "Change Cabbage settings", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::buildNow:
+            result.setInfo ("Build instrument", "Builds the current instrument", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+			
         case CommandIDs::startAudioGraph:
             result.setInfo ("Start graph", "Starts the audio signal graph", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress (KeyPress::F4Key, ModifierKeys::noModifiers, 0));
@@ -697,7 +712,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->saveGraph (true);
             return true;
 
-
+		case CommandIDs::buildNow:
         case CommandIDs::saveDocument:
             getContentComponent()->saveDocument();
             getContentComponent()->setEditMode (false);

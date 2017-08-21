@@ -7,6 +7,7 @@ rslider bounds(184, 8, 85, 79), channel("sus"), range(0, 1, 0.7), text("Sus.")
 rslider bounds(270, 8, 85, 79), channel("rel"), range(0, 1, 0.8), text("Rel.")
 combobox bounds(74, 190, 100, 25), populate("*.snaps")
 filebutton bounds(12, 190, 60, 25), text("Save"), populate("*.snaps"), mode("snapshot")
+checkbox bounds(252, 188, 100, 30) channel("checkchan9") text("Test Check") 
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -21,14 +22,12 @@ nchnls = 2
 
 ;instrument will be triggered by keyboard widget
 instr 1
-kEnv madsr chnget:i("att"), chnget:i("dec"), chnget:i("sus"), chnget:i("rel")
-aOut vco2 p5*kEnv, p4
-outs aOut, aOut
+printk2 chnget:k("att")
 endin
 
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
-f0 z
+i1 0 z
 </CsScore>
 </CsoundSynthesizer>

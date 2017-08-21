@@ -46,8 +46,9 @@ void CabbageSettings::setDefaultSettings()
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Docs";
 
-
-#if !defined(MACOSX)
+#if defined(WIN32)
+	manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
+#elif !defined(MACOSX)
     manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
 #else
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
@@ -71,6 +72,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ShowConsoleWithEditor", 1);
     defaultPropSet->setValue ("UsingCabbageCsound", 1);
     defaultPropSet->setValue ("AudioEnabled", 1);
+	defaultPropSet->setValue ("NumberOfOpenFiles", 1);
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue ("DisableAutoComplete", 0);
     defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 0);

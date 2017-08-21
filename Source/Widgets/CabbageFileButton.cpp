@@ -46,7 +46,8 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     if (mode == "file")
     {
-        FileChooser fc ("Save File", File (getCsdFile()).getParentDirectory(), "", CabbageUtilities::shouldUseNativeBrowser());
+		const String lastKnownDirectory = owner->getLastOpenedDirectory();
+        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File(lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (filetype == "snaps")
         {
@@ -76,20 +77,25 @@ void CabbageFileButton::buttonClicked (Button* button)
             {
                 owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
                 CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
-                owner->refreshComboBoxContents();
+                //owner->refreshComboBoxContents();
             }
         }
+		
+		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
     }
 
     else if (mode == "directory")
     {
-        FileChooser fc ("Open Directory", File (getCsdFile()).getChildFile (getFilename()), "", CabbageUtilities::shouldUseNativeBrowser());
+		const String lastKnownDirectory = owner->getLastOpenedDirectory();
+        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File(lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
             owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
             CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
         }
+		
+		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
     }
 
     else if (mode == "snapshot")

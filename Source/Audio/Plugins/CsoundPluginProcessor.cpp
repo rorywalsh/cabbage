@@ -75,11 +75,12 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
         csoundParams->ksmps_override = 4410;
     }
 
+    //instrument must at least be stereo
+	numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
+	csoundParams->nchnls_override = numCsoundChannels;
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
-    //instrument must at least be stereo
-    numCsoundChannels = (csound->GetNchnls() == 1 ? 2 : csound->GetNchnls());
-    numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
+	
     //  AudioProcessor::Bus* ins = getBus (true, 0);
     //  ins->setCurrentLayout(AudioChannelSet::mono());
 
@@ -151,14 +152,18 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         {
             if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type) == CabbageWidgetTypes::xypad)
             {
-                csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::xchannel).getCharPointer(),
+			    csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::xchannel).getCharPointer(),
                                     CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::valuex));
                 csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::ychannel).getCharPointer(),
                                     CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::valuey));
             }
             else
+			{
+				const var value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
                 csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
-                                    CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::value));
+                                    float(value));
+			}
+								
         }
 
     }
@@ -318,12 +323,11 @@ const String CsoundPluginProcessor::getCsoundOutput()
         if (messageCnt == 0)
             return csoundOutput;
 
-        for (int i = 0; i < messageCnt; i++)
-        {
-            csoundOutput += csound->GetFirstMessage();
-            csound->PopFirstMessage();
-        }
-
+		while(csound->GetMessageCnt()>0)
+		{
+			csoundOutput += csound->GetFirstMessage();
+			csound->PopFirstMessage();
+		}
 
         Logger::writeToLog (csoundOutput);
         return csoundOutput;
@@ -456,7 +460,7 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-    receiveChannelDataFromCsound();
+    getChannelDataFromCsound();
     sendChannelDataToCsound();
 }
 

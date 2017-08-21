@@ -53,7 +53,7 @@ CabbageNumberBox::CabbageNumberBox (ValueTree wData)
 
     const float min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     const float max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
-    const float incr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderincr);
+    const float incr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     const float skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     const float value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
 

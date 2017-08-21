@@ -120,7 +120,9 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton)
         jassert (false);
 
     currentFileIndex = fileTabs.indexOf (tabButton);
+	hideFindPanel();
     editorAndConsole[currentFileIndex]->toFront (true);
+	cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
 
 
     if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
@@ -170,6 +172,7 @@ void CabbageMainComponent::bringCodeEditorToFront (File file)
     }
     else
         this->openFile (file.getFullPathName());
+	
 }
 
 void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
@@ -215,13 +218,21 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
         {
             const String filename = tabButton->getFilename();
-            const int nodeId = nodeIdsForPlugins.getWithDefault (filename, -99);
+			int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
 
-            if (nodeId != -99)
-            {
-                const Point<int> pos (PluginWindow::getPositionOfCurrentlyOpenWindow (nodeId));
-                createEditorForAudioGraphNode (pos);
-            }
+			if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
+			{
+				PluginWindow::WindowFormatType type = f->getProcessor()->hasEditor() ? PluginWindow::Normal
+													  : PluginWindow::Generic;
+
+				if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
+				{
+					if(w->isVisible())
+						w->setVisible(false);
+					else
+						w->setVisible(true);
+				}
+			}
         }
 
     }
@@ -299,7 +310,11 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
 void CabbageMainComponent::actionListenerCallback (const String& message)
 {
-    if (message.contains ("delete:"))
+	if(message.contains(".csd"))
+	{
+		openFile(message.replace("file://", ""));
+	}
+    else if (message.contains ("delete:"))
     {
         const int lineNumber = String (message.replace ("delete:", "")).getIntValue();
         getCurrentCodeEditor()->removeLine (lineNumber);
@@ -325,7 +340,9 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
             macroNames += CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames)[i].toString() + " ";
 
 
-        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText);
+        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText) + String(CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
+		
+		
         macroNames = macroNames.length() > 1 ? macroNames : "";
 
         getCurrentCodeEditor()->insertCode (lineNumber, newText + " " + macroNames, replaceExistingLine, parent.isEmpty());
@@ -454,6 +471,8 @@ void CabbageMainComponent::arrangeFileTabs()
 			addAndMakeVisible(cycleTabsButton);
 		cycleTabsButton.setBounds(xPos, toolbarThickness + 3, 50, 30);
 	}
+	else
+		cycleTabsButton.setVisible(false);
 	
 	
 }
@@ -462,7 +481,7 @@ void CabbageMainComponent::arrangeFileTabs()
 void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
 {
     factory.combo->clearItemsFromComboBox();
-
+	getCurrentCodeEditor()->parseTextForInstrumentsAndRegions();
     const NamedValueSet instrRegions = getCurrentCodeEditor()->instrumentsAndRegions;
 
     for ( int i = 0 ; i < instrRegions.size() ; i++)
@@ -526,7 +545,10 @@ void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
 
         if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
         {
-            w->toFront (true);
+			if(GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
+				w->setVisible(false);
+			else
+				w->toFront (true);
 
             const int alwaysOnTop = cabbageSettings->getUserSettings()->getIntValue ("SetAlwaysOnTopPlugin");
 
@@ -795,6 +817,7 @@ const File CabbageMainComponent::openFile (String filename)
         currentCsdFile = File (filename);
 
     cabbageSettings->updateRecentFilesList (currentCsdFile);
+	cabbageSettings->setProperty("MostRecentFile", currentCsdFile.getFullPathName());
     createCodeEditorForFile (currentCsdFile);
     return currentCsdFile;
 
@@ -807,6 +830,7 @@ void CabbageMainComponent::launchHelpfile (String type)
     if (helpWindow == nullptr)
     {
         helpWindow = new HtmlHelpDocumentWindow ("Help", Colour (20, 20, 20));
+		helpWindow->getHtmlHelpBrowser()->addActionListener(this);
     }
 
     CodeDocument::Position pos1, pos2;
@@ -873,6 +897,8 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     addInstrumentsAndRegionsToCombobox();
     repaint();
     resized();
+	
+	cabbageSettings->setProperty("NumberOfOpenFiles", int(editorAndConsole.size()));
 }
 //==============================================================================
 void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
@@ -904,6 +930,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
             getCurrentCodeEditor()->setSavePoint();
         }
+		addInstrumentsAndRegionsToCombobox();
     }
     else
     {
@@ -919,8 +946,6 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
         }
 
-        if (cabbageSettings->getUserSettings()->getIntValue ("CompileOnSave") == 1)
-        {
             propertyPanel->setEnabled (false);
 
             if (recompile == true)
@@ -928,7 +953,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 runCsoundForNode (getCurrentCsdFile().getFullPathName());
                 fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
             }
-        }
+			
+			addInstrumentsAndRegionsToCombobox();
     }
 }
 //==================================================================================
@@ -964,6 +990,9 @@ void CabbageMainComponent::closeDocument()
             removeEditor();
         }
     }
+	
+	cabbageSettings->setProperty("NumberOfOpenFiles", int(editorAndConsole.size()));
+	
 }
 //==================================================================================
 void CabbageMainComponent::removeEditor()
@@ -988,11 +1017,13 @@ void CabbageMainComponent::removeEditor()
         else
         {
             owner->setName ("Cabbage Csound IDE");
+			propertyPanel->setVisible(false);
         }
+		
+		cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
     }
 
-    //currentCsdFile = openFiles[currentFileIndex];
-
+    
     repaint();
 
 

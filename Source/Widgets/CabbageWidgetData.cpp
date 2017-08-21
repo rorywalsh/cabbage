@@ -298,11 +298,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("populate"):
-                setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
-
-                if (strTokens.size() > 1)
-                    setProperty (widgetData, CabbageIdentifierIds::workingdir, strTokens[1].trim());
-
+				setPopulateProps(strTokens, widgetData);  
                 break;
 
             case HashStringToInt ("imgfile"):
@@ -322,7 +318,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("pivoty"):
             case HashStringToInt ("ffttablenumber"):
             case HashStringToInt ("pivotx"):
-            case HashStringToInt ("sliderincr"):
+            case HashStringToInt ("increment"):
             case HashStringToInt ("sliderskew"):
             case HashStringToInt ("visible"):
             case HashStringToInt ("active"):
@@ -344,7 +340,10 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("wrap"):
             case HashStringToInt ("readonly"):
             case HashStringToInt ("scrollbars"):
-                setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
+				if(getStringProp(widgetData, CabbageIdentifierIds::channeltype)=="string")
+					setProperty (widgetData, identifier, strTokens[0].trim());
+				else
+					setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
                 break;
 
             case HashStringToInt ("crop"):
@@ -356,12 +355,12 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
             case HashStringToInt ("max"):
                 setProperty (widgetData, CabbageIdentifierIds::maxenabled, 1);
-                setProperty (widgetData, CabbageIdentifierIds::maxvalue, strTokens[0].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::max, strTokens[0].trim().getFloatValue());
                 break;
 
             case HashStringToInt ("min"):
                 setProperty (widgetData, CabbageIdentifierIds::minenabled, 1);
-                setProperty (widgetData, CabbageIdentifierIds::minvalue, strTokens[0].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::min, strTokens[0].trim().getFloatValue());
                 break;
 
             case HashStringToInt ("range"):
@@ -804,6 +803,26 @@ void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree wi
 		setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
 	}
 }
+
+void CabbageWidgetData::setPopulateProps(StringArray strTokens, ValueTree widgetData)
+{
+	var array;
+	for ( auto str : strTokens)
+    array.append (str.trim());
+	setProperty(widgetData, CabbageIdentifierIds::populate, array);
+
+    setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
+
+    if (strTokens.size() > 1)
+		setProperty (widgetData, CabbageIdentifierIds::workingdir, strTokens[1].trim());
+		
+	//remove default items for text array if filetype is known ...
+	if (CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type) == CabbageWidgetTypes::combobox
+		&& strTokens[0].trim().isNotEmpty())
+			CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::text, "");
+	
+}
+
 void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, String identifier)
 {
     if (identifier == "range")
@@ -847,7 +866,7 @@ void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, S
             if (strTokens.size() > 4)
             {
                 decimalPlaces = getNumberOfDecimalPlaces (strTokens[4].trim());
-                setProperty (widgetData, CabbageIdentifierIds::sliderincr, strTokens[4].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::increment, strTokens[4].trim().getFloatValue());
             }
 
             double sliderRange = max - min;
@@ -928,7 +947,9 @@ void CabbageWidgetData::setNumProp (ValueTree widgetData, Identifier prop, float
 
 void CabbageWidgetData::setStringProp (ValueTree widgetData, Identifier name, const String value)
 {
-    widgetData.setProperty (name, value, 0);
+//	const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+//    if(widgetData.getProperty("channel").size()==1)
+		widgetData.setProperty (name, value, 0);
 }
 
 void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, const var& value)
@@ -1054,7 +1075,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + ", "
                + String (getNumProp (widgetData, CabbageIdentifierIds::sliderskew))
                + ", "
-               + String (getNumProp (widgetData, CabbageIdentifierIds::sliderincr))
+               + String (getNumProp (widgetData, CabbageIdentifierIds::increment))
                + "), ";
     }
 
@@ -1070,7 +1091,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + ", "
                + String (getNumProp (widgetData, CabbageIdentifierIds::sliderskew))
                + ", "
-               + String (getNumProp (widgetData, CabbageIdentifierIds::sliderincr))
+               + String (getNumProp (widgetData, CabbageIdentifierIds::increment))
                + "), ";
     }
     else if (type == "xypad" && identifier == "value")
@@ -1113,6 +1134,13 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
         }
     }
 
+    else if (type == "combobox" 
+			&& getProperty (widgetData, CabbageIdentifierIds::channeltype).toString() == "string"
+			&& identifier == "value")
+    {
+		return identifier + "(\"" + getProperty (widgetData, identifier).toString() + "\"), ";
+	}
+	
     else
     {
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
@@ -1237,7 +1265,8 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
 {
     var items = getProperty (widgetData, identifier);
-    const String typeOfWidget = getProperty (widgetData, CabbageIdentifierIds::type);
+	
+	const String typeOfWidget = getProperty (widgetData, CabbageIdentifierIds::type);
 
     if (typeOfWidget == "gentable" && identifier == "channel")
         return String::empty;
@@ -1245,6 +1274,8 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
     String itemString = "";
 
     const Array<var>* array = items.getArray();
+
+
 
     if (array)
     {
@@ -1482,14 +1513,19 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     String cabbageCode = getStringProp (widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode (getBounds (widgetData))
                          + getMultiItemTextAsCabbageCode (widgetData, "channel", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "channeltype", macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "value", macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "text", macroText)
+						 + getMultiItemTextAsCabbageCode (widgetData, "populate", macroText)
                          + getColoursTextAsCabbageCode (widgetData, macroText)
                          + getRotateTextAsCabbageCode (widgetData, macroText)
                          + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
-                         //+ getMultiItemTextAsCabbageCode (widgetData, "samplerange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
+                         + getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "max", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "min", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "increment", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)
@@ -1508,11 +1544,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
                          + getWidgetArrayAsCabbageCode (widgetData, macroText)
-                         + getImagesTextAsCabbageCode (widgetData, macroText)
-
-
-                         //lastly, add a bracket in cases of plants that open on a line of widget code rather than on a new line
-                         + (getNumProp (widgetData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
+                         + getImagesTextAsCabbageCode (widgetData, macroText);
 
 
     return updateIdentifiers (cabbageCode, currentLineText);

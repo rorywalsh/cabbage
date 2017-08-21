@@ -61,7 +61,7 @@ void CabbageSlider::createPopupBubble()
 void CabbageSlider::initialiseSlider (ValueTree wData)
 {
     decimalPlaces = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces);
-    sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderincr);
+    sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     sliderSkew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
@@ -287,7 +287,7 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 
     if (prop == CabbageIdentifierIds::value)
     {
-        slider.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), dontSendNotification);
+        slider.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), sendNotification);
     }
     else
     {

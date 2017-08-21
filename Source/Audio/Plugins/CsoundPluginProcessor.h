@@ -65,7 +65,6 @@ public:
     void setCurrentProgram (int index) override;
     const String getProgramName (int index) override;
     void changeProgramName (int index, const String& newName) override;
-
     //==============================================================================
     virtual void getStateInformation (MemoryBlock& destData) override;
     virtual void setStateInformation (const void* data, int sizeInBytes) override;
@@ -110,7 +109,7 @@ public:
     //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
     //as is done in CabbagePluginprocessor.
     virtual void sendChannelDataToCsound();
-    virtual void receiveChannelDataFromCsound() {};
+    virtual void getChannelDataFromCsound() {};
     virtual void initAllCsoundChannels (ValueTree cabbageData);
     //=============================================================================
     void addMacros (String csdText);

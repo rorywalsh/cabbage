@@ -31,10 +31,10 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     tooltipText (String::empty),
     refresh (0),
     owner (_owner),
-    widgetData (wData)
+    widgetData (wData),
+	workingDir(CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir))
 {
     widgetData.addListener (this);
-    isPresetCombo = false;
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
     setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     setTooltip (tooltipText = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
@@ -49,11 +49,39 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     setWantsKeyboardFocus (false);
 
     initialiseCommonAttributes (this, wData);
-
-    addItemsToCombobox (wData);
-    owner->sendChannelDataToCsound (getChannel(), getValue());
-    setSelectedItemIndex (getValue() - 1, isPresetCombo ? sendNotification : dontSendNotification);
-
+	
+	if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).isNotEmpty())
+		CabbageWidgetData::setProperty(wData, CabbageIdentifierIds::text, "");
+	
+	addItemsToCombobox (wData);
+	
+	if (CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channeltype) == "string")
+	{
+		isStringCombo = true;
+		if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).isNotEmpty())
+			CabbageWidgetData::setProperty(wData, CabbageIdentifierIds::text, "");
+			
+		currentValueAsText = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::value).toString();
+		owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
+		const int index = stringItems.indexOf(currentValueAsText);
+		if(index != -1)
+			setSelectedItemIndex (index, dontSendNotification);
+	}
+	else
+	{
+		
+		if(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).contains("snaps"))
+		{
+			isPresetCombo = true;
+			setSelectedItemIndex (0, dontSendNotification);
+		}
+		else
+		{
+			owner->sendChannelDataToCsound (getChannel(), getValue());
+			setSelectedItemIndex (getValue()-1, dontSendNotification);
+		}
+	}
+    
 }
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
@@ -61,7 +89,7 @@ CabbageComboBox::~CabbageComboBox()
 
 }
 
-void CabbageComboBox::addItemsToCombobox (ValueTree wData)
+void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDisk)
 {
     Array<File> dirFiles;
     StringArray fileNames;
@@ -87,12 +115,13 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         {
             const String item  = items[i].toString();
             addItem (item, i + 1);
+			stringItems.add(item);
         }
     }
     else
     {
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
-        pluginDir = File (getCsdFile()).getChildFile (workingDir).getParentDirectory();
+        pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
         pluginDir.findChildFiles (dirFiles, 2, false, filetype);
         addItem ("Select..", 1);
@@ -106,6 +135,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         {
             addItem (snapshotFiles[i].getFileNameWithoutExtension(), i + 2);
         }
+		
     }
 
     Justification justify (Justification::centred);
@@ -126,7 +156,13 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         owner->restorePluginStateFrom (snapshotFiles[combo->getSelectedItemIndex() - 1]);
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
     {
-        owner->sendChannelStringDataToCsound (getChannel(), combo->getText());
+		const String fileType = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype);
+		const int index = combo->getSelectedItemIndex();
+		if(fileType.isNotEmpty())
+			owner->sendChannelStringDataToCsound (getChannel(), snapshotFiles[index-1].getFullPathName());
+		else
+			owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
+	
     }
 }
 
@@ -134,8 +170,26 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 {
     if (prop == CabbageIdentifierIds::value)
     {
-        int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-        setSelectedItemIndex (value - 1, sendNotification);
+		if(isPresetCombo == false)
+		{
+			if(isStringCombo == false)
+			{
+				int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+				if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
+					setSelectedItemIndex (value-1, sendNotification);
+				else
+					setSelectedItemIndex (value-1, dontSendNotification);
+			}
+			else
+			{
+				currentValueAsText = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString();
+				const int index = stringItems.indexOf(currentValueAsText);
+				if(index != -1)
+					setSelectedItemIndex (index, dontSendNotification);	
+					
+				CabbageWidgetData::setProperty(valueTree, CabbageIdentifierIds::value, currentValueAsText);
+			}
+		}
     }
 
     else
@@ -146,6 +200,13 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         setColour (PopupMenu::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
 
         setTooltip (getCurrentPopupText (valueTree));
+		
+		if(workingDir!=CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir))
+		{
+			addItemsToCombobox(valueTree);
+			workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+		}
+		
 
         if (refresh != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles))
         {

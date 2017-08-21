@@ -1,0 +1,1 @@
+**wrap(val)** Turns text wrapping on of off. This is set to 0 by default, so no wrapping of text is done

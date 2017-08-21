@@ -232,7 +232,6 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, b
     const bool isRectangle = button.getProperties().getWithDefault (CabbageIdentifierIds::shape, false);
     //float fontSize = jmin (30, button.getHeight());
     const float tickWidth = button.getHeight();
-
     bool toggleState = button.getToggleState();
 
     if (button.hasKeyboardFocus (true))
@@ -261,8 +260,9 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, b
     else    //if files don't exist, draw a native Cabbage checkbox
     {
         const int newTickWidth = (button.getButtonText().isEmpty() == true ? button.getWidth() : tickWidth);
-        image = drawToggleImage (newTickWidth, button.getHeight(), button.getToggleState(), button.findColour (toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId), isRectangle, corners);
-
+		const Colour col = button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId);
+        image = drawToggleImage (newTickWidth, button.getHeight(), button.getToggleState(), col, isRectangle, corners);
+		g.setOpacity(col.getAlpha()/255.f);
         g.drawImage (image, 0.f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth(), button.getHeight(), 0, 0, button.getWidth(), button.getHeight(), false);
     }
 
@@ -311,8 +311,9 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
             Colour bg1 = colour.darker();
             Colour bg2 = colour;
             ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width * 0.5, height * 0.5, false);
-            g.setGradientFill (cg);
-            g.fillRoundedRectangle (width * 0.01, height * 0.01, width * 0.99, height * 0.99, corners);
+            //g.setGradientFill (cg);
+			g.setColour(colour);
+			g.fillRoundedRectangle (width * 0.01, height * 0.01, width * 0.99, height * 0.99, corners);
             opacity = 0.2;
         }
 
@@ -337,7 +338,7 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
                                               width * 0.8, height * 0.8, false);
         g.setGradientFill (base);
         g.fillEllipse (0, 0, width, height);
-        g.setColour (Colours::black);
+        g.setColour (colour);
         g.fillEllipse (width * 0.09, height * 0.09, width * 0.82, height * 0.82);
         Colour outline = Colour::fromRGB (70, 70, 70);
         g.setColour (outline.withAlpha (colour.getAlpha()));
@@ -350,7 +351,7 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
         }
         else   //off
         {
-            g.setColour (Colours::black);
+            g.setColour (colour);
             g.fillEllipse (width * 0.09, height * 0.09, width * 0.82, height * 0.82);
 
             Colour bg1 = Colour::fromRGBA (25, 25, 28, 255);

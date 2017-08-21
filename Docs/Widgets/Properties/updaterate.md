@@ -1,0 +1,1 @@
+**updaterate(val)** Set the rate at which the display will update. val determines the number of milliseconds between update. The update rate is set to 100 milliseconds by default, which means the display will update itself 10 times a second. Smaller update rates will produce smoother images, but will cost more in terms of CPU.  

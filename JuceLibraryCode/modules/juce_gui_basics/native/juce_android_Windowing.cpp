@@ -121,7 +121,6 @@ class AndroidComponentPeer  : public ComponentPeer,
 public:
     AndroidComponentPeer (Component& comp, const int windowStyleFlags)
         : ComponentPeer (comp, windowStyleFlags),
-          usingAndroidGraphics (false),
           fullScreen (false),
           sizeAllocated (0),
           scale ((float) Desktop::getInstance().getDisplays().getMainDisplay().scale)
@@ -437,6 +436,12 @@ public:
     {
     }
 
+    void handleBackButtonCallback()
+    {
+        if (JUCEApplicationBase* const app = JUCEApplicationBase::getInstance())
+            app->backButtonPressed();
+    }
+
     //==============================================================================
     bool isFocused() const override
     {
@@ -583,7 +588,7 @@ private:
     //==============================================================================
     GlobalRef view;
     GlobalRef buffer;
-    bool usingAndroidGraphics, fullScreen;
+    bool fullScreen;
     int sizeAllocated;
     float scale;
     static AndroidComponentPeer* frontWindow;
@@ -664,6 +669,7 @@ JUCE_VIEW_CALLBACK (void, viewSizeChanged,  (JNIEnv* env, jobject /*view*/, jlon
 JUCE_VIEW_CALLBACK (void, focusChanged,     (JNIEnv* env, jobject /*view*/, jlong host, jboolean hasFocus),                       handleFocusChangeCallback (hasFocus))
 JUCE_VIEW_CALLBACK (void, handleKeyDown,    (JNIEnv* env, jobject /*view*/, jlong host, jint k, jint kc),                         handleKeyDownCallback ((int) k, (int) kc))
 JUCE_VIEW_CALLBACK (void, handleKeyUp,      (JNIEnv* env, jobject /*view*/, jlong host, jint k, jint kc),                         handleKeyUpCallback ((int) k, (int) kc))
+JUCE_VIEW_CALLBACK (void, handleBackButton, (JNIEnv* env, jobject /*view*/, jlong host),                                          handleBackButtonCallback())
 
 //==============================================================================
 ComponentPeer* Component::createNewPeer (int styleFlags, void*)
@@ -672,6 +678,18 @@ ComponentPeer* Component::createNewPeer (int styleFlags, void*)
 }
 
 //==============================================================================
+#define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD) \
+ METHOD (getRotation, "getRotation", "()I")
+
+DECLARE_JNI_CLASS (Display, "android/view/Display");
+#undef JNI_CLASS_MEMBERS
+
+#define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD) \
+ METHOD (getDefaultDisplay, "getDefaultDisplay", "()Landroid/view/Display;")
+
+DECLARE_JNI_CLASS (WindowManager, "android/view/WindowManager");
+#undef JNI_CLASS_MEMBERS
+
 bool Desktop::canUseSemiTransparentWindows() noexcept
 {
     return true;
@@ -684,7 +702,37 @@ double Desktop::getDefaultMasterScale()
 
 Desktop::DisplayOrientation Desktop::getCurrentOrientation() const
 {
-    // TODO
+    enum
+    {
+        ROTATION_0   = 0,
+        ROTATION_90  = 1,
+        ROTATION_180 = 2,
+        ROTATION_270 = 3
+    };
+
+    JNIEnv* env = getEnv();
+    LocalRef<jstring> windowServiceString (javaString ("window"));
+    LocalRef<jobject> windowManager = LocalRef<jobject> (env->CallObjectMethod (android.activity, JuceAppActivity.getSystemService, windowServiceString.get()));
+
+    if (windowManager.get() != 0)
+    {
+        LocalRef<jobject> display = LocalRef<jobject> (env->CallObjectMethod (windowManager, WindowManager.getDefaultDisplay));
+
+        if (display.get() != 0)
+        {
+            int rotation = env->CallIntMethod (display, Display.getRotation);
+
+            switch (rotation)
+            {
+                case ROTATION_0:   return upright;
+                case ROTATION_90:  return rotatedAntiClockwise;
+                case ROTATION_180: return upsideDown;
+                case ROTATION_270: return rotatedClockwise;
+            }
+        }
+    }
+
+    jassertfalse;
     return upright;
 }
 
@@ -895,12 +943,13 @@ void MouseCursor::showInWindow (ComponentPeer*) const   {}
 void MouseCursor::showInAllWindows() const  {}
 
 //==============================================================================
-bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& /*files*/, const bool /*canMove*/)
+bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& /*files*/, const bool /*canMove*/,
+                                                           Component* /*srcComp*/)
 {
     return false;
 }
 
-bool DragAndDropContainer::performExternalDragDropOfText (const String& /*text*/)
+bool DragAndDropContainer::performExternalDragDropOfText (const String& /*text*/, Component* /*srcComp*/)
 {
     return false;
 }

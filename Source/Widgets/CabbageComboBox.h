@@ -31,13 +31,16 @@ class CabbageComboBox
       public ComboBox::Listener
 {
     int offX, offY, offWidth, offHeight, pivotx, pivoty, refresh;
-    String name, tooltipText, caption, text, filetype;
+    String name, tooltipText, caption, text, filetype, workingDir;
     float rotate;
     File pluginDir;
     CabbagePluginEditor* owner;
     ValueTree widgetData;
-    bool isPresetCombo = false;
+    bool isStringCombo = false;
+	bool isPresetCombo = false;
+	String currentValueAsText ="";
     Array<File> snapshotFiles;
+	StringArray stringItems;
 
 public:
 
@@ -45,7 +48,7 @@ public:
     ~CabbageComboBox();
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
-    void addItemsToCombobox (ValueTree wData);
+    void addItemsToCombobox (ValueTree wData, bool refreshedFromDisk = false);
 
     void comboBoxChanged (ComboBox* combo); //is preset combo use this listener
 

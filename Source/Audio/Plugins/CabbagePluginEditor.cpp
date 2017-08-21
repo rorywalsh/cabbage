@@ -53,13 +53,6 @@ CabbagePluginEditor::~CabbagePluginEditor()
     popupPlants.clear();
 }
 
-//==============================================================================
-void CabbagePluginEditor::paint (Graphics& g)
-{
-    g.fillAll (backgroundColour.withAlpha (0.f));
-    //g.fillAll(Colour(uint8(0),uint8(0),uint8(0),0.f));
-}
-
 void CabbagePluginEditor::resized()
 {
 #ifdef Cabbage_IDE_Build
@@ -128,7 +121,7 @@ void CabbagePluginEditor::createEditorInterface (ValueTree widgets)
 //======================================================================================================
 void CabbagePluginEditor::setupWindow (ValueTree widgetData)
 {
-    const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption);
+    instrumentName = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption);
     setName (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption));
     const int width = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::height);
@@ -153,8 +146,11 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
 
     processor.cabbageWidgets.addChild (newWidget, -1, 0);
 	const String channel = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::channel);
-	CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, channel+String(processor.cabbageWidgets.getNumChildren()));
-    setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
+	
+	if(channel.isNotEmpty())
+		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, channel+String(processor.cabbageWidgets.getNumChildren()));
+    
+	setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
 
     insertWidget (newWidget);
     updateLayoutEditorFrames();
@@ -463,9 +459,12 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
     if (CabbageAudioParameter* param = getParameterForComponent (combo->getName()))
     {
-        param->beginChangeGesture();
-        const int value = combo->getSelectedItemIndex() + 1;
-        param->setValueNotifyingHost (value);
+		param->beginChangeGesture();
+		//preset combos work with 0 index, Cabbage combos start at 1..
+        if(CabbageWidgetData::getStringProp(getValueTreeForComponent(combo->getName()), CabbageIdentifierIds::filetype).contains("snaps"))
+			param->setValueNotifyingHost (param->range.convertTo0to1(combo->getSelectedItemIndex()));
+		else
+			param->setValueNotifyingHost (param->range.convertTo0to1(combo->getSelectedItemIndex()+1));
         param->endChangeGesture();
     }
 }
@@ -527,23 +526,23 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName()))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (slider->getValue());
+            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getValue()));
             param->endChangeGesture();
         }
     }
-    else
+	else
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (slider->getMinValue());
+            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getMinValue()));
             param->endChangeGesture();
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_max"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (slider->getMaxValue());
+            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getMaxValue()));
             param->endChangeGesture();
         }
     }
@@ -766,8 +765,8 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
 {
-    const File csdFile (processor.getCsdFile());
-    XmlElement xml = processor.savePluginState (csdFile.getFileNameWithoutExtension().replace (" ", "_"));
+    //const File csdFile (processor.getCsdFile());
+    XmlElement xml = processor.savePluginState (instrumentName.replace(" ", "_"));
     xml.writeToFile (snapshotFile.withFileExtension (".snaps"), "");
 }
 
@@ -786,10 +785,15 @@ void CabbagePluginEditor::refreshComboBoxContents()
         if ( type == "combobox")
         {
             const String name = CabbageWidgetData::getStringProp (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
-
-            if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
+			const String fileType = CabbageWidgetData::getProperty (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype);
+       
+			
+			if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
             {
-                combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i));
+				if(fileType.isNotEmpty())
+				{
+					combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i), true);					
+				}
             }
         }
     }
@@ -805,7 +809,7 @@ String CabbagePluginEditor::createNewGenericNameForPresetFile()
     //now check existing files in directory and make sure we use a unique name
     for (int i = 0; i < dirFiles.size(); i++)
     {
-        String newName = processor.getCsdFile().getFileNameWithoutExtension() + "_" + String (i + 1);
+        String newName = instrumentName + "_" + String (i + 1);
 
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
             newFileName = pluginDir.getFullPathName() + "\\" + newName + ".snaps";
@@ -824,7 +828,7 @@ String CabbagePluginEditor::createNewGenericNameForPresetFile()
             return newFileName;
     }
 
-    const String firstPresetFile = processor.getCsdFile().getFileNameWithoutExtension() + "_0";
+    const String firstPresetFile = instrumentName + "_0";
 
     if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
         return pluginDir.getFullPathName() + "\\" + firstPresetFile + ".snaps";

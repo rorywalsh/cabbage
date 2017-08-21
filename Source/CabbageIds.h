@@ -369,7 +369,6 @@ public:
         add ("guirefresh");
         add ("tablecolor");
         add ("radiogroup");
-        add ("sliderincr");
         add ("ballcolour");
         add ("menucolor");
         add ("popuptext");
@@ -377,6 +376,7 @@ public:
         add ("fontstyle");
         add ("fontcolor");
         add ("arraysize");
+		add ("increment");
         add ("populate");
         add ("keywidth");
         add ("pluginid");
@@ -569,7 +569,7 @@ static const Identifier sliderskew = "sliderskew";
 static const Identifier rotate = "rotate";
 static const Identifier pivotx = "pivotx";
 static const Identifier pivoty = "pivoty";
-static const Identifier sliderincr = "sliderincr";
+static const Identifier increment = "increment";
 static const Identifier midichan = "midichan";
 static const Identifier midictrl = "midictrl";
 static const Identifier kind = "kind";
@@ -726,7 +726,7 @@ public:
         set ("Minimum", CabbageIdentifierIds::min.toString());
         set ("Maximum", CabbageIdentifierIds::max.toString());
         set ("Skew", CabbageIdentifierIds::sliderskew.toString());
-        set ("Increment", CabbageIdentifierIds::sliderincr.toString());
+        set ("Increment", CabbageIdentifierIds::increment.toString());
         set ("Value", CabbageIdentifierIds::value.toString());
         set ("Text", CabbageIdentifierIds::text.toString());
         set ("Popup Text", CabbageIdentifierIds::popuptext.toString());
@@ -755,6 +755,7 @@ public:
         set ("Arrows", CabbageIdentifierIds::arrowcolour.toString());
         set ("Alpha", CabbageIdentifierIds::alpha.toString());
         set ("Zoom", CabbageIdentifierIds::zoom.toString());
+		set ("Radio Group", CabbageIdentifierIds::radiogroup.toString());
         set ("Corners", CabbageIdentifierIds::corners.toString());
         set ("Shape", CabbageIdentifierIds::shape.toString());
         set ("File", CabbageIdentifierIds::file.toString());
@@ -798,6 +799,8 @@ public:
         set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
         set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
         set ("Orientation", CabbageIdentifierIds::orientation.toString());
+		set ("Populate", CabbageIdentifierIds::populate.toString());
+		set ("Channel Type", CabbageIdentifierIds::channeltype.toString());
 
     }
 };

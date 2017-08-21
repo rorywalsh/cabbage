@@ -14,62 +14,41 @@ active(val), svgfile("type", "file")
 
 ##Identifiers
 
-**bounds(x, y, width, height)** 
-integer values that set position and size on screen(in pixels). 
+#include "./Properties/active.md"
 
-**channel("chan")** 
-"chan" is the name of the channel that Cabbage will communicate with Csound on. The current value of this widget can be retrieved in Csound using a chnget opcode, or can be set using a chnset opcode. 
+#include "./Properties/alpha.md"
 
-**text("offCaption", "onCaption")**
-The text identifier must be passed at least one string argument. This string will be the one that will appear on the button. If you pass two strings to text() the button will toggle between the two string each time it is pushed.  
+#include "./Properties/bounds.md"
 
-**value(val)**
-val sets the initial state of the widget
+#include "./Properties/caption.md"
 
-**colour:0("colour")**
-This sets the colour of the button when it's value is 0. Any CSS or HTML colour string can be passed to this identifier. The colour identifier can also be passed an RBG, or RGBA value. All channel values must be between 0 and 255. For instance colour(0, 0, 255) will create a blue, while colour(0, 255, 0, 255) will create a green with an alpha channel set to full. 
+#include "./Properties/channel.md"
 
-**colour:1("colour")**
-This sets the colour of the button when it's value is 1.  See above for details on valid colours. 
+#include "./Properties/colour_0.md"
 
->You can create an invisible button by setting the colour to something with an alpha value of 0. Images can then be placed under the button to create an image button. 
+#include "./Properties/colour_1.md"
 
-**fontcolour:0("colour")**
-Sets the colour of the text that appears on the button when it's in its off state. See above for details on valid colours. 
+#include "./Properties/fontcolour_0.md"
 
-**fontcolour:1("colour")**
-Sets the colour of the text that appears on the button when it's in its on state. See above for details on valid colours.
+#include "./Properties/fontcolour_1.md"
 
-**latched(val)**
-With latched set to 0 the button will send a message to Csound on the initial mouse press, and once again as soon as the user releases the button. Therefore the button will toggle between 0 and 1 on each click rather than needing two separate mouse clicks. 
+#include "./Properties/identchannel.md"
 
-**identchannel("channel")**
-Sets the channel which messages from Csound are sent to the widget on. When used with a chnset opcode users can override widget attributes. See [Identifier channels](./identchannels.md)
+#include "./Properties/latched.md"
 
-**rotate(radians, pivotx, pivoty)**
-Rotates the widget by a number of radians(2xPI=full rotation). pivotx and pivoty will determine the rotation pivot points, where 0, 0 represents the component's top-left position. 
+#include "./Properties/popup.md"
 
-**alpha(val)**
-A value between 0 and 1 will set the alpha blend value for the entire component. Can be useful if you need to fade widgets in and out. 
+#include "./Properties/rotate.md"
 
-**visible(val)**
-A value of 0 will cause the widget to become invisible. Widgets have their visibility set to 1 by default. 
+#include "./Properties/svgfile.md"
 
-**caption("caption")**
-This identifier will place the widget within a groupbox. "caption" is the text that will appear on group box. This identifier is included for legacy purposes only. It is recommended that you use use your own groupbox component as it will give you far more control over how everything appears on your instrument. 
+#include "./Properties/text.md"
 
-**widgetarray("chan", number)** Creates an number of widgets in a single pass. See [Widget arrays](./widget_arrays.md)
+#include "./Properties/value.md"
 
-**popuptext("text")** Displays a popup text box when a user hovers over the widget.
+#include "./Properties/visible.md"
 
-**active(val)** Will deactivate a control if 0 is passed. Controls which are deactivate can still be updated from Csound.
-
-**svgfile("type", "file")** Use this identifier to set a unique .svg file to use instead of the default look and feel. "type" should be one of the following:
-
-- "on" : sets the button image when it is on
-- "off" : sets the button image when it is off
-
-For more information see [Using SVGs](./using_svgs.md)
+#include "./Properties/Widget_array_property.md"
 
 <!--(End of identifiers)/-->
 
@@ -85,4 +64,4 @@ filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), 
 </Cabbage>
 ```
 
-![Button](images/buttonExample.png)
+![Button](../images/buttonExample.png)

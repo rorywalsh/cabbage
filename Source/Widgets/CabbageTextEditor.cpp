@@ -25,14 +25,15 @@
 CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _owner)
     : widgetData (wData),
       owner (_owner),
-      textEditor (this)
+      textEditor (this),
+	  isMultiline(CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode) == "multi" ? true : false)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
     addAndMakeVisible (textEditor);
-    textEditor.setMultiLine (false, false);
+    textEditor.setMultiLine(isMultiline, false);
     textEditor.setScrollbarsShown (false);
     textEditor.addListener (this);
     textEditor.addKeyListener (this);
@@ -46,7 +47,10 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
 
 void CabbageTextEditor::textEditorReturnKeyPressed (TextEditor&)
 {
-    sendTextToCsound();
+	if(!isMultiline)
+		sendTextToCsound();
+	else
+		textEditor.insertTextAtCaret("\n");
 }
 
 void CabbageTextEditor::resized()
@@ -56,7 +60,7 @@ void CabbageTextEditor::resized()
 void CabbageTextEditor::sendTextToCsound()
 {
     strings.add (textEditor.getText());
-    strings.removeDuplicates (false);
+    strings.removeDuplicates (false);  
     stringIndex = strings.size() - 1;
     setWidgetText (textEditor.getText());
     CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::text, getText());
@@ -65,21 +69,31 @@ void CabbageTextEditor::sendTextToCsound()
 
 bool CabbageTextEditor::keyPressed (const juce::KeyPress& key, Component*)
 {
-    if (key.getTextDescription().contains ("cursor up"))
-    {
-        textEditor.setText (strings[jmax (0, stringIndex--)]);
+	if(!isMultiline)
+	{
+		if (key.getTextDescription().contains ("cursor up"))
+		{
+			textEditor.setText (strings[jmax (0, stringIndex--)]);
 
-        if (stringIndex < 1)
-            stringIndex = 0;
-    }
-    else if (key.getTextDescription().contains ("cursor down"))
-    {
-        textEditor.setText (strings[jmin (strings.size() - 1, stringIndex++)]);
+			if (stringIndex < 1)
+				stringIndex = 0;
+		}
+		else if (key.getTextDescription().contains ("cursor down"))
+		{
+			textEditor.setText (strings[jmin (strings.size() - 1, stringIndex++)]);
 
-        if (stringIndex > strings.size() - 1)
-            stringIndex = strings.size() - 1;
-    }
-
+			if (stringIndex > strings.size() - 1)
+				stringIndex = strings.size() - 1;
+		}
+	}
+	else
+	{
+		if (key.getKeyCode() ==  KeyPress::returnKey && key.getModifiers().isCommandDown())
+		{
+			sendTextToCsound();
+		}
+	}
+	
     return false;
 }
 

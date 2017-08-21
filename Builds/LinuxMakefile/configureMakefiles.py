@@ -27,6 +27,26 @@ if len(sys.argv)==1:
 else:
 	pathToJucer = sys.argv[1];
 
+createIDECommand = str(pathToJucer)+ " --resave ../../CabbageIDE.jucer"
+process = subprocess.Popen(createIDECommand, shell=True, stdout=subprocess.PIPE)
+process.wait()
+
+with open("Makefile", "rt") as file:
+	lines = file.read().splitlines()
+	for lineIndex in range(0, len(lines)):
+		if "$(JUCE_OBJDIR)/include_juce_audio_plugin_client_utils \\" in lines[lineIndex]:
+			lines[lineIndex] = " \\"
+		if "../../JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp" in lines[lineIndex]:
+			lines[lineIndex] = ""
+			lines[lineIndex+1] = ""
+			lines[lineIndex+2] = ""
+			lines[lineIndex+3] = ""
+
+
+	# Write the file out again
+	with open('MakeCabbageIDE', 'w+') as file:
+		file.write('\n'.join(lines))
+
 createPluginCommand = str(pathToJucer)+ " --resave ../../CabbagePlugin.jucer"
 process = subprocess.Popen(createPluginCommand, shell=True, stdout=subprocess.PIPE)
 process.wait()
@@ -55,22 +75,3 @@ with open("Makefile", "rt") as file:
 	with open('MakePluginEffect', 'w+') as file:
 	  file.write(filedata)
 
-createIDECommand = str(pathToJucer)+ " --resave ../../CabbageIDE.jucer"
-process = subprocess.Popen(createIDECommand, shell=True, stdout=subprocess.PIPE)
-process.wait()
-
-with open("Makefile", "rt") as file:
-	lines = file.read().splitlines()
-	for lineIndex in range(0, len(lines)):
-		if "$(JUCE_OBJDIR)/juce_audio_plugin_client_utils_35fbf7.o \\" in lines[lineIndex]:
-			lines[lineIndex] = " \\"
-		if "$(JUCE_OBJDIR)/juce_audio_plugin_client_utils_35fbf7.o: ../../JuceLibraryCode/juce_audio_plugin_client_utils.cpp" in lines[lineIndex]:
-			lines[lineIndex] = ""
-			lines[lineIndex+1] = ""
-			lines[lineIndex+2] = ""
-			lines[lineIndex+3] = ""
-
-
-	# Write the file out again
-	with open('MakeCabbageIDE', 'w+') as file:
-		file.write('\n'.join(lines))

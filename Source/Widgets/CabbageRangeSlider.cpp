@@ -48,7 +48,7 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
 
     decimalPlaces = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces);
-    sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderincr);
+    sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     sliderSkew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
 
     slider.setRange (min, max, sliderIncrement);
@@ -77,7 +77,7 @@ void CabbageRangeSlider::setSliderValues (ValueTree wData)
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
 
     decimalPlaces = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces);
-    sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderincr);
+    sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     sliderSkew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
 
     slider.setRange (min, max, sliderIncrement);

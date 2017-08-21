@@ -1,0 +1,1 @@
+**text("name")** "name" will be the text that appears on the top right hand side of the XYpad surface.  

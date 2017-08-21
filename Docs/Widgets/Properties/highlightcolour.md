@@ -1,0 +1,1 @@
+**highlightcolour("colour")** Sets the colour of the selected text. See above for details on valid colours.

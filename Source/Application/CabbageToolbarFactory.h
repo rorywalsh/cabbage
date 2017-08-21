@@ -67,6 +67,9 @@ public:
 private:
 
     ToolbarButton* createButtonFromSVG (const int itemId, const String& text, const String svgFile, const String onFile = "");
+	ToolbarButton* createButtonFromPNG (const int itemId, const String& text, const void* svg, size_t size, const String onFile = "");
+	ToolbarButton* createToggleButtonFromPNG(const int itemId, const String& text, const void* png1, size_t size1, const void* png2, size_t size2);
+
 
 
     class ToolbarComboBox : public ToolbarItemComponent

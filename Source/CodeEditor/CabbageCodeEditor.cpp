@@ -31,14 +31,17 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
       autoCompleteListBox(),
       Thread ("parseVariablesThread"),
       debugLabel (""),
-      currentLineMarker()
+      currentLineMarker(),
+	  lookAndFeel3()
 {
     //setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
-    this->setLookAndFeel(&lAf);
+    this->setLookAndFeel(&lookAndFeel3);
 	setScrollbarThickness (20);
 	
+	addToGUIEditorPopup = new AddCodeToGUIEditorComponent(this, "Add to code repository", Colour(25, 25, 25));
+	addToGUIEditorPopup->setVisible(false);
 
     if (File (opcodeFile).existsAsFile())
         setOpcodeStrings (File (opcodeFile).loadFileAsString());
@@ -62,7 +65,6 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     currentLineMarker.setColour (lineNumberBackground.contrasting().withAlpha (.3f));
     addAndMakeVisible (currentLineMarker);
 
-    //setCommandManager (commandManager);
 }
 
 void CabbageCodeEditorComponent::updateColourScheme()
@@ -606,7 +608,7 @@ bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps
 void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this is called on a separate thread..
 {
     StringArray csdArray = this->getAllTextAsStringArray();
-
+	instrumentsAndRegions.clear();
     for (int i = 0 ; i < csdArray.size() ; i++)
     {
         if (csdArray[i].indexOf ("<Cabbage>") != -1)
@@ -618,9 +620,16 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this i
         {
             instrumentsAndRegions.set ("<CsoundSynthesizer>", i);
         }
+		
+		else if ( csdArray[i].indexOf(";- Region:") != -1)
+		{
+			const String region = csdArray[i].replace(";- Region:", "");
+			instrumentsAndRegions.set (region, i);
+		}
 
 
-        else if (csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr	") != -1)
+        else if ((csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr	") != -1) &&
+		csdArray[i].substring(0, csdArray[i].indexOf ("instr")).isEmpty())
         {
             int commentInLine = csdArray[i].indexOf (";");
             String line = csdArray[i];
@@ -710,6 +719,113 @@ void CabbageCodeEditorComponent::showAutoComplete (String currentWord)
             autoCompleteListBox.setVisible (true);
         }
     }
+}
+//===========================================================================================================
+void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
+{
+    if (e.mods.isPopupMenu())
+    {
+        PopupMenu m, subM;
+        m.setLookAndFeel (&owner->getLookAndFeel());
+        addPopupMenuItems (m, &e);
+		m.addItem(10, "Add to code repository");
+		
+		StringArray codeSnippets = addItemsToPopupMenu(subM);
+		m.addSubMenu("Insert from code repository", subM);
+		
+		const int menuItemID = m.show();
+		
+		if(menuItemID==1)
+			this->cutToClipboard();
+		else if(menuItemID==2)
+			this->copyToClipboard();
+		else if(menuItemID==3)
+			this->pasteFromClipboard();
+		else if(menuItemID==4)
+			this->deleteForwards(true);
+		else if(menuItemID==5)
+			this->selectAll();
+		else if(menuItemID==6)
+			this->undo();
+		else if(menuItemID==7)
+			this->redo();			
+		else if(menuItemID==10)
+			addToGUIEditorContextMenu();
+		else if(menuItemID>=100)
+		{
+			this->insertText(codeSnippets[menuItemID-100]);
+		}
+    }
+	else
+		moveCaretTo (getPositionAt (e.x, e.y), e.mods.isShiftDown());
+}
+//===========================================================================================================
+void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKeyPressed(TextEditor &)
+{
+	if(editor.getText() !="Enter name for GUI code")
+	{
+		ScopedPointer<XmlElement> repoXml;
+		XmlElement *newEntryXml;
+		repoXml = owner->owner->settings->getUserSettings()->getXmlValue("CopeRepoXmlData");
+		
+		if(!repoXml)
+			repoXml = new XmlElement("CodeRepoXmlData");
+		
+		StringArray snippetNames;
+		
+		for( int i = 0 ; i<repoXml->getNumAttributes() ; i++)
+			snippetNames.add(repoXml->getAttributeName(i));
+	
+		if(snippetNames.contains(editor.getText()))
+		{
+			const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite the existing plant?",  &cabbageLoookAndFeel);
+			if(result == 1)
+			{
+				repoXml->setAttribute(editor.getText(), owner->getSelectedText());
+				owner->owner->settings->getUserSettings()->setValue("CopeRepoXmlData", repoXml);
+			}
+			else
+				CabbageUtilities::showMessage("Nothing written to repository", &cabbageLoookAndFeel);
+		}
+		else
+		{
+			repoXml->setAttribute(editor.getText(), owner->getSelectedText());
+			owner->owner->settings->getUserSettings()->setValue("CopeRepoXmlData", repoXml);
+
+		}
+
+		repoXml = nullptr;			
+	}
+	
+	setVisible(false);	
+}
+
+void CabbageCodeEditorComponent::addToGUIEditorContextMenu()
+{
+	addToGUIEditorPopup->setVisible(true);
+	addToGUIEditorPopup->toFront(true);
+}
+
+StringArray CabbageCodeEditorComponent::addItemsToPopupMenu(PopupMenu& m)
+{
+	StringArray customCodeSnippets;
+	ScopedPointer<XmlElement> repoXml;
+	XmlElement *newEntryXml, *newEntryXml1;
+	
+	repoXml = owner->settings->getUserSettings()->getXmlValue("CopeRepoXmlData");
+	
+	if(!repoXml)
+		return StringArray("");
+		
+		
+	for( int i = 0 ; i<repoXml->getNumAttributes() ; i++)
+	{
+		m.addItem( 100+i, repoXml->getAttributeName(i));
+		customCodeSnippets.add(repoXml->getAttributeValue(i));			
+	}
+	
+	return customCodeSnippets;
+
 }
 //===========================================================================================================
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* originatingComponent)

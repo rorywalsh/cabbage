@@ -9,8 +9,8 @@
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
-              jucerVersion="5.0.1" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
-              reportAppUsage="1" splashScreenColour="Dark">
+              jucerVersion="5.0.2" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
+              reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
@@ -235,7 +235,7 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="MSVC=1&#10;CABBAGE=1"
+    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Effect=1"
             externalLibraries="csound64.lib">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
@@ -282,7 +282,7 @@
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="enabled" JUCE_JACK="enabled"
-               JUCE_WEB_BROWSER="disabled"/>
+               JUCE_WEB_BROWSER="enabled"/>
   <LIVE_SETTINGS>
     <LINUX/>
   </LIVE_SETTINGS>

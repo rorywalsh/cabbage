@@ -17,6 +17,7 @@
 
 class GenericCabbagePluginProcessor  : public CsoundPluginProcessor
 {
+String pluginName;
 public:
     GenericCabbagePluginProcessor (File inputFile);
     ~GenericCabbagePluginProcessor();
@@ -26,6 +27,8 @@ public:
     OwnedArray<AudioParameterFloat> parameters;
 
     void sendChannelDataToCsound();
+    void setPluginName (String name) {    pluginName = name;  }
+    String getPluginName() { return pluginName;  }
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
