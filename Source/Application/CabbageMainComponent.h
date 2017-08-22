@@ -166,7 +166,7 @@ private:
         {
             setSize (600, 600);
             setName (caption);
-            this->setResizable (false, true);
+            this->setResizable (true, true);
         }
 
         void closeButtonPressed() override {    setVisible (false);  }
