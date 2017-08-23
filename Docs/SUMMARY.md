@@ -22,7 +22,7 @@
 	* [Reserved channels and Macros](macros_and_reserved_channels.md)
 	* [Managing large numbers of Widgets](managing_large_numbers_of_widgets.md)
 	* [Using SVGs](using_svgs.md)
-	* [Working with sound files](sound_file.md)
+	* [Working with sound files](soundfiles.md)
 * [Widget Reference](cabbage_syntax.md)
 	* [Button](./Widgets/button.md)
 	* [Button(File)](./Widgets/button_file.md)

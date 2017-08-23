@@ -1,10 +1,10 @@
 # Macros and Reserved Channels
-Cabbage specific macros can be used to define a range of difference identifiers, a provide tidy way of achieving a consistent look and feel across your instrument's widgets without having to hard code each and every one of a widget's identifiers. To create a macro one must define it using a #define keyword. The following code will create a macro called SLIDER1 that will define several attributes of a slider widget:
+Cabbage specific macros can be used to define a range of difference identifiers, and provide a way of achieving a consistent look and feel across your instrument's widgets, without having to hardcode each and every identifier. To create a macro one must define it using a `#define` keyword. The following code will create a macro called `SLIDER1` that will define several attributes of a slider widget:
 
 ```csharp
 #define SLIDER1 colour("red"), fontcolour("yellow"), outlinecolour("red"), range(0, 1000, 500)
 ```
-The macro can then be used anywhere else in your Cabbage code by placing it on an appropriate line of Cabbage code. For example, the following code uses the above macro with an rslider.
+The macro can then be used anywhere in your Cabbage code section by placing it on an appropriate line of Cabbage code. For example, the following code uses the above macro with an rslider.
 
 ```csharp
 rslider bounds(39, 12, 50, 50), channel("rslider"), $SLIDER1
@@ -34,16 +34,13 @@ prints $SLIDER1
 
 
 ### Cabbage Csound Macros 
-The following are Csound macros that are set by Cabbage when it first loads. Thee macros are accessed in Csound in the very same way that regular instrument macros are. Note however that each of these macros returns a string value. Therefore you may need to convert them to a number using the strtod opcode.  
+The following are Csound macros that are set by Cabbage when it first loads. These macros are accessed in Csound in the very same way that regular instrument macros are. Note however that each of these macros returns a string value. Therefore you may need to convert them to a number using the strtod opcode.  
 
 **IS_A_PLUGIN** Defined if the instrument is running as a plugin
 
 **SCREEN_WIDTH** Provides the instrument width in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen width. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.md).  
 
 **SCREEN_HEIGHT** Provides the instrument height in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen height. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.md).  
-
-**IS_ANDROID** Defined only if the instrument is being launched on an Android device. 
-
 
 ## Reserved Channels
 
