@@ -7,6 +7,5 @@ Cabbage is a 'host' application. It treats each and every Csound instruments as 
 ##Using these docs
 The following pages will take you through the basic using of Cabbage; from navigating features of the main development environment to exporting VST plugins. If you wish to start making sounds straight away, navigate to the [First synth](first_synth.html) page and start there. If you wish to learn more about Cabbage and its features, visit the [Using Cabbage](../using_cabbage.html) page. If you are curious about Csound and wish to learn more visit the [Beginners](../beginners.html) section.  
 
-Also included is a reference section for the various GUI widgets available in Cabbage. This section should be your first stop when developing graphical interfaces for your instruments.  
-
+A reference section for all the available GUI widgets is available from the mune on the right. This reference manual can be launched directly from the Cabbage code editor.  
 ![Button](images/screens/ConvolutionReverbScreen.png "Convolution Reverb plugins included with Cabbage examples")
