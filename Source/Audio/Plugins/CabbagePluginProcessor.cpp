@@ -139,6 +139,7 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
 			for (int i = 0; i < CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray).size(); i++)
 			{
 				ValueTree copy = tempWidget.createCopy();
+				const String chan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i].toString();
 				CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::channel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i]);
 				CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::identchannel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i]);
 				cabbageWidgets.addChild (copy, -1, 0);
@@ -404,11 +405,15 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
     for ( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
         const var chanArray = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
-        StringArray channels;
+        const var widgetArray = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::widgetarray);
+        
+		StringArray channels;
 
-        if (chanArray.size() == 1)
+		if(widgetArray.size()>0)
+			channels.add (CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel));
+        else if (chanArray.size() == 1)
             channels.add (CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel));
-        else if(chanArray.size() < 1)
+        else if(chanArray.size() > 1)
         {
             for (int j = 0; j < chanArray.size(); j++)
                 channels.add (var (chanArray[j]));
@@ -421,8 +426,10 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
         const String identChannelMessage = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::identchannelmessage);
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
+		const String chann = channels[0];
+
 		
-		if (chanArray.size() == 1 && channels[0].isNotEmpty())
+		if (channels.size() == 1 && channels[0].isNotEmpty())
 		{
 				
 					if (typeOfWidget != "combobox")	// don't update combobox in here, it will enter a recursive loop
@@ -450,7 +457,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 		}
 		
 		//currently only dealing with a max of 2 channels...
-		else if(chanArray.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty())
+		else if(channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty())
 		{
 			if(getCsound()->GetChannel (channels[0].toUTF8()) != valuex
 				|| getCsound()->GetChannel (channels[1].toUTF8()) != valuey)
@@ -469,6 +476,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 				}			
 			}	
 		}
+
 			
         if (identChannel.isNotEmpty())
         {
