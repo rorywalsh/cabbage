@@ -4,7 +4,6 @@ Cabbage plants are simply groups of widgets that are bound to a parent widget. A
 
 Plants are created by enclosing a group of widgets within curly brackets. In the code below an image is set up as a plant, or parent widget. The plant has three child sliders, which all use relative coordinates. For example, the first checkbox will appear 20 pixels from the rightmost edge of the image, and 4 pixels from the topmost edge. 
 
-##Example
 ```csharp
 image bounds(6, 0, 300, 200), colour(255, 0, 0, 255)
 {

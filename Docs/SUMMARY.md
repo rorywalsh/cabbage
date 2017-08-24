@@ -11,7 +11,7 @@
 	* [Cabbage Syntax](cabbage_syntax.md)
 	* [A simple Synthesiser](beginner_synth.md)
 	* [A simple Effect](first_effect.md)
-	* [Modifiying the Audio Graph](audio_graph.md)
+	* [The Cabbage patcher](audio_graph.md)
 	* [Exporting instruments as plugins](exporting.md)
 	* [Distributing instruments](distributing.md)
 * [Features](features.md)
