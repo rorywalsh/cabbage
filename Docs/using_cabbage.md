@@ -6,7 +6,7 @@ Instrument development and prototyping is carried out with the main Cabbage IDE.
 
 [Creating new files](#NewFiles) 
 
-[Building/compiling instruments](#Building) 
+[Building/exporting instruments](#Building) 
 
 [Creating GUI interfaces for instruments](#CreatingGUIs) 
 
@@ -36,8 +36,8 @@ The choices are:
 >Note that these templates are provided for quickly creating new instruments. One can modify any of the template code to convert it from a synth to an effect or vice versa. 
 
 <a name="Building"></a>
-##Building/compiling instruments
-To run an instrument users can use the controls at the top of the file's editor. Alternatively one can go to the Tools menu and hit Build Instrument. 
+##Building/exporting instruments
+To run an instrument users can use the controls at the top of the file's editor. Alternatively one can go to the 'Tools' menu and hit 'Build Instrument'. If you wish to export a plugin go to 'Export' and choose the type of plugin you wish to export. More details on exporting plugins is available [here](exporting.html). 
 ![](images/first_synth.gif)
 >Closing a file will not stop it from performing. To stop a file from performing you must hit the Stop button.  
 
