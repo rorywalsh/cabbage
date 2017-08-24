@@ -35,6 +35,7 @@ instr 100
     SFilepath chnget "sampleFolderButton"
     if changed:k(SFilepath) == 1 then
         gSSamplePath = SFilepath
+        printks SFilepath, 0
         event "i", 101, 0, 0.1
     endif
 endin
@@ -44,9 +45,10 @@ endin
 instr 101
     prints "Loading files to function tables"
     iFirstTableNumber = 100
+    SFilepath chnget "sampleFolderButton"
     kTrig = 1   ;using k-rate version because of bug with i-rate version
-    gkNumTables ftsamplebank "/home/rory/Documents/NiMPTi/Drums1/", iFirstTableNumber, kTrig, 0, 4, 1
-    gSFiles[] directory "/home/rory/Documents/NiMPTi/Drums1/", ".wav"
+    gkNumTables ftsamplebank SFilepath, iFirstTableNumber, kTrig, 0, 4, 1
+    gSFiles[] directory SFilepath, ".wav"
     event_i "i", 102, 1, 0
 endin
 
