@@ -1,4 +1,4 @@
-#Introduction
+#Using Cabbage
 
 Cabbage is a software for prototyping and developing audio instruments with the Csound audio synthesis language. Instrument development and prototyping is carried out with the main Cabbage IDE. Users write and compile Csound code in a code editor. If one wishes one can also create a graphical frontend, although this is no longer a requirement for Cabbage. Any Csound file can be run with Cabbage, regardless of whether or not it has a graphical interface. Cabbage is designed for realtime processing in mind. It is possible to use Cabbage to run Csound in the more traditional score-driven way, but your success may vary. 
 

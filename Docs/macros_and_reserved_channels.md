@@ -76,3 +76,4 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **IS_A_PLUGIN** Returns 1 if the instrument is running as an audio plugin, and 0 if the instrument is running as a standalone. 
 
+> More info on how to use reserved channels to get information from an audio host to Csound can be found [here](host_info.html)
