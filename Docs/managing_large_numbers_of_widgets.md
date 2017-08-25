@@ -2,9 +2,7 @@
 
 It can seem like a lot of work at times to deal with large numbers of widgets, but with a little thought and consideration things can be made a lot easier. The previous instrument (see [WidgetArrays](./widget_arrays.md)) will serve as a good starting point to explore this topic. 
 
-The [WidgetArrays](./widget_arrays.md) example dynamically created and positioned 100 check box widgets to the screen. So let's say that we want to turn the matrix of check boxes into a simple step sequencer. To do so we will need to check the value of each check box in each column at a set rate. The long way to do this would be to test the state of each check box manually on every k-cycle. The code for that might look like this.
-
-> Note that the Csound code presented in this section will only work with Csound 6.07 onwards due to changes made in how array opcodes are handled during looping operations. Cabbage prints the current version of Csound in the console windows on startup. You can check there which version is installed. 
+The [WidgetArrays](./widget_arrays.md) example dynamically created and positioned 100 check box widgets to the screen. Let's say we turn the matrix of check boxes into a simple step sequencer. To do so we will need to check the value of each check box in each column at a set rate. The long way to do this would be to test the state of each check box manually on every k-cycle. The code for that might look like this.
 
 ```csharp
 instr 1
@@ -123,3 +121,5 @@ i2 1 1000
 </CsScore>
 </CsoundSynthesizer>
 ```
+
+> Note that `chnget` can be used with strings that are updated at k-rate, `chnset` cannot. This issue is addressed above by calling `chnset` in `instr 1` in an i-rate loop. This limitation will be removed in Csound version 6.10.

@@ -1,4 +1,4 @@
-# Modifiying the audio graph
+# The Cabbage patcher
 
 The Cabbage patcher provides users with the means of accessing and modifying the digital audio graph. A digital audio graph consists of nodes and connections. Each node is an instrument, either a synth, or an effect. And each will contain audio and MIDI inputs and outputs.
 

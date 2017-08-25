@@ -590,8 +590,6 @@ void AudioGraph::createNodeFromXml (const XmlElement& xml)
     //xml.writeToFile (File ("/home/rory/Desktop/NodeTest.xml"), "");
     AudioProcessorGraph::Node::Ptr node = createNode (desc, xml.getIntAttribute ("uid"));
 
-	CabbageUtilities::debug(xml.getStringAttribute ("y"));
-
     if (node == nullptr)
         jassertfalse;
 

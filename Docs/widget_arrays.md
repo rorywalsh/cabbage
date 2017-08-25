@@ -1,5 +1,5 @@
 # Quickly creating multiple widgets
-If you wish to create a large number of widgets you can use the widgetarray() identifier, which takes a base channel name, and the number of widgets to be created. Each widget channel will have an underscore and number appended to them, e.g., chan_1, chan_2. While each identchannel will have a _ident string and number appended to them, e.g., chan_ident1, chan_ident2, etc. The following code will create 100 checkboxes, all sharing the same position.
+If you wish to create a large number of widgets you can use the `widgetarray()` identifier, which takes a base channel name, and the number of widgets to be created. Each widget channel will have an underscore and number appended to them, e.g., chan_1, chan_2. Each identifier channel will have an _ident string and number appended to them, e.g., chan_ident1, chan_ident2, etc. The following code will create 100 checkboxes, all sharing the same position.
 
 ```csharp
 checkbox bounds(10, 10, 50, 50), channelarray("test", 100), value(1)
@@ -58,7 +58,5 @@ i1 0 1000
 ```
 
 ![WidgetArrayExample](images/widgetArray.gif)
-
-For more details on how to controls widgets from Csound code look at the [Controlling widgets](./controlling.md) section. 
 
 > Widget arrays don't work with plants!

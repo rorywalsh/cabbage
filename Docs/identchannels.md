@@ -39,6 +39,9 @@ i2 0 1000
 </CsScore>
 </CsoundSynthesizer> 
 ```
+The above code creates this type of effect.
+
+![Random Movement](images/random_combo.gif)
 
 Identifier channels can also be used with [Plants](./plants.md). In the following example, 3 plants, containing 4 hsliders each are placed on top of each other. One has visible() set to 1, while the others have visible() set to 0. When the instrument first launches, the users sees only one of the slider plants. As the user clicks on the button marked toggle, they can show and hide the other plants. 
 
