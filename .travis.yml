@@ -26,12 +26,12 @@ addons:
       - cmake
   coverity_scan:
     project:
-      name: "rorywalsh/cabaiste"
+      name: "rorywalsh/cabbage"
       description: "<Your project description here>"
     notification_email: rorywalsh@ear.ie
     build_command_prepend: 
 
-    build_command:  "make -f ~/build/rorywalsh/cabaiste/Builds/LinuxMakefile/MakeCabbageIDE"
+    build_command:  "make -f ~/build/rorywalsh/cabbage/Builds/LinuxMakefile/MakeCabbageIDE"
     branch_pattern: coverity_scan
 
 before_install:
@@ -76,7 +76,7 @@ before_script:
     - sudo make -j4
     - sudo make install
     - sudo ldconfig
-    - cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/
+    - cd /home/travis/build/rorywalsh/cabbage/Builds/LinuxMakefile/
 
 script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
