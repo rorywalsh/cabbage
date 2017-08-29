@@ -3,4 +3,4 @@
 - "on" : sets the button image when it is on
 - "off" : sets the button image when it is off
 
-For more information see [Using SVGs](./using_svgs.md)
+For more information see [Using SVGs](./using_svgs.html)

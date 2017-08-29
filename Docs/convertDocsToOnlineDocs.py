@@ -31,8 +31,8 @@ for filename in docfiles:
 			if "```html" in line:
 				line = line.replace("```html", "```csharp")
 
-			if "[Identifier channels](./identchannels.md)" in line:
-				line = line.replace("[Identifier channels](./identchannels.md)", "[Identifier channels](../identchannels/index.html)")
+			if "[Identifier channels](./identchannels.html)" in line:
+				line = line.replace("[Identifier channels](./identchannels.html)", "[Identifier channels](../identchannels/index.html)")
 
 			if "[Widget arrays](./widget_arrays.md)" in line:
 				line = line.replace("[Widget arrays](./widget_arrays.md)", "[Widget arrays](../widget_arrays/index.html)")

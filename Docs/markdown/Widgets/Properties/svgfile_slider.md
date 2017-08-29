@@ -3,4 +3,4 @@
 - "background" : sets the slider background image
 - "slider" : sets the slider thumb, or in the case of a rotary slider, the inner circle. This image moves in sympathy with that the mouse as users move the slider.
 
-For more information see [Using SVGs](./using_svgs.md)
+For more information see [Using SVGs](./using_svgs.html)

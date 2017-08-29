@@ -3,13 +3,16 @@ import include
 import os, sys
 import shutil
 
-if os.path.exists('CabbageDocs') == False:
-	os.mkdir("CabbageDocs")
+if os.path.exists('CabbageDocs') == True:
+	shutil.rmtree('CabbageDocs')
+os.mkdir("CabbageDocs")
+
 if os.path.exists('CabbageDocs/Widgets') == False:
 	os.mkdir("CabbageDocs/Widgets")
 if os.path.exists('CabbageDocs/images') == False:
 	shutil.copytree("images", "CabbageDocs/images")
-
+if os.path.exists('CabbageDocs/Styles') == False:
+	shutil.copytree("Styles", "CabbageDocs/Styles")
 
 
 def createHtmlFiles( file ):
@@ -27,9 +30,7 @@ def createHtmlFiles( file ):
 	<title>Cabbage user Manual</title>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-	<link href='../../Styles/menu.css' rel='stylesheet' type='text/css'>
-	<link href='../Styles/menu.css' rel='stylesheet' type='text/css'>
-	<link href='./Styles/menu.css' rel='stylesheet' type='text/css'>
+	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
 	<input type="checkbox" id="menu-toggle" />
@@ -76,30 +77,30 @@ def createHtmlFiles( file ):
 	</ul>
 	</li>
 	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
-	<li><a href="./Widgets/button.html">Button</a></li>
-	<li><a href="./Widgets/button_file.html">Button(File)</a></li>
-	<li><a href="./Widgets/button_info.html">Button(Info)</a></li>
-	<li><a href="./Widgets/checkbox.html">Checkbox</a></li>
-	<li><a href="./Widgets/combobox.html">Combobox</a></li>
-	<li><a href="./Widgets/csound_output.html">Csound Output</a></li>
-	<li><a href="./Widgets/encoder.html">Endless encoder</a></li>
-	<li><a href="./Widgets/gentable.html">Gentable</a></li>
-	<li><a href="./Widgets/form.html">Form</a></li>
-	<li><a href="./Widgets/groupbox.html">Groupbox</a></li>
-	<li><a href="./Widgets/hrange.html">Hrange</a></li>
-	<li><a href="./Widgets/image.html">Image</a></li>
-	<li><a href="./Widgets/keyboard.html">Keyboard</a></li>
-	<li><a href="./Widgets/label.html">Labels</a></li>
-	<li><a href="./Widgets/listbox.html">Listbox</a></li>
-	<li><a href="./Widgets/meter.html">Meteres</a></li>
-	<li><a href="./Widgets/numberbox.html">Numberbox</a></li>
-	<li><a href="./Widgets/signaldisplay.html">SignalDisplay</a></li>
-	<li><a href="./Widgets/sliders.html">Sliders</a></li>
-	<li><a href="./Widgets/soundfiler.html">Soundfiler</a></li>
-	<li><a href="./Widgets/textbox.html">Textbox</a></li>
-	<li><a href="./Widgets/texteditor.html">Texteditor</a></li>
-	<li><a href="./Widgets/vrange.html">Vrange</a></li>
-	<li><a href="./Widgets/xypad.html">XY Pad</a></li>
+	<li><a href="button.html">Button</a></li>
+	<li><a href="button_file.html">Button(File)</a></li>
+	<li><a href="button_info.html">Button(Info)</a></li>
+	<li><a href="checkbox.html">Checkbox</a></li>
+	<li><a href="combobox.html">Combobox</a></li>
+	<li><a href="csound_output.html">Csound Output</a></li>
+	<li><a href="encoder.html">Endless encoder</a></li>
+	<li><a href="gentable.html">Gentable</a></li>
+	<li><a href="form.html">Form</a></li>
+	<li><a href="groupbox.html">Groupbox</a></li>
+	<li><a href="hrange.html">Hrange</a></li>
+	<li><a href="image.html">Image</a></li>
+	<li><a href="keyboard.html">Keyboard</a></li>
+	<li><a href="label.html">Labels</a></li>
+	<li><a href="listbox.html">Listbox</a></li>
+	<li><a href="meter.html">Meteres</a></li>
+	<li><a href="numberbox.html">Numberbox</a></li>
+	<li><a href="signaldisplay.html">SignalDisplay</a></li>
+	<li><a href="sliders.html">Sliders</a></li>
+	<li><a href="soundfiler.html">Soundfiler</a></li>
+	<li><a href="textbox.html">Textbox</a></li>
+	<li><a href="texteditor.html">Texteditor</a></li>
+	<li><a href="vrange.html">Vrange</a></li>
+	<li><a href="xypad.html">XY Pad</a></li>
 	</ul>
 	</li>
 	<li><a href="add_new_widgets.html">Adding new Widgets</a><ul>
@@ -117,10 +118,7 @@ def createHtmlFiles( file ):
 
 	filename = os.path.splitext(os.path.basename(file))[0]+".html"
 	print "Converting: " + file + " to " + filename
-	if "Widgets" in file:
-		output_file = open("./CabbageDocs/Widgets/"+filename, 'w')
-	else:
-		output_file = open("./CabbageDocs/"+filename, 'w')
+	output_file = open("./CabbageDocs/"+filename, 'w')
 
 	output_file.write(''.join(fullHtmlOutput))
 	output_file.close()

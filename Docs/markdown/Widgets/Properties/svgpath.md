@@ -9,5 +9,5 @@
 - buttonon.svg: used to draw a button when on. 
 - buttonoff.svg: used to draw a button when off. 
 
-> Theming your instruments can also be done using images, but the advantage of using SVGs is that can they will scale without loss of resolution. You should exercise some caution when using text. If the font you choose if not available on the target platform, it will not be drawn. Also note that unlike shapes and lines, text does not scale well. For more information please see [Using SVGs](./using_svgs.md)
+> Theming your instruments can also be done using images, but the advantage of using SVGs is that can they will scale without loss of resolution. You should exercise some caution when using text. If the font you choose if not available on the target platform, it will not be drawn. Also note that unlike shapes and lines, text does not scale well. For more information please see [Using SVGs](./using_svgs.html)
 

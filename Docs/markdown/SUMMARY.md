@@ -18,7 +18,7 @@
     * [Distributing instruments](distributing.md)
 * [Features](features.md)
     * [Plants](plants.md)
-    * [Controlling widgets with Csound](identchannels.md)
+    * [Controlling widgets with Csound](identchannels.html)
     * [Presets](presets.md)
     * [Widget arrays](widget_arrays.md)
     * [Reserved channels and Macros](macros_and_reserved_channels.md)

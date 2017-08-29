@@ -38,9 +38,9 @@ The following are Csound macros that are set by Cabbage when it first loads. The
 
 **IS_A_PLUGIN** Defined if the instrument is running as a plugin
 
-**SCREEN_WIDTH** Provides the instrument width in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen width. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.md).  
+**SCREEN_WIDTH** Provides the instrument width in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen width. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.html).  
 
-**SCREEN_HEIGHT** Provides the instrument height in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen height. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.md).  
+**SCREEN_HEIGHT** Provides the instrument height in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen height. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.html).  
 
 ## Reserved Channels
 
