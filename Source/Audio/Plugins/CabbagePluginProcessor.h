@@ -71,7 +71,7 @@ public:
     //==============================================================================
 
 private:
-
+	controlChannelInfo_s* csoundChanList;
     String pluginName;
     File csdFile;
     NamedValueSet macroText;

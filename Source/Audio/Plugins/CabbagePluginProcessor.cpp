@@ -52,7 +52,42 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
         createParameters();
     }
 
+	/*
+
+    csoundChanList = NULL;
+    int numberOfCsoundChannels = csoundListChannels (getCsoundStruct(), &csoundChanList);
+	StringArray csoundChannels;
+    for (int i = 0; i < numberOfCsoundChannels; i++ )
+    {
+        const String channel = csoundChanList[i].name;
+		if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
+		{
+			csoundChannels.add(channel);
+			CabbageUtilities::debug(channel);
+		}
+    }
+	
+	int numberOfCabbageChannels = cabbageWidgets.getNumChildren();
+	StringArray cabbageChannels;
+	for ( int i = 0 ; i < numberOfCabbageChannels ; i++)
+	{
+		const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+		if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
+		{
+			cabbageChannels.add(channel);
+			CabbageUtilities::debug(channel);
+		}
+	}
+*/
+
     initAllCsoundChannels (cabbageWidgets);
+	
+
+	
+	
+	
+
+	
 }
 
 CabbagePluginProcessor::~CabbagePluginProcessor()
@@ -352,7 +387,11 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 				xml.setAttribute (channels[1].toString(), yValue);
 			}
 			else
+			{
+//                CabbageUtilities::debug(channelName);
+//				CabbageUtilities::debug(value.toString());
 				xml.setAttribute (channelName, float(value));
+			}
 		}
     }
 
@@ -389,7 +428,7 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
 			}
             else
             {
-                CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue (i).getFloatValue());
+                CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue (i).getFloatValue());			
             }
         }
 
