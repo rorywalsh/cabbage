@@ -2,4 +2,4 @@
   <img alt="Coverity Scan Build Status"
        src="https://scan.coverity.com/projects/11367/badge.svg"/>
        
-[![Build Status](https://travis-ci.org/rorywalsh/cababage.svg?branch=master)](https://travis-ci.org/rorywalsh/cabbage)
+[![Build Status](https://travis-ci.org/rorywalsh/cabbage.svg?branch=master)](https://travis-ci.org/rorywalsh/cabbage)
