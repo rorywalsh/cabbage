@@ -82,7 +82,12 @@ script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
-    - ./buildCabbage
+    - make -f MakeCabbageIDE clean CONFIG=Release
+    - make -f MakeCabbageIDE -j6 CONFIG=Release
+    - make -f MakePluginEffect clean CONFIG=Release
+    - make -f MakePluginEffect -j6 CONFIG=Release
+    - make -f MakePluginSynth clean CONFIG=Release
+    - make -f MakePluginSynth -j6 CONFIG=Release
     
     
     
