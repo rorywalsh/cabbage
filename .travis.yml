@@ -82,4 +82,11 @@ script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
-    - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make -f MakeCabbageIDE ; fi    
+    - make -f MakeCabbageIDE -j6
+    - make -f MakePluginEffect clean
+    - make -f MakePluginEffect -j6
+    - make -f MakePluginSynth clean
+    - make -f MakePluginSynth -j6
+    
+    
+    
