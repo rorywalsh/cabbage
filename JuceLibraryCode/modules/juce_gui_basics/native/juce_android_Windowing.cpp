@@ -32,6 +32,11 @@ namespace juce
 {
 
 //==============================================================================
+#if JUCE_MODULE_AVAILABLE_juce_product_unlocking
+ extern void juce_inAppPurchaseCompleted (void*);
+#endif
+
+//==============================================================================
 JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, launchApp, void, (JNIEnv* env, jobject activity,
                                                                       jstring appFile, jstring appDataDir))
 {
@@ -81,6 +86,18 @@ JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, quitApp, void, (JNIEnv* env,
     JUCEApplicationBase::appWillTerminateByForce();
 
     android.shutdown (env);
+}
+
+JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, appActivityResult, void, (JNIEnv* env, jobject, jint requestCode, jint /*resultCode*/, jobject intentData))
+{
+    setEnv (env);
+
+   #if JUCE_MODULE_AVAILABLE_juce_product_unlocking
+    if (requestCode == 1001)
+        juce_inAppPurchaseCompleted (intentData);
+   #else
+    ignoreUnused (intentData, requestCode);
+   #endif
 }
 
 //==============================================================================
@@ -248,20 +265,20 @@ public:
             setFullScreen (true);
     }
 
-    Point<int> getScreenPosition() const
+    Point<float> getScreenPosition() const
     {
-        return Point<int> (view.callIntMethod (ComponentPeerView.getLeft),
-                           view.callIntMethod (ComponentPeerView.getTop)) / scale;
+        return Point<float> (view.callIntMethod (ComponentPeerView.getLeft),
+                             view.callIntMethod (ComponentPeerView.getTop)) / scale;
     }
 
     Point<float> localToGlobal (Point<float> relativePosition) override
     {
-        return relativePosition + getScreenPosition().toFloat();
+        return relativePosition + getScreenPosition();
     }
 
     Point<float> globalToLocal (Point<float> screenPosition) override
     {
-        return screenPosition - getScreenPosition().toFloat();
+        return screenPosition - getScreenPosition();
     }
 
     void setMinimised (bool /*shouldBeMinimised*/) override
@@ -390,7 +407,7 @@ public:
     void handleMouseDownCallback (int index, Point<float> sysPos, int64 time)
     {
         Point<float> pos = sysPos / scale;
-        lastMousePos = pos;
+        lastMousePos = localToGlobal (pos);
 
         // this forces a mouse-enter/up event, in case for some reason we didn't get a mouse-up before.
         handleMouseEvent (MouseInputSource::InputSourceType::touch, pos, currentModifiers.withoutMouseButtons(),
@@ -403,7 +420,7 @@ public:
     void handleMouseDragCallback (int index, Point<float> pos, int64 time)
     {
         pos /= scale;
-        lastMousePos = pos;
+        lastMousePos = localToGlobal (pos);
 
         jassert (index < 64);
         touchesDown = (touchesDown | (1 << (index & 63)));
@@ -415,7 +432,7 @@ public:
     void handleMouseUpCallback (int index, Point<float> pos, int64 time)
     {
         pos /= scale;
-        lastMousePos = pos;
+        lastMousePos = localToGlobal (pos);
 
         jassert (index < 64);
         touchesDown = (touchesDown & ~(1 << (index & 63)));
