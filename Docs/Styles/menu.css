@@ -1,0 +1,160 @@
+body {
+  font-family: 'Roboto Condensed', arial, sans-serif;
+  background-color:#fafafa;
+  margin: -20px;
+  padding-left: 400px;
+}
+
+/* unvisited link */
+a:link {
+    text-decoration: none;
+    color: white;
+}
+
+/* visited link */
+a:visited {
+    color: white;
+}
+
+ul > li {
+    margin-left: 40px;
+}
+
+li {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+}
+
+/* -- main content -- */
+.content-container {
+  position: fixed;
+  z-index: 0;
+  width: auto;
+}
+
+.site-title {
+  text-align: center;
+  border-bottom: 1px solid #111111;
+  margin-bottom: 24px;
+}
+
+.site-title h1 {
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 10px;
+}
+
+img {
+  width: 100%;
+}
+
+.content p {
+  line-height: 1.6em;
+  margin-bottom: 24px;
+}
+
+/* -- Slideout Sidebar -- */
+
+.slideout-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0px;
+  z-index: 0;
+  width: 300px;
+  height: 100%;
+  padding: 20px;
+  overflow:auto;
+  background-color: #212121;
+  transition: all 300ms ease-in-out;
+}
+
+.slideout-sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slideout-sidebar ul li {
+  cursor: pointer;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(244,244,244,0.4);
+  color: rgba(244,244,244,0.7);
+}
+
+.slideout-sidebar ul li:last-child {
+  border-bottom: 0;
+}
+
+.slideout-sidebar ul li:hover {
+  color: rgba(244,244,244,1);
+}
+
+
+
+/* -- Media Queries -- */
+
+@media (max-width: 991px) {
+  
+  .content-container {
+    max-width: 480px;
+  }
+  
+}
+
+@media (max-width: 767px) {
+  
+  .content-container {
+    max-width: 100%;
+    margin: 30px auto 0;
+  }
+  
+  #menu-toggle:checked ~ .content-container {
+    padding-left: 0;
+  }
+  
+  .slideout-sidebar ul {
+    text-align: center;
+    max-width: 200px;
+    margin: 30px auto 0;
+  }
+  
+  .menu-icon {
+    left: 20px
+  }
+  
+  #menu-toggle:checked ~ .slideout-sidebar {
+    width: 100%;
+  }
+  
+  #menu-toggle:checked + .menu-icon {
+    left: 87%;
+    color: #fafafa;
+  }
+  
+  @media screen  
+    and (max-width: 736px) 
+    and (orientation: landscape) {
+      
+      .slideout-sidebar {
+        padding: 0;
+      }
+      
+      .slideout-sidebar ul {
+        max-width: 100%;
+        margin: 60px auto 0;
+      }
+      
+      .slideout-sidebar ul li {
+        display: inline-block;
+        border-bottom: 0;
+        width: 72px;
+        padding: 18px 24px;
+        margin: 0 6px 12px;
+        color: #ffffff;
+        background-color: #777;
+      }
+
+  }
+  
+}

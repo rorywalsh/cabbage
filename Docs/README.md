@@ -1,4 +1,0 @@
-
-# Cabbage User Manual
-
-

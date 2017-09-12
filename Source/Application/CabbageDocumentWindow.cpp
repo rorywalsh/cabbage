@@ -401,7 +401,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::editMode,
                               CommandIDs::showGraph,
                               CommandIDs::about,
-                              CommandIDs::startLiveDebugger,
+                              CommandIDs::runDiagnostics,
                               CommandIDs::csoundHelp,
                               CommandIDs::cabbageHelp,
                               CommandIDs::contextHelp,
@@ -633,11 +633,9 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
             break;
 
-        case CommandIDs::startLiveDebugger:
-            result.setInfo (String ("Enable Live Debugger"), String ("Enable Live Debugger"), CommandCategories::edit, 0);
+        case CommandIDs::runDiagnostics:
+            result.setInfo (String ("Run diagnostics"), String ("Run diagnostics"), CommandCategories::edit, 0);
             result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
-            result.setTicked (getContentComponent()->getCurrentCodeEditor() == nullptr ? false : getContentComponent()->getCurrentCodeEditor()->isDebugModeEnabled());
-            result.setActive ((shouldShowEditMenu ? true : false));
             break;
 
         // help command
@@ -746,7 +744,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->getCurrentCodeEditor()->toggleComments();
             return true;
 
-        case CommandIDs::startLiveDebugger:
+        case CommandIDs::runDiagnostics:
             getContentComponent()->getCurrentCodeEditor()->runInDebugMode();
             return true;
 

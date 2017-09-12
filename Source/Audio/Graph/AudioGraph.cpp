@@ -577,6 +577,8 @@ void AudioGraph::restoreConnectionsFromXml (const XmlElement& xml)
 
 void AudioGraph::createNodeFromXml (const XmlElement& xml)
 {
+	
+	ScopedPointer<XmlElement> xml2 = XmlDocument::parse(File ("/home/rory/Desktop/NodeTest.xml"));
     PluginDescription desc;
 
     forEachXmlChildElement (xml, e)
@@ -585,7 +587,7 @@ void AudioGraph::createNodeFromXml (const XmlElement& xml)
             break;
     }
 
-    xml.writeToFile (File ("/home/rory/Desktop/NodeTest.xml"), "");
+    //xml.writeToFile (File ("/home/rory/Desktop/NodeTest.xml"), "");
     AudioProcessorGraph::Node::Ptr node = createNode (desc, xml.getIntAttribute ("uid"));
 
     if (node == nullptr)
@@ -604,6 +606,8 @@ void AudioGraph::createNodeFromXml (const XmlElement& xml)
     node->properties.set ("uiLastX", xml.getIntAttribute ("uiLastX"));
     node->properties.set ("uiLastY", xml.getIntAttribute ("uiLastY"));
     node->properties.set ("pluginName", desc.name);
+
+	setNodePosition (node->nodeId, xml.getDoubleAttribute ("x"), xml.getDoubleAttribute ("y"));
 }
 
 XmlElement* AudioGraph::createXml() const
