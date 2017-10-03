@@ -524,12 +524,15 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
             if (identifierText != identChannelMessage)
             {
-                CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + String (tmp_string));
+                CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);
 
                 if (identifierText.contains ("tablenumber")) //update even if table number has not changed
                     CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 1);
 
                 getCsound()->SetChannel (identChannel.toUTF8(), (char*)"");
+				
+				CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 0); //reset value for further updates
+
             }
         }
     }

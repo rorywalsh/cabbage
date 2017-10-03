@@ -201,10 +201,13 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             }
         }
 
-        CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::update, 0); //reset value for further updates
-
+        
     }
-    else
+    else if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 0)
+	{
+		//don't do anything when resetting update flag..
+	}
+	else		
     {
         table.setGridColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour)));
         table.setBackgroundColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour)));
