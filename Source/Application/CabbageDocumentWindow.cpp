@@ -29,10 +29,11 @@ enum
 };
 
 //=================================================================================================================
-CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (name,
+CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLineParams)  : DocumentWindow (name,
                                                                                   Colours::lightgrey,
                                                                                   DocumentWindow::allButtons),
-																				  lookAndFeel(new LookAndFeel_V3())
+																				  lookAndFeel(new LookAndFeel_V3()),
+																				  commandLineArgs(commandLineParams)
 																				  
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
@@ -53,7 +54,44 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name)  : DocumentWindow (na
     getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel);
 
 
-    if (cabbageSettings->getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup") == 1)
+	if(commandLineArgs.isNotEmpty())
+	{
+		if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
+		//hocus pocus for OSX. It seems to append some gibbrish to the command line flags
+		commandLineParams = commandLineParams.substring(0, commandLineParams.indexOf("-")-1);
+
+
+		if(commandLineParams.contains("--export-VSTi"))
+		{
+			String inputFileName = commandLineParams.substring(commandLineParams.indexOf("--export-VSTi")+13).trim().removeCharacters("\"");
+			if(File(inputFileName).existsAsFile())
+			{
+				content->openFile(inputFileName);
+				exportPlugin("VSTi", File(inputFileName));
+				JUCEApplicationBase::quit();
+			}
+
+		}
+		else if(commandLineParams.contains("--export-VST "))
+		{
+			String inputFileName = commandLineParams.substring(commandLineParams.indexOf("--export-VST")+12).trim().removeCharacters("\"");
+			if(File(inputFileName).existsAsFile())
+			{
+				content->openFile(inputFileName);
+				exportPlugin("VST", File(inputFileName));
+				JUCEApplicationBase::quit();
+			}
+
+		}
+		else if(File::getCurrentWorkingDirectory().getChildFile (commandLineParams.trim().removeCharacters("\"")).existsAsFile())
+		{
+			String CSDFile = commandLineParams.trim().removeCharacters("\"");;
+			content->openFile(CSDFile);
+		}
+	}
+	
+
+    else if (cabbageSettings->getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup") == 1)
     {
 		const String lastOpenedFile = cabbageSettings->getUserSettings()->getValue("MostRecentFile", "");
         cabbageSettings->updateRecentFilesList();

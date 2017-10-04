@@ -39,7 +39,7 @@ class CabbageDocumentWindow
 {
 public:
     //==========================================================
-    CabbageDocumentWindow (String name);
+    CabbageDocumentWindow (String name, String commandLineArgs);
     ~CabbageDocumentWindow();
     CabbageMainComponent* getContentComponent();
     //=======================================================
@@ -79,6 +79,7 @@ private:
     //=======================================================
 
 	ScopedPointer<LookAndFeel_V3> lookAndFeel;
+	String commandLineArgs = "";
     bool isGUIEnabled = false;
     ScopedPointer<CabbageMainComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)

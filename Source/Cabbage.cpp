@@ -30,7 +30,7 @@ Cabbage::Cabbage()
 //==============================================================================
 void Cabbage::initialise (const String& commandLine)
 {
-    documentWindow = new CabbageDocumentWindow (getApplicationName());
+    documentWindow = new CabbageDocumentWindow (getApplicationName(), getCommandLineParameters());
 
     if (commandLine.isNotEmpty())
     {
