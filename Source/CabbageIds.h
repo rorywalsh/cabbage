@@ -43,7 +43,7 @@ enum
     closeProject            = 0x200051,
     saveProject             = 0x200060,
     saveAll                 = 0x200080,
-    openInIDE               = 0x200072,
+    runDiagnostics          = 0x200072,
     saveAndOpenInIDE        = 0x200073,
     createNewExporter       = 0x20007d,
 

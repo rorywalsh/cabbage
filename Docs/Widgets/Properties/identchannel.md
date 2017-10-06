@@ -1,2 +1,0 @@
-**identchannel("channel")**
-Sets the channel which messages from Csound are sent to the widget on. When used with a chnset opcode users can override widget attributes. See [Identifier channels](./identchannels.md)

@@ -26,12 +26,12 @@ addons:
       - cmake
   coverity_scan:
     project:
-      name: "rorywalsh/cabaiste"
+      name: "rorywalsh/cabbage"
       description: "<Your project description here>"
     notification_email: rorywalsh@ear.ie
     build_command_prepend: 
 
-    build_command:  "make -f ~/build/rorywalsh/cabaiste/Builds/LinuxMakefile/MakeCabbageIDE"
+    build_command:  "make -f ~/build/rorywalsh/cabbage/Builds/LinuxMakefile/MakeCabbageIDE"
     branch_pattern: coverity_scan
 
 before_install:
@@ -76,10 +76,18 @@ before_script:
     - sudo make -j4
     - sudo make install
     - sudo ldconfig
-    - cd /home/travis/build/rorywalsh/cabaiste/Builds/LinuxMakefile/
+    - cd /home/travis/build/rorywalsh/cabbage/Builds/LinuxMakefile/
 
 script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
-    - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make -f MakeCabbageIDE ; fi    
+    - make -f MakeCabbageIDE clean CONFIG=Release
+    - make -f MakeCabbageIDE -j6 CONFIG=Release
+    - make -f MakePluginEffect clean CONFIG=Release
+    - make -f MakePluginEffect -j6 CONFIG=Release
+    - make -f MakePluginSynth clean CONFIG=Release
+    - make -f MakePluginSynth -j6 CONFIG=Release
+    
+    
+    

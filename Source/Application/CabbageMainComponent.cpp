@@ -1109,7 +1109,7 @@ int CabbageMainComponent::testFileForErrors(String file)
 void CabbageMainComponent::runCsoundForNode (String file)
 {
 	
-	if(testFileForErrors(file)==0) //if Csound seg faults it will take Cabbage down. best to test the instrumnet in a seperate process first. 
+	if(testFileForErrors(file)==0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a seperate process first. 
 	{
 		if (File (file).existsAsFile())
 		{
