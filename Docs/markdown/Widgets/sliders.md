@@ -25,6 +25,10 @@ widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "fil
 
 {! ./markdown/Widgets/Properties/popuptext.md !} 
 
+{! ./markdown/Widgets/Properties/popupprefix.md !} 
+
+{! ./markdown/Widgets/Properties/popuppostfix.md !} 
+
 {! ./markdown/Widgets/Properties/range.md !}   
 
 {! ./markdown/Widgets/Properties/svgfile_slider.md !}   

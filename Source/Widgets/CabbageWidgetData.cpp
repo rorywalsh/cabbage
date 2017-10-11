@@ -268,6 +268,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("popuptext"):
             case HashStringToInt ("mode"):
             case HashStringToInt ("channeltype"):
+			case HashStringToInt ("popuppostfix"):
+			case HashStringToInt ("popupprefix"):
             case HashStringToInt ("identchannel"):
             case HashStringToInt ("author"):
             case HashStringToInt ("align"):
@@ -1542,6 +1544,8 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "align", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "file", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "shape", macroText)

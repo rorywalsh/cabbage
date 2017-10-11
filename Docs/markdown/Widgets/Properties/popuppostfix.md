@@ -1,0 +1,1 @@
+**popuppostfix("text")** Sets the postfix text that will appear in the popup text bubble. This string will appear just after the current value of the slider.  
