@@ -316,8 +316,12 @@ void CabbageMainComponent::actionListenerCallback (const String& message)
 	}
     else if (message.contains ("delete:"))
     {
-        const int lineNumber = String (message.replace ("delete:", "")).getIntValue();
-        getCurrentCodeEditor()->removeLine (lineNumber);
+		//deleted whatever line is currently selected, we don't need the know the line number...
+        //const int lineNumber = String (message.replace ("delete:", "")).getIntValue();
+        //getCurrentCodeEditor()->removeLine (getCurrentCodeEditor()->getSel);
+		getCurrentCodeEditor()->removeSelectedText();
+		saveDocument();
+		setEditMode(true);
     }
 }
 //=======================================================================================

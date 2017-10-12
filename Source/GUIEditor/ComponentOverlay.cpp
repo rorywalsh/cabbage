@@ -124,22 +124,6 @@ bool ComponentOverlay::boundsChangedSinceStart ()
 //===========================================================================
 void ComponentOverlay::mouseDown (const MouseEvent& e)
 {
-
-    if (e.mods.isPopupMenu())
-    {
-        PopupMenu menu;
-        menu.setLookAndFeel (&this->getLookAndFeel());
-        menu.addItem (100, "Delete");
-
-        const int r = menu.show();
-
-        if (r == 100)
-        {
-            layoutEditor->getPluginEditor()->sendActionMessage ("delete:" + target->getProperties().getWithDefault ("linenumber", -1).toString());
-        }
-    }
-    else
-    {
         layoutEditor->updateSelectedComponentBounds();
 
         mouseDownSelectStatus = layoutEditor->getLassoSelection().addToSelectionOnMouseDown (this, e.mods);
@@ -164,7 +148,27 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
 
         interest = "selected";
         repaint();
-    }
+
+		if (e.mods.isPopupMenu())
+		{
+
+			
+			PopupMenu menu;
+			menu.setLookAndFeel (&this->getLookAndFeel());
+			menu.addItem (100, "Delete");
+
+			const int r = menu.show();
+
+			if (r == 100)
+			{
+				if (layoutEditor->getLassoSelection().getNumSelected() > 1)
+				{
+					CabbageUtilities::showMessage("Multiple widgets cannot be deleted. Either deselect and delete one by one, or delete the widgets from the Cabbage code section of your .csd file", &this->getPluginEditor()->getLookAndFeel());; 
+				}
+				else
+					layoutEditor->getPluginEditor()->sendActionMessage ("delete:" + target->getProperties().getWithDefault ("linenumber", -1).toString());
+			}
+		}
 
 }
 

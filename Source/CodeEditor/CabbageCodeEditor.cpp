@@ -315,6 +315,11 @@ void CabbageCodeEditorComponent::removeLine (int lineNumber)
     sendUpdateMessage (lineNumber);
 }
 
+void CabbageCodeEditorComponent::removeSelectedText()
+{
+	getDocument().replaceSection (getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
+}
+
 void CabbageCodeEditorComponent::insertText (String text)
 {
     if (this->isHighlightActive())
@@ -734,7 +739,7 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
 		m.addSubMenu("Insert from code repository", subM);
 		
 		const int menuItemID = m.show();
-		CabbageUtilities::debug(menuItemID);
+
 		if(menuItemID==4099)
 			this->cutToClipboard();
 		else if(menuItemID==4100)
