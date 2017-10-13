@@ -256,7 +256,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
         if (identifier.indexOf (":") != -1)
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
-        strTokens.addTokens (identifierValueSet.parameter[indx], ",", ",");
+		strTokens = CabbageUtilities::getTokens(identifierValueSet.parameter[indx], ',');
 
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
@@ -514,6 +514,7 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
     StringArray identifiersInLine = CabbageUtilities::getTokens(lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
+	
     StringArray parameters;
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
@@ -524,6 +525,7 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
         String parameter = identifiersInLine[i];
         parameter = parameter.substring (parameter.indexOf ("(") + 1, parameter.lastIndexOf (")")).trimCharactersAtStart ("\"").trimCharactersAtEnd ("\"");
         parameters.add (parameter);
+		CabbageUtilities::debug(parameter);
     }
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)

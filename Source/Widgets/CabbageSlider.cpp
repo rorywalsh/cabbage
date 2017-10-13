@@ -261,7 +261,6 @@ void CabbageSlider::setSliderVelocity (ValueTree wData)
 
 void CabbageSlider::setLookAndFeelColours (ValueTree wData)
 {
-
     textLabel.setColour (Label::outlineColourId, Colours::transparentBlack);
     slider.setColour (Slider::textBoxHighlightColourId, Colours::lime.withAlpha (.2f));
 
