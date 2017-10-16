@@ -101,6 +101,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "snapshot")
     {
         const String newFileName = owner->createNewGenericNameForPresetFile();
+		owner->sendChannelStringDataToCsound (getChannel(), newFileName);
         owner->savePluginStateToFile (File (newFileName));
         owner->refreshComboBoxContents();
     }

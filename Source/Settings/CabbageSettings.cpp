@@ -75,7 +75,7 @@ void CabbageSettings::setDefaultSettings()
 	defaultPropSet->setValue ("NumberOfOpenFiles", 1);
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue ("DisableAutoComplete", 0);
-    defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 0);
+    defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 1);
     defaultPropSet->setValue ("SetAlwaysOnTopGraph", 0);
     defaultPropSet->setValue ("GridSize", 4);
     defaultPropSet->setValue ("CompileOnSave", 1);

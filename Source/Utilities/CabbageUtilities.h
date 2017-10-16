@@ -605,7 +605,7 @@ public:
 				if(*str == '\"')	//excuse anything in quotes..
 				{
 					str++;
-					while(*str != '\"' ** *str)
+					while(*str != '\"')
 						str++;
 				}
                 str++;
