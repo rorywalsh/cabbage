@@ -47,6 +47,8 @@ class CabbageSlider
     void createPopupBubble();
     void showPopupBubble (int time);
     void setLookAndFeelColours (ValueTree wData);
+	String prefix = "";
+	String postfix = "";
 
 public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);

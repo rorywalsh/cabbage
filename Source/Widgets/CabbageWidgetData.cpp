@@ -256,7 +256,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
         if (identifier.indexOf (":") != -1)
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
-        strTokens.addTokens (identifierValueSet.parameter[indx], ",", ",");
+		strTokens = CabbageUtilities::getTokens(identifierValueSet.parameter[indx], ',');
 
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
@@ -268,6 +268,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("popuptext"):
             case HashStringToInt ("mode"):
             case HashStringToInt ("channeltype"):
+			case HashStringToInt ("popuppostfix"):
+			case HashStringToInt ("popupprefix"):
             case HashStringToInt ("identchannel"):
             case HashStringToInt ("author"):
             case HashStringToInt ("align"):
@@ -512,6 +514,7 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
     StringArray identifiersInLine = CabbageUtilities::getTokens(lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
+	
     StringArray parameters;
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
@@ -522,6 +525,7 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
         String parameter = identifiersInLine[i];
         parameter = parameter.substring (parameter.indexOf ("(") + 1, parameter.lastIndexOf (")")).trimCharactersAtStart ("\"").trimCharactersAtEnd ("\"");
         parameters.add (parameter);
+		CabbageUtilities::debug(parameter);
     }
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
@@ -1094,6 +1098,12 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + String (getNumProp (widgetData, CabbageIdentifierIds::increment))
                + "), ";
     }
+
+    else if (identifier == "max" || identifier == "min")
+    {
+		if (type.contains ("range"))
+			return identifier + "(" + String (getNumProp (widgetData, identifier)) + "), ";
+    }
     else if (type == "xypad" && identifier == "value")
     {
         return "rangex(" + String (getNumProp (widgetData, CabbageIdentifierIds::minx))
@@ -1536,6 +1546,8 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "align", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "file", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "shape", macroText)

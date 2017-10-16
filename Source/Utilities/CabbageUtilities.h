@@ -600,7 +600,7 @@ public:
         {
             const char* begin = str;
 
-            while (*str != ')' && *str)
+            while (*str != breakChar && *str)
 			{
 				if(*str == '\"')	//excuse anything in quotes..
 				{

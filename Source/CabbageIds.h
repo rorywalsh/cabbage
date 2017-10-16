@@ -349,6 +349,7 @@ public:
         add ("fontcolour:0");
         add ("tablecolour:");
         add ("metercolour:");
+		add ("popuppostfix");
         add ("orientation");
         add ("tablecolour");
         add ("metercolour");
@@ -362,6 +363,7 @@ public:
         add ("displaytype");
         add ("fontcolor:1");
         add ("basechannel");
+		add ("popupprefix");
         add ("macronames");
         add ("fontcolour");
         add ("textcolour");
@@ -654,6 +656,8 @@ static const Identifier maxenabled = "maxenabled";
 static const Identifier keywidth = "keywidth";
 static const Identifier refreshfiles = "refreshfiles";
 static const Identifier currenttext = "currenttext";
+static const Identifier popupprefix = "popupprefix";
+static const Identifier popuppostfix = "popuppostfix";
 static const Identifier titlebarcolour =  "titlebarcolour";
 static const String csdfile = "csdfile";
 static const String index = "index";

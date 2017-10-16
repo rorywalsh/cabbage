@@ -203,7 +203,7 @@ public:
     int getFontSize() {                      return currentFontSize;                             }
     void setFontSize (int size) {             currentFontSize = size;                             }
     //=========================================================
-
+	void removeSelectedText();
     void listBoxItemDoubleClicked (int row, const MouseEvent& e) {};
     void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
     void selectedRowsChanged (int /*lastRowselected*/) {};
