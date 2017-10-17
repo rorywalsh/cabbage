@@ -66,7 +66,8 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-    XmlElement savePluginState (String tag);
+	void setParametersFromXml(XmlElement* e);
+    XmlElement savePluginState (String tag, File xmlFile = File());
     void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
 

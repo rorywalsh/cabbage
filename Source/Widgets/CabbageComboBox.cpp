@@ -94,7 +94,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
     Array<File> dirFiles;
     StringArray fileNames;
     clear (dontSendNotification);
-    snapshotFiles.clear();
+    folderFiles.clear();
 
 	//load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
@@ -120,8 +120,30 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
 			stringItems.add(item);
         }
     }
-    else	//load items from directory
+	//if dealing with preset files...
+    else if(CabbageWidgetData::getStringProp (wData, "filetype") == "preset" 
+			|| CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps" 
+			|| CabbageWidgetData::getStringProp (wData, "filetype") == ".snaps"
+			|| CabbageWidgetData::getStringProp (wData, "filetype") == "snaps") //load items from directory
     {
+		const File fileName = File(getCsdFile()).withFileExtension(".snaps");
+		if(fileName.existsAsFile())
+		{
+			ScopedPointer<XmlElement> xmlElement = XmlDocument::parse(fileName);
+			int itemIndex = 1;
+			if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
+			{
+				forEachXmlChildElement (*xmlElement, e)
+				{
+					presets.add(e->getStringAttribute("PresetName"));
+					addItem (e->getStringAttribute("PresetName"), itemIndex++);
+				}
+			}
+			xmlElement = nullptr;
+		}
+	}
+	else
+	{
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 		if (workingDir.isNotEmpty())
 			pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
@@ -133,13 +155,13 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
         addItem ("Select..", 1);
 
         for (int i = 0; i < dirFiles.size(); ++i)
-            snapshotFiles.add (dirFiles[i]);
+            folderFiles.add (dirFiles[i]);
 
-        snapshotFiles.sort();
+        folderFiles.sort();
 
-        for ( int i = 0; i < snapshotFiles.size(); i++)
+        for ( int i = 0; i < folderFiles.size(); i++)
         {
-            addItem (snapshotFiles[i].getFileNameWithoutExtension(), i + 2);
+            addItem (folderFiles[i].getFileNameWithoutExtension(), i + 2);
         }
 		
     }
@@ -158,9 +180,10 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
 
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets...
 {
-    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
+    if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
+	|| CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
 	{
-        owner->restorePluginStateFrom (snapshotFiles[combo->getSelectedItemIndex() - 1]);
+        owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()]);
 		owner->sendChannelDataToCsound(getChannel(), combo->getSelectedItemIndex() - 1);
     }
 	else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
@@ -168,7 +191,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 		const String fileType = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype);
 		const int index = combo->getSelectedItemIndex();
 		if(fileType.isNotEmpty())
-			owner->sendChannelStringDataToCsound (getChannel(), snapshotFiles[index-1].getFullPathName());
+			owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index-1].getFullPathName());
 		else
 			owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
 	

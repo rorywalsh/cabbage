@@ -39,8 +39,9 @@ class CabbageComboBox
     bool isStringCombo = false;
 	bool isPresetCombo = false;
 	String currentValueAsText ="";
-    Array<File> snapshotFiles;
+    Array<File> folderFiles;
 	StringArray stringItems;
+	StringArray presets;
 
 public:
 

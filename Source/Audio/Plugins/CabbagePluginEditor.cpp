@@ -764,16 +764,24 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 }
 
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
-{
-    //const File csdFile (processor.getCsdFile());
-    XmlElement xml = processor.savePluginState (instrumentName.replace(" ", "_"));
-    xml.writeToFile (snapshotFile.withFileExtension (".snaps"), "");
+{	
+    XmlElement xml = processor.savePluginState (instrumentName.replace(" ", "_"), processor.getCsdFile().withFileExtension (".snaps"));
+    xml.writeToFile(processor.getCsdFile().withFileExtension (".snaps"), "");
 }
 
-void CabbagePluginEditor::restorePluginStateFrom (File snapshotFile)
+void CabbagePluginEditor::restorePluginStateFrom (String childPreset)
 {
-    ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (snapshotFile);
-    processor.restorePluginState (xmlElement);
+    ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (processor.getCsdFile().withFileExtension(".snaps"));
+    
+	if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
+	{
+		forEachXmlChildElement (*xmlElement, e)
+		{
+			if(e->getStringAttribute("PresetName") == childPreset)
+				processor.restorePluginState (e);
+		}
+	}
+	
 }
 
 void CabbagePluginEditor::refreshComboBoxContents()

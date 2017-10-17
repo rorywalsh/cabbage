@@ -51,25 +51,25 @@ void CabbageFileButton::buttonClicked (Button* button)
 
         if (filetype == "snaps")
         {
-            if (fc.browseForFileToSave (false))
-            {
-                if (fc.getResult().existsAsFile())
-                {
-                    CabbageLookAndFeel2 lookAndFeel;
-                    const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-
-                    if (result == 1)
-                    {
-                        owner->savePluginStateToFile (fc.getResult());
-                        owner->refreshComboBoxContents();
-                    }
-                }
-                else
-                {
-                    owner->savePluginStateToFile (fc.getResult());
-                    owner->refreshComboBoxContents();
-                }
-            }
+//            if (fc.browseForFileToSave (false))
+//            {
+//                if (fc.getResult().existsAsFile())
+//                {
+//                    CabbageLookAndFeel2 lookAndFeel;
+//                    const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+//
+//                    if (result == 1)
+//                    {
+//                        owner->savePluginStateToFile (fc.getResult());
+//                        owner->refreshComboBoxContents();
+//                    }
+//                }
+//                else
+//                {
+//                    owner->savePluginStateToFile (fc.getResult());
+//                    owner->refreshComboBoxContents();
+//                }
+//            }
         }
         else
         {

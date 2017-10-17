@@ -324,7 +324,7 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor()
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation (MemoryBlock& destData)
 {
-    copyXmlToBinary (savePluginState ("CABBAGE_PLUGIN_SETTINGS"), destData);
+    copyXmlToBinary (savePluginState ("CABBAGE_PRESETS"), destData);
 }
 
 void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBytes)
@@ -334,9 +334,23 @@ void CabbagePluginProcessor::setStateInformation (const void* data, int sizeInBy
 }
 
 //==============================================================================
-XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
+XmlElement CabbagePluginProcessor::savePluginState (String xmlTag, File xmlFile)
 {
-    XmlElement xml (xmlTag);
+	ScopedPointer<XmlElement> xml;
+	
+	if(xmlFile.existsAsFile())
+	{
+		xml = XmlDocument::parse(xmlFile);
+	}
+	else
+		xml = new XmlElement("CABBAGE_PRESETS");
+
+
+	const String presetName = "PRESET"+String(xml->getNumChildElements());
+	const String childName = xmlTag+" "+String(xml->getNumChildElements());
+
+	xml->createNewChildElement (presetName);
+	xml->getChildByName(presetName)->setAttribute ("PresetName", childName);
 
     for (int i = 0 ; i < cabbageWidgets.getNumChildren() ; i++)
     {
@@ -352,7 +366,7 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 			if (type == CabbageWidgetTypes::texteditor)
 			{
 				const String text = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::text);
-				xml.setAttribute (channelName, text);
+				xml->getChildByName(presetName)->setAttribute (channelName, text);
 			}
 			else if (type == CabbageWidgetTypes::filebutton && !CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype).contains("snaps"))
 			{
@@ -360,7 +374,7 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 				if(file.length()>2)
 				{
 					const String relativePath = File (file).getRelativePathFrom (File (csdFile));
-					xml.setAttribute (channelName, relativePath);
+					xml->getChildByName(presetName)->setAttribute (channelName, relativePath);
 				}
 			}
 			else if(type.contains("range"))//double channel range widgets
@@ -368,66 +382,79 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag)
 				var channels = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
 				const float minValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::minvalue);
 				const float maxValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::maxvalue);
-				xml.setAttribute (channels[0].toString(), minValue);
-				xml.setAttribute (channels[1].toString(), maxValue);
+				xml->getChildByName(presetName)->setAttribute (channels[0].toString(), minValue);
+				xml->getChildByName(presetName)->setAttribute (channels[1].toString(), maxValue);
 			}
 			else if(type == CabbageWidgetTypes::xypad)//double channel xypad widget
 			{
 				var channels = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
 				const float xValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuex);
 				const float yValue = CabbageWidgetData::getNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::valuey);
-				xml.setAttribute (channels[0].toString(), xValue);
-				xml.setAttribute (channels[1].toString(), yValue);
+				xml->getChildByName(presetName)->setAttribute (channels[0].toString(), xValue);
+				xml->getChildByName(presetName)->setAttribute (channels[1].toString(), yValue);
 			}
 			else
 			{
-//                CabbageUtilities::debug(channelName);
-//				CabbageUtilities::debug(value.toString());
-				xml.setAttribute (channelName, float(value));
+				CabbageUtilities::debug(channelName);
+				CabbageUtilities::debug(float(value));
+				xml->getChildByName(presetName)->setAttribute (channelName, float(value));
 			}
 		}
     }
 
-    return xml;
+    return *xml;
 }
 
 void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
 {
     if (xmlState != nullptr)
-    {
-        for (int i = 0; i < xmlState->getNumAttributes(); i++)
-        {
-            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, xmlState->getAttributeName (i), true);
-            const String type = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
-
-            if (type == CabbageWidgetTypes::texteditor)
-                CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, xmlState->getAttributeValue (i));
-            else if (type == CabbageWidgetTypes::filebutton)
-            {
-                CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, xmlState->getAttributeValue (i));
-            }
-			else if(type == CabbageWidgetTypes::hrange || type == CabbageWidgetTypes::vrange)//double channel range widgets
-			{
-				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::minvalue, xmlState->getAttributeValue (i).getFloatValue());
-				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::maxvalue, xmlState->getAttributeValue (i+1).getFloatValue());
-				i++;
-			}
-			else if(type == CabbageWidgetTypes::xypad)//double channel range widgets
-			{
-				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuex, xmlState->getAttributeValue (i).getFloatValue());
-				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuey, xmlState->getAttributeValue (i+1).getFloatValue());
-				i++;
-			}
-            else
-            {
-                CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, xmlState->getAttributeValue (i).getFloatValue());			
-            }
-        }
-
+    {		
+		//if dealing with session saved by host
+		if(xmlState->getNumChildElements()==1)
+		{
+			setParametersFromXml(xmlState->getChildByName("PRESET0"));
+		}
+		//else dealing with preset files loaded in editor...
+		else
+		{
+			setParametersFromXml(xmlState);	
+		}
         initAllCsoundChannels (cabbageWidgets);
     }
 
     xmlState = nullptr;
+}
+
+void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
+{
+	for (int i = 1; i < e->getNumAttributes(); i++)
+	{
+		ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, e->getAttributeName (i), true);
+		const String type = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
+
+		if (type == CabbageWidgetTypes::texteditor)
+			CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, e->getAttributeValue (i));
+		else if (type == CabbageWidgetTypes::filebutton)
+		{
+			CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, e->getAttributeValue (i));
+		}
+		else if(type == CabbageWidgetTypes::hrange || type == CabbageWidgetTypes::vrange)//double channel range widgets
+		{
+			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::minvalue, e->getAttributeValue (i).getFloatValue());
+			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::maxvalue, e->getAttributeValue (i+1).getFloatValue());
+			i++;
+		}
+		else if(type == CabbageWidgetTypes::xypad)//double channel range widgets
+		{
+			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuex, e->getAttributeValue (i).getFloatValue());
+			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuey, e->getAttributeValue (i+1).getFloatValue());
+			i++;
+		}
+		else
+		{
+			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, e->getAttributeValue (i).getFloatValue());			
+		}
+	}
 }
 
 //==============================================================================
