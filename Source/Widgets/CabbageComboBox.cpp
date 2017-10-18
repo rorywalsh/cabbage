@@ -131,14 +131,15 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
 		{
 			ScopedPointer<XmlElement> xmlElement = XmlDocument::parse(fileName);
 			int itemIndex = 1;
-			if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
-			{
-				forEachXmlChildElement (*xmlElement, e)
+			if(xmlElement)
+				if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
 				{
-					presets.add(e->getStringAttribute("PresetName"));
-					addItem (e->getStringAttribute("PresetName"), itemIndex++);
+					forEachXmlChildElement (*xmlElement, e)
+					{
+						presets.add(e->getStringAttribute("PresetName"));
+						addItem (e->getStringAttribute("PresetName"), itemIndex++);
+					}
 				}
-			}
 			xmlElement = nullptr;
 		}
 	}

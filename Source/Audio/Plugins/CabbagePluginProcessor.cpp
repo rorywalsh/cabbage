@@ -341,6 +341,9 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag, File xmlFile)
 	if(xmlFile.existsAsFile())
 	{
 		xml = XmlDocument::parse(xmlFile);
+		if(!xml)
+			xml = new XmlElement("CABBAGE_PRESETS");
+		
 	}
 	else
 		xml = new XmlElement("CABBAGE_PRESETS");
@@ -427,32 +430,35 @@ void CabbagePluginProcessor::restorePluginState (XmlElement* xmlState)
 
 void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 {
-	for (int i = 1; i < e->getNumAttributes(); i++)
+	if(e)
 	{
-		ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, e->getAttributeName (i), true);
-		const String type = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
+		for (int i = 1; i < e->getNumAttributes(); i++)
+		{
+			ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (cabbageWidgets, e->getAttributeName (i), true);
+			const String type = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
 
-		if (type == CabbageWidgetTypes::texteditor)
-			CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, e->getAttributeValue (i));
-		else if (type == CabbageWidgetTypes::filebutton)
-		{
-			CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, e->getAttributeValue (i));
-		}
-		else if(type == CabbageWidgetTypes::hrange || type == CabbageWidgetTypes::vrange)//double channel range widgets
-		{
-			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::minvalue, e->getAttributeValue (i).getFloatValue());
-			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::maxvalue, e->getAttributeValue (i+1).getFloatValue());
-			i++;
-		}
-		else if(type == CabbageWidgetTypes::xypad)//double channel range widgets
-		{
-			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuex, e->getAttributeValue (i).getFloatValue());
-			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuey, e->getAttributeValue (i+1).getFloatValue());
-			i++;
-		}
-		else
-		{
-			CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, e->getAttributeValue (i).getFloatValue());			
+			if (type == CabbageWidgetTypes::texteditor)
+				CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, e->getAttributeValue (i));
+			else if (type == CabbageWidgetTypes::filebutton)
+			{
+				CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, e->getAttributeValue (i));
+			}
+			else if(type == CabbageWidgetTypes::hrange || type == CabbageWidgetTypes::vrange)//double channel range widgets
+			{
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::minvalue, e->getAttributeValue (i).getFloatValue());
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::maxvalue, e->getAttributeValue (i+1).getFloatValue());
+				i++;
+			}
+			else if(type == CabbageWidgetTypes::xypad)//double channel range widgets
+			{
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuex, e->getAttributeValue (i).getFloatValue());
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::valuey, e->getAttributeValue (i+1).getFloatValue());
+				i++;
+			}
+			else
+			{
+				CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, e->getAttributeValue (i).getFloatValue());			
+			}
 		}
 	}
 }
