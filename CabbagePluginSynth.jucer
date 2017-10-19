@@ -9,8 +9,8 @@
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
-              jucerVersion="4.3.1" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
-              reportAppUsage="1" splashScreenColour="Dark">
+              jucerVersion="5.1.1" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
+              reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">

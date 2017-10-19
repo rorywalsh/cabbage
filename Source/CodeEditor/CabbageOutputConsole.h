@@ -37,7 +37,7 @@ public:
         textEditor->setReadOnly (true);
         textEditor->setFont (Font ("Arial", 12, 1));
 
-        setText ("Cabbage Csound IDE\n");
+        setText ("Csound output message console\n");
     };
 
     ~CabbageOutputConsole() {};
@@ -57,9 +57,15 @@ public:
 
     void updateColourScheme()
     {
+#ifndef CabbageLite
         textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleText, Colours::grey.darker()));
         textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleBackground, Colours::grey.darker()));
         repaint();
+#else
+        textEditor->setColour (TextEditor::textColourId, Colours::green);
+        textEditor->setColour (TextEditor::backgroundColourId, Colour(20, 20, 20));
+        repaint();
+#endif
     }
 
     void setFontSize (int size)
@@ -78,8 +84,7 @@ public:
 		if(in == true)
 			fontSize++;
 		else
-			fontSize = fontSize > 6 ? fontSize-1 : fontSize;
-			
+			fontSize = fontSize > 6 ? fontSize-1 : fontSize;			
 		
 		String currentText = textEditor->getText();
 		textEditor->setText("");
@@ -102,11 +107,10 @@ public:
 
     void paint (Graphics& g)
     {
+#ifndef CabbageLite
         g.fillAll (CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleOutline, Colours::grey.darker()));
-        //        g.setColour(Colours::white);
-        //        g.drawRoundedRectangle(getLocalBounds().toFloat(), 2, 2);
-        //        g.drawFittedText("Csound output", getLocalBounds().withHeight(18), Justification::centred, 1, 1.f);
-    }
+#endif    
+	}
 
 private:
     ValueTree value;

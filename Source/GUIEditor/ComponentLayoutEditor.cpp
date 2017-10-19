@@ -10,7 +10,9 @@
 
 #include "ComponentLayoutEditor.h"
 #include "ComponentOverlay.h"
+#ifndef Cabbage_Lite
 #include "../Application/CabbageMainComponent.h"
+#endif
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 /*
@@ -48,20 +50,23 @@ ComponentLayoutEditor::~ComponentLayoutEditor ()
 }
 
 CabbagePluginEditor* ComponentLayoutEditor::getPluginEditor()
-{
+{ 
     if (CabbagePluginEditor* c = this->findParentComponentOfClass<CabbagePluginEditor>())
         return c;
     else
         return nullptr;
 }
 
+#ifndef Cabbage_Lite
 CabbageMainComponent* ComponentLayoutEditor::getContentComponent()
 {
     if (CabbageMainComponent* c = this->findParentComponentOfClass<CabbageMainComponent>())
         return c;
     else
+
         return nullptr;
 }
+#endif
 
 void ComponentLayoutEditor::resized ()
 {

@@ -13,6 +13,8 @@ mkdir CabbageBuild
 
 if [ $1 == "debug" ]
 then
+../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
+rm Makefile MakeCabbageIDE
 make -f MakeCabbageIDE clean CONFIG=Debug
 make -f MakeCabbageIDE -j6 CONFIG=Debug
 cp ./build/Cabbage CabbageBuild/Cabbage
@@ -22,16 +24,36 @@ cp ./build/CabbagePluginEffect.so CabbageBuild/CabbagePluginEffect.so
 make -f MakePluginSynth clean CONFIG=Debug
 make -f MakePluginSynth -j6 CONFIG=Debug
 cp ./build/CabbagePluginSynth.so CabbageBuild/CabbagePluginSynth.so
+
 else
+#release mode  default
+../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
+mv Makefile MakeCabbageIDE
 make -f MakeCabbageIDE clean CONFIG=Release
 make -f MakeCabbageIDE -j6 CONFIG=Release
 cp ./build/Cabbage CabbageBuild/Cabbage
+
+../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePlugin.jucer
+mv Makefile MakePluginEffect
+
 make -f MakePluginEffect clean CONFIG=Release
 make -f MakePluginEffect -j6 CONFIG=Release
-cp ./build/CabbagePluginEffect.so CabbageBuild/CabbagePluginEffect.so
+cp ./build/CabbagePlugin.so CabbageBuild/CabbagePluginEffect.so
+
+../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginSynth.jucer
+mv Makefile MakePluginSynth
+
 make -f MakePluginSynth clean CONFIG=Release
 make -f MakePluginSynth -j6 CONFIG=Release
-cp ./build/CabbagePluginSynth.so CabbageBuild/CabbagePluginSynth.so
+cp ./build/CabbagePlugin.so CabbageBuild/CabbagePluginSynth.so
+
+../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageLite.jucer
+mv Makefile MakeCabbageLite
+
+make -f MakeCabbageLite clean CONFIG=Release
+make -f MakeCabbageLite -j6 CONFIG=Release
+cp ./build/CabbageLite CabbageBuild/Cabbage
+
 fi
 
 cp ./../opcodes.txt CabbageBuild/opcodes.txt

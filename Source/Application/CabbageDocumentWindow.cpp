@@ -18,7 +18,7 @@
 */
 
 #include "CabbageDocumentWindow.h"
-#include <fstream>
+
 
 enum
 {
@@ -67,7 +67,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
 			if(File(inputFileName).existsAsFile())
 			{
 				content->openFile(inputFileName);
-				exportPlugin("VSTi", File(inputFileName));
+				CabbageUtilities::exportPlugin("VSTi", File(inputFileName), &getLookAndFeel(), getPluginId(File(inputFileName)));
 				JUCEApplicationBase::quit();
 			}
 
@@ -78,7 +78,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
 			if(File(inputFileName).existsAsFile())
 			{
 				content->openFile(inputFileName);
-				exportPlugin("VST", File(inputFileName));
+				CabbageUtilities::exportPlugin("VST", File(inputFileName),  &getLookAndFeel(), getPluginId(File(inputFileName)));
 				JUCEApplicationBase::quit();
 			}
 
@@ -771,11 +771,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::exportAsEffect:
-            exportPlugin ("VST", getContentComponent()->getCurrentCsdFile());
+            CabbageUtilities::exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  &getLookAndFeel(), getPluginId(getContentComponent()->getCurrentCsdFile().getFullPathName()));
             return true;
 
         case CommandIDs::exportAsSynth:
-            exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile());
+            CabbageUtilities::exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  &getLookAndFeel(), getPluginId(getContentComponent()->getCurrentCsdFile().getFullPathName()));
             return true;
 
         case CommandIDs::toggleComments:
@@ -890,236 +890,19 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     return true;
 }
 
-//================================================================================
-void CabbageDocumentWindow::exportPlugin (String type, File csdFile)
-{
-    String pluginFilename, fileExtension, currentApplicationDirectory;
-    File thisFile;
-
-    if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
-    {
-        fileExtension = "so";
-        thisFile = File::getSpecialLocation (File::currentExecutableFile);
-        currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-    }
-    else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
-    {
-        fileExtension = "vst";
-        thisFile = File::getSpecialLocation (File::currentApplicationFile);
-        currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
-    }
-    else
-    {
-        fileExtension = "dll";
-        thisFile = File::getSpecialLocation (File::currentApplicationFile);
-        currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-    }
-
-
-    if (type.contains ("VSTi"))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
-    else if (type.contains (String ("VST")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
-    else if (type.contains (String ("LV2-ins")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
-    else if (type.contains (String ("LV2-fx")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
-
-    File VSTData (pluginFilename);
-
-    if (!VSTData.exists())
-    {
-        CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder", &getLookAndFeel());
-    }
-
-    FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
-
-    if (fc.browseForFileToSave (false))
-    {
-        if (fc.getResult().existsAsFile())
-        {
-            CabbageIDELookAndFeel lookAndFeelTemp;
-            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeelTemp);
-
-            if (result == 1)
-                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension);
-        }
-        else
-            writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension);
-    }
-
-}
-
-void CabbageDocumentWindow::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension)
-{
-    File dll (fc.withFileExtension (fileExtension).getFullPathName());
-
-    if (!VSTData.copyFileTo (dll))
-        CabbageUtilities::showMessage ("Can't copy plugin lib, is it currently in use?", &getLookAndFeel());
-
-
-    File exportedCsdFile;
-
-    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
-    {
-        exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
-        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-
-        File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
-        //if(bin.exists())showMessage("binary exists");
-
-
-        File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
-
-        if (bin.moveFileTo (pluginBinary) == false)
-            CabbageUtilities::showMessage ("Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &this->getLookAndFeel());
-
-        setUniquePluginId (pluginBinary, exportedCsdFile);
-
-        File pl (dll.getFullPathName() + String ("/Contents/Info.plist"));
-        String newPList = pl.loadFileAsString();
-        //write our identifiers to the plist file
-        newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
-
-        //write plist file
-        pl.replaceWithText (newPList);
-
-
-    }
-    else
-    {
-        exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
-        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-        setUniquePluginId (dll, exportedCsdFile);
-    }
-
-    //bunlde all auxilary files
-    //addFilesToPluginBundle(csdFile, dll, &getLookAndFeel());
-
-}
-
 const String CabbageDocumentWindow::getPluginId (File csdFile)
 {
-    StringArray csdLines;
-    csdLines.addLines (csdFile.loadFileAsString());
+	StringArray csdLines;
+	csdLines.addLines (csdFile.loadFileAsString());
 
-    for (auto line : csdLines)
-    {
-        ValueTree temp ("temp");
-        CabbageWidgetData::setWidgetState (temp, line, 0);
+	for (auto line : csdLines)
+	{
+		ValueTree temp ("temp");
+		CabbageWidgetData::setWidgetState (temp, line, 0);
 
-        if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-            return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
-    }
+		if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+			return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
+	}
 
-    return String::empty;
-}
-//==============================================================================
-// Set unique plugin ID for each plugin based on the file name
-//==============================================================================
-int CabbageDocumentWindow::setUniquePluginId (File binFile, File csdFile)
-{
-
-    size_t file_size;
-    const char* pluginID;
-    pluginID = "YROR";
-
-    long loc;
-    std::fstream mFile (binFile.getFullPathName().toUTF8(), ios_base::in | ios_base::out | ios_base::binary);
-
-    if (mFile.is_open())
-    {
-        mFile.seekg (0, ios::end);
-        file_size = mFile.tellg();
-        unsigned char* buffer = (unsigned char*)malloc (sizeof (unsigned char) * file_size);
-
-        //set plugin ID, do this a few times in case the plugin ID appear in more than one place.
-        for (int r = 0; r < 10; r++)
-        {
-            mFile.seekg (0, ios::beg);
-            mFile.read ((char*)&buffer[0], file_size);
-            loc = cabbageFindPluginId (buffer, file_size, pluginID);
-
-            if (loc < 0)
-            {
-                //showMessage(String("Internel Cabbage Error: The pluginID was not found"));
-                break;
-            }
-            else
-            {
-                //showMessage(newID);
-                mFile.seekg (loc, ios::beg);
-                mFile.write (getPluginId (csdFile).toUTF8(), 4);
-            }
-        }
-
-        //set plugin name based on .csd file
-        const char* pluginName = "CabbageEffectNam";
-        String plugLibName = csdFile.getFileNameWithoutExtension();
-
-        if (plugLibName.length() < 16)
-            for (int y = plugLibName.length(); y < 16; y++)
-                plugLibName.append (String (" "), 1);
-
-        mFile.seekg (0, ios::end);
-        //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
-
-        for (int i = 0; i < 5; i++)
-        {
-
-            mFile.seekg (0, ios::beg);
-            mFile.read ((char*)&buffer[0], file_size);
-
-
-            loc = cabbageFindPluginId (buffer, file_size, pluginName);
-
-            if (loc < 0)
-                break;
-            else
-            {
-                mFile.seekg (loc, ios::beg);
-                mFile.write (csdFile.getFileNameWithoutExtension().toUTF8(), 16);
-            }
-        }
-
-        free (buffer);
-
-    }
-    else
-        CabbageUtilities::showMessage ("File could not be opened", &getLookAndFeel());
-
-    mFile.close();
-    return 1;
-}
-
-long CabbageDocumentWindow::cabbageFindPluginId (unsigned char* buf, size_t len, const char* s)
-{
-    long i, j;
-    size_t slen = strlen (s);
-    size_t imax = len - slen - 1;
-    long ret = -1;
-    int match;
-
-    for (i = 0; i < imax; i++)
-    {
-        match = 1;
-
-        for (j = 0; j < slen; j++)
-        {
-            if (buf[i + j] != s[j])
-            {
-                match = 0;
-                break;
-            }
-        }
-
-        if (match)
-        {
-            ret = i;
-            break;
-        }
-    }
-
-    //return position of plugin ID
-    return ret;
+	return String::empty;
 }
