@@ -78,8 +78,9 @@ namespace MacFileHelpers
             NSNumber* hidden = nil;
             NSError* err = nil;
 
-            return [createNSURLFromFile (path) getResourceValue: &hidden forKey: NSURLIsHiddenKey error: &err]
-                     && [hidden boolValue];
+            return [[NSURL fileURLWithPath: juceStringToNS (path)]
+                        getResourceValue: &hidden forKey: NSURLIsHiddenKey error: &err]
+                    && [hidden boolValue];
         }
        #elif JUCE_IOS
         return File (path).getFileName().startsWithChar ('.');
@@ -211,7 +212,7 @@ File File::getSpecialLocation (const SpecialLocationType type)
 
             case invokedExecutableFile:
                 if (juce_argv != nullptr && juce_argc > 0)
-                    return File::getCurrentWorkingDirectory().getChildFile (String (juce_argv[0]));
+                    return File::getCurrentWorkingDirectory().getChildFile (CharPointer_UTF8 (juce_argv[0]));
                 // deliberate fall-through...
 
             case currentExecutableFile:
@@ -297,7 +298,7 @@ bool File::moveToTrash() const
    #else
     JUCE_AUTORELEASEPOOL
     {
-        NSURL* url = createNSURLFromFile (*this);
+        NSURL* url = [NSURL fileURLWithPath: juceStringToNS (getFullPathName())];
 
         [[NSWorkspace sharedWorkspace] recycleURLs: [NSArray arrayWithObject: url]
                                  completionHandler: nil];
@@ -402,12 +403,7 @@ bool JUCE_CALLTYPE Process::openDocument (const String& fileName, const String& 
         if (SystemStats::isRunningInAppExtensionSandbox())
             return false;
 
-       #if (! defined __IPHONE_OS_VERSION_MIN_REQUIRED) || (! defined __IPHONE_10_0) || (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0)
         return [[UIApplication sharedApplication] openURL: filenameAsURL];
-       #else
-        [[UIApplication sharedApplication] openURL: filenameAsURL options: @{} completionHandler: nil];
-        return true;
-       #endif
       #else
         NSWorkspace* workspace = [NSWorkspace sharedWorkspace];
 

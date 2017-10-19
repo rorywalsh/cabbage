@@ -241,7 +241,7 @@ bool OpenGLHelpers::isContextActive()
 {
     ScopedXDisplay xDisplay;
 
-    if (xDisplay.display)
+    if (auto display = xDisplay.display)
     {
         ScopedXLock xlock (xDisplay.display);
         return glXGetCurrentContext() != 0;

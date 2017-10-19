@@ -35,7 +35,7 @@
 
   ID:               juce_gui_basics
   vendor:           juce
-  version:          5.1.1
+  version:          5.0.1
   name:             JUCE GUI core classes
   description:      Basic user-interface components and related classes.
   website:          http://www.juce.com/juce
@@ -157,7 +157,6 @@ class KeyPressMappingSet;
 class ApplicationCommandManagerListener;
 class DrawableButton;
 class FlexBox;
-class Grid;
 
 #include "mouse/juce_MouseCursor.h"
 #include "mouse/juce_MouseListener.h"
@@ -179,6 +178,7 @@ class Grid;
 #include "mouse/juce_DragAndDropContainer.h"
 #include "mouse/juce_FileDragAndDropTarget.h"
 #include "mouse/juce_SelectedItemSet.h"
+#include "mouse/juce_LassoComponent.h"
 #include "mouse/juce_MouseInactivityDetector.h"
 #include "mouse/juce_TextDragAndDropTarget.h"
 #include "mouse/juce_TooltipClient.h"
@@ -286,24 +286,15 @@ class Grid;
 #include "lookandfeel/juce_LookAndFeel_V1.h"
 #include "lookandfeel/juce_LookAndFeel_V3.h"
 #include "lookandfeel/juce_LookAndFeel_V4.h"
-#include "mouse/juce_LassoComponent.h"
 
 #if JUCE_LINUX
  #include "native/juce_linux_X11.h"
 #endif
 
 // these classes are C++11-only
-#if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS
+#if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS && JUCE_COMPILER_SUPPORTS_LAMBDAS
 #include "layout/juce_FlexItem.h"
 #include "layout/juce_FlexBox.h"
-#include "layout/juce_GridItem.h"
-#include "layout/juce_Grid.h"
-
-constexpr Grid::Px operator"" _px (long double px) { return Grid::Px { px }; }
-constexpr Grid::Px operator"" _px (unsigned long long px) { return Grid::Px { px }; }
-
-constexpr Grid::Fr operator"" _fr (unsigned long long fr) { return Grid::Fr { fr }; }
-
 #endif
 
 }

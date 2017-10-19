@@ -88,19 +88,16 @@ AudioProcessor::~AudioProcessor()
 }
 
 //==============================================================================
-StringArray AudioProcessor::getAlternateDisplayNames() const     { return StringArray (getName()); }
-
-//==============================================================================
 bool AudioProcessor::addBus (bool isInput)
 {
     if (! canAddBus (isInput))
         return false;
 
-    BusProperties busesProps;
-    if (! canApplyBusCountChange (isInput, true, busesProps))
+    BusProperties BusesProperties;
+    if (! canApplyBusCountChange (isInput, true, BusesProperties))
         return false;
 
-    createBus (isInput, busesProps);
+    createBus (isInput, BusesProperties);
     return true;
 }
 
@@ -113,8 +110,8 @@ bool AudioProcessor::removeBus (bool inputBus)
     if (! canRemoveBus (inputBus))
         return false;
 
-    BusProperties busesProps;
-    if (! canApplyBusCountChange (inputBus, false, busesProps))
+    BusProperties BusesProperties;
+    if (! canApplyBusCountChange (inputBus, false, BusesProperties))
         return false;
 
     const int busIdx = numBuses - 1;
@@ -691,9 +688,7 @@ void AudioProcessor::addParameter (AudioProcessorParameter* p)
     auto paramId = getParameterID (p->parameterIndex);
 
     for (auto q : managedParameters)
-    {
         jassert (q == nullptr || q == p || paramId != getParameterID (q->parameterIndex));
-    }
    #endif
 }
 
@@ -1024,9 +1019,6 @@ void AudioProcessor::setCurrentProgramStateInformation (const void* data, int si
 {
     setStateInformation (data, sizeInBytes);
 }
-
-//==============================================================================
-void AudioProcessor::updateTrackProperties (const AudioProcessor::TrackProperties&)    {}
 
 //==============================================================================
 // magic number to identify memory blocks that we've stored as XML

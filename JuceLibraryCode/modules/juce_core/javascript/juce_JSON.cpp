@@ -323,8 +323,7 @@ class JSONFormatter
 {
 public:
     static void write (OutputStream& out, const var& v,
-                       const int indentLevel, const bool allOnOneLine,
-                       int maximumDecimalPlaces)
+                       const int indentLevel, const bool allOnOneLine)
     {
         if (v.isString())
         {
@@ -344,18 +343,14 @@ public:
         {
             out << (static_cast<bool> (v) ? "true" : "false");
         }
-        else if (v.isDouble())
-        {
-            out << String (static_cast<double> (v), maximumDecimalPlaces);
-        }
         else if (v.isArray())
         {
-            writeArray (out, *v.getArray(), indentLevel, allOnOneLine, maximumDecimalPlaces);
+            writeArray (out, *v.getArray(), indentLevel, allOnOneLine);
         }
         else if (v.isObject())
         {
             if (DynamicObject* object = v.getDynamicObject())
-                object->writeAsJSON (out, indentLevel, allOnOneLine, maximumDecimalPlaces);
+                object->writeAsJSON (out, indentLevel, allOnOneLine);
             else
                 jassertfalse; // Only DynamicObjects can be converted to JSON!
         }
@@ -425,8 +420,7 @@ public:
     }
 
     static void writeArray (OutputStream& out, const Array<var>& array,
-                            const int indentLevel, const bool allOnOneLine,
-                            int maximumDecimalPlaces)
+                            const int indentLevel, const bool allOnOneLine)
     {
         out << '[';
 
@@ -440,7 +434,7 @@ public:
                 if (! allOnOneLine)
                     writeSpaces (out, indentLevel + indentSize);
 
-                write (out, array.getReference(i), indentLevel + indentSize, allOnOneLine, maximumDecimalPlaces);
+                write (out, array.getReference(i), indentLevel + indentSize, allOnOneLine);
 
                 if (i < array.size() - 1)
                 {
@@ -499,16 +493,16 @@ Result JSON::parse (const String& text, var& result)
     return JSONParser::parseObjectOrArray (text.getCharPointer(), result);
 }
 
-String JSON::toString (const var& data, const bool allOnOneLine, int maximumDecimalPlaces)
+String JSON::toString (const var& data, const bool allOnOneLine)
 {
     MemoryOutputStream mo (1024);
-    JSONFormatter::write (mo, data, 0, allOnOneLine, maximumDecimalPlaces);
+    JSONFormatter::write (mo, data, 0, allOnOneLine);
     return mo.toUTF8();
 }
 
-void JSON::writeToStream (OutputStream& output, const var& data, const bool allOnOneLine, int maximumDecimalPlaces)
+void JSON::writeToStream (OutputStream& output, const var& data, const bool allOnOneLine)
 {
-    JSONFormatter::write (output, data, 0, allOnOneLine, maximumDecimalPlaces);
+    JSONFormatter::write (output, data, 0, allOnOneLine);
 }
 
 String JSON::escapeString (StringRef s)
@@ -535,7 +529,7 @@ Result JSON::parseQuotedString (String::CharPointerType& t, var& result)
 class JSONTests  : public UnitTest
 {
 public:
-    JSONTests() : UnitTest ("JSON", "JSON") {}
+    JSONTests() : UnitTest ("JSON") {}
 
     static String createRandomWideCharString (Random& r)
     {
@@ -571,11 +565,17 @@ public:
         return CharPointer_ASCII (buffer);
     }
 
-    // Creates a random double that can be easily stringified, to avoid
-    // false failures when decimal places are rounded or truncated slightly
+    // (creates a random double that can be easily stringified, to avoid
+    // false failures when decimal places are rounded or truncated slightly)
     static var createRandomDouble (Random& r)
     {
-        return var ((r.nextDouble() * 1000.0) + 0.1);
+        for (;;)
+        {
+            var v (String (r.nextDouble() * 1000.0, 20).getDoubleValue());
+
+            if (v.toString() == String (static_cast<double> (v), 20))
+                return v;
+        }
     }
 
     static var createRandomVar (Random& r, int depth)

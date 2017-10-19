@@ -113,14 +113,14 @@ public:
         never need to call it directly, but it's virtual so that custom object types
         can stringify themselves appropriately.
     */
-    virtual void writeAsJSON (OutputStream&, int indentLevel, bool allOnOneLine, int maximumDecimalPlaces);
+    virtual void writeAsJSON (OutputStream&, int indentLevel, bool allOnOneLine);
 
 private:
     //==============================================================================
     NamedValueSet properties;
 
    #if JUCE_CATCH_DEPRECATED_CODE_MISUSE
-    // This method has been deprecated - use var::invoke instead
+    // These methods have been deprecated - use var::invoke instead
     virtual void invokeMethod (const Identifier&, const var*, int) {}
    #endif
 

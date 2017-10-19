@@ -137,8 +137,6 @@ public:
         [task release];
         [request release];
         [headers release];
-
-        [session finishTasksAndInvalidate];
         [session release];
 
         const ScopedLock sl (dataLock);
@@ -148,25 +146,12 @@ public:
 
     void cancel()
     {
-        {
-            const ScopedLock lock (createTaskLock);
-
-            hasBeenCancelled = true;
-        }
-
         signalThreadShouldExit();
         stopThread (10000);
     }
 
     bool start (WebInputStream& inputStream, WebInputStream::Listener* listener)
     {
-        {
-            const ScopedLock lock (createTaskLock);
-
-            if (hasBeenCancelled)
-                return false;
-        }
-
         startThread();
 
         while (isThreadRunning() && ! initialised)
@@ -297,12 +282,7 @@ public:
                                                  delegate: delegate
                                             delegateQueue: [NSOperationQueue currentQueue]] retain];
 
-        {
-            const ScopedLock lock (createTaskLock);
-
-            if (! hasBeenCancelled)
-                task = [session dataTaskWithRequest: request];
-        }
+        task = [session dataTaskWithRequest: request];
 
         if (task == nil)
             return;
@@ -330,8 +310,6 @@ public:
     const int numRedirectsToFollow;
     int numRedirects = 0;
     int64 latestTotalBytes = 0;
-    CriticalSection createTaskLock;
-    bool hasBeenCancelled = false;
 
 private:
     //==============================================================================
@@ -505,7 +483,7 @@ struct BackgroundDownloadTask  : public URL::DownloadTask
     {
         NSFileManager* fileManager = [[NSFileManager alloc] init];
         error = ([fileManager moveItemAtURL: location
-                                      toURL: createNSURLFromFile (targetLocation)
+                                      toURL: [NSURL fileURLWithPath:juceStringToNS (targetLocation.getFullPathName())]
                                       error: nil] == NO);
         httpCode = 200;
         finished = true;
@@ -682,7 +660,6 @@ public:
     ~URLConnectionState()
     {
         stop();
-
         [connection release];
         [request release];
         [headers release];
@@ -709,13 +686,8 @@ public:
     void stop()
     {
         {
-            const ScopedLock dLock (dataLock);
-            const ScopedLock connectionLock (createConnectionLock);
-
-            hasBeenCancelled = true;
-
-            if (connection != nil)
-                [connection cancel];
+            const ScopedLock sl (dataLock);
+            [connection cancel];
         }
 
         stopThread (10000);
@@ -796,7 +768,8 @@ public:
     {
         DBG (nsStringToJuce ([error description])); ignoreUnused (error);
         nsUrlErrorCode = [error code];
-        hasFailed = initialised = true;
+        hasFailed = true;
+        initialised = true;
         signalThreadShouldExit();
     }
 
@@ -814,22 +787,15 @@ public:
 
     void finishedLoading()
     {
-        hasFinished = initialised = true;
+        hasFinished = true;
+        initialised = true;
         signalThreadShouldExit();
     }
 
     void run() override
     {
-        {
-            const ScopedLock lock (createConnectionLock);
-
-            if (hasBeenCancelled)
-                return;
-
-            connection = [[NSURLConnection alloc] initWithRequest: request
-                                                         delegate: delegate];
-        }
-
+        connection = [[NSURLConnection alloc] initWithRequest: request
+                                                     delegate: delegate];
         while (! threadShouldExit())
         {
             JUCE_AUTORELEASEPOOL
@@ -852,14 +818,12 @@ public:
     const int numRedirectsToFollow;
     int numRedirects = 0;
     int latestTotalBytes = 0;
-    CriticalSection createConnectionLock;
-    bool hasBeenCancelled = false;
 
 private:
     //==============================================================================
     struct DelegateClass  : public ObjCClass<NSObject>
     {
-        DelegateClass()  : ObjCClass<NSObject> ("JUCENetworkDelegate_")
+        DelegateClass()  : ObjCClass<NSObject> ("JUCEAppDelegate_")
         {
             addIvar<URLConnectionState*> ("state");
 
@@ -927,8 +891,9 @@ class WebInputStream::Pimpl
 {
 public:
     Pimpl (WebInputStream& pimplOwner, const URL& urlToUse, bool shouldBePost)
-      : owner (pimplOwner), url (urlToUse), isPost (shouldBePost),
-        httpRequestCmd (shouldBePost ? "POST" : "GET")
+      : statusCode (0), owner (pimplOwner), url (urlToUse), position (0),
+        finished (false), isPost (shouldBePost), timeOutMs (0),
+        numRedirectsToFollow (5), httpRequestCmd (shouldBePost ? "POST" : "GET")
     {
     }
 
@@ -940,15 +905,7 @@ public:
     bool connect (WebInputStream::Listener* webInputListener, int numRetries = 0)
     {
         ignoreUnused (numRetries);
-
-        {
-            const ScopedLock lock (createConnectionLock);
-
-            if (hasBeenCancelled)
-                return false;
-
-            createConnection();
-        }
+        createConnection();
 
         if (! connection->start (owner, webInputListener))
         {
@@ -979,18 +936,6 @@ public:
         }
 
         return false;
-    }
-
-    void cancel()
-    {
-        {
-            const ScopedLock lock (createConnectionLock);
-
-            if (connection != nullptr)
-                connection->cancel();
-
-            hasBeenCancelled = true;
-        }
     }
 
     //==============================================================================
@@ -1059,7 +1004,13 @@ public:
         return true;
     }
 
-    int statusCode = 0;
+    void cancel()
+    {
+        if (connection != nullptr)
+            connection->cancel();
+    }
+
+    int statusCode;
 
 private:
     WebInputStream& owner;
@@ -1067,15 +1018,13 @@ private:
     ScopedPointer<URLConnectionState> connection;
     String headers;
     MemoryBlock postData;
-    int64 position = 0;
-    bool finished = false;
+    int64 position;
+    bool finished;
     const bool isPost;
-    int timeOutMs = 0;
-    int numRedirectsToFollow = 5;
+    int timeOutMs;
+    int numRedirectsToFollow;
     String httpRequestCmd;
     StringPairArray responseHeaders;
-    CriticalSection createConnectionLock;
-    bool hasBeenCancelled = false;
 
     void createConnection()
     {

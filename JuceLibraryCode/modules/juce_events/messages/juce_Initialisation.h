@@ -84,6 +84,10 @@ public:
 */
 #ifdef DOXYGEN
  #define START_JUCE_APPLICATION(AppClass)
+#elif JUCE_ANDROID
+ #define START_JUCE_APPLICATION(AppClass) \
+   juce::JUCEApplicationBase* juce_CreateApplication() { return new AppClass(); }
+
 #else
  #if JUCE_WINDOWS && ! defined (_CONSOLE)
   #define JUCE_MAIN_FUNCTION       int __stdcall WinMain (struct HINSTANCE__*, struct HINSTANCE__*, char*, int)
@@ -110,13 +114,6 @@ public:
        juce::JUCEApplicationBase::iOSCustomDelegate = juce_GetIOSCustomDelegateClass(); \
        return juce::JUCEApplicationBase::main (JUCE_MAIN_FUNCTION_ARGS); \
     }
-
- #elif JUCE_ANDROID
-
-  #define JUCE_CREATE_APPLICATION_DEFINE(AppClass) \
-    juce::JUCEApplicationBase* juce_CreateApplication() { return new AppClass(); }
-
-  #define JUCE_MAIN_FUNCTION_DEFINITION
 
  #else
 

@@ -66,7 +66,6 @@ namespace juce
 
 #include "../../juce_core/native/juce_osx_ObjCHelpers.h"
 
-#include "../../juce_audio_basics/native/juce_mac_CoreAudioLayouts.h"
 #include "juce_AU_Shared.h"
 
 // Change this to disable logging of various activities
@@ -559,7 +558,7 @@ public:
 
                 if (! set.isDiscreteLayout())
                 {
-                    const AudioChannelLayoutTag requestedTag = CoreAudioLayouts::toCoreAudio (set);
+                    const AudioChannelLayoutTag requestedTag = AudioUnitHelpers::ChannelSetToCALayoutTag (set);
 
                     AudioChannelLayout layout;
                     const UInt32 minDataSize = sizeof (layout) - sizeof (AudioChannelDescription);
@@ -584,8 +583,7 @@ public:
                         if (err != noErr || dataSize < expectedSize)
                             return false;
 
-                        // try to convert the layout into a tag
-                        actualTag = CoreAudioLayouts::toCoreAudio (CoreAudioLayouts::fromCoreAudio (layout));
+                        actualTag = AudioUnitHelpers::ChannelSetToCALayoutTag (AudioUnitHelpers::CoreAudioChannelLayoutToJuceType (layout));
                     }
 
                     if (actualTag != requestedTag)
@@ -1066,19 +1064,6 @@ public:
     }
 
     //==============================================================================
-    void updateTrackProperties (const TrackProperties& properties) override
-    {
-        if (properties.name.isNotEmpty())
-        {
-            CFStringRef contextName = properties.name.toCFString();
-            AudioUnitSetProperty (audioUnit, kAudioUnitProperty_ContextName, kAudioUnitScope_Global,
-                                  0, &contextName, sizeof (CFStringRef));
-
-            CFRelease (contextName);
-        }
-    }
-
-    //==============================================================================
     void getStateInformation (MemoryBlock& destData) override
     {
         getCurrentProgramStateInformation (destData);
@@ -1141,7 +1126,6 @@ public:
     void refreshParameterList() override
     {
         parameters.clear();
-        paramIDToIndex.clear();
 
         if (audioUnit != nullptr)
         {
@@ -1172,7 +1156,6 @@ public:
                         ParamInfo* const param = new ParamInfo();
                         parameters.add (param);
                         param->paramID = ids[i];
-                        paramIDToIndex[ids[i]] = i;
                         param->minValue = info.minValue;
                         param->maxValue = info.maxValue;
                         param->automatable = (info.flags & kAudioUnitParameterFlag_NonRealTime) == 0;
@@ -1265,7 +1248,6 @@ private:
     };
 
     OwnedArray<ParamInfo> parameters;
-    std::unordered_map<AudioUnitParameterID, int> paramIDToIndex;
 
     MidiDataConcatenator midiConcatenator;
     CriticalSection midiInLock;
@@ -1351,10 +1333,13 @@ private:
          || event.mEventType == kAudioUnitEvent_BeginParameterChangeGesture
          || event.mEventType == kAudioUnitEvent_EndParameterChangeGesture)
         {
-            auto it = paramIDToIndex.find (event.mArgument.mParameter.mParameterID)
+            for (paramIndex = 0; paramIndex < parameters.size(); ++paramIndex)
+            {
+                const ParamInfo& p = *parameters.getUnchecked(paramIndex);
 
-            if (it != paramIDToIndex.end())
-                paramIndex = it->second;
+                if (p.paramID == event.mArgument.mParameter.mParameterID)
+                    break;
+            }
 
             if (! isPositiveAndBelow (paramIndex, parameters.size()))
                 return;
@@ -1364,7 +1349,7 @@ private:
         {
             case kAudioUnitEvent_ParameterValueChange:
                 {
-                    auto& p = *parameters.getUnchecked (paramIndex);
+                    const ParamInfo& p = *parameters.getUnchecked(paramIndex);
                     sendParamChangeMessageToListeners (paramIndex, (newValue - p.minValue) / (p.maxValue - p.minValue));
                 }
                 break;
@@ -1651,7 +1636,7 @@ private:
                 propertySize = sizeof (auLayout);
 
                 if (AudioUnitGetProperty (comp, kAudioUnitProperty_AudioChannelLayout, scope, static_cast<UInt32> (busIdx), &auLayout, &propertySize) == noErr)
-                    currentLayout = CoreAudioLayouts::fromCoreAudio (auLayout);
+                    currentLayout = AudioUnitHelpers::CoreAudioChannelLayoutToJuceType (auLayout);
             }
 
             if (currentLayout.isDisabled())
@@ -1694,7 +1679,7 @@ private:
                     UInt32 propertySize = sizeof (auLayout);
 
                     if (AudioUnitGetProperty (audioUnit, kAudioUnitProperty_AudioChannelLayout, scope, static_cast<UInt32> (busIdx), &auLayout, &propertySize) == noErr)
-                        currentLayout = CoreAudioLayouts::fromCoreAudio (auLayout);
+                        currentLayout = AudioUnitHelpers::CoreAudioChannelLayoutToJuceType (auLayout);
                 }
 
                 if (currentLayout.isDisabled())
@@ -1726,12 +1711,7 @@ private:
                                 const AudioChannelLayoutTag tag = layoutTags[j];
 
                                 if (tag != kAudioChannelLayoutTag_UseChannelDescriptions)
-                                {
-                                    AudioChannelLayout caLayout;
-
-                                    caLayout.mChannelLayoutTag = tag;
-                                    supported.addIfNotAlreadyThere (CoreAudioLayouts::fromCoreAudio (caLayout));
-                                }
+                                    supported.addIfNotAlreadyThere (AudioUnitHelpers::CALayoutTagToChannelSet (tag));
                             }
 
                             if (supported.size() > 0)

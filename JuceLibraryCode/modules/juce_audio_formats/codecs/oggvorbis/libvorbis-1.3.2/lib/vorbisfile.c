@@ -15,13 +15,8 @@
 
  ********************************************************************/
 
-#if JUCE_MSVC
+#ifdef JUCE_MSVC
  #pragma warning (disable: 4456 4457 4459)
-#endif
-
-#if JUCE_GCC && __GNUC__ > 6
- #pragma GCC diagnostic push
- #pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #endif
 
 #include <stdlib.h>
@@ -1566,7 +1561,7 @@ int ov_pcm_seek_page(OggVorbis_File *vf,ogg_int64_t pos){
         if(op.granulepos!=-1){
           vf->pcm_offset=op.granulepos-vf->pcmlengths[vf->current_link*2];
           if(vf->pcm_offset<0)vf->pcm_offset=0;
-            vf->pcm_offset+=total;
+          vf->pcm_offset+=total;
           break;
         }else
           result=ogg_stream_packetout(&vf->os,NULL);
@@ -2352,7 +2347,3 @@ int ov_time_seek_lap(OggVorbis_File *vf,double pos){
 int ov_time_seek_page_lap(OggVorbis_File *vf,double pos){
   return _ov_d_seek_lap(vf,pos,ov_time_seek_page);
 }
-
-#if JUCE_GCC && __GNUC__ > 6
- #pragma GCC diagnostic pop
-#endif

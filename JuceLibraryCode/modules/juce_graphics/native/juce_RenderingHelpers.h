@@ -2295,11 +2295,11 @@ public:
         }
     }
 
-    void drawLine (Line<float> line)
+    void drawLine (const Line<float>& line)
     {
         Path p;
         p.addLineSegment (line, 1.0f);
-        fillPath (p, {});
+        fillPath (p, AffineTransform());
     }
 
     void drawImage (const Image& sourceImage, const AffineTransform& trans)
@@ -2319,7 +2319,7 @@ public:
     void renderImage (const Image& sourceImage, const AffineTransform& trans,
                       const BaseRegionType* const tiledFillClipRegion)
     {
-        auto t = transform.getTransformWith (trans);
+        const AffineTransform t (transform.getTransformWith (trans));
 
         const int alpha = fillType.colour.getAlpha();
 
@@ -2356,17 +2356,18 @@ public:
         {
             if (tiledFillClipRegion != nullptr)
             {
-                tiledFillClipRegion->renderImageTransformed (getThis(), sourceImage, alpha,
-                                                             t, interpolationQuality, true);
+                tiledFillClipRegion->renderImageTransformed (getThis(), sourceImage, alpha, t, interpolationQuality, true);
             }
             else
             {
                 Path p;
                 p.addRectangle (sourceImage.getBounds());
 
-                if (auto c = clip->clone()->clipToPath (p, t))
-                    c->renderImageTransformed (getThis(), sourceImage, alpha,
-                                               t, interpolationQuality, false);
+                typename BaseRegionType::Ptr c (clip->clone());
+                c = c->clipToPath (p, t);
+
+                if (c != nullptr)
+                    c->renderImageTransformed (getThis(), sourceImage, alpha, t, interpolationQuality, false);
             }
         }
     }
@@ -2385,7 +2386,7 @@ public:
 
                 ColourGradient g2 (*(fillType.gradient));
                 g2.multiplyOpacity (fillType.getOpacity());
-                auto t = transform.getTransformWith (fillType.transform).translated (-0.5f, -0.5f);
+                AffineTransform t (transform.getTransformWith (fillType.transform).translated (-0.5f, -0.5f));
 
                 const bool isIdentity = t.isOnlyTranslation();
 

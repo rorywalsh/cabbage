@@ -61,7 +61,7 @@ static NSRect flippedScreenRect (NSRect r) noexcept
 }
 
 #if JUCE_MODULE_AVAILABLE_juce_opengl
-void componentPeerAboutToChange (Component&, bool);
+void componentPeerAboutToBeRemovedFromScreen (ComponentPeer&);
 #endif
 
 //==============================================================================
@@ -173,10 +173,7 @@ public:
         setOwner (view, nullptr);
 
         if ([view superview] != nil)
-        {
-            redirectWillMoveToWindow (nullptr);
             [view removeFromSuperview];
-        }
 
         [view release];
 
@@ -671,8 +668,8 @@ public:
     void redirectWillMoveToWindow (NSWindow* newWindow)
     {
        #if JUCE_MODULE_AVAILABLE_juce_opengl
-        if ([view window] == window)
-            componentPeerAboutToChange (getComponent(), newWindow == nullptr);
+        if ([view window] == window && newWindow == nullptr)
+            componentPeerAboutToBeRemovedFromScreen (*this);
        #else
         ignoreUnused (newWindow);
        #endif

@@ -76,6 +76,10 @@
   #endif
  #endif
 
+ #if JUCE_QUICKTIME && JUCE_MSVC && ! JUCE_DONT_AUTOLINK_TO_WIN32_LIBRARIES
+  #pragma comment (lib, "QTMLClient.lib")
+ #endif
+
  #if JUCE_DIRECT2D && JUCE_MSVC && ! JUCE_DONT_AUTOLINK_TO_WIN32_LIBRARIES
   #pragma comment (lib, "Dwrite.lib")
   #pragma comment (lib, "D2d1.lib")
@@ -127,9 +131,6 @@
  #undef SIZEOF
  #undef KeyPress
 #endif
-
-#include <map>
-#include <set>
 
 //==============================================================================
 namespace juce
@@ -257,13 +258,8 @@ extern bool juce_areThereAnyAlwaysOnTopWindows();
 #include "misc/juce_JUCESplashScreen.cpp"
 
 // these classes are C++11-only
-#if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS
+#if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS && JUCE_COMPILER_SUPPORTS_LAMBDAS
  #include "layout/juce_FlexBox.cpp"
- #include "layout/juce_GridItem.cpp"
- #include "layout/juce_Grid.cpp"
- #if JUCE_UNIT_TESTS
-  #include "layout/juce_GridUnitTests.cpp"
- #endif
 #endif
 
 #if JUCE_IOS || JUCE_WINDOWS

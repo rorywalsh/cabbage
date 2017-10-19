@@ -20,11 +20,6 @@
   ==============================================================================
 */
 
-#if ! JUCE_MINGW
- #pragma intrinsic (__cpuid)
- #pragma intrinsic (__rdtsc)
-#endif
-
 void Logger::outputDebugString (const String& text)
 {
     OutputDebugString ((text + "\n").toWideCharPointer());
@@ -37,6 +32,8 @@ void Logger::outputDebugString (const String& text)
 #endif
 
 //==============================================================================
+#pragma intrinsic (__cpuid)
+#pragma intrinsic (__rdtsc)
 
 #if JUCE_MINGW
 static void callCPUID (int result[4], uint32 type)
@@ -87,7 +84,7 @@ String SystemStats::getCpuModel()
 
     const int numExtIDs = info[0];
 
-    if ((unsigned) numExtIDs < 0x80000004)  // if brand string is unsupported
+    if (numExtIDs < 0x80000004)  // if brand string is unsupported
         return {};
 
     callCPUID (info, 0x80000002);
@@ -164,45 +161,59 @@ static DebugFlagsInitialiser debugFlagsInitialiser;
 #endif
 
 //==============================================================================
-static uint32 getWindowsVersion()
+static bool isWindowsVersionOrLater (SystemStats::OperatingSystemType target)
 {
-    auto filename = _T("kernel32.dll");
-    DWORD handle = 0;
+    OSVERSIONINFOEX info;
+    zerostruct (info);
+    info.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
 
-    if (auto size = GetFileVersionInfoSize (filename, &handle))
+    if (target >= SystemStats::Windows10)
     {
-        HeapBlock<char> data (size);
+        info.dwMajorVersion = 10;
+        info.dwMinorVersion = 0;
+    }
+    else if (target >= SystemStats::WinVista)
+    {
+        info.dwMajorVersion = 6;
 
-        if (GetFileVersionInfo (filename, handle, size, data))
+        switch (target)
         {
-            VS_FIXEDFILEINFO* info = nullptr;
-            UINT verSize = 0;
-
-            if (VerQueryValue (data, (LPCTSTR) _T("\\"), (void**) &info, &verSize))
-                if (size > 0 && info != nullptr && info->dwSignature == 0xfeef04bd)
-                    return (uint32) info->dwFileVersionMS;
+            case SystemStats::WinVista:    break;
+            case SystemStats::Windows7:    info.dwMinorVersion = 1; break;
+            case SystemStats::Windows8_0:  info.dwMinorVersion = 2; break;
+            case SystemStats::Windows8_1:  info.dwMinorVersion = 3; break;
+            default:                       jassertfalse; break;
         }
     }
+    else
+    {
+        info.dwMajorVersion = 5;
+        info.dwMinorVersion = target >= SystemStats::WinXP ? 1 : 0;
+    }
 
-    return 0;
+    DWORDLONG mask = 0;
+
+    VER_SET_CONDITION (mask, VER_MAJORVERSION,     VER_GREATER_EQUAL);
+    VER_SET_CONDITION (mask, VER_MINORVERSION,     VER_GREATER_EQUAL);
+    VER_SET_CONDITION (mask, VER_SERVICEPACKMAJOR, VER_GREATER_EQUAL);
+    VER_SET_CONDITION (mask, VER_SERVICEPACKMINOR, VER_GREATER_EQUAL);
+
+    return VerifyVersionInfo (&info,
+                              VER_MAJORVERSION | VER_MINORVERSION
+                               | VER_SERVICEPACKMAJOR | VER_SERVICEPACKMINOR,
+                              mask) != FALSE;
 }
 
 SystemStats::OperatingSystemType SystemStats::getOperatingSystemType()
 {
-    auto v = getWindowsVersion();
-    auto major = (v >> 16);
+    const SystemStats::OperatingSystemType types[]
+            = { Windows10, Windows8_1, Windows8_0, Windows7, WinVista, WinXP, Win2000 };
 
-    jassert (major <= 10); // need to add support for new version!
+    for (int i = 0; i < numElementsInArray (types); ++i)
+        if (isWindowsVersionOrLater (types[i]))
+            return types[i];
 
-    if (major == 10)       return Windows10;
-    if (v == 0x00060003)   return Windows8_1;
-    if (v == 0x00060002)   return Windows8_0;
-    if (v == 0x00060001)   return Windows7;
-    if (v == 0x00060000)   return WinVista;
-    if (v == 0x00050000)   return Win2000;
-    if (major == 5)        return WinXP;
-
-    jassertfalse;
+    jassertfalse;  // need to support whatever new version is running!
     return UnknownOS;
 }
 
@@ -227,19 +238,7 @@ String SystemStats::getOperatingSystemName()
 
 String SystemStats::getDeviceDescription()
 {
-   #if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-    return "Windows (Desktop)";
-   #elif WINAPI_FAMILY == WINAPI_FAMILY_PC_APP
-    return "Windows (Store)";
-   #elif WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
-    return "Windows (Phone)";
-   #elif WINAPI_FAMILY == WINAPI_FAMILY_SYSTEM
-    return "Windows (System)";
-   #elif WINAPI_FAMILY == WINAPI_FAMILY_SERVER
-    return "Windows (Server)";
-   #else
-    return "Windows";
-   #endif
+    return {};
 }
 
 bool SystemStats::isOperatingSystem64Bit()

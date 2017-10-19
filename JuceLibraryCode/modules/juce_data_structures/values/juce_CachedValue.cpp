@@ -29,7 +29,7 @@
 class CachedValueTests  : public UnitTest
 {
 public:
-    CachedValueTests() : UnitTest ("CachedValues", "Values") {}
+    CachedValueTests() : UnitTest ("CachedValues") {}
 
     void runTest() override
     {

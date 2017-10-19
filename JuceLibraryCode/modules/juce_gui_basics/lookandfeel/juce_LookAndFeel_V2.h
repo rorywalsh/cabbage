@@ -129,7 +129,7 @@ public:
     AttributedString createFileChooserHeaderText (const String& title, const String& instructions) override;
 
     void drawFileBrowserRow (Graphics&, int width, int height,
-                             const File& file, const String& filename, Image* icon,
+                             const String& filename, Image* icon,
                              const String& fileSizeDescription, const String& fileTimeDescription,
                              bool isDirectory, bool isItemSelected, int itemIndex,
                              DirectoryContentsDisplayComponent&) override;
@@ -179,10 +179,6 @@ public:
                           MenuBarComponent&) override;
 
     Component* getParentComponentForMenuOptions (const PopupMenu::Options& options) override;
-
-    bool shouldPopupMenuScaleWithTargetComponent (const PopupMenu::Options& options) override;
-
-    int getPopupMenuBorderSize() override;
 
     //==============================================================================
     void drawComboBox (Graphics&, int width, int height, bool isButtonDown,
@@ -274,7 +270,6 @@ public:
     Rectangle<int> getTabButtonExtraComponentBounds (const TabBarButton&, Rectangle<int>& textArea, Component& extraComp) override;
 
     void drawTabButton (TabBarButton&, Graphics&, bool isMouseOver, bool isMouseDown) override;
-    Font getTabButtonFont (TabBarButton&, float height) override;
     void drawTabButtonText (TabBarButton&, Graphics&, bool isMouseOver, bool isMouseDown) override;
     void drawTabbedButtonBarBackground (TabbedButtonBar&, Graphics&) override;
     void drawTabAreaBehindFrontButton (TabbedButtonBar&, Graphics&, int w, int h) override;
@@ -292,9 +287,9 @@ public:
     //==============================================================================
     void drawTableHeaderBackground (Graphics&, TableHeaderComponent&) override;
 
-    void drawTableHeaderColumn (Graphics&, TableHeaderComponent&, const String& columnName,
-                                int columnId, int width, int height, bool isMouseOver,
-                                bool isMouseDown, int columnFlags) override;
+    void drawTableHeaderColumn (Graphics&, const String& columnName, int columnId,
+                                int width, int height, bool isMouseOver, bool isMouseDown,
+                                int columnFlags) override;
 
     //==============================================================================
     void paintToolbarBackground (Graphics&, int width, int height, Toolbar&) override;

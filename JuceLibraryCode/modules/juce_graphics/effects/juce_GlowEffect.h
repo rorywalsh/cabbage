@@ -40,6 +40,7 @@ class JUCE_API  GlowEffect  : public ImageEffectFilter
 public:
     //==============================================================================
     /** Creates a default 'glow' effect.
+
         To customise its appearance, use the setGlowProperties() method.
     */
     GlowEffect();
@@ -55,19 +56,17 @@ public:
         opacity).
     */
     void setGlowProperties (float newRadius,
-                            Colour newColour,
-                            Point<int> offset = {});
+                            Colour newColour);
 
 
     //==============================================================================
     /** @internal */
-    void applyEffect (Image&, Graphics&, float scaleFactor, float alpha) override;
+    void applyEffect (Image& sourceImage, Graphics& destContext, float scaleFactor, float alpha);
 
 private:
     //==============================================================================
-    float radius = 2.0f;
-    Colour colour { Colours::white };
-    Point<int> offset;
+    float radius;
+    Colour colour;
 
     JUCE_LEAK_DETECTOR (GlowEffect)
 };

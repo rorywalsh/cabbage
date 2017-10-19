@@ -204,7 +204,7 @@ void MPEZoneLayout::removeListener (Listener* const listenerToRemove) noexcept
 class MPEZoneLayoutTests  : public UnitTest
 {
 public:
-    MPEZoneLayoutTests() : UnitTest ("MPEZoneLayout class", "MIDI/MPE") {}
+    MPEZoneLayoutTests() : UnitTest ("MPEZoneLayout class") {}
 
     void runTest() override
     {

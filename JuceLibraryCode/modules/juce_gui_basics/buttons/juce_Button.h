@@ -267,11 +267,6 @@ public:
     */
     void setTriggeredOnMouseDown (bool isTriggeredOnMouseDown) noexcept;
 
-    /** Returns whether the button click happens when the mouse is pressed or released.
-        @see setTriggeredOnMouseDown
-    */
-    bool getTriggeredOnMouseDown() const noexcept;
-
     /** Returns the number of milliseconds since the last time the button
         went into the 'down' state.
     */
@@ -397,7 +392,7 @@ protected:
         Subclasses can override this to perform whatever they actions they need
         to do.
 
-        Alternatively, a Button::Listener can be added to the button, and these listeners
+        Alternatively, a ButtonListener can be added to the button, and these listeners
         will be called when the click occurs.
 
         @see triggerClick

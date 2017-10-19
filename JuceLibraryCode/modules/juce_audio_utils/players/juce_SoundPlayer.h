@@ -77,12 +77,8 @@ public:
         @param deleteWhenFinished If this is true then the audio source will
                                   be deleted once the device manager has finished
                                   playing.
-        @param sampleRateOfSource The sample rate of the source. If this is zero, JUCE
-                                  will assume that the sample rate is the same as the
-                                  audio output device.
      */
-    void play (PositionableAudioSource* audioSource, bool deleteWhenFinished = false,
-               double sampleRateOfSource = 0.0);
+    void play (PositionableAudioSource* audioSource, bool deleteWhenFinished = false);
 
     /** Plays the sound from an audio sample buffer.
 

@@ -107,7 +107,7 @@ namespace LiveConstantEditor
     //==============================================================================
     struct JUCE_API  LivePropertyEditorBase  : public Component,
                                                private TextEditor::Listener,
-                                               private Button::Listener
+                                               private ButtonListener
     {
         LivePropertyEditorBase (LiveValueBase&, CodeDocument&);
 
@@ -123,13 +123,13 @@ namespace LiveConstantEditor
         LiveValueBase& value;
         Label name;
         TextEditor valueEditor;
-        TextButton resetButton { "reset" };
+        TextButton resetButton;
         CodeDocument& document;
         CPlusPlusCodeTokeniser tokeniser;
         CodeEditorComponent sourceEditor;
         CodeDocument::Position valueStart, valueEnd;
         ScopedPointer<Component> customComp;
-        bool wasHex = false;
+        bool wasHex;
 
         JUCE_DECLARE_NON_COPYABLE (LivePropertyEditorBase)
     };

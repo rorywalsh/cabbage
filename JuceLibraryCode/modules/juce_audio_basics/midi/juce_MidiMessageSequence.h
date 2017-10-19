@@ -46,10 +46,16 @@ public:
     MidiMessageSequence& operator= (const MidiMessageSequence&);
 
     /** Move constructor */
-    MidiMessageSequence (MidiMessageSequence&&) noexcept;
+    MidiMessageSequence (MidiMessageSequence&& other) noexcept
+        : list (static_cast<OwnedArray<MidiEventHolder>&&> (other.list))
+    {}
 
     /** Move assignment operator */
-    MidiMessageSequence& operator= (MidiMessageSequence&&) noexcept;
+    MidiMessageSequence& operator= (MidiMessageSequence&& other) noexcept
+    {
+        list = static_cast<OwnedArray<MidiEventHolder>&&> (other.list);
+        return *this;
+    }
 
     /** Destructor. */
     ~MidiMessageSequence();
@@ -80,13 +86,12 @@ public:
             note-offs up-to-date after events have been moved around in the sequence
             or deleted.
         */
-        MidiEventHolder* noteOffObject = nullptr;
+        MidiEventHolder* noteOffObject;
 
     private:
         //==============================================================================
         friend class MidiMessageSequence;
         MidiEventHolder (const MidiMessage&);
-        MidiEventHolder (MidiMessage&&);
         JUCE_LEAK_DETECTOR (MidiEventHolder)
     };
 
@@ -99,12 +104,6 @@ public:
 
     /** Returns a pointer to one of the events. */
     MidiEventHolder* getEventPointer (int index) const noexcept;
-
-    /** Iterator for the list of MidiEventHolders */
-    MidiEventHolder** begin() const noexcept;
-
-    /** Iterator for the list of MidiEventHolders */
-    MidiEventHolder** end() const noexcept;
 
     /** Returns the time of the note-up that matches the note-on at this index.
         If the event at this index isn't a note-on, it'll just return 0.
@@ -156,21 +155,8 @@ public:
                                 that will be inserted
         @see updateMatchedPairs
     */
-    MidiEventHolder* addEvent (const MidiMessage& newMessage, double timeAdjustment = 0);
-
-    /** Inserts a midi message into the sequence.
-
-        The index at which the new message gets inserted will depend on its timestamp,
-        because the sequence is kept sorted.
-
-        Remember to call updateMatchedPairs() after adding note-on events.
-
-        @param newMessage       the new message to add (an internal copy will be made)
-        @param timeAdjustment   an optional value to add to the timestamp of the message
-                                that will be inserted
-        @see updateMatchedPairs
-    */
-    MidiEventHolder* addEvent (MidiMessage&& newMessage, double timeAdjustment = 0);
+    MidiEventHolder* addEvent (const MidiMessage& newMessage,
+                               double timeAdjustment = 0);
 
     /** Deletes one of the events in the sequence.
 
@@ -289,8 +275,6 @@ private:
     //==============================================================================
     friend class MidiFile;
     OwnedArray<MidiEventHolder> list;
-
-    MidiEventHolder* addEvent (MidiEventHolder*, double);
 
     JUCE_LEAK_DETECTOR (MidiMessageSequence)
 };

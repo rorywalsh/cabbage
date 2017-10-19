@@ -38,7 +38,7 @@
 */
 class JUCE_API  ColourSelector  : public Component,
                                   public ChangeBroadcaster,
-                                  protected Slider::Listener
+                                  protected SliderListener
 {
 public:
     //==============================================================================

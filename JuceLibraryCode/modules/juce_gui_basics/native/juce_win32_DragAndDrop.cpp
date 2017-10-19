@@ -27,11 +27,12 @@
 namespace DragAndDropHelpers
 {
     //==============================================================================
-    struct JuceDropSource   : public ComBaseClassHelper<IDropSource>
+    class JuceDropSource   : public ComBaseClassHelper <IDropSource>
     {
+    public:
         JuceDropSource() {}
 
-        JUCE_COMRESULT QueryContinueDrag (BOOL escapePressed, DWORD keys) override
+        JUCE_COMRESULT QueryContinueDrag (BOOL escapePressed, DWORD keys)
         {
             if (escapePressed)
                 return DRAGDROP_S_CANCEL;
@@ -42,29 +43,35 @@ namespace DragAndDropHelpers
             return S_OK;
         }
 
-        JUCE_COMRESULT GiveFeedback (DWORD) override
+        JUCE_COMRESULT GiveFeedback (DWORD)
         {
             return DRAGDROP_S_USEDEFAULTCURSORS;
         }
     };
 
     //==============================================================================
-    struct JuceEnumFormatEtc   : public ComBaseClassHelper<IEnumFORMATETC>
+    class JuceEnumFormatEtc   : public ComBaseClassHelper <IEnumFORMATETC>
     {
-        JuceEnumFormatEtc (const FORMATETC* f)  : format (f) {}
+    public:
+        JuceEnumFormatEtc (const FORMATETC* const format_)
+            : format (format_),
+              index (0)
+        {
+        }
 
-        JUCE_COMRESULT Clone (IEnumFORMATETC** result) override
+        JUCE_COMRESULT Clone (IEnumFORMATETC** result)
         {
             if (result == 0)
                 return E_POINTER;
 
-            auto newOne = new JuceEnumFormatEtc (format);
+            JuceEnumFormatEtc* const newOne = new JuceEnumFormatEtc (format);
             newOne->index = index;
+
             *result = newOne;
             return S_OK;
         }
 
-        JUCE_COMRESULT Next (ULONG celt, LPFORMATETC lpFormatEtc, ULONG* pceltFetched) override
+        JUCE_COMRESULT Next (ULONG celt, LPFORMATETC lpFormatEtc, ULONG* pceltFetched)
         {
             if (pceltFetched != nullptr)
                 *pceltFetched = 0;
@@ -85,7 +92,7 @@ namespace DragAndDropHelpers
             return S_FALSE;
         }
 
-        JUCE_COMRESULT Skip (ULONG celt) override
+        JUCE_COMRESULT Skip (ULONG celt)
         {
             if (index + (int) celt >= 1)
                 return S_FALSE;
@@ -94,7 +101,7 @@ namespace DragAndDropHelpers
             return S_OK;
         }
 
-        JUCE_COMRESULT Reset() override
+        JUCE_COMRESULT Reset()
         {
             index = 0;
             return S_OK;
@@ -102,7 +109,7 @@ namespace DragAndDropHelpers
 
     private:
         const FORMATETC* const format;
-        int index = 0;
+        int index;
 
         static void copyFormatEtc (FORMATETC& dest, const FORMATETC& source)
         {
@@ -122,8 +129,12 @@ namespace DragAndDropHelpers
     class JuceDataObject  : public ComBaseClassHelper <IDataObject>
     {
     public:
-        JuceDataObject (JuceDropSource* s, const FORMATETC* f, const STGMEDIUM* m)
-            : dropSource (s), format (f), medium (m)
+        JuceDataObject (JuceDropSource* const dropSource_,
+                        const FORMATETC* const format_,
+                        const STGMEDIUM* const medium_)
+            : dropSource (dropSource_),
+              format (format_),
+              medium (medium_)
         {
         }
 
@@ -143,7 +154,7 @@ namespace DragAndDropHelpers
 
                 if (format->tymed == TYMED_HGLOBAL)
                 {
-                    auto len = GlobalSize (medium->hGlobal);
+                    const SIZE_T len = GlobalSize (medium->hGlobal);
                     void* const src = GlobalLock (medium->hGlobal);
                     void* const dst = GlobalAlloc (GMEM_FIXED, len);
 
@@ -218,15 +229,15 @@ namespace DragAndDropHelpers
 
         if (hDrop != 0)
         {
-            auto pDropFiles = (LPDROPFILES) GlobalLock (hDrop);
+            LPDROPFILES pDropFiles = (LPDROPFILES) GlobalLock (hDrop);
             pDropFiles->pFiles = sizeof (DROPFILES);
             pDropFiles->fWide = true;
 
-            auto* fname = reinterpret_cast<WCHAR*> (addBytesToPointer (pDropFiles, sizeof (DROPFILES)));
+            WCHAR* fname = reinterpret_cast<WCHAR*> (addBytesToPointer (pDropFiles, sizeof (DROPFILES)));
 
             for (int i = 0; i < fileNames.size(); ++i)
             {
-                auto bytesWritten = fileNames[i].copyToUTF16 (fname, 2048);
+                const size_t bytesWritten = fileNames[i].copyToUTF16 (fname, 2048);
                 fname = reinterpret_cast<WCHAR*> (addBytesToPointer (fname, bytesWritten));
             }
 
@@ -240,11 +251,11 @@ namespace DragAndDropHelpers
 
     bool performDragDrop (FORMATETC* const format, STGMEDIUM* const medium, const DWORD whatToDo)
     {
-        auto source = new JuceDropSource();
-        auto data   = new JuceDataObject (source, format, medium);
+        JuceDropSource* const source = new JuceDropSource();
+        JuceDataObject* const data = new JuceDataObject (source, format, medium);
 
         DWORD effect;
-        auto res = DoDragDrop (data, source, whatToDo, &effect);
+        const HRESULT res = DoDragDrop (data, source, whatToDo, &effect);
 
         data->Release();
         source->Release();
@@ -254,7 +265,7 @@ namespace DragAndDropHelpers
 }
 
 //==============================================================================
-bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, const bool canMove, Component*)
+bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, const bool canMove)
 {
     FORMATETC format = { CF_HDROP, 0, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
     STGMEDIUM medium = { TYMED_HGLOBAL, { 0 }, 0 };
@@ -265,12 +276,12 @@ bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& fi
                                                                           : (DWORD) DROPEFFECT_COPY);
 }
 
-bool DragAndDropContainer::performExternalDragDropOfText (const String& text, Component*)
+bool DragAndDropContainer::performExternalDragDropOfText (const String& text)
 {
     FORMATETC format = { CF_TEXT, 0, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
     STGMEDIUM medium = { TYMED_HGLOBAL, { 0 }, 0 };
 
-    auto numBytes = CharPointer_UTF16::getBytesRequiredFor (text.getCharPointer());
+    const size_t numBytes = CharPointer_UTF16::getBytesRequiredFor (text.getCharPointer());
 
     medium.hGlobal = GlobalAlloc (GMEM_MOVEABLE | GMEM_ZEROINIT, numBytes + 2);
     WCHAR* const data = static_cast<WCHAR*> (GlobalLock (medium.hGlobal));

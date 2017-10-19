@@ -25,7 +25,7 @@
 */
 
 class ChoicePropertyComponent::RemapperValueSource    : public Value::ValueSource,
-                                                        private Value::Listener
+                                                        private ValueListener
 {
 public:
     RemapperValueSource (const Value& source, const Array<var>& map)

@@ -48,17 +48,14 @@ public:
     //==============================================================================
     /** Causes the callback to be triggered at a later time.
 
-        This method returns immediately, after which a callback to the
-        handleAsyncUpdate() method will be made by the message thread as
-        soon as possible.
+        This method returns immediately, having made sure that a callback
+        to the handleAsyncUpdate() method will occur as soon as possible.
 
-        If an update callback is already pending but hasn't happened yet, calling
-        this method will have no effect.
+        If an update callback is already pending but hasn't happened yet, calls
+        to this method will be ignored.
 
-        It's thread-safe to call this method from any thread, BUT beware of calling
-        it from a real-time (e.g. audio) thread, because it involves posting a message
-        to the system queue, which means it may block (and in general will do on
-        most OSes).
+        It's thread-safe to call this method from any number of threads without
+        needing to worry about locking.
     */
     void triggerAsyncUpdate();
 

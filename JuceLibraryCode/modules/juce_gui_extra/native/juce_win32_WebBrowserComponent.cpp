@@ -24,15 +24,20 @@
   ==============================================================================
 */
 
-JUCE_DECLARE_UUID_GETTER (DWebBrowserEvents2,        "34A715A0-6587-11D0-924A-0020AFC7AC4D")
-JUCE_DECLARE_UUID_GETTER (IConnectionPointContainer, "B196B284-BAB4-101A-B69C-00AA00341D07")
-JUCE_DECLARE_UUID_GETTER (IWebBrowser2,              "D30C1661-CDAF-11D0-8A3E-00C04FC9E26E")
-JUCE_DECLARE_UUID_GETTER (WebBrowser,                "8856F961-340A-11D0-A96B-00C04FD705A2")
+JUCE_COMCLASS (DWebBrowserEvents2,        "34A715A0-6587-11D0-924A-0020AFC7AC4D")
+JUCE_COMCLASS (IConnectionPointContainer, "B196B284-BAB4-101A-B69C-00AA00341D07")
+JUCE_COMCLASS (IWebBrowser2,              "D30C1661-CDAF-11D0-8A3E-00C04FC9E26E")
+JUCE_COMCLASS (WebBrowser,                "8856F961-340A-11D0-A96B-00C04FD705A2")
 
 class WebBrowserComponent::Pimpl   : public ActiveXControlComponent
 {
 public:
-    Pimpl() {}
+    Pimpl()
+      : browser (nullptr),
+        connectionPoint (nullptr),
+        adviseCookie (0)
+    {
+    }
 
     ~Pimpl()
     {
@@ -45,24 +50,25 @@ public:
 
     void createBrowser()
     {
-        auto webCLSID = __uuidof (WebBrowser);
+        CLSID webCLSID = __uuidof (WebBrowser);
         createControl (&webCLSID);
 
-        auto iidWebBrowser2              = __uuidof (IWebBrowser2);
-        auto iidConnectionPointContainer = __uuidof (IConnectionPointContainer);
+    GUID iidWebBrowser2              = __uuidof (IWebBrowser2);
+    GUID iidConnectionPointContainer = __uuidof (IConnectionPointContainer);
 
         browser = (IWebBrowser2*) queryInterface (&iidWebBrowser2);
 
-        if (auto connectionPointContainer = (IConnectionPointContainer*) queryInterface (&iidConnectionPointContainer))
+        if (IConnectionPointContainer* connectionPointContainer
+            = (IConnectionPointContainer*) queryInterface (&iidConnectionPointContainer))
         {
             connectionPointContainer->FindConnectionPoint (__uuidof (DWebBrowserEvents2), &connectionPoint);
 
             if (connectionPoint != nullptr)
             {
-                auto* owner = dynamic_cast<WebBrowserComponent*> (getParentComponent());
+                WebBrowserComponent* const owner = dynamic_cast<WebBrowserComponent*> (getParentComponent());
                 jassert (owner != nullptr);
 
-                auto handler = new EventHandler (*owner);
+                EventHandler* handler = new EventHandler (*owner);
                 connectionPoint->Advise (handler, &adviseCookie);
                 handler->Release();
             }
@@ -114,7 +120,7 @@ public:
                 }
             }
 
-            auto urlBSTR = SysAllocString ((const OLECHAR*) url.toWideCharPointer());
+            BSTR urlBSTR = SysAllocString ((const OLECHAR*) url.toWideCharPointer());
             browser->Navigate (urlBSTR, &headerFlags, &frame, &postDataVar, &headersVar);
             SysFreeString (urlBSTR);
 
@@ -129,11 +135,11 @@ public:
     }
 
     //==============================================================================
-    IWebBrowser2* browser = nullptr;
+    IWebBrowser2* browser;
 
 private:
-    IConnectionPoint* connectionPoint = nullptr;
-    DWORD adviseCookie = 0;
+    IConnectionPoint* connectionPoint;
+    DWORD adviseCookie;
 
     //==============================================================================
     struct EventHandler  : public ComBaseClassHelper<IDispatch>,
@@ -179,14 +185,13 @@ private:
                 if (statusCode < 0)
                 {
                     LPTSTR messageBuffer = nullptr;
-                    auto size = FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                                               nullptr, statusCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                                               (LPTSTR) &messageBuffer, 0, nullptr);
+                    size_t size = FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                                                 NULL, statusCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &messageBuffer, 0, NULL);
 
-                    String message (messageBuffer, size);
-                    LocalFree (messageBuffer);
+                    String message(messageBuffer, size);
+                    LocalFree(messageBuffer);
 
-                    if (! owner.pageLoadHadNetworkError (message))
+                    if (!owner.pageLoadHadNetworkError(message))
                         *pDispParams->rgvarg[0].pboolVal = VARIANT_TRUE;
                 }
 
@@ -361,12 +366,12 @@ void WebBrowserComponent::visibilityChanged()
 
 void WebBrowserComponent::focusGained (FocusChangeType)
 {
-    auto iidOleObject = __uuidof (IOleObject);
-    auto iidOleWindow = __uuidof (IOleWindow);
+    GUID iidOleObject = __uuidof (IOleObject);
+    GUID iidOleWindow = __uuidof (IOleWindow);
 
-    if (auto oleObject = (IOleObject*) browser->queryInterface (&iidOleObject))
+    if (IOleObject* oleObject = (IOleObject*) browser->queryInterface (&iidOleObject))
     {
-        if (auto oleWindow = (IOleWindow*) browser->queryInterface (&iidOleWindow))
+        if (IOleWindow* oleWindow = (IOleWindow*) browser->queryInterface (&iidOleWindow))
         {
             IOleClientSite* oleClientSite = nullptr;
 

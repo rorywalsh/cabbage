@@ -24,14 +24,21 @@
   ==============================================================================
 */
 
-GlowEffect::GlowEffect() {}
-GlowEffect::~GlowEffect() {}
+GlowEffect::GlowEffect()
+  : radius (2.0f),
+    colour (Colours::white)
+{
+}
 
-void GlowEffect::setGlowProperties (float newRadius, Colour newColour, Point<int> pos)
+GlowEffect::~GlowEffect()
+{
+}
+
+void GlowEffect::setGlowProperties (const float newRadius,
+                                    Colour newColour)
 {
     radius = newRadius;
     colour = newColour;
-    offset = pos;
 }
 
 void GlowEffect::applyEffect (Image& image, Graphics& g, float scaleFactor, float alpha)
@@ -46,8 +53,8 @@ void GlowEffect::applyEffect (Image& image, Graphics& g, float scaleFactor, floa
     blurKernel.applyToImage (temp, image, image.getBounds());
 
     g.setColour (colour.withMultipliedAlpha (alpha));
-    g.drawImageAt (temp, offset.x, offset.y, true);
+    g.drawImageAt (temp, 0, 0, true);
 
     g.setOpacity (alpha);
-    g.drawImageAt (image, offset.x, offset.y, false);
+    g.drawImageAt (image, 0, 0, false);
 }

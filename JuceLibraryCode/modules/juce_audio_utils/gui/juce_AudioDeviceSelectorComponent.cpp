@@ -199,8 +199,8 @@ static String getNoDeviceString()   { return "<< " + TRANS("none") + " >>"; }
 //==============================================================================
 class AudioDeviceSettingsPanel : public Component,
                                  private ChangeListener,
-                                 private ComboBox::Listener,
-                                 private Button::Listener
+                                 private ComboBoxListener,  // (can't use ComboBox::Listener due to idiotic VC2005 bug)
+                                 private ButtonListener
 {
 public:
     AudioDeviceSettingsPanel (AudioIODeviceType& t, AudioDeviceSetupDetails& setupDetails,
@@ -563,8 +563,8 @@ private:
     {
         int y = 0;
 
-        for (auto* c : getChildren())
-            y = jmax (y, c->getBottom());
+        for (int i = getNumChildComponents(); --i >= 0;)
+            y = jmax (y, getChildComponent (i)->getBottom());
 
         return y;
     }

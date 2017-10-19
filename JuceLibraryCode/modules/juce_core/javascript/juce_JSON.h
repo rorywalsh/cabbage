@@ -90,12 +90,10 @@ public:
     /** Returns a string which contains a JSON-formatted representation of the var object.
         If allOnOneLine is true, the result will be compacted into a single line of text
         with no carriage-returns. If false, it will be laid-out in a more human-readable format.
-        The maximumDecimalPlaces parameter determines the precision of floating point numbers.
         @see writeToStream
     */
     static String toString (const var& objectToFormat,
-                            bool allOnOneLine = false,
-                            int maximumDecimalPlaces = 20);
+                            bool allOnOneLine = false);
 
     /** Parses a string that was created with the toString() method.
         This is slightly different to the parse() methods because they will reject primitive
@@ -107,13 +105,11 @@ public:
     /** Writes a JSON-formatted representation of the var object to the given stream.
         If allOnOneLine is true, the result will be compacted into a single line of text
         with no carriage-returns. If false, it will be laid-out in a more human-readable format.
-        The maximumDecimalPlaces parameter determines the precision of floating point numbers.
         @see toString
     */
     static void writeToStream (OutputStream& output,
                                const var& objectToFormat,
-                               bool allOnOneLine = false,
-                               int maximumDecimalPlaces = 20);
+                               bool allOnOneLine = false);
 
     /** Returns a version of a string with any extended characters escaped. */
     static String escapeString (StringRef);

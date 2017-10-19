@@ -22,6 +22,13 @@
 
 #pragma once
 
+// (NB: on win32, native thread-locals aren't possible in a dynamically loaded DLL in XP).
+#if ! ((JUCE_MSVC && (JUCE_64BIT || ! defined (JucePlugin_PluginCode))) \
+       || (JUCE_MAC && JUCE_CLANG && defined (MAC_OS_X_VERSION_10_7) \
+             && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_7))
+ #define JUCE_NO_COMPILER_THREAD_LOCAL 1
+#endif
+
 //==============================================================================
 /**
     Provides cross-platform support for thread-local objects.
@@ -54,12 +61,14 @@ public:
     */
     ~ThreadLocalValue()
     {
-        for (auto* o = first.get(); o != nullptr;)
+       #if JUCE_NO_COMPILER_THREAD_LOCAL
+        for (ObjectHolder* o = first.value; o != nullptr;)
         {
-            auto* next = o->next;
+            ObjectHolder* const next = o->next;
             delete o;
             o = next;
         }
+       #endif
     }
 
     /** Returns a reference to this thread's instance of the value.
@@ -93,25 +102,47 @@ public:
     */
     Type& get() const noexcept
     {
-        auto threadId = Thread::getCurrentThreadId();
-        ObjectHolder* o = nullptr;
+       #if JUCE_NO_COMPILER_THREAD_LOCAL
+        const Thread::ThreadID threadId = Thread::getCurrentThreadId();
 
-        for (o = first.get(); o != nullptr; o = o->next)
-            if (o->threadId.get() == threadId)
+        for (ObjectHolder* o = first.get(); o != nullptr; o = o->next)
+            if (o->threadId == threadId)
                 return o->object;
 
-        for (o = first.get(); o != nullptr; o = o->next)
-            if (o->threadId.compareAndSetBool (threadId, nullptr))
-                break;
+        for (ObjectHolder* o = first.get(); o != nullptr; o = o->next)
+        {
+            if (o->threadId == nullptr)
+            {
+                {
+                    SpinLock::ScopedLockType sl (lock);
 
-        if (o != nullptr)
-            o->object = Type();
-        else
-            for (o = new ObjectHolder (threadId, first.get());
-                 ! first.compareAndSetBool (o, o->next);
-                 o->next = first.get());
+                    if (o->threadId != nullptr)
+                        continue;
 
-        return o->object;
+                    o->threadId = threadId;
+                }
+
+                o->object = Type();
+                return o->object;
+            }
+        }
+
+        ObjectHolder* const newObject = new ObjectHolder (threadId);
+
+        do
+        {
+            newObject->next = first.get();
+        }
+        while (! first.compareAndSetBool (newObject, newObject->next));
+
+        return newObject->object;
+       #elif JUCE_MAC
+        static __thread Type object;
+        return object;
+       #elif JUCE_MSVC
+        static __declspec(thread) Type object;
+        return object;
+       #endif
     }
 
     /** Called by a thread before it terminates, to allow this class to release
@@ -119,20 +150,30 @@ public:
     */
     void releaseCurrentThreadStorage()
     {
-        auto threadId = Thread::getCurrentThreadId();
+       #if JUCE_NO_COMPILER_THREAD_LOCAL
+        const Thread::ThreadID threadId = Thread::getCurrentThreadId();
 
-        for (auto* o = first.get(); o != nullptr; o = o->next)
-            if (o->threadId.compareAndSetBool (nullptr, threadId))
-                return;
+        for (ObjectHolder* o = first.get(); o != nullptr; o = o->next)
+        {
+            if (o->threadId == threadId)
+            {
+                SpinLock::ScopedLockType sl (lock);
+                o->threadId = nullptr;
+            }
+        }
+       #endif
     }
 
 private:
     //==============================================================================
+   #if JUCE_NO_COMPILER_THREAD_LOCAL
     struct ObjectHolder
     {
-        ObjectHolder (Thread::ThreadID idToUse, ObjectHolder* n) : threadId (idToUse), next (n), object() {}
+        ObjectHolder (const Thread::ThreadID& tid)
+            : threadId (tid), next (nullptr), object()
+        {}
 
-        Atomic<Thread::ThreadID> threadId;
+        Thread::ThreadID threadId;
         ObjectHolder* next;
         Type object;
 
@@ -140,6 +181,8 @@ private:
     };
 
     mutable Atomic<ObjectHolder*> first;
+    SpinLock lock;
+   #endif
 
     JUCE_DECLARE_NON_COPYABLE (ThreadLocalValue)
 };

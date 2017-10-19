@@ -182,8 +182,6 @@ public:
     virtual void renderNextBlock (AudioBuffer<float>& outputBuffer,
                                   int startSample,
                                   int numSamples) = 0;
-
-    /** A double-precision version of renderNextBlock() */
     virtual void renderNextBlock (AudioBuffer<double>& outputBuffer,
                                   int startSample,
                                   int numSamples);
@@ -215,11 +213,6 @@ public:
         sostenuto pedal is down).
     */
     bool isKeyDown() const noexcept                             { return keyIsDown; }
-
-    /** Allows you to modify the flag indicating that the key that triggered this voice is still held down.
-        @see isKeyDown
-    */
-    void setKeyDown (bool isNowDown) noexcept                   { keyIsDown = isNowDown; }
 
     /** Returns true if the sustain pedal is currently active for this voice. */
     bool isSustainPedalDown() const noexcept                    { return sustainPedalDown; }
@@ -256,11 +249,11 @@ private:
     //==============================================================================
     friend class Synthesiser;
 
-    double currentSampleRate = 44100.0;
-    int currentlyPlayingNote = -1, currentPlayingMidiChannel = 0;
-    uint32 noteOnTime = 0;
+    double currentSampleRate;
+    int currentlyPlayingNote, currentPlayingMidiChannel;
+    uint32 noteOnTime;
     SynthesiserSound::Ptr currentlyPlayingSound;
-    bool keyIsDown = false, sustainPedalDown = false, sostenutoPedalDown = false;
+    bool keyIsDown, sustainPedalDown, sostenutoPedalDown;
 
     AudioBuffer<float> tempBuffer;
 
@@ -622,11 +615,11 @@ private:
                            int startSample,
                            int numSamples);
     //==============================================================================
-    double sampleRate = 0;
-    uint32 lastNoteOnCounter = 0;
-    int minimumSubBlockSize = 32;
-    bool subBlockSubdivisionIsStrict = false;
-    bool shouldStealNotes = true;
+    double sampleRate;
+    uint32 lastNoteOnCounter;
+    int minimumSubBlockSize;
+    bool subBlockSubdivisionIsStrict;
+    bool shouldStealNotes;
     BigInteger sustainPedalsDown;
 
    #if JUCE_CATCH_DEPRECATED_CODE_MISUSE

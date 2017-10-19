@@ -124,7 +124,7 @@ String Base64::toBase64 (const String& text)
 class Base64Tests  : public UnitTest
 {
 public:
-    Base64Tests() : UnitTest ("Base64 class", "Text") {}
+    Base64Tests() : UnitTest ("Base64 class") {}
 
     static MemoryBlock createRandomData (Random& r)
     {

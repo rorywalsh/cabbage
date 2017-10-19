@@ -28,9 +28,9 @@
 // This is an AudioTransportSource which will own it's assigned source
 struct AudioSourceOwningTransportSource  : public AudioTransportSource
 {
-    AudioSourceOwningTransportSource (PositionableAudioSource* s, double sampleRate)  : source (s)
+    AudioSourceOwningTransportSource (PositionableAudioSource* s)  : source (s)
     {
-        AudioTransportSource::setSource (s, 0, nullptr, sampleRate);
+        AudioTransportSource::setSource (s);
     }
 
     ~AudioSourceOwningTransportSource()
@@ -50,14 +50,14 @@ private:
 struct AutoRemovingTransportSource : public AudioTransportSource, private Timer
 {
     AutoRemovingTransportSource (MixerAudioSource& mixerToUse, AudioTransportSource* ts, bool ownSource,
-                                 int samplesPerBlock, double requiredSampleRate)
+                                 int samplesPerBlock, double sampleRate)
         : mixer (mixerToUse), transportSource (ts, ownSource)
     {
         jassert (ts != nullptr);
 
         setSource (transportSource);
 
-        prepareToPlay (samplesPerBlock, requiredSampleRate);
+        prepareToPlay (samplesPerBlock, sampleRate);
         start();
 
         mixer.addInputSource (this, true);
@@ -180,7 +180,7 @@ void SoundPlayer::play (const void* resourceData, size_t resourceSize)
 void SoundPlayer::play (AudioFormatReader* reader, bool deleteWhenFinished)
 {
     if (reader != nullptr)
-        play (new AudioFormatReaderSource (reader, deleteWhenFinished), true, reader->sampleRate);
+        play (new AudioFormatReaderSource (reader, deleteWhenFinished), true);
 }
 
 void SoundPlayer::play (AudioSampleBuffer* buffer, bool deleteWhenFinished, bool playOnAllOutputChannels)
@@ -189,7 +189,7 @@ void SoundPlayer::play (AudioSampleBuffer* buffer, bool deleteWhenFinished, bool
         play (new AudioSampleBufferSource (buffer, deleteWhenFinished, playOnAllOutputChannels), true);
 }
 
-void SoundPlayer::play (PositionableAudioSource* audioSource, bool deleteWhenFinished, double fileSampleRate)
+void SoundPlayer::play (PositionableAudioSource* audioSource, bool deleteWhenFinished)
 {
     if (audioSource != nullptr)
     {
@@ -199,12 +199,12 @@ void SoundPlayer::play (PositionableAudioSource* audioSource, bool deleteWhenFin
         {
             if (deleteWhenFinished)
             {
-                transport = new AudioSourceOwningTransportSource (audioSource, fileSampleRate);
+                transport = new AudioSourceOwningTransportSource (audioSource);
             }
             else
             {
                 transport = new AudioTransportSource();
-                transport->setSource (audioSource, 0, nullptr, fileSampleRate);
+                transport->setSource (audioSource);
                 deleteWhenFinished = true;
             }
         }

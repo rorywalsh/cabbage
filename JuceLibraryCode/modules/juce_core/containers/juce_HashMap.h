@@ -31,20 +31,16 @@
 */
 struct DefaultHashFunctions
 {
-    /** Generates a simple hash from an unsigned int. */
-    static int generateHash (uint32 key, int upperLimit) noexcept           { return (int) (key % (uint32) upperLimit); }
     /** Generates a simple hash from an integer. */
-    static int generateHash (int32 key, int upperLimit) noexcept            { return generateHash ((uint32) key, upperLimit); }
-    /** Generates a simple hash from a uint64. */
-    static int generateHash (uint64 key, int upperLimit) noexcept           { return (int) (key % (uint64) upperLimit); }
+    int generateHash (const int key, const int upperLimit) const noexcept        { return std::abs (key) % upperLimit; }
     /** Generates a simple hash from an int64. */
-    static int generateHash (int64 key, int upperLimit) noexcept            { return generateHash ((uint64) key, upperLimit); }
+    int generateHash (const int64 key, const int upperLimit) const noexcept      { return std::abs ((int) key) % upperLimit; }
     /** Generates a simple hash from a string. */
-    static int generateHash (const String& key, int upperLimit) noexcept    { return generateHash ((uint32) key.hashCode(), upperLimit); }
+    int generateHash (const String& key, const int upperLimit) const noexcept    { return (int) (((uint32) key.hashCode()) % (uint32) upperLimit); }
     /** Generates a simple hash from a variant. */
-    static int generateHash (const var& key, int upperLimit) noexcept       { return generateHash (key.toString(), upperLimit); }
+    int generateHash (const var& key, const int upperLimit) const noexcept       { return generateHash (key.toString(), upperLimit); }
     /** Generates a simple hash from a void ptr. */
-    static int generateHash (const void* key, int upperLimit) noexcept      { return generateHash ((pointer_sized_uint) key, upperLimit); }
+    int generateHash (const void* key, const int upperLimit) const noexcept      { return (int)(((pointer_sized_uint) key) % ((pointer_sized_uint) upperLimit)); }
 };
 
 
@@ -134,9 +130,9 @@ public:
     {
         const ScopedLockType sl (getLock());
 
-        for (auto i = hashSlots.size(); --i >= 0;)
+        for (int i = hashSlots.size(); --i >= 0;)
         {
-            auto* h = hashSlots.getUnchecked(i);
+            HashEntry* h = hashSlots.getUnchecked(i);
 
             while (h != nullptr)
             {
@@ -165,35 +161,11 @@ public:
     {
         const ScopedLockType sl (getLock());
 
-        if (auto* entry = getEntry (getSlot (keyToLookFor), keyToLookFor))
-            return entry->value;
+        for (const HashEntry* entry = hashSlots.getUnchecked (generateHashFor (keyToLookFor)); entry != nullptr; entry = entry->nextEntry)
+            if (entry->key == keyToLookFor)
+                return entry->value;
 
         return ValueType();
-    }
-
-    /** Returns a reference to the value corresponding to a given key.
-        If the map doesn't contain the key, a default instance of the value type is
-        added to the map and a reference to this is returned.
-        @param keyToLookFor    the key of the item being requested
-    */
-    inline ValueType& getReference (KeyTypeParameter keyToLookFor)
-    {
-        const ScopedLockType sl (getLock());
-        auto hashIndex = generateHashFor (keyToLookFor, getNumSlots());
-
-        auto* firstEntry = hashSlots.getUnchecked (hashIndex);
-
-        if (auto* entry = getEntry (firstEntry, keyToLookFor))
-            return entry->value;
-
-        auto* entry = new HashEntry (keyToLookFor, ValueType(), firstEntry);
-        hashSlots.set (hashIndex, entry);
-        ++totalNumItems;
-
-        if (totalNumItems > (getNumSlots() * 3) / 2)
-            remapTable (getNumSlots() * 2);
-
-        return entry->value;
     }
 
     //==============================================================================
@@ -202,7 +174,11 @@ public:
     {
         const ScopedLockType sl (getLock());
 
-        return (getEntry (getSlot (keyToLookFor), keyToLookFor) != nullptr);
+        for (const HashEntry* entry = hashSlots.getUnchecked (generateHashFor (keyToLookFor)); entry != nullptr; entry = entry->nextEntry)
+            if (entry->key == keyToLookFor)
+                return true;
+
+        return false;
     }
 
     /** Returns true if the hash contains at least one occurrence of a given value. */
@@ -210,8 +186,8 @@ public:
     {
         const ScopedLockType sl (getLock());
 
-        for (auto i = getNumSlots(); --i >= 0;)
-            for (auto* entry = hashSlots.getUnchecked(i); entry != nullptr; entry = entry->nextEntry)
+        for (int i = getNumSlots(); --i >= 0;)
+            for (const HashEntry* entry = hashSlots.getUnchecked(i); entry != nullptr; entry = entry->nextEntry)
                 if (entry->value == valueToLookFor)
                     return true;
 
@@ -223,14 +199,35 @@ public:
         If there's already an item with the given key, this will replace its value. Otherwise, a new item
         will be added to the map.
     */
-    void set (KeyTypeParameter newKey, ValueTypeParameter newValue)        { getReference (newKey) = newValue; }
+    void set (KeyTypeParameter newKey, ValueTypeParameter newValue)
+    {
+        const ScopedLockType sl (getLock());
+        const int hashIndex = generateHashFor (newKey);
+
+        HashEntry* const firstEntry = hashSlots.getUnchecked (hashIndex);
+
+        for (HashEntry* entry = firstEntry; entry != nullptr; entry = entry->nextEntry)
+        {
+            if (entry->key == newKey)
+            {
+                entry->value = newValue;
+                return;
+            }
+        }
+
+        hashSlots.set (hashIndex, new HashEntry (newKey, newValue, firstEntry));
+        ++totalNumItems;
+
+        if (totalNumItems > (getNumSlots() * 3) / 2)
+            remapTable (getNumSlots() * 2);
+    }
 
     /** Removes an item with the given key. */
     void remove (KeyTypeParameter keyToRemove)
     {
         const ScopedLockType sl (getLock());
-        auto hashIndex = generateHashFor (keyToRemove, getNumSlots());
-        auto* entry = hashSlots.getUnchecked (hashIndex);
+        const int hashIndex = generateHashFor (keyToRemove);
+        HashEntry* entry = hashSlots.getUnchecked (hashIndex);
         HashEntry* previous = nullptr;
 
         while (entry != nullptr)
@@ -261,9 +258,9 @@ public:
     {
         const ScopedLockType sl (getLock());
 
-        for (auto i = getNumSlots(); --i >= 0;)
+        for (int i = getNumSlots(); --i >= 0;)
         {
-            auto* entry = hashSlots.getUnchecked(i);
+            HashEntry* entry = hashSlots.getUnchecked(i);
             HashEntry* previous = nullptr;
 
             while (entry != nullptr)
@@ -296,27 +293,13 @@ public:
     */
     void remapTable (int newNumberOfSlots)
     {
-        const ScopedLockType sl (getLock());
+        HashMap newTable (newNumberOfSlots);
 
-        Array<HashEntry*> newSlots;
-        newSlots.insertMultiple (0, nullptr, newNumberOfSlots);
+        for (int i = getNumSlots(); --i >= 0;)
+            for (const HashEntry* entry = hashSlots.getUnchecked(i); entry != nullptr; entry = entry->nextEntry)
+                newTable.set (entry->key, entry->value);
 
-        for (auto i = getNumSlots(); --i >= 0;)
-        {
-            HashEntry* nextEntry = nullptr;
-
-            for (auto* entry = hashSlots.getUnchecked(i); entry != nullptr; entry = nextEntry)
-            {
-                auto hashIndex = generateHashFor (entry->key, newNumberOfSlots);
-
-                nextEntry = entry->nextEntry;
-                entry->nextEntry = newSlots.getUnchecked (hashIndex);
-
-                newSlots.set (hashIndex, entry);
-            }
-        }
-
-        hashSlots.swapWith (newSlots);
+        swapWith (newTable);
     }
 
     /** Returns the number of slots which are available for hashing.
@@ -476,23 +459,12 @@ private:
     int totalNumItems;
     TypeOfCriticalSectionToUse lock;
 
-    int generateHashFor (KeyTypeParameter key, int numSlots) const
+    int generateHashFor (KeyTypeParameter key) const
     {
-        const int hash = hashFunctionToUse.generateHash (key, numSlots);
-        jassert (isPositiveAndBelow (hash, numSlots)); // your hash function is generating out-of-range numbers!
+        const int hash = hashFunctionToUse.generateHash (key, getNumSlots());
+        jassert (isPositiveAndBelow (hash, getNumSlots())); // your hash function is generating out-of-range numbers!
         return hash;
     }
-
-    static inline HashEntry* getEntry (HashEntry* firstEntry, KeyType keyToLookFor) noexcept
-    {
-        for (auto* entry = firstEntry; entry != nullptr; entry = entry->nextEntry)
-            if (entry->key == keyToLookFor)
-                return entry;
-
-        return nullptr;
-    }
-
-    inline HashEntry* getSlot (KeyType key) const noexcept     { return hashSlots.getUnchecked (generateHashFor (key, getNumSlots())); }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HashMap)
 };

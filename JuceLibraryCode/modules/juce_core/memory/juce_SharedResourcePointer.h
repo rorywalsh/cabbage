@@ -126,7 +126,7 @@ public:
     int getReferenceCount() const noexcept              { return getSharedObjectHolder().refCount; }
 
 private:
-    struct SharedObjectHolder
+    struct SharedObjectHolder  : public ReferenceCountedObject
     {
         SpinLock lock;
         ScopedPointer<SharedObjectType> sharedInstance;
@@ -154,7 +154,7 @@ private:
 
     // There's no need to assign to a SharedResourcePointer because every
     // instance of the class is exactly the same!
-    SharedResourcePointer& operator= (const SharedResourcePointer&) = delete;
+    SharedResourcePointer& operator= (const SharedResourcePointer&) JUCE_DELETED_FUNCTION;
 
     JUCE_LEAK_DETECTOR (SharedResourcePointer)
 };

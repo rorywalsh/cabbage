@@ -129,7 +129,7 @@ public:
     /** Changes the type of slider interface being used.
 
         @param newStyle         the type of interface
-        @see setRotaryParameters, setVelocityBasedMode
+        @see setRotaryParameters, setVelocityBasedMode,
     */
     void setSliderStyle (SliderStyle newStyle);
 
@@ -142,22 +142,19 @@ public:
     struct RotaryParameters
     {
         /** The angle (in radians, clockwise from the top) at which
-            the slider's minimum value is represented.
-        */
+            the slider's minimum value is represented. */
         float startAngleRadians;
 
         /** The angle (in radians, clockwise from the top) at which
             the slider's maximum value is represented. This must be
-            greater than startAngleRadians.
-        */
+            greater than startAngleRadians. */
         float endAngleRadians;
 
         /** Determines what happens when a circular drag action rotates beyond
             the minimum or maximum angle. If true, the value will stop changing
             until the mouse moves back the way it came; if false, the value
             will snap back to the value nearest to the mouse. Note that this has
-            no effect if the drag mode is vertical or horizontal.
-        */
+            no effect if the drag mode is vertical or horizontal.*/
         bool stopAtEnd;
     };
 
@@ -616,7 +613,7 @@ public:
     bool getSliderSnapsToMousePosition() const noexcept;
 
     /** If enabled, this gives the slider a pop-up bubble which appears while the
-        slider is being dragged or hovered-over.
+        slider is being dragged.
 
         This can be handy if your slider doesn't have a text-box, so that users can
         see the value just when they're changing it.
@@ -627,9 +624,7 @@ public:
         transparent window, so if you're using an OS that can't do transparent windows
         you'll have to add it to a parent component instead).
     */
-    void setPopupDisplayEnabled (bool shouldShowOnMouseDrag,
-                                 bool shouldShowOnMouseHover,
-                                 Component* parentComponentToUse);
+    void setPopupDisplayEnabled (bool isEnabled, Component* parentComponentToUse);
 
     /** If a popup display is enabled and is currently visible, this returns the component
         that is being shown, or nullptr if none is currently in use.
@@ -906,10 +901,6 @@ public:
     void focusOfChildComponentChanged (FocusChangeType) override;
     /** @internal */
     void colourChanged() override;
-    /** @internal */
-    void mouseMove (const MouseEvent&) override;
-    /** @internal */
-    void mouseExit (const MouseEvent&) override;
 
 private:
     //==============================================================================

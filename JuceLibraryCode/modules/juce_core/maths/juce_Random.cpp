@@ -154,7 +154,7 @@ void Random::fillBitsRandomly (BigInteger& arrayToChange, int startBit, int numB
 class RandomTests  : public UnitTest
 {
 public:
-    RandomTests() : UnitTest ("Random", "Maths") {}
+    RandomTests() : UnitTest ("Random") {}
 
     void runTest() override
     {

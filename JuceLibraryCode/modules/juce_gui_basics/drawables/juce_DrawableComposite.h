@@ -115,8 +115,6 @@ public:
     void parentHierarchyChanged() override;
     /** @internal */
     MarkerList* getMarkers (bool xAxis) override;
-    /** @internal */
-    Path getOutlineAsPath() const override;
 
     //==============================================================================
     /** Internally-used class for wrapping a DrawableComposite's state into a ValueTree. */
@@ -148,7 +146,7 @@ private:
     //==============================================================================
     RelativeParallelogram bounds;
     MarkerList markersX, markersY;
-    bool updateBoundsReentrant = false;
+    bool updateBoundsReentrant;
 
     friend class Drawable::Positioner<DrawableComposite>;
     bool registerCoordinates (RelativeCoordinatePositionerBase&);

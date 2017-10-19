@@ -76,6 +76,8 @@ public:
     virtual void run() = 0;
 
     //==============================================================================
+    // Thread control functions..
+
     /** Starts the thread running.
 
         This will cause the thread's run() method to be called by a new thread.
@@ -90,7 +92,7 @@ public:
         Launches the thread with a given priority, where 0 = lowest, 10 = highest.
         If the thread is already running, its priority will be changed.
 
-        @see startThread, setPriority, realtimeAudioPriority
+        @see startThread, setPriority
     */
     void startThread (int priority);
 
@@ -115,18 +117,6 @@ public:
         @see signalThreadShouldExit, threadShouldExit, waitForThreadToExit, isThreadRunning
     */
     bool stopThread (int timeOutMilliseconds);
-
-    //==============================================================================
-    /** Invokes a lambda or function on its own thread.
-        This will spin up a Thread object which calls the function and then exits.
-        Bear in mind that starting and stopping a thread can be a fairly heavyweight
-        operation, so you might prefer to use a ThreadPool if you're kicking off a lot
-        of short background tasks.
-        Also note that using an anonymous thread makes it very difficult to interrupt
-        the function when you need to stop it, e.g. when your app quits. So it's up to
-        you to deal with situations where the function may fail to stop in time.
-    */
-    static void launch (std::function<void()> functionToRun);
 
     //==============================================================================
     /** Returns true if the thread is currently active */
@@ -164,7 +154,8 @@ public:
     static bool currentThreadShouldExit();
 
     /** Waits for the thread to stop.
-        This will wait until isThreadRunning() is false or until a timeout expires.
+
+        This will waits until isThreadRunning() is false or until a timeout expires.
 
         @param timeOutMilliseconds  the time to wait, in milliseconds. If this value
                                     is less than zero, it will wait forever.
@@ -173,38 +164,11 @@ public:
     bool waitForThreadToExit (int timeOutMilliseconds) const;
 
     //==============================================================================
-    /** Special realtime audio thread priority
-
-        This priority will create a high-priority thread which is best suited
-        for realtime audio processing.
-
-        Currently, this priority is identical to priority 9, except when building
-        for Android with OpenSL support.
-
-        In this case, JUCE will ask OpenSL to consturct a super high priority thread
-        specifically for realtime audio processing.
-
-        Note that this priority can only be set **before** the thread has
-        started. Switching to this priority, or from this priority to a different
-        priority, is not supported under Android and will assert.
-
-        For best performance this thread should yield at regular intervals
-        and not call any blocking APIS.
-
-        @see startThread, setPriority, sleep, WaitableEvent
-     */
-    enum
-    {
-        realtimeAudioPriority = -1
-    };
-
     /** Changes the thread's priority.
         May return false if for some reason the priority can't be changed.
 
         @param priority     the new priority, in the range 0 (lowest) to 10 (highest). A priority
                             of 5 is normal.
-
-        @see realtimeAudioPriority
     */
     bool setPriority (int priority);
 
@@ -283,17 +247,21 @@ public:
     static Thread* JUCE_CALLTYPE getCurrentThread();
 
     /** Returns the ID of this thread.
+
         That means the ID of this thread object - not of the thread that's calling the method.
+
         This can change when the thread is started and stopped, and will be invalid if the
         thread's not actually running.
+
         @see getCurrentThreadId
     */
     ThreadID getThreadId() const noexcept                           { return threadId; }
 
     /** Returns the name of the thread.
+
         This is the name that gets set in the constructor.
     */
-    const String& getThreadName() const noexcept                    { return threadName; }
+    const String& getThreadName() const                             { return threadName; }
 
     /** Changes the name of the caller thread.
         Different OSes may place different length or content limits on this name.
@@ -304,19 +272,14 @@ public:
 private:
     //==============================================================================
     const String threadName;
-    void* volatile threadHandle = nullptr;
-    ThreadID threadId = {};
+    void* volatile threadHandle;
+    ThreadID threadId;
     CriticalSection startStopLock;
     WaitableEvent startSuspensionEvent, defaultEvent;
-    int threadPriority = 5;
+    int threadPriority;
     size_t threadStackSize;
-    uint32 affinityMask = 0;
-    bool deleteOnThreadEnd = false;
-    bool volatile shouldExit = false;
-
-   #if JUCE_ANDROID
-    bool isAndroidRealtimeThread = false;
-   #endif
+    uint32 affinityMask;
+    bool volatile shouldExit;
 
    #ifndef DOXYGEN
     friend void JUCE_API juce_threadEntryPoint (void*);

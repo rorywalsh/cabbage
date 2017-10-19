@@ -33,7 +33,7 @@ class CharPointer_UTF8
 public:
     typedef char CharType;
 
-    inline explicit CharPointer_UTF8 (const CharType* rawPointer) noexcept
+    inline explicit CharPointer_UTF8 (const CharType* const rawPointer) noexcept
         : data (const_cast<CharType*> (rawPointer))
     {
     }
@@ -72,13 +72,10 @@ public:
     /** Returns true if this pointer is pointing to a null character. */
     inline bool isEmpty() const noexcept                { return *data == 0; }
 
-    /** Returns true if this pointer is not pointing to a null character. */
-    inline bool isNotEmpty() const noexcept             { return *data != 0; }
-
     /** Returns the unicode character that this pointer is pointing to. */
     juce_wchar operator*() const noexcept
     {
-        auto byte = (signed char) *data;
+        const signed char byte = (signed char) *data;
 
         if (byte >= 0)
             return (juce_wchar) (uint8) byte;
@@ -99,7 +96,7 @@ public:
 
         for (int i = 1; i <= numExtraValues; ++i)
         {
-            auto nextByte = (uint32) (uint8) data[i];
+            const uint32 nextByte = (uint32) (uint8) data[i];
 
             if ((nextByte & 0xc0) != 0x80)
                 break;
@@ -115,7 +112,7 @@ public:
     CharPointer_UTF8& operator++() noexcept
     {
         jassert (*data != 0); // trying to advance past the end of the string?
-        auto n = (signed char) *data++;
+        const signed char n = (signed char) *data++;
 
         if (n < 0)
         {
@@ -146,7 +143,7 @@ public:
         advances the pointer to point to the next character. */
     juce_wchar getAndAdvance() noexcept
     {
-        auto byte = (signed char) *data++;
+        const signed char byte = (signed char) *data++;
 
         if (byte >= 0)
             return (juce_wchar) (uint8) byte;
@@ -167,7 +164,7 @@ public:
 
         while (--numExtraValues >= 0)
         {
-            auto nextByte = (uint32) (uint8) *data;
+            const uint32 nextByte = (uint32) (uint8) *data;
 
             if ((nextByte & 0xc0) != 0x80)
                 break;
@@ -212,7 +209,7 @@ public:
     /** Returns the character at a given character index from the start of the string. */
     juce_wchar operator[] (int characterIndex) const noexcept
     {
-        auto p (*this);
+        CharPointer_UTF8 p (*this);
         p += characterIndex;
         return *p;
     }
@@ -220,7 +217,7 @@ public:
     /** Returns a pointer which is moved forwards from this one by the specified number of characters. */
     CharPointer_UTF8 operator+ (int numToSkip) const noexcept
     {
-        auto p (*this);
+        CharPointer_UTF8 p (*this);
         p += numToSkip;
         return p;
     }
@@ -228,7 +225,7 @@ public:
     /** Returns a pointer which is moved backwards from this one by the specified number of characters. */
     CharPointer_UTF8 operator- (int numToSkip) const noexcept
     {
-        auto p (*this);
+        CharPointer_UTF8 p (*this);
         p += -numToSkip;
         return p;
     }
@@ -236,12 +233,12 @@ public:
     /** Returns the number of characters in this string. */
     size_t length() const noexcept
     {
-        auto* d = data;
+        const CharType* d = data;
         size_t count = 0;
 
         for (;;)
         {
-            auto n = (uint32) (uint8) *d++;
+            const uint32 n = (uint32) (uint8) *d++;
 
             if ((n & 0x80) != 0)
             {
@@ -284,7 +281,7 @@ public:
     static size_t getBytesRequiredFor (const juce_wchar charToWrite) noexcept
     {
         size_t num = 1;
-        auto c = (uint32) charToWrite;
+        const uint32 c = (uint32) charToWrite;
 
         if (c >= 0x80)
         {
@@ -309,7 +306,7 @@ public:
     {
         size_t count = 0;
 
-        while (auto n = text.getAndAdvance())
+        while (juce_wchar n = text.getAndAdvance())
             count += getBytesRequiredFor (n);
 
         return count;
@@ -324,7 +321,7 @@ public:
     /** Writes a unicode character to this string, and advances this pointer to point to the next position. */
     void write (const juce_wchar charToWrite) noexcept
     {
-        auto c = (uint32) charToWrite;
+        const uint32 c = (uint32) charToWrite;
 
         if (c >= 0x80)
         {
@@ -363,7 +360,7 @@ public:
     /** Copies a source string to this pointer, advancing this pointer as it goes. */
     void writeAll (const CharPointer_UTF8 src) noexcept
     {
-        auto* s = src.data;
+        const CharType* s = src.data;
 
         while ((*data = *s) != 0)
         {
@@ -447,25 +444,25 @@ public:
     }
 
     /** Returns true if the first character of this string is whitespace. */
-    bool isWhitespace() const noexcept          { const CharType c = *data; return c == ' ' || (c <= 13 && c >= 9); }
+    bool isWhitespace() const noexcept      { const CharType c = *data; return c == ' ' || (c <= 13 && c >= 9); }
     /** Returns true if the first character of this string is a digit. */
-    bool isDigit() const noexcept               { const CharType c = *data; return c >= '0' && c <= '9'; }
+    bool isDigit() const noexcept           { const CharType c = *data; return c >= '0' && c <= '9'; }
     /** Returns true if the first character of this string is a letter. */
-    bool isLetter() const noexcept              { return CharacterFunctions::isLetter (operator*()) != 0; }
+    bool isLetter() const noexcept          { return CharacterFunctions::isLetter (operator*()) != 0; }
     /** Returns true if the first character of this string is a letter or digit. */
-    bool isLetterOrDigit() const noexcept       { return CharacterFunctions::isLetterOrDigit (operator*()) != 0; }
+    bool isLetterOrDigit() const noexcept   { return CharacterFunctions::isLetterOrDigit (operator*()) != 0; }
     /** Returns true if the first character of this string is upper-case. */
-    bool isUpperCase() const noexcept           { return CharacterFunctions::isUpperCase (operator*()) != 0; }
+    bool isUpperCase() const noexcept       { return CharacterFunctions::isUpperCase (operator*()) != 0; }
     /** Returns true if the first character of this string is lower-case. */
-    bool isLowerCase() const noexcept           { return CharacterFunctions::isLowerCase (operator*()) != 0; }
+    bool isLowerCase() const noexcept       { return CharacterFunctions::isLowerCase (operator*()) != 0; }
 
     /** Returns an upper-case version of the first character of this string. */
-    juce_wchar toUpperCase() const noexcept     { return CharacterFunctions::toUpperCase (operator*()); }
+    juce_wchar toUpperCase() const noexcept { return CharacterFunctions::toUpperCase (operator*()); }
     /** Returns a lower-case version of the first character of this string. */
-    juce_wchar toLowerCase() const noexcept     { return CharacterFunctions::toLowerCase (operator*()); }
+    juce_wchar toLowerCase() const noexcept { return CharacterFunctions::toLowerCase (operator*()); }
 
     /** Parses this string as a 32-bit integer. */
-    int getIntValue32() const noexcept          { return atoi (data); }
+    int getIntValue32() const noexcept      { return atoi (data); }
 
     /** Parses this string as a 64-bit integer. */
     int64 getIntValue64() const noexcept
@@ -480,15 +477,15 @@ public:
     }
 
     /** Parses this string as a floating point double. */
-    double getDoubleValue() const noexcept                      { return CharacterFunctions::getDoubleValue (*this); }
+    double getDoubleValue() const noexcept  { return CharacterFunctions::getDoubleValue (*this); }
 
     /** Returns the first non-whitespace character in the string. */
-    CharPointer_UTF8 findEndOfWhitespace() const noexcept       { return CharacterFunctions::findEndOfWhitespace (*this); }
+    CharPointer_UTF8 findEndOfWhitespace() const noexcept   { return CharacterFunctions::findEndOfWhitespace (*this); }
 
     /** Returns true if the given unicode character can be represented in this encoding. */
     static bool canRepresent (juce_wchar character) noexcept
     {
-        return ((uint32) character) < (uint32) 0x10ffff;
+        return ((unsigned int) character) < (unsigned int) 0x10ffff;
     }
 
     /** Returns true if this data contains a valid string in this encoding. */
@@ -496,7 +493,7 @@ public:
     {
         while (--maxBytesToRead >= 0 && *dataToTest != 0)
         {
-            auto byte = (signed char) *dataToTest++;
+            const signed char byte = (signed char) *dataToTest++;
 
             if (byte < 0)
             {
@@ -552,7 +549,7 @@ public:
     static bool isByteOrderMark (const void* possibleByteOrder) noexcept
     {
         jassert (possibleByteOrder != nullptr);
-        auto c = static_cast<const uint8*> (possibleByteOrder);
+        const uint8* const c = static_cast<const uint8*> (possibleByteOrder);
 
         return c[0] == (uint8) byteOrderMark1
             && c[1] == (uint8) byteOrderMark2

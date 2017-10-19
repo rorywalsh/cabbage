@@ -71,7 +71,7 @@ MidiBuffer MPEMessages::setZoneLayout (const MPEZoneLayout& layout)
 class MPEMessagesTests  : public UnitTest
 {
 public:
-    MPEMessagesTests() : UnitTest ("MPEMessages class", "MIDI/MPE") {}
+    MPEMessagesTests() : UnitTest ("MPEMessages class") {}
 
     void runTest() override
     {

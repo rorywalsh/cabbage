@@ -443,12 +443,9 @@ void Image::BitmapData::setPixelColour (const int x, const int y, Colour colour)
 //==============================================================================
 void Image::clear (const Rectangle<int>& area, Colour colourToClearTo)
 {
-    if (image != nullptr)
-    {
-        const ScopedPointer<LowLevelGraphicsContext> g (image->createLowLevelContext());
-        g->setFill (colourToClearTo);
-        g->fillRect (area, true);
-    }
+    const ScopedPointer<LowLevelGraphicsContext> g (image->createLowLevelContext());
+    g->setFill (colourToClearTo);
+    g->fillRect (area, true);
 }
 
 //==============================================================================

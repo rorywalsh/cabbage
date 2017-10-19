@@ -22,11 +22,6 @@
 
 #pragma once
 
-#if JUCE_INTEL
- #define JUCE_SNAP_TO_ZERO(n)    if (! (n < -1.0e-8f || n > 1.0e-8f)) n = 0;
-#else
- #define JUCE_SNAP_TO_ZERO(n)    ignoreUnused (n)
-#endif
 
 //==============================================================================
 /**
@@ -108,18 +103,6 @@ public:
 
     /** Multiplies each source1 value by the corresponding source2 value, then adds it to the destination value. */
     static void JUCE_CALLTYPE addWithMultiply (double* dest, const double* src1, const double* src2, int num) noexcept;
-
-    /** Multiplies each source value by the given multiplier, then subtracts it to the destination value. */
-    static void JUCE_CALLTYPE subtractWithMultiply (float* dest, const float* src, float multiplier, int numValues) noexcept;
-
-    /** Multiplies each source value by the given multiplier, then subtracts it to the destination value. */
-    static void JUCE_CALLTYPE subtractWithMultiply (double* dest, const double* src, double multiplier, int numValues) noexcept;
-
-    /** Multiplies each source1 value by the corresponding source2 value, then subtracts it to the destination value. */
-    static void JUCE_CALLTYPE subtractWithMultiply (float* dest, const float* src1, const float* src2, int num) noexcept;
-
-    /** Multiplies each source1 value by the corresponding source2 value, then subtracts it to the destination value. */
-    static void JUCE_CALLTYPE subtractWithMultiply (double* dest, const double* src1, const double* src2, int num) noexcept;
 
     /** Multiplies the destination values by the source values. */
     static void JUCE_CALLTYPE multiply (float* dest, const float* src, int numValues) noexcept;

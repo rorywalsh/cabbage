@@ -53,13 +53,13 @@ private:
         Array<Component*> alreadyDone;
 
         for (int i = TopLevelWindow::getNumTopLevelWindows(); --i >= 0;)
-            if (auto* c = TopLevelWindow::getTopLevelWindow(i))
+            if (Component* c = TopLevelWindow::getTopLevelWindow(i))
                 repaintAndResizeAllComps (c, alreadyDone);
 
-        auto& desktop = Desktop::getInstance();
+        Desktop& desktop = Desktop::getInstance();
 
         for (int i = desktop.getNumComponents(); --i >= 0;)
-            if (auto* c = desktop.getComponent(i))
+            if (Component* c = desktop.getComponent(i))
                 repaintAndResizeAllComps (c, alreadyDone);
     }
 
@@ -73,7 +73,7 @@ private:
 
             for (int i = c->getNumChildComponents(); --i >= 0;)
             {
-                if (auto* child = c->getChildComponent(i))
+                if (Component* child = c->getChildComponent(i))
                 {
                     repaintAndResizeAllComps (child, alreadyDone);
                     alreadyDone.add (child);
@@ -124,7 +124,7 @@ LiveValueBase::~LiveValueBase()
 
 //==============================================================================
 LivePropertyEditorBase::LivePropertyEditorBase (LiveValueBase& v, CodeDocument& d)
-    : value (v), document (d), sourceEditor (document, &tokeniser)
+    : value (v), resetButton ("reset"), document (d), sourceEditor (document, &tokeniser), wasHex (false)
 {
     setSize (600, 100);
 
@@ -155,11 +155,11 @@ void LivePropertyEditorBase::paint (Graphics& g)
 
 void LivePropertyEditorBase::resized()
 {
-    auto r = getLocalBounds().reduced (0, 3).withTrimmedBottom (1);
+    Rectangle<int> r (getLocalBounds().reduced (0, 3).withTrimmedBottom (1));
 
-    auto left = r.removeFromLeft (jmax (200, r.getWidth() / 3));
+    Rectangle<int> left (r.removeFromLeft (jmax (200, r.getWidth() / 3)));
 
-    auto top = left.removeFromTop (25);
+    Rectangle<int> top (left.removeFromTop (25));
     resetButton.setBounds (top.removeFromRight (35).reduced (0, 3));
     name.setBounds (top);
 
@@ -208,8 +208,8 @@ void LivePropertyEditorBase::selectOriginalValue()
 void LivePropertyEditorBase::findOriginalValueInCode()
 {
     CodeDocument::Position pos (document, value.sourceLine, 0);
-    auto line = pos.getLineText();
-    auto p = line.getCharPointer();
+    String line (pos.getLineText());
+    String::CharPointerType p (line.getCharPointer());
 
     p = CharacterFunctions::find (p, CharPointer_ASCII ("JUCE_LIVE_CONSTANT"));
 
@@ -233,13 +233,13 @@ void LivePropertyEditorBase::findOriginalValueInCode()
 
     if (p.getAndAdvance() == '(')
     {
-        auto start = p, end = p;
+        String::CharPointerType start (p), end (p);
 
         int depth = 1;
 
         while (! end.isEmpty())
         {
-            auto c = end.getAndAdvance();
+            const juce_wchar c = end.getAndAdvance();
 
             if (c == '(')  ++depth;
             if (c == ')')  --depth;
@@ -328,11 +328,11 @@ public:
 
     void updateItems (ValueList& list)
     {
-        if (auto* l = dynamic_cast<ValueListHolderComponent*> (viewport.getViewedComponent()))
+        if (ValueListHolderComponent* l = dynamic_cast<ValueListHolderComponent*> (viewport.getViewedComponent()))
         {
             while (l->getNumChildComponents() < list.values.size())
             {
-                if (auto* v = list.values [l->getNumChildComponents()])
+                if (LiveValueBase* v = list.values [l->getNumChildComponents()])
                     l->addItem (viewport.getMaximumVisibleWidth(), *v, list.getDocument (v->sourceFile));
                 else
                     break;
@@ -346,7 +346,7 @@ public:
     {
         DocumentWindow::resized();
 
-        if (auto* l = dynamic_cast<ValueListHolderComponent*> (viewport.getViewedComponent()))
+        if (ValueListHolderComponent* l = dynamic_cast<ValueListHolderComponent*> (viewport.getViewedComponent()))
             l->layout (viewport.getMaximumVisibleWidth());
     }
 
@@ -379,7 +379,7 @@ CodeDocument& ValueList::getDocument (const File& file)
     if (index >= 0)
         return *documents.getUnchecked (index);
 
-    auto* doc = documents.add (new CodeDocument());
+    CodeDocument* doc = documents.add (new CodeDocument());
     documentFiles.add (file);
     doc->replaceAllContent (file.loadFileAsString());
     doc->clearUndoHistory();
@@ -409,7 +409,7 @@ struct ColourEditorComp  : public Component,
 
     void mouseDown (const MouseEvent&) override
     {
-        auto* colourSelector = new ColourSelector();
+        ColourSelector* colourSelector = new ColourSelector();
         colourSelector->setName ("Colour");
         colourSelector->setCurrentColour (getColour());
         colourSelector->addChangeListener (this);
@@ -421,7 +421,7 @@ struct ColourEditorComp  : public Component,
 
     void changeListenerCallback (ChangeBroadcaster* source) override
     {
-        if (auto* cs = dynamic_cast<ColourSelector*> (source))
+        if (ColourSelector* cs = dynamic_cast<ColourSelector*> (source))
             editor.applyNewValue (getAsString (cs->getCurrentColour(), true));
 
         repaint();
@@ -493,9 +493,9 @@ struct BoolSliderComp  : public SliderComp
     void sliderValueChanged (Slider*) override  { editor.applyNewValue (slider.getValue() > 0.5 ? "true" : "false"); }
 };
 
-Component* createIntegerSlider (LivePropertyEditorBase& editor)  { return new SliderComp (editor, false); }
-Component* createFloatSlider   (LivePropertyEditorBase& editor)  { return new SliderComp (editor, true);  }
-Component* createBoolSlider    (LivePropertyEditorBase& editor)  { return new BoolSliderComp (editor); }
+Component* createIntegerSlider (LivePropertyEditorBase& editor) { return new SliderComp (editor, false); }
+Component* createFloatSlider   (LivePropertyEditorBase& editor) { return new SliderComp (editor, true);  }
+Component* createBoolSlider    (LivePropertyEditorBase& editor) { return new BoolSliderComp (editor); }
 
 }
 

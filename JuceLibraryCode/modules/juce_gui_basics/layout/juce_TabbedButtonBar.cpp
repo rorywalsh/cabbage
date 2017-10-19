@@ -169,7 +169,7 @@ void TabBarButton::resized()
 
 //==============================================================================
 class TabbedButtonBar::BehindFrontTabComp  : public Component,
-                                             public Button::Listener
+                                             public ButtonListener // (can't use Button::Listener due to idiotic VC2005 bug)
 {
 public:
     BehindFrontTabComp (TabbedButtonBar& tb)  : owner (tb)
@@ -221,8 +221,8 @@ void TabbedButtonBar::setOrientation (const Orientation newOrientation)
 {
     orientation = newOrientation;
 
-    for (auto* child : getChildren())
-        child->resized();
+    for (int i = getNumChildComponents(); --i >= 0;)
+        getChildComponent (i)->resized();
 
     resized();
 }

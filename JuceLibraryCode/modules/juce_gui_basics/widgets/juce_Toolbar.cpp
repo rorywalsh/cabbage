@@ -177,7 +177,7 @@ public:
         {
             for (int i = 0; i < getNumChildComponents(); ++i)
             {
-                if (auto* tc = dynamic_cast<ToolbarItemComponent*> (getChildComponent (i)))
+                if (ToolbarItemComponent* const tc = dynamic_cast<ToolbarItemComponent*> (getChildComponent (i)))
                 {
                     tc->setVisible (false);
                     const int index = oldIndexes.removeAndReturn (i);
@@ -197,9 +197,9 @@ public:
         int y = indent;
         int maxX = 0;
 
-        for (auto* c : getChildren())
+        for (int i = 0; i < getNumChildComponents(); ++i)
         {
-            if (auto* tc = dynamic_cast<ToolbarItemComponent*> (c))
+            if (ToolbarItemComponent* const tc = dynamic_cast<ToolbarItemComponent*> (getChildComponent (i)))
             {
                 int preferredSize = 1, minSize = 1, maxSize = 1;
 
@@ -705,8 +705,8 @@ private:
     Toolbar& toolbar;
 
     class CustomiserPanel  : public Component,
-                             private ComboBox::Listener,
-                             private Button::Listener
+                             private ComboBoxListener, // (can't use ComboBox::Listener due to idiotic VC2005 bug)
+                             private ButtonListener
     {
     public:
         CustomiserPanel (ToolbarItemFactory& tbf, Toolbar& bar, int optionFlags)

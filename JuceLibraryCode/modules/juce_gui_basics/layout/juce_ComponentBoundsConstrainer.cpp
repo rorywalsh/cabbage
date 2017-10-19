@@ -24,16 +24,28 @@
   ==============================================================================
 */
 
-ComponentBoundsConstrainer::ComponentBoundsConstrainer() noexcept {}
-ComponentBoundsConstrainer::~ComponentBoundsConstrainer() {}
+ComponentBoundsConstrainer::ComponentBoundsConstrainer() noexcept
+    : minW (0), maxW (0x3fffffff),
+      minH (0), maxH (0x3fffffff),
+      minOffTop (0),
+      minOffLeft (0),
+      minOffBottom (0),
+      minOffRight (0),
+      aspectRatio (0.0)
+{
+}
+
+ComponentBoundsConstrainer::~ComponentBoundsConstrainer()
+{
+}
 
 //==============================================================================
-void ComponentBoundsConstrainer::setMinimumWidth  (int minimumWidth) noexcept   { minW = minimumWidth; }
-void ComponentBoundsConstrainer::setMaximumWidth  (int maximumWidth) noexcept   { maxW = maximumWidth; }
-void ComponentBoundsConstrainer::setMinimumHeight (int minimumHeight) noexcept  { minH = minimumHeight; }
-void ComponentBoundsConstrainer::setMaximumHeight (int maximumHeight) noexcept  { maxH = maximumHeight; }
+void ComponentBoundsConstrainer::setMinimumWidth  (const int minimumWidth) noexcept   { minW = minimumWidth; }
+void ComponentBoundsConstrainer::setMaximumWidth  (const int maximumWidth) noexcept   { maxW = maximumWidth; }
+void ComponentBoundsConstrainer::setMinimumHeight (const int minimumHeight) noexcept  { minH = minimumHeight; }
+void ComponentBoundsConstrainer::setMaximumHeight (const int maximumHeight) noexcept  { maxH = maximumHeight; }
 
-void ComponentBoundsConstrainer::setMinimumSize (int minimumWidth, int minimumHeight) noexcept
+void ComponentBoundsConstrainer::setMinimumSize (const int minimumWidth, const int minimumHeight) noexcept
 {
     jassert (maxW >= minimumWidth);
     jassert (maxH >= minimumHeight);
@@ -46,7 +58,7 @@ void ComponentBoundsConstrainer::setMinimumSize (int minimumWidth, int minimumHe
     if (minH > maxH)  maxH = minH;
 }
 
-void ComponentBoundsConstrainer::setMaximumSize (int maximumWidth, int maximumHeight) noexcept
+void ComponentBoundsConstrainer::setMaximumSize (const int maximumWidth, const int maximumHeight) noexcept
 {
     jassert (maximumWidth >= minW);
     jassert (maximumHeight >= minH);
@@ -56,10 +68,10 @@ void ComponentBoundsConstrainer::setMaximumSize (int maximumWidth, int maximumHe
     maxH = jmax (minH, maximumHeight);
 }
 
-void ComponentBoundsConstrainer::setSizeLimits (int minimumWidth,
-                                                int minimumHeight,
-                                                int maximumWidth,
-                                                int maximumHeight) noexcept
+void ComponentBoundsConstrainer::setSizeLimits (const int minimumWidth,
+                                                const int minimumHeight,
+                                                const int maximumWidth,
+                                                const int maximumHeight) noexcept
 {
     jassert (maximumWidth >= minimumWidth);
     jassert (maximumHeight >= minimumHeight);
@@ -72,10 +84,10 @@ void ComponentBoundsConstrainer::setSizeLimits (int minimumWidth,
     maxH = jmax (minH, maximumHeight);
 }
 
-void ComponentBoundsConstrainer::setMinimumOnscreenAmounts (int minimumWhenOffTheTop,
-                                                            int minimumWhenOffTheLeft,
-                                                            int minimumWhenOffTheBottom,
-                                                            int minimumWhenOffTheRight) noexcept
+void ComponentBoundsConstrainer::setMinimumOnscreenAmounts (const int minimumWhenOffTheTop,
+                                                            const int minimumWhenOffTheLeft,
+                                                            const int minimumWhenOffTheBottom,
+                                                            const int minimumWhenOffTheRight) noexcept
 {
     minOffTop    = minimumWhenOffTheTop;
     minOffLeft   = minimumWhenOffTheLeft;
@@ -83,7 +95,7 @@ void ComponentBoundsConstrainer::setMinimumOnscreenAmounts (int minimumWhenOffTh
     minOffRight  = minimumWhenOffTheRight;
 }
 
-void ComponentBoundsConstrainer::setFixedAspectRatio (double widthOverHeight) noexcept
+void ComponentBoundsConstrainer::setFixedAspectRatio (const double widthOverHeight) noexcept
 {
     aspectRatio = jmax (0.0, widthOverHeight);
 }
@@ -93,30 +105,28 @@ double ComponentBoundsConstrainer::getFixedAspectRatio() const noexcept
     return aspectRatio;
 }
 
-void ComponentBoundsConstrainer::setBoundsForComponent (Component* component,
-                                                        Rectangle<int> targetBounds,
-                                                        bool isStretchingTop,
-                                                        bool isStretchingLeft,
-                                                        bool isStretchingBottom,
-                                                        bool isStretchingRight)
+void ComponentBoundsConstrainer::setBoundsForComponent (Component* const component,
+                                                        const Rectangle<int>& targetBounds,
+                                                        const bool isStretchingTop,
+                                                        const bool isStretchingLeft,
+                                                        const bool isStretchingBottom,
+                                                        const bool isStretchingRight)
 {
     jassert (component != nullptr);
 
     Rectangle<int> limits, bounds (targetBounds);
     BorderSize<int> border;
 
-    if (auto* parent = component->getParentComponent())
+    if (Component* const parent = component->getParentComponent())
     {
         limits.setSize (parent->getWidth(), parent->getHeight());
     }
     else
     {
-        if (auto* peer = component->getPeer())
+        if (ComponentPeer* const peer = component->getPeer())
             border = peer->getFrameSize();
 
-        auto screenBounds = Desktop::getInstance().getDisplays().getDisplayContaining (targetBounds.getCentre()).userArea;
-
-        limits = component->getLocalArea (nullptr, screenBounds) + component->getPosition();
+        limits = Desktop::getInstance().getDisplays().getDisplayContaining (bounds.getCentre()).userArea;
     }
 
     border.addTo (bounds);
@@ -128,7 +138,7 @@ void ComponentBoundsConstrainer::setBoundsForComponent (Component* component,
 
     border.subtractFrom (bounds);
 
-    applyBoundsToComponent (*component, bounds);
+    applyBoundsToComponent (component, bounds);
 }
 
 void ComponentBoundsConstrainer::checkComponentBounds (Component* component)
@@ -137,12 +147,13 @@ void ComponentBoundsConstrainer::checkComponentBounds (Component* component)
                            false, false, false, false);
 }
 
-void ComponentBoundsConstrainer::applyBoundsToComponent (Component& component, Rectangle<int> bounds)
+void ComponentBoundsConstrainer::applyBoundsToComponent (Component* component,
+                                                         const Rectangle<int>& bounds)
 {
-    if (auto* positioner = component.getPositioner())
+    if (Component::Positioner* const positioner = component->getPositioner())
         positioner->applyNewBounds (bounds);
     else
-        component.setBounds (bounds);
+        component->setBounds (bounds);
 }
 
 //==============================================================================
@@ -158,10 +169,10 @@ void ComponentBoundsConstrainer::resizeEnd()
 void ComponentBoundsConstrainer::checkBounds (Rectangle<int>& bounds,
                                               const Rectangle<int>& old,
                                               const Rectangle<int>& limits,
-                                              bool isStretchingTop,
-                                              bool isStretchingLeft,
-                                              bool isStretchingBottom,
-                                              bool isStretchingRight)
+                                              const bool isStretchingTop,
+                                              const bool isStretchingLeft,
+                                              const bool isStretchingBottom,
+                                              const bool isStretchingRight)
 {
     if (isStretchingLeft)
         bounds.setLeft (jlimit (old.getRight() - maxW, old.getRight() - minW, bounds.getX()));

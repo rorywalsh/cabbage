@@ -85,33 +85,6 @@ public:
     */
     virtual int getControlParameterIndex (Component&);
 
-    /** Override this method to indicate if your editor supports the presence or
-        absence of a host-provided MIDI controller.
-
-        Currently only AUv3 plug-ins compiled for MacOS 10.13 or iOS 11.0 (or later)
-        support this functionality, and even then the host may choose to ignore this
-        information.
-
-        The default behaviour is to report support for both cases.
-    */
-    virtual bool supportsHostMIDIControllerPresence (bool hostMIDIControllerIsAvailable);
-
-    /** Called to indicate if a host is providing a MIDI controller when the host
-        reconfigures its layout.
-
-        Use this as an opportunity to hide or display your own onscreen keyboard or
-        other input component.
-
-        Currently only AUv3 plug-ins compiled for MacOS 10.13 or iOS 11.0 (or later)
-        support this functionality.
-    */
-    virtual void hostMIDIControllerIsAvailable (bool controllerIsAvailable);
-
-    /** Can be called by a host to tell the editor that it should use a non-unity
-        GUI scale.
-    */
-    virtual void setScaleFactor (float newScale);
-
     //==============================================================================
     /** Marks the host's editor window as resizable
 
@@ -178,25 +151,24 @@ private:
     //==============================================================================
     struct AudioProcessorEditorListener : ComponentListener
     {
-        AudioProcessorEditorListener (AudioProcessorEditor& e) : ed (e) {}
+        AudioProcessorEditorListener (AudioProcessorEditor* audioEditor) : e (audioEditor) {}
 
-        void componentMovedOrResized (Component&, bool, bool wasResized) override   { ed.editorResized (wasResized); }
-        void componentParentHierarchyChanged (Component&) override                  { ed.updatePeer(); }
-
-        AudioProcessorEditor& ed;
+        void componentMovedOrResized (Component&, bool, bool wasResized) override   { e->editorResized (wasResized); }
+        void componentParentHierarchyChanged (Component&) override                  { e->updatePeer(); }
+        AudioProcessorEditor* e;
     };
 
     //==============================================================================
     void initialise();
     void editorResized (bool wasResized);
     void updatePeer();
-    void attachConstrainer (ComponentBoundsConstrainer*);
+    void attachConstrainer (ComponentBoundsConstrainer* newConstrainer);
 
     //==============================================================================
     ScopedPointer<AudioProcessorEditorListener> resizeListener;
     bool resizable;
     ComponentBoundsConstrainer defaultConstrainer;
-    ComponentBoundsConstrainer* constrainer = {};
+    ComponentBoundsConstrainer* constrainer;
     Component::SafePointer<Component> splashScreen;
 
     JUCE_DECLARE_NON_COPYABLE (AudioProcessorEditor)

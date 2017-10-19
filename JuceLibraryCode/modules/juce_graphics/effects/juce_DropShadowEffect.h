@@ -97,7 +97,7 @@ public:
 
     //==============================================================================
     /** @internal */
-    void applyEffect (Image& sourceImage, Graphics& destContext, float scaleFactor, float alpha) override;
+    void applyEffect (Image& sourceImage, Graphics& destContext, float scaleFactor, float alpha);
 
 
 private:

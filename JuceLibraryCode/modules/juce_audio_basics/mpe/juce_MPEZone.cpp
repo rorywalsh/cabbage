@@ -163,7 +163,7 @@ bool MPEZone::operator!= (const MPEZone& other) const noexcept
 class MPEZoneTests   : public UnitTest
 {
 public:
-    MPEZoneTests()  : UnitTest ("MPEZone class", "MIDI/MPE") {}
+    MPEZoneTests()  : UnitTest ("MPEZone class") {}
 
     void runTest() override
     {

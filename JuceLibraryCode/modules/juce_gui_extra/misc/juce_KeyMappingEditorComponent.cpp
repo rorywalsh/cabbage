@@ -101,8 +101,8 @@ public:
             addButton (TRANS("Cancel"), 0);
 
             // (avoid return + escape keys getting processed by the buttons..)
-            for (auto* child : getChildren())
-                child->setWantsKeyboardFocus (false);
+            for (int i = getNumChildComponents(); --i >= 0;)
+                getChildComponent (i)->setWantsKeyboardFocus (false);
 
             setWantsKeyboardFocus (true);
             grabKeyboardFocus();
@@ -113,7 +113,7 @@ public:
             lastPress = key;
             String message (TRANS("Key") + ": " + owner.getDescriptionForKeyPress (key));
 
-            auto previousCommand = owner.getMappings().findCommandForKeyPress (key);
+            const CommandID previousCommand = owner.getMappings().findCommandForKeyPress (key);
 
             if (previousCommand != 0)
                 message << "\n\n("
@@ -148,7 +148,7 @@ public:
     {
         if (newKey.isValid())
         {
-            auto previousCommand = owner.getMappings().findCommandForKeyPress (newKey);
+            const CommandID previousCommand = owner.getMappings().findCommandForKeyPress (newKey);
 
             if (previousCommand == 0 || dontAskUser)
             {
@@ -209,14 +209,14 @@ private:
 class KeyMappingEditorComponent::ItemComponent  : public Component
 {
 public:
-    ItemComponent (KeyMappingEditorComponent& kec, CommandID command)
+    ItemComponent (KeyMappingEditorComponent& kec, const CommandID command)
         : owner (kec), commandID (command)
     {
         setInterceptsMouseClicks (false, true);
 
         const bool isReadOnly = owner.isCommandReadOnly (commandID);
 
-        auto keyPresses = owner.getMappings().getKeyPressesAssignedToCommand (commandID);
+        const Array<KeyPress> keyPresses (owner.getMappings().getKeyPressesAssignedToCommand (commandID));
 
         for (int i = 0; i < jmin ((int) maxNumAssignments, keyPresses.size()); ++i)
             addKeyPressButton (owner.getDescriptionForKeyPress (keyPresses.getReference (i)), i, isReadOnly);
@@ -226,7 +226,7 @@ public:
 
     void addKeyPressButton (const String& desc, const int index, const bool isReadOnly)
     {
-        auto* b = new ChangeKeyButton (owner, commandID, desc, index);
+        ChangeKeyButton* const b = new ChangeKeyButton (owner, commandID, desc, index);
         keyChangeButtons.add (b);
 
         b->setEnabled (! isReadOnly);
@@ -250,7 +250,7 @@ public:
 
         for (int i = keyChangeButtons.size(); --i >= 0;)
         {
-            auto* b = keyChangeButtons.getUnchecked(i);
+            ChangeKeyButton* const b = keyChangeButtons.getUnchecked(i);
 
             b->fitToContent (getHeight() - 2);
             b->setTopRightPosition (x, 1);
@@ -272,7 +272,7 @@ private:
 class KeyMappingEditorComponent::MappingItem  : public TreeViewItem
 {
 public:
-    MappingItem (KeyMappingEditorComponent& kec, CommandID command)
+    MappingItem (KeyMappingEditorComponent& kec, const CommandID command)
         : owner (kec), commandID (command)
     {}
 
@@ -314,9 +314,13 @@ public:
         if (isNowOpen)
         {
             if (getNumSubItems() == 0)
-                for (auto command : owner.getCommandManager().getCommandsInCategory (categoryName))
-                    if (owner.shouldCommandBeIncluded (command))
-                        addSubItem (new MappingItem (owner, command));
+            {
+                const Array<CommandID> commands (owner.getCommandManager().getCommandsInCategory (categoryName));
+
+                for (int i = 0; i < commands.size(); ++i)
+                    if (owner.shouldCommandBeIncluded (commands.getUnchecked(i)))
+                        addSubItem (new MappingItem (owner, commands.getUnchecked(i)));
+            }
         }
         else
         {
@@ -333,7 +337,7 @@ private:
 
 //==============================================================================
 class KeyMappingEditorComponent::TopLevelItem   : public TreeViewItem,
-                                                  public Button::Listener,
+                                                  public ButtonListener,
                                                   private ChangeListener
 {
 public:
@@ -356,16 +360,19 @@ public:
         const OpennessRestorer opennessRestorer (*this);
         clearSubItems();
 
-        for (auto category : owner.getCommandManager().getCommandCategories())
+        const StringArray categories (owner.getCommandManager().getCommandCategories());
+
+        for (int i = 0; i < categories.size(); ++i)
         {
+            const Array<CommandID> commands (owner.getCommandManager().getCommandsInCategory (categories[i]));
             int count = 0;
 
-            for (auto command : owner.getCommandManager().getCommandsInCategory (category))
-                if (owner.shouldCommandBeIncluded (command))
+            for (int j = 0; j < commands.size(); ++j)
+                if (owner.shouldCommandBeIncluded (commands.getUnchecked(j)))
                     ++count;
 
             if (count > 0)
-                addSubItem (new CategoryItem (owner, category));
+                addSubItem (new CategoryItem (owner, categories[i]));
         }
     }
 
@@ -452,14 +459,14 @@ void KeyMappingEditorComponent::resized()
 //==============================================================================
 bool KeyMappingEditorComponent::shouldCommandBeIncluded (const CommandID commandID)
 {
-    auto* ci = mappings.getCommandManager().getCommandForID (commandID);
+    const ApplicationCommandInfo* const ci = mappings.getCommandManager().getCommandForID (commandID);
 
     return ci != nullptr && (ci->flags & ApplicationCommandInfo::hiddenFromKeyEditor) == 0;
 }
 
 bool KeyMappingEditorComponent::isCommandReadOnly (const CommandID commandID)
 {
-    auto* ci = mappings.getCommandManager().getCommandForID (commandID);
+    const ApplicationCommandInfo* const ci = mappings.getCommandManager().getCommandForID (commandID);
 
     return ci != nullptr && (ci->flags & ApplicationCommandInfo::readOnlyInKeyEditor) != 0;
 }

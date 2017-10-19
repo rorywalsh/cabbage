@@ -49,26 +49,6 @@ namespace
         return [NSString string];
     }
 
-    static inline NSURL* createNSURLFromFile (const String& f)
-    {
-        return [NSURL fileURLWithPath: juceStringToNS (f)];
-    }
-
-    static inline NSURL* createNSURLFromFile (const File& f)
-    {
-        return createNSURLFromFile (f.getFullPathName());
-    }
-
-    static inline NSArray* createNSArrayFromStringArray (const StringArray& strings)
-    {
-        auto* array = [[NSMutableArray alloc] init];
-
-        for (auto string: strings)
-            [array addObject:juceStringToNS (string)];
-
-        return [array autorelease];
-    }
-
    #if JUCE_MAC
     template <typename RectangleType>
     static NSRect makeNSRect (const RectangleType& r) noexcept
@@ -225,8 +205,8 @@ public:
     ObjCBlock (C* _this, R (C::*fn)(P...))  : block (CreateObjCBlock (_this, fn)) {}
     ObjCBlock (BlockType b) : block ([b copy]) {}
     ObjCBlock& operator= (const BlockType& other) { if (block != nullptr) { [block release]; } block = [other copy]; return *this; }
-    bool operator== (const void* ptr) const  { return ((const void*) block == ptr); }
-    bool operator!= (const void* ptr) const  { return ((const void*) block != ptr); }
+    bool operator== (const void* ptr) const  { return (block == ptr); }
+    bool operator!= (const void* ptr) const  { return (block != ptr); }
     ~ObjCBlock() { if (block != nullptr) [block release]; }
 
     operator BlockType() { return block; }

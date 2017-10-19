@@ -32,13 +32,11 @@ struct AudioProcessorValueTreeState::Parameter   : public AudioProcessorParamete
                const String& parameterID, const String& paramName, const String& labelText,
                NormalisableRange<float> r, float defaultVal,
                std::function<String (float)> valueToText,
-               std::function<float (const String&)> textToValue,
-               bool meta)
+               std::function<float (const String&)> textToValue)
         : AudioProcessorParameterWithID (parameterID, paramName, labelText),
           owner (s), valueToTextFunction (valueToText), textToValueFunction (textToValue),
           range (r), value (defaultVal), defaultValue (defaultVal),
-          listenersNeedCalling (true),
-          isMeta (meta)
+          listenersNeedCalling (true)
     {
         state.addListener (this);
         needsUpdate.set (1);
@@ -146,8 +144,6 @@ struct AudioProcessorValueTreeState::Parameter   : public AudioProcessorParamete
         return nullptr;
     }
 
-    bool isMetaParameter() const override      { return isMeta; }
-
     AudioProcessorValueTreeState& owner;
     ValueTree state;
     ListenerList<AudioProcessorValueTreeState::Listener> listeners;
@@ -157,7 +153,6 @@ struct AudioProcessorValueTreeState::Parameter   : public AudioProcessorParamete
     float value, defaultValue;
     Atomic<int> needsUpdate;
     bool listenersNeedCalling;
-    bool isMeta;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Parameter)
 };
@@ -180,8 +175,7 @@ AudioProcessorValueTreeState::~AudioProcessorValueTreeState() {}
 AudioProcessorParameterWithID* AudioProcessorValueTreeState::createAndAddParameter (const String& paramID, const String& paramName,
                                                                                     const String& labelText, NormalisableRange<float> r,
                                                                                     float defaultVal, std::function<String (float)> valueToTextFunction,
-                                                                                    std::function<float (const String&)> textToValueFunction,
-                                                                                    bool isMetaParameter)
+                                                                                    std::function<float (const String&)> textToValueFunction)
 {
     // All parameters must be created before giving this manager a ValueTree state!
     jassert (! state.isValid());
@@ -190,8 +184,7 @@ AudioProcessorParameterWithID* AudioProcessorValueTreeState::createAndAddParamet
    #endif
 
     Parameter* p = new Parameter (*this, paramID, paramName, labelText, r,
-                                  defaultVal, valueToTextFunction, textToValueFunction,
-                                  isMetaParameter);
+                                  defaultVal, valueToTextFunction, textToValueFunction);
     processor.addParameter (p);
     return p;
 }

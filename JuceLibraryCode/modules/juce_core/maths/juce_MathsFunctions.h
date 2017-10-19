@@ -337,34 +337,15 @@ inline int64 abs64 (const int64 n) noexcept
 #endif
 
 //==============================================================================
-
-/** Commonly used mathematical constants */
-template <typename FloatType>
-struct MathConstants
-{
-    /** A predefined value for Pi */
-    static const FloatType pi;
-
-    /** A predfined value for Euler's number */
-    static const FloatType euler;
-};
-
-template <typename FloatType>
-const FloatType MathConstants<FloatType>::pi = static_cast<FloatType> (3.141592653589793238L);
-
-template <typename FloatType>
-const FloatType MathConstants<FloatType>::euler = static_cast<FloatType> (2.71828182845904523536L);
-
-
 /** A predefined value for Pi, at double-precision.
     @see float_Pi
 */
-const double  double_Pi  = MathConstants<double>::pi;
+const double  double_Pi  = 3.1415926535897932384626433832795;
 
 /** A predefined value for Pi, at single-precision.
     @see double_Pi
 */
-const float   float_Pi   = MathConstants<float>::pi;
+const float   float_Pi   = 3.14159265358979323846f;
 
 
 /** Converts an angle in degrees to radians. */
@@ -500,22 +481,6 @@ inline int roundDoubleToInt (double value) noexcept
 inline int roundFloatToInt (float value) noexcept
 {
     return roundToInt (value);
-}
-
-//==============================================================================
-/** Truncates a positive floating-point number to an unsigned int.
-
-    This is generally faster than static_cast<unsigned int> (std::floor (x))
-    but it only works for positive numbers small enough to be represented as an
-    unsigned int.
-*/
-template <typename FloatType>
-unsigned int truncatePositiveToUnsignedInt (FloatType value) noexcept
-{
-    jassert (value >= static_cast<FloatType> (0));
-    jassert (static_cast<FloatType> (value) <= std::numeric_limits<unsigned int>::max());
-
-    return static_cast<unsigned int> (value);
 }
 
 //==============================================================================

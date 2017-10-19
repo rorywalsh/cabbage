@@ -255,7 +255,7 @@ namespace XRender
     static tXRenderFindFormat xRenderFindFormat = nullptr;
     static tXRenderFindVisualFormat xRenderFindVisualFormat = nullptr;
 
-    static bool isAvailable (::Display* display)
+    static bool isAvailable(::Display* display)
     {
         static bool hasLoaded = false;
 
@@ -292,13 +292,13 @@ namespace XRender
         return xRenderQueryVersion != nullptr;
     }
 
-    static bool hasCompositingWindowManager (::Display* display) noexcept
+    static bool hasCompositingWindowManager(::Display* display) noexcept
     {
         return display != nullptr
                 && XGetSelectionOwner (display, Atoms::getCreating ("_NET_WM_CM_S0")) != 0;
     }
 
-    static XRenderPictFormat* findPictureFormat (::Display* display)
+    static XRenderPictFormat* findPictureFormat(::Display* display)
     {
         ScopedXLock xlock (display);
         XRenderPictFormat* pictFormat = nullptr;
@@ -1789,9 +1789,6 @@ public:
             if (c == &component)
                 break;
 
-            if (! c->isVisible())
-                continue;
-
             if (auto* peer = c->getPeer())
                 if (peer->contains (localPos + bounds.getPosition() - peer->getBounds().getPosition(), true))
                     return false;
@@ -2217,19 +2214,14 @@ public:
     {
         updateKeyModifiers ((int) buttonPressEvent.state);
 
-        auto mapIndex = (uint32) (buttonPressEvent.button - Button1);
-
-        if (mapIndex < (uint32) numElementsInArray (pointerMap))
+        switch (pointerMap [buttonPressEvent.button - Button1])
         {
-            switch (pointerMap[mapIndex])
-            {
-                case Keys::WheelUp:         handleWheelEvent (buttonPressEvent,  50.0f / 256.0f); break;
-                case Keys::WheelDown:       handleWheelEvent (buttonPressEvent, -50.0f / 256.0f); break;
-                case Keys::LeftButton:      handleButtonPressEvent (buttonPressEvent, ModifierKeys::leftButtonModifier); break;
-                case Keys::RightButton:     handleButtonPressEvent (buttonPressEvent, ModifierKeys::rightButtonModifier); break;
-                case Keys::MiddleButton:    handleButtonPressEvent (buttonPressEvent, ModifierKeys::middleButtonModifier); break;
-                default: break;
-            }
+            case Keys::WheelUp:         handleWheelEvent (buttonPressEvent,  50.0f / 256.0f); break;
+            case Keys::WheelDown:       handleWheelEvent (buttonPressEvent, -50.0f / 256.0f); break;
+            case Keys::LeftButton:      handleButtonPressEvent (buttonPressEvent, ModifierKeys::leftButtonModifier); break;
+            case Keys::RightButton:     handleButtonPressEvent (buttonPressEvent, ModifierKeys::rightButtonModifier); break;
+            case Keys::MiddleButton:    handleButtonPressEvent (buttonPressEvent, ModifierKeys::middleButtonModifier); break;
+            default: break;
         }
 
         clearLastMousePos();
@@ -2242,17 +2234,12 @@ public:
         if (parentWindow != 0)
             updateWindowBounds();
 
-        auto mapIndex = (uint32) (buttonRelEvent.button - Button1);
-
-        if (mapIndex < (uint32) numElementsInArray (pointerMap))
+        switch (pointerMap [buttonRelEvent.button - Button1])
         {
-            switch (pointerMap[mapIndex])
-            {
-                case Keys::LeftButton:      currentModifiers = currentModifiers.withoutFlags (ModifierKeys::leftButtonModifier); break;
-                case Keys::RightButton:     currentModifiers = currentModifiers.withoutFlags (ModifierKeys::rightButtonModifier); break;
-                case Keys::MiddleButton:    currentModifiers = currentModifiers.withoutFlags (ModifierKeys::middleButtonModifier); break;
-                default: break;
-            }
+            case Keys::LeftButton:      currentModifiers = currentModifiers.withoutFlags (ModifierKeys::leftButtonModifier); break;
+            case Keys::RightButton:     currentModifiers = currentModifiers.withoutFlags (ModifierKeys::rightButtonModifier); break;
+            case Keys::MiddleButton:    currentModifiers = currentModifiers.withoutFlags (ModifierKeys::middleButtonModifier); break;
+            default: break;
         }
 
         if (dragState->dragging)
@@ -3691,7 +3678,7 @@ private:
 
     Array<Atom> srcMimeTypeAtomList;
 
-    int pointerMap[5] = {};
+    int pointerMap[5];
 
     void initialisePointerMap()
     {
@@ -3743,13 +3730,13 @@ namespace WindowingHelpers
             if (! juce_handleXEmbedEvent (nullptr, &event))
            #endif
             {
-                if (auto* peer = LinuxComponentPeer::getPeerFor (event.xany.window))
+                if (LinuxComponentPeer* const peer = LinuxComponentPeer::getPeerFor (event.xany.window))
                     peer->handleWindowMessage (event);
             }
         }
         else if (event.xany.type == KeymapNotify)
         {
-            auto& keymapEvent = (const XKeymapEvent&) event.xkeymap;
+            const XKeymapEvent& keymapEvent = (const XKeymapEvent&) event.xkeymap;
             memcpy (Keys::keyStates, keymapEvent.key_vector, 32);
         }
     }
@@ -4298,41 +4285,31 @@ void MouseCursor::showInAllWindows() const
 }
 
 //=================================== X11 - DND ================================
-static LinuxComponentPeer* getPeerForDragEvent (Component* sourceComp)
-{
-    if (sourceComp == nullptr)
-        if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource(0))
-            sourceComp = draggingSource->getComponentUnderMouse();
 
-    if (sourceComp != nullptr)
-        if (auto* lp = dynamic_cast<LinuxComponentPeer*> (sourceComp->getPeer()))
-            return lp;
-
-    jassertfalse;  // This method must be called in response to a component's mouseDown or mouseDrag event!
-    return nullptr;
-}
-
-bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, const bool canMoveFiles,
-                                                           Component* sourceComp)
+bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, const bool canMoveFiles)
 {
     if (files.size() == 0)
         return false;
 
-    if (auto* lp = getPeerForDragEvent (sourceComp))
-        return lp->externalDragFileInit (files, canMoveFiles);
+    if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource (0))
+        if (auto* sourceComp = draggingSource->getComponentUnderMouse())
+            if (auto* lp = dynamic_cast<LinuxComponentPeer*> (sourceComp->getPeer()))
+                return lp->externalDragFileInit (files, canMoveFiles);
 
     // This method must be called in response to a component's mouseDown or mouseDrag event!
     jassertfalse;
     return false;
 }
 
-bool DragAndDropContainer::performExternalDragDropOfText (const String& text, Component* sourceComp)
+bool DragAndDropContainer::performExternalDragDropOfText (const String& text)
 {
     if (text.isEmpty())
         return false;
 
-    if (auto* lp = getPeerForDragEvent (sourceComp))
-        return lp->externalDragTextInit (text);
+    if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource (0))
+        if (auto* sourceComp = draggingSource->getComponentUnderMouse())
+            if (auto* lp = dynamic_cast<LinuxComponentPeer*> (sourceComp->getPeer()))
+                return lp->externalDragTextInit (text);
 
     // This method must be called in response to a component's mouseDown or mouseDrag event!
     jassertfalse;

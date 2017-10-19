@@ -220,7 +220,7 @@ String TextDiff::Change::appliedTo (const String& text) const noexcept
 class DiffTests  : public UnitTest
 {
 public:
-    DiffTests() : UnitTest ("TextDiff class", "Text") {}
+    DiffTests() : UnitTest ("TextDiff class") {}
 
     static String createString (Random& r)
     {

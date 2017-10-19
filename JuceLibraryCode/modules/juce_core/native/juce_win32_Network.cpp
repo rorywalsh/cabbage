@@ -33,13 +33,14 @@ class WebInputStream::Pimpl
 {
 public:
     Pimpl (WebInputStream& pimplOwner, const URL& urlToCopy, bool shouldBePost)
-        : statusCode (0), owner (pimplOwner), url (urlToCopy), isPost (shouldBePost),
-          httpRequestCmd (isPost ? "POST" : "GET")
+        : statusCode (0), owner (pimplOwner), url (urlToCopy), connection (0), request (0),
+          position (0), finished (false), isPost (shouldBePost), timeOutMs (0),
+          httpRequestCmd (isPost ? "POST" : "GET"), numRedirectsToFollow (5)
     {}
 
     ~Pimpl()
     {
-        closeConnection();
+        close();
     }
 
     //==============================================================================
@@ -65,13 +66,6 @@ public:
     //==============================================================================
     bool connect (WebInputStream::Listener* listener)
     {
-        {
-            const ScopedLock lock (createConnectionLock);
-
-            if (hasBeenCancelled)
-                return false;
-        }
-
         String address = url.toString (! isPost);
 
         while (numRedirectsToFollow-- >= 0)
@@ -187,13 +181,7 @@ public:
 
     void cancel()
     {
-        {
-            const ScopedLock lock (createConnectionLock);
-
-            hasBeenCancelled = true;
-
-            closeConnection();
-        }
+        close();
     }
 
     bool setPosition (int64 wantedPos)
@@ -229,25 +217,22 @@ private:
     //==============================================================================
     WebInputStream& owner;
     const URL url;
-    HINTERNET connection = 0, request = 0;
+    HINTERNET connection, request;
     String headers;
     MemoryBlock postData;
-    int64 position = 0;
-    bool finished = false;
+    int64 position;
+    bool finished;
     const bool isPost;
-    int timeOutMs = 0;
+    int timeOutMs;
     String httpRequestCmd;
-    int numRedirectsToFollow = 5;
+    int numRedirectsToFollow;
     StringPairArray responseHeaders;
-    CriticalSection createConnectionLock;
-    bool hasBeenCancelled = false;
 
-    void closeConnection()
+    void close()
     {
         HINTERNET requestCopy = request;
 
         request = 0;
-
         if (requestCopy != 0)
             InternetCloseHandle (requestCopy);
 
@@ -262,7 +247,7 @@ private:
     {
         static HINTERNET sessionHandle = InternetOpen (_T("juce"), INTERNET_OPEN_TYPE_PRECONFIG, 0, 0, 0);
 
-        closeConnection();
+        close();
 
         if (sessionHandle != 0)
         {
@@ -313,18 +298,11 @@ private:
 
         const bool isFtp = address.startsWithIgnoreCase ("ftp:");
 
-        {
-            const ScopedLock lock (createConnectionLock);
-
-            connection = hasBeenCancelled ? 0
-                                          : InternetConnect (sessionHandle,
-                                                             uc.lpszHostName, uc.nPort,
-                                                             uc.lpszUserName, uc.lpszPassword,
-                                                             isFtp ? (DWORD) INTERNET_SERVICE_FTP
-                                                                   : (DWORD) INTERNET_SERVICE_HTTP,
-                                                             0, 0);
-        }
-
+        connection = InternetConnect (sessionHandle, uc.lpszHostName, uc.nPort,
+                                      uc.lpszUserName, uc.lpszPassword,
+                                      isFtp ? (DWORD) INTERNET_SERVICE_FTP
+                                            : (DWORD) INTERNET_SERVICE_HTTP,
+                                      0, 0);
         if (connection != 0)
         {
             if (isFtp)
@@ -345,22 +323,19 @@ private:
         const TCHAR* mimeTypes[] = { _T("*/*"), nullptr };
 
         DWORD flags = INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_NO_COOKIES
-                        | INTERNET_FLAG_NO_AUTO_REDIRECT;
+                        | INTERNET_FLAG_NO_AUTO_REDIRECT | SECURITY_SET_MASK;
 
         if (address.startsWithIgnoreCase ("https:"))
             flags |= INTERNET_FLAG_SECURE;  // (this flag only seems necessary if the OS is running IE6 -
                                             //  IE7 seems to automatically work out when it's https)
 
-        {
-            const ScopedLock lock (createConnectionLock);
-
-            request = hasBeenCancelled ? 0
-                                       : HttpOpenRequest (connection, httpRequestCmd.toWideCharPointer(),
-                                                          uc.lpszUrlPath, 0, 0, mimeTypes, flags, 0);
-        }
+        request = HttpOpenRequest (connection, httpRequestCmd.toWideCharPointer(),
+                                   uc.lpszUrlPath, 0, 0, mimeTypes, flags, 0);
 
         if (request != 0)
         {
+            setSecurityFlags();
+
             INTERNET_BUFFERS buffers = { 0 };
             buffers.dwStructSize = sizeof (INTERNET_BUFFERS);
             buffers.lpcszHeader = headers.toWideCharPointer();
@@ -401,7 +376,15 @@ private:
             }
         }
 
-        closeConnection();
+        close();
+    }
+
+    void setSecurityFlags()
+    {
+        DWORD dwFlags = 0, dwBuffLen = sizeof (DWORD);
+        InternetQueryOption (request, INTERNET_OPTION_SECURITY_FLAGS, &dwFlags, &dwBuffLen);
+        dwFlags |= SECURITY_FLAG_IGNORE_UNKNOWN_CA | SECURITY_SET_MASK;
+        InternetSetOption (request, INTERNET_OPTION_SECURITY_FLAGS, &dwFlags, sizeof (dwFlags));
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pimpl)

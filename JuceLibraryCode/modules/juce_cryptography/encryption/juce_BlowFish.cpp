@@ -311,7 +311,7 @@ int BlowFish::decrypt (void* data, size_t size) const noexcept
     return -1;
 }
 
-bool BlowFish::apply (void* data, size_t size, void (BlowFish::*op) (uint32&, uint32&) const) const
+bool BlowFish::apply (void* data, size_t size, void (BlowFish::*op) (uint32&, uint32&) const noexcept) const
 {
     union AlignedAccessHelper
     {
@@ -368,7 +368,7 @@ int BlowFish::unpad (const void* data, size_t size) noexcept
 class BlowFishTests  : public UnitTest
 {
 public:
-    BlowFishTests() : UnitTest ("BlowFish", "Cryptography") {}
+    BlowFishTests() : UnitTest ("BlowFish") {}
 
     static void fillMemoryBlockWithRandomData (MemoryBlock& block, Random& random)
     {

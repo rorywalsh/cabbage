@@ -227,8 +227,6 @@ JUCESplashScreen::JUCESplashScreen (Component& parent)
             appUsageReported = true;
         }
     }
-   #else
-    ignoreUnused (appUsageReported);
    #endif
 
    #if JUCE_DISPLAY_SPLASH_SCREEN

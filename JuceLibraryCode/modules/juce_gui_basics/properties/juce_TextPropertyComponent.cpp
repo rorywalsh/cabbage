@@ -41,7 +41,7 @@ public:
 
     bool isInterestedInFileDrag (const StringArray&) override
     {
-        return interestedInFileDrag;
+        return true;
     }
 
     void filesDropped (const StringArray& files, int, int) override
@@ -77,16 +77,10 @@ public:
         repaint();
     }
 
-    void setInterestedInFileDrag (bool isInterested)
-    {
-        interestedInFileDrag = isInterested;
-    }
-
 private:
     TextPropertyComponent& owner;
     int maxChars;
     bool isMultiline;
-    bool interestedInFileDrag = true;
 };
 
 //==============================================================================
@@ -174,10 +168,4 @@ void TextPropertyComponent::colourChanged()
 {
     PropertyComponent::colourChanged();
     textEditor->updateColours();
-}
-
-void TextPropertyComponent::setInterestedInFileDrag (bool isInterested)
-{
-    if (textEditor != nullptr)
-        textEditor->setInterestedInFileDrag (isInterested);
 }

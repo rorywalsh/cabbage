@@ -100,9 +100,9 @@ public:
     {
         NSMenu* superMenu = [menu supermenu];
         auto menuNames = currentModel->getMenuBarNames();
-        auto indexOfMenu = (int) [superMenu indexOfItemWithSubmenu: menu] - 1;
+        auto indexOfMenu = (int) [superMenu indexOfItemWithSubmenu: menu];
         [menu removeAllItems];
-        auto updatedPopup = currentModel->getMenuForIndex (indexOfMenu, menuNames[indexOfMenu]);
+        auto updatedPopup = currentModel->getMenuForIndex (indexOfMenu - 1, menuNames[indexOfMenu - 1]);
 
         for (PopupMenu::MenuItemIterator iter (updatedPopup); iter.next();)
             addMenuItem (iter, menu, 1, indexOfMenu);

@@ -24,7 +24,7 @@ MPESynthesiser::MPESynthesiser()
 {
 }
 
-MPESynthesiser::MPESynthesiser (MPEInstrument* mpeInstrument)  : MPESynthesiserBase (mpeInstrument)
+MPESynthesiser::MPESynthesiser (MPEInstrument* instrument)  : MPESynthesiserBase (instrument)
 {
 }
 

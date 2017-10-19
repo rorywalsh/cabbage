@@ -99,7 +99,15 @@ Array<AppInactivityCallback*> appBecomingInactiveCallbacks;
             }
         }];
 
-        MessageManager::callAsync ([self,application,app] ()  { app->suspended(); });
+        MessageManager::callAsync ([self,application,app] ()
+                                   {
+                                       app->suspended();
+                                       if (appSuspendTask != UIBackgroundTaskInvalid)
+                                       {
+                                           [application endBackgroundTask:appSuspendTask];
+                                           appSuspendTask = UIBackgroundTaskInvalid;
+                                       }
+                                   });
        #else
         ignoreUnused (application);
         app->suspended();
@@ -369,13 +377,13 @@ int JUCE_CALLTYPE NativeMessageBox::showYesNoBox (AlertWindow::AlertIconType /*i
 }
 
 //==============================================================================
-bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray&, bool, Component*)
+bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray&, bool)
 {
     jassertfalse;    // no such thing on iOS!
     return false;
 }
 
-bool DragAndDropContainer::performExternalDragDropOfText (const String&, Component*)
+bool DragAndDropContainer::performExternalDragDropOfText (const String&)
 {
     jassertfalse;    // no such thing on iOS!
     return false;

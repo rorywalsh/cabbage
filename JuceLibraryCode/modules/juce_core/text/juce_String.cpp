@@ -563,7 +563,7 @@ struct HashGenerator
     template <typename CharPointer>
     static Type calculate (CharPointer t) noexcept
     {
-        Type result = {};
+        Type result = Type();
 
         while (! t.isEmpty())
             result = ((Type) multiplier) * result + (Type) t.getAndAdvance();
@@ -574,9 +574,9 @@ struct HashGenerator
     enum { multiplier = sizeof (Type) > 4 ? 101 : 31 };
 };
 
-int String::hashCode() const noexcept       { return (int) HashGenerator<uint32>    ::calculate (text); }
-int64 String::hashCode64() const noexcept   { return (int64) HashGenerator<uint64>  ::calculate (text); }
-size_t String::hash() const noexcept        { return HashGenerator<size_t>          ::calculate (text); }
+int String::hashCode() const noexcept       { return HashGenerator<int>    ::calculate (text); }
+int64 String::hashCode64() const noexcept   { return HashGenerator<int64>  ::calculate (text); }
+size_t String::hash() const noexcept        { return HashGenerator<size_t> ::calculate (text); }
 
 //==============================================================================
 JUCE_API bool JUCE_CALLTYPE operator== (const String& s1, const String& s2) noexcept            { return s1.compare (s2) == 0; }
@@ -1637,23 +1637,26 @@ String String::upToLastOccurrenceOf (StringRef sub,
     return substring (0, includeSubString ? i + sub.length() : i);
 }
 
-static bool isQuoteCharacter (juce_wchar c) noexcept
-{
-    return c == '"' || c == '\'';
-}
-
 bool String::isQuotedString() const
 {
-    return isQuoteCharacter (*text.findEndOfWhitespace());
+    const juce_wchar trimmedStart = trimStart()[0];
+
+    return trimmedStart == '"'
+        || trimmedStart == '\'';
 }
 
 String String::unquoted() const
 {
-    if (! isQuoteCharacter (*text))
-        return *this;
+    const int len = length();
 
-    auto len = length();
-    return substring (1, len - (isQuoteCharacter (text[len - 1]) ? 1 : 0));
+    if (len == 0)
+        return {};
+
+    const juce_wchar lastChar = text [len - 1];
+    const int dropAtStart = (*text == '"' || *text == '\'') ? 1 : 0;
+    const int dropAtEnd = (lastChar == '"' || lastChar == '\'') ? 1 : 0;
+
+    return substring (dropAtStart, len - dropAtEnd);
 }
 
 String String::quoted (const juce_wchar quoteCharacter) const
@@ -1884,7 +1887,7 @@ String String::formattedRaw (const char* pf, ...)
         va_end (args);
 
         if (num > 0)
-            return String (temp.get());
+            return String (temp);
 
         bufferSize += 256;
 
@@ -2223,7 +2226,7 @@ StringRef::StringRef (const String& string) noexcept  : text (string.getCharPoin
 class StringTests  : public UnitTest
 {
 public:
-    StringTests() : UnitTest ("String class", "Text") {}
+    StringTests() : UnitTest ("String class") {}
 
     template <class CharPointerType>
     struct TestUTFConversion

@@ -168,13 +168,10 @@ static NSRect getDragRect (NSView* view, NSEvent* event)
                     fromView: nil];
 }
 
-NSView* getNSViewForDragEvent (Component* sourceComp)
+NSView* getNSViewForDragEvent()
 {
-    if (sourceComp == nullptr)
-        if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource(0))
-            sourceComp = draggingSource->getComponentUnderMouse();
-
-    if (sourceComp != nullptr)
+    if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource(0))
+        if (auto* sourceComp = draggingSource->getComponentUnderMouse())
             return (NSView*) sourceComp->getWindowHandle();
 
     jassertfalse;  // This method must be called in response to a component's mouseDown or mouseDrag event!
@@ -213,12 +210,12 @@ private:
     }
 };
 
-bool DragAndDropContainer::performExternalDragDropOfText (const String& text, Component* sourceComponent)
+bool DragAndDropContainer::performExternalDragDropOfText (const String& text)
 {
     if (text.isEmpty())
         return false;
 
-    if (auto* view = getNSViewForDragEvent (sourceComponent))
+    if (auto* view = getNSViewForDragEvent())
     {
         JUCE_AUTORELEASEPOOL
         {
@@ -271,13 +268,12 @@ private:
 
 static NSDraggingSourceHelper draggingSourceHelper;
 
-bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, bool /*canMoveFiles*/,
-                                                           Component* sourceComponent)
+bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, bool /*canMoveFiles*/)
 {
     if (files.isEmpty())
         return false;
 
-    if (auto* view = getNSViewForDragEvent (sourceComponent))
+    if (auto* view = getNSViewForDragEvent())
     {
         JUCE_AUTORELEASEPOOL
         {

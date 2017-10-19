@@ -55,18 +55,10 @@ import java.io.*;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import android.media.AudioManager;
+import android.media.MediaScannerConnection;
+import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.Manifest;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Future;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.atomic.*;
-$$JuceAndroidMidiImports$$         // If you get an error here, you need to re-save your project with the Projucer!
+$$JuceAndroidMidiImports$$ // If you get an error here, you need to re-save your project with the Projucer!
 
 
 //==============================================================================
@@ -105,18 +97,13 @@ public class JuceAppActivity   extends Activity
     // these have to match the values of enum PermissionID in C++ class RuntimePermissions:
     private static final int JUCE_PERMISSIONS_RECORD_AUDIO = 1;
     private static final int JUCE_PERMISSIONS_BLUETOOTH_MIDI = 2;
-    private static final int JUCE_PERMISSIONS_READ_EXTERNAL_STORAGE = 3;
-    private static final int JUCE_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 4;
 
     private static String getAndroidPermissionName (int permissionID)
     {
         switch (permissionID)
         {
-            case JUCE_PERMISSIONS_RECORD_AUDIO:           return Manifest.permission.RECORD_AUDIO;
-            case JUCE_PERMISSIONS_BLUETOOTH_MIDI:         return Manifest.permission.ACCESS_COARSE_LOCATION;
-                                                          // use string value as this is not defined in SDKs < 16
-            case JUCE_PERMISSIONS_READ_EXTERNAL_STORAGE:  return "android.permission.READ_EXTERNAL_STORAGE";
-            case JUCE_PERMISSIONS_WRITE_EXTERNAL_STORAGE: return Manifest.permission.WRITE_EXTERNAL_STORAGE;
+            case JUCE_PERMISSIONS_RECORD_AUDIO:     return Manifest.permission.RECORD_AUDIO;
+            case JUCE_PERMISSIONS_BLUETOOTH_MIDI:   return Manifest.permission.ACCESS_COARSE_LOCATION;
         }
 
         // unknown permission ID!
@@ -299,7 +286,23 @@ public class JuceAppActivity   extends Activity
     private native void suspendApp();
     private native void resumeApp();
     private native void setScreenSize (int screenWidth, int screenHeight, int dpi);
-    private native void appActivityResult (int requestCode, int resultCode, Intent data);
+
+    //==============================================================================
+    public native void deliverMessage (long value);
+    private android.os.Handler messageHandler = new android.os.Handler();
+
+    public final void postMessage (long value)
+    {
+        messageHandler.post (new MessageCallback (value));
+    }
+
+    private final class MessageCallback  implements Runnable
+    {
+        public MessageCallback (long value_)        { value = value_; }
+        public final void run()                     { deliverMessage (value); }
+
+        private long value;
+    }
 
     //==============================================================================
     private ViewHolder viewHolder;
@@ -613,7 +616,6 @@ public class JuceAppActivity   extends Activity
         //==============================================================================
         private native void handleKeyDown (long host, int keycode, int textchar);
         private native void handleKeyUp (long host, int keycode, int textchar);
-        private native void handleBackButton (long host);
 
         public void showKeyboard (String type)
         {
@@ -641,14 +643,8 @@ public class JuceAppActivity   extends Activity
                 case KeyEvent.KEYCODE_VOLUME_UP:
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     return super.onKeyDown (keyCode, event);
-                case KeyEvent.KEYCODE_BACK:
-                {
-                    handleBackButton (host);
-                    return true;
-                }
 
-                default:
-                    break;
+                default: break;
             }
 
             handleKeyDown (host, keyCode, event.getUnicodeChar());
@@ -865,171 +861,46 @@ public class JuceAppActivity   extends Activity
     private int[] cachedRenderArray = new int [256];
 
     //==============================================================================
-    public static class NativeInvocationHandler implements InvocationHandler
-    {
-        public NativeInvocationHandler (long nativeContextRef)
-        {
-            nativeContext = nativeContextRef;
-        }
-
-        @Override
-        public void finalize()
-        {
-            dispatchFinalize (nativeContext);
-        }
-
-        @Override
-        public Object invoke (Object proxy, Method method, Object[] args) throws Throwable
-        {
-            return dispatchInvoke (nativeContext, proxy, method, args);
-        }
-
-        //==============================================================================
-        private long nativeContext = 0;
-
-        private native void dispatchFinalize (long nativeContextRef);
-        private native Object dispatchInvoke (long nativeContextRef, Object proxy, Method method, Object[] args);
-    }
-
-    public static InvocationHandler createInvocationHandler (long nativeContextRef)
-    {
-        return new NativeInvocationHandler (nativeContextRef);
-    }
-
-    //==============================================================================
     public static class HTTPStream
     {
         public HTTPStream (HttpURLConnection connection_,
-                           int[] statusCode_,
-                           StringBuffer responseHeaders_)
+                           int[] statusCode, StringBuffer responseHeaders) throws IOException
         {
             connection = connection_;
-            statusCode = statusCode_;
-            responseHeaders = responseHeaders_;
-        }
-
-        private final InputStream getCancellableStream (final boolean isInput) throws ExecutionException
-        {
-            synchronized (createFutureLock)
-            {
-                if (hasBeenCancelled.get())
-                    return null;
-
-                streamFuture = executor.submit (new Callable<BufferedInputStream>()
-                {
-                    @Override
-                    public BufferedInputStream call() throws IOException
-                    {
-                        return new BufferedInputStream (isInput ? connection.getInputStream()
-                                                                : connection.getErrorStream());
-                    }
-                });
-            }
 
             try
             {
-                if (connection.getConnectTimeout() > 0)
-                    return streamFuture.get (connection.getConnectTimeout(), TimeUnit.MILLISECONDS);
-                else
-                    return streamFuture.get();
-            }
-            catch (InterruptedException e)
-            {
-                return null;
-            }
-            catch (TimeoutException e)
-            {
-                return null;
-            }
-            catch (CancellationException e)
-            {
-                return null;
-            }
-        }
-
-        public final boolean connect()
-        {
-            try
-            {
-                try
-                {
-                    synchronized (createStreamLock)
-                    {
-                        if (hasBeenCancelled.get())
-                            return false;
-
-                        inputStream = getCancellableStream (true);
-                    }
-                }
-                catch (ExecutionException e)
-                {
-                    if (connection.getResponseCode() < 400)
-                    {
-                        statusCode[0] = connection.getResponseCode();
-                        connection.disconnect();
-                        return false;
-                    }
-                }
-                finally
-                {
-                    statusCode[0] = connection.getResponseCode();
-                }
-
-                synchronized (createStreamLock)
-                {
-                    if (hasBeenCancelled.get())
-                        return false;
-
-                    try
-                    {
-                        if (statusCode[0] >= 400)
-                            inputStream = getCancellableStream (false);
-                        else
-                            inputStream = getCancellableStream (true);
-                    }
-                    catch (ExecutionException e)
-                    {}
-                }
-
-                for (java.util.Map.Entry<String, java.util.List<String>> entry : connection.getHeaderFields().entrySet())
-                    if (entry.getKey() != null && entry.getValue() != null)
-                        responseHeaders.append (entry.getKey() + ": "
-                                                + android.text.TextUtils.join (",", entry.getValue()) + "\n");
-
-                return true;
+                inputStream = new BufferedInputStream (connection.getInputStream());
             }
             catch (IOException e)
             {
-                return false;
+                if (connection.getResponseCode() < 400)
+                    throw e;
             }
+            finally
+            {
+                statusCode[0] = connection.getResponseCode();
+            }
+
+            if (statusCode[0] >= 400)
+                inputStream = connection.getErrorStream();
+            else
+                inputStream = connection.getInputStream();
+
+            for (java.util.Map.Entry<String, java.util.List<String>> entry : connection.getHeaderFields().entrySet())
+                if (entry.getKey() != null && entry.getValue() != null)
+                    responseHeaders.append (entry.getKey() + ": "
+                                             + android.text.TextUtils.join (",", entry.getValue()) + "\n");
         }
 
         public final void release()
         {
-            hasBeenCancelled.set (true);
-
             try
             {
-                if (! createStreamLock.tryLock())
-                {
-                    synchronized (createFutureLock)
-                    {
-                        if (streamFuture != null)
-                            streamFuture.cancel (true);
-                    }
-
-                    createStreamLock.lock();
-                }
-
-                if (inputStream != null)
-                    inputStream.close();
+                inputStream.close();
             }
             catch (IOException e)
             {}
-            finally
-            {
-                createStreamLock.unlock();
-            }
 
             connection.disconnect();
         }
@@ -1040,11 +911,7 @@ public class JuceAppActivity   extends Activity
 
             try
             {
-                synchronized (createStreamLock)
-                {
-                    if (inputStream != null)
-                        num = inputStream.read (buffer, 0, numBytes);
-                }
+                num = inputStream.read (buffer, 0, numBytes);
             }
             catch (IOException e)
             {}
@@ -1061,16 +928,8 @@ public class JuceAppActivity   extends Activity
         public final boolean setPosition (long newPos)  { return false; }
 
         private HttpURLConnection connection;
-        private int[] statusCode;
-        private StringBuffer responseHeaders;
         private InputStream inputStream;
         private long position;
-        private final ReentrantLock createStreamLock = new ReentrantLock();
-        private final Object createFutureLock = new Object();
-        private AtomicBoolean hasBeenCancelled = new AtomicBoolean();
-
-        private final ExecutorService executor = Executors.newCachedThreadPool (Executors.defaultThreadFactory());
-        Future<BufferedInputStream> streamFuture;
     }
 
     public static final HTTPStream createHTTPStream (String address, boolean isPost, byte[] postData,
@@ -1199,13 +1058,36 @@ public class JuceAppActivity   extends Activity
     public static final String getDownloadsFolder()  { return getFileLocation (Environment.DIRECTORY_DOWNLOADS); }
 
     //==============================================================================
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data)
+    private final class SingleMediaScanner  implements MediaScannerConnectionClient
     {
-        appActivityResult (requestCode, resultCode, data);
+        public SingleMediaScanner (Context context, String filename)
+        {
+            file = filename;
+            msc = new MediaScannerConnection (context, this);
+            msc.connect();
+        }
+
+        @Override
+        public void onMediaScannerConnected()
+        {
+            msc.scanFile (file, null);
+        }
+
+        @Override
+        public void onScanCompleted (String path, Uri uri)
+        {
+            msc.disconnect();
+        }
+
+        private MediaScannerConnection msc;
+        private String file;
     }
 
-    //==============================================================================
+    public final void scanFile (String filename)
+    {
+        new SingleMediaScanner (this, filename);
+    }
+
     public final Typeface getTypeFaceFromAsset (String assetName)
     {
         try
