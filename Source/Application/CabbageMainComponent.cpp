@@ -831,12 +831,6 @@ void CabbageMainComponent::launchHelpfile (String type)
 {
     String url = "";
 
-    if (helpWindow == nullptr)
-    {
-        helpWindow = new HtmlHelpDocumentWindow ("Help", Colour (20, 20, 20));
-		helpWindow->getHtmlHelpBrowser()->addActionListener(this);
-    }
-
     CodeDocument::Position pos1, pos2;
     pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore (getCurrentCodeEditor()->getCaretPos());
     pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter (getCurrentCodeEditor()->getCaretPos());
@@ -872,9 +866,15 @@ void CabbageMainComponent::launchHelpfile (String type)
 
     if (File (url).existsAsFile())
     {
-        helpWindow->loadPage ("file://" + url);
-        helpWindow->setVisible (true);
-        helpWindow->toFront (true);
+		URL urlHelp(url);
+        ChildProcess process;
+        File temp(urlHelp.toString(false));
+#ifdef LINUX
+		if(!process.start(String("xdg-open "+urlHelp.toString(false)).toUTF8()))
+            CabbageUtilities::showMessage("Couldn't show file, see 'Set Csound manual directory' in Options->Preferences", &getLookAndFeel());
+#else
+            urlHelp.launchInDefaultBrowser();
+#endif
 
     }
 }
