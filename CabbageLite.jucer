@@ -228,7 +228,7 @@
         <MODULEPATH id="juce_audio_utils" path="../sourcecode/JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
-    <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
+    <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1&#10;Cabbage_Lite=1"
             externalLibraries="csound64.lib">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
