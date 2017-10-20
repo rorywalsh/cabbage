@@ -24,8 +24,8 @@ public:
         appProperties.setStorageParameters (options);
     }
 
-    const String getApplicationName() override              { return JucePlugin_Name; }
-    const String getApplicationVersion() override           { return JucePlugin_VersionString; }
+    const String getApplicationName() override              { return "Cabbage Lite"; }
+    const String getApplicationVersion() override           { return "2.0"; }
     bool moreThanOneInstanceAllowed() override              { return true; }
     void anotherInstanceStarted (const String&) override    {}
 
