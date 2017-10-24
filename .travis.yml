@@ -94,7 +94,7 @@ script:
     - ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
     - ls
     - make clean CONFIG=Release
-    - make j6 CONFIG=Release
+    - make -j6 CONFIG=Release
 
     
     
