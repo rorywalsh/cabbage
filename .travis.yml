@@ -66,6 +66,10 @@ compiler:
 before_script: 
     - cd ..
     - sudo apt-get install libsndfile1
+    - git clone https://github.com/WeAreROLI/JUCE.git
+    - cd JUCE/extras/Projucer/Builds/LinuxMakefile
+    - make -j6
+    - cd ../../../../../
     - mkdir csoundMaster
     - cd csoundMaster
     - git clone https://github.com/csound/csound.git
@@ -76,14 +80,15 @@ before_script:
     - sudo make -j4
     - sudo make install
     - sudo ldconfig
-    - cd /home/travis/build/rorywalsh/cabbage/Builds/LinuxMakefile/
+    - cd /home/travis/build/rorywalsh/cabbage/Builds
 
 script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
-    - make -f MakeCabbageIDE clean CONFIG=Release
-    - make -f MakeCabbageIDE -j6 CONFIG=Release
+
+    - sudo chmod 777 buildCabbage
+    - ./buildCabbage
 
     
     
