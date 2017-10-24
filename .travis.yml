@@ -86,9 +86,10 @@ script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
     - gcc -v && g++ -v && cmake --version
-
     - sudo chmod 777 buildCabbage
-    - sudo ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
+    - ls
+    - ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
+    - ls
     - mv Makefile MakeCabbageIDE
     - make -f MakeCabbageIDE clean CONFIG=Release
     - make -f MakeCabbageIDE -j6 CONFIG=Release
