@@ -1,0 +1,141 @@
+
+	<!doctype html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cabbage user Manual</title>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+	<input type="checkbox" id="menu-toggle" />
+	<label for="menu-toggle" class="menu-icon"><i class="fa fa-bars"></i></label>
+	<div class="content-container">
+	</div>
+	<div class="content"><h1>Image</h1>
+<p>Image creates a static shape or graphic. It can be used to show pictures or it can be used to draw simple shapes. If you wish to display a picture you must pass the file name to the file() identifier. For convenience, the file passed to file() should be in the same directory as your Cabbage instrument. </p>
+<pre><code class="csharp">image bounds(x, y, width, height), colour(&quot;colour&quot;), channel(&quot;chan&quot;)\
+file(&quot;file name&quot;), shape(&quot;type&quot;), outlinecolour(&quot;colour&quot;), \
+outlinethickness(thickness), plant(&quot;name&quot;), identchannel(&quot;channel&quot;), \
+visible(val), alpha(val), rotate(radians, pivotx, pivoty), corners(val) \
+widgetarray(&quot;chan&quot;, number), popuptext(&quot;text&quot;), active(val)
+</code></pre>
+
+<!--(End of syntax)/-->
+
+<h2>Identifiers</h2>
+<h3>Specific Identifiers</h3>
+<p><strong>corners(val)</strong> Sets the radius size of the widget's corners. </p>
+<p><strong>file("filename")</strong> "filename" is the name of the image file to be displayed on the widget. If a full file path is not given, file() will search  in the current directory, i.e., the directory that contains the csd file that is open. It is best to keep all files in the same directory as your csd file, but if you wish to keep them in a sperate folder you can pass a full path to the file() identifier. Cabbage will support most file types, and will also display SVG files. </p>
+<blockquote>
+<p>Try to avoid full path names at all costs. They will work fine on a local machine, but will not be valid on another machine. </p>
+</blockquote>
+<p><strong>outlinecolour("colour")</strong> Sets the colour of a rotary slider**s tracker outline. This is the line that is drawn around the rslider's tracker. If you don't wish to display the tracker outline set the colour to something with an alpha value of 0. See above for details on valid colours.  </p>
+<p><strong>outlinethickness(value)</strong> Sets the thickness of the widget's outline. Set to 0 to disable.  </p>
+<p><strong>shape("shape")</strong> Sets the shape of the LED. Default is "square" but users can use "circle" also.  . Note that by settings the corners to a high value one can also create elliptical shapes.  </p>
+<p><strong>plant("name")</strong> [DEPRECATED] Sets the name of the plant. No two plants can have the same name. See <a href="./plants.md">Plants</a></p>
+<h3>Common Identifiers</h3>
+<p><strong>active(val)</strong> Will deactivate a control if 0 is passed. Controls which are deactivate can still be updated from Csound.  </p>
+<p><strong>alpha(val)</strong>
+A value between 0 and 1 will set the alpha blend value for the entire component. Can be useful if you need to fade widgets in and out.   </p>
+<p><strong>bounds(x, y, width, height)</strong> 
+integer values that set position and size on screen(in pixels).   </p>
+<p><strong>channel("chan")</strong> 
+"chan" is the name of the channel that Cabbage will communicate with Csound on. The current value of this widget can be retrieved in Csound using a chnget opcode, or can be set using a chnset opcode.   A left-mouse click on an image will send a 1 to the channel passed to channel(). Subsequent clicks will toggle between 0 and 1. </p>
+<p><strong>colour("colour")</strong> This sets the main colour. Any CSS or HTML colour string can be passed to this identifier. The colour identifier can also be passed an RBG, or RGBA value. All channel values must be between 0 and 255. For instance colour(0, 0, 255) will create a blue, while colour(0, 255, 0, 255) will create a green with an alpha channel set to full.    </p>
+<p><strong>identchannel("channel")</strong>
+Sets the channel which data is sent and retrieved from Csound. When used with a chnset opcode users can override widget attributes. See <a href="./identchannels.html">Identifier channels</a>  </p>
+<p><strong>rotate(radians, pivotx, pivoty)</strong>
+Rotates the widget by a number of radians(2xPI=full rotation). pivotx and pivoty will determine the rotation pivot points, where 0, 0 represents the component's top-left position.  </p>
+<p><strong>visible(val)</strong>
+A value of 0 will cause the widget to become invisible. Widgets have their visibility set to 1 by default.   </p>
+<p><strong>widgetarray("chan", number)</strong> Creates a number of widgets in a single pass. See <a href="../widget_arrays.html">Widget arrays</a>  </p>
+<!--(End of identifiers)/-->
+
+<h2>Example</h2>
+<pre><code class="csharp">&lt;Cabbage&gt;
+form size(400, 500), caption(&quot;Untitled&quot;), pluginID(&quot;plu1&quot;), colour(39, 40, 34)
+image bounds(58, 4, 257, 183), shape(&quot;ellipse&quot;), colour(&quot;purple&quot;)  
+image bounds(84, 22, 200, 150), file(&quot;/home/rory/sourcecode/cabbageaudio/cabbage/Images/logo_cabbage_sw_no_text.png&quot;),  
+&lt;/Cabbage&gt;
+</code></pre>
+
+<p><img alt="" src="../images/imageExample.png"></p>
+	  </div>
+	</div>
+	<div class="slideout-sidebar">
+	<ul>
+	<li><a href="index.html">Cabbage User Manual</a></li>
+	<li><a href="csound.html">Beginners (Csound)</a><ul>
+	<li><a href="file_structure_and_syntax.html">File Structure and Syntax</a></li>
+	<li><a href="keywords.html">Keywords</a></li>
+	<li><a href="constants_and_variables.html">Constants and Variables</a></li>
+	<li><a href="opcodes.html">Opcodes</a></li>
+	<li><a href="operators_and_comments.html">Operators and Comments</a></li>
+	</ul>
+	</li>
+	<li><a href="introduction.html">Using Cabbage</a><ul>
+	<li><a href="using_cabbage.html">Introduction</a></li>
+	<li><a href="cabbage_syntax.html">Cabbage Syntax</a></li>
+	<li><a href="beginner_synth.html">A simple Synthesiser</a></li>
+	<li><a href="first_effect.html">A simple Effect</a></li>
+	<li><a href="audio_graph.html">The Cabbage patcher</a></li>
+	<li><a href="exporting.html">Exporting plugins</a></li>
+	<li><a href="cabbage_in_host.html">Using plugins in 3rd Party software</a></li>
+	<li><a href="distributing.html">Distributing instruments</a></li>
+	</ul>
+	</li>
+	<li><a href="features.html">Features</a><ul>
+	<li><a href="plants.html">Plants</a></li>
+	<li><a href="identchannels.html">Controlling widgets with Csound</a></li>
+	<li><a href="presets.html">Presets</a></li>
+	<li><a href="widget_arrays.html">Widget arrays</a></li>
+	<li><a href="macros_and_reserved_channels.html">Reserved channels and Macros</a></li>
+	<li><a href="managing_large_numbers_of_widgets.html">Managing large numbers of Widgets</a></li>
+	<li><a href="using_svgs.html">Using SVGs</a></li>
+	<li><a href="soundfiles.html">Working with sound files</a></li>
+	<li><a href="host_info.html">Getting host information into Csound</a></li>
+	</ul>
+	</li>
+	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
+	<li><a href="button.html">Button</a></li>
+	<li><a href="button_file.html">Button(File)</a></li>
+	<li><a href="button_info.html">Button(Info)</a></li>
+	<li><a href="checkbox.html">Checkbox</a></li>
+	<li><a href="combobox.html">Combobox</a></li>
+	<li><a href="csound_output.html">Csound Output</a></li>
+	<li><a href="encoder.html">Endless encoder</a></li>
+	<li><a href="gentable.html">Gentable</a></li>
+	<li><a href="form.html">Form</a></li>
+	<li><a href="groupbox.html">Groupbox</a></li>
+	<li><a href="hrange.html">Hrange</a></li>
+	<li><a href="image.html">Image</a></li>
+	<li><a href="keyboard.html">Keyboard</a></li>
+	<li><a href="label.html">Labels</a></li>
+	<li><a href="listbox.html">Listbox</a></li>
+	<li><a href="meter.html">Meteres</a></li>
+	<li><a href="numberbox.html">Numberbox</a></li>
+	<li><a href="signaldisplay.html">SignalDisplay</a></li>
+	<li><a href="sliders.html">Sliders</a></li>
+	<li><a href="soundfiler.html">Soundfiler</a></li>
+	<li><a href="textbox.html">Textbox</a></li>
+	<li><a href="texteditor.html">Texteditor</a></li>
+	<li><a href="vrange.html">Vrange</a></li>
+	<li><a href="xypad.html">XY Pad</a></li>
+	</ul>
+	</li>
+	<li><a href="add_new_widgets.html">Adding new Widgets</a><ul>
+	<li><a href="new_widgets_part_1.html">Part 1</a></li>
+	<li><a href="new_widgets_part_2.html">Part 2</a></li>
+	<li><a href="new_widgets_part_3.html">Part 3</a></li>
+	</ul>
+	</li>
+	</ul>
+
+	</div>
+	</body>
+	</html>
+	

@@ -1,0 +1,138 @@
+
+	<!doctype html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cabbage user Manual</title>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+	<input type="checkbox" id="menu-toggle" />
+	<label for="menu-toggle" class="menu-icon"><i class="fa fa-bars"></i></label>
+	<div class="content-container">
+	</div>
+	<div class="content"><h1>XY Pad</h1>
+<p>xypad is an x/y controller that sends data to Csound on two named channels. The first channel transmits the current position of the ball on the X axis, while the second transmits the position of the ball on the Y axis. The XY pad can function in two unique modes of automation, free and path based. The two modes can be toggled by clicking on the corresponding icon on the bottom left of the xypad control. With either mode selected you can right-click the xypad and create a trajectory or path for the circle's movement. Release the mouse and the circle will start moving. Once the ball is in full flight you can control the speed of the ball using the XY pad slider that will appear once you hover over it with the mouse. To stop the ball simple left click anywhere on the xy pad canvas with the left mouse button. </p>
+<pre><code class="csharp">xypad bounds(x, y, width, height), channel(&quot;chan1&quot;, &quot;chan2&quot;), \
+rangex(min, max, val), rangey(min, max, val), text(&quot;name&quot;), \
+identchannel(&quot;channel&quot;), colour(&quot;colour&quot;), fontcolour(&quot;colour&quot;), \
+textcolour(&quot;colour&quot;), alpha(val), visible(val), widgetarray(&quot;chan&quot;, number) \
+active(val)
+</code></pre>
+
+<!--(End of syntax)/-->
+
+<h2>Identifiers</h2>
+<h3>Specific Identifiers</h3>
+<p><strong>channel("chan1", "chan2")</strong> "chan1" is the name of the X-axis channel in which to communicate with Csound, and "chan2" is the Y-axis channel in which to communicate with Csound. </p>
+<p><strong>text("name")</strong> "name" will be the text that appears on the top right hand side of the XYpad surface.   </p>
+<p><strong>rangex(min, max, value)</strong> sets the range of the X axis. The first 2 parameters are required. The third is optional. The first two parameters let you set the minimum value and the maximum value. The next parameter determines the initial value. </p>
+<p><strong>rangey(min, max, value)</strong> sets the range of the Y axis. The first 2 parameters are required. The third is optional. The first two parameters let you set the minimum value and the maximum value. The next parameter determines the initial value. </p>
+<p><strong>textcolour("colour")</strong> This set the colour of the text passed to text(). If you wish to change the colour of the numbers being displayed use fontcolour(). See below. See above for details on valid colours.  </p>
+<h3>Common Identifiers</h3>
+<p><strong>bounds(x, y, width, height)</strong> 
+integer values that set position and size on screen(in pixels).  </p>
+<p><strong>value(val)</strong>
+value sets the initial state of the widget.  </p>
+<p><strong>identchannel("channel")</strong>
+Sets the channel which data is sent and retrieved from Csound. When used with a chnset opcode users can override widget attributes. See <a href="./identchannels.html">Identifier channels</a>  </p>
+<p><strong>visible(val)</strong>
+A value of 0 will cause the widget to become invisible. Widgets have their visibility set to 1 by default.    </p>
+<p><strong>active(val)</strong> Will deactivate a control if 0 is passed. Controls which are deactivate can still be updated from Csound.   </p>
+<p><strong>colour("colour")</strong> This sets the main colour. Any CSS or HTML colour string can be passed to this identifier. The colour identifier can also be passed an RBG, or RGBA value. All channel values must be between 0 and 255. For instance colour(0, 0, 255) will create a blue, while colour(0, 255, 0, 255) will create a green with an alpha channel set to full.     </p>
+<p><strong>fontcolour("colour")</strong> Sets the colour of the font. See above for details on valid colours.  </p>
+<p><strong>alpha(val)</strong>
+A value between 0 and 1 will set the alpha blend value for the entire component. Can be useful if you need to fade widgets in and out.    </p>
+<p><strong>widgetarray("chan", number)</strong> Creates a number of widgets in a single pass. See <a href="../widget_arrays.html">Widget arrays</a>  </p>
+<blockquote>
+<p>XY pads range identifiers do not permit the setting of skew factors, or increments. If you wish to set a custom skew factor, or increment value, you will need to do so using Csound code.  </p>
+</blockquote>
+<!--(End of identifiers)/-->
+
+<h2>Example:</h2>
+<pre><code class="csharp">&lt;Cabbage&gt;
+form size(400, 500), caption(&quot;Untitled&quot;), pluginID(&quot;plu1&quot;), colour(39, 40, 34)
+xypad bounds(10, 10, 380, 380), channel(&quot;x&quot;, &quot;y&quot;), colour(&quot;yellow&quot;), textcolour(&quot;yellow&quot;), text(&quot;XY-PAD&quot;)
+&lt;/Cabbage&gt;
+</code></pre>
+
+<p><img alt="" src="../images/xypadExample.png"></p>
+	  </div>
+	</div>
+	<div class="slideout-sidebar">
+	<ul>
+	<li><a href="index.html">Cabbage User Manual</a></li>
+	<li><a href="csound.html">Beginners (Csound)</a><ul>
+	<li><a href="file_structure_and_syntax.html">File Structure and Syntax</a></li>
+	<li><a href="keywords.html">Keywords</a></li>
+	<li><a href="constants_and_variables.html">Constants and Variables</a></li>
+	<li><a href="opcodes.html">Opcodes</a></li>
+	<li><a href="operators_and_comments.html">Operators and Comments</a></li>
+	</ul>
+	</li>
+	<li><a href="introduction.html">Using Cabbage</a><ul>
+	<li><a href="using_cabbage.html">Introduction</a></li>
+	<li><a href="cabbage_syntax.html">Cabbage Syntax</a></li>
+	<li><a href="beginner_synth.html">A simple Synthesiser</a></li>
+	<li><a href="first_effect.html">A simple Effect</a></li>
+	<li><a href="audio_graph.html">The Cabbage patcher</a></li>
+	<li><a href="exporting.html">Exporting plugins</a></li>
+	<li><a href="cabbage_in_host.html">Using plugins in 3rd Party software</a></li>
+	<li><a href="distributing.html">Distributing instruments</a></li>
+	</ul>
+	</li>
+	<li><a href="features.html">Features</a><ul>
+	<li><a href="plants.html">Plants</a></li>
+	<li><a href="identchannels.html">Controlling widgets with Csound</a></li>
+	<li><a href="presets.html">Presets</a></li>
+	<li><a href="widget_arrays.html">Widget arrays</a></li>
+	<li><a href="macros_and_reserved_channels.html">Reserved channels and Macros</a></li>
+	<li><a href="managing_large_numbers_of_widgets.html">Managing large numbers of Widgets</a></li>
+	<li><a href="using_svgs.html">Using SVGs</a></li>
+	<li><a href="soundfiles.html">Working with sound files</a></li>
+	<li><a href="host_info.html">Getting host information into Csound</a></li>
+	</ul>
+	</li>
+	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
+	<li><a href="button.html">Button</a></li>
+	<li><a href="button_file.html">Button(File)</a></li>
+	<li><a href="button_info.html">Button(Info)</a></li>
+	<li><a href="checkbox.html">Checkbox</a></li>
+	<li><a href="combobox.html">Combobox</a></li>
+	<li><a href="csound_output.html">Csound Output</a></li>
+	<li><a href="encoder.html">Endless encoder</a></li>
+	<li><a href="gentable.html">Gentable</a></li>
+	<li><a href="form.html">Form</a></li>
+	<li><a href="groupbox.html">Groupbox</a></li>
+	<li><a href="hrange.html">Hrange</a></li>
+	<li><a href="image.html">Image</a></li>
+	<li><a href="keyboard.html">Keyboard</a></li>
+	<li><a href="label.html">Labels</a></li>
+	<li><a href="listbox.html">Listbox</a></li>
+	<li><a href="meter.html">Meteres</a></li>
+	<li><a href="numberbox.html">Numberbox</a></li>
+	<li><a href="signaldisplay.html">SignalDisplay</a></li>
+	<li><a href="sliders.html">Sliders</a></li>
+	<li><a href="soundfiler.html">Soundfiler</a></li>
+	<li><a href="textbox.html">Textbox</a></li>
+	<li><a href="texteditor.html">Texteditor</a></li>
+	<li><a href="vrange.html">Vrange</a></li>
+	<li><a href="xypad.html">XY Pad</a></li>
+	</ul>
+	</li>
+	<li><a href="add_new_widgets.html">Adding new Widgets</a><ul>
+	<li><a href="new_widgets_part_1.html">Part 1</a></li>
+	<li><a href="new_widgets_part_2.html">Part 2</a></li>
+	<li><a href="new_widgets_part_3.html">Part 3</a></li>
+	</ul>
+	</li>
+	</ul>
+
+	</div>
+	</body>
+	</html>
+	

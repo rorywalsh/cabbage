@@ -1,0 +1,180 @@
+
+	<!doctype html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cabbage user Manual</title>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+	<input type="checkbox" id="menu-toggle" />
+	<label for="menu-toggle" class="menu-icon"><i class="fa fa-bars"></i></label>
+	<div class="content-container">
+	</div>
+	<div class="content"><h1>Introduction</h1>
+<p>Instrument development and prototyping is carried out with the main Cabbage IDE. Users write and compile their Csound code in a code editor. Each Csound file opened with have a corresponding editor. If one wishes one can also create a graphical frontend, although this is no longer a requirement for Cabbage. Any Csound file can be run with Cabbage, regardless of whether or not it has a graphical interface. Each Csound files that is compiled by Cabbage will be added to an underlying digital audio graph. Through this graph users can manage and configure instrument to create patches of complex processing chains. </p>
+<p><a href="#OpeningFiles">Opening Files</a></p>
+<p><a href="#NewFiles">Creating new files</a> </p>
+<p><a href="#Building">Building/exporting instruments</a> </p>
+<p><a href="#CreatingGUIs">Creating GUI interfaces for instruments</a> </p>
+<p><a href="#AudioGraph">Editing the audio graph</a> </p>
+<p><a href="#Navigating">Navigating large source files</a> </p>
+<p><a href="#CodeRepo">Using the code repository</a></p>
+<p><a href="#Settings">Settings</a> </p>
+<p><a name="OpeningFiles"></a></p>
+<h2>Opening files</h2>
+<p>User can open any .csd files by clicking on the Open File menu command, or toolbar button. Users can also browse the Examples menu from the main File menu. Cabbage ships with over 100 high-end instruments that can be modified, hacked, and adapted in any way you wish. Note that if you wish to modify the examples, use the Save-as option first. Although this is only required on Windows, it's a good habit to form. You don't want to constantly overwrite the examples with your own code. </p>
+<blockquote>
+<p>Cabbage can load and perform non-Cabbage score-driven .csd files. However, it also uses its own audio IO, so it will overwrite any -odac options set in the CsOptions section of a .csd file. </p>
+</blockquote>
+<p><a name="NewFiles"></a></p>
+<h2>Creating a new file</h2>
+<p>News files can be created by clicking the New file button in the toolbar, or by clicking File-&gt;New Csound file from the main menu. When a new file is requested, Cabbage will give you the choice of 3 basic templates, as shown below. 
+<img alt="New file" src="images/new_file.gif">
+The choices are:
+- A new synth. When this option is selected Cabbage will generate a simple synthesiser with an ADSR envelope and MIDI keyboard widget. In the world of VST, these instruments are referred to a VSTi's. 
+- A new effect. When this option is selected Cabbage will create a simple audio effect. It will generate a simple Csound instrument that provides access to an incoming audio stream. It also generates code that will control the gain of the output.<br>
+- A new Csound file. This will generate a basic Csound file without any graphical frontend. </p>
+<blockquote>
+<p>Note that these templates are provided for quickly creating new instruments. One can modify any of the template code to convert it from a synth to an effect or vice versa. </p>
+</blockquote>
+<p><a name="Building"></a></p>
+<h2>Building/exporting instruments</h2>
+<p>To run an instrument users can use the controls at the top of the file's editor. Alternatively one can go to the 'Tools' menu and hit 'Build Instrument'. If you wish to export a plugin go to 'Export' and choose the type of plugin you wish to export. More details on exporting plugins is available <a href="exporting.html">here</a>. 
+<img alt="" src="images/first_synth.gif"></p>
+<blockquote>
+<p>Closing a file will not stop it from performing. To stop a file from performing you must hit the Stop button.  </p>
+</blockquote>
+<p><a name="CreatingGUIs"></a></p>
+<h2>Creating GUI interfaces for instruments</h2>
+<p>To create a GUI for your instrument you must enter edit mode for that instrument. You can do this by hitting the Edit mode button at the top of the file's editor, or by hitting Ctrl+e when the editor for that instrument have focus. Once in edit mode, each widget will have a thin white border around it. you can move widgets around whilst in edit. You can also right-click and insert new widgets, as well as modify their appearance using the GUI properties editor on the right-hand side of the screen. 
+<img alt="" src="images/edit_mode.gif">
+You will notice that when you select a widget whilst in edit mode, Cabbage will highlight the corresponding line of text in your source code. When updating GUI properties, hit 'Enter' when you are editing single line text or numeric properties, 'Tab' when you are editing multi-line text properties, and 'Escape' when you are editing colours. </p>
+<p><a name="AudioGraph"></a></p>
+<h2>Editing the audio graph</h2>
+<p>Each and every instrument that you compile in Cabbage will be added to an underlying audio graph. This is true for both Cabbage files, and traditional Csound files. To edit the graph one can launch the Cabbage patcher from the view menu. 
+<img alt="" src="images/synth_graph.gif">
+Instruments can also be added directly through the graph by right-clicking and adding them from the context menu. The context menu will show all the examples files, along with a selection of files from a user-defined folder. See the section below on <em>Settings</em> to learn how to set this folder. 
+<img alt="" src="images/audio_graph_add.gif">
+Instruments can also be deleted by right-clicking the instrument node. Users can delete/modify connections by clicking on the connections themselves. They can also connect node by clicking and dragging from an output to an input.
+<img alt="" src="images/audio_graph_modify.gif"> 
+Once an instrument node has been added, Cabbage will automatically open the corresponding code. Each time you update the corresponding source code, the node will also be updated. </p>
+<blockquote>
+<p>As mentioned above, closing a file will not stop it from performing. It is possible to have many instruments running even though their code is not showing. To stop an instrument you must hit the Stop button at the top of its editor, or delete the plugin from the graph.</p>
+</blockquote>
+<p><a name="Navigating"></a></p>
+<h2>Navigating large source files</h2>
+<p>It can become quite tricky to navigate very long text files. For this reason Cabbage provides a means of quickly jumping to instrument definitions. It is also possible to create a special <code>;- Region:</code> tag. Any text that appears after this tag will be appended to the drop-down combo box in the Cabbage tool bar.
+<img alt="" src="images/navigate_code.gif"> </p>
+<p><a name="CodeRepo"></a></p>
+<h2>Using the code repository</h2>
+<p>Cabbage provides a quick way of saving and recalling blocks of code. To save code to the repository simple select the code you want, right-click and hit 'Add to code repository'. To insert code later from the repository, right-click the place you wish to insert the code and hit 'Add from code repository'.
+<img alt="" src="images/code_repo.gif">
+Code can be modified, edited or deleted at a later stage in the Settings dialogue. </p>
+<p><a name="Settings"></a></p>
+<h1>Settings</h1>
+<p>The settings dialogue can be opened by going to the Edit-&gt;Setting menu command, or pressing the Settings cog in the main toolbar. There are four tabs in the Settings. Whenever changes are made to the settings they are automatically saved.
+<img alt="" src="images/settings.gif"></p>
+<h2>Audio and MIDI settings</h2>
+<p>These settings are used to choose your audio/MIDI input/output devices. You can also select the sampling rate and audio buffer sizes. Small buffer sizes will reduce latency but might cause some clicks in the audio. Note te buffer sizes selected here are only relevant when using the Cabbage IDE. Plugins will have their buffer sizes set by the host. The last known audio and MIDI settings will automatically be saved and recalled for the next session.</p>
+<h2>Miscellaneous.</h2>
+<h3>Editor</h3>
+<p>The following settings provide control for various aspects of Cabbage and how it runs its instruments.
+- Auto-load: Enabling this will cause Cabbage to automatically load the last files that were open. 
+- Plugin Window: Enable this checkbox to ensure that the plugin window is always on top and does not disappear behind the main editor when it loses focus.
+- Graph Window: Same as above only for the Cabbage patcher window. 
+- Auto-complete: provides a rough auto-complete of variable names
+Editor lines to scroll with MouseWheel: Sets the number of lines to jump on each movement of the mouse wheel.</p>
+<h3>Directories</h3>
+<p>These directory fields are given default directories that rarely, if ever, need to be changed. 
+- Csound manual directory: Sets the path to index.html in the Csound help manual. The default directories will be the standard location of the Csound help manual after installing Csound.
+- Cabbage manual directory: Sets the path to index.html in the Cabbage help manual. 
+- Cabbage examples directory: Set the path to the Cabbage examples folder. This should never need to be modified. 
+- User files directory: Sets the path to a folder containing user files that can be inserted by right-clicking in the patcher. Only files stored in this, and the examples path will be accessible in the Cabbage patcher context menu. </p>
+<h3>Colours</h3>
+<ul>
+<li>Interface: Allows user to set custom colours for various elements of the main graphical interface</li>
+<li>Editor: Allows users to modify the syntax highlighting in the Csound editor</li>
+<li>Console: Allows users to changes various colours in the Csound output console. </li>
+</ul>
+<h3>Code Repository</h3>
+<p>This tab shows the various blocks of code that have been saved to the repository. You can edit or delete any of the code blocks. Hit Save/Update to update any changes.   </p>
+	  </div>
+	</div>
+	<div class="slideout-sidebar">
+	<ul>
+	<li><a href="index.html">Cabbage User Manual</a></li>
+	<li><a href="csound.html">Beginners (Csound)</a><ul>
+	<li><a href="file_structure_and_syntax.html">File Structure and Syntax</a></li>
+	<li><a href="keywords.html">Keywords</a></li>
+	<li><a href="constants_and_variables.html">Constants and Variables</a></li>
+	<li><a href="opcodes.html">Opcodes</a></li>
+	<li><a href="operators_and_comments.html">Operators and Comments</a></li>
+	</ul>
+	</li>
+	<li><a href="introduction.html">Using Cabbage</a><ul>
+	<li><a href="using_cabbage.html">Introduction</a></li>
+	<li><a href="cabbage_syntax.html">Cabbage Syntax</a></li>
+	<li><a href="beginner_synth.html">A simple Synthesiser</a></li>
+	<li><a href="first_effect.html">A simple Effect</a></li>
+	<li><a href="audio_graph.html">The Cabbage patcher</a></li>
+	<li><a href="exporting.html">Exporting plugins</a></li>
+	<li><a href="cabbage_in_host.html">Using plugins in 3rd Party software</a></li>
+	<li><a href="distributing.html">Distributing instruments</a></li>
+	</ul>
+	</li>
+	<li><a href="features.html">Features</a><ul>
+	<li><a href="plants.html">Plants</a></li>
+	<li><a href="identchannels.html">Controlling widgets with Csound</a></li>
+	<li><a href="presets.html">Presets</a></li>
+	<li><a href="widget_arrays.html">Widget arrays</a></li>
+	<li><a href="macros_and_reserved_channels.html">Reserved channels and Macros</a></li>
+	<li><a href="managing_large_numbers_of_widgets.html">Managing large numbers of Widgets</a></li>
+	<li><a href="using_svgs.html">Using SVGs</a></li>
+	<li><a href="soundfiles.html">Working with sound files</a></li>
+	<li><a href="host_info.html">Getting host information into Csound</a></li>
+	</ul>
+	</li>
+	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
+	<li><a href="button.html">Button</a></li>
+	<li><a href="button_file.html">Button(File)</a></li>
+	<li><a href="button_info.html">Button(Info)</a></li>
+	<li><a href="checkbox.html">Checkbox</a></li>
+	<li><a href="combobox.html">Combobox</a></li>
+	<li><a href="csound_output.html">Csound Output</a></li>
+	<li><a href="encoder.html">Endless encoder</a></li>
+	<li><a href="gentable.html">Gentable</a></li>
+	<li><a href="form.html">Form</a></li>
+	<li><a href="groupbox.html">Groupbox</a></li>
+	<li><a href="hrange.html">Hrange</a></li>
+	<li><a href="image.html">Image</a></li>
+	<li><a href="keyboard.html">Keyboard</a></li>
+	<li><a href="label.html">Labels</a></li>
+	<li><a href="listbox.html">Listbox</a></li>
+	<li><a href="meter.html">Meteres</a></li>
+	<li><a href="numberbox.html">Numberbox</a></li>
+	<li><a href="signaldisplay.html">SignalDisplay</a></li>
+	<li><a href="sliders.html">Sliders</a></li>
+	<li><a href="soundfiler.html">Soundfiler</a></li>
+	<li><a href="textbox.html">Textbox</a></li>
+	<li><a href="texteditor.html">Texteditor</a></li>
+	<li><a href="vrange.html">Vrange</a></li>
+	<li><a href="xypad.html">XY Pad</a></li>
+	</ul>
+	</li>
+	<li><a href="add_new_widgets.html">Adding new Widgets</a><ul>
+	<li><a href="new_widgets_part_1.html">Part 1</a></li>
+	<li><a href="new_widgets_part_2.html">Part 2</a></li>
+	<li><a href="new_widgets_part_3.html">Part 3</a></li>
+	</ul>
+	</li>
+	</ul>
+
+	</div>
+	</body>
+	</html>
+	

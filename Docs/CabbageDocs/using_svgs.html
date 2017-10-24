@@ -1,0 +1,180 @@
+
+	<!doctype html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cabbage user Manual</title>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+	<input type="checkbox" id="menu-toggle" />
+	<label for="menu-toggle" class="menu-icon"><i class="fa fa-bars"></i></label>
+	<div class="content-container">
+	</div>
+	<div class="content"><h1>Using SVGs</h1>
+<p>Cabbage widgets can be drawn using Scalable Vector Graphics such as the .svg files created using software such as Inkscape, or Adobe Illustrator. Doing so can give you further control over how your instrument looks, and can help you create unique and original themes for your instruments. While SVGs may not provide the same level of detail as PNG files, they are scalable without any loss of data. This reduces the need to provide several copies of a single image at various sizes and resolutions. This also means your SVGs can easily be used on a range of instruments without having to be modified.  </p>
+<blockquote>
+<p>Note that the SVG parser does not support the entire SVG specification. Basic shapes/lines are rendered perfectly. Text is rendered, but you may need to tweak the dimensions. Careful that your text is not classified as 'flowtext'. Flowtext will not render. Filters are not yet supported.  </p>
+</blockquote>
+<h3>Using a global SVG path</h3>
+<p>If you wish to use a set of SVG files to replace the drawing of common components, the easiest way to do so is by setting the global SVG path using the svgpath() identifier of your form widget. For example, we could do something like this.</p>
+<pre><code class="csharp">&lt;Cabbage&gt;
+form caption(&quot;SVG Example&quot;) size(530, 480), colour(&quot;black&quot;), svgpath(&quot;.&quot;)
+(...)
+</code></pre>
+
+<p>This will cause Cabbage to search the current directory for a set of SVG files that it will be use for drawing common widgets. The files should be named as follows:</p>
+<ul>
+<li>rslider.svg: used to draw the inner circle, and moving part of a rotary slider.</li>
+<li>hslider.svg: used to draw the moving thumb of a vertical slider. </li>
+<li>vslider.svg: used to draw the moving thumb of a horizontal slider.</li>
+<li>vslider_background.svg: used to draw the background of a vertical slider.</li>
+<li>hslider_background.svg: used to draw the background of a horizontal slider.</li>
+<li>groupbox.svg: used to draw a custom groupbox widget. </li>
+<li>buttonon.svg: used to draw a button when on. </li>
+<li>buttonoff.svg: used to draw a button when off.</li>
+</ul>
+<blockquote>
+<p>Note that check boxes do not support SVG files. SVG check boxes can be built using buttons.</p>
+</blockquote>
+<p>If any of the above files are not found, Cabbage will use the default look and feel instead. Don't worry if your SVG files don't have the same dimensions as your widgets, they will rescale accordingly.   </p>
+<h3>Using specific SVG File</h3>
+<p>Is you wish to use specific SVG file for a certain widget you may do so using its <strong>svgfile()</strong> identifier. Althought it invovles a little more typing, using the <strong>svgfile()</strong> identifier lets you attach a unique SVG file to various widgets of the same type. This cannot be done using the global SVG path. Please refer to the widget reference manual for details on using the <strong>svgfile()</strong> identifier. </p>
+<h2>Example</h2>
+<p>The example below show how both the <strong>svgpath()</strong> and <strong>svgfile()</strong> identifiers can be used together. </p>
+<pre><code class="csharp">&lt;Cabbage&gt;
+form caption(&quot;SVG Example&quot;) size(530, 480), colour(&quot;black&quot;), pluginID(&quot;SMo1&quot;), svgpath(&quot;.&quot;)
+ groupbox bounds(122, 4, 376, 135), text(&quot;&quot;)
+ groupbox bounds(120, 152, 379, 277), text(&quot;&quot;), svgfile(&quot;custom_groupbox.svg&quot;), identchannel(&quot;groupbox&quot;)
+ rslider bounds(18, 90, 90, 90), channel(&quot;Waveshape&quot;), range(0, 5, 0, 1, 1), trackercolour(&quot;orange&quot;), text(&quot;rSlider&quot;), trackercolour(0,0,0,0), trackerthickness(.5)
+ rslider bounds(18, 184, 90, 79), channel(&quot;rslider&quot;), range(0, 1, 0), trackercolour(&quot;darkorange&quot;), trackerthickness(0.4), textbox(1)
+ hslider bounds(150, 34, 323, 27), channel(&quot;vslider1&quot;), text(&quot;Param1&quot;), range(0, 1, .5), trackercolour(&quot;orange&quot;), textbox(1), gradient(0), trackerthickness(.2)
+ hslider bounds(150, 64, 322, 27), channel(&quot;vslider2&quot;), text(&quot;Param2&quot;), range(0, 1, .75), trackercolour(&quot;orange&quot;), textbox(1), gradient(0), trackerthickness(.2)
+ hslider bounds(150, 94, 322, 27), channel(&quot;vslider3&quot;), text(&quot;Param3&quot;), range(0, 1, .25), trackercolour(&quot;orange&quot;), textbox(1), gradient(0), trackerthickness(.2)
+ vslider bounds(148, 192, 50, 220), channel(&quot;vslider1&quot;), trackercolour(&quot;darkorange&quot;), textbox(1), range(0, 1, .4), text(&quot;vP.1&quot;), trackerthickness(.125), gradient(0)
+ vslider bounds(202, 192, 50, 220), channel(&quot;vslider2&quot;), trackercolour(&quot;darkorange&quot;), textbox(1), range(0, 1, .24), text(&quot;vP.1&quot;), trackerthickness(.125), gradient(0)
+ vslider bounds(256, 192, 50, 220), channel(&quot;vslider3&quot;), trackercolour(&quot;darkorange&quot;), textbox(1), range(0, 1, .64), text(&quot;vP.1&quot;), trackerthickness(.125), gradient(0)
+ vslider bounds(310, 192, 50, 220), channel(&quot;vslider4&quot;), trackercolour(&quot;darkorange&quot;), textbox(1), range(0, 1, .34), text(&quot;vP.1&quot;), trackerthickness(.125), gradient(0)
+ vslider bounds(364, 192, 50, 220), channel(&quot;vslider5&quot;), trackercolour(&quot;darkorange&quot;), textbox(1), range(0, 1, .14), text(&quot;vP.1&quot;), trackerthickness(.125), gradient(0)
+ vslider bounds(418, 192, 50, 220), channel(&quot;vslider6&quot;), trackercolour(&quot;darkorange&quot;), textbox(1), range(0, 1, .4), text(&quot;vP.1&quot;), trackerthickness(.125), gradient(0)
+ button bounds(20, 6, 85, 35), channel(&quot;but1&quot;), text(&quot;Disabled&quot;, &quot;Enabled&quot;), fontcolour:0(&quot;orange&quot;)
+ button bounds(20, 46, 85, 35), channel(&quot;but2&quot;), text(&quot;Disabled&quot;, &quot;Enabled&quot;), fontcolour:0(&quot;orange&quot;)
+ rslider bounds(18, 264, 90, 90), channel(&quot;Waveshape&quot;), range(0, 5, 0, 1, 1), trackercolour(&quot;orange&quot;), text(&quot;rSlider&quot;), trackercolour(0,0,0,0), trackerthickness(.5)
+&lt;/Cabbage&gt;  
+</code></pre>
+
+<p><img alt="" src="images/svgExample.gif"></p>
+<h3>Debugging and Developing instruments with SVGs</h3>
+<p>Each widget capable of using SVGs support a special <strong>svgdebug()</strong> identifier. </p>
+<ul>
+<li><strong>svgdebug(val)</strong> Each time a new value is passed to to this identifier Cabbage will update the SVG it shows.</li>
+</ul>
+<p>This means that with some simple code you can have Cabbage update in real time whenever you make changes to the underlying SVGs. This will dramatically speed up the development of your GUI. Below is a simple example. The slider has an identifier channel associated with it. Using a simple metro object to time the updates, we call <strong>svgdebug()</strong> once every second. As changes are saved in Inkscape, Cabbage will automatically update the widget's appearance on screen. Note, that this should be used for develop purposes only! </p>
+<pre><code class="csharp">&lt;Cabbage&gt;
+form caption(&quot;Live SVGs&quot;) size(330, 180), colour(&quot;black&quot;), pluginID(&quot;SMo1&quot;), svgpath(&quot;.&quot;)
+rslider bounds(12, 14, 130, 122), channel(&quot;rslider&quot;), range(0, 1, 0), identchannel(&quot;svgIdent&quot;)
+&lt;/Cabbage&gt;  
+&lt;CsoundSynthesizer&gt;
+&lt;CsOptions&gt;
+-d -n
+&lt;/CsOptions&gt;
+&lt;CsInstruments&gt;
+sr      =   44100   ;SAMPLE RATE
+ksmps       =   32  ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls      =   2   ;NUMBER OF CHANNELS (2=STEREO)
+0dbfs       =   1
+
+instr   1
+if metro(1)==1 then
+    kRand random 0, 10000
+    chnset sprintfk(&quot;svgdebug(%d)&quot;, kRand), &quot;svgIdent&quot;
+endif
+endin
+
+&lt;/CsInstruments&gt;
+&lt;CsScore&gt;
+i1 0 [3600*24*7]
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</code></pre>
+
+<p><img alt="" src="images/svgDebugExample.gif"></p>
+	  </div>
+	</div>
+	<div class="slideout-sidebar">
+	<ul>
+	<li><a href="index.html">Cabbage User Manual</a></li>
+	<li><a href="csound.html">Beginners (Csound)</a><ul>
+	<li><a href="file_structure_and_syntax.html">File Structure and Syntax</a></li>
+	<li><a href="keywords.html">Keywords</a></li>
+	<li><a href="constants_and_variables.html">Constants and Variables</a></li>
+	<li><a href="opcodes.html">Opcodes</a></li>
+	<li><a href="operators_and_comments.html">Operators and Comments</a></li>
+	</ul>
+	</li>
+	<li><a href="introduction.html">Using Cabbage</a><ul>
+	<li><a href="using_cabbage.html">Introduction</a></li>
+	<li><a href="cabbage_syntax.html">Cabbage Syntax</a></li>
+	<li><a href="beginner_synth.html">A simple Synthesiser</a></li>
+	<li><a href="first_effect.html">A simple Effect</a></li>
+	<li><a href="audio_graph.html">The Cabbage patcher</a></li>
+	<li><a href="exporting.html">Exporting plugins</a></li>
+	<li><a href="cabbage_in_host.html">Using plugins in 3rd Party software</a></li>
+	<li><a href="distributing.html">Distributing instruments</a></li>
+	</ul>
+	</li>
+	<li><a href="features.html">Features</a><ul>
+	<li><a href="plants.html">Plants</a></li>
+	<li><a href="identchannels.html">Controlling widgets with Csound</a></li>
+	<li><a href="presets.html">Presets</a></li>
+	<li><a href="widget_arrays.html">Widget arrays</a></li>
+	<li><a href="macros_and_reserved_channels.html">Reserved channels and Macros</a></li>
+	<li><a href="managing_large_numbers_of_widgets.html">Managing large numbers of Widgets</a></li>
+	<li><a href="using_svgs.html">Using SVGs</a></li>
+	<li><a href="soundfiles.html">Working with sound files</a></li>
+	<li><a href="host_info.html">Getting host information into Csound</a></li>
+	</ul>
+	</li>
+	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
+	<li><a href="button.html">Button</a></li>
+	<li><a href="button_file.html">Button(File)</a></li>
+	<li><a href="button_info.html">Button(Info)</a></li>
+	<li><a href="checkbox.html">Checkbox</a></li>
+	<li><a href="combobox.html">Combobox</a></li>
+	<li><a href="csound_output.html">Csound Output</a></li>
+	<li><a href="encoder.html">Endless encoder</a></li>
+	<li><a href="gentable.html">Gentable</a></li>
+	<li><a href="form.html">Form</a></li>
+	<li><a href="groupbox.html">Groupbox</a></li>
+	<li><a href="hrange.html">Hrange</a></li>
+	<li><a href="image.html">Image</a></li>
+	<li><a href="keyboard.html">Keyboard</a></li>
+	<li><a href="label.html">Labels</a></li>
+	<li><a href="listbox.html">Listbox</a></li>
+	<li><a href="meter.html">Meteres</a></li>
+	<li><a href="numberbox.html">Numberbox</a></li>
+	<li><a href="signaldisplay.html">SignalDisplay</a></li>
+	<li><a href="sliders.html">Sliders</a></li>
+	<li><a href="soundfiler.html">Soundfiler</a></li>
+	<li><a href="textbox.html">Textbox</a></li>
+	<li><a href="texteditor.html">Texteditor</a></li>
+	<li><a href="vrange.html">Vrange</a></li>
+	<li><a href="xypad.html">XY Pad</a></li>
+	</ul>
+	</li>
+	<li><a href="add_new_widgets.html">Adding new Widgets</a><ul>
+	<li><a href="new_widgets_part_1.html">Part 1</a></li>
+	<li><a href="new_widgets_part_2.html">Part 2</a></li>
+	<li><a href="new_widgets_part_3.html">Part 3</a></li>
+	</ul>
+	</li>
+	</ul>
+
+	</div>
+	</body>
+	</html>
+	

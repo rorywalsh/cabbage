@@ -5,7 +5,7 @@ Gentable displays the contents of a function table, multiple tables, or files. F
 
 ```csharp
 gentable bounds(x, y, width, height), tableNumber(1, 2, ...), \
-tablecolour("colour1", "colour2", ...), amprange(min, max, tablenumber, y-quantise),\
+tablecolour:N("colour1"), amprange(min, max, tablenumber, y-quantise),\
 tablegridcolour("colour"), tablebackgroundcolour("colour"), samplerange(min, max),\
 zoom(val), outlinethickness(val), identchannel("channel"), \
 alpha(val), visible(val), scrubberposition(val), \

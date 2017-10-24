@@ -1,0 +1,118 @@
+
+	<!doctype html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cabbage user Manual</title>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+	<input type="checkbox" id="menu-toggle" />
+	<label for="menu-toggle" class="menu-icon"><i class="fa fa-bars"></i></label>
+	<div class="content-container">
+	</div>
+	<div class="content"><h1>Cabbage Studio</h1>
+<p>Cabbage Studio is a new Csound based DAW that provides users with a fully functional patching interface and development environment. Each node in the graph can be a Csound instrument or a 3rd party audio plugin. Cabbage Studio ships with over 100 high-end Csound instruments, along with some native utility devices that can be used to increase speed of production of Cabbage audio plugins. The system also ships with a fully integrated development environment, featuring a full GUI editor for designing graphical interfaces. </p>
+<p><img alt="Studio" src="images/CabbageStudio.gif"></p>
+<p>With Csound at the core of the system, and with access to an embedded professional level GUI framework, users can turn
+Cabbage Studio into a custom DAW solution tailored to their own needs.</p>
+<h2>Getting started</h2>
+<p>The first thing to do when you start Cabbage studio is to set up a directory for Cabbage files. To do this, press the Options menu and click on the <em>Preferences</em> command. Then press the <em>Cabbage Plugins</em> tab. This will show a list of folders that Cabbage Studio will search each time a usre right-clicks on the main patcher window. To add a new folder just click the <em>+</em> button. </p>
+<p>You should also select an audio device at this point by clicking on the <em>Audio Setup</em> tab. The selected audio device will be saved between sessions so you should only have to select the device once, unless you tend to hot swap devices while on the go. </p>
+<p>Finally, you may also wish to add paths to selected third party plugins that you wish to use in Cabbage Studio. Click the <em>Third party Plugin</em> tab and add paths to any third party plugins you wish to use. Cabbage Studio will load most plugin types, including LADSPA, AudioUnit and VST. </p>
+<h2>Adding Nodes</h2>
+<p>Right-clicking anywhere in the main patcher window will cause a context menu to pop up. This menu will list: 
+- the local Cabbage files found in any of the Cabbage plugin paths set in the preference. 
+- all third party plugins found by Cabbage studio
+- over 100 ready to go instrument that are included with Cabbage Studio.</p>
+<p>Each instrument node features controls for enabling and disabling audio as well as an audio bypass button. While disabling a node will mute its output, enabled bypass mode will output the input signal directly without any processing. </p>
+<p><img alt="AddingNodes" src="images/addingNodes.gif"> </p>
+<h2>Creating new nodes.</h2>
+<p>New instruments can be added by right-clicking the patcher interface and selecting either <em>New Instrument</em> or <em>New Effect</em>. Cabbage will then prompt you to save your new instrument file. Once this process is complete, Cabbage will generate a basic instrument file that should serve well as a template for a new instrument, be it an effect, or synthesiser. In order to develop that instrument you can right-click on the newly created node and select the <em>Show Source Code</em> menu command. This will open the instrument's source code in the source code editor.
+<img alt="NewNodes" src="images/newNodes.gif"></p>
+<p>Instrument GUIs can be developed using the integrated GUI designer. This designer is the same one that comes with the standalone version of Cabbage, but is better integrated to Cabbage Studio. Whilst in the source code editor, users can click the 'Edit mode' menu command to launch the GUI designer. When in <em>Edit mode</em>, users can right-click their instrument GUI to insert a range of GUI widgets. When a widget is placed on screen the corresponding code will be inserted into your instrument's code. Any changes you make to the widget's size and position will automatically be updated in your code. Widget properties can be set manually by typing directly into the Cabbage section of your instrument's source code, or by using the property dialogue window. </p>
+<blockquote>
+<p>Note that you must hit the 'Esc' key on your keyboard whenever you update a widget property in the embedded widget properties dialogue. If you do not, your updated property will not be passed to the instrument's source code and will therefore be discarded.  Users should get into the habit of updating/saving their instruments whenever they make changes to its user interface. Instruments need to be recompiled for any changes to stick.</p>
+</blockquote>
+<p><img alt="ModifyingNodes" src="images/modifyingNodeGUI.gif"></p>
+<h2>MIDI Learn</h2>
+<p>Users can control any instrument parameters using MIDI. To map MIDI hardware to a plugin you must first make sure you have selected a MIDI device in the Audio Setup preference. Once this is done, click on a plugin and select the MIDI Learn command from the options menu, or press Ctrl+m. Then move the parameter you wish to map with your mouse. Following this, move the MIDI slider you wish to map t the parameter. This will hook the MIDI CC channel directly to your plugin's parameter. If you wish to change or modify any MIDI mappings at a later stage you may do so using the MIDI Mapping menu command, which can be accessed through the <em>View</em> menu.  </p>
+	  </div>
+	</div>
+	<div class="slideout-sidebar">
+	<ul>
+	<li><a href="index.html">Cabbage User Manual</a></li>
+	<li><a href="csound.html">Beginners (Csound)</a><ul>
+	<li><a href="file_structure_and_syntax.html">File Structure and Syntax</a></li>
+	<li><a href="keywords.html">Keywords</a></li>
+	<li><a href="constants_and_variables.html">Constants and Variables</a></li>
+	<li><a href="opcodes.html">Opcodes</a></li>
+	<li><a href="operators_and_comments.html">Operators and Comments</a></li>
+	</ul>
+	</li>
+	<li><a href="introduction.html">Using Cabbage</a><ul>
+	<li><a href="using_cabbage.html">Introduction</a></li>
+	<li><a href="cabbage_syntax.html">Cabbage Syntax</a></li>
+	<li><a href="beginner_synth.html">A simple Synthesiser</a></li>
+	<li><a href="first_effect.html">A simple Effect</a></li>
+	<li><a href="audio_graph.html">The Cabbage patcher</a></li>
+	<li><a href="exporting.html">Exporting plugins</a></li>
+	<li><a href="cabbage_in_host.html">Using plugins in 3rd Party software</a></li>
+	<li><a href="distributing.html">Distributing instruments</a></li>
+	</ul>
+	</li>
+	<li><a href="features.html">Features</a><ul>
+	<li><a href="plants.html">Plants</a></li>
+	<li><a href="identchannels.html">Controlling widgets with Csound</a></li>
+	<li><a href="presets.html">Presets</a></li>
+	<li><a href="widget_arrays.html">Widget arrays</a></li>
+	<li><a href="macros_and_reserved_channels.html">Reserved channels and Macros</a></li>
+	<li><a href="managing_large_numbers_of_widgets.html">Managing large numbers of Widgets</a></li>
+	<li><a href="using_svgs.html">Using SVGs</a></li>
+	<li><a href="soundfiles.html">Working with sound files</a></li>
+	<li><a href="host_info.html">Getting host information into Csound</a></li>
+	</ul>
+	</li>
+	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
+	<li><a href="button.html">Button</a></li>
+	<li><a href="button_file.html">Button(File)</a></li>
+	<li><a href="button_info.html">Button(Info)</a></li>
+	<li><a href="checkbox.html">Checkbox</a></li>
+	<li><a href="combobox.html">Combobox</a></li>
+	<li><a href="csound_output.html">Csound Output</a></li>
+	<li><a href="encoder.html">Endless encoder</a></li>
+	<li><a href="gentable.html">Gentable</a></li>
+	<li><a href="form.html">Form</a></li>
+	<li><a href="groupbox.html">Groupbox</a></li>
+	<li><a href="hrange.html">Hrange</a></li>
+	<li><a href="image.html">Image</a></li>
+	<li><a href="keyboard.html">Keyboard</a></li>
+	<li><a href="label.html">Labels</a></li>
+	<li><a href="listbox.html">Listbox</a></li>
+	<li><a href="meter.html">Meteres</a></li>
+	<li><a href="numberbox.html">Numberbox</a></li>
+	<li><a href="signaldisplay.html">SignalDisplay</a></li>
+	<li><a href="sliders.html">Sliders</a></li>
+	<li><a href="soundfiler.html">Soundfiler</a></li>
+	<li><a href="textbox.html">Textbox</a></li>
+	<li><a href="texteditor.html">Texteditor</a></li>
+	<li><a href="vrange.html">Vrange</a></li>
+	<li><a href="xypad.html">XY Pad</a></li>
+	</ul>
+	</li>
+	<li><a href="add_new_widgets.html">Adding new Widgets</a><ul>
+	<li><a href="new_widgets_part_1.html">Part 1</a></li>
+	<li><a href="new_widgets_part_2.html">Part 2</a></li>
+	<li><a href="new_widgets_part_3.html">Part 3</a></li>
+	</ul>
+	</li>
+	</ul>
+
+	</div>
+	</body>
+	</html>
+	

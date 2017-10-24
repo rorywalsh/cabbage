@@ -1,0 +1,125 @@
+
+	<!doctype html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cabbage user Manual</title>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+	<input type="checkbox" id="menu-toggle" />
+	<label for="menu-toggle" class="menu-icon"><i class="fa fa-bars"></i></label>
+	<div class="content-container">
+	</div>
+	<div class="content"><h1>Sound files</h1>
+<p>Cabbage and Csound provide several ways of viewing and loading soundfiles. Cabbage provides two unique widgets for viewing sound files, while Csound provides a host of opcodes for reading files from disk, and/or those loaded to a buffer.</p>
+<h2>Viewing soundfiles in Cabbage</h2>
+<p>Cabbage provides <code>gentable</code> and <code>soundfiler</code> widgets for viewing sound files. The <code>soundfiler</code> widget is designed to quicky load audio samples. <code>gentable</code> on the other hand is used to display data from a function table. It renders slower, but features more options on how to display the function table. As soundfiler is built specifically for displaying audio files, the rest of this text will deal with its use.</p>
+<p>To view a sound file add a <code>soundfiler</code> widget to your instrument. It uses a <code>file()</code> identifier to set the audio file to display. </p>
+<pre><code class="csharp">soundfiler bounds(10, 10, 300, 200), file(&quot;../samples/test.wav&quot;)
+</code></pre>
+
+<p>To read this file in Csound we can use the <code>diskin2</code> opcode. </p>
+<pre><code class="csharp">instr 1
+a1, a2 diskin2 &quot;../samples/test.wav&quot;, 1, 0, 1
+outs a1, a2
+endin
+</code></pre>
+
+<p>If you would like to dynamically load a sound file you can use a <code>filebutton</code> widget. You will also need to add an indentifier channel to your <code>soundfiler</code> widget. The following code will let the user browse for a file when they hit the <em>filebutton1</em> button.</p>
+<pre><code class="csharp">instr 1
+    gSfilepath  chnget  &quot;filebutton1&quot;
+    kFileChanged changed gSfilepath 
+
+    if kFileChanged == 1 then                ; if user has requested a new file...
+        event   &quot;i&quot;, &quot;LoadSoundFile&quot;, 0, 0   ; call instrument to update sample storage function table 
+    endif  
+</code></pre>
+
+<p><code>instr 1</code> assigns a file name to the <code>gSfilepath</code> variable. The <code>LoadSoundFile</code> instrument reads this variable and loads the audio file to the soundfiler using an identifier channel named <code>soundfiler1</code>. The code might look like this.</p>
+<pre><code class="csharp">instr   LoadSoundFile   ; load sound file   
+    if filevalid(gSfilepath) == 1 then
+        Smessage sprintfk &quot;file(\&quot;%s\&quot;)&quot;, gSfilepath            ; print sound file to viewer
+        chnset Smessage, &quot;soundfiler1&quot;  
+    endif
+endin
+</code></pre>
+	  </div>
+	</div>
+	<div class="slideout-sidebar">
+	<ul>
+	<li><a href="index.html">Cabbage User Manual</a></li>
+	<li><a href="csound.html">Beginners (Csound)</a><ul>
+	<li><a href="file_structure_and_syntax.html">File Structure and Syntax</a></li>
+	<li><a href="keywords.html">Keywords</a></li>
+	<li><a href="constants_and_variables.html">Constants and Variables</a></li>
+	<li><a href="opcodes.html">Opcodes</a></li>
+	<li><a href="operators_and_comments.html">Operators and Comments</a></li>
+	</ul>
+	</li>
+	<li><a href="introduction.html">Using Cabbage</a><ul>
+	<li><a href="using_cabbage.html">Introduction</a></li>
+	<li><a href="cabbage_syntax.html">Cabbage Syntax</a></li>
+	<li><a href="beginner_synth.html">A simple Synthesiser</a></li>
+	<li><a href="first_effect.html">A simple Effect</a></li>
+	<li><a href="audio_graph.html">The Cabbage patcher</a></li>
+	<li><a href="exporting.html">Exporting plugins</a></li>
+	<li><a href="cabbage_in_host.html">Using plugins in 3rd Party software</a></li>
+	<li><a href="distributing.html">Distributing instruments</a></li>
+	</ul>
+	</li>
+	<li><a href="features.html">Features</a><ul>
+	<li><a href="plants.html">Plants</a></li>
+	<li><a href="identchannels.html">Controlling widgets with Csound</a></li>
+	<li><a href="presets.html">Presets</a></li>
+	<li><a href="widget_arrays.html">Widget arrays</a></li>
+	<li><a href="macros_and_reserved_channels.html">Reserved channels and Macros</a></li>
+	<li><a href="managing_large_numbers_of_widgets.html">Managing large numbers of Widgets</a></li>
+	<li><a href="using_svgs.html">Using SVGs</a></li>
+	<li><a href="soundfiles.html">Working with sound files</a></li>
+	<li><a href="host_info.html">Getting host information into Csound</a></li>
+	</ul>
+	</li>
+	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
+	<li><a href="button.html">Button</a></li>
+	<li><a href="button_file.html">Button(File)</a></li>
+	<li><a href="button_info.html">Button(Info)</a></li>
+	<li><a href="checkbox.html">Checkbox</a></li>
+	<li><a href="combobox.html">Combobox</a></li>
+	<li><a href="csound_output.html">Csound Output</a></li>
+	<li><a href="encoder.html">Endless encoder</a></li>
+	<li><a href="gentable.html">Gentable</a></li>
+	<li><a href="form.html">Form</a></li>
+	<li><a href="groupbox.html">Groupbox</a></li>
+	<li><a href="hrange.html">Hrange</a></li>
+	<li><a href="image.html">Image</a></li>
+	<li><a href="keyboard.html">Keyboard</a></li>
+	<li><a href="label.html">Labels</a></li>
+	<li><a href="listbox.html">Listbox</a></li>
+	<li><a href="meter.html">Meteres</a></li>
+	<li><a href="numberbox.html">Numberbox</a></li>
+	<li><a href="signaldisplay.html">SignalDisplay</a></li>
+	<li><a href="sliders.html">Sliders</a></li>
+	<li><a href="soundfiler.html">Soundfiler</a></li>
+	<li><a href="textbox.html">Textbox</a></li>
+	<li><a href="texteditor.html">Texteditor</a></li>
+	<li><a href="vrange.html">Vrange</a></li>
+	<li><a href="xypad.html">XY Pad</a></li>
+	</ul>
+	</li>
+	<li><a href="add_new_widgets.html">Adding new Widgets</a><ul>
+	<li><a href="new_widgets_part_1.html">Part 1</a></li>
+	<li><a href="new_widgets_part_2.html">Part 2</a></li>
+	<li><a href="new_widgets_part_3.html">Part 3</a></li>
+	</ul>
+	</li>
+	</ul>
+
+	</div>
+	</body>
+	</html>
+	
