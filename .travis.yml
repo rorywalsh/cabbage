@@ -80,7 +80,7 @@ before_script:
     - sudo make -j4
     - sudo make install
     - sudo ldconfig
-    - cd /home/travis/build/rorywalsh/cabbage/Builds
+    - cd /home/travis/build/rorywalsh/cabbage/Builds/LinuxMakefile
 
 script:
     - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
