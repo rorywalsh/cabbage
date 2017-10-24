@@ -20,8 +20,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -212,6 +212,7 @@ private:
     {
         typedef ReferenceCountedObjectPtr<MyClass> Ptr;
         ...
+    }
     @endcode
 
     @see ReferenceCountedObject, ReferenceCountedObjectArray
@@ -407,3 +408,5 @@ bool operator!= (ReferenceCountedObjectClass* object1, const ReferenceCountedObj
 {
     return object1 != object2.get();
 }
+
+} // namespace juce

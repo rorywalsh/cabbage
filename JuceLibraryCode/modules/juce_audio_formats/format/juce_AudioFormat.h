@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -79,6 +79,9 @@ public:
 
     /** Returns true if the format uses compressed data. */
     virtual bool isCompressed();
+
+    /** Returns true if the channel layout is supported by this format. */
+    virtual bool isChannelLayoutSupported (const AudioChannelSet& channelSet);
 
     /** Returns a list of different qualities that can be used when writing.
 
@@ -154,6 +157,44 @@ public:
                                                 const StringPairArray& metadataValues,
                                                 int qualityOptionIndex) = 0;
 
+    /** Tries to create an object that can write to a stream with this audio format.
+
+        The writer object that is returned can be used to write to the stream, and
+        should then be deleted by the caller.
+
+        If the stream can't be created for some reason (e.g. the parameters passed in
+        here aren't suitable), this will return nullptr.
+
+        @param streamToWriteTo      the stream that the data will go to - this will be
+                                    deleted by the AudioFormatWriter object when it's no longer
+                                    needed. If no AudioFormatWriter can be created by this method,
+                                    the stream will NOT be deleted, so that the caller can re-use it
+                                    to try to open a different format, etc
+        @param sampleRateToUse      the sample rate for the file, which must be one of the ones
+                                    returned by getPossibleSampleRates()
+        @param channelLayout        the channel layout for the file. Use isChannelLayoutSupported
+                                    to check if the writer supports this layout.
+        @param bitsPerSample        the bits per sample to use - this must be one of the values
+                                    returned by getPossibleBitDepths()
+        @param metadataValues       a set of metadata values that the writer should try to write
+                                    to the stream. Exactly what these are depends on the format,
+                                    and the subclass doesn't actually have to do anything with
+                                    them if it doesn't want to. Have a look at the specific format
+                                    implementation classes to see possible values that can be
+                                    used
+        @param qualityOptionIndex   the index of one of compression qualities returned by the
+                                    getQualityOptions() method. If there aren't any quality options
+                                    for this format, just pass 0 in this parameter, as it'll be
+                                    ignored
+        @see AudioFormatWriter
+    */
+    virtual AudioFormatWriter* createWriterFor (OutputStream* streamToWriteTo,
+                                                double sampleRateToUse,
+                                                const AudioChannelSet& channelLayout,
+                                                int bitsPerSample,
+                                                const StringPairArray& metadataValues,
+                                                int qualityOptionIndex);
+
 protected:
     /** Creates an AudioFormat object.
 
@@ -175,3 +216,5 @@ private:
     String formatName;
     StringArray fileExtensions;
 };
+
+} // namespace juce

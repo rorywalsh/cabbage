@@ -35,7 +35,7 @@
 
   ID:               juce_graphics
   vendor:           juce
-  version:          5.0.1
+  version:          5.1.2
   name:             JUCE graphics classes
   description:      Classes for 2D vector graphics, image loading/saving, font handling, etc.
   website:          http://www.juce.com/juce
@@ -92,14 +92,14 @@
 //==============================================================================
 namespace juce
 {
-
-class Image;
-class AffineTransform;
-class Path;
-class Font;
-class Graphics;
-class FillType;
-class LowLevelGraphicsContext;
+    class Image;
+    class AffineTransform;
+    class Path;
+    class Font;
+    class Graphics;
+    class FillType;
+    class LowLevelGraphicsContext;
+}
 
 #include "geometry/juce_AffineTransform.h"
 #include "geometry/juce_Point.h"
@@ -142,4 +142,6 @@ class LowLevelGraphicsContext;
  #include "native/juce_mac_CoreGraphicsContext.h"
 #endif
 
-}
+#if JUCE_DIRECT2D && JUCE_WINDOWS
+#include "native/juce_win32_Direct2DGraphicsContext.h"
+#endif

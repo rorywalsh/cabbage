@@ -52,7 +52,7 @@ class CabbageCodeEditorComponent :
 
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);
-    ~CabbageCodeEditorComponent() {};
+    ~CabbageCodeEditorComponent();
     void updateColourScheme();
     CodeDocument::Position positionInCode;
     ValueTree valueTree;

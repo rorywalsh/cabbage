@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 class MD5Generator
 {
 public:
@@ -307,7 +310,7 @@ bool MD5::operator!= (const MD5& other) const noexcept   { return ! operator== (
 class MD5Tests  : public UnitTest
 {
 public:
-    MD5Tests() : UnitTest ("MD5") {}
+    MD5Tests() : UnitTest ("MD5", "Cryptography") {}
 
     void test (const char* input, const char* expected)
     {
@@ -336,3 +339,5 @@ public:
 static MD5Tests MD5UnitTests;
 
 #endif
+
+} // namespace juce

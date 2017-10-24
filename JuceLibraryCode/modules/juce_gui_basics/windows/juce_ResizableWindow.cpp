@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 ResizableWindow::ResizableWindow (const String& name, bool shouldAddToDesktop)
     : TopLevelWindow (name, shouldAddToDesktop)
 {
@@ -242,7 +245,7 @@ void ResizableWindow::childBoundsChanged (Component* child)
         jassert (child->getWidth() > 0);
         jassert (child->getHeight() > 0);
 
-        const BorderSize<int> borders (getContentComponentBorder());
+        auto borders = getContentComponentBorder();
 
         setSize (child->getWidth() + borders.getLeftAndRight(),
                  child->getHeight() + borders.getTopAndBottom());
@@ -644,3 +647,5 @@ void ResizableWindow::addAndMakeVisible (Component* const child, int zOrder)
     Component::addAndMakeVisible (child, zOrder);
 }
 #endif
+
+} // namespace juce

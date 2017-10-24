@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 class SHA256Processor
 {
 public:
@@ -240,7 +243,7 @@ bool SHA256::operator!= (const SHA256& other) const noexcept  { return ! operato
 class SHA256Tests  : public UnitTest
 {
 public:
-    SHA256Tests() : UnitTest ("SHA-256") {}
+    SHA256Tests() : UnitTest ("SHA-256", "Cryptography") {}
 
     void test (const char* input, const char* expected)
     {
@@ -275,3 +278,5 @@ public:
 static SHA256Tests sha256UnitTests;
 
 #endif
+
+} // namespace juce

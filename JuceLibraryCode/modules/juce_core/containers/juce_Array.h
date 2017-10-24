@@ -20,8 +20,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -204,6 +204,15 @@ public:
         numUsed = 0;
     }
 
+    /** Fills the Array with the provided value. */
+    void fill (const ParameterType& newValue) noexcept
+    {
+        const ScopedLockType lock (getLock());
+
+        for (auto& e : *this)
+            e = newValue;
+    }
+
     //==============================================================================
     /** Returns the current number of elements in the array. */
     inline int size() const noexcept
@@ -349,12 +358,12 @@ public:
     int indexOf (ParameterType elementToLookFor) const
     {
         const ScopedLockType lock (getLock());
-        const ElementType* e = data.elements.getData();
+        const ElementType* e = data.elements.get();
         const ElementType* const end_ = e + numUsed;
 
         for (; e != end_; ++e)
             if (elementToLookFor == *e)
-                return static_cast<int> (e - data.elements.getData());
+                return static_cast<int> (e - data.elements.get());
 
         return -1;
     }
@@ -367,7 +376,7 @@ public:
     bool contains (ParameterType elementToLookFor) const
     {
         const ScopedLockType lock (getLock());
-        const ElementType* e = data.elements.getData();
+        const ElementType* e = data.elements.get();
         const ElementType* const end_ = e + numUsed;
 
         for (; e != end_; ++e)
@@ -379,7 +388,6 @@ public:
 
     //==============================================================================
     /** Appends a new element at the end of the array.
-
         @param newElement       the new object to add to the array
         @see set, insert, addIfNotAlreadyThere, addSorted, addUsingDefaultSort, addArray
     */
@@ -391,7 +399,6 @@ public:
     }
 
     /** Appends a new element at the end of the array.
-
         @param newElement       the new object to add to the array
         @see set, insert, addIfNotAlreadyThere, addSorted, addUsingDefaultSort, addArray
     */
@@ -400,6 +407,24 @@ public:
         const ScopedLockType lock (getLock());
         data.ensureAllocatedSize (numUsed + 1);
         new (data.elements + numUsed++) ElementType (static_cast<ElementType&&> (newElement));
+    }
+
+    /** Appends multiple new elements at the end of the array. */
+    template <typename... OtherElements>
+    void add (const ElementType& firstNewElement, OtherElements... otherElements)
+    {
+        const ScopedLockType lock (getLock());
+        data.ensureAllocatedSize (numUsed + 1 + (int) sizeof... (otherElements));
+        addAssumingCapacityIsReady (firstNewElement, otherElements...);
+    }
+
+    /** Appends multiple new elements at the end of the array. */
+    template <typename... OtherElements>
+    void add (ElementType&& firstNewElement, OtherElements... otherElements)
+    {
+        const ScopedLockType lock (getLock());
+        data.ensureAllocatedSize (numUsed + 1 + (int) sizeof... (otherElements));
+        addAssumingCapacityIsReady (static_cast<ElementType&&> (firstNewElement), otherElements...);
     }
 
     /** Inserts a new element into the array at a given position.
@@ -694,8 +719,8 @@ public:
     void resize (const int targetNumItems)
     {
         jassert (targetNumItems >= 0);
+        auto numToAdd = targetNumItems - numUsed;
 
-        const int numToAdd = targetNumItems - numUsed;
         if (numToAdd > 0)
             insertMultiple (numUsed, ElementType(), numToAdd);
         else if (numToAdd < 0)
@@ -718,7 +743,7 @@ public:
     int addSorted (ElementComparator& comparator, ParameterType newElement)
     {
         const ScopedLockType lock (getLock());
-        const int index = findInsertIndexInSortedArray (comparator, data.elements.getData(), newElement, 0, numUsed);
+        auto index = findInsertIndexInSortedArray (comparator, data.elements.get(), newElement, 0, numUsed);
         insert (index, newElement);
         return index;
     }
@@ -1172,7 +1197,7 @@ public:
         const ScopedLockType lock (getLock());
         ignoreUnused (comparator); // if you pass in an object with a static compareElements() method, this
                                    // avoids getting warning messages about the parameter being unused
-        sortArray (comparator, data.elements.getData(), 0, size() - 1, retainOrderOfEquivalentItems);
+        sortArray (comparator, data.elements.get(), 0, size() - 1, retainOrderOfEquivalentItems);
     }
 
     //==============================================================================
@@ -1222,4 +1247,23 @@ private:
         if (data.numAllocated > jmax (minimumAllocatedSize, numUsed * 2))
             data.shrinkToNoMoreThan (jmax (numUsed, jmax (minimumAllocatedSize, 64 / (int) sizeof (ElementType))));
     }
+
+    void addAssumingCapacityIsReady (const ElementType& e)  { new (data.elements + numUsed++) ElementType (e); }
+    void addAssumingCapacityIsReady (ElementType&& e)       { new (data.elements + numUsed++) ElementType (static_cast<ElementType&&> (e)); }
+
+    template <typename... OtherElements>
+    void addAssumingCapacityIsReady (const ElementType& firstNewElement, OtherElements... otherElements)
+    {
+        addAssumingCapacityIsReady (firstNewElement);
+        addAssumingCapacityIsReady (otherElements...);
+    }
+
+    template <typename... OtherElements>
+    void addAssumingCapacityIsReady (ElementType&& firstNewElement, OtherElements... otherElements)
+    {
+        addAssumingCapacityIsReady (static_cast<ElementType&&> (firstNewElement));
+        addAssumingCapacityIsReady (otherElements...);
+    }
 };
+
+} // namespace juce

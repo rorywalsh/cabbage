@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 // a word or space that can't be broken down any further
 struct TextAtom
 {
@@ -794,7 +797,7 @@ private:
 //==============================================================================
 class TextEditor::TextHolderComponent  : public Component,
                                          public Timer,
-                                         public ValueListener
+                                         public Value::Listener
 {
 public:
     TextHolderComponent (TextEditor& ed)  : owner (ed)
@@ -1027,14 +1030,15 @@ void TextEditor::setFont (const Font& newFont)
     scrollToMakeSureCursorIsVisible();
 }
 
-void TextEditor::applyFontToAllText (const Font& newFont)
+void TextEditor::applyFontToAllText (const Font& newFont, bool changeCurrentFont)
 {
-    currentFont = newFont;
+    if (changeCurrentFont)
+        currentFont = newFont;
+
     auto overallColour = findColour (textColourId);
 
-    for (int i = sections.size(); --i >= 0;)
+    for (auto* uts : sections)
     {
-        auto* uts = sections.getUnchecked (i);
         uts->setFont (newFont, passwordCharacter);
         uts->colour = overallColour;
     }
@@ -1045,11 +1049,21 @@ void TextEditor::applyFontToAllText (const Font& newFont)
     repaint();
 }
 
+void TextEditor::applyColourToAllText (const Colour& newColour, bool changeCurrentTextColour)
+{
+    for (auto* uts : sections)
+        uts->colour = newColour;
+
+    if (changeCurrentTextColour)
+        setColour (TextEditor::textColourId, newColour);
+    else
+        repaint();
+}
+
 void TextEditor::colourChanged()
 {
     setOpaque (findColour (backgroundColourId).isOpaque());
     repaint();
-    styleChanged = true;
 }
 
 void TextEditor::lookAndFeelChanged()
@@ -1163,7 +1177,7 @@ void TextEditor::setText (const String& newText,
 {
     const int newLength = newText.length();
 
-    if (newLength != getTotalNumChars() || getText() != newText || styleChanged)
+    if (newLength != getTotalNumChars() || getText() != newText)
     {
         if (! sendTextChangeMessage)
             textValue.removeListener (textHolder);
@@ -1193,8 +1207,6 @@ void TextEditor::setText (const String& newText,
         updateTextHolderSize();
         scrollToMakeSureCursorIsVisible();
         undoManager.clearUndoHistory();
-
-        styleChanged = false;
 
         repaint();
     }
@@ -1240,8 +1252,8 @@ void TextEditor::textChanged()
 void TextEditor::returnPressed()    { postCommandMessage (TextEditorDefs::returnKeyMessageId); }
 void TextEditor::escapePressed()    { postCommandMessage (TextEditorDefs::escapeKeyMessageId); }
 
-void TextEditor::addListener (TextEditorListener* const l)      { listeners.add (l); }
-void TextEditor::removeListener (TextEditorListener* const l)   { listeners.remove (l); }
+void TextEditor::addListener (Listener* l)      { listeners.add (l); }
+void TextEditor::removeListener (Listener* l)   { listeners.remove (l); }
 
 //==============================================================================
 void TextEditor::timerCallbackInt()
@@ -1982,7 +1994,8 @@ void TextEditor::setEscapeAndReturnKeysConsumed (bool shouldBeConsumed) noexcept
 
 bool TextEditor::keyPressed (const KeyPress& key)
 {
-    if (isReadOnly() && key != KeyPress ('c', ModifierKeys::commandModifier, 0))
+    if (isReadOnly() && key != KeyPress ('c', ModifierKeys::commandModifier, 0)
+                     && key != KeyPress ('a', ModifierKeys::commandModifier, 0))
         return false;
 
     if (! TextEditorKeyMapper<TextEditor>::invokeKeyFunction (*this, key))
@@ -2099,20 +2112,20 @@ void TextEditor::handleCommandMessage (const int commandId)
     switch (commandId)
     {
     case TextEditorDefs::textChangeMessageId:
-        listeners.callChecked (checker, &TextEditorListener::textEditorTextChanged, (TextEditor&) *this);
+        listeners.callChecked (checker, &Listener::textEditorTextChanged, (TextEditor&) *this);
         break;
 
     case TextEditorDefs::returnKeyMessageId:
-        listeners.callChecked (checker, &TextEditorListener::textEditorReturnKeyPressed, (TextEditor&) *this);
+        listeners.callChecked (checker, &Listener::textEditorReturnKeyPressed, (TextEditor&) *this);
         break;
 
     case TextEditorDefs::escapeKeyMessageId:
-        listeners.callChecked (checker, &TextEditorListener::textEditorEscapeKeyPressed, (TextEditor&) *this);
+        listeners.callChecked (checker, &Listener::textEditorEscapeKeyPressed, (TextEditor&) *this);
         break;
 
     case TextEditorDefs::focusLossMessageId:
         updateValueFromText();
-        listeners.callChecked (checker, &TextEditorListener::textEditorFocusLost, (TextEditor&) *this);
+        listeners.callChecked (checker, &Listener::textEditorFocusLost, (TextEditor&) *this);
         break;
 
     default:
@@ -2509,3 +2522,5 @@ void TextEditor::coalesceSimilarSections()
         }
     }
 }
+
+} // namespace juce

@@ -57,7 +57,7 @@
   #undef JUCE_USE_DIRECTWRITE
  #endif
 
- #if JUCE_USE_DIRECTWRITE
+ #if JUCE_USE_DIRECTWRITE || JUCE_DIRECT2D
   /* If you hit a compile error trying to include these files, you may need to update
      your version of the Windows SDK to the latest one. The DirectWrite and Direct2D
      headers are in the version 7 SDKs.
@@ -106,9 +106,6 @@
 #endif
 
 //==============================================================================
-namespace juce
-{
-
 #include "colour/juce_Colour.cpp"
 #include "colour/juce_ColourGradient.cpp"
 #include "colour/juce_Colours.cpp"
@@ -167,7 +164,6 @@ namespace juce
  #include "native/juce_android_IconHelpers.cpp"
 
 #endif
-}
 
 //==============================================================================
 #if JUCE_USE_FREETYPE && JUCE_USE_FREETYPE_AMALGAMATED

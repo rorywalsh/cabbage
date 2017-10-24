@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -156,6 +156,8 @@ public:
     bool hitTest (int x, int y) override;
     /** @internal */
     bool replaceColour (Colour originalColour, Colour replacementColour) override;
+    /** @internal */
+    Path getOutlineAsPath() const override;
 
 protected:
     //==============================================================================
@@ -185,3 +187,5 @@ private:
 
     DrawableShape& operator= (const DrawableShape&);
 };
+
+} // namespace juce

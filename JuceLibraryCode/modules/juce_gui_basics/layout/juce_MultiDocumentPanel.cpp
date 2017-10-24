@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 MultiDocumentPanelWindow::MultiDocumentPanelWindow (Colour backgroundColour)
     : DocumentWindow (String(), backgroundColour,
                       DocumentWindow::maximiseButton | DocumentWindow::closeButton, false)
@@ -143,7 +146,7 @@ void MultiDocumentPanel::addWindow (Component* component)
 
     int x = 4;
 
-    if (Component* const topComp = getChildComponent (getNumChildComponents() - 1))
+    if (auto* topComp = getChildren().getLast())
         if (topComp->getX() == x && topComp->getY() == x)
             x += 16;
 
@@ -200,7 +203,7 @@ bool MultiDocumentPanel::addDocument (Component* const component,
         {
             addAndMakeVisible (tabComponent = new TabbedComponentInternal());
 
-            Array <Component*> temp (components);
+            Array<Component*> temp (components);
 
             for (int i = 0; i < temp.size(); ++i)
                 tabComponent->addTab (temp[i]->getName(), docColour, temp[i], false);
@@ -239,9 +242,9 @@ bool MultiDocumentPanel::closeDocument (Component* component,
 
         if (mode == FloatingWindows)
         {
-            for (int i = getNumChildComponents(); --i >= 0;)
+            for (auto* child : getChildren())
             {
-                if (MultiDocumentPanelWindow* const dw = dynamic_cast<MultiDocumentPanelWindow*> (getChildComponent (i)))
+                if (auto* dw = dynamic_cast<MultiDocumentPanelWindow*> (child))
                 {
                     if (dw->getContentComponent() == component)
                     {
@@ -326,8 +329,8 @@ Component* MultiDocumentPanel::getActiveDocument() const noexcept
 {
     if (mode == FloatingWindows)
     {
-        for (int i = getNumChildComponents(); --i >= 0;)
-            if (MultiDocumentPanelWindow* const dw = dynamic_cast<MultiDocumentPanelWindow*> (getChildComponent (i)))
+        for (auto* child : getChildren())
+            if (auto* dw = dynamic_cast<MultiDocumentPanelWindow*> (child))
                 if (dw->isActiveWindow())
                     return dw->getContentComponent();
     }
@@ -411,7 +414,7 @@ void MultiDocumentPanel::setLayoutMode (const LayoutMode newLayoutMode)
 
         resized();
 
-        const Array <Component*> tempComps (components);
+        const Array<Component*> tempComps (components);
         components.clear();
 
         for (int i = 0; i < tempComps.size(); ++i)
@@ -445,8 +448,8 @@ void MultiDocumentPanel::resized()
 {
     if (mode == MaximisedWindowsWithTabs || components.size() == numDocsBeforeTabsUsed)
     {
-        for (int i = getNumChildComponents(); --i >= 0;)
-            getChildComponent (i)->setBounds (getLocalBounds());
+        for (auto* child : getChildren())
+            child->setBounds (getLocalBounds());
     }
 
     setWantsKeyboardFocus (components.size() == 0);
@@ -456,8 +459,8 @@ Component* MultiDocumentPanel::getContainerComp (Component* c) const
 {
     if (mode == FloatingWindows)
     {
-        for (int i = 0; i < getNumChildComponents(); ++i)
-            if (MultiDocumentPanelWindow* const dw = dynamic_cast<MultiDocumentPanelWindow*> (getChildComponent (i)))
+        for (auto* child : getChildren())
+            if (auto* dw = dynamic_cast<MultiDocumentPanelWindow*> (child))
                 if (dw->getContentComponent() == c)
                     return dw;
     }
@@ -469,8 +472,8 @@ void MultiDocumentPanel::componentNameChanged (Component&)
 {
     if (mode == FloatingWindows)
     {
-        for (int i = 0; i < getNumChildComponents(); ++i)
-            if (MultiDocumentPanelWindow* const dw = dynamic_cast<MultiDocumentPanelWindow*> (getChildComponent (i)))
+        for (auto* child : getChildren())
+            if (auto* dw = dynamic_cast<MultiDocumentPanelWindow*> (child))
                 dw->setName (dw->getContentComponent()->getName());
     }
     else if (tabComponent != nullptr)
@@ -482,21 +485,21 @@ void MultiDocumentPanel::componentNameChanged (Component&)
 
 void MultiDocumentPanel::updateOrder()
 {
-    const Array <Component*> oldList (components);
+    auto oldList = components;
 
     if (mode == FloatingWindows)
     {
         components.clear();
 
-        for (int i = 0; i < getNumChildComponents(); ++i)
-            if (MultiDocumentPanelWindow* const dw = dynamic_cast<MultiDocumentPanelWindow*> (getChildComponent (i)))
+        for (auto* child : getChildren())
+            if (auto* dw = dynamic_cast<MultiDocumentPanelWindow*> (child))
                 components.add (dw->getContentComponent());
     }
     else
     {
         if (tabComponent != nullptr)
         {
-            if (Component* const current = tabComponent->getCurrentContentComponent())
+            if (auto* current = tabComponent->getCurrentContentComponent())
             {
                 components.removeFirstMatchingValue (current);
                 components.add (current);
@@ -507,3 +510,5 @@ void MultiDocumentPanel::updateOrder()
     if (components != oldList)
         activeDocumentChanged();
 }
+
+} // namespace juce

@@ -28,8 +28,6 @@
   ==============================================================================
 */
 
-#pragma once
-
 namespace std
 {
     /**
@@ -124,7 +122,7 @@ namespace std
         template <typename ReturnType, typename... Args>
         struct FunctorHolderBase
         {
-            virtual ~FunctorHolderBase() {};
+            virtual ~FunctorHolderBase() {}
             virtual int getSize() const noexcept = 0;
             virtual void copy (void*) const = 0;
             virtual ReturnType operator()(Args...) = 0;

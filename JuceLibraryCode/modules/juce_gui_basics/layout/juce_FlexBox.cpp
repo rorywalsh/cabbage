@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 struct FlexBoxLayoutCalculation
 {
     using Coord = double;
@@ -787,7 +790,13 @@ void FlexBox::performLayout (Rectangle<float> targetArea)
             item.currentBounds += targetArea.getPosition();
 
             if (auto comp = item.associatedComponent)
-                comp->setBounds (item.currentBounds.getSmallestIntegerContainer());
+            {
+                auto position = item.currentBounds.getPosition().roundToInt();
+                comp->setBounds (position.getX(),
+                                 position.getY(),
+                                 roundToInt (item.currentBounds.getRight())  - position.getX(),
+                                 roundToInt (item.currentBounds.getBottom()) - position.getY());
+            }
 
             if (auto box = item.associatedFlexBox)
                 box->performLayout (item.currentBounds);
@@ -838,10 +847,12 @@ FlexItem FlexItem::withWidth (float newWidth) const noexcept         { auto fi =
 FlexItem FlexItem::withMinWidth (float newMinWidth) const noexcept   { auto fi = *this; fi.minWidth = newMinWidth; return fi; }
 FlexItem FlexItem::withMaxWidth (float newMaxWidth) const noexcept   { auto fi = *this; fi.maxWidth = newMaxWidth; return fi; }
 
-FlexItem FlexItem::withMinHeight (float newMinHeight) const noexcept { auto fi = *this; fi.minHeight = newMinHeight; return fi; };
-FlexItem FlexItem::withMaxHeight (float newMaxHeight) const noexcept { auto fi = *this; fi.maxHeight = newMaxHeight; return fi; };
+FlexItem FlexItem::withMinHeight (float newMinHeight) const noexcept { auto fi = *this; fi.minHeight = newMinHeight; return fi; }
+FlexItem FlexItem::withMaxHeight (float newMaxHeight) const noexcept { auto fi = *this; fi.maxHeight = newMaxHeight; return fi; }
 FlexItem FlexItem::withHeight (float newHeight) const noexcept       { auto fi = *this; fi.height = newHeight; return fi; }
 
 FlexItem FlexItem::withMargin (Margin m) const noexcept              { auto fi = *this; fi.margin = m; return fi; }
 FlexItem FlexItem::withOrder (int newOrder) const noexcept           { auto fi = *this; fi.order = newOrder; return fi; }
 FlexItem FlexItem::withAlignSelf (AlignSelf a) const noexcept        { auto fi = *this; fi.alignSelf = a; return fi; }
+
+} // namespace juce

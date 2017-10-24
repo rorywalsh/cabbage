@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -39,9 +39,9 @@
 */
 class JUCE_API  FileBrowserComponent  : public Component,
                                         private FileBrowserListener,
-                                        private TextEditorListener,
-                                        private ButtonListener,
-                                        private ComboBoxListener,  // (can't use ComboBox::Listener due to idiotic VC2005 bug)
+                                        private TextEditor::Listener,
+                                        private Button::Listener,
+                                        private ComboBox::Listener,
                                         private FileFilter,
                                         private Timer
 {
@@ -195,6 +195,7 @@ public:
                                                               const String& instructions) = 0;
 
         virtual void drawFileBrowserRow (Graphics&, int width, int height,
+                                         const File& file,
                                          const String& filename,
                                          Image* optionalIcon,
                                          const String& fileSizeDescription,
@@ -284,3 +285,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileBrowserComponent)
 };
+
+} // namespace juce

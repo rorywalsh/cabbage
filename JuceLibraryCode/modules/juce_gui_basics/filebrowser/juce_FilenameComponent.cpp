@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 FilenameComponent::FilenameComponent (const String& name,
                                       const File& currentFile,
                                       const bool canEditFilename,
@@ -126,6 +129,7 @@ void FilenameComponent::buttonClicked (Button*)
         setCurrentFile (fc.getResult(), true);
     }
    #else
+    ignoreUnused (isSaving);
     jassertfalse; // needs rewriting to deal with non-modal environments
    #endif
 }
@@ -267,3 +271,5 @@ void FilenameComponent::handleAsyncUpdate()
     Component::BailOutChecker checker (this);
     listeners.callChecked (checker, &FilenameComponentListener::filenameComponentChanged, this);
 }
+
+} // namespace juce

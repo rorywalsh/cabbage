@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 class SimpleDeviceManagerInputLevelMeter  : public Component,
                                             public Timer
 {
@@ -199,8 +202,8 @@ static String getNoDeviceString()   { return "<< " + TRANS("none") + " >>"; }
 //==============================================================================
 class AudioDeviceSettingsPanel : public Component,
                                  private ChangeListener,
-                                 private ComboBoxListener,  // (can't use ComboBox::Listener due to idiotic VC2005 bug)
-                                 private ButtonListener
+                                 private ComboBox::Listener,
+                                 private Button::Listener
 {
 public:
     AudioDeviceSettingsPanel (AudioIODeviceType& t, AudioDeviceSetupDetails& setupDetails,
@@ -563,8 +566,8 @@ private:
     {
         int y = 0;
 
-        for (int i = getNumChildComponents(); --i >= 0;)
-            y = jmax (y, getChildComponent (i)->getBottom());
+        for (auto* c : getChildren())
+            y = jmax (y, c->getBottom());
 
         return y;
     }
@@ -1217,3 +1220,5 @@ ListBox* AudioDeviceSelectorComponent::getMidiInputSelectorListBox() const noexc
 {
     return midiInputsList;
 }
+
+} // namespace juce

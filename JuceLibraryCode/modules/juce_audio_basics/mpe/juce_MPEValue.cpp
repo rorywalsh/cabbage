@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 MPEValue::MPEValue() noexcept  : normalisedValue (8192)
 {
 }
@@ -89,7 +92,7 @@ bool MPEValue::operator!= (const MPEValue& other) const noexcept
 class MPEValueTests  : public UnitTest
 {
 public:
-    MPEValueTests() : UnitTest ("MPEValue class") {}
+    MPEValueTests() : UnitTest ("MPEValue class", "MIDI/MPE") {}
 
     void runTest() override
     {
@@ -166,3 +169,5 @@ private:
 static MPEValueTests MPEValueUnitTests;
 
 #endif // JUCE_UNIT_TESTS
+
+} // namespace juce

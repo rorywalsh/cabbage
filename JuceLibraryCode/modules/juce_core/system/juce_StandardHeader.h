@@ -28,8 +28,8 @@
     See also SystemStats::getJUCEVersion() for a string version.
 */
 #define JUCE_MAJOR_VERSION      5
-#define JUCE_MINOR_VERSION      0
-#define JUCE_BUILDNUMBER        1
+#define JUCE_MINOR_VERSION      1
+#define JUCE_BUILDNUMBER        2
 
 /** Current Juce version number.
 
@@ -65,6 +65,7 @@
 
 #if JUCE_MAC || JUCE_IOS
  #include <libkern/OSAtomic.h>
+ #include <xlocale.h>
 #endif
 
 #if JUCE_LINUX
@@ -111,6 +112,11 @@
 // build
 #if JUCE_PROJUCER_LIVE_BUILD || ! defined (JUCE_STDLIB_HAS_STD_FUNCTION_SUPPORT)
  #include "../misc/juce_StdFunctionCompat.h"
+#endif
+
+// Include std::atomic if it's supported by the compiler
+#if JUCE_ATOMIC_AVAILABLE
+ #include <atomic>
 #endif
 
 //==============================================================================

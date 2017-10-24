@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 #if JUCE_MSVC
  #pragma warning (push)
  #pragma warning (disable: 4390 4611 4365 4267)
@@ -63,6 +66,9 @@ namespace pnglibNamespace
   #if JUCE_CLANG
    #pragma clang diagnostic push
    #pragma clang diagnostic ignored "-Wsign-conversion"
+   #if __has_warning("-Wcomma")
+    #pragma clang diagnostic ignored "-Wcomma"
+   #endif
   #endif
 
   #undef check
@@ -595,3 +601,5 @@ bool PNGImageFormat::writeImageToStream (const Image& image, OutputStream& out)
 
     return true;
 }
+
+} // namespace juce

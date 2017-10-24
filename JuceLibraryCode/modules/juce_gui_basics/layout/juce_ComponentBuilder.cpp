@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 namespace ComponentBuilderHelpers
 {
     static String getStateId (const ValueTree& state)
@@ -52,9 +55,9 @@ namespace ComponentBuilderHelpers
         if (c.getComponentID() == compId)
             return &c;
 
-        for (int i = c.getNumChildComponents(); --i >= 0;)
-            if (Component* const child = findComponentWithID (*c.getChildComponent (i), compId))
-                return child;
+        for (auto* child : c.getChildren())
+            if (auto* found = findComponentWithID (*child, compId))
+                return found;
 
         return nullptr;
     }
@@ -238,7 +241,7 @@ void ComponentBuilder::updateChildComponents (Component& parent, const ValueTree
 {
     using namespace ComponentBuilderHelpers;
 
-    const int numExistingChildComps = parent.getNumChildComponents();
+    auto numExistingChildComps = parent.getNumChildComponents();
 
     Array<Component*> componentsInOrder;
     componentsInOrder.ensureStorageAllocated (numExistingChildComps);
@@ -250,15 +253,16 @@ void ComponentBuilder::updateChildComponents (Component& parent, const ValueTree
         for (int i = 0; i < numExistingChildComps; ++i)
             existingComponents.add (parent.getChildComponent (i));
 
-        const int newNumChildren = children.getNumChildren();
+        auto newNumChildren = children.getNumChildren();
+
         for (int i = 0; i < newNumChildren; ++i)
         {
-            const ValueTree childState (children.getChild (i));
-            Component* c = removeComponentWithID (existingComponents, getStateId (childState));
+            auto childState = children.getChild (i);
+            auto* c = removeComponentWithID (existingComponents, getStateId (childState));
 
             if (c == nullptr)
             {
-                if (TypeHandler* const type = getHandlerForState (childState))
+                if (auto* type = getHandlerForState (childState))
                     c = ComponentBuilderHelpers::createNewComponent (*type, childState, &parent);
                 else
                     jassertfalse;
@@ -280,3 +284,5 @@ void ComponentBuilder::updateChildComponents (Component& parent, const ValueTree
             componentsInOrder.getUnchecked(i)->toBehind (componentsInOrder.getUnchecked (i + 1));
     }
 }
+
+} // namespace juce

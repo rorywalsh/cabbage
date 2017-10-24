@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 static ThreadLocalValue<AudioProcessor::WrapperType> wrapperTypeBeingCreated;
 
 void JUCE_CALLTYPE AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::WrapperType type)
@@ -88,16 +91,19 @@ AudioProcessor::~AudioProcessor()
 }
 
 //==============================================================================
+StringArray AudioProcessor::getAlternateDisplayNames() const     { return StringArray (getName()); }
+
+//==============================================================================
 bool AudioProcessor::addBus (bool isInput)
 {
     if (! canAddBus (isInput))
         return false;
 
-    BusProperties BusesProperties;
-    if (! canApplyBusCountChange (isInput, true, BusesProperties))
+    BusProperties busesProps;
+    if (! canApplyBusCountChange (isInput, true, busesProps))
         return false;
 
-    createBus (isInput, BusesProperties);
+    createBus (isInput, busesProps);
     return true;
 }
 
@@ -110,8 +116,8 @@ bool AudioProcessor::removeBus (bool inputBus)
     if (! canRemoveBus (inputBus))
         return false;
 
-    BusProperties BusesProperties;
-    if (! canApplyBusCountChange (inputBus, false, BusesProperties))
+    BusProperties busesProps;
+    if (! canApplyBusCountChange (inputBus, false, busesProps))
         return false;
 
     const int busIdx = numBuses - 1;
@@ -622,6 +628,14 @@ int AudioProcessor::getDefaultNumParameterSteps() noexcept
     return 0x7fffffff;
 }
 
+bool AudioProcessor::isParameterDiscrete (int index) const
+{
+    if (auto* p = managedParameters[index])
+        return p->isDiscrete();
+
+    return false;
+}
+
 String AudioProcessor::getParameterLabel (int index) const
 {
     if (auto* p = managedParameters[index])
@@ -688,7 +702,9 @@ void AudioProcessor::addParameter (AudioProcessorParameter* p)
     auto paramId = getParameterID (p->parameterIndex);
 
     for (auto q : managedParameters)
+    {
         jassert (q == nullptr || q == p || paramId != getParameterID (q->parameterIndex));
+    }
    #endif
 }
 
@@ -1019,6 +1035,9 @@ void AudioProcessor::setCurrentProgramStateInformation (const void* data, int si
 {
     setStateInformation (data, sizeInBytes);
 }
+
+//==============================================================================
+void AudioProcessor::updateTrackProperties (const AudioProcessor::TrackProperties&)    {}
 
 //==============================================================================
 // magic number to identify memory blocks that we've stored as XML
@@ -1393,11 +1412,12 @@ void AudioProcessorParameter::endChangeGesture()
     processor->endParameterChangeGesture (parameterIndex);
 }
 
-bool AudioProcessorParameter::isOrientationInverted() const                    { return false; }
-bool AudioProcessorParameter::isAutomatable() const                            { return true; }
-bool AudioProcessorParameter::isMetaParameter() const                          { return false; }
-AudioProcessorParameter::Category AudioProcessorParameter::getCategory() const { return genericParameter; }
-int AudioProcessorParameter::getNumSteps() const            { return AudioProcessor::getDefaultNumParameterSteps(); }
+bool AudioProcessorParameter::isOrientationInverted() const                      { return false; }
+bool AudioProcessorParameter::isAutomatable() const                              { return true; }
+bool AudioProcessorParameter::isMetaParameter() const                            { return false; }
+AudioProcessorParameter::Category AudioProcessorParameter::getCategory() const   { return genericParameter; }
+int AudioProcessorParameter::getNumSteps() const                                 { return AudioProcessor::getDefaultNumParameterSteps(); }
+bool AudioProcessorParameter::isDiscrete() const                                 { return false; }
 
 String AudioProcessorParameter::getText (float value, int /*maximumStringLength*/) const
 {
@@ -1434,3 +1454,5 @@ void AudioPlayHead::CurrentPositionInfo::resetToDefault()
     timeSigDenominator = 4;
     bpm = 120;
 }
+
+} // namespace juce

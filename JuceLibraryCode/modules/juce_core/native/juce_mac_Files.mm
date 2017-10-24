@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 /*
     Note that a lot of methods that you'd expect to find in this file actually
     live in juce_posix_SharedCode.h!
@@ -78,9 +81,8 @@ namespace MacFileHelpers
             NSNumber* hidden = nil;
             NSError* err = nil;
 
-            return [[NSURL fileURLWithPath: juceStringToNS (path)]
-                        getResourceValue: &hidden forKey: NSURLIsHiddenKey error: &err]
-                    && [hidden boolValue];
+            return [createNSURLFromFile (path) getResourceValue: &hidden forKey: NSURLIsHiddenKey error: &err]
+                     && [hidden boolValue];
         }
        #elif JUCE_IOS
         return File (path).getFileName().startsWithChar ('.');
@@ -212,7 +214,7 @@ File File::getSpecialLocation (const SpecialLocationType type)
 
             case invokedExecutableFile:
                 if (juce_argv != nullptr && juce_argc > 0)
-                    return File::getCurrentWorkingDirectory().getChildFile (CharPointer_UTF8 (juce_argv[0]));
+                    return File::getCurrentWorkingDirectory().getChildFile (String (juce_argv[0]));
                 // deliberate fall-through...
 
             case currentExecutableFile:
@@ -238,7 +240,7 @@ File File::getSpecialLocation (const SpecialLocationType type)
                 HeapBlock<char> buffer;
                 buffer.calloc (size + 8);
 
-                _NSGetExecutablePath (buffer.getData(), &size);
+                _NSGetExecutablePath (buffer.get(), &size);
                 return File (String::fromUTF8 (buffer, (int) size));
             }
 
@@ -298,7 +300,7 @@ bool File::moveToTrash() const
    #else
     JUCE_AUTORELEASEPOOL
     {
-        NSURL* url = [NSURL fileURLWithPath: juceStringToNS (getFullPathName())];
+        NSURL* url = createNSURLFromFile (*this);
 
         [[NSWorkspace sharedWorkspace] recycleURLs: [NSArray arrayWithObject: url]
                                  completionHandler: nil];
@@ -400,10 +402,12 @@ bool JUCE_CALLTYPE Process::openDocument (const String& fileName, const String& 
       #if JUCE_IOS
         ignoreUnused (parameters);
 
-        if (SystemStats::isRunningInAppExtensionSandbox())
-            return false;
-
+       #if (! defined __IPHONE_OS_VERSION_MIN_REQUIRED) || (! defined __IPHONE_10_0) || (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0)
         return [[UIApplication sharedApplication] openURL: filenameAsURL];
+       #else
+        [[UIApplication sharedApplication] openURL: filenameAsURL options: @{} completionHandler: nil];
+        return true;
+       #endif
       #else
         NSWorkspace* workspace = [NSWorkspace sharedWorkspace];
 
@@ -487,3 +491,5 @@ void File::addToDock() const
     }
 }
 #endif
+
+} // namespace juce

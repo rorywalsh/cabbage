@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 /**
     Provides a class of AudioProcessorParameter that can be used to select
     an indexed, named choice from a list.
@@ -64,11 +67,13 @@ public:
 private:
     //==============================================================================
     float value, defaultValue;
+    const int maxIndex;
 
     float getValue() const override;
     void setValue (float newValue) override;
     float getDefaultValue() const override;
     int getNumSteps() const override;
+    bool isDiscrete() const override;
     String getText (float, int) const override;
     float getValueForText (const String&) const override;
 
@@ -78,3 +83,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioParameterChoice)
 };
+
+} // namespace juce

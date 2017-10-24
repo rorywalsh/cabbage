@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 BlowFish::BlowFish (const void* const keyData, const int keyBytes)
 {
     jassert (keyData != nullptr);
@@ -311,7 +314,7 @@ int BlowFish::decrypt (void* data, size_t size) const noexcept
     return -1;
 }
 
-bool BlowFish::apply (void* data, size_t size, void (BlowFish::*op) (uint32&, uint32&) const noexcept) const
+bool BlowFish::apply (void* data, size_t size, void (BlowFish::*op) (uint32&, uint32&) const) const
 {
     union AlignedAccessHelper
     {
@@ -368,7 +371,7 @@ int BlowFish::unpad (const void* data, size_t size) noexcept
 class BlowFishTests  : public UnitTest
 {
 public:
-    BlowFishTests() : UnitTest ("BlowFish") {}
+    BlowFishTests() : UnitTest ("BlowFish", "Cryptography") {}
 
     static void fillMemoryBlockWithRandomData (MemoryBlock& block, Random& random)
     {
@@ -450,13 +453,15 @@ public:
             encryptDecryptTest (bf, data.getData(), data.getSize() - 8, data.getSize());
             encryptDecryptTest (bf, data.getData(), 0, 8);
 
+            {
+                // Test unaligned data encryption/decryption. This will be flagged up by a check for
+                // undefined behaviour!
+                const uintptr_t nudge = static_cast<uintptr_t> (random.nextInt (sizeof(void*) - 1));
+                void* unalignedData = (void*) (reinterpret_cast<uintptr_t> (data.getData()) + nudge);
+                size_t newSize = data.getSize() - nudge;
 
-            // test unaligned data encryption/decryption
-            const uintptr_t nudge = static_cast<uintptr_t> (random.nextInt (sizeof(void*) - 1));
-            void* unalignedData = (void*) (reinterpret_cast<uintptr_t> (data.getData()) + nudge);
-            size_t newSize = data.getSize() - nudge;
-
-            encryptDecryptTest (bf, unalignedData, newSize - 8, newSize);
+                encryptDecryptTest (bf, unalignedData, newSize - 8, newSize);
+            }
         }
     }
 };
@@ -464,3 +469,5 @@ public:
 static BlowFishTests blowFishUnitTests;
 
 #endif
+
+} // namespace juce

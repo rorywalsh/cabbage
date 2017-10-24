@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 namespace
 {
     void checkAndLimitZoneParameters (int minValue,
@@ -163,7 +166,7 @@ bool MPEZone::operator!= (const MPEZone& other) const noexcept
 class MPEZoneTests   : public UnitTest
 {
 public:
-    MPEZoneTests()  : UnitTest ("MPEZone class") {}
+    MPEZoneTests()  : UnitTest ("MPEZone class", "MIDI/MPE") {}
 
     void runTest() override
     {
@@ -312,3 +315,5 @@ private:
 static MPEZoneTests MPEZoneUnitTests;
 
 #endif // JUCE_UNIT_TESTS
+
+} // namespace juce

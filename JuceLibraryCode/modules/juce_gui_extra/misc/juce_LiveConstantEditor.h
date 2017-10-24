@@ -24,7 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
+namespace juce
+{
 
 #if JUCE_ENABLE_LIVE_CONSTANT_EDITOR && ! DOXYGEN
 
@@ -107,7 +108,7 @@ namespace LiveConstantEditor
     //==============================================================================
     struct JUCE_API  LivePropertyEditorBase  : public Component,
                                                private TextEditor::Listener,
-                                               private ButtonListener
+                                               private Button::Listener
     {
         LivePropertyEditorBase (LiveValueBase&, CodeDocument&);
 
@@ -123,13 +124,13 @@ namespace LiveConstantEditor
         LiveValueBase& value;
         Label name;
         TextEditor valueEditor;
-        TextButton resetButton;
+        TextButton resetButton { "reset" };
         CodeDocument& document;
         CPlusPlusCodeTokeniser tokeniser;
         CodeEditorComponent sourceEditor;
         CodeDocument::Position valueStart, valueEnd;
         ScopedPointer<Component> customComp;
-        bool wasHex;
+        bool wasHex = false;
 
         JUCE_DECLARE_NON_COPYABLE (LivePropertyEditorBase)
     };
@@ -309,3 +310,5 @@ namespace LiveConstantEditor
  #define JUCE_LIVE_CONSTANT(initialValue) \
     (initialValue)
 #endif
+
+} // namespace juce

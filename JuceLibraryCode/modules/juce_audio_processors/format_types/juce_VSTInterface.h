@@ -24,10 +24,7 @@
   ==============================================================================
 */
 
-#pragma once
 #define JUCE_VSTINTERFACE_H_INCLUDED
-
-#include "../../juce_core/juce_core.h"
 
 using namespace juce;
 
@@ -345,7 +342,7 @@ enum VstTimingInformationFlags
     vstTimingInfoFlagNanosecondsValid          = 256,
     vstTimingInfoFlagMusicalPositionValid      = 512,
     vstTimingInfoFlagTempoValid                = 1024,
-    vstTimingInfoFlagLastBarPositionValid      = 2056,
+    vstTimingInfoFlagLastBarPositionValid      = 2048,
     vstTimingInfoFlagLoopPositionValid         = 4096,
     vstTimingInfoFlagTimeSignatureValid        = 8192,
     vstTimingInfoFlagSmpteValid                = 16384,
@@ -449,6 +446,18 @@ enum VstSpeakerConfigurationType
     vstSpeakerConfigTypeLRCLfeLsRsLcRcCs,
     vstSpeakerConfigTypeLRCLfeLsRsCsSlSr,
     vstSpeakerConfigTypeLRCLfeLsRsTflTfcTfrTrlTrrLfe2
+};
+
+#if JUCE_BIG_ENDIAN
+ #define JUCE_MULTICHAR_CONSTANT(a, b, c, d) (a | (((uint32) b) << 8) | (((uint32) c) << 16) | (((uint32) d) << 24))
+#else
+ #define JUCE_MULTICHAR_CONSTANT(a, b, c, d) (d | (((uint32) c) << 8) | (((uint32) b) << 16) | (((uint32) a) << 24))
+#endif
+
+enum PresonusExtensionConstants
+{
+    presonusVendorID                = JUCE_MULTICHAR_CONSTANT ('P', 'r', 'e', 'S'),
+    presonusSetContentScaleFactor   = JUCE_MULTICHAR_CONSTANT ('A', 'e', 'C', 's')
 };
 
 //==============================================================================

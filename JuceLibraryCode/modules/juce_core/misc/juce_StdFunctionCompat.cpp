@@ -28,12 +28,15 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 #if JUCE_UNIT_TESTS
 
 namespace FunctionTestsHelpers
 {
-    void incrementArgument (int& x) { x++; };
-    double multiply (double x, double a) noexcept { return a * x; };
+    void incrementArgument (int& x) { x++; }
+    double multiply (double x, double a) noexcept { return a * x; }
 
     struct BigData
     {
@@ -75,7 +78,7 @@ namespace FunctionTestsHelpers
 class FunctionTests  : public UnitTest
 {
 public:
-    FunctionTests() : UnitTest ("Function") {}
+    FunctionTests() : UnitTest ("Function", "Function") {}
 
     void runTest() override
     {
@@ -225,8 +228,8 @@ public:
             if (f1)
                 expect (false);
 
-                std::function<int()> f2 ([]() { return 11; });
-                f2 = nullptr;
+            std::function<int()> f2 ([]() { return 11; });
+            f2 = nullptr;
             if (f2)
                 expect (false);
         }
@@ -252,3 +255,5 @@ public:
 static FunctionTests functionTests;
 
 #endif
+
+} // namespace juce

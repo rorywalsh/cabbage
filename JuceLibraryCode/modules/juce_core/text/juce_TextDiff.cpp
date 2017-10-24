@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 struct TextDiffHelpers
 {
     enum { minLengthToMatch = 3,
@@ -220,7 +223,7 @@ String TextDiff::Change::appliedTo (const String& text) const noexcept
 class DiffTests  : public UnitTest
 {
 public:
-    DiffTests() : UnitTest ("TextDiff class") {}
+    DiffTests() : UnitTest ("TextDiff class", "Text") {}
 
     static String createString (Random& r)
     {
@@ -276,3 +279,5 @@ public:
 static DiffTests diffTests;
 
 #endif
+
+} // namespace juce

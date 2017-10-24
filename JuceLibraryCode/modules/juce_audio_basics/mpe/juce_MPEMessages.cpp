@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 MidiBuffer MPEMessages::addZone (MPEZone zone)
 {
     MidiBuffer buffer (MidiRPNGenerator::generate (zone.getFirstNoteChannel(),
@@ -71,7 +74,7 @@ MidiBuffer MPEMessages::setZoneLayout (const MPEZoneLayout& layout)
 class MPEMessagesTests  : public UnitTest
 {
 public:
-    MPEMessagesTests() : UnitTest ("MPEMessages class") {}
+    MPEMessagesTests() : UnitTest ("MPEMessages class", "MIDI/MPE") {}
 
     void runTest() override
     {
@@ -193,3 +196,5 @@ private:
 static MPEMessagesTests MPEMessagesUnitTests;
 
 #endif // JUCE_UNIT_TESTS
+
+} // namespace juce

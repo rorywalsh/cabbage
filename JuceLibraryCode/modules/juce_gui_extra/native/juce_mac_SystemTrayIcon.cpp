@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 namespace MouseCursorHelpers
 {
     extern NSImage* createNSImage (const Image&, float scaleFactor = 1.f);
@@ -36,9 +39,7 @@ class SystemTrayIconComponent::Pimpl  : private Timer
 {
 public:
     Pimpl (SystemTrayIconComponent& iconComp, const Image& im)
-        : owner (iconComp), statusItem (nil),
-          statusIcon (MouseCursorHelpers::createNSImage (im)),
-          view (nil), isHighlighted (false)
+        : owner (iconComp), statusIcon (MouseCursorHelpers::createNSImage (im))
     {
         static SystemTrayViewClass cls;
         view = [cls.createInstance() init];
@@ -105,8 +106,7 @@ public:
                 eventMods = eventMods.withFlags (ModifierKeys::commandModifier);
 
             auto now = Time::getCurrentTime();
-
-            MouseInputSource mouseSource = Desktop::getInstance().getMainMouseSource();
+            auto mouseSource = Desktop::getInstance().getMainMouseSource();
             auto pressure = (float) e.pressure;
 
             if (isLeft || isRight)  // Only mouse up is sent by the OS, so simulate a down/up
@@ -148,12 +148,12 @@ public:
     }
 
     SystemTrayIconComponent& owner;
-    NSStatusItem* statusItem;
+    NSStatusItem* statusItem = nil;
 
 private:
-    NSImage* statusIcon;
-    NSControl* view;
-    bool isHighlighted;
+    NSImage* statusIcon = nil;
+    NSControl* view = nil;
+    bool isHighlighted = false;
 
     void setIconSize()
     {
@@ -188,7 +188,7 @@ private:
 
         static void frameChanged (id self, SEL, NSNotification*)
         {
-            if (Pimpl* const owner = getOwner (self))
+            if (auto* owner = getOwner (self))
             {
                 NSRect r = [[[owner->statusItem view] window] frame];
                 NSRect sr = [[[NSScreen screens] objectAtIndex: 0] frame];
@@ -277,3 +277,5 @@ void SystemTrayIconComponent::showDropdownMenu (const PopupMenu& menu)
     if (pimpl != nullptr)
         pimpl->showMenu (menu);
 }
+
+} // namespace juce

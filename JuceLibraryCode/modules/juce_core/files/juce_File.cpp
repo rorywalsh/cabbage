@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 File::File (const String& fullPathName)
     : fullPath (parseAbsolutePath (fullPathName))
 {
@@ -1004,7 +1007,7 @@ MemoryMappedFile::MemoryMappedFile (const File& file, const Range<int64>& fileRa
 class FileTests  : public UnitTest
 {
 public:
-    FileTests() : UnitTest ("Files") {}
+    FileTests() : UnitTest ("Files", "Files") {}
 
     void runTest() override
     {
@@ -1205,3 +1208,5 @@ public:
 static FileTests fileUnitTests;
 
 #endif
+
+} // namespace juce

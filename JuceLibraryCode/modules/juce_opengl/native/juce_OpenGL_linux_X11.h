@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 extern XContext windowHandleXContext;
 
 //==============================================================================
@@ -241,7 +244,7 @@ bool OpenGLHelpers::isContextActive()
 {
     ScopedXDisplay xDisplay;
 
-    if (auto display = xDisplay.display)
+    if (xDisplay.display)
     {
         ScopedXLock xlock (xDisplay.display);
         return glXGetCurrentContext() != 0;
@@ -249,3 +252,5 @@ bool OpenGLHelpers::isContextActive()
 
     return false;
 }
+
+} // namespace juce

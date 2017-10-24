@@ -20,6 +20,15 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
+#define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD) \
+ STATICMETHOD (newProxyInstance, "newProxyInstance", "(Ljava/lang/ClassLoader;[Ljava/lang/Class;Ljava/lang/reflect/InvocationHandler;)Ljava/lang/Object;") \
+
+ DECLARE_JNI_CLASS (JavaProxy, "java/lang/reflect/Proxy");
+#undef JNI_CLASS_MEMBERS
+
 JNIClassBase::JNIClassBase (const char* cp)   : classPath (cp), classRef (0)
 {
     getClasses().add (this);
@@ -92,6 +101,92 @@ jfieldID JNIClassBase::resolveStaticField (JNIEnv* env, const char* fieldName, c
 }
 
 //==============================================================================
+LocalRef<jobject> CreateJavaInterface (AndroidInterfaceImplementer* implementer,
+                                       const StringArray& interfaceNames,
+                                       LocalRef<jobject> subclass)
+{
+    auto* env = getEnv();
+
+    implementer->javaSubClass = GlobalRef (subclass);
+
+    // you need to override at least one interface
+    jassert (interfaceNames.size() > 0);
+
+    auto classArray = LocalRef<jobject> (env->NewObjectArray (interfaceNames.size(), JavaClass, nullptr));
+    LocalRef<jobject> classLoader;
+
+    for (auto i = 0; i < interfaceNames.size(); ++i)
+    {
+        auto aClass = LocalRef<jobject> (env->FindClass (interfaceNames[i].toRawUTF8()));
+
+        if (aClass != nullptr)
+        {
+            if (i == 0)
+                classLoader = LocalRef<jobject> (env->CallObjectMethod (aClass, JavaClass.getClassLoader));
+
+            env->SetObjectArrayElement ((jobjectArray) classArray.get(), i, aClass);
+        }
+        else
+        {
+            // interface class not found
+            jassertfalse;
+        }
+    }
+
+    auto invocationHandler = LocalRef<jobject> (env->CallStaticObjectMethod (JuceAppActivity,
+                                                                             JuceAppActivity.createInvocationHandler,
+                                                                             reinterpret_cast<jlong> (implementer)));
+
+    return LocalRef<jobject> (env->CallStaticObjectMethod (JavaProxy, JavaProxy.newProxyInstance,
+                                                           classLoader.get(), classArray.get(),
+                                                           invocationHandler.get()));
+}
+
+LocalRef<jobject> CreateJavaInterface (AndroidInterfaceImplementer* implementer,
+                                       const StringArray& interfaceNames)
+{
+    return CreateJavaInterface (implementer, interfaceNames,
+                                LocalRef<jobject> (getEnv()->NewObject (JavaObject,
+                                                                        JavaObject.constructor)));
+}
+
+LocalRef<jobject> CreateJavaInterface (AndroidInterfaceImplementer* implementer,
+                                       const String& interfaceName)
+{
+    return CreateJavaInterface (implementer, StringArray (interfaceName));
+}
+
+jobject AndroidInterfaceImplementer::invoke (jobject /*proxy*/, jobject method, jobjectArray args)
+{
+    auto* env = getEnv();
+    return env->CallObjectMethod (method, Method.invoke, javaSubClass.get(), args);
+}
+
+jobject juce_invokeImplementer (JNIEnv* env, jlong thisPtr, jobject proxy, jobject method, jobjectArray args)
+{
+    setEnv (env);
+    return reinterpret_cast<AndroidInterfaceImplementer*> (thisPtr)->invoke (proxy, method, args);
+}
+
+void juce_dispatchDelete (JNIEnv* env, jlong thisPtr)
+{
+    setEnv (env);
+    delete reinterpret_cast<AndroidInterfaceImplementer*> (thisPtr);
+}
+
+JUCE_JNI_CALLBACK (JUCE_JOIN_MACRO (JUCE_ANDROID_ACTIVITY_CLASSNAME, _00024NativeInvocationHandler), dispatchInvoke,
+                   jobject, (JNIEnv* env, jobject /*object*/, jlong thisPtr, jobject proxy, jobject method, jobjectArray args))
+{
+    return juce_invokeImplementer (env, thisPtr, proxy, method, args);
+}
+
+JUCE_JNI_CALLBACK (JUCE_JOIN_MACRO (JUCE_ANDROID_ACTIVITY_CLASSNAME, _00024NativeInvocationHandler), dispatchFinalize,
+                   void, (JNIEnv* env, jobject /*object*/, jlong thisPtr))
+{
+    juce_dispatchDelete (env, thisPtr);
+}
+
+//==============================================================================
 JavaVM* androidJNIJavaVM = nullptr;
 
 class JniEnvThreadHolder
@@ -116,16 +211,7 @@ public:
         return *instance;
     }
 
-    static JNIEnv* getEnv()
-    {
-        JNIEnv* env = reinterpret_cast<JNIEnv*> (pthread_getspecific (getInstance().threadKey));
-
-        // You are trying to use a JUCE function on a thread that was not created by JUCE.
-        // You need to first call setEnv on this thread before using JUCE
-        jassert (env != nullptr);
-
-        return env;
-    }
+    static JNIEnv* getEnv()   { return reinterpret_cast<JNIEnv*> (pthread_getspecific (getInstance().threadKey)); }
 
     static void setEnv (JNIEnv* env)
     {
@@ -167,7 +253,30 @@ private:
 JniEnvThreadHolder* JniEnvThreadHolder::instance = nullptr;
 
 //==============================================================================
-JNIEnv* getEnv() noexcept            { return JniEnvThreadHolder::getEnv(); }
+JNIEnv* attachAndroidJNI() noexcept
+{
+    auto* env = JniEnvThreadHolder::getEnv();
+
+    if (env == nullptr)
+    {
+        androidJNIJavaVM->AttachCurrentThread (&env, nullptr);
+        setEnv (env);
+    }
+
+    return env;
+}
+
+JNIEnv* getEnv() noexcept
+{
+    auto* env = JniEnvThreadHolder::getEnv();
+
+    // You are trying to use a JUCE function on a thread that was not created by JUCE.
+    // You need to first call setEnv on this thread before using JUCE
+    jassert (env != nullptr);
+
+    return env;
+}
+
 void setEnv (JNIEnv* env) noexcept   { JniEnvThreadHolder::setEnv (env); }
 
 extern "C" jint JNI_OnLoad (JavaVM* vm, void*)
@@ -407,3 +516,5 @@ bool Time::setSystemTimeToThisTime() const
     jassertfalse;
     return false;
 }
+
+} // namespace juce

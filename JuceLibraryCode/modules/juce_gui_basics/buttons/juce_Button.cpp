@@ -24,9 +24,12 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 class Button::CallbackHelper  : public Timer,
                                 public ApplicationCommandManagerListener,
-                                public ValueListener,
+                                public Value::Listener,
                                 public KeyListener
 {
 public:
@@ -242,19 +245,17 @@ void Button::setRadioGroupId (const int newGroupId, NotificationType notificatio
 
 void Button::turnOffOtherButtonsInGroup (const NotificationType notification)
 {
-    if (Component* const p = getParentComponent())
+    if (auto* p = getParentComponent())
     {
         if (radioGroupId != 0)
         {
             WeakReference<Component> deletionWatcher (this);
 
-            for (int i = p->getNumChildComponents(); --i >= 0;)
+            for (auto* c : p->getChildren())
             {
-                Component* const c = p->getChildComponent (i);
-
                 if (c != this)
                 {
-                    if (Button* const b = dynamic_cast<Button*> (c))
+                    if (auto b = dynamic_cast<Button*> (c))
                     {
                         if (b->getRadioGroupId() == radioGroupId)
                         {
@@ -331,6 +332,11 @@ void Button::setTriggeredOnMouseDown (const bool isTriggeredOnMouseDown) noexcep
     triggerOnMouseDown = isTriggeredOnMouseDown;
 }
 
+bool Button::getTriggeredOnMouseDown() const noexcept
+{
+    return triggerOnMouseDown;
+}
+
 //==============================================================================
 void Button::clicked()
 {
@@ -391,15 +397,8 @@ void Button::handleCommandMessage (int commandId)
 }
 
 //==============================================================================
-void Button::addListener (ButtonListener* const newListener)
-{
-    buttonListeners.add (newListener);
-}
-
-void Button::removeListener (ButtonListener* const listener)
-{
-    buttonListeners.remove (listener);
-}
+void Button::addListener (Listener* l)      { buttonListeners.add (l); }
+void Button::removeListener (Listener* l)   { buttonListeners.remove (l); }
 
 void Button::sendClickMessage (const ModifierKeys& modifiers)
 {
@@ -417,7 +416,7 @@ void Button::sendClickMessage (const ModifierKeys& modifiers)
     clicked (modifiers);
 
     if (! checker.shouldBailOut())
-        buttonListeners.callChecked (checker, &ButtonListener::buttonClicked, this);  // (can't use Button::Listener due to idiotic VC2005 bug)
+        buttonListeners.callChecked (checker, &Button::Listener::buttonClicked, this);
 }
 
 void Button::sendStateMessage()
@@ -427,7 +426,7 @@ void Button::sendStateMessage()
     buttonStateChanged();
 
     if (! checker.shouldBailOut())
-        buttonListeners.callChecked (checker, &ButtonListener::buttonStateChanged, this);
+        buttonListeners.callChecked (checker, &Button::Listener::buttonStateChanged, this);
 }
 
 //==============================================================================
@@ -696,3 +695,5 @@ void Button::repeatTimerCallback()
         callbackHelper->stopTimer();
     }
 }
+
+} // namespace juce

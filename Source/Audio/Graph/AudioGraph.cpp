@@ -140,7 +140,7 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
 
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
         jassert (processor != nullptr);
-
+		processor->enableAllBuses();
         const int inputs = processor->getBusCount (true);
         const int outputs = processor->getBusCount (false);
 

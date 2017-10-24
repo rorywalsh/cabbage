@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 Desktop::Desktop()
     : mouseSources (new MouseInputSource::SourceList()),
       mouseClickCounter (0), mouseWheelCounter (0),
@@ -401,6 +404,11 @@ void Desktop::setOrientationsEnabled (const int newOrientations)
     }
 }
 
+int Desktop::getOrientationsEnabled() const noexcept
+{
+    return allowedOrientations;
+}
+
 bool Desktop::isOrientationEnabled (const DisplayOrientation orientation) const noexcept
 {
     // Make sure you only pass one valid flag in here...
@@ -420,3 +428,5 @@ void Desktop::setGlobalScaleFactor (float newScaleFactor) noexcept
         displays->refresh();
     }
 }
+
+} // namespace juce

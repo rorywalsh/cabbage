@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 AbstractFifo::AbstractFifo (const int capacity) noexcept
     : bufferSize (capacity)
 {
@@ -130,7 +133,7 @@ void AbstractFifo::finishedRead (int numRead) noexcept
 class AbstractFifoTests  : public UnitTest
 {
 public:
-    AbstractFifoTests() : UnitTest ("Abstract Fifo") {}
+    AbstractFifoTests() : UnitTest ("Abstract Fifo", "Containers") {}
 
     class WriteThread  : public Thread
     {
@@ -227,3 +230,5 @@ public:
 static AbstractFifoTests fifoUnitTests;
 
 #endif
+
+} // namespace juce

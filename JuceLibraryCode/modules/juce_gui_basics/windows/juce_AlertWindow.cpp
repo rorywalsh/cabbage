@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 static juce_wchar getDefaultPasswordChar() noexcept
 {
    #if JUCE_LINUX
@@ -215,6 +218,13 @@ class AlertTextComp  : public TextEditor
 public:
     AlertTextComp (AlertWindow& owner, const String& message, const Font& font)
     {
+        if (owner.isColourSpecified (AlertWindow::textColourId))
+            setColour (TextEditor::textColourId, owner.findColour (AlertWindow::textColourId));
+
+        setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
+        setColour (TextEditor::outlineColourId, Colours::transparentBlack);
+        setColour (TextEditor::shadowColourId, Colours::transparentBlack);
+
         setReadOnly (true);
         setMultiLine (true, true);
         setCaretVisible (false);
@@ -226,13 +236,6 @@ public:
         setText (message, false);
 
         bestWidth = 2 * (int) std::sqrt (font.getHeight() * font.getStringWidth (message));
-
-        if (owner.isColourSpecified (AlertWindow::textColourId))
-            setColour (TextEditor::textColourId, owner.findColour (AlertWindow::textColourId));
-
-        setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
-        setColour (TextEditor::outlineColourId, Colours::transparentBlack);
-        setColour (TextEditor::shadowColourId, Colours::transparentBlack);
     }
 
     int getPreferredWidth() const noexcept   { return bestWidth; }
@@ -721,3 +724,5 @@ bool AlertWindow::showNativeDialogBox (const String& title,
     return true;
 }
 #endif
+
+} // namespace juce

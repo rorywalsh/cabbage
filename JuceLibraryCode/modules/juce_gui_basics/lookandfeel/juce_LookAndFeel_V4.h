@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 class JUCE_API  LookAndFeel_V4   : public LookAndFeel_V3
 {
@@ -155,7 +155,7 @@ public:
                                      Button* goUpButton) override;
 
     void drawFileBrowserRow (Graphics&, int width, int height,
-                             const String& filename, Image* icon,
+                             const File& file, const String& filename, Image* icon,
                              const String& fileSizeDescription, const String& fileTimeDescription,
                              bool isDirectory, bool isItemSelected, int itemIndex,
                              DirectoryContentsDisplayComponent&) override;
@@ -226,7 +226,7 @@ public:
 
 private:
     //==============================================================================
-    void drawLinearProgressBar (Graphics&, ProgressBar&, int width, int height, double progress);
+    void drawLinearProgressBar (Graphics&, ProgressBar&, int width, int height, double progress, const String&);
     void drawCircularProgressBar (Graphics&, ProgressBar&, const String&);
 
     int getPropertyComponentIndent (PropertyComponent&);
@@ -238,3 +238,5 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LookAndFeel_V4)
 };
+
+} // namespace juce

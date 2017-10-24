@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 #if JUCE_DEBUG && ! defined (JUCE_DEBUG_XERRORS)
  #define JUCE_DEBUG_XERRORS 1
 #endif
@@ -135,6 +138,26 @@ const int KeyPress::F13Key                  = (XK_F13 & 0xff) | Keys::extendedKe
 const int KeyPress::F14Key                  = (XK_F14 & 0xff) | Keys::extendedKeyModifier;
 const int KeyPress::F15Key                  = (XK_F15 & 0xff) | Keys::extendedKeyModifier;
 const int KeyPress::F16Key                  = (XK_F16 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F17Key                  = (XK_F17 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F18Key                  = (XK_F18 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F19Key                  = (XK_F19 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F20Key                  = (XK_F20 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F21Key                  = (XK_F21 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F22Key                  = (XK_F22 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F23Key                  = (XK_F23 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F24Key                  = (XK_F24 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F25Key                  = (XK_F25 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F26Key                  = (XK_F26 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F27Key                  = (XK_F27 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F28Key                  = (XK_F28 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F29Key                  = (XK_F29 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F30Key                  = (XK_F30 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F31Key                  = (XK_F31 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F32Key                  = (XK_F32 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F33Key                  = (XK_F33 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F34Key                  = (XK_F34 & 0xff) | Keys::extendedKeyModifier;
+const int KeyPress::F35Key                  = (XK_F35 & 0xff) | Keys::extendedKeyModifier;
+
 const int KeyPress::numberPad0              = (XK_KP_0 & 0xff) | Keys::extendedKeyModifier;
 const int KeyPress::numberPad1              = (XK_KP_1 & 0xff) | Keys::extendedKeyModifier;
 const int KeyPress::numberPad2              = (XK_KP_2 & 0xff) | Keys::extendedKeyModifier;
@@ -255,7 +278,7 @@ namespace XRender
     static tXRenderFindFormat xRenderFindFormat = nullptr;
     static tXRenderFindVisualFormat xRenderFindVisualFormat = nullptr;
 
-    static bool isAvailable(::Display* display)
+    static bool isAvailable (::Display* display)
     {
         static bool hasLoaded = false;
 
@@ -292,13 +315,13 @@ namespace XRender
         return xRenderQueryVersion != nullptr;
     }
 
-    static bool hasCompositingWindowManager(::Display* display) noexcept
+    static bool hasCompositingWindowManager (::Display* display) noexcept
     {
         return display != nullptr
                 && XGetSelectionOwner (display, Atoms::getCreating ("_NET_WM_CM_S0")) != 0;
     }
 
-    static XRenderPictFormat* findPictureFormat(::Display* display)
+    static XRenderPictFormat* findPictureFormat (::Display* display)
     {
         ScopedXLock xlock (display);
         XRenderPictFormat* pictFormat = nullptr;
@@ -1789,6 +1812,9 @@ public:
             if (c == &component)
                 break;
 
+            if (! c->isVisible())
+                continue;
+
             if (auto* peer = c->getPeer())
                 if (peer->contains (localPos + bounds.getPosition() - peer->getBounds().getPosition(), true))
                     return false;
@@ -2122,7 +2148,7 @@ public:
                     break;
 
                 default:
-                    if (sym >= XK_F1 && sym <= XK_F16)
+                    if (sym >= XK_F1 && sym <= XK_F35)
                     {
                         keyPressed = true;
                         keyCode = (sym & 0xff) | Keys::extendedKeyModifier;
@@ -2214,14 +2240,19 @@ public:
     {
         updateKeyModifiers ((int) buttonPressEvent.state);
 
-        switch (pointerMap [buttonPressEvent.button - Button1])
+        auto mapIndex = (uint32) (buttonPressEvent.button - Button1);
+
+        if (mapIndex < (uint32) numElementsInArray (pointerMap))
         {
-            case Keys::WheelUp:         handleWheelEvent (buttonPressEvent,  50.0f / 256.0f); break;
-            case Keys::WheelDown:       handleWheelEvent (buttonPressEvent, -50.0f / 256.0f); break;
-            case Keys::LeftButton:      handleButtonPressEvent (buttonPressEvent, ModifierKeys::leftButtonModifier); break;
-            case Keys::RightButton:     handleButtonPressEvent (buttonPressEvent, ModifierKeys::rightButtonModifier); break;
-            case Keys::MiddleButton:    handleButtonPressEvent (buttonPressEvent, ModifierKeys::middleButtonModifier); break;
-            default: break;
+            switch (pointerMap[mapIndex])
+            {
+                case Keys::WheelUp:         handleWheelEvent (buttonPressEvent,  50.0f / 256.0f); break;
+                case Keys::WheelDown:       handleWheelEvent (buttonPressEvent, -50.0f / 256.0f); break;
+                case Keys::LeftButton:      handleButtonPressEvent (buttonPressEvent, ModifierKeys::leftButtonModifier); break;
+                case Keys::RightButton:     handleButtonPressEvent (buttonPressEvent, ModifierKeys::rightButtonModifier); break;
+                case Keys::MiddleButton:    handleButtonPressEvent (buttonPressEvent, ModifierKeys::middleButtonModifier); break;
+                default: break;
+            }
         }
 
         clearLastMousePos();
@@ -2234,12 +2265,17 @@ public:
         if (parentWindow != 0)
             updateWindowBounds();
 
-        switch (pointerMap [buttonRelEvent.button - Button1])
+        auto mapIndex = (uint32) (buttonRelEvent.button - Button1);
+
+        if (mapIndex < (uint32) numElementsInArray (pointerMap))
         {
-            case Keys::LeftButton:      currentModifiers = currentModifiers.withoutFlags (ModifierKeys::leftButtonModifier); break;
-            case Keys::RightButton:     currentModifiers = currentModifiers.withoutFlags (ModifierKeys::rightButtonModifier); break;
-            case Keys::MiddleButton:    currentModifiers = currentModifiers.withoutFlags (ModifierKeys::middleButtonModifier); break;
-            default: break;
+            switch (pointerMap[mapIndex])
+            {
+                case Keys::LeftButton:      currentModifiers = currentModifiers.withoutFlags (ModifierKeys::leftButtonModifier); break;
+                case Keys::RightButton:     currentModifiers = currentModifiers.withoutFlags (ModifierKeys::rightButtonModifier); break;
+                case Keys::MiddleButton:    currentModifiers = currentModifiers.withoutFlags (ModifierKeys::middleButtonModifier); break;
+                default: break;
+            }
         }
 
         if (dragState->dragging)
@@ -3678,7 +3714,7 @@ private:
 
     Array<Atom> srcMimeTypeAtomList;
 
-    int pointerMap[5];
+    int pointerMap[5] = {};
 
     void initialisePointerMap()
     {
@@ -3730,13 +3766,13 @@ namespace WindowingHelpers
             if (! juce_handleXEmbedEvent (nullptr, &event))
            #endif
             {
-                if (LinuxComponentPeer* const peer = LinuxComponentPeer::getPeerFor (event.xany.window))
+                if (auto* peer = LinuxComponentPeer::getPeerFor (event.xany.window))
                     peer->handleWindowMessage (event);
             }
         }
         else if (event.xany.type == KeymapNotify)
         {
-            const XKeymapEvent& keymapEvent = (const XKeymapEvent&) event.xkeymap;
+            auto& keymapEvent = (const XKeymapEvent&) event.xkeymap;
             memcpy (Keys::keyStates, keymapEvent.key_vector, 32);
         }
     }
@@ -4285,33 +4321,45 @@ void MouseCursor::showInAllWindows() const
 }
 
 //=================================== X11 - DND ================================
+static LinuxComponentPeer* getPeerForDragEvent (Component* sourceComp)
+{
+    if (sourceComp == nullptr)
+        if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource(0))
+            sourceComp = draggingSource->getComponentUnderMouse();
 
-bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, const bool canMoveFiles)
+    if (sourceComp != nullptr)
+        if (auto* lp = dynamic_cast<LinuxComponentPeer*> (sourceComp->getPeer()))
+            return lp;
+
+    jassertfalse;  // This method must be called in response to a component's mouseDown or mouseDrag event!
+    return nullptr;
+}
+
+bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& files, const bool canMoveFiles,
+                                                           Component* sourceComp)
 {
     if (files.size() == 0)
         return false;
 
-    if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource (0))
-        if (auto* sourceComp = draggingSource->getComponentUnderMouse())
-            if (auto* lp = dynamic_cast<LinuxComponentPeer*> (sourceComp->getPeer()))
-                return lp->externalDragFileInit (files, canMoveFiles);
+    if (auto* lp = getPeerForDragEvent (sourceComp))
+        return lp->externalDragFileInit (files, canMoveFiles);
 
     // This method must be called in response to a component's mouseDown or mouseDrag event!
     jassertfalse;
     return false;
 }
 
-bool DragAndDropContainer::performExternalDragDropOfText (const String& text)
+bool DragAndDropContainer::performExternalDragDropOfText (const String& text, Component* sourceComp)
 {
     if (text.isEmpty())
         return false;
 
-    if (auto* draggingSource = Desktop::getInstance().getDraggingMouseSource (0))
-        if (auto* sourceComp = draggingSource->getComponentUnderMouse())
-            if (auto* lp = dynamic_cast<LinuxComponentPeer*> (sourceComp->getPeer()))
-                return lp->externalDragTextInit (text);
+    if (auto* lp = getPeerForDragEvent (sourceComp))
+        return lp->externalDragTextInit (text);
 
     // This method must be called in response to a component's mouseDown or mouseDrag event!
     jassertfalse;
     return false;
 }
+
+} // namespace juce

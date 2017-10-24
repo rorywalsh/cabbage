@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 #if JUCE_MSVC
  #pragma warning (push)
  #pragma warning (disable: 4514 4996)
@@ -211,7 +214,7 @@ private:
     {
         // (Can't use offsetof() here because of warnings about this not being a POD)
         return reinterpret_cast<StringHolder*> (reinterpret_cast<char*> (text.getAddress())
-                    - (reinterpret_cast<size_t> (reinterpret_cast<StringHolder*> (1)->text) - 1));
+                    - (reinterpret_cast<size_t> (reinterpret_cast<StringHolder*> (128)->text) - 128));
     }
 
     void compileTimeChecks()
@@ -563,7 +566,7 @@ struct HashGenerator
     template <typename CharPointer>
     static Type calculate (CharPointer t) noexcept
     {
-        Type result = Type();
+        Type result = {};
 
         while (! t.isEmpty())
             result = ((Type) multiplier) * result + (Type) t.getAndAdvance();
@@ -574,9 +577,9 @@ struct HashGenerator
     enum { multiplier = sizeof (Type) > 4 ? 101 : 31 };
 };
 
-int String::hashCode() const noexcept       { return HashGenerator<int>    ::calculate (text); }
-int64 String::hashCode64() const noexcept   { return HashGenerator<int64>  ::calculate (text); }
-size_t String::hash() const noexcept        { return HashGenerator<size_t> ::calculate (text); }
+int String::hashCode() const noexcept       { return (int) HashGenerator<uint32>    ::calculate (text); }
+int64 String::hashCode64() const noexcept   { return (int64) HashGenerator<uint64>  ::calculate (text); }
+size_t String::hash() const noexcept        { return HashGenerator<size_t>          ::calculate (text); }
 
 //==============================================================================
 JUCE_API bool JUCE_CALLTYPE operator== (const String& s1, const String& s2) noexcept            { return s1.compare (s2) == 0; }
@@ -858,8 +861,9 @@ JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const wchar_t* const s2) 
 JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const String& s2)            { return s1 += s2; }
 JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, StringRef s2)                { return s1 += s2; }
 
-JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const int number)            { return s1 += number; }
+JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, uint8 number)                { return s1 += (int) number; }
 JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const short number)          { return s1 += (int) number; }
+JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const int number)            { return s1 += number; }
 JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const unsigned short number) { return s1 += (uint64) number; }
 JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const long number)           { return s1 += String (number); }
 JUCE_API String& JUCE_CALLTYPE operator<< (String& s1, const unsigned long number)  { return s1 += String (number); }
@@ -1637,26 +1641,23 @@ String String::upToLastOccurrenceOf (StringRef sub,
     return substring (0, includeSubString ? i + sub.length() : i);
 }
 
+static bool isQuoteCharacter (juce_wchar c) noexcept
+{
+    return c == '"' || c == '\'';
+}
+
 bool String::isQuotedString() const
 {
-    const juce_wchar trimmedStart = trimStart()[0];
-
-    return trimmedStart == '"'
-        || trimmedStart == '\'';
+    return isQuoteCharacter (*text.findEndOfWhitespace());
 }
 
 String String::unquoted() const
 {
-    const int len = length();
+    if (! isQuoteCharacter (*text))
+        return *this;
 
-    if (len == 0)
-        return {};
-
-    const juce_wchar lastChar = text [len - 1];
-    const int dropAtStart = (*text == '"' || *text == '\'') ? 1 : 0;
-    const int dropAtEnd = (lastChar == '"' || lastChar == '\'') ? 1 : 0;
-
-    return substring (dropAtStart, len - dropAtEnd);
+    auto len = length();
+    return substring (1, len - (isQuoteCharacter (text[len - 1]) ? 1 : 0));
 }
 
 String String::quoted (const juce_wchar quoteCharacter) const
@@ -1870,7 +1871,7 @@ String String::formattedRaw (const char* pf, ...)
 
       #if JUCE_ANDROID
         HeapBlock<char> temp (bufferSize);
-        int num = (int) vsnprintf (temp.getData(), bufferSize - 1, pf, args);
+        int num = (int) vsnprintf (temp.get(), bufferSize - 1, pf, args);
         if (num >= static_cast<int> (bufferSize))
             num = -1;
       #else
@@ -1882,12 +1883,12 @@ String String::formattedRaw (const char* pf, ...)
        #else
             vswprintf
        #endif
-                (temp.getData(), bufferSize - 1, wideCharVersion.toWideCharPointer(), args);
+                (temp.get(), bufferSize - 1, wideCharVersion.toWideCharPointer(), args);
       #endif
         va_end (args);
 
         if (num > 0)
-            return String (temp);
+            return String (temp.get());
 
         bufferSize += 256;
 
@@ -2226,7 +2227,7 @@ StringRef::StringRef (const String& string) noexcept  : text (string.getCharPoin
 class StringTests  : public UnitTest
 {
 public:
-    StringTests() : UnitTest ("String class") {}
+    StringTests() : UnitTest ("String class", "Text") {}
 
     template <class CharPointerType>
     struct TestUTFConversion
@@ -2711,3 +2712,5 @@ public:
 static StringTests stringUnitTests;
 
 #endif
+
+} // namespace juce

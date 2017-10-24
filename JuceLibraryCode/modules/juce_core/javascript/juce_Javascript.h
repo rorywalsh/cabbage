@@ -20,6 +20,10 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
+//==============================================================================
 /**
     A simple javascript interpreter!
 
@@ -112,3 +116,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JavascriptEngine)
 };
+
+} // namespace juce

@@ -15,8 +15,10 @@
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
+#ifndef Native_File_Browser
+ #define Use_Native_File_Browser 1
+#endif
 
-// (You can add your own code in this section, and the Projucer will not overwrite it)
 #ifndef  JucePlugin_Build_VST
  #define JucePlugin_Build_VST              1
 #endif
@@ -35,11 +37,8 @@
 #ifndef  JucePlugin_Build_AAX
  #define JucePlugin_Build_AAX              0
 #endif
-#ifndef  JucePlugin_Build_Standalone
- #define JucePlugin_Build_Standalone       0
-#endif
-#ifndef  JucePlugin_Enable_IAA
- #define JucePlugin_Enable_IAA             0
+#ifndef  JucePlugin_Build_STANDALONE
+ #define JucePlugin_Build_STANDALONE       0
 #endif
 #ifndef  JucePlugin_Name
  #define JucePlugin_Name                   "CabbageEffectNam"
@@ -62,9 +61,13 @@
 #ifndef  JucePlugin_PluginCode
  #define JucePlugin_PluginCode             0x524f5259 // 'RORY'
 #endif
-#ifndef  JucePlugin_IsSynth
- #define JucePlugin_IsSynth                0
+
+#ifdef Cabbage_Plugin_Synth
+      #define JucePlugin_IsSynth                1
+#else
+    #define JucePlugin_IsSynth                0
 #endif
+
 #ifndef  JucePlugin_WantsMidiInput
  #define JucePlugin_WantsMidiInput         1
 #endif
@@ -72,7 +75,7 @@
  #define JucePlugin_ProducesMidiOutput     1
 #endif
 #ifndef  JucePlugin_IsMidiEffect
- #define JucePlugin_IsMidiEffect           1
+ #define JucePlugin_IsMidiEffect           0
 #endif
 #ifndef  JucePlugin_EditorRequiresKeyboardFocus
  #define JucePlugin_EditorRequiresKeyboardFocus  0
@@ -143,15 +146,23 @@
 #ifndef  JucePlugin_AAXDisableMultiMono
  #define JucePlugin_AAXDisableMultiMono    0
 #endif
-#ifndef  JucePlugin_IAAType
- #define JucePlugin_IAAType                0x6175726d // 'aurm'
+
+#ifndef    JUCE_STANDALONE_APPLICATION
+ #ifdef JucePlugin_Build_Standalone
+  #define  JUCE_STANDALONE_APPLICATION JucePlugin_Build_Standalone
+ #else
+  #ifdef Cabbage_IDE_Build
+      #define JUCE_STANDALONE_APPLICATION 1
+  #else
+    #define JUCE_STANDALONE_APPLICATION 0 
+  #endif
+ #endif
 #endif
-#ifndef  JucePlugin_IAASubType
- #define JucePlugin_IAASubType             JucePlugin_PluginCode
+
+#ifndef    JUCE_FORCE_USE_LEGACY_PARAM_IDS
+ #define   JUCE_FORCE_USE_LEGACY_PARAM_IDS 1
 #endif
-#ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "CabbageAudio: CabbageEffectNam"
-#endif
+
 // [END_USER_CODE_SECTION]
 
 /*
@@ -207,7 +218,7 @@
 #endif
 
 #ifndef    JUCE_WASAPI
- #define   JUCE_WASAPI 1
+ //#define JUCE_WASAPI 1
 #endif
 
 #ifndef    JUCE_WASAPI_EXCLUSIVE
@@ -359,7 +370,7 @@
 // juce_gui_extra flags:
 
 #ifndef    JUCE_WEB_BROWSER
- //#define JUCE_WEB_BROWSER 1
+ #define   JUCE_WEB_BROWSER 1
 #endif
 
 #ifndef    JUCE_ENABLE_LIVE_CONSTANT_EDITOR

@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 AudioFormatWriter::AudioFormatWriter (OutputStream* const out,
                                       const String& formatName_,
                                       const double rate,
@@ -33,6 +36,22 @@ AudioFormatWriter::AudioFormatWriter (OutputStream* const out,
     numChannels (numChannels_),
     bitsPerSample (bitsPerSample_),
     usesFloatingPointData (false),
+    channelLayout (AudioChannelSet::canonicalChannelSet(static_cast<int> (numChannels_))),
+    output (out),
+    formatName (formatName_)
+{
+}
+
+AudioFormatWriter::AudioFormatWriter (OutputStream* const out,
+                                      const String& formatName_,
+                                      const double rate,
+                                      const AudioChannelSet& channelLayout_,
+                                      const unsigned int bitsPerSample_)
+  : sampleRate (rate),
+    numChannels (static_cast<unsigned int> (channelLayout_.size())),
+    bitsPerSample (bitsPerSample_),
+    usesFloatingPointData (false),
+    channelLayout (channelLayout_),
     output (out),
     formatName (formatName_)
 {
@@ -342,3 +361,5 @@ void AudioFormatWriter::ThreadedWriter::setFlushInterval (int numSamplesPerFlush
 {
     buffer->setFlushInterval (numSamplesPerFlush);
 }
+
+} // namespace juce

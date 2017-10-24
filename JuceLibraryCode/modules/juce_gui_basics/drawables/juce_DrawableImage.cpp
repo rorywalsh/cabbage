@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 DrawableImage::DrawableImage()
     : opacity (1.0f),
       overlayColour (0x00000000)
@@ -290,3 +293,10 @@ ValueTree DrawableImage::createValueTree (ComponentBuilder::ImageProvider* image
 
     return tree;
 }
+
+Path DrawableImage::getOutlineAsPath() const
+{
+    return {}; // not applicable for images
+}
+
+} // namespace juce

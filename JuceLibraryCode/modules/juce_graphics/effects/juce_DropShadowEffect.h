@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -97,7 +97,7 @@ public:
 
     //==============================================================================
     /** @internal */
-    void applyEffect (Image& sourceImage, Graphics& destContext, float scaleFactor, float alpha);
+    void applyEffect (Image& sourceImage, Graphics& destContext, float scaleFactor, float alpha) override;
 
 
 private:
@@ -106,3 +106,5 @@ private:
 
     JUCE_LEAK_DETECTOR (DropShadowEffect)
 };
+
+} // namespace juce

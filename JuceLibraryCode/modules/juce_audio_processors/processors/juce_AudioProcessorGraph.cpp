@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 const int AudioProcessorGraph::midiChannelIndex = 0x1000;
 
 //==============================================================================
@@ -351,7 +354,7 @@ private:
     Array<int> channels;
     Array<uint32> nodeIds, midiNodeIds;
 
-    enum { freeNodeID = 0xffffffff, zeroNodeID = 0xfffffffe };
+    enum { freeNodeID = 0xffffffff, zeroNodeID = 0xfffffffe, anonymousNodeID = 0xfffffffd };
 
     static bool isNodeBusy (uint32 nodeID) noexcept     { return nodeID != freeNodeID && nodeID != zeroNodeID; }
 
@@ -509,6 +512,8 @@ private:
                     // can't re-use any of our input chans, so get a new one and copy everything into it..
                     bufIndex = getFreeBuffer (false);
                     jassert (bufIndex != 0);
+
+                    markBufferAsContaining (bufIndex, static_cast<uint32> (anonymousNodeID), 0);
 
                     const int srcIndex = getBufferContaining (sourceNodes.getUnchecked (0),
                                                               sourceOutputChans.getUnchecked (0));
@@ -1464,6 +1469,7 @@ void AudioProcessorGraph::processAudio (AudioBuffer<FloatType>& buffer, MidiBuff
     AudioBuffer<FloatType>&  currentAudioOutputBuffer = audioBuffers->currentAudioOutputBuffer.get<FloatType>();
 
     const int numSamples = buffer.getNumSamples();
+    jassert (numSamples <= getBlockSize());
 
     currentAudioInputBuffer = &buffer;
     currentAudioOutputBuffer.setSize (jmax (1, buffer.getNumChannels()), numSamples);
@@ -1486,6 +1492,25 @@ void AudioProcessorGraph::processAudio (AudioBuffer<FloatType>& buffer, MidiBuff
     midiMessages.addEvents (currentMidiOutputBuffer, 0, buffer.getNumSamples(), 0);
 }
 
+template <typename FloatType>
+void AudioProcessorGraph::sliceAndProcess (AudioBuffer<FloatType>& buffer, MidiBuffer& midiMessages)
+{
+    auto n = buffer.getNumSamples();
+    auto ch = buffer.getNumChannels();
+    auto max = 0;
+
+    for (auto pos = 0; pos < n; pos += max)
+    {
+        max = jmin (n - pos, getBlockSize());
+
+        AudioBuffer<FloatType> audioSlice (buffer.getArrayOfWritePointers(), ch, pos, max);
+        MidiBuffer midiSlice;
+
+        midiSlice.addEvents (midiMessages, pos, max, 0);
+        processAudio (audioSlice, midiSlice);
+    }
+}
+
 double AudioProcessorGraph::getTailLengthSeconds() const            { return 0; }
 bool AudioProcessorGraph::acceptsMidi() const                       { return true; }
 bool AudioProcessorGraph::producesMidi() const                      { return true; }
@@ -1494,12 +1519,12 @@ void AudioProcessorGraph::setStateInformation (const void*, int)    {}
 
 void AudioProcessorGraph::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
-    processAudio (buffer, midiMessages);
+    sliceAndProcess (buffer, midiMessages);
 }
 
 void AudioProcessorGraph::processBlock (AudioBuffer<double>& buffer, MidiBuffer& midiMessages)
 {
-    processAudio (buffer, midiMessages);
+    sliceAndProcess (buffer, midiMessages);
 }
 
 // explicit template instantiation
@@ -1671,3 +1696,5 @@ void AudioProcessorGraph::AudioGraphIOProcessor::setParentGraph (AudioProcessorG
         updateHostDisplay();
     }
 }
+
+} // namespace juce

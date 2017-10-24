@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /** An object that watches for any movement of a component or any of its parent components.
@@ -38,7 +38,7 @@
 
     It also includes a callback that lets you know when the top-level peer is changed.
 
-    This class is used by specialised components like WebBrowserComponent or QuickTimeComponent
+    This class is used by specialised components like WebBrowserComponent
     because they need to keep their custom windows in the right place and respond to
     changes in the peer.
 */
@@ -91,3 +91,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComponentMovementWatcher)
 };
+
+} // namespace juce

@@ -35,7 +35,7 @@
 
   ID:               juce_gui_basics
   vendor:           juce
-  version:          5.0.1
+  version:          5.1.2
   name:             JUCE GUI core classes
   description:      Basic user-interface components and related classes.
   website:          http://www.juce.com/juce
@@ -112,51 +112,55 @@
 //==============================================================================
 namespace juce
 {
+    class Component;
+    class LookAndFeel;
+    class MouseInputSource;
+    class MouseInputSourceInternal;
+    class ComponentPeer;
+    class MarkerList;
+    class RelativeRectangle;
+    class MouseEvent;
+    struct MouseWheelDetails;
+    struct PenDetails;
+    class ToggleButton;
+    class TextButton;
+    class AlertWindow;
+    class TextLayout;
+    class ScrollBar;
+    class ComboBox;
+    class Button;
+    class FilenameComponent;
+    class DocumentWindow;
+    class ResizableWindow;
+    class GroupComponent;
+    class MenuBarComponent;
+    class DropShadower;
+    class GlyphArrangement;
+    class PropertyComponent;
+    class TableHeaderComponent;
+    class Toolbar;
+    class ToolbarItemComponent;
+    class PopupMenu;
+    class ProgressBar;
+    class FileBrowserComponent;
+    class DirectoryContentsDisplayComponent;
+    class FilePreviewComponent;
+    class ImageButton;
+    class CallOutBox;
+    class Drawable;
+    class DrawablePath;
+    class DrawableComposite;
+    class CaretComponent;
+    class BubbleComponent;
+    class KeyPressMappingSet;
+    class ApplicationCommandManagerListener;
+    class DrawableButton;
 
-class Component;
-class LookAndFeel;
-class MouseInputSource;
-class MouseInputSourceInternal;
-class ComponentPeer;
-class MarkerList;
-class RelativeRectangle;
-class MouseEvent;
-struct MouseWheelDetails;
-struct PenDetails;
-class ToggleButton;
-class TextButton;
-class AlertWindow;
-class TextLayout;
-class ScrollBar;
-class ComboBox;
-class Button;
-class FilenameComponent;
-class DocumentWindow;
-class ResizableWindow;
-class GroupComponent;
-class MenuBarComponent;
-class DropShadower;
-class GlyphArrangement;
-class PropertyComponent;
-class TableHeaderComponent;
-class Toolbar;
-class ToolbarItemComponent;
-class PopupMenu;
-class ProgressBar;
-class FileBrowserComponent;
-class DirectoryContentsDisplayComponent;
-class FilePreviewComponent;
-class ImageButton;
-class CallOutBox;
-class Drawable;
-class DrawablePath;
-class DrawableComposite;
-class CaretComponent;
-class BubbleComponent;
-class KeyPressMappingSet;
-class ApplicationCommandManagerListener;
-class DrawableButton;
-class FlexBox;
+    #if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS
+     class FlexBox;
+     class Grid;
+    #endif
+}
 
 #include "mouse/juce_MouseCursor.h"
 #include "mouse/juce_MouseListener.h"
@@ -178,7 +182,6 @@ class FlexBox;
 #include "mouse/juce_DragAndDropContainer.h"
 #include "mouse/juce_FileDragAndDropTarget.h"
 #include "mouse/juce_SelectedItemSet.h"
-#include "mouse/juce_LassoComponent.h"
 #include "mouse/juce_MouseInactivityDetector.h"
 #include "mouse/juce_TextDragAndDropTarget.h"
 #include "mouse/juce_TooltipClient.h"
@@ -286,15 +289,19 @@ class FlexBox;
 #include "lookandfeel/juce_LookAndFeel_V1.h"
 #include "lookandfeel/juce_LookAndFeel_V3.h"
 #include "lookandfeel/juce_LookAndFeel_V4.h"
+#include "mouse/juce_LassoComponent.h"
 
 #if JUCE_LINUX
  #include "native/juce_linux_X11.h"
 #endif
 
 // these classes are C++11-only
-#if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS && JUCE_COMPILER_SUPPORTS_LAMBDAS
-#include "layout/juce_FlexItem.h"
-#include "layout/juce_FlexBox.h"
-#endif
+#if JUCE_COMPILER_SUPPORTS_INITIALIZER_LISTS
+ #include "layout/juce_FlexItem.h"
+ #include "layout/juce_FlexBox.h"
 
-}
+ #if JUCE_HAS_CONSTEXPR
+  #include "layout/juce_GridItem.h"
+  #include "layout/juce_Grid.h"
+ #endif
+#endif

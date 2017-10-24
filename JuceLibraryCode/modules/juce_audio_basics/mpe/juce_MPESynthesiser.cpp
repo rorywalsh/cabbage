@@ -20,11 +20,14 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 MPESynthesiser::MPESynthesiser()
 {
 }
 
-MPESynthesiser::MPESynthesiser (MPEInstrument* instrument)  : MPESynthesiserBase (instrument)
+MPESynthesiser::MPESynthesiser (MPEInstrument* mpeInstrument)  : MPESynthesiserBase (mpeInstrument)
 {
 }
 
@@ -352,3 +355,5 @@ void MPESynthesiser::renderNextSubBlock (AudioBuffer<double>& buffer, int startS
             voice->renderNextBlock (buffer, startSample, numSamples);
     }
 }
+
+} // namespace juce

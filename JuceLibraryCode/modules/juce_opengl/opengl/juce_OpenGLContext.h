@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -308,7 +308,7 @@ private:
     void* contextToShareWith;
     OpenGLVersion versionRequired;
     size_t imageCacheMaxSize;
-    bool renderComponents, useMultisampling, continuousRepaint;
+    bool renderComponents, useMultisampling, continuousRepaint, overrideCanAttach;
 
     //==============================================================================
     struct AsyncWorker : ReferenceCountedObject
@@ -322,11 +322,15 @@ private:
     struct AsyncWorkerFunctor : AsyncWorker
     {
         AsyncWorkerFunctor (T functorToUse) : functor (functorToUse) {}
-        void operator() (OpenGLContext& callerContext) override { functor (callerContext); }
+        void operator() (OpenGLContext& callerContext) override     { functor (callerContext); }
         T functor;
 
-        JUCE_DECLARE_NON_COPYABLE(AsyncWorkerFunctor)
+        JUCE_DECLARE_NON_COPYABLE (AsyncWorkerFunctor)
     };
+
+    //==============================================================================
+    friend void componentPeerAboutToChange (Component&, bool);
+    void overrideCanBeAttached (bool);
 
     //==============================================================================
     CachedImage* getCachedImage() const noexcept;
@@ -340,3 +344,5 @@ private:
 template <typename T>
 void OpenGLContext::executeOnGLThread (T&& f, bool shouldBlock) { execute (new AsyncWorkerFunctor<T> (f), shouldBlock); }
 #endif
+
+} // namespace juce

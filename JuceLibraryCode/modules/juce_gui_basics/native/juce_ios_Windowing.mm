@@ -24,18 +24,19 @@
   ==============================================================================
 */
 
-extern bool isIOSAppActive;
-
-struct AppInactivityCallback // NB: careful, this declaration is duplicated in other modules
+namespace juce
 {
-    virtual ~AppInactivityCallback() {}
-    virtual void appBecomingInactive() = 0;
-};
+    extern bool isIOSAppActive;
 
-// This is an internal list of callbacks (but currently used between modules)
-Array<AppInactivityCallback*> appBecomingInactiveCallbacks;
+    struct AppInactivityCallback // NB: careful, this declaration is duplicated in other modules
+    {
+        virtual ~AppInactivityCallback() {}
+        virtual void appBecomingInactive() = 0;
+    };
 
-} // (juce namespace)
+    // This is an internal list of callbacks (but currently used between modules)
+    Array<AppInactivityCallback*> appBecomingInactiveCallbacks;
+}
 
 @interface JuceAppStartupDelegate : NSObject <UIApplicationDelegate>
 {
@@ -99,15 +100,7 @@ Array<AppInactivityCallback*> appBecomingInactiveCallbacks;
             }
         }];
 
-        MessageManager::callAsync ([self,application,app] ()
-                                   {
-                                       app->suspended();
-                                       if (appSuspendTask != UIBackgroundTaskInvalid)
-                                       {
-                                           [application endBackgroundTask:appSuspendTask];
-                                           appSuspendTask = UIBackgroundTaskInvalid;
-                                       }
-                                   });
+        MessageManager::callAsync ([self,application,app] ()  { app->suspended(); });
        #else
         ignoreUnused (application);
         app->suspended();
@@ -377,13 +370,13 @@ int JUCE_CALLTYPE NativeMessageBox::showYesNoBox (AlertWindow::AlertIconType /*i
 }
 
 //==============================================================================
-bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray&, bool)
+bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray&, bool, Component*)
 {
     jassertfalse;    // no such thing on iOS!
     return false;
 }
 
-bool DragAndDropContainer::performExternalDragDropOfText (const String&)
+bool DragAndDropContainer::performExternalDragDropOfText (const String&, Component*)
 {
     jassertfalse;    // no such thing on iOS!
     return false;
@@ -486,3 +479,5 @@ void Desktop::Displays::findDisplays (float masterScale)
         displays.add (d);
     }
 }
+
+} // namespace juce

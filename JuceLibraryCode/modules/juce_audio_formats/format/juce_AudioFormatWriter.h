@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -60,6 +60,26 @@ protected:
                        const String& formatName,
                        double sampleRate,
                        unsigned int numberOfChannels,
+                       unsigned int bitsPerSample);
+
+    //==============================================================================
+    /** Creates an AudioFormatWriter object.
+
+        @param destStream            the stream to write to - this will be deleted
+                                     by this object when it is no longer needed
+        @param formatName            the description that will be returned by the getFormatName()
+                                     method
+        @param sampleRate            the sample rate to use - the base class just stores
+                                     this value, it doesn't do anything with it
+        @param audioChannelLayout    the channel layout to use for the writer - the base class
+                                     just stores this value, it doesn't do anything with it
+        @param bitsPerSample         the bit depth of the stream - the base class just stores
+                                     this value, it doesn't do anything with it
+    */
+    AudioFormatWriter (OutputStream* destStream,
+                       const String& formatName,
+                       double sampleRate,
+                       const AudioChannelSet& audioChannelLayout,
                        unsigned int bitsPerSample);
 
 public:
@@ -235,6 +255,9 @@ protected:
     /** True if it's a floating-point format, false if it's fixed-point. */
     bool usesFloatingPointData;
 
+    /** The audio channel layout that the writer should use */
+    AudioChannelSet channelLayout;
+
     /** The output stream for use by subclasses. */
     OutputStream* output;
 
@@ -271,3 +294,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioFormatWriter)
 };
+
+} // namespace juce

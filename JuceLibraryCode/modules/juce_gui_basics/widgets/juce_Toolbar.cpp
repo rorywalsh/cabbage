@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 const char* const Toolbar::toolbarDragDescriptor = "_toolbarItem_";
 
 //==============================================================================
@@ -177,7 +180,7 @@ public:
         {
             for (int i = 0; i < getNumChildComponents(); ++i)
             {
-                if (ToolbarItemComponent* const tc = dynamic_cast<ToolbarItemComponent*> (getChildComponent (i)))
+                if (auto* tc = dynamic_cast<ToolbarItemComponent*> (getChildComponent (i)))
                 {
                     tc->setVisible (false);
                     const int index = oldIndexes.removeAndReturn (i);
@@ -197,9 +200,9 @@ public:
         int y = indent;
         int maxX = 0;
 
-        for (int i = 0; i < getNumChildComponents(); ++i)
+        for (auto* c : getChildren())
         {
-            if (ToolbarItemComponent* const tc = dynamic_cast<ToolbarItemComponent*> (getChildComponent (i)))
+            if (auto* tc = dynamic_cast<ToolbarItemComponent*> (c))
             {
                 int preferredSize = 1, minSize = 1, maxSize = 1;
 
@@ -705,8 +708,8 @@ private:
     Toolbar& toolbar;
 
     class CustomiserPanel  : public Component,
-                             private ComboBoxListener, // (can't use ComboBox::Listener due to idiotic VC2005 bug)
-                             private ButtonListener
+                             private ComboBox::Listener,
+                             private Button::Listener
     {
     public:
         CustomiserPanel (ToolbarItemFactory& tbf, Toolbar& bar, int optionFlags)
@@ -811,3 +814,5 @@ void Toolbar::showCustomisationDialog (ToolbarItemFactory& factory, const int op
     (new CustomisationDialog (factory, *this, optionFlags))
         ->enterModalState (true, nullptr, true);
 }
+
+} // namespace juce

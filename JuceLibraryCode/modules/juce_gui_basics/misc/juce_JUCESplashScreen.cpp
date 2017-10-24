@@ -24,6 +24,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 /*
   ==============================================================================
 
@@ -77,7 +80,7 @@ struct ReportingThreadContainer  : public ChangeListener,
     juce_DeclareSingleton_SingleThreaded_Minimal (ReportingThreadContainer)
 };
 
-juce_ImplementSingleton_SingleThreaded (ReportingThreadContainer);
+juce_ImplementSingleton_SingleThreaded (ReportingThreadContainer)
 
 //==============================================================================
 struct ReportingThread  : public Thread,
@@ -227,6 +230,8 @@ JUCESplashScreen::JUCESplashScreen (Component& parent)
             appUsageReported = true;
         }
     }
+   #else
+    ignoreUnused (appUsageReported);
    #endif
 
    #if JUCE_DISPLAY_SPLASH_SCREEN
@@ -352,3 +357,5 @@ void JUCESplashScreen::mouseUp (const MouseEvent&)
 }
 
 // END SECTION A
+
+} // namespace juce

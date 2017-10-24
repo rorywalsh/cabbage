@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 namespace
 {
     const uint8 noLSBValueReceived = 0xff;
@@ -695,7 +698,7 @@ class MPEInstrumentTests : public UnitTest
 {
 public:
     MPEInstrumentTests()
-        : UnitTest ("MPEInstrument class")
+        : UnitTest ("MPEInstrument class", "MIDI/MPE")
     {
         // using two MPE zones with the following layout for testing
         //
@@ -2148,3 +2151,5 @@ private:
 static MPEInstrumentTests MPEInstrumentUnitTests;
 
 #endif // JUCE_UNIT_TESTS
+
+} // namespace juce

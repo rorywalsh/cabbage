@@ -24,8 +24,8 @@
   ==============================================================================
 */
 
-#pragma once
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -99,6 +99,8 @@ public:
     static const Identifier valueTreeType;
     /** @internal */
     Rectangle<float> getDrawableBounds() const override;
+    /** @internal */
+    Path getOutlineAsPath() const override;
 
     //==============================================================================
     /** Internally-used class for wrapping a DrawableText's state into a ValueTree. */
@@ -147,7 +149,11 @@ private:
     bool registerCoordinates (RelativeCoordinatePositionerBase&);
     void recalculateCoordinates (Expression::Scope*);
     void refreshBounds();
+    Rectangle<int> getTextArea (float width, float height) const;
+    AffineTransform getTextTransform (float width, float height) const;
 
     DrawableText& operator= (const DrawableText&);
     JUCE_LEAK_DETECTOR (DrawableText)
 };
+
+} // namespace juce

@@ -24,25 +24,14 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 extern int64 getMouseEventTime();
 
-#if JUCE_MINGW
- #define JUCE_COMCLASS(name, guid) \
-    template<> struct UUIDGetter<::name>   { static CLSID get() { return uuidFromString (guid); } };
-
- #ifdef __uuidof
-  #undef __uuidof
- #endif
-
- #define __uuidof(cls) UUIDGetter<::cls>::get()
-
-#else
- #define JUCE_COMCLASS(name, guid)
-#endif
-
-JUCE_COMCLASS (IOleObject,       "00000112-0000-0000-C000-000000000046")
-JUCE_COMCLASS (IOleWindow,       "00000114-0000-0000-C000-000000000046")
-JUCE_COMCLASS (IOleInPlaceSite,  "00000119-0000-0000-C000-000000000046")
+JUCE_DECLARE_UUID_GETTER (IOleObject,       "00000112-0000-0000-C000-000000000046")
+JUCE_DECLARE_UUID_GETTER (IOleWindow,       "00000114-0000-0000-C000-000000000046")
+JUCE_DECLARE_UUID_GETTER (IOleInPlaceSite,  "00000119-0000-0000-C000-000000000046")
 
 namespace ActiveXHelpers
 {
@@ -465,3 +454,5 @@ LRESULT juce_offerEventToActiveXControl (::MSG& msg)
 
     return S_FALSE;
 }
+
+} // namespace juce

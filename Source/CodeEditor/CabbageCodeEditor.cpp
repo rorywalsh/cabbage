@@ -67,6 +67,11 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
 
 }
 
+CabbageCodeEditorComponent::~CabbageCodeEditorComponent() 
+{
+	
+}
+
 void CabbageCodeEditorComponent::updateColourScheme()
 {
     struct Type

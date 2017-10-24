@@ -20,6 +20,9 @@
   ==============================================================================
 */
 
+namespace juce
+{
+
 namespace
 {
     uint16 generateNoteID (int midiChannel, int midiNoteNumber) noexcept
@@ -99,7 +102,7 @@ bool MPENote::operator!= (const MPENote& other) const noexcept
 class MPENoteTests : public UnitTest
 {
 public:
-    MPENoteTests() : UnitTest ("MPENote class") {}
+    MPENoteTests() : UnitTest ("MPENote class", "MIDI/MPE") {}
 
     //==============================================================================
     void runTest() override
@@ -128,3 +131,5 @@ private:
 static MPENoteTests MPENoteUnitTests;
 
 #endif // JUCE_UNIT_TESTS
+
+} // namespace juce
