@@ -64,6 +64,9 @@ compiler:
     - gcc
 
 before_script: 
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
+    - sleep 3 # give xvfb some time to start
     - cd ..
     - sudo apt-get install libsndfile1
     - git clone https://github.com/WeAreROLI/JUCE.git
