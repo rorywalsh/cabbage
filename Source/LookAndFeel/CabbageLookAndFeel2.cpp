@@ -523,6 +523,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
 
 }
 
+
 //========= linear slider ================================================================================
 void CabbageLookAndFeel2::drawLinearSlider (Graphics& g, int x, int y, int width, int height,
                                             float sliderPos, float minSliderPos, float maxSliderPos,

@@ -525,7 +525,6 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
         String parameter = identifiersInLine[i];
         parameter = parameter.substring (parameter.indexOf ("(") + 1, parameter.lastIndexOf (")")).trimCharactersAtStart ("\"").trimCharactersAtEnd ("\"");
         parameters.add (parameter);
-		CabbageUtilities::debug(parameter);
     }
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)

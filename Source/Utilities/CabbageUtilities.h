@@ -732,13 +732,27 @@ public:
     static int getNumberOfDecimalPlaces (String incr)
     {
 
+		int count = 0;
+		float num = abs(incr.getDoubleValue());
+		num = num - int(num);
+		while (abs(num) >= 0.0000001)
+		{
+			num = num * 10;
+			count = count + 1;
+			num = num - int(num);
+		}
+		
+
         if (incr.indexOf (".") >= 0)
         {
             String subTemp = incr.substring (incr.indexOf ("."), 10);
-            return subTemp.length() - 1;
+			if (count < subTemp.length() - 1)
+				return count;
+			else
+				return subTemp.length() - 1;
         }
 
-        return 2;
+        return count;
 
     }
 

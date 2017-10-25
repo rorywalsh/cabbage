@@ -694,7 +694,6 @@ public:
         set ("Endless Encoder", CabbageWidgetTypes::encoder);
         set ("Gentable", CabbageWidgetTypes::gentable);
         set ("Groupbox", CabbageWidgetTypes::groupbox);
-        set ("Horizontal Range Slider", CabbageWidgetTypes::hrange);
 		set ("Horizontal Meter", CabbageWidgetTypes::hmeter);
         set ("Image", CabbageWidgetTypes::image);
         set ("Keyboard", CabbageWidgetTypes::keyboard);
@@ -704,10 +703,11 @@ public:
         set ("Slider - Horizontal", CabbageWidgetTypes::hslider);
         set ("Slider - Rotary", CabbageWidgetTypes::rslider);
         set ("Slider - Vertical", CabbageWidgetTypes::vslider);
+		set ("Slider - Range - Vertical", CabbageWidgetTypes::vrange);
+		set ("Slider - Range - Horizontal", CabbageWidgetTypes::hrange);
         set ("Soundfiler", CabbageWidgetTypes::soundfiler);
         set ("Text Box", CabbageWidgetTypes::textbox.toString());
         set ("Text Editor", CabbageWidgetTypes::texteditor);
-        set ("Vertical Range Slider", CabbageWidgetTypes::vrange);
 		set ("Vertical Meter", CabbageWidgetTypes::vmeter);
         set ("XY Pad", CabbageWidgetTypes::xypad);
     }

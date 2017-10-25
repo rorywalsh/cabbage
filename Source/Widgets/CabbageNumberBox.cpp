@@ -106,11 +106,12 @@ void CabbageNumberBox::valueTreePropertyChanged (ValueTree& valueTree, const Ide
         label.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour)));
         //todo: work out why this gets rid of the font from the numberbox
         //slider.setColour (Slider::textBoxHighlightColourId, slider.findColour (Slider::textBoxBackgroundColourId));
-        slider.setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
         slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
+		slider.setColour (Slider::textBoxTextColourId, Colours::green);
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
         align = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::align);
         label.setText (getText(), dontSendNotification);
+		slider.sendLookAndFeelChange();
         resized();
     }
 }

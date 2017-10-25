@@ -297,7 +297,10 @@ void CabbagePluginProcessor::createParameters()
 					const float increment = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::increment);
 					const float skew = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::sliderskew);
 					const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::min);
-					const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::max);
+					const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::max) > min ? 
+										CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::max) :
+										min+1;
+					
 					addParameter (new CabbageAudioParameter (cabbageWidgets.getChild (i), *getCsound(), channel, name, min, max, value, increment, skew));
 				}
                 else

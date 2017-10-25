@@ -104,10 +104,6 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
                 }
                 else
                 {
-                    //cUtils::showMessage(tableValues.size());
-                    for ( int v = 0 ; v < tableValues.size() ; v++)
-                        CabbageUtilities::debug (tableValues[v]);
-
                     table.setWaveform (tableValues, tableNumber);
 
                     //only enable editing for gen05, 07, and 02
@@ -205,10 +201,6 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     }
     else if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 0)
 	{
-		//don't do anything when resetting update flag..
-	}
-	else		
-    {
         table.setGridColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour)));
         table.setBackgroundColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour)));
         table.setFill (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
@@ -264,6 +256,6 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         }
 
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-    }
+	}
 
 }
