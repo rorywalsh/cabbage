@@ -380,7 +380,7 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag, File xmlFile)
 				if(file.length()>2)
 				{
 					const String relativePath = File (file).getRelativePathFrom (File (csdFile));
-					xml->getChildByName(presetName)->setAttribute (channelName, relativePath);
+					xml->getChildByName(presetName)->setAttribute (channelName, relativePath.replaceCharacters("\\", "/"));
 				}
 			}
 			else if(type.contains("range"))//double channel range widgets

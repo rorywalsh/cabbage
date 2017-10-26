@@ -51,6 +51,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 CabbagePluginEditor::~CabbagePluginEditor()
 {
     popupPlants.clear();
+	setLookAndFeel(nullptr);
 }
 
 void CabbagePluginEditor::resized()
@@ -819,10 +820,7 @@ String CabbagePluginEditor::createNewGenericNameForPresetFile()
     {
         String newName = instrumentName + "_" + String (i + 1);
 
-        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
-            newFileName = pluginDir.getFullPathName() + "\\" + newName + ".snaps";
-        else
-            newFileName  = pluginDir.getFullPathName() + "/" + newName + ".snaps";
+        newFileName  = pluginDir.getFullPathName() + "/" + newName + ".snaps";
 
         bool allowSave = true;
 

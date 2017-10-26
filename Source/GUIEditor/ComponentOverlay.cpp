@@ -30,6 +30,7 @@ ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEdito
 
 ComponentOverlay::~ComponentOverlay ()
 {
+	setLookAndFeel(nullptr);
     delete resizer;
 }
 

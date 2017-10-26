@@ -32,7 +32,8 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
       Thread ("parseVariablesThread"),
       debugLabel (""),
       currentLineMarker(),
-	  lookAndFeel3()
+	  lookAndFeel3(),
+	  lookAndFeel3temp()
 {
     //setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
@@ -69,7 +70,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent() 
 {
-	
+	setLookAndFeel(&lookAndFeel3temp);
 }
 
 void CabbageCodeEditorComponent::updateColourScheme()

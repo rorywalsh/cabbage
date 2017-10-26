@@ -75,8 +75,9 @@ void CabbageFileButton::buttonClicked (Button* button)
         {
             if (fc.browseForFileToOpen())
             {
-                owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
-                CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
+				const String filename = fc.getResult().getFullPathName().replaceCharacters("\\", "/");
+                owner->sendChannelStringDataToCsound (getChannel(), filename);
+                CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, filename);
                 //owner->refreshComboBoxContents();
             }
         }
@@ -91,8 +92,9 @@ void CabbageFileButton::buttonClicked (Button* button)
 
         if (fc.browseForDirectory())
         {
-            owner->sendChannelStringDataToCsound (getChannel(), fc.getResult().getFullPathName());
-            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, fc.getResult().getFullPathName());
+			const String filename = fc.getResult().getFullPathName().replaceCharacters("\\", "/");
+            owner->sendChannelStringDataToCsound (getChannel(), filename);
+            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, filename);
         }
 		
 		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
