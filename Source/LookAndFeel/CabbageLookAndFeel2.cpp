@@ -559,10 +559,6 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout (Slider& slider)
 
     Rectangle<int> localBounds = slider.getLocalBounds();
 
-    if (slider.getSliderStyle() == Slider::LinearBarVertical)
-        return layout;
-
-
     const int textBoxWidth = jmax (0, jmin (slider.getTextBoxWidth(),  localBounds.getWidth() - minXSpace));
     const int textBoxHeight = jmax (0, jmin (slider.getTextBoxHeight(), localBounds.getHeight() - minYSpace));
 
