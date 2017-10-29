@@ -4,7 +4,7 @@ Form creates the main application window. pluginid() is the only required identi
 
 ```csharp
 form caption("title"), size(Width, Height), pluginid("plug"), \
-colour("colour"), guirefresh(val), svgpath("path")
+colour("colour"), guirefresh(val), import("file1", "file2")
 ```
 <!--(End of syntax)/-->
 ##Identifiers
@@ -18,7 +18,7 @@ colour("colour"), guirefresh(val), svgpath("path")
 
 {! ./markdown/Widgets/Properties/guirefresh.md !}     
 
-{! ./markdown/Widgets/Properties/svgpath.md !}  
+{! ./markdown/Widgets/Properties/import.md !}  
 
 ### Common Identifiers
 

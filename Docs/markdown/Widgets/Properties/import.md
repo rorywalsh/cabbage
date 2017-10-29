@@ -1,0 +1,1 @@
+**import("file1", "file2", "etc..")** The import identifier will import the file/s specified. The text will be auto-expanded into the <Cabbage> section of the .csd file. This can be useful wen including files that contains macro definitions. 
