@@ -98,7 +98,7 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
     cabbageWidgets.removeAllChildren (0);
     linesFromCsd.addLines (csdText);
     String parentComponent, previousComponent;
-
+	addImportFiles (linesFromCsd);
     searchForMacros (linesFromCsd);
 
 
@@ -143,6 +143,8 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         {
             const String caption = CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::caption);
             this->setPluginName (caption.length() > 0 ? caption : "Untitled");
+
+			
 
             if (CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::logger) == 1)
                 createFileLogger (this->csdFile);
@@ -192,6 +194,29 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
     }
 }
 
+void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
+{
+	for (int i = 0 ; i < linesFromCsd.size() ; i++)
+	{
+		ValueTree temp ("temp");
+		CabbageWidgetData::setWidgetState (temp, linesFromCsd[i], 0);
+
+		if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+		{
+			var files = CabbageWidgetData::getProperty (temp, CabbageIdentifierIds::importfiles);
+			for( int y = 0 ; y < files.size() ; y++)
+			{
+				StringArray defineStrings;
+				defineStrings.addLines(csdFile.getParentDirectory().getChildFile (files[y].toString()).loadFileAsString());
+				for ( int y = defineStrings.size() ; y >= 0 ; y--)
+				linesFromCsd.insert(i+1, defineStrings[y]);				
+			}
+								
+			return;
+		}
+	}
+}
+
 void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
 {
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
@@ -208,7 +233,7 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
             {
                 const String currentMacroText = csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ";
                 //first identifiers are not being used for some reason. This hack fixes that, but should be tidied up..
-				macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText );
+				macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText);
             }
         }
     }
@@ -218,18 +243,25 @@ const String CabbagePluginProcessor::getExpandedMacroText (const String line, Va
 {
     String csdLine;
     var macroNames;
+	String defineText;
 
-    for (int cnt = 0 ; cnt < macroText.size() ; cnt++)
-    {
-        if (line.contains (macroText.getName (cnt).toString()))
-        {
-            csdLine += macroText.getWithDefault (macroText.getName (cnt), "").toString() + " ";
-            macroNames.append (macroText.getName (cnt).toString());
-        }
-    }
+	if(line.contains("$"))
+	{
+		defineText = line.substring(line.indexOf("$"), line.length());
+		defineText = defineText.substring(0, (defineText.indexOf(" ")!=-1 ? defineText.indexOf(" ") : defineText.length()));
+	
+		for (int cnt = 0 ; cnt < macroText.size() ; cnt++)
+		{
+				
+			if (defineText == macroText.getName (cnt).toString())
+			{
+				csdLine += macroText.getWithDefault (macroText.getName (cnt), "").toString() + " ";
+				macroNames.append (macroText.getName (cnt).toString());
+			}
+		}
 
-    CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::macronames, macroNames);
-
+		CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::macronames, macroNames);
+	}
     return csdLine;
 }
 

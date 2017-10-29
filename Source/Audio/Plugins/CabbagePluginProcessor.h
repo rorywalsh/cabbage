@@ -35,6 +35,7 @@ public:
 
     ValueTree cabbageWidgets;
     void getChannelDataFromCsound();
+	void addImportFiles(StringArray& lineFromCsd);
     void parseCsdFile (String csdText);
     void createParameters();
     void updateWidgets (String csdText);

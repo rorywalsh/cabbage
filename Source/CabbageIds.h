@@ -380,7 +380,7 @@ public:
         add ("arraysize");
 		add ("increment");
         add ("populate");
-        add ("keywidth");
+        add ("keywidth");		
         add ("pluginid");
         add ("imgdebug");
         add ("colour:0");
@@ -401,6 +401,7 @@ public:
         add ("visible");
         add ("latched");
         add ("rescale");
+		add ("import");
         add ("bounds");
         add ("colour");
         add ("rangey");
@@ -617,7 +618,8 @@ static const Identifier align = "align";
 static const Identifier tabbed = "tabbed";
 static const Identifier rangey = "rangey";
 static const Identifier rangex = "rangex";
-static const Identifier include = "include";
+static const Identifier import = "import";
+static const Identifier importfiles = "importfiles";
 static const Identifier radiogroup = "radiogroup";
 static const Identifier tabpage = "tabpage";
 static const Identifier filetype = "filetype";

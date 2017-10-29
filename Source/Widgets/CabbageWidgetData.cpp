@@ -310,6 +310,9 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("shape"):
                 setShapes (strTokens, widgetData);
                 break;
+			
+			case HashStringToInt ("import"):
+				setImportFiles (strTokens, widgetData);
 
             //=========== floats ===============================
             case HashStringToInt ("imgdebug"):
@@ -585,6 +588,21 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
 
     }
 }
+
+void CabbageWidgetData::setImportFiles (StringArray strTokens, ValueTree widgetData)
+{
+    var files;
+    int comboRange = 0;
+
+    for (int i = 0; i < strTokens.size(); i++)
+    {
+        files.append(strTokens[i]);
+    }
+	
+	setProperty (widgetData, CabbageIdentifierIds::importfiles, files);
+
+}
+
 
 void CabbageWidgetData::setTextItemArrays (StringArray strTokens, ValueTree widgetData, String typeOfWidget)
 {
