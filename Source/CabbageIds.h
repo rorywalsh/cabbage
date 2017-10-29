@@ -379,11 +379,12 @@ public:
         add ("fontcolor");
         add ("arraysize");
 		add ("increment");
+        add ("namespace");
         add ("populate");
         add ("keywidth");		
         add ("pluginid");
         add ("imgdebug");
-        add ("colour:0");
+		add ("colour:0");
         add ("colour:1");
         add ("channels");
         add ("velocity");
@@ -678,6 +679,8 @@ static const String mousedownleft = "MOUSE_DOWN_LEFT";
 static const String mousedownright = "MOUSE_DOWN_RIGHT";
 static const String mousedownlmiddle = "MOUSE_DOWN_MIDDLE";
 static const String updaterate = "updaterate";
+static const String nsp = "namespace";
+
 };
 
 

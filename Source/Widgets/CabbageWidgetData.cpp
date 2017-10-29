@@ -220,6 +220,10 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
         setProperty (widgetData, CabbageIdentifierIds::name, "hosttime");
         setProperty (widgetData, CabbageIdentifierIds::type, "hosttime");
     }
+	else
+	{
+		setProperty (widgetData, CabbageIdentifierIds::type, strTokens[0]);
+	}
 
     //parse the text now that all default values ahve been assigned
     setCustomWidgetState (widgetData, lineFromCsd, "");
@@ -280,6 +284,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("show"):
             case HashStringToInt ("child"):
             case HashStringToInt ("logger"):
+			case HashStringToInt ("namespace"):
                 setProperty (widgetData, identifier, strTokens[0].trim());
                 break;
                 break;

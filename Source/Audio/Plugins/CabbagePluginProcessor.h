@@ -36,7 +36,7 @@ public:
     ValueTree cabbageWidgets;
     void getChannelDataFromCsound();
 	void addImportFiles(StringArray& lineFromCsd);
-    void parseCsdFile (String csdText);
+    void parseCsdFile (StringArray& linesFromCsd);
     void createParameters();
     void updateWidgets (String csdText);
     void searchForMacros (StringArray& csdText);
@@ -48,6 +48,16 @@ public:
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
+
+	class PlantImportStruct 
+	{
+		
+	public:
+		String nsp, name, csoundCode;
+		StringArray cabbageCode;
+			PlantImportStruct(){}
+								
+	};
 
     File getCsdFile()
     {

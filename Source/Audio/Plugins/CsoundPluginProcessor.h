@@ -39,6 +39,7 @@ public:
     ~CsoundPluginProcessor();
 
     //==============================================================================
+	void setupAndCompileCsound(File csdFile, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
