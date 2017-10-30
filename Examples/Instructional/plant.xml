@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<plant>
+<namespace>rw</namespace>
+<name>radioValueButtonGroup</name>
+<cabbagecode>
+	image bounds(10, 10, 140, 50) colour(22, 22, 22), corners(10){
+	button bounds(10, 10, 30, 30) channel("button1") radiogroup(99), text(""), colour:1("red"), identchannel("button1Ident")
+	button bounds(40, 10, 30, 30) channel("button2") radiogroup(99), text(""), colour:1("red"), identchannel("button2Ident")
+	button bounds(70, 10, 30, 30) channel("button3") radiogroup(99), text(""), colour:1("red")identchannel("button3Ident")
+	button bounds(100, 10, 30, 30) channel("button4") radiogroup(99), text(""), colour:1("red"), value(1), identchannel("button4Ident")
+	}
+</cabbagecode>
+<csoundcode>
+ 	opcode rw_setRadioValueButtonButtonColour,0,Siiii
+	SName, iR, iG, iB, iA xin
+	iCnt = 1
+ 	while iCnt &lt; 5 do
+ 		SMessage sprintf "colour(%d, %d, %d, %d)", iR, iG, iB, iA
+ 		SChannel sprintf "%s_button%dIdent", SName, iCnt
+ 		chnset SMessage, SChannel
+ 		iCnt+=1
+ 	od
+ 	endop
+
+	opcode rw_radioValueButtonGroup,k, S
+	    SChannel xin 
+	    kValue init 0
+	    kIndex = 1
+	    kTrig changed, chnget:k(sprintfk("%sbutton1", SChannel)), chnget:k(sprintfk("%sbutton12", SChannel)), chnget:k(sprintfk("%sbutton3", SChannel)), chnget:k(sprintfk("%sbutton4", SChannel))
+	    if kTrig == 1 then
+	        while kIndex &lt; 5 do
+	        SCustomChannel sprintfk "%sbutton%d", SChannel, kIndex
+	        kValue = (chnget:k(SCustomChannel)==1 ? kIndex : kValue)
+	        kIndex+=1
+	        od
+	    endif
+		xout kValue
+	endop
+
+</csoundcode>
+</plant>

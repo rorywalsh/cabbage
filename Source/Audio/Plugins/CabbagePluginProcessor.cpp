@@ -205,6 +205,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
 void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 {
+	int lineNumber = 0;
 	for (int i = 0 ; i < linesFromCsd.size() ; i++)
 	{
 		ValueTree temp ("temp");
@@ -257,18 +258,22 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 							//strArray.addLines(importData.cabbageCode);
 							//for ( int y = strArray.size() ; y >= 0 ; y--)
 							//	linesFromCsd.insert(i+1, strArray[y]);	
-							StringArray importedLines;
+							StringArray importedLines("");
+
+							CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
+
 							for ( auto str : linesFromCsd )
 							{
+								CabbageUtilities::debug(str);
 								ValueTree temp ("temp");
 								CabbageWidgetData::setWidgetState(temp, str, -99);
-								CabbageWidgetData::setCustomWidgetState(temp, str, -99);
+								CabbageWidgetData::setCustomWidgetState(temp, str);
 								const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
 								const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
 								
 								if(type==importData.name && importData.nsp==nsp)
 								{
-									
+									lineNumber = linesFromCsd.indexOf(str);
 									for ( auto plantCode : importData.cabbageCode)
 									{
 										if(plantCode.isNotEmpty())
@@ -298,16 +303,15 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 										}									
 									}
 								}
-								if(importedLines.size()>0)
-								{
-									const int lineToInsertTo = linesFromCsd.indexOf(str);
-									for ( int y = importedLines.size() ; y >= 0 ; y--)
-									{
-										linesFromCsd.insert(lineToInsertTo+1, importedLines[y]);										
-									}
-									importedLines.clear();
-								}
 							}
+							
+							
+							for ( int y = importedLines.size() ; y >= 0 ; y--)
+							{
+										linesFromCsd.insert(lineNumber+1, importedLines[y]);										
+							}
+									importedLines.clear();
+							
 							
 							for ( auto str : linesFromCsd )
 							{
