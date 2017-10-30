@@ -24,7 +24,7 @@ kMetro metro kr
 		iCntRows = (iCnt%10==0 ? iCntRows+1 : iCntRows)
 	enduntil
 	if kMetro==1 then
-		event "i", 2, 0, .01
+		;event "i", 2, 0, .01
 	endif		
 endin
 

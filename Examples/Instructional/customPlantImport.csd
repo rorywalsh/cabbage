@@ -11,7 +11,7 @@ radioValueButtonGroup bounds(18, 12, 258, 110), channel("radioGroup"), namespace
 sr = 44100
 ksmps = 32
 nchnls = 2
-0dbfs = 1
+0dbfs = 1 
 
 instr 1
 kValue rw_radioValueButtonGroup "radioGroup"

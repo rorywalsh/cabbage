@@ -205,6 +205,17 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
 void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 {
+CabbageUtilities::debug("image bounds(10, 10, 320, 160){");
+int index = 1;
+for ( float i = 0 ; i < 16 ; i++)
+	for ( float y = 0 ; y < 8; y++)
+	{
+	CabbageUtilities::debug("checkbox bounds("+String(int(i*320.f/16.f))+","+String(int(y*(160.f/8.f)))+", "+String(int(320.f/16.f))+","+ String(int(160.f/8))+"), channel(\"gridChannel"+String(index)+"\"), identchannel(\"gridIdent"+String(index)+"\")");
+	index++;
+	}
+CabbageUtilities::debug("}");
+	
+	
 	int lineNumber = 0;
 	for (int i = 0 ; i < linesFromCsd.size() ; i++)
 	{
@@ -317,13 +328,19 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 													const String currentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::channel);
 													const String channelPrefix = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel);
 													const String currentIdentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::identchannel);
+													
+													
+
+													
 													CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::channel, channelPrefix+currentChannel);
 													CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::identchannel, channelPrefix+currentIdentChannel);
 													String replacementText = (plantCode.indexOf("{")!=-1 ? 
 																					CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, "")+"{"
 																					: CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, ""));
+
 													importedLines.add(replacementText);
-													firstPass = false;											}
+													firstPass = false;											
+													}
 												else
 													{
 													importedLines.add("}");
@@ -357,7 +374,7 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 							}
 						
 							
-							CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
+							//CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
 							
 						}
 									

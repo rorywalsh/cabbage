@@ -40,4 +40,13 @@
 	endop
 
 </csoundcode>
+<help>
+	This widget displays 4 checkboxes, that are linked together in a single radiogroup. When the users updates one of the checkboxes, the UDO rw_radioValueButtonGroup will output the value of the newly selected checkbox. Usuage:
+
+	Cabbage:
+	radioValueButtonGroup bounds(18, 12, 258, 110), channel("chan"), namespace("rw")
+	
+	Csound:
+	kCurrentlySelectedCheckBox rw_radioValueButtonGroup "radioGroup"
+</help>
 </plant>
