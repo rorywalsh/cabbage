@@ -278,7 +278,7 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 											{
 											ValueTree temp1 ("temp1");
 											CabbageWidgetData::setWidgetState(temp1, plantCode, -99);
-											CabbageWidgetData::setCustomWidgetState(temp1, plantCode, -99);
+											CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
 											//add test for multiple channels...
 											const String currentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::channel);
 											const String channelPrefix = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel);
