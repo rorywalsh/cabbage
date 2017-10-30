@@ -261,56 +261,86 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 							StringArray importedLines("");
 
 							CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
-
+							bool firstPass = true;
+							float scaleX = 1;
+							float scaleY = 1;
+							int lineIndex = 0;
 							for ( auto str : linesFromCsd )
 							{
-								CabbageUtilities::debug(str);
-								ValueTree temp ("temp");
-								CabbageWidgetData::setWidgetState(temp, str, -99);
-								CabbageWidgetData::setCustomWidgetState(temp, str);
-								const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
-								const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
-								
-								if(type==importData.name && importData.nsp==nsp)
+								if(str.length()>0)
 								{
-									lineNumber = linesFromCsd.indexOf(str);
-									for ( auto plantCode : importData.cabbageCode)
+									CabbageUtilities::debug(str);
+									ValueTree temp ("temp");
+									CabbageWidgetData::setWidgetState(temp, str, lineIndex++);
+									CabbageWidgetData::setCustomWidgetState(temp, str);
+									const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
+									const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
+									
+									
+									if(type==importData.name && importData.nsp==nsp)
 									{
-										if(plantCode.isNotEmpty())
+										lineNumber = linesFromCsd.indexOf(str);
+										
+										for ( auto plantCode : importData.cabbageCode)
 										{
-											//CabbageUtilities::debug(plantCode);
-											if(plantCode.contains("}") == false)
+											if(plantCode.isNotEmpty())
 											{
-											ValueTree temp1 ("temp1");
-											CabbageWidgetData::setWidgetState(temp1, plantCode, -99);
-											CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
-											//add test for multiple channels...
-											const String currentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::channel);
-											const String channelPrefix = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel);
-											const String currentIdentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::identchannel);
+												if(plantCode.contains("}") == false)
+												{
+													ValueTree temp1 ("temp1");
+													CabbageWidgetData::setWidgetState(temp1, plantCode, -99);
+													CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
+													CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::plant, "true");
+													const int lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::linenumber);
+													CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::surrogatelinenumber, lineNumberPlantAppearsOn);
 
-											CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::channel, channelPrefix+currentChannel);
-											CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::identchannel, channelPrefix+currentIdentChannel);
-											String replacementText = (plantCode.indexOf("{")!=-1 ? 
-																			CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, "")+"{"
-																			: CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, ""));
-											importedLines.add(replacementText);
+													if(firstPass)
+													{
+														CabbageUtilities::debug(lineNumberPlantAppearsOn);
+														scaleX = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::width)/CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::width);
+														scaleY = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::height)/CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::height);
+														CabbageWidgetData::setBounds(temp1, CabbageWidgetData::getBounds(temp));
+													}
+													else
+													{
+														const float width = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::width)*scaleX;
+														const float height = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::height)*scaleY;
+														const float top = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::top)*scaleY;
+														const float left = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::left)*scaleX;												
+														CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::width, width);
+														CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::height, height); 
+														CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::top, top);
+														CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::left, left); 
+		
+													}
+													//add test for multiple channels...
+													const String currentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::channel);
+													const String channelPrefix = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel);
+													const String currentIdentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::identchannel);
+													CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::channel, channelPrefix+currentChannel);
+													CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::identchannel, channelPrefix+currentIdentChannel);
+													String replacementText = (plantCode.indexOf("{")!=-1 ? 
+																					CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, "")+"{"
+																					: CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, ""));
+													importedLines.add(replacementText);
+													firstPass = false;											}
+												else
+													{
+													importedLines.add("}");
+													}
+												}									
 											}
-											else
-											{
-												importedLines.add("}");
-											}
-										}									
+										}
 									}
-								}
 							}
 							
 							
 							for ( int y = importedLines.size() ; y >= 0 ; y--)
 							{
-										linesFromCsd.insert(lineNumber+1, importedLines[y]);										
+								linesFromCsd.insert(lineNumber+1, importedLines[y]);										
 							}
-									importedLines.clear();
+							
+							importedLines.clear();
 							
 							
 							for ( auto str : linesFromCsd )

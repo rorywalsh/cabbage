@@ -5,7 +5,7 @@
 <namespace>rw</namespace>
 <name>radioValueButtonGroup</name>
 <cabbagecode>
-	image bounds(10, 10, 140, 50) colour(22, 22, 22), corners(10){
+	image bounds(10, 10, 150, 50) colour(22, 22, 22), corners(5){
 	button bounds(10, 10, 30, 30) channel("button1") radiogroup(99), text(""), colour:1("red"), identchannel("button1Ident")
 	button bounds(40, 10, 30, 30) channel("button2") radiogroup(99), text(""), colour:1("red"), identchannel("button2Ident")
 	button bounds(70, 10, 30, 30) channel("button3") radiogroup(99), text(""), colour:1("red")identchannel("button3Ident")

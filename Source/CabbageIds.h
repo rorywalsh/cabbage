@@ -315,6 +315,7 @@ public:
         add ("arrowbackgroundcolour");
         add ("amprange_tablenumber");
         add ("textboxoutlinecolour");
+		add ("surrogatelinenumber");
         add ("mouseoeverkeycolour");
         add ("keyseparatorcolour");
         add ("amprange_quantise");
@@ -634,6 +635,7 @@ static const Identifier identchannel = "identchannel";
 static const Identifier identchannelmessage = "identchannelmessage";
 static const Identifier visible = "visible";
 static const Identifier linenumber = "linenumber";
+static const Identifier surrogatelinenumber = "surrogatelinenumber";
 static const Identifier scrubberposition = "scrubberposition";
 static const Identifier scrubberposition_sample = "scrubberposition_sample";
 static const Identifier scrubberposition_table = "scrubberposition_table";

@@ -320,6 +320,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 				setImportFiles (strTokens, widgetData);
 
             //=========== floats ===============================
+			case HashStringToInt ("surrogatelinenumber"):
             case HashStringToInt ("imgdebug"):
             case HashStringToInt ("middlec"):
             case HashStringToInt ("fill"):
@@ -556,6 +557,24 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
 }
 
+String CabbageWidgetData::replaceIdentifier(String line, String identifier, String updatedIdentifier)
+{
+	if(identifier.length()<2)
+		return line;
+	if(updatedIdentifier.length()<2)
+		return line;
+
+	int startPos = line.indexOf(identifier);
+	if(startPos==-1)
+		return "";
+
+	String firstSection = line.substring(0, line.indexOf(identifier));
+	line = line.substring(line.indexOf(identifier));
+	String secondSection = line.substring(line.indexOf(")")+1);
+
+	return firstSection+updatedIdentifier+secondSection;
+}
+
 void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier)
 {
     var array;
@@ -713,6 +732,14 @@ void CabbageWidgetData::setImageFiles (StringArray strTokens, ValueTree widgetDa
         else
             setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, strTokens[1].trim());
     }
+}
+
+void CabbageWidgetData::setBounds (ValueTree widgetData, Rectangle<int> rect)
+{
+	setProperty (widgetData, CabbageIdentifierIds::left, rect.getX());
+	setProperty (widgetData, CabbageIdentifierIds::top, rect.getY());
+	setProperty (widgetData, CabbageIdentifierIds::width, rect.getWidth());
+	setProperty (widgetData, CabbageIdentifierIds::height, rect.getHeight());	
 }
 
 void CabbageWidgetData::setBounds (StringArray strTokens, ValueTree widgetData)
@@ -1081,7 +1108,7 @@ Colour CabbageWidgetData::getColourFromText (String text)
 // these methods will return Cabbage code based on data stored in widget tree
 String CabbageWidgetData::getBoundsTextAsCabbageCode (Rectangle<int> rect)
 {
-    const String boundsText = "bounds(" + String (rect.getX()) + ", " + String (rect.getY()) + ", " + String (rect.getWidth()) + ", " + String (rect.getHeight()) + "), ";
+    const String boundsText = "bounds(" + String (rect.getX()) + ", " + String (rect.getY()) + ", " + String (rect.getWidth()) + ", " + String (rect.getHeight()) + ")";
     return boundsText;
 }
 
@@ -1568,6 +1595,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "plant", macroText)
 						 + getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText)
 						 + getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "align", macroText)
@@ -1576,6 +1604,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "samplerange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "surrogatelinenumber", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
                          + getWidgetArrayAsCabbageCode (widgetData, macroText)
                          + getImagesTextAsCabbageCode (widgetData, macroText);

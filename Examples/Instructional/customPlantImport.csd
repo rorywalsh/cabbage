@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("RadioThings") size(840, 280), colour(58, 110, 210), import("plant.xml")
-radioValueButtonGroup bounds(10, 10, 100, 50), channel("radioGroup"), namespace("rw")
+form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("plant.xml")
+radioValueButtonGroup bounds(18, 12, 258, 110), channel("radioGroup"), namespace("rw")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -12,8 +12,6 @@ sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
-
-;instrument will be triggered by keyboard widget
 
 instr 1
 kValue rw_radioValueButtonGroup "radioGroup"
