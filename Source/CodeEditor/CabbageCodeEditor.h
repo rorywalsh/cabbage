@@ -50,6 +50,7 @@ class CabbageCodeEditorComponent :
     int currentFontSize = 17;
 	LookAndFeel_V3 lookAndFeel3;
 	LookAndFeel_V3 lookAndFeel3temp;
+	
 
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);
@@ -64,7 +65,7 @@ public:
 	StringArray addItemsToPopupMenu(PopupMenu& m);
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     void undoText();
-
+	bool moveToNextTab = true;
     String getSelectedText();
     const StringArray getAllTextAsStringArray();
     const String getAllText();

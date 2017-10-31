@@ -58,6 +58,15 @@ public:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageJavaClass)
     };
 
+	class PlantImportStruct 
+	{
+		
+	public:
+		String nsp, name, csoundCode;
+		StringArray cabbageCode;
+			PlantImportStruct(){}
+								
+	};
 
     CabbagePluginProcessor (File inputFile = File());
     ~CabbagePluginProcessor();
@@ -68,7 +77,11 @@ public:
     void parseCsdFile (StringArray& linesFromCsd);
     void createParameters();
     void updateWidgets (String csdText);
+	void handleXmlImport(PlantImportStruct &importData, XmlElement* xml, StringArray &linesFromCsd);
     void searchForMacros (StringArray& csdText);
+	void generateCabbageCodeFromJS(PlantImportStruct &importData, String text);
+	void insertUDOCode(PlantImportStruct importData, StringArray& linesFromCsd);
+	void insertPlantCode(PlantImportStruct importData, StringArray& linesFromCsd);
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     const String getExpandedMacroText (const String line, ValueTree wData);
@@ -77,16 +90,6 @@ public:
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
-
-	class PlantImportStruct 
-	{
-		
-	public:
-		String nsp, name, csoundCode;
-		StringArray cabbageCode;
-			PlantImportStruct(){}
-								
-	};
 
     File getCsdFile()
     {

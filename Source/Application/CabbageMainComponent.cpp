@@ -113,13 +113,16 @@ void CabbageMainComponent::buttonClicked (Button* button)
 	}
 }
 
-void CabbageMainComponent::handleFileTab (FileTab* tabButton)
+void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
 {
 
-    if (tabButton->getName().contains ("html"))
-        jassert (false);
-
-    currentFileIndex = fileTabs.indexOf (tabButton);
+	if(increment && tabButton == nullptr)
+	{
+		currentFileIndex = (currentFileIndex  < fileTabs.size()-1 ? currentFileIndex+1 : 0);	
+	}
+	else
+		currentFileIndex = fileTabs.indexOf (tabButton);
+		
 	hideFindPanel();
     editorAndConsole[currentFileIndex]->toFront (true);
 	cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
@@ -131,13 +134,31 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton)
         addInstrumentsAndRegionsToCombobox();
     }
 
-    for ( auto button : fileTabs )
-    {
-        if (button != tabButton)
-            button->disableButtons (true);
-        else
-            button->disableButtons (false);
-    }
+	if(increment==false)
+	{
+		for ( auto button : fileTabs )
+		{
+			if (button != tabButton)
+				button->disableButtons (true);
+			else
+				button->disableButtons (false);
+		}
+	}
+	else
+	{
+		for( int i = 0 ; i < fileTabs.size() ; i++)
+		{
+			if(currentFileIndex == i)
+			{
+				fileTabs[i]->setToggleState (true, dontSendNotification);
+				fileTabs[i]->disableButtons (false);
+			}
+			else
+				fileTabs[i]->disableButtons (true);
+				
+		}
+		this->arrangeFileTabs();
+	}
 	
 
 }
@@ -321,8 +342,10 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
     else if (CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*> (source)) // update code when a user changes a property
     {
-        if (getCabbagePluginEditor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
-            this->getCabbagePluginProcessor()->updateWidgets (codeEditor->getAllText());
+		
+		handleFileTab(nullptr, true);
+//        else if (getCabbagePluginEditor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
+//            this->getCabbagePluginProcessor()->updateWidgets (codeEditor->getAllText());
     }
 }
 

@@ -279,7 +279,7 @@ void CabbageCodeEditorComponent::sendUpdateMessage (int lineNumber)
 
     if (allowUpdateOfPluginGUI && lineNumber < cabbageSectionClosingLineNumber)
     {
-        sendChangeMessage();
+        //sendChangeMessage();
     }
 
 }
@@ -869,7 +869,10 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
         else if (key == KeyPress::escapeKey)
             handleEscapeKey();
 
-
+		else  if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::KeyPress::tabKey))
+        {
+			sendChangeMessage();
+		}
         else  if (key.isKeyCode (KeyPress::upKey || key.isKeyCode (KeyPress::downKey)))
         {
             if (autoCompleteListBox.isVisible())

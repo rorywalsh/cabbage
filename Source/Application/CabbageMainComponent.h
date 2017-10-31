@@ -93,7 +93,7 @@ public:
     //==============================================================================
     void handleToolbarButtons (ToolbarButton* toolbarButton);
     void handleFileTabs (DrawableButton* button);
-    void handleFileTab (FileTab* drawableButton) ;
+    void handleFileTab (FileTab* drawableButton, bool icrement=false) ;
     void addFileTab (File file);
     void arrangeFileTabs();
     //==============================================================================

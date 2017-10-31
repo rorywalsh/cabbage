@@ -78,7 +78,7 @@ enum
     launchApp               = 0x410014,
     killApp                 = 0x410015,
     buildNow                = 0x41001a,
-    toggleContinuousBuild   = 0x41001b,
+    nextTab   				= 0x41001b,
 
     enableSnapToGrid        = 0x410016,
     zoomIn                  = 0x410017,

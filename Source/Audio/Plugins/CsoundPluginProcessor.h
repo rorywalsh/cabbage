@@ -199,7 +199,7 @@ private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;
-    int guiRefreshRate = 50;
+    int guiRefreshRate = 128;
     MidiBuffer midiBuffer;
     String csoundOutput;
     ScopedPointer<CSOUND_PARAMS> csoundParams;
