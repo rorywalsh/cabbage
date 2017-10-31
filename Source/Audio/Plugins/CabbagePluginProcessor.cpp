@@ -260,15 +260,32 @@ CabbageUtilities::debug("}");
 									importData.cabbageCode.addLines(e->getAllSubText());
 								}
 								if(e->getTagName() == "csoundcode")
-									importData.csoundCode = e->getAllSubText();			
-									
+									importData.csoundCode = e->getAllSubText();	
+								if(e->getTagName() == "cabbagecodescript")
+								{
+								        JavascriptEngine engine;
+										engine.maximumExecutionTime = RelativeTime::seconds (5);
+										engine.registerNativeObject ("Cabbage", new CabbageJavaClass (this));
+
+										const double startTime = Time::getMillisecondCounterHiRes();
+
+										Result result = engine.execute (e->getAllSubText().replace("$lt;", "<")
+												.replace("&amp;", "&")
+												.replace("$quote;", "\"")
+												.replace("$gt;", ">"));
+
+										const double elapsedMs = Time::getMillisecondCounterHiRes() - startTime;
+
+										importData.cabbageCode.addLines(cabbageScriptGeneratedCode.joinIntoString("\n"));
+
+										if (result.failed())
+											CabbageUtilities::showMessage("javaScript Error:" + result.getErrorMessage(), &getActiveEditor()->getLookAndFeel());
+											
+								}									
 							}
 							
-							//CabbageUtilities::debug(importData.cabbageCode);
+							
 							StringArray strArray;
-							//strArray.addLines(importData.cabbageCode);
-							//for ( int y = strArray.size() ; y >= 0 ; y--)
-							//	linesFromCsd.insert(i+1, strArray[y]);	
 							StringArray importedLines("");
 
 							CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));

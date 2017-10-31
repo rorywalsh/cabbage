@@ -30,6 +30,35 @@ class CabbagePluginProcessor
     : public CsoundPluginProcessor
 {
 public:
+
+    class CabbageJavaClass  : public DynamicObject
+    {
+	
+		CabbagePluginProcessor* owner;
+		public:
+	
+        CabbageJavaClass (CabbagePluginProcessor* owner): owner(owner)
+        {
+            setMethod ("print", print);
+        }
+
+        static Identifier getClassName()   { return "Cabbage"; }
+
+        static var print (const var::NativeFunctionArgs& args)
+        {
+            if (args.numArguments > 0)
+                if (CabbageJavaClass* thisObject = dynamic_cast<CabbageJavaClass*> (args.thisObject.getObject()))
+                    thisObject->owner->cabbageScriptGeneratedCode.add(args.arguments[0].toString());
+
+            return var::undefined();
+        }
+		
+		
+
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageJavaClass)
+    };
+
+
     CabbagePluginProcessor (File inputFile = File());
     ~CabbagePluginProcessor();
 
@@ -81,7 +110,7 @@ public:
     XmlElement savePluginState (String tag, File xmlFile = File());
     void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
-
+	StringArray cabbageScriptGeneratedCode;
 private:
 	controlChannelInfo_s* csoundChanList;
     String pluginName;
