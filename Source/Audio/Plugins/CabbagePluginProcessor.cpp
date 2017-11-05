@@ -84,11 +84,12 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
 //				CabbageUtilities::debug(channel);
 //			}
 //		}
+		initAllCsoundChannels(cabbageWidgets);
     }
 
 
 
-    initAllCsoundChannels (cabbageWidgets);	
+    
 }
 
 CabbagePluginProcessor::~CabbagePluginProcessor()
