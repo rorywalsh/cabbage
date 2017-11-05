@@ -220,6 +220,10 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
         setProperty (widgetData, CabbageIdentifierIds::name, "hosttime");
         setProperty (widgetData, CabbageIdentifierIds::type, "hosttime");
     }
+	else
+	{
+		setProperty (widgetData, CabbageIdentifierIds::type, strTokens[0]);
+	}
 
     //parse the text now that all default values ahve been assigned
     setCustomWidgetState (widgetData, lineFromCsd, "");
@@ -280,6 +284,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("show"):
             case HashStringToInt ("child"):
             case HashStringToInt ("logger"):
+			case HashStringToInt ("namespace"):
                 setProperty (widgetData, identifier, strTokens[0].trim());
                 break;
                 break;
@@ -310,8 +315,12 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("shape"):
                 setShapes (strTokens, widgetData);
                 break;
+			
+			case HashStringToInt ("import"):
+				setImportFiles (strTokens, widgetData);
 
             //=========== floats ===============================
+			case HashStringToInt ("surrogatelinenumber"):
             case HashStringToInt ("imgdebug"):
             case HashStringToInt ("middlec"):
             case HashStringToInt ("fill"):
@@ -548,6 +557,24 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
 }
 
+String CabbageWidgetData::replaceIdentifier(String line, String identifier, String updatedIdentifier)
+{
+	if(identifier.length()<2)
+		return line;
+	if(updatedIdentifier.length()<2)
+		return line;
+
+	int startPos = line.indexOf(identifier);
+	if(startPos==-1)
+		return "";
+
+	String firstSection = line.substring(0, line.indexOf(identifier));
+	line = line.substring(line.indexOf(identifier));
+	String secondSection = line.substring(line.indexOf(")")+1);
+
+	return firstSection+updatedIdentifier+secondSection;
+}
+
 void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier)
 {
     var array;
@@ -585,6 +612,21 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
 
     }
 }
+
+void CabbageWidgetData::setImportFiles (StringArray strTokens, ValueTree widgetData)
+{
+    var files;
+    int comboRange = 0;
+
+    for (int i = 0; i < strTokens.size(); i++)
+    {
+        files.append(strTokens[i]);
+    }
+	
+	setProperty (widgetData, CabbageIdentifierIds::importfiles, files);
+
+}
+
 
 void CabbageWidgetData::setTextItemArrays (StringArray strTokens, ValueTree widgetData, String typeOfWidget)
 {
@@ -690,6 +732,14 @@ void CabbageWidgetData::setImageFiles (StringArray strTokens, ValueTree widgetDa
         else
             setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, strTokens[1].trim());
     }
+}
+
+void CabbageWidgetData::setBounds (ValueTree widgetData, Rectangle<int> rect)
+{
+	setProperty (widgetData, CabbageIdentifierIds::left, rect.getX());
+	setProperty (widgetData, CabbageIdentifierIds::top, rect.getY());
+	setProperty (widgetData, CabbageIdentifierIds::width, rect.getWidth());
+	setProperty (widgetData, CabbageIdentifierIds::height, rect.getHeight());	
 }
 
 void CabbageWidgetData::setBounds (StringArray strTokens, ValueTree widgetData)
@@ -1058,7 +1108,7 @@ Colour CabbageWidgetData::getColourFromText (String text)
 // these methods will return Cabbage code based on data stored in widget tree
 String CabbageWidgetData::getBoundsTextAsCabbageCode (Rectangle<int> rect)
 {
-    const String boundsText = "bounds(" + String (rect.getX()) + ", " + String (rect.getY()) + ", " + String (rect.getWidth()) + ", " + String (rect.getHeight()) + "), ";
+    const String boundsText = "bounds(" + String (rect.getX()) + ", " + String (rect.getY()) + ", " + String (rect.getWidth()) + ", " + String (rect.getHeight()) + ")";
     return boundsText;
 }
 
@@ -1545,6 +1595,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
+						 + getSimpleTextAsCabbageCode (widgetData, "plant", macroText)
 						 + getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText)
 						 + getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "align", macroText)
@@ -1553,6 +1604,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                          + getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "samplerange", macroText)
                          + getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText)
+						 + getNumericalValueTextAsCabbageCode (widgetData, "surrogatelinenumber", macroText)
                          + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
                          + getWidgetArrayAsCabbageCode (widgetData, macroText)
                          + getImagesTextAsCabbageCode (widgetData, macroText);

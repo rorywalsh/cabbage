@@ -78,7 +78,7 @@ enum
     launchApp               = 0x410014,
     killApp                 = 0x410015,
     buildNow                = 0x41001a,
-    toggleContinuousBuild   = 0x41001b,
+    nextTab   				= 0x41001b,
 
     enableSnapToGrid        = 0x410016,
     zoomIn                  = 0x410017,
@@ -315,6 +315,7 @@ public:
         add ("arrowbackgroundcolour");
         add ("amprange_tablenumber");
         add ("textboxoutlinecolour");
+		add ("surrogatelinenumber");
         add ("mouseoeverkeycolour");
         add ("keyseparatorcolour");
         add ("amprange_quantise");
@@ -379,11 +380,12 @@ public:
         add ("fontcolor");
         add ("arraysize");
 		add ("increment");
+        add ("namespace");
         add ("populate");
-        add ("keywidth");
+        add ("keywidth");		
         add ("pluginid");
         add ("imgdebug");
-        add ("colour:0");
+		add ("colour:0");
         add ("colour:1");
         add ("channels");
         add ("velocity");
@@ -401,6 +403,7 @@ public:
         add ("visible");
         add ("latched");
         add ("rescale");
+		add ("import");
         add ("bounds");
         add ("colour");
         add ("rangey");
@@ -617,7 +620,8 @@ static const Identifier align = "align";
 static const Identifier tabbed = "tabbed";
 static const Identifier rangey = "rangey";
 static const Identifier rangex = "rangex";
-static const Identifier include = "include";
+static const Identifier import = "import";
+static const Identifier importfiles = "importfiles";
 static const Identifier radiogroup = "radiogroup";
 static const Identifier tabpage = "tabpage";
 static const Identifier filetype = "filetype";
@@ -631,6 +635,7 @@ static const Identifier identchannel = "identchannel";
 static const Identifier identchannelmessage = "identchannelmessage";
 static const Identifier visible = "visible";
 static const Identifier linenumber = "linenumber";
+static const Identifier surrogatelinenumber = "surrogatelinenumber";
 static const Identifier scrubberposition = "scrubberposition";
 static const Identifier scrubberposition_sample = "scrubberposition_sample";
 static const Identifier scrubberposition_table = "scrubberposition_table";
@@ -676,6 +681,8 @@ static const String mousedownleft = "MOUSE_DOWN_LEFT";
 static const String mousedownright = "MOUSE_DOWN_RIGHT";
 static const String mousedownlmiddle = "MOUSE_DOWN_MIDDLE";
 static const String updaterate = "updaterate";
+static const String nsp = "namespace";
+
 };
 
 

@@ -113,13 +113,16 @@ void CabbageMainComponent::buttonClicked (Button* button)
 	}
 }
 
-void CabbageMainComponent::handleFileTab (FileTab* tabButton)
+void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
 {
 
-    if (tabButton->getName().contains ("html"))
-        jassert (false);
-
-    currentFileIndex = fileTabs.indexOf (tabButton);
+	if(increment && tabButton == nullptr)
+	{
+		currentFileIndex = (currentFileIndex  < fileTabs.size()-1 ? currentFileIndex+1 : 0);	
+	}
+	else
+		currentFileIndex = fileTabs.indexOf (tabButton);
+		
 	hideFindPanel();
     editorAndConsole[currentFileIndex]->toFront (true);
 	cabbageSettings->setProperty("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
@@ -131,13 +134,31 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton)
         addInstrumentsAndRegionsToCombobox();
     }
 
-    for ( auto button : fileTabs )
-    {
-        if (button != tabButton)
-            button->disableButtons (true);
-        else
-            button->disableButtons (false);
-    }
+	if(increment==false)
+	{
+		for ( auto button : fileTabs )
+		{
+			if (button != tabButton)
+				button->disableButtons (true);
+			else
+				button->disableButtons (false);
+		}
+	}
+	else
+	{
+		for( int i = 0 ; i < fileTabs.size() ; i++)
+		{
+			if(currentFileIndex == i)
+			{
+				fileTabs[i]->setToggleState (true, dontSendNotification);
+				fileTabs[i]->disableButtons (false);
+			}
+			else
+				fileTabs[i]->disableButtons (true);
+				
+		}
+		this->arrangeFileTabs();
+	}
 	
 
 }
@@ -262,34 +283,52 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
     else if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (source)) // update Cabbage code when user drags a widget around
     {
-        propertyPanel->setVisible (true);
-        propertyPanel->setEnabled (true);
+
         resized();
         ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
-        propertyPanel->saveOpenessState();
-        propertyPanel->updateProperties (widgetData);
+		if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::plant).isEmpty())
+		{
+			//recreate/update code for standard components, dealing with custom plants later
+	        propertyPanel->setVisible (true);
+			propertyPanel->setEnabled (true);
+			propertyPanel->saveOpenessState();
+			propertyPanel->updateProperties (widgetData);
 
-        if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
-        {
-            StringArray csdArray;
-            csdArray.addLines (getCurrentCodeEditor()->getDocument().getAllContent());
+			if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
+			{
+				StringArray csdArray;
+				csdArray.addLines (getCurrentCodeEditor()->getDocument().getAllContent());
 
-            for ( int i = 0 ; i < csdArray.size() ; i++ )
-            {
-                if (csdArray[i].contains ("</Cabbage>")) //add new text just before the end of the Cabbage section of code
-                {
-                    CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::linenumber, i);
-                    updateCodeInEditor (editor, false);
-                    updateEditorColourScheme(); //keep look and feel updated..
-                    return;
-                }
-            }
-        }
-        else
-        {
-            updateCodeInEditor (editor, true);
-            updateEditorColourScheme(); //keep look and feel updated..
-        }
+				for ( int i = 0 ; i < csdArray.size() ; i++ )
+				{
+					if (csdArray[i].contains ("</Cabbage>")) //add new text just before the end of the Cabbage section of code
+					{
+						CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::linenumber, i);
+						updateCodeInEditor (editor, false);
+						updateEditorColourScheme(); //keep look and feel updated..
+						return;
+					}
+				}
+			}
+			else
+			{
+				updateCodeInEditor (editor, true);
+				updateEditorColourScheme(); //keep look and feel updated..
+			}
+		}
+		else
+		{
+			CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type));
+			CabbageUtilities::debug(CabbageWidgetData::getBounds(widgetData).toString());
+			CabbageUtilities::debug(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::surrogatelinenumber));
+			int lineNumberOfCustomPlant = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::surrogatelinenumber);
+			const Rectangle<int> rect = CabbageWidgetData::getBounds(widgetData);
+			const String newBounds = CabbageWidgetData::getBoundsTextAsCabbageCode(rect);
+			String newLine = CabbageWidgetData::replaceIdentifier(getCurrentCodeEditor()->getLineText(lineNumberOfCustomPlant), "bounds", newBounds);
+			
+			getCurrentCodeEditor()->insertCode(lineNumberOfCustomPlant, newLine, true, true);
+
+		}
     }
 
     else if (dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
@@ -303,8 +342,10 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
     else if (CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*> (source)) // update code when a user changes a property
     {
-        if (getCabbagePluginEditor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
-            this->getCabbagePluginProcessor()->updateWidgets (codeEditor->getAllText());
+		
+		handleFileTab(nullptr, true);
+//        else if (getCabbagePluginEditor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
+//            this->getCabbagePluginProcessor()->updateWidgets (codeEditor->getAllText());
     }
 }
 
@@ -802,7 +843,7 @@ const File CabbageMainComponent::openFile (String filename)
 
     if (File (filename).existsAsFile() == false)
     {
-        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.csd;*.*", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {

@@ -300,7 +300,6 @@ void ComponentOverlay::setBoundsForChildren()
 
 void ComponentOverlay::updateBoundsDataForTarget()
 {
-
     for ( ComponentOverlay* child : layoutEditor->getLassoSelection() )
     {
         ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (layoutEditor->widgetData, child->target.getComponent()->getName());
@@ -317,7 +316,6 @@ void ComponentOverlay::updateBoundsDataForTarget()
     {
         const Component* child = target.getComponent()->getChildComponent (i);
         ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (layoutEditor->widgetData, child->getName());
-
         if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::parentcomponent).isNotEmpty()) //now deal with plants, all child widgets must have theirs bounds updated..
         {
             CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::left, child->getX());
@@ -327,6 +325,5 @@ void ComponentOverlay::updateBoundsDataForTarget()
         }
     }
 
-
-    getPluginEditor()->sendChangeMessage();
+	getPluginEditor()->sendChangeMessage();
 }

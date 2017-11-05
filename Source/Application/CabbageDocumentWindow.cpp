@@ -217,8 +217,6 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
     if (menuName == "File")             createFileMenu   (menu);
     else if (menuName == "Edit")        createEditMenu   (menu);
     else if (menuName == "View")        createViewMenu   (menu);
-    else if (menuName == "Build")       createBuildMenu  (menu);
-    else if (menuName == "Window")      createWindowMenu (menu);
     else if (menuName == "Tools")       createToolsMenu  (menu);
     else if (menuName == "Help")        createHelpMenu   (menu);
     else                                jassertfalse; // names have changed?
@@ -317,39 +315,11 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
 
 void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 {
+	menu.addCommandItem (&commandManager, CommandIDs::nextTab);
     menu.addCommandItem (&commandManager, CommandIDs::showGraph);
     menu.addSeparator();
 }
 
-void CabbageDocumentWindow::createBuildMenu (PopupMenu& menu)
-{
-    menu.addCommandItem (&commandManager, CommandIDs::enableBuild);
-    menu.addCommandItem (&commandManager, CommandIDs::toggleContinuousBuild);
-    menu.addCommandItem (&commandManager, CommandIDs::buildNow);
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::launchApp);
-    menu.addCommandItem (&commandManager, CommandIDs::killApp);
-    menu.addCommandItem (&commandManager, CommandIDs::cleanAll);
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::reinstantiateComp);
-    menu.addCommandItem (&commandManager, CommandIDs::showWarnings);
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::nextError);
-    menu.addCommandItem (&commandManager, CommandIDs::prevError);
-}
-
-
-void CabbageDocumentWindow::createWindowMenu (PopupMenu& menu)
-{
-    menu.addCommandItem (&commandManager, CommandIDs::closeWindow);
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::goToPreviousDoc);
-    menu.addCommandItem (&commandManager, CommandIDs::goToNextDoc);
-    menu.addCommandItem (&commandManager, CommandIDs::goToCounterpart);
-    menu.addSeparator();
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::closeAllDocuments);
-}
 
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
@@ -422,6 +392,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::stopAudioGraph,
                               CommandIDs::exportAsSynth,
                               CommandIDs::exportAsEffect,
+							  CommandIDs::nextTab,
                               CommandIDs::exportAsFMODSoundPlugin,
                               CommandIDs::copy,
                               CommandIDs::cut,
@@ -529,6 +500,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::stopAudioGraph:
             result.setInfo ("Stop graph", "Stop the audio signal graph", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress (KeyPress::F5Key, ModifierKeys::noModifiers, 0));
+            break;
+
+        case CommandIDs::nextTab:
+            result.setInfo ("Next Tab", "Go to next tab", CommandCategories::general, 0);
+            result.addDefaultKeypress (KeyPress::tabKey, ModifierKeys::commandModifier);
             break;
 
         case CommandIDs::exportAsSynth:
@@ -762,6 +738,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::closeAllDocuments:
             return true;
 
+        case CommandIDs::nextTab:
+            getContentComponent()->handleFileTab(nullptr, true);
+			return true;
+			
         case CommandIDs::settings:
             getContentComponent()->showSettingsDialog();
             return true;

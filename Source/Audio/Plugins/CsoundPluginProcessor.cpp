@@ -40,7 +40,29 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
 
     CabbageUtilities::debug ("Plugin constructor");
-    csound = new Csound();
+    
+
+}
+
+CsoundPluginProcessor::~CsoundPluginProcessor()
+{
+    Logger::setCurrentLogger (nullptr);
+
+    CabbageUtilities::debug ("Plugin destructor");
+    Logger::setCurrentLogger (nullptr);
+
+    if (csound)
+    {
+        csound = nullptr;
+        csoundParams = nullptr;
+        editorBeingDeleted (this->getActiveEditor());
+    }
+}
+
+//==============================================================================
+void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, bool debugMode)
+{
+	csound = new Csound();
 
     csound->SetHostImplementedMIDIIO (true);
     csound->SetHostImplementedAudioIO (1, 0);
@@ -78,7 +100,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
     //instrument must at least be stereo
 	numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
 	csoundParams->nchnls_override = numCsoundChannels;
-    csound->SetParams (csoundParams);
+    csound->SetParams (csoundParams);	
     compileCsdFile (csdFile);
 	
     //  AudioProcessor::Bus* ins = getBus (true, 0);
@@ -101,26 +123,9 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
         this->setLatencySamples (csound->GetKsmps());
     }
     else
-        CabbageUtilities::debug ("Csound could not compile your file?");
-
+        CabbageUtilities::debug ("Csound could not compile your file?");	
 }
 
-CsoundPluginProcessor::~CsoundPluginProcessor()
-{
-    Logger::setCurrentLogger (nullptr);
-
-    CabbageUtilities::debug ("Plugin destructor");
-    Logger::setCurrentLogger (nullptr);
-
-    if (csound)
-    {
-        csound = nullptr;
-        csoundParams = nullptr;
-        editorBeingDeleted (this->getActiveEditor());
-    }
-}
-
-//==============================================================================
 void CsoundPluginProcessor::createFileLogger (File csdFile)
 {
     String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");

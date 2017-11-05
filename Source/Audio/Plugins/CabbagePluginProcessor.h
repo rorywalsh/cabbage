@@ -30,15 +30,58 @@ class CabbagePluginProcessor
     : public CsoundPluginProcessor
 {
 public:
+
+    class CabbageJavaClass  : public DynamicObject
+    {
+	
+		CabbagePluginProcessor* owner;
+		public:
+	
+        CabbageJavaClass (CabbagePluginProcessor* owner): owner(owner)
+        {
+            setMethod ("print", print);
+        }
+
+        static Identifier getClassName()   { return "Cabbage"; }
+
+        static var print (const var::NativeFunctionArgs& args)
+        {
+            if (args.numArguments > 0)
+                if (CabbageJavaClass* thisObject = dynamic_cast<CabbageJavaClass*> (args.thisObject.getObject()))
+                    thisObject->owner->cabbageScriptGeneratedCode.add(args.arguments[0].toString());
+
+            return var::undefined();
+        }
+		
+		
+
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageJavaClass)
+    };
+
+	class PlantImportStruct 
+	{
+		
+	public:
+		String nsp, name, csoundCode;
+		StringArray cabbageCode;
+			PlantImportStruct(){}
+								
+	};
+
     CabbagePluginProcessor (File inputFile = File());
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;
     void getChannelDataFromCsound();
-    void parseCsdFile (String csdText);
+	void addImportFiles(StringArray& lineFromCsd);
+    void parseCsdFile (StringArray& linesFromCsd);
     void createParameters();
     void updateWidgets (String csdText);
+	void handleXmlImport(PlantImportStruct &importData, XmlElement* xml, StringArray &linesFromCsd);
     void searchForMacros (StringArray& csdText);
+	void generateCabbageCodeFromJS(PlantImportStruct &importData, String text);
+	void insertUDOCode(PlantImportStruct importData, StringArray& linesFromCsd);
+	void insertPlantCode(PlantImportStruct importData, StringArray& linesFromCsd);
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     const String getExpandedMacroText (const String line, ValueTree wData);
@@ -70,7 +113,7 @@ public:
     XmlElement savePluginState (String tag, File xmlFile = File());
     void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
-
+	StringArray cabbageScriptGeneratedCode;
 private:
 	controlChannelInfo_s* csoundChanList;
     String pluginName;

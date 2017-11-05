@@ -48,8 +48,6 @@ public:
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);
     void createHelpMenu (PopupMenu&);
-    void createBuildMenu (PopupMenu&);
-    void createWindowMenu (PopupMenu&);
     void createToolsMenu (PopupMenu&);
     void getAllCommands (Array<CommandID>&) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo&) override;

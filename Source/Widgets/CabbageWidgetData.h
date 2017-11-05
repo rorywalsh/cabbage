@@ -80,11 +80,13 @@ public:
     static void setStringProp (ValueTree widgetData, Identifier prop, String val);
     static String getStringProp (ValueTree widgetData, Identifier prop);
     static Rectangle<int> getBounds (ValueTree widgetData);
+	static void setBounds (ValueTree widgetData, Rectangle<int> rect);
     static void setProperty (ValueTree widgetData, Identifier name, const var& value);
     static var getProperty (ValueTree widgetData, Identifier name);
     //============================================================================
     static IdentifiersAndParameters getSetofIdentifiersAndParameters (String lineOfText);
     static var getVarArrayFromTokens (StringArray strTokens);
+	static void setImportFiles(StringArray strToken, ValueTree widgetData);
     static void setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setTextItemArrays (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
     static void setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable = true);
@@ -98,6 +100,7 @@ public:
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
     static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
 	static void setPopulateProps( StringArray strTokens, ValueTree widgetData);
+	static String replaceIdentifier(String line, String identifier, String updatedIdentifier);
     //============================================================================
     static Colour getColourFromText (String text);
     static String getCabbageCodeFromIdentifiers (ValueTree props, const String, const String macroText);

@@ -48,37 +48,45 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
     //initAllCsoundChannels(cabbageWidgets);
     if (inputFile.existsAsFile())
     {
-        parseCsdFile (inputFile.loadFileAsString());
+		StringArray linesFromCsd;
+		linesFromCsd.addLines (inputFile.loadFileAsString());
+		addImportFiles(linesFromCsd);
+		File tempFile = File::createTempFile("csoundCabbageCsdText");
+		tempFile.replaceWithText(linesFromCsd.joinIntoString("\n")
+												.replace("$lt;", "<")
+												.replace("&amp;", "&")
+												.replace("$quote;", "\"")
+												.replace("$gt;", ">"));
+		setupAndCompileCsound(tempFile);
+		parseCsdFile (linesFromCsd);
         createParameters();
+		csoundChanList = NULL;
+//		int numberOfCsoundChannels = csoundListChannels (getCsoundStruct(), &csoundChanList);
+//		StringArray csoundChannels;
+//		for (int i = 0; i < numberOfCsoundChannels; i++ )
+//		{
+//			const String channel = csoundChanList[i].name;
+//			if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
+//			{
+//				csoundChannels.add(channel);
+//				CabbageUtilities::debug(channel);
+//			}
+//		}
+//
+//		int numberOfCabbageChannels = cabbageWidgets.getNumChildren();
+//		StringArray cabbageChannels;
+//		for ( int i = 0 ; i < numberOfCabbageChannels ; i++)
+//		{
+//			const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+//			if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
+//			{
+//				cabbageChannels.add(channel);
+//				CabbageUtilities::debug(channel);
+//			}
+//		}
     }
 
-	/*
 
-    csoundChanList = NULL;
-    int numberOfCsoundChannels = csoundListChannels (getCsoundStruct(), &csoundChanList);
-	StringArray csoundChannels;
-    for (int i = 0; i < numberOfCsoundChannels; i++ )
-    {
-        const String channel = csoundChanList[i].name;
-		if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
-		{
-			csoundChannels.add(channel);
-			CabbageUtilities::debug(channel);
-		}
-    }
-	
-	int numberOfCabbageChannels = cabbageWidgets.getNumChildren();
-	StringArray cabbageChannels;
-	for ( int i = 0 ; i < numberOfCabbageChannels ; i++)
-	{
-		const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-		if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
-		{
-			cabbageChannels.add(channel);
-			CabbageUtilities::debug(channel);
-		}
-	}
-*/
 
     initAllCsoundChannels (cabbageWidgets);	
 }
@@ -92,13 +100,12 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 }
 
 //==============================================================================
-void CabbagePluginProcessor::parseCsdFile (String csdText)
+void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 {
-    StringArray linesFromCsd;
     cabbageWidgets.removeAllChildren (0);
-    linesFromCsd.addLines (csdText);
     String parentComponent, previousComponent;
 
+	CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
     searchForMacros (linesFromCsd);
 
 
@@ -143,6 +150,8 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
         {
             const String caption = CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::caption);
             this->setPluginName (caption.length() > 0 ? caption : "Untitled");
+
+			
 
             if (CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::logger) == 1)
                 createFileLogger (this->csdFile);
@@ -192,6 +201,204 @@ void CabbagePluginProcessor::parseCsdFile (String csdText)
     }
 }
 
+void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
+{
+	PlantImportStruct importData;
+
+	int lineNumber = 0;
+	for (int i = 0 ; i < linesFromCsd.size() ; i++)
+	{
+		ValueTree temp ("temp");
+		CabbageWidgetData::setWidgetState (temp, linesFromCsd[i], 0);
+
+		if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+		{
+			var files = CabbageWidgetData::getProperty (temp, CabbageIdentifierIds::importfiles);
+			for( int y = 0 ; y < files.size() ; y++)
+			{
+				if(csdFile.getParentDirectory().getChildFile (files[y].toString()).existsAsFile())
+				{
+					StringArray defineStrings;
+					defineStrings.addLines(csdFile.getParentDirectory().getChildFile (files[y].toString()).loadFileAsString());
+					
+					
+					ScopedPointer<XmlElement> xml;
+					xml = XmlDocument::parse(csdFile.getParentDirectory().getChildFile (files[y].toString()));
+					
+					if(!xml)
+					{				
+						for ( int y = defineStrings.size() ; y >= 0 ; y--)
+						{
+							linesFromCsd.insert(i+1, defineStrings[y]);				
+							CabbageUtilities::debug(defineStrings[y]);
+						}
+					}
+					else
+					{
+						handleXmlImport(importData, xml, linesFromCsd);
+
+					}
+				}
+			}
+		}
+	}
+		insertPlantCode(importData, linesFromCsd);							
+		insertUDOCode(importData, linesFromCsd);	
+}
+
+
+void CabbagePluginProcessor::handleXmlImport(PlantImportStruct& importData, XmlElement* xml, StringArray &linesFromCsd)
+{
+	if (xml->hasTagName ("plant"))
+	{							
+		forEachXmlChildElement (*xml, e)
+		{
+			if(e->getTagName() == "namespace")
+				importData.nsp = e->getAllSubText();
+			if(e->getTagName() == "name")
+				importData.name = e->getAllSubText();
+			if(e->getTagName() == "cabbagecode")
+			{
+				importData.cabbageCode.addLines(e->getAllSubText());
+			}
+			if(e->getTagName() == "csoundcode")
+				importData.csoundCode = e->getAllSubText();	
+			if(e->getTagName() == "cabbagecodescript")
+			{
+				generateCabbageCodeFromJS(importData, e->getAllSubText());		
+			}									
+		}
+		
+		
+		StringArray strArray;
+	}				
+}
+void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, StringArray& linesFromCsd)
+{
+	StringArray importedLines("");
+	bool firstPass = true;
+	float scaleX = 1;
+	float scaleY = 1;
+	int lineIndex = 0;
+	StringArray copy = linesFromCsd;
+	for ( auto str : copy )
+	{
+		if(str.length()>0)
+		{
+			CabbageUtilities::debug(str);
+			ValueTree temp ("temp");
+			CabbageWidgetData::setWidgetState(temp, str, lineIndex++);
+			CabbageWidgetData::setCustomWidgetState(temp, str);
+			const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
+			const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
+			
+			
+			if(type==importData.name && importData.nsp==nsp)
+			{
+				int lineNumber = copy.indexOf(str);
+				
+				for ( auto plantCode : importData.cabbageCode)
+				{
+					if(plantCode.isNotEmpty())
+					{
+						if(plantCode.contains("}") == false)
+						{
+							ValueTree temp1 ("temp1");
+							CabbageWidgetData::setWidgetState(temp1, plantCode, -99);
+							CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
+							CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::plant, "true");
+							const int lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::linenumber);
+							CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::surrogatelinenumber, lineNumberPlantAppearsOn);
+
+							if(firstPass)
+							{
+								CabbageUtilities::debug(lineNumberPlantAppearsOn);
+								scaleX = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::width)/CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::width);
+								scaleY = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::height)/CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::height);
+								CabbageWidgetData::setBounds(temp1, CabbageWidgetData::getBounds(temp));
+							}
+							else
+							{
+								const float width = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::width)*scaleX;
+								const float height = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::height)*scaleY;
+								const float top = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::top)*scaleY;
+								const float left = CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::left)*scaleX;												
+								CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::width, width);
+								CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::height, height); 
+								CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::top, top);
+								CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::left, left); 
+
+							}
+							//add test for multiple channels...
+							const String currentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::channel);
+							const String channelPrefix = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel);
+							const String currentIdentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::identchannel);
+							
+							
+
+							
+							CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::channel, channelPrefix+currentChannel);
+							CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::identchannel, channelPrefix+currentIdentChannel);
+							String replacementText = (plantCode.indexOf("{")!=-1 ? 
+															CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, "")+"{"
+															: CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, ""));
+
+							importedLines.add(replacementText);
+							firstPass = false;											
+							}
+						else
+							{
+							importedLines.add("}");
+							}
+						}
+					}
+					
+					for ( int y = importedLines.size() ; y >= 0 ; y--)
+						linesFromCsd.insert(lineNumber+1, importedLines[y]);					
+								
+			}
+		}
+	}
+}
+
+void CabbagePluginProcessor::insertUDOCode(PlantImportStruct importData, StringArray& linesFromCsd)
+{
+	for ( auto str : linesFromCsd )
+	{
+		if(str.substring(0, String("<CsInstruments>").length())=="<CsInstruments>")
+		{
+			StringArray strArray;
+			strArray.addLines(importData.csoundCode);
+			const int lineToInsertTo = linesFromCsd.indexOf(str);
+			for ( int y = strArray.size() ; y >= 0 ; y--)
+				linesFromCsd.insert(lineToInsertTo+1, strArray[y]);						
+			return;
+		}
+	}
+}
+
+void CabbagePluginProcessor::generateCabbageCodeFromJS(PlantImportStruct &importData, String text)
+{
+	JavascriptEngine engine;
+	engine.maximumExecutionTime = RelativeTime::seconds (5);
+	engine.registerNativeObject ("Cabbage", new CabbageJavaClass (this));
+
+	const double startTime = Time::getMillisecondCounterHiRes();
+
+	Result result = engine.execute (text.replace("$lt;", "<")
+			.replace("&amp;", "&")
+			.replace("$quote;", "\"")
+			.replace("$gt;", ">"));
+
+	const double elapsedMs = Time::getMillisecondCounterHiRes() - startTime;
+
+	importData.cabbageCode.addLines(cabbageScriptGeneratedCode.joinIntoString("\n"));
+
+	if (result.failed())
+		CabbageUtilities::showMessage("javaScript Error:" + result.getErrorMessage(), &getActiveEditor()->getLookAndFeel());
+	
+}
+
 void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
 {
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
@@ -208,7 +415,7 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
             {
                 const String currentMacroText = csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ";
                 //first identifiers are not being used for some reason. This hack fixes that, but should be tidied up..
-				macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText );
+				macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText);
             }
         }
     }
@@ -218,18 +425,25 @@ const String CabbagePluginProcessor::getExpandedMacroText (const String line, Va
 {
     String csdLine;
     var macroNames;
+	String defineText;
 
-    for (int cnt = 0 ; cnt < macroText.size() ; cnt++)
-    {
-        if (line.contains (macroText.getName (cnt).toString()))
-        {
-            csdLine += macroText.getWithDefault (macroText.getName (cnt), "").toString() + " ";
-            macroNames.append (macroText.getName (cnt).toString());
-        }
-    }
+	if(line.contains("$"))
+	{
+		defineText = line.substring(line.indexOf("$"), line.length());
+		defineText = defineText.substring(0, (defineText.indexOf(" ")!=-1 ? defineText.indexOf(" ") : defineText.length()));
+	
+		for (int cnt = 0 ; cnt < macroText.size() ; cnt++)
+		{
+				
+			if (defineText == macroText.getName (cnt).toString())
+			{
+				csdLine += macroText.getWithDefault (macroText.getName (cnt), "").toString() + " ";
+				macroNames.append (macroText.getName (cnt).toString());
+			}
+		}
 
-    CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::macronames, macroNames);
-
+		CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::macronames, macroNames);
+	}
     return csdLine;
 }
 
@@ -237,7 +451,9 @@ const String CabbagePluginProcessor::getExpandedMacroText (const String line, Va
 void CabbagePluginProcessor::updateWidgets (String csdText)
 {
     CabbagePluginEditor* editor = static_cast<CabbagePluginEditor*> (this->getActiveEditor());
-    parseCsdFile (csdText);
+	StringArray strings;
+	strings.addLines(csdText);
+    parseCsdFile (strings);
     editor->createEditorInterface (cabbageWidgets);
     editor->updateLayoutEditorFrames();
 }
@@ -469,6 +685,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 //==============================================================================
 void CabbagePluginProcessor::getChannelDataFromCsound()
 {
+
     for ( int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
         const var chanArray = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);

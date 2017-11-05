@@ -39,6 +39,7 @@ public:
     ~CsoundPluginProcessor();
 
     //==============================================================================
+	void setupAndCompileCsound(File csdFile, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
@@ -198,7 +199,7 @@ private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;
-    int guiRefreshRate = 50;
+    int guiRefreshRate = 128;
     MidiBuffer midiBuffer;
     String csoundOutput;
     ScopedPointer<CSOUND_PARAMS> csoundParams;
