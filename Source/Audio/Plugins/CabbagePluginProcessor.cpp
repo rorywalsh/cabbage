@@ -669,7 +669,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 				CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::text, e->getAttributeValue (i));
 			else if (type == CabbageWidgetTypes::filebutton)
 			{
-				CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, e->getAttributeValue (i));
+                const String absolutePath = csdFile.getParentDirectory().getFullPathName()+"/"+e->getAttributeValue (i);
+                const String path = File(absolutePath).getFullPathName();
+				CabbageWidgetData::setStringProp (valueTree, CabbageIdentifierIds::file, absolutePath);
 			}
 			else if(type == CabbageWidgetTypes::hrange || type == CabbageWidgetTypes::vrange)//double channel range widgets
 			{
