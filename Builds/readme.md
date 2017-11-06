@@ -1,0 +1,3 @@
+To build Cabbage on any platform, you must download the latest release branch of the JUCE framework. You will firstly need to build the Projucer project manager for JUCE. It's contained in the JUCE/extras/Projucer folder and contains build projects for all major platforms and compilers. You will also need the VST SDK. The best place to put this is in a folder called SDK in your home directory, or C:\ on Windows. 
+
+For more details on building Cabbage see the various platform folders in this directory. 
