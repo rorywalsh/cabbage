@@ -41,7 +41,7 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-
+	String returnValidPath(File path);
     void setLookAndFeelColours (ValueTree wData);
 
     void buttonClicked (Button* button);

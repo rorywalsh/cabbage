@@ -75,9 +75,8 @@ void CabbageFileButton::buttonClicked (Button* button)
         {
             if (fc.browseForFileToOpen())
             {
-				const String filename = fc.getResult().getFullPathName().replaceCharacters("\\", "/");
-                owner->sendChannelStringDataToCsound (getChannel(), filename);
-                CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, filename);
+                owner->sendChannelStringDataToCsound (getChannel(), returnValidPath(fc.getResult()));
+                CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
                 //owner->refreshComboBoxContents();
             }
         }
@@ -92,9 +91,8 @@ void CabbageFileButton::buttonClicked (Button* button)
 
         if (fc.browseForDirectory())
         {
-			const String filename = fc.getResult().getFullPathName().replaceCharacters("\\", "/");
-            owner->sendChannelStringDataToCsound (getChannel(), filename);
-            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, filename);
+            owner->sendChannelStringDataToCsound (getChannel(), returnValidPath(fc.getResult()));
+            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
         }
 		
 		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
@@ -112,6 +110,11 @@ void CabbageFileButton::buttonClicked (Button* button)
 }
 
 //===============================================================================
+String CabbageFileButton::returnValidPath(File fc)
+{
+	return fc.getFullPathName().replaceCharacters("\\", "/");
+}
+//===============================================================================
 void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 {
     setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
@@ -126,4 +129,5 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
     setLookAndFeelColours (valueTree);
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
+	const String file = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
 }
