@@ -107,7 +107,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
 	CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
     searchForMacros (linesFromCsd);
-
+	int linesToSkip=0;
 
     for ( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
     {
@@ -142,7 +142,14 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
         const String comments = currentLineOfCabbageCode.indexOf (";") == -1 ? "" : currentLineOfCabbageCode.substring (currentLineOfCabbageCode.indexOf (";"));
         CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart (" \t") + " " + expandedMacroText + comments, lineNumber);
-        CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber);
+        const int partOfPlant = CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::plant);
+		if(partOfPlant>0)
+		{
+			linesToSkip = partOfPlant;
+			CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, 99999+lineNumber);
+		}
+		CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber-linesToSkip);
+		
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
 
@@ -306,7 +313,8 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 							ValueTree temp1 ("temp1");
 							CabbageWidgetData::setWidgetState(temp1, plantCode, -99);
 							CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
-							CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::plant, "true");
+							CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::plant, importData.cabbageCode.size()+2);
+							CabbageWidgetData::setNumProp(temp, CabbageIdentifierIds::plant, importData.cabbageCode.size()+2);
 							const int lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::linenumber);
 							CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::surrogatelinenumber, lineNumberPlantAppearsOn);
 
