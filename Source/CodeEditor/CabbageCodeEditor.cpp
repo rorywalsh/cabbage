@@ -70,7 +70,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent() 
 {
-	setLookAndFeel(&lookAndFeel3temp);
+	setLookAndFeel(nullptr);
 }
 
 void CabbageCodeEditorComponent::updateColourScheme()

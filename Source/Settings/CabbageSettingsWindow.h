@@ -46,6 +46,7 @@ public:
         audioDeviceSelector = nullptr;
         colourPanel.clear();
         miscPanel.clear();
+		setLookAndFeel(nullptr);
     };
 
 	CabbageSettings& settings;

@@ -286,6 +286,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
         resized();
         ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
+		CabbageUtilities::debug(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber));
 		if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::plant).isEmpty())
 		{
 			//recreate/update code for standard components, dealing with custom plants later

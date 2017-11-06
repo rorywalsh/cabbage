@@ -92,7 +92,7 @@ void AudioGraph::addPlugin (File inputFile, int32 nodeId)
         }
     }
 
-    setChangedFlag (true);  
+    setChangedFlag (true);
     createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
     setDefaultConnections (nodeId);
 }
@@ -219,6 +219,7 @@ void AudioGraph::setDefaultConnections (int nodeId)
     //if (connection1 == false  || connectInput1 == false )
     //    jassertfalse;
 }
+
 
 void AudioGraph::updateBusLayout (AudioProcessor* selectedProcessor)
 {

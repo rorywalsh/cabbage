@@ -49,6 +49,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::decimalplaces, 0);
     setProperty (widgetData, CabbageIdentifierIds::update, 0);
     setProperty (widgetData, CabbageIdentifierIds::arraysize, 0);
+	setProperty (widgetData, CabbageIdentifierIds::plant,"");
     setProperty (widgetData, CabbageIdentifierIds::basechannel, "");
 
     StringArray strTokens;

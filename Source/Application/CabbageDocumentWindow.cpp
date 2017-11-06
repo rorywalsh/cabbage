@@ -163,7 +163,7 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
     cabbageSettings->setProperty ("audioSetup", getContentComponent()->getAudioDeviceSettings());
     cabbageSettings->closeFiles();
 
-    //lookAndFeel = nullptr;
+    setLookAndFeel(nullptr);
 
 }
 //=======================================================================================
@@ -430,7 +430,6 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
     switch (commandID)
     {
         case CommandIDs::newFile:
-        CabbageUtilities::debug("Hello");
             result.setInfo ("New Csound file", "Create a new Csound file", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier, 0));
             break;
