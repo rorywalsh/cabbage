@@ -121,7 +121,6 @@ public:
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
-    OwnedArray<WebBrowserComponent> htmlHelpPages;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
     //==============================================================================
@@ -175,50 +174,6 @@ private:
 
     ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
 
-    class HtmlHelpDocumentWindow : public DocumentWindow
-    {
-        Colour colour;
-		
-		class HtmlHelpBrowser : public WebBrowserComponent, public ActionBroadcaster
-		{
-		public:
-			HtmlHelpBrowser():WebBrowserComponent()	{}
-			bool pageAboutToLoad(const String &newURL) override
-			{
-				if(newURL.contains(".csd"))
-				{
-					sendActionMessage(newURL);
-					return false;
-				}
-				else
-					return true;
-			}
-		};
-			
-		
-        ScopedPointer<HtmlHelpBrowser> htmlPage;
-    public:
-        HtmlHelpDocumentWindow (String caption, Colour backgroundColour)
-            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
-        {
-            setName (caption);
-            htmlPage = new HtmlHelpBrowser();
-            htmlPage->setSize (1000, 800);
-            this->setResizable (false, true);
-            setContentOwned (htmlPage, true);
-            setSize (1000, 800);
-        }
-
-		HtmlHelpBrowser* getHtmlHelpBrowser(){	return htmlPage;	}
-		
-        void loadPage (String url)
-        {
-            htmlPage->goToURL (url);
-        }
-
-        void closeButtonPressed() override {    setVisible (false);  }
-
-    };
 
     //ScopedPointer<HtmlHelpDocumentWindow> helpWindow;
 

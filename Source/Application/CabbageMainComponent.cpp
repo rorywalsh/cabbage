@@ -546,11 +546,6 @@ void CabbageMainComponent::resizeAllWindows (int height)
         editor->setBounds (0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight() - 5);
     }
 
-    for ( WebBrowserComponent* browser : htmlHelpPages )
-    {
-        browser->setBounds (0, height, getWidth(), getHeight() - 5);
-    }
-
     arrangeFileTabs();
 }
 
