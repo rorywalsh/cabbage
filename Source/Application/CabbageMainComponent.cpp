@@ -190,6 +190,7 @@ void CabbageMainComponent::bringCodeEditorToFront (File file)
     if (fileIndex >= 0)
     {
         fileTabs[fileIndex]->setToggleState (true, sendNotification);
+        currentFileIndex = fileIndex;
     }
     else
         this->openFile (file.getFullPathName());
@@ -294,6 +295,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 			propertyPanel->setEnabled (true);
 			propertyPanel->saveOpenessState();
 			propertyPanel->updateProperties (widgetData);
+            resized();
 
 			if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
 			{
@@ -989,7 +991,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
             propertyPanel->setEnabled (false);
 
-            if (recompile == true)
+            if (recompile == true && getCurrentCsdFile().hasFileExtension((".csd")))
             {
                 runCsoundForNode (getCurrentCsdFile().getFullPathName());
                 fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);

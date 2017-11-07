@@ -815,7 +815,7 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     var channels;
     channels.append ("checkchan");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
-    setProperty (widgetData, CabbageIdentifierIds::text, "");
+    setProperty (widgetData, CabbageIdentifierIds::text, "Check box");
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
 	setProperty (widgetData, CabbageIdentifierIds::min, 0);
 	setProperty (widgetData, CabbageIdentifierIds::max, 1);
