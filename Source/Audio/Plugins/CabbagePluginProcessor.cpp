@@ -212,12 +212,16 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 {
 	PlantImportStruct importData;
+    searchForMacros (linesFromCsd);
 
-	int lineNumber = 0;
 	for (int i = 0 ; i < linesFromCsd.size() ; i++)
 	{
-		ValueTree temp ("temp");
-		CabbageWidgetData::setWidgetState (temp, linesFromCsd[i], 0);
+
+        ValueTree temp ("temp");
+        const String expandedMacroText = getExpandedMacroText (linesFromCsd[i], temp);
+		CabbageWidgetData::setWidgetState (temp, linesFromCsd[i]+" "+expandedMacroText, 0);
+
+
 
 		if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
 		{
@@ -226,8 +230,8 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 			{
 				if(csdFile.getParentDirectory().getChildFile (files[y].toString()).existsAsFile())
 				{
-					StringArray defineStrings;
-					defineStrings.addLines(csdFile.getParentDirectory().getChildFile (files[y].toString()).loadFileAsString());
+					StringArray linesFromImportedFile;
+                    linesFromImportedFile.addLines(csdFile.getParentDirectory().getChildFile (files[y].toString()).loadFileAsString());
 					
 					
 					ScopedPointer<XmlElement> xml;
@@ -235,10 +239,10 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 					
 					if(!xml)
 					{				
-						for ( int y = defineStrings.size() ; y >= 0 ; y--)
+						for ( int y = linesFromImportedFile.size() ; y >= 0 ; y--)
 						{
-							linesFromCsd.insert(i+1, defineStrings[y]);				
-							CabbageUtilities::debug(defineStrings[y]);
+							linesFromCsd.insert(i+1, linesFromImportedFile[y]);
+							CabbageUtilities::debug(linesFromImportedFile[y]);
 						}
 					}
 					else
@@ -283,6 +287,7 @@ void CabbagePluginProcessor::handleXmlImport(PlantImportStruct& importData, XmlE
 }
 void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, StringArray& linesFromCsd)
 {
+    searchForMacros (linesFromCsd);
 	StringArray importedLines("");
 	bool firstPass = true;
 	float scaleX = 1;
@@ -295,7 +300,8 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 		{
 			CabbageUtilities::debug(str);
 			ValueTree temp ("temp");
-			CabbageWidgetData::setWidgetState(temp, str, lineIndex++);
+            const String expandedMacroText = getExpandedMacroText (str, temp);
+			CabbageWidgetData::setWidgetState(temp, str + " " + expandedMacroText, lineIndex++);
 			CabbageWidgetData::setCustomWidgetState(temp, str);
 			const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
 			const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
@@ -312,7 +318,9 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 						if(plantCode.contains("}") == false)
 						{
 							ValueTree temp1 ("temp1");
-							CabbageWidgetData::setWidgetState(temp1, plantCode, -99);
+                            const String expandedMacroText = getExpandedMacroText (plantCode, temp);
+                            CabbageUtilities::debug(plantCode);
+							CabbageWidgetData::setWidgetState(temp1, plantCode + " " + expandedMacroText, -99);
 							CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
 							CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::plant, importData.cabbageCode.size()+2);
 							CabbageWidgetData::setNumProp(temp, CabbageIdentifierIds::plant, importData.cabbageCode.size()+2);
@@ -347,7 +355,8 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 
 							
 							CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::channel, channelPrefix+currentChannel);
-							CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::identchannel, channelPrefix+currentIdentChannel);
+                            if(CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::identchannel).isNotEmpty())
+							    CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::identchannel, channelPrefix+currentIdentChannel);
 							String replacementText = (plantCode.indexOf("{")!=-1 ? 
 															CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, "")+"{"
 															: CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, ""));

@@ -16,7 +16,7 @@ for(var y = 0 ; y &lt; 8 ; y++)
   if(y==0)
     Cabbage.print("image bounds("+((x*22))+", 0, 23, 176), colour(100, 100, 100), identchannel(\"scrubberIdent"+(x+1)+"\")");
 
-  Cabbage.print("checkbox bounds("+x*22+","+y*22+", 20, 20), channel(\"gridChannel"+channelNumber+"\"), identchannel(\"gridIdent"+channelNumber+"\")");
+  Cabbage.print("checkbox bounds("+x*22+","+y*22+", 20, 20), colour(\"red\"), channel(\"gridChannel"+channelNumber+"\")");
   channelNumber++;
   }
 }

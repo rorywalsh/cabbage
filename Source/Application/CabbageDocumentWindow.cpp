@@ -97,14 +97,14 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
         cabbageSettings->updateRecentFilesList();
 
 		const int numberOfFileToOpen = cabbageSettings->getUserSettings()->getIntValue ("NumberOfOpenFiles");
-		for( int i = 1 ; i < numberOfFileToOpen; i++ )
+		for( int i = 0 ; i < numberOfFileToOpen; i++ )
 		{
 			if(File(cabbageSettings->getMostRecentFile(i).getFullPathName()).existsAsFile())
 				content->openFile (cabbageSettings->getMostRecentFile(i).getFullPathName());
 		}
 		
 		if(File(lastOpenedFile).existsAsFile())
-            content->openFile(lastOpenedFile);
+            content->bringCodeEditorToFront(File(lastOpenedFile));
 
     }
 

@@ -1,11 +1,10 @@
 <Cabbage>
 form caption("Grid Sequencer") size(544, 480), colour(120, 120, 120),pluginID("add1"), guirefresh(128), import("gridSequencer.xml")
 gridSequencer bounds(7, 7, 535, 337), channel("grid"), namespace("rw")
-button bounds(10, 430, 148, 40) channel("random") text("Randomise", "Randomise") 
-button bounds(10, 390, 148, 40) channel("clear") text("Clear", "Clear") 
-button bounds(10, 350, 148, 40) channel("play") text("Play", "Stop") 
-hslider bounds(162, 354, 361, 36) channel("tempo") range(0.1, 10, 8, 1, 0.5) text("Tempo") increment(0.5) 
-button bounds(162, 394, 148, 40) channel("bass"), text("Change bass") 
+button bounds(10, 430, 148, 40) channel("random") value(1) text("Randomise", "Randomise") 
+button bounds(10, 390, 148, 40) channel("clear") value(1) text("Clear", "Clear") 
+button bounds(10, 350, 148, 40) channel("play") value(1) text("Play", "Stop") 
+rslider bounds(162, 354, 110, 110) channel("tempo") range(0.1, 20, 8, 1, 0.5) text("Tempo") increment(0.5) 
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -22,47 +21,34 @@ nchnls = 2
 ;from checkboxes
 ;----------------------------------------
 instr 1
-kRow = 1
-kBeat init 1
-kScale[] fillarray 60, 62, 64, 65, 67, 69, 71, 72
-if chnget:k("play") == 1 then
-    if metro:k(chnget:k("tempo")) == 1 then
-        until kRow>8 do
-            kValue rw_GetGridValue "grid", kBeat, kRow
-            if kValue == 1 then
-                event "i", "SYNTH", 0, 1, kRow, kBeat
-                ;event "i", "SYNTH_2", 0, 5, kScale[8-kRow]+12
-            endif
-            kRow = kRow+1
-        od
-        kBeat = kBeat<16 ? kBeat+1 : 1
-        event "i", "UPDATE_SCRUBBER", 0, 0, kBeat
+    kRow = 1
+    kBeat init 1
+    kScale[] fillarray 60, 62, 64, 65, 67, 69, 71, 72
+    if chnget:k("play") == 1 then
+        if metro:k(chnget:k("tempo")) == 1 then
+            until kRow>8 do
+                kValue rw_GetGridValue "grid", kBeat, kRow
+                if kValue == 1 then
+                    event "i", "SYNTH", 0, 1, kRow, kBeat
+                endif
+                kRow = kRow+1
+            od
+            kBeat = kBeat<16 ? kBeat+1 : 1
+            event "i", "UPDATE_SCRUBBER", 0, 0, kBeat
+        endif
     endif
-endif
 
-if changed(chnget:k("random")) == 1 then
-    event "i", "RANDOMISE", 0, 0
-endif
-
-if changed(chnget:k("clear")) == 1 then
-    event "i", "CLEAR", 0, 0
-endif
-
-
-endin
-
-instr 2
-    kScale[] fillarray 60, 67, 65, 67, 65, 60, 64, 62
-    kFreq init 0
     if changed(chnget:k("random")) == 1 then
-        kFreq = kFreq<8 ? kFreq+1 : 0
+        event "i", "RANDOMISE", 0, 0
     endif
 
-    aEnv = .05
-    aOscil oscil aEnv, cpsmidinn(kScale[kFreq]), 2
-    kGain jspline .25, .1, 2
-    outs aOscil*(abs(kGain)+.5), aOscil*(abs(kGain)+.5)
+    if changed(chnget:k("clear")) == 1 then
+        event "i", "CLEAR", 0, 0
+    endif
+
+
 endin
+
 ;----------------------------------------
 ;simple synth that will generate tones if checkboxes
 ;are enabled. This instrument is being triggered from instr 1
@@ -119,13 +105,6 @@ iArp[] fillarray 1, 2, 3, 4
     endif  
 endin
 
-instr SYNTH_2
-    iRow = p4
-    kEnv expon 1/10, p3, 0.0001
-    aSin oscili kEnv, cpsmidinn(iRow)
-    outs aSin, aSin
-endin 
-
 ;---------------------------------------
 ;simple instrument that will randomise the values
 ;of the grid, the rw_RandomiseGrid UDO is i-rate only
@@ -157,6 +136,6 @@ f1 0 4 10 1
 f2 0 4 10 1 1
 ;main instrument
 i1 0 z
-i2 0 z
+
 </CsScore>
 </CsoundSynthesizer>
