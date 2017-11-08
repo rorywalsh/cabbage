@@ -66,7 +66,7 @@ public:
 
     CabbageMainComponent* getContentComponent();
     //=============================================================================
-    CabbageEditorContainer (CabbageSettings* settings);
+    CabbageEditorContainer (CabbageSettings* settings, bool isCsdFile=true);
     ~CabbageEditorContainer();
     void updateLookAndFeel();
     void openFile (File file);
@@ -80,12 +80,13 @@ public:
     void mouseDrag (const MouseEvent& e);
 
     int getStatusBarPosition();
+    void hideOutputConsole();
     ScopedPointer<CabbageCodeEditorComponent> editor;
     ScopedPointer<CabbageOutputConsole> outputConsole;
-    //HorizontalResizerBar horizontalResizerBar;
     StatusBar statusBar;
     CodeDocument csoundDocument;
     CsoundTokeniser csoundTokeniser;
+    XmlTokeniser xmlTokeniser;
     CabbageSettings* settings;
 
 private:

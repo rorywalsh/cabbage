@@ -108,7 +108,6 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
 		}
 
         content->openFile(lastOpenedFile, false);
-
     }
 
     setApplicationCommandManagerToWatch (&commandManager);
@@ -161,7 +160,7 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
     cabbageSettings->setProperty ("IDE_LastKnownX", getX());
     cabbageSettings->setProperty ("IDE_LastKnownY", getY());
 
-    if (getContentComponent()->getCurrentCodeEditor())
+    if (getContentComponent()->getCurrentCodeEditor() && getContentComponent()->getStatusbarYPos()<(getHeight()-50))
         cabbageSettings->setProperty ("IDE_StatusBarPos", getContentComponent()->getStatusbarYPos());
 
     cabbageSettings->setProperty ("audioSetup", getContentComponent()->getAudioDeviceSettings());
@@ -354,11 +353,10 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
     {
         const File file = cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName();
 
-        if (file.hasFileExtension (".csd"))
-            getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
-
         if (file.hasFileExtension (".cabbage"))
             getContentComponent()->openGraph (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID));
+        else
+            getContentComponent()->openFile (cabbageSettings->recentFiles.getFile (menuItemID - recentProjectsBaseID).getFullPathName());
     }
     else if (menuItemID >= examplesMenuBaseID && menuItemID < exampleFiles.size() + examplesMenuBaseID)
     {

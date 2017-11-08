@@ -20,7 +20,7 @@
 #include "CabbageEditorContainer.h"
 #include "../Application/CabbageMainComponent.h"
 
-CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings)
+CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool isCsdFile)
     : settings (settings),
       statusBar (settings->valueTree, this)
 {
@@ -59,6 +59,12 @@ CabbageEditorContainer::~CabbageEditorContainer()
 	settings->getUserSettings()->setValue ("FontSizeConsole", outputConsole->getFontSize());
     editor = nullptr;
     outputConsole = nullptr;
+}
+
+void CabbageEditorContainer::hideOutputConsole()
+{
+    statusBar.setBounds (0, getHeight() - statusBar.getHeight(), getWidth(), statusBar.getHeight());
+    outputConsole->setBounds (0, getHeight(), getWidth(), 0);
 }
 
 CabbageMainComponent* CabbageEditorContainer::getContentComponent()

@@ -932,6 +932,8 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     propertyPanel->setVisible (false);
     editorConsole->setVisible (true);
     editorConsole->toFront (true);
+    if(file.hasFileExtension(".csd") == false)
+        editorConsole->hideOutputConsole();
     editorConsole->editor->loadContent (file.loadFileAsString());
     editorConsole->editor->parseTextForInstrumentsAndRegions();
     editorConsole->editor->startThread();
