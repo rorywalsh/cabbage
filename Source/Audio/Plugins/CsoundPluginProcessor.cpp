@@ -110,7 +110,7 @@ void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, bool debugMode)
     //  outs->setCurrentLayout(AudioChannelSet::mono());
 
     addMacros (csdFile.getFullPathName());
-    csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
+    csdFile.setAsCurrentWorkingDirectory();
 
     if (csdCompiledWithoutError())
     {
@@ -177,24 +177,14 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
-
-        csound->GetStringChannel ("CSD_PATH", path);
-
-        if (String (path).isNotEmpty())
-            File (path).getParentDirectory().setAsCurrentWorkingDirectory();
-        else
             csound->SetChannel ("CSD_PATH", File (csdFile).getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
     }
     else
     {
-        csound->GetStringChannel ("CSD_PATH", path);
-
-        if (String (path).isNotEmpty())
-            File (path).getParentDirectory().setAsCurrentWorkingDirectory();
-        else
             csound->SetChannel ("CSD_PATH", File (csdFile).getParentDirectory().getFullPathName().toUTF8().getAddress());
     }
 
+    File (csdFile).getParentDirectory().setAsCurrentWorkingDirectory();
 
     if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
     {
@@ -218,9 +208,9 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     //post init hack to allow tables to be set up correctly
 	try{
-    csound->PerformKsmps();
-    //csound->SetScoreOffsetSeconds (0);
-    //csound->RewindScore();
+        csound->PerformKsmps();
+        //csound->SetScoreOffsetSeconds (0);
+        //csound->RewindScore();
 	}
 	catch(int e)
 	{
