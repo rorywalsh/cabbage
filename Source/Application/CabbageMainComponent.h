@@ -71,7 +71,7 @@ public:
     //==============================================================================
     void launchSSHFileBrowser (String mode);
     void setEditMode (bool enable);
-    const File openFile (String filename = "");
+    const File openFile (String filename = "", bool updateRecentFiles=true);
     void closeDocument();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);

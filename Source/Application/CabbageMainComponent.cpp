@@ -833,7 +833,7 @@ void CabbageMainComponent::saveGraph (bool saveAs)
     audioGraph->saveGraph (saveAs);
 }
 //==================================================================================
-const File CabbageMainComponent::openFile (String filename)
+const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles)
 {
     stopTimer();
     stopCsoundForNode (filename);
@@ -859,8 +859,12 @@ const File CabbageMainComponent::openFile (String filename)
     else
         currentCsdFile = File (filename);
 
-    cabbageSettings->updateRecentFilesList (currentCsdFile);
-	cabbageSettings->setProperty("MostRecentFile", currentCsdFile.getFullPathName());
+    if(updateRecentFiles)
+    {
+        cabbageSettings->updateRecentFilesList(currentCsdFile);
+        cabbageSettings->setProperty("MostRecentFile", currentCsdFile.getFullPathName());
+    }
+
     createCodeEditorForFile (currentCsdFile);
     return currentCsdFile;
 
