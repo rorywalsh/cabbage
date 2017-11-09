@@ -393,6 +393,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::startAudioGraph,
                               CommandIDs::stopAudioGraph,
                               CommandIDs::exportAsSynth,
+                              CommandIDs::selectAll,
                               CommandIDs::exportAsEffect,
 							  CommandIDs::nextTab,
                               CommandIDs::exportAsFMODSoundPlugin,
@@ -560,6 +561,13 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.addDefaultKeypress ('v', ModifierKeys::commandModifier);
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
+
+        case CommandIDs::selectAll:
+            result.setInfo (String ("Select all"), String ("Select all"), CommandCategories::edit, 0);
+            result.addDefaultKeypress ('a', ModifierKeys::commandModifier);
+            result.setActive ((shouldShowEditMenu ? true : false));
+            break;
+
 
         case CommandIDs::columnEdit:
             result.setInfo (String ("Column Edit mode"), String ("Column Edit"), CommandCategories::edit, 0);
@@ -809,6 +817,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 
         case CommandIDs::copy:
             getContentComponent()->getCurrentCodeEditor()->copy();
+            return true;
+
+        case CommandIDs::selectAll:
+            getContentComponent()->getCurrentCodeEditor()->selectAll();
             return true;
 
         case CommandIDs::cut:

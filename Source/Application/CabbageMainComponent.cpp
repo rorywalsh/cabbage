@@ -926,7 +926,7 @@ void CabbageMainComponent::launchHelpfile (String type)
 void CabbageMainComponent::createCodeEditorForFile (File file)
 {
     CabbageEditorContainer* editorConsole;
-    editorAndConsole.add (editorConsole = new CabbageEditorContainer (cabbageSettings));
+    editorAndConsole.add (editorConsole = new CabbageEditorContainer (cabbageSettings, file.hasFileExtension(".csd")));
     addAndMakeVisible (editorConsole);
     addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (cabbageSettings->valueTree));
     propertyPanel->setVisible (false);

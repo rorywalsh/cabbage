@@ -55,55 +55,23 @@ public:
 
         const Type types[] =
         {
-            { "Error",              Colours::black.getARGB() },
-            { "Comment",            Colours::green.getARGB() },
-            { "Keyword",            Colours::blue.getARGB() },
-            { "Identifier",         Colours::black.getARGB() },
-            { "Integer",            Colours::orange.getARGB() },
-            { "Float",              Colours::black.getARGB() },
+            { "Error",              Colours::red.getARGB() },
+            { "Comment",            Colours::red.getARGB() },
+            { "Keyword",            Colours::red.getARGB() },
+            { "Identifier",         Colours::red.getARGB() },
+            { "Integer",            Colours::red.getARGB() },
+            { "Float",              Colours::red.getARGB() },
             { "String",             Colours::red.getARGB() },
-            { "Operator",           Colours::pink.getARGB() },
-            { "Bracket",            Colours::darkgreen.getARGB() },
-            { "Punctuation",        Colours::black.getARGB() },
-            { "Preprocessor Text",  Colours::green.getARGB() },
-            { "Csd Tag",            Colours::brown.getARGB() }
+            { "Operator",           Colours::red.getARGB() },
+            { "Bracket",            Colours::red.getARGB() },
+            { "Punctuation",        Colours::red.getARGB() },
+            { "Preprocessor Text",  Colours::red.getARGB() },
+            { "Csd Tag",            Colours::red.getARGB() }
         };
 
         CodeEditorComponent::ColourScheme cs;
 
         for ( std::size_t i = 0; i < int (sizeof (types) / sizeof (types[0])); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
-            cs.set (types[i].name, Colour (types[i].colour));
-
-        return cs;
-    }
-
-    CodeEditorComponent::ColourScheme getDarkColourScheme()
-    {
-        struct Type
-        {
-            const char* name;
-            uint32 colour;
-        };
-
-        const Type types[] =
-        {
-            { "Error",              Colours::white.getARGB() },
-            { "Comment",            Colours::green.getARGB() },
-            { "Keyword",            Colours::cornflowerblue.getARGB() },
-            { "Identifier",         Colours::white.getARGB() },
-            { "Integer",            Colours::orange.getARGB() },
-            { "Float",              Colours::pink.getARGB() },
-            { "String",             Colours::red.getARGB() },
-            { "Operator",           Colours::pink.getARGB() },
-            { "Bracket",            Colours::darkgreen.getARGB() },
-            { "Punctuation",        Colours::white.getARGB() },
-            { "Preprocessor Text",  Colours::green.getARGB() },
-            { "Csd Tag",            Colours::brown.getARGB() }
-        };
-
-        CodeEditorComponent::ColourScheme cs;
-
-        for ( std::size_t i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
             cs.set (types[i].name, Colour (types[i].colour));
 
         return cs;
