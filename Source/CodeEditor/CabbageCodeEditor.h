@@ -55,7 +55,7 @@ class CabbageCodeEditorComponent :
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);
     ~CabbageCodeEditorComponent();
-    void updateColourScheme();
+    void updateColourScheme(bool isCsdFile=true);
     CodeDocument::Position positionInCode;
     ValueTree valueTree;
     void codeDocumentTextDeleted (int, int);

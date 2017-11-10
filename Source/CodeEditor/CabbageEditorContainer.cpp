@@ -20,12 +20,16 @@
 #include "CabbageEditorContainer.h"
 #include "../Application/CabbageMainComponent.h"
 
-CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool isCsdFile)
-    : settings (settings),
+CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool isCsd)
+    : settings (settings), isCsdFile(isCsd),
       statusBar (settings->valueTree, this)
 {
     addAndMakeVisible (statusBar);
-    addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
+    if(isCsdFile)
+        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument,&csoundTokeniser));
+    else
+        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &xmlTokeniser));
+
     addAndMakeVisible (outputConsole = new CabbageOutputConsole (settings->valueTree));
 	
     editor->setLineNumbersShown (true);
@@ -81,7 +85,7 @@ void CabbageEditorContainer::openFile (File file)
 
 void CabbageEditorContainer::updateLookAndFeel()
 {
-    editor->updateColourScheme();
+    editor->updateColourScheme(isCsdFile);
     outputConsole->updateColourScheme();
 }
 
@@ -134,7 +138,7 @@ void CabbageEditorContainer::resized()
 
 }
 
-void CabbageEditorContainer::updateEditorColourScheme()
+void CabbageEditorContainer::updateEditorColourScheme() //called when users update the colours in the settings window..
 {
     editor->updateColourScheme();
     outputConsole->updateColourScheme();

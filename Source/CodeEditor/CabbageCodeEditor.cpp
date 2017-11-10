@@ -73,7 +73,7 @@ CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
 	setLookAndFeel(nullptr);
 }
 
-void CabbageCodeEditorComponent::updateColourScheme()
+void CabbageCodeEditorComponent::updateColourScheme(bool isCsdFile)
 {
     struct Type
     {
@@ -81,33 +81,96 @@ void CabbageCodeEditorComponent::updateColourScheme()
         uint32 colour;
     };
 
-    const Type types[] =
+    setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId,
+              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground,
+                                                      Colour(70, 70, 70)));
+    setColour(CodeEditorComponent::ColourIds::lineNumberTextId,
+              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
+    setColour(CodeEditorComponent::ColourIds::backgroundColourId,
+              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::codeBackground, Colours::white));
+    setColour(CaretComponent::ColourIds::caretColourId,
+              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::caret, Colours::white));
+    setColour(CodeEditorComponent::ColourIds::highlightColourId,
+              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::selectTextBackground,
+                                                      Colours::white));
+
+    if(isCsdFile)
     {
-        { "Error",              CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::numbers, Colours::grey.darker()).getARGB() },
-        { "Comment",            CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::comment, Colours::grey.darker()).getARGB() },
-        { "Keyword",            CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::keyword, Colours::grey.darker()).getARGB() },
-        { "Identifier",         CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::identifierLiteral, Colours::grey.darker()).getARGB() },
-        { "Integer",            Colours::grey.darker().getARGB() },
-        { "Float",              Colours::grey.darker().getARGB() },
-        { "String",             CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::stringLiteral, Colours::grey.darker()).getARGB() },
-        { "Operator",           Colours::grey.darker().getARGB() },
-        { "Bracket",            Colours::grey.darker().getARGB() },
-        { "Punctuation",        Colours::grey.darker().getARGB() },
-        { "Preprocessor Text",  Colours::grey.darker().getARGB() },
-        { "Csd Tag",            CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::csdtags, Colours::grey.darker()).getARGB()}
-    };
+        const Type types[] =
+                {
+                        {"Error",             CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::numbers,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Comment",           CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::comment,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Keyword",           CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::keyword,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Identifier",        CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::identifierLiteral,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Integer",           Colours::grey.darker().getARGB()},
+                        {"Float",             Colours::grey.darker().getARGB()},
+                        {"String",            CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::stringLiteral,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Operator",          Colours::grey.darker().getARGB()},
+                        {"Bracket",           Colours::grey.darker().getARGB()},
+                        {"Punctuation",       Colours::grey.darker().getARGB()},
+                        {"Preprocessor Text", Colours::grey.darker().getARGB()},
+                        {"Csd Tag",           CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::csdtags,
+                                                                                      Colours::grey.darker()).getARGB()}
+                };
 
-    CodeEditorComponent::ColourScheme cs;
-    setColour (CodeEditorComponent::ColourIds::lineNumberBackgroundId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground, Colour (70, 70, 70)));
-    setColour (CodeEditorComponent::ColourIds::lineNumberTextId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumbers, Colours::white));
-    setColour (CodeEditorComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::codeBackground, Colours::white));
-    setColour (CaretComponent::ColourIds::caretColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::caret, Colours::white));
-    setColour (CodeEditorComponent::ColourIds::highlightColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground, Colours::white));
+        CodeEditorComponent::ColourScheme cs;
+        for (std::size_t i = 0;
+             i < sizeof(types) / sizeof(types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
+            cs.set(types[i].name, Colour(types[i].colour));
 
-    for (std::size_t i = 0; i < sizeof (types) / sizeof (types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
-        cs.set (types[i].name, Colour (types[i].colour));
+        this->setColourScheme(cs);
+    }
+    else
+    {
+		Colour background = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground,
+                                                      Colour(70, 70, 70));
+	
+										  
+													  
+        const Type types[] =
+                {
+                        {"Error",             CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::numbers,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Comment",           CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::comment,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Keyword",           background.contrasting(.3f).getARGB()},
+                        {"Identifier",        CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::identifierLiteral,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Integer",           background.contrasting(.8f).getARGB()},
+                        {"Float",             Colours::cornflowerblue.getARGB()},
+                        {"String",            CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::stringLiteral,
+                                                                                      Colours::grey.darker()).getARGB()},
+                        {"Operator",          Colours::pink.darker().getARGB()},
+                        {"Bracket",           background.contrasting(.3f).getARGB()},
+                        {"Punctuation",       Colours::red.darker().getARGB()},
+                        {"Preprocessor Text", Colours::red.darker().getARGB()},
+                        {"Csd Tag",           CabbageSettings::getColourFromValueTree(valueTree,
+                                                                                      CabbageColourIds::csdtags,
+                                                                                      Colours::grey.darker()).getARGB()}
+                };
 
-    this->setColourScheme (cs);
+        CodeEditorComponent::ColourScheme cs;
+        for (std::size_t i = 0;
+             i < sizeof(types) / sizeof(types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
+            cs.set(types[i].name, Colour(types[i].colour));
+
+        this->setColourScheme(cs);
+    }
 }
 //==============================================================================
 void CabbageCodeEditorComponent::runInDebugMode()
