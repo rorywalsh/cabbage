@@ -146,6 +146,7 @@ public:
 			}
 		}	   
 		   
+		   pluginHolder->stopPlaying();
 		}
 
 	const String getPluginId (File csdFile)
@@ -242,7 +243,8 @@ public:
 			
 		
         m.addSeparator();
-		m.addItem (4, "Show output console");
+		m.addItem (4, "Toggle output console");
+		m.addItem (4, "About Cabbage");
         m.showMenuAsync (PopupMenu::Options(),
                          ModalCallbackFunction::forComponent (menuCallback, this));
     }
@@ -264,17 +266,22 @@ public:
 	{
 		if(outputConsole == nullptr)
 			outputConsole = new CsoundOutputWindow();
-		outputConsole->setVisible(true);
+		
+		
+		outputConsole->setVisible(!outputConsole->isVisible());
 	}
 
     void handleMenuResult (int result)
     {
+		CabbageIDELookAndFeel lAndF;
         switch (result)
         {
             case 1:  pluginHolder->showAudioSettingsDialog(); break;
             case 2:  openFile(); break;
             case 3:  setAlwaysOnTop(!isAlwaysOnTop()); break;
 			case 4:  showOutputConsole();	break;
+			case 5:  CabbageUtilities::showMessage (String(CABBAGE_VERSION), &lAndF); break;
+			
             default: break;
         }
     }

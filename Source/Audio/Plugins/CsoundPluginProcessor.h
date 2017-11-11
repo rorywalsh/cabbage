@@ -126,6 +126,8 @@ public:
         return csCompileResult == 0 ? true : false;
     }
 
+		
+
     Csound* getCsound()
     {
         return csound;
@@ -203,7 +205,8 @@ private:
     MidiBuffer midiBuffer;
     String csoundOutput;
     ScopedPointer<CSOUND_PARAMS> csoundParams;
-    int csCompileResult, numCsoundChannels, pos;
+    int csCompileResult = -1;
+	int numCsoundChannels, pos;
     bool updateSignalDisplay = false;
     MYFLT cs_scale;
     MYFLT* CSspin, *CSspout;

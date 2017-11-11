@@ -64,9 +64,6 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
 
 		initAllCsoundChannels(cabbageWidgets);
     }
-
-
-
     
 }
 
@@ -233,8 +230,8 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 	}
 		insertPlantCode(importData, linesFromCsd);							
 		insertUDOCode(importData, linesFromCsd);
-
-	CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));	
+		
+		CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
 }
 
 
@@ -268,14 +265,15 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 {
     searchForMacros (linesFromCsd);
 	StringArray importedLines("");
-	bool firstPass = true;
+	
 	float scaleX = 1;
 	float scaleY = 1;
 	int lineIndex = 0;
 	StringArray copy = linesFromCsd;
+	int numberOfImportedLines = 0;
 	for ( auto str : copy )
 	{
-		if(str.length()>0)
+		if(str.isNotEmpty() && str.substring(0, 1) != ";")
 		{
 			//CabbageUtilities::debug(str);
 			ValueTree temp ("temp");
@@ -285,10 +283,12 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 			const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
 			const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
 			
-			
+			bool firstPass = true;
+		
 			if(type==importData.name && importData.nsp==nsp)
 			{
 				int lineNumber = copy.indexOf(str);
+				int lineNumberPlantAppearsOn;
 				
 				for ( auto plantCode : importData.cabbageCode)
 				{
@@ -303,7 +303,7 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 							CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
 							CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::plant, importData.cabbageCode.size()+2);
 							CabbageWidgetData::setNumProp(temp, CabbageIdentifierIds::plant, importData.cabbageCode.size()+2);
-							const int lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::linenumber);
+							lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::linenumber);
 							CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::surrogatelinenumber, lineNumberPlantAppearsOn);
 
 							if(firstPass)
@@ -328,9 +328,7 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 							//add test for multiple channels...
 							const String currentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::channel);
 							const String channelPrefix = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::channel);
-							const String currentIdentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::identchannel);
-							
-							
+							const String currentIdentChannel = CabbageWidgetData::getStringProp(temp1, CabbageIdentifierIds::identchannel);							
 
 							
 							CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::channel, channelPrefix+currentChannel);
@@ -340,6 +338,8 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 															CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, "")+"{"
 															: CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1, plantCode, ""));
 
+							
+
 							importedLines.add(replacementText);
 							firstPass = false;											
 							}
@@ -348,10 +348,18 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 							importedLines.add("}");
 							}
 						}
+						
 					}
-					
-					for ( int y = importedLines.size() ; y >= 0 ; y--)
-						linesFromCsd.insert(lineNumber+1, importedLines[y]);					
+
+						for ( int y = 0 ; y < importedLines.size() ; y++)
+						{						
+						linesFromCsd.insert(numberOfImportedLines + lineNumber+1+y, importedLines[y]);	
+						}
+						
+						numberOfImportedLines = importedLines.size();
+						
+						importedLines.clear();
+				
 								
 			}
 		}
