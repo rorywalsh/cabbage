@@ -84,7 +84,6 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
     cabbageWidgets.removeAllChildren (0);
     String parentComponent, previousComponent;
 
-	CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
     searchForMacros (linesFromCsd);
 	int linesToSkip=0;
 
@@ -220,7 +219,7 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 						for ( int y = linesFromImportedFile.size() ; y >= 0 ; y--)
 						{
 							linesFromCsd.insert(i+1, linesFromImportedFile[y]);
-							CabbageUtilities::debug(linesFromImportedFile[y]);
+							//CabbageUtilities::debug(linesFromImportedFile[y]);
 						}
 					}
 					else
@@ -233,7 +232,9 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 		}
 	}
 		insertPlantCode(importData, linesFromCsd);							
-		insertUDOCode(importData, linesFromCsd);	
+		insertUDOCode(importData, linesFromCsd);
+
+	CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));	
 }
 
 
@@ -276,7 +277,7 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 	{
 		if(str.length()>0)
 		{
-			CabbageUtilities::debug(str);
+			//CabbageUtilities::debug(str);
 			ValueTree temp ("temp");
             const String expandedMacroText = getExpandedMacroText (str, temp);
 			CabbageWidgetData::setWidgetState(temp, str + " " + expandedMacroText, lineIndex++);
@@ -297,7 +298,7 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 						{
 							ValueTree temp1 ("temp1");
                             const String expandedMacroText = getExpandedMacroText (plantCode, temp);
-                            CabbageUtilities::debug(plantCode);
+                            //CabbageUtilities::debug(plantCode);
 							CabbageWidgetData::setWidgetState(temp1, plantCode + " " + expandedMacroText, -99);
 							CabbageWidgetData::setCustomWidgetState(temp1, plantCode);
 							CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::plant, importData.cabbageCode.size()+2);
@@ -307,7 +308,7 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 
 							if(firstPass)
 							{
-								CabbageUtilities::debug(lineNumberPlantAppearsOn);
+								//CabbageUtilities::debug(lineNumberPlantAppearsOn);
 								scaleX = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::width)/CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::width);
 								scaleY = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::height)/CabbageWidgetData::getNumProp(temp1, CabbageIdentifierIds::height);
 								CabbageWidgetData::setBounds(temp1, CabbageWidgetData::getBounds(temp));
@@ -417,20 +418,21 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
     }
 }
 
-const String CabbagePluginProcessor::getExpandedMacroText (const String line, ValueTree wData)
+const String CabbagePluginProcessor::getExpandedMacroText (String line, ValueTree wData)
 {
     String csdLine;
     var macroNames;
 	String defineText;
 
-	if(line.contains("$"))
+	while(line.contains("$"))
 	{
-		defineText = line.substring(line.indexOf("$"), line.length());
+		line = line.substring(line.indexOf("$"), line.length());
+		defineText = line.substring(0, (line.indexOf(" ")==-1 ? line.length() : line.indexOf(" ")+1));
+		line = line.replace(defineText, "");
 		defineText = defineText.substring(0, (defineText.indexOf(" ")!=-1 ? defineText.indexOf(" ") : defineText.length()));
 	
 		for (int cnt = 0 ; cnt < macroText.size() ; cnt++)
 		{
-				
 			if (defineText == macroText.getName (cnt).toString())
 			{
 				csdLine += macroText.getWithDefault (macroText.getName (cnt), "").toString() + " ";
@@ -613,8 +615,6 @@ XmlElement CabbagePluginProcessor::savePluginState (String xmlTag, File xmlFile)
 			}
 			else
 			{
-				CabbageUtilities::debug(channelName);
-				CabbageUtilities::debug(float(value));
 				xml->getChildByName(presetName)->setAttribute (channelName, float(value));
 			}
 		}

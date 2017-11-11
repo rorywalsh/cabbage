@@ -84,7 +84,7 @@ public:
 	void insertPlantCode(PlantImportStruct importData, StringArray& linesFromCsd);
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
-    const String getExpandedMacroText (const String line, ValueTree wData);
+    const String getExpandedMacroText (String line, ValueTree wData);
 
     CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================
