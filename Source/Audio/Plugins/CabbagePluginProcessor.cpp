@@ -61,29 +61,7 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
 		parseCsdFile (linesFromCsd);
         createParameters();
 		csoundChanList = NULL;
-//		int numberOfCsoundChannels = csoundListChannels (getCsoundStruct(), &csoundChanList);
-//		StringArray csoundChannels;
-//		for (int i = 0; i < numberOfCsoundChannels; i++ )
-//		{
-//			const String channel = csoundChanList[i].name;
-//			if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
-//			{
-//				csoundChannels.add(channel);
-//				CabbageUtilities::debug(channel);
-//			}
-//		}
-//
-//		int numberOfCabbageChannels = cabbageWidgets.getNumChildren();
-//		StringArray cabbageChannels;
-//		for ( int i = 0 ; i < numberOfCabbageChannels ; i++)
-//		{
-//			const String channel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-//			if (channel != "CSD_PATH" && channel != "IS_A_PLUGIN" && channel.isNotEmpty())
-//			{
-//				cabbageChannels.add(channel);
-//				CabbageUtilities::debug(channel);
-//			}
-//		}
+
 		initAllCsoundChannels(cabbageWidgets);
     }
 
@@ -118,7 +96,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
         const String widgetTreeIdentifier = "WidgetFromLine_" + String (lineNumber);
         ValueTree tempWidget (widgetTreeIdentifier);
 
-        String currentLineOfCabbageCode = linesFromCsd[lineNumber];
+        String currentLineOfCabbageCode = linesFromCsd[lineNumber].replace("\t", " ");
 
         if (currentLineOfCabbageCode.contains (" \\"))
         {
