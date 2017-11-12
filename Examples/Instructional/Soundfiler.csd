@@ -31,19 +31,24 @@ nchnls = 2
 ;
 ;===================================================================================
 opcode	LoadSoundfile,0,SSS	                                                ; load sound file into a table
-    SFileButtonChannel,SFileButtonIdentChannel, STableNumberChannel xin                                
-    kTableNumber init 9000                                                 
+    SFileButtonChannel,SFileButtonIdentChannel, STableNumberChannel xin                                       
 
     if changed:k(chnget:S(SFileButtonChannel))==1 then 
 		SFilePath chnget SFileButtonChannel
         reinit RELOAD_FILE_TO_TABLE
-        kTableNumber+=1
+        iDate     date                                                      
+        SDateInfo dates iDate
+        Shor strsub SDateInfo, 11, 13
+        Smin strsub SDateInfo, 14, 16
+        Ssec strsub SDateInfo, 17, 19
+        STime sprintfk "%s%s%s", Shor, Smin, Ssec
+        iTableNumber = strtod(STime)                                        ; use system time to generate table number
+        
         RELOAD_FILE_TO_TABLE:
     
         if filevalid(SFilePath) ==1 then
-            itableOsc	ftgen	i(kTableNumber),0,0,1,SFilePath,0,0,0		; load sound file into a GEN 01 function table
-            prints "table number %d", i(kTableNumber)
-            chnset i(kTableNumber), STableNumberChannel 
+            itableOsc	ftgen	iTableNumber,0,0,1,SFilePath,0,0,0		    ; load sound file into a GEN 01 function table
+            chnset iTableNumber, STableNumberChannel                        ; assign current table number to channel 'STableNumberChannel'
             SMessage sprintfk "file(%s)", SFilePath           
             chnset SMessage, SFileButtonIdentChannel                        ; show file in soundfiler              
         else
