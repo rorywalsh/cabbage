@@ -19,57 +19,85 @@ ksmps = 32
 nchnls = 2
 0dbfs = 1
 
-gSfilepath init ""     ;create a global filename
+;===================================================================================
+; LoadSoundFile UDO
+; usage:
+;
+;   LoadSoundfile SFileButtonChannel,SFileButtonIdentChannel, STableNumberChannel
+;
+;   SFileButtonChannel: channel given to filebutton that is used to browse for soundfile
+;   SSoundfilerIdentChannel: soundfiler ident channel 
+;   STableNumberChannel: channel use to access table number that was asigned to soundfile
+;
+;===================================================================================
+opcode	LoadSoundfile,0,SSS	                                                ; load sound file into a table
+    SFileButtonChannel,SFileButtonIdentChannel, STableNumberChannel xin                                
+    kTableNumber init 9000                                                 
 
+    if changed:k(chnget:S(SFileButtonChannel))==1 then 
+		SFilePath chnget SFileButtonChannel
+        reinit RELOAD_FILE_TO_TABLE
+        kTableNumber+=1
+        RELOAD_FILE_TO_TABLE:
+    
+        if filevalid(SFilePath) ==1 then
+            itableOsc	ftgen	i(kTableNumber),0,0,1,SFilePath,0,0,0		; load sound file into a GEN 01 function table
+            prints "table number %d", i(kTableNumber)
+            chnset i(kTableNumber), STableNumberChannel 
+            SMessage sprintfk "file(%s)", SFilePath           
+            chnset SMessage, SFileButtonIdentChannel                        ; show file in soundfiler              
+        else
+            printks "Filename is not valid \n", 0
+        endif
+        rireturn
+    endif 
+
+endop
+
+;=================================================================================
+; Instrument 1 is always on and waiting for users to browse for files, 
+; or press play/stop once a file has been loaded
+;=================================================================================
 instr 1
-    gSfilepath	chnget	"filebutton1"
+    Sfilepath	chnget	"filebutton1"
     kCombo chnget "presetsCombo"
     kComboChanged changed kCombo
-    kFileChanged changed gSfilepath 
+    kFileChanged changed Sfilepath 
 
     if kComboChanged == 1 || kFileChanged == 1 then		; if user has requested a preset or new file...
-        event	"i", "LoadSoundFile", 0, 0				                        ; call instrument to update sample storage function table 
+        ;event	"i", "LoadSoundFile", 0, 0				                        ; call instrument to update sample storage function table 
+        LoadSoundfile "filebutton1", "soundfiler1", "file1TableNo"
     endif  
  
     kPlayButtonTrigger chnget "playbutton1"
     if changed(kPlayButtonTrigger) == 1 then
         if kPlayButtonTrigger == 1 then
-            event "i", "PlaySample", 0, 1
+            event "i", "PlaySample", 0, 1, chnget:k("file1TableNo")
         else
             turnoff2 "PlaySample", 0, 0
         endif
     endif
 endin
 
-
-instr	LoadSoundFile	; load sound file
-    prints "Loading Soundfile into soundfiler\n"
-    if filevalid(gSfilepath) == 1 then
-        giTable	ftgen	901,0,0,1,gSfilepath,0,0,0		; load sound file into a GEN 01 function table 
-        giChans	filenchnls	gSfilepath			; derive the number of channels (mono=1,stereo=2) in the sound file
-        giReady 	=	1					; if no string has yet been loaded giReady will be zero
-        gkTabLen	init		ftlen(giTable)/giChans		; table length in sample frames
-        Smessage sprintfk "file(\"%s\")", gSfilepath			; print sound file to viewer
-        chnset Smessage, "soundfiler1"	
-    endif
-endin
-
+;===================================================================
+; Simple function table player
+;===================================================================
 instr PlaySample
     prints "Playing back sample"
-    p3 = ftlen(giTable)/sr
-    if giChans == 1 then
-        a1 loscil 1, 1, giTable, 1
-        outs a1, a1
+    iChans ftchnls p4 
+    p3 = ftlen(p4)/sr
+    if iChans == 1 then
+        prints "This example only reads stereo files"
     else
-        a1, a2 loscil 1, 1, giTable, 1
+        a1, a2 loscil 1, 1, p4, 1
         outs a1, a2
     endif
 endin
 
+
 </CsInstruments>
 <CsScore>
-;causes Csound to run for about 7000 years...
+;causes instrument 1 to run for about 7000 years...
 i1 0 z
-i"LoadSoundFile" 0 0
 </CsScore>
 </CsoundSynthesizer>
