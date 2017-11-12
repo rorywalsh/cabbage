@@ -287,7 +287,11 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
         resized();
         ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
-		CabbageUtilities::debug(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber));
+		CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type));
+		CabbageUtilities::debug(CabbageWidgetData::getBounds(widgetData).toString());
+		CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::plant));
+		
+
 		if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::plant).isEmpty())
 		{
 			//recreate/update code for standard components, dealing with custom plants later
@@ -375,25 +379,33 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
 
     for (ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
     {
-        const int lineNumber = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber);
-        const String parent = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
-
-        const String currentLineText = getCurrentCodeEditor()->getLineText (lineNumber);
-
-        const String macroText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::expandedmacrotext);
-
-        String macroNames;
-
-        for ( int i = 0 ; i < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames).size() ; i++ )
-            macroNames += CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames)[i].toString() + " ";
-
-
-        const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText) + String(CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
+		int lineNumber = 0;
 		
-		
-        macroNames = macroNames.length() > 1 ? macroNames : "";
+        if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber)>=0)
+		{
 
-        getCurrentCodeEditor()->insertCode (lineNumber, newText + " " + macroNames, replaceExistingLine, parent.isEmpty());
+			lineNumber = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber);
+			
+			const String parent = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
+
+			const String currentLineText = getCurrentCodeEditor()->getLineText (lineNumber);
+
+			const String macroText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::expandedmacrotext);
+
+			String macroNames;
+
+			for ( int i = 0 ; i < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames).size() ; i++ )
+				macroNames += CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames)[i].toString() + " ";
+
+
+			const String newText = CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText) + String(CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty);
+			
+			
+			macroNames = macroNames.length() > 1 ? macroNames : "";
+
+			getCurrentCodeEditor()->insertCode (lineNumber, newText + " " + macroNames, replaceExistingLine, parent.isEmpty());
+		
+		}
 
     }
 }
