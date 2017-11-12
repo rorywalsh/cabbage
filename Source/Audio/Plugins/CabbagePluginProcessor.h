@@ -77,7 +77,7 @@ public:
     void parseCsdFile (StringArray& linesFromCsd);
     void createParameters();
     void updateWidgets (String csdText);
-	void handleXmlImport(PlantImportStruct &importData, XmlElement* xml, StringArray &linesFromCsd);
+	void handleXmlImport(XmlElement* xml, StringArray &linesFromCsd);
     void searchForMacros (StringArray& csdText);
 	void generateCabbageCodeFromJS(PlantImportStruct &importData, String text);
 	void insertUDOCode(PlantImportStruct importData, StringArray& linesFromCsd);
