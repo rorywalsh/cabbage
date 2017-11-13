@@ -405,6 +405,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("popup"):
+            case HashStringToInt ("numberofsteps"):
+            case HashStringToInt ("bpm"):
             case HashStringToInt ("resize"):
                 setProperty (widgetData, identifier, strTokens[0].trim().getIntValue());
                 break;
@@ -492,15 +494,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("metercolour"):
             case HashStringToInt ("metercolour:"):
                 setColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx], false);
-                break;
-
-            //=================== sample identifiers for tutorial stepper class =============================
-            case HashStringToInt ("numberofsteps"):
-                setProperty (widgetData, "numberofsteps", strTokens[0].trim().getFloatValue());
-                break;
-
-            case HashStringToInt ("stepbpm"):
-                setProperty (widgetData, "stepbpm", strTokens[0].trim().getIntValue());
                 break;
 
             default:

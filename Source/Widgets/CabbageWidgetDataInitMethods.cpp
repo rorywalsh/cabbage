@@ -194,6 +194,9 @@ void CabbageWidgetData::setStringSequencerProperties (ValueTree widgetData, int 
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::numberofsteps, 16);
+    setProperty (widgetData, CabbageIdentifierIds::bpm, 60);
+
 }
 
 void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)

@@ -41,7 +41,7 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     numColumns = channels.size();
     int cellWidth = width/numColumns;
 
-    numRows = 10;
+    numRows = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::numberofsteps);
     const int cellHeight = 25;
 
     for(int i = 0 ; i < numColumns ; i++)
@@ -51,15 +51,17 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
         {
             TextEditor* tf = new TextEditor();
             seqContainer.addAndMakeVisible(tf);
-            tf->setText("Hello"+String(y), dontSendNotification);
+            tf->setColour(TextEditor::outlineColourId, Colour(20, 20, 20));
             tf->getProperties().set("Column", var(i));
             tf->getProperties().set("Row", var(y));
+            tf->getProperties().set("Channel", channels.size()>1 ? channels[i] : channels);
             tf->addKeyListener(this);
             tf->setBounds(cellWidth*i, y*cellHeight, cellWidth, cellHeight);
             textFields[i]->add(tf);
         }
     }
 
+    startTimer(60/CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::bpm)*1000);
     seqContainer.setBounds(getLocalBounds().withHeight(numRows*cellHeight));
 }
 
@@ -74,16 +76,30 @@ TextEditor* CabbageStringSequencer::getEditor(int column, int row)
     return textFields[column]->operator[](row);
 }
 
+void CabbageStringSequencer::hiResTimerCallback()
+{
+    currentBeat = (currentBeat<numRows -1 ? currentBeat+1 : 0);
+
+    for( int i = 0 ; i < numColumns ; i++)
+        owner->sendChannelStringDataToCsound(getEditor(i, currentBeat)->getProperties().getWithDefault("Channel", ""), getEditor(i, currentBeat)->getText().toUTF8());
+    //CabbageUtilities::debug(currentBeat);
+}
+
 void CabbageStringSequencer::highlightEditorText(int col, int row)
 {
     for( int i = 0 ; i < numColumns ; i++)
         for( int y = 0 ; y < numRows ; y++)
         {
             if(i == col && y == row)
+            {
+                CabbageUtilities::debug("Col", col);
+                CabbageUtilities::debug("Row", row);
+                CabbageUtilities::debug(getEditor(col, row)->getText().length());
                 getEditor(col, row)->setHighlightedRegion(Range<int>(0, getEditor(col, row)->getText().length()));
+                vp.setViewPosition(0, (getEditor(col, row)->getY()>getHeight()/2 ? getEditor(col, row)->getY()-getHeight()+getEditor(col, row)->getHeight()*3 : 0));
+            }
             else
-                getEditor(col, row)->setHighlightedRegion(Range<int>(0, 0));
-
+                getEditor(i, y)->setHighlightedRegion(Range<int>(0, 0));
         }
 }
 void CabbageStringSequencer::resized()
@@ -98,6 +114,10 @@ bool CabbageStringSequencer::keyPressed (const KeyPress &key, Component *origina
     {
         const int currentColumn = int(ted->getProperties().getWithDefault("Column", 0));
         const int currentRow = int(ted->getProperties().getWithDefault("Row", 0));
+        if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
+                key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
+                key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::downKey) ||
+                key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::upKey))
         swapFocusForEditors(key, currentColumn, currentRow);
     }
 }
@@ -107,37 +127,30 @@ void CabbageStringSequencer::swapFocusForEditors(KeyPress key, int col, int row)
     int newRow, newCol;
     if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey))
     {
-        newCol = (col < numColumns -1 ? col + 1 : 0);
+        newCol = (col < numColumns - 1 ? col + 1 : 0);
         newRow = row;
-        getEditor(newCol, newRow)->grabKeyboardFocus();
-        highlightEditorText(newCol, newRow);
     }
 
     else if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey))
     {
-        newCol = (col > 0 ? col - 1 : numColumns-1);
+        newCol = (col > 0 ? col - 1 : numColumns - 1);
         newRow = row;
-        getEditor(newCol, newRow)->grabKeyboardFocus();
-        highlightEditorText(newCol, newRow);
     }
 
     else if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::downKey))
     {
         newRow = (row < numRows - 1 ? row + 1 : 0);
         newCol = col;
-        getEditor(newCol, newRow)->grabKeyboardFocus();
-        highlightEditorText(newCol, newRow);
     }
 
     else if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::upKey))
     {
-        newRow = (row > 0 ? row - 1 : numRows-1);
+        newRow = (row > 0 ? row - 1 : numRows - 1);
         newCol = col;
-        getEditor(newCol, newRow)->grabKeyboardFocus();
-        highlightEditorText(newCol, newRow);
-
     }
 
+    highlightEditorText(newCol, newRow);
+    getEditor(newCol, newRow)->grabKeyboardFocus();
 
 }
 
@@ -147,15 +160,3 @@ void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, con
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 }
 
-//=======================================================================================================
-CabbageStringSequencer::EditableTextField::EditableTextField (CabbageStringSequencer& td)  : owner (td)
-{
-    // double click to edit the label text; single click handled below
-    //setEditable (true, true, false);
-    setMultiLine(false);
-    setColour(Label::textColourId, Colours::white);
-    setColour(Label::outlineColourId, Colour(0.f,0.f,0.f,0.f));
-    setColour(Label::backgroundWhenEditingColourId, Colour(60, 60, 60));
-}
-
-//====================================================================================================

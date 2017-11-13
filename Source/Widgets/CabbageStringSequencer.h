@@ -24,53 +24,22 @@
 
 class CabbagePluginEditor;
 
-class CabbageStringSequencer : public Component, public ValueTree::Listener, public CabbageWidgetBase, public KeyListener
+class CabbageStringSequencer : public Component, public ValueTree::Listener, public CabbageWidgetBase, public KeyListener, public HighResolutionTimer
 {
 public:
-
-    // This is a custom Label component, which we use for the table's editable text columns.
-    class EditableTextField  : public TextEditor
-    {
-    public:
-        EditableTextField (CabbageStringSequencer& td);
-
-//        void mouseDown (const MouseEvent& event) override
-//        {
-//            Label::mouseDown (event);
-//        }
-//
-//        void textWasEdited() override
-//        {
-//            //owner.setText (columnId, row, getText());
-//        }
-//
-//        // Our demo code will call this when we may need to update our contents
-//        void setRowAndColumn (const int newRow, const int newColumn)
-//        {
-//            row = newRow;
-//            columnId = newColumn;
-//            //setText (owner.getText(columnId, row), dontSendNotification);
-//        }
-//
-//        void paint (Graphics& g) override
-//        {
-//            auto& lf = getLookAndFeel();
-//            if (! dynamic_cast<LookAndFeel_V4*> (&lf))
-//                lf.setColour (textColourId, Colours::black);
-//
-//            Label::paint (g);
-//        }
-
-    private:
-        CabbageStringSequencer& owner;
-        int row, columnId;
-        Colour textColour;
-    };
 
     CabbageStringSequencer (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageStringSequencer();
 
-    CabbagePluginEditor* owner;
+
+
+    void resized();
+    void hiResTimerCallback();
+    bool keyPressed (const KeyPress &key, Component *originatingComponent) override;
+    TextEditor* getEditor(int column, int row);
+    void swapFocusForEditors(KeyPress key, int col, int row);
+    void highlightEditorText(int col, int row);
+
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -78,20 +47,18 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
-    bool keyPressed (const KeyPress &key, Component *originatingComponent) override;
-    TextEditor* getEditor(int column, int row);
-    void swapFocusForEditors(KeyPress key, int col, int row);
-    void highlightEditorText(int col, int row);
     ValueTree widgetData;
 
-    void resized();
 
-    OwnedArray<OwnedArray<TextEditor>> textFields;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageStringSequencer);
 
 private:
     int numColumns = 0;
     int numRows = 0;
+    int currentBeat = 0;
     Viewport vp;
     Component seqContainer;
+    OwnedArray<OwnedArray<TextEditor>> textFields;
+    CabbagePluginEditor* owner;
 };

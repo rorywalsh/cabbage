@@ -433,7 +433,7 @@ public:
         add ("min");
         add ("max");
         add ("pos");
-
+        add ("bpm");
     }
 
     NamedValueSet getValueSet()
@@ -496,6 +496,7 @@ namespace CabbageIdentifierIds
 {
 // list of static consts for each identifiers
 static const Identifier top = "top";
+static const Identifier bpm = "bpm";
 static const Identifier left = "left";
 static const Identifier width = "width";
 static const Identifier height = "height";
@@ -537,6 +538,7 @@ static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
 static const Identifier overlaycolour = "overlaycolour";
 static const Identifier backgroundcolour = "backgroundcolour";
 static const Identifier items = "items";
+static const String numberofsteps = "numberofsteps";
 static const Identifier text = "text";
 static const Identifier ballcolour = "ballcolour";
 static const Identifier popuptext = "popuptext";
