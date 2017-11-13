@@ -227,6 +227,10 @@
               file="Source/Widgets/CabbageSoundfiler.cpp"/>
         <FILE id="E8cnXf" name="CabbageSoundfiler.h" compile="0" resource="0"
               file="Source/Widgets/CabbageSoundfiler.h"/>
+        <FILE id="vpdY1z" name="CabbageStringSequencer.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageStringSequencer.cpp"/>
+        <FILE id="HozENJ" name="CabbageStringSequencer.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageStringSequencer.h"/>
         <FILE id="S9OVhs" name="CabbageTextBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageTextBox.cpp"/>
         <FILE id="f9bgq4" name="CabbageTextBox.h" compile="0" resource="0"
@@ -374,6 +378,24 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
       </MODULEPATHS>
     </VS2017>
+    <CLION targetFolder="Builds/CLion" clionMakefileEnabled="1" clionXcodeEnabled="0">
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </CLION>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>

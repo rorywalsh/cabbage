@@ -462,7 +462,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
 
         case CommandIDs::saveDocument:
-            result.setInfo ("Save Csound file", "Save a document", CommandCategories::general, 0);
+            result.setInfo ("Save file", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
             break;
 
@@ -482,7 +482,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
 
         case CommandIDs::saveDocumentAs:
-            result.setInfo ("Save Csound file as...", "Save a document", CommandCategories::general, 0);
+            result.setInfo ("Save file as...", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::shiftModifier | ModifierKeys::commandModifier, 0));
             break;
 

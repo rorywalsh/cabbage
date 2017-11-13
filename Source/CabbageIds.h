@@ -241,6 +241,7 @@ public:
         add ("hostppqpos");
         add ("source");
         add ("infobutton");
+        add ("stringsequencer");
         add ("filebutton");
         add ("loadbutton");
         add ("soundfiler");
@@ -461,6 +462,7 @@ static const String vslider2 = "vslider2";
 static const String vslider3 = "vslider3";
 static const String vrange = "vrange";
 static const String hrange = "hrange";
+static const String stringsequencer = "stringsequencer";
 static const String checkbox = "checkbox";
 static const String soundfiler = "soundfiler";
 static const String button = "button";
@@ -713,6 +715,7 @@ public:
 		set ("Slider - Range - Vertical", CabbageWidgetTypes::vrange);
 		set ("Slider - Range - Horizontal", CabbageWidgetTypes::hrange);
         set ("Soundfiler", CabbageWidgetTypes::soundfiler);
+        set ("String Sequencer", CabbageWidgetTypes::stringsequencer);
         set ("Text Box", CabbageWidgetTypes::textbox.toString());
         set ("Text Editor", CabbageWidgetTypes::texteditor);
 		set ("Vertical Meter", CabbageWidgetTypes::vmeter);

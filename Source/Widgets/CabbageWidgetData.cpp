@@ -141,6 +141,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == "vrange")
         setVRangeSliderProperties (widgetData, ID);
 
+    else if (strTokens[0].trim() == "stringsequencer")
+        setStringSequencerProperties (widgetData, ID);
+
     //===============table==================//
     else if (strTokens[0].trim() == "table")
     {

@@ -722,7 +722,7 @@ void CabbageCodeEditorComponent::parseTextForVariables()    //this is called on 
 
     StringArray tokens;
     variableNames.clear();
-    tokens.addTokens (csdText, "  \n( ) ` ~ ! @ # $ % ^ & * - + = | \ { } [ ] : ; ' < > , . ? /\t", "");
+    tokens.addTokens (csdText, "  \n( ) ` ~ ! @ # $ % ^ & * - + = | \\ { } [ ] : ; ' < > , . ? /\t", "");
 
 
 

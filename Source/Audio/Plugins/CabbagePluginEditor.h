@@ -49,6 +49,7 @@
 #include "../../Widgets/CabbageSoundfiler.h"
 #include "../../Widgets/CabbageRangeSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
+#include "../../Widgets/CabbageStringSequencer.h"
 
 class CabbagePluginEditor;
 
@@ -94,6 +95,7 @@ public:
 	void insertEncoder (ValueTree cabbageWidgetData);
 	//the following methods instantiate controls that CANNOT
 	// be automated in a host...
+	void insertStringSequencer (ValueTree cabbageWidgetData);
 	void insertGroupBox (ValueTree cabbageWidgetData);
 	void insertSoundfiler (ValueTree cabbageWidgetData);
 	void insertSourceButton (ValueTree cabbageWidgetData) {};

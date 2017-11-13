@@ -975,7 +975,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (getCabbagePluginEditor() != nullptr)
             getCabbagePluginEditor()->enableEditMode (false);
 
-        FileChooser fc ("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Select file name and location", getCurrentCsdFile().getParentDirectory(), getCurrentCsdFile().getFileExtension(), CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToSave (false))
         {
@@ -984,10 +984,10 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", lookAndFeel);
 
                 if (result == 1)
-                    writeFileToDisk (fc.getResult().withFileExtension (".csd"));
+                    writeFileToDisk (fc.getResult().withFileExtension (fc.getResult().getFileExtension()));
             }
             else
-                writeFileToDisk (fc.getResult().withFileExtension (".csd"));
+                writeFileToDisk (fc.getResult().withFileExtension (fc.getResult().getFileExtension()));
 
             getCurrentCodeEditor()->setSavePoint();
         }
