@@ -29,20 +29,52 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-
+    int cellWidth = 0;
+    const int cellHeight = 25;
     addAndMakeVisible(vp);
     vp.setViewedComponent(&seqContainer);
 
-
     const int width = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::height);
-
-    var channels = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel);
-    numColumns = channels.size();
-    int cellWidth = width/numColumns;
-
     numRows = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::numberofsteps);
-    const int cellHeight = 25;
+    var channels = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel);
+
+    if(channels.size()<2)
+    {
+        CabbageUtilities::showMessage("Make sure you have at least 2 channels declared for stringsequencer");
+        return;
+    }
+
+    numColumns = channels.size()-1;
+    stepChannel = channels[0];
+
+
+
+    const int showNumbers = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::showstempnumbers);
+    if(showNumbers>0)
+    {
+        for( int i = 0 ; i < numRows ; i++)
+        {
+
+            Label* numberLabel = new Label("Number"+String(i+1), String(i+1));
+            if(i%showNumbers==0)
+                numberLabel->setColour(Label::textColourId, Colours::red);
+            numberLabel->setBounds(0, i*cellHeight, 20, cellHeight);
+            addAndMakeVisible(numberLabel);
+            stepNumbers.add(numberLabel);
+        }
+    }
+
+    if(height<cellHeight*numRows)
+    {
+        vp.setScrollBarsShown(true, false);
+        cellWidth = (width-vp.getScrollBarThickness()-(showNumbers>0 ? 20 : 0))/numColumns;
+    }
+    else
+    {
+        vp.setScrollBarsShown(false, false);
+        cellWidth = width-(showNumbers>0 ? 20 : 0)/numColumns;
+    }
 
     for(int i = 0 ; i < numColumns ; i++)
     {
@@ -54,15 +86,16 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
             tf->setColour(TextEditor::outlineColourId, Colour(20, 20, 20));
             tf->getProperties().set("Column", var(i));
             tf->getProperties().set("Row", var(y));
-            tf->getProperties().set("Channel", channels.size()>1 ? channels[i] : channels);
+            tf->getProperties().set("Channel", channels[i+1]);
             tf->addKeyListener(this);
-            tf->setBounds(cellWidth*i, y*cellHeight, cellWidth, cellHeight);
+            tf->setBounds((showNumbers>0 ? 20 : 0)+cellWidth*i, y*cellHeight, cellWidth, cellHeight);
             textFields[i]->add(tf);
         }
     }
 
     startTimer(60/CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::bpm)*1000);
     seqContainer.setBounds(getLocalBounds().withHeight(numRows*cellHeight));
+
 }
 
 CabbageStringSequencer::~CabbageStringSequencer()
@@ -79,7 +112,7 @@ TextEditor* CabbageStringSequencer::getEditor(int column, int row)
 void CabbageStringSequencer::hiResTimerCallback()
 {
     currentBeat = (currentBeat<numRows -1 ? currentBeat+1 : 0);
-
+    owner->sendChannelDataToCsound(stepChannel.toUTF8(), currentBeat);
     for( int i = 0 ; i < numColumns ; i++)
         owner->sendChannelStringDataToCsound(getEditor(i, currentBeat)->getProperties().getWithDefault("Channel", ""), getEditor(i, currentBeat)->getText().toUTF8());
     //CabbageUtilities::debug(currentBeat);
@@ -92,9 +125,6 @@ void CabbageStringSequencer::highlightEditorText(int col, int row)
         {
             if(i == col && y == row)
             {
-                CabbageUtilities::debug("Col", col);
-                CabbageUtilities::debug("Row", row);
-                CabbageUtilities::debug(getEditor(col, row)->getText().length());
                 getEditor(col, row)->setHighlightedRegion(Range<int>(0, getEditor(col, row)->getText().length()));
                 vp.setViewPosition(0, (getEditor(col, row)->getY()>getHeight()/2 ? getEditor(col, row)->getY()-getHeight()+getEditor(col, row)->getHeight()*3 : 0));
             }
@@ -104,6 +134,7 @@ void CabbageStringSequencer::highlightEditorText(int col, int row)
 }
 void CabbageStringSequencer::resized()
 {
+    //need to resize children according to vp size..
     vp.setBounds(getLocalBounds());
 }
 
@@ -116,8 +147,9 @@ bool CabbageStringSequencer::keyPressed (const KeyPress &key, Component *origina
         const int currentRow = int(ted->getProperties().getWithDefault("Row", 0));
         if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
                 key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
-                key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::downKey) ||
-                key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::upKey))
+                key.isKeyCode (KeyPress::downKey) ||
+                key.isKeyCode (KeyPress::upKey) ||
+                key.isKeyCode (KeyPress::returnKey))
         swapFocusForEditors(key, currentColumn, currentRow);
     }
 
@@ -139,17 +171,24 @@ void CabbageStringSequencer::swapFocusForEditors(KeyPress key, int col, int row)
         newRow = row;
     }
 
-    else if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::downKey))
+    else if(key.isKeyCode (KeyPress::downKey))
     {
         newRow = (row < numRows - 1 ? row + 1 : 0);
         newCol = col;
     }
 
-    else if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::upKey))
+    else if(key.isKeyCode (KeyPress::upKey))
     {
         newRow = (row > 0 ? row - 1 : numRows - 1);
         newCol = col;
     }
+
+    else if(key.isKeyCode (KeyPress::returnKey))
+    {
+        newRow = (row < numRows - 1 ? row + 1 : 0);
+        newCol = col;
+    }
+
 
     highlightEditorText(newCol, newRow);
     getEditor(newCol, newRow)->grabKeyboardFocus();
