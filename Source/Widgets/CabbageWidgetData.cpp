@@ -406,6 +406,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
             case HashStringToInt ("popup"):
             case HashStringToInt ("numberofsteps"):
+            case HashStringToInt ("showstepnumbers"):
             case HashStringToInt ("bpm"):
             case HashStringToInt ("resize"):
                 setProperty (widgetData, identifier, strTokens[0].trim().getIntValue());

@@ -331,6 +331,7 @@ public:
         add ("highlightcolour");
         add ("tablegridcolour");
         add ("backgroundcolor");
+        add ("showstepnumbers");
         add ("titlebarcolour");
         add ("tablegridcolor");
         add ("signalvariable");
@@ -685,6 +686,7 @@ static const String mousedownleft = "MOUSE_DOWN_LEFT";
 static const String mousedownright = "MOUSE_DOWN_RIGHT";
 static const String mousedownlmiddle = "MOUSE_DOWN_MIDDLE";
 static const String updaterate = "updaterate";
+static const String showstempnumbers = "showstepnumbers";
 static const String nsp = "namespace";
 
 };

@@ -60,5 +60,7 @@ private:
     Viewport vp;
     Component seqContainer;
     OwnedArray<OwnedArray<TextEditor>> textFields;
+    OwnedArray<Label> stepNumbers;
     CabbagePluginEditor* owner;
+    String stepChannel = "";
 };

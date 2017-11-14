@@ -200,6 +200,7 @@ void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
 			var files = CabbageWidgetData::getProperty (temp, CabbageIdentifierIds::importfiles);
 			for( int y = 0 ; y < files.size() ; y++)
 			{
+				CabbageUtilities::debug(csdFile.getParentDirectory().getChildFile (files[y].toString()).getFullPathName());
 				if(csdFile.getParentDirectory().getChildFile (files[y].toString()).existsAsFile())
 				{
 					StringArray linesFromImportedFile;
@@ -265,25 +266,26 @@ void CabbagePluginProcessor::insertPlantCode(PlantImportStruct importData, Strin
 	StringArray copy = linesFromCsd;
 	int numberOfImportedLines = 0;
 	
-	for ( auto str : copy )
+	for ( auto currentLineofCode : copy )
 	{
-		if(str.isNotEmpty() && str.substring(0, 1) != ";")
+		if(currentLineofCode.isNotEmpty() && currentLineofCode.substring(0, 1) != ";")
 		{
+
 			float scaleX = 1;
 			float scaleY = 1;
 			StringArray importedLines("");
 			ValueTree temp ("temp");
-            const String expandedMacroText = getExpandedMacroText (str, temp);
-			CabbageWidgetData::setWidgetState(temp, str + " " + expandedMacroText, lineIndex);
-			CabbageWidgetData::setCustomWidgetState(temp, str);
+            const String expandedMacroText = getExpandedMacroText (currentLineofCode, temp);
+			CabbageWidgetData::setWidgetState(temp, currentLineofCode.trim() + " " + expandedMacroText, lineIndex);
+			CabbageWidgetData::setCustomWidgetState(temp, currentLineofCode.trim());
 			const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
 			const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
 			
 			bool isPlantWidget = true;
 		
-			if(type==importData.name && importData.nsp==nsp)
+			if(type==importData.name.trim() && importData.nsp==nsp)
 			{
-				int lineNumber = copy.indexOf(str);
+				int lineNumber = copy.indexOf(currentLineofCode);
 				int lineNumberPlantAppearsOn;
 				
 				for ( auto plantCode : importData.cabbageCode)

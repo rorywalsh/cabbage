@@ -975,7 +975,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (getCabbagePluginEditor() != nullptr)
             getCabbagePluginEditor()->enableEditMode (false);
 
-        FileChooser fc ("Select file name and location", getCurrentCsdFile().getParentDirectory(), getCurrentCsdFile().getFileExtension(), CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToSave (false))
         {
@@ -984,10 +984,10 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
                 const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", lookAndFeel);
 
                 if (result == 1)
-                    writeFileToDisk (fc.getResult().withFileExtension (fc.getResult().getFileExtension()));
+                    writeFileToDisk (fc.getResult().withFileExtension (".csd"));
             }
             else
-                writeFileToDisk (fc.getResult().withFileExtension (fc.getResult().getFileExtension()));
+                writeFileToDisk (fc.getResult().withFileExtension (".csd"));
 
             getCurrentCodeEditor()->setSavePoint();
         }
@@ -1196,6 +1196,7 @@ void CabbageMainComponent::runCsoundForNode (String file)
 				pos.setY (rand.nextInt (Range<int> (getHeight() / 2, (getHeight() / 2) + 100)));
 			}
 
+            getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
 			audioGraph->addPlugin (getCurrentCsdFile(), node);
 			createEditorForAudioGraphNode (pos);
 			startTimer (100);

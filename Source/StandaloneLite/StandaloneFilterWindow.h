@@ -256,6 +256,7 @@ public:
         if (fc.browseForFileToOpen())
         {
 			csdFile = fc.getResult();
+            csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
 			resetPlugin(fc.getResult());
 			lastModified = csdFile.getLastModificationTime().toMilliseconds();
 			setName(getInstrumentname());
