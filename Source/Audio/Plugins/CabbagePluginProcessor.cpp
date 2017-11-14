@@ -57,6 +57,8 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
 												.replace("&amp;", "&")
 												.replace("$quote;", "\"")
 												.replace("$gt;", ">"));
+
+        inputFile.getParentDirectory().setAsCurrentWorkingDirectory();
 		setupAndCompileCsound(tempFile);
 		parseCsdFile (linesFromCsd);
         createParameters();
@@ -118,14 +120,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
         const String comments = currentLineOfCabbageCode.indexOf (";") == -1 ? "" : currentLineOfCabbageCode.substring (currentLineOfCabbageCode.indexOf (";"));
         CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart (" \t") + " " + expandedMacroText + comments, lineNumber);
 		
-        const int partOfPlant = CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::plant);
-		
-		if(partOfPlant>0)
-		{
-			linesToSkip = partOfPlant;
-			CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, 99999+lineNumber);
-		}
-		
+
 		CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber-linesToSkip);		
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
