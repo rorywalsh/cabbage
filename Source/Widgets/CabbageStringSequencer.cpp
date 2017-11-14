@@ -120,6 +120,8 @@ bool CabbageStringSequencer::keyPressed (const KeyPress &key, Component *origina
                 key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::upKey))
         swapFocusForEditors(key, currentColumn, currentRow);
     }
+
+    return true;
 }
 
 void CabbageStringSequencer::swapFocusForEditors(KeyPress key, int col, int row)
