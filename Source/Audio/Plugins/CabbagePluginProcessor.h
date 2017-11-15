@@ -82,6 +82,8 @@ public:
 	void generateCabbageCodeFromJS(PlantImportStruct &importData, String text);
 	void insertUDOCode(PlantImportStruct importData, StringArray& linesFromCsd);
 	void insertPlantCode(PlantImportStruct importData, StringArray& linesFromCsd);
+    bool isWidgetPlantParent(StringArray linesFromCsd, int lineNumber);
+    bool shouldClosePlant(StringArray linesFromCsd, int lineNumber);
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     const String getExpandedMacroText (String line, ValueTree wData);

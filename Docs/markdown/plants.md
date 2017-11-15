@@ -15,6 +15,6 @@ combobox bounds(20, 100, 155, 30), channel("waveform"), value(2), text("Sine", "
 
 The major advantage in using plants is that you can easily move and resize all widgets in one action. You can also save your plants and recall them later from a plant repository. Plants are intended to be reused across instruments so users do not have to keep rebuilding GUIs from scratch. Looks through the examples provided with Cabbage to see how plants are used there.  
 
-> Note: Plants have to be created manually. It's worth giving parameters generic names so that you can easily modify them when they are reused. 
+> Note: Plants have to be created manually. Opening brackets must appear on either the same line as the plant widget, or the following line. 
 
 ![Plants](images/plants.gif)

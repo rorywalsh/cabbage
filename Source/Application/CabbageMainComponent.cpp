@@ -417,11 +417,11 @@ void CabbageMainComponent::timerCallback()
     {
         int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
 
-//        if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
-//        {
-//            stopCsoundForNode ("");
-//            stopTimer();
-//        }
+        if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+        {
+            stopCsoundForNode ("");
+            stopTimer();
+        }
 
         if (getCurrentCsdFile().existsAsFile())
         {
@@ -430,10 +430,8 @@ void CabbageMainComponent::timerCallback()
             consoleMessages += csoundOutputString;
 
             if (csoundOutputString.length() > 0)
-            {
                 getCurrentOutputConsole()->setText (csoundOutputString);
-                CabbageUtilities::debug(csoundOutputString);
-            }
+
 
 
         }

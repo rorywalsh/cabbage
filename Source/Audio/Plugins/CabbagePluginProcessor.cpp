@@ -82,7 +82,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 {
     cabbageWidgets.removeAllChildren (0);
     String parentComponent, previousComponent;
-
+    StringArray parents;
     searchForMacros (linesFromCsd);
 	int linesToSkip=0;
 
@@ -112,7 +112,12 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
             }
         }
 
+
+
         const String expandedMacroText = getExpandedMacroText (currentLineOfCabbageCode, tempWidget);
+
+		if(currentLineOfCabbageCode.contains("{"))
+			CabbageWidgetData::setNumProp(tempWidget, "containsOpeningCurlyBracket", 1);
 
         if ( currentLineOfCabbageCode.indexOf (";") > -1)
             currentLineOfCabbageCode = currentLineOfCabbageCode.substring (0, currentLineOfCabbageCode.indexOf (";"));
@@ -120,6 +125,12 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
         const String comments = currentLineOfCabbageCode.indexOf (";") == -1 ? "" : currentLineOfCabbageCode.substring (currentLineOfCabbageCode.indexOf (";"));
         CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart (" \t") + " " + expandedMacroText + comments, lineNumber);
 		
+
+		if(shouldClosePlant(linesFromCsd, lineNumber))
+			parents.remove(parents.size()-1);
+
+		if(parents.size()>0)
+			CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::parentcomponent, parents[parents.size()-1]);
 
 		CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber-linesToSkip);		
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
@@ -133,14 +144,6 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
             if (CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::logger) == 1)
                 createFileLogger (this->csdFile);
         }
-
-        if (currentLineOfCabbageCode.contains ("}"))
-        {
-            parentComponent = "";
-        }
-
-        if (parentComponent.isNotEmpty())
-            CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::parentcomponent, parentComponent);
 
 		const String widgetName = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::name);
 
@@ -161,21 +164,29 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 		}
 
 
-        if (currentLineOfCabbageCode.contains ("{"))
+        if(isWidgetPlantParent(linesFromCsd, lineNumber) && currentLineOfCabbageCode.removeCharacters(" ").removeCharacters("\t").substring(0, 1)!="{")
         {
-            if (currentLineOfCabbageCode.removeCharacters (" ") == "{")
-            {
-                parentComponent = previousComponent;
-            }
-            else
-            {
-                parentComponent = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString();
-                CabbageWidgetData::setProperty (tempWidget, "containsOpeningCurlyBracket", 1);
-            }
+			CabbageUtilities::debug(CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::name).toString());
+            parents.add(CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::name).toString());
         }
 
-        previousComponent = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString();
+
     }
+}
+
+bool CabbagePluginProcessor::isWidgetPlantParent(StringArray linesFromCsd, int lineNumber)
+{
+    if(linesFromCsd[lineNumber].contains("{"))
+        return true;
+
+    if(linesFromCsd[lineNumber+1].removeCharacters(" ").removeCharacters("\t").substring(0, 1)=="{")
+        return true;
+}
+
+bool CabbagePluginProcessor::shouldClosePlant(StringArray linesFromCsd, int lineNumber)
+{
+	if(linesFromCsd[lineNumber].contains("}"))
+		return true;
 }
 
 void CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd)
