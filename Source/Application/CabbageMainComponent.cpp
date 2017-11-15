@@ -417,19 +417,24 @@ void CabbageMainComponent::timerCallback()
     {
         int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
 
-        if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
-        {
-            stopCsoundForNode ("");
-            stopTimer();
-        }
+//        if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+//        {
+//            stopCsoundForNode ("");
+//            stopTimer();
+//        }
 
         if (getCurrentCsdFile().existsAsFile())
         {
+
             const String csoundOutputString = audioGraph->getCsoundOutput (nodeId);
             consoleMessages += csoundOutputString;
 
             if (csoundOutputString.length() > 0)
+            {
                 getCurrentOutputConsole()->setText (csoundOutputString);
+                CabbageUtilities::debug(csoundOutputString);
+            }
+
 
         }
     }
@@ -1170,7 +1175,7 @@ int CabbageMainComponent::testFileForErrors(String file)
 void CabbageMainComponent::runCsoundForNode (String file)
 {
 	
-	if(testFileForErrors(file)==0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a seperate process first. 
+	if(testFileForErrors(file)==0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a separate process first.
 	{
 		if (File (file).existsAsFile())
 		{
@@ -1196,7 +1201,7 @@ void CabbageMainComponent::runCsoundForNode (String file)
 				pos.setY (rand.nextInt (Range<int> (getHeight() / 2, (getHeight() / 2) + 100)));
 			}
 
-            getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
+            //getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
 			audioGraph->addPlugin (getCurrentCsdFile(), node);
 			createEditorForAudioGraphNode (pos);
 			startTimer (100);

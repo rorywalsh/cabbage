@@ -60,10 +60,11 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
 }
 
 //==============================================================================
-void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, bool debugMode)
+void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, bool debugMode)
 {
 	csound = new Csound();
-
+    csdFilePath = filePath;
+    csdFilePath.setAsCurrentWorkingDirectory();
     csound->SetHostImplementedMIDIIO (true);
     csound->SetHostImplementedAudioIO (1, 0);
     csound->SetHostData (this);
@@ -110,7 +111,7 @@ void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, bool debugMode)
     //  outs->setCurrentLayout(AudioChannelSet::mono());
 
     addMacros (csdFile.getFullPathName());
-    csdFile.setAsCurrentWorkingDirectory();
+
 
     if (csdCompiledWithoutError())
     {
@@ -177,14 +178,14 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
-            csound->SetChannel ("CSD_PATH", File (csdFile).getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
+            csound->SetChannel ("CSD_PATH", csdFilePath.getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
     }
     else
     {
-            csound->SetChannel ("CSD_PATH", File (csdFile).getParentDirectory().getFullPathName().toUTF8().getAddress());
+            csound->SetChannel ("CSD_PATH", csdFilePath.getFullPathName().toUTF8().getAddress());
     }
 
-    File (csdFile).getParentDirectory().setAsCurrentWorkingDirectory();
+    csdFilePath.setAsCurrentWorkingDirectory();
 
     if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
     {
@@ -325,6 +326,10 @@ const String CsoundPluginProcessor::getCsoundOutput()
 		}
 
         Logger::writeToLog (csoundOutput);
+
+        if(disableLogging == false)
+            this->suspendProcessing (true);
+
         return csoundOutput;
     }
 
@@ -531,10 +536,12 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                     }
                     else
                         ++guiCycles;
+
+                    disableLogging = true;
                 }
                 else
                 {
-                    this->suspendProcessing (true);
+                    disableLogging = false;
                     return; //return as soon as Csound has stopped
                 }
 

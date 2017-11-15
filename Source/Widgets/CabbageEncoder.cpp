@@ -60,7 +60,7 @@ void CabbageEncoder::createPopupBubble()
 
 void CabbageEncoder::labelTextChanged (Label* label)
 {
-    float value = label->getText().getFloatValue();
+    float value = jlimit(min, max, label->getText().getFloatValue());
     sliderPos = 0;
     currentEncValue = value;
     valueLabel.setText (String (value, 2), dontSendNotification);

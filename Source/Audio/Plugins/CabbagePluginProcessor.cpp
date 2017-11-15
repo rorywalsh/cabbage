@@ -58,8 +58,8 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
 												.replace("$quote;", "\"")
 												.replace("$gt;", ">"));
 
-        inputFile.getParentDirectory().setAsCurrentWorkingDirectory();
-		setupAndCompileCsound(tempFile);
+        //inputFile.getParentDirectory().setAsCurrentWorkingDirectory();
+		setupAndCompileCsound(csdFile, tempFile.getParentDirectory());
 		parseCsdFile (linesFromCsd);
         createParameters();
 		csoundChanList = NULL;

@@ -39,7 +39,8 @@ public:
     ~CsoundPluginProcessor();
 
     //==============================================================================
-	void setupAndCompileCsound(File csdFile, bool debugMode = false);
+    //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
+	void setupAndCompileCsound(File csdFile, File filePath, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
@@ -212,10 +213,11 @@ private:
     MYFLT* CSspin, *CSspout;
     int csndIndex;
     int csdKsmps;
-    File csdFile;
+    File csdFile ,csdFilePath;
     ScopedPointer<Csound> csound;
     ScopedPointer<FileLogger> fileLogger;
     int busIndex = 0;
+    bool disableLogging = false;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginProcessor)
 
 };
