@@ -14,8 +14,8 @@
 GenericCabbagePluginProcessor::GenericCabbagePluginProcessor (File inputFile)
     : CsoundPluginProcessor (inputFile)
 {
-	setupAndCompileCsound(inputFile, inputFile.getParentDirectory());
-	this->setPluginName(inputFile.getFileNameWithoutExtension());
+    setupAndCompileCsound (inputFile, inputFile.getParentDirectory());
+    this->setPluginName (inputFile.getFileNameWithoutExtension());
     csoundChanList = NULL;
     int numberOfChannels = csoundListChannels (getCsoundStruct(), &csoundChanList);
 

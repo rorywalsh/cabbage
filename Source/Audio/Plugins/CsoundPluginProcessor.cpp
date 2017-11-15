@@ -40,7 +40,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
 
     CabbageUtilities::debug ("Plugin constructor");
-    
+
 
 }
 
@@ -60,9 +60,9 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
 }
 
 //==============================================================================
-void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, bool debugMode)
+void CsoundPluginProcessor::setupAndCompileCsound (File csdFile, File filePath, bool debugMode)
 {
-	csound = new Csound();
+    csound = new Csound();
     csdFilePath = filePath;
     csdFilePath.setAsCurrentWorkingDirectory();
     csound->SetHostImplementedMIDIIO (true);
@@ -99,11 +99,11 @@ void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, b
     }
 
     //instrument must at least be stereo
-	numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
-	csoundParams->nchnls_override = numCsoundChannels;
-    csound->SetParams (csoundParams);	
+    numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
+    csoundParams->nchnls_override = numCsoundChannels;
+    csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
-	
+
     //  AudioProcessor::Bus* ins = getBus (true, 0);
     //  ins->setCurrentLayout(AudioChannelSet::mono());
 
@@ -124,7 +124,7 @@ void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, b
         this->setLatencySamples (csound->GetKsmps());
     }
     else
-        CabbageUtilities::debug ("Csound could not compile your file?");	
+        CabbageUtilities::debug ("Csound could not compile your file?");
 }
 
 void CsoundPluginProcessor::createFileLogger (File csdFile)
@@ -158,18 +158,18 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         {
             if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type) == CabbageWidgetTypes::xypad)
             {
-			    csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::xchannel).getCharPointer(),
+                csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::xchannel).getCharPointer(),
                                     CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::valuex));
                 csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::ychannel).getCharPointer(),
                                     CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::valuey));
             }
             else
-			{
-				const var value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
+            {
+                const var value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
                 csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
-                                    float(value));
-			}
-								
+                                    float (value));
+            }
+
         }
 
     }
@@ -178,11 +178,11 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
-            csound->SetChannel ("CSD_PATH", csdFilePath.getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
+        csound->SetChannel ("CSD_PATH", csdFilePath.getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
     }
     else
     {
-            csound->SetChannel ("CSD_PATH", csdFilePath.getFullPathName().toUTF8().getAddress());
+        csound->SetChannel ("CSD_PATH", csdFilePath.getFullPathName().toUTF8().getAddress());
     }
 
     csdFilePath.setAsCurrentWorkingDirectory();
@@ -208,18 +208,19 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
 
     //post init hack to allow tables to be set up correctly
-	try{
+    try
+    {
         csound->PerformKsmps();
         //csound->SetScoreOffsetSeconds (0);
         //csound->RewindScore();
-	}
-	catch(int e)
-	{
-		CabbageUtilities::debug("Exception raised");
-		this->suspendProcessing(true);
-		csound = nullptr;
-	   // .. handle error - log, resume, exit, whatever
-	}
+    }
+    catch (int e)
+    {
+        CabbageUtilities::debug ("Exception raised");
+        this->suspendProcessing (true);
+        csound = nullptr;
+        // .. handle error - log, resume, exit, whatever
+    }
 
 }
 //==============================================================================
@@ -319,15 +320,15 @@ const String CsoundPluginProcessor::getCsoundOutput()
         if (messageCnt == 0)
             return csoundOutput;
 
-		while(csound->GetMessageCnt()>0)
-		{
-			csoundOutput += csound->GetFirstMessage();
-			csound->PopFirstMessage();
-		}
+        while (csound->GetMessageCnt() > 0)
+        {
+            csoundOutput += csound->GetFirstMessage();
+            csound->PopFirstMessage();
+        }
 
         Logger::writeToLog (csoundOutput);
 
-        if(disableLogging == false)
+        if (disableLogging == false)
             this->suspendProcessing (true);
 
         return csoundOutput;

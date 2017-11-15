@@ -32,17 +32,17 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
       Thread ("parseVariablesThread"),
       debugLabel (""),
       currentLineMarker(),
-	  lookAndFeel3(),
-	  lookAndFeel3temp()
+      lookAndFeel3(),
+      lookAndFeel3temp()
 {
     //setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
     opcodeFile += "/opcodes.txt";
-    this->setLookAndFeel(&lookAndFeel3);
-	setScrollbarThickness (20);
-	
-	addToGUIEditorPopup = new AddCodeToGUIEditorComponent(this, "Add to code repository", Colour(25, 25, 25));
-	addToGUIEditorPopup->setVisible(false);
+    this->setLookAndFeel (&lookAndFeel3);
+    setScrollbarThickness (20);
+
+    addToGUIEditorPopup = new AddCodeToGUIEditorComponent (this, "Add to code repository", Colour (25, 25, 25));
+    addToGUIEditorPopup->setVisible (false);
 
     if (File (opcodeFile).existsAsFile())
         setOpcodeStrings (File (opcodeFile).loadFileAsString());
@@ -68,12 +68,12 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
 
 }
 
-CabbageCodeEditorComponent::~CabbageCodeEditorComponent() 
+CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
 {
-	setLookAndFeel(nullptr);
+    setLookAndFeel (nullptr);
 }
 
-void CabbageCodeEditorComponent::updateColourScheme(bool isCsdFile)
+void CabbageCodeEditorComponent::updateColourScheme (bool isCsdFile)
 {
     struct Type
     {
@@ -81,95 +81,119 @@ void CabbageCodeEditorComponent::updateColourScheme(bool isCsdFile)
         uint32 colour;
     };
 
-    setColour(CodeEditorComponent::ColourIds::lineNumberBackgroundId,
-              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground,
-                                                      Colour(70, 70, 70)));
-    setColour(CodeEditorComponent::ColourIds::lineNumberTextId,
-              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumbers, Colours::white));
-    setColour(CodeEditorComponent::ColourIds::backgroundColourId,
-              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::codeBackground, Colours::white));
-    setColour(CaretComponent::ColourIds::caretColourId,
-              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::caret, Colours::white));
-    setColour(CodeEditorComponent::ColourIds::highlightColourId,
-              CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::selectTextBackground,
-                                                      Colours::white));
+    setColour (CodeEditorComponent::ColourIds::lineNumberBackgroundId,
+               CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground,
+                                                        Colour (70, 70, 70)));
+    setColour (CodeEditorComponent::ColourIds::lineNumberTextId,
+               CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumbers, Colours::white));
+    setColour (CodeEditorComponent::ColourIds::backgroundColourId,
+               CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::codeBackground, Colours::white));
+    setColour (CaretComponent::ColourIds::caretColourId,
+               CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::caret, Colours::white));
+    setColour (CodeEditorComponent::ColourIds::highlightColourId,
+               CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground,
+                                                        Colours::white));
 
-    if(isCsdFile)
+    if (isCsdFile)
     {
         const Type types[] =
-                {
-                        {"Error",             CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::numbers,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Comment",           CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::comment,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Keyword",           CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::keyword,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Identifier",        CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::identifierLiteral,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Integer",           Colours::grey.darker().getARGB()},
-                        {"Float",             Colours::grey.darker().getARGB()},
-                        {"String",            CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::stringLiteral,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Operator",          Colours::grey.darker().getARGB()},
-                        {"Bracket",           Colours::grey.darker().getARGB()},
-                        {"Punctuation",       Colours::grey.darker().getARGB()},
-                        {"Preprocessor Text", Colours::grey.darker().getARGB()},
-                        {"Csd Tag",           CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::csdtags,
-                                                                                      Colours::grey.darker()).getARGB()}
-                };
+        {
+            {
+                "Error",             CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::numbers,
+                Colours::grey.darker()).getARGB()
+            },
+            {
+                "Comment",           CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::comment,
+                Colours::grey.darker()).getARGB()
+            },
+            {
+                "Keyword",           CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::keyword,
+                Colours::grey.darker()).getARGB()
+            },
+            {
+                "Identifier",        CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::identifierLiteral,
+                Colours::grey.darker()).getARGB()
+            },
+            {"Integer",           Colours::grey.darker().getARGB()},
+            {"Float",             Colours::grey.darker().getARGB()},
+            {
+                "String",            CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::stringLiteral,
+                Colours::grey.darker()).getARGB()
+            },
+            {"Operator",          Colours::grey.darker().getARGB()},
+            {"Bracket",           Colours::grey.darker().getARGB()},
+            {"Punctuation",       Colours::grey.darker().getARGB()},
+            {"Preprocessor Text", Colours::grey.darker().getARGB()},
+            {
+                "Csd Tag",           CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::csdtags,
+                Colours::grey.darker()).getARGB()
+            }
+        };
 
         CodeEditorComponent::ColourScheme cs;
-        for (std::size_t i = 0;
-             i < sizeof(types) / sizeof(types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
-            cs.set(types[i].name, Colour(types[i].colour));
 
-        this->setColourScheme(cs);
+        for (std::size_t i = 0;
+             i < sizeof (types) / sizeof (types[0]); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
+            cs.set (types[i].name, Colour (types[i].colour));
+
+        this->setColourScheme (cs);
     }
     else
     {
-		Colour background = CabbageSettings::getColourFromValueTree(valueTree, CabbageColourIds::lineNumberBackground,
-                                                      Colour(70, 70, 70));
-	
-										  
-													  
+        Colour background = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground,
+                                                                     Colour (70, 70, 70));
+
+
+
         const Type types[] =
-                {
-                        {"Error",             CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::numbers,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Comment",           CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::comment,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Keyword",           background.contrasting(.3f).getARGB()},
-                        {"Identifier",        CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::identifierLiteral,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Integer",           background.contrasting(.8f).getARGB()},
-                        {"Float",             Colours::cornflowerblue.getARGB()},
-                        {"String",            CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::stringLiteral,
-                                                                                      Colours::grey.darker()).getARGB()},
-                        {"Operator",          Colours::pink.darker().getARGB()},
-                        {"Bracket",           background.contrasting(.3f).getARGB()},
-                        {"Punctuation",       Colours::red.darker().getARGB()},
-                        {"Preprocessor Text", Colours::red.darker().getARGB()},
-                        {"Csd Tag",           CabbageSettings::getColourFromValueTree(valueTree,
-                                                                                      CabbageColourIds::csdtags,
-                                                                                      Colours::grey.darker()).getARGB()}
-                };
+        {
+            {
+                "Error",             CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::numbers,
+                Colours::grey.darker()).getARGB()
+            },
+            {
+                "Comment",           CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::comment,
+                Colours::grey.darker()).getARGB()
+            },
+            {"Keyword",           background.contrasting (.3f).getARGB()},
+            {
+                "Identifier",        CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::identifierLiteral,
+                Colours::grey.darker()).getARGB()
+            },
+            {"Integer",           background.contrasting (.8f).getARGB()},
+            {"Float",             Colours::cornflowerblue.getARGB()},
+            {
+                "String",            CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::stringLiteral,
+                Colours::grey.darker()).getARGB()
+            },
+            {"Operator",          Colours::pink.darker().getARGB()},
+            {"Bracket",           background.contrasting (.3f).getARGB()},
+            {"Punctuation",       Colours::red.darker().getARGB()},
+            {"Preprocessor Text", Colours::red.darker().getARGB()},
+            {
+                "Csd Tag",           CabbageSettings::getColourFromValueTree (valueTree,
+                CabbageColourIds::csdtags,
+                Colours::grey.darker()).getARGB()
+            }
+        };
 
         CodeEditorComponent::ColourScheme cs;
-        for (std::size_t i = 0;
-             i < sizeof(types) / sizeof(types[0]); ++i)  // (NB: numElementsInArray doesn't work here in GCC4.2)
-            cs.set(types[i].name, Colour(types[i].colour));
 
-        this->setColourScheme(cs);
+        for (std::size_t i = 0;
+             i < sizeof (types) / sizeof (types[0]); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
+            cs.set (types[i].name, Colour (types[i].colour));
+
+        this->setColourScheme (cs);
     }
 }
 //==============================================================================
@@ -386,7 +410,7 @@ void CabbageCodeEditorComponent::removeLine (int lineNumber)
 
 void CabbageCodeEditorComponent::removeSelectedText()
 {
-	getDocument().replaceSection (getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
+    getDocument().replaceSection (getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
 }
 
 void CabbageCodeEditorComponent::insertText (String text)
@@ -449,13 +473,26 @@ void CabbageCodeEditorComponent::toggleComments()
     selectedText.addLines (getSelectedText());
     StringArray csdArray = getAllTextAsStringArray();
 
+    bool isAlreadyCommented = false;
+
+    for (int i = 0 ; i < commentedSections.size(); i++)
+    {
+        if (commentedSections[i] == Range<int> (startPos.getLineNumber(), endPos.getLineNumber()))
+        {
+            isAlreadyCommented = true;
+            commentedSections.remove (i);
+        }
+    }
+
+    if (isAlreadyCommented == false)
+        commentedSections.add (Range<int> (startPos.getLineNumber(), endPos.getLineNumber()));
 
     for (int i = startPos.getLineNumber(); i <= endPos.getLineNumber(); i++)
     {
         String lineText = csdArray[i];
 
-        if (lineText.trim().startsWith (";"))
-            csdArray.set (i, lineText.substring (lineText.indexOf (";") + 1));
+        if (isAlreadyCommented)
+            csdArray.set (i, lineText.substring (1));
         else
             csdArray.set (i, ";" + lineText);
 
@@ -682,7 +719,8 @@ bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps
 void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this is called on a separate thread..
 {
     StringArray csdArray = this->getAllTextAsStringArray();
-	instrumentsAndRegions.clear();
+    instrumentsAndRegions.clear();
+
     for (int i = 0 ; i < csdArray.size() ; i++)
     {
         if (csdArray[i].indexOf ("<Cabbage>") != -1)
@@ -694,16 +732,16 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this i
         {
             instrumentsAndRegions.set ("<CsoundSynthesizer>", i);
         }
-		
-		else if ( csdArray[i].indexOf(";- Region:") != -1)
-		{
-			const String region = csdArray[i].replace(";- Region:", "");
-			instrumentsAndRegions.set (region, i);
-		}
+
+        else if ( csdArray[i].indexOf (";- Region:") != -1)
+        {
+            const String region = csdArray[i].replace (";- Region:", "");
+            instrumentsAndRegions.set (region, i);
+        }
 
 
         else if ((csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr	") != -1) &&
-		csdArray[i].substring(0, csdArray[i].indexOf ("instr")).isEmpty())
+                 csdArray[i].substring (0, csdArray[i].indexOf ("instr")).isEmpty())
         {
             int commentInLine = csdArray[i].indexOf (";");
             String line = csdArray[i];
@@ -802,103 +840,104 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
         PopupMenu m, subM;
         m.setLookAndFeel (&owner->getLookAndFeel());
         addPopupMenuItems (m, &e);
-		m.addItem(10, "Add to code repository");
-		
-		StringArray codeSnippets = addItemsToPopupMenu(subM);
-		m.addSubMenu("Insert from code repository", subM);
-		
-		const int menuItemID = m.show();
+        m.addItem (10, "Add to code repository");
 
-		if(menuItemID==4099)
-			this->cutToClipboard();
-		else if(menuItemID==4100)
-			this->copyToClipboard();
-		else if(menuItemID==4101)
-			this->pasteFromClipboard();
-		else if(menuItemID==4098)
-			this->deleteForwards(true);
-		else if(menuItemID==4102)
-			this->selectAll();
-		else if(menuItemID==4104)
-			this->undo();
-		else if(menuItemID==4105)
-			this->redo();			
-		else if(menuItemID==10)
-			addToGUIEditorContextMenu();
-		else if(menuItemID>=100)
-		{
-			this->insertText(codeSnippets[menuItemID-100]);
-		}
+        StringArray codeSnippets = addItemsToPopupMenu (subM);
+        m.addSubMenu ("Insert from code repository", subM);
+
+        const int menuItemID = m.show();
+
+        if (menuItemID == 4099)
+            this->cutToClipboard();
+        else if (menuItemID == 4100)
+            this->copyToClipboard();
+        else if (menuItemID == 4101)
+            this->pasteFromClipboard();
+        else if (menuItemID == 4098)
+            this->deleteForwards (true);
+        else if (menuItemID == 4102)
+            this->selectAll();
+        else if (menuItemID == 4104)
+            this->undo();
+        else if (menuItemID == 4105)
+            this->redo();
+        else if (menuItemID == 10)
+            addToGUIEditorContextMenu();
+        else if (menuItemID >= 100)
+        {
+            this->insertText (codeSnippets[menuItemID - 100]);
+        }
     }
-	else
-		moveCaretTo (getPositionAt (e.x, e.y), e.mods.isShiftDown());
+    else
+        moveCaretTo (getPositionAt (e.x, e.y), e.mods.isShiftDown());
 }
 //===========================================================================================================
-void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKeyPressed(TextEditor &)
+void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKeyPressed (TextEditor&)
 {
-	if(editor.getText() !="Enter name for GUI code")
-	{
-		ScopedPointer<XmlElement> repoXml;
-		XmlElement *newEntryXml;
-		repoXml = owner->owner->settings->getUserSettings()->getXmlValue("CopeRepoXmlData");
-		
-		if(!repoXml)
-			repoXml = new XmlElement("CodeRepoXmlData");
-		
-		StringArray snippetNames;
-		
-		for( int i = 0 ; i<repoXml->getNumAttributes() ; i++)
-			snippetNames.add(repoXml->getAttributeName(i));
-	
-		if(snippetNames.contains(editor.getText()))
-		{
-			const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite the existing plant?",  &cabbageLoookAndFeel);
-			if(result == 1)
-			{
-				repoXml->setAttribute(editor.getText(), owner->getSelectedText());
-				owner->owner->settings->getUserSettings()->setValue("CopeRepoXmlData", repoXml);
-			}
-			else
-				CabbageUtilities::showMessage("Nothing written to repository", &cabbageLoookAndFeel);
-		}
-		else
-		{
-			repoXml->setAttribute(editor.getText(), owner->getSelectedText());
-			owner->owner->settings->getUserSettings()->setValue("CopeRepoXmlData", repoXml);
+    if (editor.getText() != "Enter name for GUI code")
+    {
+        ScopedPointer<XmlElement> repoXml;
+        XmlElement* newEntryXml;
+        repoXml = owner->owner->settings->getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
-		}
+        if (!repoXml)
+            repoXml = new XmlElement ("CodeRepoXmlData");
 
-		repoXml = nullptr;			
-	}
-	
-	setVisible(false);	
+        StringArray snippetNames;
+
+        for ( int i = 0 ; i < repoXml->getNumAttributes() ; i++)
+            snippetNames.add (repoXml->getAttributeName (i));
+
+        if (snippetNames.contains (editor.getText()))
+        {
+            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite the existing plant?",  &cabbageLoookAndFeel);
+
+            if (result == 1)
+            {
+                repoXml->setAttribute (editor.getText(), owner->getSelectedText());
+                owner->owner->settings->getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+            }
+            else
+                CabbageUtilities::showMessage ("Nothing written to repository", &cabbageLoookAndFeel);
+        }
+        else
+        {
+            repoXml->setAttribute (editor.getText(), owner->getSelectedText());
+            owner->owner->settings->getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+
+        }
+
+        repoXml = nullptr;
+    }
+
+    setVisible (false);
 }
 
 void CabbageCodeEditorComponent::addToGUIEditorContextMenu()
 {
-	addToGUIEditorPopup->setVisible(true);
-	addToGUIEditorPopup->toFront(true);
+    addToGUIEditorPopup->setVisible (true);
+    addToGUIEditorPopup->toFront (true);
 }
 
-StringArray CabbageCodeEditorComponent::addItemsToPopupMenu(PopupMenu& m)
+StringArray CabbageCodeEditorComponent::addItemsToPopupMenu (PopupMenu& m)
 {
-	StringArray customCodeSnippets;
-	ScopedPointer<XmlElement> repoXml;
-	XmlElement *newEntryXml, *newEntryXml1;
-	
-	repoXml = owner->settings->getUserSettings()->getXmlValue("CopeRepoXmlData");
-	
-	if(!repoXml)
-		return StringArray("");
-		
-		
-	for( int i = 0 ; i<repoXml->getNumAttributes() ; i++)
-	{
-		m.addItem( 100+i, repoXml->getAttributeName(i));
-		customCodeSnippets.add(repoXml->getAttributeValue(i));			
-	}
-	
-	return customCodeSnippets;
+    StringArray customCodeSnippets;
+    ScopedPointer<XmlElement> repoXml;
+    XmlElement* newEntryXml, *newEntryXml1;
+
+    repoXml = owner->settings->getUserSettings()->getXmlValue ("CopeRepoXmlData");
+
+    if (!repoXml)
+        return StringArray ("");
+
+
+    for ( int i = 0 ; i < repoXml->getNumAttributes() ; i++)
+    {
+        m.addItem ( 100 + i, repoXml->getAttributeName (i));
+        customCodeSnippets.add (repoXml->getAttributeValue (i));
+    }
+
+    return customCodeSnippets;
 
 }
 //===========================================================================================================
@@ -932,10 +971,10 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
         else if (key == KeyPress::escapeKey)
             handleEscapeKey();
 
-		else  if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::KeyPress::tabKey))
+        else  if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::KeyPress::tabKey))
         {
-			sendChangeMessage();
-		}
+            sendChangeMessage();
+        }
         else  if (key.isKeyCode (KeyPress::upKey || key.isKeyCode (KeyPress::downKey)))
         {
             if (autoCompleteListBox.isVisible())

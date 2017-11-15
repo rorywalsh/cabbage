@@ -110,7 +110,7 @@ void CabbagePluginComponent::mouseUp (const MouseEvent& e)
         if (const AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
             if (PluginWindow* const w = PluginWindow::getWindowFor (f, PluginWindow::Normal, graph.getGraph()))
             {
-				w->setVisible(true);
+                w->setVisible (true);
                 w->toFront (true);
                 graph.showCodeEditorForNode (filterID);
             }
@@ -231,9 +231,9 @@ void CabbagePluginComponent::update()
 
     if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
         setName (cabbagePlugin->getPluginName());
-    else if(GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
+    else if (GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
         setName (cabbagePlugin->getPluginName());
-	else
+    else
         setName (f->getProcessor()->getName());
 
     {

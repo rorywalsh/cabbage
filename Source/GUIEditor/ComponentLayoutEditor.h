@@ -27,7 +27,7 @@ class ComponentOverlay;
 class CabbagePluginEditor;
 class ComponentLayoutEditor;
 #ifndef Cabbage_Lite
-class CabbageMainComponent;
+    class CabbageMainComponent;
 #endif
 //=============================================================================
 class SelectedComponents   : public SelectedItemSet<ComponentOverlay*>

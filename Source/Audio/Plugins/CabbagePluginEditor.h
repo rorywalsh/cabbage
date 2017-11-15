@@ -25,7 +25,7 @@
 #include "CabbageAudioParameter.h"
 
 #ifdef Cabbage_IDE_Build
-#include "../../GUIEditor/ComponentLayoutEditor.h"
+    #include "../../GUIEditor/ComponentLayoutEditor.h"
 #endif
 
 #include "../../Widgets/CabbageCheckbox.h"
@@ -56,188 +56,198 @@ class CabbagePluginEditor;
 //==============================================================================
 __attribute__ ((unused)) static CabbagePluginEditor* getPluginEditor (Component* child)
 {
-	if (CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
-		return c;
-	else
-		return nullptr;
+    if (CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
+        return c;
+    else
+        return nullptr;
 }
 
 //==============================================================================
 class CabbagePluginEditor
-	: public AudioProcessorEditor,
-  public Button::Listener,
-  public ChangeBroadcaster,
-  public ActionBroadcaster,
-  public ComboBoxListener,
-  public Slider::Listener
+    : public AudioProcessorEditor,
+      public Button::Listener,
+      public ChangeBroadcaster,
+      public ActionBroadcaster,
+      public ComboBoxListener,
+      public Slider::Listener
 {
 public:
-	CabbagePluginEditor (CabbagePluginProcessor&);
-	~CabbagePluginEditor();
+    CabbagePluginEditor (CabbagePluginProcessor&);
+    ~CabbagePluginEditor();
 
-	void createEditorInterface (ValueTree widgets);
-	//==============================================================================
-	void resized() override;
-	void paint(Graphics& g) {}
-	//==============================================================================
-	void setupWindow (ValueTree cabbageWidgetData);
+    void createEditorInterface (ValueTree widgets);
+    //==============================================================================
+    void resized() override;
+    void paint (Graphics& g) {}
+    //==============================================================================
+    void setupWindow (ValueTree cabbageWidgetData);
 
-	void insertWidget (ValueTree cabbageWidgetData);
-	// the following methods instantiate controls that CAN
-	// be automated in a host...
-	void insertSlider (ValueTree cabbageWidgetData);
-	void insertComboBox (ValueTree cabbageWidgetData);
-	void insertButton (ValueTree cabbageWidgetData);
-	void insertCheckbox (ValueTree cabbageWidgetData);
-	void insertXYPad (ValueTree cabbageWidgetData);
-	void insertRangeSlider (ValueTree cabbageWidgetData);
-	void insertNumberBox (ValueTree cabbageWidgetData);
-	void insertEncoder (ValueTree cabbageWidgetData);
-	//the following methods instantiate controls that CANNOT
-	// be automated in a host...
-	void insertStringSequencer (ValueTree cabbageWidgetData);
-	void insertGroupBox (ValueTree cabbageWidgetData);
-	void insertSoundfiler (ValueTree cabbageWidgetData);
-	void insertSourceButton (ValueTree cabbageWidgetData) {};
-	void insertTextEditor (ValueTree cabbageWidgetData);
-	void insertCsoundOutputConsole (ValueTree cabbageWidgetData);
-	void insertMIDIKeyboard (ValueTree cabbageWidgetData);
-	void insertFileButton (ValueTree cabbageWidgetData);
-	void insertImage (ValueTree cabbageWidgetData);
-	void insertLine (ValueTree cabbageWidgetData);
-	void insertLabel (ValueTree cabbageWidgetData);
-	void insertTable (ValueTree cabbageWidgetData) {};
-	void insertInfoButton (ValueTree cabbageWidgetData);
-	void insertGenTable (ValueTree cabbageWidgetData);
-	void insertTextBox (ValueTree cabbageWidgetData);
-	void insertSignalDisplay (ValueTree cabbageWidgetData);
-	void insertStepper (ValueTree cabbageWidgetData) {};
-	void insertMeter (ValueTree cabbageWidgetData);
-	void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
-	//=============================================================================
-	// all these methods expose public methods in CabagePluginProcessor
-	void sendChannelDataToCsound (String channel, float value);
-	void sendChannelStringDataToCsound (String channel, String value);
-	bool shouldUpdateSignalDisplay();
-	void savePluginStateToFile (File snapshotFile);
-	void restorePluginStateFrom (String childPreset);
-	const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
-	const String getCsoundOutputFromProcessor();
-	StringArray getTableStatement (int tableNumber);
-	bool csdCompiledWithoutError();
-	const Array<float, CriticalSection> getTableFloats (int tableNum);
-	CabbagePluginProcessor& getProcessor();
-	void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
+    void insertWidget (ValueTree cabbageWidgetData);
+    // the following methods instantiate controls that CAN
+    // be automated in a host...
+    void insertSlider (ValueTree cabbageWidgetData);
+    void insertComboBox (ValueTree cabbageWidgetData);
+    void insertButton (ValueTree cabbageWidgetData);
+    void insertCheckbox (ValueTree cabbageWidgetData);
+    void insertXYPad (ValueTree cabbageWidgetData);
+    void insertRangeSlider (ValueTree cabbageWidgetData);
+    void insertNumberBox (ValueTree cabbageWidgetData);
+    void insertEncoder (ValueTree cabbageWidgetData);
+    //the following methods instantiate controls that CANNOT
+    // be automated in a host...
+    void insertStringSequencer (ValueTree cabbageWidgetData);
+    void insertGroupBox (ValueTree cabbageWidgetData);
+    void insertSoundfiler (ValueTree cabbageWidgetData);
+    void insertSourceButton (ValueTree cabbageWidgetData) {};
+    void insertTextEditor (ValueTree cabbageWidgetData);
+    void insertCsoundOutputConsole (ValueTree cabbageWidgetData);
+    void insertMIDIKeyboard (ValueTree cabbageWidgetData);
+    void insertFileButton (ValueTree cabbageWidgetData);
+    void insertImage (ValueTree cabbageWidgetData);
+    void insertLine (ValueTree cabbageWidgetData);
+    void insertLabel (ValueTree cabbageWidgetData);
+    void insertTable (ValueTree cabbageWidgetData) {};
+    void insertInfoButton (ValueTree cabbageWidgetData);
+    void insertGenTable (ValueTree cabbageWidgetData);
+    void insertTextBox (ValueTree cabbageWidgetData);
+    void insertSignalDisplay (ValueTree cabbageWidgetData);
+    void insertStepper (ValueTree cabbageWidgetData) {};
+    void insertMeter (ValueTree cabbageWidgetData);
+    void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
+    //=============================================================================
+    // all these methods expose public methods in CabagePluginProcessor
+    void sendChannelDataToCsound (String channel, float value);
+    void sendChannelStringDataToCsound (String channel, String value);
+    bool shouldUpdateSignalDisplay();
+    void savePluginStateToFile (File snapshotFile);
+    void restorePluginStateFrom (String childPreset);
+    const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
+    const String getCsoundOutputFromProcessor();
+    StringArray getTableStatement (int tableNumber);
+    bool csdCompiledWithoutError();
+    const Array<float, CriticalSection> getTableFloats (int tableNum);
+    CabbagePluginProcessor& getProcessor();
+    void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
 
-	//=============================================================================
-	void mouseMove (const MouseEvent& e);
-	void mouseDrag (const MouseEvent& e);
-	void mouseDown (const MouseEvent& e);
-	void mouseUp (const MouseEvent& e);
-	void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
-	void handleMouseMovement (const MouseEvent& e);
-	//=============================================================================
-	String createNewGenericNameForPresetFile();
-	void addNewWidget (String widgetType, Point<int> point);
-	//=============================================================================
-	void refreshComboBoxContents();
-	void enableEditMode (bool enable);
-	void setCurrentlySelectedComponents (StringArray componentNames);
-	void resetCurrentlySelectedComponents();
-	Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
-	ValueTree getValueTreeForComponent (String compName);
-	Component* getComponentFromName (String name);
-	void addToEditorAndMakeVisible (Component* comp, ValueTree widgetData);
-	void updateLayoutEditorFrames();
-	void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
-	//=============================================================================
-	void buttonClicked (Button* button);
-	void buttonStateChanged(Button* button);
-	void toggleButtonState(Button* button, bool state);
-	void comboBoxChanged (ComboBox* combo);
-	void sliderValueChanged (Slider* slider);
-	//=============================================================================
-	CabbageAudioParameter* getParameterForComponent (const String name);
-	//=============================================================================
-	void setLastOpenedDirectory(const String lastOpenedDirectory) {
-		this->lastOpenedDirectory = lastOpenedDirectory;
-	}
-	const String getLastOpenedDirectory() const {
-		return lastOpenedDirectory;
-	}	
-	//=============================================================================
-	void updatefTableData (GenTable* table);
+    //=============================================================================
+    void mouseMove (const MouseEvent& e);
+    void mouseDrag (const MouseEvent& e);
+    void mouseDown (const MouseEvent& e);
+    void mouseUp (const MouseEvent& e);
+    void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
+    void handleMouseMovement (const MouseEvent& e);
+    //=============================================================================
+    String createNewGenericNameForPresetFile();
+    void addNewWidget (String widgetType, Point<int> point);
+    //=============================================================================
+    void refreshComboBoxContents();
+    void enableEditMode (bool enable);
+    void setCurrentlySelectedComponents (StringArray componentNames);
+    void resetCurrentlySelectedComponents();
+    Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
+    ValueTree getValueTreeForComponent (String compName);
+    Component* getComponentFromName (String name);
+    void addToEditorAndMakeVisible (Component* comp, ValueTree widgetData);
+    void updateLayoutEditorFrames();
+    void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
+    //=============================================================================
+    void buttonClicked (Button* button);
+    void buttonStateChanged (Button* button);
+    void toggleButtonState (Button* button, bool state);
+    void comboBoxChanged (ComboBox* combo);
+    void sliderValueChanged (Slider* slider);
+    //=============================================================================
+    CabbageAudioParameter* getParameterForComponent (const String name);
+    //=============================================================================
+    void setLastOpenedDirectory (const String lastOpenedDirectory)
+    {
+        this->lastOpenedDirectory = lastOpenedDirectory;
+    }
+    const String getLastOpenedDirectory() const
+    {
+        return lastOpenedDirectory;
+    }
+    //=============================================================================
+    void updatefTableData (GenTable* table);
 
 #ifdef Cabbage_IDE_Build
-	ComponentLayoutEditor& getLayoutEditor() {
-		return layoutEditor;
-	}
+    ComponentLayoutEditor& getLayoutEditor()
+    {
+        return layoutEditor;
+    }
 #endif
 
-	bool isEditModeEnabled() {
-		return editModeEnabled;
-	}
-	Colour backgroundColour;
+    bool isEditModeEnabled()
+    {
+        return editModeEnabled;
+    }
+    Colour backgroundColour;
 
-	//---- popup plant window ----
-	class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
-	{
-		Colour colour;
-	public:
-		PopupDocumentWindow (String caption, Colour backgroundColour)
-			: DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour) {
+    //---- popup plant window ----
+    class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
+    {
+        Colour colour;
+    public:
+        PopupDocumentWindow (String caption, Colour backgroundColour)
+            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
+        {
 
-		}
+        }
 
-		void closeButtonPressed() override {
-			setVisible (false);
-			sendChangeMessage();
-		}
-		void paint (Graphics& g) {
-			g.fillAll (colour);
-		}
-	};
+        void closeButtonPressed() override
+        {
+            setVisible (false);
+            sendChangeMessage();
+        }
+        void paint (Graphics& g)
+        {
+            g.fillAll (colour);
+        }
+    };
 
 private:
 
-	//---- main component that holds widgets -----
-	class MainComponent : public Component
-	{
-		Colour colour;
-	public:
-		MainComponent() : Component() {
-			setOpaque(false);
-		}
-		void setColour (Colour col) {
-			colour = col;
-		}
-		void paint(Graphics& g) {
-			g.setOpacity(0);
-			g.fillAll(colour);
-		}
-	};
+    //---- main component that holds widgets -----
+    class MainComponent : public Component
+    {
+        Colour colour;
+    public:
+        MainComponent() : Component()
+        {
+            setOpaque (false);
+        }
+        void setColour (Colour col)
+        {
+            colour = col;
+        }
+        void paint (Graphics& g)
+        {
+            g.setOpacity (0);
+            g.fillAll (colour);
+        }
+    };
 
-	OwnedArray<Component> components;
-	OwnedArray<PopupDocumentWindow> popupPlants;
-	String lastOpenedDirectory;
-	MainComponent mainComponent;
-	int keyboardCount = 0;
-	int xyPadIndex = 0;
-	int consoleCount = 0;
-	CabbageLookAndFeel2 lookAndFeel;
-	int newlyAddedWidgetIndex = 10000;
-	TooltipWindow tooltipWindow;
-	bool editModeEnabled = false;
-	CabbagePluginProcessor& processor;
-	String instrumentName;
+    OwnedArray<Component> components;
+    OwnedArray<PopupDocumentWindow> popupPlants;
+    String lastOpenedDirectory;
+    MainComponent mainComponent;
+    int keyboardCount = 0;
+    int xyPadIndex = 0;
+    int consoleCount = 0;
+    CabbageLookAndFeel2 lookAndFeel;
+    int newlyAddedWidgetIndex = 10000;
+    TooltipWindow tooltipWindow;
+    bool editModeEnabled = false;
+    CabbagePluginProcessor& processor;
+    String instrumentName;
 
 #ifdef Cabbage_IDE_Build
-	ComponentLayoutEditor layoutEditor;
+    ComponentLayoutEditor layoutEditor;
 #endif
 
-	StringArray currentlySelectedComponentNames;
+    StringArray currentlySelectedComponentNames;
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePluginEditor)
 };
 
 

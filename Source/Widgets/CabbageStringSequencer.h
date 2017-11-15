@@ -35,10 +35,10 @@ public:
 
     void resized();
     void hiResTimerCallback();
-    bool keyPressed (const KeyPress &key, Component *originatingComponent) override;
-    TextEditor* getEditor(int column, int row);
-    void swapFocusForEditors(KeyPress key, int col, int row);
-    void highlightEditorText(int col, int row);
+    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
+    TextEditor* getEditor (int column, int row);
+    void swapFocusForEditors (KeyPress key, int col, int row);
+    void highlightEditorText (int col, int row);
 
 
     //ValueTree::Listener virtual methods....

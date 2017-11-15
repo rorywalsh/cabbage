@@ -76,8 +76,8 @@ private:
     void writePluginFileToDisk (File fc, File csdFile, File VSTData, String ext);
     //=======================================================
 
-	ScopedPointer<LookAndFeel_V3> lookAndFeel;
-	String commandLineArgs = "";
+    ScopedPointer<LookAndFeel_V3> lookAndFeel;
+    String commandLineArgs = "";
     bool isGUIEnabled = false;
     ScopedPointer<CabbageMainComponent> content;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)

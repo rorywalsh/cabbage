@@ -46,8 +46,8 @@
     that the other plugin wrappers use.
 */
 class StandaloneFilterWindow    : public DocumentWindow,
-                                  public Button::Listener,
-								  public Timer
+    public Button::Listener,
+    public Timer
 {
 public:
     //==============================================================================
@@ -60,7 +60,7 @@ public:
         true, then the settings object will be owned and deleted by this object.
     */
     StandaloneFilterWindow (const String& title,
-							const String commandLineParams,
+                            const String commandLineParams,
                             Colour backgroundColour,
                             PropertySet* settingsToUse,
                             bool takeOwnershipOfSettings,
@@ -78,13 +78,13 @@ public:
         pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings,
                                                    preferredDefaultDeviceName, preferredSetupOptions,
                                                    constrainToConfiguration);
-		setName("CabbageLite");
-		setAlwaysOnTop(true);
-       #if JUCE_IOS || JUCE_ANDROID
+        setName ("CabbageLite");
+        setAlwaysOnTop (true);
+#if JUCE_IOS || JUCE_ANDROID
         setFullScreen (true);
         setContentOwned (new MainContentComponent (*this), false);
         Desktop::getInstance().setKioskModeComponent (this, false);
-       #else
+#else
         setContentOwned (new MainContentComponent (*this), true);
 
         if (auto* props = pluginHolder->settings.get())
@@ -101,80 +101,85 @@ public:
         {
             centreWithSize (getWidth(), getHeight());
         }
-       #endif
-	   
-		startTimer(200);
-	   
-		CabbageIDELookAndFeel lAndF;
-	   
-		if(commandLineParams.isNotEmpty())
-		{
-			String commandLine = commandLineParams;
-			
-			if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
-			//hocus pocus for OSX. It seems to append some gibbrish to the command line flags
-			commandLine = commandLineParams.substring(0, commandLineParams.indexOf("-")-1);
+
+#endif
+
+        startTimer (200);
+
+        CabbageIDELookAndFeel lAndF;
+
+        if (commandLineParams.isNotEmpty())
+        {
+            String commandLine = commandLineParams;
+
+            if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
+                //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
+                commandLine = commandLineParams.substring (0, commandLineParams.indexOf ("-") - 1);
 
 
-			if(commandLine.contains("--export-VSTi"))
-			{
-				String inputFileName = commandLine.substring(commandLine.indexOf("--export-VSTi")+13).trim().removeCharacters("\"");
-				if(File(inputFileName).existsAsFile())
-				{
-					resetPlugin(inputFileName);
-					CabbageIDELookAndFeel lAndF;
-					CabbageUtilities::exportPlugin("VSTi", File(inputFileName), &lAndF, getPluginId(csdFile));
-					JUCEApplicationBase::quit();
-				}
+            if (commandLine.contains ("--export-VSTi"))
+            {
+                String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VSTi") + 13).trim().removeCharacters ("\"");
 
-			}
-			else if(commandLine.contains("--export-VST "))
-			{
-				String inputFileName = commandLine.substring(commandLine.indexOf("--export-VST")+12).trim().removeCharacters("\"");
-				if(File(inputFileName).existsAsFile())
-				{
-					resetPlugin(inputFileName);
-					CabbageUtilities::exportPlugin("VST", File(inputFileName), &lAndF, getPluginId(csdFile));
-					JUCEApplicationBase::quit();
-				}
+                if (File (inputFileName).existsAsFile())
+                {
+                    resetPlugin (inputFileName);
+                    CabbageIDELookAndFeel lAndF;
+                    CabbageUtilities::exportPlugin ("VSTi", File (inputFileName), &lAndF, getPluginId (csdFile));
+                    JUCEApplicationBase::quit();
+                }
 
-			}
-			else if(File::getCurrentWorkingDirectory().getChildFile (commandLine.trim().removeCharacters("\"")).existsAsFile())
-			{
-				String csd = commandLine.trim().removeCharacters("\"");;
-				resetPlugin(csd);
-			}
-		}	   
-		   
-		   pluginHolder->stopPlaying();
-		}
+            }
+            else if (commandLine.contains ("--export-VST "))
+            {
+                String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VST") + 12).trim().removeCharacters ("\"");
 
-	const String getPluginId (File csdFile)
-	{
-		StringArray csdLines;
-		csdLines.addLines (csdFile.loadFileAsString());
+                if (File (inputFileName).existsAsFile())
+                {
+                    resetPlugin (inputFileName);
+                    CabbageUtilities::exportPlugin ("VST", File (inputFileName), &lAndF, getPluginId (csdFile));
+                    JUCEApplicationBase::quit();
+                }
 
-		for (auto line : csdLines)
-		{
-			ValueTree temp ("temp");
-			CabbageWidgetData::setWidgetState (temp, line, 0);
+            }
+            else if (File::getCurrentWorkingDirectory().getChildFile (commandLine.trim().removeCharacters ("\"")).existsAsFile())
+            {
+                String csd = commandLine.trim().removeCharacters ("\"");;
+                resetPlugin (csd);
+            }
+        }
 
-			if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-				return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
-		}
+        pluginHolder->stopPlaying();
+    }
 
-		return String::empty;
-	}
+    const String getPluginId (File csdFile)
+    {
+        StringArray csdLines;
+        csdLines.addLines (csdFile.loadFileAsString());
+
+        for (auto line : csdLines)
+        {
+            ValueTree temp ("temp");
+            CabbageWidgetData::setWidgetState (temp, line, 0);
+
+            if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+                return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
+        }
+
+        return String::empty;
+    }
 
     ~StandaloneFilterWindow()
     {
-       #if (! JUCE_IOS) && (! JUCE_ANDROID)
+#if (! JUCE_IOS) && (! JUCE_ANDROID)
+
         if (auto* props = pluginHolder->settings.get())
         {
             props->setValue ("windowX", getX());
             props->setValue ("windowY", getY());
         }
-       #endif
+
+#endif
 
         pluginHolder->stopPlaying();
         clearContentComponent();
@@ -186,7 +191,7 @@ public:
     AudioDeviceManager& getDeviceManager() const noexcept   { return pluginHolder->deviceManager; }
 
     /** Deletes and re-creates the plugin, resetting it to its default state. */
-    void resetPlugin(File file)
+    void resetPlugin (File file)
     {
         pluginHolder->stopPlaying();
         clearContentComponent();
@@ -195,34 +200,35 @@ public:
         if (auto* props = pluginHolder->settings.get())
             props->removeValue ("filterState");
 
-        pluginHolder->createPlugin(file);
+        pluginHolder->createPlugin (file);
         setContentOwned (new MainContentComponent (*this), true);
         pluginHolder->startPlaying();
-		if(file.existsAsFile())
-			cabbageFiledOpened = true;
-			
+
+        if (file.existsAsFile())
+            cabbageFiledOpened = true;
+
     }
 
-	//==============================================================================
-	void timerCallback()
-	{
-		int64 modTime = csdFile.getLastModificationTime().toMilliseconds();
-		
-		if(modTime != lastModified && csdFile.existsAsFile())
-		{
-			lastModified = csdFile.getLastModificationTime().toMilliseconds();
-			resetPlugin(csdFile);
-		}
-		
-		if(outputConsole && outputConsole->isVisible())
-		{
-			if(cabbageFiledOpened)
-			{
-				if(CabbagePluginProcessor* plugin = dynamic_cast<CabbagePluginProcessor*>(this->getAudioProcessor()))
-					outputConsole->setText(plugin->getCsoundOutput());
-			}
-		}
-	}
+    //==============================================================================
+    void timerCallback()
+    {
+        int64 modTime = csdFile.getLastModificationTime().toMilliseconds();
+
+        if (modTime != lastModified && csdFile.existsAsFile())
+        {
+            lastModified = csdFile.getLastModificationTime().toMilliseconds();
+            resetPlugin (csdFile);
+        }
+
+        if (outputConsole && outputConsole->isVisible())
+        {
+            if (cabbageFiledOpened)
+            {
+                if (CabbagePluginProcessor* plugin = dynamic_cast<CabbagePluginProcessor*> (this->getAudioProcessor()))
+                    outputConsole->setText (plugin->getCsoundOutput());
+            }
+        }
+    }
 
     //==============================================================================
     void closeButtonPressed() override
@@ -233,75 +239,92 @@ public:
     void buttonClicked (Button*) override
     {
         PopupMenu m;
-        m.addItem (1, TRANS("Audio/MIDI Settings..."));
+        m.addItem (1, TRANS ("Audio/MIDI Settings..."));
         m.addSeparator();
-		m.addItem (2, "Open Csound file");
-		if ( this->isAlwaysOnTop() )
-			m.addItem (3, "Disable always on top");
-		else
-			m.addItem (3, "Enable always on top");
-			
-		
+        m.addItem (2, "Open Csound file");
+
+        if ( this->isAlwaysOnTop() )
+            m.addItem (3, "Disable always on top");
+        else
+            m.addItem (3, "Enable always on top");
+
+
         m.addSeparator();
-		m.addItem (4, "Toggle output console");
-		m.addItem (4, "About Cabbage");
+        m.addItem (4, "Toggle output console");
+        m.addItem (4, "About Cabbage");
         m.showMenuAsync (PopupMenu::Options(),
                          ModalCallbackFunction::forComponent (menuCallback, this));
     }
 
-	void openFile()
-	{
-		FileChooser fc ("Open File", File(""), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+    void openFile()
+    {
+        FileChooser fc ("Open File", File (""), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {
-			csdFile = fc.getResult();
+            csdFile = fc.getResult();
             csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
-			resetPlugin(fc.getResult());
-			lastModified = csdFile.getLastModificationTime().toMilliseconds();
-			setName(getInstrumentname());
-        }	
-	}
-
-	void showOutputConsole()
-	{
-		if(outputConsole == nullptr)
-			outputConsole = new CsoundOutputWindow();
-		
-		
-		outputConsole->setVisible(!outputConsole->isVisible());
-	}
-
-    void handleMenuResult (int result)
-    {
-		CabbageIDELookAndFeel lAndF;
-        switch (result)
-        {
-            case 1:  pluginHolder->showAudioSettingsDialog(); break;
-            case 2:  openFile(); break;
-            case 3:  setAlwaysOnTop(!isAlwaysOnTop()); break;
-			case 4:  showOutputConsole();	break;
-			case 5:  CabbageUtilities::showMessage (String(CABBAGE_VERSION), &lAndF); break;
-			
-            default: break;
+            resetPlugin (fc.getResult());
+            lastModified = csdFile.getLastModificationTime().toMilliseconds();
+            setName (getInstrumentname());
         }
     }
 
-	const String getInstrumentname()
-	{
-		StringArray csdLines;
-		csdLines.addLines (csdFile.loadFileAsString());
+    void showOutputConsole()
+    {
+        if (outputConsole == nullptr)
+            outputConsole = new CsoundOutputWindow();
 
-		for (auto line : csdLines)
-		{
-			ValueTree temp ("temp");
-			CabbageWidgetData::setWidgetState (temp, line, 0);
 
-			if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-				return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::caption);
-		}
-	}
-	
+        outputConsole->setVisible (!outputConsole->isVisible());
+    }
+
+    void handleMenuResult (int result)
+    {
+        CabbageIDELookAndFeel lAndF;
+
+        switch (result)
+        {
+            case 1:
+                pluginHolder->showAudioSettingsDialog();
+                break;
+
+            case 2:
+                openFile();
+                break;
+
+            case 3:
+                setAlwaysOnTop (!isAlwaysOnTop());
+                break;
+
+            case 4:
+                showOutputConsole();
+                break;
+
+            case 5:
+                CabbageUtilities::showMessage (String (CABBAGE_VERSION), &lAndF);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    const String getInstrumentname()
+    {
+        StringArray csdLines;
+        csdLines.addLines (csdFile.loadFileAsString());
+
+        for (auto line : csdLines)
+        {
+            ValueTree temp ("temp");
+            CabbageWidgetData::setWidgetState (temp, line, 0);
+
+            if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+                return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::caption);
+        }
+    }
+
 
     static void menuCallback (int result, StandaloneFilterWindow* button)
     {
@@ -322,8 +345,8 @@ public:
 private:
     //==============================================================================
     class MainContentComponent : public Component, private Value::Listener,
-                                                           Button::Listener,
-                                                           ComponentListener
+        Button::Listener,
+        ComponentListener
     {
     public:
         MainContentComponent (StandaloneFilterWindow& filterWindow)
@@ -362,12 +385,12 @@ private:
             }
         }
 
-		void paint(Graphics &g)
-		{
-			g.fillAll (Colour (50, 50, 50));
-			const Image cabbageLogo = ImageCache::getFromMemory (CabbageBinaryData::CabbageLogoBig_png, CabbageBinaryData::CabbageLogoBig_pngSize);
-			g.drawImage (cabbageLogo, getLocalBounds().toFloat(), RectanglePlacement::Flags::stretchToFit);
-		}
+        void paint (Graphics& g)
+        {
+            g.fillAll (Colour (50, 50, 50));
+            const Image cabbageLogo = ImageCache::getFromMemory (CabbageBinaryData::CabbageLogoBig_png, CabbageBinaryData::CabbageLogoBig_pngSize);
+            g.drawImage (cabbageLogo, getLocalBounds().toFloat(), RectanglePlacement::Flags::stretchToFit);
+        }
 
         void resized() override
         {
@@ -388,11 +411,11 @@ private:
 
             NotificationArea (Button::Listener* settingsButtonListener)
                 : notification ("notification", "Audio input is muted to avoid feedback loop"),
-                 #if JUCE_IOS || JUCE_ANDROID
+#if JUCE_IOS || JUCE_ANDROID
                   settingsButton ("Unmute Input")
-                 #else
+#else
                   settingsButton ("Settings...")
-                 #endif
+#endif
             {
                 setOpaque (true);
 
@@ -441,11 +464,11 @@ private:
         void valueChanged (Value& value) override     { inputMutedChanged (value.getValue()); }
         void buttonClicked (Button*) override
         {
-           #if JUCE_IOS || JUCE_ANDROID
+#if JUCE_IOS || JUCE_ANDROID
             owner.pluginHolder->getMuteInputValue().setValue (false);
-           #else
+#else
             owner.pluginHolder->showAudioSettingsDialog();
-           #endif
+#endif
         }
 
         //==============================================================================
@@ -467,17 +490,18 @@ private:
 
     //==============================================================================
     TextButton optionsButton;
-	File csdFile;
-	int64 lastModified;
-	ScopedPointer<CsoundOutputWindow> outputConsole;
-	bool cabbageFiledOpened = false;
+    File csdFile;
+    int64 lastModified;
+    ScopedPointer<CsoundOutputWindow> outputConsole;
+    bool cabbageFiledOpened = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandaloneFilterWindow)
 };
 
 StandalonePluginHolder* StandalonePluginHolder::getInstance()
 {
-   #if JucePlugin_Enable_IAA || JucePlugin_Build_Standalone
+#if JucePlugin_Enable_IAA || JucePlugin_Build_Standalone
+
     if (PluginHostType::getPluginLoadedAs() == AudioProcessor::wrapperType_Standalone)
     {
         auto& desktop = Desktop::getInstance();
@@ -487,7 +511,8 @@ StandalonePluginHolder* StandalonePluginHolder::getInstance()
             if (auto window = dynamic_cast<StandaloneFilterWindow*> (desktop.getComponent (i)))
                 return window->getPluginHolder();
     }
-   #endif
+
+#endif
 
     return nullptr;
 }

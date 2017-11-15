@@ -47,7 +47,7 @@ void CabbageSettings::setDefaultSettings()
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Docs";
 
 #if defined(WIN32)
-	manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
+    manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
 #elif !defined(MACOSX)
     manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
 #else
@@ -68,11 +68,11 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("UseCabbageIO", 1);
     defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 0);
     defaultPropSet->setValue ("FontSize", 14);
-	defaultPropSet->setValue ("FontSizeConsole", 14);
+    defaultPropSet->setValue ("FontSizeConsole", 14);
     defaultPropSet->setValue ("ShowConsoleWithEditor", 1);
     defaultPropSet->setValue ("UsingCabbageCsound", 1);
     defaultPropSet->setValue ("AudioEnabled", 1);
-	defaultPropSet->setValue ("NumberOfOpenFiles", 1);
+    defaultPropSet->setValue ("NumberOfOpenFiles", 1);
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
     defaultPropSet->setValue ("DisableAutoComplete", 0);
     defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 1);
@@ -249,7 +249,7 @@ void CabbageSettings::updateRecentFilesList()
     getUserSettings()->setValue ("recentlyOpenedFiles", recentFiles.toString());
 }
 
-File CabbageSettings::getMostRecentFile(int index)
+File CabbageSettings::getMostRecentFile (int index)
 {
     //recentFiles.restoreFromString (getUserSettings()->getValue ("recentlyOpenedFiles"));
     return recentFiles.getFile (index);

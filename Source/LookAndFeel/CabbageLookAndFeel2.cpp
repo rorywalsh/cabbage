@@ -12,34 +12,34 @@
 
 namespace LookAndFeelHelpers
 {
-static Colour createBaseColour (Colour buttonColour,
-                                bool hasKeyboardFocus,
-                                bool isMouseOverButton,
-                                bool isButtonDown) noexcept
-{
-    const float sat = hasKeyboardFocus ? 1.3f : 0.9f;
-    const Colour baseColour (buttonColour.withMultipliedSaturation (sat));
+    static Colour createBaseColour (Colour buttonColour,
+                                    bool hasKeyboardFocus,
+                                    bool isMouseOverButton,
+                                    bool isButtonDown) noexcept
+    {
+        const float sat = hasKeyboardFocus ? 1.3f : 0.9f;
+        const Colour baseColour (buttonColour.withMultipliedSaturation (sat));
 
-    if (isButtonDown)      return baseColour.contrasting (0.2f);
+        if (isButtonDown)      return baseColour.contrasting (0.2f);
 
-    if (isMouseOverButton) return baseColour.contrasting (0.1f);
+        if (isMouseOverButton) return baseColour.contrasting (0.1f);
 
-    return baseColour;
-}
+        return baseColour;
+    }
 
-static TextLayout layoutTooltipText (const String& text, Colour colour) noexcept
-{
-    const float tooltipFontSize = 13.0f;
-    const int maxToolTipWidth = 400;
+    static TextLayout layoutTooltipText (const String& text, Colour colour) noexcept
+    {
+        const float tooltipFontSize = 13.0f;
+        const int maxToolTipWidth = 400;
 
-    AttributedString s;
-    s.setJustification (Justification::centred);
-    s.append (text, Font (tooltipFontSize, Font::bold), colour);
+        AttributedString s;
+        s.setJustification (Justification::centred);
+        s.append (text, Font (tooltipFontSize, Font::bold), colour);
 
-    TextLayout tl;
-    tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
-    return tl;
-}
+        TextLayout tl;
+        tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
+        return tl;
+    }
 }
 
 //Cabbage IDE look and feel class
@@ -177,7 +177,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
     File imgFile (group.getProperties().getWithDefault ("imggroupbox", "").toString());
     const int outlineThickness = group.getProperties().getWithDefault ("outlinethickness", 1);
     const int lineThickness = group.getProperties().getWithDefault ("linethickness", 1);
-	const int justift = group.getProperties().getWithDefault ("justify", 1);
+    const int justift = group.getProperties().getWithDefault ("justify", 1);
 
 
     //if valid SVG file....
@@ -220,7 +220,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
 
     g.setColour (group.findColour (GroupComponent::textColourId));
     name = CabbageUtilities::cabbageString (name, font, group.getWidth());
-    g.drawFittedText(name, (position == Justification::left ? 10 : 0), 5, w - (position == Justification::right ? 10 : 0), font.getHeight(), position, 36, false);
+    g.drawFittedText (name, (position == Justification::left ? 10 : 0), 5, w - (position == Justification::right ? 10 : 0), font.getHeight(), position, 36, false);
 }
 //===========================================================================================
 void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, bool isMouseOverButton, bool isButtonDown)
@@ -260,9 +260,9 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, b
     else    //if files don't exist, draw a native Cabbage checkbox
     {
         const int newTickWidth = (button.getButtonText().isEmpty() == true ? button.getWidth() : tickWidth);
-		const Colour col = button.findColour(toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId);
+        const Colour col = button.findColour (toggleState == true ? TextButton::ColourIds::buttonOnColourId : TextButton::ColourIds::buttonColourId);
         image = drawToggleImage (newTickWidth, button.getHeight(), button.getToggleState(), col, isRectangle, corners);
-		g.setOpacity(col.getAlpha()/255.f);
+        g.setOpacity (col.getAlpha() / 255.f);
         g.drawImage (image, 0.f, (button.getHeight() - tickWidth) * 0.5f, button.getWidth(), button.getHeight(), 0, 0, button.getWidth(), button.getHeight(), false);
     }
 
@@ -312,8 +312,8 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
             Colour bg2 = colour;
             ColourGradient cg = ColourGradient (bg1, 0, 0, bg2, width * 0.5, height * 0.5, false);
             //g.setGradientFill (cg);
-			g.setColour(colour);
-			g.fillRoundedRectangle (width * 0.01, height * 0.01, width * 0.99, height * 0.99, corners);
+            g.setColour (colour);
+            g.fillRoundedRectangle (width * 0.01, height * 0.01, width * 0.99, height * 0.99, corners);
             opacity = 0.2;
         }
 

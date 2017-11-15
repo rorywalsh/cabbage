@@ -24,174 +24,182 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     : widgetData (wData),
       owner (_owner),
       seqContainer(),
-      vp("SequencerContainer")
+      vp ("SequencerContainer")
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     int cellWidth = 0;
     const int cellHeight = 25;
-    addAndMakeVisible(vp);
-    vp.setViewedComponent(&seqContainer);
+    addAndMakeVisible (vp);
+    vp.setViewedComponent (&seqContainer);
 
-    const int width = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::width);
-    const int height = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::height);
-    numRows = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::numberofsteps);
-    var channels = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel);
+    const int width = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
+    const int height = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
+    numRows = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::numberofsteps);
+    var channels = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channel);
 
-    if(channels.size()<2)
+    if (channels.size() < 2)
     {
-        CabbageUtilities::showMessage("Make sure you have at least 2 channels declared for stringsequencer");
+        CabbageUtilities::showMessage ("Make sure you have at least 2 channels declared for stringsequencer");
         return;
     }
 
-    numColumns = channels.size()-1;
+    numColumns = channels.size() - 1;
     stepChannel = channels[0];
 
 
 
-    const int showNumbers = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::showstempnumbers);
-    if(showNumbers>0)
+    const int showNumbers = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::showstempnumbers);
+
+    if (showNumbers > 0)
     {
-        for( int i = 0 ; i < numRows ; i++)
+        for ( int i = 0 ; i < numRows ; i++)
         {
 
-            Label* numberLabel = new Label("Number"+String(i+1), String(i+1));
-            if(i%showNumbers==0)
-                numberLabel->setColour(Label::textColourId, Colours::red);
-            numberLabel->setBounds(0, i*cellHeight, 20, cellHeight);
-            addAndMakeVisible(numberLabel);
-            stepNumbers.add(numberLabel);
+            Label* numberLabel = new Label ("Number" + String (i + 1), String (i + 1));
+
+            if (i % showNumbers == 0)
+                numberLabel->setColour (Label::textColourId, Colours::red);
+
+            numberLabel->setBounds (0, i * cellHeight, 20, cellHeight);
+            addAndMakeVisible (numberLabel);
+            stepNumbers.add (numberLabel);
         }
     }
 
-    if(height<cellHeight*numRows)
+    if (height < cellHeight * numRows)
     {
-        vp.setScrollBarsShown(true, false);
-        cellWidth = (width-vp.getScrollBarThickness()-(showNumbers>0 ? 20 : 0))/numColumns;
+        vp.setScrollBarsShown (true, false);
+        cellWidth = (width - vp.getScrollBarThickness() - (showNumbers > 0 ? 20 : 0)) / numColumns;
     }
     else
     {
-        vp.setScrollBarsShown(false, false);
-        cellWidth = width-(showNumbers>0 ? 20 : 0)/numColumns;
+        vp.setScrollBarsShown (false, false);
+        cellWidth = width - (showNumbers > 0 ? 20 : 0) / numColumns;
     }
 
-    for(int i = 0 ; i < numColumns ; i++)
+    for (int i = 0 ; i < numColumns ; i++)
     {
-        textFields.add(new OwnedArray<TextEditor>());
-        for( int y = 0 ; y < numRows ; y++)
+        textFields.add (new OwnedArray<TextEditor>());
+
+        for ( int y = 0 ; y < numRows ; y++)
         {
             TextEditor* tf = new TextEditor();
-            seqContainer.addAndMakeVisible(tf);
-            tf->setColour(TextEditor::outlineColourId, Colour(20, 20, 20));
-            tf->getProperties().set("Column", var(i));
-            tf->getProperties().set("Row", var(y));
-            tf->getProperties().set("Channel", channels[i+1]);
-            tf->addKeyListener(this);
-            tf->setBounds((showNumbers>0 ? 20 : 0)+cellWidth*i, y*cellHeight, cellWidth, cellHeight);
-            textFields[i]->add(tf);
+            seqContainer.addAndMakeVisible (tf);
+            tf->setColour (TextEditor::outlineColourId, Colour (20, 20, 20));
+            tf->getProperties().set ("Column", var (i));
+            tf->getProperties().set ("Row", var (y));
+            tf->getProperties().set ("Channel", channels[i + 1]);
+            tf->addKeyListener (this);
+            tf->setBounds ((showNumbers > 0 ? 20 : 0) + cellWidth * i, y * cellHeight, cellWidth, cellHeight);
+            textFields[i]->add (tf);
         }
     }
 
-    startTimer(60/CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::bpm)*1000);
-    seqContainer.setBounds(getLocalBounds().withHeight(numRows*cellHeight));
+    startTimer (60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000);
+    seqContainer.setBounds (getLocalBounds().withHeight (numRows * cellHeight));
 
 }
 
 CabbageStringSequencer::~CabbageStringSequencer()
 {
-    textFields.getUnchecked(0)->clear();
+    textFields.getUnchecked (0)->clear();
     textFields.clear();
 }
 
-TextEditor* CabbageStringSequencer::getEditor(int column, int row)
+TextEditor* CabbageStringSequencer::getEditor (int column, int row)
 {
-    return textFields[column]->operator[](row);
+    return textFields[column]->operator[] (row);
 }
 
 void CabbageStringSequencer::hiResTimerCallback()
 {
-    currentBeat = (currentBeat<numRows -1 ? currentBeat+1 : 0);
-    owner->sendChannelDataToCsound(stepChannel.toUTF8(), currentBeat);
-    for( int i = 0 ; i < numColumns ; i++)
-        owner->sendChannelStringDataToCsound(getEditor(i, currentBeat)->getProperties().getWithDefault("Channel", ""), getEditor(i, currentBeat)->getText().toUTF8());
+    currentBeat = (currentBeat < numRows - 1 ? currentBeat + 1 : 0);
+    owner->sendChannelDataToCsound (stepChannel.toUTF8(), currentBeat);
+
+    for ( int i = 0 ; i < numColumns ; i++)
+        owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
+
     //CabbageUtilities::debug(currentBeat);
 }
 
-void CabbageStringSequencer::highlightEditorText(int col, int row)
+void CabbageStringSequencer::highlightEditorText (int col, int row)
 {
-    for( int i = 0 ; i < numColumns ; i++)
-        for( int y = 0 ; y < numRows ; y++)
+    for ( int i = 0 ; i < numColumns ; i++)
+        for ( int y = 0 ; y < numRows ; y++)
         {
-            if(i == col && y == row)
+            if (i == col && y == row)
             {
-                getEditor(col, row)->setHighlightedRegion(Range<int>(0, getEditor(col, row)->getText().length()));
-                vp.setViewPosition(0, (getEditor(col, row)->getY()>getHeight()/2 ? getEditor(col, row)->getY()-getHeight()+getEditor(col, row)->getHeight()*3 : 0));
+                getEditor (col, row)->setHighlightedRegion (Range<int> (0, getEditor (col, row)->getText().length()));
+                vp.setViewPosition (0, (getEditor (col, row)->getY() > getHeight() / 2 ? getEditor (col, row)->getY() - getHeight() + getEditor (col, row)->getHeight() * 3 : 0));
             }
             else
-                getEditor(i, y)->setHighlightedRegion(Range<int>(0, 0));
+                getEditor (i, y)->setHighlightedRegion (Range<int> (0, 0));
         }
 }
 void CabbageStringSequencer::resized()
 {
     //need to resize children according to vp size..
-    vp.setBounds(getLocalBounds());
+    vp.setBounds (getLocalBounds());
 }
 
 
-bool CabbageStringSequencer::keyPressed (const KeyPress &key, Component *originatingComponent)
+bool CabbageStringSequencer::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    if(TextEditor* ted = dynamic_cast<TextEditor*>(originatingComponent))
+    if (TextEditor* ted = dynamic_cast<TextEditor*> (originatingComponent))
     {
-        const int currentColumn = int(ted->getProperties().getWithDefault("Column", 0));
-        const int currentRow = int(ted->getProperties().getWithDefault("Row", 0));
-        if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
-                key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
-                key.isKeyCode (KeyPress::downKey) ||
-                key.isKeyCode (KeyPress::upKey) ||
-                key.isKeyCode (KeyPress::returnKey))
-        swapFocusForEditors(key, currentColumn, currentRow);
+        const int currentColumn = int (ted->getProperties().getWithDefault ("Column", 0));
+        const int currentRow = int (ted->getProperties().getWithDefault ("Row", 0));
+
+        if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
+            key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
+            key.isKeyCode (KeyPress::downKey) ||
+            key.isKeyCode (KeyPress::upKey) ||
+            key.isKeyCode (KeyPress::returnKey))
+            swapFocusForEditors (key, currentColumn, currentRow);
     }
 
     return true;
 }
 
-void CabbageStringSequencer::swapFocusForEditors(KeyPress key, int col, int row)
+void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row)
 {
     int newRow, newCol;
-    if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey))
+
+    if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey))
     {
         newCol = (col < numColumns - 1 ? col + 1 : 0);
         newRow = row;
     }
 
-    else if(key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey))
+    else if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey))
     {
         newCol = (col > 0 ? col - 1 : numColumns - 1);
         newRow = row;
     }
 
-    else if(key.isKeyCode (KeyPress::downKey))
+    else if (key.isKeyCode (KeyPress::downKey))
     {
         newRow = (row < numRows - 1 ? row + 1 : 0);
         newCol = col;
     }
 
-    else if(key.isKeyCode (KeyPress::upKey))
+    else if (key.isKeyCode (KeyPress::upKey))
     {
         newRow = (row > 0 ? row - 1 : numRows - 1);
         newCol = col;
     }
 
-    else if(key.isKeyCode (KeyPress::returnKey))
+    else if (key.isKeyCode (KeyPress::returnKey))
     {
         newRow = (row < numRows - 1 ? row + 1 : 0);
         newCol = col;
     }
 
 
-    highlightEditorText(newCol, newRow);
-    getEditor(newCol, newRow)->grabKeyboardFocus();
+    highlightEditorText (newCol, newRow);
+    getEditor (newCol, newRow)->grabKeyboardFocus();
 
 }
 

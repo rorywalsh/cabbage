@@ -66,7 +66,7 @@ public:
 
     CabbageMainComponent* getContentComponent();
     //=============================================================================
-    CabbageEditorContainer (CabbageSettings* settings, bool isCsdFile=true);
+    CabbageEditorContainer (CabbageSettings* settings, bool isCsdFile = true);
     ~CabbageEditorContainer();
     void updateLookAndFeel();
     void openFile (File file);

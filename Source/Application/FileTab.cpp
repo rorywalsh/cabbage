@@ -20,78 +20,78 @@
 #include "FileTab.h"
 
 FileTab::FileTab (String name, String filename):
-        TextButton (name, filename),
-        csdFile (filename),
-        play ("Play", DrawableButton::ButtonStyle::ImageStretched),
-        close ("", DrawableButton::ButtonStyle::ImageStretched),
-        showEditor ("", DrawableButton::ButtonStyle::ImageStretched),
-        editGUI ("", DrawableButton::ButtonStyle::ImageStretched),
-        overlay()
+    TextButton (name, filename),
+    csdFile (filename),
+    play ("Play", DrawableButton::ButtonStyle::ImageStretched),
+    close ("", DrawableButton::ButtonStyle::ImageStretched),
+    showEditor ("", DrawableButton::ButtonStyle::ImageStretched),
+    editGUI ("", DrawableButton::ButtonStyle::ImageStretched),
+    overlay()
 {
-	
-	addChildComponent (overlay);
-	overlay.setVisible (false);
-	play.setClickingTogglesState (true);
-	play.setName ("playButton");
 
-	addAndMakeVisible (close);
-	close.setName ("closeButton");
-	close.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-	close.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-	close.setTooltip ("Close file");
-	close.getProperties().set ("filename", csdFile.getFullPathName());
+    addChildComponent (overlay);
+    overlay.setVisible (false);
+    play.setClickingTogglesState (true);
+    play.setName ("playButton");
 
-	addAndMakeVisible (play);
-	play.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-	play.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-	play.setClickingTogglesState (true);
-	play.getProperties().set ("filename", csdFile.getFullPathName());
+    addAndMakeVisible (close);
+    close.setName ("closeButton");
+    close.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+    close.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+    close.setTooltip ("Close file");
+    close.getProperties().set ("filename", csdFile.getFullPathName());
 
-	addAndMakeVisible (showEditor);
-	showEditor.setName ("showEditorButton");
-	showEditor.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-	showEditor.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-	showEditor.setClickingTogglesState (true);
-	showEditor.setTooltip ("Show plugin Editor");
+    addAndMakeVisible (play);
+    play.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+    play.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+    play.setClickingTogglesState (true);
+    play.getProperties().set ("filename", csdFile.getFullPathName());
 
-	addAndMakeVisible (editGUI);
-	editGUI.setName ("editGUIButton");
-	editGUI.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
-	editGUI.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-	editGUI.setClickingTogglesState (true);
-	editGUI.setTooltip ("Edit Plugin GUI");
+    addAndMakeVisible (showEditor);
+    showEditor.setName ("showEditorButton");
+    showEditor.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+    showEditor.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+    showEditor.setClickingTogglesState (true);
+    showEditor.setTooltip ("Show plugin Editor");
 
-	setDrawableImages (play, 60, 25, "play");
-	setDrawableImages (close, 25, 25, "close");
-	setDrawableImages (showEditor, 25, 25, "showEditor");
-	setDrawableImages (editGUI, 25, 25, "editGUI"); 
+    addAndMakeVisible (editGUI);
+    editGUI.setName ("editGUIButton");
+    editGUI.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+    editGUI.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+    editGUI.setClickingTogglesState (true);
+    editGUI.setTooltip ("Edit Plugin GUI");
+
+    setDrawableImages (play, 60, 25, "play");
+    setDrawableImages (close, 25, 25, "close");
+    setDrawableImages (showEditor, 25, 25, "showEditor");
+    setDrawableImages (editGUI, 25, 25, "editGUI");
 }
 
 void FileTab::drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height)
 {
-	const float mainBrightness = baseColour.getBrightness();
-	const float mainAlpha = baseColour.getFloatAlpha();
+    const float mainBrightness = baseColour.getBrightness();
+    const float mainAlpha = baseColour.getFloatAlpha();
 
-	g.setGradientFill (ColourGradient (baseColour.brighter (0.2f), 0.0f, 0.0f,
-									   baseColour.darker (0.25f), 0.0f, height, false));
-	g.fillPath (outline);
+    g.setGradientFill (ColourGradient (baseColour.brighter (0.2f), 0.0f, 0.0f,
+                                       baseColour.darker (0.25f), 0.0f, height, false));
+    g.fillPath (outline);
 
-	g.setColour (Colours::white.withAlpha (0.4f * mainAlpha * mainBrightness * mainBrightness));
-	g.strokePath (outline, PathStrokeType (1.0f), AffineTransform::translation (0.0f, 1.0f)
-														.scaled (1.0f, (height - 1.6f) / height));
+    g.setColour (Colours::white.withAlpha (0.4f * mainAlpha * mainBrightness * mainBrightness));
+    g.strokePath (outline, PathStrokeType (1.0f), AffineTransform::translation (0.0f, 1.0f)
+                  .scaled (1.0f, (height - 1.6f) / height));
 
-	g.setColour (Colours::black.withAlpha (0.4f * mainAlpha));
-	g.strokePath (outline, PathStrokeType (1.0f));
+    g.setColour (Colours::black.withAlpha (0.4f * mainAlpha));
+    g.strokePath (outline, PathStrokeType (1.0f));
 }
 
 
 void FileTab::drawButtonText (Graphics& g)
 {
-	Font font(jmin (15.0f, getHeight() * 0.6f));
+    Font font (jmin (15.0f, getHeight() * 0.6f));
     g.setFont (font);
     g.setColour (findColour (getToggleState() ? TextButton::textColourOnId
-                                                            : TextButton::textColourOnId)
-                       .darker (getToggleState() ? 0.f : 0.5f));
+                             : TextButton::textColourOnId)
+                 .darker (getToggleState() ? 0.f : 0.5f));
 
     const int yIndent = jmin (4, proportionOfHeight (0.3f));
     const int cornerSize = jmin (getHeight(), getWidth()) / 2;
@@ -106,102 +106,102 @@ void FileTab::drawButtonText (Graphics& g)
                           leftIndent, yIndent, textWidth, getHeight() - yIndent * 2,
                           Justification::centred, 1);
 }
-						  
-void FileTab::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown)
+
+void FileTab::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
-	const Colour backgroundColour = Colour(100, 100, 100);
-	
-	if(isEnabled()==false)
-		jassert(false);
-	
-	Colour baseColour (getToggleState() ? backgroundColour : Colour(30, 30, 30));
+    const Colour backgroundColour = Colour (100, 100, 100);
 
-	if (isButtonDown || isMouseOverButton)
-		baseColour = baseColour.contrasting (isButtonDown ? 0.2f : 0.1f);
+    if (isEnabled() == false)
+        jassert (false);
 
-	const bool flatOnLeft   = isConnectedOnLeft();
-	const bool flatOnRight  = isConnectedOnRight();
-	const bool flatOnTop    = isConnectedOnTop();
-	const bool flatOnBottom = isConnectedOnBottom();
+    Colour baseColour (getToggleState() ? backgroundColour : Colour (30, 30, 30));
 
-	const float width  = getWidth() - 1.0f;
-	const float height = getHeight() - 1.0f;
+    if (isButtonDown || isMouseOverButton)
+        baseColour = baseColour.contrasting (isButtonDown ? 0.2f : 0.1f);
 
-	if (width > 0 && height > 0)
-	{
-		const float cornerSize = 4.0f;
+    const bool flatOnLeft   = isConnectedOnLeft();
+    const bool flatOnRight  = isConnectedOnRight();
+    const bool flatOnTop    = isConnectedOnTop();
+    const bool flatOnBottom = isConnectedOnBottom();
 
-		Path outline;
-		outline.addRoundedRectangle (0.5f, 0.5f, width, height, cornerSize, cornerSize,
-									 ! (flatOnLeft  || flatOnTop),
-									 ! (flatOnRight || flatOnTop),
-									 ! (flatOnLeft  || flatOnBottom),
-									 ! (flatOnRight || flatOnBottom));
+    const float width  = getWidth() - 1.0f;
+    const float height = getHeight() - 1.0f;
 
-		drawButtonShape (g, outline, baseColour, height);
-	}
-	
-	drawButtonText(g);
+    if (width > 0 && height > 0)
+    {
+        const float cornerSize = 4.0f;
+
+        Path outline;
+        outline.addRoundedRectangle (0.5f, 0.5f, width, height, cornerSize, cornerSize,
+                                     ! (flatOnLeft  || flatOnTop),
+                                     ! (flatOnRight || flatOnTop),
+                                     ! (flatOnLeft  || flatOnBottom),
+                                     ! (flatOnRight || flatOnBottom));
+
+        drawButtonShape (g, outline, baseColour, height);
+    }
+
+    drawButtonText (g);
 }
 
 void FileTab::addButtonListeners (Button::Listener* listener)
 {
-	play.addListener (listener);
-	close.addListener (listener);
-	showEditor.addListener (listener);
-	editGUI.addListener (listener);
+    play.addListener (listener);
+    close.addListener (listener);
+    showEditor.addListener (listener);
+    editGUI.addListener (listener);
 }
 
 void FileTab::disableButtons (bool disable)
 {
-	if (disable)
-	{
-		overlay.setVisible (true);
-		overlay.toFront (true);
-	}
-	else
-		overlay.setVisible (false);
+    if (disable)
+    {
+        overlay.setVisible (true);
+        overlay.toFront (true);
+    }
+    else
+        overlay.setVisible (false);
 
 }
 
 void FileTab::resized()
 {
-	overlay.setBounds (5, 3, 125, 25);
-	play.setBounds (5, 3, 60, 25);
-	showEditor.setBounds (67, 3, 30, 25);
-	editGUI.setBounds (99, 3, 30, 25);
-	close.setBounds (getWidth() - 22, 3, 20, 20);
+    overlay.setBounds (5, 3, 125, 25);
+    play.setBounds (5, 3, 60, 25);
+    showEditor.setBounds (67, 3, 30, 25);
+    editGUI.setBounds (99, 3, 30, 25);
+    close.setBounds (getWidth() - 22, 3, 20, 20);
 }
 
 void FileTab::setDrawableImages (DrawableButton& button, int width, int height, String type)
 {
-	DrawableImage imageNormal, imageNormalPressed, imageDownPressed;
+    DrawableImage imageNormal, imageNormalPressed, imageDownPressed;
 
-	if (type == "play")
-	{
-		DrawableImage imageDown;
-		imageNormalPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, false, true));
-		imageDownPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, true, true));
-		imageNormal.setImage (CabbageImages::drawPlayStopIcon (width, height, false));
-		imageDown.setImage (CabbageImages::drawPlayStopIcon (width, height, true));
-		button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageDown, nullptr,  &imageDownPressed, &imageDownPressed);
-	}
-	else if (type == "close")
-	{
-		imageNormal.setImage (CabbageImages::drawCloseIcon (width, height));
-		imageNormalPressed.setImage (CabbageImages::drawCloseIcon (width - 3, height - 3));
-		button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal);
-	}
-	else if (type == "showEditor")
-	{
-		imageNormal.setImage (CabbageImages::drawEditorIcon (width, height));
-		imageNormalPressed.setImage (CabbageImages::drawEditorIcon (width - 1, height - 1));
-		button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);
-	}
-	else if (type == "editGUI")
-	{
-		imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
-		imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));
-		button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);
-	}
+    if (type == "play")
+    {
+        DrawableImage imageDown;
+        imageNormalPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, false, true));
+        imageDownPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, true, true));
+        imageNormal.setImage (CabbageImages::drawPlayStopIcon (width, height, false));
+        imageDown.setImage (CabbageImages::drawPlayStopIcon (width, height, true));
+        button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageDown, nullptr,  &imageDownPressed, &imageDownPressed);
+    }
+    else if (type == "close")
+    {
+        imageNormal.setImage (CabbageImages::drawCloseIcon (width, height));
+        imageNormalPressed.setImage (CabbageImages::drawCloseIcon (width - 3, height - 3));
+        button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal);
+    }
+    else if (type == "showEditor")
+    {
+        imageNormal.setImage (CabbageImages::drawEditorIcon (width, height));
+        imageNormalPressed.setImage (CabbageImages::drawEditorIcon (width - 1, height - 1));
+        button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);
+    }
+    else if (type == "editGUI")
+    {
+        imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
+        imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));
+        button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);
+    }
 }

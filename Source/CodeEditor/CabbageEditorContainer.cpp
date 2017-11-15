@@ -21,27 +21,28 @@
 #include "../Application/CabbageMainComponent.h"
 
 CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool isCsd)
-    : settings (settings), isCsdFile(isCsd),
+    : settings (settings), isCsdFile (isCsd),
       statusBar (settings->valueTree, this)
 {
     addAndMakeVisible (statusBar);
-    if(isCsdFile)
-        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument,&csoundTokeniser));
+
+    if (isCsdFile)
+        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
     else
         addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &xmlTokeniser));
 
     addAndMakeVisible (outputConsole = new CabbageOutputConsole (settings->valueTree));
-	
+
     editor->setLineNumbersShown (true);
     editor->addMouseListener (this, true);
     Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
     const int fontSize = settings->getUserSettings()->getIntValue ("FontSize", 17);
-	const int fontSizeConsole = settings->getUserSettings()->getIntValue ("FontSizeConsole", 14);
+    const int fontSizeConsole = settings->getUserSettings()->getIntValue ("FontSizeConsole", 14);
     editor->setFont (Font (fontPtr).withHeight (fontSize));
     editor->setFontSize (fontSize);
     editor->setVisible (true);
     outputConsole->setVisible (true);
-	outputConsole->setFontSize(fontSizeConsole);	
+    outputConsole->setFontSize (fontSizeConsole);
     statusBar.addMouseListener (this, true);
 
     const int width = settings->getUserSettings()->getIntValue ("IDE_LastKnownWidth");
@@ -60,7 +61,7 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool 
 CabbageEditorContainer::~CabbageEditorContainer()
 {
     settings->getUserSettings()->setValue ("FontSize", editor->getFontSize());
-	settings->getUserSettings()->setValue ("FontSizeConsole", outputConsole->getFontSize());
+    settings->getUserSettings()->setValue ("FontSizeConsole", outputConsole->getFontSize());
     editor = nullptr;
     outputConsole = nullptr;
 }
@@ -85,7 +86,7 @@ void CabbageEditorContainer::openFile (File file)
 
 void CabbageEditorContainer::updateLookAndFeel()
 {
-    editor->updateColourScheme(isCsdFile);
+    editor->updateColourScheme (isCsdFile);
     outputConsole->updateColourScheme();
 }
 

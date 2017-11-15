@@ -28,7 +28,7 @@ class CabbageAudioParameter : public AudioParameterFloat
 
 public:
     CabbageAudioParameter (ValueTree wData, Csound& csound, String channel, String name, float minValue, float maxValue, float def, float incr, float skew)
-        : AudioParameterFloat (channel, channel, NormalisableRange<float>(minValue, maxValue, incr, skew), def), widgetData (wData), currentValue (def), widgetName (name), channel (channel), csound (csound)
+        : AudioParameterFloat (channel, channel, NormalisableRange<float> (minValue, maxValue, incr, skew), def), widgetData (wData), currentValue (def), widgetName (name), channel (channel), csound (csound)
     {
         widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
     }
@@ -36,13 +36,13 @@ public:
 
     float getValue() const override
     {
-        return range.convertTo0to1(currentValue);
+        return range.convertTo0to1 (currentValue);
     }
 
     void setValue (float newValue) override
     {
-        csound.SetChannel (channel.toUTF8(), range.convertFrom0to1(newValue));
-        currentValue = range.convertFrom0to1(newValue);
+        csound.SetChannel (channel.toUTF8(), range.convertFrom0to1 (newValue));
+        currentValue = range.convertFrom0to1 (newValue);
     }
 
     const String getWidgetName() {   return widgetName;  }

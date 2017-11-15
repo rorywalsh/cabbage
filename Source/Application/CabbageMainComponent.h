@@ -43,7 +43,7 @@ class CabbageMainComponent
       public ChangeListener,
       public Timer,
       public ComboBox::Listener,
-	  public FileDragAndDropTarget
+      public FileDragAndDropTarget
 {
 public:
 
@@ -64,14 +64,14 @@ public:
     void createAudioGraph();
     void createCodeEditorForFile (File file);
     void createNewProject();
-	bool isInterestedInFileDrag(const StringArray &files);
-	void filesDropped(const StringArray &files, int x, int y);
+    bool isInterestedInFileDrag (const StringArray& files);
+    void filesDropped (const StringArray& files, int x, int y);
     Image createBackground();
     void removeEditor();
     //==============================================================================
     void launchSSHFileBrowser (String mode);
     void setEditMode (bool enable);
-    const File openFile (String filename = "", bool updateRecentFiles=true);
+    const File openFile (String filename = "", bool updateRecentFiles = true);
     void closeDocument();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);
@@ -89,11 +89,11 @@ public:
     File getCurrentCsdFile ();
     void setCurrentCsdFile (File file);
     void writeFileToDisk (File file);
-	int testFileForErrors(String file);
+    int testFileForErrors (String file);
     //==============================================================================
     void handleToolbarButtons (ToolbarButton* toolbarButton);
     void handleFileTabs (DrawableButton* button);
-    void handleFileTab (FileTab* drawableButton, bool icrement=false) ;
+    void handleFileTab (FileTab* drawableButton, bool icrement = false) ;
     void addFileTab (File file);
     void arrangeFileTabs();
     //==============================================================================
@@ -106,7 +106,7 @@ public:
     void hideFindPanel();
     int findNext (bool forward);
     void replaceText (bool replaceAll);
-	
+
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -126,10 +126,10 @@ public:
     //==============================================================================
     void timerCallback();
     void launchHelpfile (String type);
-	TextButton cycleTabsButton;
+    TextButton cycleTabsButton;
 
 private:
-	int getTabFileIndex(File file);
+    int getTabFileIndex (File file);
     OwnedArray<FileTab> fileTabs;
     bool fileNeedsSaving = false;
     String searchString = String::empty;

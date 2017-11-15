@@ -25,7 +25,7 @@
 class CabbageOutputConsole : public Component
 {
     ScopedPointer<TextEditor> textEditor;
-	int fontSize;
+    int fontSize;
 public:
     CabbageOutputConsole (ValueTree valueTree): Component(), value (valueTree)
     {
@@ -63,7 +63,7 @@ public:
         repaint();
 #else
         textEditor->setColour (TextEditor::textColourId, Colours::green);
-        textEditor->setColour (TextEditor::backgroundColourId, Colour(20, 20, 20));
+        textEditor->setColour (TextEditor::backgroundColourId, Colour (20, 20, 20));
         repaint();
 #endif
     }
@@ -71,34 +71,34 @@ public:
     void setFontSize (int size)
     {
         textEditor->setFont (Font ("Arial", size, 0));
-		fontSize = size;
+        fontSize = size;
     }
-	
-	int getFontSize()
-	{
-		return fontSize;
-	}
-	
-	void zoom(bool in)
-	{
-		if(in == true)
-			fontSize++;
-		else
-			fontSize = fontSize > 6 ? fontSize-1 : fontSize;			
-		
-		String currentText = textEditor->getText();
-		textEditor->setText("");
-		textEditor->setFont (Font ("Arial", fontSize, 0));
-		textEditor->setText(currentText);
-		textEditor->setCaretPosition (textEditor->getText().length());
-	
-	}
 
-	void clearText()
-	{
-		textEditor->setText("");
-	}
-	
+    int getFontSize()
+    {
+        return fontSize;
+    }
+
+    void zoom (bool in)
+    {
+        if (in == true)
+            fontSize++;
+        else
+            fontSize = fontSize > 6 ? fontSize - 1 : fontSize;
+
+        String currentText = textEditor->getText();
+        textEditor->setText ("");
+        textEditor->setFont (Font ("Arial", fontSize, 0));
+        textEditor->setText (currentText);
+        textEditor->setCaretPosition (textEditor->getText().length());
+
+    }
+
+    void clearText()
+    {
+        textEditor->setText ("");
+    }
+
     void resized()
     {
         Rectangle<int> area (getLocalBounds());
@@ -109,8 +109,8 @@ public:
     {
 #ifndef CabbageLite
         g.fillAll (CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleOutline, Colours::grey.darker()));
-#endif    
-	}
+#endif
+    }
 
 private:
     ValueTree value;

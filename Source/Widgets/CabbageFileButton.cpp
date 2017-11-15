@@ -46,62 +46,62 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     if (mode == "file")
     {
-		const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File(lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        const String lastKnownDirectory = owner->getLastOpenedDirectory();
+        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (filetype == "snaps")
         {
-//            if (fc.browseForFileToSave (false))
-//            {
-//                if (fc.getResult().existsAsFile())
-//                {
-//                    CabbageLookAndFeel2 lookAndFeel;
-//                    const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-//
-//                    if (result == 1)
-//                    {
-//                        owner->savePluginStateToFile (fc.getResult());
-//                        owner->refreshComboBoxContents();
-//                    }
-//                }
-//                else
-//                {
-//                    owner->savePluginStateToFile (fc.getResult());
-//                    owner->refreshComboBoxContents();
-//                }
-//            }
+            //            if (fc.browseForFileToSave (false))
+            //            {
+            //                if (fc.getResult().existsAsFile())
+            //                {
+            //                    CabbageLookAndFeel2 lookAndFeel;
+            //                    const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+            //
+            //                    if (result == 1)
+            //                    {
+            //                        owner->savePluginStateToFile (fc.getResult());
+            //                        owner->refreshComboBoxContents();
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    owner->savePluginStateToFile (fc.getResult());
+            //                    owner->refreshComboBoxContents();
+            //                }
+            //            }
         }
         else
         {
             if (fc.browseForFileToOpen())
             {
-                owner->sendChannelStringDataToCsound (getChannel(), returnValidPath(fc.getResult()));
-                CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
+                owner->sendChannelStringDataToCsound (getChannel(), returnValidPath (fc.getResult()));
+                CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath (fc.getResult()));
                 //owner->refreshComboBoxContents();
             }
         }
-		
-		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+
+        owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
     }
 
     else if (mode == "directory")
     {
-		const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File(lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        const String lastKnownDirectory = owner->getLastOpenedDirectory();
+        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
-            owner->sendChannelStringDataToCsound (getChannel(), returnValidPath(fc.getResult()));
-            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
+            owner->sendChannelStringDataToCsound (getChannel(), returnValidPath (fc.getResult()));
+            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath (fc.getResult()));
         }
-		
-		owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+
+        owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
     }
 
     else if (mode == "snapshot")
     {
         const String newFileName = owner->createNewGenericNameForPresetFile();
-		owner->sendChannelStringDataToCsound (getChannel(), newFileName);
+        owner->sendChannelStringDataToCsound (getChannel(), newFileName);
         owner->savePluginStateToFile (File (newFileName));
         owner->refreshComboBoxContents();
     }
@@ -110,9 +110,9 @@ void CabbageFileButton::buttonClicked (Button* button)
 }
 
 //===============================================================================
-String CabbageFileButton::returnValidPath(File fc)
+String CabbageFileButton::returnValidPath (File fc)
 {
-	return fc.getFullPathName().replaceCharacters("\\", "/");
+    return fc.getFullPathName().replaceCharacters ("\\", "/");
 }
 //===============================================================================
 void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
@@ -129,5 +129,5 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
     setLookAndFeelColours (valueTree);
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
-	const String file = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
+    const String file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
 }

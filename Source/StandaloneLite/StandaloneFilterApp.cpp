@@ -8,18 +8,18 @@ class StandaloneFilterApp  : public JUCEApplication
 public:
     StandaloneFilterApp()
     {
-       // PluginHostType::jucePlugInClientCurrentWrapperType = AudioProcessor::wrapperType_Standalone;
+        // PluginHostType::jucePlugInClientCurrentWrapperType = AudioProcessor::wrapperType_Standalone;
 
         PropertiesFile::Options options;
 
         options.applicationName     = getApplicationName();
         options.filenameSuffix      = ".settings";
         options.osxLibrarySubFolder = "Application Support";
-       #if JUCE_LINUX
+#if JUCE_LINUX
         options.folderName          = "~/.config";
-       #else
+#else
         options.folderName          = "";
-       #endif
+#endif
 
         appProperties.setStorageParameters (options);
     }
@@ -31,18 +31,18 @@ public:
 
     virtual StandaloneFilterWindow* createWindow()
     {
-       #ifdef JucePlugin_PreferredChannelConfigurations
+#ifdef JucePlugin_PreferredChannelConfigurations
         StandalonePluginHolder::PluginInOuts channels[] = { JucePlugin_PreferredChannelConfigurations };
-       #endif
+#endif
 
         return new StandaloneFilterWindow (getApplicationName(),  getCommandLineParameters(),
                                            LookAndFeel::getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
                                            appProperties.getUserSettings(),
                                            false, {}, nullptr
-                                          #ifdef JucePlugin_PreferredChannelConfigurations
+#ifdef JucePlugin_PreferredChannelConfigurations
                                            , juce::Array<StandalonePluginHolder::PluginInOuts> (channels, juce::numElementsInArray (channels))
-                                          #endif
-                                           );
+#endif
+                                          );
     }
 
     //==============================================================================
@@ -50,9 +50,9 @@ public:
     {
         mainWindow = createWindow();
 
-       #if JUCE_IOS || JUCE_ANDROID
+#if JUCE_IOS || JUCE_ANDROID
         Desktop::getInstance().setKioskModeComponent (mainWindow, false);
-       #endif
+#endif
 
         mainWindow->setVisible (true);
     }

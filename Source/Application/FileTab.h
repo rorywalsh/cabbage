@@ -25,7 +25,7 @@
 class FileTab : public TextButton
 {
     DrawableButton play, close, showEditor, editGUI;
-	File csdFile;
+    File csdFile;
 
     class Overlay : public Component
     {
@@ -44,16 +44,16 @@ public:
     FileTab (String name, String filename);
     const String getFilename() { return csdFile.getFullPathName();    }
 
-	void drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height);
-    void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown);
+    void drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height);
+    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
     void addButtonListeners (Button::Listener* listener);
     void disableButtons (bool disable);
     void resized();
     void setDrawableImages (DrawableButton& button, int width, int height, String type);
-	void drawButtonText (Graphics& g);
+    void drawButtonText (Graphics& g);
 
-	File getFile(){		return csdFile;	}
-	void setFile(File file){		csdFile=file;	}
+    File getFile() {     return csdFile; }
+    void setFile (File file) {        csdFile = file;   }
     DrawableButton& getPlayButton() {    return play;    }
     DrawableButton& getShowEditorButton() {  return showEditor;  }
     DrawableButton& getCloseFileEditorButton() { return close;   }

@@ -17,7 +17,7 @@
 
 class GenericCabbagePluginProcessor  : public CsoundPluginProcessor
 {
-String pluginName;
+    String pluginName;
 public:
     GenericCabbagePluginProcessor (File inputFile);
     ~GenericCabbagePluginProcessor();

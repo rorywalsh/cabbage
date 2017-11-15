@@ -32,7 +32,7 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     sliderIncr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
-	currentEncValue = value;
+    currentEncValue = value;
     addAndMakeVisible (textLabel);
     addAndMakeVisible (valueLabel);
     valueLabel.setVisible (true);
@@ -60,7 +60,7 @@ void CabbageEncoder::createPopupBubble()
 
 void CabbageEncoder::labelTextChanged (Label* label)
 {
-    float value = jlimit(min, max, label->getText().getFloatValue());
+    float value = jlimit (min, max, label->getText().getFloatValue());
     sliderPos = 0;
     currentEncValue = value;
     valueLabel.setText (String (value, 2), dontSendNotification);
@@ -68,41 +68,41 @@ void CabbageEncoder::labelTextChanged (Label* label)
     showPopup();
 }
 
-void CabbageEncoder::mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel)
+void CabbageEncoder::mouseWheelMove (const MouseEvent& event, const MouseWheelDetails& wheel)
 {
-	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::active) == 1)
-	{
-		if (wheel.deltaY < 0)
-		{
-			currentEncValue -= sliderIncr;
-			sliderPos = sliderPos + 50;		
-		}
-		else
-		{
-			currentEncValue += sliderIncr;
-			sliderPos = sliderPos - 50;
-		}
+    if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::active) == 1)
+    {
+        if (wheel.deltaY < 0)
+        {
+            currentEncValue -= sliderIncr;
+            sliderPos = sliderPos + 50;
+        }
+        else
+        {
+            currentEncValue += sliderIncr;
+            sliderPos = sliderPos - 50;
+        }
 
-		
-		repaint();
-		owner->sendChannelDataToCsound(getChannel(), currentEncValue);
-		showPopup();
-	}
+
+        repaint();
+        owner->sendChannelDataToCsound (getChannel(), currentEncValue);
+        showPopup();
+    }
 }
 
 void CabbageEncoder::mouseDown (const MouseEvent& e)
 {
-	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::active) == 1)
-	{
-		if (e.getNumberOfClicks() > 1)
-		{
-			sliderPos = 0;
-			currentEncValue = startingValue;
-			repaint();
-			owner->sendChannelDataToCsound (getChannel(), currentEncValue);
-			showPopup();
-		}
-	}
+    if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::active) == 1)
+    {
+        if (e.getNumberOfClicks() > 1)
+        {
+            sliderPos = 0;
+            currentEncValue = startingValue;
+            repaint();
+            owner->sendChannelDataToCsound (getChannel(), currentEncValue);
+            showPopup();
+        }
+    }
 }
 
 void CabbageEncoder::mouseEnter (const MouseEvent& e)
@@ -113,28 +113,28 @@ void CabbageEncoder::mouseEnter (const MouseEvent& e)
 
 void CabbageEncoder::mouseDrag (const MouseEvent& e)
 {
-	if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::active) == 1)
-	{
-		if (yAxis != e.getOffsetFromDragStart().getY())
-		{
-			sliderPos = sliderPos + (e.getOffsetFromDragStart().getY() < yAxis ? -50 : 50);
-			currentEncValue = CabbageUtilities::roundToPrec (currentEncValue + (e.getOffsetFromDragStart().getY() < yAxis ? sliderIncr : -sliderIncr), 5);
+    if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::active) == 1)
+    {
+        if (yAxis != e.getOffsetFromDragStart().getY())
+        {
+            sliderPos = sliderPos + (e.getOffsetFromDragStart().getY() < yAxis ? -50 : 50);
+            currentEncValue = CabbageUtilities::roundToPrec (currentEncValue + (e.getOffsetFromDragStart().getY() < yAxis ? sliderIncr : -sliderIncr), 5);
 
-			if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::minenabled) == 1)
-				currentEncValue = jmax (min, currentEncValue);
+            if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::minenabled) == 1)
+                currentEncValue = jmax (min, currentEncValue);
 
-			if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::maxenabled) == 1)
-				currentEncValue = jmin (max, currentEncValue);
+            if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::maxenabled) == 1)
+                currentEncValue = jmin (max, currentEncValue);
 
-			yAxis = e.getOffsetFromDragStart().getY();
-			repaint();
-			valueLabel.setText (String (currentEncValue), dontSendNotification);
+            yAxis = e.getOffsetFromDragStart().getY();
+            repaint();
+            valueLabel.setText (String (currentEncValue), dontSendNotification);
 
-			//  valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
-			owner->sendChannelDataToCsound (getChannel(), currentEncValue);
-			showPopup();
-		}
-	}
+            //  valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
+            owner->sendChannelDataToCsound (getChannel(), currentEncValue);
+            showPopup();
+        }
+    }
 }
 
 void CabbageEncoder::showPopup (int displayTime)

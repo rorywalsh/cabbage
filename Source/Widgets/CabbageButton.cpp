@@ -56,7 +56,7 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
     {
         setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
         setToggleState (getValue() == 0 ? false : true, dontSendNotification);
-		setButtonText(getTextArray()[getValue()]);
+        setButtonText (getTextArray()[getValue()]);
     }
     else
     {

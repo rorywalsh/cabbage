@@ -29,7 +29,7 @@ class CabbageNumberBox : public Component, public ValueTree::Listener, public Ca
     Slider slider;
     Label label;
     String text, align;
-	CabbageLookAndFeel2 lookAndFeel;
+    CabbageLookAndFeel2 lookAndFeel;
 public:
 
     CabbageNumberBox (ValueTree wData);

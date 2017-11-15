@@ -51,7 +51,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 CabbagePluginEditor::~CabbagePluginEditor()
 {
     popupPlants.clear();
-	setLookAndFeel(nullptr);
+    setLookAndFeel (nullptr);
 }
 
 void CabbagePluginEditor::resized()
@@ -146,12 +146,12 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
     newWidget.setProperty (CabbageIdentifierIds::left, position.getX(), 0);
 
     processor.cabbageWidgets.addChild (newWidget, -1, 0);
-	const String channel = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::channel);
-	
-	if(channel.isNotEmpty())
-		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, channel+String(processor.cabbageWidgets.getNumChildren()));
-    
-	setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
+    const String channel = CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::channel);
+
+    if (channel.isNotEmpty())
+        CabbageWidgetData::setStringProp (newWidget, CabbageIdentifierIds::channel, channel + String (processor.cabbageWidgets.getNumChildren()));
+
+    setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
 
     insertWidget (newWidget);
     updateLayoutEditorFrames();
@@ -471,12 +471,14 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
     if (CabbageAudioParameter* param = getParameterForComponent (combo->getName()))
     {
-		param->beginChangeGesture();
-		//preset combos work with 0 index, Cabbage combos start at 1..
-        if(CabbageWidgetData::getStringProp(getValueTreeForComponent(combo->getName()), CabbageIdentifierIds::filetype).contains("snaps"))
-			param->setValueNotifyingHost (param->range.convertTo0to1(combo->getSelectedItemIndex()));
-		else
-			param->setValueNotifyingHost (param->range.convertTo0to1(combo->getSelectedItemIndex()+1));
+        param->beginChangeGesture();
+
+        //preset combos work with 0 index, Cabbage combos start at 1..
+        if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
+            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()));
+        else
+            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex() + 1));
+
         param->endChangeGesture();
     }
 }
@@ -488,47 +490,47 @@ void CabbagePluginEditor::buttonClicked (Button* button)
     if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
     {
         const StringArray textItems = cabbageButton->getTextArray();
-		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
-		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
+        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
+        const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
 
         if (textItems.size() > 0)
             cabbageButton->setButtonText ( textItems[ buttonState == false ? 0 : 1]);
-		
-		if(latched == 1)	
-			toggleButtonState(button, buttonState); 
-		
-		return;
+
+        if (latched == 1)
+            toggleButtonState (button, buttonState);
+
+        return;
     }
 
-    toggleButtonState(button, buttonState);
+    toggleButtonState (button, buttonState);
 }
 
-void CabbagePluginEditor::buttonStateChanged(Button* button)
+void CabbagePluginEditor::buttonStateChanged (Button* button)
 {
-	if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
-	{
-		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
-		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);	
-		
-		if (latched==0)
-		{
-			if(button->isMouseButtonDown())
-				toggleButtonState(button, true);
-			else
-				toggleButtonState(button, false);
-		}
-	}
+    if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
+    {
+        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
+        const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
+
+        if (latched == 0)
+        {
+            if (button->isMouseButtonDown())
+                toggleButtonState (button, true);
+            else
+                toggleButtonState (button, false);
+        }
+    }
 
 }
 
-void CabbagePluginEditor::toggleButtonState(Button* button, bool state)
+void CabbagePluginEditor::toggleButtonState (Button* button, bool state)
 {
-	if (CabbageAudioParameter* param = getParameterForComponent (button->getName())) 
-	{
-		param->beginChangeGesture();
-		param->setValueNotifyingHost (state == true ? 1 : 0);
-		param->endChangeGesture();
-	}		
+    if (CabbageAudioParameter* param = getParameterForComponent (button->getName()))
+    {
+        param->beginChangeGesture();
+        param->setValueNotifyingHost (state == true ? 1 : 0);
+        param->endChangeGesture();
+    }
 }
 //======================================================================================================
 void CabbagePluginEditor::sliderValueChanged (Slider* slider)
@@ -538,23 +540,23 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName()))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getValue()));
+            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getValue()));
             param->endChangeGesture();
         }
     }
-	else
+    else
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getMinValue()));
+            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMinValue()));
             param->endChangeGesture();
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_max"))
         {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (param->range.convertTo0to1(slider->getMaxValue()));
+            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMaxValue()));
             param->endChangeGesture();
         }
     }
@@ -776,24 +778,24 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 }
 
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
-{	
-    XmlElement xml = processor.savePluginState (instrumentName.replace(" ", "_"), processor.getCsdFile().withFileExtension (".snaps"));
-    xml.writeToFile(processor.getCsdFile().withFileExtension (".snaps"), "");
+{
+    XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), processor.getCsdFile().withFileExtension (".snaps"));
+    xml.writeToFile (processor.getCsdFile().withFileExtension (".snaps"), "");
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset)
 {
-    ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (processor.getCsdFile().withFileExtension(".snaps"));
-    
-	if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
-	{
-		forEachXmlChildElement (*xmlElement, e)
-		{
-			if(e->getStringAttribute("PresetName") == childPreset)
-				processor.restorePluginState (e);
-		}
-	}
-	
+    ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (processor.getCsdFile().withFileExtension (".snaps"));
+
+    if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
+    {
+        forEachXmlChildElement (*xmlElement, e)
+        {
+            if (e->getStringAttribute ("PresetName") == childPreset)
+                processor.restorePluginState (e);
+        }
+    }
+
 }
 
 void CabbagePluginEditor::refreshComboBoxContents()
@@ -805,15 +807,15 @@ void CabbagePluginEditor::refreshComboBoxContents()
         if ( type == "combobox")
         {
             const String name = CabbageWidgetData::getStringProp (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
-			const String fileType = CabbageWidgetData::getProperty (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype);
-       
-			
-			if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
+            const String fileType = CabbageWidgetData::getProperty (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype);
+
+
+            if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
             {
-				if(fileType.isNotEmpty())
-				{
-					combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i), true);					
-				}
+                if (fileType.isNotEmpty())
+                {
+                    combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i), true);
+                }
             }
         }
     }

@@ -67,7 +67,7 @@ public:
     CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageRangeSlider() {};
 
-	void setCurrentValues(float min, float max);
+    void setCurrentValues (float min, float max);
     void resized();
     void showPopup (int displayTime);
     //ValueTree::Listener virtual methods....

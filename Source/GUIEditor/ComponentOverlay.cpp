@@ -30,7 +30,7 @@ ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEdito
 
 ComponentOverlay::~ComponentOverlay ()
 {
-	setLookAndFeel(nullptr);
+    setLookAndFeel (nullptr);
     delete resizer;
 }
 
@@ -125,51 +125,51 @@ bool ComponentOverlay::boundsChangedSinceStart ()
 //===========================================================================
 void ComponentOverlay::mouseDown (const MouseEvent& e)
 {
-        layoutEditor->updateSelectedComponentBounds();
+    layoutEditor->updateSelectedComponentBounds();
 
-        mouseDownSelectStatus = layoutEditor->getLassoSelection().addToSelectionOnMouseDown (this, e.mods);
+    mouseDownSelectStatus = layoutEditor->getLassoSelection().addToSelectionOnMouseDown (this, e.mods);
 
-        if (e.eventComponent != resizer)
+    if (e.eventComponent != resizer)
+    {
+        //added a constrainer so that components can't be dragged off-screen
+        constrainer->setMinimumOnscreenAmounts (getHeight(), getWidth(), getHeight(), getWidth());
+        dragger.startDraggingComponent (this, e);
+    }
+
+
+    setBoundsForChildren();
+
+    userAdjusting = true;
+    startBounds = getBounds ();
+    userStartedChangingBounds ();
+    layoutEditor->updateCodeEditor();
+
+    if (layoutEditor->getLassoSelection().getNumSelected() == 1)
+        layoutEditor->resetAllInterest();
+
+    interest = "selected";
+    repaint();
+
+    if (e.mods.isPopupMenu())
+    {
+
+
+        PopupMenu menu;
+        menu.setLookAndFeel (&this->getLookAndFeel());
+        menu.addItem (100, "Delete");
+
+        const int r = menu.show();
+
+        if (r == 100)
         {
-            //added a constrainer so that components can't be dragged off-screen
-            constrainer->setMinimumOnscreenAmounts (getHeight(), getWidth(), getHeight(), getWidth());
-            dragger.startDraggingComponent (this, e);
+            if (layoutEditor->getLassoSelection().getNumSelected() > 1)
+            {
+                CabbageUtilities::showMessage ("Multiple widgets cannot be deleted. Either deselect and delete one by one, or delete the widgets from the Cabbage code section of your .csd file", &this->getPluginEditor()->getLookAndFeel());;
+            }
+            else
+                layoutEditor->getPluginEditor()->sendActionMessage ("delete:" + target->getProperties().getWithDefault ("linenumber", -1).toString());
         }
-
-
-        setBoundsForChildren();
-
-        userAdjusting = true;
-        startBounds = getBounds ();
-        userStartedChangingBounds ();
-        layoutEditor->updateCodeEditor();
-
-        if (layoutEditor->getLassoSelection().getNumSelected() == 1)
-            layoutEditor->resetAllInterest();
-
-        interest = "selected";
-        repaint();
-
-		if (e.mods.isPopupMenu())
-		{
-
-			
-			PopupMenu menu;
-			menu.setLookAndFeel (&this->getLookAndFeel());
-			menu.addItem (100, "Delete");
-
-			const int r = menu.show();
-
-			if (r == 100)
-			{
-				if (layoutEditor->getLassoSelection().getNumSelected() > 1)
-				{
-					CabbageUtilities::showMessage("Multiple widgets cannot be deleted. Either deselect and delete one by one, or delete the widgets from the Cabbage code section of your .csd file", &this->getPluginEditor()->getLookAndFeel());; 
-				}
-				else
-					layoutEditor->getPluginEditor()->sendActionMessage ("delete:" + target->getProperties().getWithDefault ("linenumber", -1).toString());
-			}
-		}
+    }
 
 }
 
@@ -217,7 +217,7 @@ void ComponentOverlay::mouseDrag (const MouseEvent& e)
             }
 
         }
-        
+
     }
 }
 
@@ -274,9 +274,9 @@ bool ComponentOverlay::keyPressed (const KeyPress& key, Component* originatingCo
         applyToTarget();
     }
 
-	updateBoundsDataForTarget();
-	layoutEditor->updateCodeEditor();
-	
+    updateBoundsDataForTarget();
+    layoutEditor->updateCodeEditor();
+
     return false;
 }
 //===========================================================================
@@ -316,6 +316,7 @@ void ComponentOverlay::updateBoundsDataForTarget()
     {
         const Component* child = target.getComponent()->getChildComponent (i);
         ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (layoutEditor->widgetData, child->getName());
+
         if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::parentcomponent).isNotEmpty()) //now deal with plants, all child widgets must have theirs bounds updated..
         {
             CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::left, child->getX());
@@ -325,5 +326,5 @@ void ComponentOverlay::updateBoundsDataForTarget()
         }
     }
 
-	getPluginEditor()->sendChangeMessage();
+    getPluginEditor()->sendChangeMessage();
 }

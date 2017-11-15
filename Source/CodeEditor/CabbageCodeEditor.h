@@ -48,24 +48,25 @@ class CabbageCodeEditorComponent :
     CabbageEditorContainer* owner;
     int updateGUICounter = 0;
     int currentFontSize = 17;
-	LookAndFeel_V3 lookAndFeel3;
-	LookAndFeel_V3 lookAndFeel3temp;
-	
+    LookAndFeel_V3 lookAndFeel3;
+    LookAndFeel_V3 lookAndFeel3temp;
+    Array<Range<int>> commentedSections;
+
 
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);
     ~CabbageCodeEditorComponent();
-    void updateColourScheme(bool isCsdFile=true);
+    void updateColourScheme (bool isCsdFile = true);
     CodeDocument::Position positionInCode;
     ValueTree valueTree;
     void codeDocumentTextDeleted (int, int);
     void codeDocumentTextInserted (const juce::String&, int);
     void displayOpcodeHelpInStatusBar (String lineFromCsd);
     const String getLineText (int lineNumber);
-	StringArray addItemsToPopupMenu(PopupMenu& m);
+    StringArray addItemsToPopupMenu (PopupMenu& m);
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     void undoText();
-	bool moveToNextTab = true;
+    bool moveToNextTab = true;
     String getSelectedText();
     const StringArray getAllTextAsStringArray();
     const String getAllText();
@@ -98,49 +99,51 @@ public:
 
     class AddCodeToGUIEditorComponent : public DocumentWindow, public TextEditor::Listener
     {
-	CabbageCodeEditorComponent* owner;
-	Colour colour;
-	CabbageIDELookAndFeel cabbageLoookAndFeel;
+        CabbageCodeEditorComponent* owner;
+        Colour colour;
+        CabbageIDELookAndFeel cabbageLoookAndFeel;
     public:
-		AddCodeToGUIEditorComponent (CabbageCodeEditorComponent* _owner, String caption, Colour backgroundColour)
-			: DocumentWindow(caption, Colour(100, 100, 100), DocumentWindow::TitleBarButtons::allButtons), 
-			editor("editor"), 
-			colour (backgroundColour),
-			owner(_owner),
-			cabbageLoookAndFeel()
-		{
-			
+        AddCodeToGUIEditorComponent (CabbageCodeEditorComponent* _owner, String caption, Colour backgroundColour)
+            : DocumentWindow (caption, Colour (100, 100, 100), DocumentWindow::TitleBarButtons::allButtons),
+              editor ("editor"),
+              colour (backgroundColour),
+              owner (_owner),
+              cabbageLoookAndFeel()
+        {
+
             setName (caption);
-			editor.centreWithSize(300, 50);
-			editor.setText("Enter name for GUI code");
-			editor.setHighlightedRegion(Range<int>(0, 100));
+            editor.centreWithSize (300, 50);
+            editor.setText ("Enter name for GUI code");
+            editor.setHighlightedRegion (Range<int> (0, 100));
             setContentOwned (&editor, true);
-            centreWithSize (200, 50);	
-			editor.addListener(this);
-		}
+            centreWithSize (200, 50);
+            editor.addListener (this);
+        }
 
-		void textEditorReturnKeyPressed	(TextEditor &);
+        void textEditorReturnKeyPressed (TextEditor&);
 
-		void closeButtonPressed() override {
-			setVisible (false);
-		}
-		
-		void paint (Graphics& g) 
-		{
-			if (isVisible())
-			{
-				editor.grabKeyboardFocus();
-			}
-			g.fillAll (colour);
+        void closeButtonPressed() override
+        {
+            setVisible (false);
+        }
 
-		}
-		
-		
-		TextEditor editor;
+        void paint (Graphics& g)
+        {
+            if (isVisible())
+            {
+                editor.grabKeyboardFocus();
+            }
+
+            g.fillAll (colour);
+
+        }
+
+
+        TextEditor editor;
 
     };
-	
-	ScopedPointer<AddCodeToGUIEditorComponent> addToGUIEditorPopup;
+
+    ScopedPointer<AddCodeToGUIEditorComponent> addToGUIEditorPopup;
 
     void run() // thread for parsing text for variables on startup
     {
@@ -150,9 +153,9 @@ public:
         parseForVariables = false;
     };
 
-	void addToGUIEditorContextMenu();
+    void addToGUIEditorContextMenu();
     void updateCurrenLineMarker (ArrowKeys arrow = ArrowKeys::None);
-	void mouseDown (const MouseEvent& e) override;
+    void mouseDown (const MouseEvent& e) override;
     void handleTabKey (String direction);
     void handleReturnKey();
     void handleEscapeKey();
@@ -205,7 +208,7 @@ public:
     int getFontSize() {                      return currentFontSize;                             }
     void setFontSize (int size) {             currentFontSize = size;                             }
     //=========================================================
-	void removeSelectedText();
+    void removeSelectedText();
     void listBoxItemDoubleClicked (int row, const MouseEvent& e) {};
     void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
     void selectedRowsChanged (int /*lastRowselected*/) {};

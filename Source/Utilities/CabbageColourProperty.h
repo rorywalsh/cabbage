@@ -72,17 +72,17 @@ public:
     {
         return getColourSwatches().size();
     }
-	
+
     Colour getSwatchColour (int index) const
     {
         return getColourSwatches()[index];
     }
-	
+
     void setSwatchColour (const int index, const Colour& newColour)
     {
         getColourSwatches().set (index, newColour);
     }
-	
+
     String getNameOfParent()
     {
         return nameOfParent;

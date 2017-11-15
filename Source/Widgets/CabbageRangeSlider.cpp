@@ -86,12 +86,12 @@ void CabbageRangeSlider::setSliderValues (ValueTree wData)
     slider.setMinAndMaxValues (minValue, maxValue);
 }
 
-void CabbageRangeSlider::setCurrentValues(float min, float max)
+void CabbageRangeSlider::setCurrentValues (float min, float max)
 {
-	minValue = min;
-	maxValue = max;
-	CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::minvalue, minValue);
-	CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::maxvalue, maxValue);
+    minValue = min;
+    maxValue = max;
+    CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::minvalue, minValue);
+    CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::maxvalue, maxValue);
 }
 
 void CabbageRangeSlider::createPopupBubble()
@@ -248,8 +248,8 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
         {
             setMinValue (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
             setMaxValue (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
-			CabbageUtilities::debug(proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
-			CabbageUtilities::debug(proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
+            CabbageUtilities::debug (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
+            CabbageUtilities::debug (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
         }
         else
         {
@@ -272,7 +272,7 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
 
     }
 
-	//owner->setCurrentValues(getMinValue(), getMaxValue());
+    //owner->setCurrentValues(getMinValue(), getMaxValue());
 
     owner->showPopup (1000);
 }

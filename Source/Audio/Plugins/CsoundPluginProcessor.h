@@ -40,7 +40,7 @@ public:
 
     //==============================================================================
     //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
-	void setupAndCompileCsound(File csdFile, File filePath, bool debugMode = false);
+    void setupAndCompileCsound (File csdFile, File filePath, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
@@ -127,7 +127,7 @@ public:
         return csCompileResult == 0 ? true : false;
     }
 
-		
+
 
     Csound* getCsound()
     {
@@ -207,13 +207,13 @@ private:
     String csoundOutput;
     ScopedPointer<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
-	int numCsoundChannels, pos;
+    int numCsoundChannels, pos;
     bool updateSignalDisplay = false;
     MYFLT cs_scale;
     MYFLT* CSspin, *CSspout;
     int csndIndex;
     int csdKsmps;
-    File csdFile ,csdFilePath;
+    File csdFile , csdFilePath;
     ScopedPointer<Csound> csound;
     ScopedPointer<FileLogger> fileLogger;
     int busIndex = 0;

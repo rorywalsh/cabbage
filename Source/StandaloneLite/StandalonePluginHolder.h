@@ -5,7 +5,7 @@
 
 CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile)
 {
-	return new CabbagePluginProcessor (inputFile);
+    return new CabbagePluginProcessor (inputFile);
 }
 
 //==================================================================================
@@ -13,39 +13,39 @@ CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile)
 //==================================================================================
 class CsoundOutputWindow    : public DocumentWindow
 {
-TextEditor console;	
+    TextEditor console;
 public:
-	CsoundOutputWindow():DocumentWindow ("Csound output", Colours::black, DocumentWindow::minimiseButton | DocumentWindow::closeButton), console("Csound Output")
-	{
-		console.getLookAndFeel().setColour(TextEditor::textColourId, Colours::green);
-		console.getLookAndFeel().setColour(TextEditor::backgroundColourId, Colour(20, 20, 20));
-		console.setMultiLine(true, false);
-		setResizable(true, true);
-		console.setFont(Font(12, 1));
-		console.setSize(600, 300);
-		setContentOwned(&console, true);
-		setAlwaysOnTop(true);
-	}
-	
-	void setText(const String text)
-	{		
-		console.insertTextAtCaret (text);
+    CsoundOutputWindow(): DocumentWindow ("Csound output", Colours::black, DocumentWindow::minimiseButton | DocumentWindow::closeButton), console ("Csound Output")
+    {
+        console.getLookAndFeel().setColour (TextEditor::textColourId, Colours::green);
+        console.getLookAndFeel().setColour (TextEditor::backgroundColourId, Colour (20, 20, 20));
+        console.setMultiLine (true, false);
+        setResizable (true, true);
+        console.setFont (Font (12, 1));
+        console.setSize (600, 300);
+        setContentOwned (&console, true);
+        setAlwaysOnTop (true);
+    }
+
+    void setText (const String text)
+    {
+        console.insertTextAtCaret (text);
         console.setCaretPosition (console.getText().length());
-	}
-	
-	void closeButtonPressed() override
-	{
-		setVisible(false);
-	}
-	
-	~CsoundOutputWindow(){}
+    }
+
+    void closeButtonPressed() override
+    {
+        setVisible (false);
+    }
+
+    ~CsoundOutputWindow() {}
 };
 
 
 class StandalonePluginHolder    : private AudioIODeviceCallback
-                               #if JUCE_IOS || JUCE_ANDROID
-                                , Timer
-                               #endif
+#if JUCE_IOS || JUCE_ANDROID
+    , Timer
+#endif
 {
 public:
     //==============================================================================
@@ -76,10 +76,10 @@ public:
           channelConfiguration (channels),
           shouldMuteInput (! isInterAppAudioConnected())
     {
-        createPlugin(File(""));
+        createPlugin (File (""));
 
         auto inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
-                                                           : processor->getMainBusNumInputChannels());
+                           : processor->getMainBusNumInputChannels());
 
         if (preferredSetupOptions != nullptr)
             options = new AudioDeviceManager::AudioDeviceSetup (*preferredSetupOptions);
@@ -87,7 +87,7 @@ public:
         if (inChannels > 0 && RuntimePermissions::isRequired (RuntimePermissions::recordAudio)
             && ! RuntimePermissions::isGranted (RuntimePermissions::recordAudio))
             RuntimePermissions::request (RuntimePermissions::recordAudio,
-                                         [this, preferredDefaultDeviceName] (bool granted) { init (granted, preferredDefaultDeviceName); });
+            [this, preferredDefaultDeviceName] (bool granted) { init (granted, preferredDefaultDeviceName); });
         else
             init (true, preferredDefaultDeviceName);
     }
@@ -98,42 +98,42 @@ public:
         reloadPluginState();
         startPlaying();
 
-       #if JUCE_IOS || JUCE_ANDROID
+#if JUCE_IOS || JUCE_ANDROID
         startTimer (500);
-       #endif
+#endif
     }
 
     virtual ~StandalonePluginHolder()
     {
-       #if JUCE_IOS || JUCE_ANDROID
+#if JUCE_IOS || JUCE_ANDROID
         stopTimer();
-       #endif
+#endif
 
         deletePlugin();
         shutDownAudioDevices();
     }
 
     //==============================================================================
-    virtual void createPlugin(File file)
+    virtual void createPlugin (File file)
     {
 
-      #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
+#if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
         processor = ::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone);
-      #else
+#else
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-        processor = createCabbagePluginFilter(File(file));
+        processor = createCabbagePluginFilter (File (file));
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
-      #endif
+#endif
         jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
 
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails (44100, 512);
 
         int inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
-                                                          : processor->getMainBusNumInputChannels());
+                          : processor->getMainBusNumInputChannels());
 
         int outChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numOuts
-                                                           : processor->getMainBusNumOutputChannels());
+                           : processor->getMainBusNumOutputChannels());
 
         processorHasPotentialFeedbackLoop = (inChannels > 0 && outChannels > 0);
     }
@@ -179,8 +179,8 @@ public:
     /** Pops up a dialog letting the user save the processor's state to a file. */
     void askUserToSaveState (const String& fileSuffix = String())
     {
-       #if JUCE_MODAL_LOOPS_PERMITTED
-        FileChooser fc (TRANS("Save current state"), getLastFile(), getFilePatterns (fileSuffix));
+#if JUCE_MODAL_LOOPS_PERMITTED
+        FileChooser fc (TRANS ("Save current state"), getLastFile(), getFilePatterns (fileSuffix));
 
         if (fc.browseForFileToSave (true))
         {
@@ -191,19 +191,20 @@ public:
 
             if (! fc.getResult().replaceWithData (data.getData(), data.getSize()))
                 AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-                                                  TRANS("Error whilst saving"),
-                                                  TRANS("Couldn't write to the specified file!"));
+                                                  TRANS ("Error whilst saving"),
+                                                  TRANS ("Couldn't write to the specified file!"));
         }
-       #else
+
+#else
         ignoreUnused (fileSuffix);
-       #endif
+#endif
     }
 
     /** Pops up a dialog letting the user re-load the processor's state from a file. */
     void askUserToLoadState (const String& fileSuffix = String())
     {
-       #if JUCE_MODAL_LOOPS_PERMITTED
-        FileChooser fc (TRANS("Load a saved state"), getLastFile(), getFilePatterns (fileSuffix));
+#if JUCE_MODAL_LOOPS_PERMITTED
+        FileChooser fc (TRANS ("Load a saved state"), getLastFile(), getFilePatterns (fileSuffix));
 
         if (fc.browseForFileToOpen())
         {
@@ -215,12 +216,13 @@ public:
                 processor->setStateInformation (data.getData(), (int) data.getSize());
             else
                 AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-                                                  TRANS("Error whilst loading"),
-                                                  TRANS("Couldn't read from the specified file!"));
+                                                  TRANS ("Error whilst loading"),
+                                                  TRANS ("Couldn't read from the specified file!"));
         }
-       #else
+
+#else
         ignoreUnused (fileSuffix);
-       #endif
+#endif
     }
 
     //==============================================================================
@@ -228,13 +230,15 @@ public:
     {
         player.setProcessor (processor);
 
-       #if JucePlugin_Enable_IAA && JUCE_IOS
+#if JucePlugin_Enable_IAA && JUCE_IOS
+
         if (auto device = dynamic_cast<iOSAudioIODevice*> (deviceManager.getCurrentAudioDevice()))
         {
             processor->setPlayHead (device->getAudioPlayHead());
             device->setMidiMessageCollector (&player.getMidiMessageCollector());
         }
-       #endif
+
+#endif
     }
 
     void stopPlaying()
@@ -259,13 +263,13 @@ public:
         }
 
         o.content.setOwned (new SettingsComponent (*this, deviceManager,
-                                                          totalInChannels,
-                                                          totalInChannels,
-                                                          totalOutChannels,
-                                                          totalOutChannels));
+                                                   totalInChannels,
+                                                   totalInChannels,
+                                                   totalOutChannels,
+                                                   totalOutChannels));
         o.content->setSize (500, 450);
 
-        o.dialogTitle                   = TRANS("Audio/MIDI Settings");
+        o.dialogTitle                   = TRANS ("Audio/MIDI Settings");
         o.dialogBackgroundColour        = o.content->getLookAndFeel().findColour (ResizableWindow::backgroundColourId);
         o.escapeKeyTriggersCloseButton  = true;
         o.useNativeTitleBar             = true;
@@ -282,9 +286,9 @@ public:
 
             settings->setValue ("audioSetup", xml);
 
-           #if ! (JUCE_IOS || JUCE_ANDROID)
+#if ! (JUCE_IOS || JUCE_ANDROID)
             settings->setValue ("shouldMuteInput", (bool) shouldMuteInput.getValue());
-           #endif
+#endif
         }
     }
 
@@ -298,9 +302,9 @@ public:
         {
             savedState      = settings->getXmlValue ("audioSetup");
 
-           #if ! (JUCE_IOS || JUCE_ANDROID)
+#if ! (JUCE_IOS || JUCE_ANDROID)
             shouldMuteInput.setValue (settings->getBoolValue ("shouldMuteInput", true));
-           #endif
+#endif
         }
 
         auto totalInChannels  = processor->getMainBusNumInputChannels();
@@ -347,35 +351,41 @@ public:
     //==============================================================================
     void switchToHostApplication()
     {
-       #if JUCE_IOS
+#if JUCE_IOS
+
         if (auto device = dynamic_cast<iOSAudioIODevice*> (deviceManager.getCurrentAudioDevice()))
             device->switchApplication();
-       #endif
+
+#endif
     }
 
     bool isInterAppAudioConnected()
     {
-       #if JUCE_IOS
+#if JUCE_IOS
+
         if (auto device = dynamic_cast<iOSAudioIODevice*> (deviceManager.getCurrentAudioDevice()))
             return device->isInterAppAudioConnected();
-       #endif
+
+#endif
 
         return false;
     }
 
-   #if JUCE_MODULE_AVAILABLE_juce_gui_basics
+#if JUCE_MODULE_AVAILABLE_juce_gui_basics
     Image getIAAHostIcon (int size)
     {
-       #if JUCE_IOS && JucePlugin_Enable_IAA
+#if JUCE_IOS && JucePlugin_Enable_IAA
+
         if (auto device = dynamic_cast<iOSAudioIODevice*> (deviceManager.getCurrentAudioDevice()))
             return device->getIcon (size);
-       #else
+
+#else
         ignoreUnused (size);
-       #endif
+#endif
 
         return {};
     }
-   #endif
+#endif
 
     static StandalonePluginHolder* getInstance();
 
@@ -393,9 +403,9 @@ public:
 
     ScopedPointer<AudioDeviceManager::AudioDeviceSetup> options;
 
-   #if JUCE_IOS || JUCE_ANDROID
+#if JUCE_IOS || JUCE_ANDROID
     StringArray lastMidiDevices;
-   #endif
+#endif
 
 private:
     //==============================================================================
@@ -520,7 +530,7 @@ private:
         deviceManager.removeAudioCallback (this);
     }
 
-   #if JUCE_IOS || JUCE_ANDROID
+#if JUCE_IOS || JUCE_ANDROID
     void timerCallback() override
     {
         auto newMidiDevices = MidiInput::getDevices();
@@ -536,7 +546,7 @@ private:
                     deviceManager.setMidiInputEnabled (newDevice, true);
         }
     }
-   #endif
+#endif
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandalonePluginHolder)
 };

@@ -73,7 +73,7 @@ void CabbageSoundfiler::resized()
 
 void CabbageSoundfiler::setFile (String newFile)
 {
-	soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile (newFile));
+    soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile (newFile));
 }
 
 void CabbageSoundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
@@ -96,7 +96,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
     {
         file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
-		const String fullPath = File(getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
+        const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
         setFile (fullPath);
     }
 
@@ -106,7 +106,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
         soundfiler.setZoomFactor (zoom);
     }
 
-	soundfiler.setScrubberPos(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
+    soundfiler.setScrubberPos (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
     soundfiler.setWaveformColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     soundfiler.setBackgroundColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour));
     soundfiler.repaint();

@@ -41,8 +41,8 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     setImgProperties (this->slider, wData, "sliderbg");
     setTextBoxOrientation (sliderType, shouldShowTextBox);
     slider.setLookAndFeel (&owner->getLookAndFeel());
-	prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
-	postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
 }
 
 CabbageSlider::~CabbageSlider()
@@ -213,8 +213,8 @@ void CabbageSlider::showPopupBubble (int time)
 {
     if (getTooltipText().isNotEmpty())
         popupText = getTooltipText();
-	else if ( postfix.isNotEmpty() || prefix.isNotEmpty() )
-		popupText = prefix + String (slider.getValue(), decimalPlaces) + postfix;
+    else if ( postfix.isNotEmpty() || prefix.isNotEmpty() )
+        popupText = prefix + String (slider.getValue(), decimalPlaces) + postfix;
     else
         popupText = channel + ": " + String (slider.getValue(), decimalPlaces);
 

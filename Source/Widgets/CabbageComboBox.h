@@ -37,11 +37,11 @@ class CabbageComboBox
     CabbagePluginEditor* owner;
     ValueTree widgetData;
     bool isStringCombo = false;
-	bool isPresetCombo = false;
-	String currentValueAsText ="";
+    bool isPresetCombo = false;
+    String currentValueAsText = "";
     Array<File> folderFiles;
-	StringArray stringItems;
-	StringArray presets;
+    StringArray stringItems;
+    StringArray presets;
 
 public:
 

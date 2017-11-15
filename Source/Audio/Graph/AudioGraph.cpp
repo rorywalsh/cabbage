@@ -140,7 +140,7 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
 
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
         jassert (processor != nullptr);
-		processor->enableAllBuses();
+        processor->enableAllBuses();
         const int inputs = processor->getBusCount (true);
         const int outputs = processor->getBusCount (false);
 
@@ -578,8 +578,8 @@ void AudioGraph::restoreConnectionsFromXml (const XmlElement& xml)
 
 void AudioGraph::createNodeFromXml (const XmlElement& xml)
 {
-	
-	ScopedPointer<XmlElement> xml2 = XmlDocument::parse(File ("/home/rory/Desktop/NodeTest.xml"));
+
+    ScopedPointer<XmlElement> xml2 = XmlDocument::parse (File ("/home/rory/Desktop/NodeTest.xml"));
     PluginDescription desc;
 
     forEachXmlChildElement (xml, e)
@@ -608,7 +608,7 @@ void AudioGraph::createNodeFromXml (const XmlElement& xml)
     node->properties.set ("uiLastY", xml.getIntAttribute ("uiLastY"));
     node->properties.set ("pluginName", desc.name);
 
-	setNodePosition (node->nodeId, xml.getDoubleAttribute ("x"), xml.getDoubleAttribute ("y"));
+    setNodePosition (node->nodeId, xml.getDoubleAttribute ("x"), xml.getDoubleAttribute ("y"));
 }
 
 XmlElement* AudioGraph::createXml() const
@@ -795,10 +795,10 @@ void PluginWindow::closeAllCurrentlyOpenWindows()
         for (int i = activePluginWindows.size(); --i >= 0;)
             delete activePluginWindows.getUnchecked (i);
 
-// fixed issue with focus in JUCE 4, doesn't seem to be need in JUCE 5
-//        Component dummyModalComp;
-//        dummyModalComp.enterModalState();
-//        MessageManager::getInstance()->runDispatchLoopUntil (150);
+        // fixed issue with focus in JUCE 4, doesn't seem to be need in JUCE 5
+        //        Component dummyModalComp;
+        //        dummyModalComp.enterModalState();
+        //        MessageManager::getInstance()->runDispatchLoopUntil (150);
     }
 }
 

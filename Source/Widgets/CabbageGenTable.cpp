@@ -39,7 +39,7 @@ CabbageGenTable::CabbageGenTable (ValueTree wData, CabbagePluginEditor* owner)
     addAndMakeVisible (table);
 
     ampRanges = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::amprange);
-	
+
     initialiseGenTable (wData);
 
 }
@@ -197,10 +197,10 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             }
         }
 
-        
+
     }
     else if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 0)
-	{
+    {
         table.setGridColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablegridcolour)));
         table.setBackgroundColour (Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour)));
         table.setFill (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fill));
@@ -256,6 +256,6 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         }
 
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-	}
+    }
 
 }

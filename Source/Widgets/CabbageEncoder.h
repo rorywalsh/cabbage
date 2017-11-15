@@ -70,8 +70,8 @@ public:
     void mouseEnter (const MouseEvent& e);
     void mouseDrag (const MouseEvent& e);
     void mouseExit (const MouseEvent& e);
-	void mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel);
-	void paint (Graphics& g);
+    void mouseWheelMove (const MouseEvent& event, const MouseWheelDetails& wheel);
+    void paint (Graphics& g);
     void showPopup (int displayTime = 250);
     void resized();
 
