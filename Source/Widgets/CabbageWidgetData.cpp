@@ -546,11 +546,10 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
     {
-        valueSet.identifier.add (identifiersInLine[i].substring (identifiersInLine[i].indexOf (" ")));
+        valueSet.identifier.add (identifiersInLine[i].removeCharacters(" "));
         valueSet.parameter.add (parameters[i].removeCharacters ("\""));
     }
 
-    //problem with duplicates, set will set a parameter by name, so two can't exist in the array...
 
     return valueSet;
 
