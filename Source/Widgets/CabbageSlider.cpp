@@ -40,14 +40,14 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     setImgProperties (this->slider, wData, "slider");
     setImgProperties (this->slider, wData, "sliderbg");
     setTextBoxOrientation (sliderType, shouldShowTextBox);
-    slider.setLookAndFeel (&owner->getLookAndFeel());
+    //slider.setLookAndFeel (&owner->getLookAndFeel());
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
 }
 
 CabbageSlider::~CabbageSlider()
 {
-
+   // slider.setLookAndFeel(nullptr);
 }
 
 void CabbageSlider::createPopupBubble()

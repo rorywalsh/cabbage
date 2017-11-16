@@ -34,6 +34,7 @@ AudioGraph::AudioGraph (CabbageMainComponent& owner_, PropertySet* settingsToUse
     :   settings (settingsToUse, takeOwnershipOfSettings),
         graph(),
         owner (owner_),
+        lookAndFeel(),
         FileBasedDocument (filenameSuffix,
                            filenameWildcard,
                            "Load a filter graph",
@@ -697,7 +698,7 @@ FileBasedDocument::SaveResult AudioGraph::saveGraph (bool saveAs)
         {
             if (fc.getResult().existsAsFile())
             {
-                CabbageIDELookAndFeel lookAndFeel;
+
                 const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
 
                 if (result == 1)
@@ -854,6 +855,7 @@ PluginWindow::~PluginWindow()
     if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
     {
         owner->getProcessor()->editorBeingDeleted (ed);
+        ed->setLookAndFeel(nullptr);
         clearContentComponent();
     }
 }

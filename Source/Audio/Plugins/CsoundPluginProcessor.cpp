@@ -328,7 +328,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
 
         Logger::writeToLog (csoundOutput);
 
-        if (disableLogging == false)
+        if (disableLogging == true)
             this->suspendProcessing (true);
 
         return csoundOutput;
@@ -538,11 +538,11 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                     else
                         ++guiCycles;
 
-                    disableLogging = true;
+                    disableLogging = false;
                 }
                 else
                 {
-                    disableLogging = false;
+                    disableLogging = true;
                     return; //return as soon as Csound has stopped
                 }
 

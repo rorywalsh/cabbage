@@ -48,9 +48,11 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
     //initAllCsoundChannels(cabbageWidgets);
     if (inputFile.existsAsFile())
     {
+
         StringArray linesFromCsd;
         linesFromCsd.addLines (inputFile.loadFileAsString());
         addImportFiles (linesFromCsd);
+        parseCsdFile (linesFromCsd);
         File tempFile = File::createTempFile ("csoundCabbageCsdText");
         tempFile.replaceWithText (linesFromCsd.joinIntoString ("\n")
                                   .replace ("$lt;", "<")
@@ -59,8 +61,8 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
                                   .replace ("$gt;", ">"));
 
         //inputFile.getParentDirectory().setAsCurrentWorkingDirectory();
-        setupAndCompileCsound (csdFile, tempFile.getParentDirectory());
-        parseCsdFile (linesFromCsd);
+        setupAndCompileCsound (tempFile, inputFile.getParentDirectory());
+
         createParameters();
         csoundChanList = NULL;
 
@@ -275,6 +277,7 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
 
         insertPlantCode (importData, linesFromCsd);
         insertUDOCode (importData, linesFromCsd);
+        CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
     }
 }
 
@@ -297,7 +300,7 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
             ValueTree temp ("temp");
             const String expandedMacroText = getExpandedMacroText (currentLineofCode, temp);
             CabbageWidgetData::setWidgetState (temp, currentLineofCode.trim() + " " + expandedMacroText, lineIndex);
-            CabbageWidgetData::setCustomWidgetState (temp, currentLineofCode.trim());
+            //CabbageWidgetData::setCustomWidgetState (temp, currentLineofCode.trim());
             const String type = CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type);
             const String nsp = CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::nsp);
 
@@ -316,9 +319,7 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
                         {
                             ValueTree temp1 ("temp1");
                             const String expandedMacroText = getExpandedMacroText (plantCode, temp);
-                            //CabbageUtilities::debug(plantCode);
                             CabbageWidgetData::setWidgetState (temp1, plantCode + " " + expandedMacroText, -99);
-                            CabbageWidgetData::setCustomWidgetState (temp1, plantCode);
                             CabbageWidgetData::setNumProp (temp1, CabbageIdentifierIds::plant, importData.cabbageCode.size() + 2);
                             CabbageWidgetData::setNumProp (temp, CabbageIdentifierIds::plant, importData.cabbageCode.size() + 2);
                             lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp (temp, CabbageIdentifierIds::linenumber);
@@ -395,6 +396,7 @@ void CabbagePluginProcessor::insertUDOCode (PlantImportStruct importData, String
         {
             StringArray strArray;
             strArray.addLines (importData.csoundCode);
+
             const int lineToInsertTo = linesFromCsd.indexOf (str);
 
             for ( int y = strArray.size() ; y >= 0 ; y--)

@@ -57,6 +57,7 @@ CabbageMainComponent::~CabbageMainComponent()
     editorAndConsole.clear();
     graphComponent = nullptr;
     audioGraph = nullptr;
+    setLookAndFeel(nullptr);
 
     if (tempFile.existsAsFile())
         tempFile.deleteFile();
@@ -1212,7 +1213,7 @@ void CabbageMainComponent::runCsoundForNode (String file)
                 pos.setY (rand.nextInt (Range<int> (getHeight() / 2, (getHeight() / 2) + 100)));
             }
 
-            //getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
+            getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
             audioGraph->addPlugin (getCurrentCsdFile(), node);
             createEditorForAudioGraphNode (pos);
             startTimer (100);

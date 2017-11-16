@@ -248,7 +248,9 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
     if (lineOfText.trim() == "<Cabbage>" || lineOfText.trim() == "</Cabbage>" || lineOfText.trim().isEmpty())
         return;
 
+    lineOfText = lineOfText.trimCharactersAtStart(" ");
     String typeOfWidget = lineOfText.substring (0, lineOfText.indexOf (" "));
+    //reduce line ot code to identifiers...
     lineOfText = lineOfText.substring (lineOfText.indexOf (" ") + 1);
 
     IdentifiersAndParameters identifierValueSet = getSetofIdentifiersAndParameters (lineOfText);
@@ -258,6 +260,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
     for ( int indx = 0 ; indx < identifierValueSet.identifier.size() ; indx++)
     {
+        CabbageUtilities::debug(identifierValueSet.identifier[indx]);
         StringArray strTokens;
         String identifier = identifierValueSet.identifier[indx].trimCharactersAtStart (" ");
 

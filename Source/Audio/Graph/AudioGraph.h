@@ -146,6 +146,7 @@ public:
 private:
     CabbageMainComponent& owner;
     Array<int> internalNodeIds;
+    CabbageIDELookAndFeel lookAndFeel;
     ScopedPointer<AudioPluginFormatManager> formatManager;
     //bool isCabbageFile = false;
     void createNodeFromXml (const XmlElement& xml);
