@@ -191,12 +191,16 @@ bool CabbagePluginProcessor::isWidgetPlantParent (StringArray linesFromCsd, int 
 
     if (linesFromCsd[lineNumber + 1].removeCharacters (" ").removeCharacters ("\t").substring (0, 1) == "{")
         return true;
+
+	return false;
 }
 
 bool CabbagePluginProcessor::shouldClosePlant (StringArray linesFromCsd, int lineNumber)
 {
-    if (linesFromCsd[lineNumber].contains ("}"))
-        return true;
+	if (linesFromCsd[lineNumber].contains("}"))
+		return true;
+	
+	return false;
 }
 
 void CabbagePluginProcessor::addImportFiles (StringArray& linesFromCsd)

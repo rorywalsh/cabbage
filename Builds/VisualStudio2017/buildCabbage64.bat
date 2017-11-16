@@ -11,28 +11,28 @@ PAUSE
  
 ::C:\\Users\\rory\\Documents\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\Projucer.exe
 
-SET MYPATH="C:\\Users\\rory\\Documents\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\App\\"
+SET PROJUCER="C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
 
 REM "BUILDING THE MAIN APP"
- %MYPATH%Projucer.exe --resave ../../CabbageIDE.jucer
+ %PROJUCER% --resave ../../CabbageIDE.jucer
   msbuild Cabbage.sln /p:Configuration=Release /property:Platform=x64
  copy ".\x64\Release\App\Cabbage.exe" ".\x64\Cabbage.exe"
 
  
 REM "BUILDING EFFECT PLUGIN"
- %MYPATH%Projucer.exe --resave ../../CabbagePlugin.jucer
+ %PROJUCER% --resave ../../CabbagePlugin.jucer
  msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64 
  copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginEffect.dll"
 
 
 REM "BUILDING VST PLUGIN"
- %MYPATH%Projucer.exe --resave ../../CabbagePluginSynth.jucer
+ %PROJUCER% --resave ../../CabbagePluginSynth.jucer
  msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64
 
  copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginSynth.dll"
 
 REM "BUILDING CABBAGE LITE"
- %MYPATH%Projucer.exe --resave ../../CabbageLite.jucer
+ %PROJUCER% --resave ../../CabbageLite.jucer
   msbuild CabbageLite.sln /p:Configuration=Release /property:Platform=x64
  copy ".\x64\Release\App\CabbageLite.exe" ".\x64\CabbageLite.exe"
 

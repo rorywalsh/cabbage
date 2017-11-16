@@ -249,6 +249,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
         return;
 
     lineOfText = lineOfText.trimCharactersAtStart(" ");
+
     String typeOfWidget = lineOfText.substring (0, lineOfText.indexOf (" "));
     //reduce line ot code to identifiers...
     lineOfText = lineOfText.substring (lineOfText.indexOf (" ") + 1);
