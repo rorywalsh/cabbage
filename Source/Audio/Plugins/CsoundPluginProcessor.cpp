@@ -320,7 +320,7 @@ int CsoundPluginProcessor::checkTable (int tableNum)
 //==============================================================================
 const String CsoundPluginProcessor::getCsoundOutput()
 {
-    if (isSuspended() == false)
+    if (isSuspended() == false && csound!=nullptr)
     {
         const int messageCnt = csound->GetMessageCnt();
         csoundOutput = "";

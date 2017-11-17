@@ -220,12 +220,16 @@ public:
             resetPlugin (csdFile);
         }
 
+        if (CabbagePluginProcessor* plugin = dynamic_cast<CabbagePluginProcessor*> (this->getAudioProcessor()))
+            if(plugin->getCsoundOutput().length()>10)
+                csoundOutput = plugin->getCsoundOutput();
+
         if (outputConsole && outputConsole->isVisible())
         {
             if (cabbageFiledOpened)
             {
-                if (CabbagePluginProcessor* plugin = dynamic_cast<CabbagePluginProcessor*> (this->getAudioProcessor()))
-                    outputConsole->setText (plugin->getCsoundOutput());
+                if(csoundOutput.length()>10)
+                    outputConsole->setText(csoundOutput);
             }
         }
     }
@@ -494,6 +498,7 @@ private:
     int64 lastModified;
     ScopedPointer<CsoundOutputWindow> outputConsole;
     bool cabbageFiledOpened = false;
+    String csoundOutput;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandaloneFilterWindow)
 };

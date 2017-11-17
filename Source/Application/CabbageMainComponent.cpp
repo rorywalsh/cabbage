@@ -434,7 +434,6 @@ void CabbageMainComponent::timerCallback()
         {
 
             const String csoundOutputString = audioGraph->getCsoundOutput (nodeId);
-            consoleMessages += csoundOutputString;
 
             if (csoundOutputString.length() > 0)
                 getCurrentOutputConsole()->setText (csoundOutputString);

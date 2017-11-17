@@ -816,7 +816,11 @@ void CabbagePluginEditor::refreshComboBoxContents()
                 {
                     combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i), true);
                 }
+
+                combo->setSelectedItemIndex(combo->getNumItems()-1);
             }
+
+
         }
     }
 }
