@@ -75,7 +75,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
         if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).contains ("snaps"))
         {
             isPresetCombo = true;
-            setSelectedItemIndex (getValue() + 1, dontSendNotification);
+            setSelectedItemIndex ((getValue()-1 >= 0 ? getValue() - 1 : 0), dontSendNotification);
         }
         else
         {
@@ -155,7 +155,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
         if (workingDir.isNotEmpty())
             pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
         else
-            pluginDir = File (getCsdFile()).getParentDirectory();
+            pluginDir = File::getCurrentWorkingDirectory().getParentDirectory();
 
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
         pluginDir.findChildFiles (dirFiles, 2, false, filetype);

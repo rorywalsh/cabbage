@@ -37,7 +37,7 @@ CabbageTextBox::CabbageTextBox (ValueTree wData)
     setColour (TextEditor::focusedOutlineColourId, Colours::transparentBlack);
     setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
 
-    const File textFile (File (getCsdFile()).getParentDirectory().getChildFile (filename).getFullPathName());
+    const File textFile (File::getCurrentWorkingDirectory().getChildFile (filename).getFullPathName());
 
     if (textFile.existsAsFile())
         setText (textFile.loadFileAsString(), false);
