@@ -107,6 +107,8 @@ public:
         startTimer (200);
 
         CabbageIDELookAndFeel lAndF;
+        outputConsole = new CsoundOutputWindow();
+        outputConsole->getEditor().setFont(Font(14, 1));
 
         if (commandLineParams.isNotEmpty())
         {
@@ -221,14 +223,12 @@ public:
         }
 
         if (CabbagePluginProcessor* plugin = dynamic_cast<CabbagePluginProcessor*> (this->getAudioProcessor()))
-            if(plugin->getCsoundOutput().length()>10)
-                csoundOutput = plugin->getCsoundOutput();
-
-        if (outputConsole && outputConsole->isVisible())
         {
+            csoundOutput = plugin->getCsoundOutput();
+
             if (cabbageFiledOpened)
             {
-                if(csoundOutput.length()>10)
+                if(csoundOutput.length()>0)
                     outputConsole->setText(csoundOutput);
             }
         }
@@ -255,7 +255,7 @@ public:
 
         m.addSeparator();
         m.addItem (4, "Toggle output console");
-        m.addItem (4, "About Cabbage");
+        m.addItem (5, "About Cabbage");
         m.showMenuAsync (PopupMenu::Options(),
                          ModalCallbackFunction::forComponent (menuCallback, this));
     }
@@ -276,10 +276,6 @@ public:
 
     void showOutputConsole()
     {
-        if (outputConsole == nullptr)
-            outputConsole = new CsoundOutputWindow();
-
-
         outputConsole->setVisible (!outputConsole->isVisible());
     }
 
