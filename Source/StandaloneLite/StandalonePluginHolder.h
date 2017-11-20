@@ -38,6 +38,8 @@ public:
         setVisible (false);
     }
 
+    TextEditor& getEditor(){    return console; }
+
     ~CsoundOutputWindow() {}
 };
 
