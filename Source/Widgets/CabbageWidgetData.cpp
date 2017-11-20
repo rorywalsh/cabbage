@@ -55,6 +55,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
 
+    if(strTokens.size()>0)
+        setProperty (widgetData, CabbageIdentifierIds::type, strTokens[0].trim());
+
     setProperty (widgetData, CabbageIdentifierIds::widgetarray, "");
 
     if (strTokens[0].trim() == "hslider")
@@ -250,9 +253,13 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
     lineOfText = lineOfText.trimCharactersAtStart(" ");
 
-    String typeOfWidget = lineOfText.substring (0, lineOfText.indexOf (" "));
+
+    String typeOfWidget = getStringProp(widgetData, CabbageIdentifierIds::type);
     //reduce line ot code to identifiers...
-    lineOfText = lineOfText.substring (lineOfText.indexOf (" ") + 1);
+    if(lineOfText.indexOf (typeOfWidget) != -1)
+    {
+        lineOfText = lineOfText.substring (lineOfText.indexOf (typeOfWidget) + typeOfWidget.length());
+    }
 
     IdentifiersAndParameters identifierValueSet = getSetofIdentifiersAndParameters (lineOfText);
 
@@ -309,7 +316,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
             case HashStringToInt ("items"):
             case HashStringToInt ("text"):
-                setTextItemArrays (strTokens, widgetData, typeOfWidget);
+                setTextItemArrays (strTokens, widgetData, getStringProp(widgetData, CabbageIdentifierIds::type));
                 break;
 
             case HashStringToInt ("populate"):
@@ -317,7 +324,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("imgfile"):
-                setImageFiles (strTokens, widgetData, typeOfWidget);
+                setImageFiles (strTokens, widgetData, getStringProp(widgetData, CabbageIdentifierIds::type));
                 break;
 
             case HashStringToInt ("shape"):

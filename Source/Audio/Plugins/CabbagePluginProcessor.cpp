@@ -166,7 +166,8 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
             for (int i = 0; i < CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray).size(); i++)
             {
                 ValueTree copy = tempWidget.createCopy();
-                const String chan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i].toString();
+//                const String chan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i].toString();
+//                const String iChan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i].toString();
                 CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::channel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i]);
                 CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::identchannel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i]);
                 cabbageWidgets.addChild (copy, -1, 0);
@@ -295,6 +296,8 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
 
     for ( auto currentLineofCode : copy )
     {
+        if(currentLineofCode.contains("</Cabbage>)"))
+            return;
         if (currentLineofCode.isNotEmpty() && currentLineofCode.substring (0, 1) != ";")
         {
 
@@ -807,8 +810,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
         if (identChannel.isNotEmpty())
         {
             getCsound()->GetStringChannel (identChannel.toUTF8(), tmp_string);
-            String identifierText (tmp_string);
-
+            const String identifierText (tmp_string);
             if (identifierText != identChannelMessage)
             {
                 CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);
