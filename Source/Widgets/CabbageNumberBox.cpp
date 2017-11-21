@@ -59,7 +59,7 @@ CabbageNumberBox::CabbageNumberBox (ValueTree wData)
 
     slider.setSkewFactor (skew);
     slider.setRange (min, max, incr);
-    slider.setValue (value, dontSendNotification);
+    slider.setValue (value, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
 }
 
