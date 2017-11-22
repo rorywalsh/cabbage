@@ -115,8 +115,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
         }
 
 
-        const String expandedMacroText = getExpandedMacroText (currentLineOfCabbageCode, tempWidget);
-
+        expandMacroText(currentLineOfCabbageCode, tempWidget);
         //note whether lines contains opening and closing bracket so GUI editor can add them back in
         if (currentLineOfCabbageCode.contains ("{"))
             CabbageWidgetData::setNumProp (tempWidget, "containsOpeningCurlyBracket", 1);
@@ -128,7 +127,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
             currentLineOfCabbageCode = currentLineOfCabbageCode.substring (0, currentLineOfCabbageCode.indexOf (";"));
 
         const String comments = currentLineOfCabbageCode.indexOf (";") == -1 ? "" : currentLineOfCabbageCode.substring (currentLineOfCabbageCode.indexOf (";"));
-        CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart (" \t") + " " + expandedMacroText + comments, lineNumber);
+        CabbageWidgetData::setWidgetState (tempWidget, currentLineOfCabbageCode.trimCharactersAtStart (" \t") + comments, lineNumber);
 
 
         if (shouldClosePlant (linesFromCsd, lineNumber))
@@ -139,7 +138,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
         CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber - linesToSkip);
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
-        CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
+        //CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
 
         const String typeOfWidget = CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::type);
 
@@ -212,8 +211,9 @@ void CabbagePluginProcessor::addImportFiles (StringArray& linesFromCsd)
     for (int i = 0 ; i < linesFromCsd.size() ; i++)
     {
         ValueTree temp ("temp");
-        const String expandedMacroText = getExpandedMacroText (linesFromCsd[i], temp);
-        CabbageWidgetData::setWidgetState (temp, linesFromCsd[i] + " " + expandedMacroText, 0);
+        String newLine = linesFromCsd[i];
+        expandMacroText (newLine, temp);
+        CabbageWidgetData::setWidgetState (temp, newLine, 0);
 
         //if form, check for import files..
         if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
@@ -302,8 +302,8 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
             float scaleY = 1;
             StringArray importedLines ("");
             ValueTree temp ("temp");
-            const String expandedMacroText = getExpandedMacroText (currentLineofCode, temp);
-            CabbageWidgetData::setWidgetState (temp, currentLineofCode.trim() + " " + expandedMacroText, lineIndex);
+            expandMacroText(currentLineofCode, temp);
+            CabbageWidgetData::setWidgetState (temp, currentLineofCode.trim(), lineIndex);
             const String type = CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type);
             const String nsp = CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::nsp);
 
@@ -322,8 +322,8 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
                         if (plantCode.contains ("}") == false)
                         {
                             ValueTree temp1 ("temp1");
-                            const String expandedMacroText = getExpandedMacroText (plantCode, temp);
-                            CabbageWidgetData::setWidgetState (temp1, plantCode.trim() + " " + expandedMacroText, -99);
+                            expandMacroText(plantCode, temp);
+                            CabbageWidgetData::setWidgetState (temp1, plantCode.trim(), -99);
                             CabbageWidgetData::setNumProp (temp1, CabbageIdentifierIds::plant, importData.cabbageCode.size() + 2);
                             CabbageWidgetData::setNumProp (temp, CabbageIdentifierIds::plant, importData.cabbageCode.size() + 2);
                             lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp (temp, CabbageIdentifierIds::linenumber);
@@ -455,25 +455,26 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
     }
 }
 
-const String CabbagePluginProcessor::getExpandedMacroText (String line, ValueTree wData)
+void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
 {
     String csdLine;
     var macroNames;
     String defineText;
-
-    while (line.contains ("$"))
+    String newLine = line;
+    String expandedLine = line;
+    while (newLine.contains ("$"))
     {
-        line = line.substring (line.indexOf ("$"), line.length());
-        line = line.replace (",", " ");
-        defineText = line.substring (0, (line.indexOf (" ") == -1 ? line.length() : line.indexOf (" ") + 1));
-        line = line.replace (defineText, "");
+        newLine = newLine.substring (newLine.indexOf ("$"), newLine.length());
+        newLine = newLine.replace (",", " ");
+        defineText = newLine.substring (0, (newLine.indexOf (" ") == -1 ? newLine.length() : newLine.indexOf (" ") + 1));
+        newLine = newLine.replace (defineText, "");
         defineText = defineText.substring (0, (defineText.indexOf (" ") != -1 ? defineText.indexOf (" ") : defineText.length()));
 
         for (int cnt = 0 ; cnt < macroText.size() ; cnt++)
         {
             if (defineText == macroText.getName (cnt).toString())
             {
-                csdLine += macroText.getWithDefault (macroText.getName (cnt), "").toString() + " ";
+                line  = expandedLine.replace(defineText, macroText.getWithDefault (macroText.getName (cnt), "").toString());
                 macroNames.append (macroText.getName (cnt).toString());
             }
         }
@@ -481,7 +482,7 @@ const String CabbagePluginProcessor::getExpandedMacroText (String line, ValueTre
         CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::macronames, macroNames);
     }
 
-    return csdLine;
+
 }
 
 //rebuild the entire GUi each time something changes.

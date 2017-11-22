@@ -86,7 +86,7 @@ public:
     bool shouldClosePlant (StringArray linesFromCsd, int lineNumber);
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
-    const String getExpandedMacroText (String line, ValueTree wData);
+    void expandMacroText (String &line, ValueTree wData);
 
     CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================
