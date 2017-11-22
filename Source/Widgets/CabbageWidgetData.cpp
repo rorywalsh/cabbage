@@ -245,7 +245,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
     //remove any text after a semicolon and take out tabs..
     lineOfText = lineOfText.replace ("\t", " ");
 
-    if (lineOfText.indexOf (0, ";") != -1)
+    if (lineOfText.indexOf (";") > -1)
         lineOfText = lineOfText.substring (0, lineOfText.indexOf (0, ";"));
 
     if (lineOfText.trim() == "<Cabbage>" || lineOfText.trim() == "</Cabbage>" || lineOfText.trim().isEmpty())
@@ -258,7 +258,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
     //reduce line ot code to identifiers...
     if(lineOfText.indexOf (typeOfWidget) != -1)
     {
-        lineOfText = lineOfText.substring (lineOfText.indexOf (typeOfWidget) + typeOfWidget.length());
+        lineOfText = lineOfText.substring (lineOfText.indexOf (typeOfWidget) + typeOfWidget.length()).trim();
     }
 
     IdentifiersAndParameters identifierValueSet = getSetofIdentifiersAndParameters (lineOfText);
@@ -268,7 +268,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
     for ( int indx = 0 ; indx < identifierValueSet.identifier.size() ; indx++)
     {
-        CabbageUtilities::debug(identifierValueSet.identifier[indx]);
+        //CabbageUtilities::debug(identifierValueSet.identifier[indx]);
         StringArray strTokens;
         String identifier = identifierValueSet.identifier[indx].trimCharactersAtStart (" ");
 

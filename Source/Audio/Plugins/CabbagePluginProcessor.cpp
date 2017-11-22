@@ -177,7 +177,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
         if (isWidgetPlantParent (linesFromCsd, lineNumber) && currentLineOfCabbageCode.removeCharacters (" ").removeCharacters ("\t").substring (0, 1) != "{")
         {
-            CabbageUtilities::debug (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString());
+            //CabbageUtilities::debug (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString());
             parents.add (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString());
         }
 
@@ -222,7 +222,7 @@ void CabbagePluginProcessor::addImportFiles (StringArray& linesFromCsd)
 
             for ( int y = 0 ; y < files.size() ; y++)
             {
-                CabbageUtilities::debug (csdFile.getParentDirectory().getChildFile (files[y].toString()).getFullPathName());
+                //CabbageUtilities::debug (csdFile.getParentDirectory().getChildFile (files[y].toString()).getFullPathName());
 
                 if (csdFile.getParentDirectory().getChildFile (files[y].toString()).existsAsFile())
                 {
@@ -267,22 +267,19 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
                 importData.name = e->getAllSubText();
 
             if (e->getTagName() == "cabbagecode")
-            {
                 importData.cabbageCode.addLines (e->getAllSubText());
-            }
 
             if (e->getTagName() == "csoundcode")
                 importData.csoundCode = e->getAllSubText();
 
             if (e->getTagName() == "cabbagecodescript")
-            {
                 generateCabbageCodeFromJS (importData, e->getAllSubText());
-            }
+
         }
 
         insertPlantCode (importData, linesFromCsd);
         insertUDOCode (importData, linesFromCsd);
-        CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
+        //CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
     }
 }
 
@@ -307,13 +304,13 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
             ValueTree temp ("temp");
             const String expandedMacroText = getExpandedMacroText (currentLineofCode, temp);
             CabbageWidgetData::setWidgetState (temp, currentLineofCode.trim() + " " + expandedMacroText, lineIndex);
-            //CabbageWidgetData::setCustomWidgetState (temp, currentLineofCode.trim());
             const String type = CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type);
             const String nsp = CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::nsp);
 
             bool isPlantWidget = true;
-
-            if (type == importData.name.trim() && importData.nsp == nsp)
+            CabbageUtilities::debug(type + " " + importData.name.trim() );
+            CabbageUtilities::debug(nsp + " " + importData.nsp.trim() );
+            if (type == importData.name.trim() && importData.nsp.trim() == nsp)
             {
                 int lineNumber = copy.indexOf (currentLineofCode);
                 int lineNumberPlantAppearsOn;
@@ -326,7 +323,7 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
                         {
                             ValueTree temp1 ("temp1");
                             const String expandedMacroText = getExpandedMacroText (plantCode, temp);
-                            CabbageWidgetData::setWidgetState (temp1, plantCode + " " + expandedMacroText, -99);
+                            CabbageWidgetData::setWidgetState (temp1, plantCode.trim() + " " + expandedMacroText, -99);
                             CabbageWidgetData::setNumProp (temp1, CabbageIdentifierIds::plant, importData.cabbageCode.size() + 2);
                             CabbageWidgetData::setNumProp (temp, CabbageIdentifierIds::plant, importData.cabbageCode.size() + 2);
                             lineNumberPlantAppearsOn = CabbageWidgetData::getNumProp (temp, CabbageIdentifierIds::linenumber);
