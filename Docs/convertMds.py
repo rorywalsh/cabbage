@@ -65,15 +65,16 @@ def createHtmlFiles( file ):
 	</ul>
 	</li>
 	<li><a href="features.html">Features</a><ul>
-	<li><a href="plants.html">Plants</a></li>
 	<li><a href="identchannels.html">Controlling widgets with Csound</a></li>
+	<li><a href="soundfiles.html">Working with sound files</a></li>
+	<li><a href="host_info.html">Getting host information into Csound</a></li>
 	<li><a href="presets.html">Presets</a></li>
+	<li><a href="plants.html">Plants</a></li>
 	<li><a href="widget_arrays.html">Widget arrays</a></li>
 	<li><a href="macros_and_reserved_channels.html">Reserved channels and Macros</a></li>
 	<li><a href="managing_large_numbers_of_widgets.html">Managing large numbers of Widgets</a></li>
 	<li><a href="using_svgs.html">Using SVGs</a></li>
-	<li><a href="soundfiles.html">Working with sound files</a></li>
-	<li><a href="host_info.html">Getting host information into Csound</a></li>
+	<li><a href="custom_plant_imports.html">Import custom plants</a></li>
 	</ul>
 	</li>
 	<li><a href="cabbage_syntax.html">Widget Reference</a><ul>
