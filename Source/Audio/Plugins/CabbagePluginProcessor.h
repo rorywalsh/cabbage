@@ -87,6 +87,7 @@ public:
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     void expandMacroText (String &line, ValueTree wData);
+    const String getPlantXmlFileAsString(File xmlFile);
 
     CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================

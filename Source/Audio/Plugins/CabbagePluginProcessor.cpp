@@ -230,7 +230,7 @@ void CabbagePluginProcessor::addImportFiles (StringArray& linesFromCsd)
                     linesFromImportedFile.addLines (csdFile.getParentDirectory().getChildFile (files[y].toString()).loadFileAsString());
 
                     ScopedPointer<XmlElement> xml;
-                    xml = XmlDocument::parse (csdFile.getParentDirectory().getChildFile (files[y].toString()));
+                    xml = XmlDocument::parse (getPlantXmlFileAsString(csdFile.getParentDirectory().getChildFile (files[y].toString())));
 
                     if (!xml) //if plain text...
                     {
@@ -248,9 +248,34 @@ void CabbagePluginProcessor::addImportFiles (StringArray& linesFromCsd)
         }
     }
 
-    CabbageUtilities::debug (linesFromCsd.joinIntoString ("\n"));
 }
 
+const String CabbagePluginProcessor::getPlantXmlFileAsString(File xmlFile)
+{
+    StringArray linesFromXmlFile;
+    linesFromXmlFile.addLines(xmlFile.loadFileAsString());
+    bool shouldReplaceChars = false;
+    for( int i = 0 ; i < linesFromXmlFile.size()-1; i++)
+    {
+        if(shouldReplaceChars)
+        {
+            linesFromXmlFile.set(i, linesFromXmlFile[i].replace ("&", "&amp;")
+                    .replace ("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace ("\"", "$quote;")
+                    .replace ("'", "&apos;"));
+
+        }
+
+        if(linesFromXmlFile[i] == "<cabbagecodescript>" || linesFromXmlFile[i] == "<csoundcode>")
+            shouldReplaceChars = true;
+        else if(linesFromXmlFile[i+1] == "</cabbagecodescript>" || linesFromXmlFile[i+1] == "</csoundcode>")
+            shouldReplaceChars = false;
+
+
+    }
+    return linesFromXmlFile.joinIntoString("\n");
+}
 
 void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& linesFromCsd)
 {
@@ -270,7 +295,10 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
                 importData.cabbageCode.addLines (e->getAllSubText());
 
             if (e->getTagName() == "csoundcode")
+            {
                 importData.csoundCode = e->getAllSubText();
+            }
+
 
             if (e->getTagName() == "cabbagecodescript")
                 generateCabbageCodeFromJS (importData, e->getAllSubText());
@@ -279,7 +307,7 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
 
         insertPlantCode (importData, linesFromCsd);
         insertUDOCode (importData, linesFromCsd);
-        //CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
+        CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
     }
 }
 
