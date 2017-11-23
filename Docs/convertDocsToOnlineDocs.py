@@ -28,7 +28,7 @@ for dir in directories[0:3]:
 			lineText = ""
 
 			# add YAML
-			if "Properties" not in sys.argv[1]:
+			if "Properties" not in dir:
 				fileNameOnly = os.path.basename(inputFile.name)
 				outputFile.write("---\n")
 				outputFile.write("layout: docs\n")
