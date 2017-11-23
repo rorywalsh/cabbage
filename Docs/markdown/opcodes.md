@@ -4,7 +4,9 @@ Opcodes do things. They are the brains of each and every Csound instrument. What
 
 In their most common form, opcodes are given input arguments and output a result. The rate at which an opcode operates is determined by the output variable name. Outputs always appear to the left of an opcode name, while inputs always appear to the right of the opcode name. The typical syntax for most opcodes in Csound is give as
 
+```
 aOutput opcode input1, input2, input3, ...
+```
 
 Note that aOutput is the output variable. It can be called anything you like, but it must begin with an a, k or i, depending on the opcode.While most opcodes in Csound have outputs as well as inputs, some opcodes only have inputs, while others only have outputs. It should also be noted that not every opcode can operate at a, k and i rate. The simplest way to see what rates are supported by what opcode is by looking at the Csound reference manual.
 

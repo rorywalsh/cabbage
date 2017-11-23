@@ -29,7 +29,10 @@ instr 1
         event	"i", "LoadSoundFile", 0, 0   ; call instrument to update sample storage function table 
     endif  
 ``` 
-`instr 1` assigns a file name to the `gSfilepath` variable. The `LoadSoundFile` instrument reads this variable and loads the audio file to the soundfiler using an identifier channel named `soundfiler1`. The code might look like this.
+`instr 1` assigns a file name to the `gSfilepath` variable. The `LoadSoundFile` instrument reads this variable and loads the audio file to the soundfiler using an identifier channel named `soundfiler1`. 
+
+The code might look like this.
+
 ```csharp
 instr	LoadSoundFile	; load sound file   
     if filevalid(gSfilepath) == 1 then

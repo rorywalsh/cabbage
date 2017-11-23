@@ -1,0 +1,60 @@
+- title: Beginners (Csound)
+  docs:
+    - csound
+    - file_structure_and_syntax
+    - keywords
+    - constants_and_variables
+    - opcodes
+    - operators_and_comments
+- title: Using Cabbage
+  docs:
+    - introduction
+    - using_cabbage
+    - beginner_synth
+    - first_effect
+    - audio_graph
+    - exporting
+    - cabbage_in_host
+    - distributing
+- title: Advanced Features
+  docs:
+    - features
+    - identchannels
+    - soundfiles
+    - host_info
+    - presets
+    - widget_arrays
+    - macros_and_reserved_channels
+    - managing_large_numbers_of_widgets
+    - using_svgs
+    - custom_plant_imports
+- title: Cabbage Widgets
+  # href:
+  #   - /docs/widgets
+  docs:
+    - cabbage_syntax
+    - button
+    - button_file
+    - button_info
+    - checkbox
+    - combobox
+    - csound_output
+    - encoder
+    - fftdisplay
+    - form
+    - gentable
+    - groupbox
+    - hrange
+    - image
+    - keyboard
+    - label
+    - listbox
+    - meters
+    - numberbox
+    - signaldisplay
+    - sliders
+    - soundfiler
+    - textbox
+    - texteditor
+    - vrange
+    - xypad
