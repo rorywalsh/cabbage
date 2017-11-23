@@ -2,7 +2,7 @@
 
 Keywords are special reserved words that have a unique function and meaning. The two most commonly used keywords in the Csound language are **instr** and **endin**. These two keywords define an instrument block which contain instructions on how an instrument functions. Each instrument must be given a unique name or number which follows the **instr** keyword.
 
-```csharp
+<pre><code data-language="javascript">
 instr 1
 ;to stuff
 endin
@@ -10,7 +10,7 @@ endin
 instr DoStuff
 ;do stuff
 endin
-```
+</code></pre>
 
 Other common keywords are found in the **CsInstruments** header section. The header section appears before any instrument block and sets up vital information about things such as sampling rates, sr, the number of audio channels to use, nchnls, and decibels relative to full scale, 0dbfs. 
 
