@@ -125,7 +125,7 @@ public:
 
                 if (File (inputFileName).existsAsFile())
                 {
-                    resetPlugin (inputFileName);
+                    openFile (inputFileName);
                     CabbageIDELookAndFeel lAndF;
                     CabbageUtilities::exportPlugin ("VSTi", File (inputFileName), &lAndF, getPluginId (csdFile));
                     JUCEApplicationBase::quit();
@@ -138,7 +138,7 @@ public:
 
                 if (File (inputFileName).existsAsFile())
                 {
-                    resetPlugin (inputFileName);
+                    openFile (inputFileName);
                     CabbageUtilities::exportPlugin ("VST", File (inputFileName), &lAndF, getPluginId (csdFile));
                     JUCEApplicationBase::quit();
                 }
@@ -147,7 +147,7 @@ public:
             else if (File::getCurrentWorkingDirectory().getChildFile (commandLine.trim().removeCharacters ("\"")).existsAsFile())
             {
                 String csd = commandLine.trim().removeCharacters ("\"");;
-                resetPlugin (csd);
+                openFile (csd);
             }
         }
 
@@ -260,17 +260,28 @@ public:
                          ModalCallbackFunction::forComponent (menuCallback, this));
     }
 
-    void openFile()
+    void openFile(String inputFile)
     {
-        FileChooser fc ("Open File", File (""), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
-
-        if (fc.browseForFileToOpen())
+        if(File(inputFile).existsAsFile())
         {
-            csdFile = fc.getResult();
+            csdFile = File(inputFile);
             csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
-            resetPlugin (fc.getResult());
+            resetPlugin (csdFile);
             lastModified = csdFile.getLastModificationTime().toMilliseconds();
             setName (getInstrumentname());
+        }
+        else
+        {
+            FileChooser fc ("Open File", File (""), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+
+            if (fc.browseForFileToOpen())
+            {
+                csdFile = fc.getResult();
+                csdFile.getParentDirectory().setAsCurrentWorkingDirectory();
+                resetPlugin (fc.getResult());
+                lastModified = csdFile.getLastModificationTime().toMilliseconds();
+                setName (getInstrumentname());
+            }
         }
     }
 
@@ -290,7 +301,7 @@ public:
                 break;
 
             case 2:
-                openFile();
+                openFile("");
                 break;
 
             case 3:
