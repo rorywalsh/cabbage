@@ -1,5 +1,5 @@
 # Macros and Reserved Channels
-Cabbage specific macros can be used to define a range of difference identifiers, and provide a way of achieving a consistent look and feel across your instrument's widgets, without having to hardcode each and every identifier. To create a macro one must define it using a `#define` keyword. The following code will create a macro called `SLIDER1` that will define several attributes of a slider widget:
+Cabbage specific macros can be used to define a range of difference identifiers, and provide a way of achieving a consistent look and feel across your instrument's widgets, without having to hardcode each and every identifier. To create a macro one must define it using a `#define` keyword. Macros must appear at the end of a line when called in Cabbage code. The following code will create a macro called `SLIDER1` that will define several attributes of a slider widget:
 
 ```csharp
 #define SLIDER1 colour("red"), fontcolour("yellow"), outlinecolour("red"), range(0, 1000, 500)
