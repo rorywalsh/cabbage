@@ -1,6 +1,6 @@
 <Cabbage>
 form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("plant.xml")
-radioValueButtonGroup bounds(18, 12, 258, 110), channel("radioGroup"), namespace("rw")
+radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), namespace("rw")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -16,7 +16,7 @@
  	opcode rw_setRadioValueButtonButtonColour,0,Siiii
 	SName, iR, iG, iB, iA xin
 	iCnt = 1
- 	while iCnt &lt; 5 do
+ 	while iCnt < 5 do
  		SMessage sprintf "colour(%d, %d, %d, %d)", iR, iG, iB, iA
  		SChannel sprintf "%s_button%dIdent", SName, iCnt
  		chnset SMessage, SChannel
@@ -30,7 +30,7 @@
 	    kIndex = 1
 	    kTrig changed, chnget:k(sprintfk("%sbutton1", SChannel)), chnget:k(sprintfk("%sbutton12", SChannel)), chnget:k(sprintfk("%sbutton3", SChannel)), chnget:k(sprintfk("%sbutton4", SChannel))
 	    if kTrig == 1 then
-	        while kIndex &lt; 5 do
+	        while kIndex < 5 do
 	        SCustomChannel sprintfk "%sbutton%d", SChannel, kIndex
 	        kValue = (chnget:k(SCustomChannel)==1 ? kIndex : kValue)
 	        kIndex+=1
