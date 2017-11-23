@@ -6,6 +6,7 @@ body{
     max-width: 960px;
     margin: -20px;
     padding-left: 400px;
+    overflow-wrap: normal;
 }
 h1, h2, h3, h4 {
     color: #111111;
@@ -58,9 +59,10 @@ pre {
     white-space: pre-wrap;
 }
 code {
-    font-family: Consolas, Monaco, Andale Mono, monospace;
-    line-height: 1.5;
     font-size: 13px;
+    max-width: 700px;
+    margin-left: 5px;
+    overflow-wrap: normal;
 }
 aside {
     display: block;
@@ -72,8 +74,10 @@ blockquote {
     max-width: 476px;
 }
 blockquote p {
-    color: #666;
-    max-width: 460px;
+    background: #ddd;
+    color: #444;
+    max-width: 500px;
+    font-style: italic;
 }
 hr {
     width: 540px;

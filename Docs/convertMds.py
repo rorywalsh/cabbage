@@ -31,6 +31,8 @@ def createHtmlFiles( file ):
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link href='./Styles/DocStyle.css' rel='stylesheet' type='text/css'>
+	<script src="./Styles/rainbow-custom.min.js"></script>
+	<script src="./Styles/csound.syntax.js"></script>
 	</head>
 	<body>
 	<input type="checkbox" id="menu-toggle" />

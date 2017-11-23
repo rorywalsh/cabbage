@@ -10,7 +10,7 @@ To create a new instrument hit the new file button as shown in the following ima
 When Cabbage creates the file it will generate some basic code that can be used as a template which you can modify to suit your needs. This instrument, shown below, uses the MIDI interop command line flags to pipe MIDI data directly to p-fields in instrument 1. In this case all MIDI pitch data is being written directly to a special variable named p4 while all MIDI amplitude data is written to variable called p5. You can read more about this in the [Beginners](beginners.html) section. MIDI data being sent on channel 1 will cause instrument 1 to play. Data being sent on channel 2 will cause instrument 2 to play(if one was defined), and so on. If you wish to assign an instrument to a unique MIDI channel you can use the 'massign' opcode. If you don't have a keyboard you can still send MIDI data to an instrument by using the 'leyboard' widget.  
 
 ##Example
-```html
+```csound
 <Cabbage>
 form caption("Untitled") size(400, 300), colour(58, 110, 182), pluginID("def1")
 keyboard bounds(8, 158, 381, 95)
