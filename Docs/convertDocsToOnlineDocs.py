@@ -1,20 +1,26 @@
 from os import listdir
+from shutil import copyfile
+from distutils.dir_util import copy_tree
 import os.path
 import os
 import sys
 from os.path import isfile, join, basename
 
+print("Usage: python convertDocsToOnlineDocs.py ./path_to_md_files ../path_to_cabbage_site_app_dir")
+
 if len(sys.argv) != 3:
 	print("You must supply a directory")
 	exit(1)
 
-outputDir = os.path.abspath(sys.argv[2])
+outputDir = os.path.abspath(sys.argv[2])+"/_docs"
+imagesDir = os.path.abspath(sys.argv[2])+"/images/docs"
+copy_tree("./images/", imagesDir)
 
 directories = ["", "/Widgets", "/Widgets/Properties"]
 currentDir = os.path.abspath(sys.argv[1])
 for dir in directories[0:3]:
 	
-	#print(dir)
+	print(dir)
 	#print(sys.argv[1])
 	#print(os.path.abspath(sys.argv[1]))
 	print(currentDir+dir)
@@ -28,14 +34,13 @@ for dir in directories[0:3]:
 			lineText = ""
 
 			# add YAML
-			if "Properties" not in sys.argv[1]:
+			if "Properties" not in dir:
 				fileNameOnly = os.path.basename(inputFile.name)
 				outputFile.write("---\n")
 				outputFile.write("layout: docs\n")
 				outputFile.write("title: "+os.path.splitext(fileNameOnly)[0].replace("_", " ").title()+"\n")
 				outputFile.write("permalink: /docs/"+os.path.splitext(fileNameOnly)[0]+"/\n")
 				outputFile.write("---\n\n")
-
 
 			# now parse files and update to Gordon's online format
 			for line in inputFile:
@@ -61,6 +66,9 @@ for dir in directories[0:3]:
 				if "[Plants](./plants.md)" in line:
 					line = line.replace("[Plants](./plants.md)", "[Plants](../plants/index.html)")
 
+				if "[Cabbage](./introduction.html)" in line:
+					line = line.replace("[Cabbage](./introduction.html)", "[Introduction](../introduction/index.html)")
+
 				if "[Controlling widgets](./controlling.md)" in line:
 					line = line.replace("[Controlling widgets](./controlling.md)", "[Controlling widgets](../controlling/index.html)")
 
@@ -74,4 +82,4 @@ for dir in directories[0:3]:
 
 			inputFile.close()
 			outputFile.close()
-			dir = ''
+

@@ -11,9 +11,13 @@ active(val), svgfile("type", "file")
 ```
 <!--(End of syntax)/-->
 
-
 ##Identifiers
 
+### Specific Identifiers
+
+{! ./markdown/Widgets/Properties/latched.md !} 
+
+### Common Identifiers
 {! ./markdown/Widgets/Properties/active.md !}
 
 {! ./markdown/Widgets/Properties/alpha.md !} 
@@ -33,8 +37,6 @@ active(val), svgfile("type", "file")
 {! ./markdown/Widgets/Properties/fontcolour_1.md !} 
 
 {! ./markdown/Widgets/Properties/identchannel.md !} 
-
-{! ./markdown/Widgets/Properties/latched.md !} 
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 

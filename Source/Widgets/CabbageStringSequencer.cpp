@@ -63,12 +63,12 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
                 numberLabel->setColour (Label::textColourId, Colours::red);
 
             numberLabel->setBounds (0, i * cellHeight, 20, cellHeight);
-            addAndMakeVisible (numberLabel);
+            seqContainer.addAndMakeVisible (numberLabel);
             stepNumbers.add (numberLabel);
         }
     }
 
-    if (height < cellHeight * numRows)
+    if (height <= cellHeight * numRows)
     {
         vp.setScrollBarsShown (true, false);
         cellWidth = (width - vp.getScrollBarThickness() - (showNumbers > 0 ? 20 : 0)) / numColumns;
@@ -160,7 +160,7 @@ bool CabbageStringSequencer::keyPressed (const KeyPress& key, Component* origina
             swapFocusForEditors (key, currentColumn, currentRow);
     }
 
-    return true;
+    return false;
 }
 
 void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row)

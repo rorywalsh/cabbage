@@ -88,7 +88,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
 {
-
+    setLookAndFeel(nullptr);
+    this->getParentComponent()->setLookAndFeel(nullptr);
 }
 
 void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDisk)
