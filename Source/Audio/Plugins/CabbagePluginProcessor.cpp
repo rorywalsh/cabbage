@@ -222,7 +222,7 @@ void CabbagePluginProcessor::addImportFiles (StringArray& linesFromCsd)
 
             for ( int y = 0 ; y < files.size() ; y++)
             {
-                //CabbageUtilities::debug (csdFile.getParentDirectory().getChildFile (files[y].toString()).getFullPathName());
+                CabbageUtilities::debug (csdFile.getParentDirectory().getChildFile (files[y].toString()).getFullPathName());
 
                 if (csdFile.getParentDirectory().getChildFile (files[y].toString()).existsAsFile())
                 {
@@ -502,13 +502,16 @@ void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
         {
             if (defineText == macroText.getName (cnt).toString())
             {
-                line  = expandedLine.replace(defineText, macroText.getWithDefault (macroText.getName (cnt), "").toString());
+                expandedLine  = expandedLine.replace(defineText, macroText.getWithDefault (macroText.getName (cnt), "").toString());
+                CabbageUtilities::debug(line);
                 macroNames.append (macroText.getName (cnt).toString());
             }
         }
 
         CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::macronames, macroNames);
     }
+
+    line = expandedLine;
 
 
 }
