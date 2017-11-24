@@ -29,14 +29,16 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-    int cellWidth = 0;
-    const int cellHeight = 25;
     addAndMakeVisible (vp);
     vp.setViewedComponent (&seqContainer);
 
     const int width = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
+    int cellHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellheight);
+    int cellWidth = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellwidth);
     numRows = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::numberofsteps);
+
+
     var channels = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channel);
 
     if (channels.size() < 2)
@@ -48,35 +50,32 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     numColumns = channels.size() - 1;
     stepChannel = channels[0];
 
-
-
     const int showNumbers = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::showstempnumbers);
+    createNumberLabels(wData, cellHeight, showNumbers);
 
-    if (showNumbers > 0)
-    {
-        for ( int i = 0 ; i < numRows ; i++)
-        {
-
-            Label* numberLabel = new Label ("Number" + String (i + 1), String (i + 1));
-
-            if (i % showNumbers == 0)
-                numberLabel->setColour (Label::textColourId, Colours::red);
-
-            numberLabel->setBounds (0, i * cellHeight, 20, cellHeight);
-            seqContainer.addAndMakeVisible (numberLabel);
-            stepNumbers.add (numberLabel);
-        }
-    }
+    if(cellWidth == 0)
+        seqContainer.setBounds (getLocalBounds().withHeight (numRows * cellHeight).withWidth(getLocalBounds().getWidth()));
+    else
+        seqContainer.setBounds (getLocalBounds().withHeight (numRows * cellHeight).withWidth(cellWidth*numColumns));
 
     if (height <= cellHeight * numRows)
     {
-        vp.setScrollBarsShown (true, false);
-        cellWidth = (width - vp.getScrollBarThickness() - (showNumbers > 0 ? 20 : 0)) / numColumns;
+        if(cellWidth == 0)
+        {
+            vp.setScrollBarsShown (true, false);
+            cellWidth = (width - vp.getScrollBarThickness() - (showNumbers > 0 ? numbersWidth : 0)) / numColumns;
+        }
+        else
+        {
+            vp.setScrollBarsShown (true, true);
+           // cellWidth = cellWidth;//(width - vp.getScrollBarThickness() - (showNumbers > 0 ? numbersWidth : 0)) / numColumns;
+        }
     }
     else
     {
         vp.setScrollBarsShown (false, false);
-        cellWidth = width - (showNumbers > 0 ? 20 : 0) / numColumns;
+        if(cellWidth == 0)
+            cellWidth = width - (showNumbers > 0 ? 20 : 0) / numColumns;
     }
 
     for (int i = 0 ; i < numColumns ; i++)
@@ -87,7 +86,6 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
         {
             TextEditor* tf = new TextEditor();
             seqContainer.addAndMakeVisible (tf);
-            tf->setColour (TextEditor::outlineColourId, Colour (20, 20, 20));
             tf->getProperties().set ("Column", var (i));
             tf->getProperties().set ("Row", var (y));
             tf->getProperties().set ("Channel", channels[i + 1]);
@@ -97,8 +95,8 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
         }
     }
 
+    setColours(wData);
     startTimer (60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000);
-    seqContainer.setBounds (getLocalBounds().withHeight (numRows * cellHeight));
 
 }
 
@@ -108,9 +106,56 @@ CabbageStringSequencer::~CabbageStringSequencer()
     textFields.clear();
 }
 
+void CabbageStringSequencer::createNumberLabels(ValueTree wData, int height, int showNumbers)
+{
+    if (showNumbers > 0)
+    {
+        for ( int i = 0 ; i < numRows ; i++)
+        {
+
+            Label* numberLabel = new Label ("Number" + String (i + 1), String (i + 1));
+
+            if (i % showNumbers == 0)
+            {
+                numberLabel->setColour(Label::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
+                numberLabel->setColour(Label::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour)));
+            }
+
+
+
+            numberLabel->setBounds (0, i * height, numbersWidth, height);
+            seqContainer.addAndMakeVisible (numberLabel);
+            stepNumbers.add (numberLabel);
+        }
+    }
+}
+
 TextEditor* CabbageStringSequencer::getEditor (int column, int row)
 {
     return textFields[column]->operator[] (row);
+}
+
+void CabbageStringSequencer::setColours(ValueTree wData)
+{
+    for(int x = 0 ; x < numColumns ; x++)
+        for(int y = 0 ; y < numRows ; y++)
+        {
+            getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour)));
+            getEditor(x, y)->setColour(TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+            getEditor(x, y)->setColour(TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::activecellcolour)));
+            getEditor(x, y)->setColour(TextEditor::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
+            getEditor(x, y)->setColour(CaretComponent::caretColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+        }
+
+    for( int i = 0 ; i < stepNumbers.size(); i++)
+    {
+        stepNumbers[i]->setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
+        if (i % int(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::showstempnumbers)) == 0)
+        {
+            stepNumbers[i]->setColour(Label::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
+            stepNumbers[i]->setColour(Label::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour)));
+        }
+    }
 }
 
 void CabbageStringSequencer::hiResTimerCallback()
@@ -121,7 +166,17 @@ void CabbageStringSequencer::hiResTimerCallback()
     for ( int i = 0 ; i < numColumns ; i++)
         owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
 
-    //CabbageUtilities::debug(currentBeat);
+    for ( int x = 0 ; x < numColumns ; x++)
+        for ( int y = 0 ; y < numRows ; y++)
+        {
+            if( currentBeat == y)
+               getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
+            else
+               getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
+
+            const MessageManagerLock j;
+            getEditor(x, y)->lookAndFeelChanged();
+        }
 }
 
 void CabbageStringSequencer::highlightEditorText (int col, int row)

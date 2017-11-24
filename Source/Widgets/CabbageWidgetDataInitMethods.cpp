@@ -191,13 +191,18 @@ void CabbageWidgetData::setStringSequencerProperties (ValueTree widgetData, int 
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "stringsequencer");
+    setProperty (widgetData, CabbageIdentifierIds::backgroundcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::activecellcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::highlightcolour, Colours::cornflowerblue.toString());
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::textcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::numberofsteps, 16);
     setProperty (widgetData, CabbageIdentifierIds::bpm, 60);
-    setProperty (widgetData, CabbageIdentifierIds::showstempnumbers, 4);
-
+    setProperty (widgetData, CabbageIdentifierIds::cellwidth, 0);
+    setProperty (widgetData, CabbageIdentifierIds::cellheight, 20);
 }
 
 void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)

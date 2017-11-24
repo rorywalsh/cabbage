@@ -420,6 +420,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("numberofsteps"):
             case HashStringToInt ("showstepnumbers"):
             case HashStringToInt ("bpm"):
+            case HashStringToInt ("cellwidth"):
+            case HashStringToInt ("cellheight"):
             case HashStringToInt ("resize"):
                 setProperty (widgetData, identifier, strTokens[0].trim().getIntValue());
                 break;
@@ -483,6 +485,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("tablegridcolour"):
             case HashStringToInt ("trackercolour"):
             case HashStringToInt ("highlightcolour"):
+            case HashStringToInt ("activecellcolour"):
             case HashStringToInt ("titlebarcolour"):
             case HashStringToInt ("outlinecolour"):
             case HashStringToInt ("textcolour"):

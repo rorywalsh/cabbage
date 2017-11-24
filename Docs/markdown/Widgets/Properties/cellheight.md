@@ -1,0 +1,1 @@
+**cellheight(val)** Sets the height of a cell in a string sequencer. A value of 0 (the default is 20), will cause Cabbage to automatically resize each cell's height to fit the bounds of the sequencer. 

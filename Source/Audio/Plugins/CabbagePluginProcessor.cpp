@@ -531,7 +531,6 @@ void CabbagePluginProcessor::updateWidgets (String csdText)
 // Other widgets can communicate with Csound, but they cannot be automated
 void CabbagePluginProcessor::createParameters()
 {
-
     CabbageControlWidgetStrings controlWidgetTypes;
 
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
@@ -547,7 +546,6 @@ void CabbagePluginProcessor::createParameters()
 
             if (controlWidgetTypes.contains (CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type)))
             {
-
                 if (typeOfWidget == CabbageWidgetTypes::xypad)
                 {
                     const var channel = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);

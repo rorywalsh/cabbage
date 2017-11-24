@@ -324,6 +324,7 @@ public:
         add ("expandedmacrotext");
         add ("backgroundcolour");
         add ("trackerthickness");
+        add ("activecellcolour");
         add ("outlinethickness");
         add ("scrubberposition");
         add ("whitenotecolour");
@@ -376,6 +377,8 @@ public:
         add ("radiogroup");
         add ("ballcolour");
         add ("menucolor");
+        add ("cellwidth");
+        add ("cellheight");
         add ("popuptext");
         add ("textcolor");
         add ("fontstyle");
@@ -535,6 +538,7 @@ namespace CabbageIdentifierIds
     static const Identifier menucolour = "menucolour";
     static const Identifier colour = "colour";
     static const Identifier oncolour = "oncolour";
+    static const Identifier activecellcolour = "activecellcolour";
     static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
     static const Identifier overlaycolour = "overlaycolour";
     static const Identifier backgroundcolour = "backgroundcolour";
@@ -669,6 +673,8 @@ namespace CabbageIdentifierIds
     static const Identifier popupprefix = "popupprefix";
     static const Identifier popuppostfix = "popuppostfix";
     static const Identifier titlebarcolour =  "titlebarcolour";
+    static const String cellwidth = "cellwidth";
+    static const String cellheight = "cellheight";
     static const String csdfile = "csdfile";
     static const String index = "index";
     static const String stringchannel = "string";
@@ -819,7 +825,8 @@ public:
         set ("Orientation", CabbageIdentifierIds::orientation.toString());
         set ("Populate", CabbageIdentifierIds::populate.toString());
         set ("Channel Type", CabbageIdentifierIds::channeltype.toString());
-
+        set ("Cell Width", CabbageIdentifierIds::cellwidth);
+        set ("Cell Height", CabbageIdentifierIds::cellheight);
     }
 };
 
