@@ -904,6 +904,7 @@ void CabbageMainComponent::launchHelpfile (String type)
     const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue ("CsoundManualDir");
     const String cabbageHelpDir = cabbageSettings->getUserSettings()->getValue ("CabbageManualDir");
 
+
     if (type == "context")
     {
         CabbageControlWidgetStrings controlWidgets;
@@ -912,16 +913,16 @@ void CabbageMainComponent::launchHelpfile (String type)
         if (controlWidgets.contains (keyword) || layoutWidgets.contains (keyword))
         {
             if (keyword.contains ("slider"))
-                url = cabbageHelpDir + "/sliders.html";
+                url = cabbageHelpDir + "/docs/sliders/index.html";
             else if (keyword == "filebutton")
-                url = cabbageHelpDir + "/filebutton.html";
+                url = cabbageHelpDir + "/docs/filebutton/index.html";
             else if (keyword == "infobutton")
-                url = cabbageHelpDir + "/infobutton.html";
+                url = cabbageHelpDir + "/docs/infobutton/index.html";
             else
-                url = cabbageHelpDir + "/" + keyword + String (".html");
+                url = cabbageHelpDir + "/docs/" + keyword + "/index.html";
         }
         else
-            url = csoundHelpDir + "/" + keyword + String (".html");
+            url = cabbageHelpDir + "/index.html";
     }
     else if (type == "csound")
         url = csoundHelpDir + "/index.html";
