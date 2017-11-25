@@ -2,17 +2,24 @@
 ; Written by Iain McCurdy, 2014, updated 2016
 
 <Cabbage>
-form caption("Buffer Freeze"), size(610, 245), pluginID("LiBT"), colour("DarkSLateGrey")
-gentable      bounds(  5,  5,600,120), tablenumber(1), tablecolour("lime"), amprange(-1,1,1), identchannel(table), zoom(-1)
+form caption("Buffer Freeze"), size(610, 250), pluginID("BfFr"), colour(50,50,75)
+gentable      bounds(  5,  5,600,120), tablenumber(1), tablecolour("LightBlue"), amprange(-1,1,1), identchannel(table), zoom(-1)
 
-hslider    bounds(  0,120, 610, 35), channel("ptr"),    range(0, 1.00, 1)
-label      bounds(205,150,200,  12), text("Pointer"), fontcolour("white")
+hslider    bounds(  0,120, 610, 25), channel("ptr"),    range(0, 1.00, 1), trackercolour("LightBlue")
+label      bounds(205,143,200,  12), text("Pointer"), fontcolour("white")
 
-checkbox bounds(  5,150, 70, 20), channel("freeze"), text("Freeze"), fontcolour("white")
+checkbox bounds( 15,180, 80, 30), channel("freeze"), text("Freeze"), fontcolour("white"), colour("LightBlue")
 
-rslider    bounds( 20,180, 60, 60), channel("InGain"), text("Input Gain"), textcolour("white"), range(0, 8.00, 1)
-rslider    bounds( 80,180, 60, 60), channel("DryGain"), text("Dry Gain"), textcolour("white"), range(0, 8.00, 1)
-rslider    bounds(140,180, 60, 60), channel("FreezeGain"), text("Frze Gain"), textcolour("white"), range(0, 8.00, 1)
+rslider    bounds(100,170, 70, 70), channel("InGain"), text("Input Gain"), textcolour("white"), range(0, 8.00, 1,0.5), trackercolour("LightBlue")
+rslider    bounds(170,170, 70, 70), channel("DryGain"), text("Dry Gain"), textcolour("white"), range(0, 8.00, 1,0.5), trackercolour("LightBlue")
+rslider    bounds(240,170, 70, 70), channel("FreezeGain"), text("Freeze Gain"), textcolour("white"), range(0, 8.00, 1), trackercolour("LightBlue")
+
+label      bounds(325,175, 60,13), text("FFT Size"), fontcolour("white")
+combobox   bounds(325,190, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("FFTSize"), value(4), fontcolour(255,255,255)
+
+rslider    bounds(395,170, 70, 70), channel("PtrRand"), text("Ptr.Rand."), textcolour("white"), range(0, 1.00, 0), trackercolour("LightBlue")
+rslider    bounds(465,170, 70, 70), channel("Transpose"), text("Transpose"), textcolour("white"), range(-24, 24.00, 0), trackercolour("LightBlue")
+rslider    bounds(535,170, 70, 70), channel("TransRand"), text("Trans.Rand."), textcolour("white"), range(0, 24.00, 0), trackercolour("LightBlue")
 
 </Cabbage>
                     
@@ -29,7 +36,7 @@ ksmps 		= 	16	; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	; NUMBER OF CHANNELS
 0dbfs		=	1	; MAXIMUM AMPLITUDE
 			 
-giDispBuffer	ftgen	1,0, -600,2, 0	; define live audio buffer table for display. It makes sense if this corresponds to the display size in pixels.
+giDispBuffer	ftgen	1,0, -600,-2, 0	; define live audio buffer table for display. It makes sense if this corresponds to the display size in pixels.
 giAudBuffer	ftgen	2,0, 2^18,10, 0	; define live audio buffer table
 
 instr	1
@@ -71,9 +78,19 @@ instr	1
 	 kptr	chnget	"ptr"
 	 kporttime linseg 0,0.001,0.01
 	 kptr portk kptr, kporttime
-	 kptr	wrap	kptr+koffset,0,1
-	 asig 	mincer 	a(kptr*(ftlen(giAudBuffer)/sr)), 1, 1, giAudBuffer, 0, 1024
-	 	outs	asig*kFreezeGain,asig*kFreezeGain
+	 kPtrRand	gauss	chnget:k("PtrRand")
+	 kptr	wrap	kptr+koffset+kPtrRand,0,1
+	 kFFTSize	chnget	"FFTSize"
+	 kFFTSize	init	4
+	 kPitch	=	semitone( chnget:k("Transpose") + gauss:k(chnget:k("TransRand")) )
+	 if changed(kFFTSize)==1 then
+	  reinit UPDATE
+	 endif
+	 UPDATE:
+	 iFFTSize	=	2^(i(kFFTSize)+6)
+	 asig 	mincer 	a(kptr*(ftlen(giAudBuffer)/sr)), kFreezeGain, kPitch, giAudBuffer, 0, iFFTSize
+	 rireturn 
+		outs	asig,asig
 
 	endif
 

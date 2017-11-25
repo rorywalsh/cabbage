@@ -5,42 +5,42 @@
 <Cabbage>
 form caption("GEN42"), size(420,495), pluginID("gn42"), colour(210,110, 80,200)
 
-gentable bounds(  5,  5, 410, 145), identchannel("table1"), tablenumber(1), tablecolour("yellow"), amprange(24,96,1), zoom(-1)
+gentable bounds(  5,  5, 410, 145), identchannel("table1"), tablenumber(1), outlinethickness(2), tablecolour("yellow"), amprange(24,96,1), zoom(-1), fill(0)
 
 groupbox bounds(0, 155,420,240), text("Histogram"), plant("histogram"), fontcolour("white"){
-rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), textBox(1), range(0, 100, 24,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), textBox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(100, 25, 70, 70), channel("prob3"), text("Prob. 3"), textBox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(150, 25, 70, 70), channel("prob4"), text("Prob. 4"), textBox(1), range(0, 100, 34,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(200, 25, 70, 70), channel("prob5"), text("Prob. 5"), textBox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(250, 25, 70, 70), channel("prob6"), text("Prob. 6"), textBox(1), range(0, 100, 84,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(300, 25, 70, 70), channel("prob7"), text("Prob. 7"), textBox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(350, 25, 70, 70), channel("prob8"), text("Prob. 8"), textBox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), valuetextbox(1), textbox(1), range(0, 100, 24,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), valuetextbox(1), textbox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(100, 25, 70, 70), channel("prob3"), text("Prob. 3"), valuetextbox(1), textbox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(150, 25, 70, 70), channel("prob4"), text("Prob. 4"), valuetextbox(1), textbox(1), range(0, 100, 34,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(200, 25, 70, 70), channel("prob5"), text("Prob. 5"), valuetextbox(1), textbox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(250, 25, 70, 70), channel("prob6"), text("Prob. 6"), valuetextbox(1), textbox(1), range(0, 100, 84,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(300, 25, 70, 70), channel("prob7"), text("Prob. 7"), valuetextbox(1), textbox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(350, 25, 70, 70), channel("prob8"), text("Prob. 8"), valuetextbox(1), textbox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackercolour("white")
 
-rslider bounds(  0, 95, 70, 70), channel("min1"), text("Min 1"), textBox(1), range(24, 96, 50,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds( 50, 95, 70, 70), channel("min2"), text("Min 2"), textBox(1), range(24, 96, 62,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(100, 95, 70, 70), channel("min3"), text("Min 3"), textBox(1), range(24, 96, 48,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(150, 95, 70, 70), channel("min4"), text("Min 4"), textBox(1), range(24, 96, 44,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(200, 95, 70, 70), channel("min5"), text("Min 5"), textBox(1), range(24, 96, 56,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(250, 95, 70, 70), channel("min6"), text("Min 6"), textBox(1), range(24, 96, 54,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(300, 95, 70, 70), channel("min7"), text("Min 7"), textBox(1), range(24, 96, 52,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(350, 95, 70, 70), channel("min8"), text("Min 8"), textBox(1), range(24, 96, 76,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(  0, 95, 70, 70), channel("min1"), text("Min 1"), valuetextbox(1), textbox(1), range(24, 96, 50,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds( 50, 95, 70, 70), channel("min2"), text("Min 2"), valuetextbox(1), textbox(1), range(24, 96, 62,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(100, 95, 70, 70), channel("min3"), text("Min 3"), valuetextbox(1), textbox(1), range(24, 96, 48,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(150, 95, 70, 70), channel("min4"), text("Min 4"), valuetextbox(1), textbox(1), range(24, 96, 44,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(200, 95, 70, 70), channel("min5"), text("Min 5"), valuetextbox(1), textbox(1), range(24, 96, 56,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(250, 95, 70, 70), channel("min6"), text("Min 6"), valuetextbox(1), textbox(1), range(24, 96, 54,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(300, 95, 70, 70), channel("min7"), text("Min 7"), valuetextbox(1), textbox(1), range(24, 96, 52,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(350, 95, 70, 70), channel("min8"), text("Min 8"), valuetextbox(1), textbox(1), range(24, 96, 76,1,1), colour(210,110, 80,200), trackercolour("white")
 
-rslider bounds(  0,165, 70, 70), channel("max1"), text("Max 1"), textBox(1), range(24, 96, 51,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds( 50,165, 70, 70), channel("max2"), text("Max 2"), textBox(1), range(24, 96, 61,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(100,165, 70, 70), channel("max3"), text("Max 3"), textBox(1), range(24, 96, 49,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(150,165, 70, 70), channel("max4"), text("Max 4"), textBox(1), range(24, 96, 44,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(200,165, 70, 70), channel("max5"), text("Max 5"), textBox(1), range(24, 96, 57,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(250,165, 70, 70), channel("max6"), text("Max 6"), textBox(1), range(24, 96, 53,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(300,165, 70, 70), channel("max7"), text("Max 7"), textBox(1), range(24, 96, 53,1,1), colour(210,110, 80,200), trackercolour("white")
-rslider bounds(350,165, 70, 70), channel("max8"), text("Max 8"), textBox(1), range(24, 96, 75,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(  0,165, 70, 70), channel("max1"), text("Max 1"), valuetextbox(1), textbox(1), range(24, 96, 51,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds( 50,165, 70, 70), channel("max2"), text("Max 2"), valuetextbox(1), textbox(1), range(24, 96, 61,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(100,165, 70, 70), channel("max3"), text("Max 3"), valuetextbox(1), textbox(1), range(24, 96, 49,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(150,165, 70, 70), channel("max4"), text("Max 4"), valuetextbox(1), textbox(1), range(24, 96, 44,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(200,165, 70, 70), channel("max5"), text("Max 5"), valuetextbox(1), textbox(1), range(24, 96, 57,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(250,165, 70, 70), channel("max6"), text("Max 6"), valuetextbox(1), textbox(1), range(24, 96, 53,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(300,165, 70, 70), channel("max7"), text("Max 7"), valuetextbox(1), textbox(1), range(24, 96, 53,1,1), colour(210,110, 80,200), trackercolour("white")
+rslider bounds(350,165, 70, 70), channel("max8"), text("Max 8"), valuetextbox(1), textbox(1), range(24, 96, 75,1,1), colour(210,110, 80,200), trackercolour("white")
 }
 
 groupbox bounds(0, 395,420,100), text("Synthesiser"), plant("synth"), fontcolour("white"){
-checkbox bounds( 15, 50,115, 17), channel("SynthOnOff"), text("On/Off"),  value(0), colour("yellow"), shape("square")
-rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), textBox(1), range(0, 1.00, 0.7), colour(210,110, 80,200), trackercolour("white")
-rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"),  textBox(1), range(0.2, 5.00, 2), colour(210,110, 80,200), trackercolour("white")
-rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."),  textBox(1), range(0.1, 3.00, 2), colour(210,110, 80,200), trackercolour("white")
+checkbox bounds( 15, 50,115, 17), channel("SynthOnOff"), text("On/Off"),  value(0), colour:1("yellow"), colour:0("black"), shape("square")
+rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), valuetextbox(1), textbox(1), textbox(1), range(0, 1.00, 0.7), colour(210,110, 80,200), trackercolour("white")
+rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"), valuetextbox(1), textbox(1),  textbox(1), range(0.2, 5.00, 2), colour(210,110, 80,200), trackercolour("white")
+rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."), valuetextbox(1), textbox(1),  textbox(1), range(0.1, 3.00, 2), colour(210,110, 80,200), trackercolour("white")
 }
 
 </Cabbage>
@@ -141,12 +141,12 @@ instr	2
 	irefl	table	iNote, giScal
 	aSig  wgpluck2  0.58, 0.5*gklev, cpsmidinn(iNote+iDtn), iPlk, irefl    	
 	kcf	expon	cpsoct(rnd(6)+6),p3,50
-	aSig	clfilt	aSig, kcf, 0, 2					; butterworth lowpass filter	
+	aSig	clfilt	aSig, kcf, 0, 2					; butterworth lowpass filter	 
 	aL,aR pan2      aSig * aEnv, rnd(0.5)+0.5        ; random panning   
 	      outs      aL, aR
 	gasendL	=	gasendL + aL*0.2
 	gasendR	=	gasendR + aR*0.2
-	
+	                                                                             
 endin
 
 instr	99

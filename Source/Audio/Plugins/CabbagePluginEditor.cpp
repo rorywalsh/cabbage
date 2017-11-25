@@ -648,7 +648,7 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (ValueTree wData, Component
         PopupDocumentWindow* popupPlant;
         popupPlants.add (popupPlant = new PopupDocumentWindow (caption, backgroundColour));
         popupPlant->setLookAndFeel (&getLookAndFeel());
-
+        popupPlant->setWidgetData(wData);
         popupPlant->setContentNonOwned (plant, true);
         popupPlant->setName (name);
     }

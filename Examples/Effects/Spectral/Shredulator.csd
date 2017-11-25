@@ -51,28 +51,29 @@ image    bounds(5,50,450,110), colour(225,230,255), outlinecolour("Black"), outl
 label    bounds(  0,  3,440, 13), text("D    E    L    A    Y"), fontcolour("Black")
 label    bounds( 10, 20, 70, 14), text("FFT Size"), fontcolour("Black")
 combobox bounds( 10, 35, 70, 20), text("128","256","512","1024","2048","4096"), channel("FFTindex"), value(4)
-rslider  bounds( 75, 15, 90,90), text("Max.Delay"), textbox(1), channel("MaxDelay"), range(0.1, 8, 3.7,0.5), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
-rslider  bounds(145, 15, 90,90), text("Rate"), textbox(1), channel("Rate"), range(0.1, 500, 10,0.5,0.1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
-rslider  bounds(215, 15, 90,90), text("Depth"), textbox(1), channel("Depth"), range(0, 1, 0.2), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
-rslider  bounds(285, 15, 90,90), text("Granulation"), textbox(1), channel("Granulation"), range(0, 1, 0.2), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
-rslider  bounds(355, 15, 90,90), text("Feedback"), textbox(1), channel("Feedback"), range(0, 1, 0.5), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds( 75, 15, 90,90), text("Max.Delay"), textbox(1), valuetextbox(1), channel("MaxDelay"), range(0.1, 8, 3.7,0.5), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(145, 15, 90,90), text("Rate"), textbox(1), valuetextbox(1), channel("Rate"), range(0.1, 500, 10,0.5,0.1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(215, 15, 90,90), text("Depth"), textbox(1), valuetextbox(1), channel("Depth"), range(0, 1, 0.2), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(285, 15, 90,90), text("Granulation"), textbox(1), valuetextbox(1), channel("Granulation"), range(0, 1, 0.2), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(355, 15, 90,90), text("Feedback"), textbox(1), valuetextbox(1), channel("Feedback"), range(0, 1, 0.5), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
 }
 
 image    bounds(5,165,450,110), colour(225,230,255), outlinecolour("Black"), outlinethickness(5), plant("Transpose")
 {  
 label    bounds(  0,  3,450, 13), text("T    R    A    N    S    P    O    S    E"), fontcolour("Black")
-rslider  bounds( 60, 15, 90,90), text("Semitones"), textbox(1), channel("Semitones"), range(-12, 12, 5,1,1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
-rslider  bounds(130, 15, 90,90), text("Cents"), textbox(1), channel("Cents"), range(-100, 100, 0,1,1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds( 60, 15, 90,90), text("Semitones"), textbox(1), valuetextbox(1), channel("Semitones"), range(-12, 12, 5,1,1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(130, 15, 90,90), text("Cents"), textbox(1), valuetextbox(1), channel("Cents"), range(-100, 100, 0,1,1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
 label    bounds(220, 20, 70, 14), text("Pre/Post"), fontcolour("Black")
 combobox bounds(220, 35, 70, 20), text("Pre","Post"), channel("PrePost"), value(2)
-rslider  bounds(290, 15, 90,90), text("Randomise"), textbox(1), channel("TransRand"), range(0, 1, 0.35), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(290, 15, 90,90), text("Randomise"), textbox(1), valuetextbox(1), channel("TransRand"), range(0, 1, 0.35), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
 }
 
 image    bounds(5,280,450,110), colour(225,230,255), outlinecolour("Black"), outlinethickness(5), plant("Output")
 {  
 label    bounds(  0,  3,450, 13), text("O    U    T    P    U    T"), fontcolour("Black")
-rslider  bounds(145, 15, 90,90), text("Dry/Wet Mix"), textbox(1), channel("DryWetMix"), range(0, 1, 1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
-rslider  bounds(215, 15, 90,90), text("Level"), textbox(1), channel("Level"), range(0, 1, 1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(110, 15, 90,90), text("Width"), textbox(1), valuetextbox(1), channel("Width"), range(0, 1, 1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(180, 15, 90,90), text("Dry/Wet Mix"), textbox(1), valuetextbox(1), channel("DryWetMix"), range(0, 1, 1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
+rslider  bounds(250, 15, 90,90), text("Level"), textbox(1), valuetextbox(1), channel("Level"), range(0, 1, 1), fontcolour("Black"), textcolour("Black"), colour(20,20,155), trackercolour(150,150,225)
 }
 
 </Cabbage>
@@ -101,6 +102,7 @@ instr	1
  kRate				chnget		"Rate"
  kTranspose			=			kSemitones + kCents*0.01
  kFeedback			chnget		"Feedback"
+ kWidth				chnget		"Width"
  kDryWetMix			chnget		"DryWetMix"
  kLevel				chnget		"Level"
  kFFTindex			chnget		"FFTindex"
@@ -142,7 +144,7 @@ instr	1
   aDly				pvsynth		fScale 									; resynthesise read buffer output
  endif
  aMix				ntrpol		aL,aDly,kDryWetMix 						; dry/wet audio mix
- 					outch		1,aMix*kLevel
+ 					outs		aMix*kLevel*(1-kWidth),aMix*kLevel
 
  iHandle2, kTime	pvsbuffer	fsigMixR, i(kMaxDelay)								; create a circular fsig buffer
  kDly2				randomh		0,i(kMaxDelay)*kDepth, kRate, 1				; delay time
@@ -158,7 +160,7 @@ instr	1
   aDly				pvsynth		fScale 									; resynthesise read buffer output
  endif
  aMix				ntrpol		aR,aDly,kDryWetMix 						; dry/wet audio mix
- 					outch		2,aMix*kLevel
+ 					outs		aMix*kLevel,aMix*kLevel*(1-kWidth)
 endin
 
 </CsInstruments>

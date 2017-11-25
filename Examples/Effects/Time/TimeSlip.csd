@@ -29,17 +29,17 @@ image                bounds(0,0,700,210), colour( 40, 40, 60), shape("sharp")
 groupbox bounds(  0,  0,700, 90), plant("SlowSlider"), text("Time Ratio"), colour(0,0,0,10) {
 hslider  bounds(  5, 15,690, 60), range(1,20,1,0.5,0.0001), channel("stretch"), trackercolour(140,140,160)
 label    bounds(  5, 65,690, 14), text("Time Stretch")
-button   bounds(  5, 65, 60, 18), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(150,250,150), text("Realtime","Realtime"),channel("realtime"), latched(1);, value(1)
-button   bounds(630, 65, 60, 18), fontcolour:0(50,50,50), fontcolour:1(205,205,255), colour:0(0,0,10), colour:1(150,150,250), text("Freeze","Freeze"), channel("freeze"), latched(1)
+button   bounds(  5, 65, 60, 18), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(150,250,150), text("Realtime","Realtime"),channel("realtime")
+button   bounds(630, 65, 60, 18), fontcolour:0(50,50,50), fontcolour:1(205,205,255), colour:0(0,0,10), colour:1(150,150,250), text("Freeze","Freeze"), channel("freeze")
 }
 
 button   bounds( 60,145,90,18), fontcolour:0(50,50,50), fontcolour:1(255,205,205), colour:0(10,0,0), colour:1(250,150,150), text("Grain Scale","Grain Scale"), channel("GrainScale"), latched(1), value(1)
-rslider  bounds(170,100,80,95), range(1,50,4,1,1),         channel("overlaps"), textbox(1), trackercolour(140,140,160), text("Overlaps")
-rslider  bounds(250,100,80,95), range(1,50,8,1,1),         channel("dens"),     textbox(1), trackercolour(140,140,160), text("Density")
-rslider  bounds(330,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhen"),  textbox(1), trackercolour(140,140,160), text("Rand.When")
-rslider  bounds(410,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhere"), textbox(1), trackercolour(140,140,160), text("Rand.Where")
-rslider  bounds(490,100,80,95), range(0,1,0.5),            channel("wet"),      textbox(1), trackercolour(140,140,160), text("Wet")
-rslider  bounds(570,100,80,95), range(0,1,1),              channel("level"),    textbox(1), trackercolour(140,140,160), text("Level")
+rslider  bounds(170,100,80,95), range(1,50,4,1,1),         channel("overlaps"), valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Overlaps")
+rslider  bounds(250,100,80,95), range(1,50,8,1,1),         channel("dens"),     valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Density")
+rslider  bounds(330,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhen"),  valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Rand.When")
+rslider  bounds(410,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhere"), valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Rand.Where")
+rslider  bounds(490,100,80,95), range(0,1,0.5),            channel("wet"),      valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Wet")
+rslider  bounds(570,100,80,95), range(0,1,1),              channel("level"),    valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Level")
 
 </Cabbage>
                     
@@ -73,22 +73,23 @@ instr	1
  gkfreeze	chnget	"freeze"
  gkrealtime	chnget	"realtime"
  gkGrainScale	chnget	"GrainScale"
- 
- gaInL,gaInR	ins					; READ REALTIME AUDIO INPUT
+ gkfreeze	chnget	"freeze"
+  
+ gaInL,gaInR	ins							; READ REALTIME AUDIO INPUT
  
  gaWPhasor	phasor	sr/ftlen(giBuffL)		; WRITE PHASOR
- kWPhasor	downsamp	gaWPhasor		; K RATE VERSION OF WRITE PHASOR
+ kWPhasor	downsamp	gaWPhasor			; K RATE VERSION OF WRITE PHASOR
  		tablew	gaInL,gaWPhasor,giBuffL,1	; WRITE STEREO AUDIO TO TABLES
  		tablew	gaInR,gaWPhasor,giBuffR,1	;
   
- if	gkstretch==1&&active:k(2)==0 then			; IF TIME STRETCH SLIDER IS AT '1' AND 'REALTIME' MODE IS NOT YET ACTIVE, ACTIVATE IT
+ if	gkstretch==1&&active:k(2)==0 then		; IF TIME STRETCH SLIDER IS AT '1' AND 'REALTIME' MODE IS NOT YET ACTIVE, ACTIVATE IT
   event	"i",2,0,-1
-  kOn	=	1					; TURN ON REALTIME BUTTON
- 	chnset	kOn,"realtime"				;
- elseif	gkstretch>1&&active:k(3)==0 then			; IF TIME STRETCH SLIDER IS INCREASED BEYOND '1' AND 'TIME STRETCH' MODE IS NOT YET ACTIVE, ACTIVATE IT
+  kOn	=	1								; TURN ON REALTIME BUTTON
+ 	chnset	kOn,"realtime"
+ elseif	gkstretch>1&&active:k(3)==0 then	; IF TIME STRETCH SLIDER IS INCREASED BEYOND '1' AND 'TIME STRETCH' MODE IS NOT YET ACTIVE, ACTIVATE IT
   kOff	=	0
- 	chnset	kOff,"realtime"				; TURN OFF REALTIME BUTTON
-  event	"i",3,0,-1,kWPhasor				; TURN ON TIME STRETCH INSTRUMENT AND SEND IT CURRENT WRITE PHASOR POSITION
+ 	chnset	kOff,"realtime"					; TURN OFF REALTIME BUTTON
+  event	"i",3,0,-1,kWPhasor					; TURN ON TIME STRETCH INSTRUMENT AND SEND IT CURRENT WRITE PHASOR POSITION
  endif
  
 endin
@@ -116,7 +117,7 @@ instr	3	; SLOWED PLAYBACK (TRIGGER SOUND GRAINS)
  elseif trigger:k(gkstretch,19.999,1)==1 then
   	chnset	kOff,"freeze"	
  endif
- 
+
  if trigger:k(gkrealtime,0.5,0)==1&&gkstretch>1 then	; IF REALTIME BUTTON IS ACTIVATED RETURN TIME STRETCH SLIDER TO '1' (LEFT-MOST)
   kReset	=	1
   		chnset	kReset,"stretch"

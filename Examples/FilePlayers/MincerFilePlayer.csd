@@ -41,12 +41,12 @@ checkbox   bounds(125,223, 60, 12), channel("lock"), text("Lock"), colour("yello
 checkbox   bounds(125,243, 60, 12), channel("MIDI"), text("MIDI"), colour("yellow"), fontcolour("white")
 
 label      bounds(105,183, 48, 12), text("FFT Size"), fontcolour("white")
-combobox   bounds( 95,195, 70, 20), channel("FFTSize"), items("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32", "16", "8", "4"), value(5), fontcolour("white")
+combobox   bounds( 95,195, 70, 20), channel("FFTSize"), text("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32", "16", "8", "4"), value(5), fontcolour("white")
 
 combobox   bounds(170,175, 80, 20), text("Semitone","Ratio"), channel("IntervalMode"),       value(1)
 
 image      bounds(175,200, 70, 70), colour(0,0,0,0), plant("Semitones"), identchannel("SemitonesPlant_ident"), visible(1) {
-rslider    bounds(  0,  0, 70, 70), channel("Semitones"), range(-48, 48, 0,1,1), colour( 40, 80, 80)), trackercolour("white"), text("Semitones"), textcolour("white")
+rslider    bounds(  0,  0, 70, 70), channel("Semitones"), range(-48, 48, 0,1,1), colour( 40, 80, 80), trackercolour("white"), text("Semitones"), textcolour("white")
 }
 
 image      bounds(175,200, 70, 70), colour(0,0,0,0), plant("Ratio"), identchannel("RatioPlant_ident"), visible(0) {
@@ -56,12 +56,12 @@ numberbox bounds( 20, 35, 25, 18), channel("Denominator"),      range(1,99,2,1,1
 }
 
 
-rslider    bounds(240,200, 70, 70), channel("portamento"),range(0, 20,0.05,0.5,0.01),             colour( 40, 80, 80)), trackercolour("white"), text("Port.Time"), textcolour("white")
+rslider    bounds(240,200, 70, 70), channel("portamento"),range(0, 20,0.05,0.5,0.01), colour( 40, 80, 80), trackercolour("white"), text("Port.Time"), textcolour("white")
 
 image      bounds(320,188, 305,90), colour(0,0,0,0), outlinecolour("silver"), outlinethickness(1), shape("sharp"), plant("LoopRegion") {
 label      bounds(  0,  2, 305,10), text("L   O   O   P       R   E   G   I   O   N"), fontcolour("white")
 label      bounds( 10, 24, 85, 12), text("Shape"), fontcolour("white")
-combobox   bounds( 10, 37, 85, 20), channel("LoopMode"), items("Forward","Backward","Triangle","Sine"), value(1), fontcolour("white")
+combobox   bounds( 10, 37, 85, 20), channel("LoopMode"), text("Forward","Backward","Triangle","Sine"), value(1), fontcolour("white")
 rslider    bounds(100, 17, 70, 70), channel("Speed"), range(-2, 2, 1,1,0.001),            colour( 40, 80, 80)), trackercolour("white"), text("Speed"), textcolour("white")
 numberbox  bounds(170, 35, 60, 30), channel("ModRange"), range(0,2,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textcolour("white")
 numberbox  bounds(235, 20, 60, 30), channel("Rate1"),    range(0,30,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textcolour("white")

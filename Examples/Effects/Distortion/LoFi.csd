@@ -4,7 +4,6 @@
 <Cabbage>
 form size(230, 120), caption("Lo Fi"), pluginID("lofi"), scrollbars(0)
 image pos(0, 0), size(230, 120), colour(0,0,0), shape("sharp")
-image bounds(0,0,0,0), shape("ellipse"), widgetarray("boxes",276)
 image   bounds( 30, 94, 30, 15), shape("rounded"), colour("black")
 image   bounds( 85, 70, 60, 15), shape("rounded"), colour("black")
 image   bounds(165, 94, 40, 15), shape("rounded"), colour("black")
@@ -35,20 +34,7 @@ opcode	LoFi,a,akk
 		xout	aout									;SEND AUDIO BACK TO CALLER INSTRUMENT
 endop
 
-instr 1
-
- ; COSMETIC NONSENSE
- icount0	=	1		; ROW LOOP
- loop0:
- icount		=	1		; COLUMN LOOP
- loop:
- Smsg		sprintf	"bounds(%d,%d,10,10), colour(%d,%d,%d,150)",(icount-1)*10,(icount0-1)*10,rnd(255),rnd(255),rnd(255)
- Schn		sprintf	"boxes_ident%d",icount + ((icount0-1)*23)
- 		chnset	Smsg,Schn
- loop_le	icount,1,23,loop	; ROW LOOP
- loop_le	icount0,1,12,loop0	; COLUMN LOOP
- 
- 
+instr 1 
 kbits chnget "bits"
 kfold chnget "fold"
 klevel chnget "level"

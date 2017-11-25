@@ -28,11 +28,13 @@ image              bounds(0,  0,610,500), shape("sharp"), colour("black") ;backg
 image              bounds(0,465,610,35), shape("sharp"), colour(100,100,100) 		; floor
 image bounds( 0, 0, 0,0), shape("sharp"), colour(255,255, 50), identchannel("block1")	; blocks: yellow
 image bounds( 0, 0, 0,0), shape("sharp"), colour( 75,255, 75), identchannel("block2")	; green
-image bounds( 0, 0, 0,0), shape("sharp"), colour( 65, 65,255),   identchannel("block3")	; blue
-image bounds( 0, 0, 0,0), shape("sharp"), colour(255, 65, 65), identchannel("block4")	; red
+image bounds( 0, 0, 0,0), shape("sharp"), colour( 65, 65,255), identchannel("block3")	; blue
+image bounds( 0, 0, 0,0), shape("sharp"), colour(255, 15, 15), identchannel("block4")	; red
 image bounds( 0, 0, 0,0), shape("sharp"), colour(255,100, 50), identchannel("block5")	; orange
 image bounds( 0, 0, 0,0), shape("sharp"), colour(155, 50,255), identchannel("block6")	; purple
 image bounds( 0, 0, 0,0), shape("sharp"), colour(  0,230,255), identchannel("block7")	; turquoise
+image bounds( 0, 0, 0,0), shape("sharp"), colour(255,  0,255), identchannel("block8")	; pink
+image bounds( 0, 0, 0,0), shape("sharp"), colour(155,155,155), identchannel("block9")	; grey
                                                              
 image bounds(0,0,0,0), shape("ellipse"), colour(255,230,220), identchannel("ball")	; ball
 
@@ -71,12 +73,13 @@ nchnls = 2
 0dbfs=1
 seed	0
 
+giNumBlocks		=	9
 giPanelWidth	=	610
 giPanelHeight	=	500
 giFloorDepth	=	35
 gisine	ftgen	0,0,131072,10,1
 gal,gar	init	0
-gkactive0,gkactive1,gkactive2,gkactive3,gkactive4,gkactive5,gkactive6,gkactive7	init	0	; used for polyphony control. Add further variables if additional blocks are needed. NB each block has its own polyphony control mechanism.
+gkactive0,gkactive1,gkactive2,gkactive3,gkactive4,gkactive5,gkactive6,gkactive7,gkactive8,gkactive9	init	0	; used for polyphony control. Add further variables if additional blocks are needed. NB each block has its own polyphony control mechanism.
 giGravAccel	=	2*ksmps						; Acceleration due to gravity
 giStopThreshold	=	1.2						; Speed threshold below which the current ball will be removed and a new ball will be thrown. Values from 1 to 5 are appropriate. Higher values for ball to be thrown quicker.
 giWallFloorAmp	=	0.2						; Amplitude of bounce sound effects off the walls and floor
@@ -94,11 +97,11 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
  kNBlocksDn	chnget	"NBlocksDn"			; read in widgets
  kNBlocksUp	chnget	"NBlocksUp"			;
  if trigger(kNBlocksDn,0.5,0)==1 then			; if 'down' button is triggered... 
-  gkNBlocks	limit	gkNBlocks-1,0,7			; increment counter up one step (within limits)
+  gkNBlocks	limit	gkNBlocks-1,0,giNumBlocks			; increment counter up one step (within limits)
   Smess		sprintfk	"text(%d)",gkNBlocks	; create message to change value indicator (a text label) 
   chnset	Smess,"NBlocksID"			; send message to widget
  elseif trigger(kNBlocksUp,0.5,0)==1 then		; do the same for  the 'up' counter button
-  gkNBlocks	limit	gkNBlocks+1,0,7
+  gkNBlocks	limit	gkNBlocks+1,0,giNumBlocks
   Smess		sprintfk	"text(%d)",gkNBlocks
   chnset	Smess,"NBlocksID"
  endif
@@ -172,6 +175,8 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
  $BLOCK(5)
  $BLOCK(6)
  $BLOCK(7)
+ $BLOCK(8)
+ $BLOCK(9)
  
  SKIP:
  
@@ -248,6 +253,8 @@ instr	2
   $CHECK_OBJECT_STRIKE(5)
   $CHECK_OBJECT_STRIKE(6)
   $CHECK_OBJECT_STRIKE(7)
+  $CHECK_OBJECT_STRIKE(8)
+  $CHECK_OBJECT_STRIKE(9)
   SKIP:				; Escape to here if finished checking for block collisions
   Smess	sprintfk	"bounds(%d,%d,%d,%d)",kx,ky,isize,isize
   chnset	Smess,Sid
@@ -328,6 +335,8 @@ $CLANG_INSTR(94'4)
 $CLANG_INSTR(95'5)
 $CLANG_INSTR(96'6)
 $CLANG_INSTR(97'7)
+$CLANG_INSTR(98'8)
+$CLANG_INSTR(99'9)
 
 
 

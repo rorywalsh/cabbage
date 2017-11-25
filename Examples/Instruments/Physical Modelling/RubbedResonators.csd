@@ -50,7 +50,7 @@ rslider  bounds(270, 25,60,60), text("Jit. Rate"), channel("JitRte"), colour("Ch
 ;RESONATORS
 groupbox bounds(340, 10,290, 90), text("Resonators"), fontcolour("white"), plant("resonators"){
 label    bounds( 15, 21,140, 12), text("Instrument"), fontcolour("white")
-combobox bounds( 15, 36,140, 25), channel("sound"), value(4), text("Single", "Dahina", "Banyan", "Xylophone", "Tibetan Bowl 180mm", "Spinel Sphere", "Pot Lid", "Red Cedar Wood Plate", "Tubular Bell", "Redwood Wood Plate", "Douglas Fir Wood Plate", "Uniform Wooden Bar", "Uniform Aluminium Bar", "Vibraphone 1", "Vibraphone 2", "Chladni Plates", "Tibetan Bowl 152mm", "Tibetan Bowl 140mm", "Wine Glass", "Small Handbell", "Albert Clock Bell", "Wood Block","Harmonic 10","Harmonic 20","Harmonic 30","Harmonic Odd 10","Harmonic Odd 20")
+combobox bounds( 15, 36,140, 25), channel("sound"), value(4), text("Single", "Dahina", "Banyan", "Xylophone", "Tibetan Bowl 180mm", "Spinel Sphere", "Pot Lid", "Red Cedar Wood Plate", "Tubular Bell", "Redwood Wood Plate", "Douglas Fir Wood Plate", "Uniform Wooden Bar", "Uniform Aluminium Bar", "Vibraphone 1", "Vibraphone 2", "Chladni Plates", "Tibetan Bowl 152mm", "Tibetan Bowl 140mm", "Wine Glass", "Small Handbell", "Albert Clock Bell", "Wood Block","Harmonic 10","Harmonic 20","Harmonic 30","Harmonic Odd 10","Harmonic Odd 20","Anvil")
 label    bounds( 11, 62,120, 12), text("Number of Partials:"), fontcolour("white")
 numberbox  bounds( 126, 62, 29, 13), channel("npartials"), range(1, 10000, 6, 1, 1)
 rslider  bounds(160, 25, 60, 60), text("Q"), colour("orange"), channel("Q"), range(1, 10000, 2000, 0.5)
@@ -67,7 +67,7 @@ rslider  bounds(100, 25, 60, 60), text("Compress"), colour("orange"), channel("c
 ;POLYPHONY                                        
 groupbox bounds(170,100,220, 90), text("Polyphony"), fontcolour("white"), plant("polyphony"){
 button   bounds(  8, 25, 84, 20), text("Polyphonic","Monophonic"), channel("monopoly"), value(0)
-hslider  bounds(  5, 43, 95, 38), colour("chocolate"), channel("GlissTime"), range(0.005, 5, 0.1, 0.25, 0.001)
+hslider  bounds(  5, 43, 95, 38), colour("chocolate"), channel("GlissTime"), range(0.005,20, 0.1, 0.5, 0.0001)
 label    bounds(  5, 74, 95, 12), text("Gliss Time")
 rslider  bounds( 95, 25, 60, 60), text("Poly.Limit"), channel("PolyLimit"), range(0, 20, 5,1,1), colour("chocolate")
 rslider  bounds(155, 25, 60, 60), text("Rel.Time"), channel("RelTim"), range(0.01, 5,0.2,0.5,0.01), colour("chocolate")
@@ -192,6 +192,28 @@ girtos26	ftgen	0,0,-10,-2,	1,3,5,7,9,11,13,15,17,19
 
 ;harmonic odd 20
 girtos27	ftgen	0,0,-20,-2,	1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
+
+;anvil
+girtos28	ftgen	0,0,-16,-2,	3690/5122,	3790/5122,	4710/5122,	5122/5122,	5295/5122,	5843/5122,	6595/5122,	7570/5122,	8590/5122,	9770/5122,	11370/5122,	11915/5122,	12700/5122,	14575/5122,	16780/5122,	17103/5122
+
+/*
+1	3690	-17
+2	3790	-21
+3	4710	-20
+4	5122	-23
+5	5295	-15
+6	5843	-18
+7	6595	-21
+8	7570	-18
+9	8590	-22
+10	9770	-17
+11	11370	-20
+12	11915	-30
+13	12700	-28
+14	14575	-30
+15	16780	-35                                   
+16	17103	-34
+*/
 
 seed	0			;random number generators seeded from the system clock
 gasend	init	0		;initialise the global audio send variable

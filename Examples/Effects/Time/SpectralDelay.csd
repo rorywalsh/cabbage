@@ -15,8 +15,8 @@
 ; Level			-	output level
 
 <Cabbage>
-form caption("") size(530,345), colour( 25, 30, 55), pluginID("SpDl")
-image     pos(0, 0), size(530,345), colour( 25, 30, 55), shape("rounded"), outlinecolour(125,130,155), outlinethickness(5) 
+form caption("") size(530,345), colour("black"), pluginID("SpDl")
+image     pos(0, 0), size(530,345), colour("black"), shape("rounded"), outlinecolour(125,130,155), outlinethickness(5) 
 ;line      bounds(15, 53, 610,  1), colour(150,150,150)
 
 label   bounds(  0,  1,530, 58), text("SPECTRAL DELAY"), fontcolour( 70, 50, 50)
@@ -24,23 +24,23 @@ label   bounds(  0,  4,530, 52), text("SPECTRAL DELAY"), fontcolour( 75, 95, 75)
 label   bounds(  0,  7,530, 46), text("SPECTRAL DELAY"), fontcolour(150,150,200)
 label   bounds(  0, 10,530, 40), text("SPECTRAL DELAY"), fontcolour(220,220,220)
 
-rslider bounds( 25, 60, 90,120), text("Max.Delay"), textbox(1), channel("MaxDelay"), range(0.1, 8, 1, 0.5), colour(200,200,180), trackercolour(200,200, 50)
+rslider bounds( 25, 60, 90,120), text("Max.Delay"), textbox(1), valuetextbox(1), channel("MaxDelay"), range(0.01, 8, 1, 0.5), colour(105,70,70), trackercolour(205,170,170)
 
 label    bounds(125, 65, 80, 14), text("FFT Size")
 combobox bounds(125, 80, 80, 20), text("64","128","256","512","1024","2048"), channel("FFTindex"), value(3)
 
-rslider  bounds(215, 60, 90,120), text("Feedback"), textbox(1), channel("Feedback"), range(0, 1, 0.85), colour(200,200,180), trackercolour(200,200, 50)
-rslider  bounds(315, 60, 90,120), text("Dry/Wet Mix"), textbox(1), channel("DryWetMix"), range(0, 1, 1), colour(200,200,180), trackercolour(200,200, 50)
-rslider  bounds(415, 60, 90,120), text("Level"), textbox(1), channel("Level"), range(0, 1, 0.5), colour(200,200,180), trackercolour(200,200, 50)
+rslider  bounds(215, 60, 90,120), text("Feedback"), textbox(1), valuetextbox(1), channel("Feedback"), range(0, 1, 0.85), colour(105,70,70), trackercolour(205,170,170)
+rslider  bounds(315, 60, 90,120), text("Dry/Wet Mix"), textbox(1), valuetextbox(1), channel("DryWetMix"), range(0, 1, 1), colour(105,70,70), trackercolour(205,170,170)
+rslider  bounds(415, 60, 90,120), text("Level"), textbox(1), valuetextbox(1), channel("Level"), range(0, 1, 0.5), colour(105,70,70), trackercolour(205,170,170)
 
 label    bounds( 20,193, 80, 14), text("Amp.Table")
-combobox bounds( 20,208, 80, 20), text("Hi to Lo","Lo to Hi","Random","Peak 1","Peak 2","Peak 3","Comb 1","Comb 2","Flat"), channel("AmpTable"), value(3)
-gentable bounds( 20,230,235, 90), identchannel("AmpTableID"), tablenumber(101), tablecolour("DarkBlue"), zoom(-1), tablebackgroundcolour(200,200,200), tablegridcolour(100,100,100)
+combobox bounds( 20,208, 80, 20), text("Hi to Lo","Lo to Hi","Random","Peak 1","Peak 2","Peak 3","Comb 1","Comb 2","Spring","Flat"), channel("AmpTable"), value(3)
+gentable bounds( 20,230,235, 90), identchannel("AmpTableID"), tablenumber(101), amprange(0,1,101), tablecolour("DarkBlue"), zoom(-1), tablebackgroundcolour(200,200,200), tablegridcolour(100,100,100)
 label    bounds( 20,322,235, 14), text("Amplitudes Table")
 
 label    bounds(275,193, 80, 14), text("Freq.Table")
-combobox bounds(275,208, 80, 20), text("Hi to Lo","Lo to Hi","Random","Peak 1","Peak 2","Peak 3","Comb 1","Comb 2","Flat"), channel("FrqTable"), value(7)
-gentable bounds(275,230,235, 90), identchannel("FrqTableID"), tablenumber(102), tablecolour("DarkGreen"), zoom(-1), tablebackgroundcolour(200,200,200), tablegridcolour(100,100,100)
+combobox bounds(275,208, 80, 20), text("Hi to Lo","Lo to Hi","Random","Peak 1","Peak 2","Peak 3","Comb 1","Comb 2","Spring","Flat"), channel("FrqTable"), value(7)
+gentable bounds(275,230,235, 90), identchannel("FrqTableID"), tablenumber(102), amprange(0,1,102), tablecolour("DarkGreen"), zoom(-1), tablebackgroundcolour(200,200,200), tablegridcolour(100,100,100)
 label    bounds(275,322,235, 14), text("Frequencies Table")
 
 </Cabbage>
@@ -71,7 +71,8 @@ giV5				ftgen			205,0,giViewTabSize,-16,0,abs(giViewTabSize)*0.125,-4,1,abs(giVi
 giV6				ftgen			206,0,giViewTabSize,-16,0,abs(giViewTabSize)*0.0125,-4,1,abs(giViewTabSize)*0.075,4,0	; Peak 3
 giV7				ftgen			207,0,giViewTabSize,-19,8,1*0.5,0,1*0.5										; Comb 1
 giV8				ftgen			208,0,giViewTabSize,-19,16,1*0.5,0,1*0.5									; Comb 2
-giV9				ftgen			209,0,giViewTabSize,-7,1,abs(giViewTabSize),1			; Flat
+giV9				ftgen			209,0,giViewTabSize,-7,0.9,abs(giViewTabSize),1			; Spring
+giV9				ftgen			210,0,giViewTabSize,-7,1,abs(giViewTabSize),1			; Flat
 
 instr	1
  ; read in widgets
@@ -97,7 +98,7 @@ instr	1
  RESTART:															; a label
  
  iFFT				=				iFFTsizes[i(kFFTindex)-1]		; retrieve FFT size value from array
- iMaxDelay			=				i(kMaxDelay)					; max.delay time must be i-rate
+ iMaxDelay			limit			i(kMaxDelay), iFFT/sr,8			; max.delay time must be i-rate
 
  iftamps1			ftgen			1,0,iFFT,-7,iMaxDelay,iFFT,0							; Hi to Lo
  iftamps2			ftgen			2,0,iFFT,-7,0,iFFT,iMaxDelay							; Lo to Hi
@@ -107,7 +108,8 @@ instr	1
  iftamps6			ftgen			6,0,iFFT,-16,0,iFFT*0.0125,-4,iMaxDelay,iFFT*0.075,4,0	; Peak 3
  iftamps7			ftgen			7,0,iFFT,-19,8,iMaxDelay*0.5,0,iMaxDelay*0.5			; Comb 1
  iftamps8			ftgen			8,0,iFFT,-19,16,iMaxDelay*0.5,0,iMaxDelay*0.5			; Comb 2
- iftamps9			ftgen			9,0,iFFT,-7,iFFT,iFFT,iFFT								; Flat
+ iftamps9			ftgen			9,0,iFFT,-7,iMaxDelay-(iMaxDelay*0.1),iFFT,iMaxDelay	; Spring
+ iftamps10			ftgen			10,0,iFFT,-7,iFFT,iFFT,iFFT								; Flat
  
  iftfrqs1			ftgen			51,0,iFFT,-7,iMaxDelay,iFFT,0							; Hi to Lo		
  iftfrqs2			ftgen			52,0,iFFT,-7,0,iFFT,iMaxDelay							; Lo to hi
@@ -117,7 +119,8 @@ instr	1
  iftfrqs6			ftgen			56,0,iFFT,-16,0,iFFT*0.0125,-4,iMaxDelay,iFFT*0.075,4,0	; Peak 3
  iftfrqs7			ftgen			57,0,iFFT,-19,8,iMaxDelay*0.5,0,iMaxDelay*0.5			; Comb 1
  iftfrqs8			ftgen			58,0,iFFT,-19,16,iMaxDelay*0.5,0,iMaxDelay*0.5			; Comb 2
- iftfrqs9			ftgen			59,0,iFFT,-7,iFFT,iFFT,iFFT								; Flat
+ iftfrqs9			ftgen			59,0,iFFT,-7,iMaxDelay-(iMaxDelay*0.1),iFFT,iMaxDelay	; Spring
+ iftfrqs10			ftgen			60,0,iFFT,-7,iFFT,iFFT,iFFT								; Flat
 
  					tablecopy		101,200+i(kAmpTable)
  					tablecopy		102,200+i(kFrqTable)

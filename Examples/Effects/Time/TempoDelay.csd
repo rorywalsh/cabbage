@@ -55,11 +55,11 @@ instr	1
 	 ktempo	limit	ktempo,40,500			;limit range of possible tempo values. i.e. a tempo of zero would result in a delay time of infinity.
 	endif
 
-	ktime	=	(60*kRhyMlt)/(ktempo*8)		;derive delay time. 8 in the denominator indicates that kRhyMult will be in demisemiquaver divisions
+	ktime	divz	(60*kRhyMlt),(ktempo*8),0.1		;derive delay time. 8 in the denominator indicates that kRhyMult will be in demisemiquaver divisions
 	atime	interp	ktime				;interpolate k-rate delay time to create an a-rate version which will give smoother results when tempo is modulated
-
+	
 	ainL,ainR	ins				;read stereo inputs
-
+	
 	if kDelType==0 then				;if 'simple' delay type is chosen...
 	 abuf	delayr	5
 	 atapL	deltap3	atime
@@ -86,7 +86,7 @@ instr	1
 	 ;right channel delay (note that 'atime' is doubled) 
 	 abuf	delayr	10
 	 atapR	deltap3	atime*2
-	 atapR	tone	atapR,kdamp
+	 atapR	tone	atapR,kdamp;		delayw	ainR+(atapR*kfback)
 		delayw	ainR+(atapR*kfback)
 	
 	 ;create width control. note that if width is zero the result is the same as 'simple' mode

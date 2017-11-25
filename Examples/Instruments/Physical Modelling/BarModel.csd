@@ -23,6 +23,8 @@
 ;                               emerges somewhere around E3 and above. This sub-partial is roughly 2 octaves + a minor 6th
 ;                               below the fundemental.
 ;				When 'Clamped-Free' is selected the fundemental partial is unaffected by 'Damping'. 
+; Keyboard Scaling  -    when active, damping, attack time, decay time and release times are influenced by the note played 
+;                           with higher notes attacking and decaying quicker, and therefore reflecting real-world physics.
 ; Decay			-	This is the time it will take for the amplitude to decay by 30dB from its initial level.
 ; HOLD (button)		-	If this is active, the value for decay will be a large number and the value of the slider will be ignored. 
 ;				This feature can be used to create 'sustained' notes but bear in mind that a note's ability
@@ -74,53 +76,56 @@
 
 <Cabbage>
 form caption("Bar Model"), size(955,340), pluginID("BaMo"), colour(0,0,0), guirefresh(128)
-combobox  bounds( 10, 15,150, 70), caption("Boundary Conditions"), channel("bc"), value(2), text("Clamped-Clamped","Clamped-Pivoted","Pivoted-Pivoted","Clamped-Free")
-rslider   bounds(160,  5, 80, 80), text("Decay"), channel("T30"), textBox(1), range(0.01,30,5.5,0.5,0.01), TrackerColour("yellow")
+label     bounds( 10, 15,150, 15), text("Boundary Conditions")
+combobox  bounds( 10, 32,150, 20), channel("bc"), value(2), text("Clamped-Clamped","Clamped-Pivoted","Pivoted-Pivoted","Clamped-Free")
+checkbox  bounds( 10, 70,150, 15), channel("KybdScal"), text("Keyboard Scaling") value(0)
+rslider   bounds(160,  5, 80, 80), text("Decay"), channel("T30"), valuetextbox(1), textbox(1), range(0.01,30,5.5,0.5,0.01), trackercolour("yellow")
 button    bounds(175, 90, 50, 15), text("HOLD","HOLD"), channel("T30_Hold"), fontcolour:0(30,30,30), fontcolour:1(255,255,100)
-rslider   bounds(220,  5, 80, 80), text("Release"), channel("rel"), textBox(1), range(0.01,30,5.5,0.5,0.01), TrackerColour("yellow")
-rslider   bounds(280,  5, 80, 80), text("Damping"), channel("b"), textBox(1), range(0, 9.999,0.4,0.5,0.001), TrackerColour("yellow")
-rslider   bounds(350,  5, 80, 80), text("Polyphony"), channel("PolyLimit"), textBox(1), range(0, 20,5,1,1), TrackerColour("yellow")
-;rslider   bounds(420,  5, 80, 80), text(""), channel(""), textBox(1), range(0, 1,0.5,1,0.001), TrackerColour("yellow")
-rslider   bounds(420,  5, 80, 80), text("Width"), channel("wid"), textBox(1), range(0.01, 1,0.5,1,0.01), TrackerColour("yellow")
+rslider   bounds(220,  5, 80, 80), text("Release"), channel("rel"), valuetextbox(1), textbox(1), range(0.01,30,5.5,0.5,0.01), trackercolour("yellow")
+rslider   bounds(280,  5, 80, 80), text("Damping"), channel("b"), valuetextbox(1), textbox(1), range(0, 9.999,0.4,0.5,0.001), trackercolour("yellow")
+rslider   bounds(350,  5, 80, 80), text("Polyphony"), channel("PolyLimit"), valuetextbox(1), textbox(1), range(0, 20,5,1,1), trackercolour("yellow")
+;rslider   bounds(420,  5, 80, 80), text(""), channel(""), valuetextbox(1), range(0, 1,0.5,1,0.001), trackercolour("yellow")
+rslider   bounds(420,  5, 80, 80), text("Width"), channel("wid"), valuetextbox(1), textbox(1), range(0.01, 1,0.5,1,0.01), trackercolour("yellow")
 ;line      bounds(505, 15, 90,  1)
 image     bounds(505, 15, 90,  1), colour(30,30,30), identchannel("AttackLine")
 label     bounds(525,  9, 50, 12), text("Attack"), colour(0,0,0), fontcolour(30,30,30), identchannel("AttackLabel")
-rslider   bounds(490, 25, 61, 61), text("Time"), channel("AttTim"), range(0,3,0,0.5,0.001), TrackerColour("yellow")
-rslider   bounds(550, 25, 61, 61), text("Amount"), channel("AttAmt"), range(0, 1, 0,1,0.001), TrackerColour("yellow")
-combobox  bounds(615, 15,140, 70), caption("Presets"), channel("preset"), value(1), text("Xylobar","Scan Envelope","Soft Sustain","Rhodes","Good Vibes","Bad Vibes","Hard Beater","Stacking Plates","Bowed Plank","Interference","Ride Cymbal","Tubular Bell", "Discord Bar")
+rslider   bounds(490, 25, 61, 61), text("Time"), channel("AttTim"), range(0,3,0,0.5,0.001), trackercolour("yellow")
+rslider   bounds(550, 25, 61, 61), text("Amount"), channel("AttAmt"), range(0, 1, 0,1,0.001), trackercolour("yellow")
+label     bounds(615, 15,150, 15), text("Presets")
+combobox  bounds(615, 32,140, 20), channel("preset"), value(1), text("Xylobar","Scan Envelope","Soft Sustain","Rhodes","Good Vibes","Bad Vibes","Hard Beater","Stacking Plates","Bowed Plank","Interference","Ride Cymbal","Tubular Bell", "Discord Bar")
 ;line      bounds(775, 15, 90,  1)
 image     bounds(775, 15, 90,  1), colour(30,30,30), identchannel("ReverbLine")
-label     bounds(795,  9, 50, 12), text("Reverb"), colour(0,0,0), fontcolour(30,30,30), identchannel(ReverbLabel)
-rslider   bounds(760, 25, 61, 61), text("Mix"), channel("RvbMix"), range(0, 1, 0,1,0.01), TrackerColour("yellow")
-rslider   bounds(820, 25, 61, 61), text("Size"), channel("RvbSize"), range(0.5,0.99,0.8,1,0.01), TrackerColour("yellow")
-rslider   bounds(870,  5, 80, 80), text("Level"), channel("OutAmp"), textBox(1), range(0,9.999,0.8,0.5,0.001), TrackerColour("yellow")
+label     bounds(795,  9, 50, 12), text("Reverb"), colour(0,0,0), fontcolour(30,30,30), identchannel("ReverbLabel")
+rslider   bounds(760, 25, 61, 61), text("Mix"), channel("RvbMix"), range(0, 1, 0,1,0.01), trackercolour("yellow")
+rslider   bounds(820, 25, 61, 61), text("Size"), channel("RvbSize"), range(0.5,0.99,0.8,1,0.01), trackercolour("yellow")
+rslider   bounds(870,  5, 80, 80), text("Level"), channel("OutAmp"), valuetextbox(1), textbox(1), range(0,9.999,0.8,0.5,0.001), trackercolour("yellow")
 
 groupbox  bounds(  5,115,400,140), text("Velocity Mappings"), colour(0,0,0,60), shape("sharp"), plant("VelocityMappings"){
 label     bounds(  5, 25,120, 10), text("Strike Position")
-gentable  bounds(  5, 37,120, 90), tablenumber(2), identchannel(table2), amprange(0,1,2), zoom(-1), tablecolour(turquoise), active(1)
+gentable  bounds(  5, 37,120, 90), tablenumber(2), identchannel(table2), amprange(0,1,2), zoom(-1), tablecolour(turquoise), active(1), fill(0)
 label     bounds(135, 25,120, 10), text("Tone")
-gentable  bounds(135, 37,120, 90), tablenumber(3), identchannel(table3), amprange(0,1,3), zoom(-1), tablecolour(turquoise), active(1)
+gentable  bounds(135, 37,120, 90), tablenumber(3), identchannel(table3), amprange(0,1,3), zoom(-1), tablecolour(turquoise), active(1), fill(0)
 label     bounds(265, 25,120, 10), text("Amplitude")
-gentable  bounds(265, 37,120, 90), tablenumber(4), identchannel(table4), amprange(0.01,1,4), zoom(-1), tablecolour(turquoise), active(1)
+gentable  bounds(265, 37,120, 90), tablenumber(4), identchannel(table4), amprange(0.01,1,4), zoom(-1), tablecolour(turquoise), active(1), fill(0)
 }
 
 ; MODULATION
 groupbox  bounds(410,115,540,140), text("Modulation"), colour(0,0,0,60), shape("sharp"), plant("modulation"){
-rslider   bounds(  5, 25, 80, 80), text("Mix"), channel("ScanMix"), textBox(1), range(0, 1, 0,1,0.001), TrackerColour("yellow")
-rslider   bounds( 65, 25, 80, 80), text("Rate"), channel("scan"), textBox(1), range(0, 1, 0.1,0.5,0.001), trackercolour("yellow")
+rslider   bounds(  5, 25, 80, 80), text("Mix"), channel("ScanMix"), valuetextbox(1), textbox(1), range(0, 1, 0,1,0.001), trackercolour("yellow")
+rslider   bounds( 65, 25, 80, 80), text("Rate"), channel("scan"), valuetextbox(1), textbox(1), range(0, 1, 0.1,0.5,0.001), trackercolour("yellow")
 button    bounds( 80,110, 50, 15), text("x 100","x 100"), channel("scan_x100"), fontcolour:0(30,30,30), fontcolour:1(255,255,100)
 label     bounds(150, 25,120, 10), text("Envelope")
-gentable  bounds(150, 37,120, 90), tablenumber(5), identchannel(table5), amprange(0.01,2,-1), zoom(-1), tablecolour(yellow), active(1)
-rslider   bounds(280, 25, 80, 80), text("Duration"), channel("ModEnvDur"), textBox(1), range(0.1, 10, 1,0.5,0.01), TrackerColour("yellow")
+gentable  bounds(150, 37,120, 90), tablenumber(5), identchannel(table5), amprange(0.01,2,-1), zoom(-1), tablecolour(yellow), active(1), fill(0)
+rslider   bounds(280, 25, 80, 80), text("Duration"), channel("ModEnvDur"), valuetextbox(1), textbox(1), range(0.1, 10, 1,0.5,0.01), trackercolour("yellow")
 line      bounds(365, 35, 90,  1)
 label     bounds(385, 29, 50, 12), text("Random"), colour(0,0,0)
-rslider   bounds(350, 45, 61, 61), text("Amount"), channel("RndModAmt"), range(0, 1, 0,1,0.001), TrackerColour("yellow")
-rslider   bounds(410, 45, 61, 61), text("Rate"), channel("RndModRte"), range(0.01,10,0.1,0.5,0.001), TrackerColour("yellow")
-rslider   bounds(460, 25, 80, 80), text("Panning"), channel("PanDepth"), textBox(1), range(0, 0.5, 0,1,0.001), TrackerColour("yellow")
+rslider   bounds(350, 45, 61, 61), text("Amount"), channel("RndModAmt"), range(0, 1, 0,1,0.001), trackercolour("yellow")
+rslider   bounds(410, 45, 61, 61), text("Rate"), channel("RndModRte"), range(0.01,10,0.1,0.5,0.001), trackercolour("yellow")
+rslider   bounds(460, 25, 80, 80), text("Panning"), channel("PanDepth"), valuetextbox(1), textbox(1), range(0, 0.5, 0,1,0.001), trackercolour("yellow")
 label bounds(440, 120,98,10),text("Iain McCurdy 2015")
 }
 
-keyboard bounds(  5,255,945, 80)
+keyboard bounds(4, 254, 945, 80) mouseoeverkeycolour(255, 255, 0, 128) 
 
 ;;TUNING
 ;image     bounds(  0,350,955,170), plant("tuning"), colour(0,0,0,0) {
@@ -129,7 +134,7 @@ keyboard bounds(  5,255,945, 80)
 ;button    bounds(160,  0,100, 15), text("ZERO","ZERO"), channel("ZeroOffset"), fontcolour:0(30,30,30), fontcolour:1(255,255,100), latched(0)
 ;numberbox bounds(160, 15,100, 70), caption("Offset"), channel("offset"), range(-100,100,0,1,0.01)
 ;checkbox  bounds(425, 15,100, 20), text("Test Tone"), channel("TestTone"), value(0)
-;hslider   bounds(425, 40,120, 15), channel("TestVol"), range(0, 0.2, 0.05, 0.5,0.001), TrackerColour("yellow")
+;hslider   bounds(425, 40,120, 15), channel("TestVol"), range(0, 0.2, 0.05, 0.5,0.001), trackercolour("yellow")
 ;csoundoutput bounds(545,0,400,170)
 ;}
 </Cabbage>
@@ -143,7 +148,7 @@ keyboard bounds(  5,255,945, 80)
 <CsInstruments>
 
 sr 		= 	44100
-ksmps 		= 	64
+ksmps 		= 	4
 nchnls 		= 	2
 0dbfs		=	1
 
@@ -189,7 +194,7 @@ endop
 ; barmodel demands a high kr for high quality results whenever kscan>0, therefore it is embedded in a UDO which can dictate its own kr
 opcode barmodel_ksmps,a,iiiikiiii
  ibcL, ibcR, iK, ib, kscan, iT30, ipos, iStrk, iwid	xin
- setksmps	4		; experiment with this value. Powers of 2 closer to 1 will result in higher quality results at the expense of CPU
+ setksmps	1		; experiment with this value. Powers of 2 closer to 1 will result in higher quality results at the expense of CPU
  asig 	barmodel 	ibcL, ibcR, iK, ib,     kscan, iT30, ipos, iStrk, iwid 
  	xout		asig
 endop
@@ -220,6 +225,7 @@ instr	1	; always on instrument. Read in widgets that will be used as global vari
  gkRvbSize	chnget	"RvbSize"
  gkDry		limit	(1-gkRvbMix)*2,0,1
  gkWet		limit	gkRvbMix*2,0,1
+ gkKybdScal chnget  "KybdScal"
  
 ; ; TUNING
 ; ; TEST TONE
@@ -314,10 +320,13 @@ instr	3	; Sound producing instrument. Triggered from instrument 2.
 ; 	chnset	inote,"note"			; (used for diagnostics and tuning)
 ; gknote	init	inote			; (used for diagnostics and tuning)
 
+ iDurRatio  =       i(gkKybdScal) == 1 ? cpsmidinn(60)/cpsmidinn(inote) : 1     ; turn on or off keyboard scaling
  
- ib		chnget	"b"			; damping
+ ib		    chnget	"b"			    ; damping
+ ib         /=      iDurRatio
  irel		chnget	"rel"			; release time
  iT30		chnget	"T30"			; 30dB decay time
+ iT30       *=      iDurRatio
  iT30_Hold	chnget	"T30_Hold"		; over-ride decay slider value (HOLD button)
  iT30		=	iT30_Hold == 1 ? 3600 : iT30	; if 'HOLD' button is active set T30 value to 3600 and ignore slider value
  ibc		chnget	"bc"			; boundary conditions selection (1,2,3 or 4)
@@ -388,14 +397,14 @@ instr	3	; Sound producing instrument. Triggered from instrument 2.
  iAttTim	chnget	"AttTim"		; attack time
  aatt	init	1
  if iAttTim>0 then				; only create attack envelope if 'Time' is greater than zero 
-  aatt	linseg		1-iAttAmt,iAttTim,1
+  aatt	linseg		1-iAttAmt,iAttTim*iDurRatio,1
  endif
  asig	=	asig * aatt * gkOutAmp
 
  ; AMPLITUDE RELEASE ENVELOPE
  arel	init	1
  if kactive==0 then			; if the midi key that started this note has been released...
-  arel	transeg	1,irel,-4,0		; create a release envelope
+  arel	transeg	1,irel*iDurRatio,-4,0		; create a release envelope
   asig	=	asig * arel		; apply envelope
  endif
  kOffTrig	trigger	kactive,0.5,1	; sense when note key has been released
@@ -655,14 +664,14 @@ instr	99
 		chnset	1, "bc"
 		chnset	3.0, "T30"
 		chnset	0, "T30_Hold"
-		chnset	3.0, "rel"
+		chnset	3.00, "rel"
    		chnset	0.365, "b"
 		chnset	4, "PolyLimit"
 		chnset	0.47 ,"wid"
 		chnset  0, "AttTim"
 		chnset  0, "AttAmt"
-		chnset	0.25, "RvbMix"
-		chnset	0.65, "RvbSize"
+		chnset	0, "RvbMix"
+		chnset	0.25, "RvbSize"
 		chnset	1.8, "OutAmp"
    		chnset	0,"ScanMix"
    		chnset	0.01,"scan"

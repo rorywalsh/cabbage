@@ -119,7 +119,7 @@ public:
         return loopLength * sampleRate;
     }
 
-    void setColour (Colour col) { colour = col; repaint();    }
+    void setColour (Colour col) { tableColour = col; repaint();    }
     void setScrubberPos (double pos);
 
     float timeToX (const double time) const
@@ -262,7 +262,7 @@ private:
     Image waveformImage;
     AudioThumbnailCache thumbnailCache;
     ScopedPointer<AudioThumbnail> thumbnail;
-    Colour colour, fontcolour;
+    Colour tableColour, fontcolour;
     int mouseDownX, mouseUpX;
     juce::Rectangle<int> localBounds;
     double loopLength;

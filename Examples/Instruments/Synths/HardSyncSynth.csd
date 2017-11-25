@@ -9,7 +9,7 @@
 ; This action can naturally induce discontinuities in the audio output and in the digital domain this is liable to cause aliasing.
 ; To prevent this the slave oscillator audio output needs to be amplitude enveloped using a window function in order to ramp is down to zero whenever a resync. occurs.
 ; This window function is therefore cycled using the phase pointer of the master oscillator.
-
+z
 ; Controls
 ; --------
 ; Waveform	-	waveform used by the slave oscillator
@@ -54,6 +54,7 @@
 ; Rate		-	rate of the LFO
 ; Delay		-	time delay before LFO begins to have an influence
 ; Rise		-	time it takes the LFO to rise to maximum amplitude
+; MONO/POLY	-	sets whether a single LFO is used for all notes played (MONO) or whether each note get its own LFO
 
 <Cabbage>
 form caption("Hard Sync Synth") size(1175, 325), pluginID("HdSy")
@@ -72,26 +73,26 @@ image    bounds(145,  0,235,115), plant("voice2"), colour(0,0,0,0), outlinecolou
 label    bounds(  0,  3,235, 12), text("V o i c e    2")
 checkbox bounds( 10, 25,100, 15), text("On/Off"), channel("Voice2OnOff"), value(1)
 rslider  bounds( 20, 47, 60, 60), channel("V2Lev"), text("Level"), range(0,1,1)
-rslider  bounds( 75, 15, 90, 90), channel("SubSemis"), text("Semitones"), textbox(1), range(-24,24,-24,1,1)
-rslider  bounds(145, 15, 90, 90), channel("SubCents"), text("Cents"), textbox(1), range(-100,100,0,1,1)
-}
+rslider  bounds( 75, 15, 90, 90), channel("SubSemis"), text("Semitones"), valuetextbox(1), textbox(1), range(-24,24,-24,1,1)
+rslider  bounds(145, 15, 90, 90), channel("SubCents"), text("Cents"), valuetextbox(1), textbox(1), range(-100,100,0,1,1)
+}                                                                                       
 
 ; amplitude envelope
 image    bounds(385,  0,300,115), plant("AmpEnvelope"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
 {
 label   bounds(  0,  3,300, 12), text("A m p l i t u d e    E n v e l o p e")
-rslider bounds(  0,  15,90,90), channel("AAtt"), text("Attack"), textbox(1), range(0,8,0.05,0.5,0.001)
-rslider bounds( 70,  15,90,90), channel("ADec"), text("Decay"), textbox(1), range(0,8,0.5,0.5,0.001)
-rslider bounds(140,  15,90,90), channel("ASus"), text("Sustain"), textbox(1), range(0,1,1,1,0.01)
-rslider bounds(210,  15,90,90), channel("ARel"), text("Release"), textbox(1), range(0,8,5,0.5,0.001)
+rslider bounds(  0,  15,90,90), channel("AAtt"), text("Attack"),  valuetextbox(1), textbox(1), range(0,8,0.05,0.5,0.001)
+rslider bounds( 70,  15,90,90), channel("ADec"), text("Decay"),   valuetextbox(1), textbox(1), range(0,8,0.5,0.5,0.001)
+rslider bounds(140,  15,90,90), channel("ASus"), text("Sustain"), valuetextbox(1), textbox(1), range(0,1,1,1,0.01)
+rslider bounds(210,  15,90,90), channel("ARel"), text("Release"), valuetextbox(1), textbox(1), range(0,8,5,0.5,0.001)
 }
 
 ; mixer
 image    bounds(690,  0,160,115), plant("AmpEnvelope"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
 {
 label    bounds(  0,  3,160, 12), text("M i x e r")
-rslider  bounds(  0, 15,90,90), channel("Vel"), text("Velocity"), textbox(1), range(0,1,0.5,0.5,0.001)
-rslider  bounds( 70, 15,90,90), channel("Lev"), text("Level"), textbox(1), range(0,1,0.05,0.5,0.001)
+rslider  bounds(  0, 15,90,90), channel("Vel"), text("Velocity"), valuetextbox(1), textbox(1), range(0,1,0.5,0.5,0.001)
+rslider  bounds( 70, 15,90,90), channel("Lev"), text("Level"),    valuetextbox(1), textbox(1), range(0,1,0.05,0.5,0.001)
 }
 
 ; presets
@@ -104,31 +105,24 @@ combobox   bounds( 10, 35, 60, 18), channel("preset"), value(1), text("1", "2", 
 image    bounds(940,  0,230,115), plant("StereoProcessing"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
 {
 label    bounds(  0,  3,230, 12), text("R e v e r b")
-rslider bounds(  0,  15,90,90), channel("StMix"), text("Width"), textbox(1), range(0,1,1)
-
-rslider bounds( 70,  15,90,90), channel("RvbMix"), text("Rvb.Mix"), textbox(1), range(0,1,0.2)
-rslider bounds(140,  15,90,90), channel("RvbSize"), text("Rvb.Size"), textbox(1), range(0,1,0.8)
-;rslider bounds(210,  15,90,90), channel("RvbCF"), text("Damping"), textbox(1), range(100,15000,8000,0.5,1)
-
-;rslider bounds( 70,  15,90,90), channel("StDep"), text("Depth"), textbox(1), range(0,1,1)
-;rslider bounds(140,  15,90,90), channel("StRte"), text("Rate"), textbox(1), range(0.001,9.999,0.1,0.5)
-;rslider bounds(210,  15,90,90), channel("StWid"), text("Width"), textbox(1), range(0,1,1)
-
+rslider bounds(  0,  15,90,90), channel("StMix"), text("Width"),      valuetextbox(1), textbox(1), range(0,1,1)
+rslider bounds( 70,  15,90,90), channel("RvbMix"), text("Rvb.Mix"),   valuetextbox(1), textbox(1), range(0,1,0.2)
+rslider bounds(140,  15,90,90), channel("RvbSize"), text("Rvb.Size"), valuetextbox(1), textbox(1), range(0,1,0.8)
 }
 
 ; sync trigger envelope
 image   bounds(  5,120,740,115), plant("SyncEnvelope"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
 {
 label   bounds(  0,  3,740, 12), text("S y n c .    T r i g g e r    E n v e l o p e")
-rslider bounds(  0, 15, 90, 90), channel("Attack"), text("Attack"), textbox(1), range(0,8,2,0.5,0.001)
-rslider bounds( 70, 15, 90, 90), channel("Decay"), text("Decay"), textbox(1), range(0,8,5,0.5,0.001)
-rslider bounds(140, 15, 90, 90), channel("Sustain"), text("Sustain"), textbox(1), range(0,1,1,1,0.01)
-rslider bounds(210, 15, 90, 90), channel("Release"), text("Release"), textbox(1), range(0,8,5,0.5,0.001)
-rslider bounds(280, 15, 90, 90), channel("Minimum"), text("Minimum"), textbox(1), range(-8, 4,-0.6,1,0.01)
-rslider bounds(350, 15, 90, 90), channel("Maximum"), text("Maximum"), textbox(1), range(-8, 4,-0.7,1,0.01)
+rslider bounds(  0, 15, 90, 90), channel("Attack"), text("Attack"),   valuetextbox(1), textbox(1), range(0,8,2,0.5,0.001)
+rslider bounds( 70, 15, 90, 90), channel("Decay"), text("Decay"),     valuetextbox(1), textbox(1), range(0,8,5,0.5,0.001)
+rslider bounds(140, 15, 90, 90), channel("Sustain"), text("Sustain"), valuetextbox(1), textbox(1), range(0,1,1,1,0.01)
+rslider bounds(210, 15, 90, 90), channel("Release"), text("Release"), valuetextbox(1), textbox(1), range(0,8,5,0.5,0.001)
+rslider bounds(280, 15, 90, 90), channel("Minimum"), text("Minimum"), valuetextbox(1), textbox(1), range(-8, 4,-0.6,1,0.01)
+rslider bounds(350, 15, 90, 90), channel("Maximum"), text("Maximum"), valuetextbox(1), textbox(1), range(-8, 4,-0.7,1,0.01)
 label   bounds(440, 30,215, 14), text("Env<-->Man")
-hslider bounds(440, 30,215, 60), channel("SyncEnvMan"), range(0,1,0)		;, textbox(1), text("Env<>Man")
-rslider bounds(650, 15, 90, 90), channel("SyncRate"), text("Manual"), textbox(1), range(1,4000,440,0.5,0.1)
+hslider bounds(440, 30,215, 60), channel("SyncEnvMan"), range(0,1,0)		;, valuetextbox(1), text("Env<>Man")
+rslider bounds(650, 15, 90, 90), channel("SyncRate"), text("Manual"), valuetextbox(1), textbox(1), range(1,4000,440,0.5,0.1)
 }
 
 ; sync trigger lfo
@@ -137,10 +131,12 @@ image    bounds(750,120,420,115), plant("SyncLFO"), colour(0,0,0,0), outlinecolo
 label    bounds(  0,  3,420, 12), text("S y n c    T r i g g e r    L F O")
 combobox bounds(  5, 30, 80, 20), channel("LFO_Shape"), text("Sine","Triangle","Square","Saw-up","Saw-Down","Random"), value(2)
 gentable bounds( 85, 30, 40, 20), tablenumber(2000), identchannel("LFO_Shape_ID"), zoom(-1), amprange(2000,-1,1)
-rslider  bounds(120, 15, 90, 90), channel("LFO_Depth"), text("Depth"), textbox(1), range(0,4,2,0.5,0.01)
-rslider  bounds(190, 15, 90, 90), channel("LFO_Rate"), text("Rate"), textbox(1), range(0,99,0.07,0.5,0.01)
-rslider  bounds(260, 15, 90, 90), channel("LFO_Delay"), text("Delay"), textbox(1), range(0,8,0,0.5,0.01)
-rslider  bounds(330, 15, 90, 90), channel("LFO_Rise"), text("Rise"), textbox(1), range(0,8,0,0.5,0.01)
+button   bounds( 35, 60, 50, 16), channel("MONO_LFO"), text("MONO","MONO"), colour:0(0,0,0), colour:1(200,200, 0), fontcolour:0(80,80,80), fontcolour:1(255,255,255), radiogroup(1)
+button   bounds( 35, 76, 50, 16), channel("POLY_LFO"), text("POLY","POLY"), colour:0(0,0,0), colour:1(200,200, 0), fontcolour:0(80,80,80), fontcolour:1(255,255,255), radiogroup(1), value(1)
+rslider  bounds(120, 15, 90, 90), channel("LFO_Depth"), text("Depth"), valuetextbox(1), textbox(1), range(0,4,2,0.5,0.01)
+rslider  bounds(190, 15, 90, 90), channel("LFO_Rate"), text("Rate"),   valuetextbox(1), textbox(1), range(0,99,0.07,0.5,0.01)
+rslider  bounds(260, 15, 90, 90), channel("LFO_Delay"), text("Delay"), valuetextbox(1), textbox(1), range(0,8,0,0.5,0.01)
+rslider  bounds(330, 15, 90, 90), channel("LFO_Rise"), text("Rise"),   valuetextbox(1), textbox(1), range(0,8,0,0.5,0.01)
 }
 
 keyboard bounds(5,240,1165,80)
@@ -150,7 +146,7 @@ keyboard bounds(5,240,1165,80)
 <CsoundSynthesizer>
 
 <CsOptions>
--n -+rtmidi=NULL -M0
+-n -+rtmidi=NULL -M0 -dm0
 ; -m0d
 </CsOptions>
 
@@ -182,7 +178,7 @@ imaxh	=  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
 ifn	ftgen	4000+icount,0,4097,-30,gitri,1,imaxh
 	loop_le	icount,1,127,loop1
 
-	; 127 band limited squares
+; 127 band limited squares
 gisquare	ftgen	0, 0, 4097, 10, 7, 1, 2048, 1, 0, -1, 2048, -1					; Square
 icount	=	0
 loop2:
@@ -190,7 +186,7 @@ imaxh	=  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
 ifn	ftgen	5000+icount,0,4097,-30,gisquare,1,imaxh
 	loop_le	icount,1,127,loop2
 
-	; 127 band limited saws
+; 127 band limited saws
 gisaw		ftgen	0, 0, 4097, 7, 1, 4096, -1   									; Sawtooth
 icount	=	0
 loop3:
@@ -198,7 +194,7 @@ imaxh	=  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
 ifn	ftgen	6000+icount,0,4097,-30,gisaw,1,imaxh
 	loop_le	icount,1,127,loop3
 
-	; 127 band limited pulses
+; 127 band limited pulses
 gipulse		ftgen	0, 0, 4097, 7, 1, 128, 1, 0, 0, 4096-128, 0				  		; Pulse
 icount	=	0
 loop4:
@@ -240,7 +236,7 @@ instr	1
  kSubSemis			chnget	"SubSemis"
  kSubCents			chnget	"SubCents"
  gkSubTrans			=		semitone(kSubSemis)*cent(kSubCents)
- gkSyncLFO_Shape	chnget	"SyncLFO_Shape"
+ gkLFO_Shape		chnget	"LFO_Shape"
  gkLFO_Depth		chnget	"LFO_Depth"
  gkLFO_Rate			chnget	"LFO_Rate"
  gkLFO_Delay		chnget	"LFO_Delay"
@@ -248,7 +244,23 @@ instr	1
  gkV2Lev			chnget	"V2Lev"
  gkVel				chnget	"Vel"
  gkLev				chnget	"Lev"
- 
+ gkMONO_LFO			chnget	"MONO_LFO"
+ if gkMONO_LFO==1 then
+  if gkLFO_Shape==1 then
+   gaLFO	poscil	gkLFO_Depth,gkLFO_Rate										; sine
+  elseif gkLFO_Shape==2 then
+   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,1									; triangle
+  elseif gkLFO_Shape==3 then
+   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,2									; bipolar square
+  elseif gkLFO_Shape==4 then 
+   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,4									; saw up
+  elseif gkLFO_Shape==5 then
+   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,5									; saw down
+  elseif gkLFO_Shape==6 then
+   gaLFO	rspline	-gkLFO_Depth,gkLFO_Depth,gkLFO_Rate,gkLFO_Rate*2	; random
+  endif
+ endif
+   
  ; update view of main waveform
  gkWaveform			chnget	"Waveform"
  if changed(gkWaveform)==1 then
@@ -341,22 +353,24 @@ instr	2	; MIDI triggered instrument
  acps		=		icps * octave(a(kcps))
 
  acps	ntrpol	acps,a(gkSyncRate),gkSyncEnvMan
- 
  ; sync trigger LFO
- kLFO_Env	linseg	0.001,i(gkLFO_Delay)+0.0001,0.001,i(gkLFO_Rise)+0.0001,1-0.001	; lfo envelope
- kLFO_Env	+=		-0.001
- if gkLFO_Shape==1 then
-  aLFO	poscil	gkLFO_Depth*kLFO_Env,gkLFO_Rate										; sine
- elseif gkLFO_Shape==2 then
-  aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,1									; triangle
- elseif gkLFO_Shape==3 then
-  aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,2									; bipolar square
- elseif gkLFO_Shape==4 then 
-  aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,4									; saw up
- elseif gkLFO_Shape==5 then
-  aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,5									; saw down
- elseif gkLFO_Shape==6 then
-  aLFO	rspline	-gkLFO_Depth*kLFO_Env,gkLFO_Depth*kLFO_Env,gkLFO_Rate,gkLFO_Rate*2	; random
+ kLFO_Env	linseg	0, i(gkLFO_Delay)+0.001, 0, i(gkLFO_Rise)+0.001, 1				; lfo envelope
+ if i(gkMONO_LFO)==0 then
+  if i(gkLFO_Shape)==1 then
+   aLFO	poscil	gkLFO_Depth*kLFO_Env,gkLFO_Rate										; sine
+  elseif i(gkLFO_Shape)==2 then
+   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,1									; triangle
+  elseif i(gkLFO_Shape)==3 then
+   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,2									; bipolar square
+  elseif i(gkLFO_Shape)==4 then 
+   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,4									; saw up
+  elseif i(gkLFO_Shape)==5 then
+   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,5									; saw down
+  elseif i(gkLFO_Shape)==6 then
+   aLFO	rspline	-gkLFO_Depth*kLFO_Env,gkLFO_Depth*kLFO_Env,gkLFO_Rate,gkLFO_Rate*2	; random
+  endif
+ else
+   aLFO	=	gaLFO * kLFO_Env
  endif
  acps	*=	octave(aLFO)
  
@@ -376,7 +390,7 @@ instr	2	; MIDI triggered instrument
  asig	buthp	asig,icps
  asig	buthp	asig,icps
  asig	*=		aWndw
- 
+
  ; voice 2
  if gkVoice2OnOff==1 then
   aPhaseMast,aSyncMast 	syncphasor icps*gkSubTrans, a(0)
@@ -393,7 +407,7 @@ instr	2	; MIDI triggered instrument
  ; amplitude envelope
  ; sync trigger envelope
  iAAtt	chnget	"AAtt"
- iADec	chnget	"ADec"
+ iADec	chnget	"ADec"                                        
  iASus	chnget	"ASus"
  iARel	chnget	"ARel"
  kEnv	linsegr	0,    iAAtt+0.0001,1,    iADec+0.0001,iASus,      iARel+0.0001,0

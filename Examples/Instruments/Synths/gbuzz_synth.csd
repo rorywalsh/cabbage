@@ -15,18 +15,18 @@ rslider  bounds(300, 23, 62, 62), text("Pan"),    colour(SlateGrey) channel("pan
 label    bounds(368, 19, 55, 11), text("Waveform"), fontcolour(white)
 combobox bounds(365, 30, 60, 18), channel("waveform"), value(3), text("cosine", "sine", "user")
 label    bounds(368, 52, 60, 11), text("User Matrix"), fontcolour(white)
-checkbox bounds(368, 63, 10, 10), channel("part1"), FontColour(white), colour("lime"), value(1)
-checkbox bounds(378, 63, 10, 10), channel("part2"), FontColour(white), colour("lime"), value(0)
-checkbox bounds(388, 63, 10, 10), channel("part3"), FontColour(white), colour("lime"), value(1)
-checkbox bounds(398, 63, 10, 10), channel("part4"), FontColour(white), colour("lime"), value(0)
-checkbox bounds(408, 63, 10, 10), channel("part5"), FontColour(white), colour("lime"), value(0)
-checkbox bounds(418, 63, 10, 10), channel("part6"), FontColour(white), colour("lime"), value(0)
-checkbox bounds(368, 73, 10, 10), channel("part7"), FontColour(white), colour("lime"), value(1)
-checkbox bounds(378, 73, 10, 10), channel("part8"), FontColour(white), colour("lime"), value(0)
-checkbox bounds(388, 73, 10, 10), channel("part9"), FontColour(white), colour("lime"), value(0)
-checkbox bounds(398, 73, 10, 10), channel("part10"), FontColour(white), colour("lime"), value(1)
-checkbox bounds(408, 73, 10, 10), channel("part11"), FontColour(white), colour("lime"), value(1)
-checkbox bounds(418, 73, 10, 10), channel("part12"), FontColour(white), colour("lime"), value(0)
+checkbox bounds(368, 63, 10, 10), channel("part1"), fontcolour(white), colour("lime"), value(1)
+checkbox bounds(378, 63, 10, 10), channel("part2"), fontcolour(white), colour("lime"), value(0)
+checkbox bounds(388, 63, 10, 10), channel("part3"), fontcolour(white), colour("lime"), value(1)
+checkbox bounds(398, 63, 10, 10), channel("part4"), fontcolour(white), colour("lime"), value(0)
+checkbox bounds(408, 63, 10, 10), channel("part5"), fontcolour(white), colour("lime"), value(0)
+checkbox bounds(418, 63, 10, 10), channel("part6"), fontcolour(white), colour("lime"), value(0)
+checkbox bounds(368, 73, 10, 10), channel("part7"), fontcolour(white), colour("lime"), value(1)
+checkbox bounds(378, 73, 10, 10), channel("part8"), fontcolour(white), colour("lime"), value(0)
+checkbox bounds(388, 73, 10, 10), channel("part9"), fontcolour(white), colour("lime"), value(0)
+checkbox bounds(398, 73, 10, 10), channel("part10"), fontcolour(white), colour("lime"), value(1)
+checkbox bounds(408, 73, 10, 10), channel("part11"), fontcolour(white), colour("lime"), value(1)
+checkbox bounds(418, 73, 10, 10), channel("part12"), fontcolour(white), colour("lime"), value(0)
 rslider  bounds(430, 23, 62, 62), text("Octave"),    colour(SlateGrey) channel("octave"),range(-8, 8, -4,1,1), textcolour(white)
 }              
 
@@ -59,14 +59,14 @@ rslider  bounds(240, 23, 62, 62), text("Rel"),  colour(SlateGrey) channel("MRel"
 
 ;LOW CUT                                                                  
 image    bounds(320,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("lowcut"){	;Low Cut
-checkbox bounds( 30,  6, 70, 12), text("Low Cut") channel("LowCutOnOff"), FontColour(white), colour("lime")
+checkbox bounds( 30,  6, 70, 12), text("Low Cut") channel("LowCutOnOff"), fontcolour(white), colour("lime")
 rslider  bounds(  0, 23, 62, 62), text("Low Cut"),   colour(SlateGrey) channel("LowCut"),   range(0, 30.00, 0,1,0.0011), textcolour(white)
 rslider  bounds( 60, 23, 62, 62), text("Lo Poles"),  colour(SlateGrey) channel("LowPoles"), range(2, 30, 2,1,1),         textcolour(white)
 }
 
 ;HIGH CUT
 image    bounds(450,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("highcut"){	;High Cut
-checkbox bounds( 28,  6, 70, 12), text("High Cut") channel("HighCutOnOff"), FontColour(white), colour("lime"), value(1)
+checkbox bounds( 28,  6, 70, 12), text("High Cut") channel("HighCutOnOff"), fontcolour(white), colour("lime"), value(1)
 rslider  bounds(  2, 23, 62, 62), text("High Cut"),  colour(SlateGrey) channel("HighCut"),   range(1, 100.00, 7,0.25,0.0001), textcolour(white)
 rslider  bounds( 62, 23, 62, 62), text("Hi Poles"),  colour(SlateGrey) channel("HighPoles"), range(2, 30, 8,1,1),             textcolour(white)
 }

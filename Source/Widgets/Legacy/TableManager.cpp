@@ -353,6 +353,7 @@ void TableManager::resized()
         shouldShowTableButtons = false;
 
     mainFooterHeight = (shouldShowZoomButtons == true ? 25 : 0);
+    int ySpacing, yPos = 0, height;
 
     for (int i = 0; i < tableConfigList.size(); i++)
     {
@@ -360,7 +361,7 @@ void TableManager::resized()
             for (int y = 0; y < tableConfigList[i].size(); y++)
             {
                 int tableNumber = tableConfigList[i].getArray()->getReference (y);
-                int ySpacing, yPos = 0, height;
+
 
                 //if not the bottom table..
                 if (getTableFromFtNumber (tableNumber) != nullptr)
@@ -600,8 +601,8 @@ GenTable::~GenTable()
 void GenTable::addTable (int sr, const Colour col, int igen, var ampRange)
 {
     sampleRate = sr;
-    colour = col;
-    currentPositionMarker->setFill (colour.brighter());
+    tableColour = col;
+    currentPositionMarker->setFill (tableColour.brighter());
     genRoutine = abs (igen);
     handleViewer->handleViewerGen = igen;
     realGenRoutine = igen;
@@ -876,13 +877,13 @@ void GenTable::enableEditMode (StringArray m_pFields)
         {
             float pFieldAmpValue = (normalised < 0 ? pFields[5].getFloatValue() : pFields[5].getFloatValue() / pFieldMinMax.getEnd());
             const float amp = ampToPixel (thumbHeight, minMax, pFieldAmpValue);
-            handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->colour);
+            handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->tableColour);
 
             for (int i = 6; i < pFields.size(); i += 2)
             {
                 xPos = xPos + pFields[i].getFloatValue();
                 pFieldAmpValue = (normalised < 0 ? pFields[i + 1].getFloatValue() : pFields[i + 1].getFloatValue() / pFieldMinMax.getEnd());
-                handleViewer->addHandle (xPos / (double)waveformBuffer.size(), ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->colour);
+                handleViewer->addHandle (xPos / (double)waveformBuffer.size(), ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->tableColour);
             }
 
             handleViewer->fixEdgePoints (genRoutine);
@@ -890,14 +891,14 @@ void GenTable::enableEditMode (StringArray m_pFields)
         else if (genRoutine == 2)
         {
             float pFieldAmpValue = (normalised < 0 ? pFields[5].getFloatValue() : pFields[5].getFloatValue() / pFieldMinMax.getEnd());
-            handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->colour, pFieldAmpValue == 1 ? true : false);
+            handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, pFieldAmpValue == 1 ? true : false);
 
             for (double i = 6; i < pFields.size(); i++)
             {
                 pfieldCount++;
                 xPos = (i - 5.0) / (double (tableSize)) * tableSize;
                 pFieldAmpValue = (normalised < 0 ? pFields[i].getFloatValue() : pFields[i].getFloatValue() / pFieldMinMax.getEnd());
-                handleViewer->addHandle (xPos / tableSize, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->colour, pFieldAmpValue == 1 ? true : false);
+                handleViewer->addHandle (xPos / tableSize, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, pFieldAmpValue == 1 ? true : false);
             }
 
             //initialise all remaining points in the table if user hasn't
@@ -905,7 +906,7 @@ void GenTable::enableEditMode (StringArray m_pFields)
             {
                 xPos = (i + 1) / (double (tableSize)) * tableSize;
                 pFieldAmpValue = pFieldMinMax.getEnd();
-                handleViewer->addHandle (xPos / tableSize, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->colour, false);
+                handleViewer->addHandle (xPos / tableSize, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, false);
             }
 
             handleViewer->fixEdgePoints (genRoutine);
@@ -964,9 +965,7 @@ const Image GenTable::drawGridImage (bool redraw, double width, double height, d
         Image gridImage (Image::RGB, width, height, true);
         Graphics g (gridImage);
         const double widthOfGridElement = width / waveformBuffer.size();
-
-
-
+        //g.fillAll(Colours::transparentBlack);
         //g.setColour(Colours::red);
         //draw grid image
         for (double i = 0; i < waveformBuffer.size(); i++)
@@ -974,7 +973,7 @@ const Image GenTable::drawGridImage (bool redraw, double width, double height, d
             g.drawImageAt (CabbageLookAndFeel2::drawToggleImage (widthOfGridElement - 3.f,
                                                                  height,
                                                                  (waveformBuffer[i] > 0.0 ? true : false),
-                                                                 colour,
+                                                                 (waveformBuffer[i] > 0.0 ? tableColour : backgroundColour),
                                                                  true,
                                                                  4.f),
                            i * (widthOfGridElement) + 2,
@@ -1100,9 +1099,9 @@ void GenTable::paint (Graphics& g)
     //if gen01 then use an audio thumbnail class
     if (genRoutine == 1 || waveformBuffer.size() > MAX_TABLE_SIZE)
     {
-        g.setColour (colour);
+        g.setColour (tableColour);
         thumbnail->drawChannels (g, thumbArea.reduced (2), visibleRange.getStart(), visibleRange.getEnd(), .8f);
-        g.setColour (colour.contrasting (.5f).withAlpha (.7f));
+        g.setColour (tableColour.contrasting (.5f).withAlpha (.7f));
         float zoomFactor = thumbnail->getTotalLength() / visibleRange.getLength();
         regionWidth = (regionWidth == 2 ? 2 : regionWidth * zoomFactor);
     }
@@ -1155,13 +1154,13 @@ void GenTable::paint (Graphics& g)
                 {
                     if (shouldFill)
                     {
-                        g.setColour (colour);
+                        g.setColour (tableColour);
                         g.drawVerticalLine (prevX, (prevY < midPoint ? prevY : midPoint),  (prevY > midPoint ? prevY : midPoint));
                     }
 
                     if (traceThickness > 0)
                     {
-                        g.setColour (colour);
+                        g.setColour (tableColour);
                         //draw trace
                         currX = jmax (0.0, (i - visibleStart) * numPixelsPerIndex);
                         g.drawLine (prevX, prevY, currX, currY, traceThickness);

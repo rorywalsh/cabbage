@@ -149,6 +149,8 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
             if (CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::logger) == 1)
                 createFileLogger (this->csdFile);
+
+            setGUIRefreshRate(CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::guirefresh));
         }
 
         const String precedingCharacters = currentLineOfCabbageCode.substring (0, currentLineOfCabbageCode.indexOf (typeOfWidget));
@@ -838,7 +840,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
         {
             getCsound()->GetStringChannel (identChannel.toUTF8(), tmp_string);
             const String identifierText (tmp_string);
-            if (identifierText != identChannelMessage)
+
+            if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
             {
                 CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);
 

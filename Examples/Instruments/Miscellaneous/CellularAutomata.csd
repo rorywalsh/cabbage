@@ -101,7 +101,7 @@ label     bounds( 10,  5,100, 13), text("Output States"), align("left")
 image     bounds( 10, 26,800, 32), colour(60,60,60), outlinecolour("white"), outlinethickness(2), shape("sharp"), identchannel("OutputRange")
 gentable  bounds( 10, 35,800, 15),  tablenumber(2), tablecolour("green"), amprange(0,1,2,1), zoom(-1), identchannel("OutTable")
 numberbox bounds( 10, 60, 60, 30), text("Elements"), channel("elements"), range(1,64,32,1,1)
-numberbox bounds( 80, 60, 60, 30), text("Iterations"), channel("iter"), range(0,100000,0,1,1)
+numberbox bounds( 80, 60, 60, 30), text("Iterations"), channel("iter"), range(0,100000,0,1,1), active(0), textcolour(255,255,255), fontcolour(255,255,255)
 }
 
 label bounds(5,345,110,11), text("Iain McCurdy |2015|")

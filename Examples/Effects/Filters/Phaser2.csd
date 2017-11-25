@@ -11,12 +11,12 @@ rslider  bounds( 70, 11, 70, 70),  text("Frequency"),  channel("freq"),     rang
 rslider  bounds(140, 16, 60, 60),  text("Port."),  channel("port"),     range(0, 30, 0.1, 0.5,0.01), colour(100,100,200), trackercolour(silver), textcolour("white")
 rslider  bounds(195, 11, 70, 70),  text("Q"),          channel("q"),        range(0.01,10,1,0.5),            colour(100,100,200), trackercolour(silver), textcolour("white")
 rslider  bounds(260, 11, 70, 70), text("N.Ords."),    channel("ord"),      range(1, 256, 8, 0.5,1),      colour(100,100,200), trackercolour(silver), textcolour("white")
-label    bounds(335, 20, 61,12),  text("Sep. Mode:")
+label    bounds(335, 20, 61,12),  text("Sep. Mode:"), fontcolour("white")
 rslider  bounds(410, 11, 70, 70), text("Separation"), channel("sep"),      range(-3, 3.00, 1),         colour(100,100,200), trackercolour(silver), textcolour("white")
 rslider  bounds(475, 11, 70, 70), text("Feedback"),   channel("feedback"), range(-0.99, 0.99, 0.9),      colour(100,100,200), trackercolour(silver), textcolour("white")
 rslider  bounds(540, 11, 70, 70), text("Mix"),        channel("mix"),      range(0, 1.00, 1),            colour(100,100,200), trackercolour(silver), textcolour("white")
 rslider  bounds(605, 11, 70, 70), text("Level"),      channel("level"),    range(0, 1.00, 0.7),          colour(100,100,200), trackercolour(silver), textcolour("white")
-combobox bounds(330, 34, 80,25), channel("mode"), value(1), text("Equal", "Power")
+combobox bounds(330, 34, 80,25), channel("mode"), value(1), text("Equal", "Power"), fontcolour("white")
 }
 </Cabbage>
 

@@ -54,24 +54,25 @@ Filters
 <Cabbage>
 form caption("Clavinet"), size(550, 170), pluginID("clav"), colour(228,156,28), guirefresh(64)
 
-#define RSliderStyle #textcolour(black), outlinecolour(50,50,50) #
+#define RSliderStyle textcolour(black), outlinecolour(50,50,50)
 
 image bounds(0,0,550,170), colour(228,156,28), shape("sharp")
 
 ; filter switches
-checkbox bounds( 10,  5, 70, 15), text("Brilliant") channel("brilliant"), FontColour(50,50,50), colour("lime")
-checkbox bounds( 10, 25, 70, 15), text("Treble") channel("treble"), FontColour(50,50,50), colour("lime"), value(1)
-checkbox bounds( 10, 45, 70, 15), text("Medium") channel("medium"), FontColour(50,50,50), colour("lime")
-checkbox bounds( 10, 65, 70, 15), text("Soft") channel("soft"), FontColour(50,50,50), colour("lime")
+checkbox bounds( 10,  5, 70, 15), text("Brilliant") channel("brilliant"), fontcolour(50,50,50), colour("lime")
+checkbox bounds( 10, 25, 70, 15), text("Treble") channel("treble"), fontcolour(50,50,50), colour("lime"), value(1)
+checkbox bounds( 10, 45, 70, 15), text("Medium") channel("medium"), fontcolour(50,50,50), colour("lime")
+checkbox bounds( 10, 65, 70, 15), text("Soft") channel("soft"), fontcolour(50,50,50), colour("lime")
 
 ; pickup configuration switches
-checkbox bounds( 80,  5, 70, 15), text("C/D") channel("C_D"), FontColour(50,50,50), colour("lime"), value(1)
-checkbox bounds( 80, 25, 70, 15), text("A/B") channel("A_B"), FontColour(50,50,50), colour("lime"), value(1)
+checkbox bounds( 80,  5, 70, 15), text("C/D") channel("C_D"), fontcolour(50,50,50), colour("lime"), value(1)
+checkbox bounds( 80, 25, 70, 15), text("A/B") channel("A_B"), fontcolour(50,50,50), colour("lime"), value(1)
 
 ; controls pertaining to the setup of the instrument (pickup positions, pluck position, damping etc.) accessed in a pop-up panel
-button bounds(140,  5, 100, 30), channel("setup_Button"), text("Setup")
-groupbox bounds(140, 25, 172, 305),  colour(228,156,28), plant("Setup"), outlinethickness(0), popup(1), identchannel("setupPlant")
+button   bounds(140,  5, 100, 30), channel("setup_Button"), text("Setup")
+groupbox bounds(140, 25, 232, 305),  colour(228,156,28), plant("Setup"), outlinethickness(0), popup(1), identchannel("setupPlant")
 {
+image   bounds(  0,  0,172, 305),  colour(228,156,28)
 rslider bounds(  5,  8, 55, 55), text("Pick A"), colour(195,126,  0), channel("pickA"),   range(0, 1.00, 0.25, 1, 0.001), textcolour(black),  $RSliderStyle
 rslider bounds( 55,  8, 55, 55), text("Pick B"), colour(195,126,  0), channel("pickB"),   range(0, 1.00, 0.07, 1, 0.001), textcolour(black),  $RSliderStyle
 rslider bounds(  5, 68, 55, 55), text("Mod A"),  colour(225,156, 28), channel("ModA"),   range(0,0.50, 0.03, 0.5, 0.001), textcolour(black), $RSliderStyle
@@ -88,13 +89,19 @@ rslider bounds(112,  8, 55, 55), text("Pluck"),  colour(195,126,  0), channel("p
 rslider bounds(112, 68, 55, 55), text("Damp"),   colour(225,156, 28), channel("SusDamp"), range(-1.00, 1.00, 0), textcolour(black), $RSliderStyle
 rslider bounds(112,128, 55, 55), text("HPF"),    colour(255,186, 58), channel("HPF"),     range(0,16.0, 0), textcolour(black), $RSliderStyle
 rslider bounds(112,188, 55, 55), text("LPF"),    colour(255,216, 88), channel("LPF"),     range(1.0,72, 72, 0.375, 0.0001), textcolour(black), $RSliderStyle
-rslider bounds(112,248, 55, 55), text("Inharm."),colour(255,216, 88), channel("inharm"),  range(-0.99,0.99, 0), textcolour(black), $RSliderStyle
+line bounds(170, 25,  1, 260), colour( 50, 50, 50)
+rslider bounds(172,  8, 55, 55), text("Inharm."),colour(255,216, 88), channel("inharm"),  range(-0.99,0.99, 0), textcolour(black), $RSliderStyle
+rslider bounds(172, 68, 55, 55), text("Mix"), colour(255,216, 88), channel("FSMix"),  range(0, 1, 1), textcolour(black), $RSliderStyle
+rslider bounds(172,128, 55, 55), text("Decay"), colour(255,216, 88), channel("FSEnvTime"),  range(0, 1, 0), textcolour(black), $RSliderStyle
+rslider bounds(172,188, 55, 55), text("Feedback"), colour(255,216, 88), channel("FS_FB_Amt"),  range(0, 0.6, 0), textcolour(black), $RSliderStyle
+button  bounds(174,248, 51, 20), text("Key Follow","Key Follow"), fontcolour:0(100,100,100), fontcolour:1(255,255,170), value(0), latched(1), channel("FSKeyFollow") 
 }
 
 ; controls pertaining to the release stage of a note accessed in a pop-up panel
 button bounds(250,   5, 100, 30), channel("release_Button"), text("Release")
 groupbox bounds(250, 25, 265, 65),  colour(228,156,28), plant("Release"), outlinethickness(0), popup(1), identchannel("releasePlant")
 {
+image   bounds(  0,  0,265, 65),  colour(228,156,28)
 rslider bounds(  5,  8, 55, 55), text("Ampl."),  colour(255,186,58), channel("RelAmpl"),  range(0, 20.00, 2), textcolour(black), $RSliderStyle
 rslider bounds( 55,  8, 55, 55), text("Tone"),   colour(255,186,58), channel("RelTone"),  range(100, 8000, 1000), textcolour(black), $RSliderStyle  
 rslider bounds(105,  8, 55, 55), text("D.Time"), colour(255,186,58), channel("RelDTime"), range(0.001, 1, 0.01, 0.5, 0.001), textcolour(black), $RSliderStyle
@@ -106,14 +113,15 @@ rslider bounds(205,  8, 55, 55), text("A.Time"), colour(255,186,58), channel("Re
 button bounds(360,  5, 100, 30), channel("filters_Button"), text("Filters")
 groupbox bounds(360, 25, 230, 195),  colour(228,156,28), plant("Filters"), outlinethickness(0), popup(1), identchannel("filtersPlant")
 {
-label    bounds( 10,  5, 45, 12), text("Brilliant"), colour(228,156,28), FontColour(50,50,50)
-label    bounds( 64,  5, 45, 12), text("Treble"),    colour(228,156,28), FontColour(50,50,50)
-label    bounds(121,  5, 45, 12), text("Medium"),    colour(228,156,28), FontColour(50,50,50)
-label    bounds(174,  5, 45, 12), text("Soft"),      colour(228,156,28), FontColour(50,50,50)
-checkbox bounds( 26, 18, 10, 10), channel("brilliant"), colour("lime"), value(0), shape("ellipse")
-checkbox bounds( 81, 18, 10, 10), channel("treble"),    colour("lime"), value(0), shape("ellipse")
-checkbox bounds(136, 18, 10, 10), channel("medium"),    colour("lime"), value(0), shape("ellipse")
-checkbox bounds(191, 18, 10, 10), channel("soft"),      colour("lime"), value(0), shape("ellipse")
+image    bounds(  0,  0,230,195),  colour(228,156,28)
+label    bounds( 10,  5, 45, 12), text("Brilliant"), colour(228,156,28), fontcolour(50,50,50)
+label    bounds( 64,  5, 45, 12), text("Treble"),    colour(228,156,28), fontcolour(50,50,50)
+label    bounds(121,  5, 45, 12), text("Medium"),    colour(228,156,28), fontcolour(50,50,50)
+label    bounds(174,  5, 45, 12), text("Soft"),      colour(228,156,28), fontcolour(50,50,50)
+checkbox bounds( 26, 18, 10, 10), channel("brilliant"), colour("lime"), value(0), shape("ellipse"), active(0)
+checkbox bounds( 81, 18, 10, 10), channel("treble"),    colour("lime"), value(0), shape("ellipse"), active(0)
+checkbox bounds(136, 18, 10, 10), channel("medium"),    colour("lime"), value(0), shape("ellipse"), active(0)
+checkbox bounds(191, 18, 10, 10), channel("soft"),      colour("lime"), value(0), shape("ellipse"), active(0)
 rslider  bounds(  5, 30, 55, 55), channel("fco1"),  text("fco.1"),  colour(235,166,38),  range(50,5000,2500,0.5), textcolour(black), $RSliderStyle
 rslider  bounds( 60, 30, 55, 55), channel("fco2"),  text("fco.2"),  colour(235,166,38),  range(50,5000,1000,0.5), textcolour(black), $RSliderStyle
 rslider  bounds(115, 30, 55, 55), channel("fco3"),  text("fco.3"),  colour(235,166,38),  range(50,5000, 500,0.5), textcolour(black), $RSliderStyle
@@ -140,7 +148,7 @@ combobox   bounds( 10, 15, 80, 18), channel("preset"), value(1), text("Clavinet 
 }
 
 keyboard bounds(  5, 85,540, 80)
-label bounds(440, 73,  110, 11), text("Iain McCurdy |2013|"), FontColour(50,50,50)
+label bounds(440, 73,  110, 11), text("Iain McCurdy |2013|"), fontcolour(50,50,50)
 
 </Cabbage>
 
@@ -209,7 +217,7 @@ instr	1	; presets
    chnset	$SusDamp	,"SusDamp"
    chnset	$HPF		,"HPF"
    chnset	$LPF		,"LPF"
-   chnset	$inharm		,"inharm"
+   chnset	$inharm		,"inharm"   
    chnset	$RelAmpl	,"RelAmpl"
    chnset	$RelTone	,"RelTone"
    chnset	$RelDTime	,"RelDTime"
@@ -233,17 +241,17 @@ instr	1	; presets
    chnset	$Q4		,"Q4"
    chnset	$level		,"level"
   endif#
-
-  $SEND_SETTINGS(1' 0'1'0'0' 1'1' 0.25                '0.0700000003        '0.0300000012        '0.0300000012        '0.200000003         '0.150000006         '0                   '0                   '0.0500000007        '0.0500000007        '0.00499999989       '0           '0                   '72                  '0                   '2           '1000        '0.0100000007'0.949999988 '0.049999997 '0           '1           '0                   '0                   '2500                '1000                '500                 '200                 '3                   '2.29999995          '1.29999995          '1.39999998          '1.25                '1                   '1                   '2                   '0.5                 )
-  $SEND_SETTINGS(2' 0'0'1'0' 1'0' 0.938000023         '0.0500000007        '0.0300000012        '0.0300000012        '0.200000003         '0.150000006         '0                   '0                   '0.0500000007        '0.0500000007        '0.165399998 '0.50999999          '0                   '39.6390991          '0           '0           '1000        '0.0100000007'0.359999985 '4.01999998  '0           '0                   '1                   '0                   '2500                '1000                '500                 '200                 '3                   '2.29999995          '1.29999995          '1.39999998          '1.25                '1                   '1                   '2                   '0.925000072)
-  $SEND_SETTINGS(3' 0'0'1'0'1'0'0.120000005'0.252000004'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.00079999998'0.0799999759'2.04999995'8.57209969'-0.50999999'2.15999985'2358.80005'0.0650000051'0.300000012'8'0'0'1'0'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'1.21700001)  
-  $SEND_SETTINGS(4' 0'1'0'0'1'0'0.530000031'0.462000012'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.269099981'-1'0'25.2099991'0'2'1000'0.0100000007'0.879999995'0.049999997'0'1'0'0'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'0.5)
-  $SEND_SETTINGS(5' 0'1'0'1'0'1'0.398000032'0.522000015'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.285899997'0.0999999791'0'31.4514999'0'0'1000'0.0100000007'0.579999983'3.91999984'0'1'0'1'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'0.461000025)
-  $SEND_SETTINGS(6' 0'1'0'0'1'1'0.0940000042'0.398000032'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.128700003'0.299999982'0'72'0'0'1000'0.0100000007'0.280000001'1.39999998'0'1'0'0'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'0.5)
-  $SEND_SETTINGS(7' 1'1'0'0'1'0'0.00200000009'0.950000048'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.128700003'0.299999982'3.46000004'24.0676003'0'0'1000'0.0100000007'0.280000001'3.32999992'1'1'0'0'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'4.26300001)
-  $SEND_SETTINGS(8' 1'1'0'0'1'0'0.584000051'0.450000018'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.23709999'0.459999979'1.46999991'16.7103996'0'0'1000'0.0100000007'0.140000001'3.58999991'1'1'0'0'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'0.720000029)
-  $SEND_SETTINGS(9' 1'0'0'0'0'0'0.25'0.0700000003'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.00499999989'0'0'25.5985985'0'2'1000'0.0100000007'0.949999988'0.049999997'1'0'0'0'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'1.92100012)
-  $SEND_SETTINGS(10' 1'0'0'0'1'0'0.25'0.0700000003'0.0300000012'0.0300000012'0.200000003'0.150000006'0'0'0.0500000007'0.0500000007'0.00499999989'0'0'25.5985985'0'2'1000'0.0100000007'0.949999988'0.049999997'1'0'0'0'2500'1000'500'200'3'2.29999995'1.29999995'1.39999998'1.25'1'1'2'1.92100012) 
+;				 			brilliant	treble	medium	soft	C_D		A_B		pickA			pickB			ModA			ModB			RateA			RateB			EnvA			EnvB			TimeA			TimeB			plk				SusDamp			HPF				LPF				inharm		RelAmpl			RelTone			RelDTime		RelDamp			RelATime		brilliant	treble	medium	soft	fco1	fco2	fco3	fco4		gain1		gain2		gain3		gain4		Q1			Q2			Q3		Q4			level
+  $SEND_SETTINGS(1			'0			'1		'0		'0		'1		'1		'0.25           '0.0700000003   '0.0300000012   '0.0300000012   '0.200000003    '0.150000006    '0  	'0  	'0.0500000007   '0.0500000007   '0.00499999989  '0           	'0              '72         '0              '2          	'1000        	'0.0100000007	'0.949999988	'0.049999997'0		'1      '0      '0      '2500   '1000   '500        '200        '3          '2.29999995 '1.29999995 '1.39999998 '1.25       '1      '1          '2                   '0.5                 )
+  $SEND_SETTINGS(2			'0			'0		'1		'0		'1		'0		'0.938000023    '0.0500000007   '0.0300000012   '0.0300000012   '0.200000003    '0.150000006    '0  	'0  	'0.0500000007   '0.0500000007   '0.165399998 	'0.50999999     '0              '39.6390991 '0           	'0          	'1000        	'0.0100000007	'0.359999985	'4.01999998	'0		'0      '1      '0      '2500   '1000   '500        '200        '3          '2.29999995 '1.29999995 '1.39999998 '1.25       '1      '1          '2                   '0.925000072)
+  $SEND_SETTINGS(3			'0			'0		'1		'0		'1		'0		'0.120000005	'0.252000004	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.00079999998	'0.0799999759	'2.04999995		'8.57209969	'-0.50999999	'2.15999985		'2358.80005		'0.0650000051	'0.300000012	'8			'0		'0		'1		'0		'2500	'1000	'500		'200		'3			'2.29999995	'1.29999995	'1.39999998	'1.25		'1		'1			'2		'1.21700001)  
+  $SEND_SETTINGS(4			'0			'1		'0		'0		'1		'0		'0.530000031	'0.462000012	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.269099981	'-1				'0				'25.2099991	'0				'2				'1000			'0.0100000007	'0.879999995	'0.049999997'0		'1		'0		'0		'2500	'1000	'500		'200		'3			'2.29999995	'1.29999995	'1.39999998	'1.25		'1		'1			'2		'0.5)
+  $SEND_SETTINGS(5			'0			'1		'0		'1		'0		'1		'0.398000032	'0.522000015	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.285899997	'0.0999999791	'0				'31.4514999	'0				'0				'1000			'0.0100000007	'0.579999983	'3.91999984	'0		'1		'0		'1		'2500	'1000	'500		'200		'3			'2.29999995	'1.29999995	'1.39999998	'1.25		'1		'1			'2		'0.461000025)
+  $SEND_SETTINGS(6			'0			'1		'0		'0		'1		'1		'0.0940000042	'0.398000032	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.128700003	'0.299999982	'0				'72'0'0'1000'0.0100000007	'0.280000001	'1.39999998		'0				'1				'0			'0		'2500	'1000	'500	'200	'3		'2.29999995	'1.29999995	'1.39999998	'1.25		'1			'1			'2 			'0.5)
+  $SEND_SETTINGS(7			'1			'1		'0		'0		'1		'0		'0.00200000009	'0.950000048	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.128700003	'0.299999982	'3.46000004		'24.0676003	'0				'0'1000			'0.0100000007	'0.280000001	'3.32999992		'1			'1		'0		'0		'2500	'1000	'500	'200		'3			'2.29999995	'1.29999995	'1.39999998	'1.25		'1 			'1		'2			'4.26300001)
+  $SEND_SETTINGS(8			'1			'1		'0		'0		'1		'0		'0.584000051	'0.450000018	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.23709999		'0.459999979	'1.46999991		'16.7103996	'0				'0'1000			'0.0100000007	'0.140000001	'3.58999991		'1			'1		'0		'0		'2500	'1000	'500	'200		'3			'2.29999995	'1.29999995	'1.39999998	'1.25		'1 			'1		'2			'0.720000029)
+  $SEND_SETTINGS(9			'1			'0		'0		'0		'0		'0		'0.25			'0.0700000003	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.00499999989	'0'0'25.5985985	'0				'2			'1000			'0.0100000007	'0.949999988	'0.049999997	'1				'0			'0		'0		'2500	'1000	'500	'200	'3			'2.29999995	'1.29999995	'1.39999998	'1.25		'1			'1 			'2		'1.92100012)
+  $SEND_SETTINGS(10			'1			'0		'0		'0		'1		'0		'0.25			'0.0700000003	'0.0300000012	'0.0300000012	'0.200000003	'0.150000006	'0		'0		'0.0500000007	'0.0500000007	'0.00499999989	'0'0'25.5985985	'0				'2			'1000			'0.0100000007	'0.949999988	'0.049999997	'1				'0			'0		'0		'2500	'1000	'500	'200	'3			'2.29999995	'1.29999995	'1.39999998	'1.25		'1			'1 			'2		'1.92100012) 
   rireturn
  endif
 endin
@@ -256,7 +264,6 @@ instr	2	; RESPOND TO MIDI NOTES
  		tablew	1-release(),inum,giActiveNotes
 endin
 
-
 instr	3
  ibrilliant	chnget	"brilliant"	; filter switch
  itreble	chnget	"treble"	; filter switch
@@ -266,7 +273,7 @@ instr	3
  iA_B		chnget	"A_B"		; neck/bridge pickup selector
  gklevel	chnget	"level"		; output volume control
 
-  icps		=	p4		; cps read from midi
+ icps		=	p4		; cps read from midi
  inum		=	p5		; note number read from midi
  ivel		=	p6		; velocity read from midi
 
@@ -297,13 +304,12 @@ instr	3
  kpickB	chnget	"pickB"			; bridge pickup position
  
  ; string vibration damping / reflectivity
- irefl	table			inum,girefl			; read reflectivity for this note from function table (lower notes will experience more damping)
+ irefl		table		inum,girefl			; read reflectivity for this note from function table (lower notes will experience more damping)
  iRelDTime	chnget		"RelDTime"			; release damping time: time for damping state to be established
  iRelDamp	chnget		"RelDamp"			; amount of damping upon release
  krefl		linsegr		irefl,iRelDTime,iRelDamp	; upon note release vibrations are damped quickly and dramatically
  kSusDamp	chnget		"SusDamp"			; user controlled modulation of string vibration damping
  krefl		limit		krefl+kSusDamp,0.001,0.999	; consolidate reflection/damping value and limit possible values to prevent out of range values
- 
  iamp		=		ivel*0.3
  kenv		expseg		1, 0.01,0.001,1,0.001		; create an amplitude envelope for the noise burst
  axcite		pinkish		kenv-0.001			; create a pink noise signal
@@ -333,15 +339,33 @@ instr	3
  kpickA		limit		kpickA + kmod1 + kenv1, 0, 1	; consolidate pickup position between fixed value, lfo and envelope. Also protect against out of range values. (pickup A)
  kpickB		limit		kpickB + kmod2 + kenv2, 0, 1	; consolidate pickup position between fixed value, lfo and envelope. Also protect against out of range values. (pickup B)
  
- iinharm	chnget		"inharm"			; inharmonicity of the tone. negative values compress the spectrum, positive values expand it. Compensation will be applied to the fundemental so that it will remain consistent.
- iFShift	=		icps*iinharm			; amount of frequency shift (in CPS)
+ iinharm	    chnget		"inharm"			    ; inharmonicity of the tone. negative values compress the spectrum, positive values expand it. Compensation will be applied to the fundemental so that it will remain consistent.
+ iFShift	    =		    icps*iinharm		    ; amount of frequency shift (in CPS)
+ iFSMix         chnget  "FSMix"
+ iFSKeyFollow   chnget  "FSKeyFollow"
+ iFSEnvTime     chnget  "FSEnvTime"
+ iFS_FB_Amt     chnget  "FS_FB_Amt"
  
- a1 		repluck 	iplk, iamp, icps-iFShift, kpickA, krefl, axcite	; employ plucked string model (pickup A)
- a2 		repluck 	iplk, iamp, icps-iFShift, kpickB, krefl, axcite	; employ plucked string model (pickup B)
+ ;a1 		repluck 	iplk, iamp, icps-iFShift, kpickA, krefl, axcite	; employ plucked string model (pickup A)
+ ;a2 		repluck 	iplk, iamp, icps-iFShift, kpickB, krefl, axcite	; employ plucked string model (pickup B)
+ a1 		repluck 	iplk, iamp, icps, kpickA, krefl, axcite	; employ plucked string model (pickup A)
+ a2 		repluck 	iplk, iamp, icps, kpickB, krefl, axcite	; employ plucked string model (pickup B)
+ 
  
  if(iinharm!=0) then						; only apply frequency shifting if inharmonicity is anything other than zero
-  a1		FreqShifter	a1,iFShift,gisine		; call frequency shifting UDO
-  a2		FreqShifter	a2,iFShift,gisine
+  aFS1,aFS2    init    0
+  iFShift   =   iFSKeyFollow == 1 ? iFShift*(cpsoct(4)/icps) : iFShift
+  if iFSEnvTime>0 then
+   kFSEnv       transeg 1, (1-iFSEnvTime)*3, -2, 0
+   aFS1		FreqShifter	a1+aFS1*iFS_FB_Amt,iFShift*kFSEnv,gisine		; call frequency shifting UDO
+   aFS2		FreqShifter	a2+aFS2*iFS_FB_Amt,iFShift*kFSEnv,gisine
+  else
+   aFS1		FreqShifter	a1+aFS1*iFS_FB_Amt,iFShift,gisine		; call frequency shifting UDO
+   aFS2		FreqShifter	a2+aFS2*iFS_FB_Amt,iFShift,gisine
+  endif
+  
+  a1        ntrpol          a1, aFS1, iFSMix
+  a2        ntrpol          a2, aFS2, iFSMix
  endif
  
  if(iC_D==0&&iA_B==0) then	;CA - neck pickup only
@@ -410,14 +434,12 @@ instr	3
  
  ; release envelope
  iRelATime	chnget		"RelATime"				; amplitude release time
- aenv		linsegr		1, iRelATime, 0				; amplitude release envelope (senses key release before entering final/only segment)
+ aenv		transegr	1, iRelATime, -4, 0		; amplitude release envelope (senses key release before entering final/only segment)
  
  ; output signal
  aout		=		amix * aenv * gklevel			; apply release envelope and level control
  		outs		aout, aout				; send audio to outputs
 endin
-
-
 
 
 
@@ -427,7 +449,7 @@ instr 1000				; launches plant popups
  #
  kpressed	chnget 		"$name._Button"
  if changed(kpressed)==1 then
-   Smsg 	sprintfk 	"visible(%d), pos(1, 19)", klaunch
+   Smsg 	sprintfk 	"show(%d), pos(1, 19)", klaunch
    		chnset 		Smsg, "$name.Plant"
  endif
  #

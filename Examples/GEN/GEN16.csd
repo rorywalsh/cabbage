@@ -10,7 +10,7 @@
 <Cabbage>
 form caption("GEN16"), size(325, 360), pluginID("gn16"), colour(100,100,110)
 
-gentable bounds( 10,  5, 305, 120), tablenumber(1), tablecolour("lime"), identchannel("table"), zoom(-1)
+gentable bounds( 10,  5, 305, 120), tablenumber(1), tablecolour("lime"), identchannel("table"), zoom(-1), amprange(1,0,1)
 
 #define SLIDER_SETTINGS #textBox(1), fontcolour("white"), textcolour("white"), trackercolour("silver")#
 
@@ -43,10 +43,10 @@ line bounds(250,130,  2,220), colour("Grey")
 
 <CsInstruments>
 
-sr 		= 	44100	;SAMPLE RATE
-ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	;NUMBER OF CHANNELS (1=MONO)
-0dbfs		=	1	;MAXIMUM AMPLITUDE
+sr 		= 	44100	; SAMPLE RATE
+ksmps 	= 	32		; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls 	= 	2		; NUMBER OF CHANNELS (1=MONO)
+0dbfs	=	1		; MAXIMUM AMPLITUDE
 
 opcode	butlpsr,a,aa					; butterworth lowpass filter with audio-rate variable cutoff frequency
 	asig,acf	xin

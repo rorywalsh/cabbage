@@ -4,21 +4,17 @@
 <Cabbage>
 form caption("Envelope Follower") size(530, 100), pluginID("envf")
 image                  pos(0, 0), size(530, 100), colour("brown"), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-checkbox bounds(20, 70, 15, 15), channel("lev1"), value(0), colour(200,220,0,255), active(0)
-checkbox bounds(20, 55, 15, 15), channel("lev2"), value(0), colour(250,190,0,255), active(0)
-checkbox bounds(20, 40, 15, 15), channel("lev3"), value(0), colour(255,120,0,255), active(0)
-checkbox bounds(20, 25, 15, 15), channel("lev4"), value(0), colour(255, 60,0,255), active(0)
-checkbox bounds(20, 10, 15, 15), channel("lev5"), value(0), colour(255,  0,0,255), active(0)
+vmeter   bounds(20, 10, 15, 80) channel("Meter") value(0) outlinecolour("black"), overlaycolour(20, 3, 3,255) metercolour:0(255,100,100,255) metercolour:1(255,150,155, 255) metercolour:2(255,255,123, 255) outlinethickness(3) 
+
 rslider bounds( 40, 11, 75, 75), text("Sensitivity"), channel("sens"),  range(0, 1, 0.65),                   colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150)
 rslider bounds(110,  6, 45, 45), text("Att."),        channel("att"),   range(0.001, 0.5, 0.01, 0.5, 0.001), colour(255,200,100), textcolour(255,255,200), trackercolour(255,255,150)
 rslider bounds(110, 51, 45, 45), text("Dec."),        channel("rel"),   range(0.001, 0.5, 0.2, 0.5, 0.001),  colour(255,200,100), textcolour(255,255,200), trackercolour(255,255,150)
 rslider bounds(150, 11, 75, 75), text("Frequency"),   channel("freq"),  range(10, 10000, 1000, 0.5),         colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150)
 label    bounds(225, 15, 85, 14), text("Type"), fontcolour(255,255,200)
 combobox bounds(225, 30, 85, 20), text("lpf18","moogladder","butlp","tone"), value("1"), channel("type")
-rslider bounds(310, 11, 75, 75), text("Resonance"),   channel("res"),   range(0,  1, 0.75),                  colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150)
-rslider bounds(380, 11, 75, 75), text("Distortion"),  channel("dist"),  range(0,  1.00, 0),                  colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150)
+rslider bounds(310, 11, 75, 75), text("Resonance"),   channel("res"),   range(0,  1, 0.75),                  colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150), identchannel("resID")
+rslider bounds(380, 11, 75, 75), text("Distortion"),  channel("dist"),  range(0,  1.00, 0),                  colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150), identchannel("distID")
 rslider bounds(450, 11, 75, 75), text("Level"),       channel("level"), range(0, 1.00, 1),                   colour(255,200,100), textcolour(255,255,200), trackercolour(255,255,150)
-}
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -74,39 +70,37 @@ kres chnget "res"
 kdist chnget "dist"
 klevel chnget "level"
 a1,a2	ins
+
+
+if changed:k(ktype)==1 then
+ if ktype==1 then
+  chnset	"visible(1)","distID"
+  chnset	"visible(1)","resID"
+ elseif ktype==2 then
+  chnset	"visible(0)","distID"
+  chnset	"visible(1)","resID"
+ else
+  chnset	"visible(0)","distID"
+  chnset	"visible(0)","resID"
+ endif
+endif
+
 ;a1,a2	diskin2	"808loop.wav",1,0,1
 ;a1	=	a1*0.4
 ;a2	=	a2*0.4
-
 
 /*level meter*/
 amix	sum	a1,a2
 krms	rms	amix*0.5
 krms	pow	krms,0.75
-krms	SwitchPort	krms,0.01,0.2
-kon	=	1
-koff	=	0
-#define	INDICATOR(LEV'N)
-#
-kOnTrig		trigger	krms,$LEV^1.5,0
-kOffTrig	trigger	krms,$LEV^1.5,1
-if	kOnTrig==1 then
- chnset	kon,"lev$N"
-elseif kOffTrig==1 then
- chnset	koff,"lev$N"
-endif
-#
-$INDICATOR(1/6'1)
-$INDICATOR(2/6'2)
-$INDICATOR(3/6'3)
-$INDICATOR(4/6'4)
-$INDICATOR(5/6'5)
+krms	SwitchPort	krms,0.01,0.05
+		chnset	krms,"Meter"
 
 a1	EnvelopeFollower	a1,ksens,katt,krel,kfreq,ktype,kres*0.95,kdist*100
 a2	EnvelopeFollower	a2,ksens,katt,krel,kfreq,ktype,kres*0.95,kdist*100
 a1	=	a1 * klevel * (1 - ((kdist*0.3)^0.02))	;scale amplitude according to distortion level (to compensate for gain increases it applies)
 a2	=	a2 * klevel * (1 - ((kdist*0.3)^0.02))
-	outs	a1,a2
+;	outs	a1,a2
 endin
 
 </CsInstruments>

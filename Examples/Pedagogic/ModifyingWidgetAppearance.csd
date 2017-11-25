@@ -15,7 +15,7 @@ hslider bounds( 10, 270, 390, 30), channel("SizeY"),   range(  1,450, 11,1,1), f
 combobox bounds(400,240, 100, 25), channel("VisibleInvisible"), value(2), text("Invisible", "Visible")
 
 groupbox   bounds( 10, 310,220,170) text("Main Object"), plant("main") {
-combobox   bounds( 70,  30, 80, 20), channel("Shape"), items("rounded", "sharp", "ellipse"), value(1), channeltype("string")
+combobox   bounds( 70,  30, 80, 20), channel("Shape"), text("rounded","sharp","ellipse"), value(1), channeltype("string")
 hslider    bounds(  0,  50,220, 30), channel("Red"),     range(  0,255,250,1,1), fontcolour(red)   colour(red),   text("Red"),  trackercolour(red)
 hslider    bounds(  0,  80,220, 30), channel("Green"),   range(  0,255,250,1,1), fontcolour(green) colour(green), text("Green"),  trackercolour(green)
 hslider    bounds(  0, 110,220, 30), channel("Blue"),    range(  0,255,  0,1,1), fontcolour(blue)  colour(blue),  text("Blue"),  trackercolour(blue)

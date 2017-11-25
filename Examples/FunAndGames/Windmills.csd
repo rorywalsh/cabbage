@@ -5,7 +5,6 @@
 
 <Cabbage>
 form caption("Windmills") size(700,500), colour(150,150,255), scrollbars(0), guirefresh(32)
-
 ; SUN
 image bounds(610, 20,70,70), colour(250,250,100), shape(ellipse)			; sun
 
@@ -206,7 +205,7 @@ instr	1
  ktilt	=	1 - abs(kSwing2)
 
  ; printk	0.5,ktilt	; 1 = full 0.5 = tilted
- printk	0.5,kspeed		; 1 = full 0.5 = tilted
+ ; printk	0.5,kspeed		; 1 = full 0.5 = tilted
 
  kWidth		=	(1-abs(kSwing2))*kMaxWidth
  kX_Offset	=	(kMaxWidth - kWidth) * 0.5

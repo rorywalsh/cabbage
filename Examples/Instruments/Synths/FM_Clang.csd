@@ -56,10 +56,10 @@ form caption("FM Clang") size(945, 320), pluginID("FMCl"), guirefresh(256)
 image    bounds(  5,  5,300,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("amplitude"){
 line     bounds( 90,  6,120, 14)
 label    bounds( 90,  8,120, 10), text("A  M  P  L  I  T  U  D  E"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("Level"),    channel("Amp"),    range(0,8.00,0.5,0.5),        textBox(1), $RSliderStyle
-rslider  bounds( 55, 25, 75, 75), text("Attack"),   channel("AttTim"), range(0,0.1,0,0.5,0.001),  textBox(1), $RSliderStyle
-rslider  bounds(110, 25, 75, 75), text("Vel.Att."), channel("AttVel"), range(0,1,0),                 textBox(1), $RSliderStyle
-rslider  bounds(165, 25, 75, 75), text("Duration"), channel("Dur"),    range(0.1, 24.00, 12, 0.5,),  textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("Level"),    channel("Amp"),    range(0,8.00,0.5,0.5),        valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds( 55, 25, 75, 75), text("Attack"),   channel("AttTim"), range(0,0.1,0,0.5,0.001),     valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds(110, 25, 75, 75), text("Vel.Att."), channel("AttVel"), range(0,1,0),                 valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds(165, 25, 75, 75), text("Duration"), channel("Dur"),    range(0.1, 24.00, 12, 0.5,),  valuetextbox(1), textbox(1), $RSliderStyle
 checkbox bounds(230, 53,180, 12), channel("Sustain"), value(1), text("Sustain"), textcolour("white")
 }
 
@@ -67,31 +67,31 @@ checkbox bounds(230, 53,180, 12), channel("Sustain"), value(1), text("Sustain"),
 image    bounds(310,  5,180,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("modulator"){
 line     bounds( 30,  6,120, 14)
 label    bounds( 30,  8,120, 10), text("M  O  D  U  L  A  T  O  R"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("Ratio"), channel("mod"), range(1, 17, 2.29, 1,0.01),  textBox(1), $RSliderStyle
-rslider  bounds( 55, 25, 75, 75), text("Index"), channel("NdxVel"), range(0, 2.00, 1,0.75),  textBox(1), $RSliderStyle
-rslider  bounds(110, 25, 75, 75), text("Decay"), channel("NdxCurve"), range(8, 256.00, 16,0.5),  textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("Ratio"), channel("mod"), range(1, 17, 2.29, 1,0.01),    valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds( 55, 25, 75, 75), text("Index"), channel("NdxVel"), range(0, 2.00, 1,0.75),     valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds(110, 25, 75, 75), text("Decay"), channel("NdxCurve"), range(8, 256.00, 16,0.5), valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 ;CARRIER
 image    bounds(495,  5,105,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("carrier"){
 line     bounds(  7,  6, 90, 14)
 label    bounds(  7,  8, 90, 10), text("C  A  R  R  I  E  R"), textcolour(white)
-rslider  bounds( 15, 25, 75, 75), text("Kyb.Scale"), channel("CarKyb"), range(-4, 4.00, 0), textBox(1), $RSliderStyle
+rslider  bounds( 15, 25, 75, 75), text("Kyb.Scale"), channel("CarKyb"), range(-4, 4.00, 0), valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 ;DETUNE
 image    bounds(605,  5,130,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("detune"){
 line     bounds( 26,  6, 78, 14)
 label    bounds( 26,  8, 78, 10), text("D  E  T  U  N  E"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("Mix"), channel("DtnMix"), range(0,1.00,1), textBox(1), $RSliderStyle
-rslider  bounds( 55, 25, 75, 75), text("Amount"), channel("Detune"), range(0.00,25.00,1.5), textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("Mix"), channel("DtnMix"), range(0,1.00,1), valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds( 55, 25, 75, 75), text("Amount"), channel("Detune"), range(0.00,25.00,1.5), valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 ;FILTER
 image    bounds(740,  5,200,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("filter"){
 line     bounds( 60,  6, 80, 14)
 label    bounds( 60,  8, 80, 10), text("F  I  L  T  E  R"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("LPF"), channel("LPF"), range(1, 16.00, 16),  textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("LPF"), channel("LPF"), range(1, 16.00, 16),  valuetextbox(1), textbox(1), $RSliderStyle
 checkbox bounds( 65, 53,180, 12), channel("FiltFund"), value(1), text("Filter Fundamental"), fontcolour("white")
 }
 
@@ -99,8 +99,8 @@ checkbox bounds( 65, 53,180, 12), channel("FiltFund"), value(1), text("Filter Fu
 image    bounds(  5,120,240,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("noise"){
 line     bounds( 78,  6, 69, 14)
 label    bounds( 78,  8, 69, 10), text("N  O  I  S  E"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("Amount"),  channel("NseAmp"),   range(0,2000,1000,0.5,1),   textBox(1), $RSliderStyle
-rslider  bounds( 55, 25, 75, 75), text("Filter"),     channel("NseBW"), range(0.0005,1,0.001,0.35), textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("Amount"),  channel("NseAmp"),   range(0,2000,1000,0.5,1),   valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds( 55, 25, 75, 75), text("Filter"),     channel("NseBW"), range(0.0005,1,0.001,0.35), valuetextbox(1), textbox(1), $RSliderStyle
 checkbox bounds(120, 53,120, 12), channel("NseFllw"), value(0), text("Follow Modulator"), fontcolour("white")
 }
 
@@ -108,10 +108,10 @@ checkbox bounds(120, 53,120, 12), channel("NseFllw"), value(0), text("Follow Mod
 image    bounds(250,120,240,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("lfo"){
 line     bounds( 85,  6, 70, 14)
 label    bounds( 85,  8, 70, 10), text("L  .  F  .  O"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("Mix."), channel("ModMix"), range(0,     1, 1),  textBox(1), $RSliderStyle
-rslider  bounds( 55, 25, 75, 75), text("Depth"), channel("ModDep"), range(0, 1.000, 0.1,0.5,0.001),  textBox(1), $RSliderStyle
-rslider  bounds(110, 25, 75, 75), text("Rate"), channel("ModRte"), range(0, 32.00, 3,0.5),  textBox(1), $RSliderStyle
-rslider  bounds(165, 25, 75, 75), text("Kyb.Follow"), channel("ModRteKyb"), range(-4, 4.00, 0),  textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("Mix."), channel("ModMix"), range(0,     1, 1),  valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds( 55, 25, 75, 75), text("Depth"), channel("ModDep"), range(0, 1.000, 0.1,0.5,0.001),  valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds(110, 25, 75, 75), text("Rate"), channel("ModRte"), range(0, 32.00, 3,0.5),  valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds(165, 25, 75, 75), text("Kyb.Follow"), channel("ModRteKyb"), range(-4, 4.00, 0),  valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 
@@ -119,16 +119,16 @@ rslider  bounds(165, 25, 75, 75), text("Kyb.Follow"), channel("ModRteKyb"), rang
 image    bounds(495,120,130,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("stereo"){
 line     bounds( 26,  6, 78, 14)
 label    bounds( 26,  8, 78, 10), text("S  T  E  R  E  O"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("Dry/Wet"),  channel("StMix"), range(0,1.00,0.5),  textBox(1), $RSliderStyle
-rslider  bounds( 55, 25, 75, 75), text("Width"),  channel("StWidth"), range(0,0.2,0.01,0.5,0.001),  textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("Dry/Wet"),  channel("StMix"), range(0,1.00,0.5),  valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds( 55, 25, 75, 75), text("Width"),  channel("StWidth"), range(0,0.2,0.01,0.5,0.001),  valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 ;REVERB
 image    bounds(630,120,130,110), colour( 70, 90, 90), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("reverb"){
 line     bounds( 25,  6, 80, 14)
 label    bounds( 25,  8, 80, 10), text("R  E  V  E  R  B"), textcolour(white)
-rslider  bounds(  0, 25, 75, 75), text("Dry/Wet"),  channel("RvbDryWet"), range(0,1.000,0.3),  textBox(1), $RSliderStyle
-rslider  bounds( 55, 25, 75, 75), text("Size"),     channel("RvbSize"),   range(0,1,0.55),     textBox(1), $RSliderStyle
+rslider  bounds(  0, 25, 75, 75), text("Dry/Wet"),  channel("RvbDryWet"), range(0,1.000,0.3),  valuetextbox(1), textbox(1), $RSliderStyle
+rslider  bounds( 55, 25, 75, 75), text("Size"),     channel("RvbSize"),   range(0,1,0.55),     valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 ;PRESETS

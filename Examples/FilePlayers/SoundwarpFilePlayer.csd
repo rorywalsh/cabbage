@@ -341,6 +341,14 @@ instr	3
  endif
 endin
 
+/*
+event_i	"i",999,0,3600
+instr	999
+ aL,aR	monitor
+ 		fout	"SndWarpOut.wav",4,aL,aR
+endin
+*/
+
 </CsInstruments>  
 
 <CsScore>

@@ -60,7 +60,7 @@ label     bounds( 10,370,110, 10), fontcolour(150,150,150), text("Iain McCurdy |
 ; display bars 
 image bounds( 18,218,454,124), colour(250,250,250), shape("sharp")
 image bounds( 20,220,450,120), colour( 20, 20, 20), shape("sharp"), plant("display") {
-image bounds(  0,  0,  4,100), colour(250,250,250), shape(sharp), visible(1), widgetarray("Bars",32)
+image bounds(  -100,  0,  4,100), colour(250,250,250), shape(sharp), visible(1), widgetarray("Bars",32)
 }
 </Cabbage>
 
@@ -85,7 +85,7 @@ giMaxDelay	=	4	; maximum delay time (this should correspond with the maximum val
 opcode	EchoDelays,aa,aakkkkkkkkii
  aInL,aInR,kTotTim,kWarp,kFeedback,kAmpCurve,kLPFCurve,kLPFType,kHPFCurve,kHPFType,iNumber,iCount	xin	; read in input arguments
  ;	setksmps	1
- kRatio	pow	(iCount-1)/(iNumber-1),kWarp		; define delay time ratio according to layer number and 'Warp' amount. 
+ kRatio	pow	(iCount)/(iNumber),kWarp		; define delay time ratio according to layer number and 'Warp' amount. 
  kTim	=	kTotTim * kRatio		; scale ratio by total delay time
  aTim	interp	kTim				; create interpolated a-rate version. Creates higher quality results than just using a k-rate variable in the delay.  
  abuf	delayr	giMaxDelay			; establish delay buffer (establish memory/RAM needed)

@@ -35,7 +35,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::name, "form");
     setProperty (widgetData, CabbageIdentifierIds::type, "form");
-    setProperty (widgetData, CabbageIdentifierIds::guirefresh, 100);
+    setProperty (widgetData, CabbageIdentifierIds::guirefresh, 128);
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 1);
@@ -839,7 +839,7 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     var channels;
     channels.append ("checkchan");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
-    setProperty (widgetData, CabbageIdentifierIds::text, "Check box");
+    setProperty (widgetData, CabbageIdentifierIds::text, "");
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::min, 0);
     setProperty (widgetData, CabbageIdentifierIds::max, 1);

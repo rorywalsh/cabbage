@@ -4,7 +4,8 @@
 <Cabbage>
 form caption("pvsBlur"), size(235,125) colour( 70, 90,100), pluginID("blur")
 image             bounds(0, 0,235,125), colour( 70, 90,100), shape("rounded"), outlinecolour("white"), outlinethickness(5) 
-rslider bounds( 10, 10, 70, 70), text("FFT Size"),  channel("att_table"), range(1, 7, 4, 1,1),              textcolour("white"), colour( 30, 50, 60),trackercolour("white")
+label    bounds(15,20, 60,13), text("FFT Size"), fontcolour("white")
+combobox bounds(15,35, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("att_table"), value(4), fontcolour(220,220,255)
 rslider bounds( 80, 10, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 1),                textcolour("white"), colour( 30, 50, 60),trackercolour("white")
 rslider bounds(150, 10, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5, 0.5),         textcolour("white"), colour( 30, 50, 60),trackercolour("white")
 hslider bounds( 10, 70,210, 40), channel("blurtime"),  range(0, 2.00, 0.0, 0.5, 0.0001),                    textcolour("white"), colour( 10, 30, 40),trackercolour("white")
@@ -67,7 +68,7 @@ instr	1
 	kblurtime	portk	kblurtime,kporttime
 	aoutL		pvsblur_module	ainL,kblurtime,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
 	aoutR		pvsblur_module	ainR,kblurtime,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
-			outs	aoutR,aoutR
+				outs	aoutR,aoutR
 endin
 
 </CsInstruments>

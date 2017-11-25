@@ -39,7 +39,7 @@
 ; Clock:---	-	Clock source internal (Tempo knob) or external (VST host)
 
 <Cabbage>
-#define RSliderStyle # trackercolour(255,255,255), colour(  0, 55,100), textcolour(0,0,0), outlinecolour(50,50,50), textbox(1), fontcolour("black")#
+#define RSliderStyle trackercolour(255,255,255), colour(  0, 55,100), textcolour(0,0,0), outlinecolour(50,50,50), valuetextbox(1), textbox(1), fontcolour("black")
 
 form caption("Bassline TB-303") size(615,335), pluginID("T303"), guirefresh(64)
 image                bounds(  0,  0,615,335), colour("grey"), shape("sharp"), outlinecolour("white"), line(4)
@@ -61,22 +61,22 @@ checkbox bounds(555,  8,  5,  5), channel("Act15"), value(0), colour("yellow"), 
 checkbox bounds(590,  8,  5,  5), channel("Act16"), value(0), colour("yellow"), shape("ellipse"), active(0)
 
 label    bounds( 10, 43, 40, 12), text("Note"), FontColour("black")
-rslider  bounds( 45, 15, 45, 65), text("1"),  channel("Note1"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds( 80, 15, 45, 65), text("2"),  channel("Note2"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(115, 15, 45, 65), text("3"),  channel("Note3"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(150, 15, 45, 65), text("4"),  channel("Note4"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(185, 15, 45, 65), text("5"),  channel("Note5"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(220, 15, 45, 65), text("6"),  channel("Note6"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(255, 15, 45, 65), text("7"),  channel("Note7"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(290, 15, 45, 65), text("8"),  channel("Note8"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(325, 15, 45, 65), text("9"),  channel("Note9"),  range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(360, 15, 45, 65), text("10"), channel("Note10"), range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(395, 15, 45, 65), text("11"), channel("Note11"), range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(430, 15, 45, 65), text("12"), channel("Note12"), range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(465, 15, 45, 65), text("13"), channel("Note13"), range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(500, 15, 45, 65), text("14"), channel("Note14"), range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(535, 15, 45, 65), text("15"), channel("Note15"), range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
-rslider  bounds(570, 15, 45, 65), text("16"), channel("Note16"), range(12, 96, 60, 1, 1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds( 45, 15, 45, 65), text("1"),  channel("Note1"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds( 80, 15, 45, 65), text("2"),  channel("Note2"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(115, 15, 45, 65), text("3"),  channel("Note3"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(150, 15, 45, 65), text("4"),  channel("Note4"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(185, 15, 45, 65), text("5"),  channel("Note5"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(220, 15, 45, 65), text("6"),  channel("Note6"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(255, 15, 45, 65), text("7"),  channel("Note7"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(290, 15, 45, 65), text("8"),  channel("Note8"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(325, 15, 45, 65), text("9"),  channel("Note9"),  range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(360, 15, 45, 65), text("10"), channel("Note10"), range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(395, 15, 45, 65), text("11"), channel("Note11"), range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(430, 15, 45, 65), text("12"), channel("Note12"), range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(465, 15, 45, 65), text("13"), channel("Note13"), range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(500, 15, 45, 65), text("14"), channel("Note14"), range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(535, 15, 45, 65), text("15"), channel("Note15"), range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
+rslider  bounds(570, 15, 45, 65), text("16"), channel("Note16"), range(12, 96, 60, 1, 1), valuetextbox(1), textbox(1), fontcolour("black"), $RSliderStyle
 
 label    bounds( 10, 82, 40, 12), text("On/Off"), fontcolour("black"), FontColour("black")
 checkbox bounds( 61, 82, 12, 12), channel("On1"),  value(0)
@@ -145,12 +145,12 @@ rslider  bounds(410,140, 60, 80), text("Accent"),  channel("Accent"),  range(0, 
 
 image                bounds(140,222,215,81), colour(155,155,155), shape("sharp")
 
-rslider  bounds( 80,220, 60, 80), text("Gliss"),    channel("NoteGliss"),     range(0, 0.03, 0.01,0.75,0.001),        $RSliderStyle
-rslider  bounds(135,220, 60, 80), text("BPF.CF."), channel("BPF_StaticCF"), range(50,3000,100,0.5,1),        $RSliderStyle
-rslider  bounds(190,220, 60, 80), text("BPF.BW."), channel("BPF_StaticBW"), range(0.1,99,1,0.5,0.01),        $RSliderStyle
-rslider  bounds(245,220, 60, 80), text("BPF.Bal."), channel("BPF_StaticBal"), range(0,2,1,1,1),        $RSliderStyle
-rslider  bounds(300,220, 60, 80), text("BPF.Mix"), channel("BPF_StaticMix"), range(0,1,0.3),        $RSliderStyle
-rslider  bounds(355,220, 60, 80), text("Dist."),   channel("Dist"),    range(0,1.00, 0,1,0.001),         $RSliderStyle;, visible(0)
+rslider  bounds( 80,220, 60, 80), text("Gliss"),     channel("NoteGliss"),     range(0, 0.03, 0.01,0.75,0.001),        $RSliderStyle
+rslider  bounds(135,220, 60, 80), text("BPF.CF."),   channel("BPF_StaticCF"),  range(50,3000,100,0.5,1),        $RSliderStyle
+rslider  bounds(190,220, 60, 80), text("BPF.BW."),   channel("BPF_StaticBW"),  range(0.1,99,1,0.5,0.01),        $RSliderStyle
+rslider  bounds(245,220, 60, 80), text("BPF.Bal."),  channel("BPF_StaticBal"), range(0,2,1,1,1),        $RSliderStyle
+rslider  bounds(300,220, 60, 80), text("BPF.Mix"),   channel("BPF_StaticMix"), range(0,1,0.3),        $RSliderStyle
+rslider  bounds(355,220, 60, 80), text("Dist."),     channel("Dist"), range(0,1.00, 0,1,0.001), textcolour("black"), $RSliderStyle
 rslider  bounds(410,220, 60, 80), text("Dist.LPF."), channel("Dist_LPF"),     range(50,20000,4000,0.5,1), identchannel("Dist_LPF_ID"),       $RSliderStyle
 
 rslider  bounds(470,220, 70, 90), text("Tempo"),   channel("Tempo"),   range(1, 500, 110, 1, 1), identchannel("TempoID"), $RSliderStyle

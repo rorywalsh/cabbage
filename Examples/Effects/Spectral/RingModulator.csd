@@ -32,7 +32,7 @@
 form caption("Ring Modulator") size(755,170), pluginID("rmod")
 image               pos(0, 0), size(755, 90), colour("black"), shape("rounded"), outlinecolour("lime"), outlinethickness(5) 
 label    bounds( 10, 20, 65, 13), text("Input"), textcolour(white)
-combobox bounds( 10, 34, 65, 18), text("Knob",Keybd."), channel("input"), textcolour(white)
+combobox bounds( 10, 34, 65, 18), text("Knob","Keybd."), channel("input"), textcolour(white)
 rslider bounds( 75, 12, 70, 70), text("Freq."),    channel("freq"),  range(0, 15000, 800, 0.25),   colour("yellow"),    trackercolour(white), textcolour(white)
 rslider bounds(145, 12, 70, 70), text("Harms"),    channel("harms"), range(1, 40, 1,1,1),          colour("yellow"),    trackercolour(white), textcolour(white)
 rslider bounds(215, 12, 70, 70), text("Offset"),   channel("offset"),range(0, 20, 0,1,1),          colour("yellow"),    trackercolour(white), textcolour(white)
@@ -152,8 +152,9 @@ instr	2
  a1	RingModulator	ga1,gkmix,kfreq,gkenv,gkatt,gkdec,ifn,i(gkwidth)
  a2	RingModulator	ga2,gkmix,kfreq,gkenv,gkatt,gkdec,ifn,0
  rireturn
- a1	=	a1 * gklevel
- a2	=	a2 * gklevel
+ aEnv	linsegr	0,0.01,1,0.01,0
+ a1	=	a1 * gklevel * aEnv
+ a2	=	a2 * gklevel * aEnv
  	outs	a1,a2
 endin
 

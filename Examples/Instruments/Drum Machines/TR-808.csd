@@ -10,120 +10,120 @@ form caption("TR-808") size(800, 400), colour("SlateGrey"), pluginID("T808"), gu
 
 label 		bounds(  5,385,120, 12), text("Iain McCurdy |2012|"), fontcolour("black")
 
-groupbox bounds( 0,  0,  50, 225), text("B.Drum"),FontColour("black"), colour(192,192,192){
+groupbox bounds( 0,  0,  50, 225), text("B.Drum"),fontcolour("black"), colour(192,192,192), plant(1) {
 checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act1"),  value(0), shape("ellipse"), active(0)
 rslider  bounds( 5, 25,  45,  45), text("Level"), textcolour("black"), colour(80,100,150), channel("level1"), range(0, 2, 1,1,0.01)
 rslider  bounds( 5, 75,  45,  45), text("Tune"),  textcolour("black"), colour(80,100,150), channel("tune1"),  range(-2, 2, 0,1,0.01)
 rslider  bounds( 5,125,  45,  45), text("Decay"), textcolour("black"), colour(80,100,150), channel("dur1"),   range(0.25, 2, 1, 0.8)
 rslider  bounds( 5,175,  45,  45), text("Pan"),   textcolour("black"), colour(80,100,150), channel("pan1"),   range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(50,  0,  50, 225), text("Snare"), FontColour("black"),colour(202,202,202){
-checkbox bounds(60, 24,   5,   5), colour("yellow"), channel("Act2"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(55, 25,  45,  45), text("Level"), textcolour("black"), colour(80,100,150), channel("level2"), range(0, 2, 1,1,0.01)
-rslider  bounds(55, 75,  45,  45), text("Tune"),  textcolour("black"), colour(80,100,150), channel("tune2"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(55,125,  45,  45), text("Decay"), textcolour("black"), colour(80,100,150), channel("dur2"),   range(0.25, 2, 1, 0.8)
-rslider  bounds(55,175,  45,  45), text("Pan"),   textcolour("black"), colour(80,100,150), channel("pan2"),   range(0, 1, 0.5,1,0.01)
+groupbox bounds(50,  0,  50, 225), text("Snare"), fontcolour("black"),colour(202,202,202), plant(2) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act2"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"), textcolour("black"), colour(80,100,150), channel("level2"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),  textcolour("black"), colour(80,100,150), channel("tune2"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"), textcolour("black"), colour(80,100,150), channel("dur2"),   range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),   textcolour("black"), colour(80,100,150), channel("pan2"),   range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(100,  0,  50, 225), text("Open HH"), FontColour("black"), colour(212,212,212){
-checkbox bounds(110, 24,   5,   5), colour("yellow"), channel("Act3"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(105, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level3"), range(0, 2, 1,1,0.01)
-rslider  bounds(105, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune3"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(105,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur3"),   range(0.25, 2, 1, 0.8)
-rslider  bounds(105,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan3"),  range(0, 1, 0.5,1,0.01)
+groupbox bounds(100,  0,  50, 225), text("O. HH"), fontcolour("black"), colour(212,212,212), plant(3) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act3"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level3"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune3"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur3"),   range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan3"),  range(0, 1, 0.5,1,0.01)
 }                                
-groupbox bounds(150,  0,  50, 225), text("Cl. HH"),FontColour("black"),colour(222,222,222){
-checkbox bounds(160, 24,   5,   5), colour("yellow"), channel("Act4"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(155, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level4"), range(0, 2, 1,1,0.01)
-rslider  bounds(155, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune4"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(155,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur4"),   range(0.25, 2, 1, 0.8)
-rslider  bounds(155,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan4"),  range(0, 1, 0.5,1,0.01)
+groupbox bounds(150,  0,  50, 225), text("Cl. HH"),fontcolour("black"),colour(222,222,222), plant(4) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act4"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level4"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune4"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur4"),   range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan4"),  range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(200,  0,  50, 225), text("Hi Tom"), FontColour("black"),colour(232,232,232){
-checkbox bounds(210, 24,   5,   5), colour("yellow"), channel("Act5"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(205, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level5"), range(0, 2, 1,1,0.01)
-rslider  bounds(205, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune5"), range(-2, 2, 0,1,0.01)
-rslider  bounds(205,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur5"),   range(0.25, 2, 1, 0.8)
-rslider  bounds(205,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan5"),  range(0, 1, 0.5,1,0.01)
+groupbox bounds(200,  0,  50, 225), text("H. Tom"), fontcolour("black"),colour(232,232,232), plant(5) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act5"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level5"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune5"), range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur5"),   range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan5"),  range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(250,  0,  50, 225), text("Mid Tom"),FontColour("black"), colour(242,242,242){
-checkbox bounds(260, 24,   5,   5), colour("yellow"), channel("Act6"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(255, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level6"), range(0, 2, 1,1,0.01)
-rslider  bounds(255, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune6"), range(-2, 2, 0,1,0.01)
-rslider  bounds(255,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur6"), range(0.25, 2, 1, 0.8)
-rslider  bounds(255,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan6"),  range(0, 1, 0.5,1,0.01)
+groupbox bounds(250,  0,  50, 225), text("M. Tom"),fontcolour("black"), colour(242,242,242), plant(6) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act6"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level6"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune6"), range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur6"), range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan6"),  range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(300,  0,  50, 225), text("Low Tom"),FontColour("black"), colour(232,232,232){
-checkbox bounds(310, 24,   5,   5), colour("yellow"), channel("Act7"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(305, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level7"), range(0, 2, 1,1,0.01)
-rslider  bounds(305, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune7"), range(-2, 2, 0,1,0.01)
-rslider  bounds(305,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur7"), range(0.25, 2, 1, 0.8)
-rslider  bounds(305,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan7"),  range(0, 1, 0.5,1,0.01)
+groupbox bounds(300,  0,  50, 225), text("L. Tom"),fontcolour("black"), colour(232,232,232), plant(7) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act7"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level7"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune7"), range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur7"), range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan7"),  range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(350,  0,  50, 225), text("Cymbal"), FontColour("black"),colour(222,222,222){
-checkbox bounds(360, 24,   5,   5), colour("yellow"), channel("Act8"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(355, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level8"), range(0, 2, 1,1,0.01)
-rslider  bounds(355, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune8"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(355,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur8"),  range(0.25, 2, 1, 0.8)
-rslider  bounds(355,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan8"),  range(0, 1, 0.5,1,0.01)
+groupbox bounds(350,  0,  50, 225), text("Cymbal"), fontcolour("black"),colour(222,222,222), plant(8) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act8"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level8"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune8"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur8"),  range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan8"),  range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(400,  0,  50, 225), text("Rim Shot"),FontColour("black"), colour(212,212,212){
-checkbox bounds(410, 24,   5,   5), colour("yellow"), channel("Act9"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(405, 25,  45,  45), text("Level"),   textcolour("black"), colour(80,100,150), channel("level9"), range(0, 2, 1,1,0.01)
-rslider  bounds(405, 75,  45,  45), text("Tune"),    textcolour("black"), colour(80,100,150), channel("tune9"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(405,125,  45,  45), text("Decay"),   textcolour("black"), colour(80,100,150), channel("dur9"),  range(0.25, 2, 1, 0.8)
-rslider  bounds(405,175,  45,  45), text("Pan"),     textcolour("black"), colour(80,100,150), channel("pan9"),  range(0, 1, 0.5,1,0.01)
+groupbox bounds(400,  0,  50, 225), text("Rim Shot"),fontcolour("black"), colour(212,212,212), plant(9) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act9"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),   textcolour("black"), colour(80,100,150), channel("level9"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),    textcolour("black"), colour(80,100,150), channel("tune9"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),   textcolour("black"), colour(80,100,150), channel("dur9"),  range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),     textcolour("black"), colour(80,100,150), channel("pan9"),  range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(450,  0,  50, 225), text("Claves"), FontColour("black"),colour(202,202,202){
-checkbox bounds(460, 24,   5,   5), colour("yellow"), channel("Act10"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(455, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level10"), range(0, 2, 1,1,0.01)
-rslider  bounds(455, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune10"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(455,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur10"),  range(0.25, 2, 1, 0.8)
-rslider  bounds(455,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan10"), range(0, 1, 0.5,1,0.01)
+groupbox bounds(450,  0,  50, 225), text("Claves"), fontcolour("black"),colour(202,202,202), plant(10) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act10"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level10"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune10"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur10"),  range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan10"), range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(500,  0,  50, 225), text("Cowbell"),FontColour("black"), colour(192,192,192){
-checkbox bounds(510, 24,   5,   5), colour("yellow"), channel("Act11"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(505, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level11"), range(0, 2, 1,1,0.01)
-rslider  bounds(505, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune11"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(505,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur11"),  range(0.25, 2, 1, 0.8)
-rslider  bounds(505,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan11"), range(0, 1, 0.5,1,0.01)
+groupbox bounds(500,  0,  50, 225), text("Cowbell"),fontcolour("black"), colour(192,192,192), plant(11) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act11"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level11"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune11"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur11"),  range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan11"), range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(550,  0,  50, 225), text("Clap"), FontColour("black"),colour(182,182,182){
-checkbox bounds(560, 24,   5,   5), colour("yellow"), channel("Act12"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(555, 25,  45,  45), text("Level"), textcolour("black"), colour(80,100,150), channel("level12"), range(0, 2, 1,1,0.01)
-rslider  bounds(555, 75,  45,  45), text("Tune"),  textcolour("black"), colour(80,100,150), channel("tune12"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(555,125,  45,  45), text("Decay"), textcolour("black"), colour(80,100,150), channel("dur12"),  range(0.25, 2, 1, 0.8)
-rslider  bounds(555,175,  45,  45), text("Pan"),   textcolour("black"), colour(80,100,150), channel("pan12"), range(0, 1, 0.5,1,0.01)
+groupbox bounds(550,  0,  50, 225), text("Clap"), fontcolour("black"),colour(182,182,182), plant(12) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act12"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"), textcolour("black"), colour(80,100,150), channel("level12"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),  textcolour("black"), colour(80,100,150), channel("tune12"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"), textcolour("black"), colour(80,100,150), channel("dur12"),  range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),   textcolour("black"), colour(80,100,150), channel("pan12"), range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(600,  0,  50, 225), text("Maraca"),FontColour("black"), colour(172,172,172){
-checkbox bounds(610, 24,   5,   5), colour("yellow"), channel("Act13"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(605, 25,  45,  45), text("Level"), textcolour("black"), colour(80,100,150), channel("level13"), range(0, 2, 1,1,0.01)
-rslider  bounds(605, 75,  45,  45), text("Tune"),  textcolour("black"), colour(80,100,150), channel("tune13"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(605,125,  45,  45), text("Decay"), textcolour("black"), colour(80,100,150), channel("dur13"),  range(0.25, 2, 1, 0.8)
-rslider  bounds(605,175,  45,  45), text("Pan"),   textcolour("black"), colour(80,100,150), channel("pan13"), range(0, 1, 0.5,1,0.01)
+groupbox bounds(600,  0,  50, 225), text("Maraca"),fontcolour("black"), colour(172,172,172), plant(13) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act13"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"), textcolour("black"), colour(80,100,150), channel("level13"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),  textcolour("black"), colour(80,100,150), channel("tune13"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"), textcolour("black"), colour(80,100,150), channel("dur13"),  range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),   textcolour("black"), colour(80,100,150), channel("pan13"), range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(650,  0,  50, 225), text("Hi Conga"),FontColour("black"), colour(162,162,162){
-checkbox bounds(660, 24,   5,   5), colour("yellow"), channel("Act14"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(655, 25,  45,  45), text("Level"),   textcolour("black"), colour(80,100,150), channel("level14"), range(0, 2, 1,1,0.01)
-rslider  bounds(655, 75,  45,  45), text("Tune"),    textcolour("black"), colour(80,100,150), channel("tune14"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(655,125,  45,  45), text("Decay"),   textcolour("black"), colour(80,100,150), channel("dur14"),   range(0.25, 2, 1, 0.8)
-rslider  bounds(655,175,  45,  45), text("Pan"),     textcolour("black"), colour(80,100,150), channel("pan14"), range(0, 1, 0.5,0.01)
+groupbox bounds(650,  0,  50, 225), text("Hi Conga"),fontcolour("black"), colour(162,162,162), plant(14) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act14"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),   textcolour("black"), colour(80,100,150), channel("level14"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),    textcolour("black"), colour(80,100,150), channel("tune14"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),   textcolour("black"), colour(80,100,150), channel("dur14"),   range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),     textcolour("black"), colour(80,100,150), channel("pan14"), range(0, 1, 0.5,0.01)
 }
-groupbox bounds(700,  0,  50, 225), text("Md Cnga"),FontColour("black"), colour(152,152,152){
-checkbox bounds(710, 24,   5,   5), colour("yellow"), channel("Act15"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(705, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level15"), range(0, 2, 1,1,0.01)
-rslider  bounds(705, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune15"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(705,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur15"),   range(0.25, 2, 1, 0.8)
-rslider  bounds(705,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan15"), range(0, 1, 0.5,1,0.01)
+groupbox bounds(700,  0,  50, 225), text("Md Cnga"),fontcolour("black"), colour(152,152,152), plant(15) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act15"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level15"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune15"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur15"),   range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan15"), range(0, 1, 0.5,1,0.01)
 }
-groupbox bounds(750,  0,  50, 225), text("Lo Cnga"),FontColour("black"), colour(142,142,142){
-checkbox bounds(760, 24,   5,   5), colour("yellow"), channel("Act16"),  value(0), shape("ellipse"), active(0)
-rslider  bounds(755, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level16"), range(0, 2, 1,1,0.01)
-rslider  bounds(755, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune16"),  range(-2, 2, 0,1,0.01)
-rslider  bounds(755,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur16"),   range(0.25, 2, 1, 0.8)
-rslider  bounds(755,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan16"), range(0, 1, 0.5,1,0.01)
+groupbox bounds(750,  0,  50, 225), text("Lo Cnga"),fontcolour("black"), colour(142,142,142), plant(16) {
+checkbox bounds(10, 24,   5,   5), colour("yellow"), channel("Act16"),  value(0), shape("ellipse"), active(0)
+rslider  bounds( 5, 25,  45,  45), text("Level"),  textcolour("black"), colour(80,100,150), channel("level16"), range(0, 2, 1,1,0.01)
+rslider  bounds( 5, 75,  45,  45), text("Tune"),   textcolour("black"), colour(80,100,150), channel("tune16"),  range(-2, 2, 0,1,0.01)
+rslider  bounds( 5,125,  45,  45), text("Decay"),  textcolour("black"), colour(80,100,150), channel("dur16"),   range(0.25, 2, 1, 0.8)
+rslider  bounds( 5,175,  45,  45), text("Pan"),    textcolour("black"), colour(80,100,150), channel("pan16"), range(0, 1, 0.5,1,0.01)
 }
 
-keyboard pos(0, 225), size(800, 80)
+keyboard bounds(0, 225, 800, 80)
 button   bounds( 10,315, 40, 25), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), text("Play","Play"), channel("Play"), latched(1), radiogroup(1), identchannel("PlayButton")
 button   bounds( 50,315, 40, 25), fontcolour:0(50,50,50), fontcolour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0), text("Stop","Stop"), channel("Stop"), latched(1), radiogroup(1), value(1), identchannel("StopButton")
 
@@ -132,31 +132,31 @@ combobox bounds( 10,345, 80, 15), channel("sound"), value(1), text("Bass Drum","
 button   bounds(462,315, 80, 20), text("Clear","Clear"), channel("clear"), value(0)
 button   bounds(462,338, 38, 20), text("Save","Save"), channel("save"), value(0)
 button   bounds(502,338, 38, 20), text("Load","Load"), channel("load"), value(0)
-label    bounds(542,328, 48, 10), text("PATTERN"), FontColour("black")
+label    bounds(542,328, 48, 10), text("PATTERN"), fontcolour("black")
 combobox bounds(544,338, 45, 20), channel("pattern"), value(1), text("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16")
 rslider  bounds(593,310, 60, 60), text("Accent"),  textcolour("black"), colour(80,100,150), channel("AccLev"), range(0, 1.00, 0.4)
 rslider  bounds(643,310, 60, 60), text("Tempo"),   textcolour("black"), colour(80,100,150), channel("tempo"), range(10, 500, 70, 1, 1)
 rslider  bounds(693,310, 60, 60), text("Swing"),   textcolour("black"), colour(80,100,150), channel("swing"), range(0, 0.50, 0)
 rslider  bounds(743,310, 60, 60), text("Level"),   textcolour("black"), colour(80,100,150), channel("level"), range(0, 2.00, 1)
 
-label    bounds(143,312,  6, 10), text("1"), FontColour("black")
-label    bounds(163,312,  6, 10), text("2"), FontColour("black")
-label    bounds(183,312,  6, 10), text("3"), FontColour("black")
-label    bounds(203,312,  6, 10), text("4"), FontColour("black")
-label    bounds(223,312,  6, 10), text("5"), FontColour("black")
-label    bounds(243,312,  6, 10), text("6"), FontColour("black")
-label    bounds(263,312,  6, 10), text("7"), FontColour("black")
-label    bounds(283,312,  6, 10), text("8"), FontColour("black")
-label    bounds(303,312,  6, 10), text("9"), FontColour("black")
-label    bounds(320,312, 12, 10), text("10"), FontColour("black")
-label    bounds(340,312, 12, 10), text("11"), FontColour("black")
-label    bounds(360,312, 12, 10), text("12"), FontColour("black")
-label    bounds(380,312, 12, 10), text("13"), FontColour("black")
-label    bounds(400,312, 12, 10), text("14"), FontColour("black")
-label    bounds(420,312, 12, 10), text("15"), FontColour("black")
-label    bounds(440,312, 12, 10), text("16"), FontColour("black")
+label    bounds(143,312,  6, 10), text("1"), fontcolour("black")
+label    bounds(163,312,  6, 10), text("2"), fontcolour("black")
+label    bounds(183,312,  6, 10), text("3"), fontcolour("black")
+label    bounds(203,312,  6, 10), text("4"), fontcolour("black")
+label    bounds(223,312,  6, 10), text("5"), fontcolour("black")
+label    bounds(243,312,  6, 10), text("6"), fontcolour("black")
+label    bounds(263,312,  6, 10), text("7"), fontcolour("black")
+label    bounds(283,312,  6, 10), text("8"), fontcolour("black")
+label    bounds(303,312,  6, 10), text("9"), fontcolour("black")
+label    bounds(320,312, 12, 10), text("10"), fontcolour("black")
+label    bounds(340,312, 12, 10), text("11"), fontcolour("black")
+label    bounds(360,312, 12, 10), text("12"), fontcolour("black")
+label    bounds(380,312, 12, 10), text("13"), fontcolour("black")
+label    bounds(400,312, 12, 10), text("14"), fontcolour("black")
+label    bounds(420,312, 12, 10), text("15"), fontcolour("black")
+label    bounds(440,312, 12, 10), text("16"), fontcolour("black")
 
-label    bounds(120, 325, 17, 12), text("On"), FontColour("black")
+label    bounds(120, 325, 17, 12), text("On"), fontcolour("black")
 checkbox bounds(140, 325, 12, 12), channel("On1"),  value(1)
 checkbox bounds(160, 325, 12, 12), channel("On2"),  value(0)
 checkbox bounds(180, 325, 12, 12), channel("On3"),  value(0)
@@ -174,7 +174,7 @@ checkbox bounds(400, 325, 12, 12), channel("On14"), value(1)
 checkbox bounds(420, 325, 12, 12), channel("On15"), value(0)
 checkbox bounds(440, 325, 12, 12), channel("On16"), value(0)
 
-label    bounds( 98, 345, 38, 12), text("Accent"), FontColour("black")
+label    bounds( 98, 345, 38, 12), text("Accent"), fontcolour("black")
 checkbox bounds(140, 345, 12, 12), channel("Acc1"),  value(1), colour("yellow")
 checkbox bounds(160, 345, 12, 12), channel("Acc2"),  value(0), colour("yellow")
 checkbox bounds(180, 345, 12, 12), channel("Acc3"),  value(0), colour("yellow")
@@ -193,7 +193,6 @@ checkbox bounds(420, 345, 12, 12), channel("Acc15"), value(0), colour("yellow")
 checkbox bounds(440, 345, 12, 12), channel("Acc16"), value(0), colour("yellow")
 
 button   bounds(458,362, 90, 18), text("Local Control","Host Control"), channel("control"), value(0)
-
 
 </Cabbage>
 

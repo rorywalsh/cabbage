@@ -150,11 +150,14 @@ instr	3 ; Echo ripple
 endin
 
 
-
-instr	99	; Reverb
- aL,aR	reverbsc	gaSendL,gaSendR,0.9,3000
- 	outs		aL, aR			; Send delay signal to outputs
- 	clear		gaSendL, gaSendR	; Clear global audio send variables
+instr	99	; Delay-Reverb
+ aL		delayr		0.7
+ aR		delayr		0.973
+		delayw		gaSendL*0.8 + aL*0.35 + aR*0.35
+		delayw		gaSendR*0.8 + aR*0.35 + aL*0.35
+ aL,aR	reverbsc	gaSendL+aL,gaSendR+aR,0.8,3000
+ 		outs		aL, aR			; Send delay signal to outputs
+ 		clear		gaSendL, gaSendR	; Clear global audio send variables
 endin
 
 

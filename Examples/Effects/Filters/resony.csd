@@ -80,17 +80,21 @@ numberbox bounds(580, 15, 70, 40), text("Sep.semi."),        channel("sep2"),  r
 
 rslider   bounds(660, 10, 70, 70), text("Level"),           fontcolour("white"), channel("gain"), range(0,2,1,0.25,0.00001),  colour(255,100,0,255), trackercolour(255,250,100)
 
-combobox  bounds(450, 95,130, 70), caption("Separation Mode"), channel("sepmode"), value(1), text("octs.total", "hertz", "octs.adjacent")
-combobox  bounds(600, 95,130, 70), caption("Scaling Mode"), channel("scl"), value(2), text("none", "peak response", "RMS")
+label     bounds(450,100,130, 13), text("Separation Mode")
+combobox  bounds(450,115,130, 25), channel("sepmode"), value(1), text("octs.total", "hertz", "octs.adjacent")
+label     bounds(600,100,130, 13), text("Scaling Mode")
+combobox  bounds(600,115,130, 25), channel("scl"), value(2), text("none", "peak response", "RMS")
 
 
-image    bounds( 30, 90,180, 80), colour(0,0,0,0), outlinecolour(150,150,150), outlinethickness(1), plant("highpass")
+image    bounds( 30, 90,180, 80), colour(0,0,0,0), outlinecolour(150,150,150), outlinethickness(1), plant("highpass"), {
 checkbox bounds( 20, 15,100, 20), text("Highpass"), channel("HPF_OnOff")
 rslider  bounds(100,  5, 70, 70), text("Ratio"),           fontcolour("white"), channel("HPF_Ratio"), range(0.1, 16, 0.1, 0.5,0.0001),  colour(255,100,0,255), trackercolour(255,250,100)
+}
 
-image    bounds(240, 90,180, 80), colour(0,0,0,0), outlinecolour(150,150,150), outlinethickness(1), plant("lowpass")
+image    bounds(240, 90,180, 80), colour(0,0,0,0), outlinecolour(150,150,150), outlinethickness(1), plant("lowpass"), {
 checkbox bounds( 20, 15,100, 20), text("Lowpass"), channel("LPF_OnOff")
 rslider  bounds(100,  5, 70, 70), text("Ratio"),           fontcolour("white"), channel("LPF_Ratio"), range(0.1, 32, 32, 0.25,0.00001),  colour(255,100,0,255), trackercolour(255,250,100)
+}
 
 </Cabbage>
 

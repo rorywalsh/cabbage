@@ -30,8 +30,9 @@ form caption("Leslie Speaker") size(260,120), pluginID("Lsli")
 
 image     bounds(  0,  0,260,120), outlinethickness(4), outlinecolour("white"), file("DarkWood.jpg");, colour(75,50,50)
 image     bounds(  0,  0,260,120), outlinethickness(4), outlinecolour("silver"), colour(0,0,0,0)
-button    bounds( 70, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Slow","Slow"), channel("Slow"), latched(1), radiogroup(1), value(1)
-button    bounds(130, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Fast","Fast"), channel("Fast"), latched(1), radiogroup(1)
+button    bounds( 40, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Slow","Slow"), channel("Slow"), latched(1), radiogroup(1), value(1)
+button    bounds(100, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Stop","Stop"), channel("Stop"), latched(1), radiogroup(1)
+button    bounds(160, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Fast","Fast"), channel("Fast"), latched(1), radiogroup(1)
 
 image     bounds( 132,  7,16,16), identchannel("TweeterID"), shape("ellipse"), colour(170,150,150)
 image     bounds( 110, 30,40,40), identchannel("WooferID"),  shape("ellipse"), colour(170,150,150)
@@ -118,8 +119,18 @@ instr	1	; a basic MIDI triggered organ sound
 endin
 
 instr	99	; a Leslie speaker effect
- kSpeed	chnget	"Fast"									; read 'Slow' button widget
- 														; 0=slow 1=fast
+ kSlow	chnget	"Slow"									; read 'Slow' button widget
+ kStop	chnget	"Stop"									; read 'Stop' button widget
+ kFast	chnget	"Fast"									; read 'Faset' button widget
+ 
+ if kSlow==1 then
+  kSpeed	=	0
+ elseif kStop==1 then
+  kSpeed	=	1
+ else
+  kSpeed	=	2
+ endif
+ 														; 0=slow 1=stop 2=fast
  aMix		chnget	"send"								; read in organ sound from instr 1
 
  aL,aR		ins											; read live audio in
@@ -155,9 +166,12 @@ instr	99	; a Leslie speaker effect
  if kSpeed==0 then										; if speed is slow
   kLF_Speed	=	kLF_Slow								; set woofer speed to slow speed as defined in the set-up pop-up
   kHF_Speed	=	kHF_Slow								; set tweeter speed to slow speed as defined in the set-up pop-up
- else
+ elseif kSpeed==2 then
   kLF_Speed	=	kLF_Fast								; set woofer speed to slow speed as defined in the set-up pop-up
   kHF_Speed	=	kHF_Fast								; set tweeter speed to slow speed as defined in the set-up pop-up
+ else
+  kLF_Speed	=	0										; set woofer speed to slow speed as defined in the set-up pop-up
+  kHF_Speed	=	0										; set tweeter speed to slow speed as defined in the set-up pop-up
  endif
  
  kportramp	linseg	0,0.01,1							; portamento time ramps up quickly from zero

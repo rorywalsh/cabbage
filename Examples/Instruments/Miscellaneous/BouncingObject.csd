@@ -18,58 +18,58 @@
 <Cabbage>
 form caption("Bouncing Object"), size(390, 635), pluginID("bnOb")
 
-#define RSliderStyle # trackercolour(255,255,255), colour(100,200,140), outlinecolour(40,40,40), textcolour(white) #
+#define RSliderStyle trackercolour(255,255,255), colour(100,200,140), outlinecolour(40,40,40), textcolour(white)
 
 image      bounds(  5,  5,380, 70), colour( 50,100, 70), outlinecolour("white"), line(2), shape("sharp"),plant("main"){
 filebutton bounds(  5,  8, 80, 25), text("Open File","Open File"), fontcolour("white") channel("filename"), shape("ellipse")
-button     bounds(  5, 37, 80, 25), channel("GestureTrigger"), text("Trigger","Trigger"), value(0)
+button     bounds(  5, 37, 80, 25), channel("GestureTrigger"), text("Trigger","Trigger"), value(0), latched(0)
 rslider    bounds( 90,  5, 60, 60), channel("dur"), text("Duration"), range(0.1, 20.00,  4,0.25), $RSliderStyle
-label      bounds(150, 12, 65, 12), text("Input:"),  FontColour("white")
+label      bounds(150, 12, 65, 12), text("Input:"),  fontcolour("white")
 combobox   bounds(150, 25, 65, 20), channel("input"), value(2), text("Sample", "Sine", "Saw", "Square", "Tri", "Noise")
 
-label    bounds(220, 12, 90, 12), text("Filter Type:"),  FontColour("white")
+label    bounds(220, 12, 90, 12), text("Filter Type:"),  fontcolour("white")
 combobox bounds(220, 25, 90, 20), channel("FiltType"), value(1), text("Lowpass", "Bandpass", "Reson", "Highpass", "Moogladder")
 rslider  bounds(310,  5, 60, 60), channel("bandwidth"), text("Bandwidth"), range(0.05, 2, 0.1, 0.25), $RSliderStyle
 }
 
 image   bounds(  5, 80,380, 90), colour( 50,100, 70), outlinecolour("white"), line(2), shape("sharp"),plant("time"){
-label   bounds(  0,  3,170, 12), text("Time Gap"),  FontColour("white")
+label   bounds(  0,  3,170, 12), text("Time Gap"),  fontcolour("white")
 rslider bounds(  0, 25, 60, 60), channel("TimeS"), text("Start"), range(0.01, 1.00,  0.5), $RSliderStyle
 rslider bounds( 55, 25, 60, 60), channel("TimeE"), text("End"),   range(0.01, 1.00,  0.05), $RSliderStyle
 rslider bounds(110, 25, 60, 60), channel("TimeC"), text("Curve"), range(  -40, 40.00,-0.4), $RSliderStyle
-gentable   bounds(175,  5,200, 80), identchannel("table1"), tableNumbers(1), tablecolour("lime"), amprange(0.01,1,1), zoom(-1)
+gentable   bounds(175,  5,200, 80), identchannel("table1"), tablenumbers(1), tablecolour("lime"), amprange(0.01,1,1), zoom(-1), fill(0)
 }
 
 image   bounds(  5,175,380, 90), colour( 50,100, 70), outlinecolour("white"), line(2), shape("sharp"),plant("Transpose"){
-label   bounds(  0,  3,170, 12), text("Transpose"),  FontColour("white")
+label   bounds(  0,  3,170, 12), text("Transpose"),  fontcolour("white")
 rslider bounds(  0, 25, 60, 60), channel("TransS"), text("Start"), range(-48, 48,  0), $RSliderStyle
 rslider bounds( 55, 25, 60, 60), channel("TransE"), text("End"),   range(-48, 48,  0), $RSliderStyle
 rslider bounds(110, 25, 60, 60), channel("TransC"), text("Curve"), range(  -40, 40.00, 0), $RSliderStyle
-gentable   bounds(175,  5,200, 80), identchannel("table2"), tableNumbers(2), tablecolour("yellow"), amprange(-48,48,2), zoom(-1)
+gentable   bounds(175,  5,200, 80), identchannel("table2"), tablenumbers(2), tablecolour("yellow"), amprange(-48,48,2), zoom(-1), fill(0)
 }
 
 image   bounds(  5,270,380, 90), colour( 50,100, 70), outlinecolour("white"), line(2), shape("sharp"),plant("Filter"){
-label   bounds(  0,  3,170, 12), text("Filter"),  FontColour("white")
+label   bounds(  0,  3,170, 12), text("Filter"),  fontcolour("white")
 rslider bounds(  0, 25, 60, 60), channel("FilterS"), text("Start"), range(4, 14.00,  14), $RSliderStyle
 rslider bounds( 55, 25, 60, 60), channel("FilterE"), text("End"),   range(4, 14.00,  5), $RSliderStyle
 rslider bounds(110, 25, 60, 60), channel("FilterC"), text("Curve"), range(-40, 40.00,-2), $RSliderStyle
-gentable   bounds(175,  5,200, 80), identchannel("table3"), tableNumbers(3), tablecolour("LightBlue"), amprange(4,14,3), zoom(-1)
+gentable   bounds(175,  5,200, 80), identchannel("table3"), tablenumbers(3), tablecolour("LightBlue"), amprange(4,14,3), zoom(-1), fill(0)
 }
 
 image   bounds(  5,365,380, 90), colour( 50,100, 70), outlinecolour("white"), line(2), shape("sharp"),plant("Amp"){
-label   bounds(  0,  3,170, 12), text("Gesture Amplitude Envelope"),  FontColour("white")
+label   bounds(  0,  3,170, 12), text("Gesture Amplitude Envelope"),  fontcolour("white")
 rslider bounds(  0, 25, 60, 60), channel("AmpS"), text("Start"), range(0, 1,  1), $RSliderStyle
 rslider bounds( 55, 25, 60, 60), channel("AmpE"), text("End"),   range(0, 1,0.5), $RSliderStyle
 rslider bounds(110, 25, 60, 60), channel("AmpC"), text("Curve"), range(-40, 40.00, 0), $RSliderStyle
-gentable   bounds(175,  5,200, 80), identchannel("table4"), tableNumbers(4), tablecolour("Pink"), amprange(0,1,4), zoom(-1)
+gentable   bounds(175,  5,200, 80), identchannel("table4"), tablenumbers(4), tablecolour("Pink"), amprange(0,1,4), zoom(-1), fill(0)
 }
 
 image   bounds(  5,460,380, 90), colour( 50,100, 70), outlinecolour("white"), line(2), shape("sharp"),plant("ElementAmp"){
-label   bounds(  0,  3,170, 12), text("Element Amplitude Envelope"),  FontColour("white")
+label   bounds(  0,  3,170, 12), text("Element Amplitude Envelope"),  fontcolour("white")
 rslider bounds(  0, 25, 60, 60), channel("ElementAmpS"), text("Start"), range(0, 1,  1), $RSliderStyle
 rslider bounds( 55, 25, 60, 60), channel("ElementAmpE"), text("End"),   range(0, 1,  1), $RSliderStyle
 rslider bounds(110, 25, 60, 60), channel("ElementAmpC"), text("Curve"), range(-40, 40.00, 0), $RSliderStyle
-gentable   bounds(175,  5,200, 80), identchannel("table5"), tableNumbers(5), tablecolour("Orange"), amprange(0,1,5), zoom(-1)
+gentable   bounds(175,  5,200, 80), identchannel("table5"), tablenumbers(5), tablecolour("Orange"), amprange(0,1,5), zoom(-1), fill(0)
 }
 
 keyboard bounds(  0,555,390, 80)
@@ -185,7 +185,7 @@ instr	1
  		chnset	"tablenumber(5)", "table5"
  endif
 
- if changed(gkGestureTrigger)==1 then
+ if trigger:k(gkGestureTrigger,0.6,0)==1 then
   event	"i",3,0,gkdur,60
  endif
 endin
@@ -233,7 +233,8 @@ instr	4	; INDIVIDUAL IMPULSE SOUNDS
   ;iFiltType	=		i(gkFiltType)  
   if iNChans==1||i(gkinput)!=1 then
    if i(gkinput)==1 then
-    asig		loscil3		ilevel,imlt,ifn,1
+    ;asig		loscil3		ilevel,imlt,ifn,1   ; commented while loscil transposition is broken
+    asig		poscil		ilevel,imlt/p3,ifn
    elseif i(gkinput)==2 then
     aenv2	linseg	0,0.005,1,p3-0.005,0
     asig	poscil	aenv2*ilevel*0.2,cpsmidinn(p4+60),gisine

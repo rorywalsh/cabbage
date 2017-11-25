@@ -19,6 +19,8 @@
 ; 14	-	hilbert
 ; 15    -   distort1
 ; 16    -   synchronous granular synthesis
+; 17    -   polynomial waveshaping
+; 18    -   chebyshev polynomial waveshaping
 ; 
 ; Use level to control the audio level. (Display level is unaffected by this control)
 ; The display level can be controlled by the small vertical slider to the right of the display.
@@ -27,76 +29,78 @@
 <Cabbage>
 form caption("Oscilloscope"), size(930, 450), pluginID("osci"), colour( 20, 20, 20,150)
 
-gentable bounds(  5,  5, 910, 240), identchannel("table1"), tablenumber(1), tablecolour("lightblue"), amprange(-1,1,1), zoom(-1)
+;gentable bounds(  5,  5, 910, 240), identchannel("table1"), tablenumbers(1,2,3), tablecolours("lightblue","red","green"), amprange(-1,1,0), zoom(-1)
+gentable bounds(  5,  5, 910, 240), identchannel("table1"), tablenumbers(1), tablecolours("lightblue"), amprange(-1,1,1), zoom(-1)
 hslider  bounds(  1,245, 920,  10), channel("phase"), range(0, 1, 0,1,0.001)
 vslider  bounds(920,  0,  10, 252), channel("gain"), range(0, 1, 1,1,0.001)
 
 label    bounds( 10, 258, 80, 11), text("Source")
-combobox bounds(  5, 270, 90, 20), channel("source"), value(1), text("Sine","VCO","Buzz","FM/RM/AM","Hsboscil","PD Half X","PD Half Y","FOF","Bit Depth","S.R. Rate","pdclip","powershape","clip","hilbert","distort1","grain")
+combobox bounds(  5, 270, 90, 20), channel("source"), value(1), text("Sine","VCO","Buzz","FM/RM/AM","Hsboscil","PD Half X","PD Half Y","FOF","Bit Depth","S.R. Rate","pdclip","powershape","clip","hilbert","distort1","grain","polynomial","chebyshevpoly","alpass")
 rslider  bounds( 20, 300, 60, 60), channel("level"), text("Level"), range(0, 1, 0.1,0.375,0.0001)
 
 groupbox bounds( 100, 260, 270, 100), text("VCO"), plant("VCO"), visible(0), identchannel("2") {
 label    bounds( 10,  38,110, 11), text("Waveform")
 combobox bounds( 10,  50,110, 20), channel("wave"), value(1), text("Sawtooth","Square/PWM","Saw./Tri./Ramp")
-rslider  bounds( 120,20, 80, 80), channel("pw"), text("Pulse Width"), textBox(1), range(0.01, 0.99, 0.5)
-rslider  bounds( 190,20, 80, 80), channel("VCOharms"), text("N.Harms"), textBox(1), range(0.01, 0.5, 0.5,0.5,0.001)
+rslider  bounds( 120,20, 80, 80), channel("pw"), text("Pulse Width"), textbox(1), valuetextbox(1), range(0.01, 0.99, 0.5)
+rslider  bounds( 190,20, 80, 80), channel("VCOharms"), text("N.Harms"), textbox(1), valuetextbox(1), range(0.01, 0.5, 0.5,0.5,0.001)
 }
 groupbox bounds( 100, 260, 200, 100), text("Buzz"), plant("buzz"), visible(0), identchannel("3") {
-rslider  bounds(   0,  20,  80, 80), channel("lp"), text("Lowest"), textBox(1), range(1, 20, 1, 1,1)
-rslider  bounds(  60,  20,  80, 80), channel("np"), text("Number"), textBox(1), range(1, 80, 10, 1,1)
-rslider  bounds( 120,  20,  80, 80), channel("pow"), text("Power"), textBox(1), range(0, 2.00,0.5)
+rslider  bounds(   0,  20,  80, 80), channel("lp"), text("Lowest"), textbox(1), valuetextbox(1), range(1, 20, 1, 1,1)
+rslider  bounds(  60,  20,  80, 80), channel("np"), text("Number"), textbox(1), valuetextbox(1), range(1, 80, 10, 1,1)
+rslider  bounds( 120,  20,  80, 80), channel("pow"), text("Power"), textbox(1), valuetextbox(1), range(0, 2.00,0.5)
 }
 groupbox bounds( 100, 260, 280, 100), text("FM/RM/AM"), plant("FM"), visible(0), identchannel("4") {
-rslider  bounds(   0,20, 80, 80), channel("FMratio"), text("Ratio"), textBox(1), range(0, 8.00, 1,0.5,0.001)
-rslider  bounds(  70,20, 80, 80), channel("FMAdd"), text("Add"), textBox(1), range(-5, 5.00, 0)
-rslider  bounds( 140,20, 80, 80), channel("FMindex"), text("Index"), textBox(1), range(0,100.00, 1,0.5)
+rslider  bounds(   0,20, 80, 80), channel("FMratio"), text("Ratio"), textbox(1), valuetextbox(1), range(0, 8.00, 1,0.5,0.001)
+rslider  bounds(  70,20, 80, 80), channel("FMAdd"), text("Add"), textbox(1), valuetextbox(1), range(-5, 5.00, 0)
+rslider  bounds( 140,20, 80, 80), channel("FMindex"), text("Index"), textbox(1), valuetextbox(1), range(0,100.00, 1,0.5)
 checkbox bounds( 220,35, 80, 12), channel("FMselect"), text("FM"), value(1), radiogroup(3)
 checkbox bounds( 220,50, 80, 12), channel("RMselect"), text("RM"), value(0), radiogroup(3)
 checkbox bounds( 220,65, 80, 12), channel("AMselect"), text("AM"), value(0), radiogroup(3)
 }
 groupbox bounds( 100, 260, 150, 100), text("Hsboscil"), plant("hsboscil"), visible(0), identchannel("5") {
-rslider  bounds(   0,20, 80, 80), channel("brite"), text("Brite"), textBox(1), range(-4, 4.00, 0)
-rslider  bounds(  70,20, 80, 80), channel("octcnt"), text("Width"), textBox(1), range(2, 10.00, 3,1,1)
+rslider  bounds(   0,20, 80, 80), channel("brite"), text("Brite"), textbox(1), valuetextbox(1), range(-4, 4.00, 0)
+rslider  bounds(  70,20, 80, 80), channel("octcnt"), text("Width"), textbox(1), valuetextbox(1), range(2, 10.00, 3,1,1)
 }
 groupbox bounds( 100,260,235, 100), text("PD Half X"), plant("pdhalfx"), visible(0), identchannel("6") {
 combobox bounds(   5, 30, 70, 20), channel("PDHalfIP"), value(1), text("Cosine", "Saw", "Triangle","Square","User")
-rslider  bounds(  70, 20, 80, 80), channel("PD_amount"), text("P.Distort"), textBox(1), range(-1, 1.00, 0,1,0.001)
+rslider  bounds(  70, 20, 80, 80), channel("PD_amount"), text("P.Distort"), textbox(1), valuetextbox(1), range(-1, 1.00, 0,1,0.001)
 combobox bounds(150, 30, 80, 20), channel("polarX"), value(1), text("Unipolar", "Bipolar")
 }
 groupbox bounds( 100,260,235, 100), text("PD Half Y"), plant("pdhalfy"), visible(0), identchannel("7") {
 combobox bounds(   5, 30, 70, 20), channel("PDHalfyIP"), value(1), text("Sine", "Saw", "Triangle","Square","User")
-rslider  bounds(  70,20, 80, 80), channel("PD_amountY"), text("P.Distort"), textBox(1), range(-1, 2.00, 0,1,0.001)
+rslider  bounds(  70,20, 80, 80), channel("PD_amountY"), text("P.Distort"), textbox(1), valuetextbox(1), range(-1, 2.00, 0,1,0.001)
 combobox bounds(150, 30, 80, 20), channel("polarY"), value(1), text("Unipolar", "Bipolar")
 }
 groupbox bounds( 100,260,450, 100), text("FOF"), plant("fof"), visible(0), identchannel("8") {
-rslider  bounds(   0,20, 80, 80), channel("formant"), text("Formant"), textBox(1), range(50,10000,800,0.5,1)
-rslider  bounds(  70,20, 80, 80), channel("FRatio"), text("Frq.Ratio"), textBox(1), range(1,32, 8,0.5,0.01)
+rslider  bounds(   0,20, 80, 80), channel("formant"), text("Formant"), textbox(1), valuetextbox(1), range(50,10000,800,0.5,1)
+rslider  bounds(  70,20, 80, 80), channel("FRatio"), text("Frq.Ratio"), textbox(1), valuetextbox(1), range(1,32, 8,0.5,0.01)
 checkbox  bounds( 150,45,100, 20), channel("FormOn"),  text("Formant"), radiogroup(1) , value(1)
 checkbox  bounds( 150,65,100, 20), channel("RatioOn"), text("Frq.Ratio"),   radiogroup(1)
-rslider  bounds( 230,20, 80, 80), channel("bandwidth"), text("Bandwidth"), textBox(1), range(1,1000, 50,0.5,1)
-rslider  bounds( 300,20, 80, 80), channel("octdiv"), text("Oct.Div."), textBox(1), range(0,8, 0,1,0.01)
-rslider  bounds( 370,20, 80, 80), channel("FOFGain"), text("Gain"), textBox(1), range(0.001,1,1,0.5,0.001)
+rslider  bounds( 230,20, 80, 80), channel("bandwidth"), text("Bandwidth"), textbox(1), valuetextbox(1), range(1,1000, 50,0.5,1)
+rslider  bounds( 300,20, 80, 80), channel("octdiv"), text("Oct.Div."), textbox(1), valuetextbox(1), range(0,8, 0,1,0.01)
+rslider  bounds( 370,20, 80, 80), channel("FOFGain"), text("Gain"), textbox(1), valuetextbox(1), range(0.001,1,1,0.5,0.001)
 }
 groupbox bounds( 100,260, 80, 100), text("Bit Depth"), plant("bitdepth"), visible(0), identchannel("9") {
-rslider  bounds(   0,20, 80, 80), channel("bits"), text("Bits"), textBox(1), range(0, 16, 16,0.5,0.01)
+rslider  bounds(   0,20, 80, 80), channel("bits"), text("Bits"), textbox(1), valuetextbox(1), range(0, 16, 16,0.5,0.01)
 }
 groupbox bounds( 100,260, 80, 100), text("Samp. Rate"), plant("samplerate"), visible(0), identchannel("10") {
-rslider  bounds(   0,20, 80, 80), channel("sr_hold"), text("SR Hold"), textBox(1), range(1, 10000, 1,0.5,1)
+rslider  bounds(   0,20, 80, 80), channel("sr_hold"), text("SR Hold"), textbox(1), valuetextbox(1), range(1, 10000, 1,0.5,1)
 }
-groupbox bounds( 100,260,320, 100), text("pdclip"), plant("pdclip"), visible(0), identchannel("11") {
+groupbox bounds( 100,260,380, 100), text("pdclip"), plant("pdclip"), visible(0), identchannel("11") {
 combobox     bounds(  5, 30, 70, 20), channel("PdclipIP"), value(1), text("Sine", "Phasor")
-rslider      bounds( 70, 20, 80, 80), text("Width"),  channel("PdclipWidth"),  range(0, 1.00, 0), textBox(1)
-rslider      bounds(140, 20, 80, 80), text("Centre"), channel("PdclipCenter"), range(-1.00, 1.00, 0), textBox(1) 
+rslider      bounds( 70, 20, 80, 80), text("Width"),  channel("PdclipWidth"),  range(0, 1.00, 0), textbox(1), valuetextbox(1)
+rslider      bounds(140, 20, 80, 80), text("Centre"), channel("PdclipCenter"), range(-1.00, 1.00, 0), textbox(1), valuetextbox(1) 
 combobox     bounds(220, 30, 80, 20), channel("PdclipBipolar"), value(2), text("Unipolar", "Bipolar")
+rslider      bounds(300, 20, 80, 80), text("Scale"), channel("Pdscale"), range(0.00, 1.00, 1), textbox(1), valuetextbox(1) 
 }
 groupbox bounds( 100,260,180, 100), text("Powershape"), plant("powershape"), visible(0), identchannel("12") {
-rslider      bounds(  0, 20, 80, 80), text("Amount"),  channel("PShapeAmt"),  range(0.1, 999, 1.00,0.25,0.01), textBox(1)
+rslider      bounds(  0, 20, 80, 80), text("Amount"),  channel("PShapeAmt"),  range(0.1, 999, 1.00,0.25,0.01), textbox(1), valuetextbox(1)
 numberbox    bounds( 70, 22,100, 40), text("Amount [type]"),  channel("PShapeAmt"),  range(0.1, 999, 1,0.5,0.01)
 }
 groupbox bounds( 100,260,410, 100), text("Clip"), plant("clip"), visible(0), identchannel("13") {
-rslider      bounds(  0, 20, 80, 80), text("Pre-Gain"),  channel("ClipGain"),  range(0.5,100.00, 1,0.5,0.01), textBox(1)
-rslider      bounds( 70, 20, 80, 80), text("Limit"),  channel("ClipLimit"),  range(0.001, 2, 1, 0.5,0.001), textBox(1)
-rslider      bounds(140, 20, 80, 80), text("Arg."),  channel("ClipArg"),  range(0, 1.00, 0.5), textBox(1)
+rslider      bounds(  0, 20, 80, 80), text("Pre-Gain"),  channel("ClipGain"),  range(0.5,100.00, 1,0.5,0.01), textbox(1), valuetextbox(1)
+rslider      bounds( 70, 20, 80, 80), text("Limit"),  channel("ClipLimit"),  range(0.001, 2, 1, 0.5,0.001), textbox(1), valuetextbox(1)
+rslider      bounds(140, 20, 80, 80), text("Arg."),  channel("ClipArg"),  range(0, 1.00, 0.5), textbox(1), valuetextbox(1)
 combobox     bounds(220, 30, 80,20), channel("ClipMethod"), value(1), text("B.D.J.", "Sine", "Tanh")
 checkbox  bounds( 310,45,100, 20), channel("ClipNorm"),  text("Normalise"), value(0)
 }
@@ -106,32 +110,65 @@ checkbox  bounds( 10,55,120, 15), channel("hilbert_sine"),    text("Sine Output"
 checkbox  bounds( 10,75,120, 15), channel("hilbert_cosine"),  text("Cosine Output"), value(0), radiogroup(2)
 }
 groupbox bounds( 100,260,260, 100), text("distort1"), plant("distort1"), visible(0), identchannel("15") {
-rslider  bounds(   0,  20,  80, 80), channel("pregain"), text("Pre-gain"), textBox(1), range(0.1, 100, 1, 0.5,0.1)
-rslider  bounds(  60,  20,  80, 80), channel("postgain"), text("Post-gain"), textBox(1), range(0.0001, 3, 1, 0.5,0.001)
-rslider  bounds( 120,  20,  80, 80), channel("shape1"), text("Shape 1"), textBox(1), range(-2.00, 2.00,0,1,0.01)
-rslider  bounds( 180,  20,  80, 80), channel("shape2"), text("Shape 2"), textBox(1), range(-2.00, 2.00,0,1,0.01)
+rslider  bounds(   0,  20,  80, 80), channel("pregain"), text("Pre-gain"), textbox(1), valuetextbox(1), range(0.1, 100, 1, 0.5,0.1)
+rslider  bounds(  60,  20,  80, 80), channel("postgain"), text("Post-gain"), textbox(1), valuetextbox(1), range(0.0001, 3, 1, 0.5,0.001)
+rslider  bounds( 120,  20,  80, 80), channel("shape1"), text("Shape 1"), textbox(1), valuetextbox(1), range(-2.00, 2.00,0,1,0.01)
+rslider  bounds( 180,  20,  80, 80), channel("shape2"), text("Shape 2"), textbox(1), valuetextbox(1), range(-2.00, 2.00,0,1,0.01)
 }
 groupbox bounds(100, 260, 330, 100), text("Synchronous Granular Synthesis"), plant("grain"), visible(0), identchannel("16") {
-rslider  bounds( 20,  20,  80, 80), channel("GAmp"), text("Amplitude"), textBox(1), range(0, 1, 0.3, 0.5)
-rslider  bounds( 90,  20,  80, 80), channel("GPitch"), text("Pitch Ratio"), textBox(1), range(0.1, 500, 1, 0.5)
-rslider  bounds(160,  20,  80, 80), channel("GDur"), text("Duration"), textBox(1), range(0.001, 0.50,0.01,0.5)
-rslider  bounds(230,  20,  80, 80), channel("GPitchRnd"), text("Pitch Rand."), textBox(1), range(0, 1000,0,0.5,1)
+rslider  bounds( 20,  20,  80, 80), channel("GAmp"), text("Amplitude"), textbox(1), valuetextbox(1), range(0, 1, 0.3, 0.5)
+rslider  bounds( 90,  20,  80, 80), channel("GPitch"), text("Pitch Ratio"), textbox(1), valuetextbox(1), range(0.1, 500, 1, 0.5)
+rslider  bounds(160,  20,  80, 80), channel("GDur"), text("Duration"), textbox(1), valuetextbox(1), range(0.001, 0.50,0.01,0.5)
+rslider  bounds(230,  20,  80, 80), channel("GPitchRnd"), text("Pitch Rand."), textbox(1), valuetextbox(1), range(0, 1000,0,0.5,1)
+}
+groupbox bounds(100, 260, 630, 100), text("Polynomial"), plant("Polynomial"), visible(0), identchannel("17") {
+rslider  bounds(  0,  20,  80,  80), channel("PolyC0"), text("C.0"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds( 50,  20,  80,  80), channel("PolyC1"), text("C.1"), textbox(1), valuetextbox(1), range(-1, 1, 1, 1, 0.01)
+rslider  bounds(100,  20,  80,  80), channel("PolyC2"), text("C.2"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(150,  20,  80,  80), channel("PolyC3"), text("C.3"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(200,  20,  80,  80), channel("PolyC4"), text("C.4"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(250,  20,  80,  80), channel("PolyC5"), text("C.5"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(300,  20,  80,  80), channel("PolyC6"), text("C.6"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(350,  20,  80,  80), channel("PolyC7"), text("C.7"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(400,  20,  80,  80), channel("PolyC8"), text("C.8"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(450,  20,  80,  80), channel("PolyC9"), text("C.9"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(500,  20,  80,  80), channel("PolyC10"), text("C.10"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(550,  20,  80,  80), channel("PolyScale"), text("Scale"), textbox(1), valuetextbox(1), range(0, 1, 1, 1, 0.01)
 }
 
+groupbox bounds(100, 260, 630, 100), text("Chebyshev"), plant("Chebyshev"), visible(0), identchannel("18") {
+rslider  bounds(  0,  20,  80,  80), channel("ChebyC0"), text("C.0"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds( 50,  20,  80,  80), channel("ChebyC1"), text("C.1"), textbox(1), valuetextbox(1), range(-1, 1, 1, 1, 0.01)
+rslider  bounds(100,  20,  80,  80), channel("ChebyC2"), text("C.2"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(150,  20,  80,  80), channel("ChebyC3"), text("C.3"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(200,  20,  80,  80), channel("ChebyC4"), text("C.4"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(250,  20,  80,  80), channel("ChebyC5"), text("C.5"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(300,  20,  80,  80), channel("ChebyC6"), text("C.6"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(350,  20,  80,  80), channel("ChebyC7"), text("C.7"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(400,  20,  80,  80), channel("ChebyC8"), text("C.8"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(450,  20,  80,  80), channel("ChebyC9"), text("C.9"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(500,  20,  80,  80), channel("ChebyC10"), text("C.10"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+rslider  bounds(550,  20,  80,  80), channel("ChebyScale"), text("Scale"), textbox(1), valuetextbox(1), range(0, 1, 1, 1, 0.01)
+}
 
+groupbox bounds(100, 260, 630, 100), text("Alpass"), plant("Alpass"), visible(0), identchannel("19") {
+;rslider  bounds(  0,  20,  80,  80), channel("ChebyC0"), text("C.0"), textbox(1), valuetextbox(1), range(-1, 1, 0, 1, 0.01)
+;rslider  bounds( 50,  20,  80,  80), channel("ChebyC1"), text("C.1"), textbox(1), valuetextbox(1), range(-1, 1, 1, 1, 0.01)
+}
 
 ; FFT pop-up panel
 button bounds(820,255, 100, 30), channel("fft_Button"), text("FFT View")
-groupbox bounds(0, 0,510,400), plant("FFT"), colour("black"), outlinethickness(0), popup(1), identchannel("fftPlant")
+groupbox bounds(0, 0,510,400), plant("FFT"), outlinethickness(0), popup(1), identchannel("fftPlant")
 {
 label      bounds(  5, 25,100, 12), text("View Format")
 combobox   bounds(  5, 38,100, 25), channel("displaytype"), text("Spectrogram","Lissajous"), value(1)
 rslider    bounds(110, 20, 60, 60), channel("period"), text("Period"), range(0.01, 0.5, 0.01,1,0.01)
 label      bounds(175, 25, 80, 12), text("Window Size")
-combobox   bounds(175, 38, 80, 25), channel("wsize"), text("256","512","1024","2048","4096","8192","16384","32768"), value(2)
+combobox   bounds(175, 38, 80, 25), channel("wsize"), text("256","512","1024","2048","4096","8192","16384","32768"), value(3)
 rslider    bounds(260, 20, 60, 60), channel("minbin"), text("Min.Bin"), range(0,511,0,1,1)
 label      bounds(325, 25, 80, 12), text("Max.Bin")
-combobox   bounds(325, 38, 80, 25), channel("maxbin"), text("Win/2","Win/4","Win/8","Win/16","Win/32","Win/64"), value(2)
+combobox   bounds(325, 38, 80, 25), channel("maxbin"), text("Win/2","Win/4","Win/8","Win/16","Win/32","Win/64"), value(4)
+checkbox   bounds(410, 40, 80, 15), channel("FFTThreshold"), text("Threshold")
 ;rslider    bounds(410, 20, 60, 60), channel("FFTGain"), text("Gain"), range(0,100,1,0.5)
 fftdisplay bounds(  5, 90,500,300), colour("cornflowerblue"), identchannel("fft")
 }
@@ -143,7 +180,7 @@ keyboard bounds(  5,365,920, 80)
 <CsoundSynthesizer>
 
 <CsOptions>   
--n -+rtmidi=null -M0 --displays
+-n -+rtmidi=null -M0 --displays -m0
 </CsOptions>
 
 <CsInstruments>
@@ -156,9 +193,12 @@ nchnls 		= 	2	; NUMBER OF CHANNELS (1=MONO)
 massign	0,2
 			
 giview	ftgen	1,0,1024,10,0
-giblank	ftgen	2,0,1024,2,0
-gisine	ftgen	3,0,4096,10,1
-gicos	ftgen	4,0,131072,9,1,1,90
+giview2	ftgen	2,0,1024,10,0
+giview3	ftgen	3,0,1024,10,0
+
+giblank	ftgen	0,0,1024,2,0
+gisine	ftgen	0,0,4096,10,1
+gicos	ftgen	0,0,131072,9,1,1,90
 giuser	ftgen	0,0,4097,10,1,1,0,1,0,0,1,0,0,0,0,0.1
 
 giwfn	ftgen	5, 0, 131072, 10, 1			;A SINE WAVE
@@ -222,6 +262,7 @@ instr	1
  gkPdclipCenter		chnget	"PdclipCenter"
  gkPdclipCenter		portk	gkPdclipCenter,kporttime
  gkPdclipBipolar	chnget	"PdclipBipolar"
+ gkPdscale			chnget	"Pdscale"
 
  gkPShapeAmt	chnget	"PShapeAmt"
  gkPShapeAmt	portk	gkPShapeAmt,kporttime
@@ -265,11 +306,15 @@ instr	1
   	chnset		Smsg,"15"
  Smsg	sprintfk	"visible(%d)", gksrc == 16 ? 1 : 0
   	chnset		Smsg,"16"
+ Smsg	sprintfk	"visible(%d)", gksrc == 17 ? 1 : 0
+  	chnset		Smsg,"17"
+ Smsg	sprintfk	"visible(%d)", gksrc == 18 ? 1 : 0
+  	chnset		Smsg,"18"
+ Smsg	sprintfk	"visible(%d)", gksrc == 19 ? 1 : 0
+  	chnset		Smsg,"19"
  endif
   
 endin
-
-
 
 
 
@@ -424,7 +469,8 @@ instr	2
   endif
   ;CLIP THE AUDIO SIGNAL USING pdclip
   asig		pdclip		asig, gkPdclipWidth, gkPdclipCenter, i(gkPdclipBipolar)-1	; [, ifullscale]]
-
+  asig		*=			gkPdscale
+  
  ; POWERSHAPE
  elseif i(gksrc)==12 then
   asig		poscil	1,icps
@@ -466,7 +512,6 @@ instr	2
   kshape2	chnget  	"shape2"
   imode		=	1
   asig	distort1	asig, kpregain, kpostgain, kshape1, kshape2 , imode 
- ;endif
 
  ; GRAIN
  elseif i(gksrc)==16 then
@@ -482,7 +527,48 @@ instr	2
   iMGDur	=		1
   iGRnd		=		1
   asig		grain 	kAmp, kPitch, kDens, kAmpOff, kPitchOff, kGDur, iGFn, iWFn, iMGDur, iGRnd
- ;			out		asig
+
+ ; POLYNOMIAL
+ elseif i(gksrc)==17 then
+  kC0		chnget		"PolyC0"
+  kC1		chnget		"PolyC1"
+  kC2		chnget		"PolyC2"
+  kC3		chnget		"PolyC3"
+  kC4		chnget		"PolyC4"
+  kC5		chnget		"PolyC5"
+  kC6		chnget		"PolyC6"
+  kC7		chnget		"PolyC7"
+  kC8		chnget		"PolyC8"
+  kC9		chnget		"PolyC9"
+  kC10		chnget		"PolyC10"
+  kScale	chnget		"PolyScale"
+  asig		poscil		1,icps
+  asig		polynomial	asig,kC0,kC1,kC2,kC3,kC4,kC5,kC6,kC7,kC8,kC9,kC10
+  asig		*=			kScale
+
+ ; CHEBYSHEVPOLY
+ elseif i(gksrc)==18 then
+  kC0		chnget		"ChebyC0"
+  kC1		chnget		"ChebyC1"
+  kC2		chnget		"ChebyC2"
+  kC3		chnget		"ChebyC3"
+  kC4		chnget		"ChebyC4"
+  kC5		chnget		"ChebyC5"
+  kC6		chnget		"ChebyC6"
+  kC7		chnget		"ChebyC7"
+  kC8		chnget		"ChebyC8"
+  kC9		chnget		"ChebyC9"
+  kC10		chnget		"ChebyC10"
+  kScale	chnget		"ChebyScale"
+  asig		poscil		1,icps
+  asig		chebyshevpoly	asig,kC0,kC1,kC2,kC3,kC4,kC5,kC6,kC7,kC8,kC9,kC10
+  asig		*=			kScale
+
+ ; ALPASS
+ elseif i(gksrc)==19 then
+  asig		poscil		1,icps
+  asig		alpass		asig,0.3,0.0236
+  ;asig		delay		asig,0.25/icps
  endif				; (otherwise asig = asig)
 
  
@@ -519,7 +605,7 @@ instr 1000				; launches plant popups
  #
  kpressed	chnget 		"$name._Button"
  if changed(kpressed)==1 then
-   Smsg 	sprintfk 	"visible(%d), pos(1, 19)", klaunch
+   Smsg 	sprintfk 	"show(%d), pos(1, 19)", klaunch
    		chnset 		Smsg, "$name.Plant"
  endif
  #
@@ -536,13 +622,16 @@ instr 1000				; launches plant popups
  kmaxbin	chnget	"maxbin"
  kmaxbin	init	2
  kminbin	chnget	"minbin"
+ kFFTThreshold	chnget	"FFTThreshold"
  ;kFFTGain	chnget	"FFTGain"
  if changed(kperiod,kwsize,kmaxbin,kminbin)==1 then
   reinit RESTART_DISPLAY
  endif
  RESTART_DISPLAY:
  iwsize	=	giwsizes[i(kwsize)-1]
- dispfft asig, i(kperiod), iwsize, 0, 0, 0, i(kminbin), iwsize/gimaxbin[i(kmaxbin)-1]
+ if rms:k(asig)>0.01 || kFFTThreshold==0 then
+  dispfft asig, i(kperiod), iwsize, 0, 0, 0, i(kminbin), iwsize/gimaxbin[i(kmaxbin)-1]
+ endif
  rireturn
  ; allows users to toggle the type of display
  kChangeDisplay chnget "displaytype"

@@ -10,7 +10,7 @@
 ; If played from the MIDI keyboard, note number translates to 'Transposition' and key velocity translates to amplitude for the grain stream for that note.
 
 ; In 'Pointer' mode pointer position is controlled by the long 'Manual' slider with an optional amount of randomisation determined ny the 'Phs.Mod' slider.  
-  
+
 ; Selecting 'Speed' pointer mode bring up some additional controls:
 ; Speed		-	speed ratio
 ; Freeze	-	freezes the pointer at its present locations 

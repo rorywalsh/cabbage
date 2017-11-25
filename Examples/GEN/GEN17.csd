@@ -8,33 +8,33 @@
 <Cabbage>
 form caption("GEN17"), size(420, 395), pluginID("gn17"), colour(120,170,200, 50)
 
-gentable bounds(  5,  5, 410, 115), identchannel("table1"), tablenumber(1), tablecolour("yellow"), amprange(24,72,1), zoom(-1)
+gentable bounds(  5,  5, 410, 115), identchannel("table1"), tablenumber(1), tablecolour("yellow"), amprange(24,72,1), zoom(-1), fill(0), outlinethickness(2)
 
 groupbox bounds(0, 125,420,170), text("Histogram"), plant("histogram"), fontcolour("white"){
-rslider bounds( 50, 25, 70, 70), channel("loc1"), text("Len. 1"), textBox(1), range(1, 512, 24,1,1), colour(120,170,200,50), trackercolour("white")
-rslider bounds(100, 25, 70, 70), channel("loc2"), text("Len. 2"), textBox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
-rslider bounds(150, 25, 70, 70), channel("loc3"), text("Len. 3"), textBox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
-rslider bounds(200, 25, 70, 70), channel("loc4"), text("Len. 4"), textBox(1), range(1, 512, 34,1,1), colour(120,170,200,50), trackercolour("white")
-rslider bounds(250, 25, 70, 70), channel("loc5"), text("Len. 5"), textBox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
-rslider bounds(300, 25, 70, 70), channel("loc6"), text("Len. 6"), textBox(1), range(1, 512, 84,1,1), colour(120,170,200,50), trackercolour("white")
-rslider bounds(350, 25, 70, 70), channel("loc7"), text("Len. 7"), textBox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
+rslider bounds( 50, 25, 70, 70), channel("loc1"), text("Len. 1"), valuetextbox(1), textbox(1), range(1, 512, 24,1,1), colour(120,170,200,50), trackercolour("white")
+rslider bounds(100, 25, 70, 70), channel("loc2"), text("Len. 2"), valuetextbox(1), textbox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
+rslider bounds(150, 25, 70, 70), channel("loc3"), text("Len. 3"), valuetextbox(1), textbox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
+rslider bounds(200, 25, 70, 70), channel("loc4"), text("Len. 4"), valuetextbox(1), textbox(1), range(1, 512, 34,1,1), colour(120,170,200,50), trackercolour("white")
+rslider bounds(250, 25, 70, 70), channel("loc5"), text("Len. 5"), valuetextbox(1), textbox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
+rslider bounds(300, 25, 70, 70), channel("loc6"), text("Len. 6"), valuetextbox(1), textbox(1), range(1, 512, 84,1,1), colour(120,170,200,50), trackercolour("white")
+rslider bounds(350, 25, 70, 70), channel("loc7"), text("Len. 7"), valuetextbox(1), textbox(1), range(1, 512, 64,1,1), colour(120,170,200,50), trackercolour("white")
 
-rslider bounds(  0, 95, 70, 70), channel("val0"), text("Value 0"), textBox(1), range(24, 127, 50,1,1), colour(120,170,200, 50), trackercolour("white")
-rslider bounds( 50, 95, 70, 70), channel("val1"), text("Value 1"), textBox(1), range(24, 72, 62,1,1),  colour(120,170,200, 50), trackercolour("white")
-rslider bounds(100, 95, 70, 70), channel("val2"), text("Value 2"), textBox(1), range(24, 72, 48,1,1),  colour(120,170,200, 50), trackercolour("white")
-rslider bounds(150, 95, 70, 70), channel("val3"), text("Value 3"), textBox(1), range(24, 72, 44,1,1),  colour(120,170,200, 50), trackercolour("white")
-rslider bounds(200, 95, 70, 70), channel("val4"), text("Value 4"), textBox(1), range(24, 72, 66,1,1),  colour(120,170,200, 50), trackercolour("white")
-rslider bounds(250, 95, 70, 70), channel("val5"), text("Value 5"), textBox(1), range(24, 72, 54,1,1),  colour(120,170,200, 50), trackercolour("white")
-rslider bounds(300, 95, 70, 70), channel("val6"), text("Value 6"), textBox(1), range(24, 72, 52,1,1),  colour(120,170,200, 50), trackercolour("white")
-rslider bounds(350, 95, 70, 70), channel("val7"), text("Value 7"), textBox(1), range(24, 72, 46,1,1),  colour(120,170,200, 50), trackercolour("white")
+rslider bounds(  0, 95, 70, 70), channel("val0"), text("Value 0"), valuetextbox(1), textbox(1), range(24, 127, 50,1,1), colour(120,170,200, 50), trackercolour("white")
+rslider bounds( 50, 95, 70, 70), channel("val1"), text("Value 1"), valuetextbox(1), textbox(1), range(24, 72, 62,1,1),  colour(120,170,200, 50), trackercolour("white")
+rslider bounds(100, 95, 70, 70), channel("val2"), text("Value 2"), valuetextbox(1), textbox(1), range(24, 72, 48,1,1),  colour(120,170,200, 50), trackercolour("white")
+rslider bounds(150, 95, 70, 70), channel("val3"), text("Value 3"), valuetextbox(1), textbox(1), range(24, 72, 44,1,1),  colour(120,170,200, 50), trackercolour("white")
+rslider bounds(200, 95, 70, 70), channel("val4"), text("Value 4"), valuetextbox(1), textbox(1), range(24, 72, 66,1,1),  colour(120,170,200, 50), trackercolour("white")
+rslider bounds(250, 95, 70, 70), channel("val5"), text("Value 5"), valuetextbox(1), textbox(1), range(24, 72, 54,1,1),  colour(120,170,200, 50), trackercolour("white")
+rslider bounds(300, 95, 70, 70), channel("val6"), text("Value 6"), valuetextbox(1), textbox(1), range(24, 72, 52,1,1),  colour(120,170,200, 50), trackercolour("white")
+rslider bounds(350, 95, 70, 70), channel("val7"), text("Value 7"), valuetextbox(1), textbox(1), range(24, 72, 46,1,1),  colour(120,170,200, 50), trackercolour("white")
 }
 
 
 groupbox bounds(0, 295,420,100), text("Synthesiser"), plant("synth"), fontcolour("white"){
 checkbox bounds( 15, 50,115, 17), channel("SynthOnOff"), text("On/Off"),  value(0), colour("yellow"), shape("square")
-rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), textBox(1), range(0, 1.00, 0.7), colour(120,170,200, 50), trackercolour("white")
-rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"),  textBox(1), range(0.2, 5.00, 1), colour(120,170,200, 50), trackercolour("white")
-rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."),  textBox(1), range(0.1, 3.00, 2), colour(120,170,200, 50), trackercolour("white")
+rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), valuetextbox(1), textbox(1), range(0, 1.00, 0.7), colour(120,170,200, 50), trackercolour("white")
+rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"), valuetextbox(1),  textbox(1), range(0.2, 5.00, 1), colour(120,170,200, 50), trackercolour("white")
+rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."), valuetextbox(1),  textbox(1), range(0.1, 3.00, 2), colour(120,170,200, 50), trackercolour("white")
 }
 </Cabbage>
                     
