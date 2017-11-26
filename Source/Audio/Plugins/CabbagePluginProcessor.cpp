@@ -538,7 +538,6 @@ void CabbagePluginProcessor::createParameters()
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
-        CabbageControlWidgetStrings controlWidgetTypes;
 
         if (controlWidgetTypes.contains (typeOfWidget))
         {
@@ -815,7 +814,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
         }
 
         //currently only dealing with a max of 2 channels...
-        else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty())
+        else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&typeOfWidget != CabbageWidgetTypes::stringsequencer)
         {
             if (getCsound()->GetChannel (channels[0].toUTF8()) != valuex
                 || getCsound()->GetChannel (channels[1].toUTF8()) != valuey)
@@ -835,6 +834,11 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
             }
         }
 
+        else if(typeOfWidget == CabbageWidgetTypes::stringsequencer && channels.size() > 1 && channels[0].isNotEmpty())
+        {
+            if (getCsound()->GetChannel (channels[0].toUTF8()) != float (value))
+                CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+        }
 
         if (identChannel.isNotEmpty())
         {

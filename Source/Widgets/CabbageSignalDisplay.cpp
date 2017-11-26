@@ -199,12 +199,12 @@ void CabbageSignalDisplay::drawWaveform (Graphics& g)
     const int offset = isScrollbarShowing == true ? scrollbarHeight : 0;
     const int height = getHeight() - offset;
     int prevXPos = 0;
-    int prevYPos = jmap (signalFloatArray[0], -1.f, 1.f, 0.f, 1.f) * height;
+    int prevYPos = jmap (signalFloatArray[0]*-1.f, -1.f, 1.f, 0.f, 1.f) * height;
 
     for (int i = 0; i < vectorSize; i++)
     {
         const int position = jmap (i, 0, vectorSize, leftPos, scopeWidth);
-        const int amp = jmap (signalFloatArray[i], -1.f, 1.f, 0.f, 1.f) * height;
+        const int amp = jmap (signalFloatArray[i]*-1.f, -1.f, 1.f, 0.f, 1.f) * height;
         g.setColour (colour);
         g.drawLine (prevXPos, prevYPos, position, amp, lineThickness);
         prevXPos = position;

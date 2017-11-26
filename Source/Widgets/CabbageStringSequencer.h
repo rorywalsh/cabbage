@@ -39,7 +39,7 @@ public:
     TextEditor* getEditor (int column, int row);
     void swapFocusForEditors (KeyPress key, int col, int row);
     void highlightEditorText (int col, int row);
-
+    void setCurrentRow(int row);
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

@@ -201,6 +201,7 @@ public:
     CabbageControlWidgetStrings()
     {
         add ("hslider");
+        add ("stringsequencer");
         add ("hslider2");
         add ("hslider3");
         add ("rslider");

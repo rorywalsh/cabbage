@@ -96,7 +96,7 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     }
 
     setColours(wData);
-    startTimer (60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000);
+    //startTimer (60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000);
 
 }
 
@@ -173,6 +173,28 @@ void CabbageStringSequencer::hiResTimerCallback()
                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
             else
                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
+
+            const MessageManagerLock j;
+            getEditor(x, y)->lookAndFeelChanged();
+        }
+}
+
+void CabbageStringSequencer::setCurrentRow(int row)
+{
+    const int restrictedRow = jlimit(0, numRows-1, row);
+    const int currentBeat = jlimit(0, numRows-1, row);
+
+    CabbageUtilities::debug(currentBeat);
+    for ( int i = 0 ; i < numColumns ; i++)
+        owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
+
+    for ( int x = 0 ; x < numColumns ; x++)
+        for ( int y = 0 ; y < numRows ; y++)
+        {
+            if( restrictedRow == y)
+                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
+            else
+                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
 
             const MessageManagerLock j;
             getEditor(x, y)->lookAndFeelChanged();
@@ -260,7 +282,14 @@ void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row
 
 void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    repaint();
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    if (prop == CabbageIdentifierIds::value)
+    {
+        setCurrentRow(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
+    }
+    else
+    {
+        repaint();
+        handleCommonUpdates(this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    }
 }
 
