@@ -26,6 +26,7 @@
 #define JUCE_STANDALONEFILTERWINDOW_H_INCLUDED
 
 #include "../Utilities/CabbageUtilities.h"
+#include "../Utilities/CabbageExportPlugin.h"
 #include "../Audio/Plugins/CabbagePluginProcessor.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 #include "../Audio/Plugins/CsoundPluginEditor.h"
@@ -127,7 +128,7 @@ public:
                 {
                     openFile (inputFileName);
                     CabbageIDELookAndFeel lAndF;
-                    CabbageUtilities::exportPlugin ("VSTi", File (inputFileName), &lAndF, getPluginId (csdFile));
+                    pluginExporter.exportPlugin ("VSTi", File (inputFileName), getPluginId (csdFile));
                     JUCEApplicationBase::quit();
                 }
 
@@ -139,7 +140,7 @@ public:
                 if (File (inputFileName).existsAsFile())
                 {
                     openFile (inputFileName);
-                    CabbageUtilities::exportPlugin ("VST", File (inputFileName), &lAndF, getPluginId (csdFile));
+                    pluginExporter.exportPlugin ("VST", File (inputFileName),getPluginId (csdFile));
                     JUCEApplicationBase::quit();
                 }
 
@@ -506,6 +507,7 @@ private:
     ScopedPointer<CsoundOutputWindow> outputConsole;
     bool cabbageFiledOpened = false;
     String csoundOutput;
+    PluginExporter pluginExporter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandaloneFilterWindow)
 };
