@@ -96,7 +96,7 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     }
 
     setColours(wData);
-    //startTimer (60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000);
+    startTimer (60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000);
 
 }
 
@@ -184,7 +184,6 @@ void CabbageStringSequencer::setCurrentRow(int row)
     const int restrictedRow = jlimit(0, numRows-1, row);
     const int currentBeat = jlimit(0, numRows-1, row);
 
-    CabbageUtilities::debug(currentBeat);
     for ( int i = 0 ; i < numColumns ; i++)
         owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
 
@@ -284,12 +283,13 @@ void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, con
 {
     if (prop == CabbageIdentifierIds::value)
     {
-        setCurrentRow(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
+        currentBeat = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
     }
     else
     {
         repaint();
         handleCommonUpdates(this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        startTimer (60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000);
     }
 }
 
