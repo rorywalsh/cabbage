@@ -35,9 +35,9 @@
 ; Level		-	Level control (pre reverb so reverberation will always die away natuarally)
 
 <Cabbage>
-form caption("String Feedback"), size(885, 205), pluginID("fbck"), colour(0,0,0)
+form caption("String Feedback"), size(885, 180), pluginID("fbck"), colour(0,0,0)
 
-groupbox bounds(  0,  0, 290, 90), text("String"), fontcolour(195,126, 0){
+groupbox bounds(  0,  0, 290, 90), text("String"), fontcolour(195,126, 0), plant("String") {
 rslider bounds(  5, 25, 60, 60), text("Feedback"),  colour(195,126,  0), FontColour(195,126,  0), channel("fback"),   range(0, 8, 0.8,0.5)
 rslider bounds( 60, 25, 60, 60), text("Drive"),   colour(195,126,  0), FontColour(195,126,  0), channel("drive"),   range(0, 1, 0.25)
 rslider bounds(115, 25, 60, 60), text("Sustain"), colour(195,126,  0), FontColour(195,126,  0), channel("sustain"),   range(0.0001, 1, 1, 0.5, 0.0001)
@@ -45,33 +45,29 @@ rslider bounds(170, 25, 60, 60), text("Bright"),  colour(195,126,  0), FontColou
 rslider bounds(225, 25, 60, 60), text("Cut"),     colour(195,126,  0), FontColour(195,126,  0), channel("HPF"),   range(0, 32, 1)
 }
 
-groupbox bounds(290,  0,  70, 90), text("Movement"), fontcolour(195,126, 0){
-rslider bounds(295, 25, 60, 60), text("Speed"),   colour(195,126,  0), FontColour(195,126,  0), channel("speed"),   range(0.001,1, 0.1,0.5,0.0001)
+groupbox bounds(290,  0,  70, 90), text("Movement"), fontcolour(195,126, 0), plant("Movement") {
+rslider  bounds(  5, 25, 60, 60), text("Speed"),   colour(195,126,  0), FontColour(195,126,  0), channel("speed"),   range(0.001,1, 0.1,0.5,0.0001)
 }
 
-groupbox bounds(360,  0,170, 90), text("Pick-up"), fontcolour(195,126, 0){
-rslider bounds(365, 25, 60, 60), text("Position"),colour(195,126,  0), FontColour(195,126,  0), channel("PickPos"),   range(0, 1, 0.1)
-checkbox bounds(425, 25, 70, 15), text("Auto") channel("auto"), FontColour(195,126,  0), colour("orange")
-rslider bounds(465, 25, 60, 60), text("Speed"),colour(195,126,  0), FontColour(195,126,  0), channel("PickPosSpeed"),   range(0.001, 8, 1, 0.5,0.001)
+groupbox bounds(360,  0,170, 90), text("Pick-up"), fontcolour(195,126, 0), plant("Pickup") {
+rslider bounds(  5, 25, 60, 60), text("Position"),colour(195,126,  0), FontColour(195,126,  0), channel("PickPos"),   range(0, 1, 0.1)
+checkbox bounds( 65, 25, 70, 15), text("Auto") channel("auto"), FontColour(195,126,  0), colour("orange")
+rslider bounds(105, 25, 60, 60), text("Speed"),colour(195,126,  0), FontColour(195,126,  0), channel("PickPosSpeed"),   range(0.001, 8, 1, 0.5,0.001)
 }
 
-groupbox bounds(530,  0,120, 90), text("Reverb"), fontcolour(195,126, 0){
-rslider bounds(535, 25, 60, 60), text("Distance"),colour(195,126,  0), FontColour(195,126,  0), channel("distance"),   range(0, 1, 0.1)
-rslider bounds(590, 25, 60, 60), text("Room"),    colour(195,126,  0), FontColour(195,126,  0), channel("room"),   range(0.5,0.99, 0.85)
+groupbox bounds(530,  0,120, 90), text("Reverb"), fontcolour(195,126, 0), plant("Reverb") {
+rslider bounds(  5, 25, 60, 60), text("Distance"),colour(195,126,  0), FontColour(195,126,  0), channel("distance"),   range(0, 1, 0.1)
+rslider bounds( 60, 25, 60, 60), text("Room"),    colour(195,126,  0), FontColour(195,126,  0), channel("room"),   range(0.5,0.99, 0.85)
 }
 
-groupbox bounds(650,  0,235, 90), text("Output"), fontcolour(195,126, 0){
-rslider bounds(655, 25, 60, 60), text("FB.Rel."),  colour(195,126,  0), FontColour(195,126,  0), channel("rel"),     range(0.01, 8, 0.01, 0.5)
-rslider bounds(710, 25, 60, 60), text("Str.Rel."), colour(195,126,  0), FontColour(195,126,  0), channel("StrRel"),  range(0.1, 15, 5, 0.5)
-rslider bounds(765, 25, 60, 60), text("Gain"),     colour(195,126,  0), FontColour(195,126,  0), channel("Gain"),    range(1, 10, 1)
-rslider bounds(820, 25, 60, 60), text("Level"),    colour(195,126,  0), FontColour(195,126,  0), channel("level"),   range(0, 1, 0.5)
+groupbox bounds(650,  0,235, 90), text("Output"), fontcolour(195,126, 0), plant("Output") {
+rslider bounds(  5, 25, 60, 60), text("FB.Rel."),  colour(195,126,  0), FontColour(195,126,  0), channel("rel"),     range(0.01, 8, 0.01, 0.5)
+rslider bounds( 60, 25, 60, 60), text("Str.Rel."), colour(195,126,  0), FontColour(195,126,  0), channel("StrRel"),  range(0.1, 15, 5, 0.5)
+rslider bounds(115, 25, 60, 60), text("Gain"),     colour(195,126,  0), FontColour(195,126,  0), channel("Gain"),    range(1, 10, 1)
+rslider bounds(170, 25, 60, 60), text("Level"),    colour(195,126,  0), FontColour(195,126,  0), channel("level"),   range(0, 1, 0.5)
 }
 
 keyboard bounds(0,  95,885,80)
-image bounds(5, 180, 230, 20), colour(75, 85, 90, 50), plant("credit"){
-label bounds(0.01, 0.1, .95, .7), text("Author: Iain McCurdy |2013|"), FontColour(195,126,  0)
-}
-
 </Cabbage>
 
 <CsoundSynthesizer>

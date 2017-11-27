@@ -58,18 +58,19 @@ button   bounds(140,139, 80, 18), colour("Green"), text("RESYNC.", "RESYNC."), c
 button   bounds(280, 15,100, 30), channel("clfiltButton"), text("clfilt")
 groupbox bounds(280, 15,150, 90),  colour("black"), plant("clfilt"), outlinethickness(0), popup(1), identchannel("clfiltPlant");, fontcolour("white")
 {
-rslider bounds(  5, 16, 70, 70), text("N.Poles"), colour( 30 , 30, 30),	trackercolour("white"), FontColour("white"), channel("npol"),   range(2, 80, 2, 1, 2)
-rslider bounds( 75, 16, 70, 70), text("Ripple"),  colour( 30 , 30, 30),	trackercolour("white"), FontColour("white"), channel("pbr"),    range(0.1, 50.00, 1, 0.5, 0.001)
+rslider bounds(  5, 16, 70, 70), text("N.Poles"), colour( 30 , 30, 30),	trackercolour("white"), fontcolour("white"), channel("npol"),   range(2, 80, 2, 1, 2)
+rslider bounds( 75, 16, 70, 70), text("Ripple"),  colour( 30 , 30, 30),	trackercolour("white"), fontcolour("white"), channel("pbr"),    range(0.1, 50.00, 1, 0.5, 0.001)
 }
 
 ; controls pertaining to the setup of phaser2 accessed in a pop-up panel.
 button   bounds(280, 55,100, 30), channel("phaser2Button"), text("phaser2")
-groupbox bounds(280, 55,315, 90),  colour("black"), plant("phaser2"), outlinethickness(0), popup(1), identchannel("phaser2Plant");, fontcolour(white)
+groupbox bounds(280, 55,315, 90), colour("black"), plant("phaser2"), outlinethickness(0), popup(1), identchannel("phaser2Plant");, fontcolour(white)
 {
-rslider  bounds(  5, 16, 70, 70), text("Q"),       channel("q"),   range(0.0001,4,3),       colour( 30 , 30, 30),	trackercolour("white"), FontColour("white")
-rslider  bounds( 75, 16, 70, 70), text("N.Ords."), channel("ord"), range(1, 256, 8, 0.5,1), colour( 30 , 30, 30),	trackercolour("white"), FontColour("white")
-combobox bounds(145, 20, 90, 68), caption("Sep. Mode:"), channel("mode"), value(1), text("Equal", "Power"), colour( 30 , 30, 30),	trackercolour("white"), FontColour("white")
-rslider  bounds(240, 16, 70, 70), text("Separation"), channel("sep"), range(-3, 3.00, 0.9), colour( 30 , 30, 30),	trackercolour("white"), FontColour("white")
+rslider  bounds(  5, 16, 70, 70), text("Q"),       channel("q"),   range(0.0001,4,3),       colour( 30 , 30, 30),	trackercolour("white"), fontcolour("white")
+rslider  bounds( 75, 16, 70, 70), text("N.Ords."), channel("ord"), range(1, 256, 8, 0.5,1), colour( 30 , 30, 30),	trackercolour("white"), fontcolour("white")
+label    bounds(145, 20, 90, 14), text("Sep. Mode:"), fontcolour("white")
+combobox bounds(145, 35, 90, 20), channel("mode"), value(1), text("Equal", "Power"), colour( 30 , 30, 30),	trackercolour("white"), fontcolour("white")
+rslider  bounds(240, 16, 70, 70), text("Separation"), channel("sep"), range(-3, 3.00, 0.9), colour( 30 , 30, 30),	trackercolour("white"), fontcolour("white")
 }
 
 ; controls pertaining to the setup of resony accessed in a pop-up panel.
@@ -80,11 +81,13 @@ rslider  bounds(  5, 16, 70, 70), text("BW."),           fontcolour("white"), ch
 rslider  bounds( 75, 16, 70, 70), text("Num."),          fontcolour("white"), channel("num"),   range(1, 80, 10, 1,1),      colour( 30 , 30, 30),	trackercolour("white")
 rslider  bounds(145, 16, 70, 70), text("Sep.oct."),      fontcolour("white"), channel("sepR"),  range(-11, 11, 2),          colour( 30 , 30, 30),	trackercolour("white")
 rslider  bounds(215, 16, 70, 70), text("Sep.semi."),     fontcolour("white"), channel("sepR2"), range(-48, 48, 24,1,1),     colour( 30 , 30, 30),	trackercolour("white")
-combobox bounds(285, 10,130, 70), caption("Scaling Mode"), channel("scl"), value(2), text("none", "peak response", "RMS")
-combobox bounds(425, 10,130, 70), caption("Separation Mode"), channel("sepmode"), value(1), text("octs.total", "hertz", "octs.adjacent")
+label    bounds(285, 20,130, 14), text("Scaling Mode"), fontcolour("white")
+combobox bounds(285, 35,130, 20), channel("scl"), value(2), text("none", "peak response", "RMS")
+label    bounds(425, 20,130, 14), text("Separation Mode"), fontcolour("white")
+combobox bounds(425, 35,130, 20), channel("sepmode"), value(1), text("octs.total", "hertz", "octs.adjacent")
 }
 
-;checkbox bounds(400, 50,100, 15), text("Balance") channel("balance"), FontColour("white"), colour("yellow")  value(0)
+;checkbox bounds(400, 50,100, 15), text("Balance") channel("balance"), fontcolour("white"), colour("yellow")  value(0)
 
 
 line bounds(390, 10,  2,150), colour("Grey")
@@ -107,7 +110,7 @@ rslider  bounds(645, 91, 70, 70), text("Rate Div."),colour( 30, 30 ,30),	tracker
 rslider  bounds(710, 91, 70, 70), text("Smoothing"),colour( 30, 30 ,30),	trackercolour("white"), fontcolour("white"), channel("LFOport2"), range(0, 0.1, 0.001, 0.25, 0.000001)
 checkbox bounds(405,111, 80, 12), text("Link Rates"), channel("RateLink"),colour(yellow), fontcolour("white"),  value(0)
 
-label   bounds(220,150, 170, 12), text("Author: Iain McCurdy |2013|"), FontColour("grey")
+label   bounds(220,150, 170, 12), text("Author: Iain McCurdy |2013|"), fontcolour("grey")
 </Cabbage>
 
 <CsoundSynthesizer>

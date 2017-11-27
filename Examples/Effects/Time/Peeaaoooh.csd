@@ -151,7 +151,7 @@ instr	1
  else
   aL,aR	ins
  endif
- 
+  
  /* CALL DELAY STACK (VIA A UDO) */
  if changed(kLayers)==1 then
   reinit	UPDATE
@@ -178,7 +178,7 @@ instr	1
  kOverload	chnget	"Overload"		; read in value of 'Overload' LED
  if kRMS>0.9 then				; if rms exceeds a given value...
   chnset	kOn,"Overload"			; turn on 'Overload' LED
-  chnset	kFeedback - (0.00003),"Feedback"	; decrement 'Feedback' slider. This will be repeated every k-cycle until rms is back below the threshold value prescribed above.
+  chnset	(kFeedback - (0.0003)) - ((kFeedback-1)*0.001),"Feedback"	; decrement 'Feedback' slider. This will be repeated every k-cycle until rms is back below the threshold value prescribed above.
  elseif kOverload==1 then			; otherwise..., i.e. if 'Overload' LED is on but rms is beneath the threshold...  
   chnset	kOff,"Overload"			; turn 'overload' LED off
  endif	

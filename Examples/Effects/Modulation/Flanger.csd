@@ -2,17 +2,19 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Flanger") size(510, 90), pluginID("flan")
-image pos(0, 0), size(510, 90), colour("lightgreen"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-rslider bounds(  5, 10, 70, 70), text("Rate"),     channel("rate"),  range(0.001, 40, 0.15, 0.5, 0.001),      colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider bounds( 75, 10, 70, 70), text("Depth"),    channel("depth"), range(0, 0.01, 0.005,1,0.0001),          colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider bounds(145, 10, 70, 70), text("Delay"),    channel("delay"), range(0.0001, 0.1, 0.0001, 0.5, 0.0001), colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider bounds(215, 10, 70, 70), text("Feedback"), channel("fback"), range(-1, 1, 0),                         colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider bounds(285, 10, 70, 70), text("Mix"),      channel("mix"),   range(0, 1.00, 0.5),                     colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-checkbox bounds(355, 10, 80, 15), colour("yellow"), channel("ThruZero"),  value(1), text("Thru.Zero"), fontcolour(  0, 30,  0)
-label    bounds(360, 37, 65, 12), text("LFO Shape:"), fontcolour(  0, 30,  0)
-combobox bounds(355, 50, 80, 18), channel("lfoshape"), value(1), text("parabola", "sine", "triangle", "randomi", "randomh")
-rslider bounds(435, 10, 70, 70), text("Level"), channel("level"), range(0, 1.00, 1), colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
+form caption("Flanger") size(510,100), pluginID("flan")
+image pos(0, 0), size(510,100), colour("lightgreen"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+line	 bounds( 15, 10,190,  2)
+label    bounds( 75,  7, 70, 10), text("MODULATION"), fontcolour("white"), colour(100,110,130)
+rslider  bounds(  5, 20, 70, 70), text("Rate"),     channel("rate"),  range(0.001, 40, 0.15, 0.5, 0.001),      colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
+rslider  bounds( 75, 20, 70, 70), text("Depth"),    channel("depth"), range(0, 0.01, 0.005,1,0.0001),          colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
+rslider  bounds(145, 20, 70, 70), text("Offset"),    channel("delay"), range(0.00002, 0.1, 0.0001, 0.5, 0.0001), colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
+rslider  bounds(215, 20, 70, 70), text("Feedback"), channel("fback"), range(-1, 1, 0),                         colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
+checkbox bounds(290, 20, 80, 15), colour("yellow"), channel("ThruZero"),  value(1), text("Thru.Zero"), fontcolour(  0, 30,  0)
+label    bounds(295, 47, 65, 12), text("LFO Shape:"), fontcolour(  0, 30,  0)
+combobox bounds(290, 60, 80, 18), channel("lfoshape"), value(1), text("parabola", "sine", "triangle", "randomi", "randomh")
+rslider  bounds(370, 20, 70, 70), text("Mix"),      channel("mix"),   range(0, 1.00, 0.5),                     colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
+rslider  bounds(435, 20, 70, 70), text("Level"), channel("level"), range(0, 1.00, 1), colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -61,9 +63,9 @@ instr 1
 	kThruZero chnget "ThruZero"
 	kmix chnget "mix"
 	
-	;a1,a2	ins					;read live stereo audio input
-	a1	pinkish	0.2				;for testing...
-	a2	pinkish	0.2
+	a1,a2	ins					;read live stereo audio input
+	;a1	pinkish	0.2				;for testing...
+	;a2	pinkish	0.2
 
 	kporttime	linseg	0,0.001,0.1
 	kdelay	portk	kdelay,kporttime
@@ -72,8 +74,8 @@ instr 1
 	afla2	Flanger	a2,krate,kdepth,kdelay,kfback,klfoshape	;call udo (right channel)
 
 	if kThruZero==1 then				;if 'Thru.Zero' mode is selected...
-	 a1	delay	a1,0.0001
-	 a2	delay	a2,0.0001
+	 a1	delay	a1,0.00002
+	 a2	delay	a2,0.00002
 	 a1	ntrpol	-a1,afla1,kmix			;invert delayed dry signal and mix with flanger signal
 	 a2	ntrpol	-a2,afla2,kmix
 	else						;otherwise... (standard flanger)

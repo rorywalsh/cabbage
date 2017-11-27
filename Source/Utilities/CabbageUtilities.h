@@ -486,7 +486,7 @@ public:
         addExamples (m, "LiveSampling", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "MIDI", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
-        addExamples (m, "Instructional", dir, filesArray, StringArray(), indexOffset);
+        addExamples (m, "Pedagogic", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "Utilities", dir, filesArray, StringArray(), indexOffset);

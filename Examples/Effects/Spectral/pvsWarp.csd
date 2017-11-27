@@ -3,12 +3,13 @@
 
 <Cabbage>
 form caption("pvsWarp") size(535, 90), pluginID("warp")
-image pos(0, 0), size(535, 90), colour( 50, 50,75,220), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+image pos(0, 0), size(535, 90), colour( 80, 80,135,220), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 rslider bounds( 10, 11, 70, 70), text("Scale"),    channel("scal"),      range(0.1, 4, 1, 0.5, 0.001), colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
 rslider bounds( 80, 11, 70, 70), text("Shift"),    channel("shift"),     range(-5000, 5000, 0),        colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
 rslider bounds(150, 11, 70, 70), text("Feedback"), channel("FB"),        range(0, 0.99, 0),            colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
-rslider bounds(220, 10, 70, 70), text("FFT Size"), channel("att_table"), range(1, 8, 5, 1,1),          colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
-checkbox bounds(290,30, 95,15), channel("DelayComp"), text("Delay Comp.")
+label    bounds(220,20, 60,13), text("FFT Size"), fontcolour("white")
+combobox bounds(220,35, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("att_table"), value(4), fontcolour("lightblue")
+checkbox bounds(290,30, 95,15), channel("DelayComp"), text("Delay Comp."), fontcolour("white"), colour("lightblue")
 rslider bounds(385, 11, 70, 70), text("Mix"),      channel("mix"),       range(0, 1.00, 1),            colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
 rslider bounds(455, 11, 70, 70), text("Level"),    channel("lev"),       range(0, 1.00, 0.5),          colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
 </Cabbage>

@@ -15,8 +15,8 @@
 
 CabbageGraphComponent::CabbageGraphComponent (AudioGraph& graph_, CabbageMainComponent& owner_)
     : graph (graph_),
-      owner (owner_),
-      lookAndFeel()
+      owner (owner_)
+      //lookAndFeel()
 {
     graph.addChangeListener (this);
     setOpaque (false);

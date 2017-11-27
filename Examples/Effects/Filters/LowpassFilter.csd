@@ -3,15 +3,15 @@
 
 <Cabbage>
 form caption("Lowpass Filter") size(435, 90), pluginID("LPFl")
-image pos(0, 0),               size(435, 90), colour(  70, 90,100), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+image    bounds(0, 0, 435, 90), colour(  70, 90,100), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 label    bounds( 22, 22, 38, 11), text("INPUT:"), fontcolour("white")
 combobox bounds( 10, 33, 60, 20), channel("input"), value(1), text("Live","Tone","Noise")
 rslider  bounds( 75, 11, 70, 70), channel("cf"),        text("Freq."), colour(  0, 40, 50), trackercolour(200,240,250), 	textcolour("white"), 	range(20, 20000, 20000, 0.333)
 rslider  bounds(140, 11, 70, 70), channel("res"),       text("Res."),  colour(  0, 40, 50), trackercolour(200,240,250), 	textcolour("white"),	range(0,1.00,0)
 rslider  bounds(205, 11, 70, 70), channel("mix"),       text("Mix"),   colour(  0, 40, 50), trackercolour(200,240,250),		textcolour("white"), 	range(0,1.00,1)
-label    bounds(285, 10, 70, 12), text("Steepness:"), FontColour("white")
+label    bounds(285, 10, 70, 12), text("Steepness:"), fontcolour("white")
 button   bounds(280, 23, 80, 20), channel("steepness"), text("12dB/oct","24dB/oct"), value(0)
-checkbox bounds(280, 50, 80, 15), channel("ResType"), FontColour("white"),  value(0), text("Resonant"), colour(yellow)
+checkbox bounds(280, 50, 80, 15), channel("ResType"), fontcolour("white"),  value(0), text("Resonant"), colour(yellow)
 rslider  bounds(360, 11, 70, 70), text("Level"),                       colour(  0, 40, 50), trackercolour(200,240,250),		textcolour("white"), 		channel("level"), 	range(0, 1.00, 1)
 </Cabbage>
 

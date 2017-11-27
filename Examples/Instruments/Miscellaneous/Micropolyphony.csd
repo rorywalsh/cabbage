@@ -85,26 +85,25 @@
 ; Level		-	output level
 
 <Cabbage>
-#define COLOUR  # colour(172,127,100) #
-#define COLOUR2 # colour(60,40,40) #
-#define TRACKER # trackercolour("yellow") #
+#define COLOUR  colour(172,127,100)
+#define COLOUR2 colour(60,40,40)
+#define TRACKER trackercolour("yellow")
 
 form caption("Micropolyphony") size(1110,335), pluginID("MPSy")
-image                    bounds(0,0,1110,335), $COLOUR
 
 ;MONO/POLY
 image   bounds(  5,  6,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("polyphony") {
 label   bounds(  0,  5,210, 15), text("MONO/POLY"),  fontcolour(white)
 button  bounds( 10, 50, 60, 25), text("poly","mono"), channel("monopoly"), value(1), fontcolour:0(200,200,50), fontcolour:1(200,200,50)
-rslider bounds( 70, 20, 80, 80), text("Leg.Time"),    channel("LegTim"), range(0.001,20, 0.8, 0.5, 0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds(130, 20, 80, 80), text("Smear"),    channel("PortSmear"), range(0,     8, 3,   0.5, 0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 70, 20, 80, 80), text("Leg.Time"),    channel("LegTim"), range(0.001,20, 0.8, 0.5, 0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(130, 20, 80, 80), text("Smear"),    channel("PortSmear"), range(0,     8, 3,   0.5, 0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 }       
 
 ;VOICES
 image   bounds(220,  6,305,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("Voices") {
 label   bounds(  0,  5,305, 15), text("VOICES"),  fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("N.Voices"),    channel("voices"), range(1,51,18,1,1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Spread"),    channel("spread"), range(0, 24, 0.5, 1, 0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("N.Voices"),    channel("voices"), range(1,51,18,1,1), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Spread"),    channel("spread"), range(0, 24, 0.5, 1, 0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 label    bounds(135, 35, 80, 13), text("Scale"), fontcolour("white")                     
 combobox bounds(135, 50, 80, 20), text("Chromatic","Major","Minor","Pentatonic"), channel("VScale"), fontcolour(200,200,50)
 label    bounds(220, 35, 80, 13), text("Synth"), fontcolour("white") 
@@ -115,57 +114,57 @@ combobox bounds(220, 50, 80, 20), text("Bow","Pure Tone","Noisy Tone","Brass"), 
 ;KEYBOARD
 image   bounds(530,  6,145,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("Keyboard") {
 label   bounds(  0,  5,145, 15), text("KEYBOARD"),  fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("Interval"), channel("KIntvl"), range(0, 1,1,1,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white") 
-rslider bounds( 65, 20, 80, 80), text("Shift"),    channel("KShift"), range(-127,127, 0, 1, 1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("Interval"), channel("KIntvl"), range(0, 1,1,1,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white") 
+rslider bounds( 65, 20, 80, 80), text("Shift"),    channel("KShift"), range(-127,127, 0, 1, 1), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 }
 
 ;AMP ENVELOPE
 image   bounds(680,  6,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("AmpEnv") {
 label   bounds(  0,  5,210, 15), text("AMPLITUDE ENVELOPE"),  fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("Attack"),    channel("AAtt"), range(0,20,1,0.5,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Release"),    channel("ARel"), range(0,20,10,0.5,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds(125, 20, 80, 80), text("Amount"),    channel("AAmt"), range(0,1,0.055,1,0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("Attack"),    channel("AAtt"), range(0,20,1,0.5,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Release"),    channel("ARel"), range(0,20,10,0.5,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(125, 20, 80, 80), text("Amount"),    channel("AAmt"), range(0,1,0.4,1,0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 }
 
 ;FILTER
 image   bounds(895,  6,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("Filter") {
 label   bounds(  0,  5,210, 15), text("FILTER"),  fontcolour(white), identchannel("FilterID0")
 checkbox bounds( 10, 50, 65, 15), text("On/Off"), channel("FOnOff"), value(1), colour("yellow"), fontcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Cutoff"),    channel("FCutoff"), range(0,1,0.66,1,0.001), textbox(1), identchannel("FilterID1"), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds(125, 20, 80, 80), text("Follow"),     channel("FFollow"), range(0,1,0,1,0.001), textbox(1), identchannel("FilterID2"), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Cutoff"),    channel("FCutoff"), range(0,1,0.66,1,0.001), valuetextbox(1), textbox(1), identchannel("FilterID1"), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(125, 20, 80, 80), text("Follow"),     channel("FFollow"), range(0,1,0,1,0.001), valuetextbox(1), textbox(1), identchannel("FilterID2"), $TRACKER, fontcolour("white"), textcolour("white")
 }
 
 
 ;NOISY TONE PARAMETERS
 image   bounds(  5,126,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("Noise"), identchannel("NoisyToneID"), visible(0) {
 label   bounds(  0,  5,210, 15), text("NOISE FILTER"),  fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("Min"),    channel("NFMin"), range(0.01,5,0.1,0.5,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Max"),    channel("NFMax"), range(0.01,5,0.1,0.5,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds(125, 20, 80, 80), text("Movement"),    channel("NFMvt"), range(0.01,20,0.1,0.5,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("Min"),    channel("NFMin"), range(0.01,5,0.1,0.5,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Max"),    channel("NFMax"), range(0.01,5,0.1,0.5,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(125, 20, 80, 80), text("Movement"),    channel("NFMvt"), range(0.01,20,0.1,0.5,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 }                                                     
 
 
 ;BOW POSITION
 image   bounds(  5,126,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("BowPos"), identchannel("Bow1") {
 label   bounds(  0,  5,210, 15), text("BOW POSITION"),  fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("Min"),    channel("RMin"), range(0,1,0.23,1,0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Max"),    channel("RMax"), range(0,1,0.35,1,0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds(125, 20, 80, 80), text("Movement"),    channel("RMvt"), range(0.01,20,0.1,0.5,0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("Min"),    channel("RMin"), range(0,1,0.23,1,0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Max"),    channel("RMax"), range(0,1,0.35,1,0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(125, 20, 80, 80), text("Movement"),    channel("RMvt"), range(0.01,20,0.1,0.5,0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 }
 
 ;BOW PRESSURE     
 image   bounds(220,126,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("Bow Pressure"), identchannel("Bow2") {
 label   bounds(  0,  5,210, 15), text("BOW PRESSURE"),  fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("Min"),    channel("PMin"), range(0.01,40,1,0.5,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Max"),    channel("PMax"), range(0.01,40,3,0.5,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds(125, 20, 80, 80), text("Movement"),    channel("PMvt"), range(0.01,20,0.23,0.5,0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("Min"),    channel("PMin"), range(0.01,40,1,0.5,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Max"),    channel("PMax"), range(0.01,40,3,0.5,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(125, 20, 80, 80), text("Movement"),    channel("PMvt"), range(0.01,20,0.23,0.5,0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 }
 
 ;VIBRATO                                      
 image   bounds(435,126,230,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("Vibrato"), identchannel("Bow3") {
 label   bounds(  0,  5,230, 15), text("VIBRATO"),  fontcolour(white), identchannel("VibratoID0"), fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("Depth"),    channel("VDep"), range(0,2,0.001,0.75,0.001), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Rate"),     channel("VRate"), range(0.01,999,0.5,0.25,0.01), textbox(1), identchannel("VibratoID1"), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("Depth"),    channel("VDep"), range(0,2,0.001,0.75,0.001), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Rate"),     channel("VRate"), range(0.01,999,0.5,0.25,0.01), valuetextbox(1), textbox(1), identchannel("VibratoID1"), $TRACKER, fontcolour("white"), textcolour("white")
 label    bounds(140, 35, 75, 13), text("Shape"), identchannel("VibratoID2"), fontcolour(white)
 combobox bounds(140, 50, 75, 20), text("Sine","Random","Triangle","Square","Squarish","Random 2"), channel("VShape"), value(2), identchannel("VibratoID3"), fontcolour(200,200,50)
 }
@@ -173,9 +172,9 @@ combobox bounds(140, 50, 75, 20), text("Sine","Random","Triangle","Square","Squa
 ;REVERB
 image   bounds(670,126,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("Reverb") {
 label   bounds(  0,  5,210, 15), text("REVERB"),  fontcolour(white), identchannel("ReverbID1"), fontcolour(white)
-rslider bounds(  5, 20, 80, 80), text("Mix"),     channel("RvbMix"), range(0,1,0.4,1,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds( 65, 20, 80, 80), text("Size"),    channel("RvbSiz"), range(0.3,0.99,0.75,1,0.01), textbox(1), identchannel("ReverbID2"), $TRACKER, fontcolour("white"), textcolour("white")
-rslider bounds(125, 20, 80, 80), text("Damping"), channel("RvbDmp"), range(200,20000,8000,0.5,1), textbox(1), identchannel("ReverbID3"), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(  5, 20, 80, 80), text("Mix"),     channel("RvbMix"), range(0,1,0.4,1,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds( 65, 20, 80, 80), text("Size"),    channel("RvbSiz"), range(0.3,0.99,0.75,1,0.01), valuetextbox(1), textbox(1), identchannel("ReverbID2"), $TRACKER, fontcolour("white"), textcolour("white")
+rslider bounds(125, 20, 80, 80), text("Damping"), channel("RvbDmp"), range(200,20000,8000,0.5,1), valuetextbox(1), textbox(1), identchannel("ReverbID3"), $TRACKER, fontcolour("white"), textcolour("white")
 }                                  
 
 ;PRESETS
@@ -191,7 +190,7 @@ label    bounds(  5, 25, 85, 13), text("Mode"), fontcolour(white)
 combobox bounds(  5, 40, 85, 20), text("Alternate","Rnd.Fixed","Rnd.Moving"), channel("StMode"), value(1), fontcolour(200,200,50)
 label    bounds(  5, 66, 85, 13), text("Speed"), identchannel("StSpeedID0"), visible(0), fontcolour(white)
 hslider  bounds(  5, 83, 85, 12), channel("StSpeed"), identchannel("StSpeedID1"), range(0.01,10,0.1,0.5,0.01), $TRACKER, visible(0)
-rslider  bounds( 80, 20, 80, 80), text("Width"),     channel("StWidth"), range(0,1,0.8,1,0.01), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
+rslider  bounds( 80, 20, 80, 80), text("Width"),     channel("StWidth"), range(0,1,0.8,1,0.01), valuetextbox(1), textbox(1), $TRACKER, fontcolour("white"), textcolour("white")
 }
 
 keyboard pos(5, 250), size(1035, 80)
@@ -476,19 +475,19 @@ instr	1	; always on. Read in widgets and send presets.
    chnset	$RvbDmp   	,"RvbDmp"
   endif#
   ;                 monopoly'LegTim'PortSmear'voices'spread'VScale'KIntvl'KShift'AAtt'ARel'AAmt 'FOnOff'FCutoff'FFollow'StMode'StWidth'StSpeed'OutLevel'RMin 'RMax 'RMvt'PMin'PMax'PMvt'VDep 'VRate'VShape'RvbMix'RvbSiz'RvbDmp)#
-  $SEND_SETTINGS(1  '1      '0.8   '3        '18    '0.5   '1     '1     '0     '1   '10  '0.055'1     '0.66   '0      '1     '0.7    '0.1    '4       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
-  $SEND_SETTINGS(2  '1      '0.5   '0.3      '11    '7     '1     '1     '0     '2   '10  '0.1  '1     '0.45   '0.01   '1     '0.7    '0.1    '3       '0.1  '0.2  '0.1 '0.7 '2   '0.1 '0.001'0.5  '2     '0.4   '0.75  '8000  )
-  $SEND_SETTINGS(3  '1      '0.5   '2        '7     '0.02  '1     '1     '0     '0.12'0.9 '0.3  '1     '0.5    '1      '1     '0.8    '0.1    '0.5     '0.008'0.7  '0.1 '1.35'3.3 '0.23'0.001'0.01 '2     '0.4   '0.75  '8000  )
-  $SEND_SETTINGS(4  '1      '0.5   '3        '51    '1.15  '1     '1     '0     '6   '10  '0.7  '1     '0.4    '0      '1     '0.9    '0.1    '1       '0.03 '0.07 '0.1 '1   '3   '0.23'0    '0.01 '2     '0.4   '0.75  '8000  )
+  $SEND_SETTINGS(1  '1      '0.8   '3        '18    '0.5   '1     '1     '0     '1   '10  '0.4  '1     '0.66   '0      '1     '0.7    '0.1    '4       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
+  $SEND_SETTINGS(2  '1      '0.5   '0.3      '11    '7     '1     '1     '0     '2   '10  '0.4  '1     '0.45   '0.01   '1     '0.7    '0.1    '3       '0.1  '0.2  '0.1 '0.7 '2   '0.1 '0.001'0.5  '2     '0.4   '0.75  '8000  )
+  $SEND_SETTINGS(3  '1      '0.5   '2        '7     '0.02  '1     '1     '0     '0.12'0.9 '0.3  '1     '0.5    '1      '1     '0.8    '0.1    '2       '0.008'0.7  '0.1 '1.35'3.3 '0.23'0.001'0.01 '2     '0.4   '0.75  '8000  )
+  $SEND_SETTINGS(4  '1      '0.5   '3        '51    '1.15  '1     '1     '0     '6   '10  '0.7  '1     '0.4    '0      '1     '0.9    '0.1    '2       '0.03 '0.07 '0.1 '1   '3   '0.23'0    '0.01 '2     '0.4   '0.75  '8000  )
   $SEND_SETTINGS(5  '0      '0.5   '3        '2     '3     '1     '1     '0     '2   '5   '0.1  '1     '0.002  '1      '1     '0.8    '0.1    '2       '0.7  '0.8  '0.1 '7   '8   '0.23'0.1  '0.01 '2     '0.4   '0.75  '8000  )
-  $SEND_SETTINGS(6  '1      '0.4   '3        '9     '2     '1     '1     '0     '1.5 '2.5 '0.005'1     '0      '1      '1     '0.7    '0.1    '10      '0.05 '0.07 '0.1 '7   '8   '0.23'0.01 '2.2  '1     '0.3   '0.9   '15000 )
-  $SEND_SETTINGS(7  '1      '0.8   '2        '5     '1     '1     '1     '0     '1   '0.5 '0.001'1     '0.055  '1      '1     '0.8    '0.1    '4       '0.04 '0.37 '0.1 '7   '8   '0.23'0.32 '0.13 '1     '0.28  '0.89  '12000 )
-  $SEND_SETTINGS(8  '1      '0.003 '0        '4     '12    '1     '1     '0     '0   '0   '1    '0     '0      '0      '1     '0.3    '0.1    '0.05    '0.04 '0.38 '0.01'3.29'5.3 '0.01'0    '0.01 '2     '0.5   '0.47  '15000 )
-  $SEND_SETTINGS(9  '0      '1     '1        '9     '0.1   '1     '1     '0     '0.5 '6   '1    '1     '0.07   '1      '1     '0.9    '0.1    '0.05    '0.002'0.025'0.9 '3.2 '5.3 '0.01'0.066'0.01 '2     '0.5   '0.67  '15000 )
-  $SEND_SETTINGS(10 '1      '1     '1        '51    '0.5   '1     '1     '0     '2.5 '20  '0.03 '1     '0.04   '1      '1     '0.7    '0.1    '10      '0.35 '0.37 '1   '0.01'0.4 '0.01'0.01 '0.1  '1     '0.4   '0.75  '15000 )
-  $SEND_SETTINGS(11 '1      '0.8   '3        '9     '1     '2     '1     '0     '1   '10  '0.055'1     '0.66   '0      '1     '0.7    '0.1    '2       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
-  $SEND_SETTINGS(12 '1      '0.8   '3        '9     '1     '3     '1     '0     '1   '10  '0.055'1     '0.66   '0      '1     '0.7    '0.1    '2       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
-  $SEND_SETTINGS(13 '1      '0.8   '3        '7     '1     '4     '1     '0     '1   '10  '0.055'1     '0.66   '0      '1     '0.7    '0.1    '2       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
+  $SEND_SETTINGS(6  '1      '0.4   '3        '9     '2     '1     '1     '0     '1.5 '2.5 '0.3  '1     '0      '1      '1     '0.7    '0.1    '10      '0.05 '0.07 '0.1 '7   '8   '0.23'0.01 '2.2  '1     '0.3   '0.9   '15000 )
+  $SEND_SETTINGS(7  '1      '0.8   '2        '5     '1     '1     '1     '0     '1   '0.5 '0.2  '1     '0.055  '1      '1     '0.8    '0.1    '4       '0.04 '0.37 '0.1 '7   '8   '0.23'0.32 '0.13 '1     '0.28  '0.89  '12000 )
+  $SEND_SETTINGS(8  '1      '0.003 '0        '4     '12    '1     '1     '0     '0   '0   '1    '0     '0      '0      '1     '0.3    '0.1    '2       '0.04 '0.38 '0.01'3.29'5.3 '0.01'0    '0.01 '2     '0.5   '0.47  '15000 )
+  $SEND_SETTINGS(9  '0      '1     '1        '9     '0.1   '1     '1     '0     '0.5 '6   '1    '1     '0.07   '1      '1     '0.9    '0.1    '3       '0.002'0.025'0.9 '3.2 '5.3 '0.01'0.066'0.01 '2     '0.5   '0.67  '15000 )
+  $SEND_SETTINGS(10 '1      '1     '1        '51    '0.5   '1     '1     '0     '2.5 '20  '0.6  '1     '0.04   '1      '1     '0.7    '0.1    '10      '0.35 '0.37 '1   '0.01'0.4 '0.01'0.01 '0.1  '1     '0.4   '0.75  '15000 )
+  $SEND_SETTINGS(11 '1      '0.8   '3        '9     '1     '2     '1     '0     '1   '10  '0.5  '1     '0.66   '0      '1     '0.7    '0.1    '2       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
+  $SEND_SETTINGS(12 '1      '0.8   '3        '9     '1     '3     '1     '0     '1   '10  '0.2  '1     '0.66   '0      '1     '0.7    '0.1    '2       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
+  $SEND_SETTINGS(13 '1      '0.8   '3        '7     '1     '4     '1     '0     '1   '10  '0.3  '1     '0.66   '0      '1     '0.7    '0.1    '2       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
   rireturn
  endif
 

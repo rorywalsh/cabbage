@@ -9,11 +9,14 @@ xypad bounds(6,  6, 250, 224), channel("Az", "Elev"), text("X=Azimuth : Y=Elev."
 checkbox bounds(265, 6, 80, 12), channel("TestSound"), FontColour("white"),  value(1), text("Test Sound"), colour(yellow)
 
 combobox bounds(265, 20, 90,25), channel("type"), value(2), text("hrtfmove", "hrtfmove2")
-hslider bounds(265,  50, 90,55), channel("L_R_In"), range(0, 1.00, 0), caption("L/R In")
-combobox bounds(265,110, 90,60), channel("overlap"), value(3), text("1", "2", "4", "8", "16", "32", "64"), caption("Overlap")
-hslider bounds(265, 175, 90, 55), channel("radius"), range(1, 30, 9), caption("Radius")
+label    bounds(265,  50, 90, 15), text("L/R In"), fontcolour("white")
+hslider  bounds(265,  65, 90, 20), channel("L_R_In"), range(0, 1.00, 0)
+label    bounds(265,110, 90, 15), text("Overlap"), fontcolour("white")
+combobox bounds(265,125, 90, 20), channel("overlap"), value(3), text("1", "2", "4", "8", "16", "32", "64")
+label    bounds(265, 175, 90, 15), text("Radius"), fontcolour("white")
+hslider  bounds(265, 190, 90, 20), channel("radius"), range(1, 30, 9)
 image bounds(5,245, 215, 20), colour(100,100,100,80), plant("credit"), outlinethickness(0){
-label bounds(0.03, 0.1, .95, .7), text("Author: Iain McCurdy |2012|"), fontcolour("white")
+label bounds(0.03, 0.1, .95, .7), text("Author: Iain McCurdy |2012|"), fontcolour("white")}
 </Cabbage>
 
 <CsoundSynthesizer>

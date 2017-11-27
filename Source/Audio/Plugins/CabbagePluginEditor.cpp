@@ -51,7 +51,9 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 CabbagePluginEditor::~CabbagePluginEditor()
 {
     popupPlants.clear();
+    components.clear();
     setLookAndFeel (nullptr);
+
 }
 
 void CabbagePluginEditor::resized()
@@ -648,7 +650,7 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (ValueTree wData, Component
         PopupDocumentWindow* popupPlant;
         popupPlants.add (popupPlant = new PopupDocumentWindow (caption, backgroundColour));
         popupPlant->setLookAndFeel (&getLookAndFeel());
-
+        popupPlant->setWidgetData(wData);
         popupPlant->setContentNonOwned (plant, true);
         popupPlant->setName (name);
     }

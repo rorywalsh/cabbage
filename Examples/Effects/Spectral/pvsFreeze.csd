@@ -7,19 +7,32 @@
 ; 'Threshold' specifies the threshold level at which triggering will occur. In a noisy environment, raise 'Threshold'
 
 <Cabbage>
-form caption("pvsfreeze"), size(670, 80) colour(  0,140,40,170), pluginID("frez")
-image bounds(  0,  0,270, 80), colour(  0,200,100,100), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-checkbox bounds( 15, 10, 180, 25), channel("freezb"), text("Freeze Both"), fontcolour("white"), shape("rounded"), colour("red")
-checkbox bounds(120, 10, 180, 25), channel("freeza"), text("Freeze Amplitudes"), fontcolour("white"), shape("rounded"), colour("yellow")
-checkbox bounds(120, 45, 180, 25), channel("freezf"), text("Freeze Frequencies"), fontcolour("white"), shape("rounded"), colour("orange")
-image bounds(270,  0,200, 80), colour(  0,200,100,100), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-rslider bounds(280, 10, 60, 60), text("FFT Size"), channel("att_table"), range(1, 8, 5, 1,1),      textcolour("white"), colour(  0,100, 50,255), trackercolour("white")
-rslider bounds(340, 10, 60, 60), text("Mix"),      channel("mix"),       range(0, 1.00, 1),        textcolour("white"), colour(  0,100, 50,255), trackercolour("white")
-rslider bounds(400, 10, 60, 60), text("Level"),    channel("lev"),       range(0, 1.00, 0.5, 0.5), textcolour("white"), colour(  0,100, 50,255), trackercolour("white")
-image bounds(470,  0,200, 80), colour(  0,200,100,100), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-checkbox bounds(480, 10, 180, 25), channel("auto"), text("Auto"), fontcolour("white"), shape("rounded"), colour("red")
-rslider bounds(540, 10, 60, 60), text("Delay"),     channel("delay"),  textcolour("white"), range(0.0001, 0.5, 0.1, 1,0.001), colour(  0,100, 50,255), trackercolour("white")
-rslider bounds(600, 10, 60, 60), text("Threshold"), channel("thresh"), textcolour("white"), range(0.001, 0.5, 0.1,1,0.001),   colour(  0,100, 50,255), trackercolour("white")
+form caption("pvsfreeze"), size(660,100) colour(  0,160,80), pluginID("frez")
+
+image            bounds(  0,  0,270, 80), colour(  0,160,80), shape("rounded"), outlinecolour("white"), outlinethickness(4), plant("Freeze") {
+checkbox bounds( 15, 10, 180, 25), channel("freezb"), text("Freeze Both"), fontcolour("white"), shape("ellipse"), colour("red")
+checkbox bounds( 20, 50, 180, 15), channel("lock"), text("Lock Phases"), fontcolour("white"), shape("ellipse"), colour("LightBlue")
+checkbox bounds(120, 10, 180, 25), channel("freeza"), text("Freeze Amplitudes"), fontcolour("white"), shape("ellipse"), colour("yellow")
+checkbox bounds(120, 45, 180, 25), channel("freezf"), text("Freeze Frequencies"), fontcolour("white"), shape("ellipse"), colour("orange")
+}
+
+image bounds(270,  0,190, 80), colour(  0,160,80), shape("rounded"), outlinecolour("white"), outlinethickness(4), plant("Auto") {
+button  bounds( 15, 25, 40, 20), channel("auto"), text("Auto","Auto"), colour:0(  0,  0,  0), fontcolour:0(100,100,100), colour:1(255,100,100), fontcolour:1(255,200,200)
+rslider bounds( 60, 10, 60, 60), text("Delay"),     channel("delay"),  textcolour("white"), range(0.0001, 0.5, 0.1, 1,0.001), colour(  0,100, 50,255), trackercolour("white")
+rslider bounds(120, 10, 60, 60), text("Threshold"), channel("thresh"), textcolour("white"), range(0.001, 0.5, 0.1,1,0.001),   colour(  0,100, 50,255), trackercolour("white")
+}
+
+image   bounds(460,  0,200, 80), colour(  0,160,80), shape("rounded"), outlinecolour("white"), outlinethickness(4), plant("Mix") {
+label    bounds(10,15, 60,13), text("FFT Size"), fontcolour("white")
+combobox bounds(10,30, 60,18), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5)
+rslider bounds( 70, 10, 60, 60), text("Mix"),      channel("mix"),       range(0, 1.00, 1),        textcolour("white"), colour(  0,100, 50,255), trackercolour("white")
+rslider bounds(130, 10, 60, 60), text("Level"),    channel("lev"),       range(0, 1.00, 0.5, 0.5), textcolour("white"), colour(  0,100, 50,255), trackercolour("white")
+}
+
+
+
+
+label   bounds( 2,85,100,10), text("Iain McCurdy . 2017"), fontcolour("white")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -44,13 +57,13 @@ giFFTattributes6	ftgen	0, 0, 4, -2, 2048, 512, 2048, 1
 giFFTattributes7	ftgen	0, 0, 4, -2, 4096,1024, 4096, 1
 giFFTattributes8	ftgen	0, 0, 4, -2, 8192,2048, 8192, 1
 
-opcode	pvsfreeze_module,a,akkkkiiii
-	ain,kfreeza,kfreezf,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype	xin
+opcode	pvsfreeze_module,a,akkkkiiiik
+	ain,kfreeza,kfreezf,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype,klock	xin
 
 	f_anal  	pvsanal	ain, iFFTsize, ioverlap, iwinsize, iwintype		;ANALYSE AUDIO INPUT SIGNAL AND OUTPUT AN FSIG
 	f_freeze	pvsfreeze f_anal, kfreeza, kfreezf
-	aout		pvsynth f_freeze                      				;RESYNTHESIZE THE f-SIGNAL AS AN AUDIO SIGNAL
-
+	f_lock 		pvslock f_freeze, klock
+	aout		pvsynth f_lock
 	amix		ntrpol		ain, aout, kmix					;CREATE DRY/WET MIX
 			xout		amix*klev	
 endop
@@ -61,6 +74,7 @@ instr	1
 	kfreeza		chnget	"freeza"
 	kfreezf		chnget	"freeza"
 	kfreezb		chnget	"freezb"
+	klock		chnget	"lock"
 	
 	; triggering of 'Freeze All' mode
 	kon		=	1
@@ -77,7 +91,6 @@ instr	1
 
 	; audio input
 	ainL,ainR	ins
-	;ainL,ainR	diskin	"808loop.wav",1,0,1	;USE FOR TESTING
 
 	; auto freeze triggering
 	kauto	chnget	"auto"				; read in widgets
@@ -117,9 +130,9 @@ instr	1
 	iwintype	table	3, giFFTattributes1 + i(katt_table) - 1
 	/*-------------------*/
 	
-	aoutL		pvsfreeze_module	ainL,kfreeza,kfreezf,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
-	aoutR		pvsfreeze_module	ainR,kfreeza,kfreezf,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
-			outs	aoutR,aoutR
+	aoutL		pvsfreeze_module	ainL,kfreeza,kfreezf,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype, klock
+	aoutR		pvsfreeze_module	ainR,kfreeza,kfreezf,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype, klock
+				outs				aoutR,aoutR
 endin
 
 </CsInstruments>

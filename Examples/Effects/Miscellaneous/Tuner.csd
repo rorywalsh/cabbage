@@ -5,17 +5,17 @@
 form caption("Tuner"), size(295,100), pluginID("Tunr")
 image            bounds(0,0,295,100), colour(50,50,80), outlinethickness(4), outlinecolour("silver")
 image bounds(10,10,290,85), colour(0,0,0,0), plant("Indicators") {
-checkbox bounds(  0, 16,  9,  9), colour(255,  5,  5), channel("Err-50"), shape("ellipse"), value(0)
-checkbox bounds( 14, 14, 13, 13), colour(255, 55, 55), channel("Err-40"), shape("ellipse"), value(0)
-checkbox bounds( 32, 12, 17, 17), colour(255,105,105), channel("Err-30"), shape("ellipse"), value(0)
-checkbox bounds( 54,  9, 22, 22), colour(255,155,155), channel("Err-20"), shape("ellipse"), value(0)
-checkbox bounds( 82,  5, 30, 30), colour(255,205,205), channel("Err-10"), shape("ellipse"), value(0)
-checkbox bounds(117,  0, 40, 40), colour(255,255,255), channel("Err0"),   shape("ellipse"), value(0)
-checkbox bounds(162,  5, 30, 30), colour(255,205,205), channel("Err10"),  shape("ellipse"), value(0)
-checkbox bounds(197,  9, 22, 22), colour(255,155,155), channel("Err20"),  shape("ellipse"), value(0)
-checkbox bounds(224, 12, 17, 17), colour(205,105,105), channel("Err30"),  shape("ellipse"), value(0)
-checkbox bounds(246, 14, 13, 13), colour(255, 55, 55), channel("Err40"),  shape("ellipse"), value(0)
-checkbox bounds(264, 16,  9,  9), colour(255,  5,  5), channel("Err50"),  shape("ellipse"), value(0)
+checkbox bounds(  0, 16,  9,  9), colour(255,  5,  5), channel("Err-50"), shape("ellipse"), value(0), active(0)
+checkbox bounds( 14, 14, 13, 13), colour(255, 55, 55), channel("Err-40"), shape("ellipse"), value(0), active(0)
+checkbox bounds( 32, 12, 17, 17), colour(255,105,105), channel("Err-30"), shape("ellipse"), value(0), active(0)
+checkbox bounds( 54,  9, 22, 22), colour(255,155,155), channel("Err-20"), shape("ellipse"), value(0), active(0)
+checkbox bounds( 82,  5, 30, 30), colour(255,205,205), channel("Err-10"), shape("ellipse"), value(0), active(0)
+checkbox bounds(117,  0, 40, 40), colour(255,255,255), channel("Err0"),   shape("ellipse"), value(0), active(0)
+checkbox bounds(162,  5, 30, 30), colour(255,205,205), channel("Err10"),  shape("ellipse"), value(0), active(0)
+checkbox bounds(197,  9, 22, 22), colour(255,155,155), channel("Err20"),  shape("ellipse"), value(0), active(0)
+checkbox bounds(224, 12, 17, 17), colour(205,105,105), channel("Err30"),  shape("ellipse"), value(0), active(0)
+checkbox bounds(246, 14, 13, 13), colour(255, 55, 55), channel("Err40"),  shape("ellipse"), value(0), active(0)
+checkbox bounds(264, 16,  9,  9), colour(255,  5,  5), channel("Err50"),  shape("ellipse"), value(0), active(0)
 image    bounds( 91, 48,120, 34), colour(0,0,0), outlinethickness(2), outlinecolour("silver")
 label    bounds(107, 50, 60, 30), text("---"), identchannel("NoteNameID"), fontcolour("white")
 label    bounds(157, 58, 60, 20), text("---"), identchannel("ErrorID"), fontcolour("yellow")
@@ -37,7 +37,7 @@ nchnls = 1
 0dbfs = 1
 
 giTimeDelay		=	0.3		; delay between printings
-giThreshHold	=	0.01	; amplitude threshold beneath which printings will be skipped
+giThreshHold	=	-30		; decibel threshold beneath which printings will be skipped
 giFreqThresh	=	20		; freq. threshold
 
 opcode NNToStr,S,i
@@ -76,19 +76,38 @@ endop
 
 alwayson	1
 instr		1
- 
- ;kNote		rspline			36,72,0.1,0.2
- ;aL		vco2			0.2,cpsmidinn(kNote),4,0.5
- ;aR		=				aL
+
+ /*
+ kNote		rspline			36,72,0.05,0.08
+ aL		vco2			0.4,cpsmidinn(kNote),4,0.5
+ aR		=				aL
+ ;		outs			aL,aR
+ */
  
  aL,aR		ins
+
+ /*
+ icps		=			261.7
+ aImp		mpulse		1,0
+ aBuff		delayr		1/icps
+ aL			deltapi		1/icps
+ 			delayw		aImp+(aL*0.9999)
+ aR			=			aL
+  			outs		aL,aR
+ */
  
- kthresh	=			0.03
+ /*
+ kthresh	=			0.003
  fSig		pvsanal		aL,2048,512,2048,1
  kfr,kamp	pvspitch	fSig,kthresh
+ */
+ 
+ kfr, kamp 	ptrack 		aL, 2048
  knum		=			(octcps(kfr)-3) * 12	; convert oct format to MIDI note number format
  kround		=			round(knum)				; round note numbers to the nearest integer
  kdiff		=			knum 	- kround 		; difference between precise note number (including fraction) and rounded integer will be value (in semitones) by which to scale input to achieve chromatic pitch correction
+ 
+ kfr		mediank		kfr,111,111
  
  kPrintTrig	=	kamp>giThreshHold?1:0
  if metro:k(1/giTimeDelay)==1 then
@@ -250,7 +269,7 @@ instr		1
   chnset		Sstr,"NoteNameID"
  endif 
  
- if kfr<giFreqThresh then
+ if kfr<giFreqThresh || kamp<giThreshHold then
   chnset	k(0), "Err-50"
   chnset	k(0), "Err-40"
   chnset	k(0), "Err-30"
@@ -261,7 +280,7 @@ instr		1
   chnset	k(0), "Err20"
   chnset	k(0), "Err30"
   chnset	k(0), "Err40"
-  chnset	k(0), "Err50" 
+  chnset	k(0), "Err50"
   chnset	"---","NoteNameID"
   chnset	"---","ErrorID"
  endif

@@ -17,18 +17,18 @@
 <Cabbage>
 form caption("Autopan / Tremolo") size(565, 102), pluginID("aptr"), guirefresh(32)
 image pos( 0,  0),                size(565, 102),     colour("Maroon"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-rslider  bounds(  5,  6, 90, 90), text("Freq.[Hz]"),  channel("rate"),  range(0.1, 50, 0.5, 0.5),   textBox(1), trackercolour("tomato")
-rslider  bounds( 80,  6, 90, 90), text("Tempo[BPM]"), channel("tempo"), range(6, 3000, 30, 0.5, 1), textBox(1), trackercolour("tomato")
-rslider  bounds(175,  6, 90, 90), text("Depth"),      channel("depth"), range(0, 1.00, 1, 0.5),     textBox(1), trackercolour("tomato")
+rslider  bounds(  5,  6, 90, 90), text("Freq.[Hz]"),  channel("rate"),  range(0.1, 50, 0.5, 0.5),   valuetextbox(1), textbox(1), trackercolour("tomato")
+rslider  bounds( 80,  6, 90, 90), text("Tempo[BPM]"), channel("tempo"), range(6, 3000, 30, 0.5, 1), valuetextbox(1), textbox(1), trackercolour("tomato")
+rslider  bounds(175,  6, 90, 90), text("Depth"),      channel("depth"), range(0, 1.00, 1, 0.5),     valuetextbox(1), textbox(1), trackercolour("tomato")
 
 line     bounds(360, 10, 107, 2), colour("Grey")
 label    bounds(393,  5, 43, 12), text("USER"), colour("Maroon")
-rslider  bounds(345, 16, 80, 80), text("Bias"),      channel("bias"), range(-1, 1.00, 0),          textBox(1), trackercolour("tomato")
-rslider  bounds(405, 16, 80, 80), text("Duty"),      channel("duty"), range(0.01, 2000.00, 1, 0.25, 0.001),          textBox(1), trackercolour("tomato")
+rslider  bounds(345, 16, 80, 80), text("Bias"),      channel("bias"), range(-1, 1.00, 0),          valuetextbox(1), textbox(1), trackercolour("tomato")
+rslider  bounds(405, 16, 80, 80), text("Duty"),      channel("duty"), range(0.01, 2000.00, 1, 0.25, 0.001),          valuetextbox(1), textbox(1), trackercolour("tomato")
 
-rslider  bounds(470,  6, 90, 90), text("Level"),      channel("level"), range(0, 1.00, 1),          textBox(1), trackercolour("tomato")
+rslider  bounds(470,  6, 90, 90), text("Level"),      channel("level"), range(0, 1.00, 1),          valuetextbox(1), textbox(1), trackercolour("tomato")
 
-checkbox bounds(160, 40, 25, 25), colour("yellow"), channel("indicator"),  value(0), shape("rounded"), active(0)
+checkbox bounds(160, 40, 25, 25), colour("yellow"), channel("indicator"),  value(0), shape("ellipse"), active(0)
 combobox bounds(260, 13,  90,20), channel("mode"), value(1), text("Autopan", "Tremolo")
 combobox bounds(260, 38,  90,20), channel("wave"), value(1), text("Sine", "Triangle", "Square", "Randomi", "Randomh", "Rspline", "User")
 checkbox bounds(260, 63, 90, 15), text("TEST TONE"), colour("lime"), channel("test"),  value(0)

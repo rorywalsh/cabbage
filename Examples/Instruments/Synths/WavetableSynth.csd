@@ -21,13 +21,14 @@
 ; Drop		--		Amount of pitch drop upon note conclusion
 
 <Cabbage>
-form caption("Wavetable Synth") size(720, 320), pluginID("wtsy")
+form caption("Wavetable Synth") size(720, 290), pluginID("wtsy")
 image                pos(0, 0), size(720, 290), colour(150,100,70), shape("sharp"),   outlinecolour("maroon"), outlinethickness(2)
 
 ;INSTRUMENT
 image    bounds( 10,  6,140, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"), outlinethickness(1), plant("instrument") {
 label    bounds(  0,  5,140, 15), text("Instrument"),       fontcolour(white)
 combobox bounds( 10, 40,120, 20), fontcolour("white"), channel("Instr"),  value(1), text("Clarinet", "Bass Clarinet", "C.bass Clarinet", "Oboe", "Bassoon", "C.bassoon", "Violin", "Cello", "Piccolo", "Flute", "Alto Flute", "Bass Flute", "Ahh", "Horn P", "Horn F", "B.Trb.Harmon Mute", "B.Trb.Cup Mute", "B.Trb.Open")
+}
 
 ;MODULATION
 image   bounds(160,  6,290, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"), outlinethickness(1), plant("modulation") {
@@ -91,8 +92,6 @@ rslider bounds(200, 24, 60, 60), text("Level"),  channel("level"),   range(0, 2.
 }
 
 keyboard pos(10, 200), size(700, 80)
-image bounds(5, 295, 180, 20), colour(75, 85, 90, 100), plant("credit"){
-label bounds(0.03, 0.2, .9, .6), text("Author: Iain McCurdy |2012|"), fontcolour("white")
 </Cabbage>
 
 <CsoundSynthesizer>

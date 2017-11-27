@@ -17,7 +17,9 @@ rslider bounds(80, 11, 70, 70),  text("Buf. Size"), channel("buflen"),    range(
 rslider bounds(150, 11, 70, 70), text("Semitones"), channel("semis"),     range(-24, 24, 0, 1, 1),     textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
 rslider bounds(220, 11, 70, 70), text("Cents"),     channel("cents"),     range(-100, 100, 0, 1, 1),   textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
 rslider bounds(290, 11, 70, 70), text("Feedback"),  channel("FB"),        range(0, 1.50, 0),           textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
-rslider bounds(360, 11, 70, 70), text("FFT Size"),  channel("att_table"), range(1, 8, 5, 1,1),         textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
+label    bounds(360,20, 60,13), text("FFT Size"), fontcolour("white")
+combobox bounds(360,35, 60,20), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontcolour(255,255,190)
+
 rslider bounds(430, 11, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 1),           textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
 rslider bounds(500, 11, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5),         textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
 </Cabbage>

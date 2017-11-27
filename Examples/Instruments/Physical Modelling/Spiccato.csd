@@ -114,7 +114,7 @@ combobox bounds( 50, 40, 40, 15), channel("preset"), text("1","2","3","4","5","6
 image    bounds(300,105,220, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("Layers") {
 label    bounds(  0,  5,220, 10), text("L   A   Y   E   R   S"), fontcolour("black")
 rslider  bounds(  5, 20, 70, 70), channel("Layers"), range(1,10,1,1,1), textcolour("black"), fontcolour("black"), text("Layers"), colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("IntSemis"), range(0,12,2,1,1),  textcolour("black"), fontcolour("black"), text("Semitones"), colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("IntSemis"), range(-24,24,2,1,1),  textcolour("black"), fontcolour("black"), text("Semitones"), colour("black")
 rslider  bounds(145, 20, 70, 70), channel("Detune"), range(0,100,0,1,1), textcolour("black"), fontcolour("black"), text("Detune"), colour("black")
 }
 
@@ -130,7 +130,7 @@ keyboard  bounds( 0,205,985,80)
 <CsInstruments>
 
 sr 		= 	44100		;SAMPLE RATE
-ksmps 		= 	32		;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+ksmps 		= 	4		;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2		;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1
 
@@ -164,7 +164,7 @@ endop
 
 opcode	wgbowSR,a,ikkkkkiikki											;wgbow ENCAPSULATED WITHIN A UDO SO THAT ksmps CAN BE REDUCED TO IMPROVE SOUND QUALITY OF VIBRATO AND BOWING POSITION CHANGES 
 	ivel, kcps, kpres, kBowPos, kvibf, kvibamp, ivibwav, iMinFrq, kPosA, kPosF, iPosIRnd	xin
-		setksmps	4										;REDUCED ksmps. (ksmps = 1 DOESN'T SEEM TO WORK!)
+		setksmps	1										;REDUCED ksmps. (ksmps = 1 DOESN'T SEEM TO WORK!)
 	kporttime	linseg	0,0.001,0.05
 
 	if kPosA>0 then						; random spline randomise bowing position
@@ -183,6 +183,8 @@ endop
 
 opcode	RecursiveInstrument,aa,iiiip
 	inum,ivel,iLayers,iIntSemis,iCount	xin
+	aMixL	=			0
+	aMixR	=			0	
 	aL,aR	subinstr	p1+1,inum+((iCount-1)*iIntSemis),ivel	;call voice instrument as a subinstrument. Audio will be fed back to this instrument before being sent to the outputs.
 	if iCount<iLayers then
 	 aMixL,aMixR	RecursiveInstrument	inum,ivel,iLayers,iIntSemis,iCount+1

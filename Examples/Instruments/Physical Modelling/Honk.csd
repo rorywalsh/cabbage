@@ -66,6 +66,7 @@ rslider bounds( 10, 20, 60, 60), text("Width"),                                 
 rslider bounds( 70, 20, 60, 60), text("Rvb.Send"),                                   channel("RvbSend"), range(0,      1.00, 0.2), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
 rslider bounds(130, 20, 60, 60), text("Rvb.Size"),                                   channel("RvbSize"), range(0.5,    0.99, 0.6), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
 rslider bounds(190, 20, 60, 60), text("Level"),                                      channel("OutGain"), range(0,     10.00, 0.5,0.5), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
+}
 
 ; bow position
 image   bounds(  0, 90,700, 90), colour(50,50,100), outlinecolour("LightGrey"), outlinethickness(1), shape("sharp"), plant("bowposition"){
@@ -92,7 +93,7 @@ rslider bounds(630, 20, 60, 60), text("Rate"),                                  
 image   bounds(  0,270,700, 90), colour(50,50,100), outlinecolour("LightGrey"), outlinethickness(1), shape("sharp"), plant("system"){
 label   bounds(  5,  5,690, 12), text("System"), fontcolour(white)
 hslider bounds( 10, 20,685, 30), text("F.back"),                                   channel("gain"),    range(0,      1.00, 0.95), TrackerColour("Silver"), textcolour("white"), colour("white")
-hslider bounds( 10, 50,685, 30), text("Discord"),                                    channel("const"),   range(0,   1.00, 0.97), TrackerColour("Silver"), textcolour("white"), colour("white")
+hslider bounds( 10, 50,685, 30), text("Discord"),                                    channel("const"),   range(0,   1.50, 0.97), TrackerColour("Silver"), textcolour("white"), colour("white")
 }
 
 keyboard pos( 0, 360), size(700, 80)

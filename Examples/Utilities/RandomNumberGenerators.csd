@@ -7,7 +7,7 @@
 form caption("Random Number Generators"), size(920, 280), pluginID("RaFu"), guirefresh(32)
 
 image     bounds(  5,  0,910,200), colour(0,0,0,0), plant("Table") {
-gentable  bounds(  0,  0,910,150), identchannel("table1"), tablenumber(1), tablecolour("lightblue"), amprange(-1,1,1), zoom(-1)
+gentable  bounds(  0,  0,910,150), identchannel("table1"), tablenumber(1), tablecolour:1(100,0,0), alpha(1), amprange(-1,1,1), zoom(-1), tablebackgroundcolour(50,50,50), tablegridcolour(100,100,100)
 image     bounds(  0,  0,  1,150), identchannel("wiper")
 numberbox bounds(  0,155,90,30), text("Rate of Updates"), channel("ROU"), range(1,256,64,1,1)
 numberbox bounds( 95,155,90,30), text("Maximum so far"), channel("Max"), range(-10,10,0,1,0.001)
@@ -66,7 +66,7 @@ numberbox bounds(540,  0,90,30), text("Freq.3"),          channel("jitter2Freq3"
 image     bounds( 95,210,700, 60), colour(0,0,0,0), plant("vibr"), identchannel("vibrPlant") {
 numberbox bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibrAvAmp"),        range(-1,1,.3,1,0.001)
 numberbox bounds( 90,  0,90,30), text("Av.Freq"),       channel("vibrAvFreq"),       range(0.1,16,1,1,0.001)
-combobox  bounds(180, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2"), channel("WaveShape")
+combobox  bounds(180, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2","Bi-gauss"), channel("WaveShape")
 }
 image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("vibrato"), identchannel("vibratoPlant") {
 numberbox bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibratoAvAmp"),          range(-1,1,.3,1,0.001)
@@ -77,7 +77,7 @@ numberbox bounds(360,  0,90,30), text("Amp.Min.Rate"),  channel("vibratoAmpMinRa
 numberbox bounds(450,  0,90,30), text("Amp.Max.Rate"),  channel("vibratoAmpMaxRate"),     range(0.001,16,1,1,0.001)
 numberbox bounds(540,  0,90,30), text("Frq.Min.Rate"),  channel("vibratoCpsMinRate"),     range(0.001,16,1,1,0.001)
 numberbox bounds(630,  0,90,30), text("Frq.Max.Rate"),  channel("vibratoCpsMaxRate"),     range(0.001,16,1,1,0.001)
-combobox  bounds(720, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2"), channel("WaveShape")
+combobox  bounds(720, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2","Bi-gauss"), channel("WaveShape")
 }
 image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("gaussi"), identchannel("gaussiPlant") {
 numberbox bounds(  0,  0,90,30), text("Amp."),        	channel("gaussiRange"),          range(0,1,.3,1,0.001)
@@ -108,6 +108,13 @@ giSqu		ftgen	4,0,2048,7,1,1024,1,0,-1,1024,-1	; square wave
 giExp		ftgen	5,0,2048,19,0.5,0.5,270,0.5		; exponential curve
 giGauss1	ftgen	6,0,2048,20,6,1,1			; gaussian window shape
 giGauss2	ftgen	7,0,2048,20,6,1,0.25			; gaussian window shape (sharper)
+giBiGauss	ftgen	8,0,2048,10,1
+iCount		=		0
+while iCount<ftlen(giBiGauss) do
+ iVal		table	iCount, giBiGauss
+ 			tablew	iVal^16 * (iVal<0?-1:1), iCount, giBiGauss
+ iCount		+=		1
+od
 
 instr	1
  kROU			chnget	"ROU"			; rate of updates

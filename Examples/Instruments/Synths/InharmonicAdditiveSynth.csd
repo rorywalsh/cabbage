@@ -39,11 +39,11 @@
 
 
 <Cabbage>
-form caption("Inharmonic Synth"), size(445, 320), pluginID("InSy")
-image pos(0, 0), size(445, 290), colour("black"), shape("rounded"), outlinecolour("brown"), line(4)
+form caption("Inharmonic Synth"), size(445, 285), pluginID("InSy")
+image pos(0, 0),                  size(445, 285), colour("black"), shape("rounded"), outlinecolour("brown"), line(4)
 
 groupbox bounds(275,10,160, 90), text("Instrument"), plant("instrument"){
-combobox channel("Instr"), bounds( 10, 40,140, 25), value(5), text("Bass Guitar", "Dahina", "Banyan", "Xylophone", "Tibetan Bowl 180mm", "Spinel Sphere", "Pot Lid", "Red Cedar Wood Plate", "Tubular Bell", "Redwood Wood Plate", "Douglas Fir Wood Plate", "Uniform Wooden Bar", "Uniform Aluminium Bar", "Vibraphone 1", "Vibraphone 2", "Chladni Plate", "Tibetan Bowl 152mm", "Tibetan Bowl 140mm", "Wine Glass", "Small Handbell", "Albert Clock Bell", "Wood Block")
+combobox channel("Instr"), bounds( 10, 40,140, 25), value(5), text("Bass Guitar", "Dahina", "Banyan", "Xylophone", "Tibetan Bowl 180mm", "Spinel Sphere", "Pot Lid", "Red Cedar Wood Plate", "Tubular Bell", "Redwood Wood Plate", "Douglas Fir Wood Plate", "Uniform Wooden Bar", "Uniform Aluminium Bar", "Vibraphone 1", "Vibraphone 2", "Chladni Plate", "Tibetan Bowl 152mm", "Tibetan Bowl 140mm", "Wine Glass", "Small Handbell", "Albert Clock Bell", "Wood Block","Anvil")
 }
 
 groupbox bounds(10, 10,260, 90), text("Amplitude Envelope"), plant("ampenv"){
@@ -69,8 +69,6 @@ rslider  bounds(100, 25,60,60), text("Rate"),  channel("ChoRte"), trackercolour(
 }
 
 keyboard pos(10, 200), size(425, 80)
-image bounds(5, 295, 240, 22), colour(75, 85, 90, 100), plant("credit"){
-label bounds(0.03, 0.15, .9, .7), text("Author: Iain McCurdy |2012|"), fontcolour("white")
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -137,6 +135,8 @@ girtos20	ftgen	0,0,-22,-2, 1, 1.0019054878049, 1.7936737804878, 1.8009908536585,
 girtos21	ftgen	0,0,-22,-2, 2.043260,1.482916,1.000000,3.328848,4.761811,1.477056,0.612007,2.661295,1.002793,4.023776,0.254139,2.043916,4.032463,2.659438,4.775560,5.500494,3.331014,0.809697,2.391301, 0.254098,1.901476,2.366563    ;,0.614968,2.046543,1.814887,3.130744,2.484426,0.558874,0.801697,0.070870,3.617036,2.782656
 ;wood block
 girtos22	ftgen	0,0,4,-2,	915/915,1540/915,1863/915,3112/915
+;anvil
+girtos23	ftgen	0,0,16,-2,	0.783,0.805,1,1.087,1.124,1.241,1.400,1.607,1.824,2.074,2.414,2.530,2.696,3.094,3.562,3.631
 ;=================================================================================================================================================================================
 
 ;=================================================================================================================================================================================
@@ -165,6 +165,8 @@ giwave19	ftgen	0, 0, giTableSize, 9, 1000,1.000,0,	 2320,1.000,0,	 4250,1.000,0,
 giwave20	ftgen	0, 0, giTableSize, 9, 1000,1.000,0,	 1002,0.833,0,	 1794,0.694,0,	 1801,0.579,0,	 2520,0.482,0,	 2522,0.402,0,	 2991,0.335,0,	 2994,0.279,0,	 3786,0.233,0,	 3806,0.194,0,	 4569,0.162,0,	 4575,0.135,0,	 5030,0.112,0,	 5046,0.093,0,	 6076,0.078,0,	 5909,0.065,0,	 6412,0.054,0,	 6443,0.045,0,	 7083,0.038,0,	 7092,0.031,0,	 7319,0.026,0,	 7555,0.022,0
 giwave21	ftgen	0, 0, giTableSize, 9, 2043,1.000,0,	 1483,0.909,0,	 1000,0.826,0,	 3329,0.751,0,	 4762,0.683,0,	 1477,0.621,0,	 612,0.564,0,	 2661,0.513,0,	 1003,0.467,0,	 4024,0.424,0,	 254,0.386,0,	 2044,0.350,0,	 4032,0.319,0,	 2659,0.290,0,	 4776,0.263,0,	 5500,0.239,0,	 3331,0.218,0,	 810,0.198,0,	 2391,0.180,0,	 254,0.164,0,	 1901,0.149,0,	 2367,0.135,0
 giwave22	ftgen	0, 0, giTableSize, 9, 1000,1.000,0,	 1683,0.909,0,	 2036,0.826,0,	 3401,0.751,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0,	 0,0.000,0
+;anvil
+giwaves23	ftgen	0, 0, giTableSize, 9, 720,1.413,0, 739,0.891,0, 919,1.000,0, 1000,0.708,0, 1033,1.778,0, 1140,1.259,0, 1287,0.891,0, 1477,1.259,0, 1677,0.794,0, 1907,1.413,0, 2219,1.000,0, 2326,0.316,0, 2479,0.398,0, 2845,0.316,0, 3276,0.178,0, 3339,0.200,0
 ;=================================================================================================================================================================================
 
 gisine		ftgen	0,0,4096,10,1				;A SINE WAVE

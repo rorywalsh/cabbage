@@ -187,6 +187,7 @@ public:
     class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
     {
         Colour colour;
+        ValueTree plantWidgetData;
     public:
         PopupDocumentWindow (String caption, Colour backgroundColour)
             : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
@@ -197,12 +198,11 @@ public:
         void closeButtonPressed() override
         {
             setVisible (false);
-            sendChangeMessage();
+            CabbageWidgetData::setNumProp(plantWidgetData, CabbageIdentifierIds::visible, 0);
         }
-        void paint (Graphics& g)
-        {
-            g.fillAll (colour);
-        }
+
+        void paint (Graphics& g){               g.fillAll (colour);         }
+        void setWidgetData(ValueTree wData){    plantWidgetData = wData;    }
     };
 
 private:

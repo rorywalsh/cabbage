@@ -1,5 +1,7 @@
-; wguide.csd
+; wguide2.csd
 ; Written by Iain McCurdy, 2013.
+
+; For a more extensive use of this opcode see the example "Harmonics.csd"
 
 <Cabbage>
 form caption("wguide2") size(595, 90)

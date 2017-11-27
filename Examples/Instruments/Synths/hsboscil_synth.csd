@@ -64,10 +64,10 @@ Rate	-	Rate of modulation used in the chorus effect
 
 
 <Cabbage>
-form caption("hsboscil Synth") size(590, 480), pluginID("hsbo")
+form caption("hsboscil Synth") size(590, 450), pluginID("hsbo")
 
 ;AMPLITUDE
-groupbox bounds(0, 0, 590, 100), colour( 10, 15, 30, 100) text("Amplitude"), fontcolour(255,0,0)
+groupbox bounds(0, 0, 590, 100), colour( 10, 15, 30, 100) text("Amplitude"), fontcolour(255,0,0), plant("Amplitude") {
 rslider  bounds(  5, 30, 60, 60), text("Amp."), channel("amp"), range(0, 1, 0.3)
 line bounds( 65,  30, 2, 60), colour("DarkSlateGrey")
 rslider  bounds( 70, 30, 60, 60), text("Att."), channel("AAtt"), range(   0, 8.00, 0.3,0.5)
@@ -81,69 +81,66 @@ rslider bounds(375, 30, 60, 60), text("Rate"), channel("ARte"), range(0, 16.0, 4
 rslider bounds(425, 30, 60, 60), text("Depth"), channel("ADep"), range(0, 1.00, 1)
 rslider bounds(475, 30, 60, 60), text("Delay"), channel("ADel"), range(0, 2.00, 0, 0.5)
 rslider bounds(525, 30, 60, 60), text("Rise"), channel("ARis"), range(0, 2.00, 0.1, 0.5)
-
+}
 
 ;BRIGHTNESS
-groupbox bounds(0, 100,450,170), colour( 6, 18, 22, 100), text("Brightness"), fontcolour(205,10,10)
-rslider bounds(  5,135, 60, 60), text("Brite"), channel("brite"), range(-6, 6.00, -2)
-rslider bounds(  5,200, 60, 60), text("Vel."), channel("BVelDep"), range(0, 6.00, 3)
-rslider bounds( 65,135, 60, 60), text("Oct.Cnt."), channel("octcnt"), range(2, 20, 3, 1, 1)
-line    bounds(130,127, 2, 60), colour("DarkSlateGrey")
-rslider bounds(135,135, 60, 60), text("Att."), channel("BAtt"), range(0, 8.00, 0.1,0.5)
-rslider bounds(185,135, 60, 60), text("Att.Lev."), channel("BAttLev"), range(-6.00, 6, 1)
-rslider bounds(235,135, 60, 60), text("Dec."), channel("BDec"), range(0, 8.00, 0.1,0.5)
-rslider bounds(285,135, 60, 60), text("Sus."), channel("BSus"), range(-6, 6.00, 0)
-rslider bounds(335,135, 60, 60), text("Rel."), channel("BRel"), range(0, 8.00, 0.01,0.5)
-rslider bounds(385,135, 60, 60), text("Rel.Lev."), channel("BRelLev"), range(-4.00, 4, 0)
-line    bounds( 90,200, 2, 60), colour("DarkSlateGrey")
-label    bounds(118,205, 65, 12), text("Mod.Shape")
-combobox bounds(115,220, 70, 20), channel("britelfo"), value(2), text("sine", "splines", "S+H", "square")
-rslider bounds(185,200, 60, 60), text("Rate"), channel("BRte"), range(0, 30.0, 4)
-rslider bounds(235,200, 60, 60), text("Depth"), channel("BDep"), range(0, 6.00, 2)
-rslider bounds(285,200, 60, 60), text("Delay"), channel("BDel"), range(0, 2.00, 0.5, 0.5)
-rslider bounds(335,200, 60, 60), text("Rise"), channel("BRis"), range(0, 4.00, 1.5, 0.5)
-
+groupbox bounds(0, 100,450,170), colour( 6, 18, 22, 100), text("Brightness"), fontcolour(205,10,10), plant("Brightness") {
+rslider bounds(  5, 35, 60, 60), text("Brite"), channel("brite"), range(-6, 6.00, -2)
+rslider bounds(  5,100, 60, 60), text("Vel."), channel("BVelDep"), range(0, 6.00, 3)
+rslider bounds( 65, 35, 60, 60), text("Oct.Cnt."), channel("octcnt"), range(2, 20, 3, 1, 1)
+line    bounds(130, 27, 2, 60), colour("DarkSlateGrey")
+rslider bounds(135, 35, 60, 60), text("Att."), channel("BAtt"), range(0, 8.00, 0.1,0.5)
+rslider bounds(185, 35, 60, 60), text("Att.Lev."), channel("BAttLev"), range(-6.00, 6, 1)
+rslider bounds(235, 35, 60, 60), text("Dec."), channel("BDec"), range(0, 8.00, 0.1,0.5)
+rslider bounds(285, 35, 60, 60), text("Sus."), channel("BSus"), range(-6, 6.00, 0)
+rslider bounds(335, 35, 60, 60), text("Rel."), channel("BRel"), range(0, 8.00, 0.01,0.5)
+rslider bounds(385, 35, 60, 60), text("Rel.Lev."), channel("BRelLev"), range(-4.00, 4, 0)
+line    bounds( 90,100, 2, 60), colour("DarkSlateGrey")
+label    bounds(118,105, 65, 12), text("Mod.Shape")
+combobox bounds(115,120, 70, 20), channel("britelfo"), value(2), text("sine", "splines", "S+H", "square")
+rslider bounds(185,100, 60, 60), text("Rate"), channel("BRte"), range(0, 30.0, 4)
+rslider bounds(235,100, 60, 60), text("Depth"), channel("BDep"), range(0, 6.00, 2)
+rslider bounds(285,100, 60, 60), text("Delay"), channel("BDel"), range(0, 2.00, 0.5, 0.5)
+rslider bounds(335,100, 60, 60), text("Rise"), channel("BRis"), range(0, 4.00, 1.5, 0.5)
+}
 
 ;NOISE
-groupbox bounds(450, 100, 70,170), colour( 20, 7, 19, 100), text("Noise"), fontcolour(255,40,60)
-rslider  bounds(455, 135, 60, 60), text("Rate"), channel("NRte"), range(16,10000, 1000, 0.5)
-rslider  bounds(455, 200, 60, 60), text("Depth"), channel("NDep"), range(0, 1.00, 0.05, 0.5)
-
+groupbox bounds(450, 100, 70,170), colour( 20, 7, 19, 100), text("Noise"), fontcolour(255,40,60), plant("Noise") {
+rslider  bounds(  5,  35, 60, 60), text("Rate"), channel("NRte"), range(16,10000, 1000, 0.5)
+rslider  bounds(  5, 100, 60, 60), text("Depth"), channel("NDep"), range(0, 1.00, 0.05, 0.5)
+}
 
 ;REVERB
-groupbox bounds(520, 100, 70,170), colour( 3, 25, 11, 100), text("Reverb"), fontcolour(255,0,100)
-rslider  bounds(525,135, 60, 60), text("Mix"), channel("RvbMix"), range(0, 1.00, 0.3)
-rslider  bounds(525,200, 60, 60), text("Size"), channel("RvbSize"), range(0, 1.00, 0.82)
-
+groupbox bounds(520,100, 70,170), colour( 3, 25, 11, 100), text("Reverb"), fontcolour(255,0,100), plant("Reverb") {
+rslider  bounds(  5, 35, 60, 60), text("Mix"), channel("RvbMix"), range(0, 1.00, 0.3)
+rslider  bounds(  5,100, 60, 60), text("Size"), channel("RvbSize"), range(0, 1.00, 0.82)
+}
 
 ;PITCH MOD.
-groupbox bounds(  0,270,350,100), colour( 20, 25, 40, 100), text("Pitch Modulation"), fontcolour(255,100,0)
-label    bounds( 10,305, 65, 12), text("Mod.Shape")
-combobox bounds( 10,320, 65, 20), channel("pitchlfo"), value(1), text("sine", "splines", "S+H", "square")
-rslider  bounds( 80,300, 60, 60), text("Rate"), channel("PRte"), range(0, 16.00, 0, 0.5)
-rslider  bounds(130,300, 60, 60), text("Depth"), channel("PDep"), range(0, 1.00, 0)
-rslider  bounds(180,300, 60, 60), text("Delay"), channel("PDel"), range(0, 2.00, 0, 0.5)
-rslider  bounds(230,300, 60, 60), text("Rise"), channel("PRis"), range(0, 2.00, 0.1, 0.5)
-rslider  bounds(280,300, 60, 60), text("Risset"), channel("TRate"), range(-3.00, 3, 0)
-
+groupbox bounds(  0,270,350,100), colour( 20, 25, 40, 100), text("Pitch Modulation"), fontcolour(255,100,0), plant("PitchMod") {
+label    bounds( 10, 35, 65, 12), text("Mod.Shape")
+combobox bounds( 10, 50, 65, 20), channel("pitchlfo"), value(1), text("sine", "splines", "S+H", "square")
+rslider  bounds( 80, 30, 60, 60), text("Rate"), channel("PRte"), range(0, 16.00, 0, 0.5)
+rslider  bounds(130, 30, 60, 60), text("Depth"), channel("PDep"), range(0, 1.00, 0)
+rslider  bounds(180, 30, 60, 60), text("Delay"), channel("PDel"), range(0, 2.00, 0, 0.5)
+rslider  bounds(230, 30, 60, 60), text("Rise"), channel("PRis"), range(0, 2.00, 0.1, 0.5)
+rslider  bounds(280, 30, 60, 60), text("Risset"), channel("TRate"), range(-3.00, 3, 0)
+}
 
 ;FREQ. SHIFT
-groupbox bounds(350,270, 70,100), colour( 20,  5, 25, 100), text("Freq.Shift"), fontcolour(200,0,0)
-rslider  bounds(355,300, 60, 60), text("Freq."), channel("FShift"), range(-1000, 1000, -1000)
-
+groupbox bounds(350,270, 70,100), colour( 20,  5, 25, 100), text("Freq.Shift"), fontcolour(200,0,0), plant("FreqShift") {
+rslider  bounds(  5, 30, 60, 60), text("Freq."), channel("FShift"), range(-1000, 1000, -1000)
+}
 
 ;CHORUS
-groupbox bounds(420,270,170,100), colour( 3, 10, 13, 100), text("Chorus"), fontcolour(255,200,0)
-rslider  bounds(425,300, 60, 60), text("Mix"), channel("ChoMix"), range(0, 1.00, 1)
-rslider  bounds(475,300, 60, 60), text("Depth"), channel("ChoDep"), range(0, 0.100, 0.01,0.5,0.0001)
-rslider  bounds(525,300, 60, 60), text("Rate"), channel("ChoRte"), range(0, 20.0, 4, 0.5)
-
+groupbox bounds(420,270,170,100), colour( 3, 10, 13, 100), text("Chorus"), fontcolour(255,200,0), plant("Chorus") {
+rslider  bounds(  5, 30, 60, 60), text("Mix"), channel("ChoMix"), range(0, 1.00, 1)
+rslider  bounds( 55, 30, 60, 60), text("Depth"), channel("ChoDep"), range(0, 0.100, 0.01,0.5,0.0001)
+rslider  bounds(105, 30, 60, 60), text("Rate"), channel("ChoRte"), range(0, 20.0, 4, 0.5)
+}
 
 keyboard pos(0, 370), size(590, 80)
-label bounds(5, 455, 303, 20) text("Author: Iain McCurdy |2012|") fontcolour("white"), fontcolour:0(255, 255, 255, 255)
-
 </Cabbage>
-
 
 <CsoundSynthesizer>
 

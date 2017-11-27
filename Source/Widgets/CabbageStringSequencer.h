@@ -39,7 +39,7 @@ public:
     TextEditor* getEditor (int column, int row);
     void swapFocusForEditors (KeyPress key, int col, int row);
     void highlightEditorText (int col, int row);
-
+    void setCurrentRow(int row);
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -47,6 +47,9 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
+    void setColours(ValueTree wData);
+    void createNumberLabels(ValueTree wData, int height, int showNumbers);
+
     ValueTree widgetData;
 
 
@@ -57,6 +60,7 @@ private:
     int numColumns = 0;
     int numRows = 0;
     int currentBeat = 0;
+    int numbersWidth = 20;
     Viewport vp;
     Component seqContainer;
     OwnedArray<OwnedArray<TextEditor>> textFields;

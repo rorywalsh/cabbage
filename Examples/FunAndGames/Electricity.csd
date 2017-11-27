@@ -64,7 +64,11 @@ instr 1
   kdelta	=	kdeltax + kdeltay		; sum of mouse position changes
   koldx		=	gkMOUSE_X			; set 'previous' mouse positions for next iteration
   koldy		=	gkMOUSE_Y
-  ktrig	metro	300 * kdelta				; generate a trigger
+  kdens		init	300
+  ktrig	metro	kdens * kdelta				; generate a trigger
+  if ktrig==1 then
+   kdens	=	exprand:k(300) + 50
+  endif
   schedkwhen	ktrig,0,0,2,0,0.01,kx_ratio,ky_ratio	; spark sound
   schedkwhen	ktrig,0,0,11,        0,0,1,kdelta	; visual sparks...
   schedkwhen	ktrig,0,0,11,rnd(0.01)*3,0,2,kdelta
@@ -191,7 +195,7 @@ endin
 </CsInstruments>
 
 <CsScore>
-i 99 0 [3600*24*7]	; reverb
+;i 99 0 [3600*24*7]	; reverb
 i 1000 0 [3600*24*7]	; instructions
 </CsScore>
 

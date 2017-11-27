@@ -21,7 +21,7 @@ instr 1
 a1, a2 init 0
 
 if chnget:k("waveshape") == 1 then
-	a1 oscil 1, p4
+	a1 oscili 1, p4
 elseif chnget:k("waveshape") == 2 then
 	a1 vco2 1, p4
 elseif chnget:k("waveshape") == 3 then
@@ -35,7 +35,7 @@ a2 oscil 1, p4*.9+aLFO
 
 display	a1, .1, 1
 dispfft a1, .1, 1024
-display	a2, .1, 1
+display	a2, .1, 1  
 endin
 
 

@@ -40,14 +40,14 @@ image              bounds(  0,  0,850, 85), colour(DarkSlateGrey),  shape("sharp
 #define RSliderStyle # colour(150,205,150), textcolour(200,250,200), outlinecolour(140,140,140), trackercolour(yellow), fontcolour(250,250,150)#
 
 image   bounds(  0,  0,135, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("delays"){
-rslider bounds(  0,  5, 75, 75), channel("TotDel"), text("Duration"), range(0.01,4,0.4,0.5,0.01), textbox(1), $RSliderStyle
-rslider bounds( 60,  5, 75, 75), channel("TotNum"), text("N.Taps"),   range(1,300,100,1,1), textbox(1), $RSliderStyle
+rslider bounds(  0,  5, 75, 75), channel("TotDel"), text("Duration"), range(0.01,4,0.4,0.5,0.01), valuetextbox(1), textbox(1), $RSliderStyle
+rslider bounds( 60,  5, 75, 75), channel("TotNum"), text("N.Taps"),   range(1,300,100,1,1), valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 image   bounds(133,  0,194, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("scatter"){
-rslider bounds(  0,  5, 75, 75), channel("ScatAmp"),text("Scat.Amp."), range(0,1,0.5), textbox(1), $RSliderStyle
-rslider bounds( 60,  5, 75, 75), channel("Shape"),text("Shape"), range(-20,20,0,1,0.1), textbox(1), $RSliderStyle
-rslider bounds(120,  5, 75, 75), channel("ScatTim"),text("Scat.Tim."), range(0,1,0.5), textbox(1), $RSliderStyle
+rslider bounds(  0,  5, 75, 75), channel("ScatAmp"),text("Scat.Amp."), range(0,1,0.5),  valuetextbox(1), textbox(1), $RSliderStyle
+rslider bounds( 60,  5, 75, 75), channel("Shape"),text("Shape"), range(-20,20,0,1,0.1), valuetextbox(1), textbox(1), $RSliderStyle
+rslider bounds(120,  5, 75, 75), channel("ScatTim"),text("Scat.Tim."), range(0,1,0.5),  valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 image    bounds(325,  0,112, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("InputOutputMode"){
@@ -59,14 +59,14 @@ checkbox bounds(  8, 50, 95, 12), channel("DelayDry"), text("Delay Dry"), value(
 image    bounds(435,  0,282, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("Filter"){
 label    bounds(  8,  8, 85, 12), text("Filter"), fontcolour(200,250,200)
 combobox bounds(  8, 21, 85, 20), channel("FiltSelect"), text("Bypass","Lowpass","Bandpass"), value(1), fontcolour(250,250,150)
-rslider bounds( 90,  5, 75, 75), channel("FiltMin"),    text("Min."),      range(4,13.5,4,1,0.1), textbox(1), $RSliderStyle
-rslider bounds(150,  5, 75, 75), channel("FiltMax"),    text("Max."),      range(4,13.5,13.5,1,0.1), textbox(1), $RSliderStyle
-rslider bounds(210,  5, 75, 75), channel("Q"),          text("Q."),        range(0,1,0.1), textbox(1), $RSliderStyle
+rslider bounds( 90,  5, 75, 75), channel("FiltMin"),    text("Min."),      range(4,13.5,4,1,0.1),    valuetextbox(1), textbox(1), $RSliderStyle
+rslider bounds(150,  5, 75, 75), channel("FiltMax"),    text("Max."),      range(4,13.5,13.5,1,0.1), valuetextbox(1), textbox(1), $RSliderStyle
+rslider bounds(210,  5, 75, 75), channel("Q"),          text("Q."),        range(0,1,0.1),           valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 image   bounds(715,  0,135, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("mixer"){
-rslider bounds(  0,  5, 75, 75), channel("Mix"),    text("Mix"),      range(0,1.00,0.5), textbox(1), $RSliderStyle
-rslider bounds( 60,  5, 75, 75), channel("Level"),  text("Level"),    range(0,1,0.7), textbox(1), $RSliderStyle
+rslider bounds(  0,  5, 75, 75), channel("Mix"),    text("Mix"),      range(0,1.00,0.5), valuetextbox(1), textbox(1), $RSliderStyle
+rslider bounds( 60,  5, 75, 75), channel("Level"),  text("Level"),    range(0,1,0.7),    valuetextbox(1), textbox(1), $RSliderStyle
 }
 
 </Cabbage>
@@ -102,7 +102,7 @@ opcode	Taps,a,iiiiiikkkko
   iRndDel	random	-(iTotDel*iScatTim)/iTotNum, (iTotDel*iScatTim)/iTotNum		; CREATE A RANDOM DELAY TAP OFFSET VALUE
  endif 
  iDel		limit	((iTotDel/iTotNum)*iCount)+iRndDel,0.001,iTotDel		; LIMIT DELAY TIMES SO THAT IT WON'T EXCEED BUFFER SIZE OR BE ZERO OR LESS
- aOut		deltap	iDel								; CREATE DELAY TAP
+ aOut		deltapi	iDel								; CREATE DELAY TAP
 
  /* FILTER */
  iRndCFOct	random	i(kFiltMin),i(kFiltMax)
@@ -134,7 +134,7 @@ instr	1
  kTotDel	chnget	"TotDel"
  kTotDel	init	0.4
  kMix		chnget	"Mix"
- kLevel		chnget	"Level"
+ kLevel		chnget	"Level"                                                                       
  kScatAmp	chnget	"ScatAmp"
  kShape		chnget	"Shape"
  kScatTim	chnget	"ScatTim"

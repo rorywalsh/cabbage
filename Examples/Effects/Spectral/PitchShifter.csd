@@ -334,7 +334,7 @@ instr	1
 	  chnset	"visible(0)","FBMethod_ident"
 	  chnset	"visible(1)","NIter_ident"
 	 else
-	  chnset	"visible(1)","Feedback_ident"
+	  chnset	"visible(0)","Feedback_ident"
 	  chnset	"visible(0)","FBLabel_ident"
 	  chnset	"visible(0)","FBMethod_ident"
 	  chnset	"visible(1)","NIter_ident"
@@ -369,11 +369,12 @@ instr	1
 	 if changed(kNIter)==1 then
 	  reinit UPDATE4
 	 endif
-	 aFBL,aFBR	init	0
+	 ;aFBL,aFBR	init	0
 	 UPDATE4:
-	 aPS_L,aPS_R	pitchshifter4	aInL+aFBL,aInR+aFBL,semitone(kSemitones-12),i(kNIter),kDelay,kSmooth,iMaxDelay,iWfn	
-	 aFBL	=	aPS_L*kFeedback
-	 aFBR	=	aPS_R*kFeedback
+	 ;aPS_L,aPS_R	pitchshifter4	aInL+aFBL,aInR+aFBL,semitone(kSemitones-12),i(kNIter),kDelay,kSmooth,iMaxDelay,iWfn	
+	 aPS_L,aPS_R	pitchshifter4	aInL,aInR,semitone(kSemitones-12),i(kNIter),kDelay,kSmooth,iMaxDelay,iWfn	
+	 ;aFBL	=	aPS_L*kFeedback
+	 ;aFBR	=	aPS_R*kFeedback
 	endif
 
 	rireturn

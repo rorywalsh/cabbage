@@ -149,6 +149,8 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
             if (CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::logger) == 1)
                 createFileLogger (this->csdFile);
+
+            setGUIRefreshRate(CabbageWidgetData::getNumProp (tempWidget, CabbageIdentifierIds::guirefresh));
         }
 
         const String precedingCharacters = currentLineOfCabbageCode.substring (0, currentLineOfCabbageCode.indexOf (typeOfWidget));
@@ -531,13 +533,11 @@ void CabbagePluginProcessor::updateWidgets (String csdText)
 // Other widgets can communicate with Csound, but they cannot be automated
 void CabbagePluginProcessor::createParameters()
 {
-
     CabbageControlWidgetStrings controlWidgetTypes;
 
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
-        CabbageControlWidgetStrings controlWidgetTypes;
 
         if (controlWidgetTypes.contains (typeOfWidget))
         {
@@ -547,7 +547,6 @@ void CabbagePluginProcessor::createParameters()
 
             if (controlWidgetTypes.contains (CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::type)))
             {
-
                 if (typeOfWidget == CabbageWidgetTypes::xypad)
                 {
                     const var channel = CabbageWidgetData::getProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::channel);
@@ -815,7 +814,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
         }
 
         //currently only dealing with a max of 2 channels...
-        else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty())
+        else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&typeOfWidget != CabbageWidgetTypes::stringsequencer)
         {
             if (getCsound()->GetChannel (channels[0].toUTF8()) != valuex
                 || getCsound()->GetChannel (channels[1].toUTF8()) != valuey)
@@ -835,12 +834,18 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
             }
         }
 
+        else if(typeOfWidget == CabbageWidgetTypes::stringsequencer && channels.size() > 1 && channels[0].isNotEmpty())
+        {
+            if (getCsound()->GetChannel (channels[0].toUTF8()) != float (value))
+                CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+        }
 
         if (identChannel.isNotEmpty())
         {
             getCsound()->GetStringChannel (identChannel.toUTF8(), tmp_string);
             const String identifierText (tmp_string);
-            if (identifierText != identChannelMessage)
+
+            if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
             {
                 CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);
 

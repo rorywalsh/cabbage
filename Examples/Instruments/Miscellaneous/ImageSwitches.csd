@@ -162,7 +162,7 @@ rslider  bounds(265,365, 60, 60), text("MODIFY"),          channel("Modifier"), 
 rslider  bounds(325,365, 60, 60), text("REVERB"),          channel("Reverb"),      range(0, 1.00,0.5),   colour("DarkGrey"),  trackercolour("white"), outlinecolour(100,100,100)
 button   bounds(390,365, 70, 25), text("STRIKE","STRIKE"), channel("Strike"), value(0), latched(0)
 
-label bounds(2,424,100, 10), text("Iain McCurdy |2013|"), FontColour(110,110,110), align("left")
+label bounds(2,424,100, 10), text("Iain McCurdy |2013|"), fontcolour(110,110,110), align("left")
 </Cabbage>                                                                                                          
                                                                                                                     
 <CsoundSynthesizer>                                                                                                 

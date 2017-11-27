@@ -35,7 +35,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::name, "form");
     setProperty (widgetData, CabbageIdentifierIds::type, "form");
-    setProperty (widgetData, CabbageIdentifierIds::guirefresh, 100);
+    setProperty (widgetData, CabbageIdentifierIds::guirefresh, 128);
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 1);
@@ -191,13 +191,19 @@ void CabbageWidgetData::setStringSequencerProperties (ValueTree widgetData, int 
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "stringsequencer");
+    setProperty (widgetData, CabbageIdentifierIds::backgroundcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::activecellcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::highlightcolour, Colours::cornflowerblue.toString());
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::textcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::value, -1);
     setProperty (widgetData, CabbageIdentifierIds::numberofsteps, 16);
     setProperty (widgetData, CabbageIdentifierIds::bpm, 60);
-    setProperty (widgetData, CabbageIdentifierIds::showstempnumbers, 4);
-
+    setProperty (widgetData, CabbageIdentifierIds::cellwidth, 0);
+    setProperty (widgetData, CabbageIdentifierIds::cellheight, 20);
 }
 
 void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
@@ -834,7 +840,7 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     var channels;
     channels.append ("checkchan");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
-    setProperty (widgetData, CabbageIdentifierIds::text, "Check box");
+    setProperty (widgetData, CabbageIdentifierIds::text, "");
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::min, 0);
     setProperty (widgetData, CabbageIdentifierIds::max, 1);

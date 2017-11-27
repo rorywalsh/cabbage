@@ -1,26 +1,28 @@
 # Image
 
-Image creates a static shape or graphic. It can be used to show pictures or it can be used to draw simple shapes. If you wish to display a picture you must pass the file name to the file() identifier. For convenience, the file passed to file() should be in the same directory as your Cabbage instrument. 
+Image creates a static shape or graphic. It can be used to show pictures or it can be used to draw simple shapes. If you wish to display a picture you must pass the file name to the file() identifier. For convenience, the file passed to file() should be in the same directory as your Cabbage instrument.
 
 ```csharp
 image bounds(x, y, width, height), colour("colour"), channel("chan")\
 file("file name"), shape("type"), outlinecolour("colour"), \
 outlinethickness(thickness), plant("name"), identchannel("channel"), \
 visible(val), alpha(val), rotate(radians, pivotx, pivoty), corners(val) \
-widgetarray("chan", number), popuptext("text"), active(val)
+widgetarray("chan", number), popupup(val), popuptext("text"), active(val)
 ```
 <!--(End of syntax)/-->
-##Identifiers 
+##Identifiers
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/corners.md !} 
+{! ./markdown/Widgets/Properties/corners.md !}
 
-{! ./markdown/Widgets/Properties/file_image.md !} 
+{! ./markdown/Widgets/Properties/file_image.md !}
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !} 
- 
-{! ./markdown/Widgets/Properties/outlinethickness.md !} 
+{! ./markdown/Widgets/Properties/outlinecolour.md !}
+
+{! ./markdown/Widgets/Properties/outlinethickness.md !}
+
+{! ./markdown/Widgets/Properties/popup.md !} 
 
 {! ./markdown/Widgets/Properties/shape.md !} . Note that by settings the corners to a high value one can also create elliptical shapes.  
 
@@ -34,7 +36,7 @@ widgetarray("chan", number), popuptext("text"), active(val)
 
 {! ./markdown/Widgets/Properties/bounds.md !}  
 
-{! ./markdown/Widgets/Properties/channel.md !}  A left-mouse click on an image will send a 1 to the channel passed to channel(). Subsequent clicks will toggle between 0 and 1. 
+{! ./markdown/Widgets/Properties/channel.md !}  A left-mouse click on an image will send a 1 to the channel passed to channel(). Subsequent clicks will toggle between 0 and 1.
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 

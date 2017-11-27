@@ -42,7 +42,9 @@
 ; The filter envelope added to this example modulates a bandpass filter's bandwidth as opposed to its cutoff frequency. 
 ; The cutoff frequency is defined using the 'Pos' slider and defines a ratio above the base frequency. Therefore a value 
 ; of '3' here will emphasise the 3rd partial of any note when bandwidth is narrowed.
-                                                             
+
+; Layers - controls a number of additional dissonant layers added for each note played. This is a feature that is still under development
+                                                           
 <Cabbage>
 form caption("Pad Synth"), size(1120, 420), pluginID("PdSy")
 
@@ -58,11 +60,11 @@ combobox bounds(  5, 42,100, 22), channel("Table"), text("User 30","D.Bass","Cla
 label    bounds(  5, 68,100, 13), text("Tuning")
 combobox bounds(  5, 82,100, 22), channel("Tuning"), text("Equal","Just","Pythagorean","Quarter Tones"), value(1)
 
-rslider  bounds(100, 25, 90, 90), channel("Base"), text("Base Freq."), range(0,127,60,1,1), textbox(1), popuptext("Base frequency of the created waveform"), identchannel("BaseID")
-rslider  bounds(170, 25, 90, 90), channel("BW"),   text("Bandwidth"),  range(1,999,6,0.25,0.01), textbox(1), popuptext("Bandwidth of Modulation")
-rslider  bounds(240, 25, 90, 90), channel("PartScal"), text("Part.Scal."),  range(1,30,1.6,0.5,0.01), textbox(1), popuptext("Partial Scaling")
-rslider  bounds(310, 25, 90, 90), channel("HarmStr"), text("Harm.Str."),  range(0.1,8,1,0.5,0.01), textbox(1), popuptext("Harmonic Stretch")
-rslider  bounds(380, 25, 90, 90), channel("TabSize"), text("Table Size"),  range(1,24,18,1,1), textbox(1), popuptext("Larger values slow down table rebuilds!")
+rslider  bounds(100, 25, 90, 90), channel("Base"), text("Base Freq."), range(0,127,60,1,1), valuetextbox(1), textbox(1), popuptext("Base frequency of the created waveform"), identchannel("BaseID")
+rslider  bounds(170, 25, 90, 90), channel("BW"),   text("Bandwidth"),  range(1,999,6,0.25,0.01), valuetextbox(1), textbox(1), popuptext("Bandwidth of Modulation")
+rslider  bounds(240, 25, 90, 90), channel("PartScal"), text("Part.Scal."),  range(1,30,1.6,0.5,0.01), valuetextbox(1), textbox(1), popuptext("Partial Scaling")
+rslider  bounds(310, 25, 90, 90), channel("HarmStr"), text("Harm.Str."),  range(0.1,8,1,0.5,0.01), valuetextbox(1), textbox(1), popuptext("Harmonic Stretch")
+rslider  bounds(380, 25, 90, 90), channel("TabSize"), text("Table Size"),  range(1,24,18,1,1), valuetextbox(1), textbox(1), popuptext("Larger values slow down table rebuilds!")
 }
 
 image    bounds(480,  5,635,130), plant("UserControlSliders"), identchannel("UserControlSlidersID"), $PlantBoxAppearance {
@@ -92,7 +94,7 @@ vslider  bounds(550, 25, 10, 85), channel("22"), range(0,1,0	,0.5), visible(0)
 vslider  bounds(575, 25, 10, 85), channel("23"), range(0,1,0	,0.5), visible(0)
 vslider  bounds(600, 25, 10, 85), channel("24"), range(0,1,0    ,0.5), visible(0)
 
-image  bounds( 20, 25, 20, 0), colour("silver"), identchannel("Slider1")  , outlinecolour( 20, 20, 40), outlinethickness(1)
+image  bounds( 20, 25, 20, 1), colour("silver"), identchannel("Slider1")  , outlinecolour( 20, 20, 40), outlinethickness(1)
 image  bounds( 40, 25, 20, 0), colour("silver"), identchannel("Slider2")  , outlinecolour( 20, 20, 40), outlinethickness(1)
 image  bounds( 60, 25, 20, 0), colour("silver"), identchannel("Slider3")  , outlinecolour( 20, 20, 40), outlinethickness(1)
 image  bounds( 80, 25, 20, 0), colour("silver"), identchannel("Slider4")  , outlinecolour( 20, 20, 40), outlinethickness(1)
@@ -157,33 +159,39 @@ label  bounds(600,106, 20,11), text("30")
                 
 image    bounds(  5,140,370,130), plant("AmplitudeEnvelope"), $PlantBoxAppearance {
 label    bounds(  5,  4,370, 15), text("Amplitude Envelope")
-rslider  bounds(  0, 30, 90, 90), channel("AAtt"), text("Attack"), range(0.001,5,0.5,0.5,0.001), textbox(1)
-rslider  bounds( 70, 30, 90, 90), channel("ADec"), text("Decay"),  range(0.001,5,0.01,0.5,0.001), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("ASus"), text("Sustain"),range(0,    1,1,0.5,0.001), textbox(1)
-rslider  bounds(210, 30, 90, 90), channel("ARel"), text("Release"),range(0.001,5,0.5,0.5,0.001), textbox(1)
-rslider  bounds(280, 30, 90, 90), channel("AGain"),text("Gain"),   range(0.1,  5,1,0.5,0.001), textbox(1)
+rslider  bounds(  0, 30, 90, 90), channel("AAtt"), text("Attack"), range(0.001,5,0.5,0.5,0.001), valuetextbox(1), textbox(1)   
+rslider  bounds( 70, 30, 90, 90), channel("ADec"), text("Decay"),  range(0.001,5,0.01,0.5,0.001), valuetextbox(1), textbox(1)
+rslider  bounds(140, 30, 90, 90), channel("ASus"), text("Sustain"),range(0,    1,1,0.5,0.001), valuetextbox(1), textbox(1)
+rslider  bounds(210, 30, 90, 90), channel("ARel"), text("Release"),range(0.001,5,0.5,0.5,0.001), valuetextbox(1), textbox(1)
+rslider  bounds(280, 30, 90, 90), channel("AGain"),text("Gain"),   range(0.1,  5,1,0.5,0.001), valuetextbox(1), textbox(1)
 }               
                 
-image    bounds(380,140,500,130), plant("Filter"), $PlantBoxAppearance {
-label    bounds(  5,  4,500, 15), text("Filter")
-checkbox bounds( 10, 33, 80, 15), channel("FOnOff"), text("On/Off"), value(1)
 
+image    bounds(380,140, 55,130), plant("Layers"), $PlantBoxAppearance 
+{
+label    bounds(  5, 10, 45, 12), text("Layers")   
+rslider  bounds( 10, 25, 35, 35), channel("Layers"), range(1,20,1,1,1);, valuetextbox(1), textbox(1)
+label    bounds(  5, 65, 45, 12), text("Interval")   
+rslider  bounds( 10, 80, 35, 35), channel("Interval"), range(-12,12,5,1,0.1);, valuetextbox(1), textbox(1)
+}
 
-rslider  bounds( 10, 45, 60, 60), channel("Layers"), range(1,20,1), textbox(1);, text("Layers")
-
-rslider  bounds( 60, 30, 90, 90), channel("FL1"), text("Level 1"), range(0.001,9.999,9.999,0.5,0.001), textbox(1)
-rslider  bounds(130, 30, 90, 90), channel("FT1"), text("Attack"), range(0.001,8,3,0.5), textbox(1)
-rslider  bounds(200, 30, 90, 90), channel("FSus"), text("Sustain"), range(0.001,9.999,1.5,0.5,0.01), textbox(1)
-rslider  bounds(270, 30, 90, 90), channel("FRelTim"), text("Rel.Time"), range(0.001,8,0.25,0.5), textbox(1)
-rslider  bounds(340, 30, 90, 90), channel("FRelLev"), text("Rel.Level"), range(0.001,9.999,0.1,0.5,0.01), textbox(1)
-rslider  bounds(410, 30, 90, 90), channel("FPos"), text("Position"), range(1,24,3,1,1), textbox(1)
+image    bounds(440,140,440,130), plant("Filter"), $PlantBoxAppearance 
+{
+label    bounds(  5,  4,440, 15), text("Filter Bandwidth")
+checkbox bounds( 10, 10, 80, 12), channel("FOnOff"), text("On/Off"), value(1)
+rslider  bounds(  0, 30, 90, 90), channel("FL1"), text("Level 1"), range(0.001,9.999,9.999,0.5,0.001), valuetextbox(1), textbox(1)
+rslider  bounds( 70, 30, 90, 90), channel("FT1"), text("Attack"), range(0.001,8,3,0.5), valuetextbox(1), textbox(1)
+rslider  bounds(140, 30, 90, 90), channel("FSus"), text("Sustain"), range(0.001,9.999,1.5,0.5,0.01), valuetextbox(1), textbox(1)
+rslider  bounds(210, 30, 90, 90), channel("FRelTim"), text("Rel.Time"), range(0.001,8,0.25,0.5), valuetextbox(1), textbox(1)
+rslider  bounds(280, 30, 90, 90), channel("FRelLev"), text("Rel.Level"), range(0.001,9.999,0.1,0.5,0.01), valuetextbox(1), textbox(1)
+rslider  bounds(350, 30, 90, 90), channel("FPos"), text("Position"), range(1,24,3,1,1), valuetextbox(1), textbox(1)
 }
 
 image    bounds(885,140,230,130), plant("Reverb"), $PlantBoxAppearance {
 label    bounds(  5,  4,230, 15), text("Reverb")
-rslider  bounds(  0, 30, 90, 90), channel("RSend"), text("Send"), range(0,1,0.5), textbox(1)
-rslider  bounds( 70, 30, 90, 90), channel("RSize"), text("Size"),  range(0,0.99,0.85), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("R__CF"), text("Damping"),range(20,20000,8000,0.5,1), textbox(1)
+rslider  bounds(  0, 30, 90, 90), channel("RSend"), text("Send"), range(0,1,0.5), valuetextbox(1), textbox(1)
+rslider  bounds( 70, 30, 90, 90), channel("RSize"), text("Size"),  range(0,0.99,0.85), valuetextbox(1), textbox(1)
+rslider  bounds(140, 30, 90, 90), channel("R__CF"), text("Damping"),range(20,20000,8000,0.5,1), valuetextbox(1), textbox(1)
 }
 
 keyboard bounds(5,335,1110, 80)
@@ -393,13 +401,13 @@ endin
 
 giMaxLayers	init	8
 
-opcode PoscilLayer,a,iiikp
- iCPS,iTable,iPhase,kLayers,iCount	xin
+opcode PoscilLayer,a,kiikkp
+ kCPS,iTable,iPhase,kInterval,kLayers,iCount	xin
  iInterval	=	semitone(10*(iCount-1))
  kAmp		limit	(kLayers+1) - iCount, 0, 1
- aSig		poscil	kAmp,iCPS,iTable,iPhase
+ aSig		poscil	kAmp,kCPS,iTable,iPhase
  if iCount<giMaxLayers then
-  aMix	PoscilLayer	iCPS*iInterval,iTable,iPhase,kLayers,iCount+1
+  aMix	PoscilLayer	kCPS*semitone(kInterval*iCount),iTable,iPhase,kInterval,kLayers,iCount+1
  endif
  			xout		aMix+aSig
 endop
@@ -414,13 +422,13 @@ instr	3	; SOUNDING INSTRUMENT. TRIGGERED BY MIDI NOTES.
  aAmpEnv	linsegr		0, i(gkAAtt),1, i(gkADec), i(gkASus),                  i(gkARel), 0	
  
  kLayers	chnget	"Layers"
+ kInterval	chnget	"Interval"
 
- aL		PoscilLayer		(ifreq*sr*1.01)/(giTabLen*giBase), giTable, 0,   kLayers
- aR		PoscilLayer		(ifreq*sr)     /(giTabLen*giBase), giTable, 0.5, kLayers	; OFFSET RIGHT CHANNEL PHASE FOR STEREO BREADTH 
+ aL		PoscilLayer		(ifreq*sr*1.01)/(giTabLen*giBase), giTable, 0,   kInterval, kLayers
+ aR		PoscilLayer		(ifreq*sr)     /(giTabLen*giBase), giTable, 0.5, kInterval, kLayers	; OFFSET RIGHT CHANNEL PHASE FOR STEREO BREADTH 
  
  aL		*=				ivel*aAmpEnv*gkAGain
  aR		*=				ivel*aAmpEnv*gkAGain
- 
  
  ;aL		poscil	ivel*aAmpEnv*gkAGain, (ifreq*iInterval*sr*1.01)/(giTabLen*giBase), giTable
  ;aR		poscil	ivel*aAmpEnv*gkAGain, (ifreq*iInterval*sr)     /(giTabLen*giBase), giTable, 0.5	; OFFSET RIGHT CHANNEL PHASE FOR STEREO BREADTH 

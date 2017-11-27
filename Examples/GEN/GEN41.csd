@@ -10,33 +10,33 @@
 <Cabbage>
 form caption("GEN41"), size(420, 395), pluginID("gn41"), colour(120,70,170,150)
 
-gentable bounds(  5,  5, 410, 115), identchannel("table1"), tablenumber(1), tablecolour("yellow"), amprange(24,72,1), zoom(-1)
+gentable bounds(  5,  5, 410, 115), identchannel("table1"), tablenumber(1), tablecolour("yellow"), outlinethickness(2), amprange(36,84,1), zoom(-1), fill(0)
 
 groupbox bounds(0, 125,420,170), text("Histogram"), plant("histogram"), fontcolour("white"){
-rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), textBox(1), range(0, 100, 24,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), textBox(1), range(0, 100, 64,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(100, 25, 70, 70), channel("prob3"), text("Prob. 3"), textBox(1), range(0, 100, 64,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(150, 25, 70, 70), channel("prob4"), text("Prob. 4"), textBox(1), range(0, 100, 34,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(200, 25, 70, 70), channel("prob5"), text("Prob. 5"), textBox(1), range(0, 100, 64,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(250, 25, 70, 70), channel("prob6"), text("Prob. 6"), textBox(1), range(0, 100, 84,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(300, 25, 70, 70), channel("prob7"), text("Prob. 7"), textBox(1), range(0, 100, 64,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(350, 25, 70, 70), channel("prob8"), text("Prob. 8"), textBox(1), range(0, 100, 64,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), valuetextbox(1), textbox(1), range(0, 100, 70,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(100, 25, 70, 70), channel("prob3"), text("Prob. 3"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(150, 25, 70, 70), channel("prob4"), text("Prob. 4"), valuetextbox(1), textbox(1), range(0, 100, 15,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(200, 25, 70, 70), channel("prob5"), text("Prob. 5"), valuetextbox(1), textbox(1), range(0, 100, 15,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(250, 25, 70, 70), channel("prob6"), text("Prob. 6"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(300, 25, 70, 70), channel("prob7"), text("Prob. 7"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(350, 25, 70, 70), channel("prob8"), text("Prob. 8"), valuetextbox(1), textbox(1), range(0, 100, 70,1,1), colour(160,110,210,200), trackercolour("white")
 
-rslider bounds(  0, 95, 70, 70), channel("val1"), text("Value 1"), textBox(1), range(24, 72, 50,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds( 50, 95, 70, 70), channel("val2"), text("Value 2"), textBox(1), range(24, 72, 62,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(100, 95, 70, 70), channel("val3"), text("Value 3"), textBox(1), range(24, 72, 48,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(150, 95, 70, 70), channel("val4"), text("Value 4"), textBox(1), range(24, 72, 44,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(200, 95, 70, 70), channel("val5"), text("Value 5"), textBox(1), range(24, 72, 66,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(250, 95, 70, 70), channel("val6"), text("Value 6"), textBox(1), range(24, 72, 54,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(300, 95, 70, 70), channel("val7"), text("Value 7"), textBox(1), range(24, 72, 52,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(350, 95, 70, 70), channel("val8"), text("Value 8"), textBox(1), range(24, 72, 46,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(  0, 95, 70, 70), channel("val1"), text("Value 1"), valuetextbox(1), textbox(1), range(36, 84, 60,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds( 50, 95, 70, 70), channel("val2"), text("Value 2"), valuetextbox(1), textbox(1), range(36, 84, 62,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(100, 95, 70, 70), channel("val3"), text("Value 3"), valuetextbox(1), textbox(1), range(36, 84, 64,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(150, 95, 70, 70), channel("val4"), text("Value 4"), valuetextbox(1), textbox(1), range(36, 84, 65,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(200, 95, 70, 70), channel("val5"), text("Value 5"), valuetextbox(1), textbox(1), range(36, 84, 67,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(250, 95, 70, 70), channel("val6"), text("Value 6"), valuetextbox(1), textbox(1), range(36, 84, 69,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(300, 95, 70, 70), channel("val7"), text("Value 7"), valuetextbox(1), textbox(1), range(36, 84, 71,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(350, 95, 70, 70), channel("val8"), text("Value 8"), valuetextbox(1), textbox(1), range(36, 84, 72,1,1), colour(160,110,210,200), trackercolour("white")
 }
 
 groupbox bounds(0, 295,420,100), text("Synthesiser"), plant("synth"), fontcolour("white"){
 checkbox bounds( 15, 50,115, 17), channel("SynthOnOff"), text("On/Off"),  value(0), colour("yellow"), shape("square")
-rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), textBox(1), range(0, 1.00, 0.7), colour(160,110,210,200), trackercolour("white")
-rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"),  textBox(1), range(0.2, 5.00, 2), colour(160,110,210,200), trackercolour("white")
-rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."),  textBox(1), range(0.1, 3.00, 2), colour(160,110,210,200), trackercolour("white")
+rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), valuetextbox(1), textbox(1), range(0, 1.00, 0.7), colour(160,110,210,200), trackercolour("white")
+rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"), valuetextbox(1),  textbox(1), range(0.2, 5.00, 2), colour(160,110,210,200), trackercolour("white")
+rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."), valuetextbox(1),  textbox(1), range(0.1, 3.00, 2), colour(160,110,210,200), trackercolour("white")
 }
 
 </Cabbage>
@@ -116,33 +116,20 @@ endin
 ; SCALE FOR REFLECTION DEPENDENT UPON MIDI NOTE NUMBER
 giScal	ftgen	0,0,128, -27,  0, 0.9, 24, 0.9, 36, 0.85, 48, 0.75, 60, 0.65, 72, 0.35, 84, 0.001, 96, 0.001, 127;, 0.001
 
-opcode	FreqShifter,a,aki					; frequency shifter
-	ain,kfshift,ifn	xin					;READ IN INPUT ARGUMENTS
-	areal, aimag hilbert ain				;HILBERT OPCODE OUTPUTS TWO PHASE SHIFTED SIGNALS, EACH 90 OUT OF PHASE WITH EACH OTHER
-	asin 	oscili       1,    kfshift,     ifn,          0
-	acos 	oscili       1,    kfshift,     ifn,          0.25	
-	;RING MODULATE EACH SIGNAL USING THE QUADRATURE OSCILLATORS AS MODULATORS
-	amod1	=		areal * acos
-	amod2	=		aimag * asin	
-	;UPSHIFTING OUTPUT
-	aFS	= (amod1 - amod2)
-		xout	aFS				;SEND AUDIO BACK TO CALLER INSTRUMENT
-endop
 
 gisine	ftgen	0,0,4096,10,1
 
 instr	2
-	iNote table     rnd(1),gihist,1                 ; read a random value from the function table
-	aEnv  linsegr	0, 0.005, 1, p3-0.105, 1, 0.1, 0 ; amplitude envelope
-	iPlk  random	0.1, 0.3                         ; point at which to pluck the string
-	iDtn  random    -0.05, 0.05                      ; random detune
-	irefl	table	iNote, giScal
-	aSig  wgpluck2  0.58, 0.5*gklev, cpsmidinn(iNote+iDtn), iPlk, irefl   
-	kcf	expon	cpsoct(rnd(6)+6),p3,50
-	aSig	clfilt	aSig, kcf, 0, 2					; butterworth lowpass filter	
-	aSig	FreqShifter	aSig,44,gisine
-	aL,aR pan2      aSig * aEnv, rnd(0.5)+0.5        ; random panning   
-	      outs      aL, aR
+	iNote 	table     	rnd(1),gihist,1                 	; read a random value from the function table
+	aEnv  	linsegr		0, 0.005, 1, p3-0.105, 1, 0.1, 0 	; amplitude envelope
+	iPlk  	random		0.1, 0.3                         	; point at which to pluck the string
+	iDtn  	random    	-0.05, 0.05                      	; random detune
+	irefl	table		iNote, giScal
+	aSig  	wgpluck2  	0.58, 0.5*gklev, cpsmidinn(iNote+iDtn), iPlk, irefl   
+	kcf		expon		cpsoct(rnd(6)+6),p3,50
+	aSig	clfilt		aSig, kcf, 0, 2						; butterworth lowpass filter	
+	aL,aR 	pan2		aSig * aEnv, rnd(0.5)+0.5        	; random panning   
+	      	outs		aL, aR
 endin
 
 </CsInstruments>

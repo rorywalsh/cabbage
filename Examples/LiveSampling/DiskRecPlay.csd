@@ -11,10 +11,10 @@ groupbox bounds(150,   0, 70, 80), text("Play Loop")
 checkbox channel("PlayLoop"), bounds(160,25,50,50), value(0), shape("square")
 groupbox bounds(220,   0, 70, 80), text("Play Once")
 checkbox channel("PlayOnce"), bounds(230,25,50,50), value(0), shape("square"), colour("yellow")
-hslider bounds(10,  80, 280,70), channel("Speed"), range(-4, 4, 1), caption("Speed")
-hslider bounds(10, 150, 280,70), channel("InSkip"), range(0, 1, 0), caption("In Skip")
-hslider bounds(10, 220, 280,70), channel("InGain"), range(0, 1, 1), caption("Input Gain")
-hslider bounds(10, 290, 280,70), channel("OutGain"), range(0, 1, 1), caption("Output Gain")
+hslider bounds(10,  80, 280,70), channel("Speed"), range(-4, 4, 1), text("Speed")
+hslider bounds(10, 150, 280,70), channel("InSkip"), range(0, 1, 0), text("In Skip")
+hslider bounds(10, 220, 280,70), channel("InGain"), range(0, 1, 1), text("Input Gain")
+hslider bounds(10, 290, 280,70), channel("OutGain"), range(0, 1, 1), text("Output Gain")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -69,7 +69,7 @@ instr	2	;PLAYBACK LOOPED INSTRUMENT
 	kporttime	linseg	0,0.001,0.02
 	kSpeed		portk	gkSpeed,kporttime
 	if	gkPause!=1	then				;IF PAUSE BUTTON IS NOT ACTIVATED... 
-	  aL,aR	diskin2		"$FILENAME",kSpeed,iInSkip,1	;PLAY AUDIO FROM FILE
+	   aL,aR	diskin2		"$FILENAME",kSpeed,iInSkip,1	;PLAY AUDIO FROM FILE
 	  	outs		aL*gkOutGain,aR*gkOutGain	;SEND AUDIO TO OUTPUT
 	endif					;END OF CONDITIONAL BRANCH
 endin

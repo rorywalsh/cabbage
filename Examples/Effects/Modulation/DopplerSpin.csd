@@ -42,7 +42,6 @@
 <Cabbage>
 form caption("Doppler Spin"), size(700,265), pluginID("SDop")
 
-;label    bounds(23, 10, 60,11), text("Input")
 label    bounds( 8 , 4, 70, 15), text("i  n  p  u  t"), fontcolour("white")
 combobox bounds(10, 30, 60,20), channel("input"), value(1), text("left","right","mixed","test")
 
@@ -65,7 +64,7 @@ hslider bounds(  5, 80,690, 35), channel("freq"),        range(-10,10.0,0.2,1,0.
 hslider bounds(  5,110,690, 35), channel("AmpDepth"),    range(0,1.000,0.7,1,0.001),        text("Loc."),          TextBox(1), colour(135, 45, 75), trackercolour(white)	;Central/Edge
 hslider bounds(  5,140,690, 35), channel("AmpPhase"),    range(0,1.000,0.5,1,0.001),        text("Orient."),       TextBox(1), colour(125, 45, 85), trackercolour(white)	;Orientation [radians]
 hslider bounds(  5,170,690, 35), channel("PanDepth"),    range(0,1.000,1,1,0.001),          text("Width"),         TextBox(1), colour(115, 45, 95), trackercolour(white)	;Panning Width
-hslider bounds(  5,200,690, 35), channel("DopDep"),      range(0,0.030,0.003,1,0.001), text("Depth"),         TextBox(1), colour(105, 45,105), trackercolour(white)	;Doppler Depth
+hslider bounds(  5,200,690, 35), channel("DopDep"),      range(0,0.030,0.003,1,0.0001), text("Depth"),         TextBox(1), colour(105, 45,105), trackercolour(white)	;Doppler Depth
 
 label   bounds( 5,247, 170, 12), text("Author: Iain McCurdy |2013|"), FontColour("grey")
 

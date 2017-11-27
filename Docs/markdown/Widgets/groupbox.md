@@ -15,11 +15,13 @@ widgetarray("chan", number), active(val), svgfile("filename")
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/linethickess.md !} 
+{! ./markdown/Widgets/Properties/linethickess.md !}
 
 {! ./markdown/Widgets/Properties/outlinethickness.md !}  
 
-{! ./markdown/Widgets/Properties/text_groupbox.md !} 
+{! ./markdown/Widgets/Properties/text_groupbox.md !}
+
+{! ./markdown/Widgets/Properties/popup.md !} 
 
 **plant("name")** [DEPRECATED] Sets the name of the plant. No two plants can have the same name. See [Plants](./plants.md)
 

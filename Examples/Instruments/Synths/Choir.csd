@@ -11,10 +11,10 @@ N.Voices value is not strictly speaking accurate: 	1 = 1 voice
 							5 = 8 voices, this is on account of how the mechanism implements a stereo effect
 
 <Cabbage>
-form caption("Choir") size(770, 335), pluginID("choi")
+form caption("Choir") size(770, 315), pluginID("choi")
 
 ; main container
-image bounds(  0,  0,770, 335), colour(255,100,  0, 40), shape("rounded"), outlinecolour("white"), outlinethickness(3)
+image bounds(  0,  0,770, 315), colour(255,100,  0, 40), shape("rounded"), outlinecolour("white"), outlinethickness(3)
 ; horizontal stripes
 ;image bounds(  0, 40,770,  75), colour(100,100,  0, 60), shape("sharp")
 ;image bounds(  0,130,770,  35), colour(  0,  0,255, 60), shape("sharp")
@@ -46,10 +46,6 @@ checkbox bounds(570, 10,190, 20), text("Filter On/Off") channel("FiltOnOff"), co
 xypad    bounds(570, 35,190,185), channel("cf", "bw"), text("x:c.off/y:b.width"), rangex(5, 13, 8), rangey(0.1, 5, 0.3)
 
 keyboard pos(10, 225), size(750, 80)
-
-image bounds(25, 309, 250, 22), colour(75, 85, 90, 100), plant("credit"){
-label bounds(0.03, 0.15, .99, .7), text("Author: Iain McCurdy |2012|"), fontcolour("white")
-}
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -258,7 +254,6 @@ instr	1	;instrument that continuously scans widgets
 endin
 
 instr	2	;triggered via MIDI
-	print	notnum()
 	gkNoteTrig	init	1	;at the beginning of a new note set note trigger flag to '1'
 	icps		cpsmidi		;read in midi note pitch in cycles per second
 	givel		veloc	0,1	;read in midi note velocity

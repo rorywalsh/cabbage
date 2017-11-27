@@ -30,9 +30,10 @@ line     bounds( 10, 10,160, 2), colour("grey")
 label    bounds( 50,  5, 80, 12), text("PROBABILITY"), colour(50,50,50)
 rslider  bounds(  0, 20, 60, 60), text("Thresh."),   channel("thresh"),  range(0, 1.00, 0.4), $RSliderStyle
 checkbox bounds( 10, 85,100, 12), text("HOLD"), colour("lime"), channel("hold"),  value(0)
-rslider  bounds( 60, 20, 60, 60), text("Freq.Min."), channel("FreqMin"), range(0.1,100.00, 0.5, 0.5), $RSliderStyle
-rslider  bounds(120, 20, 60, 60), text("Freq.Max."), channel("FreqMax"), range(0.1,100.00, 4, 0.5), $RSliderStyle
+rslider  bounds( 60, 20, 60, 60), text("Freq.Min."), channel("FreqMin"), range(0.1,100.00, 2, 0.5), $RSliderStyle
+rslider  bounds(120, 20, 60, 60), text("Freq.Max."), channel("FreqMax"), range(0.1,100.00, 8, 0.5), $RSliderStyle
 
+button   bounds( 95, 84, 50, 16), text("STUCK","STUCK"), active(0), channel("STUCK"), fontcolour:0(40,40,40), fontcolour:1(255,200,200), colour:1(255,80,80)
 
 line     bounds(190, 10,100,  2), colour("grey")
 label    bounds(203	,  5, 75, 12), text("BUFFER SIZE"), colour(50,50,50)
@@ -47,8 +48,8 @@ combobox bounds(315, 82, 90, 18	), channel("interp"), value(2), text("No Interp.
 
 line     bounds(430, 10,160,  2), colour("grey")
 label    bounds(484,  5, 50, 12), text("OUTPUT"), colour(50,50,50)
-rslider  bounds(420,20, 60, 60), text("Width"), channel("PanWidth"), range(0, 1.00, 0), $RSliderStyle
-rslider  bounds(480,20, 60, 60), text("Mix"), channel("mix"), range(0, 1.00, 0.5), $RSliderStyle
+rslider  bounds(420,20, 60, 60), text("Width"), channel("PanWidth"), range(0, 1.00, 0.5), $RSliderStyle
+rslider  bounds(480,20, 60, 60), text("Mix"), channel("mix"), range(0, 1.00, 0.85), $RSliderStyle
 rslider  bounds(540,20, 60, 60), text("Level"), channel("level"), range(0, 1.00, 1), $RSliderStyle
 
 checkbox bounds(190, 85,100, 12), text("INTEGERISE"), colour("lime"), channel("integer"),  value(0)
@@ -163,7 +164,13 @@ instr	1
  	outs	aL*klevel, aR*klevel
   aL	=	0
   aR	=	0
-  
+
+  ; toggle GUI "STUCK" indicator
+  if trigger:k(kTestVal-khold,kthresh,0)==1 then
+   chnset	k(0),"STUCK"
+  elseif  trigger:k(kTestVal+khold,kthresh,1)==1 then
+   chnset	k(1),"STUCK"
+  endif
 endin
 
 </CsInstruments>  

@@ -7,7 +7,7 @@
 ; 'Freq.Mult.' is a factor by which all cutoff frequencies are multiplied by.
 
 <Cabbage>
-form caption("Formant Filter"), colour("SlateGrey"), size(550, 300), pluginID("form")  
+form caption("Formant Filter"), colour("SlateGrey"), size(550, 280), pluginID("form")  
 
 xypad bounds(5, 5, 350, 260), channel("x", "y"), rangex(0, 1, 0.5), rangey(0, 1, 0), text("upper edge:A E I | lower :U O"), fontcolour("white")
 
@@ -27,10 +27,6 @@ rslider bounds(480,  5, 60, 60), text("BW.Mult"),   channel("BWMlt"),  range(0.0
 rslider bounds(480, 70, 60, 60), text("Freq.Mult"), channel("FrqMlt"), range(0.25, 4, 1, 0.4), textcolour("white")
 rslider bounds(480,140, 60, 60), text("Mix"),       channel("mix"),    range(0, 1.00, 1),      textcolour("white")
 rslider bounds(480,210, 60, 60), text("Gain"),      channel("gain"),   range(0, 5.00, 1, 0.5), textcolour("white")
-
-image bounds( 5, 275, 350, 18), colour(75, 85, 90, 100), plant("credit"), outlinethickness(0){
-label bounds(0.03, 0.1, .6, .8), text("Author: Iain McCurdy |2012|"), fontcolour("white")
-}
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

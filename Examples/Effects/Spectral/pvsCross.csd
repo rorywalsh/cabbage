@@ -1,12 +1,35 @@
 ; pvsCross.csd
 ; Written by Iain McCurdy, 2012.
 
+; This effect implements cross-synthesis between the left and right inputs.
+; By default, the left input is the 'source' signal and the right signal is the 'destination' signal.
+;  This arrangement can be swapped with the swap button.
+
+; LEFT----+
+;         |
+;      (SOURCE)                 +---LEFT
+;         |                     |
+;         +-CROSS-SYNTHESIS-----+
+;         |                     |
+;    (DESTINATION)              +---RIGHT
+;         |
+; RIGHT---+
+
+
+; Source	-	level of the source signal sent to the output.
+; Dest.		-	level of the destination signal sent to the output.
+; Cross		-	level of the cross-synthesis signal sent to the output.
+; Level		-	global control of the level of all signal that may be present at the output.
+
 <Cabbage>
 form caption("pvsCross") size(370, 90), pluginID("crss")
 image            bounds(0, 0, 370, 90), colour("Cream"), outlinecolour("silver"), outlinethickness(5)
 
 ; filter switches
-checkbox bounds( 10, 25, 94, 15), text("Swap Inputs"), channel("swap"), fontcolour(138, 54, 15), colour("lime")
+checkbox bounds( 10, 20, 94, 15), text("Swap Inputs"), channel("swap"), fontcolour(138, 54, 15), colour("lime")
+
+label    bounds(15, 41, 60,13), text("FFT Size"), fontcolour(138, 54, 15)
+combobox bounds(15, 55, 60,20), text("64","128","256","512","1024","2048","2048","4096","8192","16384"), channel("att_table"), value(5)
 
 line     bounds(115, 10,165, 3), colour("Grey")
 
@@ -56,7 +79,7 @@ endop
 
 instr	1
 
-	;;katt_table	chnget	"att_table"	; FFT atribute table
+	katt_table	chnget	"att_table"	; FFT atribute table
 	katt_table	init	5
 	ktrig		changed	katt_table
 	if ktrig==1 then

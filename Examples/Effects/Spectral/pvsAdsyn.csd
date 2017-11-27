@@ -1,6 +1,11 @@
 ; pvsAdsyn.csd
 ; Written by Iain McCurdy, 2012.
 
+; Encapsulation of the pvsadsyn opcode.
+; This opcode takes a streaming phase vocoding analysis and reconstitutes it as an audio signal with user-definable parameters
+;  for the number of bins to include, the bin from which to begin resynthesis (bin offset) and the option of skipping bins and not
+;  resynthesising them one after another (Bin Incr.)
+
 <Cabbage>
 form caption("pvsAdsyn") size(580, 90), pluginID("adsy")
 image pos(0, 0), size(580, 90), colour(200,100,50,150), shape("rounded"), outlinecolour("white"), outlinethickness(5) 
@@ -8,11 +13,13 @@ rslider bounds(10, 11, 70, 70),  text("Freq.Mod."),  channel("fmod"),      range
 rslider bounds(80, 11, 70, 70),  text("Num.Osc.s"),  channel("noscs"),     range(1, 1024, 256,1,1),  textcolour("white"), colour(200,100,50,250), trackercolour(tan)
 rslider bounds(150, 11, 70, 70), text("Bin Offset"), channel("binoffset"), range(0, 256, 1,1,1),     textcolour("white"), colour(200,100,50,250), trackercolour(tan)
 rslider bounds(220, 11, 70, 70), text("Bin Incr."),  channel("binincr"),   range(1, 32, 1,1,1),      textcolour("white"), colour(200,100,50,250), trackercolour(tan)
-rslider bounds(290, 11, 70, 70), text("FFT Size"),   channel("att_table"), range(1, 8, 5, 1,1),      textcolour("white"), colour(200,100,50,250), trackercolour(tan)
+label    bounds(295,20, 60,13), text("FFT Size"), fontcolour("white")
+combobox bounds(295,35, 60,18), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontcolour(255,255,200)
 rslider bounds(360, 11, 70, 70), text("Feedback"),   channel("feedback"),  range(0, 0.99, 0),        textcolour("white"), colour(200,100,50,250), trackercolour(tan)
 rslider bounds(430, 11, 70, 70), text("Mix"),        channel("mix"),       range(0, 1.00, 1),        textcolour("white"), colour(200,100,50,250), trackercolour(tan)
 rslider bounds(500, 11, 70, 70), text("Level"),      channel("lev"),       range(0, 5.00, 0.5, 0.5), textcolour("white"), colour(200,100,50,250), trackercolour(tan)
 </Cabbage>
+
 <CsoundSynthesizer>
 <CsOptions>
 -d -n

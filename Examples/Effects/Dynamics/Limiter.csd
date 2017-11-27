@@ -10,14 +10,14 @@
 ; Gain		-	Make up gain. Useful for compensating for gain loss.
    
 <Cabbage>
-#define SLIDER_APPEARANCE #, textcolour("black"), trackercolour("LightSlateGrey")# 
-form caption("Limiter") size(385, 90), pluginID("lmtr")
-image         bounds(  0,  0,385, 90), outlinethickness(6), outlinecolour("white"), colour("silver")
-rslider bounds( 10,10,70,70), channel("thresh"), text("Threshold"), range(-120,0,-24) $SLIDER_APPEARANCE
-rslider bounds( 80,10,70,70), channel("smooth"), text("Smoothing"), range(0.01,1,0.1,0.5) $SLIDER_APPEARANCE
-rslider bounds(150,10,70,70), channel("delay"), text("Delay"), range(0,0.2,0,0.5) $SLIDER_APPEARANCE
-rslider bounds(220,10,70,70), channel("gain"), text("Gain"), range(-48,48,0) $SLIDER_APPEARANCE
-checkbox bounds(295,30,100,15), channel("limiting"), text("Limiting"), shape("ellipse"), colour("red"), fontcolour("black")
+#define SLIDER_APPEARANCE textcolour("black"), trackercolour("LightSlateGrey")
+form caption("Limiter") size(435,105), pluginID("lmtr")
+image         bounds(  0,  0,435,105), outlinethickness(6), outlinecolour("white"), colour("silver")
+rslider  bounds( 10,15, 80, 80), channel("thresh"), text("Threshold [dB]"), range(-120,0,-24), $SLIDER_APPEARANCE
+rslider  bounds( 90,15, 80, 80), channel("smooth"), text("Smoothing"), range(0.01,1,0.1,0.5), $SLIDER_APPEARANCE
+rslider  bounds(170,15, 80, 80), channel("delay"), text("Delay [s]"), range(0,0.2,0,0.5), $SLIDER_APPEARANCE
+rslider  bounds(250,15, 80, 80), channel("gain"), text("Gain [dB]"), range(-48,48,0), $SLIDER_APPEARANCE
+checkbox bounds(335,35,100, 20), channel("limiting"), text("Limiting"), shape("ellipse"), colour("red"), fontcolour("black"), active(0)
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -36,22 +36,22 @@ nchnls = 2
 ; Author: Iain McCurdy (2016)
 
 instr 1
- aL,aR		ins					; read live audio in
+ aL,aR		ins							; read live audio in
  kthresh	chnget		"thresh" 		; read in widgets
  ksmooth	chnget		"smooth" 		; this is needed as an i-time variable so will have to be cast as an i variable and a reinitialisation forced
  kthresh	=		ampdbfs(kthresh)	; convert threshold to an amplitude value
- if changed(ksmooth)==1 then				; if Smoothing slider is moved...
-  reinit REINIT						; ... force a reinitialisation
+ if changed(ksmooth)==1 then			; if Smoothing slider is moved...
+  reinit REINIT							; ... force a reinitialisation
  endif
- REINIT:						; reinitialise from here
+ REINIT:								; reinitialise from here
  krmsL		rms		aL,1/i(ksmooth)		; scan both channels
  krmsR		rms		aR,1/i(ksmooth)		; ...
- rireturn						; return to performance pass from reinitialisation pass (if applicable)
- krms		max		krmsL,krmsR		; but only used the highest rms
+ rireturn								; return to performance pass from reinitialisation pass (if applicable)
+ krms		max		krmsL,krmsR			; but only used the highest rms
 
  kdelay		chnget	"delay"				
- if kdelay>0 then					; if Delay value is anything above zero ...
-  aL	vdelay	aL, kdelay*1000, 200			; delay audio signals before limiting
+ if kdelay>0 then						; if Delay value is anything above zero ...
+  aL	vdelay	aL, kdelay*1000, 200	; delay audio signals before limiting
   aR	vdelay	aR, kdelay*1000, 200
  endif
 

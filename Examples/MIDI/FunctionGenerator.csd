@@ -47,7 +47,7 @@
 ;			A value of zero disables this function.
 		
 <Cabbage>
-form caption("MIDI Function Generator"), size(430,115), pluginID("FnGn")
+form caption("MIDI Function Generator"), size(560,115), pluginID("FnGn")
 
 image    bounds(  5,  5,150,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white")
 label    bounds( 10,  9,140, 11), text("G E N E R A T O R"), fontcolour("WHITE")
@@ -75,7 +75,15 @@ rslider  bounds( 40, 55, 50, 50), channel("LimSkew"), text("Amount"), range(0.1,
 rslider  bounds( 40, 55, 50, 50), channel("QuantVal"), text("Value"), range(0,1,0.1,1,0.01), identchannel("QuantValID"), visible(0)
 }
 
-image    bounds(295,  5,130,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white"), plant("output") {
+image    bounds(295,  5,130,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white"), plant("scale") {
+label    bounds(  5,  9,120, 11), text("S C A L E"), fontcolour("WHITE")
+rslider  bounds( 10, 25, 55, 55), channel("ScaleMin"), text("Min"), range(0,127,0,  1,1)
+rslider  bounds( 65, 25, 55, 55), channel("ScaleMax"), text("Max"), range(0,127,127,1,1)
+checkbox bounds( 20, 83, 70, 12), channel("ScaleInt"), text("Integers")
+
+}
+
+image    bounds(430,  5,130,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white"), plant("output") {
 label    bounds(  5,  9,120, 11), text("O U T P U T"), fontcolour("WHITE")
 label    bounds( 25, 22, 80, 12), text("Channel"), fontcolour("WHITE")
 combobox bounds( 25, 35, 80, 20), channel("channel"), text("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"), value(1)
@@ -349,14 +357,20 @@ instr	1
  endif
  
  
- 
-; printk	1,kfn
+; SCALE
+ gkScaleMin 	chnget	"ScaleMin"
+ gkScaleMax 	chnget	"ScaleMax"
+ gkScaleInt		chnget	"ScaleInt"
+ kfn			scale	kfn,gkScaleMax,gkScaleMin
+ kfn			=		gkScaleInt==1?int(kfn):kfn
  
 ; OUTPUT 
  kchannel	chnget	"channel"
  kcontroller	chnget	"controller"
  		outkc 	kchannel,kcontroller, kfn, 0, 1
 
+; printk 1, kfn
+ 
  gkfn	=	kfn			; OUTPUT FUNCTION. GLOBAL VARIABLE FOR USE IN instr 3
 
 

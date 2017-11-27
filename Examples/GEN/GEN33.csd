@@ -17,7 +17,7 @@
 
 <Cabbage>
 form caption("GEN33"), size(520, 320), pluginID("gn33")
-gentable bounds(  0,  0, 520, 120), identchannel("table1"), tablenumber(1), tablecolour("yellow"), zoom(-1)
+gentable bounds(  0,  0, 520, 120), identchannel("table1"), tablenumber(1), tablecolour("yellow"), zoom(-1), , fill(0), amprange(1,-1,1)
 
 
 groupbox bounds(0, 120,370,120), text("Manual Control"), plant("Manual"), fontcolour("white"){
@@ -28,14 +28,14 @@ combobox bounds( 10, 61,140, 20), channel("source"), value(1), text("Tubular Bel
 label     bounds( 10, 82,100, 11), text("Maximum Harms:"), fontcolour("white"), align(left)
 numberbox bounds( 110, 81, 40, 15), text(""), fontcolour(white), channel("NumPartials"), range(0, 100, 0,1,1)
 
-rslider  bounds(150, 30, 80, 80), channel("nh"), text("Num.Harms."), textBox(1), range(1,25,25,1,1), TrackerColour("yellow"), colour(200,200,200)
-rslider  bounds(220, 30, 80, 80), channel("amp"), text("Amp."), textBox(1), range(0,1.000,0.1,0.5), TrackerColour("yellow"), colour(200,200,200)
-rslider  bounds(290, 30, 80, 80), channel("frq"), text("Freq."), textBox(1), range(0.5,100.000,10,0.5), TrackerColour("yellow"), colour(200,200,200)
+rslider  bounds(150, 30, 80, 80), channel("nh"), text("Num.Harms."), valuetextbox(1), textbox(1), range(1,25,25,1,1), TrackerColour("yellow"), colour(200,200,200)
+rslider  bounds(220, 30, 80, 80), channel("amp"), text("Amp."), valuetextbox(1), textbox(1), range(0,1.000,0.1,0.5), TrackerColour("yellow"), colour(200,200,200)
+rslider  bounds(290, 30, 80, 80), channel("frq"), text("Freq."), valuetextbox(1), textbox(1), range(5,1000.000,520,0.5), TrackerColour("yellow"), colour(200,200,200)
 }
 
 groupbox bounds(370,120,150,120), text("MIDI [Keyboard]"), plant("MIDI"), fontcolour("white"){
-rslider  bounds(  0, 30, 80, 80), channel("SusTim"), text("Sus.Time"), textBox(1), range(0.1,15.00,8,0.5), TrackerColour("yellow"), colour(200,200,200)
-rslider  bounds( 70, 30, 80, 80), channel("RelTim"), text("Rel.Tim"),  textBox(1), range(0.1,15.00,8,0.5), TrackerColour("yellow"), colour(200,200,200)
+rslider  bounds(  0, 30, 80, 80), channel("DecTim"), text("Dec.Time"), valuetextbox(1), textbox(1), range(0.1,15.00,8,0.5), TrackerColour("yellow"), colour(200,200,200)
+rslider  bounds( 70, 30, 80, 80), channel("RelTim"), text("Rel.Tim"), valuetextbox(1),  textbox(1), range(0.1,15.00,8,0.5), TrackerColour("yellow"), colour(200,200,200)
 }
 
 keyboard bounds(  0,240,520, 80)
@@ -179,7 +179,7 @@ gidata8		ftgen	0,0,-24*3,-2,		0.753504,	100,	rnd(1),\
 						0.001450,	2400,	rnd(1)
 
 
-giTabSize	=	4096	; function table size of the GEN33 table
+giTabSize	=	(2^15) +1	; function table size of the GEN33 table
 
 instr	1	; manual instrument
  gknh		chnget	"nh"			; read in widgets
@@ -211,8 +211,8 @@ instr	1	; manual instrument
  endif
  
  if gkManualOnOff==1 then			; if 'Manual On/Off' button is on...
-  aL		oscili	gkamp,gkfrq,giwave	; create an audio oscillator using the GEN33 waveform
-  aR		oscili	gkamp,gkfrq,giwave,0.13	; create an audio oscillator using the GEN33 waveform
+  aL		oscil3	gkamp,gkfrq/400,giwave	; create an audio oscillator using the GEN33 waveform
+  aR		oscil3	gkamp,gkfrq/400,giwave,0.13	; create an audio oscillator using the GEN33 waveform
  		outs	aL,aR		
  endif
  
@@ -220,7 +220,7 @@ endin
 
 
 instr	3	; midi / keyboard instrument
- iSusTim	chnget	"SusTim"
+ iDecTim	chnget	"DecTim"
  iRelTim	chnget	"RelTim"
  
  iNumH	ampmidi	(ftlen(gisource)/3)+1			; midi velocity mapped to a value between zero (min velocity) and the number of partials in the data table (max velocity)
@@ -237,11 +237,11 @@ instr	3	; midi / keyboard instrument
  ktrig	=	0	
 
  ; CREATE SOME SOUND
- inum	notnum						; midi note number
- aL	oscili	gkamp,gkfrq*semitone(inum-72),iwave	; create an audio oscilator
- aR	oscili	gkamp,gkfrq*semitone(inum-72),iwave,0.13; create an audio oscilator
- acf	expsegr	10000,iSusTim,   50,iRelTim,50		; filter cutoff envelope (percussive decay)
- aenv	expsegr	1,    iSusTim,0.001,iRelTim,0.001	; amplitude envelope
+ icps	cpsmidi						; midi note number
+ aL	oscil3	gkamp,icps/400,iwave	; create an audio oscilator
+ aR	oscil3	gkamp,icps/400,iwave,0.13; create an audio oscilator
+ acf	expsegr	10000,iDecTim,   50,iRelTim,50		; filter cutoff envelope (percussive decay)
+ aenv	expsegr	1,    iDecTim,0.001,iRelTim,0.001	; amplitude envelope
  aL	butlp	aL,acf					; filter audio
  aR	butlp	aR,acf					; filter audio
  aL	=	aL * (aenv-0.001) * ivel		; scale amplitude of audio using envelope and midi velocity
