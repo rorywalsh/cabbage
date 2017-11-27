@@ -130,6 +130,10 @@
               file="Source/Settings/CabbageSettingsWindow.h"/>
       </GROUP>
       <GROUP id="{8D9B8DF5-3215-02BE-1D61-4761D82ACE8A}" name="Utilities">
+        <FILE id="EjL0Yf" name="CabbageExportPlugin.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageExportPlugin.h"/>
+        <FILE id="ZxldDQ" name="CabbageExportPlugin.cpp" compile="1" resource="0"
+              file="Source/Utilities/CabbageExportPlugin.cpp"/>
         <FILE id="eh2J17" name="CabbageColourProperty.cpp" compile="1" resource="0"
               file="Source/Utilities/CabbageColourProperty.cpp"/>
         <FILE id="nF7hRF" name="CabbageColourProperty.h" compile="0" resource="0"

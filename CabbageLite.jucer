@@ -91,6 +91,18 @@
               file="Source/StandaloneLite/StandaloneFilterWindow.h"/>
       </GROUP>
       <GROUP id="{E15DE213-674B-D68B-B1FF-E523C3C0D267}" name="Utilities">
+        <FILE id="hrDipX" name="CabbageExportPlugin.cpp" compile="1" resource="0"
+              file="Source/Utilities/CabbageExportPlugin.cpp"/>
+        <FILE id="bShxNy" name="CabbageExportPlugin.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageExportPlugin.h"/>
+        <FILE id="O0vi1K" name="CabbageNewProjectWindow.cpp" compile="1" resource="0"
+              file="Source/Utilities/CabbageNewProjectWindow.cpp"/>
+        <FILE id="XMSlst" name="CabbageNewProjectWindow.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageNewProjectWindow.h"/>
+        <FILE id="bUaPPe" name="CabbageSSHFileBrowser.cpp" compile="1" resource="0"
+              file="Source/Utilities/CabbageSSHFileBrowser.cpp"/>
+        <FILE id="GkXrej" name="CabbageSSHFileBrowser.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageSSHFileBrowser.h"/>
         <FILE id="f0vjB5" name="CabbageColourProperty.cpp" compile="1" resource="0"
               file="Source/Utilities/CabbageColourProperty.cpp"/>
         <FILE id="MVsVFD" name="CabbageColourProperty.h" compile="0" resource="0"
