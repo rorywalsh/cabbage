@@ -33,7 +33,8 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             Colours::lightgrey,
             DocumentWindow::allButtons),
     lookAndFeel (new LookAndFeel_V3()),
-    commandLineArgs (commandLineParams)
+    commandLineArgs (commandLineParams),
+                                                                                        pluginExporter()
 
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
@@ -68,7 +69,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             if (File (inputFileName).existsAsFile())
             {
                 content->openFile (inputFileName);
-                CabbageUtilities::exportPlugin ("VSTi", File (inputFileName), &getLookAndFeel(), getPluginId (File (inputFileName)));
+                pluginExporter.exportPlugin("VSTi", File (inputFileName), getPluginId (File (inputFileName)));
                 JUCEApplicationBase::quit();
             }
 
@@ -80,7 +81,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             if (File (inputFileName).existsAsFile())
             {
                 content->openFile (inputFileName);
-                CabbageUtilities::exportPlugin ("VST", File (inputFileName),  &getLookAndFeel(), getPluginId (File (inputFileName)));
+                pluginExporter.exportPlugin ("VST", File (inputFileName), getPluginId (File (inputFileName)));
                 JUCEApplicationBase::quit();
             }
 
@@ -764,11 +765,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::exportAsEffect:
-            CabbageUtilities::exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  &getLookAndFeel(), getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
             return true;
 
         case CommandIDs::exportAsSynth:
-            CabbageUtilities::exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  &getLookAndFeel(), getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
             return true;
 
         case CommandIDs::toggleComments:

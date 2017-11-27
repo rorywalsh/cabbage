@@ -29,6 +29,7 @@
 #include "../CodeEditor/CabbageOutputConsole.h"
 #include "../Settings/CabbageSettingsWindow.h"
 #include "../Settings/CabbageSettings.h"
+#include "../Utilities/CabbageExportPlugin.h"
 
 
 
@@ -76,6 +77,7 @@ private:
     void writePluginFileToDisk (File fc, File csdFile, File VSTData, String ext);
     //=======================================================
 
+    PluginExporter pluginExporter;
     ScopedPointer<LookAndFeel_V3> lookAndFeel;
     String commandLineArgs = "";
     bool isGUIEnabled = false;

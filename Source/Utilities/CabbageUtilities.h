@@ -1008,63 +1008,63 @@ public:
 
 
     //===============   methods for exporting plugins ==============================
-    static void exportPlugin (String type, File csdFile, LookAndFeel* lAndF, String pluginId)
-    {
-        String pluginFilename, fileExtension, currentApplicationDirectory;
-        File thisFile;
-
-        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
-        {
-            fileExtension = "so";
-            thisFile = File::getSpecialLocation (File::currentExecutableFile);
-            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-        }
-        else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
-        {
-            fileExtension = "vst";
-            thisFile = File::getSpecialLocation (File::currentApplicationFile);
-            currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
-        }
-        else
-        {
-            fileExtension = "dll";
-            thisFile = File::getSpecialLocation (File::currentApplicationFile);
-            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-        }
-
-
-        if (type.contains ("VSTi"))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
-        else if (type.contains (String ("VST")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
-        else if (type.contains (String ("LV2-ins")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
-        else if (type.contains (String ("LV2-fx")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
-
-        File VSTData (pluginFilename);
-
-        if (!VSTData.exists())
-        {
-            CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder");
-        }
-
-        FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
-
-        if (fc.browseForFileToSave (false))
-        {
-            if (fc.getResult().existsAsFile())
-            {
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", lAndF);
-
-                if (result == 1)
-                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
-            }
-            else
-                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
-        }
-
-    }
+//    static void exportPlugin (String type, File csdFile, LookAndFeel* lAndF, String pluginId)
+//    {
+//        String pluginFilename, fileExtension, currentApplicationDirectory;
+//        File thisFile;
+//
+//        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+//        {
+//            fileExtension = "so";
+//            thisFile = File::getSpecialLocation (File::currentExecutableFile);
+//            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+//        }
+//        else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+//        {
+//            fileExtension = "vst";
+//            thisFile = File::getSpecialLocation (File::currentApplicationFile);
+//            currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
+//        }
+//        else
+//        {
+//            fileExtension = "dll";
+//            thisFile = File::getSpecialLocation (File::currentApplicationFile);
+//            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+//        }
+//
+//
+//        if (type.contains ("VSTi"))
+//            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
+//        else if (type.contains (String ("VST")))
+//            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
+//        else if (type.contains (String ("LV2-ins")))
+//            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
+//        else if (type.contains (String ("LV2-fx")))
+//            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
+//
+//        File VSTData (pluginFilename);
+//
+//        if (!VSTData.exists())
+//        {
+//            CabbageUtilities::showMessage (pluginFilename + " cannot be found? It should be in the Cabbage root folder");
+//        }
+//
+//        FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
+//
+//        if (fc.browseForFileToSave (false))
+//        {
+//            if (fc.getResult().existsAsFile())
+//            {
+//                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", lAndF);
+//
+//                if (result == 1)
+//                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
+//            }
+//            else
+//                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
+//        }
+//
+//    }
 
     static void writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId)
     {

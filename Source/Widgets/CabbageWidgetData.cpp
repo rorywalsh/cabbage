@@ -332,7 +332,12 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("import"):
-                setImportFiles (strTokens, widgetData);
+                addFiles (strTokens, widgetData, "import");
+                break;
+
+            case HashStringToInt ("bundle"):
+                addFiles (strTokens, widgetData, "bundle");
+                break;
 
             //=========== floats ===============================
             case HashStringToInt ("surrogatelinenumber"):
@@ -627,17 +632,19 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     }
 }
 
-void CabbageWidgetData::setImportFiles (StringArray strTokens, ValueTree widgetData)
+void CabbageWidgetData::addFiles (StringArray strTokens, ValueTree widgetData, String identifier)
 {
     var files;
-    int comboRange = 0;
 
     for (int i = 0; i < strTokens.size(); i++)
     {
         files.append (strTokens[i]);
     }
 
-    setProperty (widgetData, CabbageIdentifierIds::importfiles, files);
+    setProperty (widgetData, identifier, files);
+    var test = getProperty(widgetData, identifier);
+    if(test.size()>0)
+        CabbageUtilities::debug("hat's going on");
 
 }
 

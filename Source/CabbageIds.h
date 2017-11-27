@@ -409,6 +409,7 @@ public:
         add ("visible");
         add ("latched");
         add ("rescale");
+        add ("bundle");
         add ("import");
         add ("bounds");
         add ("colour");
@@ -591,6 +592,7 @@ namespace CabbageIdentifierIds
     static const Identifier decimalplaces = "decimalplaces";
     static const Identifier mode = "mode";
     static const Identifier shape = "shape";
+    static const Identifier bundle = "bundle";
     static const Identifier channeltype = "channeltype";
     static const Identifier comborange = "comborange";
     static const Identifier populate = "populate";
