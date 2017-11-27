@@ -24,17 +24,17 @@
 #include "../Audio/Plugins/CabbageAudioParameter.h"
 
 CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
-    widgetData (wData),
     owner (editor),
-    ball(),
+    widgetData (wData),
     minX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx)),
     maxX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxx)),
     minY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::miny)),
     maxY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxy)),
-    valueX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuex)),
-    valueY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuey)),
+    ball(),
     yValueLabel(),
     xValueLabel(),
+    valueX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuex)),
+    valueY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuey)),
     fontColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour))),
     textColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour))),
     colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
@@ -153,13 +153,13 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     }
     else
     {
-        const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
-        const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
-        //setValues(xPos, maxY - yPos);
-        Point<float> pos (getValueAsPosition (Point<float> (xPos, maxY - yPos)));
-        //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
-        ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
-        repaint();
+//        const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
+//        const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
+//        //setValues(xPos, maxY - yPos);
+//        Point<float> pos (getValueAsPosition (Point<float> (xPos, maxY - yPos)));
+//        //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
+//        ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
+//        repaint();
     }
 }
 

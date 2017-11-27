@@ -44,7 +44,7 @@ void CabbageSettings::setDefaultSettings()
     String manualPath, examplesDir, cabbageHelp;
 
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
-    cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Docs";
+    cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CabbageManual";
 
 #if defined(WIN32)
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
@@ -52,7 +52,7 @@ void CabbageSettings::setDefaultSettings()
     manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
 #else
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
-    cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Docs";
+    cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/CabbageManual";
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
 #endif
 
