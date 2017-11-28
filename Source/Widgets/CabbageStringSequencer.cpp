@@ -56,7 +56,7 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     if(cellWidth == 0)
         seqContainer.setBounds (getLocalBounds().withHeight (numRows * cellHeight).withWidth(getLocalBounds().getWidth()));
     else
-        seqContainer.setBounds (getLocalBounds().withHeight (numRows * cellHeight).withWidth(cellWidth*numColumns));
+        seqContainer.setBounds (getLocalBounds().withHeight (numRows * cellHeight).withWidth(cellWidth*(numColumns+1)));
 
     if (height <= cellHeight * numRows)
     {
@@ -74,8 +74,8 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     else
     {
         vp.setScrollBarsShown (false, false);
-        if(cellWidth == 0)
-            cellWidth = width - (showNumbers > 0 ? 20 : 0) / numColumns;
+        cellWidth = (width - vp.getScrollBarThickness() - (showNumbers > 0 ? numbersWidth : 0)) / numColumns;
+
     }
 
     for (int i = 0 ; i < numColumns ; i++)
@@ -96,12 +96,18 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     }
 
     setColours(wData);
-    startTimer (60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000);
+    bpm  = 60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000;
+    previousBpm = bpm;
+
+    if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) == 1)
+        startTimer(bpm);
+
 
 }
 
 CabbageStringSequencer::~CabbageStringSequencer()
 {
+    stopTimer();
     textFields.getUnchecked (0)->clear();
     textFields.clear();
 }
@@ -166,6 +172,7 @@ void CabbageStringSequencer::hiResTimerCallback()
     for ( int i = 0 ; i < numColumns ; i++)
         owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
 
+    const MessageManagerLock j;
     for ( int x = 0 ; x < numColumns ; x++)
         for ( int y = 0 ; y < numRows ; y++)
         {
@@ -174,9 +181,15 @@ void CabbageStringSequencer::hiResTimerCallback()
             else
                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
 
-            const MessageManagerLock j;
+
             getEditor(x, y)->lookAndFeelChanged();
         }
+
+    if(bpm != previousBpm)
+    {
+        startTimer(bpm);
+        previousBpm = bpm;
+    }
 }
 
 void CabbageStringSequencer::setCurrentRow(int row)
@@ -285,11 +298,13 @@ void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, con
     {
         currentBeat = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
     }
+    else if(prop == CabbageIdentifierIds::bpm)
+        bpm = 60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000;
     else
     {
         repaint();
         handleCommonUpdates(this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-        startTimer (60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000);
+        setColours(valueTree);
     }
 }
 

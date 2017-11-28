@@ -61,6 +61,8 @@ private:
     int numRows = 0;
     int currentBeat = 0;
     int numbersWidth = 20;
+    int bpm = 120;
+    int previousBpm = 120;
     Viewport vp;
     Component seqContainer;
     OwnedArray<OwnedArray<TextEditor>> textFields;
