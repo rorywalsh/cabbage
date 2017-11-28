@@ -640,12 +640,10 @@ void CabbageWidgetData::addFiles (StringArray strTokens, ValueTree widgetData, S
     {
         files.append (strTokens[i]);
     }
-
-    setProperty (widgetData, identifier, files);
-    var test = getProperty(widgetData, identifier);
-    if(test.size()>0)
-        CabbageUtilities::debug("hat's going on");
-
+    if(identifier == "import")
+        setProperty (widgetData, CabbageIdentifierIds::importfiles, files);
+    else if(identifier == "bundle")
+        setProperty (widgetData, CabbageIdentifierIds::bundle, files);
 }
 
 
