@@ -172,7 +172,8 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 
         //write plist file
         pl.replaceWithText (newPList);
-
+        //bunlde all auxilary files
+        addFilesToPluginBundle(csdFile, exportedCsdFile);
 
     }
     else
@@ -180,10 +181,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
         exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
         setUniquePluginId (dll, exportedCsdFile, pluginId );
+        //bunlde all auxilary files
+        addFilesToPluginBundle(csdFile, dll);
     }
 
-    //bunlde all auxilary files
-    addFilesToPluginBundle(csdFile, dll);
+
 
 }
 

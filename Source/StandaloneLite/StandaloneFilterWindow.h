@@ -113,7 +113,7 @@ public:
 
         if (commandLineParams.isNotEmpty())
         {
-            String commandLine = commandLineParams;
+            String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "");
 
             if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
                 //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
@@ -147,8 +147,9 @@ public:
             }
             else if (File::getCurrentWorkingDirectory().getChildFile (commandLine.trim().removeCharacters ("\"")).existsAsFile())
             {
-                String csd = commandLine.trim().removeCharacters ("\"");;
+                String csd = commandLine.trim().removeCharacters ("\"");
                 openFile (csd);
+                return;
             }
         }
 
@@ -203,6 +204,7 @@ public:
         if (auto* props = pluginHolder->settings.get())
             props->removeValue ("filterState");
 
+        file.getParentDirectory().setAsCurrentWorkingDirectory();
         pluginHolder->createPlugin (file);
         setContentOwned (new MainContentComponent (*this), true);
         pluginHolder->startPlaying();
@@ -220,6 +222,7 @@ public:
         if (modTime != lastModified && csdFile.existsAsFile())
         {
             lastModified = csdFile.getLastModificationTime().toMilliseconds();
+            CabbageUtilities::debug("resetting file due to update of file on disk");
             resetPlugin (csdFile);
         }
 
