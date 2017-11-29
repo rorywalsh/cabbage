@@ -314,21 +314,16 @@ void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row
 
 void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
+    if(prop == CabbageIdentifierIds::bpm)
+        bpm = 60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000;
+
+    else if(prop == CabbageIdentifierIds::celldata)
     {
         var props = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::celldata);
         if (props.size()==3)
         {
             setCellData(int(props[0]), int(props[1]), props[2].toString());
         }
-    }
-
-    else if(prop == CabbageIdentifierIds::bpm)
-        bpm = 60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000;
-
-    else if(prop == CabbageIdentifierIds::celldata)
-    {
-
     }
 
     else if(prop == CabbageIdentifierIds::scrubberposition)

@@ -640,7 +640,6 @@ void CabbageWidgetData::setCellData(StringArray strTokens, ValueTree widgetData)
     var props;
     if(strTokens.size()==3)
     {
-
         props.append(strTokens[0].getIntValue());
         props.append(strTokens[1].getIntValue());
         props.append(strTokens[2]);
