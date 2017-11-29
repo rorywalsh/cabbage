@@ -1,1 +1,1 @@
-**scrubberposition(val)** Sets the scrubber position where val is an integer value in samples. If you wish to update the scrubberposition in real time use an identchannel identifier.
+**scrubberposition(val)** Sets the scrubber position where val is an integer value in samples, or steps if dealing with a stringsequencer widget. If you wish to update the scrubberposition in real time use an identchannel identifier.

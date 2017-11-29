@@ -517,6 +517,9 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx], false);
                 break;
 
+            //multiple property identifiers
+            case HashStringToInt ("celldata"):
+                setCellData(strTokens, widgetData);
             default:
                 break;
 
@@ -630,6 +633,20 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
         setProperty (widgetData, CabbageIdentifierIds::identchannelarray, identChannelArray);
 
     }
+}
+
+void CabbageWidgetData::setCellData(StringArray strTokens, ValueTree widgetData)
+{
+    var props;
+    if(strTokens.size()==3)
+    {
+
+        props.append(strTokens[0].getIntValue());
+        props.append(strTokens[1].getIntValue());
+        props.append(strTokens[2]);
+    }
+    setProperty (widgetData, CabbageIdentifierIds::celldata, props);
+
 }
 
 void CabbageWidgetData::addFiles (StringArray strTokens, ValueTree widgetData, String identifier)

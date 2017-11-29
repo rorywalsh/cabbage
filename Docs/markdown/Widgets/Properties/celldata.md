@@ -1,0 +1,1 @@
+**celldata(xVal, yVal, "string")** Sets the contents of a cell. The first two values set the actual cell in terms of coordinates, while the 3rd parameter sets the contents of the cell. This identifier is best used with an [identchannel](./identchannels.md). 

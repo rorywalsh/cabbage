@@ -836,12 +836,6 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
             }
         }
 
-        else if(typeOfWidget == CabbageWidgetTypes::stringsequencer && channels.size() > 1 && channels[0].isNotEmpty())
-        {
-            if (getCsound()->GetChannel (channels[0].toUTF8()) != float (value))
-                CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
-        }
-
         if (identChannel.isNotEmpty())
         {
             getCsound()->GetStringChannel (identChannel.toUTF8(), tmp_string);
@@ -851,7 +845,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
             {
                 CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);
 
-                if (identifierText.contains ("tablenumber")) //update even if table number has not changed
+                if (identifierText.contains ("tablenumber") || identifierText.contains ("celldata")) //update even if table number has not changed
                     CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 1);
 
                 getCsound()->SetChannel (identChannel.toUTF8(), (char*)"");

@@ -32,6 +32,35 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     addAndMakeVisible (vp);
     vp.setViewedComponent (&seqContainer);
 
+    arrangeTextEditor(wData);
+
+    bpm  = 60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000;
+    previousBpm = bpm;
+
+    if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) == 1)
+        startTimer(bpm);
+
+    setColours(wData);
+    updateCurrentStepPosition();
+
+    var props = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::celldata);
+
+    if (props.size()==3)
+    {
+        setCellData(int(props[0]), int(props[1]), props[2].toString());
+    }
+
+}
+
+CabbageStringSequencer::~CabbageStringSequencer()
+{
+    stopTimer();
+    textFields.getUnchecked (0)->clear();
+    textFields.clear();
+}
+
+void CabbageStringSequencer::arrangeTextEditor(ValueTree wData)
+{
     const int width = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
     int cellHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellheight);
@@ -68,7 +97,7 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
         else
         {
             vp.setScrollBarsShown (true, true);
-           // cellWidth = cellWidth;//(width - vp.getScrollBarThickness() - (showNumbers > 0 ? numbersWidth : 0)) / numColumns;
+            // cellWidth = cellWidth;//(width - vp.getScrollBarThickness() - (showNumbers > 0 ? numbersWidth : 0)) / numColumns;
         }
     }
     else
@@ -94,22 +123,6 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
             textFields[i]->add (tf);
         }
     }
-
-    setColours(wData);
-    bpm  = 60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000;
-    previousBpm = bpm;
-
-    if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) == 1)
-        startTimer(bpm);
-
-
-}
-
-CabbageStringSequencer::~CabbageStringSequencer()
-{
-    stopTimer();
-    textFields.getUnchecked (0)->clear();
-    textFields.clear();
 }
 
 void CabbageStringSequencer::createNumberLabels(ValueTree wData, int height, int showNumbers)
@@ -166,9 +179,19 @@ void CabbageStringSequencer::setColours(ValueTree wData)
 
 void CabbageStringSequencer::hiResTimerCallback()
 {
-    currentBeat = (currentBeat < numRows - 1 ? currentBeat + 1 : 0);
     owner->sendChannelDataToCsound (stepChannel.toUTF8(), currentBeat);
+    updateCurrentStepPosition();
+    if(bpm != previousBpm)
+    {
+        startTimer(bpm);
+        previousBpm = bpm;
+    }
 
+    currentBeat = (currentBeat < numRows - 1 ? currentBeat + 1 : 0);
+}
+
+void CabbageStringSequencer::updateCurrentStepPosition()
+{
     for ( int i = 0 ; i < numColumns ; i++)
         owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
 
@@ -177,19 +200,13 @@ void CabbageStringSequencer::hiResTimerCallback()
         for ( int y = 0 ; y < numRows ; y++)
         {
             if( currentBeat == y)
-               getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
+                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
             else
-               getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
+                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
 
 
             getEditor(x, y)->lookAndFeelChanged();
         }
-
-    if(bpm != previousBpm)
-    {
-        startTimer(bpm);
-        previousBpm = bpm;
-    }
 }
 
 void CabbageStringSequencer::setCurrentRow(int row)
@@ -233,6 +250,10 @@ void CabbageStringSequencer::resized()
     vp.setBounds (getLocalBounds());
 }
 
+void CabbageStringSequencer::setCellData(int col, int row, const String data)
+{
+    getEditor(col, row)->setText(data);
+}
 
 bool CabbageStringSequencer::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
@@ -286,7 +307,6 @@ void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row
         newCol = col;
     }
 
-
     highlightEditorText (newCol, newRow);
     getEditor (newCol, newRow)->grabKeyboardFocus();
 
@@ -294,17 +314,49 @@ void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row
 
 void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    if (prop == CabbageIdentifierIds::value)
+    if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
     {
-        currentBeat = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+        var props = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::celldata);
+        if (props.size()==3)
+        {
+            setCellData(int(props[0]), int(props[1]), props[2].toString());
+        }
     }
+
     else if(prop == CabbageIdentifierIds::bpm)
         bpm = 60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000;
+
+    else if(prop == CabbageIdentifierIds::celldata)
+    {
+
+    }
+
+    else if(prop == CabbageIdentifierIds::scrubberposition)
+    {
+        const int position = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition);
+        currentBeat = (position < 0 ? currentBeat : position);
+        if(position >= 0)
+            CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::scrubberposition, -1);
+    }
+
+    else if(prop == CabbageIdentifierIds::active)
+    {
+        handleCommonUpdates(this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
+
+        if(getActive()==0)
+            stopTimer();
+        else
+        {
+            currentBeat = 0;
+            startTimer(bpm);
+        }
+    }
     else
     {
         repaint();
-        handleCommonUpdates(this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates(this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
         setColours(valueTree);
+
     }
 }
 

@@ -54,23 +54,23 @@ for dir in directories[0:3]:
 				if "```html" in line:
 					line = line.replace("```html", "```csharp")
 
-				if "[Identifier channels](./identchannels.html)" in line:
-					line = line.replace("[Identifier channels](./identchannels.html)", "[Identifier channels](../identchannels/index.html)")
+				if "(./identchannels.html)" in line:
+					line = line.replace("(./identchannels.html)", "(../identchannels/index.html)")
 
-				if "[Widget arrays](./widget_arrays.md)" in line:
-					line = line.replace("[Widget arrays](./widget_arrays.md)", "[Widget arrays](../widget_arrays/index.html)")
+				if "(./widget_arrays.md)" in line:
+					line = line.replace("(./widget_arrays.md)", "(../widget_arrays/index.html)")
 
-				if "[Presets](./presets.md)" in line:
-					line = line.replace("[Presets](./presets.md)", "[Presets](../presets/index.html)")
+				if "(./presets.md)" in line:
+					line = line.replace("(./presets.md)", "(../presets/index.html)")
 
-				if "[Plants](./plants.md)" in line:
-					line = line.replace("[Plants](./plants.md)", "[Plants](../plants/index.html)")
+				if "(./plants.md)" in line:
+					line = line.replace("(./plants.md)", "(../plants/index.html)")
 
-				if "[Cabbage](./introduction.html)" in line:
-					line = line.replace("[Cabbage](./introduction.html)", "[Introduction](../introduction/index.html)")
+				if "(./introduction.html)" in line:
+					line = line.replace("(./introduction.html)", "(../introduction/index.html)")
 
-				if "[Controlling widgets](./controlling.md)" in line:
-					line = line.replace("[Controlling widgets](./controlling.md)", "[Controlling widgets](../controlling/index.html)")
+				if "(./controlling.md)" in line:
+					line = line.replace("(./controlling.md)", "(../controlling/index.html)")
 
 				if "{! " in line:
 					line = line.replace("{! ./markdown/Widgets/Properties/", "{% include_relative ")

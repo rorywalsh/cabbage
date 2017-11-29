@@ -396,6 +396,7 @@ public:
         add ("channels");
         add ("velocity");
         add ("amprange");
+        add ("celldata");
         add ("color:0");
         add ("caption");
         add ("textbox");
@@ -573,6 +574,7 @@ namespace CabbageIdentifierIds
     static const Identifier cropy = "cropy";
     static const Identifier cropwidth = "cropwidth";
     static const Identifier cropheight = "cropheight";
+    static const Identifier celldata = "celldata";
     static const Identifier active = "active";
     static const Identifier type = "type";
     static const Identifier imgdebug = "imgdebug";
