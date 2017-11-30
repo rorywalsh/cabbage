@@ -101,7 +101,7 @@ public:
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
     static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setPopulateProps ( StringArray strTokens, ValueTree widgetData);
-    static void setCellData(StringArray strTokens, ValueTree widgetData);
+    static void setCellData(StringArray strTokens, String str, ValueTree widgetData);
     static String replaceIdentifier (String line, String identifier, String updatedIdentifier);
     //============================================================================
     static Colour getColourFromText (String text);

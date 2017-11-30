@@ -16,12 +16,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
 */
-#ifndef CABBAGEGENERICPLUGINLOOKANDFEEL_H_INCLUDED
-#define CABBAGEGENERICPLUGINLOOKANDFEEL_H_INCLUDED
-
-
-#ifndef CABBAGEIDELOOKANDFEEL_H_INCLUDED
-#define CABBAGEIDELOOKANDFEEL_H_INCLUDED
+#pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../Settings/CabbageSettings.h"
@@ -56,9 +51,3 @@ private:
 
 };
 
-
-#endif  // CABBAGEIDELOOKANDFEEL_H_INCLUDED
-
-
-
-#endif  // CABBAGEGENERICPLUGINLOOKANDFEEL_H_INCLUDED

@@ -519,7 +519,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
             //multiple property identifiers
             case HashStringToInt ("celldata"):
-                setCellData(strTokens, widgetData);
+                setCellData(strTokens, identifierValueSet.parameter[indx], widgetData);
             default:
                 break;
 
@@ -635,15 +635,18 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     }
 }
 
-void CabbageWidgetData::setCellData(StringArray strTokens, ValueTree widgetData)
+void CabbageWidgetData::setCellData(StringArray strTokens, String parameters, ValueTree widgetData)
 {
+
     var props;
-    if(strTokens.size()==3)
-    {
-        props.append(strTokens[0].getIntValue());
-        props.append(strTokens[1].getIntValue());
-        props.append(strTokens[2]);
-    }
+
+    props.append(strTokens[0].getIntValue());
+    parameters = parameters.substring(parameters.indexOf(",")+1);
+    props.append(strTokens[1].getIntValue());
+    parameters = parameters.substring(parameters.indexOf(",")+1);
+    props.append(parameters.substring(0, parameters.length()).replace("\\", "\""));
+
+//    CabbageUtilities::debug(props[2].toString());
     setProperty (widgetData, CabbageIdentifierIds::celldata, props);
 
 }

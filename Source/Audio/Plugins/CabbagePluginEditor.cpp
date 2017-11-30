@@ -735,6 +735,12 @@ void CabbagePluginEditor::sendChannelStringDataToCsound (String channel, String 
         processor.getCsound()->SetChannel (channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
+void CabbagePluginEditor::sendScoreEventToCsound (String scoreEvent)
+{
+    if (processor.csdCompiledWithoutError())
+        processor.getCsound()->InputMessage(scoreEvent.toUTF8());
+}
+
 const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDisplay (const String signalVariable, const String displayType)
 {
     if (csdCompiledWithoutError())

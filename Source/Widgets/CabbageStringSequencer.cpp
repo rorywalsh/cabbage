@@ -211,23 +211,23 @@ void CabbageStringSequencer::updateCurrentStepPosition()
 
 void CabbageStringSequencer::setCurrentRow(int row)
 {
-    const int restrictedRow = jlimit(0, numRows-1, row);
-    const int currentBeat = jlimit(0, numRows-1, row);
-
-    for ( int i = 0 ; i < numColumns ; i++)
-        owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
-
-    for ( int x = 0 ; x < numColumns ; x++)
-        for ( int y = 0 ; y < numRows ; y++)
-        {
-            if( restrictedRow == y)
-                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
-            else
-                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
-
-            const MessageManagerLock j;
-            getEditor(x, y)->lookAndFeelChanged();
-        }
+//    const int restrictedRow = jlimit(0, numRows-1, row);
+//    const int currentBeat = jlimit(0, numRows-1, row);
+//
+//    for ( int i = 0 ; i < numColumns ; i++)
+//        owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
+//
+//    for ( int x = 0 ; x < numColumns ; x++)
+//        for ( int y = 0 ; y < numRows ; y++)
+//        {
+//            if( restrictedRow == y)
+//                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
+//            else
+//                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
+//
+//            const MessageManagerLock j;
+//            getEditor(x, y)->lookAndFeelChanged();
+//        }
 }
 
 void CabbageStringSequencer::highlightEditorText (int col, int row)
@@ -252,6 +252,7 @@ void CabbageStringSequencer::resized()
 
 void CabbageStringSequencer::setCellData(int col, int row, const String data)
 {
+    CabbageUtilities::debug(data);
     getEditor(col, row)->setText(data);
 }
 
@@ -323,6 +324,7 @@ void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, con
         if (props.size()==3)
         {
             setCellData(int(props[0]), int(props[1]), props[2].toString());
+            CabbageUtilities::debug(props[2].toString());
         }
     }
 

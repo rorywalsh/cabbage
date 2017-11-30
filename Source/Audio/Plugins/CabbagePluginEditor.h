@@ -148,6 +148,7 @@ public:
     ValueTree getValueTreeForComponent (String compName);
     Component* getComponentFromName (String name);
     void addToEditorAndMakeVisible (Component* comp, ValueTree widgetData);
+    void sendScoreEventToCsound (String scoreEvent);
     void updateLayoutEditorFrames();
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
     //=============================================================================

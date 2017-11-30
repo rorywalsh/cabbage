@@ -1,9 +1,9 @@
 <Cabbage>
-form caption("String Sequencer") size(400, 400), pluginID("def1")
-stringsequencer bounds(10, 10, 300, 320), channels("step", "track1", "track2", "track3", "track4"), active(0), identchannel("trackerIdent"), textcolour(200, 200, 200), highlightcolour(60, 60, 60) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20) showstepnumbers(4), numberofsteps(16)
-rslider bounds(314, 10, 70, 70) channel("bpm") range(10, 300, 180, 1, 0.001) text("BPM") 
-button bounds(314, 82, 70, 27) channel("startStop") text("Start", "Stop") 
-button bounds(314, 132, 70, 27) channel("shuffle") text("Shuffle")  
+form caption("String Sequencer") size(600, 400), pluginID("def1")
+stringsequencer bounds(10, 10, 500, 320), channels("step", "track1", "track2", "track3", "track4"), active(0), identchannel("trackerIdent"), textcolour(200, 200, 200), highlightcolour(60, 60, 60) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20) showstepnumbers(4), numberofsteps(16)
+rslider bounds(514, 10, 70, 70) channel("bpm") range(10, 300, 180, 1, 0.001) text("BPM") 
+button bounds(514, 82, 70, 27) channel("startStop") text("Start", "Stop") 
+button bounds(514, 132, 70, 27) channel("shuffle") text("Shuffle")  
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -15,25 +15,21 @@ sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
-
 ;The following instrument listens for the current step and 
 ;trigger instruments accordingly 
 instr 1 
     kBeat chnget "step"
     kBPM chnget "bpm"
-
     if changed(kBeat) == 1 then
         event "i", "Track1", 0, 1
         ;event "i", "Track2", 0, 1
         ;event "i", "Track3", 0, 1
         ;event "i", "Track4", 0, 1
     endif
-
     if changed(kBPM) == 1 then
         SMessage sprintfk "bpm(%d)", kBPM
         chnset SMessage, "trackerIdent"
     endif
-
     kStartStop chnget "startStop"
     if changed(kStartStop) == 1 then
         if kStartStop == 1 then
@@ -47,7 +43,6 @@ instr 1
         SMessage sprintfk "scrubberposition(%d)", chnget:k("position")
         chnsetks SMessage, "trackerIdent"
     endif
-
     if changed:k(chnget:k("shuffle")) == 1 then 
         event "i", "FillCells", 0, 0
     endif
@@ -66,7 +61,6 @@ instr Track1
         outs aOscil, aOscil
     endif
 endin
-
 instr Track2
     SCellData chnget "track2"
     if strlen(SCellData)!=0 then
@@ -77,7 +71,6 @@ instr Track2
         outs aOscil, aOscil
     endif
 endin
-
 instr Track3
     SCellData chnget "track3"
     if strlen(SCellData)!=0 then
@@ -88,8 +81,6 @@ instr Track3
         outs aOscil, aOscil 
     endif
 endin
-
-
 instr Track4
     SCellData chnget "track4"
     if strlen(SCellData)!=0 then
@@ -100,7 +91,6 @@ instr Track4
         outs aOscil, aOscil 
     endif
 endin
-
 ;fills cell with random note data 
 instr FillCells
     iNotes[] fillarray 60, 62, 64, 65, 67, 72, 48, 36, 74, 75
@@ -114,7 +104,8 @@ instr FillCells
         while iColCnt < iNumCols do
             iNoteIndex random 0, lenarray(iNotes)
             if random:i(0, 100)>50 then
-                SMessage sprintf "celldata(%d, %d, \"%d\") ", iColCnt, iRowCnt, iNotes[int(iNoteIndex)]
+                SScoreEvent sprintf "i \\\"Track1\\\" 0 1 %d", iNotes[int(iNoteIndex)]
+                SMessage sprintf "celldata(%d, %d, \"%s\") ", iColCnt, iRowCnt, SScoreEvent 
             else
                 SMessage sprintf "celldata(%d, %d, \"\") ", iColCnt, iRowCnt
             endif
@@ -123,11 +114,10 @@ instr FillCells
         od
         iRowCnt+=1
     od  
-
     ;when SCellData strings has been constructed, send it to Cabbage
+    prints SCellData
     chnset SCellData, "trackerIdent"    
 endin
-
 </CsInstruments>
 <CsScore>
 f1 0 16 10 1

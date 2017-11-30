@@ -843,6 +843,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
             if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
             {
+                CabbageUtilities::debug(identifierText);
                 CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);
 
                 if (identifierText.contains ("tablenumber")) //update even if table number has not changed
