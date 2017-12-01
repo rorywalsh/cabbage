@@ -267,22 +267,11 @@ void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, Strin
 
 void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, String channel, String data)
 {
-    for (auto matrixEvent : matrixEventSequencers)
+    for (int i = 0 ; i < matrixEventSequencers.size(); i++)
     {
-        if (matrixEvent.channel == channel)
+        if (matrixEventSequencers.getUnchecked(i).channel == channel)
         {
-            matrixEvent.events[col].set(row, data);
-        }
-    }
-}
-
-void CsoundPluginProcessor::setMatrixEventSequencerCurrentBeat(String channel, int beat)
-{
-    for (auto matrixEvent : matrixEventSequencers)
-    {
-        if (matrixEvent.channel == channel)
-        {
-            matrixEvent.position = beat;
+            matrixEventSequencers.getUnchecked(i).events[col].set(row, data);
         }
     }
 }

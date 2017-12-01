@@ -245,9 +245,9 @@ void CabbageStringSequencer::resized()
 
 void CabbageStringSequencer::setCellData(int col, int row, const String data)
 {
-    CabbageUtilities::debug(data);
     if(col<numColumns && row<numRows)
     {
+        getEditor(col, row)->setText(data);
         getEditor(col, row)->setText(data);
         owner->setEventMatrixData(col, row, getChannel(), data);
     }
@@ -304,6 +304,7 @@ void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row
 
     else if (key.isKeyCode (KeyPress::returnKey))
     {
+        setCellData(col, row, getText());
         newRow = (row < numRows - 1 ? row + 1 : 0);
         newCol = col;
     }
@@ -331,7 +332,7 @@ void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, con
         if (props.size()==3)
         {
             setCellData(int(props[0]), int(props[1]), props[2].toString());
-            CabbageUtilities::debug(props[2].toString());
+            //CabbageUtilities::debug(props[2].toString());
         }
     }
 

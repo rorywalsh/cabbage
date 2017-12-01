@@ -116,7 +116,6 @@ public:
 
     void createMatrixEventSequencer(int rows, int cols, String channel);
     void setMatrixEventSequencerCellData(int row, int col, String channel, String data);
-    void setMatrixEventSequencerCurrentBeat(String channel, int beat);
     //=============================================================================
     //Implement these to init, send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel

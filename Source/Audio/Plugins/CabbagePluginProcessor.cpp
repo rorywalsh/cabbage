@@ -843,7 +843,6 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
             if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
             {
-                CabbageUtilities::debug(identifierText);
                 CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);
 
                 if (identifierText.contains ("tablenumber")) //update even if table number has not changed
@@ -860,12 +859,20 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
 void CabbagePluginProcessor::triggerCsoundEvents()
 {
-    for ( int i = 0; i < matrixEventSequencers.size(); i++)
+    for ( int x = 0 ; x < matrixEventSequencers.size() ; x++)
     {
-        const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, matrixEventSequencers.getUnchecked(i).channel, true);
+        const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, matrixEventSequencers.getUnchecked(x).channel, true);
         const String channel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
         const int position = getCsound()->GetChannel(channel.toUTF8());
-        CabbageUtilities::debug("Position", position);
+
+        for(int i = 0 ; i < CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::matrixcols) ; i++)
+        {
+            for ( int y = 0 ; y < 16 ; y++)
+            {
+                String event = matrixEventSequencers.getUnchecked(x).events[y][i];
+                CabbageUtilities::debug(event);
+            }
+        }
     }
 }
 //================================================================================

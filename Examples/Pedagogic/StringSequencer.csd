@@ -1,4 +1,4 @@
-<Cabbage>
+, I'll <Cabbage>
 form caption("String Sequencer") size(600, 400), pluginID("def1")
 stringsequencer bounds(10, 10, 500, 320), channels("step"), active(0), identchannel("trackerIdent"), showstepnumbers(4), matrixsize(16, 4) textcolour(200, 200, 200), highlightcolour(60, 60, 60) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20)
 rslider bounds(514, 10, 70, 70) channel("bpm") range(10, 400, 180, 1, 0.001) text("BPM") 
