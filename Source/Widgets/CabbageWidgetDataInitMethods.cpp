@@ -198,6 +198,8 @@ void CabbageWidgetData::setStringSequencerProperties (ValueTree widgetData, int 
     setProperty (widgetData, CabbageIdentifierIds::textcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
+    setProperty (widgetData, CabbageIdentifierIds::matrixcols, 2);
+    setProperty (widgetData, CabbageIdentifierIds::matrixrows, 8);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::value, 1);
     setProperty (widgetData, CabbageIdentifierIds::numberofsteps, 16);

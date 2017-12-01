@@ -104,12 +104,26 @@ public:
     int checkTable (int tableNum);
     AudioPlayHead::CurrentPositionInfo hostInfo;
 
+    class MatrixEventSequencer
+    {
+    public:
+        String channel = "";
+        Array<StringArray> events;
+        int position = 0;
+        MatrixEventSequencer(String csoundChannel):channel(csoundChannel){}
+
+    };
+
+    void createMatrixEventSequencer(int rows, int cols, String channel);
+    void setMatrixEventSequencerCellData(int row, int col, String channel, String data);
+    void setMatrixEventSequencerCurrentBeat(String channel, int beat);
     //=============================================================================
     //Implement these to init, send and receive channel data to Csound. Typically used when
     //a component is updated and its value is sent to Csound, or when a Csound channel
     //is updated in the Csound orchestra and we need to update the Cabbage components.
     //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
     //as is done in CabbagePluginprocessor.
+    virtual void triggerCsoundEvents();
     virtual void sendChannelDataToCsound();
     virtual void getChannelDataFromCsound() {};
     virtual void initAllCsoundChannels (ValueTree cabbageData);
@@ -196,6 +210,7 @@ public:
         return returnVal;
     };
 
+    Array<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "");
 private:
@@ -218,6 +233,7 @@ private:
     ScopedPointer<FileLogger> fileLogger;
     int busIndex = 0;
     bool disableLogging = false;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginProcessor)
 
 };

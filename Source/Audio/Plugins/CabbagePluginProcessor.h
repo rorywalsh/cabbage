@@ -68,11 +68,13 @@ public:
 
     };
 
+
     CabbagePluginProcessor (File inputFile = File());
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;
     void getChannelDataFromCsound();
+    void triggerCsoundEvents();
     void addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     void createParameters();
@@ -124,6 +126,10 @@ private:
     NamedValueSet macroText;
     bool xyAutosCreated = false;
     OwnedArray<XYPadAutomator> xyAutomators;
+
+
+
+
 
 };
 

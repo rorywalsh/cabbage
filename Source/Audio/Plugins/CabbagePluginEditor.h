@@ -118,6 +118,11 @@ public:
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (String channel, float value);
     void sendChannelStringDataToCsound (String channel, String value);
+    void sendScoreEventToCsound (String scoreEvent);
+    void createEventMatrix(int cols, int rows, String channel);
+    void setEventMatrixData(int cols, int rows, String channel, String data);
+    void setEventMatrixCurrentPosition(int cols, int rows, String channel, int position);
+
     bool shouldUpdateSignalDisplay();
     void savePluginStateToFile (File snapshotFile);
     void restorePluginStateFrom (String childPreset);
@@ -148,7 +153,6 @@ public:
     ValueTree getValueTreeForComponent (String compName);
     Component* getComponentFromName (String name);
     void addToEditorAndMakeVisible (Component* comp, ValueTree widgetData);
-    void sendScoreEventToCsound (String scoreEvent);
     void updateLayoutEditorFrames();
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
     //=============================================================================

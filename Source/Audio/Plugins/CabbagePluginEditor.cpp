@@ -741,6 +741,19 @@ void CabbagePluginEditor::sendScoreEventToCsound (String scoreEvent)
         processor.getCsound()->InputMessage(scoreEvent.toUTF8());
 }
 
+void CabbagePluginEditor::createEventMatrix(int cols, int rows, String channel)
+{
+    if (processor.csdCompiledWithoutError())
+        processor.createMatrixEventSequencer(cols, rows, channel);
+}
+
+void CabbagePluginEditor::setEventMatrixData(int cols, int rows, String channel, String data)
+{
+    if (processor.csdCompiledWithoutError())
+        processor.setMatrixEventSequencerCellData(cols, rows, channel, data);
+}
+
+
 const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDisplay (const String signalVariable, const String displayType)
 {
     if (csdCompiledWithoutError())

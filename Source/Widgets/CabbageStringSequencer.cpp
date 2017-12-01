@@ -32,13 +32,15 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
     addAndMakeVisible (vp);
     vp.setViewedComponent (&seqContainer);
 
-    arrangeTextEditor(wData);
+    numRows = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::matrixrows);
+    numColumns = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::matrixcols);
+    arrangeTextEditors(wData);
 
     bpm  = 60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000;
     previousBpm = bpm;
 
-    if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) == 1)
-        startTimer(bpm);
+    //if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) == 1)
+    //    startTimer(bpm);
 
     setColours(wData);
     updateCurrentStepPosition();
@@ -50,6 +52,8 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
         setCellData(int(props[0]), int(props[1]), props[2].toString());
     }
 
+    owner->createEventMatrix(numColumns, numRows, getChannel());
+
 }
 
 CabbageStringSequencer::~CabbageStringSequencer()
@@ -59,25 +63,14 @@ CabbageStringSequencer::~CabbageStringSequencer()
     textFields.clear();
 }
 
-void CabbageStringSequencer::arrangeTextEditor(ValueTree wData)
+void CabbageStringSequencer::arrangeTextEditors(ValueTree wData)
 {
     const int width = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
     int cellHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellheight);
     int cellWidth = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellwidth);
-    numRows = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::numberofsteps);
 
 
-    var channels = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channel);
-
-    if (channels.size() < 2)
-    {
-        CabbageUtilities::showMessage ("Make sure you have at least 2 channels declared for stringsequencer");
-        return;
-    }
-
-    numColumns = channels.size() - 1;
-    stepChannel = channels[0];
 
     const int showNumbers = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::showstempnumbers);
     createNumberLabels(wData, cellHeight, showNumbers);
@@ -117,7 +110,6 @@ void CabbageStringSequencer::arrangeTextEditor(ValueTree wData)
             seqContainer.addAndMakeVisible (tf);
             tf->getProperties().set ("Column", var (i));
             tf->getProperties().set ("Row", var (y));
-            tf->getProperties().set ("Channel", channels[i + 1]);
             tf->addKeyListener (this);
             tf->setBounds ((showNumbers > 0 ? 20 : 0) + cellWidth * i, y * cellHeight, cellWidth, cellHeight);
             textFields[i]->add (tf);
@@ -179,21 +171,22 @@ void CabbageStringSequencer::setColours(ValueTree wData)
 
 void CabbageStringSequencer::hiResTimerCallback()
 {
-    owner->sendChannelDataToCsound (stepChannel.toUTF8(), currentBeat);
-    updateCurrentStepPosition();
-    if(bpm != previousBpm)
-    {
-        startTimer(bpm);
-        previousBpm = bpm;
-    }
-
-    currentBeat = (currentBeat < numRows - 1 ? currentBeat + 1 : 0);
+//    owner->sendChannelDataToCsound (stepChannel.toUTF8(), currentBeat);
+//    updateCurrentStepPosition();
+//    if(bpm != previousBpm)
+//    {
+//        startTimer(bpm);
+//        previousBpm = bpm;
+//    }
+//
+//    currentBeat = (currentBeat < numRows - 1 ? currentBeat + 1 : 0);
 }
 
 void CabbageStringSequencer::updateCurrentStepPosition()
 {
-    for ( int i = 0 ; i < numColumns ; i++)
-        owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
+    //for ( int i = 0 ; i < numColumns ; i++)
+    //    owner->sendScoreEventToCsound(getEditor (i, currentBeat)->getText().toUTF8());
+        // owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
 
     const MessageManagerLock j;
     for ( int x = 0 ; x < numColumns ; x++)
@@ -253,7 +246,14 @@ void CabbageStringSequencer::resized()
 void CabbageStringSequencer::setCellData(int col, int row, const String data)
 {
     CabbageUtilities::debug(data);
-    getEditor(col, row)->setText(data);
+    if(col<numColumns && row<numRows)
+    {
+        getEditor(col, row)->setText(data);
+        owner->setEventMatrixData(col, row, getChannel(), data);
+    }
+
+
+    //setMatrixEventSequencerCellData(int row, int col, String channel, String data)
 }
 
 bool CabbageStringSequencer::keyPressed (const KeyPress& key, Component* originatingComponent)
@@ -315,7 +315,14 @@ void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row
 
 void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    if(prop == CabbageIdentifierIds::bpm)
+    if(prop == CabbageIdentifierIds::value)
+    {
+        currentBeat = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value);
+        updateCurrentStepPosition();
+
+    }
+
+    else if(prop == CabbageIdentifierIds::bpm)
         bpm = 60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000;
 
     else if(prop == CabbageIdentifierIds::celldata)
@@ -345,7 +352,7 @@ void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, con
         else
         {
             currentBeat = 0;
-            startTimer(bpm);
+            //startTimer(bpm);
         }
     }
     else

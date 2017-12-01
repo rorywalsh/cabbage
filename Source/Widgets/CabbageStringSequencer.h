@@ -42,7 +42,7 @@ public:
     void setCurrentRow(int row);
     void setCellData(int col, int row, const String data);
     void updateCurrentStepPosition();
-    void arrangeTextEditor(ValueTree wData);
+    void arrangeTextEditors(ValueTree wData);
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

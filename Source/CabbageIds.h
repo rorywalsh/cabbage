@@ -370,6 +370,7 @@ public:
         add ("basechannel");
         add ("popupprefix");
         add ("macronames");
+        add ("matrixsize");
         add ("fontcolour");
         add ("textcolour");
         add ("updaterate");
@@ -587,6 +588,8 @@ namespace CabbageIdentifierIds
     static const Identifier rotate = "rotate";
     static const Identifier pivotx = "pivotx";
     static const Identifier pivoty = "pivoty";
+    static const Identifier matrixrows = "matrixrows";
+    static const Identifier matrixcols = "matrixcols";
     static const Identifier increment = "increment";
     static const Identifier midichan = "midichan";
     static const Identifier midictrl = "midictrl";

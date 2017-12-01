@@ -517,9 +517,13 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setColourArrays (strTokens, widgetData, identifierValueSet.identifier[indx], false);
                 break;
 
-            //multiple property identifiers
+            //matrix event props
             case HashStringToInt ("celldata"):
                 setCellData(strTokens, identifierValueSet.parameter[indx], widgetData);
+                break;
+
+            case HashStringToInt( ("matrixsize")):
+                setMatrixSize(strTokens, widgetData);
             default:
                 break;
 
@@ -635,20 +639,23 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     }
 }
 
+void CabbageWidgetData::setMatrixSize(StringArray strTokens, ValueTree widgetData)
+{
+    setNumProp(widgetData, CabbageIdentifierIds::matrixrows, strTokens[0].getIntValue());
+    setNumProp(widgetData, CabbageIdentifierIds::matrixcols, strTokens[1].getIntValue());
+}
+
 void CabbageWidgetData::setCellData(StringArray strTokens, String parameters, ValueTree widgetData)
 {
-
     var props;
-
     props.append(strTokens[0].getIntValue());
-    parameters = parameters.substring(parameters.indexOf(",")+1);
     props.append(strTokens[1].getIntValue());
-    parameters = parameters.substring(parameters.indexOf(",")+1);
-    props.append(parameters.substring(0, parameters.length()).replace("\\", "\""));
 
-//    CabbageUtilities::debug(props[2].toString());
+    while(parameters.indexOf(",")!=-1)
+        parameters =  parameters.substring(parameters.indexOf(",")+1);
+
+    props.append(parameters.replace("\\", "\""));
     setProperty (widgetData, CabbageIdentifierIds::celldata, props);
-
 }
 
 void CabbageWidgetData::addFiles (StringArray strTokens, ValueTree widgetData, String identifier)

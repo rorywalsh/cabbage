@@ -214,21 +214,10 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     else
         csound->SetChannel ("IS_A_PLUGIN", 0.0);
 
+    csound->PerformKsmps();
+    //csound->SetScoreOffsetSeconds (0);
+    //csound->RewindScore();
 
-    //post init hack to allow tables to be set up correctly
-    try
-    {
-        csound->PerformKsmps();
-        //csound->SetScoreOffsetSeconds (0);
-        //csound->RewindScore();
-    }
-    catch (int e)
-    {
-        CabbageUtilities::debug ("Exception raised");
-        this->suspendProcessing (true);
-        csound = nullptr;
-        // .. handle error - log, resume, exit, whatever
-    }
 
 }
 //==============================================================================
@@ -257,6 +246,47 @@ void CsoundPluginProcessor::addMacros (String csdText)
             i = csdArray.size();
     }
 }
+
+//==============================================================================
+void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, String channel)
+{
+    MatrixEventSequencer matrix(channel);
+
+    for (int i = 0 ; i < cols ; i++)
+    {
+        matrix.events.add (StringArray());
+
+        for ( int y = 0 ; y < rows ; y++)
+        {
+            matrix.events[i].add("");
+        }
+    }
+
+    matrixEventSequencers.add(matrix);
+}
+
+void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, String channel, String data)
+{
+    for (auto matrixEvent : matrixEventSequencers)
+    {
+        if (matrixEvent.channel == channel)
+        {
+            matrixEvent.events[col].set(row, data);
+        }
+    }
+}
+
+void CsoundPluginProcessor::setMatrixEventSequencerCurrentBeat(String channel, int beat)
+{
+    for (auto matrixEvent : matrixEventSequencers)
+    {
+        if (matrixEvent.channel == channel)
+        {
+            matrixEvent.position = beat;
+        }
+    }
+}
+
 //==============================================================================
 StringArray CsoundPluginProcessor::getTableStatement (int tableNum)
 {
@@ -466,6 +496,11 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 #endif
 }
 
+//==========================================================================
+void CsoundPluginProcessor::triggerCsoundEvents()
+{
+
+}
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
@@ -542,6 +577,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                     {
                         guiCycles = 0;
                         triggerAsyncUpdate();
+                        triggerCsoundEvents();
                     }
                     else
                         ++guiCycles;

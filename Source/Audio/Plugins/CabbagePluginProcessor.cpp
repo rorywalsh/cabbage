@@ -858,6 +858,16 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
     }
 }
 
+void CabbagePluginProcessor::triggerCsoundEvents()
+{
+    for ( int i = 0; i < matrixEventSequencers.size(); i++)
+    {
+        const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, matrixEventSequencers.getUnchecked(i).channel, true);
+        const String channel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
+        const int position = getCsound()->GetChannel(channel.toUTF8());
+        CabbageUtilities::debug("Position", position);
+    }
+}
 //================================================================================
 void CabbagePluginProcessor::addXYAutomator (CabbageXYPad* xyPad, ValueTree wData)
 {
