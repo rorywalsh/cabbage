@@ -198,7 +198,7 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::csoundoutput)
         insertCsoundOutputConsole (cabbageWidgetData);
 
-    else if (widgetType == CabbageWidgetTypes::numberbox)
+    else if (widgetType == CabbageWidgetTypes::numslider)
         insertNumberBox (cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::textbox.toString())

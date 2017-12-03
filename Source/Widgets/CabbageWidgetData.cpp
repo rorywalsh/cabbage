@@ -87,7 +87,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == "checkbox")
         setCheckBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "numberbox")
+    else if (strTokens[0].trim() == "numslider")
         setNumberBoxProperties (widgetData, ID);
 
     else if (strTokens[0].trim() == "combobox")

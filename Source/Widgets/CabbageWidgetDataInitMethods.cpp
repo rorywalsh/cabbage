@@ -819,12 +819,12 @@ void CabbageWidgetData::setNumberBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::text, "");
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
-    setProperty (widgetData, CabbageIdentifierIds::type, "numberbox");
+    setProperty (widgetData, CabbageIdentifierIds::type, "numslider");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getDarkerBackgroundSkin().toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::whitesmoke.toString());
     setProperty (widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
-    setProperty (widgetData, CabbageIdentifierIds::name, "numberbox");
+    setProperty (widgetData, CabbageIdentifierIds::name, "numslider");
     setProperty (widgetData, CabbageIdentifierIds::align, "above");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");

@@ -29,7 +29,7 @@ CabbageNumberBox::CabbageNumberBox (ValueTree wData)
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-
+	CabbageUtilities::debug(getName());
     //slider.setName(text);
     slider.toFront (true);
 

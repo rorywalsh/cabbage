@@ -213,9 +213,10 @@ public:
         add ("combobox");
         add ("checkbox");
         add ("encoder");
-        add ("numberbox");
+        //add ("numberbox");
         add ("xypad");
         add ("button");
+		add ("numslider"); //fix for stupid live issue with number boxes
     }
 
     ~CabbageControlWidgetStrings() {}
@@ -460,7 +461,8 @@ namespace CabbageWidgetTypes
 {
     //list of static consts for types of widgets
     static const String combobox = "combobox";
-    static const String numberbox = "numberbox";
+    //static const String numberbox = "numberbox";
+	static const String numslider = "numslider";
     static const String rslider = "rslider";
     static const String hslider = "hslider";
     static const String hslider2 = "hslider2";
@@ -725,7 +727,7 @@ public:
         set ("Image", CabbageWidgetTypes::image);
         set ("Keyboard", CabbageWidgetTypes::keyboard);
         set ("Label", CabbageWidgetTypes::label);
-        set ("Numberbox", CabbageWidgetTypes::numberbox);
+        set ("Numberbox", CabbageWidgetTypes::numslider);
         set ("Signal Display", CabbageWidgetTypes::signaldisplay);
         set ("Slider - Horizontal", CabbageWidgetTypes::hslider);
         set ("Slider - Rotary", CabbageWidgetTypes::rslider);
