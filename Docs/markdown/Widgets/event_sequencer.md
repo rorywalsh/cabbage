@@ -5,7 +5,7 @@ The eventsequencer widget is an event based sequencer that can be used to send s
 ```csharp
 eventsequencer bounds(x, y, width, height), channel("position"), fontcolour("colour"), matrixsize(row, cols), shownumbers(val), cellwidth(val),
 cellheight(val), identchannel("channel"), alpha(val), visible(val), text("Track1", "Track2", "Track3", "Track4"), orientation("type")
-rotate(radians, pivotx, pivoty), active(val),
+rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefix(col, "string")
 ```
 <!--(End of syntax)/-->
 
@@ -15,19 +15,21 @@ rotate(radians, pivotx, pivoty), active(val),
 
 {! ./markdown/Widgets/Properties/bpm.md !}
 
-{! ./markdown/Widgets/Properties/numberofsteps.md !}
-
-{! ./markdown/Widgets/Properties/shownumbers.md !}
-
-{! ./markdown/Widgets/Properties/cellwidth.md !}
+{! ./markdown/Widgets/Properties/celldata.md !}
 
 {! ./markdown/Widgets/Properties/cellheight.md !}
 
-{! ./markdown/Widgets/Properties/bpm.md !}
+{! ./markdown/Widgets/Properties/cellwidth.md !}
 
-{! ./markdown/Widgets/Properties/celldata.md !}
+{! ./markdown/Widgets/Properties/colprefix.md !}
+
+{! ./markdown/Widgets/Properties/numberofsteps.md !}
 
 {! ./markdown/Widgets/Properties/orientation.md !}
+
+{! ./markdown/Widgets/Properties/rowprefix.md !}
+
+{! ./markdown/Widgets/Properties/shownumbers.md !}
 
 ### Common Identifiers
 {! ./markdown/Widgets/Properties/active.md !}

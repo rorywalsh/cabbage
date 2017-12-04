@@ -1,1 +1,2 @@
-**rowprefix(row, "prefix")** Will append "val" to all score events for the given row. This can be useful if you wish to free up and avoid text duplication in each cell. 
+**rowprefix(row, "prefix")** Will append "val" to all score events for the given row (row indices start at 0). This can be useful if you wish to free up and avoid text duplication in each cell. If you wish to set more than one row at a time, you may use a ':' between numbers, with no whitespace, e.g, `rowprefix(0:1:2:3, "i1 0 1")` 
+>Note you shuld only ever use either a `colprefix()`or a `rowprefix()`. Using two will only lead to inconcsistant and erratic behaviour. 

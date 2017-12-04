@@ -20,6 +20,8 @@
 
 
 #include "CabbageWidgetData.h"
+#define MAX_MATRIX_SIZE 16
+
 //#include "CabbageWidgetDataInitMethods.cpp"
 //===============================================================================
 // Main Cabbage abstract GUI class
@@ -521,7 +523,10 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("celldata"):
                 setCellData(strTokens, identifierValueSet.parameter[indx], widgetData);
                 break;
-
+			case HashStringToInt("rowprefix"):
+			case HashStringToInt("colprefix"):
+				setMatrixPrefix(strTokens, identifierValueSet.parameter[indx], widgetData, identifierValueSet.identifier[indx]);
+				break;
             case HashStringToInt( ("matrixsize")):
                 setMatrixSize(strTokens, widgetData);
             default:
@@ -600,7 +605,7 @@ String CabbageWidgetData::replaceIdentifier (String line, String identifier, Str
 
     return firstSection + updatedIdentifier + secondSection;
 }
-
+//=========================================================================================================
 void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier)
 {
     var array;
@@ -638,6 +643,43 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
 
     }
 }
+
+void CabbageWidgetData::setMatrixPrefix(StringArray strTokens, String parameters, ValueTree widgetData, String identifier)
+{
+	var currentPrefixes = getProperty(widgetData, identifier);
+	StringArray prefixes;
+	StringArray tokens;
+
+	if (currentPrefixes.size() < MAX_MATRIX_SIZE)
+		for (int i = 0; i < MAX_MATRIX_SIZE; i++)
+			prefixes.add("");
+	else
+		for (int i = 0 ; i < currentPrefixes.size() ; i++)
+			prefixes.add(currentPrefixes[i].toString());
+
+	var nums;
+	if (strTokens[0].contains(":") && strTokens.size() > 0)
+		tokens.addTokens(strTokens[0], ":", "");
+	else
+		tokens.add(strTokens[0]);
+
+	while (parameters.indexOf(",") != -1)
+		parameters = parameters.substring(parameters.indexOf(",") + 1);
+
+
+	for (auto num : tokens)
+		prefixes.set(num.getIntValue(), parameters);	
+
+	if (identifier == "colprefix")
+		setProperty(widgetData, "colprefix", prefixes);
+	else //rowprefix
+		setProperty(widgetData, "rowprefix", prefixes);
+
+	for (auto str : prefixes)
+		CabbageUtilities::debug(str);
+}
+
+
 
 void CabbageWidgetData::setMatrixSize(StringArray strTokens, ValueTree widgetData)
 {

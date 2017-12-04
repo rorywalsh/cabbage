@@ -52,13 +52,13 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
         setCellData(int(props[0]), int(props[1]), props[2].toString());
     }
 
+	//matrix belongs to processor..
     owner->createEventMatrix(numColumns, numRows, getChannel());
 
 }
 
 CabbageEventSequencer::~CabbageEventSequencer()
 {
-    stopTimer();
     textFields.getUnchecked (0)->clear();
     textFields.clear();
 }
@@ -72,7 +72,7 @@ void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
 
 
 
-    const int showNumbers = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::showstempnumbers);
+    const int showNumbers = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::showstepnumbers);
     createNumberLabels(wData, cellHeight, showNumbers);
 
     if(cellWidth == 0)
@@ -107,6 +107,7 @@ void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
         for ( int y = 0 ; y < numRows ; y++)
         {
             TextEditor* tf = new TextEditor();
+			tf->setJustification(Justification::left);
             seqContainer.addAndMakeVisible (tf);
             tf->getProperties().set ("Column", var (i));
             tf->getProperties().set ("Row", var (y));
@@ -159,7 +160,7 @@ void CabbageEventSequencer::setColours(ValueTree wData)
     for( int i = 0 ; i < stepNumbers.size(); i++)
     {
         stepNumbers[i]->setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textcolour)));
-        if (i % int(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::showstempnumbers)) == 0)
+        if (i % int(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::showstepnumbers)) == 0)
         {
             stepNumbers[i]->setColour(Label::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
             stepNumbers[i]->setColour(Label::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour)));
@@ -167,25 +168,8 @@ void CabbageEventSequencer::setColours(ValueTree wData)
     }
 }
 
-void CabbageEventSequencer::hiResTimerCallback()
-{
-//    owner->sendChannelDataToCsound (stepChannel.toUTF8(), currentBeat);
-//    updateCurrentStepPosition();
-//    if(bpm != previousBpm)
-//    {
-//        startTimer(bpm);
-//        previousBpm = bpm;
-//    }
-//
-//    currentBeat = (currentBeat < numRows - 1 ? currentBeat + 1 : 0);
-}
-
 void CabbageEventSequencer::updateCurrentStepPosition()
 {
-    //for ( int i = 0 ; i < numColumns ; i++)
-    //    owner->sendScoreEventToCsound(getEditor (i, currentBeat)->getText().toUTF8());
-        // owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
-
     const MessageManagerLock j;
     for ( int x = 0 ; x < numColumns ; x++)
         for ( int y = 0 ; y < numRows ; y++)
@@ -198,27 +182,6 @@ void CabbageEventSequencer::updateCurrentStepPosition()
 
             getEditor(x, y)->lookAndFeelChanged();
         }
-}
-
-void CabbageEventSequencer::setCurrentRow(int row)
-{
-//    const int restrictedRow = jlimit(0, numRows-1, row);
-//    const int currentBeat = jlimit(0, numRows-1, row);
-//
-//    for ( int i = 0 ; i < numColumns ; i++)
-//        owner->sendChannelStringDataToCsound (getEditor (i, currentBeat)->getProperties().getWithDefault ("Channel", ""), getEditor (i, currentBeat)->getText().toUTF8());
-//
-//    for ( int x = 0 ; x < numColumns ; x++)
-//        for ( int y = 0 ; y < numRows ; y++)
-//        {
-//            if( restrictedRow == y)
-//                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
-//            else
-//                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
-//
-//            const MessageManagerLock j;
-//            getEditor(x, y)->lookAndFeelChanged();
-//        }
 }
 
 void CabbageEventSequencer::highlightEditorText (int col, int row)
@@ -241,15 +204,24 @@ void CabbageEventSequencer::resized()
     vp.setBounds (getLocalBounds());
 }
 
-void CabbageEventSequencer::setCellData(int col, int row, const String data)
+void CabbageEventSequencer::setCellData(int col, int row, String data)
 {
-    if(col<numColumns && row<numRows)
-    {
-        getEditor(col, row)->setText(data);
-        getEditor(col, row)->setText(data);
-        owner->setEventMatrixData(col, row, getChannel(), data);
-    }
-
+	var colPrefixes = CabbageWidgetData::getProperty(widgetData, "colprefix");
+	var rowPrefixes = CabbageWidgetData::getProperty(widgetData, "rowprefix");
+	if ( rowPrefixes.size() > 0)
+		data = rowPrefixes.size() < row ? rowPrefixes[row].toString() : "" + data;
+	if (colPrefixes.size() > 0)
+	{
+		CabbageUtilities::debug(colPrefixes[col].toString());
+		data = colPrefixes[col].toString() + data;
+	}
+	
+	if (col<numColumns && row<numRows)
+	{
+		getEditor(col, row)->setText(data);
+		getEditor(col, row)->setText(data);
+		owner->setEventMatrixData(col, row, getChannel(), data);
+	}
 
     //setMatrixEventSequencerCellData(int row, int col, String channel, String data)
 }
@@ -318,11 +290,7 @@ void CabbageEventSequencer::valueTreePropertyChanged (ValueTree& valueTree, cons
     {
         currentBeat = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::value);
         updateCurrentStepPosition();
-
     }
-
-    else if(prop == CabbageIdentifierIds::bpm)
-        bpm = 60 / CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::bpm) * 1000;
 
     else if(prop == CabbageIdentifierIds::celldata)
     {
@@ -330,30 +298,15 @@ void CabbageEventSequencer::valueTreePropertyChanged (ValueTree& valueTree, cons
         if (props.size()==3)
         {
             setCellData(int(props[0]), int(props[1]), props[2].toString());
-            //CabbageUtilities::debug(props[2].toString());
         }
     }
 
-    else if(prop == CabbageIdentifierIds::scrubberposition)
-    {
-        const int position = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition);
-        currentBeat = (position < 0 ? currentBeat : position);
-        if(position >= 0)
-            CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::scrubberposition, -1);
-    }
+	else if (prop == CabbageIdentifierIds::colprefixes)
+	{
+		var test = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::colprefixes);
+		CabbageUtilities::debug(test.toString());
+	}
 
-    else if(prop == CabbageIdentifierIds::active)
-    {
-        handleCommonUpdates(this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
-
-        if(getActive()==0)
-            stopTimer();
-        else
-        {
-            currentBeat = 0;
-            //startTimer(bpm);
-        }
-    }
     else
     {
         repaint();

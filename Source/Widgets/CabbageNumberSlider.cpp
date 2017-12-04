@@ -101,8 +101,9 @@ void CabbageNumberSlider::valueTreePropertyChanged (ValueTree& valueTree, const 
 {
     if (prop == CabbageIdentifierIds::value)
     {
+		//CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::value, CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
         slider.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), dontSendNotification);
-    }
+	}
     else
     {
         slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
