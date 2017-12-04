@@ -36,7 +36,7 @@
 #include "../../Widgets/CabbageInfoButton.h"
 #include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageGenTable.h"
-#include "../../Widgets/CabbageNumberBox.h"
+#include "../../Widgets/CabbageNumberSlider.h"
 #include "../../Widgets/CabbageEncoder.h"
 #include "../../Widgets/CabbageTextBox.h"
 #include "../../Widgets/CabbageSignalDisplay.h"
@@ -91,7 +91,7 @@ public:
     void insertCheckbox (ValueTree cabbageWidgetData);
     void insertXYPad (ValueTree cabbageWidgetData);
     void insertRangeSlider (ValueTree cabbageWidgetData);
-    void insertNumberBox (ValueTree cabbageWidgetData);
+    void insertNumberSlider (ValueTree cabbageWidgetData);
     void insertEncoder (ValueTree cabbageWidgetData);
     //the following methods instantiate controls that CANNOT
     // be automated in a host...

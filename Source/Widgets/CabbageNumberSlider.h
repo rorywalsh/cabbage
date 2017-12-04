@@ -17,14 +17,14 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGENUMBERBOX_H_INCLUDED
-#define CABBAGENUMBERBOX_H_INCLUDED
+#ifndef CabbageNumberSlider_H_INCLUDED
+#define CabbageNumberSlider_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
 
-class CabbageNumberBox : public Component, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageNumberSlider : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
     Slider slider;
     Label label;
@@ -32,8 +32,8 @@ class CabbageNumberBox : public Component, public ValueTree::Listener, public Ca
 
 public:
 
-    CabbageNumberBox (ValueTree wData);
-    ~CabbageNumberBox() {};
+    CabbageNumberSlider (ValueTree wData);
+    ~CabbageNumberSlider() {};
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
@@ -51,8 +51,8 @@ public:
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageNumberBox);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageNumberSlider);
 };
 
 
-#endif  // CABBAGENUMBERBOX_H_INCLUDED
+#endif  // CabbageNumberSlider_H_INCLUDED

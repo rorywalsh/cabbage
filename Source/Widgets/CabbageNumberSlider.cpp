@@ -17,9 +17,9 @@
   02111-1307 USA
 */
 
-#include "CabbageNumberBox.h"
+#include "CabbageNumberSlider.h"
 
-CabbageNumberBox::CabbageNumberBox (ValueTree wData)
+CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     : widgetData (wData),
       slider (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
       label(),
@@ -63,7 +63,7 @@ CabbageNumberBox::CabbageNumberBox (ValueTree wData)
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
 }
 
-void CabbageNumberBox::resized()
+void CabbageNumberSlider::resized()
 {
     if (text.isNotEmpty())
     {
@@ -92,7 +92,7 @@ void CabbageNumberBox::resized()
         slider.setBounds (0, 0, getWidth(), getHeight());
 }
 
-void CabbageNumberBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+void CabbageNumberSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     if (prop == CabbageIdentifierIds::value)
     {

@@ -55,7 +55,7 @@ public:
     static void setRSliderProperties (ValueTree widgetData, int ID);
     static void setHSliderProperties (ValueTree widgetData, int ID);
     static void setVSliderProperties (ValueTree widgetData, int ID);
-    static void setNumberBoxProperties (ValueTree widgetData, int ID);
+    static void setNumberSliderProperties (ValueTree widgetData, int ID);
     static void setCsoundOutputProperties (ValueTree widgetData, int ID);
     static void setKeyboardProperties (ValueTree widgetData, int ID);
     static void setTextBoxProperties (ValueTree widgetData, int ID);

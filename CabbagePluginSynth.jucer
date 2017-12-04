@@ -103,6 +103,10 @@
               file="Source/Widgets/CabbageCustomWidgets.h"/>
         <FILE id="vMHpST" name="CabbageEncoder.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageEncoder.cpp"/>
+        <FILE id="ypSyhT" name="CabbageNumberSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageNumberSlider.cpp"/>
+        <FILE id="StdKoV" name="CabbageNumberSlider.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageNumberSlider.h"/>
         <FILE id="L8o1F2" name="CabbageEncoder.h" compile="0" resource="0"
               file="Source/Widgets/CabbageEncoder.h"/>
         <FILE id="TrHi3K" name="CabbageFileButton.cpp" compile="1" resource="0"
@@ -131,10 +135,6 @@
         <FILE id="O6khRB" name="CabbageLabel.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageLabel.cpp"/>
         <FILE id="s2k5MD" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
-        <FILE id="KJ5D49" name="CabbageNumberBox.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageNumberBox.cpp"/>
-        <FILE id="DlzYZd" name="CabbageNumberBox.h" compile="0" resource="0"
-              file="Source/Widgets/CabbageNumberBox.h"/>
         <FILE id="SEOUw4" name="CabbageRangeSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRangeSlider.cpp"/>
         <FILE id="VBitck" name="CabbageRangeSlider.h" compile="0" resource="0"

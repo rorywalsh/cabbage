@@ -165,10 +165,10 @@
         <FILE id="DILLeq" name="CabbageLabel.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageLabel.cpp"/>
         <FILE id="f2AHOq" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
-        <FILE id="JFOooT" name="CabbageNumberBox.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageNumberBox.cpp"/>
-        <FILE id="Jpg5cK" name="CabbageNumberBox.h" compile="0" resource="0"
-              file="Source/Widgets/CabbageNumberBox.h"/>
+        <FILE id="JFOooT" name="CabbageNumberSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageNumberSlider.cpp"/>
+        <FILE id="Jpg5cK" name="CabbageNumberSlider.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageNumberSlider.h"/>
         <FILE id="YYOQif" name="CabbageRangeSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRangeSlider.cpp"/>
         <FILE id="Gk2SeH" name="CabbageRangeSlider.h" compile="0" resource="0"

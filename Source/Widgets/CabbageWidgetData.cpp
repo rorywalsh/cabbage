@@ -60,95 +60,95 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
 
     setProperty (widgetData, CabbageIdentifierIds::widgetarray, "");
 
-    if (strTokens[0].trim() == "hslider")
+    if (strTokens[0].trim() == String(CabbageWidgetTypes::hslider))
         setHSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "vslider")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::vslider))
         setVSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "rslider")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::rslider))
         setRSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "groupbox")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::groupbox))
         setGroupBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "csoundoutput")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::csoundoutput))
         setCsoundOutputProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "keyboard")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::keyboard))
         setKeyboardProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "form")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::form))
         setFormProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "textbox")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::textbox))
         setTextBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "checkbox")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::checkbox))
         setCheckBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "numslider")
-        setNumberBoxProperties (widgetData, ID);
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::nslider))
+        setNumberSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "combobox")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::combobox))
         setComboBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "label")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::label))
         setLabelProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "texteditor")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::texteditor))
         setTextEditorProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "image")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::image))
         setImageProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "encoder")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::encoder))
         setEncoderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "hmeter")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::hmeter))
         setMeterProperties (widgetData, ID, false);
 
-    else if (strTokens[0].trim() == "vmeter")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::vmeter))
         setMeterProperties (widgetData, ID, true);
 
-    else if (strTokens[0].trim() == "button")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::button))
         setButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "soundfiler")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::soundfiler))
         setSoundfilerProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "filebutton")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::filebutton))
         setFileButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "infobutton")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::infobutton))
         setInfoButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "line")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::line))
         setLineProperties (widgetData, ID);
 
-    else if ((strTokens[0].trim() == "sourcebutton") || (strTokens[0].trim() == "loadbutton"))
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::sourcebutton) || strTokens[0].trim() == String(CabbageWidgetTypes::loadbutton))
         setLoadButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "signaldisplay" || strTokens[0].trim() == "fftdisplay")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::signaldisplay) || strTokens[0].trim() == String(CabbageWidgetTypes::fftdisplay))
         setSignalDisplayProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "xypad")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::xypad))
         setXYPadProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "gentable")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::gentable))
         setGenTableProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "hrange")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::hrange))
         setHRangeSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "vrange")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::vrange))
         setVRangeSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == "stringsequencer")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::stringsequencer))
         setStringSequencerProperties (widgetData, ID);
 
     //===============table==================//
-    else if (strTokens[0].trim() == "table")
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::table))
     {
         setProperty (widgetData, "basetype", "layout");
         var tableColours;

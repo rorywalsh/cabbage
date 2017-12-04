@@ -213,10 +213,9 @@ public:
         add ("combobox");
         add ("checkbox");
         add ("encoder");
-        //add ("numberbox");
         add ("xypad");
         add ("button");
-		add ("numslider"); //fix for stupid live issue with number boxes
+		add ("nslider"); //fix for stupid live issue with number boxes
     }
 
     ~CabbageControlWidgetStrings() {}
@@ -462,7 +461,7 @@ namespace CabbageWidgetTypes
     //list of static consts for types of widgets
     static const String combobox = "combobox";
     //static const String numberbox = "numberbox";
-	static const String numslider = "numslider";
+	static const String nslider = "nslider";
     static const String rslider = "rslider";
     static const String hslider = "hslider";
     static const String hslider2 = "hslider2";
@@ -492,7 +491,7 @@ namespace CabbageWidgetTypes
     static const String keyboard = "keyboard";
     static const String oscserver = "oscserver";
     static const String form = "form";
-    static const Identifier textbox = "textbox";
+    static const String textbox = "textbox";
     static const String directorylist = "directorylist";
     static const String xypad = "xypad";
     static const String csoundoutput = "csoundoutput";
@@ -727,16 +726,16 @@ public:
         set ("Image", CabbageWidgetTypes::image);
         set ("Keyboard", CabbageWidgetTypes::keyboard);
         set ("Label", CabbageWidgetTypes::label);
-        set ("Numberbox", CabbageWidgetTypes::numslider);
         set ("Signal Display", CabbageWidgetTypes::signaldisplay);
         set ("Slider - Horizontal", CabbageWidgetTypes::hslider);
         set ("Slider - Rotary", CabbageWidgetTypes::rslider);
         set ("Slider - Vertical", CabbageWidgetTypes::vslider);
         set ("Slider - Range - Vertical", CabbageWidgetTypes::vrange);
         set ("Slider - Range - Horizontal", CabbageWidgetTypes::hrange);
+        set ("Slider - Number Box", CabbageWidgetTypes::nslider);
         set ("Soundfiler", CabbageWidgetTypes::soundfiler);
         set ("String Sequencer", CabbageWidgetTypes::stringsequencer);
-        set ("Text Box", CabbageWidgetTypes::textbox.toString());
+        set ("Text Box", CabbageWidgetTypes::textbox);
         set ("Text Editor", CabbageWidgetTypes::texteditor);
         set ("Vertical Meter", CabbageWidgetTypes::vmeter);
         set ("XY Pad", CabbageWidgetTypes::xypad);

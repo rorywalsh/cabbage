@@ -198,10 +198,10 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::csoundoutput)
         insertCsoundOutputConsole (cabbageWidgetData);
 
-    else if (widgetType == CabbageWidgetTypes::numslider)
-        insertNumberBox (cabbageWidgetData);
+    else if (widgetType == CabbageWidgetTypes::nslider)
+        insertNumberSlider (cabbageWidgetData);
 
-    else if (widgetType == CabbageWidgetTypes::textbox.toString())
+    else if (widgetType == CabbageWidgetTypes::textbox)
         insertTextBox (cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::texteditor)
@@ -377,10 +377,10 @@ void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
     addMouseListenerAndSetVisibility (button, cabbageWidgetData);
 }
 
-void CabbagePluginEditor::insertNumberBox (ValueTree cabbageWidgetData)
+void CabbagePluginEditor::insertNumberSlider (ValueTree cabbageWidgetData)
 {
-    CabbageNumberBox* numberBox;
-    components.add (numberBox = new CabbageNumberBox (cabbageWidgetData));
+    CabbageNumberSlider* numberBox;
+    components.add (numberBox = new CabbageNumberSlider (cabbageWidgetData));
     numberBox->getSlider().addListener (this);
     addToEditorAndMakeVisible (numberBox, cabbageWidgetData);
     addMouseListenerAndSetVisibility (numberBox, cabbageWidgetData);
