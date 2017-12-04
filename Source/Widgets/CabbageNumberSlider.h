@@ -28,7 +28,7 @@ class CabbageNumberSlider : public Component, public ValueTree::Listener, public
 {
     Slider slider;
     Label label;
-    String text, align;
+    String text="", align="", postfix="";
 
 public:
 

@@ -184,10 +184,10 @@
               file="Source/Widgets/CabbageSoundfiler.cpp"/>
         <FILE id="U5k9eV" name="CabbageSoundfiler.h" compile="0" resource="0"
               file="Source/Widgets/CabbageSoundfiler.h"/>
-        <FILE id="LdiAvd" name="CabbageStringSequencer.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageStringSequencer.cpp"/>
-        <FILE id="HwBzPQ" name="CabbageStringSequencer.h" compile="0" resource="0"
-              file="Source/Widgets/CabbageStringSequencer.h"/>
+        <FILE id="LdiAvd" name="CabbageEventSequencer.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageEventSequencer.cpp"/>
+        <FILE id="HwBzPQ" name="CabbageEventSequencer.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageEventSequencer.h"/>
         <FILE id="lVhBT2" name="CabbageTextBox.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageTextBox.cpp"/>
         <FILE id="Qi6iHN" name="CabbageTextBox.h" compile="0" resource="0"

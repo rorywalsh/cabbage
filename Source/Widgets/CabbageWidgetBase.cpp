@@ -85,7 +85,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
     {
         //string sequencer uses active to stop sequencing..
         active = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active);
-        if (CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::type) != "stringsequencer")
+        if (CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::type) != "eventsequencer")
         child->setEnabled ( active == 1 ? true : false);
     }
 

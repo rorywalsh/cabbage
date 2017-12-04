@@ -144,7 +144,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::vrange))
         setVRangeSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::stringsequencer))
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::eventsequencer))
         setStringSequencerProperties (widgetData, ID);
 
     //===============table==================//

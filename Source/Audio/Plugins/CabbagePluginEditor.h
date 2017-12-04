@@ -49,7 +49,7 @@
 #include "../../Widgets/CabbageSoundfiler.h"
 #include "../../Widgets/CabbageRangeSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
-#include "../../Widgets/CabbageStringSequencer.h"
+#include "../../Widgets/CabbageEventSequencer.h"
 
 class CabbagePluginEditor;
 

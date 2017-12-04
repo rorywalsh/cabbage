@@ -231,7 +231,7 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::xypad)
         insertXYPad (cabbageWidgetData);
 
-    else if (widgetType == CabbageWidgetTypes::stringsequencer)
+    else if (widgetType == CabbageWidgetTypes::eventsequencer)
         insertStringSequencer (cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::hmeter || widgetType == CabbageWidgetTypes::vmeter)
@@ -286,8 +286,8 @@ void CabbagePluginEditor::insertLabel (ValueTree cabbageWidgetData)
 
 void CabbagePluginEditor::insertStringSequencer (ValueTree cabbageWidgetData)
 {
-    CabbageStringSequencer* stringSeq;
-    components.add (stringSeq = new CabbageStringSequencer (cabbageWidgetData, this));
+    CabbageEventSequencer* stringSeq;
+    components.add (stringSeq = new CabbageEventSequencer (cabbageWidgetData, this));
     addToEditorAndMakeVisible (stringSeq, cabbageWidgetData);
     addMouseListenerAndSetVisibility (stringSeq, cabbageWidgetData);
 }

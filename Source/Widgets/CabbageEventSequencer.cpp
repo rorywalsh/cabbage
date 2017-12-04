@@ -17,10 +17,10 @@
   02111-1307 USA
 */
 
-#include "CabbageStringSequencer.h"
+#include "CabbageEventSequencer.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEditor* _owner)
+CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEditor* _owner)
     : widgetData (wData),
       owner (_owner),
       seqContainer(),
@@ -56,14 +56,14 @@ CabbageStringSequencer::CabbageStringSequencer (ValueTree wData, CabbagePluginEd
 
 }
 
-CabbageStringSequencer::~CabbageStringSequencer()
+CabbageEventSequencer::~CabbageEventSequencer()
 {
     stopTimer();
     textFields.getUnchecked (0)->clear();
     textFields.clear();
 }
 
-void CabbageStringSequencer::arrangeTextEditors(ValueTree wData)
+void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
 {
     const int width = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
@@ -117,7 +117,7 @@ void CabbageStringSequencer::arrangeTextEditors(ValueTree wData)
     }
 }
 
-void CabbageStringSequencer::createNumberLabels(ValueTree wData, int height, int showNumbers)
+void CabbageEventSequencer::createNumberLabels(ValueTree wData, int height, int showNumbers)
 {
     if (showNumbers > 0)
     {
@@ -132,8 +132,6 @@ void CabbageStringSequencer::createNumberLabels(ValueTree wData, int height, int
                 numberLabel->setColour(Label::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour)));
             }
 
-
-
             numberLabel->setBounds (0, i * height, numbersWidth, height);
             seqContainer.addAndMakeVisible (numberLabel);
             stepNumbers.add (numberLabel);
@@ -141,12 +139,12 @@ void CabbageStringSequencer::createNumberLabels(ValueTree wData, int height, int
     }
 }
 
-TextEditor* CabbageStringSequencer::getEditor (int column, int row)
+TextEditor* CabbageEventSequencer::getEditor (int column, int row)
 {
     return textFields[column]->operator[] (row);
 }
 
-void CabbageStringSequencer::setColours(ValueTree wData)
+void CabbageEventSequencer::setColours(ValueTree wData)
 {
     for(int x = 0 ; x < numColumns ; x++)
         for(int y = 0 ; y < numRows ; y++)
@@ -169,7 +167,7 @@ void CabbageStringSequencer::setColours(ValueTree wData)
     }
 }
 
-void CabbageStringSequencer::hiResTimerCallback()
+void CabbageEventSequencer::hiResTimerCallback()
 {
 //    owner->sendChannelDataToCsound (stepChannel.toUTF8(), currentBeat);
 //    updateCurrentStepPosition();
@@ -182,7 +180,7 @@ void CabbageStringSequencer::hiResTimerCallback()
 //    currentBeat = (currentBeat < numRows - 1 ? currentBeat + 1 : 0);
 }
 
-void CabbageStringSequencer::updateCurrentStepPosition()
+void CabbageEventSequencer::updateCurrentStepPosition()
 {
     //for ( int i = 0 ; i < numColumns ; i++)
     //    owner->sendScoreEventToCsound(getEditor (i, currentBeat)->getText().toUTF8());
@@ -202,7 +200,7 @@ void CabbageStringSequencer::updateCurrentStepPosition()
         }
 }
 
-void CabbageStringSequencer::setCurrentRow(int row)
+void CabbageEventSequencer::setCurrentRow(int row)
 {
 //    const int restrictedRow = jlimit(0, numRows-1, row);
 //    const int currentBeat = jlimit(0, numRows-1, row);
@@ -223,7 +221,7 @@ void CabbageStringSequencer::setCurrentRow(int row)
 //        }
 }
 
-void CabbageStringSequencer::highlightEditorText (int col, int row)
+void CabbageEventSequencer::highlightEditorText (int col, int row)
 {
     for ( int i = 0 ; i < numColumns ; i++)
         for ( int y = 0 ; y < numRows ; y++)
@@ -237,13 +235,13 @@ void CabbageStringSequencer::highlightEditorText (int col, int row)
                 getEditor (i, y)->setHighlightedRegion (Range<int> (0, 0));
         }
 }
-void CabbageStringSequencer::resized()
+void CabbageEventSequencer::resized()
 {
     //need to resize children according to vp size..
     vp.setBounds (getLocalBounds());
 }
 
-void CabbageStringSequencer::setCellData(int col, int row, const String data)
+void CabbageEventSequencer::setCellData(int col, int row, const String data)
 {
     if(col<numColumns && row<numRows)
     {
@@ -256,7 +254,7 @@ void CabbageStringSequencer::setCellData(int col, int row, const String data)
     //setMatrixEventSequencerCellData(int row, int col, String channel, String data)
 }
 
-bool CabbageStringSequencer::keyPressed (const KeyPress& key, Component* originatingComponent)
+bool CabbageEventSequencer::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     if (TextEditor* ted = dynamic_cast<TextEditor*> (originatingComponent))
     {
@@ -274,7 +272,7 @@ bool CabbageStringSequencer::keyPressed (const KeyPress& key, Component* origina
     return false;
 }
 
-void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row)
+void CabbageEventSequencer::swapFocusForEditors (KeyPress key, int col, int row)
 {
     int newRow, newCol;
 
@@ -314,7 +312,7 @@ void CabbageStringSequencer::swapFocusForEditors (KeyPress key, int col, int row
 
 }
 
-void CabbageStringSequencer::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+void CabbageEventSequencer::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     if(prop == CabbageIdentifierIds::value)
     {

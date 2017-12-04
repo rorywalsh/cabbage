@@ -24,12 +24,12 @@
 
 class CabbagePluginEditor;
 
-class CabbageStringSequencer : public Component, public ValueTree::Listener, public CabbageWidgetBase, public KeyListener, public HighResolutionTimer
+class CabbageEventSequencer : public Component, public ValueTree::Listener, public CabbageWidgetBase, public KeyListener, public HighResolutionTimer
 {
 public:
 
-    CabbageStringSequencer (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageStringSequencer();
+    CabbageEventSequencer (ValueTree wData, CabbagePluginEditor* _owner);
+    ~CabbageEventSequencer();
 
 
 
@@ -57,7 +57,7 @@ public:
 
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageStringSequencer);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageEventSequencer);
 
 private:
     int numColumns = 0;

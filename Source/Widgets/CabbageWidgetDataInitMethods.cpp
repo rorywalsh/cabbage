@@ -190,7 +190,7 @@ void CabbageWidgetData::setStringSequencerProperties (ValueTree widgetData, int 
     setProperty (widgetData, CabbageIdentifierIds::height, 2);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
-    setProperty (widgetData, CabbageIdentifierIds::type, "stringsequencer");
+    setProperty (widgetData, CabbageIdentifierIds::type, "eventsequencer");
     setProperty (widgetData, CabbageIdentifierIds::backgroundcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::activecellcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::highlightcolour, Colours::cornflowerblue.toString());

@@ -816,7 +816,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
         }
 
         //currently only dealing with a max of 2 channels...
-        else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&typeOfWidget != CabbageWidgetTypes::stringsequencer)
+        else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&typeOfWidget != CabbageWidgetTypes::eventsequencer)
         {
             if (getCsound()->GetChannel (channels[0].toUTF8()) != valuex
                 || getCsound()->GetChannel (channels[1].toUTF8()) != valuey)
@@ -861,18 +861,22 @@ void CabbagePluginProcessor::triggerCsoundEvents()
 {
     for ( int x = 0 ; x < matrixEventSequencers.size() ; x++)
     {
-        const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, matrixEventSequencers.getUnchecked(x).channel, true);
+        const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, matrixEventSequencers[x]->channel, true);
         const String channel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
         const int position = getCsound()->GetChannel(channel.toUTF8());
 
         for(int i = 0 ; i < CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::matrixcols) ; i++)
         {
-            for ( int y = 0 ; y < 16 ; y++)
+            if(matrixEventSequencers[x]->position !=position)
             {
-                String event = matrixEventSequencers.getUnchecked(x).events[y][i];
-                CabbageUtilities::debug(event);
+                String event = matrixEventSequencers[x]->events.getUnchecked(i)->getReference(position);
+                if (event.isNotEmpty())
+                {
+                    getCsound()->InputMessage(event.toUTF8());
+                }
             }
         }
+        matrixEventSequencers[x]->position = position;
     }
 }
 //================================================================================

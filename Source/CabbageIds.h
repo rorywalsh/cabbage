@@ -201,7 +201,7 @@ public:
     CabbageControlWidgetStrings()
     {
         add ("hslider");
-        add ("stringsequencer");
+        add ("eventsequencer");
         add ("hslider2");
         add ("hslider3");
         add ("rslider");
@@ -242,7 +242,7 @@ public:
         add ("hostppqpos");
         add ("source");
         add ("infobutton");
-        add ("stringsequencer");
+        add ("eventsequencer");
         add ("filebutton");
         add ("loadbutton");
         add ("soundfiler");
@@ -471,7 +471,7 @@ namespace CabbageWidgetTypes
     static const String vslider3 = "vslider3";
     static const String vrange = "vrange";
     static const String hrange = "hrange";
-    static const String stringsequencer = "stringsequencer";
+    static const String eventsequencer = "eventsequencer";
     static const String checkbox = "checkbox";
     static const String soundfiler = "soundfiler";
     static const String button = "button";
@@ -734,7 +734,7 @@ public:
         set ("Slider - Range - Horizontal", CabbageWidgetTypes::hrange);
         set ("Slider - Number Box", CabbageWidgetTypes::nslider);
         set ("Soundfiler", CabbageWidgetTypes::soundfiler);
-        set ("String Sequencer", CabbageWidgetTypes::stringsequencer);
+        set ("String Sequencer", CabbageWidgetTypes::eventsequencer);
         set ("Text Box", CabbageWidgetTypes::textbox);
         set ("Text Editor", CabbageWidgetTypes::texteditor);
         set ("Vertical Meter", CabbageWidgetTypes::vmeter);

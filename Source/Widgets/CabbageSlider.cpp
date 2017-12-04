@@ -50,16 +50,6 @@ CabbageSlider::~CabbageSlider()
    // slider.setLookAndFeel(nullptr);
 }
 
-void CabbageSlider::createPopupBubble()
-{
-    //create popup display for showing value of sliders.
-    popupBubble.setColour (BubbleComponent::backgroundColourId, Colours::white);
-    popupBubble.setBounds (0, 0, 50, 20);
-    owner->addChildComponent (popupBubble);
-    popupBubble.setVisible (false);
-    popupBubble.setAlwaysOnTop (true);
-}
-
 void CabbageSlider::initialiseSlider (ValueTree wData)
 {
     decimalPlaces = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces);
@@ -207,6 +197,16 @@ void CabbageSlider::resized()
     }
 
     slider.setValue (value, dontSendNotification);
+}
+
+void CabbageSlider::createPopupBubble()
+{
+    //create popup display for showing value of sliders.
+    popupBubble.setColour (BubbleComponent::backgroundColourId, Colours::white);
+    popupBubble.setBounds (0, 0, 50, 20);
+    owner->addChildComponent (popupBubble);
+    popupBubble.setVisible (false);
+    popupBubble.setAlwaysOnTop (true);
 }
 
 void CabbageSlider::showPopupBubble (int time)

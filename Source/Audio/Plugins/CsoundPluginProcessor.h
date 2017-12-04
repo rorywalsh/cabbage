@@ -108,9 +108,15 @@ public:
     {
     public:
         String channel = "";
-        Array<StringArray> events;
+        OwnedArray<StringArray> events;
         int position = 0;
+        void setEventString(int col, int row, String data)
+        {
+            events[col]->set(row, data);
+        }
+
         MatrixEventSequencer(String csoundChannel):channel(csoundChannel){}
+        ~MatrixEventSequencer(){ events.clear();}
 
     };
 
@@ -209,7 +215,7 @@ public:
         return returnVal;
     };
 
-    Array<MatrixEventSequencer> matrixEventSequencers;
+    OwnedArray<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "");
 private:

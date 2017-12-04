@@ -250,15 +250,16 @@ void CsoundPluginProcessor::addMacros (String csdText)
 //==============================================================================
 void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, String channel)
 {
-    MatrixEventSequencer matrix(channel);
+    MatrixEventSequencer* matrix = new MatrixEventSequencer(channel);
+    (channel);
 
     for (int i = 0 ; i < cols ; i++)
     {
-        matrix.events.add (StringArray());
+        matrix->events.add (new StringArray());
 
         for ( int y = 0 ; y < rows ; y++)
         {
-            matrix.events[i].add("");
+            matrix->events[i]->add(String());
         }
     }
 
@@ -269,9 +270,9 @@ void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, St
 {
     for (int i = 0 ; i < matrixEventSequencers.size(); i++)
     {
-        if (matrixEventSequencers.getUnchecked(i).channel == channel)
+        if (matrixEventSequencers[i]->channel == channel)
         {
-            matrixEventSequencers.getUnchecked(i).events[col].set(row, data);
+            matrixEventSequencers[i]->setEventString(col, row, data);
         }
     }
 }
@@ -566,10 +567,12 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                     {
                         guiCycles = 0;
                         triggerAsyncUpdate();
-                        triggerCsoundEvents();
                     }
                     else
                         ++guiCycles;
+
+                    //trigger any Csound score event on each k-boundary
+                    triggerCsoundEvents();
 
                     disableLogging = false;
                 }

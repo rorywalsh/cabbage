@@ -61,6 +61,9 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setRange (min, max, incr);
     slider.setValue (value, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
+
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    slider.setTextValueSuffix(postfix);
 }
 
 void CabbageNumberSlider::resized()
@@ -90,6 +93,8 @@ void CabbageNumberSlider::resized()
     }
     else
         slider.setBounds (0, 0, getWidth(), getHeight());
+
+    //setTextValueSuffix
 }
 
 void CabbageNumberSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -104,11 +109,10 @@ void CabbageNumberSlider::valueTreePropertyChanged (ValueTree& valueTree, const 
         slider.setColour (Slider::trackColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         slider.setColour (Slider::thumbColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         label.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour)));
-        //todo: work out why this gets rid of the font from the numberbox
         slider.setColour (Slider::textBoxHighlightColourId, slider.findColour (Slider::textBoxBackgroundColourId));
         slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         slider.setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
-        handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
         align = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::align);
         label.setText (getText(), dontSendNotification);
         slider.sendLookAndFeelChange();

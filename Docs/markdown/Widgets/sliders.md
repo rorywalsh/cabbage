@@ -1,6 +1,6 @@
 # Sliders
 
-Slider can be used to create an on-screen slider. Data can be sent to Csound on the channel specified through the channel string. Sliders can be rotary, vertical or horizontal, and can react in both a linear and non-linear fashion. 
+Slider can be used to create an on-screen slider. Data can be sent to Csound on the channel specified through the channel string. Sliders can be rotary, vertical, horizontal, frange-based, or number boxes, and can react in both a linear and non-linear fashion. 
 
 
 ```csharp
@@ -23,11 +23,11 @@ widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "fil
 
 {! ./markdown/Widgets/Properties/outlinecolour.md !}  
 
-{! ./markdown/Widgets/Properties/popuptext.md !} 
+{! ./markdown/Widgets/Properties/popuptext.md !} Not available to nslider 
 
-{! ./markdown/Widgets/Properties/popupprefix.md !} 
+{! ./markdown/Widgets/Properties/popupprefix.md !} Not available to nslider 
 
-{! ./markdown/Widgets/Properties/popuppostfix.md !} 
+{! ./markdown/Widgets/Properties/popuppostfix.md !} Although nslider's don't use popup bubbles, this identifier will set a value postfix. 
 
 {! ./markdown/Widgets/Properties/range.md !}   
 
@@ -57,8 +57,6 @@ widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "fil
 
 {! ./markdown/Widgets/Properties/bounds.md !}  
 
-
-
 {! ./markdown/Widgets/Properties/channel.md !}  
 
 {! ./markdown/Widgets/Properties/colour.md !} 
@@ -67,7 +65,7 @@ widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "fil
 
 {! ./markdown/Widgets/Properties/identchannel.md  !}
 
-{! ./markdown/Widgets/Properties/popup.md !}  
+{! ./markdown/Widgets/Properties/popup.md !} Not available to nslider 
 
 {! ./markdown/Widgets/Properties/rotate.md  !}
 
@@ -88,6 +86,8 @@ widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "fil
 * *hslider2*, two value horizontal range slider (**deprecated, use hrange**)
 
 * *vslider2*, two value vertical range slider (**deprecated, use vrange**)
+
+* *nslider*, a number box slider in the style of Pure Data /MaxMSP (**deprecated, use vrange**)
 
 
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
