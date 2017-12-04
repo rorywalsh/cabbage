@@ -1,0 +1,1 @@
+**rowprefix(row, "prefix")** Will append "val" to all score events for the given row. This can be useful if you wish to free up and avoid text duplication in each cell. 
