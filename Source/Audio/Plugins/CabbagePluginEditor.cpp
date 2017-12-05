@@ -51,9 +51,8 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 CabbagePluginEditor::~CabbagePluginEditor()
 {
     popupPlants.clear();
-    //components.clear();
+    components.clear();
     setLookAndFeel (nullptr);
-
 }
 
 void CabbagePluginEditor::resized()

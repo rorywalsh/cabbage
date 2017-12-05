@@ -85,7 +85,7 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
     cabbageWidgets.removeAllChildren (0);
     String parentComponent, previousComponent;
     StringArray parents;
-    searchForMacros (linesFromCsd);
+    getMacros (linesFromCsd);
     int linesToSkip = 0;
 
     for ( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
@@ -208,7 +208,7 @@ bool CabbagePluginProcessor::shouldClosePlant (StringArray linesFromCsd, int lin
 void CabbagePluginProcessor::addImportFiles (StringArray& linesFromCsd)
 {
 
-    searchForMacros (linesFromCsd);
+    getMacros (linesFromCsd);
 
     for (int i = 0 ; i < linesFromCsd.size() ; i++)
     {
@@ -315,7 +315,7 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
 
 void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, StringArray& linesFromCsd)
 {
-    searchForMacros (linesFromCsd);
+    getMacros (linesFromCsd);
 
     int lineIndex = 0;
     StringArray copy = linesFromCsd;
@@ -465,7 +465,7 @@ void CabbagePluginProcessor::generateCabbageCodeFromJS (PlantImportStruct& impor
 
 }
 
-void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
+void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
 {
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
     {
@@ -481,7 +481,7 @@ void CabbagePluginProcessor::searchForMacros (StringArray& linesFromCsd)
             {
                 const String currentMacroText = csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ";
                 //first identifiers are not being used for some reason. This hack fixes that, but should be tidied up..
-                macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText);
+                macroText.set ("$" + tokens[1], " " + currentMacroText);
             }
         }
     }
@@ -494,12 +494,38 @@ void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
     String defineText;
     String newLine = line;
     String expandedLine = line;
+
+//
+//    StringArray tokens;
+//    tokens.addTokens(line, " ,");
+//
+//    for ( auto token : tokens)
+//    {
+//        if(token.startsWith("$"))
+//        {
+//            for ( auto macro : macroText)
+//            {
+//                const String stringToReplace = token.removeCharacters(",() ");
+//                CabbageUtilities::debug(macro.name.toString());
+//                CabbageUtilities::debug(stringToReplace);
+//                if(macro.name.toString() == stringToReplace)
+//                {
+//                    line = line.replace(stringToReplace, macro.value.toString());
+//                }
+//            }
+//        }
+//
+//    }
+
+
     while (newLine.contains ("$"))
     {
         newLine = newLine.substring (newLine.indexOf ("$"), newLine.length());
-        newLine = newLine.replace (",", " ");
+        //newLine = newLine.replace (",", " ");
         defineText = newLine.substring (0, (newLine.indexOf (" ") == -1 ? newLine.length() : newLine.indexOf (" ") + 1));
+        defineText = newLine.replace(")", " ");
         newLine = newLine.replace (defineText, "");
+
         defineText = defineText.substring (0, (defineText.indexOf (" ") != -1 ? defineText.indexOf (" ") : defineText.length()));
 
         for (int cnt = 0 ; cnt < macroText.size() ; cnt++)

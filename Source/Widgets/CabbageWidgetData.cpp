@@ -20,7 +20,7 @@
 
 
 #include "CabbageWidgetData.h"
-#define MAX_MATRIX_SIZE 16
+#define MAX_MATRIX_SIZE 64
 
 //#include "CabbageWidgetDataInitMethods.cpp"
 //===============================================================================
@@ -147,7 +147,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
         setVRangeSliderProperties (widgetData, ID);
 
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::eventsequencer))
-        setStringSequencerProperties (widgetData, ID);
+        setEventSequencerProperties (widgetData, ID);
 
     //===============table==================//
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::table))
@@ -290,6 +290,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("mode"):
             case HashStringToInt ("channeltype"):
             case HashStringToInt ("popuppostfix"):
+            case HashStringToInt ("orientation"):
             case HashStringToInt ("popupprefix"):
             case HashStringToInt ("identchannel"):
             case HashStringToInt ("author"):
@@ -1659,6 +1660,77 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
 //===================================================================
 String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, const String currentLineText, const String macroText)
 {
+//    StringArray identifiers;
+//    String returnString = currentLineText;
+//    identifiers.add(getBoundsTextAsCabbageCode (getBounds (widgetData)));
+//    identifiers.add(getColoursTextAsCabbageCode (widgetData, macroText));
+//    identifiers.add(getImagesTextAsCabbageCode (widgetData, macroText));
+//    identifiers.add(getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText));
+//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "channel", macroText));
+//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText));
+//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "populate", macroText));
+//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText));
+//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "text", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "active", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "fill", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "increment", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "linethickness", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "max", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "min", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "samplerange", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "surrogatelinenumber", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "value", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "valuetextbox", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "visible", macroText));
+//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText));
+//    identifiers.add(getRotateTextAsCabbageCode (widgetData, macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "align", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "channeltype", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "file", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "mode", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "plant", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText));
+//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "shape", macroText));
+//    identifiers.add(getStringProp (widgetData, CabbageIdentifierIds::type));
+//    identifiers.add(getWidgetArrayAsCabbageCode (widgetData, macroText));
+//
+//    for (const auto identifierText : identifiers)
+//    {
+//        CabbageIdentifierStrings listOfIdentifiers;
+//        for (const auto identName : listOfIdentifiers)
+//        {
+//            if(identifierText.substring(0, identifierText.indexOf("(")) == identName)
+//            {
+//                CabbageUtilities::debug(identName);
+//                int startPos = returnString.indexOf(identName);
+//                if(startPos!=-1)
+//                {
+//                    String firstSection = returnString.substring(0, startPos);
+//                    String test = returnString.substring(startPos);
+//                    //can't always look for the first closing bracket
+//                    String secondSection = returnString.substring(currentLineText.indexOf(")") + 1);
+//                    returnString = firstSection + identifierText + secondSection;
+//                }
+//                else if(identifierText.isNotEmpty())
+//                {
+//                    //returnString = returnString + identifierText;
+//                }
+//            }
+//
+//        }
+//
+//    }
+//
+//    return returnString;
+
     String cabbageCode = getStringProp (widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode (getBounds (widgetData))
                          + getMultiItemTextAsCabbageCode (widgetData, "channel", macroText)

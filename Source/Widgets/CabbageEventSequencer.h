@@ -62,12 +62,10 @@ private:
     int numRows = 0;
     int currentBeat = 0;
     int numbersWidth = 20;
-    int bpm = 120;
-    int previousBpm = 120;
     Viewport vp;
     Component seqContainer;
-    OwnedArray<OwnedArray<TextEditor>> textFields;
+    OwnedArray<OwnedArray<TextEditor>> cells;
     OwnedArray<Label> stepNumbers;
     CabbagePluginEditor* owner;
-    String stepChannel = "";
+    String orientation = "";
 };

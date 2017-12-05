@@ -34,10 +34,9 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
 
     numRows = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::matrixrows);
     numColumns = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::matrixcols);
+    orientation = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::orientation);
     arrangeTextEditors(wData);
 
-    bpm  = 60 / CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::bpm) * 1000;
-    previousBpm = bpm;
 
     //if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::active) == 1)
     //    startTimer(bpm);
@@ -59,8 +58,8 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
 
 CabbageEventSequencer::~CabbageEventSequencer()
 {
-    textFields.getUnchecked (0)->clear();
-    textFields.clear();
+    cells.getUnchecked (0)->clear();
+    cells.clear();
 }
 
 void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
@@ -102,7 +101,7 @@ void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
 
     for (int i = 0 ; i < numColumns ; i++)
     {
-        textFields.add (new OwnedArray<TextEditor>());
+        cells.add (new OwnedArray<TextEditor>());
 
         for ( int y = 0 ; y < numRows ; y++)
         {
@@ -113,7 +112,7 @@ void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
             tf->getProperties().set ("Row", var (y));
             tf->addKeyListener (this);
             tf->setBounds ((showNumbers > 0 ? 20 : 0) + cellWidth * i, y * cellHeight, cellWidth, cellHeight);
-            textFields[i]->add (tf);
+            cells[i]->add (tf);
         }
     }
 }
@@ -142,7 +141,7 @@ void CabbageEventSequencer::createNumberLabels(ValueTree wData, int height, int 
 
 TextEditor* CabbageEventSequencer::getEditor (int column, int row)
 {
-    return textFields[column]->operator[] (row);
+    return cells[column]->operator[] (row);
 }
 
 void CabbageEventSequencer::setColours(ValueTree wData)
@@ -171,17 +170,41 @@ void CabbageEventSequencer::setColours(ValueTree wData)
 void CabbageEventSequencer::updateCurrentStepPosition()
 {
     const MessageManagerLock j;
-    for ( int x = 0 ; x < numColumns ; x++)
-        for ( int y = 0 ; y < numRows ; y++)
+
+    if(orientation == "vertical")
+    {
+        for (int x = 0; x < numColumns; x++)
+            for (int y = 0; y < numRows; y++)
+            {
+                if (currentBeat == y)
+                    getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString(
+                            CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::highlightcolour)));
+                else
+                    getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString(
+                            CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::backgroundcolour)));
+
+
+                getEditor(x, y)->lookAndFeelChanged();
+            }
+    }
+    else
+    {
+        for (int y = 0; y < numRows; y++)
         {
-            if( currentBeat == y)
-                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
-            else
-                getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
+            for (int x = 0; x < numColumns; x++)
+            {
+                if (currentBeat == x)
+                    getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString(
+                            CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::highlightcolour)));
+                else
+                    getEditor(x, y)->setColour(TextEditor::backgroundColourId, Colour::fromString(
+                            CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::backgroundcolour)));
 
 
-            getEditor(x, y)->lookAndFeelChanged();
+                getEditor(x, y)->lookAndFeelChanged();
+            }
         }
+    }
 }
 
 void CabbageEventSequencer::highlightEditorText (int col, int row)

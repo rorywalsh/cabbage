@@ -80,7 +80,7 @@ public:
     void createParameters();
     void updateWidgets (String csdText);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
-    void searchForMacros (StringArray& csdText);
+    void getMacros (StringArray& csdText);
     void generateCabbageCodeFromJS (PlantImportStruct& importData, String text);
     void insertUDOCode (PlantImportStruct importData, StringArray& linesFromCsd);
     void insertPlantCode (PlantImportStruct importData, StringArray& linesFromCsd);

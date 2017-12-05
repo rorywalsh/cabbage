@@ -181,7 +181,7 @@ void CabbageWidgetData::setLineProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
 
-void CabbageWidgetData::setStringSequencerProperties (ValueTree widgetData, int ID)
+void CabbageWidgetData::setEventSequencerProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
@@ -198,6 +198,7 @@ void CabbageWidgetData::setStringSequencerProperties (ValueTree widgetData, int 
     setProperty (widgetData, CabbageIdentifierIds::textcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
+    setProperty (widgetData, CabbageIdentifierIds::orientation, "vertical");
     setProperty (widgetData, CabbageIdentifierIds::matrixcols, 2);
     setProperty (widgetData, CabbageIdentifierIds::matrixrows, 8);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
