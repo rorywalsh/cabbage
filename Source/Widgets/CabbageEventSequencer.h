@@ -38,8 +38,7 @@ public:
     TextEditor* getEditor (int column, int row);
     void swapFocusForEditors (KeyPress key, int col, int row);
     void highlightEditorText (int col, int row);
-    void setCurrentRow(int row);
-    void setCellData(int col, int row, String data);
+    void setCellData(int col, int row, const String data);
     void updateCurrentStepPosition();
     void arrangeTextEditors(ValueTree wData);
 

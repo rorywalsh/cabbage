@@ -668,12 +668,12 @@ void CabbageWidgetData::setMatrixPrefix(StringArray strTokens, String parameters
 
 
 	for (auto num : tokens)
-		prefixes.set(num.getIntValue(), parameters);	
+		prefixes.set(num.getIntValue(), parameters.replace("\\", "\""));
 
-	if (identifier == "colprefix")
-		setProperty(widgetData, "colprefix", prefixes);
-	else //rowprefix
-		setProperty(widgetData, "rowprefix", prefixes);
+	//if (identifier == identifier)
+		setProperty(widgetData, identifier, prefixes);
+	//else //rowprefix
+	//	setProperty(widgetData, "rowprefix", prefixes);
 
 	for (auto str : prefixes)
 		CabbageUtilities::debug(str);

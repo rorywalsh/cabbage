@@ -1,8 +1,8 @@
-, I'll <Cabbage>
+<Cabbage>
 form caption("String Sequencer") size(600, 400), pluginID("def1")
-stringsequencer bounds(10, 10, 500, 320), channels("step"), active(0), identchannel("trackerIdent"), showstepnumbers(4), matrixsize(16, 4) textcolour(200, 200, 200), highlightcolour(60, 60, 60) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20)
+eventsequencer bounds(10, 10, 500, 320), channels("step"), active(0), identchannel("trackerIdent"), colprefix(0:1:2:3, "i\"Sine\" 0"), showstepnumbers(4), matrixsize(16, 4) textcolour(200, 200, 200), highlightcolour(60, 60, 60) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20)
 rslider bounds(514, 10, 70, 70) channel("bpm") range(10, 400, 180, 1, 0.001) text("BPM") 
-button bounds(514, 82, 70, 27) channel("startPlayback") text("Start", "Stop") 
+button bounds(514, 82, 70, 27) channel("startPlayback") text("Start", "Stop")  
 button bounds(514, 132, 70, 27) channel("shuffle") text("Shuffle")  
 </Cabbage>
 <CsoundSynthesizer>
@@ -11,7 +11,7 @@ button bounds(514, 132, 70, 27) channel("shuffle") text("Shuffle")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+sr = 44100 
 ksmps = 32
 nchnls = 2
 0dbfs = 1
@@ -58,8 +58,8 @@ instr FillCells
         while iColCnt < iNumCols do
             iNoteIndex random 0, lenarray(iNotes)
             if random:i(0, 100)>50 then
-                SScoreEvent sprintf "i \\\"Sine\\\" 0 1 %d", iNotes[int(iNoteIndex)]
-                SMessage sprintf "celldata(%d, %d, \"%s\") ", iColCnt, iRowCnt, SScoreEvent 
+                SScoreEvent sprintf "1 %d", iNotes[int(iNoteIndex)]
+                SMessage sprintf "celldata(%d, %d, %s) ", iColCnt, iRowCnt, SScoreEvent 
             else
                 SMessage sprintf "celldata(%d, %d, \"\") ", iColCnt, iRowCnt
             endif

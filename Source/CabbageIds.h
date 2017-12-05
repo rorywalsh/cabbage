@@ -369,8 +369,6 @@ public:
         add ("fontcolor:1");
         add ("basechannel");
         add ("popupprefix");
-		add ("rowprefixes");
-		add ("colprefixes");
         add ("macronames");
         add ("matrixsize");
         add ("fontcolour");
@@ -390,6 +388,8 @@ public:
         add ("arraysize");
         add ("increment");
         add ("namespace");
+		add ("rowprefix");
+		add ("colprefix");
         add ("populate");
         add ("keywidth");
         add ("pluginid");
@@ -533,7 +533,7 @@ namespace CabbageIdentifierIds
 	static const Identifier channeltype = "channeltype";
 	static const Identifier child = "child";
 	static const Identifier colour = "colour";
-	static const Identifier colprefixes = "colprefixes";
+	static const Identifier colprefix = "colprefix";
 	static const Identifier comborange = "comborange";
 	static const Identifier corners = "corners";
 	static const Identifier crop = "crop";
@@ -630,7 +630,7 @@ namespace CabbageIdentifierIds
 	static const Identifier resize = "resize";
 	static const Identifier resizemode = "resizemode";
 	static const Identifier rotate = "rotate";
-	static const Identifier rowprefixes = "rowprefixes";
+	static const Identifier rowprefix = "rowprefix";
 	static const Identifier samplerange = "samplerange";
 	static const Identifier scalex = "scalex";
 	static const Identifier scaley = "scaley";

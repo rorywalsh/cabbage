@@ -1,9 +1,9 @@
 # Event Sequencer
 
-The eventsequencer widget is an event based sequencer that can be used to send score event to Csound. Each cell in the matrix represents a score event that will be fire to Csound. The associated "channel" sets the current position of the steps and is controlled by Csound using the `chnset` opcode. 
+The eventsequencer widget is an event based sequencer that can be used to send score events to Csound. Each cell in the matrix represents a score event that will be sent to Csound. The associated "channel" sets the current position of the steps and is controlled by Csound using the `chnset` opcode. 
 
 ```csharp
-eventsequencer bounds(x, y, width, height), channel("position"), fontcolour("colour"), matrixsize(row, cols), shownumbers(val), cellwidth(val),
+eventsequencer bounds(x, y, width, height), channel("position"), fontcolour("colour"), matrixsize(rows, cols), shownumbers(val), cellwidth(val),
 cellheight(val), identchannel("channel"), alpha(val), visible(val), text("Track1", "Track2", "Track3", "Track4"), orientation("type")
 rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefix(col, "string")
 ```
@@ -13,7 +13,6 @@ rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefi
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/bpm.md !}
 
 {! ./markdown/Widgets/Properties/celldata.md !}
 
@@ -23,13 +22,13 @@ rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefi
 
 {! ./markdown/Widgets/Properties/colprefix.md !}
 
-{! ./markdown/Widgets/Properties/numberofsteps.md !}
-
 {! ./markdown/Widgets/Properties/orientation.md !}
 
 {! ./markdown/Widgets/Properties/rowprefix.md !}
 
 {! ./markdown/Widgets/Properties/shownumbers.md !}
+
+{! ./markdown/Widgets/Properties/matrixsize.md !}
 
 ### Common Identifiers
 {! ./markdown/Widgets/Properties/active.md !}
@@ -44,7 +43,7 @@ rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefi
 
 {! ./markdown/Widgets/Properties/fontcolour.md !}
 
-{! ./markdown/Widgets/Properties/fontcolour.md !} In the case of a stringsequencer it will determine the colour of the numbers corresponding to each step. 
+{! ./markdown/Widgets/Properties/fontcolour.md !} In the case of a eventsequencer it will determine the colour of the numbers corresponding to each step. 
 
 {! ./markdown/Widgets/Properties/identchannel.md !}
 
@@ -67,4 +66,4 @@ rslider bounds(316, 112, 70, 70) channel("position") range(0, 15, 0, 1, 1)
 </Cabbage>
 ```
 
-![Button](../images/stringsequencer.gif)
+![eventsequencer](../images/eventsequencer.gif)

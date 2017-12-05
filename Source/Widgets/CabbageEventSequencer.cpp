@@ -200,30 +200,28 @@ void CabbageEventSequencer::highlightEditorText (int col, int row)
 }
 void CabbageEventSequencer::resized()
 {
-    //need to resize children according to vp size..
     vp.setBounds (getLocalBounds());
 }
 
-void CabbageEventSequencer::setCellData(int col, int row, String data)
+void CabbageEventSequencer::setCellData(int col, int row, const String data)
 {
-	var colPrefixes = CabbageWidgetData::getProperty(widgetData, "colprefix");
-	var rowPrefixes = CabbageWidgetData::getProperty(widgetData, "rowprefix");
-	if ( rowPrefixes.size() > 0)
-		data = rowPrefixes.size() < row ? rowPrefixes[row].toString() : "" + data;
-	if (colPrefixes.size() > 0)
-	{
-		CabbageUtilities::debug(colPrefixes[col].toString());
-		data = colPrefixes[col].toString() + data;
-	}
+	String newData = data;
+	var colPrefixes = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::colprefix);
+	var rowPrefixes = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::rowprefix);
+
+	if (rowPrefixes.size() > 0 && data.trim().isNotEmpty())
+		newData = rowPrefixes[row].toString() + data;
+
+	if (colPrefixes.size() > 0 && data.trim().isNotEmpty())
+		newData = colPrefixes[col].toString() + data;
 	
 	if (col<numColumns && row<numRows)
 	{
-		getEditor(col, row)->setText(data);
-		getEditor(col, row)->setText(data);
-		owner->setEventMatrixData(col, row, getChannel(), data);
+		getEditor(col, row)->setText(data.trimStart());
+		getEditor(col, row)->setText(data.trimStart());
+		owner->setEventMatrixData(col, row, getChannel(), newData);
 	}
 
-    //setMatrixEventSequencerCellData(int row, int col, String channel, String data)
 }
 
 bool CabbageEventSequencer::keyPressed (const KeyPress& key, Component* originatingComponent)
@@ -300,12 +298,6 @@ void CabbageEventSequencer::valueTreePropertyChanged (ValueTree& valueTree, cons
             setCellData(int(props[0]), int(props[1]), props[2].toString());
         }
     }
-
-	else if (prop == CabbageIdentifierIds::colprefixes)
-	{
-		var test = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::colprefixes);
-		CabbageUtilities::debug(test.toString());
-	}
 
     else
     {

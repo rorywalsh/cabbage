@@ -41,6 +41,7 @@
     - combobox
     - csound_output
     - encoder
+    - event_sequencer
     - fftdisplay
     - form
     - gentable

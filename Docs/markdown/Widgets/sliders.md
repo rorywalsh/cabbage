@@ -87,7 +87,7 @@ widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "fil
 
 * *vslider2*, two value vertical range slider (**deprecated, use vrange**)
 
-* *nslider*, a number box slider in the style of Pure Data /MaxMSP (**deprecated, use vrange**)
+* *nslider*, a number box slider in the style of Pure Data /MaxMSP
 
 
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
