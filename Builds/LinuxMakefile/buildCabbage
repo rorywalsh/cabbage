@@ -52,9 +52,9 @@ mv Makefile MakeCabbageLite
 
 make -f MakeCabbageLite clean CONFIG=Release
 make -f MakeCabbageLite -j6 CONFIG=Release
-cp ./build/CabbageLite CabbageBuild/Cabbage
+cp ./build/CabbageLite CabbageBuild/CabbageLite
 
-fi
+fi  
 
 cp ./../opcodes.txt CabbageBuild/opcodes.txt
 cp ./../../Images/cabbage.png CabbageBuild/cabbage.png
