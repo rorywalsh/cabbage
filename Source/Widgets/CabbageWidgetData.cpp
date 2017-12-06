@@ -1308,8 +1308,6 @@ String CabbageWidgetData::getRotateTextAsCabbageCode (ValueTree widgetData, cons
     const String type = getStringProp (widgetData, CabbageIdentifierIds::type);
     setWidgetState (tempData, type + " " + macroText, -99);
 
-
-
     if (getNumProp (widgetData, CabbageIdentifierIds::rotate) != getNumProp (tempData, CabbageIdentifierIds::rotate)
         || getNumProp (widgetData, CabbageIdentifierIds::pivotx) != getNumProp (tempData, CabbageIdentifierIds::pivotx)
         || getNumProp (widgetData, CabbageIdentifierIds::pivoty) != getNumProp (tempData, CabbageIdentifierIds::pivoty))
@@ -1701,35 +1699,45 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 //    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "shape", macroText));
 //    identifiers.add(getStringProp (widgetData, CabbageIdentifierIds::type));
 //    identifiers.add(getWidgetArrayAsCabbageCode (widgetData, macroText));
+//    identifiers.removeEmptyStrings();
+//    String secondSection = currentLineText;
 //
-//    for (const auto identifierText : identifiers)
+//    StringArray identifiersInLine = CabbageUtilities::getTokens (currentLineText, ')');
+//
+//    //remove widget type
+//    identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ")+1));
+//
+//
+//    //colour identifier is getting missed due to it being name colour:0
+//    for (const auto currentIdentifier : identifiersInLine)
 //    {
-//        CabbageIdentifierStrings listOfIdentifiers;
-//        for (const auto identName : listOfIdentifiers)
-//        {
-//            if(identifierText.substring(0, identifierText.indexOf("(")) == identName)
+//         for (const auto updatedIdentifier : identifiers)
+//         {
+//            if(updatedIdentifier.isNotEmpty())
 //            {
-//                CabbageUtilities::debug(identName);
-//                int startPos = returnString.indexOf(identName);
-//                if(startPos!=-1)
+//                const String newIdentName = updatedIdentifier.substring(0, updatedIdentifier.indexOf("(")).trim();
+//                const String currentIdentName = (currentIdentifier.substring(0, currentIdentifier.indexOf("(")).trim().removeCharacters(", ") == "colour"
+//                ? "colour:0" : (currentIdentifier.substring(0, currentIdentifier.indexOf("(")).trim().removeCharacters(", ")));
+//
+//                //if identifier exists in the current line of code, replace it with the update
+//                if(newIdentName == currentIdentName && newIdentName.isNotEmpty())
 //                {
-//                    String firstSection = returnString.substring(0, startPos);
-//                    String test = returnString.substring(startPos);
-//                    //can't always look for the first closing bracket
-//                    String secondSection = returnString.substring(currentLineText.indexOf(")") + 1);
-//                    returnString = firstSection + identifierText + secondSection;
-//                }
-//                else if(identifierText.isNotEmpty())
-//                {
-//                    //returnString = returnString + identifierText;
+//                    const String stringToReplace = currentIdentifier.trimCharactersAtStart(", ") + ")";
+//                    returnString = returnString.replace(stringToReplace,
+//                                                        updatedIdentifier.trim().trimCharactersAtEnd(","));
 //                }
 //            }
-//
 //        }
-//
 //    }
 //
-//    return returnString;
+//    for( const auto ident : identifiers)
+//    {
+//        if(returnString.contains(ident.trimCharactersAtEnd(", ")) == false)
+//            returnString = returnString + " " + ident.trimCharactersAtEnd(", ");
+//    }
+//
+//
+//    return returnString.trimEnd();
 
     String cabbageCode = getStringProp (widgetData, CabbageIdentifierIds::type) + " "
                          + getBoundsTextAsCabbageCode (getBounds (widgetData))

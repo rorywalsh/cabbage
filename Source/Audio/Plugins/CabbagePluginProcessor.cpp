@@ -464,7 +464,7 @@ void CabbagePluginProcessor::generateCabbageCodeFromJS (PlantImportStruct& impor
         CabbageUtilities::showMessage ("javaScript Error:" + result.getErrorMessage(), &getActiveEditor()->getLookAndFeel());
 
 }
-
+/*
 void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
 {
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
@@ -481,7 +481,7 @@ void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
             {
                 const String currentMacroText = csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ";
                 //first identifiers are not being used for some reason. This hack fixes that, but should be tidied up..
-                macroText.set ("$" + tokens[1], " " + currentMacroText);
+                macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText);
             }
         }
     }
@@ -495,37 +495,64 @@ void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
     String newLine = line;
     String expandedLine = line;
 
-//
-//    StringArray tokens;
-//    tokens.addTokens(line, " ,");
-//
-//    for ( auto token : tokens)
-//    {
-//        if(token.startsWith("$"))
-//        {
-//            for ( auto macro : macroText)
-//            {
-//                const String stringToReplace = token.removeCharacters(",() ");
-//                CabbageUtilities::debug(macro.name.toString());
-//                CabbageUtilities::debug(stringToReplace);
-//                if(macro.name.toString() == stringToReplace)
-//                {
-//                    line = line.replace(stringToReplace, macro.value.toString());
-//                }
-//            }
-//        }
-//
-//    }
 
+    StringArray tokens;
+    tokens.addTokens(line, " ,");
 
+    for ( auto token : tokens)
+    {
+        if(token.startsWith("$"))
+        {
+            for ( auto macro : macroText)
+            {
+                const String stringToReplace = token.removeCharacters(",() ");
+                CabbageUtilities::debug(macro.name.toString());
+                CabbageUtilities::debug(stringToReplace);
+                if(macro.name.toString() == stringToReplace)
+                {
+                    line = line.replace(stringToReplace, macro.value.toString());
+                }
+            }
+        }
+
+    }
+}
+*/
+void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
+{
+    for (String csdLine : linesFromCsd) //deal with Cabbage macros
+    {
+        StringArray tokens;
+        csdLine = csdLine.replace ("\n", " ");
+        tokens.addTokens (csdLine, ", ");
+
+        if (tokens[0].containsIgnoreCase ("define"))
+        {
+            tokens.removeEmptyStrings();
+
+            if (tokens.size() > 1)
+            {
+                const String currentMacroText = csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ";
+                //first identifiers are not being used for some reason. This hack fixes that, but should be tidied up..
+                macroText.set ("$" + tokens[1], " " + currentMacroText + currentMacroText);
+            }
+        }
+    }
+}
+
+void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
+{
+    String csdLine;
+    var macroNames;
+    String defineText;
+    String newLine = line;
+    String expandedLine = line;
     while (newLine.contains ("$"))
     {
         newLine = newLine.substring (newLine.indexOf ("$"), newLine.length());
-        //newLine = newLine.replace (",", " ");
+        newLine = newLine.replace (",", " ");
         defineText = newLine.substring (0, (newLine.indexOf (" ") == -1 ? newLine.length() : newLine.indexOf (" ") + 1));
-        defineText = newLine.replace(")", " ");
         newLine = newLine.replace (defineText, "");
-
         defineText = defineText.substring (0, (defineText.indexOf (" ") != -1 ? defineText.indexOf (" ") : defineText.length()));
 
         for (int cnt = 0 ; cnt < macroText.size() ; cnt++)
@@ -545,7 +572,6 @@ void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
 
 
 }
-
 //rebuild the entire GUi each time something changes.
 void CabbagePluginProcessor::updateWidgets (String csdText)
 {
