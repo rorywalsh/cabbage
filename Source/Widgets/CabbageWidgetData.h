@@ -113,7 +113,7 @@ public:
     //============================================================================
     static String getBoundsTextAsCabbageCode (Rectangle<int> rect);
     static String getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
-    static String getColoursTextAsCabbageCode (ValueTree widgetData, const String macroText);
+    static String getColoursTextAsCabbageCode (ValueTree widgetData, const String identifier, const String macroText);
     static String getNumericalValueTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
     static String getRotateTextAsCabbageCode (ValueTree widgetData, const String macroText);
     static String getSimpleTextAsCabbageCode (ValueTree widgetData, String identfier, const String macroText);

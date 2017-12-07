@@ -1492,7 +1492,7 @@ String CabbageWidgetData::getWidgetArrayAsCabbageCode (ValueTree widgetData, con
 
 }
 
-String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, const String macroText)
+String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, const String identifier const String macroText)
 {
     ValueTree tempData ("tempTree");
 
@@ -1764,10 +1764,12 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
 String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, const String currentLineText, const String macroText)
 {
     String returnString = currentLineText;
+    StringArray replacedIdentifiers;
     StringArray identifiersInLine = CabbageUtilities::getTokens (currentLineText, ')');
     //remove widget type
     identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ")+1));
 
+    CabbageIdentifierStrings identifierStrings;
 
     //colour identifier is getting missed due to it being name colour:0
     for (const auto currentIdentifier : identifiersInLine)
@@ -1777,10 +1779,28 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 
         if (currentIdentName.isNotEmpty())
         {
+            const String newText = getCabbageCodeForIdentifier(widgetData, currentIdentName, macroText).trimCharactersAtEnd(", ");
             const String stringToReplace = currentIdentifier.trimCharactersAtStart(", ") + ")";
-            returnString = returnString.replace(stringToReplace, getCabbageCodeForIdentifier(widgetData, currentIdentName, macroText).trimCharactersAtEnd(", "));
+
+            replacedIdentifiers.add(newText.substring(0, newText.indexOf("(")));
+            returnString = returnString.replace(stringToReplace, newText);
         }
 
+    }
+
+    identifiersInLine.clear();
+    identifiersInLine = CabbageUtilities::getTokens (returnString, ')');
+
+    CabbageUtilities::debug(replacedIdentifiers.joinIntoString(" - "));
+    CabbageUtilities::debug(identifiersInLine.joinIntoString(" - "));
+
+
+    for( const auto ident : identifierStrings)
+    {
+        if(replacedIdentifiers.contains(ident) == false)
+        {
+            CabbageUtilities::debug(getCabbageCodeForIdentifier(widgetData, ident, macroText).trimCharactersAtEnd(", "));
+        }
     }
 
     return returnString.trimEnd();
