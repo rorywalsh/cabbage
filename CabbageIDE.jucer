@@ -253,6 +253,8 @@
               file="Source/Widgets/CabbageWidgetData.h"/>
         <FILE id="GM7oOm" name="CabbageWidgetDataInitMethods.cpp" compile="1"
               resource="0" file="Source/Widgets/CabbageWidgetDataInitMethods.cpp"/>
+        <FILE id="b9xprj" name="CabbageWidgetDataTextMethods.cpp" compile="1"
+              resource="0" file="Source/Widgets/CabbageWidgetDataTextMethods.cpp"/>
         <FILE id="X96TNA" name="CabbageXYPad.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageXYPad.cpp"/>
         <FILE id="oRcPiJ" name="CabbageXYPad.h" compile="0" resource="0" file="Source/Widgets/CabbageXYPad.h"/>
