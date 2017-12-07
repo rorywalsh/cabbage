@@ -1220,7 +1220,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + String (getNumProp (widgetData, CabbageIdentifierIds::sliderskew))
                + ", "
                + String (getNumProp (widgetData, CabbageIdentifierIds::increment))
-               + "), ";
+               + ")";
     }
 
     if (type.contains ("range") && identifier == "value")
@@ -1236,7 +1236,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + String (getNumProp (widgetData, CabbageIdentifierIds::sliderskew))
                + ", "
                + String (getNumProp (widgetData, CabbageIdentifierIds::increment))
-               + "), ";
+               + ")";
     }
 
     else if (identifier == "max" || identifier == "min")
@@ -1257,7 +1257,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
                + String (getNumProp (widgetData, CabbageIdentifierIds::maxy))
                + ", "
                + String (getNumProp (widgetData, CabbageIdentifierIds::valuey))
-               + "), ";
+               + ")";
     }
 
     else if (type == "gentable" && identifier == "samplerange")
@@ -1268,7 +1268,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
             return "samplerange(" + String (getNumProp (widgetData, CabbageIdentifierIds::startpos))
                    + ", "
                    + String (getNumProp (widgetData, CabbageIdentifierIds::endpos))
-                   + "), ";
+                   + ")";
         }
     }
 
@@ -1279,7 +1279,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
             return "scrubberposition(" + String (getNumProp (widgetData, CabbageIdentifierIds::scrubberposition_sample))
                    + ", "
                    + String (getNumProp (widgetData, CabbageIdentifierIds::scrubberposition_table))
-                   + "), ";
+                   + ")";
 
         }
     }
@@ -1288,14 +1288,14 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
              && getProperty (widgetData, CabbageIdentifierIds::channeltype).toString() == "string"
              && identifier == "value")
     {
-        return identifier + "(\"" + getProperty (widgetData, identifier).toString() + "\"), ";
+        return identifier + "(\"" + getProperty (widgetData, identifier).toString() + "\")";
     }
 
     else
     {
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
         {
-            return identifier + "(" + String (getNumProp (widgetData, identifier)) + "), ";
+            return identifier + "(" + String (getNumProp (widgetData, identifier)) + ")";
         }
     }
 
@@ -1316,7 +1316,7 @@ String CabbageWidgetData::getRotateTextAsCabbageCode (ValueTree widgetData, cons
         const float pivotx = getNumProp (widgetData, CabbageIdentifierIds::pivotx);
         const float pivoty = getNumProp (widgetData, CabbageIdentifierIds::pivoty);
 
-        return "rotate(" + String (rotate) + ", " + String (pivotx) + ", " + String (pivoty) + "), ";
+        return "rotate(" + String (rotate) + ", " + String (pivotx) + ", " + String (pivoty) + ")";
     }
 
     return String::empty;
@@ -1331,7 +1331,7 @@ String CabbageWidgetData::getSimpleTextAsCabbageCode (ValueTree widgetData, Stri
     if (getStringProp (widgetData, identifier) != getStringProp (tempData, identifier))
     {
         const String text = getStringProp (widgetData, identifier);
-        return identifier + "(\"" + text + "\"), ";
+        return identifier + "(\"" + text + "\")";
     }
 
     return String::empty;
@@ -1348,35 +1348,35 @@ String CabbageWidgetData::getImagesTextAsCabbageCode (ValueTree widgetData, cons
         != getStringProp (tempData, CabbageIdentifierIds::imgbuttonon))
     {
         const String text = getStringProp (widgetData, CabbageIdentifierIds::imgbuttonon);
-        returnText = "imgfile(\"On\", \"" + text + "\"), ";
+        returnText = "imgfile(\"On\", \"" + text + "\")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::imgbuttonoff)
         != getStringProp (tempData, CabbageIdentifierIds::imgbuttonoff))
     {
         const String text = getStringProp (widgetData, CabbageIdentifierIds::imgbuttonoff);
-        returnText = returnText + "imgfile(\"Off\", \"" + text + "\"), ";
+        returnText = returnText + "imgfile(\"Off\", \"" + text + "\")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::imgslider)
         != getStringProp (tempData, CabbageIdentifierIds::imgslider))
     {
         const String text = getStringProp (widgetData, CabbageIdentifierIds::imgslider);
-        returnText = returnText + "imgfile(\"Slider\", \"" + text + "\"), ";
+        returnText = returnText + "imgfile(\"Slider\", \"" + text + "\")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::imgsliderbg)
         != getStringProp (tempData, CabbageIdentifierIds::imgsliderbg))
     {
         const String text = getStringProp (widgetData, CabbageIdentifierIds::imgsliderbg);
-        returnText = returnText + "imgfile(\"Background\", \"" + text + "\"), ";
+        returnText = returnText + "imgfile(\"Background\", \"" + text + "\")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::imggroupbox)
         != getStringProp (tempData, CabbageIdentifierIds::imggroupbox))
     {
         const String text = getStringProp (widgetData, CabbageIdentifierIds::imggroupbox);
-        returnText = returnText + "imgfile(\"" + text + "\"), ";
+        returnText = returnText + "imgfile(\"" + text + "\")";
     }
 
     return returnText;
@@ -1400,7 +1400,7 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
                 return identifier + "(" + array->getReference (0).toString() + ", "
                        + array->getReference (1).toString() + ", "
                        + array->getReference (2).toString() + ", "
-                       + String (float (array->getReference (3)), 4) + "), ";
+                       + String (float (array->getReference (3)), 4) + ")";
             }
 
             return String::empty;
@@ -1452,9 +1452,9 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
             }
 
             if ( array->size() == 1)
-                return identifier + "(\"" + itemString + array->getReference (array->size() - 1).toString() + "\"), ";
+                return identifier + "(\"" + itemString + array->getReference (array->size() - 1).toString() + "\")";
             else
-                return identifier + "(" + itemString + "\"" + array->getReference (array->size() - 1).toString() + "\"), ";
+                return identifier + "(" + itemString + "\"" + array->getReference (array->size() - 1).toString() + "\")";
 
         }
     }
@@ -1472,7 +1472,7 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
             stringArray.set (i, "\"" + stringArray[i] + "\"");
 
     if (stringArray.joinIntoString ("\n").length() > 0)
-        return identifier + "(" + stringArray.joinIntoString (", ") + "), ";
+        return identifier + "(" + stringArray.joinIntoString (", ") + ")";
     else
         return String::empty;
 }
@@ -1485,7 +1485,7 @@ String CabbageWidgetData::getWidgetArrayAsCabbageCode (ValueTree widgetData, con
 
     if (getStringProp (widgetData, CabbageIdentifierIds::basechannel) != getStringProp (tempData, CabbageIdentifierIds::basechannel))
     {
-        return String ("widgetarray(\"" + baseChannel + "\", " + String (arraySize) + "), ");
+        return String ("widgetarray(\"" + baseChannel + "\", " + String (arraySize) + ")");
     }
 
     return String::empty;
@@ -1511,13 +1511,13 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
                                    || type == "soundfiler"
                                    ? "colour(" : "colour:0(");
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::colour));
-        colourString = colourString << identifier << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << identifier << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::oncolour) != getStringProp (tempData, CabbageIdentifierIds::oncolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::oncolour));
-        colourString = colourString << "colour:1(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "colour:1(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::fontcolour) != getStringProp (tempData, CabbageIdentifierIds::fontcolour))
@@ -1526,85 +1526,85 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         colourString = colourString << (type.contains ("slider")
                                         || type == "csoundoutput"
                                         || type == "xypad"
-                                        || type == "encoder" ? "fontcolour(" : "fontcolour:0(") << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+                                        || type == "encoder" ? "fontcolour(" : "fontcolour:0(") << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::onfontcolour) != getStringProp (tempData, CabbageIdentifierIds::onfontcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::onfontcolour));
-        colourString = colourString << "fontcolour:1(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "fontcolour:1(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::outlinecolour) != getStringProp (tempData, CabbageIdentifierIds::outlinecolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::outlinecolour));
-        colourString = colourString << "outlinecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "outlinecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::whitenotecolour) != getStringProp (tempData, CabbageIdentifierIds::whitenotecolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::whitenotecolour));
-        colourString = colourString << "whitenotecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "whitenotecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::mouseoeverkeycolour) != getStringProp (tempData, CabbageIdentifierIds::whitenotecolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::mouseoeverkeycolour));
-        colourString = colourString << "mouseoeverkeycolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "mouseoeverkeycolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::blacknotecolour) != getStringProp (tempData, CabbageIdentifierIds::blacknotecolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::blacknotecolour));
-        colourString = colourString << "blacknotecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "blacknotecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::keyseparatorcolour) != getStringProp (tempData, CabbageIdentifierIds::keyseparatorcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::keyseparatorcolour));
-        colourString = colourString << "keyseparatorcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "keyseparatorcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::arrowbackgroundcolour) != getStringProp (tempData, CabbageIdentifierIds::arrowbackgroundcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::arrowbackgroundcolour));
-        colourString = colourString << "arrowbackgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "arrowbackgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::arrowcolour) != getStringProp (tempData, CabbageIdentifierIds::arrowcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::arrowcolour));
-        colourString = colourString << "arrowcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "arrowcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::ballcolour) != getStringProp (tempData, CabbageIdentifierIds::ballcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::ballcolour));
-        colourString = colourString << "ballcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "ballcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour) != getStringProp (tempData, CabbageIdentifierIds::backgroundcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour));
-        colourString = colourString << "backgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "backgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::tablegridcolour) != getStringProp (tempData, CabbageIdentifierIds::tablegridcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::tablegridcolour));
-        colourString = colourString << "tablegridcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "tablegridcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::tablebackgroundcolour) != getStringProp (tempData, CabbageIdentifierIds::tablebackgroundcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::tablebackgroundcolour));
-        colourString = colourString << "tablebackgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "tablebackgroundcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::overlaycolour) != getStringProp (tempData, CabbageIdentifierIds::overlaycolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::overlaycolour));
-        colourString = colourString << "overlaycolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "overlaycolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getProperty (widgetData, CabbageIdentifierIds::tablecolour) != getProperty (tempData, CabbageIdentifierIds::tablecolour))
@@ -1614,7 +1614,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         for ( int i = 0 ; i < colours.size() ; i++)
         {
             const Colour col = Colour::fromString (colours[i].toString());
-            colourString = colourString << "tablecolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+            colourString = colourString << "tablecolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
         }
     }
 
@@ -1625,98 +1625,171 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         for ( int i = 0 ; i < colours.size() ; i++)
         {
             const Colour col = Colour::fromString (colours[i].toString());
-            colourString = colourString << "metercolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+            colourString = colourString << "metercolour:" + String (i) + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
         }
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::textcolour) != getStringProp (tempData, CabbageIdentifierIds::textcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::textcolour));
-        colourString = colourString << "textcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "textcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::trackercolour) != getStringProp (tempData, CabbageIdentifierIds::trackercolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::trackercolour));
-        colourString = colourString << "trackercolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "trackercolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::textboxcolour) != getStringProp (tempData, CabbageIdentifierIds::textboxcolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::textboxcolour));
-        colourString = colourString << "textboxcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "textboxcolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     if (getStringProp (widgetData, CabbageIdentifierIds::textboxoutlinecolour) != getStringProp (tempData, CabbageIdentifierIds::textboxoutlinecolour))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::textboxoutlinecolour));
-        colourString = colourString << "textboxoutlinecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << "), ";
+        colourString = colourString << "textboxoutlinecolour(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     return colourString;
 }
 //===================================================================
+String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, String identifier, String macroText)
+{
+    switch (HashStringToInt (identifier.toStdString().c_str()))
+    {
+        case HashStringToInt ("active"):
+        case HashStringToInt ("alpha"):
+        case HashStringToInt ("corners"):
+        case HashStringToInt ("fill"):
+        case HashStringToInt ("increment"):
+        case HashStringToInt ("linethickness"):
+        case HashStringToInt ("max"):
+        case HashStringToInt ("min"):
+        case HashStringToInt ("outlinethickness"):
+        case HashStringToInt ("radiogroup"):
+        case HashStringToInt ("samplerange"):
+        case HashStringToInt ("scrubberposition"):
+        case HashStringToInt ("surrogatelinenumber"):
+        case HashStringToInt ("value"):
+        case HashStringToInt ("valuetextbox"):
+        case HashStringToInt ("velocity"):
+        case HashStringToInt ("visible"):
+        case HashStringToInt ("zoom"):
+            return getNumericalValueTextAsCabbageCode (widgetData, identifier, macroText);
+
+        case HashStringToInt ("align"):
+        case HashStringToInt ("channeltype"):
+        case HashStringToInt ("file"):
+        case HashStringToInt ("mode"):
+        case HashStringToInt ("plant"):
+        case HashStringToInt ("popuppostfix"):
+        case HashStringToInt ("popupprefix"):
+        case HashStringToInt ("popuptext"):
+        case HashStringToInt ("shape"):
+            return getSimpleTextAsCabbageCode(widgetData, identifier, macroText);
+
+
+        case HashStringToInt ("channel"):
+        case HashStringToInt ("identchannel"):
+        case HashStringToInt ("populate"):
+        case HashStringToInt ("tablenumber"):
+        case HashStringToInt ("text"):
+            return getMultiItemTextAsCabbageCode(widgetData, identifier, macroText);
+
+
+        case HashStringToInt ("bounds"):
+            return getBoundsTextAsCabbageCode (getBounds (widgetData));
+
+        case HashStringToInt ("type"):
+            return getStringProp (widgetData, CabbageIdentifierIds::type);
+
+        case HashStringToInt ("amprange"):
+            return getMultiItemNumbersAsCabbageCode (widgetData, identifier, macroText);
+
+        case HashStringToInt ("activecellcolour"):
+        case HashStringToInt ("arrowbackgroundcolour"):
+        case HashStringToInt ("arrowcolour"):
+        case HashStringToInt ("backgroundcolour"):
+        case HashStringToInt ("ballcolour"):
+        case HashStringToInt ("blacknotecolour"):
+        case HashStringToInt ("fillcolour"):
+        case HashStringToInt ("highlightcolour"):
+        case HashStringToInt ("keyseparatorcolour"):
+        case HashStringToInt ("menucolour"):
+        case HashStringToInt ("mouseoeverkeycolour"):
+        case HashStringToInt ("outlinecolour"):
+        case HashStringToInt ("overlaycolour"):
+        case HashStringToInt ("tablebackgroundcolour"):
+        case HashStringToInt ("tablegridcolour"):
+        case HashStringToInt ("textboxcolour"):
+        case HashStringToInt ("textboxoutlinecolour"):
+        case HashStringToInt ("textcolour"):
+        case HashStringToInt ("titlebarcolour"):
+        case HashStringToInt ("trackercolour"):
+        case HashStringToInt ("whitenotecolour"):
+        case HashStringToInt ("colour"):
+        case HashStringToInt ("fontcolour"):
+        case HashStringToInt ("colour:0"):
+        case HashStringToInt ("colour:1"):
+        case HashStringToInt ("fontcolour:0"):
+        case HashStringToInt ("fontcolour:1"):
+        case HashStringToInt ("tablecolour"):
+        case HashStringToInt ("tablecolours"):
+        case HashStringToInt ("tablecolour:"):
+        case HashStringToInt ("metercolour"):
+        case HashStringToInt ("metercolour:0"):
+        case HashStringToInt ("metercolour:1"):
+            return getColoursTextAsCabbageCode (widgetData, macroText);
+
+        case HashStringToInt ("channelarray"):
+        case HashStringToInt ("widgetarray"):
+            return getWidgetArrayAsCabbageCode (widgetData, macroText);
+
+        case HashStringToInt ("rotate"):
+            return getRotateTextAsCabbageCode (widgetData, macroText);
+
+        case HashStringToInt ("imgfile"):
+            return getImagesTextAsCabbageCode (widgetData, macroText);
+
+        default:
+            return String::empty;
+            break;
+
+    }
+}
+
 String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, const String currentLineText, const String macroText)
 {
-//    StringArray identifiers;
-//    String returnString = currentLineText;
-//    identifiers.add(getBoundsTextAsCabbageCode (getBounds (widgetData)));
-//    identifiers.add(getColoursTextAsCabbageCode (widgetData, macroText));
-//    identifiers.add(getImagesTextAsCabbageCode (widgetData, macroText));
-//    identifiers.add(getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText));
-//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "channel", macroText));
-//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText));
-//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "populate", macroText));
-//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText));
-//    identifiers.add(getMultiItemTextAsCabbageCode (widgetData, "text", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "active", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "fill", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "increment", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "linethickness", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "max", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "min", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "samplerange", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "surrogatelinenumber", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "value", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "valuetextbox", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "visible", macroText));
-//    identifiers.add(getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText));
-//    identifiers.add(getRotateTextAsCabbageCode (widgetData, macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "align", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "channeltype", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "file", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "mode", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "plant", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText));
-//    identifiers.add(getSimpleTextAsCabbageCode (widgetData, "shape", macroText));
-//    identifiers.add(getStringProp (widgetData, CabbageIdentifierIds::type));
-//    identifiers.add(getWidgetArrayAsCabbageCode (widgetData, macroText));
-//    identifiers.removeEmptyStrings();
-//    String secondSection = currentLineText;
-//
-//    StringArray identifiersInLine = CabbageUtilities::getTokens (currentLineText, ')');
-//
-//    //remove widget type
-//    identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ")+1));
-//
-//
-//    //colour identifier is getting missed due to it being name colour:0
-//    for (const auto currentIdentifier : identifiersInLine)
-//    {
-//         for (const auto updatedIdentifier : identifiers)
+    String returnString = currentLineText;
+    StringArray identifiersInLine = CabbageUtilities::getTokens (currentLineText, ')');
+    //remove widget type
+    identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ")+1));
+
+
+    //colour identifier is getting missed due to it being name colour:0
+    for (const auto currentIdentifier : identifiersInLine)
+    {
+        const String currentIdentName = currentIdentifier.substring(0, currentIdentifier.indexOf("(")).trim().removeCharacters(", ");
+        CabbageUtilities::debug(currentIdentName);
+
+        if (currentIdentName.isNotEmpty())
+        {
+            const String stringToReplace = currentIdentifier.trimCharactersAtStart(", ") + ")";
+            returnString = returnString.replace(stringToReplace, getCabbageCodeForIdentifier(widgetData, currentIdentName, macroText).trimCharactersAtEnd(", "));
+        }
+
+    }
+
+    return returnString.trimEnd();
+//        for (const auto updatedIdentifier : identifiers)
 //         {
 //            if(updatedIdentifier.isNotEmpty())
 //            {
 //                const String newIdentName = updatedIdentifier.substring(0, updatedIdentifier.indexOf("(")).trim();
-//                const String currentIdentName = (currentIdentifier.substring(0, currentIdentifier.indexOf("(")).trim().removeCharacters(", ") == "colour"
+//                .trim().removeCharacters(", ") == "colour"
 //                ? "colour:0" : (currentIdentifier.substring(0, currentIdentifier.indexOf("(")).trim().removeCharacters(", ")));
 //
 //                //if identifier exists in the current line of code, replace it with the update
@@ -1735,106 +1808,106 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 //        if(returnString.contains(ident.trimCharactersAtEnd(", ")) == false)
 //            returnString = returnString + " " + ident.trimCharactersAtEnd(", ");
 //    }
-//
-//
+
+
 //    return returnString.trimEnd();
 
-    String cabbageCode = getStringProp (widgetData, CabbageIdentifierIds::type) + " "
-                         + getBoundsTextAsCabbageCode (getBounds (widgetData))
-                         + getMultiItemTextAsCabbageCode (widgetData, "channel", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "channeltype", macroText)
-                         + getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "value", macroText)
-                         + getMultiItemTextAsCabbageCode (widgetData, "text", macroText)
-                         + getMultiItemTextAsCabbageCode (widgetData, "populate", macroText)
-                         + getColoursTextAsCabbageCode (widgetData, macroText)
-                         + getRotateTextAsCabbageCode (widgetData, macroText)
-                         + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "max", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "min", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "increment", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "fill", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "visible", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "valuetextbox", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "linethickness", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "plant", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "align", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "file", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "shape", macroText)
-                         + getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "samplerange", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText)
-                         + getNumericalValueTextAsCabbageCode (widgetData, "surrogatelinenumber", macroText)
-                         + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
-                         + getWidgetArrayAsCabbageCode (widgetData, macroText)
-                         + getImagesTextAsCabbageCode (widgetData, macroText);
-
-
-    return updateIdentifiers (cabbageCode, currentLineText);
+//    String cabbageCode = getStringProp (widgetData, CabbageIdentifierIds::type) + " "
+//                         + getBoundsTextAsCabbageCode (getBounds (widgetData))
+//                         + getMultiItemTextAsCabbageCode (widgetData, "channel", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "channeltype", macroText)
+//                         + getMultiItemTextAsCabbageCode (widgetData, "identchannel", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "value", macroText)
+//                         + getMultiItemTextAsCabbageCode (widgetData, "text", macroText)
+//                         + getMultiItemTextAsCabbageCode (widgetData, "populate", macroText)
+//                         + getColoursTextAsCabbageCode (widgetData, macroText)
+//                         + getRotateTextAsCabbageCode (widgetData, macroText)
+//                         + getMultiItemTextAsCabbageCode (widgetData, "tablenumber", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "alpha", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "radiogroup", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "max", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "min", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "increment", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "zoom", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "corners", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "active", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "fill", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "visible", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "valuetextbox", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "linethickness", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "outlinethickness", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "velocity", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "popuptext", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "plant", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "popupprefix", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "popuppostfix", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "align", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "file", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "shape", macroText)
+//                         + getMultiItemNumbersAsCabbageCode (widgetData, "amprange", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "samplerange", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "scrubberposition", macroText)
+//                         + getNumericalValueTextAsCabbageCode (widgetData, "surrogatelinenumber", macroText)
+//                         + getSimpleTextAsCabbageCode (widgetData, "mode", macroText)
+//                         + getWidgetArrayAsCabbageCode (widgetData, macroText)
+//                         + getImagesTextAsCabbageCode (widgetData, macroText);
+//
+//
+//    return updateIdentifiers (cabbageCode, currentLineText);
 }
 
-String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentLineText)
-{
-    //makes sure we preserve the order in which the widgets appear in the text..
-    StringArray newIdentifiers = CabbageUtilities::getTokens (cabbageCode.substring (0, cabbageCode.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
-    StringArray oldIdentifiers = CabbageUtilities::getTokens (currentLineText.substring (0, currentLineText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
-
-    for ( int i = 0 ; i < newIdentifiers.size() ; i++)
-        newIdentifiers.set (i, newIdentifiers[i].trim().trimCharactersAtStart (" ,") + ")");
-
-    for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
-        oldIdentifiers.set (i, oldIdentifiers[i].trim().trimCharactersAtStart (" ,") + "),");
-
-    //get rid of identifiers are using default values..
-    for (int i = oldIdentifiers.size(); i >= 0; i--)
-        if (newIdentifiers.indexOf (oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("))) == -1)
-            oldIdentifiers.remove (i);
-
-    for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
-    {
-        const String oldIdent = oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("));
-
-        for ( int y = newIdentifiers.size() ; y >= 0 ; y--)
-        {
-            const String newIdent = newIdentifiers[y].substring (0, newIdentifiers[y].indexOf ("("));
-
-            if (newIdent == oldIdent)
-            {
-                oldIdentifiers.set (i, newIdentifiers[y]);
-                newIdentifiers.remove (y);
-            }
-        }
-    }
-
-    for ( auto str : newIdentifiers)
-        oldIdentifiers.add (str);
-
-    const String newLine = oldIdentifiers.joinIntoString (" ").trimCharactersAtStart (" ");
-    return newLine;
-}
-
-String CabbageWidgetData::removeWidgetFromValueTree (ValueTree wData, int lineNumber)
-{
-
-    for ( int  i = 0 ; i < wData.getNumChildren() ; i++ )
-    {
-        if (int (wData.getChild (i).getProperty (CabbageIdentifierIds::linenumber)) == lineNumber)
-        {
-            const String childName = wData.getChild (i).getProperty (CabbageIdentifierIds::name).toString();
-            wData.removeChild (i, 0);
-            return childName;
-        }
-    }
-
-    return String::empty;
-}
+//String CabbageWidgetData::updateIdentifiers (String cabbageCode, String currentLineText)
+//{
+//    //makes sure we preserve the order in which the widgets appear in the text..
+//    StringArray newIdentifiers = CabbageUtilities::getTokens (cabbageCode.substring (0, cabbageCode.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
+//    StringArray oldIdentifiers = CabbageUtilities::getTokens (currentLineText.substring (0, currentLineText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
+//
+//    for ( int i = 0 ; i < newIdentifiers.size() ; i++)
+//        newIdentifiers.set (i, newIdentifiers[i].trim().trimCharactersAtStart (" ,") + ")");
+//
+//    for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
+//        oldIdentifiers.set (i, oldIdentifiers[i].trim().trimCharactersAtStart (" ,") + "),");
+//
+//    //get rid of identifiers are using default values..
+//    for (int i = oldIdentifiers.size(); i >= 0; i--)
+//        if (newIdentifiers.indexOf (oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("))) == -1)
+//            oldIdentifiers.remove (i);
+//
+//    for ( int i = 0 ; i < oldIdentifiers.size() ; i++)
+//    {
+//        const String oldIdent = oldIdentifiers[i].substring (0, oldIdentifiers[i].indexOf ("("));
+//
+//        for ( int y = newIdentifiers.size() ; y >= 0 ; y--)
+//        {
+//            const String newIdent = newIdentifiers[y].substring (0, newIdentifiers[y].indexOf ("("));
+//
+//            if (newIdent == oldIdent)
+//            {
+//                oldIdentifiers.set (i, newIdentifiers[y]);
+//                newIdentifiers.remove (y);
+//            }
+//        }
+//    }
+//
+//    for ( auto str : newIdentifiers)
+//        oldIdentifiers.add (str);
+//
+//    const String newLine = oldIdentifiers.joinIntoString (" ").trimCharactersAtStart (" ");
+//    return newLine;
+//}
+//
+//String CabbageWidgetData::removeWidgetFromValueTree (ValueTree wData, int lineNumber)
+//{
+//
+//    for ( int  i = 0 ; i < wData.getNumChildren() ; i++ )
+//    {
+//        if (int (wData.getChild (i).getProperty (CabbageIdentifierIds::linenumber)) == lineNumber)
+//        {
+//            const String childName = wData.getChild (i).getProperty (CabbageIdentifierIds::name).toString();
+//            wData.removeChild (i, 0);
+//            return childName;
+//        }
+//    }
+//
+//    return String::empty;
+//}
