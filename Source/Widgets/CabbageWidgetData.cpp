@@ -1511,7 +1511,6 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         case HashStringToInt("whitenotecolour"):
         case HashStringToInt("mouseoeverkeycolour"):
         case HashStringToInt("blacknotecolour"):
-        case HashStringToInt("arrowbackgroundcolour"):
         case HashStringToInt("keyseparatorcolour"):
         case HashStringToInt("arrowbackgroundcolour"):
         case HashStringToInt("arrowcolour"):
@@ -1645,7 +1644,7 @@ String CabbageWidgetData::getBasicColourString(ValueTree widgetData, String iden
     if (getStringProp (widgetData, identifier) != getStringProp (tempData, identifier))
     {
         const Colour col = Colour::fromString (getStringProp (widgetData, CabbageIdentifierIds::textboxoutlinecolour));
-        colourText = identifier + "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
+        colourText << identifier << "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
     }
 
     return colourText;
@@ -1764,7 +1763,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     //remove widget type
     identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ")+1));
 
-    CabbageIdentifierStrings identifierStrings;
+    CabbageIdentifierStrings fullListOfIdentifierStrings;
 
     //colour identifier is getting missed due to it being name colour:0
     for (const auto currentIdentifier : identifiersInLine)
@@ -1790,11 +1789,13 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     CabbageUtilities::debug(identifiersInLine.joinIntoString(" - "));
 
 
-    for( const auto ident : identifierStrings)
+    for( const auto ident : fullListOfIdentifierStrings)
     {
-        if(replacedIdentifiers.contains(ident) == false)
+        if(replacedIdentifiers.indexOf(ident)==-1)
         {
-            CabbageUtilities::debug(getCabbageCodeForIdentifier(widgetData, ident, macroText).trimCharactersAtEnd(", "));
+            const String newIdent = getCabbageCodeForIdentifier(widgetData, ident, macroText).trimCharactersAtEnd(", ");
+            if(newIdent.isNotEmpty())
+                CabbageUtilities::debug(returnString+ " " + newIdent);
         }
     }
 
