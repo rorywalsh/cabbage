@@ -631,11 +631,13 @@ void CabbageCodeEditorComponent::mouseWheelMove (const MouseEvent& e, const Mous
 void CabbageCodeEditorComponent::zoomIn()
 {
     setFont (this->getFont().withHeight (currentFontSize < 100 ? ++currentFontSize : 100));
+    owner->settings->getUserSettings()->setValue("FontSize", currentFontSize);
 }
 
 void CabbageCodeEditorComponent::zoomOut()
 {
     setFont (this->getFont().withHeight (currentFontSize > 8 ? --currentFontSize : 8));
+    owner->settings->getUserSettings()->setValue("FontSize", currentFontSize);
 }
 
 //==============================================================================

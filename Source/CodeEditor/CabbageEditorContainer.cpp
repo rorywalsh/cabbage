@@ -60,7 +60,7 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool 
 
 CabbageEditorContainer::~CabbageEditorContainer()
 {
-    settings->getUserSettings()->setValue ("FontSize", editor->getFontSize());
+    //settings->getUserSettings()->setValue ("FontSize", editor->getFontSize());
     settings->getUserSettings()->setValue ("FontSizeConsole", outputConsole->getFontSize());
     editor = nullptr;
     outputConsole = nullptr;

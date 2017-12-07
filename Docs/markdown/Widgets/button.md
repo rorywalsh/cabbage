@@ -4,7 +4,7 @@ Button creates a button on screen that can be used for a whole range of differen
 
 ```csharp
 button bounds(x, y, width, height), channel("chan"), text("offCaption","onCaption"), \
-value(val), colour("colour"), fontcolour("colour"), latched(val), \
+value(val), colour:N("colour"), fontcolour:N("colour"), latched(val), \
 identchannel("channel"), alpha(val), visible(val), caption("caption"), \ 
 rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
 active(val), svgfile("type", "file")

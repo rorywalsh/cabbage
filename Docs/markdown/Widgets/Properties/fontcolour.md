@@ -1,1 +1,1 @@
-**fontcolour("colour")** Sets the colour of the font. See above for details on valid colours.
+**fontcolour("colour")** Sets the colour of the font. In the case of slider this sets teh colour of the font in the value textbox if it is shown. 

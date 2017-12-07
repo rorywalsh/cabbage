@@ -5,7 +5,7 @@ A filebutton can be used to select files from disk. The filename selected, or cr
 ```csharp
 filebutton bounds(x, y, width, height), channel("chan"), \
 text("offCaption"), populate("filetype", "dir"), value(val), \
-colour("colour"), fontcolour("colour"), identchannel("channel"), \
+colour:N("colour"), fontcolour:N("colour"), identchannel("channel"), \
 alpha(val), visible(val), mode("mode"), rotate(radians, pivotx, pivoty), \
 widgetarray("chan", number), popuptext("text"), active(val), svgfile("type", "file")
 ```
@@ -29,13 +29,13 @@ widgetarray("chan", number), popuptext("text"), active(val), svgfile("type", "fi
 
 {! ./markdown/Widgets/Properties/channel.md !} 
 
-{! ./markdown/Widgets/Properties/colour.md !} 
+{! ./markdown/Widgets/Properties/colour_0.md !} 
 
-{! ./markdown/Widgets/Properties/colour.md !} 
+{! ./markdown/Widgets/Properties/colour_1.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour.md !} 
+{! ./markdown/Widgets/Properties/fontcolour_0.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour.md !} 
+{! ./markdown/Widgets/Properties/fontcolour_1.md !} 
 
 {! ./markdown/Widgets/Properties/identchannel.md !} 
 

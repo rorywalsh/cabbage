@@ -31,7 +31,6 @@ CabbageButton::CabbageButton (ValueTree wData)
 
     setToggleState ((bool)getValue(), dontSendNotification);
 
-
     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup) != 0)
         setRadioGroupId (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup));
 
@@ -66,6 +65,7 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
         populateTextArrays (valueTree);
         //const String newText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
         //if(newText != getTextArray()[getValue()])
+        CabbageUtilities::debug(getTextArray()[getValue()]);
         setButtonText (getTextArray()[getValue()]);
     }
 }

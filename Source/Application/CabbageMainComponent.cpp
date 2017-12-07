@@ -1033,6 +1033,13 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
         addInstrumentsAndRegionsToCombobox();
     }
+
+    StringArray lines;
+    lines.addLines(getCurrentCsdFile().loadFileAsString());
+
+
+    if(lines.indexOf("<Cabbage>") == -1 || lines.indexOf("</Cabbage>") == -1)
+        CabbageUtilities::showMessage("You are missing Cabbage tags. Please ensure your code has <Cabbage> and </Cabbage> tags.", lookAndFeel);
 }
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk (File file)
