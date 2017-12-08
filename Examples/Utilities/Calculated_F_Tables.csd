@@ -18,15 +18,15 @@ combobox bounds(  5,505,120, 20), channel("formula"), text("y = x","y = -x","y =
 
 image  bounds( 5,525, 66, 40) plant("a") identchannel("aID") colour(0,0,0,0)
 {
-numberbox bounds( 0,  0, 40, 30), text("a ="), channel("a"), range(1,100,2,1,1) textcolour("white")
+nslider bounds( 0,  0, 40, 30), text("a ="), channel("a"), range(1,100,2,1,1) textcolour("white")
 button    bounds(41,  8, 20, 14), text("^","^") channel("aIncr") latched(0)
 button    bounds(41,  8, 20, 14), text("^","^") channel("aDecr") latched(0), rotate(3.147,10,15)
 }
 
 label    bounds(130,513,100, 14), text("normalised"), visible(0), identchannel("normalised")
 label    bounds(220,513,100, 14), text("x = 0 to 10"), visible(0), identchannel("x = 0 to 10")
-numberbox bounds(340,505,60,30), text("x value"), channel("xval"), range(-10, 10,0,1,0.00001)
-numberbox bounds(405,505,60,30), text("y value"), channel("yval"), range(-100,100,0,1,0.00001)
+nslider bounds(340,505,60,30), text("x value"), channel("xval"), range(-10, 10,0,1,0.00001)
+nslider bounds(405,505,60,30), text("y value"), channel("yval"), range(-100,100,0,1,0.00001)
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -471,7 +471,7 @@ instr 1
 
   chnset	"tablenumber(1)","table"		; update table
 
- ; read y values and print to numberbox
+ ; read y values and print to nslider
  kMOUSE_X	chnget	"MOUSE_X"	; read mouse x position. range: 0 - panel_width(in pixels)
  kndx		=	(kMOUSE_X/500)	; range: 0 - 1
  if metro(8)==1 then			; restrict maximum rate of updates

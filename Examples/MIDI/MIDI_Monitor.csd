@@ -12,16 +12,16 @@ image     bounds(  0,  0, 610,110), colour(75, 85, 90, 100), line(2), shape(shar
 gentable     bounds(  5,  5, 600, 74),  tableNumbers(1), tablecolour("yellow"), identchannel("table1"), drawmode(4), amprange(0,127,1), zoom(-1), tablegridcolour(0,0,0,0)
 label     bounds(  5, 83,600, 12), text("Notes and Velocities"), fontcolour("white")
 label     bounds(  5, 82, 70, 12), text("Last Note:"), fontcolour("white")
-numberbox bounds( 75, 80, 35, 16), fontcolour("white"), channel("LastNote"), range(0,127,0,1,1)
+nslider bounds( 75, 80, 35, 16), fontcolour("white"), channel("LastNote"), range(0,127,0,1,1)
 label     bounds(125, 82, 80, 12), text("Last Velocity:"), fontcolour("white")
-numberbox bounds(205, 80, 35, 16), fontcolour("white"), channel("LastVel"), range(0,127,0,1,1)
+nslider bounds(205, 80, 35, 16), fontcolour("white"), channel("LastVel"), range(0,127,0,1,1)
 
 ; ALL CONTROLLERS ON ONE CHANNEL
 image    bounds(  0,115,610,110), colour(75, 85, 90, 100), line(2), shape(sharp)
 gentable    bounds(  5,120,600, 74), tableNumbers(2), tablecolour("lime"), identchannel("table2"), drawmode(4), amprange(0,127,2), zoom(-1), tablegridcolour(0,0,0,0)
 label    bounds(  5,198,600, 12), text("Controllers by Channel"), fontcolour("white")
 label    bounds(  5,197,130, 12), text("Last Controller Value:"), fontcolour("white")
-numberbox  bounds(135,195, 35, 16), fontcolour("white"), channel("LastCtrl"), range(0,127,0,1,1)
+nslider  bounds(135,195, 35, 16), fontcolour("white"), channel("LastCtrl"), range(0,127,0,1,1)
 label    bounds(413,201, 90, 12),  text("MIDI Channel:"), fontcolour("white")
 combobox bounds(500,200, 33, 15), channel("CtrlChannel"), value(1), text("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16")
 

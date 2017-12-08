@@ -31,9 +31,9 @@ rslider bounds( 70,  0, 70, 70),  text("Cents"),     channel("cents"), range(-10
 }
 
 image     bounds(130, 20, 35, 58), plant("Ratio"), colour(0,0,0,0), visible(0), identchannel("ratio_ident") {
-numberbox bounds(  5,  5, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
+nslider bounds(  5,  5, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
 image     bounds(  0, 26, 35,  1), shape("sharp"), colour("black")
-numberbox bounds(  5, 30, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
+nslider bounds(  5, 30, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
 }
 
 image   bounds(238, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlinethickness(0)	; circles around rsliders

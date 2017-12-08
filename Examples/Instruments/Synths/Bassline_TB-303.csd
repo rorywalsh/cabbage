@@ -157,7 +157,7 @@ rslider  bounds(470,220, 70, 90), text("Tempo"),   channel("Tempo"),   range(1, 
 rslider  bounds(535,220, 70, 90), text("Vol."),    channel("Vol"),     range(0, 5.00, 1),        $RSliderStyle
 
 label      bounds(480,146, 90, 12), text("Phrase Length:"), fontcolour("black")                                                                       
-numberbox  bounds(570,145, 30, 15), channel("PhrLen"),       range(1,16,16,1,1)
+nslider  bounds(570,145, 30, 15), channel("PhrLen"),       range(1,16,16,1,1)
 button     bounds(480,165, 60, 15), text("Reset"),   channel("Reset"),  value(0), latched(0)
 button     bounds(540,165, 60, 15), text("Random"),  channel("Rnd"),    value(0), latched(0)
 button     bounds(480,185, 60, 15), text("-semi"),   channel("SemiDn"), value(0), latched(0)

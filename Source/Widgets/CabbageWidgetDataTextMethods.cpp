@@ -147,34 +147,27 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     var macroNames = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macronames);
     var macroStrings = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macrostrings);
 
-    for( int i = 0 ; i < macroNames.size() ; i++)
-        CabbageUtilities::debug(macroStrings[i].toString());
 
     //deal with macros
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
     {
         if(identifiersInLine[i].contains("$"))
         {
-            CabbageUtilities::debug(identifiersInLine[i]);
             const String macroWithIdentifier = identifiersInLine[i].trimCharactersAtStart(", ");
             const String macro = macroWithIdentifier.substring(0, macroWithIdentifier.indexOf(" "));
             const int indexOfmacro = macroNames.indexOf(macro);
-            if(indexOfmacro != -1)
-                CabbageUtilities::debug(macroStrings[indexOfmacro].toString());
             identifiersInLine.set(i, identifiersInLine[i].replace(macro, ""));
             identifiersInLine.insert(i, macro);
             i++;
         }
     }
 
-    CabbageUtilities::debug(identifiersInLine.joinIntoString(" - "));
     //colour identifier is getting missed due to it being name colour:0
     for (const auto currentIdentifier : identifiersInLine)
     {
 
         const String currentIdentName = currentIdentifier.substring(0, currentIdentifier.indexOf(
                 "(")).trim().removeCharacters(", ");
-        CabbageUtilities::debug(currentIdentName);
 
         //I need to check that the current identifiers and not the same as the existing ones, if so don't replace anything
         if (currentIdentName.isNotEmpty())
@@ -197,11 +190,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 
     //remove widget type from first string in array
     identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ") + 1));
-
-
-    CabbageUtilities::debug(identifiersInLine.joinIntoString(" - "));
-    CabbageUtilities::debug(replacedIdentifiers.joinIntoString(" - "));
-
+    
     for (const auto ident : fullListOfIdentifierStrings)
     {
         if (replacedIdentifiers.indexOf(ident) == -1)

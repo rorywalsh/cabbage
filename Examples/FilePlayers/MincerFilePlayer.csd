@@ -50,9 +50,9 @@ rslider    bounds(  0,  0, 70, 70), channel("Semitones"), range(-48, 48, 0,1,1),
 }
 
 image      bounds(175,200, 70, 70), colour(0,0,0,0), plant("Ratio"), identchannel("RatioPlant_ident"), visible(0) {
-numberbox bounds( 20,  0, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
+nslider bounds( 20,  0, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
 image     bounds( 15, 26, 35,  1), shape("sharp") 
-numberbox bounds( 20, 35, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
+nslider bounds( 20, 35, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
 }
 
 
@@ -63,16 +63,16 @@ label      bounds(  0,  2, 305,10), text("L   O   O   P       R   E   G   I   O 
 label      bounds( 10, 24, 85, 12), text("Shape"), fontcolour("white")
 combobox   bounds( 10, 37, 85, 20), channel("LoopMode"), text("Forward","Backward","Triangle","Sine"), value(1), fontcolour("white")
 rslider    bounds(100, 17, 70, 70), channel("Speed"), range(-2, 2, 1,1,0.001),            colour( 40, 80, 80)), trackercolour("white"), text("Speed"), textcolour("white")
-numberbox  bounds(170, 35, 60, 30), channel("ModRange"), range(0,2,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textcolour("white")
-numberbox  bounds(235, 20, 60, 30), channel("Rate1"),    range(0,30,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textcolour("white")
-numberbox  bounds(235, 50, 60, 30), channel("Rate2"),    range(0,30,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textcolour("white")
+nslider  bounds(170, 35, 60, 30), channel("ModRange"), range(0,2,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textcolour("white")
+nslider  bounds(235, 20, 60, 30), channel("Rate1"),    range(0,30,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textcolour("white")
+nslider  bounds(235, 50, 60, 30), channel("Rate2"),    range(0,30,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textcolour("white")
 }
 
 image      bounds(630,188, 145,90), colour(0,0,0,0), outlinecolour("silver"), outlinethickness(1), shape("sharp"), plant("ModPtr") {
 label      bounds(  0,  2, 135,10), text("M  O  D.     P  O  I  N  T  E  R"), fontcolour("white")
-numberbox  bounds( 10, 35, 60, 30), channel("PtrModRange"), range(0,1,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textcolour("white")
-numberbox  bounds( 75, 20, 60, 30), channel("PtrRate1"),    range(0,500,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textcolour("white")
-numberbox  bounds( 75, 50, 60, 30), channel("PtrRate2"),    range(0,500,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textcolour("white")
+nslider  bounds( 10, 35, 60, 30), channel("PtrModRange"), range(0,1,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textcolour("white")
+nslider  bounds( 75, 20, 60, 30), channel("PtrRate1"),    range(0,500,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textcolour("white")
+nslider  bounds( 75, 50, 60, 30), channel("PtrRate2"),    range(0,500,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textcolour("white")
 }
 
 image      bounds(785,200,265, 70), colour(0,0,0,0), plant("output") {
@@ -203,7 +203,7 @@ instr	1
   kMOUSE_Y	limit	1 - ((kMOUSE_Y - 5) / 150), 0, 1		; Mouse Y transposition
   gapointer	interp	kMOUSE_X
   kSemitones	chnget	"Semitones"
-  gktranspose	portk	((kMOUSE_Y*2)-1)*kSemitones,kporttime		; Transposition is scaled using transposition value derived either from 'Semitone' slider or 'Ratio' numberboxes
+  gktranspose	portk	((kMOUSE_Y*2)-1)*kSemitones,kporttime		; Transposition is scaled using transposition value derived either from 'Semitone' slider or 'Ratio' nslideres
   gktranspose	=	semitone(gktranspose)
   gklevel	portk	kMOUSE_Y*gklevel + (1-gklevel), kporttime*krampup
   schedkwhen	kStartScrub,0,0,2,0,-1

@@ -52,7 +52,7 @@ groupbox bounds(340, 10,290, 90), text("Resonators"), fontcolour("white"), plant
 label    bounds( 15, 21,140, 12), text("Instrument"), fontcolour("white")
 combobox bounds( 15, 36,140, 25), channel("sound"), value(4), text("Single", "Dahina", "Banyan", "Xylophone", "Tibetan Bowl 180mm", "Spinel Sphere", "Pot Lid", "Red Cedar Wood Plate", "Tubular Bell", "Redwood Wood Plate", "Douglas Fir Wood Plate", "Uniform Wooden Bar", "Uniform Aluminium Bar", "Vibraphone 1", "Vibraphone 2", "Chladni Plates", "Tibetan Bowl 152mm", "Tibetan Bowl 140mm", "Wine Glass", "Small Handbell", "Albert Clock Bell", "Wood Block","Harmonic 10","Harmonic 20","Harmonic 30","Harmonic Odd 10","Harmonic Odd 20","Anvil")
 label    bounds( 11, 62,120, 12), text("Number of Partials:"), fontcolour("white")
-numberbox  bounds( 126, 62, 29, 13), channel("npartials"), range(1, 10000, 6, 1, 1)
+nslider  bounds( 126, 62, 29, 13), channel("npartials"), range(1, 10000, 6, 1, 1)
 rslider  bounds(160, 25, 60, 60), text("Q"), colour("orange"), channel("Q"), range(1, 10000, 2000, 0.5)
 rslider  bounds(220, 25, 60, 60), text("Bright"), colour("orange"), channel("bright"), range(-4.00, 4, 0)
 }

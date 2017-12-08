@@ -38,7 +38,7 @@ button     bounds( 96,206, 83, 20), text("STOP","STOP"), channel("Stop"), value(
 
 rslider    bounds(178,160, 60, 60), text("Duration"), channel("Duration"), range(0.1, 60.00, 3,0.5,0.001), colour(30,30,40), trackercolour("white"), fontcolour("white"), outlinecolour(150,150,150)
 rslider    bounds(238,160, 60, 60), text("Transpose"), channel("Transpose"), range(-48, 48.00, 0,1,0.5), colour(30,30,40), trackercolour("white"), fontcolour("white"), outlinecolour(150,150,150)
-;numberbox  bounds(180,160,110, 35), text("Stretched Duration"), channel("Duration"), range(0.1, 800.00, 3,1,0.001), colour(0,0,0), fontcolour("white"), textbox(1)
+;nslider  bounds(180,160,110, 35), text("Stretched Duration"), channel("Duration"), range(0.1, 800.00, 3,1,0.001), colour(0,0,0), fontcolour("white"), textbox(1)
 label      bounds(300,160, 80, 13), text("FFT Size"), fontcolour("white")
 combobox   bounds(300,177, 80, 17), channel("FFTSize"), items("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32"), value(5), fontcolour("white")
 checkbox   bounds(300,198, 95, 15), channel("lock"), text("Phase Lock"), fontcolour("white"), colour(255,0,0)

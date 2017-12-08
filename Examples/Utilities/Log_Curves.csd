@@ -31,8 +31,8 @@ label    bounds( 999,258, 15, 12), text("10"),  fontcolour("white")
 
 image    bounds(436,461,200, 40), shape("sharp"), colour(100,100,100), outlinecolour("white"), outlinethickness(2), plant("values") {
 combobox bounds(  5, 10, 65, 20), text("log","log2","log10"), channel("function"), value(1)
-numberbox bounds( 75, 5, 60, 30), text("Input"),  channel("input"), range(0,1000.000,0,1,0.001), textcolour("black")
-numberbox bounds(135, 5, 60, 30), text("Output"), channel("output"), range(0,1000.000,0,1,0.001), textcolour("black") 
+nslider bounds( 75, 5, 60, 30), text("Input"),  channel("input"), range(0,1000.000,0,1,0.001), textcolour("black")
+nslider bounds(135, 5, 60, 30), text("Output"), channel("output"), range(0,1000.000,0,1,0.001), textcolour("black") 
 }
 
 </Cabbage>

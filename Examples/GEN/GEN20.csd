@@ -14,8 +14,8 @@ checkbox bounds(345,158, 55, 13), text("x 100") channel("x100"), colour("yellow"
 
 image bounds(-5,-125,4,4), colour("red"), identchannel("scrubber"), shape("sharp")
 
-numberbox  bounds(  5,190, 50, 30), text("Index"), channel("ndx"), range(0, 4095,1024, 1,1),      fontcolour("white")
-numberbox  bounds( 65,190, 50, 30), text("Value"), channel("val"), range(0,    1, 0, 1,0.0001), fontcolour("white")
+nslider  bounds(  5,190, 50, 30), text("Index"), channel("ndx"), range(0, 4095,1024, 1,1),      fontcolour("white")
+nslider  bounds( 65,190, 50, 30), text("Value"), channel("val"), range(0,    1, 0, 1,0.0001), fontcolour("white")
 
 checkbox bounds(160,200,100, 13), text("Tone On/Off") channel("ToneOnOff"), colour("yellow"), fontcolour("white"),  value(0)
 

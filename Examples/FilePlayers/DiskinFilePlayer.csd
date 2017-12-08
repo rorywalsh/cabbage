@@ -37,15 +37,15 @@ rslider    bounds(605,  5, 70, 70), channel("level"),     range(  0,  3.00, 1, 0
 
 image      bounds(675,155,140, 65), colour(0,0,0,0), outlinecolour("silver"), outlinethickness(1), shape("sharp"), plant("stretch") {
 checkbox   bounds(  5,  5, 80, 15), channel("StretchOnOff"), text("Stretch"), fontcolour("white")
-numberbox  bounds(  5, 25, 60, 30), channel("threshold"), range(0,1,0.005,1,0.001),  colour( 90, 50, 50), text("Threshold"), textcolour("white")
-numberbox  bounds( 75, 25, 60, 30), channel("stretchratio"), range(0.01,8.00,0.25,1,0.01),  colour( 90, 50, 50), trackercolour("silver"), text("Str.Ratio"), textcolour("white")
+nslider  bounds(  5, 25, 60, 30), channel("threshold"), range(0,1,0.005,1,0.001),  colour( 90, 50, 50), text("Threshold"), textcolour("white")
+nslider  bounds( 75, 25, 60, 30), channel("stretchratio"), range(0.01,8.00,0.25,1,0.01),  colour( 90, 50, 50), trackercolour("silver"), text("Str.Ratio"), textcolour("white")
 }
 
 image bounds(820, 155,200, 65), colour(0,0,0,0), outlinecolour("silver"), outlinethickness(1), shape("sharp"), plant("speedmod") {
 label      bounds(  0,  5,200, 12), text("Speed Modulation"), fontcolour("white")
-numberbox  bounds(  5, 25, 60, 30), channel("ModRange"), range(0,4,0,1,0.001),  colour( 90, 50, 50), text("Mod.Range"), textcolour("white")
-numberbox  bounds( 70, 25, 60, 30), channel("Rate1"), range(0,30,1,1,0.001),  colour( 90, 50, 50), text("Rate 1"), textcolour("white")
-numberbox  bounds(135, 25, 60, 30), channel("Rate2"), range(0,30,2,1,0.001),  colour( 90, 50, 50), text("Rate 2"), textcolour("white")
+nslider  bounds(  5, 25, 60, 30), channel("ModRange"), range(0,4,0,1,0.001),  colour( 90, 50, 50), text("Mod.Range"), textcolour("white")
+nslider  bounds( 70, 25, 60, 30), channel("Rate1"), range(0,30,1,1,0.001),  colour( 90, 50, 50), text("Rate 1"), textcolour("white")
+nslider  bounds(135, 25, 60, 30), channel("Rate2"), range(0,30,2,1,0.001),  colour( 90, 50, 50), text("Rate 2"), textcolour("white")
 }
 
 keyboard bounds( 5,230,1015, 75)

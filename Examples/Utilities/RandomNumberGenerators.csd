@@ -9,9 +9,9 @@ form caption("Random Number Generators"), size(920, 280), pluginID("RaFu"), guir
 image     bounds(  5,  0,910,200), colour(0,0,0,0), plant("Table") {
 gentable  bounds(  0,  0,910,150), identchannel("table1"), tablenumber(1), tablecolour:1(100,0,0), alpha(1), amprange(-1,1,1), zoom(-1), tablebackgroundcolour(50,50,50), tablegridcolour(100,100,100)
 image     bounds(  0,  0,  1,150), identchannel("wiper")
-numberbox bounds(  0,155,90,30), text("Rate of Updates"), channel("ROU"), range(1,256,64,1,1)
-numberbox bounds( 95,155,90,30), text("Maximum so far"), channel("Max"), range(-10,10,0,1,0.001)
-numberbox bounds(190,155,90,30), text("Minimum so far"), channel("Min"), range(-10,10,0,1,0.001)
+nslider bounds(  0,155,90,30), text("Rate of Updates"), channel("ROU"), range(1,256,64,1,1)
+nslider bounds( 95,155,90,30), text("Maximum so far"), channel("Max"), range(-10,10,0,1,0.001)
+nslider bounds(190,155,90,30), text("Minimum so far"), channel("Min"), range(-10,10,0,1,0.001)
 button    bounds(285,170,60,17), text("RESET","RESET"), channel("Reset"), latched(0)
 
 checkbox  bounds(355,170,60,15), text("Sound"), channel("SoundOnOff"), colour("yellow")
@@ -29,60 +29,60 @@ label     bounds( 10,208,80,12), text("OPCODE")
 combobox  bounds( 10,220,80,20), text("randomi","randomh","rspline","jspline","jitter","jitter2","vibr","vibrato","gaussi"), channel("Type")
 
 image     bounds( 95,210,300, 60), colour(0,0,0,0), plant("randomi"), identchannel("randomiPlant") {
-numberbox bounds(  0,  0,90,30), text("Amp.1"),         channel("randomiAmp1"),    range(-1,1,-1,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Amp.2"),         channel("randomiAmp2"),    range(-1,1,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Freq"),          channel("randomiFreq"),    range(0.001,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Amp.1"),         channel("randomiAmp1"),    range(-1,1,-1,1,0.001)
+nslider bounds( 90,  0,90,30), text("Amp.2"),         channel("randomiAmp2"),    range(-1,1,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Freq"),          channel("randomiFreq"),    range(0.001,16,1,1,0.001)
 }
 image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("randomh"), identchannel("randomhPlant") {
-numberbox bounds(  0,  0,90,30), text("Amp.1"),         channel("randomhAmp1"),    range(-1,1,-1,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Amp.2"),         channel("randomhAmp2"),    range(-1,1,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Freq"),          channel("randomhFreq"),    range(0.001,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Amp.1"),         channel("randomhAmp1"),    range(-1,1,-1,1,0.001)
+nslider bounds( 90,  0,90,30), text("Amp.2"),         channel("randomhAmp2"),    range(-1,1,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Freq"),          channel("randomhFreq"),    range(0.001,16,1,1,0.001)
 }
 image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("rspline"), identchannel("rsplinePlant") {
-numberbox bounds(  0,  0,90,30), text("Amp.1"),           channel("rsplineAmp1"),     range(-1,1,-1,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Amp.2"),           channel("rsplineAmp2"),     range(-1,1,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Freq.1"),          channel("rsplineFreq1"),    range(0.001,16,1,1,0.001)
-numberbox bounds(270,  0,90,30), text("Freq.2"),          channel("rsplineFreq2"),    range(0.001,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Amp.1"),           channel("rsplineAmp1"),     range(-1,1,-1,1,0.001)
+nslider bounds( 90,  0,90,30), text("Amp.2"),           channel("rsplineAmp2"),     range(-1,1,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Freq.1"),          channel("rsplineFreq1"),    range(0.001,16,1,1,0.001)
+nslider bounds(270,  0,90,30), text("Freq.2"),          channel("rsplineFreq2"),    range(0.001,16,1,1,0.001)
 }
 image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("jspline"), identchannel("jsplinePlant") {
-numberbox bounds(  0,  0,90,30), text("Amp"),             channel("jsplineAmp"),     range(-1,1,1,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Freq.1"),          channel("jsplineFreq1"),    range(0.001,16,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Freq.2"),          channel("jsplineFreq2"),    range(0.001,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Amp"),             channel("jsplineAmp"),     range(-1,1,1,1,0.001)
+nslider bounds( 90,  0,90,30), text("Freq.1"),          channel("jsplineFreq1"),    range(0.001,16,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Freq.2"),          channel("jsplineFreq2"),    range(0.001,16,1,1,0.001)
 }
 image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("jitter"), identchannel("jitterPlant") {
-numberbox bounds(  0,  0,90,30), text("Amp"),             channel("jitterAmp"),      range(-1,1,1,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Freq.1"),          channel("jitterFreq1"),    range(0.001,16,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Freq.2"),          channel("jitterFreq2"),    range(0.001,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Amp"),             channel("jitterAmp"),      range(-1,1,1,1,0.001)
+nslider bounds( 90,  0,90,30), text("Freq.1"),          channel("jitterFreq1"),    range(0.001,16,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Freq.2"),          channel("jitterFreq2"),    range(0.001,16,1,1,0.001)
 }
 image     bounds( 95,210,700, 60), colour(0,0,0,0), plant("jitter2"), identchannel("jitter2Plant") {
-numberbox bounds(  0,  0,90,30), text("Total Amp."),      channel("jitter2TotAmp"),  range(-1,1,1,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Amp.1"),           channel("jitter2Amp1"),    range(-1,1,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Freq.1"),          channel("jitter2Freq1"),   range(0.001,16,1,1,0.001)
-numberbox bounds(270,  0,90,30), text("Amp.2"),           channel("jitter2Amp2"),    range(-1,1,1,1,0.001)
-numberbox bounds(360,  0,90,30), text("Freq.2"),          channel("jitter2Freq2"),   range(0.001,16,1,1,0.001)
-numberbox bounds(450,  0,90,30), text("Amp.3"),           channel("jitter2Amp3"),    range(-1,1,1,1,0.001)
-numberbox bounds(540,  0,90,30), text("Freq.3"),          channel("jitter2Freq3"),   range(0.001,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Total Amp."),      channel("jitter2TotAmp"),  range(-1,1,1,1,0.001)
+nslider bounds( 90,  0,90,30), text("Amp.1"),           channel("jitter2Amp1"),    range(-1,1,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Freq.1"),          channel("jitter2Freq1"),   range(0.001,16,1,1,0.001)
+nslider bounds(270,  0,90,30), text("Amp.2"),           channel("jitter2Amp2"),    range(-1,1,1,1,0.001)
+nslider bounds(360,  0,90,30), text("Freq.2"),          channel("jitter2Freq2"),   range(0.001,16,1,1,0.001)
+nslider bounds(450,  0,90,30), text("Amp.3"),           channel("jitter2Amp3"),    range(-1,1,1,1,0.001)
+nslider bounds(540,  0,90,30), text("Freq.3"),          channel("jitter2Freq3"),   range(0.001,16,1,1,0.001)
 }
 image     bounds( 95,210,700, 60), colour(0,0,0,0), plant("vibr"), identchannel("vibrPlant") {
-numberbox bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibrAvAmp"),        range(-1,1,.3,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Av.Freq"),       channel("vibrAvFreq"),       range(0.1,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibrAvAmp"),        range(-1,1,.3,1,0.001)
+nslider bounds( 90,  0,90,30), text("Av.Freq"),       channel("vibrAvFreq"),       range(0.1,16,1,1,0.001)
 combobox  bounds(180, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2","Bi-gauss"), channel("WaveShape")
 }
 image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("vibrato"), identchannel("vibratoPlant") {
-numberbox bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibratoAvAmp"),          range(-1,1,.3,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Av.Freq"),       channel("vibratoAvFreq"),         range(0.1,16,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Rand.Dev.Amp."), channel("vibratoRandAmountAmp"),  range(0,1,1,1,0.001)
-numberbox bounds(270,  0,90,30), text("Rand.Dev.Frq."), channel("vibratoRandAmountFreq"), range(0.001,16,1,1,0.001)
-numberbox bounds(360,  0,90,30), text("Amp.Min.Rate"),  channel("vibratoAmpMinRate"),     range(0.001,16,1,1,0.001)
-numberbox bounds(450,  0,90,30), text("Amp.Max.Rate"),  channel("vibratoAmpMaxRate"),     range(0.001,16,1,1,0.001)
-numberbox bounds(540,  0,90,30), text("Frq.Min.Rate"),  channel("vibratoCpsMinRate"),     range(0.001,16,1,1,0.001)
-numberbox bounds(630,  0,90,30), text("Frq.Max.Rate"),  channel("vibratoCpsMaxRate"),     range(0.001,16,1,1,0.001)
+nslider bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibratoAvAmp"),          range(-1,1,.3,1,0.001)
+nslider bounds( 90,  0,90,30), text("Av.Freq"),       channel("vibratoAvFreq"),         range(0.1,16,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Rand.Dev.Amp."), channel("vibratoRandAmountAmp"),  range(0,1,1,1,0.001)
+nslider bounds(270,  0,90,30), text("Rand.Dev.Frq."), channel("vibratoRandAmountFreq"), range(0.001,16,1,1,0.001)
+nslider bounds(360,  0,90,30), text("Amp.Min.Rate"),  channel("vibratoAmpMinRate"),     range(0.001,16,1,1,0.001)
+nslider bounds(450,  0,90,30), text("Amp.Max.Rate"),  channel("vibratoAmpMaxRate"),     range(0.001,16,1,1,0.001)
+nslider bounds(540,  0,90,30), text("Frq.Min.Rate"),  channel("vibratoCpsMinRate"),     range(0.001,16,1,1,0.001)
+nslider bounds(630,  0,90,30), text("Frq.Max.Rate"),  channel("vibratoCpsMaxRate"),     range(0.001,16,1,1,0.001)
 combobox  bounds(720, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2","Bi-gauss"), channel("WaveShape")
 }
 image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("gaussi"), identchannel("gaussiPlant") {
-numberbox bounds(  0,  0,90,30), text("Amp."),        	channel("gaussiRange"),          range(0,1,.3,1,0.001)
-numberbox bounds( 90,  0,90,30), text("Range"),       	channel("gaussiAmp"),         range(0,1,1,1,0.001)
-numberbox bounds(180,  0,90,30), text("Freq."), 		channel("gaussiCps"),  range(0,100,5,1,0.001)
+nslider bounds(  0,  0,90,30), text("Amp."),        	channel("gaussiRange"),          range(0,1,.3,1,0.001)
+nslider bounds( 90,  0,90,30), text("Range"),       	channel("gaussiAmp"),         range(0,1,1,1,0.001)
+nslider bounds(180,  0,90,30), text("Freq."), 		channel("gaussiCps"),  range(0,100,5,1,0.001)
 }
 </Cabbage>
                     
@@ -253,9 +253,9 @@ instr	1
  kMax	=	kRnd>kMax?kRnd:kMax					; update 'Maximum So Far' value if required
  kMin	=	kRnd<kMin?kRnd:kMin					; update 'Minimum So Far' value if required
  if changed(kMax)==1 then						; if 'Maximum So Far' has been changed...
-  chnset	kMax,"Max"						; ...write to GUI numberbox
+  chnset	kMax,"Max"						; ...write to GUI nslider
  elseif changed(kMin)==1 then						; if 'Minimum So Far' has been changed...
-  chnset	kMin,"Min"						; ...write to GUI numberbox
+  chnset	kMin,"Min"						; ...write to GUI nslider
  endif
 
  ; sonify

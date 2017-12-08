@@ -38,13 +38,13 @@ image bounds( 0, 0, 0,0), shape("sharp"), colour(155,155,155), identchannel("blo
                                                              
 image bounds(0,0,0,0), shape("ellipse"), colour(255,230,220), identchannel("ball")	; ball
 
-numberbox  bounds( 20,465,60,34), channel("damping"),    range(0.00, 0.999, 0.1,1,0.001),     textcolour(white),         text("Damping"),   colour(0,0,0)
-numberbox  bounds( 90,465,60,34), channel("friction"),   range(0.001, 0.999, 0.03,1,0.001),   textcolour(white),         text("Friction"),  colour(0,0,0)
-numberbox  bounds(160,465,50,34), channel("speed"),      range(0.01,  20, 1,1,0.01),          textcolour(white),         text("Speed"),     colour(0,0,0)
-numberbox  bounds(220,465,40,34), channel("size"),       range(2, 80, 15,1,1),                textcolour(white),         text("Size"),      colour(0,0,0)
-numberbox  bounds(270,465,50,34), channel("angle"),      range(0, 5, 3,1,0.001),              textcolour(white),         text("Angle"),     colour(0,0,0)
-numberbox  bounds(330,465,70,34), channel("resonance"),  range(0.1, 30, 2,1,0.1),             textcolour(white),         text("Resonance"), colour(0,0,0)
-;numberbox  bounds(410,415,40,34), channel("NBlocks"),    range(0, 7, 5,1,1),                 textcolour(white),         text("Blocks"),    colour(0,0,0)
+nslider  bounds( 20,465,60,34), channel("damping"),    range(0.00, 0.999, 0.1,1,0.001),     textcolour(white),         text("Damping"),   colour(0,0,0)
+nslider  bounds( 90,465,60,34), channel("friction"),   range(0.001, 0.999, 0.03,1,0.001),   textcolour(white),         text("Friction"),  colour(0,0,0)
+nslider  bounds(160,465,50,34), channel("speed"),      range(0.01,  20, 1,1,0.01),          textcolour(white),         text("Speed"),     colour(0,0,0)
+nslider  bounds(220,465,40,34), channel("size"),       range(2, 80, 15,1,1),                textcolour(white),         text("Size"),      colour(0,0,0)
+nslider  bounds(270,465,50,34), channel("angle"),      range(0, 5, 3,1,0.001),              textcolour(white),         text("Angle"),     colour(0,0,0)
+nslider  bounds(330,465,70,34), channel("resonance"),  range(0.1, 30, 2,1,0.1),             textcolour(white),         text("Resonance"), colour(0,0,0)
+;nslider  bounds(410,415,40,34), channel("NBlocks"),    range(0, 7, 5,1,1),                 textcolour(white),         text("Blocks"),    colour(0,0,0)
 button     bounds(460,473,60,21), text("Notch","Notch"), channel("fundemental"), value(0),    fontcolour:0( 50, 50, 50), fontcolour:1(white)
 button     bounds(530,473,60,21), text("New Ball"), channel("NewBall"), value(0), latched(0), fontcolour:0(200,200,200), fontcolour:1(white)
 

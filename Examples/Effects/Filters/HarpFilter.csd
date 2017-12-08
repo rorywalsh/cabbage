@@ -46,11 +46,11 @@ combobox  bounds(  7, 74, 80, 16), text("Live","Dust","P.Noise","W.Noise"), chan
 
 label     bounds( 92, 42, 66, 13), text("Frequency"), fontcolour("black"), identchannel("freqID0")
 rslider   bounds(102, 58, 42, 42),  channel("freq"), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(1,5000,150,0.5,0.01), identchannel("freqID1")
-numberbox bounds( 93,100, 60, 17),  channel("freq"), colour("white"), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(1,5000,150,0.5,0.01), identchannel("freqID2")
+nslider bounds( 93,100, 60, 17),  channel("freq"), colour("white"), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(1,5000,150,0.5,0.01), identchannel("freqID2")
 
 label     bounds( 92, 42, 66, 13), text("Note Num."), fontcolour("black"), identchannel("NNID0"), visible(0)
 rslider   bounds(102, 58, 42, 42),  channel("NoteNumber"), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(10,110,50,1,0.01), identchannel("NNID1"), visible(0)
-numberbox bounds( 93,100, 60, 17),  channel("NoteNumber"), colour("white"), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(10,110,50,1,0.01), identchannel("NNID2"), visible(0)
+nslider bounds( 93,100, 60, 17),  channel("NoteNumber"), colour("white"), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(10,110,50,1,0.01), identchannel("NNID2"), visible(0)
 
 image    bounds(160,  5, 75,115), outlinethickness(1), line(1), outlinecolour("darkslategrey"), shape("sharp"), plant("cutoff") {
 label    bounds(  5,  3, 65, 11), text("Cutoff"), fontcolour("black")
@@ -68,7 +68,7 @@ combobox bounds(440, 20, 80, 16), text("Single","Double","Triple","Quadruple"), 
 label    bounds(545,  8,  80, 11), text("Filter Type"), fontcolour("black")
 combobox bounds(545, 20, 80, 16), text("wguide1","streson"), channel("FilterType"), value(1)
 rslider   bounds(250, 40, 75, 75), text("Interval"),  channel("interval"),   valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(-12,12,0.25)
-numberbox bounds(260,100, 55, 16),                    channel("interval"),   range(-24,24,0.25,1,0.0001), colour("white"), fontcolour("black")
+nslider bounds(260,100, 55, 16),                    channel("interval"),   range(-24,24,0.25,1,0.0001), colour("white"), fontcolour("black")
 rslider  bounds(320, 40, 75, 75), text("Number"),     channel("max"),         valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(1,100,11,1,1)
 rslider  bounds(380, 40, 75, 75), text("Lowest"),     channel("min"),      valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(1,100,1,1,1)
 rslider  bounds(440, 41, 75, 75), text("Width"),      channel("StWidth"),   range(-0.5, 0.5, 0, 1,0.001), valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey")
@@ -77,7 +77,7 @@ rslider  bounds(560, 41, 75, 75), text("Tune"),       channel("Tune"),       ran
 
 checkbox bounds(660, 20, 70, 12), text("Low Cut"),     channel("LowCut"),  fontcolour("black")
 rslider  bounds(640, 40, 75, 75), text("Port."),   channel("Portamento"), valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(0.1,99,0.1,0.5,0.01)
-numberbox bounds(710, 55, 55, 35), text("Feedback"),  channel("feedback"), range(-0.99999,0.99999,0.99,1,0.00001), colour("white"), fontcolour("black"), textcolour("black")
+nslider bounds(710, 55, 55, 35), text("Feedback"),  channel("feedback"), range(-0.99999,0.99999,0.99,1,0.00001), colour("white"), fontcolour("black"), textcolour("black")
 rslider  bounds(760, 40, 75, 75), text("Attack"), channel("Att"),         valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(0.05,10,0.05,0.5)
 rslider  bounds(820, 40, 75, 75), text("Decay"),  channel("Dec"),         valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(0.05,2,0.05,0.5)
 rslider  bounds(880, 40, 75, 75), text("Release"),channel("Rel"),         valuetextbox(1), textbox(1), fontcolour("black"), textcolour("black"), trackercolour("DarkSlateGrey"), range(0.05,20,15,0.5,0.01)

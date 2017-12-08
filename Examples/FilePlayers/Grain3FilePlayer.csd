@@ -96,11 +96,11 @@ image      bounds(  5,282,505,75), colour(0,0,0,0), outlinecolour("grey"), outli
 label      bounds(  0,  3,505, 8), text("V  O  I  C  E     2"), fontcolour("white")
 checkbox   bounds( 10, 30, 70, 20), channel("DualOnOff"), text("On/Off"), fontcolour("white")
 rslider    bounds( 80, 13, 60, 60), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001), text("Dens.Ratio"), $RSliderStyle
-numberbox  bounds(140, 25, 60, 20), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001),  textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+nslider  bounds(140, 25, 60, 20), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001),  textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
 rslider    bounds(200, 13, 60, 60), channel("PtrDiff"),   range(-1,1,0,1,0.00001), text("Ptr.Diff."), $RSliderStyle
-numberbox  bounds(260, 25, 60, 20), channel("PtrDiff"),   range(-1,1,0,1,0.00001), textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+nslider  bounds(260, 25, 60, 20), channel("PtrDiff"),   range(-1,1,0,1,0.00001), textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
 rslider    bounds(320, 13, 60, 60), channel("TransDiff"),   range(-2,2,0,1,0.00001), text("Trans.Diff."), $RSliderStyle
-numberbox  bounds(380, 25, 60, 20), channel("TransDiff"),   range(-2,2,0,1,0.00001), textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+nslider  bounds(380, 25, 60, 20), channel("TransDiff"),   range(-2,2,0,1,0.00001), textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
 rslider    bounds(440, 13, 60, 60), channel("Delay"),       range(0,1,0,1,0.00001), text("Delay"), $RSliderStyle
 }
 

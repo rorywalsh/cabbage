@@ -45,21 +45,21 @@
 
 <Cabbage>
 form caption("Prepared Piano") size(795,245), colour(250,235,255), pluginID("PreP")
-numberbox  bounds(  5,5,70,34), channel("NS"),    range(2, 50, 3,1,1),       textcolour(black), fontcolour(black), text("Num.Strings"), colour(white)
-numberbox  bounds( 85,5,70,34), channel("D"),    range(0,20000, 0),       textcolour(black), fontcolour(black), text("Detuning"), colour(white)
-numberbox  bounds(165,5,70,34), channel("K"),    range(1, 40, 1),       textcolour(black), fontcolour(black), text("Stiffness"), colour(white)
-numberbox  bounds(245,5,70,34), channel("T30"),   range(0.1, 30, 12),       textcolour(black), fontcolour(black), text("Decay"), colour(white)
-numberbox  bounds(325,5,70,34), channel("rel"),      range(0.001,8,0.1,1,0.001),       textcolour(black), fontcolour(black), text("Release Time"), colour(white)
-numberbox  bounds(405,5,70,34), channel("B"),        range(0.0001, 1, 0.002,1,0.0001),       textcolour(black), fontcolour(black), text("Hi.Freq.Loss"), colour(white)
-numberbox  bounds(485,5,70,34), channel("UpperLim"),range(0,127,127,1,1),       textcolour(black), fontcolour(black), text("Upper Lim."), colour(white)
+nslider  bounds(  5,5,70,34), channel("NS"),    range(2, 50, 3,1,1),       textcolour(black), fontcolour(black), text("Num.Strings"), colour(white)
+nslider  bounds( 85,5,70,34), channel("D"),    range(0,20000, 0),       textcolour(black), fontcolour(black), text("Detuning"), colour(white)
+nslider  bounds(165,5,70,34), channel("K"),    range(1, 40, 1),       textcolour(black), fontcolour(black), text("Stiffness"), colour(white)
+nslider  bounds(245,5,70,34), channel("T30"),   range(0.1, 30, 12),       textcolour(black), fontcolour(black), text("Decay"), colour(white)
+nslider  bounds(325,5,70,34), channel("rel"),      range(0.001,8,0.1,1,0.001),       textcolour(black), fontcolour(black), text("Release Time"), colour(white)
+nslider  bounds(405,5,70,34), channel("B"),        range(0.0001, 1, 0.002,1,0.0001),       textcolour(black), fontcolour(black), text("Hi.Freq.Loss"), colour(white)
+nslider  bounds(485,5,70,34), channel("UpperLim"),range(0,127,127,1,1),       textcolour(black), fontcolour(black), text("Upper Lim."), colour(white)
 
-numberbox  bounds(  5, 45, 70, 34), channel("mass"),    range(0.0001,1000,1,1,0.0001),       textcolour(black), fontcolour(black), text("Hamm.Mass."), colour(white)
-numberbox  bounds( 85, 45, 70, 34), channel("freqH"),   range(1,4000000,20000.1,1,1),       textcolour(black), fontcolour(black), text("Hamm.Freq."), colour(white)
-numberbox  bounds(165, 45, 70,34), channel("pos"),    range(0.004,0.996,0.09),       textcolour(black), fontcolour(black), text("Strike Pos."), colour(white)
-numberbox  bounds(245, 45, 70,34), channel("vel"),   range(0,1000, 50),       textcolour(black), fontcolour(black), text("String Vel."), colour(white)
-numberbox  bounds(325, 45, 70, 34), channel("sfreq"),    range(0,100,0,1,0.001),       textcolour(black), fontcolour(black), text("Scan Freq"), colour(white)
-numberbox  bounds(405, 45, 70, 34), channel("sspread"),  range(0,1,0.1,1,0.001),       textcolour(black), fontcolour(black), text("Scan Spread"), colour(white)
-numberbox  bounds(485, 45, 70, 34), channel("OctShift"),range(-4,0,0,1,1),       textcolour(black), fontcolour(black), text("Oct.Shift"), colour(white)
+nslider  bounds(  5, 45, 70, 34), channel("mass"),    range(0.0001,1000,1,1,0.0001),       textcolour(black), fontcolour(black), text("Hamm.Mass."), colour(white)
+nslider  bounds( 85, 45, 70, 34), channel("freqH"),   range(1,4000000,20000.1,1,1),       textcolour(black), fontcolour(black), text("Hamm.Freq."), colour(white)
+nslider  bounds(165, 45, 70,34), channel("pos"),    range(0.004,0.996,0.09),       textcolour(black), fontcolour(black), text("Strike Pos."), colour(white)
+nslider  bounds(245, 45, 70,34), channel("vel"),   range(0,1000, 50),       textcolour(black), fontcolour(black), text("String Vel."), colour(white)
+nslider  bounds(325, 45, 70, 34), channel("sfreq"),    range(0,100,0,1,0.001),       textcolour(black), fontcolour(black), text("Scan Freq"), colour(white)
+nslider  bounds(405, 45, 70, 34), channel("sspread"),  range(0,1,0.1,1,0.001),       textcolour(black), fontcolour(black), text("Scan Spread"), colour(white)
+nslider  bounds(485, 45, 70, 34), channel("OctShift"),range(-4,0,0,1,1),       textcolour(black), fontcolour(black), text("Oct.Shift"), colour(white)
 
 label      bounds(570, 10, 70, 12), text("Left B.C."), fontcolour("black")
 checkbox   bounds(570, 28, 70, 14), text("Clamped"),  channel("BCL1"), fontcolour("black"), colour("yellow"), value(0), radiogroup(1)
@@ -77,19 +77,19 @@ combobox   bounds(740, 28, 40, 15), channel("preset"), text("1","2","3","4","5",
 image     bounds(  5, 90,390, 65), colour(0,0,0,0), outlinecolour(0,0,0), outlinethickness(1), plant("rattle1") {
 label     bounds(  0,  2,390, 15), fontcolour("black"), text("Rattle") 
 checkbox  bounds( 10,  7, 60, 11), text("On/Off"), channel("rattle1"),fontcolour("black"), colour("yellow"), value(1)
-numberbox bounds( 10, 22, 85, 34), channel("posRat1"), range(0, 1, 0.6),               textcolour(black), fontcolour(black), text("Position"), colour("white")
-numberbox bounds(105, 22, 85, 34), channel("MDRRat1"), range(0,10000,1000,1,0.01),     textcolour(black), fontcolour(black), text("Mass Dens.Ratio"), colour(white)
-numberbox bounds(200, 22, 85, 34), channel("FrqRat1"), range(0.1,10000,30,1,0.1),      textcolour(black), fontcolour(black), text("Freq."), colour(white)
-numberbox bounds(295, 22, 85, 34), channel("LenRat1"), range(0.001,1, 0.001,1,0.001),  textcolour(black), fontcolour(black), text("Length"), colour("white")
+nslider bounds( 10, 22, 85, 34), channel("posRat1"), range(0, 1, 0.6),               textcolour(black), fontcolour(black), text("Position"), colour("white")
+nslider bounds(105, 22, 85, 34), channel("MDRRat1"), range(0,10000,1000,1,0.01),     textcolour(black), fontcolour(black), text("Mass Dens.Ratio"), colour(white)
+nslider bounds(200, 22, 85, 34), channel("FrqRat1"), range(0.1,10000,30,1,0.1),      textcolour(black), fontcolour(black), text("Freq."), colour(white)
+nslider bounds(295, 22, 85, 34), channel("LenRat1"), range(0.001,1, 0.001,1,0.001),  textcolour(black), fontcolour(black), text("Length"), colour("white")
 }
 
 image     bounds(400, 90,390, 65), colour(0,0,0,0), outlinecolour(0,0,0), outlinethickness(1), plant("rubber1") {
 label     bounds(  5,  2,390, 15), fontcolour("black"), text("Rubber") 
 checkbox  bounds( 10,  7, 60, 11), text("On/Off"), channel("rubber1"), fontcolour("black"), colour("yellow"), value(1)
-numberbox bounds( 10, 22, 85, 34), channel("posRub1"), range(0, 1, 0.7),           textcolour(black), fontcolour(black), text("Position"), colour("white")
-numberbox bounds(105, 22, 85, 34), channel("MDRRub1"), range(0,10000,1000,1,0.01), textcolour(black), fontcolour(black), text("Mass.Dens.Ratio"), colour(white)
-numberbox bounds(200, 22, 85, 34), channel("FrqRub1"), range(0.1,10000,40,1,0.1),  textcolour(black), fontcolour(black), text("Freq."), colour(white)
-numberbox bounds(295, 22, 85, 34), channel("LosRub1"), range(0,10000, 1000,1,1),   textcolour(black), fontcolour(black), text("Loss"), colour("white")
+nslider bounds( 10, 22, 85, 34), channel("posRub1"), range(0, 1, 0.7),           textcolour(black), fontcolour(black), text("Position"), colour("white")
+nslider bounds(105, 22, 85, 34), channel("MDRRub1"), range(0,10000,1000,1,0.01), textcolour(black), fontcolour(black), text("Mass.Dens.Ratio"), colour(white)
+nslider bounds(200, 22, 85, 34), channel("FrqRub1"), range(0.1,10000,40,1,0.1),  textcolour(black), fontcolour(black), text("Freq."), colour(white)
+nslider bounds(295, 22, 85, 34), channel("LosRub1"), range(0,10000, 1000,1,1),   textcolour(black), fontcolour(black), text("Loss"), colour("white")
 }
 
 keyboard  bounds( 0,165,800,80)

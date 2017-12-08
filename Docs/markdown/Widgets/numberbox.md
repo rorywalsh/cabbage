@@ -1,4 +1,4 @@
-# Number Box
+# Number Box (deprecated, use [nslider](./sliders.md) instead)
 
 Number boxes can be used to create a PureData, Max/MSP style number box. Data can be sent to Csound on the channel specified through the channel string.
 

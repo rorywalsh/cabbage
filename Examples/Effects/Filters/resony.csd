@@ -70,13 +70,13 @@ image        bounds(  0,  0,750,180), colour("black"), shape("rounded"), outline
 label     bounds( 10, 20, 80, 12), text("INPUT:")
 button    bounds( 10, 35, 80, 35), text("Live","Noise"),     channel("input"), value(0)
 rslider   bounds( 90, 10, 70, 70), text("Base Freq"),       fontcolour("white"), channel("bf"),   range(20, 20000, 909, 0.5), colour(255,100,0,255), trackercolour(255,250,100)
-numberbox bounds(160, 15, 70, 40), text("Base Freq"),        channel("bf"),   range(20, 20000, 909, 0.5)
+nslider bounds(160, 15, 70, 40), text("Base Freq"),        channel("bf"),   range(20, 20000, 909, 0.5)
 rslider   bounds(230, 10, 70, 70), text("B.width"),         fontcolour("white"), channel("bw"),   range(0.01, 500, 13, 0.375, 0.0001), colour(255,100,0,255), trackercolour(255,250,100)
 rslider   bounds(300, 10, 70, 70), text("Num."),            fontcolour("white"), channel("num"),  range(1, 80, 10, 1,1),      colour(255,100,0,255), trackercolour(255,250,100)
 rslider   bounds(370, 10, 70, 70), text("Sep.oct."),        fontcolour("white"), channel("sep"),  range(-11, 11, 2,1,0.001),          colour(255,100,0,255), trackercolour(255,250,100)
-numberbox bounds(440, 15, 70, 40), text("Sep.oct"),          channel("sep"),  range(-11, 11, 2,1,0.001)
+nslider bounds(440, 15, 70, 40), text("Sep.oct"),          channel("sep"),  range(-11, 11, 2,1,0.001)
 rslider   bounds(510, 10, 70, 70), text("Sep.semi."),       fontcolour("white"), channel("sep2"), range(-48, 48, 24,1,1),     colour(255,100,0,255), trackercolour(255,250,100)
-numberbox bounds(580, 15, 70, 40), text("Sep.semi."),        channel("sep2"),  range(-48, 48, 24,1,0.001)
+nslider bounds(580, 15, 70, 40), text("Sep.semi."),        channel("sep2"),  range(-48, 48, 24,1,0.001)
 
 rslider   bounds(660, 10, 70, 70), text("Level"),           fontcolour("white"), channel("gain"), range(0,2,1,0.25,0.00001),  colour(255,100,0,255), trackercolour(255,250,100)
 

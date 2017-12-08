@@ -73,6 +73,9 @@ for dir in directories[0:3]:
 				if "(./controlling.md)" in line:
 					line = line.replace("(./controlling.md)", "(../controlling/index.html)")
 
+				if "(./sliders.md)" in line:
+					line = line.replace("(./sliders.md)", "(../sliders/index.html)")
+
 				if "{! " in line:
 					line = line.replace("{! ./markdown/Widgets/Properties/", "{% include_relative ")
 

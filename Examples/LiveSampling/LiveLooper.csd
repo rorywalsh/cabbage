@@ -27,7 +27,7 @@ label     bounds(  0,  4,190, 15), text("Loop")
 button    bounds( 15, 25, 60, 25), fontcolour:0(50,50,50), fontcolour:1(205,205,235), colour:0(10,0,0), colour:1(0,0,130), text("Stop","Stop"),     channel("Stop"),   latched(1), radiogroup(1), value(1)
 button    bounds( 15, 55, 60, 25), fontcolour:0(50,50,50), fontcolour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0), text("Record","Record"), channel("Record"), latched(1), radiogroup(1)
 button    bounds( 15, 85, 60, 25), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), text("Play","Play"),     channel("Play"),   latched(1), radiogroup(1)
-numberbox bounds( 90, 25, 85, 35), range(0, 100000,0), channel("LoopDuration"), text("Loop Duration")
+nslider bounds( 90, 25, 85, 35), range(0, 100000,0), channel("LoopDuration"), text("Loop Duration")
 label     bounds( 90, 68, 85, 14), text("Loop Mode")
 combobox  bounds( 90, 84, 85, 20), text("Fwd","Bwd","Fwd/Bwd"), channel("LoopMode")
 }

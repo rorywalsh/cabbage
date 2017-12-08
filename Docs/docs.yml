@@ -51,6 +51,7 @@
     - keyboard
     - label
     - listbox
+    - numberbox
     - meters
     - signaldisplay
     - sliders

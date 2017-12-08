@@ -16,11 +16,11 @@
 <Cabbage>
 form caption("Splat!"), size(1000,530), colour(230,230,230),guirefresh(64)
 image bounds(0,   0, 0, 0), colour(white), shape(ellipse), widgetarray("fly",500)
-numberbox  bounds(  5,495,60,34), channel("Population"),    range(1,100, 10,1,1),       textcolour(black), fontcolour(black), text("Population"), colour(white)
-numberbox  bounds( 70,495,60,34), channel("Liveliness"),    range(0.1,10.00, 4,1,0.1),  textcolour(black), fontcolour(black), text("Liveliness"), colour(white)
-numberbox  bounds(135,495,60,34), channel("Excursion"),     range(2,300, 50,1,1),       textcolour(black), fontcolour(black), text("Excursion"),  colour(white)
-numberbox  bounds(200,495,60,34), channel("FlySize"),       range(2,12, 5,1,0.001),     textcolour(black), fontcolour(black), text("Fly Size"),   colour(white)
-numberbox  bounds(265,495,80,34), channel("SwarmSpeed"),    range(0.1,10, 0.3,1,0.001), textcolour(black), fontcolour(black), text("Swarm Speed"),colour(white)
+nslider  bounds(  5,495,60,34), channel("Population"),    range(1,100, 10,1,1),       textcolour(black), fontcolour(black), text("Population"), colour(white)
+nslider  bounds( 70,495,60,34), channel("Liveliness"),    range(0.1,10.00, 4,1,0.1),  textcolour(black), fontcolour(black), text("Liveliness"), colour(white)
+nslider  bounds(135,495,60,34), channel("Excursion"),     range(2,300, 50,1,1),       textcolour(black), fontcolour(black), text("Excursion"),  colour(white)
+nslider  bounds(200,495,60,34), channel("FlySize"),       range(2,12, 5,1,0.001),     textcolour(black), fontcolour(black), text("Fly Size"),   colour(white)
+nslider  bounds(265,495,80,34), channel("SwarmSpeed"),    range(0.1,10, 0.3,1,0.001), textcolour(black), fontcolour(black), text("Swarm Speed"),colour(white)
 label    bounds(  0, 0,  0, 0), text("Click swarm to splat. Click again to unsplat."), align(centre), fontcolour(white), identchannel("instructions1")		; Instructions
 label    bounds(350,519,100, 10), text("Iain McCurdy 2014"), align(left), fontcolour(0,0,0,150)
 </Cabbage>

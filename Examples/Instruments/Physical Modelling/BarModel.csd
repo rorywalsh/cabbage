@@ -129,10 +129,10 @@ keyboard bounds(4, 254, 945, 80) mouseoeverkeycolour(255, 255, 0, 128)
 
 ;;TUNING
 ;image     bounds(  0,350,955,170), plant("tuning"), colour(0,0,0,0) {
-;numberbox bounds(  0, 15,160, 70), caption("Note Number"), channel("note"), range(0,128,0,1,1)
-;numberbox bounds(260, 15,160, 70), caption("Output"), channel("output"), range(0,8000,0,1,0.001)
+;nslider bounds(  0, 15,160, 70), caption("Note Number"), channel("note"), range(0,128,0,1,1)
+;nslider bounds(260, 15,160, 70), caption("Output"), channel("output"), range(0,8000,0,1,0.001)
 ;button    bounds(160,  0,100, 15), text("ZERO","ZERO"), channel("ZeroOffset"), fontcolour:0(30,30,30), fontcolour:1(255,255,100), latched(0)
-;numberbox bounds(160, 15,100, 70), caption("Offset"), channel("offset"), range(-100,100,0,1,0.01)
+;nslider bounds(160, 15,100, 70), caption("Offset"), channel("offset"), range(-100,100,0,1,0.01)
 ;checkbox  bounds(425, 15,100, 20), text("Test Tone"), channel("TestTone"), value(0)
 ;hslider   bounds(425, 40,120, 15), channel("TestVol"), range(0, 0.2, 0.05, 0.5,0.001), trackercolour("yellow")
 ;csoundoutput bounds(545,0,400,170)

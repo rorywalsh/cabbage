@@ -95,7 +95,7 @@ rslider      bounds(300, 20, 80, 80), text("Scale"), channel("Pdscale"), range(0
 }
 groupbox bounds( 100,260,180, 100), text("Powershape"), plant("powershape"), visible(0), identchannel("12") {
 rslider      bounds(  0, 20, 80, 80), text("Amount"),  channel("PShapeAmt"),  range(0.1, 999, 1.00,0.25,0.01), textbox(1), valuetextbox(1)
-numberbox    bounds( 70, 22,100, 40), text("Amount [type]"),  channel("PShapeAmt"),  range(0.1, 999, 1,0.5,0.01)
+nslider    bounds( 70, 22,100, 40), text("Amount [type]"),  channel("PShapeAmt"),  range(0.1, 999, 1,0.5,0.01)
 }
 groupbox bounds( 100,260,410, 100), text("Clip"), plant("clip"), visible(0), identchannel("13") {
 rslider      bounds(  0, 20, 80, 80), text("Pre-Gain"),  channel("ClipGain"),  range(0.5,100.00, 1,0.5,0.01), textbox(1), valuetextbox(1)

@@ -27,9 +27,9 @@ label    bounds( 10, 15, 80, 13), fontcolour("white"), text("Interval")
 combobox bounds( 10, 30, 80, 20), text("Semitone","Ratio"), channel("IntervalMode"),       value(1)
 
 image     bounds(120, 15, 35, 58), plant("Ratio"), colour(0,0,0,0), visible(0), identchannel("RatioPlant_ident") {
-numberbox bounds(  5,  0, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
+nslider bounds(  5,  0, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
 image     bounds(  0, 26, 35,  1), shape("sharp") 
-numberbox bounds(  5, 35, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
+nslider bounds(  5, 35, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
 }
 
 image    bounds(110, 10,130, 70), plant("Semitones"), colour(0,0,0,0), visible(1), identchannel("SemitonesPlant_ident") {

@@ -32,7 +32,7 @@
 ; Duration	--	defines the duration of notes
 ; Amplitude	--	ampltude of note (there is some randomisation of amplitude in order the make the results slightly less mechanical)
 ; Free/Sync. (combobox)	--	sets how the rate of the metronome for generation of notes is controlled
-;			if 'free' then rate is independent of the cell tranformation metronome and is defined by the adjacent 'Rate' numberbox
+;			if 'free' then rate is independent of the cell tranformation metronome and is defined by the adjacent 'Rate' nslider
 ;			if 'sync' then it is synced to the cell transformation metronome. In this mode the actual rate of note/rest generation will be: cell_rate x n_elements x repeats
 
 ; Rule defines the rule that will be applied to determine future statuses of cells in the output group
@@ -63,27 +63,27 @@ image      bounds(  5,  5,205, 70), colour(0,0,0,0), outlinecolour("white"), out
 label      bounds( 10,  5,100, 13), text("Trigger Change"), align("left")
 button     bounds( 10, 35, 60, 20), text("Manual","Manual"), channel("generate"), latched(0)
 checkbox   bounds( 80, 35, 50, 15), text("Auto"), channel("AutoGenerate"), value(1), colour("DarkSlateBlue")
-numberbox  bounds(135, 25, 60, 30), text("Rate"), channel("rate"), range(0,8,0.2,1,0.001)
+nslider  bounds(135, 25, 60, 30), text("Rate"), channel("rate"), range(0,8,0.2,1,0.001)
 }
 
 ; Sonification
 image      bounds(215,  5,610, 70), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("Sonification") {
 label      bounds( 10,  5,100, 13), text("Sonification"), align("left")
 checkbox   bounds( 10, 35, 60, 15), text("On/Off"), channel("sonify"), value(1), colour("DarkSlateBlue")
-numberbox  bounds( 80, 25, 70, 30), text("Note Centre"), channel("NoteCentre"), range(0,127,100,1,1)
-numberbox  bounds(155, 25, 70, 30), text("Note Range"), channel("NoteRange"), range(0,72,64,1,1)
-numberbox  bounds(235, 25, 70, 30), text("Duration"), channel("NoteDur"), range(0.01,0.5,0.1,0.5,0.01)
-numberbox  bounds(310, 25, 70, 30), text("Amplitude"), channel("NoteAmp"), range(0,1,0.3,0.5,0.01)
+nslider  bounds( 80, 25, 70, 30), text("Note Centre"), channel("NoteCentre"), range(0,127,100,1,1)
+nslider  bounds(155, 25, 70, 30), text("Note Range"), channel("NoteRange"), range(0,72,64,1,1)
+nslider  bounds(235, 25, 70, 30), text("Duration"), channel("NoteDur"), range(0.01,0.5,0.1,0.5,0.01)
+nslider  bounds(310, 25, 70, 30), text("Amplitude"), channel("NoteAmp"), range(0,1,0.3,0.5,0.01)
 combobox   bounds(390, 35, 60, 20), text("Free","Sync."), channel("sync"), value(2)
-numberbox  bounds(455, 25, 70, 30), text("Rate"), channel("NRate"), range(1,72,8,1,1), identchannel("NRateID")
-numberbox  bounds(530, 25, 70, 30), text("Repeats"), channel("SyncRepeats"), range(1,16,4,1,1), identchannel("SyncRepeatsID")
+nslider  bounds(455, 25, 70, 30), text("Rate"), channel("NRate"), range(1,72,8,1,1), identchannel("NRateID")
+nslider  bounds(530, 25, 70, 30), text("Repeats"), channel("SyncRepeats"), range(1,16,4,1,1), identchannel("SyncRepeatsID")
 }
 
 ; Rule
 image     bounds(  5, 80,820, 70), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("RuleTable") {
 label     bounds( 10,  5,100, 13), text("Rule"), align("left")
-numberbox bounds( 10, 20, 55, 30), text("Length"), channel("RuleLen"), range(1,27,8,1,1)
-numberbox bounds( 75, 20, 55, 30), text("Radius"), channel("radius"), range(1,2,2,1,1)
+nslider bounds( 10, 20, 55, 30), text("Length"), channel("RuleLen"), range(1,27,8,1,1)
+nslider bounds( 75, 20, 55, 30), text("Radius"), channel("radius"), range(1,2,2,1,1)
 image     bounds(135, 20,200, 50), colour(30,30,30), outlinecolour("white"), outlinethickness(1), shape("sharp"), identchannel("RuleRange")
 gentable  bounds(135, 30,675, 25),  tablenumber(3), tablecolour("GoldenRod"), amprange(0,1,3,1), zoom(-1), active(1)
 }
@@ -100,8 +100,8 @@ image     bounds(  5,245,820, 95), colour(0,0,0,0), outlinecolour("white"), outl
 label     bounds( 10,  5,100, 13), text("Output States"), align("left")
 image     bounds( 10, 26,800, 32), colour(60,60,60), outlinecolour("white"), outlinethickness(2), shape("sharp"), identchannel("OutputRange")
 gentable  bounds( 10, 35,800, 15),  tablenumber(2), tablecolour("green"), amprange(0,1,2,1), zoom(-1), identchannel("OutTable")
-numberbox bounds( 10, 60, 60, 30), text("Elements"), channel("elements"), range(1,64,32,1,1)
-numberbox bounds( 80, 60, 60, 30), text("Iterations"), channel("iter"), range(0,100000,0,1,1), active(0), textcolour(255,255,255), fontcolour(255,255,255)
+nslider bounds( 10, 60, 60, 30), text("Elements"), channel("elements"), range(1,64,32,1,1)
+nslider bounds( 80, 60, 60, 30), text("Iterations"), channel("iter"), range(0,100000,0,1,1), active(0), textcolour(255,255,255), fontcolour(255,255,255)
 }
 
 label bounds(5,345,110,11), text("Iain McCurdy |2015|")
