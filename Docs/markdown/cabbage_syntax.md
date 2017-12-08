@@ -2,7 +2,9 @@
 
 Cabbage widgets can loosly be split into two groups, interactive widgets and non-interactive widgets. Each interactive widget, such as a slider, a button, etc., will be accessible in a plugin host. The non-interactive widgets, such as group boxes and images, can only be controlled manually, or via Csound. Software channels are used in order for Cabbage to communicate with Csound, and vice versa. The name that appears beside each native slider in the plugin host will be the assigned channel name for that widget. 
 
-The syntax for each widget follows a pretty simple pattern. The first thing to delcare is the widget type which is done by placing a widget name at the start of a line of code in the Cabbage section of the source file.
+>Note: since Cabbage version 2, ALL identifier are case sensitive!
+
+The syntax for each widget follows a pretty simple pattern. The first thing to declare is the widget type which is done by placing a widget name at the start of a line of code in the Cabbage section of the source file.
 
 ```csharp
 <Cabbage>
