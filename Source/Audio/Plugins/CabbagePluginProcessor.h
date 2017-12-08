@@ -124,6 +124,8 @@ private:
     String pluginName;
     File csdFile;
     NamedValueSet macroText;
+    var macroNames;
+    var macroStrings;
     bool xyAutosCreated = false;
     OwnedArray<XYPadAutomator> xyAutomators;
 

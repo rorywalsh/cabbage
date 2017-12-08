@@ -28,7 +28,7 @@ constexpr unsigned long long int HashStringToInt (const char* str, unsigned long
 
 //===========================================================================
 // these methods will return Cabbage code based on data stored in widget tree
-String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, String identifier, String macroText)
+String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, String identifier)
 {
     switch (HashStringToInt (identifier.toStdString().c_str()))
     {
@@ -51,7 +51,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("visible"):
         case HashStringToInt ("zoom"):
         case HashStringToInt ("range"):
-            return getNumericalValueTextAsCabbageCode (widgetData, identifier, macroText).trim();
+            return getNumericalValueTextAsCabbageCode (widgetData, identifier, "").trim();
 
         case HashStringToInt ("align"):
         case HashStringToInt ("channeltype"):
@@ -62,7 +62,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("popupprefix"):
         case HashStringToInt ("popuptext"):
         case HashStringToInt ("shape"):
-            return getSimpleTextAsCabbageCode(widgetData, identifier, macroText);
+            return getSimpleTextAsCabbageCode(widgetData, identifier, "");
 
 
         case HashStringToInt ("channel"):
@@ -70,7 +70,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("populate"):
         case HashStringToInt ("tablenumber"):
         case HashStringToInt ("text"):
-            return getMultiItemTextAsCabbageCode(widgetData, identifier, macroText);
+            return getMultiItemTextAsCabbageCode(widgetData, identifier, "");
 
 
         case HashStringToInt ("bounds"):
@@ -80,7 +80,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
             return getStringProp (widgetData, CabbageIdentifierIds::type);
 
         case HashStringToInt ("amprange"):
-            return getMultiItemNumbersAsCabbageCode (widgetData, identifier, macroText);
+            return getMultiItemNumbersAsCabbageCode (widgetData, identifier, "");
 
         case HashStringToInt ("activecellcolour"):
         case HashStringToInt ("arrowbackgroundcolour"):
@@ -115,17 +115,17 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("metercolour"):
         case HashStringToInt ("metercolour:0"):
         case HashStringToInt ("metercolour:1"):
-            return getColoursTextAsCabbageCode (widgetData, identifier, macroText);
+            return getColoursTextAsCabbageCode (widgetData, identifier, "");
 
         case HashStringToInt ("channelarray"):
         case HashStringToInt ("widgetarray"):
-            return getWidgetArrayAsCabbageCode (widgetData, macroText);
+            return getWidgetArrayAsCabbageCode (widgetData, "");
 
         case HashStringToInt ("rotate"):
-            return getRotateTextAsCabbageCode (widgetData, macroText);
+            return getRotateTextAsCabbageCode (widgetData, "");
 
         case HashStringToInt ("imgfile"):
-            return getImagesTextAsCabbageCode (widgetData, macroText);
+            return getImagesTextAsCabbageCode (widgetData, "");
 
         default:
             return String::empty;
@@ -134,7 +134,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
     }
 }
 
-String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, const String currentLineText, const String macroText)
+String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, const String currentLineText)
 {
     String returnString = currentLineText;
     StringArray replacedIdentifiers;
@@ -144,14 +144,23 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ") + 1));
     CabbageIdentifierStrings fullListOfIdentifierStrings;
 
+    var macroNames = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macronames);
+    var macroStrings = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macrostrings);
+
+    for( int i = 0 ; i < macroNames.size() ; i++)
+        CabbageUtilities::debug(macroStrings[i].toString());
+
     //deal with macros
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
     {
         if(identifiersInLine[i].contains("$"))
         {
             CabbageUtilities::debug(identifiersInLine[i]);
-            const String macroWithIdentifier = identifiersInLine[i].trimStart();
+            const String macroWithIdentifier = identifiersInLine[i].trimCharactersAtStart(", ");
             const String macro = macroWithIdentifier.substring(0, macroWithIdentifier.indexOf(" "));
+            const int indexOfmacro = macroNames.indexOf(macro);
+            if(indexOfmacro != -1)
+                CabbageUtilities::debug(macroStrings[indexOfmacro].toString());
             identifiersInLine.set(i, identifiersInLine[i].replace(macro, ""));
             identifiersInLine.insert(i, macro);
             i++;
@@ -170,12 +179,12 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
         //I need to check that the current identifiers and not the same as the existing ones, if so don't replace anything
         if (currentIdentName.isNotEmpty())
         {
-            const String newText = getCabbageCodeForIdentifier(widgetData, currentIdentName,
-                                                               macroText).trimCharactersAtEnd(", ");
+            const String newText = getCabbageCodeForIdentifier(widgetData, currentIdentName).trimCharactersAtEnd(", ");
             const String stringToReplace = currentIdentifier.trimCharactersAtStart(", ") + ")";
 
             replacedIdentifiers.add(newText.substring(0, newText.indexOf("(")));
-            returnString = returnString.replace(stringToReplace, newText);
+            if(newText!=stringToReplace && macroStrings.indexOf(newText) == -1)
+                returnString = returnString.replace(stringToReplace, newText);
         }
 
     }
@@ -197,8 +206,8 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     {
         if (replacedIdentifiers.indexOf(ident) == -1)
         {
-            const String newIdent = getCabbageCodeForIdentifier(widgetData, ident, macroText).trimCharactersAtEnd(", ");
-            if (newIdent.isNotEmpty())
+            const String newIdent = getCabbageCodeForIdentifier(widgetData, ident).trimCharactersAtEnd(", ");
+            if (newIdent.isNotEmpty() && macroStrings.indexOf(newIdent) == -1)
                 returnString = returnString.trimEnd() + " " + newIdent;
         }
     }
@@ -423,17 +432,20 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
 {
     var items = getProperty (widgetData, identifier);
+    const Array<var>* array = items.getArray();
+    ValueTree tempData ("tempTree");
 
     const String typeOfWidget = getProperty (widgetData, CabbageIdentifierIds::type);
+    setWidgetState (tempData, typeOfWidget + " " + macroText, -99);
+    var tempItems = getProperty (tempData, identifier);
+
+    if(tempItems.equalsWithSameType(items))
+        return String::empty;
 
     if (typeOfWidget == "gentable" && identifier == "channel")
         return String::empty;
 
     String itemString = "";
-
-    const Array<var>* array = items.getArray();
-
-
 
     if (array)
     {
@@ -510,7 +522,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
     setWidgetState(tempData, type + " " + macroText, -99);
     String colourString;
 
-    if (identifier == "colour:0" && type.contains("slider") == false)
+    if (identifier == "colour:0" && type.contains("slider") == false && type != "combobox")
     {
         if (getStringProp(widgetData, CabbageIdentifierIds::colour) !=
             getStringProp(tempData, CabbageIdentifierIds::colour))

@@ -138,7 +138,11 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 
         CabbageWidgetData::setNumProp (tempWidget, CabbageIdentifierIds::linenumber, lineNumber - linesToSkip);
         CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
-        //CabbageWidgetData::setStringProp (tempWidget, CabbageIdentifierIds::expandedmacrotext, expandedMacroText);
+
+
+        CabbageWidgetData::setProperty (tempWidget, CabbageIdentifierIds::macronames, macroNames);
+        CabbageWidgetData::setProperty (tempWidget, CabbageIdentifierIds::macrostrings, macroStrings);
+
 
         const String typeOfWidget = CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::type);
 
@@ -389,9 +393,12 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
                             if (CabbageWidgetData::getStringProp (temp1, CabbageIdentifierIds::identchannel).isNotEmpty())
                                 CabbageWidgetData::setStringProp (temp1, CabbageIdentifierIds::identchannel, channelPrefix + currentIdentChannel);
 
+                            CabbageWidgetData::setProperty (temp1, CabbageIdentifierIds::macronames, macroNames);
+                            CabbageWidgetData::setProperty (temp1, CabbageIdentifierIds::macrostrings, macroStrings);
+
                             String replacementText = (plantCode.indexOf ("{") != -1 ?
-                                                      CabbageWidgetData::getCabbageCodeFromIdentifiers (temp1, plantCode, "") + "{"
-                                                      : CabbageWidgetData::getCabbageCodeFromIdentifiers (temp1, plantCode, ""));
+                                                      CabbageWidgetData::getCabbageCodeFromIdentifiers (temp1, plantCode) + "{"
+                                                      : CabbageWidgetData::getCabbageCodeFromIdentifiers (temp1, plantCode));
 
                             importedLines.add (replacementText);
                             isPlantWidget = false;
@@ -468,6 +475,7 @@ void CabbagePluginProcessor::generateCabbageCodeFromJS (PlantImportStruct& impor
 
 void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
 {
+    var tempMacroNames, tempMacroStrings;
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
     {
         StringArray tokens;
@@ -482,6 +490,10 @@ void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
             {
                 const String currentMacroText = csdLine.substring (csdLine.indexOf (tokens[1]) + tokens[1].length()) + " ";
                 macroText.set ("$" + tokens[1], " " + currentMacroText);
+                tempMacroNames.append("$" + tokens[1]);
+                tempMacroStrings.append(currentMacroText.trim());
+                macroNames = tempMacroNames;
+                macroStrings = tempMacroStrings;
             }
         }
     }

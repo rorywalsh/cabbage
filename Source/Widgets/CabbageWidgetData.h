@@ -107,10 +107,8 @@ public:
     static String replaceIdentifier (String line, String identifier, String updatedIdentifier);
     //============================================================================
     static Colour getColourFromText (String text);
-    static String getBasicColourString(ValueTree widgetData, String identifier, String macroText);
-    static String getCabbageCodeForIdentifier(ValueTree widgetData, const String, const String);
-    static String getCabbageCodeFromIdentifiers (ValueTree props, const String, const String macroText);
-    //static String updateIdentifiers (String cabbageCode, String currentLineText);
+    static String getCabbageCodeForIdentifier(ValueTree widgetData, const String);
+    static String getCabbageCodeFromIdentifiers (ValueTree props, const String);
     //============================================================================
     static String getBoundsTextAsCabbageCode (Rectangle<int> rect);
     static String getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);

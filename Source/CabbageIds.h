@@ -322,7 +322,6 @@ public:
         add ("keyseparatorcolour");
         add ("amprange_quantise");
         add ("currentnotecolour");
-        add ("expandedmacrotext");
         add ("backgroundcolour");
         add ("trackerthickness");
         add ("activecellcolour");
@@ -352,6 +351,7 @@ public:
         add ("tablenumbers");
         add ("identchannel");
         add ("fontcolour:0");
+        add ("macrostrings");
         add ("tablecolour:");
         add ("metercolour:");
         add ("popuppostfix");
@@ -369,7 +369,6 @@ public:
         add ("fontcolor:1");
         add ("basechannel");
         add ("popupprefix");
-        add ("macronames");
         add ("matrixsize");
         add ("fontcolour");
         add ("textcolour");
@@ -377,6 +376,7 @@ public:
         add ("guirefresh");
         add ("tablecolor");
         add ("radiogroup");
+        add ("macronames");
         add ("ballcolour");
         add ("menucolor");
         add ("cellwidth");
@@ -547,7 +547,7 @@ namespace CabbageIdentifierIds
 	static const Identifier drawmode = "drawmode";
 	static const Identifier endpoint = "endpoint";
 	static const Identifier endpos = "endpos";
-	static const Identifier expandedmacrotext = "expandedmacrotext";
+	static const Identifier macronames = "macronames";
 	static const Identifier ffttablenumber = "ffttablenumber";
 	static const Identifier file = "file";
 	static const Identifier filetype = "filetype";
@@ -582,7 +582,7 @@ namespace CabbageIdentifierIds
 	static const Identifier linenumber = "linenumber";
 	static const Identifier linethickness = "linethickness";
 	static const Identifier logger = "logger";
-	static const Identifier macronames = "macronames";
+	static const Identifier macrostrings = "macrostrings";
 	static const Identifier matrixcols = "matrixcols";
 	static const Identifier matrixrows = "matrixrows";
 	static const Identifier max = "max";

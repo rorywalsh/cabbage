@@ -394,23 +394,13 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
 
             const String currentLineText = getCurrentCodeEditor()->getLineText (lineNumber);
 
-            const String macroText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::expandedmacrotext);
-
-            String macroNames;
-
-            for ( int i = 0 ; i < CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames).size() ; i++ )
-                macroNames += CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::macronames)[i].toString() + " ";
-
-
             const String newText = CabbageWidgetData::getStringProp (wData, "precedingCharacters")
-                                   + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText, macroText)
+                                   + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText)
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty)
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "}" : String::empty);
 
 
-            macroNames = macroNames.length() > 1 ? macroNames : "";
-
-            getCurrentCodeEditor()->insertCode (lineNumber, newText + " " + macroNames, replaceExistingLine, parent.isEmpty());
+            getCurrentCodeEditor()->insertCode (lineNumber, newText, replaceExistingLine, parent.isEmpty());
 
         }
 
