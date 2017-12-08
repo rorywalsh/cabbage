@@ -314,7 +314,7 @@ void TableManager::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newR
 
 void TableManager::setScrubberPos (double pos, int ftnumber)
 {
-    if (ftnumber == -1)
+    if (ftnumber == -1 && tables.size()>0)
     {
         scrubberPosition = pos / tables[0]->tableSize;
         tables[0]->setScrubberPos (scrubberPosition);

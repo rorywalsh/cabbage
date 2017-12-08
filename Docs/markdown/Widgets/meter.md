@@ -23,6 +23,8 @@ widgetarray("chan", number), active(val), outlinethickness(val)
 
 {! ./markdown/Widgets/Properties/overlaycolour.md !} 
 
+{! ./markdown/Widgets/Properties/metercolour.md !} 
+
 
 ### Common Identifiers
 

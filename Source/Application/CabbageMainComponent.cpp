@@ -384,18 +384,20 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
     for (ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
     {
         int lineNumber = 0;
+        Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
 
         if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber) >= 0)
         {
 
-            lineNumber = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber);
+            lineNumber = jmin(cabbageSection.getEnd(), int(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber)));
+            const String type = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::type);
 
             const String parent = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
 
             const String currentLineText = getCurrentCodeEditor()->getLineText (lineNumber);
 
             const String newText = CabbageWidgetData::getStringProp (wData, "precedingCharacters")
-                                   + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText)
+                                   + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, (currentLineText == "</Cabbage>" ? "" : currentLineText))
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty)
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "}" : String::empty);
 

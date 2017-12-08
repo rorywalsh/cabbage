@@ -593,6 +593,23 @@ public:
     }
 
     //===========================================================================================
+    static Range<int> getCabbageSectionRange(String csdText)
+    {
+        Range<int> range;
+        StringArray lines;
+        lines.addLines(csdText);
+        for(int i = 0 ; i < lines.size() ; i++)
+        {
+            if (lines[i] == "<Cabbage>")
+                range.setStart(i);
+            else if (lines[i] == "</Cabbage>")
+                range.setEnd(i);
+        }
+
+        return range;
+    }
+
+    //===========================================================================================
     static StringArray getTokens (String code, char breakChar)
     {
         StringArray tokens;
