@@ -217,7 +217,6 @@ void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
     channels.append ("yChan");
     setProperty (widgetData, CabbageIdentifierIds::xyautoindex, 0);
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
-    setProperty (widgetData, CabbageIdentifierIds::ychannel, channels[1]);
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
