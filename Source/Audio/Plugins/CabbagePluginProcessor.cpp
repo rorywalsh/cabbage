@@ -35,12 +35,13 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     csdFile = File (dir + "/" + filename);
 
 #endif
-    return new CabbagePluginProcessor (csdFile);
+	const int numChannels = CabbageUtilities::getIntendedNumberOfChannels(csdFile.loadFileAsString());
+    return new CabbagePluginProcessor (csdFile, numChannels, numChannels);
 };
 
 //============================================================================
-CabbagePluginProcessor::CabbagePluginProcessor (File inputFile)
-    : CsoundPluginProcessor (inputFile),
+CabbagePluginProcessor::CabbagePluginProcessor (File inputFile, const int ins, const int outs)
+    : CsoundPluginProcessor (inputFile, ins, outs),
       csdFile (inputFile),
       cabbageWidgets ("CabbageWidgetData")
 {

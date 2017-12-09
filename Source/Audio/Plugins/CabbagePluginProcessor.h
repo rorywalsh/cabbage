@@ -69,7 +69,7 @@ public:
     };
 
 
-    CabbagePluginProcessor (File inputFile = File());
+    CabbagePluginProcessor (File inputFile = File(), const int ins=2, const int outs=2);
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;

@@ -378,7 +378,43 @@ public:
         return false;
 #endif
     }
+	//==============================================================
+	static int getIntendedNumberOfChannels(String csdText)
+	{
 
+		while (csdText.indexOf("/*") != -1 && csdText.indexOf("*/") != -1)
+		{
+			const String comments = csdText.substring(csdText.indexOf("/*"), csdText.indexOf("*/") + 2);
+			csdText = csdText.replace(comments, "");
+		}
+
+		StringArray array;
+		array.addLines(csdText);
+
+		bool inCsoundInstrumentsSection = false;
+
+		for (int i = 0; i < array.size(); i++)
+		{
+			if (array[i] == "<CsInstruments>")
+				inCsoundInstrumentsSection = true;
+
+			if (inCsoundInstrumentsSection)
+			{
+				if (array[i].indexOf(";") != -1)
+					array.set(i, array[i].substring(0, array[i].indexOf(";")));
+
+				array.set(i, array[i].removeCharacters("\t").trimStart());
+
+				if (array[i].contains("nchnls") && array[i].contains("="))
+				{
+					String channels = array[i].substring(array[i].indexOf("=") + 1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
+					return channels.trim().getIntValue();
+				}
+			}
+		}
+
+		return 2;
+	}
     //==============================================================
     static const String getSVGTextFromMemory (const void* svg, size_t size)
     {

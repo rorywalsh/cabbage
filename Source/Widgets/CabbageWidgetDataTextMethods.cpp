@@ -517,7 +517,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
     setWidgetState(tempData, type + " " + macroText, -99);
     String colourString;
 
-    if (identifier == "colour:0" && type.contains("slider") == false && type != "combobox" && type != "image" && type != "encoder" && type != "label" && type!="textbox" && type!="xypad")
+    if (identifier == "colour:0" && type.contains("slider") == false && type != "combobox" && type != "image" && type != "gentable" && type != "soundfiler" && type != "encoder" && type != "label" && type!="textbox" && type!="xypad" && type!="groupbox")
     {
         if (getStringProp(widgetData, CabbageIdentifierIds::colour) !=
             getStringProp(tempData, CabbageIdentifierIds::colour))
@@ -578,7 +578,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
     }
 
 
-    else if(identifier=="fontcolour:0" && type!="combobox" && type!="encoder" && type != "label" && !type.contains("slider") && type!="textbox" && type!="xypad")
+    else if(identifier=="fontcolour:0" && type!="combobox" && type!="encoder" && type != "label" && type != "groupbox" && !type.contains("slider") && type!="textbox" && type!="xypad")
     {
         if (getStringProp(widgetData, CabbageIdentifierIds::fontcolour) !=
             getStringProp(tempData, CabbageIdentifierIds::fontcolour))
