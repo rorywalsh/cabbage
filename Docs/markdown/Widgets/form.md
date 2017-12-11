@@ -5,6 +5,7 @@ Form creates the main application window. pluginid() is the only required identi
 <big></pre>
 form WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 ##Identifiers
 

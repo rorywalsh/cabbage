@@ -2,13 +2,11 @@
 
 Infobuttons can be used to open html files in the system's default web browser. When clicked, the file passed to the file() identifier will be opened, if it is a valid file. This widget can be useful for providing help files or any other additional information about your instruments. 
 
-```csharp
-infobutton bounds(x, y, width, height), text("name"), \
-colour("colour"), fontcolour("colour") file("file name"), \
-identchannel("chan"), alpha(val), visible(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), \
-popuptext("text"), active(val), svgfile("type", "file")
-```
+<big></pre>
+infobutton WIDGET_SYNTAX
+</pre></big>
+
+
 <!--(End of syntax)/-->
 
 ## Identifiers

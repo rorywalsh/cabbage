@@ -18,6 +18,8 @@ currentDir = os.path.abspath(sys.argv[1])
 docfiles = listdir(currentDir)
 os.chdir(currentDir)
 
+if os.path.exists('./GeneratedWidgetFiles') == False:
+	os.mkdir("GeneratedWidgetFiles")
 
 for filename in docfiles:
     if ".md" in filename:
@@ -39,7 +41,7 @@ for filename in docfiles:
                         propLine = propLine[propLine.find("**")+2:-1]
                         params = propLine[propLine.find("("):propLine.find(")")+1]
                         propLine = propLine[0:propLine.find("(")]
-                        linkText = "["+propLine+"](#" + propLine +")" + params +", "
+                        linkText = "["+propLine+"](#" + line[0:line.find(".")] +")" + params +", "
                         #print (linkText)
 
                         links.append(linkText + "\n")

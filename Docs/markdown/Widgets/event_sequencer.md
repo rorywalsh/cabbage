@@ -5,6 +5,7 @@ The eventsequencer widget is an event based sequencer that can be used to send s
 <big></pre>
 eventsequencer WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

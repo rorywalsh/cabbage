@@ -5,6 +5,7 @@ Encoder creates an endless rotary encoder similar to those found in certain well
 <big></pre>
 encoder WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

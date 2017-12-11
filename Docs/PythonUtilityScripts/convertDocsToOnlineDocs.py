@@ -12,12 +12,12 @@ if len(sys.argv) != 3:
 	print("You must supply a directory")
 	exit(1)
 
-copyfile("docs.yml", os.path.abspath(sys.argv[2])+"/_data/docs.yml")
+copyfile("../docs.yml", os.path.abspath(sys.argv[2])+"/_data/docs.yml")
 outputDir = os.path.abspath(sys.argv[2])+"/_docs"
 imagesDir = os.path.abspath(sys.argv[2])+"/images/docs/"
-copy_tree("./images/", imagesDir)
+copy_tree("../images/", imagesDir)
 
-directories = ["", "/Widgets", "/Widgets/Properties"]
+directories = ["", "/Widgets/GeneratedWidgetFiles", "/Widgets/Properties"]
 currentDir = os.path.abspath(sys.argv[1])
 for dir in directories[0:3]:
 	

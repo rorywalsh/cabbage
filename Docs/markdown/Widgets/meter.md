@@ -6,6 +6,7 @@ Meters can be used to create any kind of horizontal or vertical metering bar, su
 <big></pre>
 meter WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

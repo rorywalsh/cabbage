@@ -5,6 +5,7 @@ Button creates a button on screen that can be used for a whole range of differen
 <big></pre>
 button WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

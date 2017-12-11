@@ -6,6 +6,7 @@ Gentable displays the contents of a function table, multiple tables, or files. F
 <big></pre>
 gentable WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

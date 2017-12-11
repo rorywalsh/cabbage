@@ -5,6 +5,7 @@ Image creates a static shape or graphic. It can be used to show pictures or it c
 <big></pre>
 image WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 ##Identifiers
 

@@ -6,6 +6,7 @@ Combobox creates a drop-down list of items which users can choose from. Once the
 <big></pre>
 combobox WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ## Identifiers

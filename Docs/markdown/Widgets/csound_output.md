@@ -6,6 +6,7 @@ Csoundoutput will display Csound output messages within your instrument**s GUI. 
 <big></pre>
 csoundoutput WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 ##Identifiers
 

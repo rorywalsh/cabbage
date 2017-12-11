@@ -6,6 +6,7 @@ Listbox creates a list of custom items. Similary to a combobox in functionality,
 <big></pre>
 listbox WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ## Identifiers

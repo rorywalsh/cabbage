@@ -2,13 +2,10 @@
 
 A filebutton can be used to select files from disk. The filename selected, or created will be sent to Csound on the named channel as a string message. Filebuttons can also be used to select snapshot files for Cabbage to save parameter presets. See the populate identifier below. 
 
-```csharp
-filebutton bounds(x, y, width, height), channel("chan"), \
-text("offCaption"), populate("filetype", "dir"), value(val), \
-colour:N("colour"), fontcolour:N("colour"), identchannel("channel"), \
-alpha(val), visible(val), mode("mode"), rotate(radians, pivotx, pivoty), \
-widgetarray("chan", number), popuptext("text"), active(val), svgfile("type", "file")
-```
+<big></pre>
+filebutton WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

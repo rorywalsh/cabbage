@@ -5,6 +5,7 @@ Groupbox creates a container for other GUI widgets. They do not communicate with
 <big></pre>
 groupbox WIDGET_SYNTAX
 </pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers
