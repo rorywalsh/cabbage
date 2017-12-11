@@ -1,1 +1,1 @@
-**text("caption")** "caption" will be the string to appear on the group box
+<a name="text_groupbox"></a>**text("caption")** "caption" will be the string to appear on the group box

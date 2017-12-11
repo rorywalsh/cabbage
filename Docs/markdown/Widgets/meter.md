@@ -3,12 +3,9 @@
 Meters can be used to create any kind of horizontal or vertical metering bar, such as VU meters. 
 
 
-```csharp
-vmeter bounds(x, y, width, height), overlaycolour("colour"), channel("chan") \
-metercolour:N("colour"), align("position"), identchannel("channel"), \
-alpha(val), visible(val), rotate(radians, pivotx, pivoty), corners(val)\
-widgetarray("chan", number), active(val), outlinethickness(val)
-```
+<big></pre>
+meter WIDGET_SYNTAX
+</pre></big>
 <!--(End of syntax)/-->
 
 ##Identifiers

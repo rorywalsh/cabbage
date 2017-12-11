@@ -2,11 +2,9 @@
 
 The eventsequencer widget is an event based sequencer that can be used to send score events to Csound. Each cell in the matrix represents a score event that will be sent to Csound. The associated "channel" sets the current position of the steps and is controlled by Csound using the `chnset` opcode. 
 
-```csharp
-eventsequencer bounds(x, y, width, height), channel("position"), fontcolour("colour"), matrixsize(rows, cols), shownumbers(val), cellwidth(val),
-cellheight(val), identchannel("channel"), alpha(val), visible(val), text("Track1", "Track2", "Track3", "Track4"), orientation("type")
-rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefix(col, "string")
-```
+<big></pre>
+eventsequencer WIDGET_SYNTAX
+</pre></big>
 <!--(End of syntax)/-->
 
 ##Identifiers

@@ -2,10 +2,9 @@
 
 Form creates the main application window. pluginid() is the only required identifier. The default values for size are 600x300. 
 
-```csharp
-form caption("title"), size(Width, Height), pluginid("plug"), \
-colour("colour"), guirefresh(val), import("file1", "file2"), bundle("./folder1", "file1.txt", etc)
-```
+<big></pre>
+form WIDGET_SYNTAX
+</pre></big>
 <!--(End of syntax)/-->
 ##Identifiers
 

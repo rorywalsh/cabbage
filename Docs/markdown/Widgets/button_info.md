@@ -25,8 +25,6 @@ popuptext("text"), active(val), svgfile("type", "file")
 
 {! ./markdown/Widgets/Properties/bounds.md !} 
 
-<!--  {! ./markdown/Widgets/Properties/channel.md !}   Does button info have channel property ? -->
-
 {! ./markdown/Widgets/Properties/colour_0.md !} 
 
 {! ./markdown/Widgets/Properties/colour_1.md !} 

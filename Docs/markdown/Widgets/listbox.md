@@ -3,14 +3,9 @@
 Listbox creates a list of custom items. Similary to a combobox in functionality, listboxes can be used for much longer lists that users can scroll through. Double-clicking on a listbox item will send a channel message to Csound. 
 
 
-```csharp
-listbox bounds(x, y, width, height), channel("chan"), highlightcolour("colour") \
-value(val), items("item1", "item2", ...), populate("filetype", "dir"),\
-channeltype("type"), colour("colour"), fontcolour("colour"), align("position"), \
-identchannel("channel"), alpha(val), file("filename.txt"), visible(val), caption("caption"), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val)
-```
+<big></pre>
+listbox WIDGET_SYNTAX
+</pre></big>
 <!--(End of syntax)/-->
 
 ## Identifiers

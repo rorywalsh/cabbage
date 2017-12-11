@@ -3,12 +3,10 @@
 Soundfiler will display the contents of a sound file, or a function table containing a sound file (GEN01 tables). This is a fast waveform viewer that allows users to select regions of the waveform. Unlike the table widget, soundfiler can only display one waveform at a time. 
 
 
-```csharp
-soundfiler bounds(x, y, width, height), channel("start", "end"), \
-colour("colour1"), zoom(val), tablenumber(val), file("filename"), \
-scrubberpos(val), identchannel("channel"), alpha(val), visible(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), active(val)
-```
+<big></pre>
+soundfiler WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

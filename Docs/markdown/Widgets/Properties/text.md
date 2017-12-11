@@ -1,1 +1,1 @@
- **text("name")** "name" will be the text that appears on the widget.
+<a name="text"></a> **text("name")** "name" will be the text that appears on the widget.

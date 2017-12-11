@@ -2,13 +2,9 @@
 
 Groupbox creates a container for other GUI widgets. They do not communicate with Csound but can be useful for organising widgets into panels.
 
-```csharp
-groupbox bounds(x, y, width, height), text("Caption"), \
-colour("colour"), fontcolour("colour"), linethinckness(value), plant("name"), \
-popup(val), child(val), visible(val), alpha(val), show(val), \
-identchannel("channel"), rotate(radians, pivotx, pivoty), outlinethickness(val) \
-widgetarray("chan", number), active(val), svgfile("filename")
-```
+<big></pre>
+groupbox WIDGET_SYNTAX
+</pre></big>
 <!--(End of syntax)/-->
 
 ##Identifiers

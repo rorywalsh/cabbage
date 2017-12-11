@@ -2,10 +2,9 @@
 
 Keyboard will display a keyboard that will send MIDI information to your Csound instrument. This component can be used together with a hardware controller. Pressing keys on the actual MIDI keyboard will cause the on-screen keys to react up. 
 
-```csharp
-keyboard bounds(x, y, width, height), value(note), identchannel("channel"), visible(val), \ 
-middlec(val), keywidth(val), scrollbars(val)
-```
+<big></pre>
+keyboard WIDGET_SYNTAX
+</pre></big>
 
 ##Identifiers
 

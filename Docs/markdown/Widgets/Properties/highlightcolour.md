@@ -1,1 +1,1 @@
-**highlightcolour("colour")** Sets the colour of the selected text. See above for details on valid colours.
+<a name="highlightcolour"></a>**highlightcolour("colour")** Sets the colour of the selected text. See above for details on valid colours.

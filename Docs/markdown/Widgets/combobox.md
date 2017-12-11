@@ -3,14 +3,9 @@
 Combobox creates a drop-down list of items which users can choose from. Once the user selects an item, the index of their selection will be sent to Csound on a channel named by the channel string. The default value is 0.
 
 
-```csharp
-combobox bounds(x, y, width, height), channel("chan"), align("position")\
-value(val), items("item1", "item2", ...), file("filename.txt"), populate("filetype", "dir"),\
-channeltype("type"), colour("colour"), fontcolour("colour"), \
-identchannel("channel"), alpha(val), visible(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val)
-```
+<big></pre>
+combobox WIDGET_SYNTAX
+</pre></big>
 <!--(End of syntax)/-->
 
 ## Identifiers

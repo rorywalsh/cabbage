@@ -1,1 +1,1 @@
-**import("file1", "file2", "etc..")** The import identifier will import the file/s specified. This can be useful when including files that contains macros definitions, or custom plant imports. 
+<a name="import"></a>**import("file1", "file2", "etc..")** The import identifier will import the file/s specified. This can be useful when including files that contains macros definitions, or custom plant imports. 

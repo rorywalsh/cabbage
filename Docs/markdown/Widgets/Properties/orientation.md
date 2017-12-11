@@ -1,1 +1,1 @@
-**orientation("val")** Will set whether the eventsequencer widget moves scrubers from top to bottom(default), or left to right. "val" can be "vertical", or "horizontal"  
+<a name="orientation"></a>**orientation("val")** Will set whether the eventsequencer widget moves scrubers from top to bottom(default), or left to right. "val" can be "vertical", or "horizontal"  

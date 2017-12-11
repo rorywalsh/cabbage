@@ -3,12 +3,10 @@
 Labels can be used for placing text on-screen. 
 
 
-```csharp
-label bounds(x, y, width, height), text("text"), colour("colour"), channel("chan") \
-fontcolour("colour"), align("position"), identchannel("channel"), \
-alpha(val), visible(val), rotate(radians, pivotx, pivoty), corners(val)\
-widgetarray("chan", number), active(val), fontstyle("style")
-```
+<big></pre>
+label WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

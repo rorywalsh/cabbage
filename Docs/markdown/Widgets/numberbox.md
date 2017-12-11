@@ -3,14 +3,10 @@
 Number boxes can be used to create a PureData, Max/MSP style number box. Data can be sent to Csound on the channel specified through the channel string.
 
 
-```csharp
-numberbox bounds(x, y, width, height), channel("chan"), \
-text("name"), textbox(val), range(min, max, value, skew, incr), \
-min(val), max(val), textcolour("colour"), fontcolour("colour"), \
-identchannel("channel"), alpha(val), visible(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val)
-```
+<big></pre>
+numberbox WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

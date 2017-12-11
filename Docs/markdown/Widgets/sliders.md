@@ -2,16 +2,10 @@
 
 Slider can be used to create an on-screen slider. Data can be sent to Csound on the channel specified through the channel string. Sliders can be rotary, vertical, horizontal, frange-based, or number boxes, and can react in both a linear and non-linear fashion. 
 
+<big></pre>
+slider WIDGET_SYNTAX
+</pre></big>
 
-```csharp
-hslider bounds(x, y, width, height), channel("chan"), \
-text("name"), valuetextbox(val), range(min, max, value, skew, incr), \
-min(val), max(val), colour("colour"), textcolour("colour"), fontcolour("colour"), \
-trackercolour("colour"), outlinecolour("colour"), trackerthickness(val) \
-textboxcolour("colour"), textboxoutlinecolour("colour"), identchannel("channel"), \
-alpha(val), visible(val), caption("caption"), rotate(radians, pivotx, pivoty), \
-widgetarray("chan", number), popuptext("text") active(val), svgfile("type", "file"), velocity(val)
-```
 <!--(End of syntax)/-->
 
 ##Identifiers

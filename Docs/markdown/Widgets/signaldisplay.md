@@ -2,11 +2,10 @@
 
 Displays a graphical representation of a signal. Must be used with the **display** or **dispfft** opcodes in Csound. 
 
-```csharp
-signaldisplay bounds(x, y, width, height), colour("colour"), groundcolour("colour"), \
-signalvariable("a-rate variables"), displaytype("type"), identchannel("channel"), alpha(val), \
-visible(val), active(val), zoom(val), updaterate(val)
-```
+<big></pre>
+signaldisplay WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

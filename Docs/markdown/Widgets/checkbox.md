@@ -3,14 +3,10 @@
 Checkbox creates a checkbox which functions like a button, but the associated caption will not change when the user checks it. As with all widgets capable of sending data to Csound, the channel string is the channel on which the widget will communicate with Csound. 
 
 
-```csharp
-checkbox bounds(x, y, width, height), channel("chan"), \
-text("name"), value(val), colour:0("colour"), \
-colour:1("colour"), shape("shape"), fontcolour("colour"), \
-identchannel("channel"), alpha(val), visible(val), corners(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val)
-```
+<big></pre>
+checkbox WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ## Identifiers

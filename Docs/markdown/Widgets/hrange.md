@@ -3,15 +3,10 @@
 Create an on-screen slider with a dragable, and user selectable range. Data can be sent to Csound on the channel specified through the channel string.  
 
 
-```csharp
-hrange bounds(x, y, width, height), channel("chan"), \
-text("name"), textbox(val), range(min, max, value, skew, incr), \
-min(val), max(val), textcolour("colour"), fontcolour("colour"), \
-trackercolour("colour"), outlinecolour("colour"), trackerthickness(val)
-identchannel("channel"), alpha(val), visible(val), caption("caption"), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val)
-```
+<big></pre>
+hrange WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

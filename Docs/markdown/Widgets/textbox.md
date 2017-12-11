@@ -3,12 +3,10 @@
 Textbox will display the contents of a text file. This can be useful for placing instructions and information directly on to an instrument.  
 
 
-```csharp
-textbox bounds(x, y, width, height), file("filename"), \
-colour("colour"), fontcolour("colour"), wrap(val), alpha(val), \
-visible(val), rotate(radians, pivotx, pivoty), widgetarray("chan", number) \
-popuptext("text"), active(val)
-```
+<big></pre>
+textbox WIDGET_SYNTAX
+</pre></big>
+
 <!--(End of syntax)/-->
 
 ##Identifiers

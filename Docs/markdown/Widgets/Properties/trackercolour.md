@@ -1,1 +1,1 @@
-**trackercolour("colour")** Sets the colour of the slider**s tracker. This is the line that follows the slider when you move it. See above for details on valid colours. 
+<a name="trackercolour"></a>**trackercolour("colour")** Sets the colour of the slider**s tracker. This is the line that follows the slider when you move it. See above for details on valid colours. 

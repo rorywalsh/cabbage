@@ -3,11 +3,9 @@
 Csoundoutput will display Csound output messages within your instrument**s GUI. This widget can be very useful when working in plugin mode and can be invaluable when it comes to de-slugging Cabbage instruments. 
 
 
-```csharp
-csoundoutput bounds(x, y, width, height), text("name"), \
-colour("colour"), fontcolour("colour"), identchannel("channel"), \
-visible(val), alpha(val), widgetarray("chan", number)
-```
+<big></pre>
+csoundoutput WIDGET_SYNTAX
+</pre></big>
 <!--(End of syntax)/-->
 ##Identifiers
 

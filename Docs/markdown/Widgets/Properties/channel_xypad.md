@@ -1,1 +1,1 @@
-**channel("chan1", "chan2")** "chan1" is the name of the X-axis channel in which to communicate with Csound, and "chan2" is the Y-axis channel in which to communicate with Csound.
+<a name="channel_xypad"></a>**channel("chan1", "chan2")** "chan1" is the name of the X-axis channel in which to communicate with Csound, and "chan2" is the Y-axis channel in which to communicate with Csound.
