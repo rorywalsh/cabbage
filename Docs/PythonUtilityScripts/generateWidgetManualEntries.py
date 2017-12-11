@@ -25,6 +25,7 @@ for filename in docfiles:
     if ".md" in filename:
         #print(filename)
         links = []
+        identifierCode = []
         #outputFile = open("_"+filename, 'w+')
         #outputFile = open(inputFile.name, 'w')
         #lineText = ""
@@ -36,7 +37,8 @@ for filename in docfiles:
                 line = line[0:line.find(" !}")]
                 #print(line)
                 propFile = open("./Properties/"+line.rstrip())
-                for propLine in propFile:
+                content = propFile.readlines()
+                for propLine in content:
                     if "**" in propLine:
                         propLine = propLine[propLine.find("**")+2:-1]
                         params = propLine[propLine.find("("):propLine.find(")")+1]
@@ -45,17 +47,44 @@ for filename in docfiles:
                         #print (linkText)
 
                         links.append(linkText + "\n")
-
-
+                    
+                    if "<!--UPDATE WIDGET_IN_CSOUND" in propLine:
+                        lineIndex = content.index(propLine)+1
+                        while lineIndex < len(content)-1:
+                            identifierCode.append(content[lineIndex])
+                            lineIndex+=1
         
         inputFile = open(filename)
         htmlText = ""
         for line in inputFile:
             if "WIDGET_SYNTAX" in line:
-                print("found in line")
                 line = line.replace("WIDGET_SYNTAX", ''.join(links))
         
             htmlText = htmlText+line;
+
+            if ";WIDGET_ADVANCED_USAGE" in line:
+                newLines = '''
+                instr 2
+                    kUpdate init 0
+                    iCnt init 0
+                    if changed:k(chnget:k("changeAttributes")) == 1 then
+                        event "i", "ChangeAttributes", 0, 1, kUpdate
+                        kUpdate = (kUpdate < 6 ? kUpdate+1 : 0)
+                    endif
+                endin
+
+                instr ChangeAttributes
+                    SIdentifier init ""\n'''  
+                newLines +=''.join(identifierCode)      
+
+                lastBit ='''
+                    chnset SIdentifier, "buttonIdent"     
+                    prints SIdentifier         
+                endin'''
+                newLines+=lastBit
+
+                line = line.replace(";WIDGET_ADVANCED_USAGE", newLines)
+                htmlText = htmlText+line;
 
         inputFile = open("./GeneratedWidgetFiles/"+filename, "w+")
         inputFile.write(htmlText)

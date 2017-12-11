@@ -56,11 +56,42 @@ button WIDGET_SYNTAX
 ##Example
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
-infobutton bounds(120, 16, 100, 30), channel("button"),  file("README.txt"), text("Info")
-filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
+form caption("Button Example") size(400, 300), colour(20, 20, 20), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage")
+groupbox bounds(8, 110, 367, 177), text("Identifiers Updates")
+button bounds(116, 38, 150, 50), channel("button1"), text("Enable Tone", "Disable Tone"),
+button bounds(20, 140, 71, 40), channel("changeAttributes"), text("Change Attributes", "Change Attributes") 
+button bounds(110, 140, 165, 62) identchannel("buttonIdent")
 </Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+seed 0 
+;basic usage
+instr 1
+    aTone oscili chnget:k("button1"), 300
+    outs aTone, aTone    
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
 ```
 
 ![Button](../images/buttonExample.png)
