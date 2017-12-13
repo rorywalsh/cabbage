@@ -1,14 +1,11 @@
-language: cpp
+os: osx
 
-os:
-  - linux
-  - osx
+language: cpp
 
 osx_image: xcode9.2
 
-compiler:
-  - gcc
-  - clang
+    compiler: clang
+    env: CXX_COMPILER='clang++' C_COMPILER='clang' Fortran_COMPILER='gfortran' BUILD_TYPE='Debug'
 
 install:
   - '[ "${TRAVIS_OS_NAME}" = "osx" ] && brew update || true'
