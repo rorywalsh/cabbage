@@ -69,3 +69,4 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
         setButtonText (getTextArray()[getValue()]);
     }
 }
+
