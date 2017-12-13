@@ -346,7 +346,8 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
     {
         if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
-            updateCodeInEditor (ed, true);
+
+            updateCodeInEditor (ed, true, true);
         }
     }
 
@@ -377,7 +378,7 @@ void CabbageMainComponent::actionListenerCallback (const String& message)
     }
 }
 //=======================================================================================
-void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool replaceExistingLine)
+void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool replaceExistingLine, bool guiPropUpdate)
 {
     propertyPanel->addChangeListener (this);
 
@@ -395,14 +396,16 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
             const String parent = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
 
             const String currentLineText = getCurrentCodeEditor()->getLineText (lineNumber);
-
+            CabbageUtilities::debug(currentLineText);
             const String newText = CabbageWidgetData::getStringProp (wData, "precedingCharacters")
                                    + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, (currentLineText == "</Cabbage>" ? "" : currentLineText))
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty)
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "}" : String::empty);
 
-
-            getCurrentCodeEditor()->insertCode (lineNumber, newText, replaceExistingLine, parent.isEmpty());
+            if(isGUIEnabled == true && guiPropUpdate == false)
+                getCurrentCodeEditor()->updateBoundsText (lineNumber, newText, true);
+            else
+                getCurrentCodeEditor()->insertCode (lineNumber, newText, replaceExistingLine, parent.isEmpty());
 
         }
 
@@ -726,6 +729,7 @@ void CabbageMainComponent::setEditMode (bool enable)
         }
 
         getCabbagePluginEditor()->enableEditMode (enable);
+        isGUIEnabled = enable;
     }
 }
 //=======================================================================================

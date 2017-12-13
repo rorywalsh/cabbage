@@ -55,7 +55,7 @@ public:
     void actionListenerCallback (const String& message);
     void buttonClicked (Button* button);
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
-    void updateCodeInEditor (CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
+    void updateCodeInEditor (CabbagePluginEditor* pluginEditor, bool replaceExistingLine, bool guiPropUpdate =false);
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
