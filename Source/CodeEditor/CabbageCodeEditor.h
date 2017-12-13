@@ -163,6 +163,7 @@ public:
     void insertCode (int lineNumber, String codeToInsert, bool replaceExistingLine, bool highlightLine);
     void insertNewLine (String text);
     void insertTextAtCaret (const String& textToInsert);
+    void updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight);
     void insertMultiLineTextAtCaret (String text);
     void insertText (String text);
     void highlightLines (int firstLine, int lastLine);

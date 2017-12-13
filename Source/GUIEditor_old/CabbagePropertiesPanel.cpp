@@ -176,6 +176,7 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
 {
     CabbageIdentifierPropertyStringPairs propertyStringPairs;
     const String identifier = propertyStringPairs.getValue (name, "");
+	const String widgetType = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
 
     CabbageAmpRangeIdentifiers ampRangeIdentifiers;
     CabbageScrubberPositionIdentifiers scrubberIdentifiers;
@@ -195,8 +196,11 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
         else if (scrubberIdentifiers.contains (identifier))
             getScrubberPositionForTable (identifier, value);
 
-        else
-            CabbageWidgetData::setProperty (widgetData, identifier, value);
+		else
+		{
+			CabbageUtilities::debug(value.toString());
+			CabbageWidgetData::setProperty(widgetData, identifier, value);
+		}
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
@@ -380,18 +384,18 @@ void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileCo
 Array<PropertyComponent*> CabbagePropertiesPanel::createChannelEditors (ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
-    const var channel = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::channel);
+
     const var identChannel = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::identchannel);
     const String typeOfWidget = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
 
     if ( typeOfWidget != "gentable" &&  typeOfWidget != "groupbox")
     {
-        const var array = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::channel);
+        const var channel = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::channel);
 
-        if (array.size() > 1)
+        if (channel.size() > 1)
             createMultiLineTextEditors (valueTree, comps, CabbageIdentifierIds::channel, "Channel");
         else
-            comps.add (new TextPropertyComponent (Value (channel), "Channel", 200, false));
+            comps.add (new TextPropertyComponent (Value(channel), "Channel", 200, false));
     }
 
     comps.add (new TextPropertyComponent (Value (identChannel), "Ident Channel", 100, false));
@@ -434,7 +438,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors (ValueTree v
     else
     {
         const String text = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::text);
-        comps.add (new TextPropertyComponent (Value (var (text)), "Text", 1000, isMultiline));
+        comps.add (new TextPropertyComponent (Value (var (text)), "Text", 1000, false));
     }
 
     if (typeOfWidget != "gentable")
@@ -919,8 +923,10 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors (CabbagePro
     }
     else if (typeOfWidget == CabbageWidgetTypes::button || typeOfWidget == CabbageWidgetTypes::checkbox)
     {
+        const String value = String (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), decimalPlaces);
         const int radioGroup = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::radiogroup);
         comps.add (new TextPropertyComponent (Value (radioGroup), "Radio Group", 8, false));
+        comps.add (new TextPropertyComponent (Value (value), "Value", 8, false));
     }
     else
     {
