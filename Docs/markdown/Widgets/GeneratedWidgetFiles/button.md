@@ -74,11 +74,10 @@ button [latched](#latched)(val),
 ##Example
 ```csharp
 <Cabbage>
-form caption("Button Example") size(400, 300), colour(20, 20, 20), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage")
-groupbox bounds(8, 110, 367, 177), text("Identifiers Updates")
+form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 button bounds(116, 38, 150, 50), channel("button1"), text("Enable Tone", "Disable Tone"),
-button bounds(20, 140, 71, 40), channel("changeAttributes"), text("Change Attributes", "Change Attributes") 
 button bounds(110, 140, 165, 62) identchannel("buttonIdent")
 </Cabbage>
 <CsoundSynthesizer>
@@ -102,11 +101,8 @@ endin
 ;WIDGET_ADVANCED_USAGE
 
                 instr 2
-                    kUpdate init 0
-                    iCnt init 0
-                    if changed:k(chnget:k("changeAttributes")) == 1 then
-                        event "i", "ChangeAttributes", 0, 1, kUpdate
-                        kUpdate = (kUpdate < 6 ? kUpdate+1 : 0)
+                    if metro(1) == 1 then
+                        event "i", "ChangeAttributes", 0, 1
                     endif
                 endin
 
@@ -124,11 +120,14 @@ endin
     SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "fontcolour:1(%d, %d, 255) ", rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent   
-    SIdent sprintf "text(\"TextOff %f\", \"TextOn %\") ", rnd(100), rnd(100)
+    SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
+    SIdentifier strcat SIdentifier, SIdent
+    SIdent sprintf "value(%f) ", rnd(1)
+    SIdentifier strcat SIdentifier, SIdent
+    SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
     SIdentifier strcat SIdentifier, SIdent
 
-                    chnset SIdentifier, "buttonIdent"     
-                    prints SIdentifier         
+                    chnset SIdentifier, "widgetIdent"           
                 endin
 
 </CsInstruments>

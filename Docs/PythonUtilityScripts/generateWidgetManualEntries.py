@@ -49,10 +49,13 @@ for filename in docfiles:
                         links.append(linkText + "\n")
                     
                     if "<!--UPDATE WIDGET_IN_CSOUND" in propLine:
-                        lineIndex = content.index(propLine)+1
+                        lineIndex = content.index(propLine)+1;           
                         while lineIndex < len(content)-1:
+                            if "-->" in content[lineIndex]:
+                                lineIndex == len(content)+1
                             identifierCode.append(content[lineIndex])
                             lineIndex+=1
+
         
         inputFile = open(filename)
         htmlText = ""
@@ -65,11 +68,8 @@ for filename in docfiles:
             if ";WIDGET_ADVANCED_USAGE" in line:
                 newLines = '''
                 instr 2
-                    kUpdate init 0
-                    iCnt init 0
-                    if changed:k(chnget:k("changeAttributes")) == 1 then
-                        event "i", "ChangeAttributes", 0, 1, kUpdate
-                        kUpdate = (kUpdate < 6 ? kUpdate+1 : 0)
+                    if metro(1) == 1 then
+                        event "i", "ChangeAttributes", 0, 1
                     endif
                 endin
 
@@ -78,8 +78,7 @@ for filename in docfiles:
                 newLines +=''.join(identifierCode)      
 
                 lastBit ='''
-                    chnset SIdentifier, "buttonIdent"     
-                    prints SIdentifier         
+                    chnset SIdentifier, "widgetIdent"           
                 endin'''
                 newLines+=lastBit
 

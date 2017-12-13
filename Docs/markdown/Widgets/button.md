@@ -56,11 +56,10 @@ button WIDGET_SYNTAX
 ##Example
 ```csharp
 <Cabbage>
-form caption("Button Example") size(400, 300), colour(20, 20, 20), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage")
-groupbox bounds(8, 110, 367, 177), text("Identifiers Updates")
+form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 button bounds(116, 38, 150, 50), channel("button1"), text("Enable Tone", "Disable Tone"),
-button bounds(20, 140, 71, 40), channel("changeAttributes"), text("Change Attributes", "Change Attributes") 
 button bounds(110, 140, 165, 62) identchannel("buttonIdent")
 </Cabbage>
 <CsoundSynthesizer>
