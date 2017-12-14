@@ -6,13 +6,13 @@ compiler: clang
 
 before_script: 
     - git clone https://github.com/WeAreROLI/JUCE.git
-    - cd JUCE/extras/Projucer/Builds/LinuxMakefile
-    - make -j6
-    - cd ../../../../../
-
-install:
-  - '[ "${TRAVIS_OS_NAME}" = "osx" ] && brew update || true'
-  - '[ "${TRAVIS_OS_NAME}" = "osx" ] && brew install ant fop || true'
+    - cd JUCE/extras/Projucer/Builds/MacOSX/
+    - xcodebuild -project Projucer.xcodeproj
+    - pwd
+    - cd /home/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
   - pwd
+  - sudo chmod 777 buildCabbage
+  - ls
+  - ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
