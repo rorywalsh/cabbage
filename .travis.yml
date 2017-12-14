@@ -11,7 +11,7 @@ before_script:
     - xcodebuild -project Projucer.xcodeproj
     - pwd
     - cd /Users/travis/build/rorywalsh/
-    - wget csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
+    - wget 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
     - ls
     - hdiutil attach csound6.09.1-OSX-universal.dmg
     - cp -R /Volumes/Csound6.09.1/ Csound
