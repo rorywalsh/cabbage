@@ -9,7 +9,7 @@ before_script:
     - git clone https://github.com/WeAreROLI/JUCE.git
     - cd JUCE/extras/Projucer/Builds/MacOSX/
     - xcodebuild -project Projucer.xcodeproj
-    - pwd
+    - ls ./Debug/
     - cd /Users/travis/build/rorywalsh/
     - wget 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
     - ls
@@ -27,15 +27,15 @@ before_script:
     - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
+    - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSXDebug/Projucer --resave ../../CabbageIDE.jucer
     - xcodebuild -project Cabbage.xcodeproj clean
     - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageLite.jucer
+    - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSX/Debug/Projucer--resave ../../CabbageLite.jucer
     - xcodebuild -project CabbageLite.xcodeproj clean
     - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
     
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePlugin.jucer
+    - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSXDebug/Projucer --resave ../../CabbagePlugin.jucer
     - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
     - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
     - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
