@@ -15,7 +15,7 @@ before_script:
     - ls
     - hdiutil attach csound6.09.1-OSX-universal.dmg
     - cp -R /Volumes/Csound6.09.1/ Csound
-    - hdiutil detach csound6.09.1-OSX-universal.dmg
+    - hdiutil detach /Volumes/Csound6.09.1/
     - cd Csound
     - sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
     - ls /Library/Frameworks/
