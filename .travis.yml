@@ -9,7 +9,15 @@ before_script:
     - cd JUCE/extras/Projucer/Builds/MacOSX/
     - xcodebuild -project Projucer.xcodeproj
     - pwd
-    - cd /home/travis/build/rorywalsh/cabbage/Builds/MacOSX
+    - curl -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
+    - ls
+    - hdiutil attach csound6.09.1-OSX-universal.dmg
+    - cp -R /Volumes/Csound6.09.1/ Csound
+    - hdiutil detach csound6.09.1-OSX-universal.dmg
+    - cd Csound
+    - sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
+    - ls /Library/Frameworks/
+    - cd /users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
   - pwd
