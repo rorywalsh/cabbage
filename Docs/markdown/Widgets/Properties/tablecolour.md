@@ -4,6 +4,6 @@
 <!--UPDATE WIDGET_IN_CSOUND
     SIdent sprintf "tablecolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent  
-    --->
+--->
 
 

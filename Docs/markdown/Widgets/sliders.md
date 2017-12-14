@@ -126,6 +126,5 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-```
 
 ![](../images/sliderExample.png)

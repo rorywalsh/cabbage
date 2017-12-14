@@ -54,11 +54,46 @@ filebutton WIDGET_SYNTAX
 ##Example
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
-infobutton bounds(120, 16, 100, 30), channel("button"),  file("README.txt"), text("Info")
-filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
+form caption("File Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
+filebutton bounds(108, 30, 150, 50), channel("filebutton1"), text("Browsse", "Browsse") value(0) file("/Users/walshr/sourcecode/cabbage/Examples/Widgets/Sliders.csd")
+button bounds(146, 140, 68, 127) identchannel("widgetIdent")
+texteditor bounds(10, 84, 379, 21), text(""), identchannel("editorIdent")
 </Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+seed 0 
+;basic usage
+instr 1
+SFile chnget "filebutton1" 
+    if changed(SFile)== 1 then
+        printf "%s\n", k(1), SFile
+        SMessage sprintfk "text(\"Selected File:%s\") ", SFile
+        chnset SMessage, "editorIdent"
+    endif
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
 ```
 
 

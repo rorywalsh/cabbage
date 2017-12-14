@@ -7,19 +7,12 @@ import sys
 from os.path import isfile, join, basename
 
 
-
-print("Usage: python generateWidgetManualEntries.py ./path_to_widget_md_files")
-
-if len(sys.argv) != 2:
-	print("You must supply a directory")
-	exit(1)
-
-currentDir = os.path.abspath(sys.argv[1])
+currentDir = os.path.abspath("../markdown/Widgets/")
 docfiles = listdir(currentDir)
 os.chdir(currentDir)
 
-if os.path.exists('./GeneratedWidgetFiles') == False:
-	os.mkdir("GeneratedWidgetFiles")
+if os.path.exists('./ExpandedWidgetEntries') == False:
+	os.mkdir("ExpandedWidgetEntries")
 
 for filename in docfiles:
     if ".md" in filename:
@@ -85,7 +78,7 @@ for filename in docfiles:
                 line = line.replace(";WIDGET_ADVANCED_USAGE", newLines)
                 htmlText = htmlText+line;
 
-        inputFile = open("./GeneratedWidgetFiles/"+filename, "w+")
+        inputFile = open("./ExpandedWidgetEntries/"+filename, "w+")
         inputFile.write(htmlText)
         inputFile.close();
 

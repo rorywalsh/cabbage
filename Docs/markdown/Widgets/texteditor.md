@@ -11,7 +11,7 @@ texteditor WIDGET_SYNTAX
 ##Identifiers
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/mode_texteditor.md !} 
+{! ./markdown/Widgets/Properties/wrap.md !} 
 
 ### Common Identifiers
 
