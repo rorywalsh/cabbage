@@ -78,7 +78,7 @@ form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 button bounds(116, 38, 150, 50), channel("button1"), text("Enable Tone", "Disable Tone"),
-button bounds(110, 140, 165, 62) identchannel("buttonIdent")
+button bounds(110, 140, 165, 62) identchannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -108,17 +108,23 @@ endin
 
                 instr ChangeAttributes
                     SIdentifier init ""
+    SIdent sprintf "latched(%d) ", rand(100) < 70 ? 1 : 0
+    SIdentifier strcat SIdentifier, SIdent
+    SIdent sprintf "alpha(%f) ", rnd(100)/100
+    SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
     SIdentifier strcat SIdentifier, SIdent
-    SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100)+50)
+    SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
+    SIdentifier strcat SIdentifier, SIdent
+    SIdent sprintf "caption(\"Text%d\\") ", rnd(100)
     SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "colour:0(%d, 255, 255) ", rnd(255)
     SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "colour:1(%d, 0, 255) ", rnd(255)
     SIdentifier strcat SIdentifier, SIdent
-    SIdent sprintf "fontcolour:0(%d, 255, 0) ", rnd(255)
+    SIdent sprintf "fontcolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent
-    SIdent sprintf "fontcolour:1(%d, %d, 255) ", rnd(255), rnd(255)
+    SIdent sprintf "fontcolour:1(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent   
     SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
     SIdentifier strcat SIdentifier, SIdent

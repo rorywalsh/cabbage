@@ -151,6 +151,10 @@ endin
 
                 instr ChangeAttributes
                     SIdentifier init ""
+    SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+    SIdentifier strcat SIdentifier, SIdent  
+    SIdent sprintf "popuptext(\"Popup Text %d\") ", rnd(1000)
+    SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "textcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent  
     SIdent sprintf "text(\"TextOff %f\") ", rnd(100)
@@ -163,11 +167,15 @@ endin
     SIdentifier strcat SIdentifier, SIdent  
     SIdent sprintf "trackercolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent  
+    SIdent sprintf "alpha(%f) ", rnd(100)/100
+    SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
     SIdentifier strcat SIdentifier, SIdent
-    SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100)+50)
+    SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
     SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+    SIdentifier strcat SIdentifier, SIdent  
+    SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent  
     SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
     SIdentifier strcat SIdentifier, SIdent
@@ -184,7 +192,6 @@ i1 0 z
 i2 0 z
 </CsScore>
 </CsoundSynthesizer>
-```
 ```
 
 ![](../images/sliderExample.png)

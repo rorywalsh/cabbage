@@ -37,6 +37,29 @@ keyboard WIDGET_SYNTAX
 form size(400, 300), caption("Untitled"), pluginID("plu1")
 keyboard bounds(10, 10, 300, 150)
 </Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d --midi-key=4
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+;basic usage
+instr 1 
+a1 oscil .5, cpsmidinn(4)
+outs a1, a1
+endin
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+</CsScore>
+</CsoundSynthesizer>
 ```
 <!--(End of syntax)/-->
 ![](../images/keyboardExample.png)

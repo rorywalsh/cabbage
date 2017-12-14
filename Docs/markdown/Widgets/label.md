@@ -67,7 +67,7 @@ nchnls = 2
 
 seed 0 
 ;basic usage
-instr 1
+instr 1 
     aTone oscili chnget:k("label1"), 300
     outs aTone, aTone    
 endin
