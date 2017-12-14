@@ -5,12 +5,13 @@ compiler: clang
 #env: CXX_COMPILER='clang++' C_COMPILER='clang' Fortran_COMPILER='gfortran' BUILD_TYPE='Debug'
 
 before_script: 
+    - brew install wget
     - git clone https://github.com/WeAreROLI/JUCE.git
     - cd JUCE/extras/Projucer/Builds/MacOSX/
     - xcodebuild -project Projucer.xcodeproj
     - pwd
     - cd /users/travis/build/rorywalsh/
-    - curl -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
+    - wget csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
     - ls
     - hdiutil attach csound6.09.1-OSX-universal.dmg
     - cp -R /Volumes/Csound6.09.1/ Csound
