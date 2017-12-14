@@ -386,9 +386,9 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createChannelEditors (ValueTre
 
     if ( typeOfWidget != "gentable" &&  typeOfWidget != "groupbox")
     {
-        const var array = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::channel);
+        const Array<var>* array = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::channel).getArray();
 
-        if (array.size() > 1)
+        if (array && array->size() > 1)
             createMultiLineTextEditors (valueTree, comps, CabbageIdentifierIds::channel, "Channel");
         else
             comps.add (new TextPropertyComponent (Value (channel), "Channel", 200, false));
