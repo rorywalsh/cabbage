@@ -9,7 +9,9 @@ before_script:
     - git clone https://github.com/WeAreROLI/JUCE.git
     - cd JUCE/extras/Projucer/Builds/MacOSX/
     - xcodebuild -project Projucer.xcodeproj
-    - ls ./Debug/
+    - ls
+    - cd Debug
+    - pwd
     - cd /Users/travis/build/rorywalsh/
     - wget 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
     - ls
