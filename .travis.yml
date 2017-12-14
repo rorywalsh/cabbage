@@ -4,8 +4,8 @@ language: cpp
 
 osx_image: xcode9.2
 
-    compiler: clang
-    env: CXX_COMPILER='clang++' C_COMPILER='clang' Fortran_COMPILER='gfortran' BUILD_TYPE='Debug'
+compiler: clang
+env: CXX_COMPILER='clang++' C_COMPILER='clang' Fortran_COMPILER='gfortran' BUILD_TYPE='Debug'
 
 before_script: 
     - git clone https://github.com/WeAreROLI/JUCE.git
