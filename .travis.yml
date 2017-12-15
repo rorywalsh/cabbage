@@ -33,15 +33,15 @@ before_script:
     - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-    - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
+    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
     - xcodebuild -project Cabbage.xcodeproj clean
     - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
-    - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
+    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
     - xcodebuild -project CabbageLite.xcodeproj clean
     - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
     
-    - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
+    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
     - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
     - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
     - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
@@ -54,3 +54,13 @@ script:
 
     - cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
     - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
+
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file:
+    - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageLite.app"
+    - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
+  skip_cleanup: true
+  on:
+    tags: true
