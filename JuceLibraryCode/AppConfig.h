@@ -15,6 +15,7 @@
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
+
 #ifndef Native_File_Browser
  #define Use_Native_File_Browser 1
 #endif
