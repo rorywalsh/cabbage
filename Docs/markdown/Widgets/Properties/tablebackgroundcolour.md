@@ -5,4 +5,4 @@
 <!--UPDATE WIDGET_IN_CSOUND
     SIdent sprintf "tablebackgroundcolour:0(%d, %d, %d) ", rnd(255), rnd(2550, rnd(255)
     SIdentifier strcat SIdentifier, SIdent
---->
+-->

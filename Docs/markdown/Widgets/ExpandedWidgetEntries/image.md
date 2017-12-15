@@ -107,8 +107,6 @@ endin
     SIdentifier strcat SIdentifier, SIdent  
     SIdent sprintf "outlinethickness(%f) ", rnd(100)/50
     SIdentifier strcat SIdentifier, SIdent
-    SIdent sprintf "shape(%s) ", rnd(100) < 70 ? "square" : "circle"
-    SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "alpha(%f) ", rnd(100)/100
     SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)

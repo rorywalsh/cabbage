@@ -119,8 +119,6 @@ endin
     SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent  
-    SIdent sprintf "shape(%s) ", rnd(100) < 70 ? "square" : "circle"
-    SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
     SIdentifier strcat SIdentifier, SIdent
     SIdent sprintf "value(%f) ", rnd(1)

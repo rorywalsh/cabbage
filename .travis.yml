@@ -13,7 +13,7 @@ before_script:
     - cd ..
     - git clone https://github.com/WeAreROLI/JUCE.git
     - cd JUCE/extras/Projucer/Builds/MacOSX/
-    - xcodebuild -project Projucer.xcodeproj
+    - xcodebuild -project Projucer.xcodeproj | xcpretty && exit ${PIPESTATUS[0]}
     - cd ../../../../../
     - pwd
     - cd /Users/travis/build/rorywalsh/

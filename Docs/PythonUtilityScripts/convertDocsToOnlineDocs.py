@@ -48,10 +48,9 @@ for dir in directories[0:3]:
 				
 				if "**" in line:
 					line = line.replace("**", "`")
-
-
-				if "./images/" in line:
-					line = "![]({{ site.url }}/images/docs/"+line[line.index("images/")+7:]
+					
+				if "../images/" in line:
+					line = "(../docs/images/" +line[line.index("images/")+7:]
 
 				if "```html" in line:
 					line = line.replace("```html", "```csharp")

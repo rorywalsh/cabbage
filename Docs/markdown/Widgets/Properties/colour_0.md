@@ -4,4 +4,4 @@ This sets the colour of the button when it's value is 0. Any CSS or HTML colour 
 <!--UPDATE WIDGET_IN_CSOUND
     SIdent sprintf "colour:0(%d, 255, 255) ", rnd(255)
     SIdentifier strcat SIdentifier, SIdent
---->
+-->

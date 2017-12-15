@@ -3,4 +3,4 @@
 <!--UPDATE WIDGET_IN_CSOUND
     SIdent sprintf "tablegridcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
     SIdentifier strcat SIdentifier, SIdent  
-    --->
+-->

@@ -6,4 +6,4 @@ This sets the colour of the button when it's value is 1.  See above for details 
 <!--UPDATE WIDGET_IN_CSOUND
     SIdent sprintf "colour:1(%d, 0, 255) ", rnd(255)
     SIdentifier strcat SIdentifier, SIdent
---->
+-->

@@ -4,4 +4,4 @@ The text identifier must be passed at least one string argument. This string wil
 <!--UPDATE WIDGET_IN_CSOUND
     SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
     SIdentifier strcat SIdentifier, SIdent
---->
+-->
