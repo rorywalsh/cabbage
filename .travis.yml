@@ -6,6 +6,7 @@ compiler: clang
 
 before_script: 
     - brew install wget
+    - pwd
     - git clone https://github.com/WeAreROLI/JUCE.git
     - cd JUCE/extras/Projucer/Builds/MacOSX/
     - xcodebuild -project Projucer.xcodeproj
@@ -21,6 +22,7 @@ before_script:
     - sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
     - ls /Library/Frameworks/
     - cd ~/
+    - pwd
     - wget 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
     - unzip -a vstsdk368_08_11_2017_build_121.zip
     - mkdir ~/SDKs
@@ -28,10 +30,10 @@ before_script:
     - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
     - ls ~/
 
-script:
-    - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
-    - xcodebuild -project Cabbage.xcodeproj clean
-    - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+# script:
+#     - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
+#     - xcodebuild -project Cabbage.xcodeproj clean
+#     - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
     # - /Users/travis/build/rorywalsh/cabbage/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
     # - xcodebuild -project CabbageLite.xcodeproj clean
