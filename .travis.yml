@@ -66,5 +66,3 @@ deploy:
     # - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageLite.app"
     - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
   skip_cleanup: true
-  on:
-    tags: true
