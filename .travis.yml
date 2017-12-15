@@ -9,11 +9,12 @@ before_script:
     - ls
     - brew install wget
     - gem install xcpretty
+    - gem install xcpretty-travis-formatter
     - pwd
     - cd ..
     - git clone https://github.com/WeAreROLI/JUCE.git
     - cd JUCE/extras/Projucer/Builds/MacOSX/
-    - xcodebuild -project Projucer.xcodeproj | xcpretty && exit ${PIPESTATUS[0]}
+    - xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`
     - cd ../../../../../
     - pwd
     - cd /Users/travis/build/rorywalsh/
@@ -36,7 +37,7 @@ before_script:
 script:
     - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
     - xcodebuild -project Cabbage.xcodeproj clean
-    - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
+    - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter`
 
     # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
     # - xcodebuild -project CabbageLite.xcodeproj clean
