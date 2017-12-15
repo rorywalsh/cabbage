@@ -39,30 +39,32 @@ script:
     - xcodebuild -project Cabbage.xcodeproj clean
     - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter`
 
-    # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
-    # - xcodebuild -project CabbageLite.xcodeproj clean
-    # - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
+    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
+    - xcodebuild -project CabbageLite.xcodeproj clean
+    - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
     
-    # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
-    # - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty && exit ${PIPESTATUS[0]}
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
+    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
+    - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty && exit ${PIPESTATUS[0]}
+    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
+    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
 
-    # - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty && exit ${PIPESTATUS[0]}
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
+    - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty && exit ${PIPESTATUS[0]}
+    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
+    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
     # - rm -rf ./build/Release/CabbagePluginEffect.vst
     # - rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.vst
 
-    # - cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
-    # - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
+    - cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
+    - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 
 deploy:
   skip_cleanup: true
   script: skip
   provider: develop
-  api_key: "GITHUB OAUTH TOKEN"
+  api_key: GITHUB OAUTH TOKEN
   file:
-    # - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageLite.app"
-    - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
-  skip_cleanup: true
+  - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
+env:
+  global:
+  - secure: etOfFSvOc15UTMhakfuD/dp7RKLs2ASARivtj4v0M/RXrKaViyZrI4iptblw3dkec8JefsrAaRI6j9zD5/moNwLXBQEzGR4H7xs2dCOq70r1/CPK6Wf7FfE32gbX7x3KmhyoqMCruNZCa+t3W8ehFGaYfg8TBWMREpa28w+cRkaufZfLXNdENd+ASJkGtX2k9TELAAiJJTUmF5ALgwCekSFtNhyN14QlIWHhaikdDNFgv/Lq3645AU8PidHscKYJNF8vNl24kpZgqVsl7ulgRmMjvzYjG0wat/L2hoU1qKrKmsR97Gr0G5yy5ZlSakUoi0QU6V/3O2waDoz0eorZTfVGyOMILfx0sIMq54//cxFw9n343wIF07UCHfvrMZ1jXecZ1Mo7zf9JGJUms1l0ztOh49002b0c74t5mZ0yaXet6cIybe9v1gXsHVHEC/2w8b/SczPqA0zuK9luZeBN9q1k1S6UHjt8ti+QdiQQuYPVn/fx2t6tAAPvQjGjYmysYWpIIDr4nYIIrV3oauPd7Qu4vHCYw0cTHJZe60ohFNHOgOfaneklYQZmWwAVcrVOBBwrN6ztztmIzwORTCJhj1+EtZdMHPjc8UXUh2ojfhthLnj6ChZiubWTGTwKrNH1o0t2M8nSR5+h9LxEHWLeggthN40MdjXUyRXIrVEiyY4=
+  - secure: ppoOUqZFN8Ou3afi5ccYIHhfCYayv5ZuUf/AQ6iGdT1M73mn2tu/A0CMgEat5LiEF38la6iqZ1ICJlSZ4pYZc4dlwigpHFuc2OkAz2a3fLtPmkijkEr8ZSbm2i67vXggP0YIKOtFG4lf1zi59AtrWHkJjpDVzDYGB2iMgBx38UK3hd+mpJINkGCeRSQPl0x2D/jGEJ7pDhZy2hgUYu1wattTjfBlYGXmtB+fY1bGtXsYng0pDD2zL3x2KA6QXkcjCvkoQqxDJ3i58MPJw4Xh6voEFi6O47ZNURxluHRhf359InDlNmzNaAh0TK3pmUzq5+GwBpmQlX7avu4A/eBUaCOXw7VypMBeMH+nycbj27E20m5r8ZTDqAJsVYgPAl6yMi0UzUJweUiXEzSMVSuWTts+bue4Dc0G+8mQSeFgDbRgfg9tS4ZHYAgSj2EpA/ZGGf+Isk+/Ob+UM9vd6Gqhtn4d3ukgO7yxIH2NhJVo4XN27sI7Y377TyHUw3cvPXtaVDwyydxOZ0/wYTRPNwXP5F4B37HO7+HcyHZ3OrmYiSyatCRjEY4XGgQep2OSOhDCx1CxGg8KuscZLpsCFzNpPYAoDGSrm8h9LbftAu/HrGEAxXZgRKpxNewGxuSD1dCquhdTm7Zd1P+KuuVCeUAxRJwgdJzXWPhL+5GVKMgv/Xc=
