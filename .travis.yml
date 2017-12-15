@@ -58,7 +58,9 @@ script:
     # - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 
 deploy:
-  provider: releases
+  skip_cleanup: true
+  script: skip
+  provider: develop
   api_key: "GITHUB OAUTH TOKEN"
   file:
     # - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageLite.app"
