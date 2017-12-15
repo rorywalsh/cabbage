@@ -6,19 +6,19 @@ import os
 import sys
 from os.path import isfile, join, basename
 
-print("Usage: python convertDocsToOnlineDocs.py ./path_to_md_files ../path_to_cabbage_site_app_dir")
+print("Usage: python convertDocsToOnlineDocs.py ../path_to_cabbage_site_app_dir")
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 2:
 	print("You must supply a directory")
 	exit(1)
 
-copyfile("../docs.yml", os.path.abspath(sys.argv[2])+"/_data/docs.yml")
-outputDir = os.path.abspath(sys.argv[2])+"/_docs"
-imagesDir = os.path.abspath(sys.argv[2])+"/images/docs/"
+copyfile("../docs.yml", os.path.abspath(sys.argv[1])+"/_data/docs.yml")
+outputDir = os.path.abspath(sys.argv[1])+"/_docs"
+imagesDir = os.path.abspath(sys.argv[1])+"/images/docs/"
 copy_tree("../images/", imagesDir)
 
-directories = ["", "/Widgets/GeneratedWidgetFiles", "/Widgets/Properties"]
-currentDir = os.path.abspath(sys.argv[1])
+directories = ["", "/Widgets/ExpandedWidgetEntries", "/Widgets/Properties"]
+currentDir = os.path.abspath("../markdown")
 for dir in directories[0:3]:
 	
 	print(dir)
@@ -49,8 +49,9 @@ for dir in directories[0:3]:
 				if "**" in line:
 					line = line.replace("**", "`")
 
-				if "(images/" in line:
-					line = "![]({{ site.url }}/images/docs/"+line[line.index("(images/")+8:]
+
+				if "./images/" in line:
+					line = "![]({{ site.url }}/images/docs/"+line[line.index("images/")+7:]
 
 				if "```html" in line:
 					line = line.replace("```html", "```csharp")

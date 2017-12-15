@@ -8,6 +8,7 @@ before_script:
     #/Users/travis/build/
     - ls
     - brew install wget
+    - gem install xcpretty
     - pwd
     - cd ..
     - git clone https://github.com/WeAreROLI/JUCE.git
@@ -34,32 +35,32 @@ before_script:
 
 script:
     - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
-    - xcodebuild -quiet -project Cabbage.xcodeproj clean
-    - xcodebuild -quiet -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+    - xcodebuild -project Cabbage.xcodeproj clean
+    - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
 
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
-    - xcodebuild -quiet -project CabbageLite.xcodeproj clean
-    - xcodebuild -quiet -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+    # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
+    # - xcodebuild -project CabbageLite.xcodeproj clean
+    # - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
     
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
-    - xcodebuild -quiet -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
-    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
-    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
+    # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
+    # - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty && exit ${PIPESTATUS[0]}
+    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
+    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
 
-    - xcodebuild -quiet -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1"
-    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
-    - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
-    - rm -rf ./build/Release/CabbagePluginEffect.vst
-    - rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.vst
+    # - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty && exit ${PIPESTATUS[0]}
+    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
+    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
+    # - rm -rf ./build/Release/CabbagePluginEffect.vst
+    # - rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.vst
 
-    - cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
-    - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
+    # - cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
+    # - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 
 deploy:
   provider: releases
   api_key: "GITHUB OAUTH TOKEN"
   file:
-    - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageLite.app"
+    # - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageLite.app"
     - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
   skip_cleanup: true
   on:
