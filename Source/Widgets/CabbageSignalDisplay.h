@@ -68,7 +68,7 @@ public:
 
     void setBins (int min, int max);
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     void drawSonogram();
     void drawSpectroscope (Graphics& g);
     void drawWaveform (Graphics& g);

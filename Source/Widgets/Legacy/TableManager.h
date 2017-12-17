@@ -84,7 +84,7 @@ public:
     OwnedArray<GenTable> tables;
     void showZoomButtons (bool show);
     void showTableButtons (bool show);
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     void bringTableToFront (int ftNumber);
     void configTableSizes (var tableConfig);
     void setVUGradient (Array<Colour> colour);
@@ -254,7 +254,7 @@ private:
     bool reDraw;
     double scrubberPosition;
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     ScopedPointer<HandleViewer> handleViewer;
     AudioFormatManager formatManager;
     double sampleRate;

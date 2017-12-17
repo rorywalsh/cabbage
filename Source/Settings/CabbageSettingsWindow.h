@@ -50,7 +50,7 @@ public:
     };
 
     CabbageSettings& settings;
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     void addColourProperties();
     void addMiscProperties();
     void resized();
@@ -82,7 +82,7 @@ public:
         void resized() override {};
         int getNumRows() override { return items.size();};
         void setDefaultItem();
-        void listBoxItemClicked (int row, const MouseEvent&);
+        void listBoxItemClicked (int row, const MouseEvent&) ;
         void paintListBoxItem (int rowNumber, Graphics& g,
                                int width, int height, bool rowIsSelected) override;
         void selectedRowsChanged (int /*lastRowselected*/) override {};

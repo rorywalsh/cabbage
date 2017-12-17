@@ -43,7 +43,7 @@ public:
     PinComponent* findPinAt (int x, int y) const;
 
     void resized() override;
-    void changeListenerCallback (ChangeBroadcaster*);
+    void changeListenerCallback (ChangeBroadcaster*) override;
     void updateComponents();
 
     //==============================================================================
