@@ -135,10 +135,10 @@ public:
     void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
 
     //=============================================================================
-    void mouseMove (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
-    void mouseDown (const MouseEvent& e);
-    void mouseUp (const MouseEvent& e);
+    void mouseMove (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
+    void mouseDown (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
@@ -156,11 +156,11 @@ public:
     void updateLayoutEditorFrames();
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
     //=============================================================================
-    void buttonClicked (Button* button);
+    void buttonClicked (Button* button) override;
     void buttonStateChanged (Button* button);
     void toggleButtonState (Button* button, bool state);
-    void comboBoxChanged (ComboBox* combo);
-    void sliderValueChanged (Slider* slider);
+    void comboBoxChanged (ComboBox* combo) override;
+    void sliderValueChanged (Slider* slider) override;
     //=============================================================================
     CabbageAudioParameter* getParameterForComponent (const String name);
     //=============================================================================

@@ -1300,7 +1300,7 @@ public:
     }
     ~RoundButton() {}
 
-    void mouseDown (const MouseEvent& e)
+    void mouseDown (const MouseEvent& e) override
     {
         //Logger::writeToLog("Mouse down on round button:"+String(type));
         sendChangeMessage();

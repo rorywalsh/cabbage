@@ -34,7 +34,7 @@ public:
     ~CabbageGraphComponent();
 
     void paint (Graphics& g) override;
-    void mouseDown (const MouseEvent& e);
+    void mouseDown (const MouseEvent& e) override;
 
     void createNewPlugin (const PluginDescription* desc, int x, int y);
 
@@ -42,7 +42,7 @@ public:
     ConnectorComponent* getComponentForConnection (const AudioProcessorGraph::Connection& conn) const;
     PinComponent* findPinAt (int x, int y) const;
 
-    void resized();
+    void resized() override;
     void changeListenerCallback (ChangeBroadcaster*);
     void updateComponents();
 
