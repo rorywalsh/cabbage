@@ -35,9 +35,7 @@ before_script:
     - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
-    - xcodebuild -project Cabbage.xcodeproj clean
-    - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+    - ./buildTravis.sh
 
     # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
     # - xcodebuild -project CabbageLite.xcodeproj clean
