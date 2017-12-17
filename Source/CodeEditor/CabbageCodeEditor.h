@@ -83,7 +83,7 @@ public:
     {
     public:
         CurrentLineMarker(): Component() {}
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             g.fillAll (Colours::transparentBlack);
             g.setColour (colour);
@@ -127,7 +127,7 @@ public:
             setVisible (false);
         }
 
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             if (isVisible())
             {

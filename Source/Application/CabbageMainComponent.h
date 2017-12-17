@@ -169,7 +169,7 @@ private:
         }
 
         void closeButtonPressed() override {    setVisible (false);  }
-        void paint (Graphics& g) { g.fillAll (colour); }
+        void paint (Graphics& g)  override { g.fillAll (colour); }
     };
 
     ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;

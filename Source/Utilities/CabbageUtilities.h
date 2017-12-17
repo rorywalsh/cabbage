@@ -1307,7 +1307,7 @@ public:
         mode = (mode == 1 ? 0 : mode + 1);
     }
 
-    void paint (Graphics& g)
+    void paint (Graphics& g)  override
     {
         //Logger::writeToLog(type);
         if (type.contains ("zoom"))

@@ -52,7 +52,7 @@ class TableManager : public Component,
 public:
     TableManager();
     ~TableManager() {};
-    void paint (Graphics& g);
+    void paint (Graphics& g)  override;
     void setGridColour (Colour col);
     void setOutlineThickness (float thickness);
     void setFill (bool fill );
@@ -245,12 +245,12 @@ private:
     ScopedPointer<DrawableRectangle> currentPositionMarker;
     juce::Rectangle<int> thumbArea;
     juce::Rectangle<int> handleViewerRect;
-    void paint (Graphics& g);
-    void mouseDown (const MouseEvent& e);
-    void mouseUp (const MouseEvent& e);
-    void mouseEnter (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
-    void mouseExit (const MouseEvent& e);
+    void paint (Graphics& g)  override;
+    void mouseDown (const MouseEvent& e)  override;
+    void mouseUp (const MouseEvent& e)  override;
+    void mouseEnter (const MouseEvent& e)  override;
+    void mouseDrag (const MouseEvent& e)  override;
+    void mouseExit (const MouseEvent& e)  override;
     bool reDraw;
     double scrubberPosition;
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
@@ -360,13 +360,13 @@ public:
 
     void setPosition (double x, double y, bool circularEnv);
 
-    void paint (Graphics& g);
+    void paint (Graphics& g)  override;
     void removeThisHandle();
-    void mouseEnter (const MouseEvent& e);
-    void mouseDown (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
-    void mouseUp (const MouseEvent& e);
-    void mouseExit (const MouseEvent& e);
+    void mouseEnter (const MouseEvent& e) override;
+    void mouseDown (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
+    void mouseExit (const MouseEvent& e) override;
     int index;
     int height, width;
     int x, y;

@@ -33,7 +33,7 @@ public:
     CabbageGraphComponent (AudioGraph& graph, CabbageMainComponent& owner);
     ~CabbageGraphComponent();
 
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     void mouseDown (const MouseEvent& e);
 
     void createNewPlugin (const PluginDescription* desc, int x, int y);

@@ -38,7 +38,7 @@ public:
         sendChangeMessage();
     }
 
-    void paint (Graphics& g)
+    void paint (Graphics& g)  override
     {
         g.fillAll (Colours::transparentBlack);
         g.setColour (Colours::white.withAlpha (.8f));

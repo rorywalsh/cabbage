@@ -45,7 +45,7 @@ public:
             setText (StringArray (initString));
         }
 
-        void paint (Graphics& g);
+        void paint (Graphics& g)  override;
 
         void setText (StringArray text)
         {

@@ -31,7 +31,7 @@ class FileTab : public TextButton
     {
     public:
         Overlay(): Component() {}
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             g.fillAll (Colours::black.withAlpha (.5f));
         }

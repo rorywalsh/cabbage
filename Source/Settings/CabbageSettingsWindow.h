@@ -55,7 +55,7 @@ public:
     void addMiscProperties();
     void resized();
     void buttonClicked (Button* button);
-    void paint (Graphics& g);
+    void paint (Graphics& g)  override;
     void valueChanged (Value& value);
     void updateColourScheme();
     void mouseEnter (const MouseEvent& e) override;

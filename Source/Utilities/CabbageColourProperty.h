@@ -106,7 +106,7 @@ public :
     //======= ColourPropertyComponent =======
     ColourPropertyComponent (String name, String colourString, bool colourSettings = false);
     ~ColourPropertyComponent() {}
-    void paint (Graphics& g);
+    void paint (Graphics& g)  override;
     void mouseDown (const MouseEvent& e);
     void changeListenerCallback (juce::ChangeBroadcaster* source);
     void refresh() override {}
@@ -128,7 +128,7 @@ class ColourMultiPropertyComponent : public PropertyComponent, public ChangeList
     public:
         OverlayComponent (String name): Component (name) {}
         void setColour (Colour colour) {  overlayColour = colour; repaint();}
-        void paint (Graphics& g) {    g.fillAll (overlayColour);   }
+        void paint (Graphics& g)  override {    g.fillAll (overlayColour);   }
     };
 
     OwnedArray<OverlayComponent> overlayComponents;
@@ -143,7 +143,7 @@ public :
     //======= ColourPropertyComponent =======
     ColourMultiPropertyComponent (String name, var colours, bool colourSettings = false);
     ~ColourMultiPropertyComponent() {}
-    void paint (Graphics& g);
+    void paint (Graphics& g)  override;
     void mouseDown (const MouseEvent& e);
     void changeListenerCallback (juce::ChangeBroadcaster* source);
     void refresh() override {}

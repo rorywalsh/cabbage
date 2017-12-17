@@ -400,7 +400,7 @@ private:
             }
         }
 
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             g.fillAll (Colour (50, 50, 50));
             const Image cabbageLogo = ImageCache::getFromMemory (CabbageBinaryData::CabbageLogoBig_png, CabbageBinaryData::CabbageLogoBig_pngSize);

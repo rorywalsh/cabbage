@@ -78,7 +78,7 @@ public:
     void createEditorInterface (ValueTree widgets);
     //==============================================================================
     void resized() override;
-    void paint (Graphics& g) {}
+    void paint (Graphics& g)  override{}
     //==============================================================================
     void setupWindow (ValueTree cabbageWidgetData);
 
@@ -225,7 +225,7 @@ private:
         {
             colour = col;
         }
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             g.setOpacity (0);
             g.fillAll (colour);
