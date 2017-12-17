@@ -63,6 +63,10 @@ deploy:
   api_key: GITHUB OAUTH TOKEN
   file:
   - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
+
+  on:
+    branch: develop
+
 env:
   global:
   - secure: etOfFSvOc15UTMhakfuD/dp7RKLs2ASARivtj4v0M/RXrKaViyZrI4iptblw3dkec8JefsrAaRI6j9zD5/moNwLXBQEzGR4H7xs2dCOq70r1/CPK6Wf7FfE32gbX7x3KmhyoqMCruNZCa+t3W8ehFGaYfg8TBWMREpa28w+cRkaufZfLXNdENd+ASJkGtX2k9TELAAiJJTUmF5ALgwCekSFtNhyN14QlIWHhaikdDNFgv/Lq3645AU8PidHscKYJNF8vNl24kpZgqVsl7ulgRmMjvzYjG0wat/L2hoU1qKrKmsR97Gr0G5yy5ZlSakUoi0QU6V/3O2waDoz0eorZTfVGyOMILfx0sIMq54//cxFw9n343wIF07UCHfvrMZ1jXecZ1Mo7zf9JGJUms1l0ztOh49002b0c74t5mZ0yaXet6cIybe9v1gXsHVHEC/2w8b/SczPqA0zuK9luZeBN9q1k1S6UHjt8ti+QdiQQuYPVn/fx2t6tAAPvQjGjYmysYWpIIDr4nYIIrV3oauPd7Qu4vHCYw0cTHJZe60ohFNHOgOfaneklYQZmWwAVcrVOBBwrN6ztztmIzwORTCJhj1+EtZdMHPjc8UXUh2ojfhthLnj6ChZiubWTGTwKrNH1o0t2M8nSR5+h9LxEHWLeggthN40MdjXUyRXIrVEiyY4=
