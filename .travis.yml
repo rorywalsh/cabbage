@@ -17,7 +17,8 @@ before_script:
 - cd /Users/travis/build/rorywalsh/
 - git clone https://github.com/WeAreROLI/JUCE.git
 - cd JUCE/extras/Projucer/Builds/MacOSX/
-- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`
+  > /dev/null
 - cd /Users/travis/build/rorywalsh/
 - ls /Library/Frameworks/
 - pwd
@@ -35,16 +36,12 @@ script:
 - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration
   Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
 - echo -en "travis_fold:end:building"
+
 deploy:
-  skip_cleanup: true
-  script: skip
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
-  github_token: $GITHUB_TOKEN
-  file:
-  - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
+  api_key:
+    secure: t1RDH2xfgwBOAyPjqyGezDqxh5GbvOMoH0agnuiBNuIGELWAfA1c3ylcJVu96ydMefV+hbqXajzBS7F8a2doRpmxtAkjrLR27w+c8sW7r33OAfrLJKr3xFAq+tV2IMC6QlS6U8Ts8UxOZkZJd+MIpdT5PLTcFHWDh507pSupMSc7+o7JldKrJH33tiGpcSF+EFs2voSnFwRWW1sVlw7jBVQqhVlmkXbk76LIYxNOmHOjj0GCxUIqMkw55EhsK9BI0uPPN6+U9K0bwpSPAwljBchssAL3Pp46YsScyI8POzkn7PQNm4yXOoXEcJ4IQPfHtW7md/WMAyxwJnU+t36wWbxRUIuIIN74vzbB5KorG4Hj5C/alhhu7Zh/Zf8A1ThhJe19u6IEfItn9cQA9VCyWFMu30WzeJgTcyoPJe0HmbzK6lKe4sBuQWMZ9GL6a8tlVoH2KlSf2ZxwAppHIUgn2MuuvSWMwoSuISTfnzB3z4r2+24XTMzzaJPOAXDGGcHZ+DYlkuGQWztqC1eoj0YoHjupQAzNTw47EhyutIyPcO6O95k/9PH0DdbHlIMGdJBil1192Y9q3SrX8/hHiVmckCQGQT+C6QRSZsP/S+aOeLCn9aiXn2W1op7CYrWGkm8Q60W2hhXdk6Hqt3hxcQ1d5AvLGsC8yY5AIo1KP0FQ3i4=
+  file: /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app
   on:
-    all_branches: true
-env:
-  global:
-    secure: sbJ471H2r7BdOS+73IdhOslFvIaRSVkqkAnv79jieAVI4Ntz4lYqNmqpmu0F8qu8SgySnb5W77y+gP7QO3oBVTmO08oqRZ4kNfLHH5wlexxee3PFgj2FKuEhj0aapZRa1igiEVibZ5nJQZpKWA6VlXSFqymMmtmOhuTwbOHaCXKa7H/qWtyZsmxQfCHaVJ2DbDLTtwyldrY3/VM6HTc6mi1Ina0tDJTh9Rirhy1U7uuvd1DaJtw2MQGNKgLQIsna6YMTfYwd2CjT8hGlNTcNqxPL7kBrfP+YSXlqtAGWau7Kcj3qFwgDoi8NU721SD2yuJZRcDeEJFKDbvvLYTgXLTOJ4S5bN3XMW4/AyLWvztMP5Zk9+Vf0juC/7X51DRVRF/HRH/R1WV/us1hkFaV3QUK3EjWC599EzWVsSsTCXa4WXIwHwRfqqNhUpeDPwoYS4Qq4tADv8sFuhiSl6egXFQK5s5qW13/FaUhEZk4uC1dnOEba5jgTONd9CdPEMIr4QOgrMXHkLSoNybpK6luVkFvg823kCsgwQeiuZSoqKlleKtam2bIlNfPXG1MPI64DGhQhTJuPoJrCi9KcIBuK+Ax8wmAoQHmMqBoOWaXfVtcWfNKPFdnFRljNiEiYG+DIbUigJJCofH9BogbD+CDBLdNA5eOnSfvx1rokfEsMSfs=
+    repo: rorywalsh/cabbage
+    branch: develop
