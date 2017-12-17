@@ -12,7 +12,8 @@ before_script:
     - gem install xcpretty-travis-formatter
     - pwd
     - cd ..
-    - curl 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg' -o csound6.09.1-OSX-universal.dmg
+    - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
+    - ls
     - hdiutil attach csound6.09.1-OSX-universal.dmg
     - cp -R /Volumes/Csound6.09.1/ Csound
     - hdiutil detach /Volumes/Csound6.09.1/
