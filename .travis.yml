@@ -28,6 +28,9 @@ before_script:
 - cp -rf VST_SDK ~/SDKs
 - ls /Users/travis/build/rorywalsh/
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
+- ls
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release
+- ls
 script:
 - echo -en "travis_fold:start:building"
 - "/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
