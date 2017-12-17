@@ -28,8 +28,8 @@ before_script:
     - ls /Library/Frameworks/
     - pwd
     - cd /Users/travis/build/
-    - wget 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
-    - unzip -qq -a vstsdk368_08_11_2017_build_121.zip
+    - curl -L -o vstsdk368_08_11_2017_build_121.zip https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip
+    - unzip -q vstsdk368_08_11_2017_build_121.zip
     - mkdir ~/SDKs
     - cp -rf VST_SDK ~/SDKs
     - ls /Users/travis/build/rorywalsh/
