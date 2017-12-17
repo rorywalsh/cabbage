@@ -17,8 +17,7 @@ before_script:
 - cd /Users/travis/build/rorywalsh/
 - git clone https://github.com/WeAreROLI/JUCE.git
 - cd JUCE/extras/Projucer/Builds/MacOSX/
-- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`
-  > /dev/null
+- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`  > /dev/null
 - cd /Users/travis/build/rorywalsh/
 - ls /Library/Frameworks/
 - pwd
