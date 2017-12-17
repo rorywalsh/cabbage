@@ -7,7 +7,6 @@ compiler: clang
 before_script: 
     #/Users/travis/build/
     - ls
-    - brew install wget
     - gem install xcpretty
     - gem install xcpretty-travis-formatter
     - pwd
