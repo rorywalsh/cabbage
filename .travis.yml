@@ -18,7 +18,7 @@ before_script:
     - cd ../../../../../
     - pwd
     - cd /Users/travis/build/rorywalsh/
-    - wget –quiet 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
+    - wget –q -o /dev/null/ 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
     - hdiutil attach csound6.09.1-OSX-universal.dmg
     - cp -R /Volumes/Csound6.09.1/ Csound
     - hdiutil detach /Volumes/Csound6.09.1/
