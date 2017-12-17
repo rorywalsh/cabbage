@@ -59,8 +59,8 @@ public:
     void updateColourScheme (bool isCsdFile = true);
     CodeDocument::Position positionInCode;
     ValueTree valueTree;
-    void codeDocumentTextDeleted (int, int);
-    void codeDocumentTextInserted (const juce::String&, int);
+    void codeDocumentTextDeleted (int, int) override;
+    void codeDocumentTextInserted (const juce::String&, int) override;
     void displayOpcodeHelpInStatusBar (String lineFromCsd);
     const String getLineText (int lineNumber);
     StringArray addItemsToPopupMenu (PopupMenu& m);
