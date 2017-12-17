@@ -1,61 +1,41 @@
 os: osx
-
 osx_image: xcode9.2
 compiler: clang
-#env: CXX_COMPILER='clang++' C_COMPILER='clang' Fortran_COMPILER='gfortran' BUILD_TYPE='Debug'
-
-before_script: 
-    #/Users/travis/build/
-    - ls
-    - gem install xcpretty
-    - gem install xcpretty-travis-formatter
-    - pwd
-    - cd ..
-    - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
-    - ls
-    - hdiutil attach csound6.09.1-OSX-universal.dmg
-    - cp -R /Volumes/Csound6.09.1/ Csound
-    - hdiutil detach /Volumes/Csound6.09.1/
-    - cd Csound
-    - sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
-    - cd /Users/travis/build/rorywalsh/
-    - git clone https://github.com/WeAreROLI/JUCE.git
-    - cd JUCE/extras/Projucer/Builds/MacOSX/
-    - xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`
-    - cd /Users/travis/build/rorywalsh/
-    - ls /Library/Frameworks/
-    - pwd
-    - cd /Users/travis/build/
-    - curl -L -o vstsdk368_08_11_2017_build_121.zip https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip
-    - unzip -q vstsdk368_08_11_2017_build_121.zip
-    - mkdir ~/SDKs
-    - cp -rf VST_SDK ~/SDKs
-    - ls /Users/travis/build/rorywalsh/
-    - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
-
+before_script:
+- ls
+- gem install xcpretty
+- gem install xcpretty-travis-formatter
+- pwd
+- cd ..
+- curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
+- ls
+- hdiutil attach csound6.09.1-OSX-universal.dmg
+- cp -R /Volumes/Csound6.09.1/ Csound
+- hdiutil detach /Volumes/Csound6.09.1/
+- cd Csound
+- sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
+- cd /Users/travis/build/rorywalsh/
+- git clone https://github.com/WeAreROLI/JUCE.git
+- cd JUCE/extras/Projucer/Builds/MacOSX/
+- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`
+  > /dev/null
+- cd /Users/travis/build/rorywalsh/
+- ls /Library/Frameworks/
+- pwd
+- cd /Users/travis/build/
+- curl -L -o vstsdk368_08_11_2017_build_121.zip https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip
+- unzip -q vstsdk368_08_11_2017_build_121.zip
+- mkdir ~/SDKs
+- cp -rf VST_SDK ~/SDKs
+- ls /Users/travis/build/rorywalsh/
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 script:
-    - echo -en "travis_fold:start:buildingVST"
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
-    - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-
-    # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
-    # - xcodebuild -project CabbageLite.xcodeproj clean
-    # - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
-    # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
-    # - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty && exit ${PIPESTATUS[0]}
-    - echo -en "travis_fold:end:buildingVST"
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
-
-    # - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty && exit ${PIPESTATUS[0]}
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
-    # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
-    # - rm -rf ./build/Release/CabbagePluginEffect.vst
-    # - rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.vst
-
-    # - cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
-    # - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
-
+- echo -en "travis_fold:start:buildingVST"
+- "/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+  --resave ../../CabbageIDE.jucer"
+- xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration
+  Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- echo -en "travis_fold:end:buildingVST"
 deploy:
   skip_cleanup: true
   script: skip
@@ -63,12 +43,8 @@ deploy:
   api_key: GITHUB OAUTH TOKEN
   file:
   - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbagePlugin.vst/"
-  # - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
-
   on:
     all_branches: true
-
 env:
   global:
-  - secure: etOfFSvOc15UTMhakfuD/dp7RKLs2ASARivtj4v0M/RXrKaViyZrI4iptblw3dkec8JefsrAaRI6j9zD5/moNwLXBQEzGR4H7xs2dCOq70r1/CPK6Wf7FfE32gbX7x3KmhyoqMCruNZCa+t3W8ehFGaYfg8TBWMREpa28w+cRkaufZfLXNdENd+ASJkGtX2k9TELAAiJJTUmF5ALgwCekSFtNhyN14QlIWHhaikdDNFgv/Lq3645AU8PidHscKYJNF8vNl24kpZgqVsl7ulgRmMjvzYjG0wat/L2hoU1qKrKmsR97Gr0G5yy5ZlSakUoi0QU6V/3O2waDoz0eorZTfVGyOMILfx0sIMq54//cxFw9n343wIF07UCHfvrMZ1jXecZ1Mo7zf9JGJUms1l0ztOh49002b0c74t5mZ0yaXet6cIybe9v1gXsHVHEC/2w8b/SczPqA0zuK9luZeBN9q1k1S6UHjt8ti+QdiQQuYPVn/fx2t6tAAPvQjGjYmysYWpIIDr4nYIIrV3oauPd7Qu4vHCYw0cTHJZe60ohFNHOgOfaneklYQZmWwAVcrVOBBwrN6ztztmIzwORTCJhj1+EtZdMHPjc8UXUh2ojfhthLnj6ChZiubWTGTwKrNH1o0t2M8nSR5+h9LxEHWLeggthN40MdjXUyRXIrVEiyY4=
-  - secure: ppoOUqZFN8Ou3afi5ccYIHhfCYayv5ZuUf/AQ6iGdT1M73mn2tu/A0CMgEat5LiEF38la6iqZ1ICJlSZ4pYZc4dlwigpHFuc2OkAz2a3fLtPmkijkEr8ZSbm2i67vXggP0YIKOtFG4lf1zi59AtrWHkJjpDVzDYGB2iMgBx38UK3hd+mpJINkGCeRSQPl0x2D/jGEJ7pDhZy2hgUYu1wattTjfBlYGXmtB+fY1bGtXsYng0pDD2zL3x2KA6QXkcjCvkoQqxDJ3i58MPJw4Xh6voEFi6O47ZNURxluHRhf359InDlNmzNaAh0TK3pmUzq5+GwBpmQlX7avu4A/eBUaCOXw7VypMBeMH+nycbj27E20m5r8ZTDqAJsVYgPAl6yMi0UzUJweUiXEzSMVSuWTts+bue4Dc0G+8mQSeFgDbRgfg9tS4ZHYAgSj2EpA/ZGGf+Isk+/Ob+UM9vd6Gqhtn4d3ukgO7yxIH2NhJVo4XN27sI7Y377TyHUw3cvPXtaVDwyydxOZ0/wYTRPNwXP5F4B37HO7+HcyHZ3OrmYiSyatCRjEY4XGgQep2OSOhDCx1CxGg8KuscZLpsCFzNpPYAoDGSrm8h9LbftAu/HrGEAxXZgRKpxNewGxuSD1dCquhdTm7Zd1P+KuuVCeUAxRJwgdJzXWPhL+5GVKMgv/Xc=
+    secure: sbJ471H2r7BdOS+73IdhOslFvIaRSVkqkAnv79jieAVI4Ntz4lYqNmqpmu0F8qu8SgySnb5W77y+gP7QO3oBVTmO08oqRZ4kNfLHH5wlexxee3PFgj2FKuEhj0aapZRa1igiEVibZ5nJQZpKWA6VlXSFqymMmtmOhuTwbOHaCXKa7H/qWtyZsmxQfCHaVJ2DbDLTtwyldrY3/VM6HTc6mi1Ina0tDJTh9Rirhy1U7uuvd1DaJtw2MQGNKgLQIsna6YMTfYwd2CjT8hGlNTcNqxPL7kBrfP+YSXlqtAGWau7Kcj3qFwgDoi8NU721SD2yuJZRcDeEJFKDbvvLYTgXLTOJ4S5bN3XMW4/AyLWvztMP5Zk9+Vf0juC/7X51DRVRF/HRH/R1WV/us1hkFaV3QUK3EjWC599EzWVsSsTCXa4WXIwHwRfqqNhUpeDPwoYS4Qq4tADv8sFuhiSl6egXFQK5s5qW13/FaUhEZk4uC1dnOEba5jgTONd9CdPEMIr4QOgrMXHkLSoNybpK6luVkFvg823kCsgwQeiuZSoqKlleKtam2bIlNfPXG1MPI64DGhQhTJuPoJrCi9KcIBuK+Ax8wmAoQHmMqBoOWaXfVtcWfNKPFdnFRljNiEiYG+DIbUigJJCofH9BogbD+CDBLdNA5eOnSfvx1rokfEsMSfs=
