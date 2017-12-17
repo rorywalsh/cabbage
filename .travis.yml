@@ -12,14 +12,14 @@ before_script:
     - gem install xcpretty-travis-formatter
     - pwd
     - cd ..
-    - curl -O https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg
+    - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
     - ls
     - hdiutil attach csound6.09.1-OSX-universal.dmg
     - cp -R /Volumes/Csound6.09.1/ Csound
     - hdiutil detach /Volumes/Csound6.09.1/
     - cd Csound
     - sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
-
+    
     - cd /Users/travis/build/rorywalsh/
     - git clone https://github.com/WeAreROLI/JUCE.git
     - cd JUCE/extras/Projucer/Builds/MacOSX/
@@ -28,8 +28,8 @@ before_script:
     - ls /Library/Frameworks/
     - pwd
     - cd /Users/travis/build/
-    - curl -O https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
-    - unzip -q -a vstsdk368_08_11_2017_build_121.zip
+    - wget 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
+    - unzip -qq -a vstsdk368_08_11_2017_build_121.zip
     - mkdir ~/SDKs
     - cp -rf VST_SDK ~/SDKs
     - ls /Users/travis/build/rorywalsh/
