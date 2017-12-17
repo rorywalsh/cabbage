@@ -17,8 +17,7 @@ before_script:
 - cd /Users/travis/build/rorywalsh/
 - git clone https://github.com/WeAreROLI/JUCE.git
 - cd JUCE/extras/Projucer/Builds/MacOSX/
-- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`
-  > /dev/null
+- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter` > /dev/null
 - cd /Users/travis/build/rorywalsh/
 - ls /Library/Frameworks/
 - pwd
@@ -40,9 +39,9 @@ deploy:
   skip_cleanup: true
   script: skip
   provider: releases
-  api_key: GITHUB OAUTH TOKEN
+  github_token: $GITHUB_TOKEN
   file:
-  - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbagePlugin.vst/"
+  - "/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app"
   on:
     all_branches: true
 env:
