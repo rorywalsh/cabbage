@@ -28,15 +28,15 @@ before_script:
 - cp -rf VST_SDK ~/SDKs
 - ls /Users/travis/build/rorywalsh/
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
-- ls
-- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release
-- ls
+
 script:
 - echo -en "travis_fold:start:building"
 - "/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
   --resave ../../CabbageIDE.jucer"
 - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration
   Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build
+- ls /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release
 - echo -en "travis_fold:end:building"
 
 deploy:
