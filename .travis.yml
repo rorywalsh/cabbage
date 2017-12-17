@@ -18,8 +18,7 @@ before_script:
     - cd ../../../../../
     - pwd
     - cd /Users/travis/build/rorywalsh/
-    - curl "https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg" -# --output csound6.09.1-OSX-universal.dmg
-    - ls
+    - curl 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg' -o csound6.09.1-OSX-universal.dmg
     - hdiutil attach csound6.09.1-OSX-universal.dmg
     - cp -R /Volumes/Csound6.09.1/ Csound
     - hdiutil detach /Volumes/Csound6.09.1/
@@ -36,11 +35,14 @@ before_script:
     - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-    - echo "travis_fold:start:SCRIPT folding starts"
-    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
-    - xcodebuild -project CabbageLite.xcodeproj clean
-    - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
-    - echo "travis_fold:end:SCRIPT folding ends"
+    - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer
+    - xcodebuild -project Cabbage.xcodeproj clean
+    - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+
+    # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
+    # - xcodebuild -project CabbageLite.xcodeproj clean
+    # - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty && exit ${PIPESTATUS[0]}
+    
     # - /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
     # - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty && exit ${PIPESTATUS[0]}
     # - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
