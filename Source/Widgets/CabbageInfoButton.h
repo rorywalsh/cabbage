@@ -35,7 +35,7 @@ public:
     ~CabbageInfoButton() {};
 
     //ValueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
@@ -43,7 +43,7 @@ public:
 
     void setLookAndFeelColours (ValueTree wData);
 
-    void buttonClicked (Button* button);
+    void buttonClicked (Button* button)  override;
     ValueTree widgetData;
 
 

@@ -48,10 +48,10 @@ public:
     CabbageComboBox (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageComboBox();
 
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void addItemsToCombobox (ValueTree wData, bool refreshedFromDisk = false);
 
-    void comboBoxChanged (ComboBox* combo); //is preset combo use this listener
+    void comboBoxChanged (ComboBox* combo)  override; //is preset combo use this listener
 
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
