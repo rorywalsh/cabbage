@@ -1034,7 +1034,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
     lines.addLines(getCurrentCsdFile().loadFileAsString());
 
 
-    if(lines.indexOf("<Cabbage>") == -1 || lines.indexOf("</Cabbage>") == -1)
+    if(lines.indexOf("<Cabbage>") == -1 || lines.indexOf("</Cabbage>") == -1 && getCurrentCsdFile().hasFileExtension(".csd"))
         CabbageUtilities::showMessage("You are missing Cabbage tags. Please ensure your code has <Cabbage> and </Cabbage> tags.", lookAndFeel);
 }
 //==================================================================================
