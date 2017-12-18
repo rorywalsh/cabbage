@@ -36,7 +36,7 @@ script:
 - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration
   Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build
-- ls /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release
+- ls /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release  
 - zip -r /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app 
 - echo -en "travis_fold:end:building"
 
