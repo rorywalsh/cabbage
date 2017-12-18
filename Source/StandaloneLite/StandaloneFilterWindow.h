@@ -97,6 +97,9 @@ public:
                 setBoundsConstrained ({ x, y, getWidth(), getHeight() });
             else
                 centreWithSize (getWidth(), getHeight());
+
+            this->setAlwaysOnTop(props->getIntValue("AlwaysOnTop"));
+
         }
         else
         {
@@ -202,7 +205,10 @@ public:
         pluginHolder->deletePlugin();
 
         if (auto* props = pluginHolder->settings.get())
+        {
             props->removeValue ("filterState");
+        }
+
 
         file.getParentDirectory().setAsCurrentWorkingDirectory();
         pluginHolder->createPlugin (file);
@@ -256,7 +262,6 @@ public:
         else
             m.addItem (3, "Enable always on top");
 
-
         m.addSeparator();
         m.addItem (4, "Toggle output console");
         m.addItem (5, "About Cabbage");
@@ -297,6 +302,10 @@ public:
     void handleMenuResult (int result)
     {
         CabbageIDELookAndFeel lAndF;
+        if (auto* props = pluginHolder->settings.get())
+            props->setValue("AlwaysOnTop", this->isAlwaysOnTop()==true ? 1 : 0);
+
+
 
         switch (result)
         {
