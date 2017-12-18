@@ -50,11 +50,15 @@ for dir in directories[0:3]:
 					line = line.replace("**", "`")
 					
 				if "(images/" in line:
-					line = "![](../../images/docs/" +line[line.index("(images/")+8:]
+					line = "![](../../../../images/" +line[line.index("(images/")+8:]
+					
+				#working for inline docs..
+				# if "(images/" in line:
+				# 	line = "![](../../images/docs/" +line[line.index("(images/")+8:]
 
 				if "../images/" in line:
-					line = "![](../../images/docs/" +line[line.index("/images/")+8:]
-
+					line = "![](../../images/docs/" +line[line.index("(images/")+8:]
+					
 				if "```html" in line:
 					line = line.replace("```html", "```csharp")
 

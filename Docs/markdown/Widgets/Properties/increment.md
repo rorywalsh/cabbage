@@ -1,1 +1,2 @@
-<a name="increment"></a>**increment(val)** Set the incremental step size for the encoder.
+<a name="increment"></a>
+**increment(val)** Set the incremental step size for the encoder.
