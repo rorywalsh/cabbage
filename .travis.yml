@@ -30,15 +30,31 @@ before_script:
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-- echo -en "travis_fold:start:building"
-- "/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
-  --resave ../../CabbageIDE.jucer"
-- xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration
-  Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build
-- ls /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release  
+- echo -en "travis_fold:start:buildingIDE"
+- "/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer"
+- xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- echo -en "travis_fold:end:buildingIDE"
+
+- echo -en "travis_fold:start:buildingLite"
+- /Users/walshr/sourcecode/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageLite.jucer
+- xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- echo -en "travis_fold:end:buildingLite"
+
+- echo -en "travis_fold:start:buildingPlugins"
+- /Users/walshr/sourcecode/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbagePlugin.jucer
+- xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
+- xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1"
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
+- cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
+- cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
+- echo -en "travis_fold:end:buildingPlugins"
+
+- echo -en "travis_fold:start:buildingZip"
 - zip -r /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app 
-- echo -en "travis_fold:end:building"
+- echo -en "travis_fold:end:buildingZip"
 
 deploy:
   skip_cleanup: true
