@@ -54,7 +54,8 @@ script:
 - echo -en "travis_fold:end:buildingPlugins"
 
 - echo -en "travis_fold:start:buildingZip"
-- zip -j /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/Cabbage.app 
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
+- zip -r CabbageOSX.zip Cabbage.app 
 - echo -en "travis_fold:end:buildingZip"
 
 deploy:

@@ -1,2 +1,2 @@
 <a name="Widget_array_property"></a>
-**widgetarray("chan", number)** Creates an number of widgets in a single pass. See [Widget arrays](./widget_arrays.mdl)
+**widgetarray("chan", number)** Creates an number of widgets in a single pass. See [Widget arrays](./widget_arrays.md)

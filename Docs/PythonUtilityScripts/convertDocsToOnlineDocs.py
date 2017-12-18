@@ -48,21 +48,20 @@ for dir in directories[0:3]:
 				
 				if "**" in line:
 					line = line.replace("**", "`")
-					
+
 				if "(images/" in line:
 					line = "![](../../../../images/" +line[line.index("(images/")+8:]
-					
-				#working for inline docs..
-				# if "(images/" in line:
-				# 	line = "![](../../images/docs/" +line[line.index("(images/")+8:]
 
 				if "../images/" in line:
-					line = "![](../../images/docs/" +line[line.index("(images/")+8:]
-					
+					line = "![](../../images/docs/" +line[line.index("./images/")+9:]
+
 				if "```html" in line:
 					line = line.replace("```html", "```csharp")
 
-				if "(./identchannels.html)" in line:
+				if "(./using_svgs.md)" in line:
+					line = line.replace("(./using_svgs.md)", "(../using_svgs/index.html)")
+
+				if "(./identchannels.md)" in line:
 					line = line.replace("(./identchannels.html)", "(../identchannels/index.html)")
 
 				if "(./widget_arrays.md)" in line:
