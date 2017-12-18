@@ -6,12 +6,7 @@ The eventsequencer widget is an event based sequencer that can be used to send s
 eventsequencer WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
-
 
 {! ./markdown/Widgets/Properties/celldata.md !}
 
@@ -55,6 +50,7 @@ eventsequencer WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("String Sequencer") size(400, 400), pluginID("def1")
@@ -64,5 +60,5 @@ button bounds(314, 82, 70, 27) channel("startStop") text("Start", "Stop")
 rslider bounds(316, 112, 70, 70) channel("position") range(0, 15, 0, 1, 1) 
 </Cabbage>
 ```
-
+<!--(End Widget Example)/-->
 ![eventsequencer](../images/eventsequencer.gif)

@@ -7,10 +7,6 @@ Listbox creates a list of custom items. Similary to a combobox in functionality,
 listbox WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-## Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/align.md !} 
@@ -56,11 +52,12 @@ listbox WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
 listbox bounds(10, 16, 300, 200), channel("comps"), file("Compositions.txt"), colour("yellow"), fontcolour("black")
 </Cabbage>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/listbox.png)

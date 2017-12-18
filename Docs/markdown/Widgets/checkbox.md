@@ -7,9 +7,6 @@ Checkbox creates a checkbox which functions like a button, but the associated ca
 checkbox WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-## Identifiers
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/checkbox_corner.md !} 
@@ -53,6 +50,7 @@ checkbox WIDGET_SYNTAX
 >colour:1() can be set using colour(). However, it's recommended that you use the numerated colour identifiers in order to make your code more readable. 
 
 ## Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Checkbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -91,4 +89,6 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
+<!--(End Widget Example)/-->
+
 ![](../images/checkboxExample.png)

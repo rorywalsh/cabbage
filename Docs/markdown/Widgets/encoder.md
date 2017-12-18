@@ -6,10 +6,6 @@ Encoder creates an endless rotary encoder similar to those found in certain well
 encoder WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/increment.md !} 
@@ -61,6 +57,7 @@ encoder WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 200), caption("Untitled"), pluginID("plu1"), colour(57, 110, 185)
@@ -72,5 +69,5 @@ hslider bounds(196, 42, 200, 30), text("H-Slider"), channel("hslider2"), range(0
 hslider bounds(196, 42, 200, 30), text("H-Slider"), channel("hslider2"), range(0, 1, 1)
 </Cabbage>
 ```
-
+<!--(Widget Example)/-->
 ![Encoder](../images/encoder.png)

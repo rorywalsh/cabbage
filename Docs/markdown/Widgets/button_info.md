@@ -6,11 +6,6 @@ Infobuttons can be used to open html files in the system's default web browser. 
 infobutton WIDGET_SYNTAX
 </pre></big>
 
-
-<!--(End of syntax)/-->
-
-## Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/file_info_button.md !} 
@@ -47,6 +42,7 @@ infobutton WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
@@ -55,5 +51,6 @@ infobutton bounds(120, 16, 100, 30), channel("button"),  file("README.txt"), tex
 filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
 </Cabbage>
 ```
+<!--(End Widget Example)/-->
 
 ![](../images/buttonExample.png)

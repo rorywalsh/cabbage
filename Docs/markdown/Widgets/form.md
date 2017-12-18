@@ -6,9 +6,6 @@ Form creates the main application window. pluginid() is the only required identi
 form WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-##Identifiers
-
 ### Specific Identifiers
 {! ./markdown/Widgets/Properties/caption.md !} 
 
@@ -29,6 +26,7 @@ form WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
@@ -57,5 +55,5 @@ i1 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/formExample.png)

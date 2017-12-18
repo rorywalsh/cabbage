@@ -7,10 +7,6 @@ Soundfiler will display the contents of a sound file, or a function table contai
 soundfiler WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/channel_soundfiler.md  !}
@@ -44,11 +40,12 @@ soundfiler WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
-
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
 soundfiler bounds(10,10, 380, 200), file("/home/rory/JazzStems/06_Piano.wav")
 </Cabbage>
 ```
+<!--(End Widget Example)/-->
 ![](../images/soundfilerExample.png)

@@ -7,10 +7,6 @@ Create an on-screen slider with a dragable, and user selectable range. Data can 
 vrange WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/channel_range.md !}   
@@ -62,7 +58,7 @@ vrange WIDGET_SYNTAX
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
 
 ##Example
-
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Test") size(615, 480), pluginID("add1"), guirefresh(1) 
@@ -73,5 +69,5 @@ hrange bounds(92, 84, 400, 30) channel("rangeone2", "rangetwo2"), range(-2000, 1
 vrange bounds(54, 16, 36, 119), channel("vrange1", "vrange2"), range(0, 300, 0:100, 1, 1)
 </Cabbage>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/rangeSliders.png)

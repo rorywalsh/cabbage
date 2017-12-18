@@ -6,9 +6,6 @@ xypad is an x/y controller that sends data to Csound on two named channels. The 
 xypad WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/channel_xypad.md !} 
@@ -47,12 +44,12 @@ xypad WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example:
-
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
 xypad bounds(10, 10, 380, 380), channel("x", "y"), colour("yellow"), textcolour("yellow"), text("XY-PAD")
 </Cabbage>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/xypadExample.png)

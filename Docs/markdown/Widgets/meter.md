@@ -7,10 +7,6 @@ Meters can be used to create any kind of horizontal or vertical metering bar, su
 meter WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/corners.md !} 
@@ -51,6 +47,7 @@ meter WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Meter example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -91,5 +88,5 @@ f0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/metersEample.png)

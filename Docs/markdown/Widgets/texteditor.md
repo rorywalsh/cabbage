@@ -6,9 +6,6 @@ Texteditor creates a single line text editor that can be used to send strings to
 texteditor WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/wrap.md !} 
@@ -40,6 +37,7 @@ texteditor WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("File Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -85,5 +83,5 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
+<!--End Widget Example)/-->
 ![](../images/texteditorExample.png)

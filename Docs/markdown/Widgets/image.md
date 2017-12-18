@@ -6,9 +6,6 @@ Image creates a static shape or graphic. It can be used to show pictures or it c
 image WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/corners.md !}
@@ -48,6 +45,7 @@ image WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Image Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -89,5 +87,5 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/imageExample.png)

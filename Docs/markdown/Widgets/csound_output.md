@@ -7,9 +7,6 @@ Csoundoutput will display Csound output messages within your instrument**s GUI. 
 csoundoutput WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-##Identifiers
-
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/bounds.md !}  
@@ -32,6 +29,7 @@ csoundoutput WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
@@ -61,4 +59,6 @@ i1 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
+<!--(End Widget Example)/-->
+
 ![](../images/csoundOutputExample.png)

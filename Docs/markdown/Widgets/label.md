@@ -7,10 +7,6 @@ Labels can be used for placing text on-screen.
 label WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/align.md !} 
@@ -46,6 +42,7 @@ label WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Label Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -83,5 +80,5 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/labelExample.png)

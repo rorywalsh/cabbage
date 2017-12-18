@@ -7,10 +7,6 @@ Combobox creates a drop-down list of items which users can choose from. Once the
 combobox WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-## Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/align.md !} 
@@ -52,6 +48,7 @@ combobox WIDGET_SYNTAX
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Checkbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -91,5 +88,6 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
+<!--(End Widget Example)/-->
 
 ![](../images/comboboxExample.png)

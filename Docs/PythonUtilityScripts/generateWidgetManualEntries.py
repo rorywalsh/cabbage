@@ -16,19 +16,15 @@ if os.path.exists('./ExpandedWidgetEntries') == False:
 
 for filename in docfiles:
     if ".md" in filename:
-        #print(filename)
         links = []
         identifierCode = []
-        #outputFile = open("_"+filename, 'w+')
-        #outputFile = open(inputFile.name, 'w')
-        #lineText = ""
+        #search for properties and add anchor links to top of widget entry 
         inputFile = open(filename)
         print("Widget Properties for "+filename)
         for line in inputFile:
             if "{! ./markdown/Widgets/Properties/" in line:
                 line = line.replace("{! ./markdown/Widgets/Properties/", "")
                 line = line[0:line.find(" !}")]
-                #print(line)
                 propFile = open("./Properties/"+line.rstrip())
                 content = propFile.readlines()
                 for propLine in content:
@@ -37,19 +33,19 @@ for filename in docfiles:
                         params = propLine[propLine.find("("):propLine.find(")")+1]
                         propLine = propLine[0:propLine.find("(")]
                         linkText = "["+propLine+"](#" + line[0:line.find(".")] +")" + params +", "
-                        #print (linkText)
-
                         links.append(linkText + "\n")
                     
+                    #if we have an example, extract code and add to identifierCode list
                     if "<!--UPDATE WIDGET_IN_CSOUND" in propLine:
                         lineIndex = content.index(propLine)+1;           
                         while lineIndex < len(content)-1:
                             if "-->" in content[lineIndex]:
                                 lineIndex == len(content)+1
-                            identifierCode.append(content[lineIndex])
+                            lineText = "\t"+content[lineIndex].lstrip(' ')
+                            identifierCode.append(lineText)
                             lineIndex+=1
 
-        
+        #expand widget entry with generated Csound code        
         inputFile = open(filename)
         htmlText = ""
         for line in inputFile:
@@ -60,19 +56,21 @@ for filename in docfiles:
 
             if ";WIDGET_ADVANCED_USAGE" in line:
                 newLines = '''
-                instr 2
-                    if metro(1) == 1 then
-                        event "i", "ChangeAttributes", 0, 1
-                    endif
-                endin
+instr 2
+    if metro(1) == 1 then
+        event "i", "ChangeAttributes", 0, 1
+    endif
+endin
 
-                instr ChangeAttributes
-                    SIdentifier init ""\n'''  
-                newLines +=''.join(identifierCode)      
+instr ChangeAttributes
+    SIdentifier init ""'''
+                newLines = newLines.lstrip(' ')
+                newLines +=''.join(identifierCode).lstrip(' ')      
 
-                lastBit ='''
-                    chnset SIdentifier, "widgetIdent"           
-                endin'''
+                lastBit ='''    ;send identifier string to Cabbage
+    chnset SIdentifier, "widgetIdent"           
+endin
+                '''
                 newLines+=lastBit
 
                 line = line.replace(";WIDGET_ADVANCED_USAGE", newLines)
@@ -82,21 +80,19 @@ for filename in docfiles:
         inputFile.write(htmlText)
         inputFile.close();
 
-#print htmlText
-    #         <big><pre>
-    # [bounds](#bounds)(x, y, width, height) 
-    # [channel](#channel)("chan") 
-    # [text](#text)("offCaption","onCaption")
-    # [bounds](#bounds)(x, y, width, height) 
-    # [channel](#channel)("chan") 
-    # [text](#text)("offCaption","onCaption") 
-    # [bounds](#bounds)(x, y, width, height) 
-    # [channel](#channel)("chan") 
-    # [text](#text)("offCaption","onCaption")
-    # </pre></big>
+        #generate help .csd from expanded widget entry        
+        inputFile = open("./ExpandedWidgetEntries/"+filename)
+        outputFile = open("./ExpandedWidgetEntries/"+filename.replace('.md', '.csd'), "w+")
+        foundExampleCode = False
+        for line in inputFile:
+            if "<!--(Widget Example)/-->" in line:
+                foundExampleCode = True
+            if "<!--(End Widget Example)/-->" in line:
+                foundExampleCode = False
+            if foundExampleCode is True and "<!--(Widget Example)/-->" not in line and "```" not in line:
+                outputFile.write(line)
+        
+        inputFile.close()
+        outputFile.close()
 
-        #     outputFile.write(line)
-
-        # inputFile.close()
-        # outputFile.close()
 

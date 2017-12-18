@@ -7,10 +7,6 @@ Gentable displays the contents of a function table, multiple tables, or files. F
 gentable WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/amprange.md !} 
@@ -53,11 +49,12 @@ gentable WIDGET_SYNTAX
 >If you need to redraw tables quickly, make sure they don't use negative GEN routines as it will seriously slow down redrawing. 
 
 ##Example
-
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
 gentable bounds(10, 10, 380, 200), tablenumber(1, 2), tablecolour("yellow", "red"), tablegridcolour(60, 60,60)
 </Cabbage>
 ```
+<!--(End Widget Example)/-->
 ![](../images/gentableExample.png)

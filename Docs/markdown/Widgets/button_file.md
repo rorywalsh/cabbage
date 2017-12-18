@@ -6,10 +6,6 @@ A filebutton can be used to select files from disk. The filename selected, or cr
 filebutton WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/file_populate.md !} 
@@ -52,6 +48,7 @@ filebutton WIDGET_SYNTAX
 >colour:1() and fontcolour:1() can be set using colour() and fontcolour(). However, it's recommended that you use the numerated colour identifiers in order to make your code as readable a possible. 
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("File Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -95,6 +92,7 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
+<!--(End Widget Example)/-->
 
 
 ![](../images/buttonExample.png)

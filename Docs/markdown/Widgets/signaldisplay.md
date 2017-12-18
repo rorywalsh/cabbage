@@ -6,9 +6,6 @@ Displays a graphical representation of a signal. Must be used with the **display
 signaldisplay WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
 ### Specific Identifiers
 {! ./markdown/Widgets/Properties/backgroundcolour.md !}  
 
@@ -39,6 +36,7 @@ signaldisplay WIDGET_SYNTAX
 > To enable the use of the signaldisplay widget you must pass --displays to your CsOptions. See the SignalDisplay example for details. Also note that the Lissajous display is the most CPU expensive display option, followed by waveform. The spectral modes are the least CPU expensive.   
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(520, 350), caption("SignalDisplay")
@@ -46,5 +44,5 @@ signaldisplay bounds(10, 0, 500, 300), colour("cornflowerblue"), signavariable("
 button bounds(12, 304, 120, 25), channel("displaytype"), text("Spectroscope", "Spectrogram")
 </Cabbage>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/fftdisplayExample.gif)

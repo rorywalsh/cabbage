@@ -6,9 +6,6 @@ Slider can be used to create an on-screen slider. Data can be sent to Csound on 
 slider WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/max.md !}  
@@ -87,7 +84,7 @@ slider WIDGET_SYNTAX
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
 
 ##Example
-
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
@@ -126,5 +123,5 @@ i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
+<!--(End Widget Example)/-->
 ![](../images/sliderExample.png)

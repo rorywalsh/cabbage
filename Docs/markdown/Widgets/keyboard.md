@@ -6,8 +6,6 @@ Keyboard will display a keyboard that will send MIDI information to your Csound 
 keyboard WIDGET_SYNTAX
 </pre></big>
 
-##Identifiers
-
 ### Specific Identifiers
 
 **keywidth(val)** Set the width of the keys in pixels.
@@ -32,6 +30,7 @@ keyboard WIDGET_SYNTAX
 >The keyboard can be played at different velocities depending on where you click on the key with your mouse. Clicking at the top of the key will cause a quieter velocity while clicking on the bottom will cause the note to sound with full velocity. If you wish to play the keyboard like a nutjob in standalone mode, make sure to pass '-m0d' to the CsOptions(disable console messages). The keyboard widget is only provided as a quick and easy means of testing plugins in Cabbage. Treating it as anything more than that could result in severe disappointment!  
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form size(400, 300), caption("Untitled"), pluginID("plu1")
@@ -61,5 +60,5 @@ f0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-<!--(End of syntax)/-->
+<!--(Widget Example)/-->
 ![](../images/keyboardExample.png)

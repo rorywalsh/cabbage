@@ -7,10 +7,6 @@ Number boxes can be used to create a PureData, Max/MSP style number box. Data ca
 numberbox WIDGET_SYNTAX
 </pre></big>
 
-<!--(End of syntax)/-->
-
-##Identifiers
-
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/max.md !} 
