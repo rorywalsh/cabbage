@@ -40,6 +40,7 @@ label WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetarray.md !}  
 
 <!--(End of identifiers)/-->
+![](../images/label.gif)
 
 ##Example
 <!--(Widget Example)/-->
@@ -81,4 +82,3 @@ i2 0 z
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-![](../images/labelExample.png)

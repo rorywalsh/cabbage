@@ -45,6 +45,7 @@ meter WIDGET_SYNTAX
 * *hslider*, a standard horizontal slider
 
 <!--(End of identifiers)/-->
+![](../images/meter.gif)
 
 ##Example
 <!--(Widget Example)/-->
@@ -73,10 +74,13 @@ nchnls = 2
 seed 0 
 ;basic usage
 instr 1
-	chnset abs(randi:k(1.1, 100, 2)), "vMeter1"
-	chnset abs(randi:k(1.1, 100, 2)), "vMeter2"
-	chnset abs(randi:k(1.1, 100, 2)), "vMeter3"
-	chnset abs(randi:k(1.1, 100, 2)), "vMeter4"
+    if metro(20) == 1 then
+        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter1"
+        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter2"
+        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter3"
+        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter4"
+        chnset abs:k(randi:k(1.1, 100, 2)), "meterTest"
+	endif
 endin
 
 ;WIDGET_ADVANCED_USAGE
@@ -84,9 +88,9 @@ endin
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
-f0 z
+i1 0 z
+i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-![](../images/metersEample.png)

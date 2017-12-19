@@ -28,11 +28,13 @@ csoundoutput WIDGET_SYNTAX
 
 <!--(End of identifiers)/-->
 
+![Button](../images/csound_output.gif)
+
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Csound output"), pluginID("plu1"), colour(39, 40, 34)
 csoundoutput bounds(10, 10, 380, 400)
 </Cabbage>
 <CsoundSynthesizer>
@@ -60,5 +62,3 @@ i1 0 z
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-
-![](../images/csoundOutputExample.png)

@@ -1,6 +1,6 @@
 # Text Editor
 
-Texteditor creates a single line text editor that can be used to send strings to Csound. Hitting return when in single line mode will send the string to Csound on a named string channel while pressing the up and down buttons when the texteditor is in focus will toggle through the previous strings that have been sent. When in "multiline" mode, press command and return to send the string data to Csound. 
+Texteditor creates a text editor that can be used to send strings to Csound. Hitting return when in single line mode will send the string to Csound on a named string channel while pressing the up and down buttons when the texteditor is in focus will toggle through the previous strings that have been sent. When in "multiline" mode, press command and return to send the string data to Csound. 
 
 <big></pre>
 texteditor WIDGET_SYNTAX
@@ -36,15 +36,17 @@ texteditor WIDGET_SYNTAX
 
 <!--(End of identifiers)/-->
 
+![](../images/texteditor.gif)
+
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form caption("File Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+form caption("Texteditor Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 label bounds(12, 36, 297, 19), text("Enter some text and hit enter"), align("left") fontcolour(84, 83, 83, 255)
-texteditor bounds(12, 58, 152, 24), channel("filebutton1"), text("") value(0) file("/Users/walshr/sourcecode/cabbage/Examples/Widgets/Sliders.csd")
+texteditor bounds(12, 58, 152, 24), channel("textEditor1"), text("") value(0) file("/Users/walshr/sourcecode/cabbage/Examples/Widgets/Sliders.csd")
 texteditor bounds(146, 140, 68, 127) identchannel("widgetIdent")
 label bounds(192, 60, 192, 21), text(""), identchannel("labelIdent")
 
@@ -63,7 +65,7 @@ nchnls = 2
 seed 0 
 ;basic usage
 instr 1
-SFile chnget "filebutton1" 
+SFile chnget "textEditor1" 
     if changed(SFile)== 1 then
         printf "%s\n", k(1), SFile
         SMessage sprintfk "text(\"%s\") ", SFile
@@ -84,4 +86,3 @@ i2 0 z
 </CsoundSynthesizer>
 ```
 <!--End Widget Example)/-->
-![](../images/texteditorExample.png)

@@ -49,6 +49,8 @@ checkbox WIDGET_SYNTAX
 
 >colour:1() can be set using colour(). However, it's recommended that you use the numerated colour identifiers in order to make your code more readable. 
 
+![Button](../images/checkbox.gif)
+
 ## Example
 <!--(Widget Example)/-->
 ```csharp
@@ -91,4 +93,4 @@ i2 0 z
 ```
 <!--(End Widget Example)/-->
 
-![](../images/checkboxExample.png)
+

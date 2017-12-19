@@ -83,11 +83,13 @@ slider WIDGET_SYNTAX
 
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
 
+![](../images/sliders.gif)
+
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+form caption("Slider Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 hslider bounds(8, 38, 369, 50), channel("gain"), text("Gain") range(0, 1, 0, 1, 0.001) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
@@ -124,4 +126,3 @@ i2 0 z
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-![](../images/sliderExample.png)

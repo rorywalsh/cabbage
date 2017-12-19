@@ -49,6 +49,8 @@ button WIDGET_SYNTAX
 
 >colour:1() and fontcolour:1() can be set using colour() and fontcolour(). However, it's recommended that you use the numerated colour identifiers in order to make your code as readable a possible. 
 
+![Button](../images/button.gif)
+
 ##Example
 <!--(Widget Example)/-->
 ```csharp
@@ -90,5 +92,3 @@ i2 0 z
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-
-![Button](../images/buttonExample.png)

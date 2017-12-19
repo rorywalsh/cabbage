@@ -58,10 +58,10 @@ if changed:k(kChangeDisplay)==1 then
 	endif
 endif
 
-kTrigger changed kChangeDisplay
-if kTrigger == 1 then
-	chnset SDisplayIdentString, "displayIdent"
-endif 
+;kTrigger changed kChangeDisplay
+;if kTrigger == 1 then
+;	chnset SDisplayIdentString, "displayIdent"
+;endif 
 
 endin
 

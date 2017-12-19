@@ -17,9 +17,6 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGEWIDGETDATAINITMETHODS_H_INCLUDED;
-#define CABBAGEWIDGETDATAINITMETHODS_H_INCLUDED
-
 #include "../Utilities/CabbageUtilities.h"
 #include "../CabbageIds.h"
 #include "CabbageWidgetData.h"
@@ -864,4 +861,3 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 }
 
-#endif  // CABBAGEWIDGETDATAINITMETHODS_H_INCLUDED

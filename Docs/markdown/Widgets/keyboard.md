@@ -29,12 +29,14 @@ keyboard WIDGET_SYNTAX
 
 >The keyboard can be played at different velocities depending on where you click on the key with your mouse. Clicking at the top of the key will cause a quieter velocity while clicking on the bottom will cause the note to sound with full velocity. If you wish to play the keyboard like a nutjob in standalone mode, make sure to pass '-m0d' to the CsOptions(disable console messages). The keyboard widget is only provided as a quick and easy means of testing plugins in Cabbage. Treating it as anything more than that could result in severe disappointment!  
 
+![](../images/keyboard.gif)
+
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 300), caption("Untitled"), pluginID("plu1")
-keyboard bounds(10, 10, 300, 150)
+form size(400, 300), caption("Keyboard"), pluginID("plu1")
+keyboard bounds(10, 10, 385, 160), identchannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -49,9 +51,9 @@ nchnls = 2
 
 ;basic usage
 instr 1 
-a1 oscil .5, cpsmidinn(4)
+a1 oscil 1, cpsmidinn(p4)
 outs a1, a1
-endin
+endin        
 
 </CsInstruments>
 <CsScore>
@@ -61,4 +63,3 @@ f0 z
 </CsoundSynthesizer>
 ```
 <!--(Widget Example)/-->
-![](../images/keyboardExample.png)

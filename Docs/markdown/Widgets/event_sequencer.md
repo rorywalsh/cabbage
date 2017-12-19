@@ -61,4 +61,3 @@ rslider bounds(316, 112, 70, 70) channel("position") range(0, 15, 0, 1, 1)
 </Cabbage>
 ```
 <!--(End Widget Example)/-->
-![eventsequencer](../images/eventsequencer.gif)

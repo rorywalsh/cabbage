@@ -45,6 +45,7 @@ groupbox WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetarray.md !}  
 
 <!--(End of identifiers)/-->
+![](../images/groupbox.gif)
 
 ##Example
 <!--(Widget Example)/-->
@@ -73,10 +74,10 @@ instr 1
 
 endin
 
+;WIDGET_ADVANCED_USAGE
+
 </CsInstruments>
 <CsScore>
-;causes Csound to run for about 7000 years...
-f0 z
 ;starts instrument 1 and runs it for a week
 i1 0 z
 i2 0 z
@@ -84,4 +85,4 @@ i2 0 z
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-![](../images/groupBoxExample.png)
+

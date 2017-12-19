@@ -44,6 +44,8 @@ image WIDGET_SYNTAX
 
 <!--(End of identifiers)/-->
 
+![](../images/image.gif)
+
 ##Example
 <!--(Widget Example)/-->
 ```csharp
@@ -88,4 +90,3 @@ i2 0 z
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-![](../images/imageExample.png)

@@ -299,7 +299,7 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
                 importData.name = e->getAllSubText();
 
             if (e->getTagName() == "cabbagecode")
-                importData.cabbageCode.addLines (e->getAllSubText());
+                importData.cabbageCode.addLines (e->getAllSubText().trim());
 
             if (e->getTagName() == "csoundcode")
             {

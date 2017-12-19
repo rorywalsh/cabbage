@@ -63,7 +63,7 @@ instr 2
 endin
 
 instr ChangeAttributes
-    SIdentifier init ""'''
+    SIdentifier init ""\n'''
                 newLines = newLines.lstrip(' ')
                 newLines +=''.join(identifierCode).lstrip(' ')      
 

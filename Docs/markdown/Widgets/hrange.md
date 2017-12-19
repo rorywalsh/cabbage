@@ -57,17 +57,17 @@ hrange WIDGET_SYNTAX
 
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
 
+![](../images/hrange.gif)
+
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form caption("Image Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+form caption("HRange Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-
-hrange bounds(128, 30, 122, 57), channel("hrangeL", "hrangeR"), colour(123, 34, 143), range(100, 300, 200:300, 1, .01)
-hrange bounds(110, 140, 165, 62), channel("range1", "range2"), identchannel("widgetIdent"), channel colour(123, 34, 143), corners(40), range(0, 1, .24:.75, 1 0.001)
-
+hrange bounds(166, 34, 20, 70), channel("vrangeL", "vrangeR"), colour(123, 34, 143), range(100, 1000, 200:300, 1, .01)
+hrange bounds(110, 140, 62, 162), channel("range1", "range2"), identchannel("widgetIdent"), channel colour(123, 34, 143), corners(40), range(0, 1, .24:.75, 1 0.001)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -101,4 +101,4 @@ i2 0 z
 </CsoundSynthesizer>
 ```
 <!--(Widget Example)/-->
-![](../images/rangeSliders.png)
+

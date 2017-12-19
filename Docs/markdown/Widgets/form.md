@@ -24,12 +24,13 @@ form WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/colour.md !}     
 
 <!--(End of identifiers)/-->
+![](../images/formExample.png)
 
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Form Example"), pluginID("plu1"), colour(39, 40, 34)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -56,4 +57,3 @@ i1 0 z
 </CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
-![](../images/formExample.png)

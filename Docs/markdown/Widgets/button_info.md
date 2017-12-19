@@ -38,19 +38,49 @@ infobutton WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/widgetarray.md !} 
 
-
 <!--(End of identifiers)/-->
+
+![](../images/button_info.gif)
+
 
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Infobutton Example"), pluginID("plu1"), colour(39, 40, 34)
 button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
-infobutton bounds(120, 16, 100, 30), channel("button"),  file("README.txt"), text("Info")
+infobutton bounds(120, 16, 100, 30), channel("button"),  file("button.csd"), text("Info")
 filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
 </Cabbage>
+</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+seed 0 
+;basic usage
+instr 1
+
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
 ```
 <!--(End Widget Example)/-->
 
-![](../images/buttonExample.png)
