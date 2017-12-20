@@ -37,13 +37,16 @@ for filename in docfiles:
                     
                     #if we have an example, extract code and add to identifierCode list
                     if "<!--UPDATE WIDGET_IN_CSOUND" in propLine:
-                        lineIndex = content.index(propLine)+1;           
-                        while lineIndex < len(content)-1:
-                            if "-->" in content[lineIndex]:
-                                lineIndex == len(content)+1
-                            lineText = "\t"+content[lineIndex].lstrip(' ')
-                            identifierCode.append(lineText)
-                            lineIndex+=1
+                        if "keyboard" in filename and ("bounds" in linkText or "visible" in linkText):
+                            print("excluding" + filename + linkText)
+                        else:
+                            lineIndex = content.index(propLine)+1;           
+                            while lineIndex < len(content)-1:
+                                if "-->" in content[lineIndex]:
+                                    lineIndex == len(content)+1
+                                lineText = "\t"+content[lineIndex].lstrip(' ')
+                                identifierCode.append(lineText)
+                                lineIndex+=1
 
         #expand widget entry with generated Csound code        
         inputFile = open(filename)

@@ -8,13 +8,25 @@ keyboard WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-**keywidth(val)** Set the width of the keys in pixels.
+{! ./markdown/Widgets/Properties/keyseparatorcolour.md !} 
 
-**middlec(val)** Sets the octave number that will appear on the middle C key. By default this is set to 3.  
+{! ./markdown/Widgets/Properties/mouseoeverkeycolour.md !}  
 
-**scrollbars(val)** Enables or disables scrolling up and down through octaves. Enabled by defaut. 
+{! ./markdown/Widgets/Properties/whitenotecolour.md !}  
 
-**value(note)** sets the note on the leftmost side of the keyboard when it appears on-screen. Middle C, 60, is the default. 
+{! ./markdown/Widgets/Properties/blacknotecolour.md !} 
+
+{! ./markdown/Widgets/Properties/arrowbackgroundcolour.md !} 
+
+{! ./markdown/Widgets/Properties/arrowcolour.md !} 
+
+{! ./markdown/Widgets/Properties/keywidth.md !} 
+
+{! ./markdown/Widgets/Properties/middlec.md !}
+
+{! ./markdown/Widgets/Properties/scrollbars.md !}
+
+{! ./markdown/Widgets/Properties/value_keyboard.md !}
 
 ### Common Identifiers
 
@@ -55,10 +67,13 @@ a1 oscil 1, cpsmidinn(p4)
 outs a1, a1
 endin        
 
+;WIDGET_ADVANCED_USAGE
+
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
 f0 z
+i2 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```

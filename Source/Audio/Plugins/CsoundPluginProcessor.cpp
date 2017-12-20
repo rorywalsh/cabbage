@@ -701,7 +701,10 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
             *mbuf++ = *data++;
             *mbuf++ = *data++;
 
-            cnt += 3;
+            if (message.isProgramChange())
+                cnt += 2;
+            else
+                cnt += 3;
         }
 
         midiData->midiBuffer.clear();
