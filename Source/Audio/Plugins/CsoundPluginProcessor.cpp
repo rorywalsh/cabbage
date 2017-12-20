@@ -698,13 +698,18 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
         {
             const uint8* data = message.getRawData();
             *mbuf++ = *data++;
-            *mbuf++ = *data++;
-            *mbuf++ = *data++;
 
-            if (message.isProgramChange())
+            if(message.isChannelPressure() || message.isProgramChange())
+            {
+                *mbuf++ = *data++;
                 cnt += 2;
+            }
             else
-                cnt += 3;
+            {
+                *mbuf++ = *data++;
+                *mbuf++ = *data++;
+                cnt  += 3;
+            }
         }
 
         midiData->midiBuffer.clear();
