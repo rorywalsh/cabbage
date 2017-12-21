@@ -37,8 +37,14 @@ install:
   - cmd: mkdir lib
   - cmd: cd lib
   - ps: Copy-Item ../*.dll .
-  - cmd: cd lib
+  - ps: Copy-Item ../*.lib .
   - cmd: dir
+  - cmd: cd c:/
+  - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
+  - cmd: 7z.exe x vstsdk368_08_11_2017_build_121.zip
+  - cmd: dir
+  - cmd: mkdir C:/SDKs
+
   # - cmd: cd c:/
   # - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   # - cmd: cd JUCE/extras/Projucer/JuceLibraryCode
