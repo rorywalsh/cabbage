@@ -18,14 +18,10 @@ clone_folder: c:\cabbage
 install:
   - cmd: cd Builds/VisualStudio2017/
   - cmd: dir
-  - ps: (Get-Content -Path "buildCabbage64.bat") | ForEach-Object {$_ -Replace SET PROJUCER="C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
-", "SET PROJUCER="C:\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
-"} | Set-Content -Path "buildCabbage64.bat"
+  - ps: (Get-Content -Path "buildCabbage64.bat") | ForEach-Object {$_ -Replace SET PROJUCER="C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe", "SET PROJUCER="C:\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"} | Set-Content -Path "buildCabbage64.bat"
   - ps: Get-Content buildCabbage64.bat
-
-
   # by default, all script lines are interpreted as batch
-  - echo This is batch
+
   - cmd: cd c:/
   - cmd: git clone https://github.com/csound/csound.git
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
