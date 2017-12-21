@@ -31,7 +31,6 @@ install:
   - cmd: cd csound
   - ps: Copy-Item ../*.h .
   - ps: Copy-Item ../*.hpp . 
-  - cmd: cd csound
   - cmd: dir
   - cmd: cd ../../
   - cmd: pwd
