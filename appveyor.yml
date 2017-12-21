@@ -12,5 +12,6 @@ clone_folder: c:\cabbage
 install:
   # by default, all script lines are interpreted as batch
   - echo This is batch
+  - ls
   - cd cabbage
   - ls
