@@ -27,11 +27,10 @@ install:
   - ps: Get-ChildItem -Path "C:/Csound6_x64" | Copy-Item -Destination "C:/Program Files/Csound6_x64" -Recurse -Container
   - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: cd include
+  - cmd: mkdir csound
+  - ps: Copy-Item * csound 
+  - cmd: cd csound
   - cmd: dir
-  # - cmd: mkdir csound
-  # - ps: Copy-Item * csound 
-  # - cmd: cd csound
-  # - cmd: dir
   # - cmd: cd c:/
   # - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   # - cmd: cd JUCE/extras/Projucer/JuceLibraryCode
