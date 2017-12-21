@@ -21,7 +21,7 @@ install:
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
   - cmd: 7z.exe x csound-windows-x64-6.10.0-rc2-1060.zip -oc:\Csound6_x64
-  - cmd: xcopy Csound6_x64 "C:/Program Files/Csound6_x64" /O /X /E /H /K
+  - cmd: copy Csound6_x64 "C:/Program Files/Csound6_x64"
   - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: dir
   - cmd: cd c:/
