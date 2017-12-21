@@ -53,6 +53,10 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
 
 	//matrix belongs to processor..
     owner->createEventMatrix(numColumns, numRows, getChannel());
+    //init matrix data:
+    for( int x = 0 ; x < numColumns ; x++)
+        for( int y = 0 ; y < numRows ; y++)
+            owner->setEventMatrixData(x, y, getChannel(), String::empty);
 
 }
 
@@ -251,8 +255,11 @@ bool CabbageEventSequencer::keyPressed (const KeyPress& key, Component* originat
 {
     if (TextEditor* ted = dynamic_cast<TextEditor*> (originatingComponent))
     {
+        const MessageManagerLock m;
         const int currentColumn = int (ted->getProperties().getWithDefault ("Column", 0));
         const int currentRow = int (ted->getProperties().getWithDefault ("Row", 0));
+
+        setCellData(currentColumn, currentRow, ted->getText());
 
         if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
             key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
@@ -295,7 +302,7 @@ void CabbageEventSequencer::swapFocusForEditors (KeyPress key, int col, int row)
 
     else if (key.isKeyCode (KeyPress::returnKey))
     {
-        setCellData(col, row, getText());
+        setCellData(col, row, getEditor (col, row)->getText());
         newRow = (row < numRows - 1 ? row + 1 : 0);
         newCol = col;
     }

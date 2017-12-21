@@ -38,10 +38,11 @@ class FileTab : public TextButton
     };
 
     Overlay overlay;
+    bool isCsdFile;
 public:
 
 
-    FileTab (String name, String filename);
+    FileTab (String name, String filename, bool isCsdFile=true);
     const String getFilename() { return csdFile.getFullPathName();    }
 
     void drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height);

@@ -252,7 +252,7 @@ void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, Strin
 
         for ( int y = 0 ; y < rows ; y++)
         {
-            matrix->events[i]->add(String());
+            matrix->events[i]->add(" ");
         }
     }
 

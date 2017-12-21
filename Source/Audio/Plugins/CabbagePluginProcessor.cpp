@@ -876,14 +876,31 @@ void CabbagePluginProcessor::triggerCsoundEvents()
         const String channel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
         const int position = getCsound()->GetChannel(channel.toUTF8());
 
-        for(int i = 0 ; i < CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::matrixcols) ; i++)
+        if(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::orientation)=="vertical")
         {
-            if(matrixEventSequencers[x]->position !=position)
+            for (int i = 0; i < CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::matrixcols); i++)
             {
-                String event = matrixEventSequencers[x]->events.getUnchecked(i)->getReference(position);
-                if (event.isNotEmpty())
+                if (matrixEventSequencers[x]->position != position)
                 {
-                    getCsound()->InputMessage(event.toUTF8());
+                    String event = matrixEventSequencers[x]->events.getUnchecked(i)->getReference(position);
+                    if (event.isNotEmpty())
+                    {
+                        getCsound()->InputMessage(event.toUTF8());
+                    }
+                }
+            }
+        }
+        else //horizontal
+        {
+            for (int i = 0; i < CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::matrixrows); i++)
+            {
+                if (matrixEventSequencers[x]->position != position)
+                {
+                    String event = matrixEventSequencers[x]->events.getUnchecked(position)->getReference(i);
+                    if (event.isNotEmpty())
+                    {
+                        getCsound()->InputMessage(event.toUTF8());
+                    }
                 }
             }
         }
