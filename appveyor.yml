@@ -28,8 +28,16 @@ install:
   - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: cd include
   - cmd: mkdir csound
-  - ps: Copy-Item * csound 
   - cmd: cd csound
+  - ps: Copy-Item ../* . 
+  - cmd: cd csound
+  - cmd: dir
+  - cmd: cd ../../
+  - cmd: pwd
+  - cmd: mkdir lib
+  - cmd: cd lib
+  - ps: Copy-Item ../* .
+  - cmd: cd lib
   - cmd: dir
   # - cmd: cd c:/
   # - cmd: git clone https://github.com/WeAreROLI/JUCE.git
