@@ -2,7 +2,7 @@
 version: configuring.{build}
 configuration:
 - Debug
-- Release
+
 platform:
 - x64
 
