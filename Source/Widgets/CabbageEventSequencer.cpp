@@ -255,11 +255,10 @@ bool CabbageEventSequencer::keyPressed (const KeyPress& key, Component* originat
 {
     if (TextEditor* ted = dynamic_cast<TextEditor*> (originatingComponent))
     {
-        const MessageManagerLock m;
         const int currentColumn = int (ted->getProperties().getWithDefault ("Column", 0));
         const int currentRow = int (ted->getProperties().getWithDefault ("Row", 0));
 
-        setCellData(currentColumn, currentRow, ted->getText());
+        setCellData(currentColumn, currentRow, ted->getText()+key.getTextCharacter());
 
         if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
             key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
