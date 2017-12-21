@@ -51,6 +51,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("visible"):
         case HashStringToInt ("zoom"):
         case HashStringToInt ("range"):
+        case HashStringToInt ("latched"):
             return getNumericalValueTextAsCabbageCode (widgetData, identifier, "").trim();
 
         case HashStringToInt ("align"):

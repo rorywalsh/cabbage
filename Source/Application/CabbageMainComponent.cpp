@@ -1032,10 +1032,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
     StringArray lines;
     lines.addLines(getCurrentCsdFile().loadFileAsString());
-    //CabbageUtilities::debug(getCurrentCsdFile().getFullPathName());
 
-    if((lines.indexOf("<Cabbage>") == -1 || lines.indexOf("</Cabbage>") == -1) && getCurrentCsdFile().hasFileExtension(".csd"))
-        CabbageUtilities::showMessage("You are missing Cabbage tags. Please ensure your code has <Cabbage> and </Cabbage> tags.", lookAndFeel);
 }
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk (File file)

@@ -487,6 +487,7 @@ void CabbagePluginEditor::buttonClicked (Button* button)
     if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
     {
         const StringArray textItems = cabbageButton->getTextArray();
+        CabbageUtilities::debug(cabbageButton->getName());
         const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
         const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
 

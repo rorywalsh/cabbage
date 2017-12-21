@@ -59,7 +59,6 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
     }
     else
     {
-
         setLookAndFeelColours (valueTree);
         handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
         populateTextArrays (valueTree);

@@ -299,7 +299,7 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
                 importData.name = e->getAllSubText();
 
             if (e->getTagName() == "cabbagecode")
-                importData.cabbageCode.addLines (e->getAllSubText().trim());
+                importData.cabbageCode.addLines (e->getAllSubText().replace("\t", " ").trim());
 
             if (e->getTagName() == "csoundcode")
             {
@@ -328,7 +328,7 @@ void CabbagePluginProcessor::insertPlantCode (PlantImportStruct importData, Stri
 
     for ( auto currentLineofCode : copy )
     {
-        if(currentLineofCode.contains("</Cabbage>)"))
+        if(currentLineofCode.contains("</Cabbage>"))
             return;
         if (currentLineofCode.isNotEmpty() && currentLineofCode.substring (0, 1) != ";")
         {
