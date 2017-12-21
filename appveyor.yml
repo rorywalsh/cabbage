@@ -3,8 +3,13 @@ version: configuring.{build}
 configuration:
 - Debug
 
+environment:
+  VSTOOLSET: v141
+
+
 platform:
 - x64
+
 
 clone_folder: c:\cabbage
 
