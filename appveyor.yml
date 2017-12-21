@@ -29,14 +29,15 @@ install:
   - cmd: cd include
   - cmd: mkdir csound
   - cmd: cd csound
-  - ps: Copy-Item ../* . 
+  - ps: Copy-Item ../*.h .
+  - ps: Copy-Item ../*.hpp . 
   - cmd: cd csound
   - cmd: dir
   - cmd: cd ../../
   - cmd: pwd
   - cmd: mkdir lib
   - cmd: cd lib
-  - ps: Copy-Item ../* .
+  - ps: Copy-Item ../*.dll .
   - cmd: cd lib
   - cmd: dir
   # - cmd: cd c:/
