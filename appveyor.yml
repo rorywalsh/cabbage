@@ -41,9 +41,14 @@ install:
   - cmd: dir
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
+  - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/asiosdk2.3.zip'
   - cmd: 7z.exe x vstsdk368_08_11_2017_build_121.zip
+  - cmd: 7z.exe x asiosdk2.3.zip
+  
   - cmd: dir
-  - cmd: mkdir C:/SDKs
+  - cmd: mkdir SDKs
+  - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
+
 
   # - cmd: cd c:/
   # - cmd: git clone https://github.com/WeAreROLI/JUCE.git
