@@ -19,7 +19,11 @@ install:
   # by default, all script lines are interpreted as batch
   - echo This is batch
   - cmd: cd c:/
+  - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
+  - cmd: 7z.exe x csound-windows-x64-6.10.0-rc2-1060.zip -aoa -o "Program Files/Csound6_x64/"
+  - cmd: cd "Program Files/Csound6_x64"
   - cmd: dir
+  - cmd: cd c:/
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   - cmd: cd JUCE/extras/Projucer/JuceLibraryCode
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
