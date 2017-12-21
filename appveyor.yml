@@ -6,6 +6,7 @@ configuration:
 platform:
 - x64
 clone_folder: c:\cabbage
-- cmd: >-
-    cd c:\cabbage\
-    dir
+
+init:
+  - cd c:\cabbage\
+  - dir
