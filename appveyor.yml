@@ -12,6 +12,10 @@ clone_folder: c:\cabbage
 install:
   # by default, all script lines are interpreted as batch
   - echo This is batch
-  - ls
-  - cd cabbage
-  - ls
+  - cmd: cd c:/
+  - cmd: git clone https://github.com/WeAreROLI/JUCE.git
+  - cmd: cd JUCE/extras/Projucer/JuceLibraryCode
+  - ps: -Command "(gc AppConfig.h) -replace '#define JUCER_ENABLE_GPL_MODE 1', '#define JUCER_ENABLE_GPL_MODE 0' | Out-File -encoding ASCII AppConfig.h"
+  - ps: -Command "(gc AppConfig.h) -replace '#define JUCE_USE_DARK_SPLASH_SCREEN 1', '#define JUCE_USE_DARK_SPLASH_SCREEN 0' | Out-File -encoding ASCII  AppConfig.h"
+  - ps: Get-Content AppConfig.h
+  
