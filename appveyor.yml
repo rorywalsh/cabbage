@@ -16,6 +16,12 @@ clone_folder: c:\cabbage
 
 # scripts that run after cloning repository
 install:
+  - cmd: cd Builds/VisualStudio2017/
+  - ps: (Get-Content -Path "buildCabbage64.bat") | ForEach-Object {$_ -Replace SET PROJUCER="C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
+", "SET PROJUCER="C:\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
+"} | Set-Content -Path "buildCabbage64.bat"
+  - ps: Get-Content buildCabbage64.bat
+
   # by default, all script lines are interpreted as batch
   - echo This is batch
   - cmd: cd c:/
@@ -31,29 +37,23 @@ install:
   - cmd: cd csound
   - ps: Copy-Item ../*.h .
   - ps: Copy-Item ../*.hpp . 
-  - cmd: dir
   - cmd: cd ../../
-  - cmd: pwd
   - cmd: mkdir lib
-  - cmd: cd lib
   - ps: Copy-Item ../*.dll .
   - ps: Copy-Item ../*.lib .
-  - cmd: dir
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
   - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/asiosdk2.3.zip'
   - cmd: 7z.exe x vstsdk368_08_11_2017_build_121.zip
   - cmd: 7z.exe x asiosdk2.3.zip
-  
-  - cmd: dir
   - cmd: mkdir SDKs
   - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
   - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
 
-  # - cmd: git clone https://github.com/WeAreROLI/JUCE.git
-  # - cmd: cd JUCE/extras/Projucer/JuceLibraryCode
-  # - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
-  # - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
-  # - cmd: cd ../Builds/VisualStudio2017/
-  # - cmd: msbuild Projucer.sln /property:Platform=x64
+  - cmd: git clone https://github.com/WeAreROLI/JUCE.git
+  - cmd: cd JUCE/extras/Projucer/JuceLibraryCode
+  - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
+  - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
+  - cmd: cd ../Builds/VisualStudio2017/
+  - cmd: msbuild Projucer.sln /property:Platform=x64
   
