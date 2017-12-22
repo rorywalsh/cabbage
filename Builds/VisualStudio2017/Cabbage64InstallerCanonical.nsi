@@ -15,7 +15,7 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\nsis1-install.ico"
+!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ; Welcome page
@@ -118,7 +118,7 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
-  ${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR"
+  ${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\bin"
   ${un.EnvVarUpdate} $0 "CABBAGE_OPCODE_PATH" "R" "HKLM" "$INSTDIR"
   
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
