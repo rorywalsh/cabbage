@@ -15,7 +15,7 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "icon.ico"
+!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\nsis1-install.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ; Welcome page
@@ -77,8 +77,8 @@ Section "Core components" SEC01
   ; ;File "C:\mingw64\bin\libgcc_s_dw2-1.dll"
   ;File "C:\mingw64\bin\libstdc++-6.dll"
   ;docs and examples
-  SetOutPath "$INSTDIR\Docs\"
-  File /r "..\..\Docs\*"
+  ;SetOutPath "$INSTDIR\Docs\"
+  ;File /r "..\..\Docs\*"
   SetOutPath "$INSTDIR\Examples\"
   File /r "..\..\Examples\*"
 
