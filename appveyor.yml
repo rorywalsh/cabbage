@@ -32,7 +32,7 @@ install:
   - ps: Copy-Item ../*.h .
   - ps: Copy-Item ../*.hpp . 
   - cmd: cd ../../
-  - cmd: mkdir lib
+  - cmd: mkdir lib   
   - ps: Copy-Item ../*.dll .
   - ps: Copy-Item ../*.lib .
   - cmd: cd lib
