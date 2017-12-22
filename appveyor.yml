@@ -39,23 +39,23 @@ install:
   - ps: Copy-Item ../*.lib .
   - cmd: dir
   - cmd: pwd
-  # - cmd: cd c:/
-  # - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
-  # - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/asiosdk2.3.zip'
-  # - cmd: 7z.exe x vstsdk368_08_11_2017_build_121.zip
-  # - cmd: 7z.exe x asiosdk2.3.zip
-  # - cmd: mkdir SDKs
-  # - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
-  # - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
+  - cmd: cd c:/
+  - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
+  - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/asiosdk2.3.zip'
+  - cmd: 7z.exe x vstsdk368_08_11_2017_build_121.zip
+  - cmd: 7z.exe x asiosdk2.3.zip
+  - cmd: mkdir SDKs
+  - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
+  - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
 
-  # - cmd: git clone https://github.com/WeAreROLI/JUCE.git
-  # - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
-  # - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
-  # - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
-  # - cmd: cd ../Builds/VisualStudio2017/
-  # - cmd: msbuild Projucer.sln /property:Platform=x64
+  - cmd: git clone https://github.com/WeAreROLI/JUCE.git
+  - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
+  - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
+  - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
+  - cmd: cd ../Builds/VisualStudio2017/
+  - cmd: msbuild Projucer.sln /property:Platform=x64
   
-  # - cmd: cd c:/cabbage/Builds/VisualStudio2017/
-  # - cmd: appveyorBuildCabbage64.bat
-  # - cmd: x64
-  # - cmd: dir
+  - cmd: cd c:/cabbage/Builds/VisualStudio2017/
+  - cmd: appveyorBuildCabbage64.bat
+  - cmd: cd x64
+  - cmd: dir
