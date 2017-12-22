@@ -1162,7 +1162,7 @@ int CabbageMainComponent::testFileForErrors (String file)
 {
     ChildProcess process;
     const String applicationDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName();
-    const String processName = applicationDir + "/testCsoundFile " + file;
+    const String processName = applicationDir + "/CsoundTest " + file;
 
     if (File (processName).existsAsFile())
     {

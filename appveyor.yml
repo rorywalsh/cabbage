@@ -17,7 +17,7 @@ clone_folder: c:\cabbage
 # scripts that run after cloning repository
 install:
   - cmd: dir
-  # by default, all script lines are interpreted as batch
+  by default, all script lines are interpreted as batch
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
   - cmd: 7z.exe x csound-windows-x64-6.10.0-rc2-1060.zip -oc:\Csound6_x64
@@ -54,7 +54,8 @@ install:
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
   - cmd: cd ../Builds/VisualStudio2017/
   - cmd: msbuild Projucer.sln /property:Platform=x64
-  
+  - cmd: cd c:/cabbage/CsoundTestWin64 
+  - cmd: msbuild CsoundTest.sln /property:Platform=x64
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
   - cmd: appveyorBuildCabbage64.bat
   - cmd: c:\PROGRA~2\NSIS\\makensis.exe Cabbage64InstallerCanonical.nsi

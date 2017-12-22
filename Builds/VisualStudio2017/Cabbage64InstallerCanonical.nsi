@@ -64,7 +64,7 @@ Section "Core components" SEC01
 
   File "x64\CabbagePluginEffect.dll"
   File "x64\CabbagePluginSynth.dll"
-  File "x64\testCsoundFile.exe"
+  File "../../CsoundTestWin64/Debug/x64/Debug/CsoundTest.exe"
   ;File "C:\Users\rory\sourcecode\cabbageaudio\fmod_csoundL64.dll"
   File "../opcodes.txt"
   
@@ -131,7 +131,7 @@ Section Uninstall
   Delete "$INSTDIR\Cabbage.exe"
   Delete "$INSTDIR\CabbagePluginEffect.dll"
   Delete "$INSTDIR\CabbagePluginSynth.dll"
-  Delete "$INSTDIR\testCsoundFile.exe"
+  Delete "$INSTDIR\CsoundTest.exe"
   Delete "$INSTDIR\opcodes.txt"
 
 
