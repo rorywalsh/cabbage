@@ -52,4 +52,4 @@ install:
   - cmd: msbuild Projucer.sln /property:Platform=x64
   
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
-  - cmd: appveyorBulidCabbage64.bat
+  - cmd: appveyorBuildCabbage64.bat
