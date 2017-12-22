@@ -8,7 +8,7 @@ REM "Then run this script"
 REM "exe and dll will be stored under .\x64"
  
 ::C:\\Users\\rory\\Documents\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\Projucer.exe
-SET PROJUCER="C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
+SET PROJUCER="c:\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
 
 REM "BUILDING THE MAIN APP"
  %PROJUCER% --resave ../../CabbageIDE.jucer
