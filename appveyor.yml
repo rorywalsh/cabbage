@@ -16,12 +16,8 @@ clone_folder: c:\cabbage
 
 # scripts that run after cloning repository
 install:
-  - cmd: cd Builds/VisualStudio2017/
   - cmd: dir
-  - ps: (Get-Content -Path "buildCabbage64.bat") | ForEach-Object {$_ -Replace "SET PROJUCER=C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe", "SET PROJUCER=C:\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"} | Set-Content -Path "buildCabbage64.bat"
-  - ps: Get-Content buildCabbage64.bat
   # by default, all script lines are interpreted as batch
-
   - cmd: cd c:/
   - cmd: git clone https://github.com/csound/csound.git
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
@@ -49,9 +45,11 @@ install:
   - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
 
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
-  - cmd: cd JUCE/extras/Projucer/JuceLibraryCode
+  - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
   - cmd: cd ../Builds/VisualStudio2017/
   - cmd: msbuild Projucer.sln /property:Platform=x64
   
+  - cmd: cd c:/cabbage/Builds/VisualStudio2017/
+  - cmd: appveyorBulidCabbage64.bat
