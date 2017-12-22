@@ -31,7 +31,7 @@ install:
   - cmd: cd csound
   - ps: Copy-Item ../*.h .
   - ps: Copy-Item ../*.hpp . 
-  - cmd: cd ../../
+  - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: mkdir lib   
   - ps: Copy-Item ../*.dll .
   - ps: Copy-Item ../*.lib .
