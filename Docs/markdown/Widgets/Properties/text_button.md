@@ -1,4 +1,4 @@
-<a name="text_button"></a>
+<a name="text_button"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **text("offCaption", "onCaption")**
 The text identifier must be passed at least one string argument. This string will be the one that will appear on the button. If you pass two strings to text() the button will toggle between the two string each time it is pushed. 
 

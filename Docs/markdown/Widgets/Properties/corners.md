@@ -1,4 +1,4 @@
-<a name="corners"></a>
+<a name="corners"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **corners(val)** Sets the radius size of the widget's corners.
 
 <!--UPDATE WIDGET_IN_CSOUND

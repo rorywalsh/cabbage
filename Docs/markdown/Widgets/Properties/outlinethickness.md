@@ -1,4 +1,4 @@
-<a name="outlinethickness"></a>
+<a name="outlinethickness"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **outlinethickness(value)** Sets the thickness of the widget's outline. Set to 0 to disable. 
 
 

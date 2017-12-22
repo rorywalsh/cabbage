@@ -25,6 +25,6 @@ os.chdir(currentDir)
 
 for filename in docfiles:
     if ".md" in filename:
-        insert(filename, "inserted string")
-        #insert(filename, "<a name=\"" + filename[0:filename.find(".")] + "\"></a>")
+        #insert(filename, "inserted string")
+        insert(filename, "<a name=\"" + filename[0:filename.find(".")] + "\"><h3 style=\"padding-top: 40px; margin-top: 40px;\"></h3></a>\n")
 

@@ -1,3 +1,3 @@
-<a name="file_gentable"></a>
+<a name="file_gentable"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **file("filename")** Sets a file for the table to display. Unlike the tablenumber() identifier, which depends on the existence of a valid function table, file() will simply display a file from disk. This can be useful if you are using one of Csound's file reading opcodes. File are always shown as table 0, and will always be the first table created. Therefore it will always take the first colour passed to the tablecolour list. If you wish to load a file after the gentable widget has been created you will need to pass a dummy filename to file() so that the underlying table gets created. If not, calling the file() identifier with an identchannel() will not work.  
 >The background grid is disabled when working with a table that use the file() identifier. 

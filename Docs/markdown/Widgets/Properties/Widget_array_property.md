@@ -1,2 +1,2 @@
-<a name="Widget_array_property"></a>
+<a name="Widget_array_property"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **widgetarray("chan", number)** Creates an number of widgets in a single pass. See [Widget arrays](./widget_arrays.md)

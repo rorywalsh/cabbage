@@ -1,4 +1,4 @@
-<a name="colour_1"></a>
+<a name="colour_1"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **colour:1("colour")**
 This sets the colour of the button when it's value is 1.  See above for details on valid colours. 
 

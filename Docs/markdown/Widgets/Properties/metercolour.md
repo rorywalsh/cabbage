@@ -1,4 +1,4 @@
-<a name="metercolour"></a>
+<a name="metercolour"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **metercolour:N("colour")**Sets the colours of the meter. Use `metercolour:0("colour")` to set the first colour. Any further colours with cause a gradient fill to be created. 
 
 <!--UPDATE WIDGET_IN_CSOUND

@@ -1,2 +1,2 @@
-<a name="channel_xypad"></a>
+<a name="channel_xypad"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **channel("chan1", "chan2")** "chan1" is the name of the X-axis channel in which to communicate with Csound, and "chan2" is the Y-axis channel in which to communicate with Csound.

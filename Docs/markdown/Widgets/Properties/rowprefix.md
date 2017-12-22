@@ -1,3 +1,3 @@
-<a name="rowprefix"></a>
+<a name="rowprefix"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **rowprefix(row, "prefix")** Will append "val" to all score events for the given row (row indices start at 0). These prefixes will not be seen in the matrix cells, but will be sent to Csound. This can be useful if you wish to free up and avoid text duplication in each cell. If you wish to set more than one row at a time, you may use a ':' between numbers, with no whitespace, e.g, `rowprefix(0:1:2:3, "i1 0 1")` 
 >Note you should never need to use both a `colprefix()`and a `rowprefix()`. Using both at the same time will only lead to inconsistent and erratic behaviour. Also note that in order to use inverted commas, you will need to use a preceding '/', e.g, rowprefix(0:1:2:3, "i\"Sine\" 0")

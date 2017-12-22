@@ -1,4 +1,4 @@
-<a name="fontcolour_1"></a>
+<a name="fontcolour_1"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **fontcolour:1("colour")**
 Sets the colour of the text that appears on the button when it's in its on state. See above for details on valid colours.
 

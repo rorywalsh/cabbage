@@ -1,2 +1,2 @@
-<a name="file_info_button"></a>
+<a name="file_info_button"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **file("file name")** Sets the file that will be opened when a user clicks on the button. For convenience, the file passed to the file() identifier should reside in the same directory as the current .csd file. If not you will need to provide a full path to the requested file.  

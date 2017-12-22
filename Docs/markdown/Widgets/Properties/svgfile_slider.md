@@ -1,4 +1,4 @@
-<a name="svgfile_slider"></a>
+<a name="svgfile_slider"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **svgfile("type", "file")** Use this identifier to pass a unique svg file to use instead of the default look and feel. "type" should be one of the following:
 
 - "background" : sets the slider background image
