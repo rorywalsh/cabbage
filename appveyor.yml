@@ -53,3 +53,5 @@ install:
   
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
   - cmd: appveyorBuildCabbage64.bat
+  - cmd: x64
+  - cmd: dir
