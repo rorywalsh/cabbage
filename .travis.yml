@@ -16,7 +16,11 @@ before_script:
 - sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
 - cd /Users/travis/build/rorywalsh/
 - git clone https://github.com/WeAreROLI/JUCE.git
-- cd JUCE/extras/Projucer/Builds/MacOSX/
+- cd JUCE/extras/Projucer/JuceLibraryCode
+- sed -i 's/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1' AppConfig.h
+- sed -i 's/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0' AppConfig.h
+- cat AppConfig.h
+- cd /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/
 - xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`  > /dev/null
 - cd /Users/travis/build/rorywalsh/
 - ls /Library/Frameworks/

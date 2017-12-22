@@ -17,8 +17,6 @@ clone_folder: c:\cabbage
 # scripts that run after cloning repository
 install:
   - cmd: dir
-  - cmd: cd "c:/Program Files (x86)/NSIS/"
-  - cmd: dir
   # by default, all script lines are interpreted as batch
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
@@ -59,3 +57,4 @@ install:
   
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
   - cmd: appveyorBuildCabbage64.bat
+  - cmd: "c:/Program Files (x86)/NSIS/makensis.exe" Cabbage64InstallerCanonical.nsis
