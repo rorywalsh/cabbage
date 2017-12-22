@@ -1,6 +1,6 @@
 <Cabbage>
 form caption("Event Sequencer") size(600, 400), pluginID("def1")
-eventsequencer bounds(10, 10, 500, 320), channels("step"), active(0), identchannel("trackerIdent"), orientation("horizontal"), colprefix(0:1:2:3, "i\"Sine\" 0"), showstepnumbers(4), matrixsize(16, 4) textcolour(200, 200, 200), highlightcolour(30, 30, 30) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20)
+eventsequencer bounds(10, 10, 500, 320), channels("step"), active(0) identchannel("trackerIdent"), orientation("horizontal"), colprefix(0:1:2:3, "i\"Sine\" 0 1 "), showstepnumbers(4), matrixsize(16, 4) textcolour(200, 200, 200), highlightcolour(30, 30, 30) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20)
 rslider bounds(514, 10, 70, 70) channel("bpm") range(10, 400, 180, 1, 0.001) text("BPM") 
 button bounds(514, 82, 70, 27) channel("startPlayback") text("Start", "Stop")  
 button bounds(514, 132, 70, 27) channel("shuffle") text("Shuffle")  
@@ -23,7 +23,8 @@ instr 1
     
     if metro(kBpm/60) == 1 && chnget:k("startPlayback") ==1 then      
         chnset kBeat, "step" 
-        kBeat = kBeat<15 ? kBeat+1 : 0
+        ;event "i", "Metronome", 0, 1
+        kBeat = kBeat<3 ? kBeat+1 : 0
     endif
     
     
@@ -37,10 +38,18 @@ instr 1
     endif
 endin
  
+instr Metronome
+a1 expon 1, p3, 0.001
+a2 oscili a1, 1000
+outs a2, a2
+endin 
+ 
 ;Simple synthesiser
 instr Sine
-    aEnv expon .2, p3, .001
-    aOscil oscil aEnv, cpsmidinn(p4), 2
+print p3
+print p4
+    aEnv expon .6, p3, .001
+    aOscil oscil aEnv, cpsmidinn(p4+12), 2
     outs aOscil, aOscil
 endin
 
@@ -77,7 +86,7 @@ endin
 f1 0 16 10 1
 f2 0 8 10 1 1
 ;starts instrument 1 and runs it for a week
-i"FillCells" 0 1
+;i"FillCells" 0 1
 i1 1 z
 </CsScore>
 </CsoundSynthesizer>

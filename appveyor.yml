@@ -57,4 +57,4 @@ install:
   
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
   - cmd: appveyorBuildCabbage64.bat
-  - cmd: c:/Program Files (x86)/NSIS/makensis.exe Cabbage64InstallerCanonical.nsis
+  - cmd: "c:\\Program Files (x86)\\NSIS\\makensis.exe" Cabbage64InstallerCanonical.nsis
