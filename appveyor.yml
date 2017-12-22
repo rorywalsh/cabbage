@@ -35,7 +35,7 @@ install:
   - cmd: mkdir lib
   - ps: Copy-Item ../*.dll .
   - ps: Copy-Item ../*.lib .
-  - cmd: lib
+  - cmd: cd lib
   - cmd: dir
   - cmd: pwd
   # - cmd: cd c:/
