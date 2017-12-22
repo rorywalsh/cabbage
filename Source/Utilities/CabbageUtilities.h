@@ -513,7 +513,6 @@ public:
 
     }
 
-
     static void addExampleFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
     {
         filesArray.clear();

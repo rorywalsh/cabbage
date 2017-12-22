@@ -203,7 +203,7 @@ void CabbageWidgetData::setEventSequencerProperties (ValueTree widgetData, int I
     setProperty (widgetData, CabbageIdentifierIds::numberofsteps, 16);
     setProperty (widgetData, CabbageIdentifierIds::bpm, 60);
     setProperty (widgetData, CabbageIdentifierIds::cellwidth, 0);
-    setProperty (widgetData, CabbageIdentifierIds::cellheight, 20);
+    setProperty (widgetData, CabbageIdentifierIds::cellheight, 0);
 }
 
 void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)

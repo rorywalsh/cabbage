@@ -71,6 +71,9 @@ void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
     const int width = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
     int cellHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellheight);
+    if (cellHeight == 0)
+        cellHeight = height/numRows;
+
     int cellWidth = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellwidth);
 
 
