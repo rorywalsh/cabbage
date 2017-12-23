@@ -55,10 +55,7 @@ install:
   - cmd: msbuild Projucer.sln /property:Platform=x64
   - cmd: cd c:/cabbage/CsoundTestWin64 
   - cmd: msbuild CsoundTest.sln /property:Platform=x64
-  - cmd: pwd
-  - cmd: dir
-  - cmd: cd Debug
-  - cmd: cd x64
+  - cmd: cd x64/Debug
   - cmd: dir 
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
   - cmd: appveyorBuildCabbage64.bat
