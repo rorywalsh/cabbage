@@ -64,7 +64,8 @@ Section "Core components" SEC01
 
   File "x64\CabbagePluginEffect.dll"
   File "x64\CabbagePluginSynth.dll"
-  File "../../CsoundTestWin64/x64/Debug/CsoundTest.exe"
+  ;C:\cabbage\CsoundTestWin64\x64\Debug\CsoundTest.exe
+  File "../CsoundTestWin64/x64/Debug/CsoundTest.exe"
   ;File "C:\Users\rory\sourcecode\cabbageaudio\fmod_csoundL64.dll"
   File "../opcodes.txt"
   
