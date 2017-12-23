@@ -50,11 +50,11 @@ install:
   - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
+
+before_build:
   - cmd: cd ../Builds/VisualStudio2017/
   - cmd: msbuild Projucer.sln /property:Platform=x64
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
-
-build:
   - cmd: appveyorBuildCabbage64.bat  
   - cmd: cd c:/cabbage/CsoundTestWin64 
   - cmd: msbuild CsoundTest.sln /property:Platform=x64
