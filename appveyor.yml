@@ -67,5 +67,5 @@ after_build:
   - cmd: c:\PROGRA~2\NSIS\\makensis.exe Cabbage64InstallerCanonical.nsi
 
 artifacts:
-  - path: ../Builds/VisualStudio2017/CabbageCanonicalSetup.exe
+  - path: Builds/VisualStudio2017/CabbageCanonicalSetup.exe
   - path: logs
