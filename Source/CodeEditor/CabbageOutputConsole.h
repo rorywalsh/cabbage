@@ -105,7 +105,7 @@ public:
         textEditor->setBounds (area.reduced (2).withY (0));
     }
 
-    void paint (Graphics& g)
+    void paint (Graphics& g)  override
     {
 #ifndef CabbageLite
         g.fillAll (CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleOutline, Colours::grey.darker()));

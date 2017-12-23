@@ -24,7 +24,7 @@
 #pragma warning(disable: 4100)
 #pragma warning(disable: 4305)
 
-#define CABBAGE_VERSION "Cabbage(64bit) v2.0.27a"
+#define CABBAGE_VERSION "Cabbage(64bit) v2.0.28a"
 
 
 

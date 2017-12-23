@@ -24,17 +24,15 @@
 
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, bool debugMode)
-#ifndef JucePlugin_PreferredChannelConfigurations
+CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const int outs, bool debugMode)
     : csdFile (csdFile), AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-                                         .withInput  ("Input",  AudioChannelSet::discreteChannels (2), true)
+                                         .withInput  ("Input",  AudioChannelSet::discreteChannels (ins), true)
 #endif
-                                         .withOutput ("Output", AudioChannelSet::discreteChannels (2), true)
+                                         .withOutput ("Output", AudioChannelSet::discreteChannels (outs), true)
 #endif
                                         )
-#endif
 {
 
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
@@ -99,16 +97,11 @@ void CsoundPluginProcessor::setupAndCompileCsound (File csdFile, File filePath, 
     }
 
     //instrument must at least be stereo
-    numCsoundChannels = getIntendedNumberOfChannels (csdFile.loadFileAsString());
+    numCsoundChannels = CabbageUtilities::getIntendedNumberOfChannels (csdFile.loadFileAsString());
     csoundParams->nchnls_override = numCsoundChannels;
     csound->SetParams (csoundParams);
     compileCsdFile (csdFile);
 
-    //  AudioProcessor::Bus* ins = getBus (true, 0);
-    //  ins->setCurrentLayout(AudioChannelSet::mono());
-
-    //  AudioProcessor::Bus* outs = getBus (false, 0);
-    //  outs->setCurrentLayout(AudioChannelSet::mono());
 
     addMacros (csdFile.getFullPathName());
 
@@ -259,7 +252,7 @@ void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, Strin
 
         for ( int y = 0 ; y < rows ; y++)
         {
-            matrix->events[i]->add(String());
+            matrix->events[i]->add(" ");
         }
     }
 
@@ -364,43 +357,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
 
     return String::empty;
 }
-//==============================================================================
-int CsoundPluginProcessor::getIntendedNumberOfChannels (String csdText)
-{
 
-    while (csdText.indexOf ("/*") != -1 && csdText.indexOf ("*/") != -1)
-    {
-        const String comments = csdText.substring (csdText.indexOf ("/*"), csdText.indexOf ("*/") + 2);
-        csdText = csdText.replace (comments, "");
-    }
-
-    StringArray array;
-    array.addLines (csdText);
-
-    bool inCsoundInstrumentsSection = false;
-
-    for (int i = 0; i < array.size(); i++)
-    {
-        if (array[i] == "<CsInstruments>")
-            inCsoundInstrumentsSection = true;
-
-        if (inCsoundInstrumentsSection)
-        {
-            if ( array[i].indexOf (";") != -1)
-                array.set (i, array[i].substring (0, array[i].indexOf (";")));
-
-            array.set (i, array[i].removeCharacters ("\t").trimStart());
-
-            if (array[i].contains ("nchnls") && array[i].contains ("="))
-            {
-                String channels = array[i].substring (array[i].indexOf ("=") + 1, (array[i].contains (";") ? array[i].indexOf (";") : 100));
-                return channels.trim().getIntValue();
-            }
-        }
-    }
-
-    return 2;
-}
 //==============================================================================
 const String CsoundPluginProcessor::getName() const
 {
@@ -459,6 +416,8 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+	CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(true, 0).getDescription());
+	CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(false, 0).getDescription());
 }
 
 void CsoundPluginProcessor::releaseResources()
@@ -477,10 +436,10 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 
     const int inputs = layouts.getNumChannels (true, busIndex);
     const int outputs = layouts.getNumChannels (false, busIndex);
-    //CabbageUtilities::debug("inputs:"+String(inputs)+" outputs:"+String(outputs));
 
-    if (inputs == numCsoundChannels && outputs == numCsoundChannels)
-        return true;
+
+	if (inputs == 4 && outputs == 4)
+		return true;
 
     return false;
 #endif
@@ -523,8 +482,8 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     int result = -1;
 
 
-    const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
-    const int outputs = getTotalNumOutputChannels();;
+	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
+	const int outputs =  getTotalNumOutputChannels();;
 
 
 
@@ -739,13 +698,18 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
         {
             const uint8* data = message.getRawData();
             *mbuf++ = *data++;
-            *mbuf++ = *data++;
-            *mbuf++ = *data++;
 
-            if (message.isProgramChange() || message.isChannelPressure())
+            if(message.isChannelPressure() || message.isProgramChange())
+            {
+                *mbuf++ = *data++;
                 cnt += 2;
+            }
             else
-                cnt += 3;
+            {
+                *mbuf++ = *data++;
+                *mbuf++ = *data++;
+                cnt  += 3;
+            }
         }
 
         midiData->midiBuffer.clear();

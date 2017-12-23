@@ -19,8 +19,9 @@
 
 #include "FileTab.h"
 
-FileTab::FileTab (String name, String filename):
+FileTab::FileTab (String name, String filename, bool isCsdFile):
     TextButton (name, filename),
+    isCsdFile(isCsdFile),
     csdFile (filename),
     play ("Play", DrawableButton::ButtonStyle::ImageStretched),
     close ("", DrawableButton::ButtonStyle::ImageStretched),
@@ -34,27 +35,24 @@ FileTab::FileTab (String name, String filename):
     play.setClickingTogglesState (true);
     play.setName ("playButton");
 
-    addAndMakeVisible (close);
+
     close.setName ("closeButton");
     close.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
     close.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
     close.setTooltip ("Close file");
     close.getProperties().set ("filename", csdFile.getFullPathName());
 
-    addAndMakeVisible (play);
     play.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
     play.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
     play.setClickingTogglesState (true);
     play.getProperties().set ("filename", csdFile.getFullPathName());
 
-    addAndMakeVisible (showEditor);
     showEditor.setName ("showEditorButton");
     showEditor.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
     showEditor.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
     showEditor.setClickingTogglesState (true);
     showEditor.setTooltip ("Show plugin Editor");
 
-    addAndMakeVisible (editGUI);
     editGUI.setName ("editGUIButton");
     editGUI.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
     editGUI.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
@@ -65,6 +63,15 @@ FileTab::FileTab (String name, String filename):
     setDrawableImages (close, 25, 25, "close");
     setDrawableImages (showEditor, 25, 25, "showEditor");
     setDrawableImages (editGUI, 25, 25, "editGUI");
+
+    addAndMakeVisible (close);
+
+    if(isCsdFile)
+    {
+        addAndMakeVisible(play);
+        addAndMakeVisible(showEditor);
+        addAndMakeVisible(editGUI);
+    }
 }
 
 void FileTab::drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height)
@@ -87,24 +94,32 @@ void FileTab::drawButtonShape (Graphics& g, const Path& outline, Colour baseColo
 
 void FileTab::drawButtonText (Graphics& g)
 {
-    Font font (jmin (15.0f, getHeight() * 0.6f));
-    g.setFont (font);
-    g.setColour (findColour (getToggleState() ? TextButton::textColourOnId
-                             : TextButton::textColourOnId)
-                 .darker (getToggleState() ? 0.f : 0.5f));
+    Font font(jmin(15.0f, getHeight() * 0.6f));
+    g.setFont(font);
+    g.setColour(findColour(getToggleState() ? TextButton::textColourOnId
+                                            : TextButton::textColourOnId)
+                        .darker(getToggleState() ? 0.f : 0.5f));
 
-    const int yIndent = jmin (4, proportionOfHeight (0.3f));
-    const int cornerSize = jmin (getHeight(), getWidth()) / 2;
-
-    const int fontHeight = roundToInt (font.getHeight() * 0.6f);
-    const int leftIndent  = 140;
+    const int yIndent = jmin(4, proportionOfHeight(0.3f));
+    const int cornerSize = jmin(getHeight(), getWidth()) / 2;
+    const int fontHeight = roundToInt(font.getHeight() * 0.6f);
+    const int leftIndent = 140;
 
     const int textWidth = getWidth() - 165;
 
     if (textWidth > 0)
-        g.drawFittedText (getButtonText(),
-                          leftIndent, yIndent, textWidth, getHeight() - yIndent * 2,
-                          Justification::centred, 1);
+    {
+        if(isCsdFile)
+        g.drawFittedText(getButtonText(),
+                         leftIndent, yIndent, textWidth, getHeight() - yIndent * 2,
+                         Justification::centred, 1);
+        else
+            g.drawFittedText(getButtonText(),
+                             10, yIndent, getWidth(), getHeight() - yIndent * 2,
+                             Justification::centred, 1);
+    }
+
+
 }
 
 void FileTab::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown)
@@ -154,13 +169,15 @@ void FileTab::addButtonListeners (Button::Listener* listener)
 
 void FileTab::disableButtons (bool disable)
 {
-    if (disable)
+    if(isCsdFile)
     {
-        overlay.setVisible (true);
-        overlay.toFront (true);
+        if (disable)
+        {
+            overlay.setVisible(true);
+            overlay.toFront(true);
+        } else
+            overlay.setVisible(false);
     }
-    else
-        overlay.setVisible (false);
 
 }
 

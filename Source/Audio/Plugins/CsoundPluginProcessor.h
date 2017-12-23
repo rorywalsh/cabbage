@@ -32,10 +32,9 @@
 //==============================================================================
 class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 {
-
 public:
     //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, bool debugMode = false);
+    CsoundPluginProcessor (File csoundInputFile, const int ins = 2, const int outs = 2, bool debugMode = false);
     ~CsoundPluginProcessor();
 
     //==============================================================================
@@ -43,10 +42,7 @@ public:
     void setupAndCompileCsound (File csdFile, File filePath, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-
-#ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-#endif
 
     virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
 
@@ -72,7 +68,7 @@ public:
     virtual void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    int getIntendedNumberOfChannels (String csdText);       //gets the number of chanels delcared using nchnls, regardless of errors..
+
     //==============================================================================
     //Csound API functions for deailing with midi input
     static int OpenMidiInputDevice (CSOUND* csnd, void** userData, const char* devName);

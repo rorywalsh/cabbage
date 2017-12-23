@@ -15,6 +15,7 @@
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
+
 #ifndef Native_File_Browser
  #define Use_Native_File_Browser 1
 #endif
@@ -163,6 +164,9 @@
  #define   JUCE_FORCE_USE_LEGACY_PARAM_IDS 1
 #endif
 
+#ifndef JUCE_DISPLAY_SPLASH_SCREEN
+ #define JUCE_DISPLAY_SPLASH_SCREEN 0
+#endif
 // [END_USER_CODE_SECTION]
 
 /*
@@ -178,10 +182,6 @@
 */
 
 // BEGIN SECTION A
-
-#ifndef JUCE_DISPLAY_SPLASH_SCREEN
- #define JUCE_DISPLAY_SPLASH_SCREEN 1
-#endif
 
 #ifndef JUCE_REPORT_APP_USAGE
  #define JUCE_REPORT_APP_USAGE 1

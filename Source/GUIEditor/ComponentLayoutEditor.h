@@ -46,7 +46,7 @@ public:
 
     ValueTree widgetData;
     void resized ();
-    void paint (Graphics& g);
+    void paint (Graphics& g)  override;
     void setTargetComponent (Component* target);
     void bindWithTarget ();
     void updateFrames ();

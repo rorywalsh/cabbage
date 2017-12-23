@@ -59,8 +59,8 @@ public:
     void updateColourScheme (bool isCsdFile = true);
     CodeDocument::Position positionInCode;
     ValueTree valueTree;
-    void codeDocumentTextDeleted (int, int);
-    void codeDocumentTextInserted (const juce::String&, int);
+    void codeDocumentTextDeleted (int, int) override;
+    void codeDocumentTextInserted (const juce::String&, int) override;
     void displayOpcodeHelpInStatusBar (String lineFromCsd);
     const String getLineText (int lineNumber);
     StringArray addItemsToPopupMenu (PopupMenu& m);
@@ -83,7 +83,7 @@ public:
     {
     public:
         CurrentLineMarker(): Component() {}
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             g.fillAll (Colours::transparentBlack);
             g.setColour (colour);
@@ -127,7 +127,7 @@ public:
             setVisible (false);
         }
 
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             if (isVisible())
             {
@@ -145,7 +145,7 @@ public:
 
     ScopedPointer<AddCodeToGUIEditorComponent> addToGUIEditorPopup;
 
-    void run() // thread for parsing text for variables on startup
+    void run() override// thread for parsing text for variables on startup
     {
         if (parseForVariables == true)
             parseTextForVariables();
@@ -157,12 +157,13 @@ public:
     void updateCurrenLineMarker (ArrowKeys arrow = ArrowKeys::None);
     void mouseDown (const MouseEvent& e) override;
     void handleTabKey (String direction);
-    void handleReturnKey();
-    void handleEscapeKey();
-    void mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& mouse);
+    void handleReturnKey() override;
+    void handleEscapeKey() override;
+    void mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& mouse) override;
     void insertCode (int lineNumber, String codeToInsert, bool replaceExistingLine, bool highlightLine);
     void insertNewLine (String text);
-    void insertTextAtCaret (const String& textToInsert);
+    void insertTextAtCaret (const String& textToInsert) override;
+    void updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight);
     void insertMultiLineTextAtCaret (String text);
     void insertText (String text);
     void highlightLines (int firstLine, int lastLine);
@@ -202,16 +203,16 @@ public:
     //=========================================================
     void setAllText (String text) {           getDocument().replaceAllContent (text);              }
     void setOpcodeStrings (String opcodes) {  opcodeStrings.addLines (opcodes);                    }
-    int getNumRows() {                       return variableNamesToShow.size();                  }
+    int getNumRows() override  {                       return variableNamesToShow.size();                  }
     bool hasFileChanged() {                  return getDocument().hasChangedSinceSavePoint();    }
     void setSavePoint() {                    getDocument().setSavePoint();                       }
     int getFontSize() {                      return currentFontSize;                             }
     void setFontSize (int size) {             currentFontSize = size;                             }
     //=========================================================
     void removeSelectedText();
-    void listBoxItemDoubleClicked (int row, const MouseEvent& e) {};
-    void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected);
-    void selectedRowsChanged (int /*lastRowselected*/) {};
+    void listBoxItemDoubleClicked (int row, const MouseEvent& e) override {};
+    void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected) override;
+    void selectedRowsChanged (int /*lastRowselected*/) override {};
     String lastAction;
     bool allowUpdateOfPluginGUI = false;
 

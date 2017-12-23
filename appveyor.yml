@@ -1,0 +1,71 @@
+image: Visual Studio 2017
+
+version: configuring.{build}
+configuration:
+- Debug
+
+environment:
+  VSTOOLSET: v141
+
+
+platform:
+- x64
+
+
+clone_folder: c:\cabbage
+
+# scripts that run after cloning repository
+install:
+  - cmd: dir
+  - cmd: cd c:/
+  - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
+  - cmd: 7z.exe x csound-windows-x64-6.10.0-rc2-1060.zip -oc:\Csound6_x64
+  - cmd: cd Csound6_x64
+  - cmd: mkdir "C:/Program Files/Csound6_x64"
+  - ps: Get-ChildItem -Path "C:/Csound6_x64" | Copy-Item -Destination "C:/Program Files/Csound6_x64" -Recurse -Container
+  - cmd: cd "C:/Program Files/Csound6_x64"
+  - cmd: cd include
+  - cmd: mkdir csound
+  - cmd: cd csound
+  - ps: Copy-Item ../*.h .
+  - ps: Copy-Item ../*.hpp . 
+  - cmd: dir
+  - cmd: cd "C:/Program Files/Csound6_x64"
+  - cmd: dir
+  - cmd: mkdir lib 
+  - cmd: cd lib  
+  - ps: Copy-Item ../*.dll .
+  - ps: Copy-Item ../*.lib .
+  - cmd: dir
+  - cmd: pwd
+  - cmd: cd c:/
+  - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
+  - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/asiosdk2.3.zip'
+  - cmd: 7z.exe x vstsdk368_08_11_2017_build_121.zip
+  - cmd: 7z.exe x asiosdk2.3.zip
+  - cmd: mkdir SDKs
+  - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
+  - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
+  - cmd: git clone https://github.com/WeAreROLI/JUCE.git
+  - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
+  - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
+  - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
+
+build:
+  project: c:/cabbage/Builds/VisualStudio2017/Cabbage.sln
+
+before_build:
+  - cmd: cd ../Builds/VisualStudio2017/
+  - cmd: msbuild Projucer.sln /property:Platform=x64
+  - cmd: cd c:/cabbage/Builds/VisualStudio2017/
+  - cmd: appveyorBuildCabbage64.bat  
+  - cmd: cd c:/cabbage/CsoundTestWin64 
+  - cmd: msbuild CsoundTest.sln /property:Platform=x64
+  - cmd: cd c:/cabbage/Builds/VisualStudio2017/
+
+after_build:
+  - cmd: c:\PROGRA~2\NSIS\\makensis.exe Cabbage64InstallerCanonical.nsi
+
+artifacts:
+  - path: Builds/VisualStudio2017/CabbageCanonicalSetup.exe
+  - path: logs

@@ -1,1 +1,2 @@
+<a name="file_populate"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 **populate("filetype", "dir")** Sets the type of file to search for, and the initial directory to look in. For example, to set the file type to wave files use "*.wav" as the filetype string. If using the filebutton to record parameter snapshots, you must specify a filetype of "\*.snaps", and a mode type of snapshot. If no directory is specified, the file browser will open in the current working directory.  

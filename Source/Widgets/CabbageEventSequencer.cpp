@@ -53,6 +53,10 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
 
 	//matrix belongs to processor..
     owner->createEventMatrix(numColumns, numRows, getChannel());
+    //init matrix data:
+    for( int x = 0 ; x < numColumns ; x++)
+        for( int y = 0 ; y < numRows ; y++)
+            owner->setEventMatrixData(x, y, getChannel(), String::empty);
 
 }
 
@@ -67,6 +71,9 @@ void CabbageEventSequencer::arrangeTextEditors(ValueTree wData)
     const int width = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
     int cellHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellheight);
+    if (cellHeight == 0)
+        cellHeight = height/numRows;
+
     int cellWidth = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cellwidth);
 
 
@@ -254,6 +261,8 @@ bool CabbageEventSequencer::keyPressed (const KeyPress& key, Component* originat
         const int currentColumn = int (ted->getProperties().getWithDefault ("Column", 0));
         const int currentRow = int (ted->getProperties().getWithDefault ("Row", 0));
 
+        setCellData(currentColumn, currentRow, ted->getText()+key.getTextCharacter());
+
         if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
             key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
             key.isKeyCode (KeyPress::downKey) ||
@@ -295,7 +304,7 @@ void CabbageEventSequencer::swapFocusForEditors (KeyPress key, int col, int row)
 
     else if (key.isKeyCode (KeyPress::returnKey))
     {
-        setCellData(col, row, getText());
+        setCellData(col, row, getEditor (col, row)->getText());
         newRow = (row < numRows - 1 ? row + 1 : 0);
         newCol = col;
     }

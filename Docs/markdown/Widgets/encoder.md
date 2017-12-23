@@ -2,16 +2,9 @@
 
 Encoder creates an endless rotary encoder similar to those found in certain well-known hardware samplers. Unlike regular sliders, *encoder* doesn't have a start and stop point. One may set a starting point, but after this the user can drag up or down as long as they like. By setting a very small slider increment these widgets can offer a level of fine grain control not possible with regular sliders. 
 
-```csharp
-encoder bounds(x, y, width, height), channel("chan"), min(val), max(val)\
-text("name"), textbox(val), value(val), increment(val), textcolour("colour"), fontcolour("colour"), \
-trackercolour("colour"), outlinecolour("colour"), identchannel("channel"), alpha(val), \
-visible(val), caption("caption"), rotate(radians, pivotx, pivoty),\
-widgetarray("chan", number), popuptext("text") active(val)
-```
-<!--(End of syntax)/-->
-
-##Identifiers
+<big></pre>
+encoder WIDGET_SYNTAX
+</pre></big>
 
 ### Specific Identifiers
 
@@ -63,17 +56,46 @@ widgetarray("chan", number), popuptext("text") active(val)
 
 <!--(End of identifiers)/-->
 
+![Button](../images/encoder.gif)
+
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 200), caption("Untitled"), pluginID("plu1"), colour(57, 110, 185)
-encoder bounds(12, 8, 105, 105), channel("vslider1"), value(100), sliderincr(0.01), text("Encoder"), colour("yellow")
-rslider bounds(140, 8, 50, 50), text("R-Slider"), channel("rslider1"), range(0, 1, 0)
-rslider bounds(140, 62, 50, 50), channel("rslider2"), range(0, 1, .5), colour("lime"), trackercolour("pink")
-hslider bounds(196, 8, 200, 30), channel("hslider1"), range(0, 1, .2), trackercolour("red"), textbox(1)
-hslider bounds(196, 42, 200, 30), text("H-Slider"), channel("hslider2"), range(0, 1, 1)
-hslider bounds(196, 42, 200, 30), text("H-Slider"), channel("hslider2"), range(0, 1, 1)
+form caption("Encoder Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
+encoder bounds(70, 140, 41, 119) identchannel("widgetIdent"),  
 </Cabbage>
-```
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
 
-![Encoder](../images/encoder.png)
+seed 0 
+;basic usage
+instr 1
+    aTone oscili chnget:k("gain"), 300
+    outs aTone, aTone    
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
+```
+<!--(Widget Example)/-->

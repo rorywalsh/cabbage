@@ -37,7 +37,7 @@ public:
     void listBoxItemDoubleClicked (int row, const MouseEvent& e);
 
     void paintListBoxItem (int rowNumber, Graphics& g,
-                           int width, int height, bool rowIsSelected);
+                           int width, int height, bool rowIsSelected) override;
 
     void selectedRowsChanged (int /*lastRowselected*/) {};
     ListBox filesListBox;;

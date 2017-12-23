@@ -150,11 +150,11 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails (44100, 512);
 
-        AudioProcessor::Bus* ins = processor->getBus (true, 0);
-        ins->setCurrentLayout (AudioChannelSet::discreteChannels (numberOfChannels));
+        //AudioProcessor::Bus* ins = processor->getBus (true, 0);
+        //ins->setCurrentLayout (AudioChannelSet::discreteChannels (numberOfChannels));
 
-        AudioProcessor::Bus* outs = processor->getBus (false, 0);
-        outs->setCurrentLayout (AudioChannelSet::discreteChannels (numberOfChannels));
+        //AudioProcessor::Bus* outs = processor->getBus (false, 0);
+        //outs->setCurrentLayout (AudioChannelSet::discreteChannels (numberOfChannels));
 
         AudioProcessorGraph::Node* node = graph.addNode (processor, nodeId);
         ScopedPointer<XmlElement> xmlElem;

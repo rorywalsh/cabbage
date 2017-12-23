@@ -70,7 +70,7 @@ public:
     CabbagePluginEditor* owner;
 
     //ValueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
@@ -79,9 +79,9 @@ public:
     ValueTree widgetData;
 
     void sendTextToCsound();
-    bool keyPressed (const juce::KeyPress& key, Component*);
-    void textEditorReturnKeyPressed (TextEditor&);
-    void resized();
+    bool keyPressed (const juce::KeyPress& key, Component*) override;
+    void textEditorReturnKeyPressed (TextEditor&) override;
+    void resized() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextEditor);
 

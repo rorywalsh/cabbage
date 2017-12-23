@@ -707,7 +707,7 @@ void CabbageWidgetData::addFiles (StringArray strTokens, ValueTree widgetData, S
 
     for (int i = 0; i < strTokens.size(); i++)
     {
-        files.append (strTokens[i]);
+        files.append (strTokens[i].trim());
     }
     if(identifier == "import")
         setProperty (widgetData, CabbageIdentifierIds::importfiles, files);

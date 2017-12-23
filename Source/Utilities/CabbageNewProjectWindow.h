@@ -69,7 +69,7 @@ public:
 
     void buttonClicked (Button* button);
 
-    void paint (Graphics& g)
+    void paint (Graphics& g)  override
     {
         g.fillAll (Colour (147, 210, 0));
         g.setColour (Colours::white);

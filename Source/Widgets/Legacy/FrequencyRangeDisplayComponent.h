@@ -55,7 +55,7 @@ public:
 
     }
 
-    void paint (Graphics& g)
+    void paint (Graphics& g)  override
     {
         g.fillAll (backgroundColour);
         g.setColour (fontColour);

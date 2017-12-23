@@ -49,9 +49,9 @@ public:
 
     ValueTree widgetData;
 
-    void resized() {};
-    void paint (Graphics& g);
-    void mouseDown (const MouseEvent& e);
+    void resized() override {};
+    void paint (Graphics& g)  override;
+    void mouseDown (const MouseEvent& e)  override;
     void setText (String _text);
 
 

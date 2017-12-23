@@ -39,12 +39,14 @@ public:
     // This creates new instances of the plugin..
     GenericCabbagePluginProcessor* JUCE_CALLTYPE createGenericPluginFilter (File inputFile)
     {
-        return new GenericCabbagePluginProcessor (inputFile);
+		const int numChannels = CabbageUtilities::getIntendedNumberOfChannels(inputFile.loadFileAsString());
+        return new GenericCabbagePluginProcessor (inputFile, numChannels, numChannels);
     }
 
     CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile)
     {
-        return new CabbagePluginProcessor (inputFile);
+		const int numChannels = CabbageUtilities::getIntendedNumberOfChannels(inputFile.loadFileAsString());
+        return new CabbagePluginProcessor (inputFile, numChannels, numChannels);
     }
 
     AudioGraph (CabbageMainComponent& owner, PropertySet* settingsToUse,

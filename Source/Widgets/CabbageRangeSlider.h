@@ -68,10 +68,10 @@ public:
     ~CabbageRangeSlider() {};
 
     void setCurrentValues (float min, float max);
-    void resized();
+    void resized()  override;
     void showPopup (int displayTime);
     //ValueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}

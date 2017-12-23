@@ -1,5 +1,7 @@
 # Macros and Reserved Channels
-Cabbage macros can be used to define a range of different identifiers, and provide a way of achieving a consistent look and feel across your instrument's widgets, without having to hardcode each and every identifier. To create a macro one must use the `#define` keyword. Macros can appear anywhere after a widget has been declared. The following code will create a macro called `SLIDER1` that will define several attributes of a slider widget:
+Cabbage macros can be used to define a range of different identifiers, and provide a way of achieving a consistent look and feel across your instrument's widgets, without having to hard-code each and every identifier. To create a macro one must use the `#define` keyword. Macros can appear anywhere after a widget has been declared. Their use is normally reserved for entire identifier strings as in the examples below. You may however use them to form part of an identifier's parameters, but they resultant identifer will not be available for updating through the use of the GUI editor. 
+
+The following code will create a macro called `SLIDER1` that will define several attributes of a slider widget:
 
 ```csharp
 #define SLIDER1 colour("red"), fontcolour("yellow"), outlinecolour("red"), range(0, 1000, 500)

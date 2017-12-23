@@ -42,15 +42,15 @@ public:
     CabbageImage (ValueTree cAttr, CabbagePluginEditor* _owner, bool isLineWidget = false);
     ~CabbageImage() {};
 
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
-    void paint (Graphics& g);
-    void mouseDown (const MouseEvent& e);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
+    void paint (Graphics& g) override;
+    void mouseDown (const MouseEvent& e) override;
 
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
+    void valueTreeChildAdded (ValueTree&, ValueTree&) override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {}
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     String getTooltip()
     {
         return tooltipText;

@@ -110,7 +110,7 @@ private:
     bool reDraw;
     double scrubberPosition;
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     ScopedPointer<ZoomButton> zoomIn, zoomOut;
 
     AudioFormatManager formatManager;

@@ -51,11 +51,11 @@ public:
     CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
     ~CabbageMainComponent();
     //==============================================================================
-    void changeListenerCallback (ChangeBroadcaster* source);
-    void actionListenerCallback (const String& message);
-    void buttonClicked (Button* button);
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
-    void updateCodeInEditor (CabbagePluginEditor* pluginEditor, bool replaceExistingLine);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void actionListenerCallback (const String& message) override;
+    void buttonClicked (Button* button) override;
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
+    void updateCodeInEditor (CabbagePluginEditor* pluginEditor, bool replaceExistingLine, bool guiPropUpdate =false);
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
@@ -169,7 +169,7 @@ private:
         }
 
         void closeButtonPressed() override {    setVisible (false);  }
-        void paint (Graphics& g) { g.fillAll (colour); }
+        void paint (Graphics& g)  override { g.fillAll (colour); }
     };
 
     ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;

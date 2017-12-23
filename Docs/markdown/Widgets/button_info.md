@@ -2,16 +2,9 @@
 
 Infobuttons can be used to open html files in the system's default web browser. When clicked, the file passed to the file() identifier will be opened, if it is a valid file. This widget can be useful for providing help files or any other additional information about your instruments. 
 
-```csharp
-infobutton bounds(x, y, width, height), text("name"), \
-colour("colour"), fontcolour("colour") file("file name"), \
-identchannel("chan"), alpha(val), visible(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), \
-popuptext("text"), active(val), svgfile("type", "file")
-```
-<!--(End of syntax)/-->
-
-## Identifiers
+<big></pre>
+infobutton WIDGET_SYNTAX
+</pre></big>
 
 ### Specific Identifiers
 
@@ -24,8 +17,6 @@ popuptext("text"), active(val), svgfile("type", "file")
 {! ./markdown/Widgets/Properties/alpha.md !} 
 
 {! ./markdown/Widgets/Properties/bounds.md !} 
-
-<!--  {! ./markdown/Widgets/Properties/channel.md !}   Does button info have channel property ? -->
 
 {! ./markdown/Widgets/Properties/colour_0.md !} 
 
@@ -47,17 +38,49 @@ popuptext("text"), active(val), svgfile("type", "file")
 
 {! ./markdown/Widgets/Properties/widgetarray.md !} 
 
-
 <!--(End of identifiers)/-->
 
+![](../images/button_info.gif)
+
+
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Infobutton Example"), pluginID("plu1"), colour(39, 40, 34)
 button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
-infobutton bounds(120, 16, 100, 30), channel("button"),  file("README.txt"), text("Info")
+infobutton bounds(120, 16, 100, 30), channel("button"),  file("button.csd"), text("Info")
 filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
 </Cabbage>
-```
+</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
 
-![](../images/buttonExample.png)
+seed 0 
+;basic usage
+instr 1
+
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
+```
+<!--(End Widget Example)/-->
+

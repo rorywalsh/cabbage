@@ -2,12 +2,9 @@
 
 Form creates the main application window. pluginid() is the only required identifier. The default values for size are 600x300. 
 
-```csharp
-form caption("title"), size(Width, Height), pluginid("plug"), \
-colour("colour"), guirefresh(val), import("file1", "file2"), bundle("./folder1", "file1.txt", etc)
-```
-<!--(End of syntax)/-->
-##Identifiers
+<big></pre>
+form WIDGET_SYNTAX
+</pre></big>
 
 ### Specific Identifiers
 {! ./markdown/Widgets/Properties/caption.md !} 
@@ -27,12 +24,36 @@ colour("colour"), guirefresh(val), import("file1", "file2"), bundle("./folder1",
 {! ./markdown/Widgets/Properties/colour.md !}     
 
 <!--(End of identifiers)/-->
+![](../images/formExample.png)
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Form Example"), pluginID("plu1"), colour(39, 40, 34)
 </Cabbage>
-```
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
 
-![](../images/formExample.png)
+;basic usage
+instr 1 
+endin
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+</CsScore>
+</CsoundSynthesizer>
+```
+<!--(End Widget Example)/-->

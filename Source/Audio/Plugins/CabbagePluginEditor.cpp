@@ -147,10 +147,6 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
     newWidget.setProperty (CabbageIdentifierIds::left, position.getX(), 0);
 
     processor.cabbageWidgets.addChild (newWidget, -1, 0);
-    const String channel = CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::channel);
-
-    if (channel.isNotEmpty())
-        CabbageWidgetData::setStringProp (newWidget, CabbageIdentifierIds::channel, channel + String (processor.cabbageWidgets.getNumChildren()));
 
     setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
 
@@ -491,6 +487,7 @@ void CabbagePluginEditor::buttonClicked (Button* button)
     if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
     {
         const StringArray textItems = cabbageButton->getTextArray();
+        CabbageUtilities::debug(cabbageButton->getName());
         const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
         const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
 

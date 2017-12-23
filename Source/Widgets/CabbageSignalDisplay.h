@@ -58,7 +58,7 @@ public:
     ~CabbageSignalDisplay() {};
 
     //ValueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
@@ -68,21 +68,21 @@ public:
 
     void setBins (int min, int max);
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     void drawSonogram();
     void drawSpectroscope (Graphics& g);
     void drawWaveform (Graphics& g);
     void drawLissajous (Graphics& g);
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     void setSignalFloatArray (Array<float, CriticalSection> _points);
     void setSignalFloatArraysForLissajous (Array<float, CriticalSection> _points1, Array<float, CriticalSection> _points2);
-    void resized();
-    void mouseMove (const MouseEvent& e);
+    void resized() override;
+    void mouseMove (const MouseEvent& e) override;
     void showPopup (String text);
     void showScrollbar (bool show);
     void zoomOut (int factor = 1);
     void zoomIn (int factor = 1);
-    void timerCallback();
+    void timerCallback() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSignalDisplay);
 };

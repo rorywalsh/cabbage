@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="200"
+   height="100"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="led_on.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview2990"
+     showgrid="false"
+     inkscape:zoom="2.38396"
+     inkscape:cx="39.110256"
+     inkscape:cy="31.873329"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <filter
+       id="filter3002"
+       inkscape:label="Drop Shadow"
+       color-interpolation-filters="sRGB">
+      <feFlood
+         id="feFlood3004"
+         flood-opacity="0.5"
+         flood-color="rgb(0,0,0)"
+         result="flood" />
+      <feComposite
+         id="feComposite3006"
+         in2="SourceGraphic"
+         in="flood"
+         operator="in"
+         result="composite1" />
+      <feGaussianBlur
+         id="feGaussianBlur3008"
+         stdDeviation="2"
+         result="blur" />
+      <feOffset
+         id="feOffset3010"
+         dx="4"
+         dy="4"
+         result="offset" />
+      <feComposite
+         id="feComposite3012"
+         in2="offset"
+         in="SourceGraphic"
+         operator="over"
+         result="composite2" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     sodipodi:type="arc"
+     style="fill:#00ff00;fill-opacity:1;stroke:#4d4d4d;stroke-width:1.69131088;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+     id="path2988"
+     sodipodi:cx="42.156746"
+     sodipodi:cy="42.004311"
+     sodipodi:rx="39.639927"
+     sodipodi:ry="39.639927"
+     d="m 81.796673,42.004311 a 39.639927,39.639927 0 1 1 -79.279854,0 39.639927,39.639927 0 1 1 79.279854,0 z"
+     transform="matrix(1.037037,0,0,1.2169312,-0.43770321,-1.7618409)" />
+  <text
+     xml:space="preserve"
+     style="font-size:45.2857399px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
+     x="105.1749"
+     y="56.113831"
+     id="text2992"
+     sodipodi:linespacing="125%"
+     transform="scale(0.87813101,1.1387822)"><tspan
+       sodipodi:role="line"
+       id="tspan2994"
+       x="105.1749"
+       y="56.113831">Stop</tspan></text>
+  <rect
+     style="fill:none;fill-opacity:1;stroke:#666666;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     id="rect4141"
+     width="199.24831"
+     height="99.833893"
+     x="0.41947013"
+     y="0.16611017"
+     rx="4.4029999" />
+</svg>

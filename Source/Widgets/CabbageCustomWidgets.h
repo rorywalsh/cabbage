@@ -73,11 +73,11 @@ public:
     CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageMeter() {};
 
-    void paint (Graphics& g);
-    void resized();
+    void paint (Graphics& g)  override;
+    void resized()  override;
 
     //ValueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}

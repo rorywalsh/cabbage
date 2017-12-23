@@ -33,7 +33,7 @@ public:
 
 
 
-    void resized();
+    void resized() override;
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     TextEditor* getEditor (int column, int row);
     void swapFocusForEditors (KeyPress key, int col, int row);

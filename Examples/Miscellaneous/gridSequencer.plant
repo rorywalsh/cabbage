@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plant>
+<namespace>rw</namespace>
+<name>gridSequencer</name>
+<cabbagecode>
+</cabbagecode>
+<cabbagecodescript>
+var channelNumber = 1;
+Cabbage.print("image bounds(10, 10, 360, 178) colour(0, 0, 0, 0){");
+//Cabbage.print("image bounds(0, 0, 23, 176), colour(100, 100, 100), identchannel(\"scrubberIdent\")");
+
+for(var y = 0 ; y < 8 ; y++)
+{    
+  for (var x = 0 ; x < 16 ; x++)
+  {
+  if(y==0)
+    Cabbage.print("image bounds("+((x*22))+", 0, 23, 176), colour(100, 100, 100), identchannel(\"scrubberIdent"+(x+1)+"\")");
+
+  Cabbage.print("checkbox bounds("+x*22+","+y*22+", 20, 20), colour(\"red\"), channel(\"gridChannel"+channelNumber+"\")");
+  channelNumber++;
+  }
+}
+Cabbage.print("}");
+</cabbagecodescript>
+<csoundcode>
+opcode rw_RandomiseGrid,0,S
+SIn xin
+iCnt init 0
+until iCnt > 128 do
+	S2 sprintfk "%sgridChannel%d", SIn, iCnt+1
+	iValue random 0, 100
+	chnset iValue < 80 ? 0 : 1, S2
+	iCnt=iCnt+1
+enduntil		
+endop
+
+opcode rw_ClearGrid,0,S
+SIn xin
+iCnt init 0
+until iCnt > 128 do
+	S2 sprintfk "%sgridChannel%d", SIn, iCnt+1
+	chnset 0, S2
+	iCnt=iCnt+1
+enduntil		
+endop
+
+opcode rw_SetGridScrubberPosition, 0,Si
+    SIn, iBeat xin
+    iCnt = 0    
+
+    until iCnt > 16 do
+    SChannel sprintfk "%sscrubberIdent%d", SIn, iCnt
+        if iCnt==iBeat then
+            SMessage strcpyk "colour(200, 200, 200)"
+            chnset SMessage, SChannel 
+        else
+            SMessage strcpyk "colour(100, 100, 100)"
+            chnset SMessage, SChannel 
+        endif
+        
+        
+    iCnt+=1
+    od
+       
+endop
+
+opcode rw_GetGridValue, k,Skk
+    SChan, kIndex, kRow xin
+    kValue init 0
+    SChannel sprintfk "%sgridChannel%d", SChan, kIndex+((kRow-1)*16)
+    kValue chnget SChannel
+    xout kValue
+endop
+
+</csoundcode>
+<info>
+Grid Sequencer. Rory Walsh 2017
+16x8 grid sequencer
+UDOs:
+kValue rw_GetGridValue SChannel, kBeat, kRow
+	Gets the values of the checkbox at index, kBeat on kRow
+rw_RandomiseGrid SChannel
+	Randomly changes the values of all checkboxes in grid
+</info>
+</plant>
+

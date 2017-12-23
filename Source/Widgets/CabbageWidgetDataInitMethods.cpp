@@ -17,9 +17,6 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGEWIDGETDATAINITMETHODS_H_INCLUDED
-#define CABBAGEWIDGETDATAINITMETHODS_H_INCLUDED
-
 #include "../Utilities/CabbageUtilities.h"
 #include "../CabbageIds.h"
 #include "CabbageWidgetData.h"
@@ -206,7 +203,7 @@ void CabbageWidgetData::setEventSequencerProperties (ValueTree widgetData, int I
     setProperty (widgetData, CabbageIdentifierIds::numberofsteps, 16);
     setProperty (widgetData, CabbageIdentifierIds::bpm, 60);
     setProperty (widgetData, CabbageIdentifierIds::cellwidth, 0);
-    setProperty (widgetData, CabbageIdentifierIds::cellheight, 20);
+    setProperty (widgetData, CabbageIdentifierIds::cellheight, 0);
 }
 
 void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
@@ -217,7 +214,6 @@ void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
     channels.append ("yChan");
     setProperty (widgetData, CabbageIdentifierIds::xyautoindex, 0);
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
-    //setProperty(widgetData, CabbageIdentifierIds::ychannel, channels[1]);
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
@@ -865,4 +861,3 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 }
 
-#endif  // CABBAGEWIDGETDATAINITMETHODS_H_INCLUDED

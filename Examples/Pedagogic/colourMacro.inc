@@ -1,1 +1,0 @@
-#define colourMacro colour("red")

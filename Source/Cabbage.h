@@ -34,7 +34,7 @@ public:
     Cabbage();
 
     static Cabbage& getApp();
-    void changeListenerCallback (ChangeBroadcaster* source);
+
     const String getApplicationName() override
     {
         return ProjectInfo::projectName;

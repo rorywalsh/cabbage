@@ -2,17 +2,11 @@
 
 The eventsequencer widget is an event based sequencer that can be used to send score events to Csound. Each cell in the matrix represents a score event that will be sent to Csound. The associated "channel" sets the current position of the steps and is controlled by Csound using the `chnset` opcode. 
 
-```csharp
-eventsequencer bounds(x, y, width, height), channel("position"), fontcolour("colour"), matrixsize(rows, cols), shownumbers(val), cellwidth(val),
-cellheight(val), identchannel("channel"), alpha(val), visible(val), text("Track1", "Track2", "Track3", "Track4"), orientation("type")
-rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefix(col, "string")
-```
-<!--(End of syntax)/-->
-
-##Identifiers
+<big></pre>
+eventsequencer WIDGET_SYNTAX
+</pre></big>
 
 ### Specific Identifiers
-
 
 {! ./markdown/Widgets/Properties/celldata.md !}
 
@@ -49,13 +43,12 @@ rotate(radians, pivotx, pivoty), active(val), colprefix(col, "string"), rowprefi
 
 {! ./markdown/Widgets/Properties/rotate.md !}
 
-{! ./markdown/Widgets/Properties/text.md !} In the case of an envetsequencer widget, each string will appear either above or to the left of the matrix, depening on the orientation. 
-
 {! ./markdown/Widgets/Properties/visible.md !}
 
 <!--(End of identifiers)/-->
 
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("String Sequencer") size(400, 400), pluginID("def1")
@@ -65,5 +58,4 @@ button bounds(314, 82, 70, 27) channel("startStop") text("Start", "Stop")
 rslider bounds(316, 112, 70, 70) channel("position") range(0, 15, 0, 1, 1) 
 </Cabbage>
 ```
-
-![eventsequencer](../images/eventsequencer.gif)
+<!--(End Widget Example)/-->

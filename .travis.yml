@@ -1,101 +1,74 @@
-sudo: required
-dist: trusty
-
-language: cpp
-compiler: gcc
-
-git:
-    depth: 10
-
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "OsiLt01SfvDANKBXykWTunHJUdMqVXlEmKDhiw5LRYJvlZ8zVDL43xhtJQ31uPTLrXNxJ76bHJ755MO5WiLjGcFCHYb7uCWkbHk6w+TUn6pnnZPVL7eBSZ52QGeKD9SUv7xGTzge9bB2n6VlfIBAl1Po1U1erGFuJ9KAMi4G39bqUmwI4l596MGroZdJnEpsO+JU+4sygmrSReZFmQ7hqMOJ2/xcB5BIyL6xJBJigVnaTrgnSYYtP6N0YMdLumcpK0svHxczqgvn+vhpy13zdzfWGkYI7NY7pKD3tfV/dkKJsQoOAnFR93UA7kNSMaxlLFuMtyi+mHfOG96A5J2n9sssuJ92SXNcehs5yuXD/qy6904sfxgbXgAyNkopEGJ44b2bz7zWDKmmD7M62C/YWWwZHQC4y23wWVNbseS/eut/cS8yr1+fhurdveWdrv4Y3X1e0ZZbMrcxbRuJUYClXBNoYQF1jT0pwxOoMRahF25u+oE2y4ftVzDIdAKond3Fum7KrQ+rZqnF/gk9+nnIQBZdk0XldCeZsDuE1ZOfoKv9hpXE5kGtq6h9hfGxxUUVBmQHgh+BQCA2D/T6khoDODHJcoPa4lrThDLkcU8IxTlcmR/MqohUBrQEljRZEroPrBsLYELuhXopgSaL65Li+PrxYtpyp2lrnx3//QdOWZs="
-
-before_install:
-      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-6
-      - g++-6
-      - cmake
-  coverity_scan:
-    project:
-      name: "rorywalsh/cabbage"
-      description: "<Your project description here>"
-    notification_email: rorywalsh@ear.ie
-    build_command_prepend: 
-
-    build_command:  "make -f ~/build/rorywalsh/cabbage/Builds/LinuxMakefile/MakeCabbageIDE"
-    branch_pattern: coverity_scan
-
-before_install:
-    - sudo apt-get build-dep csound
-    - sudo apt-get update --fix-missing
-    - sudo apt-get update -qq
-    - sudo apt-get install -y
-        libfreetype6-dev
-        libx11-dev
-        libstdc++6
-        libc++-dev
-        libxinerama-dev
-        libxrandr-dev
-        libxcursor-dev
-        libxcomposite-dev
-        mesa-common-dev
-        libasound2-dev
-        freeglut3-dev
-        libcurl4-gnutls-dev+
-        libasound2-dev
-        libsndfile1
-        libjack-dev
-    - sudo add-apt-repository -y ppa:webkit-team/ppa
-    - sudo apt-get update
-    - sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
-    - sudo apt-get update --fix-missing
-    
-
-compiler:
-    - gcc
-
-before_script: 
-    - "export DISPLAY=:99.0"
-    - "sh -e /etc/init.d/xvfb start"
-    - sleep 3 # give xvfb some time to start
-    - cd ..
-    - sudo apt-get install libsndfile1
-    - git clone https://github.com/WeAreROLI/JUCE.git
-    - cd JUCE/extras/Projucer/Builds/LinuxMakefile
-    - make -j6
-    - cd ../../../../../
-    - mkdir csoundMaster
-    - cd csoundMaster
-    - git clone https://github.com/csound/csound.git
-    - cd csound
-    - mkdir build
-    - cd build
-    - cmake .. -DUSE_GETTEXT=0 -DBUILD_CSOUNDVST=0 -DBUILD_PD_CLASS=0 -DBUILD_STATIC_LIBRARY=1 -DBUILD_VST4CS_OPCODES=0 -DBUILD_VST4CS_OPCODES=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_LUA_OPCODES:BOOL=0 -DBUILD_CSOUND_AC=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_CSOUND_AC_PYTHON_INTERFAC=0 
-    - sudo make -j4
-    - sudo make install
-    - sudo ldconfig
-    - cd /home/travis/build/rorywalsh/cabbage/Builds/LinuxMakefile
+os: osx
+osx_image: xcode9.2
+compiler: clang
+before_script:
+- ls
+- gem install xcpretty
+- gem install xcpretty-travis-formatter
+- pwd
+- cd ..
+- curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
+- ls
+- hdiutil attach csound6.09.1-OSX-universal.dmg
+- cp -R /Volumes/Csound6.09.1/ Csound
+- hdiutil detach /Volumes/Csound6.09.1/
+- cd Csound
+- sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
+- cd /Users/travis/build/rorywalsh/
+- git clone https://github.com/WeAreROLI/JUCE.git
+- cd JUCE/extras/Projucer/JuceLibraryCode
+- sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
+- sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
+- cat AppConfig.h
+- cd /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/
+- xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`  > /dev/null
+- cd /Users/travis/build/rorywalsh/
+- ls /Library/Frameworks/
+- pwd
+- cd /Users/travis/build/
+- curl -L -o vstsdk368_08_11_2017_build_121.zip https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip
+- unzip -q vstsdk368_08_11_2017_build_121.zip
+- mkdir ~/SDKs
+- cp -rf VST_SDK ~/SDKs
+- ls /Users/travis/build/rorywalsh/
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-    - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-    - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
-    - gcc -v && g++ -v && cmake --version
-    - sudo chmod 777 buildCabbage
-    - ls
-    - ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
-    - ls
-    - make clean CONFIG=Release
-    - make -j6 CONFIG=Release
+- export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+- echo -en "travis_fold:start:buildingIDE"
+- $PROJUCER --resave ../../CabbageIDE.jucer
+- xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- echo -en "travis_fold:end:buildingIDE"
 
-    
-    
-    
+- echo -en "travis_fold:start:buildingLite"
+- $PROJUCER --resave ../../CabbageLite.jucer
+- xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- echo -en "travis_fold:end:buildingLite"
+
+- echo -en "travis_fold:start:buildingPlugins"
+- $PROJUCER --resave ../../CabbagePlugin.jucer
+- xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
+- xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
+- cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
+- cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
+- cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
+- echo -en "travis_fold:end:buildingPlugins"
+
+- echo -en "travis_fold:start:buildingZip"
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
+- ls
+- zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
+- echo -en "travis_fold:end:buildingZip"
+
+# deploy:
+#   skip_cleanup: true
+#   provider: releases
+#   api_key:
+#     secure: t1RDH2xfgwBOAyPjqyGezDqxh5GbvOMoH0agnuiBNuIGELWAfA1c3ylcJVu96ydMefV+hbqXajzBS7F8a2doRpmxtAkjrLR27w+c8sW7r33OAfrLJKr3xFAq+tV2IMC6QlS6U8Ts8UxOZkZJd+MIpdT5PLTcFHWDh507pSupMSc7+o7JldKrJH33tiGpcSF+EFs2voSnFwRWW1sVlw7jBVQqhVlmkXbk76LIYxNOmHOjj0GCxUIqMkw55EhsK9BI0uPPN6+U9K0bwpSPAwljBchssAL3Pp46YsScyI8POzkn7PQNm4yXOoXEcJ4IQPfHtW7md/WMAyxwJnU+t36wWbxRUIuIIN74vzbB5KorG4Hj5C/alhhu7Zh/Zf8A1ThhJe19u6IEfItn9cQA9VCyWFMu30WzeJgTcyoPJe0HmbzK6lKe4sBuQWMZ9GL6a8tlVoH2KlSf2ZxwAppHIUgn2MuuvSWMwoSuISTfnzB3z4r2+24XTMzzaJPOAXDGGcHZ+DYlkuGQWztqC1eoj0YoHjupQAzNTw47EhyutIyPcO6O95k/9PH0DdbHlIMGdJBil1192Y9q3SrX8/hHiVmckCQGQT+C6QRSZsP/S+aOeLCn9aiXn2W1op7CYrWGkm8Q60W2hhXdk6Hqt3hxcQ1d5AvLGsC8yY5AIo1KP0FQ3i4=
+#   file: /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip
+#   on:
+#     repo: rorywalsh/cabbage
+#     branch: develop

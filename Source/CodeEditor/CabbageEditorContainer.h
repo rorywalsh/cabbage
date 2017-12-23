@@ -45,7 +45,7 @@ public:
             setText (StringArray (initString));
         }
 
-        void paint (Graphics& g);
+        void paint (Graphics& g)  override;
 
         void setText (StringArray text)
         {
@@ -70,14 +70,14 @@ public:
     ~CabbageEditorContainer();
     void updateLookAndFeel();
     void openFile (File file);
-    void resized();
+    void resized() override;
 
     void updateEditorColourScheme();
-    void mouseDown (const MouseEvent& e);
-    void mouseUp (const MouseEvent& e);
-    void mouseExit (const MouseEvent& e);
-    void mouseEnter (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
+    void mouseDown (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
+    void mouseExit (const MouseEvent& e) override;
+    void mouseEnter (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
 
     int getStatusBarPosition();
     void hideOutputConsole();

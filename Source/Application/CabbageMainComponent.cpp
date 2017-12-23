@@ -346,7 +346,8 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
     {
         if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
-            updateCodeInEditor (ed, true);
+
+            updateCodeInEditor (ed, true, true);
         }
     }
 
@@ -377,30 +378,34 @@ void CabbageMainComponent::actionListenerCallback (const String& message)
     }
 }
 //=======================================================================================
-void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool replaceExistingLine)
+void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool replaceExistingLine, bool guiPropUpdate)
 {
     propertyPanel->addChangeListener (this);
 
     for (ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
     {
         int lineNumber = 0;
+        Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
 
         if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber) >= 0)
         {
 
-            lineNumber = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber);
+            lineNumber = jmin(cabbageSection.getEnd(), int(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber)));
+            const String type = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::type);
 
             const String parent = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
 
             const String currentLineText = getCurrentCodeEditor()->getLineText (lineNumber);
-
+            CabbageUtilities::debug(currentLineText);
             const String newText = CabbageWidgetData::getStringProp (wData, "precedingCharacters")
-                                   + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, currentLineText)
+                                   + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, (currentLineText == "</Cabbage>" ? "" : currentLineText))
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty)
                                    + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "}" : String::empty);
 
-
-            getCurrentCodeEditor()->insertCode (lineNumber, newText, replaceExistingLine, parent.isEmpty());
+            if(isGUIEnabled == true && guiPropUpdate == false)
+                getCurrentCodeEditor()->updateBoundsText (lineNumber, newText, true);
+            else
+                getCurrentCodeEditor()->insertCode (lineNumber, newText, replaceExistingLine, parent.isEmpty());
 
         }
 
@@ -480,7 +485,7 @@ void CabbageMainComponent::addFileTab (File file)
 {
 
     FileTab* fileButton;
-    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName()));
+    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd")));
 
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
@@ -724,6 +729,7 @@ void CabbageMainComponent::setEditMode (bool enable)
         }
 
         getCabbagePluginEditor()->enableEditMode (enable);
+        isGUIEnabled = enable;
     }
 }
 //=======================================================================================
@@ -1027,9 +1033,6 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
     StringArray lines;
     lines.addLines(getCurrentCsdFile().loadFileAsString());
 
-
-    if(lines.indexOf("<Cabbage>") == -1 || lines.indexOf("</Cabbage>") == -1)
-        CabbageUtilities::showMessage("You are missing Cabbage tags. Please ensure your code has <Cabbage> and </Cabbage> tags.", lookAndFeel);
 }
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk (File file)
@@ -1159,7 +1162,7 @@ int CabbageMainComponent::testFileForErrors (String file)
 {
     ChildProcess process;
     const String applicationDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName();
-    const String processName = applicationDir + "/testCsoundFile " + file;
+    const String processName = applicationDir + "/CsoundTest " + file;
 
     if (File (processName).existsAsFile())
     {

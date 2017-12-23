@@ -65,7 +65,7 @@ class CabbageXYPad
             repaint();
         }
         XYBall() {}
-        void paint (Graphics& g)
+        void paint (Graphics& g)  override
         {
             g.fillAll (Colours::transparentBlack);
             g.setColour (colour);

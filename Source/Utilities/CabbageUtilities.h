@@ -378,7 +378,43 @@ public:
         return false;
 #endif
     }
+	//==============================================================
+	static int getIntendedNumberOfChannels(String csdText)
+	{
 
+		while (csdText.indexOf("/*") != -1 && csdText.indexOf("*/") != -1)
+		{
+			const String comments = csdText.substring(csdText.indexOf("/*"), csdText.indexOf("*/") + 2);
+			csdText = csdText.replace(comments, "");
+		}
+
+		StringArray array;
+		array.addLines(csdText);
+
+		bool inCsoundInstrumentsSection = false;
+
+		for (int i = 0; i < array.size(); i++)
+		{
+			if (array[i] == "<CsInstruments>")
+				inCsoundInstrumentsSection = true;
+
+			if (inCsoundInstrumentsSection)
+			{
+				if (array[i].indexOf(";") != -1)
+					array.set(i, array[i].substring(0, array[i].indexOf(";")));
+
+				array.set(i, array[i].removeCharacters("\t").trimStart());
+
+				if (array[i].contains("nchnls") && array[i].contains("="))
+				{
+					String channels = array[i].substring(array[i].indexOf("=") + 1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
+					return channels.trim().getIntValue();
+				}
+			}
+		}
+
+		return 2;
+	}
     //==============================================================
     static const String getSVGTextFromMemory (const void* svg, size_t size)
     {
@@ -477,19 +513,19 @@ public:
 
     }
 
-
     static void addExampleFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
     {
         filesArray.clear();
         addExamples (m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);
+        addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
+        addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
+        addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "Instruments", dir, filesArray, CabbageExamplesFolder::getInstruments(), indexOffset);
         addExamples (m, "LiveSampling", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "MIDI", dir, filesArray, StringArray(), indexOffset);
-        addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
-        addExamples (m, "Pedagogic", dir, filesArray, StringArray(), indexOffset);
-        addExamples (m, "FunAndGames", dir, filesArray, StringArray(), indexOffset);
-        addExamples (m, "GEN", dir, filesArray, StringArray(), indexOffset);
+        addExamples (m, "Miscellaneous", dir, filesArray, StringArray(), indexOffset);
         addExamples (m, "Utilities", dir, filesArray, StringArray(), indexOffset);
+        addExamples (m, "Widgets", dir, filesArray, StringArray(), indexOffset);
     }
 
     static void addFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, int indexOffset)
@@ -590,6 +626,23 @@ public:
             return Justification::right;
 
         return Justification::centred;
+    }
+
+    //===========================================================================================
+    static Range<int> getCabbageSectionRange(String csdText)
+    {
+        Range<int> range;
+        StringArray lines;
+        lines.addLines(csdText);
+        for(int i = 0 ; i < lines.size() ; i++)
+        {
+            if (lines[i] == "<Cabbage>")
+                range.setStart(i);
+            else if (lines[i] == "</Cabbage>")
+                range.setEnd(i);
+        }
+
+        return range;
     }
 
     //===========================================================================================
@@ -1247,14 +1300,14 @@ public:
     }
     ~RoundButton() {}
 
-    void mouseDown (const MouseEvent& e)
+    void mouseDown (const MouseEvent& e) override
     {
         //Logger::writeToLog("Mouse down on round button:"+String(type));
         sendChangeMessage();
         mode = (mode == 1 ? 0 : mode + 1);
     }
 
-    void paint (Graphics& g)
+    void paint (Graphics& g)  override
     {
         //Logger::writeToLog(type);
         if (type.contains ("zoom"))

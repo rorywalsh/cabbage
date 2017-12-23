@@ -90,7 +90,7 @@ void CabbageImage::paint (Graphics& g)
 void CabbageImage::mouseDown (const MouseEvent& e)
 {
     owner->sendChannelDataToCsound (getChannel(), currentToggleValue);
-    currentToggleValue != currentToggleValue;
+    currentToggleValue =! currentToggleValue;
 }
 
 void CabbageImage::changeListenerCallback (ChangeBroadcaster* source)

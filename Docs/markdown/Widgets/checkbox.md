@@ -3,17 +3,10 @@
 Checkbox creates a checkbox which functions like a button, but the associated caption will not change when the user checks it. As with all widgets capable of sending data to Csound, the channel string is the channel on which the widget will communicate with Csound. 
 
 
-```csharp
-checkbox bounds(x, y, width, height), channel("chan"), \
-text("name"), value(val), colour:0("colour"), \
-colour:1("colour"), shape("shape"), fontcolour("colour"), \
-identchannel("channel"), alpha(val), visible(val), corners(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val)
-```
-<!--(End of syntax)/-->
+<big></pre>
+checkbox WIDGET_SYNTAX
+</pre></big>
 
-## Identifiers
 ### Specific Identifiers
 
 {! ./markdown/Widgets/Properties/checkbox_corner.md !} 
@@ -56,11 +49,48 @@ active(val)
 
 >colour:1() can be set using colour(). However, it's recommended that you use the numerated colour identifiers in order to make your code more readable. 
 
+![Button](../images/checkbox.gif)
+
 ## Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-checkbox bounds(20, 16, 150, 30), channel("combobox"), items("Check me out!"), colour("lime"), fontcolour("white")
+form caption("Checkbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
+checkbox bounds(116, 38, 150, 50), channel("checkbutton1"), text("Enable Tone", "Disable Tone"),
+checkbox bounds(110, 140, 165, 62) identchannel("widgetIdent")
 </Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+seed 0 
+;basic usage
+instr 1
+    aTone oscili chnget:k("checkbutton1"), 300
+    outs aTone, aTone    
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
 ```
-![](../images/checkboxExample.png)
+<!--(End Widget Example)/-->
+
+

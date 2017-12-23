@@ -1112,6 +1112,32 @@ void CabbageCodeEditorComponent::insertCode (int lineNumber, String codeToInsert
         highlightLine (lineNumber);
 }
 
+//==============================================================================
+void CabbageCodeEditorComponent::updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight)
+{
+    StringArray csdLines;
+    csdLines.addLines (getDocument().getAllContent());
+    const int currentIndexOfBounds = csdLines[lineNumber].indexOf("bounds");
+    const int newIndexOfBounds = csdLines[lineNumber].indexOf("bounds");
+    const String currentLine = csdLines[lineNumber];
+    const String currentBounds = currentLine.substring(currentIndexOfBounds, currentLine.indexOf(currentIndexOfBounds, ")")+1);
+    const String newBounds = codeToInsert.substring(newIndexOfBounds, codeToInsert.indexOf(newIndexOfBounds, ")")+1);
+    
+    if(currentIndexOfBounds == -1)
+        csdLines.insert (lineNumber, codeToInsert);
+    else
+    {
+        CabbageUtilities::debug(currentLine.replace(currentBounds, newBounds));
+        csdLines.set (lineNumber, currentLine.replace(currentBounds, newBounds));
+    }
+
+
+    getDocument().replaceAllContent (csdLines.joinIntoString ("\n"));
+
+    if (shouldHighlight)
+        highlightLine (lineNumber);
+}
+
 
 StringArray CabbageCodeEditorComponent::getIdentifiersFromString (String code)
 {

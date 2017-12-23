@@ -2,15 +2,9 @@
 
 Image creates a static shape or graphic. It can be used to show pictures or it can be used to draw simple shapes. If you wish to display a picture you must pass the file name to the file() identifier. For convenience, the file passed to file() should be in the same directory as your Cabbage instrument.
 
-```csharp
-image bounds(x, y, width, height), colour("colour"), channel("chan")\
-file("file name"), shape("type"), outlinecolour("colour"), \
-outlinethickness(thickness), plant("name"), identchannel("channel"), \
-visible(val), alpha(val), rotate(radians, pivotx, pivoty), corners(val) \
-widgetarray("chan", number), popupup(val), popuptext("text"), active(val)
-```
-<!--(End of syntax)/-->
-##Identifiers
+<big></pre>
+image WIDGET_SYNTAX
+</pre></big>
 
 ### Specific Identifiers
 
@@ -50,13 +44,49 @@ widgetarray("chan", number), popupup(val), popuptext("text"), active(val)
 
 <!--(End of identifiers)/-->
 
+![](../images/image.gif)
+
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-image bounds(58, 4, 257, 183), shape("ellipse"), colour("purple")  
-image bounds(84, 22, 200, 150), file("/home/rory/sourcecode/cabbageaudio/cabbage/Images/logo_cabbage_sw_no_text.png"),  
-</Cabbage>
-```
+form caption("Image Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(6, 26, 380, 18) text("Image: click to send info to Csound") fontcolour(118, 118, 118, 255)
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 
-![](../images/imageExample.png)
+image bounds(128, 46, 122, 57), channel("image1"), colour(123, 34, 143), corners(40)
+image bounds(110, 140, 165, 62) identchannel("widgetIdent")
+</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+seed 0 
+;basic usage
+instr 1
+    aTone oscili chnget:k("image1"), 300
+    outs aTone, aTone    
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
+```
+<!--(End Widget Example)/-->

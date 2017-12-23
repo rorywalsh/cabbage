@@ -3,17 +3,9 @@
 Gentable displays the contents of a function table, multiple tables, or files. Function tables that have their identifier active() set to one, and use a negative GEN05, GEN07 or GEN02 can be edited by clicking and dragging on the table. Only tables of size less or equal to 16384 points can be manually edited. If you wish to save any tables that you create you can use one of Csound's built-in table saving opcode "ftsave". If you need only display the contents of a static sound file from disk, use soundfiler as it will be fast and use less CPU. If on the other hand you wish to create some user editable envelopes, or display FFT or live waveform data use table. 
 
 
-```csharp
-gentable bounds(x, y, width, height), tableNumber(1, 2, ...), \
-tablecolour:N("colour1"), amprange(min, max, tablenumber, y-quantise),\
-tablegridcolour("colour"), tablebackgroundcolour("colour"), samplerange(min, max),\
-zoom(val), outlinethickness(val), identchannel("channel"), \
-alpha(val), visible(val), scrubberposition(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), active(val)
-```
-<!--(End of syntax)/-->
-
-##Identifiers
+<big></pre>
+gentable WIDGET_SYNTAX
+</pre></big>
 
 ### Specific Identifiers
 
@@ -56,12 +48,47 @@ rotate(radians, pivotx, pivoty), widgetarray("chan", number), active(val)
 
 >If you need to redraw tables quickly, make sure they don't use negative GEN routines as it will seriously slow down redrawing. 
 
-##Example
+![](../images/gentable.gif)
 
+##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-gentable bounds(10, 10, 380, 200), tablenumber(1, 2), tablecolour("yellow", "red"), tablegridcolour(60, 60,60)
+form caption("Gentable Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+gentable bounds(8, 30, 380, 70), tablenumber(1), tablegridcolour(0, 0, 0, 255), fill(0)
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
+gentable bounds(70, 140, 141, 119), tablenumber(1) identchannel("widgetIdent"),  
 </Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+giWave ftgen 1, 0, 4096, 10, 1, 1, 1, 1 
+seed 0 
+;basic usage
+instr 1
+    aTone oscili chnget:k("gain"), 300
+    outs aTone, aTone    
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
 ```
-![](../images/gentableExample.png)
+<!--(End Widget Example)/-->

@@ -3,17 +3,9 @@
 Combobox creates a drop-down list of items which users can choose from. Once the user selects an item, the index of their selection will be sent to Csound on a channel named by the channel string. The default value is 0.
 
 
-```csharp
-combobox bounds(x, y, width, height), channel("chan"), align("position")\
-value(val), items("item1", "item2", ...), file("filename.txt"), populate("filetype", "dir"),\
-channeltype("type"), colour("colour"), fontcolour("colour"), \
-identchannel("channel"), alpha(val), visible(val), \
-rotate(radians, pivotx, pivoty), widgetarray("chan", number), popuptext("text") \
-active(val)
-```
-<!--(End of syntax)/-->
-
-## Identifiers
+<big></pre>
+combobox WIDGET_SYNTAX
+</pre></big>
 
 ### Specific Identifiers
 
@@ -55,12 +47,47 @@ active(val)
 
 <!--(End of identifiers)/-->
 
+![Button](../images/combobox.gif)
+
 ##Example
+<!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-combobox bounds(20, 16, 100, 30), channel("combobox"), items("Item 1", "Item 2", "Item 3"), colour("yellow"), fontcolour("black")
+form caption("Combobox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
+combobox bounds(36, 38, 150, 50), channel("combobox1"), items("100Hz", "200Hz", "300Hz")
+combobox bounds(200, 38, 150, 50), channel("combobox2"), populate("*.*", ".")
+combobox bounds(110, 140, 165, 62) identchannel("widgetIdent")
 </Cabbage>
-```
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
 
-![](../images/comboboxExample.png)
+seed 0 
+;basic usage
+instr 1
+    aTone oscili chnget:k("checkbutton1"), 300
+    outs aTone, aTone    
+endin
+
+;WIDGET_ADVANCED_USAGE
+
+</CsInstruments>
+<CsScore>
+;causes Csound to run for about 7000 years...
+f0 z
+;starts instrument 1 and runs it for a week
+i1 0 z
+i2 0 z
+</CsScore>
+</CsoundSynthesizer>
+```
+<!--(End Widget Example)/-->
