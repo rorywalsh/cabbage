@@ -55,7 +55,6 @@ install:
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
 
 build:
-
   - cmd: appveyorBuildCabbage64.bat  
   - cmd: cd c:/cabbage/CsoundTestWin64 
   - cmd: msbuild CsoundTest.sln /property:Platform=x64
