@@ -43,8 +43,6 @@ eventsequencer WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !}
 
-{! ./markdown/Widgets/Properties/text.md !} In the case of an envetsequencer widget, each string will appear either above or to the left of the matrix, depening on the orientation. 
-
 {! ./markdown/Widgets/Properties/visible.md !}
 
 <!--(End of identifiers)/-->

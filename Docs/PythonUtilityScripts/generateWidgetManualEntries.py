@@ -85,7 +85,7 @@ endin
 
         #generate help .csd from expanded widget entry        
         inputFile = open("./ExpandedWidgetEntries/"+filename)
-        outputFile = open("./ExpandedWidgetEntries/"+filename.replace('.md', '.csd'), "w+")
+        outputFile = open("../../../Examples/Widgets/"+filename.lower().replace('.md', '.csd'), "w+")
         foundExampleCode = False
         for line in inputFile:
             if "<!--(Widget Example)/-->" in line:
