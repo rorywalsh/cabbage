@@ -59,7 +59,6 @@ before_build:
   - cmd: cd c:/cabbage/CsoundTestWin64 
   - cmd: msbuild CsoundTest.sln /property:Platform=x64
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
-  - cmd: dir ../
 
 after_build:
   - cmd: c:\PROGRA~2\NSIS\\makensis.exe Cabbage64InstallerCanonical.nsi
