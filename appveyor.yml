@@ -61,6 +61,9 @@ before_build:
   - cmd: appveyorBuildCabbage64.bat  
   - cmd: cd c:/cabbage/CsoundTestWin64 
   - cmd: msbuild CsoundTest.sln /property:Platform=x64
+  - cmd: cd C:/cabbage
+  - ps: Start-FileDownload 'http://cabbageaudio.com/beta/CabbageManual.zip'
+  - cmd: 7z.exe x CabbageManual.zip  
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
 
 after_build:
