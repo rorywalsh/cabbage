@@ -57,13 +57,14 @@ script:
 - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 - echo -en "travis_fold:end:buildingPlugins"
 
-- echo -en "travis_fold:start:getting manual"
+- echo -en "travis_fold:start:gettingManual"
 - curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 - ls
 - unzip -q CabbageManual.zip
+- ls
 - cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/Examples
 - cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/Examples
-- echo -en "travis_fold:end:getting manual"
+- echo -en "travis_fold:end:gettingManual"
 
 - echo -en "travis_fold:start:buildingZip"
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
