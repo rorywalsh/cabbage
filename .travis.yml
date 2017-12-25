@@ -62,8 +62,8 @@ script:
 - ls
 - unzip -q "CabbageManual.zip"
 - ls
-- cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/Examples
-- cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/Examples
+- cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
+- cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
 - echo -en "travis_fold:end:gettingManual"
 
 - echo -en "travis_fold:start:buildingZip"
