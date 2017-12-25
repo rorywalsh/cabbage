@@ -78,8 +78,8 @@ Section "Core components" SEC01
   ; ;File "C:\mingw64\bin\libgcc_s_dw2-1.dll"
   ;File "C:\mingw64\bin\libstdc++-6.dll"
   ;docs and examples
-  ;SetOutPath "$INSTDIR\Docs\"
-  ;File /r "..\..\Docs\*"
+  SetOutPath "$INSTDIR\CabbageManual\"
+  File /r "..\..\CabbageManual\*"
   SetOutPath "$INSTDIR\Examples\"
   File /r "..\..\Examples\*"
 
