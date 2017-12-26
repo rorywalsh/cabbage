@@ -42,11 +42,12 @@ public:
     CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice);
     ~CabbageSettingsWindow()
     {
+        setLookAndFeel (nullptr);
         codeEditor = nullptr;
         audioDeviceSelector = nullptr;
         colourPanel.clear();
         miscPanel.clear();
-        setLookAndFeel (nullptr);
+
     };
 
     CabbageSettings& settings;
