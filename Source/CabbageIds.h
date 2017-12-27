@@ -135,23 +135,6 @@ namespace CommandCategories
     static const char* const windows       = "Windows";
 }
 
-// Handy list of static Identifiers..
-namespace Ids
-{
-#define DECLARE_ID(name)      const Identifier name (#name)
-
-    DECLARE_ID (name);
-    DECLARE_ID (font);
-    DECLARE_ID (colour);
-    DECLARE_ID (csoundManualDirectory);
-    DECLARE_ID (cabbagePlantDirectory);
-    DECLARE_ID (cabbageExamplesDirectory);
-    const Identifier ID ("id");
-    const Identifier ID_uppercase ("ID");
-    const Identifier class_ ("class");
-
-#undef DECLARE_ID
-};
 
 namespace CabbageInterfaceModes
 {

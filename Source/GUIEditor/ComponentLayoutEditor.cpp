@@ -11,6 +11,7 @@
 #include "ComponentLayoutEditor.h"
 #include "ComponentOverlay.h"
 #ifndef Cabbage_Lite
+    #include "../Settings/CabbageSettings.h"
     #include "../Application/CabbageMainComponent.h"
 #endif
 #include "../Audio/Plugins/CabbagePluginEditor.h"
@@ -153,7 +154,7 @@ void ComponentLayoutEditor::mouseDrag (const MouseEvent& e)
 void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 {
     selectedComponents.deselectAll();
-
+    Array<File> customPlants;
     resetAllInterest();
 
     if (e.mods.isPopupMenu())
@@ -165,6 +166,15 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
         for ( int i = 0 ; i < widgets.size() ; i++ )
             menu.addItem (i + 1, widgets.getAllKeys()[i]);
 
+        CabbageSettings settings;
+        settings.setStorageParameters(CabbageUtilities::getStorageProps());
+        settings.setDefaultSettings();
+        const String plantDir = settings.getUserSettings()->getValue("CabbagePlantDir");
+        CabbageUtilities::debug(plantDir);
+
+        //PopupMenu subMenu;
+        //CabbageUtilities::addCustomPlantsToMenu(subMenu, customPlants, plantDir);
+        //menu.addSubMenu("Custom Plants", subMenu);
         const int result = menu.show();
 
         if (result > 0)

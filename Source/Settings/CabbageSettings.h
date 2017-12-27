@@ -58,6 +58,13 @@ public:
         return audioSettingsXml;
     }
 
+    static CabbageSettings& instance()
+    {
+        static CabbageSettings x;
+        return x;
+    }
+
+
 private:
 
 

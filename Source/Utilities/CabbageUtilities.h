@@ -23,6 +23,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../BinaryData/CabbageBinaryData.h"
+
 #include <fstream>
 
 class CabbageIDELookAndFeel;
@@ -513,6 +514,20 @@ public:
 
     }
 
+    static PropertiesFile::Options getStorageProps()
+    {
+        PropertiesFile::Options options;
+        options.applicationName = "Cabbage2";
+        options.filenameSuffix = "settings";
+        options.osxLibrarySubFolder = "Preferences";
+#if JUCE_LINUX
+        options.folderName = "~/.config/Cabbage2";
+#else
+        options.folderName          = "Cabbage2";
+#endif
+        return options;
+    }
+
     static void addExampleFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
     {
         filesArray.clear();
@@ -922,8 +937,7 @@ public:
             for (int i = 0; i < filePaths.getNumPaths(); i++)
             {
                 File plantDir (filePaths[i]);
-                plantDir.findChildFiles (plantFiles, File::findFiles, false, "*.plant");
-
+                plantDir.findChildFiles (plantFiles, File::findFiles, false, "*.plant;*.xml");
             }
 
             for (int i = 0; i < plantFiles.size(); ++i)
