@@ -134,29 +134,38 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     repaint();
 }
 //======================================================================================================
-void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position)
+void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position, bool isCustomPlant)
 {
 
-    StringArray csdArray = processor.getCurrentCsdFileAsStringArray();
-    const String widgetTreeIdentifier = "newlyAddedWidget";
-    ValueTree newWidget (widgetTreeIdentifier);
+    if(isCustomPlant == false)
+    {
+        StringArray csdArray = processor.getCurrentCsdFileAsStringArray();
+        const String widgetTreeIdentifier = "newlyAddedWidget";
+        ValueTree newWidget(widgetTreeIdentifier);
 
-    CabbageWidgetData::setWidgetState (newWidget, widgetType, newlyAddedWidgetIndex);
-    CabbageWidgetData::setStringProp (newWidget, CabbageIdentifierIds::csdfile, processor.getCsdFile().getFullPathName());
-    newWidget.setProperty (CabbageIdentifierIds::top, position.getY(), 0);
-    newWidget.setProperty (CabbageIdentifierIds::left, position.getX(), 0);
+        CabbageWidgetData::setWidgetState(newWidget, widgetType, newlyAddedWidgetIndex);
+        CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile,
+                                         processor.getCsdFile().getFullPathName());
+        newWidget.setProperty(CabbageIdentifierIds::top, position.getY(), 0);
+        newWidget.setProperty(CabbageIdentifierIds::left, position.getX(), 0);
 
-    processor.cabbageWidgets.addChild (newWidget, -1, 0);
+        processor.cabbageWidgets.addChild(newWidget, -1, 0);
 
-    setCurrentlySelectedComponents (StringArray (CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::name)));
+        setCurrentlySelectedComponents(
+                StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
 
-    insertWidget (newWidget);
-    updateLayoutEditorFrames();
+        insertWidget(newWidget);
+        updateLayoutEditorFrames();
 
-    sendChangeMessage();    //update code in editor
+        sendChangeMessage();    //update code in editor
 
-    newlyAddedWidgetIndex++;
-
+        newlyAddedWidgetIndex++;
+    }
+    else
+    {
+        changeMessage = widgetType;
+        sendChangeMessage();    //update code in editor
+    }
 }
 
 //======================================================================================================
@@ -602,7 +611,13 @@ Array<ValueTree> CabbagePluginEditor::getValueTreesForCurrentlySelectedComponent
 
 ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
 {
-    return CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, getComponentFromName (compName)->getName());
+    if(compName == "form")//special case
+    {
+        resetCurrentlySelectedComponents();
+        return CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, "form");
+    }
+    else
+        return CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, getComponentFromName (compName)->getName());
 }
 
 void CabbagePluginEditor::updateLayoutEditorFrames()

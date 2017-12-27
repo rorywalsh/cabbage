@@ -921,6 +921,35 @@ public:
         return path;
 
     }
+
+    //==========================================================================================
+    const static String getPlantFileAsXmlString(File xmlFile)
+    {
+        StringArray linesFromXmlFile;
+        linesFromXmlFile.addLines(xmlFile.loadFileAsString());
+        bool shouldReplaceChars = false;
+        for( int i = 0 ; i < linesFromXmlFile.size()-1; i++)
+        {
+            if(shouldReplaceChars)
+            {
+                linesFromXmlFile.set(i, linesFromXmlFile[i].replace ("&", "&amp;")
+                        .replace ("<", "&lt;")
+                        .replace(">", "&gt;")
+                        .replace ("\"", "$quote;")
+                        .replace ("'", "&apos;"));
+
+            }
+
+            if(linesFromXmlFile[i] == "<cabbagecodescript>" || linesFromXmlFile[i] == "<csoundcode>")
+                shouldReplaceChars = true;
+            else if(linesFromXmlFile[i+1] == "</cabbagecodescript>" || linesFromXmlFile[i+1] == "</csoundcode>")
+                shouldReplaceChars = false;
+
+
+        }
+        return linesFromXmlFile.joinIntoString("\n");
+    }
+
     //==========================================================================================
     static void addCustomPlantsToMenu (PopupMenu& m, Array<File>& plantFiles, String userDir)
     {
@@ -941,41 +970,22 @@ public:
             }
 
             for (int i = 0; i < plantFiles.size(); ++i)
-                m.addItem (i + 100, plantFiles[i].getFileNameWithoutExtension());
-
-
-            //fileCnt = cabbageFiles.size();
-
-            //increment menu size and serach recursively through all subfolders in specified dirs
-            for (int i = 0; i < filePaths.getNumPaths(); i++)
             {
-                Array<File> subFolders;
-                File searchDir (filePaths[i]);
-                subFolders.add (searchDir);
-                searchDir.findChildFiles (subFolders, File::findDirectories, true);
+                ScopedPointer<XmlElement> xml;
+                xml = XmlDocument::parse (getPlantFileAsXmlString(plantFiles[i]));
 
-                //remove parent dirs from array
-                for (int p = 0; p < filePaths.getNumPaths(); p++)
-                    subFolders.removeAllInstancesOf (filePaths[p]);
-
-                PopupMenu subMenu;
-
-                for (int subs = 0; subs < subFolders.size(); subs++)
+                if (xml) //if valid xml
                 {
-                    fileCnt = plantFiles.size();
-                    subFolders[subs].findChildFiles (plantFiles, File::findFiles, false, "*.plants");
-                    subMenu.clear();
-
-                    for (int fileIndex = fileCnt + 1; fileIndex < plantFiles.size(); fileIndex++)
-                        subMenu.addItem (fileIndex + 100, plantFiles[fileIndex].getFileNameWithoutExtension());
-
-
-                    m.addSubMenu (subFolders[subs].getFileNameWithoutExtension(), subMenu);
+                    if (xml->hasTagName ("plant"))
+                    {
+                        forEachXmlChildElement (*xml, e)
+                        {
+                            if (e->getTagName() == "name")
+                                m.addItem(i + 100, e->getAllSubText());
+                        }
+                    }
                 }
-
-                subMenu.clear();
             }
-
 
             m.addSeparator();
             //m.setLookAndFeel(&this->getLookAndFeel());

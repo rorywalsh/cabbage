@@ -53,6 +53,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::arraysize, 0);
     setProperty (widgetData, CabbageIdentifierIds::plant, "");
     setProperty (widgetData, CabbageIdentifierIds::basechannel, "");
+    setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -598,7 +599,7 @@ String CabbageWidgetData::replaceIdentifier (String line, String identifier, Str
     int startPos = line.indexOf (identifier);
 
     if (startPos == -1)
-        return "";
+        return line + " " + updatedIdentifier;
 
     String firstSection = line.substring (0, line.indexOf (identifier));
     line = line.substring (line.indexOf (identifier));
@@ -1136,7 +1137,11 @@ ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, Str
         }
         else
         {
-            if (name == widgetData.getChild (i).getProperty (CabbageIdentifierIds::name).toString())
+            if(name == "form")
+            {
+                return widgetData.getChild(0);
+            }
+            else if (name == widgetData.getChild (i).getProperty (CabbageIdentifierIds::name).toString())
             {
                 return widgetData.getChild (i);
             }

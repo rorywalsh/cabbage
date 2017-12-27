@@ -82,6 +82,7 @@ public:
     void bringCodeEditorToFront (File file);
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
+    void insertCustomPlantToEditor(CabbagePluginEditor* editor);
     void setLookAndFeelColours();
     void showGraph();
     void saveGraph (bool saveAs);

@@ -58,14 +58,10 @@ public:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageJavaClass)
     };
 
-    class PlantImportStruct
+    struct PlantImportStruct
     {
-
-    public:
         String nsp, name, csoundCode;
         StringArray cabbageCode;
-        PlantImportStruct() {}
-
     };
 
 
@@ -89,7 +85,7 @@ public:
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     void expandMacroText (String &line, ValueTree wData);
-    const String getPlantXmlFileAsString(File xmlFile);
+
 
     CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================
@@ -119,10 +115,12 @@ public:
     void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
     StringArray cabbageScriptGeneratedCode;
+    Array<PlantImportStruct> plantStructs;
 private:
     controlChannelInfo_s* csoundChanList;
     String pluginName;
     File csdFile;
+    int linesToSkip = 0;
     NamedValueSet macroText;
     var macroNames;
     var macroStrings;

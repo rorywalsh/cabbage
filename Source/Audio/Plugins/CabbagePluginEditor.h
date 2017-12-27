@@ -143,7 +143,7 @@ public:
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
     String createNewGenericNameForPresetFile();
-    void addNewWidget (String widgetType, Point<int> point);
+    void addNewWidget (String widgetType, Point<int> point, bool isPlant = false);
     //=============================================================================
     void refreshComboBoxContents();
     void enableEditMode (bool enable);
@@ -210,6 +210,7 @@ public:
         void setWidgetData(ValueTree wData){    plantWidgetData = wData;    }
     };
 
+    String changeMessage = "";
 private:
 
     //---- main component that holds widgets -----

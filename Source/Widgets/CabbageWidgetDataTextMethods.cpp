@@ -438,6 +438,8 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
     if(tempItems.equalsWithSameType(items))
         return String::empty;
 
+    identifier = (identifier == CabbageIdentifierIds::importfiles.toString() ? "import" : identifier);
+
     if (typeOfWidget == "gentable" && identifier == "channel")
         return String::empty;
 

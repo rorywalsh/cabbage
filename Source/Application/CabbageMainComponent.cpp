@@ -288,58 +288,75 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
     else if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (source)) // update Cabbage code when user drags a widget around
     {
-
-        resized();
-        ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
-        CabbageUtilities::debug (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type));
-        CabbageUtilities::debug (CabbageWidgetData::getBounds (widgetData).toString());
-        CabbageUtilities::debug (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::plant));
-
-
-        if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::plant).isEmpty())
+        if(File(editor->changeMessage).existsAsFile())  //custom plant has been added...
         {
-            //recreate/update code for standard components, dealing with custom plants later
-            propertyPanel->setVisible (true);
-            propertyPanel->setEnabled (true);
-            propertyPanel->saveOpenessState();
-            propertyPanel->updateProperties (widgetData);
+            insertCustomPlantToEditor(editor);
+        }
+        else
+        {
             resized();
+            ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
+            CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type));
+            CabbageUtilities::debug(CabbageWidgetData::getBounds(widgetData).toString());
+            CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::plant));
+            CabbageUtilities::debug("linenUmber:", CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber));
+            const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
+            CabbageLayoutWidgetStrings layoutWidgets;
+            CabbageControlWidgetStrings controlWidgets;
+            ;
 
-            if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
+            if (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::surrogatelinenumber)<0)
+                //layoutWidgets.contains(typeOfWidget)
+                //    || controlWidgets.contains(typeOfWidget)) //if not custom plant
             {
-                StringArray csdArray;
-                csdArray.addLines (getCurrentCodeEditor()->getDocument().getAllContent());
+                //recreate/update code for standard components, dealing with custom plants later
+                propertyPanel->setVisible(true);
+                propertyPanel->setEnabled(true);
+                propertyPanel->saveOpenessState();
+                propertyPanel->updateProperties(widgetData);
+                resized();
 
-                for ( int i = 0 ; i < csdArray.size() ; i++ )
+                if (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber) >
+                    9999) //if widget was added in edit mode...
                 {
-                    if (csdArray[i].contains ("</Cabbage>")) //add new text just before the end of the Cabbage section of code
+                    StringArray csdArray;
+                    csdArray.addLines(getCurrentCodeEditor()->getDocument().getAllContent());
+
+                    for (int i = 0; i < csdArray.size(); i++)
                     {
-                        CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::linenumber, i);
-                        updateCodeInEditor (editor, false);
-                        updateEditorColourScheme(); //keep look and feel updated..
-                        return;
+                        if (csdArray[i].contains(
+                                "</Cabbage>")) //add new text just before the end of the Cabbage section of code
+                        {
+                            CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::linenumber, i);
+                            updateCodeInEditor(editor, false);
+                            updateEditorColourScheme(); //keep look and feel updated..
+                            return;
+                        }
                     }
+                } else
+                {
+                    updateCodeInEditor(editor, true);
+                    updateEditorColourScheme(); //keep look and feel updated..
                 }
             }
             else
             {
-                updateCodeInEditor (editor, true);
-                updateEditorColourScheme(); //keep look and feel updated..
+                CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type));
+                CabbageUtilities::debug(CabbageWidgetData::getBounds(widgetData).toString());
+                CabbageUtilities::debug(
+                        CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::surrogatelinenumber));
+                int lineNumberOfCustomPlant = CabbageWidgetData::getNumProp(widgetData,
+                                                                            CabbageIdentifierIds::surrogatelinenumber);
+                const Rectangle<int> rect = CabbageWidgetData::getBounds(widgetData);
+                const String newBounds = CabbageWidgetData::getBoundsTextAsCabbageCode(rect);
+                String newLine = CabbageWidgetData::replaceIdentifier(
+                        getCurrentCodeEditor()->getLineText(lineNumberOfCustomPlant), "bounds", newBounds);
+
+                getCurrentCodeEditor()->insertCode(lineNumberOfCustomPlant, newLine, true, true);
+
             }
         }
-        else
-        {
-            CabbageUtilities::debug (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type));
-            CabbageUtilities::debug (CabbageWidgetData::getBounds (widgetData).toString());
-            CabbageUtilities::debug (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::surrogatelinenumber));
-            int lineNumberOfCustomPlant = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::surrogatelinenumber);
-            const Rectangle<int> rect = CabbageWidgetData::getBounds (widgetData);
-            const String newBounds = CabbageWidgetData::getBoundsTextAsCabbageCode (rect);
-            String newLine = CabbageWidgetData::replaceIdentifier (getCurrentCodeEditor()->getLineText (lineNumberOfCustomPlant), "bounds", newBounds);
-
-            getCurrentCodeEditor()->insertCode (lineNumberOfCustomPlant, newLine, true, true);
-
-        }
+        editor->changeMessage = "";
     }
 
     else if (dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
@@ -352,13 +369,28 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
     }
 
 
-    else if (CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*> (source)) // update code when a user changes a property
+    else if (CabbageCodeEditorComponent* codeEditor = dynamic_cast<CabbageCodeEditorComponent*> (source))
     {
-
         handleFileTab (nullptr, true);
-        //        else if (getCabbagePluginEditor() != nullptr && getCabbagePluginEditor()->isEditModeEnabled())
-        //            this->getCabbagePluginProcessor()->updateWidgets (codeEditor->getAllText());
     }
+}
+
+void CabbageMainComponent::insertCustomPlantToEditor(CabbagePluginEditor* editor)
+{
+    //add import file to form if not already there...
+    ValueTree widgetData = editor->getValueTreeForComponent("form");
+    CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::name));
+    var importFiles = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::importfiles);
+    importFiles.append(File(editor->changeMessage).getRelativePathFrom(getCurrentCsdFile()));
+    CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::importfiles, importFiles);
+    const int lineNumber = int(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber));
+    const String currentLineText = getCurrentCodeEditor()->getLineText(lineNumber);
+    const String newImportFilesIdentifierString = CabbageWidgetData::getMultiItemTextAsCabbageCode(widgetData, CabbageIdentifierIds::importfiles.toString(), "");
+    const String updatedText = CabbageWidgetData::replaceIdentifier(currentLineText, CabbageIdentifierIds::importfiles.toString(), newImportFilesIdentifierString);
+    getCurrentCodeEditor()->insertCode(lineNumber, updatedText, true, true);
+    updateCodeInEditor(editor, true);
+
+
 }
 
 void CabbageMainComponent::actionListenerCallback (const String& message)
@@ -382,33 +414,43 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
 {
     propertyPanel->addChangeListener (this);
 
-    for (ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
+    if(editor->getValueTreesForCurrentlySelectedComponents().size()>0)
     {
-        int lineNumber = 0;
-        Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
-
-        if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber) >= 0)
+        for (ValueTree wData : editor->getValueTreesForCurrentlySelectedComponents())
         {
+            int lineNumber = 0;
+            Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
 
-            lineNumber = jmin(cabbageSection.getEnd(), int(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linenumber)));
-            const String type = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::type);
+            if (CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber) >= 0)
+            {
 
-            const String parent = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
+                lineNumber = jmin(cabbageSection.getEnd(),
+                                  int(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber)));
+                const String type = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::type);
 
-            const String currentLineText = getCurrentCodeEditor()->getLineText (lineNumber);
-            CabbageUtilities::debug(currentLineText);
-            const String newText = CabbageWidgetData::getStringProp (wData, "precedingCharacters")
-                                   + CabbageWidgetData::getCabbageCodeFromIdentifiers (wData, (currentLineText == "</Cabbage>" ? "" : currentLineText))
-                                   + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "{" : String::empty)
-                                   + String (CabbageWidgetData::getNumProp (wData, "containsOpeningCurlyBracket") == 1 ? "}" : String::empty);
+                const String parent = CabbageWidgetData::getStringProp(wData,
+                                                                       CabbageIdentifierIds::parentcomponent); // if widget has a parent don't highlight line
 
-            if(isGUIEnabled == true && guiPropUpdate == false)
-                getCurrentCodeEditor()->updateBoundsText (lineNumber, newText, true);
-            else
-                getCurrentCodeEditor()->insertCode (lineNumber, newText, replaceExistingLine, parent.isEmpty());
+                const String currentLineText = getCurrentCodeEditor()->getLineText(lineNumber);
+
+                const String newText = CabbageWidgetData::getStringProp(wData, "precedingCharacters")
+                                       + CabbageWidgetData::getCabbageCodeFromIdentifiers(wData, (currentLineText ==
+                                                                                                  "</Cabbage>" ? ""
+                                                                                                               : currentLineText));
+
+                if (isGUIEnabled == true && guiPropUpdate == false)
+                    getCurrentCodeEditor()->updateBoundsText(lineNumber, newText, true);
+                else
+                    getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty());
+
+            }
 
         }
-
+    }
+    else
+    {
+       //custom plant has been inserted...
+        jassertfalse;
     }
 }
 //==============================================================================

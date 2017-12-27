@@ -172,14 +172,15 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
         const String plantDir = settings.getUserSettings()->getValue("CabbagePlantDir");
         CabbageUtilities::debug(plantDir);
 
-        //PopupMenu subMenu;
-        //CabbageUtilities::addCustomPlantsToMenu(subMenu, customPlants, plantDir);
-        //menu.addSubMenu("Custom Plants", subMenu);
+        PopupMenu subMenu;
+        CabbageUtilities::addCustomPlantsToMenu(subMenu, customPlants, plantDir);
+        menu.addSubMenu("Custom Plants", subMenu);
         const int result = menu.show();
 
-        if (result > 0)
+        if (result > 0 && result < 100)
             getPluginEditor()->addNewWidget (widgets.getAllValues()[result - 1], e.getPosition());
-
+        else
+            getPluginEditor()->addNewWidget (customPlants[result-100].getFullPathName(), e.getPosition(), true);
         currentMouseCoors = e.getPosition();
     }
     else
