@@ -31,13 +31,13 @@ The plant xml file, which can take any file extension, should have the following
 </plant> 
 ```
 
-###namespace
+### namespace
 A unique string should be added to the **namespace** section. This will ensure that plants with the same name, but from different authors can be loaded into a .csd file. Note the namespace name is case sensitive.
 
-###name
+### name
 The **name** section should be passed the name of the plant. As with the case of the namespace attribute, this is always case sensitive. 
 
-###cabbagecode
+### cabbagecode
 The **cabbagecode** section should provide code for a single plant. It should adhere to the same structure as a standard Cabbage plant, i.e, it should contain opening and closing curly brackets spread over at least 2 lines of code. Each widgets should have a channel attached to it in the usual fashion. When Cabbage imports these widgets into a .csd, it will pre-pend a channel string to the channels defined in your plant. This ensure that each instance of a plant will have unique channel names. you can create an instance of a custom plant in the same way you create any widget in Cabbage. But you must import the plant xml, as described above, before trying to create one. The following code will import a plnt xml, and create an instance of that plant.
 
 ```
@@ -49,7 +49,7 @@ radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), namespace
 Each widget in the imported plant will have "radioGroup" prepended to its channel name. This is required to ensure that each channel has a unique name, which is required when you instantiate more than one of the same plant. 
 
 
-###cabbagecodescript
+### cabbagecodescript
 Javascript code can be added to the *cabbagecodescript*. This script can be used to generate Cabbage code that will then be added to yur .csd file. This can be extremely useful if you are creating plants with lots of widgets. Use the Cabbage.print() method to write any JS strings as cabbagecode that will be read by Cabbage when the instrument loads. The code below is an example taken from the GridSequencer.xml file in the Cabbage/instructional examples folder.
 
 ``` javascript
@@ -72,11 +72,11 @@ Cabbage.print("}");
 
 Calls to Cabbage.print() are made first to declare an image widget to be used as the main plant container. Then the same method is called in a loop to create an 8 x 16 matrix of checkbox widgets. Finally, a closing curly bracket is added to complete the plant. 
 
-###csoundcode
+### csoundcode
 
 The **csoundcode** section is where you declare your custom user defined opcodes. These UDOs can be used to interact with your plant code. It is good practice to use the namespace defined in the **namespace** section as a pre or post-fix to your UDO name. Every UDO you create needs to accept a string parameter that can be used to construct channel names that match those created by Cabbage. See below for a full example of how all this works. 
 
-###info
+### info
 The **info** section should be filled with information about how to use your custom widget and associated UDOs. 
 
 
