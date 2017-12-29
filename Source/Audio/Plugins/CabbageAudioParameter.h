@@ -28,9 +28,9 @@ class CabbageAudioParameter : public AudioParameterFloat
 
 public:
     CabbageAudioParameter (ValueTree wData, Csound& csound, String channel, String name, float minValue, float maxValue, float def, float incr, float skew)
-        : AudioParameterFloat (name, channel, NormalisableRange<float> (minValue, maxValue, incr, skew), def), widgetData (wData), currentValue (def), widgetName (name), channel (channel), csound (csound)
+        : AudioParameterFloat (name, channel, NormalisableRange<float> (minValue, maxValue, incr, skew), def),  currentValue (def), widgetName (name), channel (channel), csound (csound)
     {
-        widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
+       // widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
     }
     ~CabbageAudioParameter() {}
 
@@ -49,8 +49,8 @@ public:
 
     String channel;
     String widgetName;
-    ValueTree widgetData;
-    String widgetType;
+    //ValueTree widgetData;
+    //String widgetType;
     float currentValue;
 
     Csound csound;

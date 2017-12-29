@@ -211,6 +211,7 @@ public:
     };
 
     String changeMessage = "";
+    Point<int> customPlantPosition;
 private:
 
     //---- main component that holds widgets -----

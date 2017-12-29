@@ -208,9 +208,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("IS_A_PLUGIN", 0.0);
 
     csound->PerformKsmps();
-    //csound->SetScoreOffsetSeconds (0);
-    //csound->RewindScore();
-
 
 }
 //==============================================================================

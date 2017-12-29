@@ -79,7 +79,7 @@ public:
     void getMacros (StringArray& csdText);
     void generateCabbageCodeFromJS (PlantImportStruct& importData, String text);
     void insertUDOCode (PlantImportStruct importData, StringArray& linesFromCsd);
-    void insertPlantCode (PlantImportStruct importData, StringArray& linesFromCsd);
+    void insertPlantCode (StringArray& linesFromCsd);
     bool isWidgetPlantParent (StringArray linesFromCsd, int lineNumber);
     bool shouldClosePlant (StringArray linesFromCsd, int lineNumber);
     void setPluginName (String name) {    pluginName = name;  }
@@ -118,6 +118,7 @@ public:
     Array<PlantImportStruct> plantStructs;
 private:
     controlChannelInfo_s* csoundChanList;
+    int numberOfLinesInPlantCode = 0;
     String pluginName;
     File csdFile;
     int linesToSkip = 0;

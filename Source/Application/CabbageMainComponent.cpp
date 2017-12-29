@@ -291,6 +291,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
         if(File(editor->changeMessage).existsAsFile())  //custom plant has been added...
         {
             insertCustomPlantToEditor(editor);
+            //editor->changeMessage = "";
         }
         else
         {
@@ -333,7 +334,8 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
                             return;
                         }
                     }
-                } else
+                }
+                else
                 {
                     updateCodeInEditor(editor, true);
                     updateEditorColourScheme(); //keep look and feel updated..
@@ -356,7 +358,6 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
             }
         }
-        editor->changeMessage = "";
     }
 
     else if (dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
@@ -381,15 +382,58 @@ void CabbageMainComponent::insertCustomPlantToEditor(CabbagePluginEditor* editor
     ValueTree widgetData = editor->getValueTreeForComponent("form");
     CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::name));
     var importFiles = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::importfiles);
-    importFiles.append(File(editor->changeMessage).getRelativePathFrom(getCurrentCsdFile()));
+
+    bool alreadyContainsFile = false;
+    for ( int i = 0 ; i < importFiles.size() ; i++)
+        if(importFiles[i].toString() == File(editor->changeMessage).getRelativePathFrom(getCurrentCsdFile()))
+            alreadyContainsFile = true;
+
+    if(alreadyContainsFile == false)
+        importFiles.append(File(editor->changeMessage).getRelativePathFrom(getCurrentCsdFile()));
+
+
     CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::importfiles, importFiles);
     const int lineNumber = int(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber));
     const String currentLineText = getCurrentCodeEditor()->getLineText(lineNumber);
     const String newImportFilesIdentifierString = CabbageWidgetData::getMultiItemTextAsCabbageCode(widgetData, CabbageIdentifierIds::importfiles.toString(), "");
     const String updatedText = CabbageWidgetData::replaceIdentifier(currentLineText, CabbageIdentifierIds::importfiles.toString(), newImportFilesIdentifierString);
     getCurrentCodeEditor()->insertCode(lineNumber, updatedText, true, true);
-    updateCodeInEditor(editor, true);
+    //updateCodeInEditor(editor, true);
 
+    Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
+    String name;
+    String namespce;
+    ScopedPointer<XmlElement> xml;
+    StringArray cabbageCode;
+    xml = XmlDocument::parse (CabbageUtilities::getPlantFileAsXmlString(editor->changeMessage));
+
+    if (xml) //if valid xml
+    {
+        if (xml->hasTagName ("plant"))
+        {
+            forEachXmlChildElement (*xml, e)
+            {
+                if (e->getTagName() == "name")
+                    name = e->getAllSubText();
+                if (e->getTagName() == "namespace")
+                    namespce = e->getAllSubText();
+                if (e->getTagName() == "cabbagecode")
+                    cabbageCode.addLines (e->getAllSubText().replace("\t", " ").trim());
+            }
+        }
+    }
+
+    ValueTree newWidget("temp1");
+    CabbageWidgetData::setWidgetState(newWidget, cabbageCode[0], -1);
+    CabbageWidgetData::setNumProp(newWidget, CabbageIdentifierIds::left, editor->customPlantPosition.getX());
+    CabbageWidgetData::setNumProp(newWidget, CabbageIdentifierIds::top, editor->customPlantPosition.getY());
+    const String newText = name + " " + CabbageWidgetData::getBoundsTextAsCabbageCode(CabbageWidgetData::getBounds(newWidget)) +
+    " namespace(\"" + namespce + "\")";
+
+    getCurrentCodeEditor()->insertCode(cabbageSection.getEnd(), newText, false, true);
+    //setEditMode(false);
+    saveDocument();
+    setEditMode(true);
 
 }
 
@@ -450,7 +494,6 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
     else
     {
        //custom plant has been inserted...
-        jassertfalse;
     }
 }
 //==============================================================================

@@ -164,6 +164,7 @@ void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position, 
     else
     {
         changeMessage = widgetType;
+        customPlantPosition = position;
         sendChangeMessage();    //update code in editor
     }
 }

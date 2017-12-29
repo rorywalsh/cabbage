@@ -590,6 +590,9 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
 String CabbageWidgetData::replaceIdentifier (String line, String identifier, String updatedIdentifier)
 {
+    if(identifier == CabbageIdentifierIds::importfiles.toString())
+        identifier = "import";
+
     if (identifier.length() < 2)
         return line;
 
