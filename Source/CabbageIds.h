@@ -28,6 +28,7 @@ namespace CommandIDs
     {
         openCabbagePatch        = 0x200010,
         newFile                 = 0x200020,
+        newTextFile             = 0x200022,
         open                    = 0x200023,
         openFromRPi             = 0x200021,
         closeDocument           = 0x200030,

@@ -52,7 +52,6 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     deleteRepoButton ("Delete/Remove"),
     saveRepoButton ("Save/Update")
 {
-    setLookAndFeel (&lookAndFeel);
     saveRepoButton.addListener (this);
     deleteRepoButton.addListener (this);
     addColourProperties();

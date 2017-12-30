@@ -842,6 +842,7 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
         PopupMenu m, subM;
         m.setLookAndFeel (&owner->getLookAndFeel());
         addPopupMenuItems (m, &e);
+        m.addItem (21, "Export as custom plant XML");
         m.addItem (10, "Add to code repository");
 
         StringArray codeSnippets = addItemsToPopupMenu (subM);
@@ -863,6 +864,37 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
             this->undo();
         else if (menuItemID == 4105)
             this->redo();
+        else if (menuItemID == 21)
+        {
+            CabbageIDELookAndFeel cabbageLoookAndFeel;
+            String XMLFile = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    "<plant>\n"
+                    "<namespace>\n"
+                    "\n"
+                    "</namespace>\n"
+                    "<name>\n"
+                    "\n"
+                    "</name>\n"
+                    "<cabbagecode>\n";
+            StringArray lines = getSelectedTextArray();
+            lines.removeEmptyStrings();
+            if(lines[0].contains("{") == false && lines[1].startsWith("{") == false)
+                CabbageUtilities::showMessage ("Code seems to be missing open brackets and does not appear to be a valid plant? ", &cabbageLoookAndFeel);
+            XMLFile += getSelectedText();
+            XMLFile += "\n</cabbagecode>\n"
+                    "<cabbagecodescript>\n"
+                    "\n"
+                    "</cabbagecodescript>\n"
+                    "<csoundcode>\n"
+                    "\n"
+                    "</csoundcode>\n"
+                    "<info>\n"
+                    "\n"
+                    "</info>\n"
+                    "</plant>";
+            owner->getContentComponent()->createNewTextFile(XMLFile);
+
+        }
         else if (menuItemID == 10)
             addToGUIEditorContextMenu();
         else if (menuItemID >= 100)

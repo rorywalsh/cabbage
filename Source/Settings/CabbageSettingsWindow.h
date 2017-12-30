@@ -42,12 +42,11 @@ public:
     CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice);
     ~CabbageSettingsWindow()
     {
-        setLookAndFeel (nullptr);
         codeEditor = nullptr;
         audioDeviceSelector = nullptr;
         colourPanel.clear();
         miscPanel.clear();
-
+        setLookAndFeel (nullptr);
     };
 
     CabbageSettings& settings;
@@ -115,7 +114,6 @@ private:
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
 
     Value alwaysOnTopPluginValue, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
-    LookAndFeel_V3 lookAndFeel;
     Viewport viewport;
 
 };

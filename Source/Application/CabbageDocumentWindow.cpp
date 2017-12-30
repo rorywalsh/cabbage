@@ -235,6 +235,7 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
 void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::newFile);
+    menu.addCommandItem (&commandManager, CommandIDs::newTextFile);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::open);
     menu.addCommandItem (&commandManager, CommandIDs::openCabbagePatch);
@@ -382,6 +383,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 
     const CommandID ids[] = { CommandIDs::openCabbagePatch,
                               CommandIDs::newFile,
+                              CommandIDs::newTextFile,
                               CommandIDs::open,
                               CommandIDs::openFromRPi,
                               CommandIDs::closeAllDocuments,
@@ -439,6 +441,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::newFile:
             result.setInfo ("New Csound file", "Create a new Csound file", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier, 0));
+            break;
+
+        case CommandIDs::newTextFile:
+            result.setInfo ("New text file", "Create a new text file", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
             break;
 
         case CommandIDs::openCabbagePatch:
@@ -712,6 +719,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     {
         case CommandIDs::newFile:
             getContentComponent()->createNewProject();
+            return true;
+
+        case CommandIDs::newTextFile:
+            getContentComponent()->createNewTextFile();
             return true;
 
         case CommandIDs::openCabbagePatch:

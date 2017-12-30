@@ -828,7 +828,7 @@ void CabbageMainComponent::showSettingsDialog()
     o.escapeKeyTriggersCloseButton = true;
     o.useNativeTitleBar = true;
     o.resizable = false;
-    o.runModal();
+    o.launchAsync();
 }
 //==============================================================================
 void CabbageMainComponent::createNewProject()
@@ -846,6 +846,32 @@ void CabbageMainComponent::createNewProject()
     o.launchAsync();
 }
 
+//==============================================================================
+void CabbageMainComponent::createNewTextFile(String contents)
+{
+    FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+
+    if (fc.browseForFileToSave (false))
+    {
+        if (fc.getResult().existsAsFile())
+        {
+            CabbageIDELookAndFeel lookAndFeel;
+            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+
+            if (result == 1)
+            {
+                fc.getResult().replaceWithText (contents);
+                createCodeEditorForFile (fc.getResult());
+            }
+        }
+        else
+        {
+            fc.getResult().replaceWithText (contents);
+            createCodeEditorForFile (fc.getResult());
+        }
+    }
+}
+//==============================================================================
 bool CabbageMainComponent::isInterestedInFileDrag (const StringArray&   files)
 {
     return true;
@@ -1134,7 +1160,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk (File file)
 {
-    setCurrentCsdFile (file);
+    if(file.hasFileExtension(".csd"))
+        setCurrentCsdFile (file);
 
     getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
     owner->setName ("Cabbage " + getCurrentCsdFile().getFullPathName());

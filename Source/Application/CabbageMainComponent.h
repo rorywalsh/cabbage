@@ -64,6 +64,7 @@ public:
     void createAudioGraph();
     void createCodeEditorForFile (File file);
     void createNewProject();
+    void createNewTextFile(String contents = "");
     bool isInterestedInFileDrag (const StringArray& files);
     void filesDropped (const StringArray& files, int x, int y);
     Image createBackground();
