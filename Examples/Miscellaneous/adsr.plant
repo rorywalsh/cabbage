@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plant>
-<namespace>cab</namespace>
-<name>adsr</name>
+<namespace>
+cab
+</namespace>
+<name>
+adsr
+</name>
 <cabbagecode>
 groupbox bounds(0, 0, 330, 122) text("ADSR") {
     rslider bounds(12, 32, 70, 70) channel("attack") range(0, 1, 0.01, 1, 0.001) text("Att.") 

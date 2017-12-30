@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("SVG Example") size(530, 480), colour("black"), pluginID("SMo1"), imgpath(".")
+form caption("SVG Example") size(530, 480), colour("black"), pluginID("SMo1")
  groupbox bounds(122, 4, 376, 135), text("")
  groupbox bounds(120, 152, 379, 277), text(""), imgfile("custom_groupbox.svg"), identchannel("groupbox")
 rslider bounds(18, 90, 87, 85) channel("Waveshape1") imgfile("Slider", "rslider.svg") imgfile("background", "rslider_background.svg"), range(0, 5, 0, 1, 1) trackercolour(255, 165, 0, 255) trackerthickness(.5),
