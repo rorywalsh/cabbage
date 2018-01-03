@@ -71,6 +71,7 @@ public:
     const StringArray getAllTextAsStringArray();
     const String getAllText();
     StringArray getSelectedTextArray();
+    StringArray keywordsArray;
 
     enum ArrowKeys
     {
@@ -216,6 +217,7 @@ public:
     String lastAction;
     bool allowUpdateOfPluginGUI = false;
 
+
 };
 
 template <class CallbackClass>
@@ -261,10 +263,6 @@ struct CustomTextEditorKeyMapper
 
         if (numCtrlAltCommandKeys < 2)
         {
-            if (key.isKeyCode (KeyPress::leftKey))  return target.moveCaretLeft  (ctrlOrAltDown, isShiftDown);
-
-            if (key.isKeyCode (KeyPress::rightKey)) return target.moveCaretRight (ctrlOrAltDown, isShiftDown);
-
             if (key.isKeyCode (KeyPress::homeKey))  return ctrlOrAltDown ? target.moveCaretToTop         (isShiftDown)
                                                                : target.moveCaretToStartOfLine (isShiftDown);
 

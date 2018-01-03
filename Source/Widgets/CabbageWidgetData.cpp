@@ -53,6 +53,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::arraysize, 0);
     setProperty (widgetData, CabbageIdentifierIds::plant, "");
     setProperty (widgetData, CabbageIdentifierIds::basechannel, "");
+    setProperty (widgetData, CabbageIdentifierIds::typeface, "");
     setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
 
     StringArray strTokens;
@@ -302,6 +303,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("plant"):
             case HashStringToInt ("show"):
             case HashStringToInt ("child"):
+            case HashStringToInt ("typeface"):
             case HashStringToInt ("logger"):
             case HashStringToInt ("namespace"):
                 setProperty (widgetData, identifier, strTokens[0].trim());

@@ -33,6 +33,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     setName ("PluginEditor");
     setSize (400, 300);
     setLookAndFeel (&lookAndFeel);
+
     createEditorInterface (processor.cabbageWidgets);
 
     addAndMakeVisible (mainComponent);
@@ -128,6 +129,8 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     const int width = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::width);
     const int height = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::height);
     const String backgroundColourString = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
+    lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
+    lookAndFeelChanged();
     backgroundColour = Colour::fromString (backgroundColourString);
     mainComponent.setColour (backgroundColour);
     setSize (width, height);

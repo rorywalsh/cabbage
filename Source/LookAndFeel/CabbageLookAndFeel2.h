@@ -64,11 +64,24 @@ public:
 
     void drawButtonText (Graphics& g, TextButton& button, bool /*isMouseOverButton*/, bool /*isButtonDown*/) override;
 
-    Font getLabelFont (Label& label) override;
+    void drawLabel (Graphics&, Label&) override;
 
+
+    void setDefaultFont(File fontFile);
+    Font getTextButtonFont (TextButton&, int buttonHeight) override;
+    Font getComboBoxFont (ComboBox&) override;
+    Font getLabelFont (Label&) override;
+    Font getSliderPopupFont (Slider&) override;
+
+//    Font getAlertWindowTitleFont() override;
+//    Font getAlertWindowMessageFont() override;
+//    Font getAlertWindowFont() override;
+//
+//    Font getPopupMenuFont() override;
+//    Font getMenuBarFont (MenuBarComponent&, int itemIndex, const String& itemText) override;
 private:
 
-
+    Font customFont;
 
 
 };

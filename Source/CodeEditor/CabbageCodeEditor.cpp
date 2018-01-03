@@ -66,6 +66,13 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     currentLineMarker.setColour (lineNumberBackground.contrasting().withAlpha (.3f));
     addAndMakeVisible (currentLineMarker);
 
+    for ( auto str : CsoundKeywords)
+    {
+        keywordsArray.add( String (CharPointer_UTF8 (str)));
+    }
+
+
+
 }
 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
@@ -765,7 +772,6 @@ void CabbageCodeEditorComponent::parseTextForVariables()    //this is called on 
     tokens.addTokens (csdText, "  \n( ) ` ~ ! @ # $ % ^ & * - + = | \\ { } [ ] : ; ' < > , . ? /\t", "");
 
 
-
     for (const String currentWord : tokens)
     {
         if (currentWord.startsWith ("a") || currentWord.startsWith ("i") ||
@@ -776,6 +782,7 @@ void CabbageCodeEditorComponent::parseTextForVariables()    //this is called on 
                 variableNames.addIfNotAlreadyThere (currentWord.replace ("\"", ""));
         }
     }
+    variableNames.addArray(keywordsArray);
 }
 
 void CabbageCodeEditorComponent::handleAutoComplete (String text)
@@ -978,6 +985,8 @@ StringArray CabbageCodeEditorComponent::addItemsToPopupMenu (PopupMenu& m)
 bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     allowUpdateOfPluginGUI = true;      //allow keystrokes to update GUI
+    const bool ctrlOrAltDown = key.getModifiers().isCtrlDown() || key.getModifiers().isAltDown();
+    const bool isShiftDown   = key.getModifiers().isShiftDown();
 
     if (key.getTextDescription().contains ("cursor up"))
     {
@@ -1008,6 +1017,16 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
         else  if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::KeyPress::tabKey))
         {
             sendChangeMessage();
+        }
+        else if (key.isKeyCode (KeyPress::leftKey))
+        {
+            autoCompleteListBox.setVisible (false);
+            moveCaretLeft(ctrlOrAltDown, isShiftDown);
+        }
+        else if (key.isKeyCode (KeyPress::rightKey))
+        {
+            autoCompleteListBox.setVisible (false);
+            moveCaretRight (ctrlOrAltDown, isShiftDown);
         }
         else  if (key.isKeyCode (KeyPress::upKey || key.isKeyCode (KeyPress::downKey)))
         {

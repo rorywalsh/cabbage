@@ -19,6 +19,8 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/bundle.md !}  
 
+{! ./markdown/Widgets/Properties/typeface.md !}  
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/colour.md !}     

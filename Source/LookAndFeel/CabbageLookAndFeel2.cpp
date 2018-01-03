@@ -45,9 +45,24 @@ namespace LookAndFeelHelpers
 //Cabbage IDE look and feel class
 CabbageLookAndFeel2::CabbageLookAndFeel2()
 {
-
+    setDefaultFont(File());
 }
 
+void CabbageLookAndFeel2::setDefaultFont(File fontFile)
+{
+    if(fontFile.existsAsFile())
+    {
+        ScopedPointer<InputStream> inStream = fontFile.createInputStream();
+        MemoryBlock mb;
+        inStream->readIntoMemoryBlock(mb);
+        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+        customFont = Font(fontPtr);
+    }
+    else
+        customFont = CabbageUtilities::getComponentFont();
+
+
+}
 //=========== ComboBox ============================================================================
 void CabbageLookAndFeel2::drawComboBox (Graphics& g, int width, int height, bool /*isButtonDown*/,
                                         int /*buttonX*/,
@@ -133,7 +148,7 @@ void CabbageLookAndFeel2::drawPopupMenuItem (Graphics& g, const Rectangle<int>& 
     }
 
 
-    g.setFont (CabbageUtilities::getComponentFont());
+    g.setFont (customFont);
     g.drawText (CabbageUtilities::cabbageString (text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
 
     if (isSeparator == true)
@@ -212,7 +227,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
 
     //----- Text
     String name = group.getText();
-    Font font = CabbageUtilities::getTitleFont();
+    Font font = customFont;
 #ifndef MACOSX
     font.setFallbackFontName ("Verdana");
 #endif
@@ -1145,8 +1160,56 @@ int CabbageLookAndFeel2::getScrollbarButtonSize (ScrollBar& scrollbar)
                 : scrollbar.getHeight());
 }
 
+void CabbageLookAndFeel2::drawLabel (Graphics& g, Label& label)
+{
+    g.fillAll (label.findColour (Label::backgroundColourId));
+
+    if (! label.isBeingEdited())
+    {
+        const float alpha = label.isEnabled() ? 1.0f : 0.5f;
+        const Font font (getLabelFont (label));
+
+        g.setColour (label.findColour (Label::textColourId).withMultipliedAlpha (alpha));
+        g.setFont (font);
+
+        Rectangle<int> textArea (label.getBorderSize().subtractedFrom (label.getLocalBounds()));
+
+        g.drawFittedText (label.getText(), textArea, label.getJustificationType(),
+                          jmax (1, (int) (textArea.getHeight() / font.getHeight())),
+                          label.getMinimumHorizontalScale());
+
+        g.setColour (label.findColour (Label::outlineColourId).withMultipliedAlpha (alpha));
+    }
+    else if (label.isEnabled())
+    {
+        g.setColour (label.findColour (Label::outlineColourId));
+    }
+
+    g.drawRect (label.getLocalBounds());
+}
+
+//===================================================================================
+Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
+{
+    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
+    return Font(customFont);
+}
+
+Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
+{
+    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
+    return Font(customFont);
+}
+
 Font CabbageLookAndFeel2::getLabelFont (Label& label)
 {
-    return CabbageUtilities::getComponentFont();
+    return customFont;
+}
+
+Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
+{
+    customFont.setHeight(15.0f);
+    customFont.setBold(true);
+    return Font (15.0f, Font::bold);
 }
 
