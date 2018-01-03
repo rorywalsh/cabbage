@@ -36,6 +36,8 @@ meter WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !}  
  
+{! ./markdown/Widgets/Properties/tofront.md !} 
+
 {! ./markdown/Widgets/Properties/widgetarray.md !}  
 
 ##Slider types:

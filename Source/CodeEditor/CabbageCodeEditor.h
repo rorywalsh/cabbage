@@ -292,8 +292,6 @@ struct CustomTextEditorKeyMapper
         // NB: checking for delete must happen after the earlier check for shift + delete
         if (numCtrlAltCommandKeys < 2)
         {
-            if (key.isKeyCode (KeyPress::backspaceKey)) return target.deleteBackwards (ctrlOrAltDown);
-
             if (key.isKeyCode (KeyPress::deleteKey))    return target.deleteForwards  (ctrlOrAltDown);
         }
 

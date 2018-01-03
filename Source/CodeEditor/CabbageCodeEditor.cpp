@@ -793,6 +793,9 @@ void CabbageCodeEditorComponent::handleAutoComplete (String text)
         const CodeDocument::Position pos2 = getDocument().findWordBreakAfter (getCaretPos());
         const String currentWord = getDocument().getTextBetween (pos1, pos2).trim();
 
+        if(pos1.getLineText().trim().isEmpty())
+            return;
+
         if (currentWord.startsWith ("a") || currentWord.startsWith ("i") ||
             currentWord.startsWith ("k") || currentWord.startsWith ("S") ||
             currentWord.startsWith ("f") || currentWord.startsWith ("g"))
@@ -1014,7 +1017,7 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
         else if (key == KeyPress::escapeKey)
             handleEscapeKey();
 
-        else  if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::KeyPress::tabKey))
+        else  if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::tabKey))
         {
             sendChangeMessage();
         }
@@ -1027,6 +1030,11 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
         {
             autoCompleteListBox.setVisible (false);
             moveCaretRight (ctrlOrAltDown, isShiftDown);
+        }
+        else if (key.isKeyCode (KeyPress::backspaceKey))
+        {
+            autoCompleteListBox.setVisible (false);
+            return deleteBackwards (ctrlOrAltDown);
         }
         else  if (key.isKeyCode (KeyPress::upKey || key.isKeyCode (KeyPress::downKey)))
         {

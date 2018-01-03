@@ -24,6 +24,7 @@
 
 void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree data)
 {
+    toFront = -99;
     csdFile = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::csdfile);
     rotate = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate);
     pivotx = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::pivotx);
@@ -67,6 +68,12 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         child->setTransform (AffineTransform::rotation ( rotate, child->getX() + CabbageWidgetData::getNumProp (data,
                                                          CabbageIdentifierIds::pivotx),
                                                          child->getY() + CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::pivoty)));
+    }
+
+    if ( toFront != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront) || calledFromConstructor)
+    {
+        toFront = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront);
+        child->toFront(true);
     }
 
     if ( visible != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible) || calledFromConstructor)

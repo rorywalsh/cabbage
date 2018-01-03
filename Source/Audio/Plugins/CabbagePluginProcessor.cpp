@@ -855,6 +855,10 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
                 if (identifierText.contains ("tablenumber")) //update even if table number has not changed
                     CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 1);
+                else if(identifierText == CabbageIdentifierIds::tofront.toString()+"()")
+                {
+                    CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::tofront, Random::getSystemRandom().nextInt());
+                }
 
                 getCsound()->SetChannel (identChannel.toUTF8(), (char*)"");
 

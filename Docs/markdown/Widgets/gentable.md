@@ -43,6 +43,8 @@ gentable WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
+{! ./markdown/Widgets/Properties/tofront.md !} 
+
 {! ./markdown/Widgets/Properties/active.md !} 
 <!--(End of identifiers)/-->
 

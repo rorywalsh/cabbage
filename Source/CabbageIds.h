@@ -398,6 +398,7 @@ public:
         add ("visible");
         add ("latched");
         add ("rescale");
+        add ("tofront");
         add ("bundle");
         add ("import");
         add ("bounds");
@@ -636,7 +637,8 @@ namespace CabbageIdentifierIds
 	static const Identifier textboxoutlinecolour = "textboxoutlinecolour";
 	static const Identifier textcolour = "textcolour";
 	static const Identifier titlebarcolour = "titlebarcolour";
-	static const Identifier top = "top";
+    static const Identifier tofront = "tofront";
+    static const Identifier top = "top";
 	static const Identifier trackercolour = "trackercolour";
 	static const Identifier trackerthickness = "trackerthickness";
 	static const Identifier type = "type";

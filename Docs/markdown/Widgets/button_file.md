@@ -42,6 +42,8 @@ filebutton WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !} 
 
+{! ./markdown/Widgets/Properties/tofront.md !} 
+
 {! ./markdown/Widgets/Properties/widgetarray.md !} 
 
 <!--(End of identifiers)/-->

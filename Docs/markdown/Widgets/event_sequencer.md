@@ -43,6 +43,8 @@ eventsequencer WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !}
 
+{! ./markdown/Widgets/Properties/tofront.md !} 
+
 {! ./markdown/Widgets/Properties/visible.md !}
 
 <!--(End of identifiers)/-->

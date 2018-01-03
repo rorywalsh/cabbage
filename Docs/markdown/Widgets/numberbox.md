@@ -21,6 +21,8 @@ numberbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/textcolour.md !} 
 
+{! ./markdown/Widgets/Properties/tofront.md !} 
+
 {! ./markdown/Widgets/Properties/trackerthickness.md !} 
 
 ### Common Identifiers

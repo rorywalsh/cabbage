@@ -34,6 +34,8 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/identchannel.md !}  
 
+{! ./markdown/Widgets/Properties/tofront.md !} 
+
 {! ./markdown/Widgets/Properties/visible.md !}  
 
 
