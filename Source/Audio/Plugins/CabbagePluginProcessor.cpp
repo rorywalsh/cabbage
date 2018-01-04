@@ -758,6 +758,7 @@ void CabbagePluginProcessor::setParametersFromXml (XmlElement* e)
             }
             else
             {
+                if(type != "combobox")
                 CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, e->getAttributeValue (i).getFloatValue());
             }
         }

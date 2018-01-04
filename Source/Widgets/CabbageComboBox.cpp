@@ -93,6 +93,7 @@ CabbageComboBox::~CabbageComboBox()
 
 void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDisk)
 {
+    presets.clear();
     Array<File> dirFiles;
     StringArray fileNames;
     clear (dontSendNotification);
