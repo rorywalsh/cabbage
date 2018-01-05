@@ -399,9 +399,11 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
     Image image;
     const File imgSlider (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgslider, "").toString());
     const File imgSliderBackground (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgsliderbg, "").toString());
-
     const int svgSliderWidthBg = slider.getProperties().getWithDefault ("svgsliderbgwidth", 100);
     const int svgSliderHeightBg = slider.getProperties().getWithDefault ("svgsliderbgheight", 100);
+
+    const float innerRadiusProportion = slider.getProperties().getWithDefault ("trackerinnerradius", .7);
+    const float outerRadiusProportion = slider.getProperties().getWithDefault ("trackerouterradius", 1);
 
     //if valid background SVG file....
     if (imgSliderBackground.existsAsFile() && imgSliderBackground.hasFileExtension (".csd") == false)
@@ -426,15 +428,13 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
     {
 
         //tracker
-        if (slider.findColour (Slider::trackColourId).getAlpha() == 0)
-            g.setColour (Colours::transparentBlack);
-        else
-            g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver ? 1.0f : 0.9f));
+        g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver  ? slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
 
-        const float thickness = 0.7f;
+        const float thickness = slider.getProperties().getWithDefault ("trackerthickness", 1);
         {
             Path filledArc;
-            filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, thickness);
+            filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
+            filledArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
             g.fillPath (filledArc);
         }
 
@@ -443,12 +443,13 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
             if (slider.findColour (Slider::trackColourId).getAlpha() == 0)
                 g.setColour (Colours::transparentBlack);
             else
-                g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver ? 1.0f : 0.9f));
+                g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver ?slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
 
-            const float thickness = slider.getProperties().getWithDefault ("trackerthickness", .7);
+            const float thickness = slider.getProperties().getWithDefault ("trackerthickness", 1);
             {
                 Path filledArc;
-                filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, 1.f - thickness);
+                filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
+                filledArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
                 g.fillPath (filledArc);
             }
 
@@ -483,7 +484,8 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
             g.setColour (slider.findColour (Slider::rotarySliderOutlineColourId));
 
             Path outlineArc;
-            outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, thickness);
+            outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
+            outlineArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
             outlineArc.closeSubPath();
 
             g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
@@ -496,21 +498,24 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
 
             if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
             {
-                newPolygon.addPolygon (centre, 12.f, radius * .65, 0.f);
+                newPolygon.addPolygon (centre, 12.f, radius * innerRadiusProportion, 0.f);
                 newPolygon.applyTransform (AffineTransform::rotation (angle,
                                                                       centreX, centreY));
             }
             else //Else just use a circle. This is clearer than a polygon when very small.
                 newPolygon.addEllipse (-radius * .2, -radius * .2, radius * .3f, radius * .3f);
 
+            g.setColour (slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f));
 
-            g.setColour (slider.findColour (Slider::thumbColourId));
+            //g.setColour (slider.findColour (Slider::thumbColourId));
 
-            Colour thumbColour = slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? 1.0f : 0.9f);
-            ColourGradient cg = ColourGradient (Colours::white, 0, 0, thumbColour, diameter * 0.6, diameter * 0.4, false);
+            Colour thumbColour = slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f);
+            ColourGradient cg = ColourGradient (Colours::white.withAlpha(slider.findColour (Slider::thumbColourId).getFloatAlpha()), 0, 0, thumbColour, diameter * 0.6, diameter * 0.4, false);
 
-            if (slider.findColour (Slider::thumbColourId) != Colour (0.f, 0.f, 0.f, 0.f))
+            if (slider.findColour (Slider::thumbColourId).getAlpha() != 0)
                 g.setGradientFill (cg);
+            //else if (slider.findColour (Slider::thumbColourId).getAlpha() == 0)
+
 
             g.fillPath (newPolygon);
         }

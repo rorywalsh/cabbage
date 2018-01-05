@@ -33,6 +33,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     addAndMakeVisible (textLabel);
     addAndMakeVisible (&slider);
     slider.setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
+    slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerthickness));
     initialiseSlider (wData);
     textLabel.setVisible (false);
     initialiseCommonAttributes (this, wData);
@@ -60,8 +61,11 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
     shouldShowTextBox = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuetextbox);
     trackerThickness = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerthickness);
-
+    trackerInnerRadius = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerinsideradius);
+    trackerOuterRadius = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackeroutsideradius);
     slider.getProperties().set ("trackerthickness", trackerThickness);
+    slider.getProperties().set ("trackerinnerradius", trackerInnerRadius);
+    slider.getProperties().set ("trackerouterradius", trackerOuterRadius);
 
     slider.setSkewFactor (sliderSkew);
     slider.setRange (min, max, sliderIncrement);
@@ -97,8 +101,6 @@ void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
     {
         shouldDisplayPopup = false;
         setTextBoxWidth();
-
-
     }
     else
     {
@@ -266,7 +268,7 @@ void CabbageSlider::setLookAndFeelColours (ValueTree wData)
 
     slider.setColour (Slider::thumbColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
     slider.setColour (Slider::trackColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)));
-    slider.setColour (Slider::Slider::rotarySliderOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
+    slider.setColour (Slider::rotarySliderOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
 
     slider.setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));

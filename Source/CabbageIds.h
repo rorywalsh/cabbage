@@ -301,6 +301,8 @@ public:
         add ("arrowbackgroundcolour");
         add ("amprange_tablenumber");
         add ("textboxoutlinecolour");
+        add ("trackeroutsideradius");
+        add ("trackerinsideradius");
         add ("surrogatelinenumber");
         add ("mouseoeverkeycolour");
         add ("keyseparatorcolour");
@@ -326,6 +328,7 @@ public:
         add ("numberofsteps");
         add ("textboxcolour");
         add ("trackercolour");
+        add ("trackerradius");
         add ("valuetextbox");
         add ("fontcolour:1");
         add ("amprange_min");
@@ -641,6 +644,8 @@ namespace CabbageIdentifierIds
     static const Identifier top = "top";
 	static const Identifier trackercolour = "trackercolour";
 	static const Identifier trackerthickness = "trackerthickness";
+    static const Identifier trackeroutsideradius = "trackeroutsideradius";
+    static const Identifier trackerinsideradius = "trackerinsideradius";
 	static const Identifier type = "type";
     static const Identifier typeface = "typeface";
     static const Identifier update = "update";
@@ -753,6 +758,9 @@ public:
         set ("Colour", CabbageIdentifierIds::colour.toString());
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
+        set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
+        set ("Tracker Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
+        set ("Tracker Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
         set ("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
         set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set ("Value Box", CabbageIdentifierIds::valuetextbox.toString());
@@ -847,7 +855,7 @@ static const char* const CsoundKeywords[] =
     "listbox", "hrange", "vrange", "active", "align", "alpha", "amprange", "bounds", "caption", "channel", "channelarray", "channeltype", "child", "colour", "colour:0", "colour:1", "corners", "displaytype", "file",
     "fontcolour", "fontstyle", "guirefresh", "highlightcolour", "identchannel", "items", "latched", "line", "middlec", "max", "min", "mode", "outlinecolour", "outlinethickness", "plant", "pluginid", "populate",
     "popup", "popuptext", "range", "rangex", "rangey", "rotate", "samplerange", "scrubberpos", "scrubberposition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tablebackgroundcolour", "tablecolour",
-    "tablegridcolour", "tablenumber", "text", "textcolour", "textbox", "trackercolour", "trackerthickness", "widgetarray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
+    "tablegridcolour", "tablenumber", "text", "textcolour", "textbox", "trackercolour", "trackerthickness", "trackerouterradius", "trackerinnerradius", "typeface", "widgetarray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textbox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",
     "enduntil", "soundfiler", "combobox", "vslider", "vslider2", "vslider3", "hslider2", "define", "hslider3", "hslider", "rslider", "groupbox", "combobox", "xypad", "image", "plant", "csoundoutput", "button", "form", "checkbox",
     "tab", "abs", "acauchy", "active", "adsr", "adsyn", "adsynt", "adsynt2", "aexprand", "aftouch", "agauss", "agogobel", "alinrand", "alpass", "ampdb", "ampdbfs", "ampmidi", "apcauchy", "apoisson", "apow", "areson",

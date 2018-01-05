@@ -370,6 +370,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("outlinethickness"):
             case HashStringToInt ("linethickness"):
             case HashStringToInt ("trackerthickness"):
+            case HashStringToInt ("trackerinsideradius"):
+            case HashStringToInt ("trackeroutsideradius"):
             case HashStringToInt ("value"):
             case HashStringToInt ("valuex"):
             case HashStringToInt ("valuey"):

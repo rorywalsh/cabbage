@@ -157,7 +157,9 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::decimalplaces, 1);
     setProperty (widgetData, CabbageIdentifierIds::velocity, 0);
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
-    setProperty (widgetData, CabbageIdentifierIds::trackerthickness, .7);
+    setProperty (widgetData, CabbageIdentifierIds::trackerthickness, 1.f);
+    setProperty (widgetData, CabbageIdentifierIds::trackerinsideradius, .7f);
+    setProperty (widgetData, CabbageIdentifierIds::trackeroutsideradius, 1.f);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
