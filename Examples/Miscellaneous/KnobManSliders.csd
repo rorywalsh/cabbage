@@ -1,11 +1,11 @@
 <Cabbage>
 form caption("Knobman Filmstrip Example") size(450, 180), colour(93, 93, 93), pluginID("def1")
 
-image bounds(10, 23, 32, 107), file("/home/rory/sourcecode/cabaiste/Examples/Instructional/roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent1")
+image bounds(10, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent1")
 vslider bounds(10, 22, 27, 106) channel("vslider1") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(50, 23, 32, 107), file("/home/rory/sourcecode/cabaiste/Examples/Instructional/roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent2")
+image bounds(50, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent2")
 vslider bounds(50, 22, 32, 106) channel("vslider2") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(90, 23, 32, 107), file("/home/rory/sourcecode/cabaiste/Examples/Instructional/roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent3")
+image bounds(90, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent3")
 vslider bounds(90, 22, 32, 106) channel("vslider3") range(0, 1, 0, 1, 0.001) alpha(0)
 image bounds(130, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent4")
 vslider bounds(130, 22, 32, 106) channel("vslider4") range(0, 1, 0, 1, 0.001) alpha(0)
