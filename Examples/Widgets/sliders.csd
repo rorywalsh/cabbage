@@ -43,9 +43,9 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "trackerthickness(%f) ", rnd(10)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "trackerthickness(%f) ", rnd(10)
+	SIdent sprintf "trackerinsideradius(%f) ", rnd(10)/10
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "trackerthickness(%f) ", rnd(10)
+	SIdent sprintf "trackeroutsideradius(%f) ", rnd(10)/10
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "textboxoutlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
