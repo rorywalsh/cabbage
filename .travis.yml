@@ -13,8 +13,8 @@ before_script:
 - pwd
 - git remote rm origin
 - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalshe/cabbage.git
-- git config --global user.email "${GIT_EMAIL}"
-- git config --global user.name "${GIT_NAME}"
+- git config --global user.email "rorywalsh@ear.ie"
+- git config --global user.name "rorywalsh"
 - git config --global push.default simple
 - git tag vBeta -a -m "Generated tag for beta build"
 - git push --tags
