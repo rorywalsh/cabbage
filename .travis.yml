@@ -41,6 +41,8 @@ before_script:
 # - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
+ - git config --global user.email "rorywalsh@ear.ie"
+ - git config --global user.name "rorywalsh"
  - git tag vBeta -a -m "Generated tag for beta build"
  - git push --tags
 
