@@ -1,11 +1,19 @@
-os: osx
-osx_image: xcode9.2
-compiler: clang
+sudo: required
+dist: trusty
+
+language: cpp
+compiler: gcc
+# os: osx
+# osx_image: xcode9.2
+# compiler: clang
 before_script:
 - ls
 - gem install xcpretty
 - gem install xcpretty-travis-formatter
 - pwd
+- cd cabbage
+- git remote rm origin
+- git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalshe/cabbage.git
 #- cd ..
 # - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
 # - ls
