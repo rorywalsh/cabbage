@@ -13,6 +13,12 @@ before_script:
 - pwd
 - git remote rm origin
 - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalshe/cabbage.git
+- git config --global user.email "${GIT_EMAIL}"
+- git config --global user.name "${GIT_NAME}"
+- git config --global push.default simple
+- git tag vBeta -a -m "Generated tag for beta build"
+- git push --tags
+
 #- cd ..
 # - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
 # - ls
@@ -41,13 +47,6 @@ before_script:
 # - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-  - git config --global user.email "${GIT_EMAIL}"
-  - git config --global user.name "${GIT_NAME}"
-  - git config --global push.default simple
-  - git remote add origin https://${GH_TOKEN}@github.com/rorywalsh/cabbage.git
- - git tag vBeta -a -m "Generated tag for beta build"
- - git push --tags
-
  - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
  - echo -en "travis_fold:start:buildingIDE"
 # - $PROJUCER --resave ../../CabbageIDE.jucer
