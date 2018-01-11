@@ -12,7 +12,7 @@ before_script:
 - gem install xcpretty-travis-formatter
 - pwd
 - git remote rm origin
-- git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalshe/cabbage.git
+- git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalsh/cabbage.git
 - git config --global user.email "rorywalsh@ear.ie"
 - git config --global user.name "rorywalsh"
 - git config --global push.default simple
