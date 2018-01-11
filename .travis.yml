@@ -11,7 +11,6 @@ before_script:
 - gem install xcpretty
 - gem install xcpretty-travis-formatter
 - pwd
-- cd cabbage
 - git remote rm origin
 - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalshe/cabbage.git
 #- cd ..
