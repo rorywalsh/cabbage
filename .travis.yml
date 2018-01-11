@@ -13,7 +13,7 @@ before_script:
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 - git push --delete origin vBeta
 - git push origin --tags
-- git pull --tags
+- git pull origin --tags
 - git tag vBeta -a -m "Generated tag for beta build"
 - git push --tags
 script:
