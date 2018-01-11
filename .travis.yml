@@ -41,8 +41,10 @@ before_script:
 # - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
- - git config --global user.email "rorywalsh@ear.ie"
- - git config --global user.name "rorywalsh"
+  - git config --global user.email "${GIT_EMAIL}"
+  - git config --global user.name "${GIT_NAME}"
+  - git config --global push.default simple
+  - git remote add origin https://${GH_TOKEN}@github.com/rorywalsh/cabbage.git
  - git tag vBeta -a -m "Generated tag for beta build"
  - git push --tags
 
@@ -84,13 +86,13 @@ script:
 # - zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 # - echo -en "travis_fold:end:buildingZip"
 
-before_deploy:
-  - git config --global user.email "${GIT_EMAIL}"
-  - git config --global user.name "${GIT_NAME}"
-  - git config --global push.default simple
-  - git remote add origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
-  - git tag vBeta -a -m "Generated tag for beta build"
-  - git push --tags
+# before_deploy:
+#   - git config --global user.email "${GIT_EMAIL}"
+#   - git config --global user.name "${GIT_NAME}"
+#   - git config --global push.default simple
+#   - git remote add origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
+#   - git tag vBeta -a -m "Generated tag for beta build"
+#   - git push --tags
 
 # deploy:
 #   skip_cleanup: true
