@@ -110,4 +110,4 @@ env:
 
 branches:
   except:
-    - /^*-v[0-9]/
+    - vBeta
