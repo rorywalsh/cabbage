@@ -73,6 +73,8 @@ script:
 - echo -en "travis_fold:end:buildingZip"
 
 before_deploy:
+  - git config --global user.email "rorywalsh@ear.ie"
+  - git config --global user.name "rorywalsh"
   - git tag vBeta -a -m "Generated tag for beta build"
   - git push --tags
 
