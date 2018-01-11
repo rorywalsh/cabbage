@@ -41,13 +41,9 @@ before_script:
 # - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-  - git config --global user.email "${GIT_EMAIL}"
-  - git config --global user.name "${GIT_NAME}"
-  - git config --global push.default simple
-  - git remote add origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
-  - git tag vBeta -a -m "Generated tag for beta build"
-  - git push --tags
-  
+ - git tag vBeta -a -m "Generated tag for beta build"
+ - git push --tags
+
  - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
  - echo -en "travis_fold:start:buildingIDE"
 # - $PROJUCER --resave ../../CabbageIDE.jucer
