@@ -3,9 +3,9 @@ osx_image: xcode9.2
 compiler: clang
 before_script:
 - ls
-#- gem install xcpretty
-#- gem install xcpretty-travis-formatter
-#- pwd
+- gem install xcpretty
+- gem install xcpretty-travis-formatter
+- pwd
 #- cd ..
 # - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
 # - ls
@@ -34,11 +34,11 @@ before_script:
 # - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-# - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
-# - echo -en "travis_fold:start:buildingIDE"
+ - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+ - echo -en "travis_fold:start:buildingIDE"
 # - $PROJUCER --resave ../../CabbageIDE.jucer
 # - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-# - echo -en "travis_fold:end:buildingIDE"
+ - echo -en "travis_fold:end:buildingIDE"
 
 # - echo -en "travis_fold:start:buildingLite"
 # - $PROJUCER --resave ../../CabbageLite.jucer
