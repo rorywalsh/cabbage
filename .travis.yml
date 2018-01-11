@@ -12,6 +12,7 @@ before_script:
 - git config credential.helper "store --file=.git/credentials"
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 - git push --delete origin vBeta
+- git fetch --all
 - git tag vBeta -a -m "Generated tag for beta build"
 - git push --tags
 script:
