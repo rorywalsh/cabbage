@@ -1,11 +1,7 @@
 sudo: required
 dist: trusty
-
 language: cpp
 compiler: gcc
-# os: osx
-# osx_image: xcode9.2
-# compiler: clang
 before_script:
 - ls
 - gem install xcpretty
@@ -14,96 +10,14 @@ before_script:
 - git remote rm origin
 - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalsh/cabbage.git
 - git config --global user.email "rorywalsh@ear.ie"
-- git config --global user.name "rorywalsh"
-- git config --global push.default simple
+- git config credential.helper "store --file=.git/credentials"
+- echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 - git tag vBeta -a -m "Generated tag for beta build"
 - git push --tags
-
-#- cd ..
-# - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
-# - ls
-# - hdiutil attach csound6.09.1-OSX-universal.dmg
-# - cp -R /Volumes/Csound6.09.1/ Csound
-# - hdiutil detach /Volumes/Csound6.09.1/
-# - cd Csound
-# - sudo installer -pkg csound6.09.1-OSX-universal.pkg -target /
-# - cd /Users/travis/build/rorywalsh/
-# - git clone https://github.com/WeAreROLI/JUCE.git
-# - cd JUCE/extras/Projucer/JuceLibraryCode
-# - sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
-# - sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
-# - cat AppConfig.h
-# - cd /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/
-# - xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`  > /dev/null
-# - cd /Users/travis/build/rorywalsh/
-# - ls /Library/Frameworks/
-# - pwd
-# - cd /Users/travis/build/
-# - curl -L -o vstsdk368_08_11_2017_build_121.zip https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip
-# - unzip -q vstsdk368_08_11_2017_build_121.zip
-# - mkdir ~/SDKs
-# - cp -rf VST_SDK ~/SDKs
-# - ls /Users/travis/build/rorywalsh/
-# - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
-
 script:
- - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
- - echo -en "travis_fold:start:buildingIDE"
-# - $PROJUCER --resave ../../CabbageIDE.jucer
-# - xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
- - echo -en "travis_fold:end:buildingIDE"
-
-# - echo -en "travis_fold:start:buildingLite"
-# - $PROJUCER --resave ../../CabbageLite.jucer
-# - xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-# - echo -en "travis_fold:end:buildingLite"
-
-# - echo -en "travis_fold:start:buildingPlugins"
-# - $PROJUCER --resave ../../CabbagePlugin.jucer
-# - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-# - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
-# - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
-# - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-# - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
-# - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
-# - cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
-# - cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
-# - echo -en "travis_fold:end:buildingPlugins"
-
-# - echo -en "travis_fold:start:gettingManual"
-# - curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
-# - ls
-# - unzip -q "CabbageManual.zip"
-# - ls
-# - cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
-# - cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
-# - echo -en "travis_fold:end:gettingManual"
-
-# - echo -en "travis_fold:start:buildingZip"
-# - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
-# - ls
-# - zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
-# - echo -en "travis_fold:end:buildingZip"
-
-# before_deploy:
-#   - git config --global user.email "${GIT_EMAIL}"
-#   - git config --global user.name "${GIT_NAME}"
-#   - git config --global push.default simple
-#   - git remote add origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
-#   - git tag vBeta -a -m "Generated tag for beta build"
-#   - git push --tags
-
-# deploy:
-#   skip_cleanup: true
-#   provider: releases
-#   api_key:
-#     secure: t1RDH2xfgwBOAyPjqyGezDqxh5GbvOMoH0agnuiBNuIGELWAfA1c3ylcJVu96ydMefV+hbqXajzBS7F8a2doRpmxtAkjrLR27w+c8sW7r33OAfrLJKr3xFAq+tV2IMC6QlS6U8Ts8UxOZkZJd+MIpdT5PLTcFHWDh507pSupMSc7+o7JldKrJH33tiGpcSF+EFs2voSnFwRWW1sVlw7jBVQqhVlmkXbk76LIYxNOmHOjj0GCxUIqMkw55EhsK9BI0uPPN6+U9K0bwpSPAwljBchssAL3Pp46YsScyI8POzkn7PQNm4yXOoXEcJ4IQPfHtW7md/WMAyxwJnU+t36wWbxRUIuIIN74vzbB5KorG4Hj5C/alhhu7Zh/Zf8A1ThhJe19u6IEfItn9cQA9VCyWFMu30WzeJgTcyoPJe0HmbzK6lKe4sBuQWMZ9GL6a8tlVoH2KlSf2ZxwAppHIUgn2MuuvSWMwoSuISTfnzB3z4r2+24XTMzzaJPOAXDGGcHZ+DYlkuGQWztqC1eoj0YoHjupQAzNTw47EhyutIyPcO6O95k/9PH0DdbHlIMGdJBil1192Y9q3SrX8/hHiVmckCQGQT+C6QRSZsP/S+aOeLCn9aiXn2W1op7CYrWGkm8Q60W2hhXdk6Hqt3hxcQ1d5AvLGsC8yY5AIo1KP0FQ3i4=
-#   file: /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip
-#   on:
-#     repo: rorywalsh/cabbage
-#     tags: false
-#     branch: master
-
-# branches:
-#   except:
-#     - /^*-v[0-9]/
+- export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+- echo -en "travis_fold:start:buildingIDE"
+- echo -en "travis_fold:end:buildingIDE"
+env:
+  global:
+    secure: Rutly8wQi3KfYQOf4du0QuPBbQgoYn8oMJUe51mpilcAX8kfmi98jocycek1wrkTOlZAZMJvA1GHC/Z6CN05NtnjrJGOW+9u6dEv/0Wrz2yYOBVZYZrvTyVoGJhs7Xy3mJ9IufihhDmfkWEIWb3uDEDBVz9QLGOg9JkK6090iGJZPq7oFY0xlJcxzpcbFOyYH2OfArJLVnrHWvfTzMv+zk5LXi70V2MeuHrKqK1uHt40GoxHhOdJGSkcm+l8zufA1o6I2RM21Shu/5s0is7PR7rUJzy9s5X4z9q/xKN3K0FLa/kmzOR5j2RYJWQdnnfe5HX6lkijot8FZQJl8oExQay/4og2gHf9UyJRr6/a2YLy25mCF7J9Va8ffxxHOiAP3jGu5QFjzWxuKxi6wQT5/XIvGbrx1whZ7b89Dmu2JTo0lHQQuiMHwqg19w37HH9t4YC1yKbiqmJLunJSekd96nRef4fqOxRiOgce2BX+fLM+UehEP+uZ3qFRdCJ8q6qVQv8bloGhmzv6h2GKvur1yqF584KETtkHd+0Ex9OhF+FwHUsbjHZeTfsMCbKOyawdx6oXN1mESfW/SdJYC0SFrDX6BI0R53aYLeEaOpqerP5I+E/cz2XAiwzM+v6kgNe//5dxmAkFCAedoBzscfbbzORJcGkR9Nhys9jJOD3cjiM=
