@@ -88,7 +88,7 @@ deploy:
   file: /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip
   on:
     repo: rorywalsh/cabbage
-    tags: false
+    tags: true
     branch: master
 
 env:
