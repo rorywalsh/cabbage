@@ -11,9 +11,7 @@ before_script:
 - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalsh/cabbage.git
 - git config credential.helper "store --file=.git/credentials"
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
-- git push --delete origin vBeta
-- git push origin --tags
-- git pull origin --tags
+- git push --delete master vBeta
 - git tag vBeta -a -m "Generated tag for beta build"
 - git push --tags
 script:
@@ -109,6 +107,6 @@ env:
 #     tags: false
 #     branch: master
 
-# branches:
-#   except:
-#     - /^*-v[0-9]/
+branches:
+  except:
+    - /^*-v[0-9]/
