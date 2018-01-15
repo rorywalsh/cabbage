@@ -119,6 +119,8 @@ void CabbagePluginEditor::createEditorInterface (ValueTree widgets)
             insertWidget (widgets.getChild (widget));
         }
     }
+    
+    lookAndFeelChanged();
 }
 
 //======================================================================================================
@@ -130,7 +132,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     const int height = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::height);
     const String backgroundColourString = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
     lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
-    lookAndFeelChanged();
+
     backgroundColour = Colour::fromString (backgroundColourString);
     mainComponent.setColour (backgroundColour);
     setSize (width, height);

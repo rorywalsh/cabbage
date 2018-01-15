@@ -1150,7 +1150,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
             const String csOptions = lines[i+1];
             if(csOptions.contains("-+rtaudio"))
                 CabbageUtilities::showMessage("You are using -+rtaudio to set an audio device. This is unsupported. Please set the audio device in the Cabbage audio settings and remove the -+rtaudio flag from your CsOptions.", lookAndFeel);
-            if(csOptions.contains("-+rtmidi=") && !csOptions.contains("-+rtmidi=NULL"))
+            if(csOptions.contains("-+rtmidi=") && (!csOptions.contains("-+rtmidi=NULL") && !csOptions.contains("-+rtmidi=null")))
                 CabbageUtilities::showMessage("You are using -+rtmidi to set a MIDI device. This is unsupported. Please use -+rtmidi=NULL in your CsOptions, and select a MIDI device in the Cabbage audio settings.", lookAndFeel);
 
         }

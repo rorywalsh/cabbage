@@ -68,10 +68,10 @@ public:
 
 
     void setDefaultFont(File fontFile);
-    Font getTextButtonFont (TextButton&, int buttonHeight) override;
-    Font getComboBoxFont (ComboBox&) override;
-    Font getLabelFont (Label&) override;
-    Font getSliderPopupFont (Slider&) override;
+//    Font getTextButtonFont (TextButton&, int buttonHeight) override;
+//    Font getComboBoxFont (ComboBox&) override;
+//    Font getLabelFont (Label&) override;
+//    Font getSliderPopupFont (Slider&) override;
 
 //    Font getAlertWindowTitleFont() override;
 //    Font getAlertWindowMessageFont() override;
