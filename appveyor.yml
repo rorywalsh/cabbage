@@ -72,8 +72,9 @@ before_build:
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
 
 after_build:
-  - cmd: c:\PROGRA~2\NSIS\\makensis.exe Cabbage64InstallerCanonical.nsi
+  - cmd: set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
+  - cmd: icss CabbageCannonicalInstaller.iss
 
 artifacts:
-  - path: Builds/VisualStudio2017/CabbageCanonicalSetup.exe
+  - path: Builds/VisualStudio2017/Output/CabbageCanonicalSetup.exe
   - path: logs
