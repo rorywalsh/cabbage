@@ -5,7 +5,7 @@ before_script:
 - ls
 - gem install xcpretty
 - gem install xcpretty-travis-formatter
-- pwd
+- git remote rm origin
 - cd ..
 - curl -L -o csound6.09.1-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.09.1/csound6.09.1-OSX-universal.dmg'
 - ls
@@ -72,12 +72,32 @@ script:
 - zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 - echo -en "travis_fold:end:buildingZip"
 
+before_deploy:
+  - cd /Users/travis/build/rorywalsh/cabbage/
+  - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalsh/cabbage.git
+  - git config credential.helper "store --file=.git/credentials"
+  - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
+  - git tag -d vBeta
+  - git push --force origin :refs/tags/vBeta
+  - git tag vBeta -a -m "Latest OSX Beta Build"
+  - git push origin master && git push origin master --tags
+
 deploy:
   skip_cleanup: true
   provider: releases
+  prerelease: true
   api_key:
     secure: t1RDH2xfgwBOAyPjqyGezDqxh5GbvOMoH0agnuiBNuIGELWAfA1c3ylcJVu96ydMefV+hbqXajzBS7F8a2doRpmxtAkjrLR27w+c8sW7r33OAfrLJKr3xFAq+tV2IMC6QlS6U8Ts8UxOZkZJd+MIpdT5PLTcFHWDh507pSupMSc7+o7JldKrJH33tiGpcSF+EFs2voSnFwRWW1sVlw7jBVQqhVlmkXbk76LIYxNOmHOjj0GCxUIqMkw55EhsK9BI0uPPN6+U9K0bwpSPAwljBchssAL3Pp46YsScyI8POzkn7PQNm4yXOoXEcJ4IQPfHtW7md/WMAyxwJnU+t36wWbxRUIuIIN74vzbB5KorG4Hj5C/alhhu7Zh/Zf8A1ThhJe19u6IEfItn9cQA9VCyWFMu30WzeJgTcyoPJe0HmbzK6lKe4sBuQWMZ9GL6a8tlVoH2KlSf2ZxwAppHIUgn2MuuvSWMwoSuISTfnzB3z4r2+24XTMzzaJPOAXDGGcHZ+DYlkuGQWztqC1eoj0YoHjupQAzNTw47EhyutIyPcO6O95k/9PH0DdbHlIMGdJBil1192Y9q3SrX8/hHiVmckCQGQT+C6QRSZsP/S+aOeLCn9aiXn2W1op7CYrWGkm8Q60W2hhXdk6Hqt3hxcQ1d5AvLGsC8yY5AIo1KP0FQ3i4=
   file: /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip
   on:
     repo: rorywalsh/cabbage
-    branch: master
+    tags: false
+    all_branches: true
+
+env:
+  global:
+    secure: Rutly8wQi3KfYQOf4du0QuPBbQgoYn8oMJUe51mpilcAX8kfmi98jocycek1wrkTOlZAZMJvA1GHC/Z6CN05NtnjrJGOW+9u6dEv/0Wrz2yYOBVZYZrvTyVoGJhs7Xy3mJ9IufihhDmfkWEIWb3uDEDBVz9QLGOg9JkK6090iGJZPq7oFY0xlJcxzpcbFOyYH2OfArJLVnrHWvfTzMv+zk5LXi70V2MeuHrKqK1uHt40GoxHhOdJGSkcm+l8zufA1o6I2RM21Shu/5s0is7PR7rUJzy9s5X4z9q/xKN3K0FLa/kmzOR5j2RYJWQdnnfe5HX6lkijot8FZQJl8oExQay/4og2gHf9UyJRr6/a2YLy25mCF7J9Va8ffxxHOiAP3jGu5QFjzWxuKxi6wQT5/XIvGbrx1whZ7b89Dmu2JTo0lHQQuiMHwqg19w37HH9t4YC1yKbiqmJLunJSekd96nRef4fqOxRiOgce2BX+fLM+UehEP+uZ3qFRdCJ8q6qVQv8bloGhmzv6h2GKvur1yqF584KETtkHd+0Ex9OhF+FwHUsbjHZeTfsMCbKOyawdx6oXN1mESfW/SdJYC0SFrDX6BI0R53aYLeEaOpqerP5I+E/cz2XAiwzM+v6kgNe//5dxmAkFCAedoBzscfbbzORJcGkR9Nhys9jJOD3cjiM=
+
+branches:
+  except:
+    - vBeta

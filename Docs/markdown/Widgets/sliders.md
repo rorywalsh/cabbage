@@ -28,7 +28,11 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/text_slider.md !} 
 
-{! ./markdown/Widgets/Properties/trackerthickness.md !} 
+{! ./markdown/Widgets/Properties/trackerthickness.md !} Not available for rsliders
+
+{! ./markdown/Widgets/Properties/trackerinsideradius.md !} Only available to rsliders
+
+{! ./markdown/Widgets/Properties/trackeroutsideradius.md !} Only available to rsliders
 
 {! ./markdown/Widgets/Properties/textboxoutlinecolour.md !}  
 

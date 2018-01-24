@@ -50,18 +50,16 @@ CabbageLookAndFeel2::CabbageLookAndFeel2()
 
 void CabbageLookAndFeel2::setDefaultFont(File fontFile)
 {
-    if(fontFile.existsAsFile())
-    {
-        ScopedPointer<InputStream> inStream = fontFile.createInputStream();
-        MemoryBlock mb;
-        inStream->readIntoMemoryBlock(mb);
-        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
-        customFont = Font(fontPtr);
-    }
-    else
+//    if(fontFile.existsAsFile())
+//    {
+//        ScopedPointer<InputStream> inStream = fontFile.createInputStream();
+//        MemoryBlock mb;
+//        inStream->readIntoMemoryBlock(mb);
+//        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+//        customFont = Font(fontPtr);
+//    }
+//    else
         customFont = CabbageUtilities::getComponentFont();
-
-
 }
 //=========== ComboBox ============================================================================
 void CabbageLookAndFeel2::drawComboBox (Graphics& g, int width, int height, bool /*isButtonDown*/,
@@ -1194,27 +1192,27 @@ void CabbageLookAndFeel2::drawLabel (Graphics& g, Label& label)
 }
 
 //===================================================================================
-Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
-{
-    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
-    return Font(customFont);
-}
-
-Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
-{
-    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
-    return Font(customFont);
-}
-
-Font CabbageLookAndFeel2::getLabelFont (Label& label)
-{
-    return customFont;
-}
-
-Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
-{
-    customFont.setHeight(15.0f);
-    customFont.setBold(true);
-    return Font (15.0f, Font::bold);
-}
+//Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
+//{
+//    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
+//    return Font(customFont);
+//}
+//
+//Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
+//{
+//    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
+//    return Font(customFont);
+//}
+//
+//Font CabbageLookAndFeel2::getLabelFont (Label& label)
+//{
+//    return customFont;
+//}
+//
+//Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
+//{
+//    customFont.setHeight(15.0f);
+//    customFont.setBold(true);
+//    return Font (15.0f, Font::bold);
+//}
 

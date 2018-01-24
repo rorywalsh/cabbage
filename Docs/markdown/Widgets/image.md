@@ -10,6 +10,8 @@ image WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/corners.md !}
 
+{! ./markdown/Widgets/Properties/crop.md !}
+
 {! ./markdown/Widgets/Properties/file_image.md !}
 
 {! ./markdown/Widgets/Properties/outlinecolour.md !}

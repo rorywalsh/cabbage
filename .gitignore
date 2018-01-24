@@ -2,3 +2,4 @@ Docs/_book
 Docs/CabbageDocs
 Docs/markdown/Widgets/ExpandedWidgetEntries
 .vscode
+*.DS_Store
