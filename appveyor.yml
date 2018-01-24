@@ -73,7 +73,7 @@ before_build:
 
 after_build:
   - cmd: set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
-  - cmd: icss CabbageCannonicalInstaller.iss
+  - cmd: iscc CabbageCannonicalInstaller.iss
 
 artifacts:
   - path: Builds/VisualStudio2017/Output/CabbageCanonicalSetup.exe
