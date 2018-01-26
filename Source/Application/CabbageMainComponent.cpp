@@ -465,7 +465,7 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
             int lineNumber = 0;
             Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
 
-            if (CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber) >= 0)
+            if (CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber) >= 0 && CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::surrogatelinenumber)<=0)
             {
 
                 lineNumber = jmin(cabbageSection.getEnd(),

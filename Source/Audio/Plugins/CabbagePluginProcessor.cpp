@@ -53,7 +53,13 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile, const int ins, c
         StringArray linesFromCsd;
         linesFromCsd.addLines (inputFile.loadFileAsString());
         addImportFiles (linesFromCsd);
+
+        File file("/home/rory/Desktop/expandedText.csd");
+        file.replaceWithText(linesFromCsd.joinIntoString("\n"));
+
         parseCsdFile (linesFromCsd);
+
+
         File tempFile = File::createTempFile ("csoundCabbageCsdText");
         tempFile.replaceWithText (linesFromCsd.joinIntoString ("\n")
                                   .replace ("$lt;", "<")
@@ -303,12 +309,12 @@ void CabbagePluginProcessor::insertPlantCode (StringArray& linesFromCsd)
 {
     getMacros (linesFromCsd);
 
-    int lineIndex = 0;
-    StringArray copy = linesFromCsd;
+    const StringArray copy = linesFromCsd;
     int numberOfImportedLines = 0;
 
-    for ( auto currentLineOfCode : copy )
+    for ( int lineIndex = 0 ; lineIndex < linesFromCsd.size() ; lineIndex++ )
     {
+        String currentLineOfCode = linesFromCsd[lineIndex];
         if(currentLineOfCode.trim().startsWith("</Cabbage>"))
             return;
         if (currentLineOfCode.isNotEmpty() && currentLineOfCode.substring (0, 1) != ";")
@@ -330,7 +336,6 @@ void CabbagePluginProcessor::insertPlantCode (StringArray& linesFromCsd)
                 CabbageUtilities::debug(nsp + " " + plantStructs[plantIndex].nsp.trim());
                 if (type == plantStructs[plantIndex].name.trim() && plantStructs[plantIndex].nsp.trim() == nsp)
                 {
-                    int lineNumber = copy.indexOf(currentLineOfCode);
                     int lineNumberPlantAppearsOn;
 
                     for (auto plantCode : plantStructs[plantIndex].cabbageCode)
@@ -346,7 +351,7 @@ void CabbagePluginProcessor::insertPlantCode (StringArray& linesFromCsd)
                                                               plantStructs[plantIndex].cabbageCode.size() + 2);
                                 CabbageWidgetData::setNumProp(temp, CabbageIdentifierIds::plant,
                                                               plantStructs[plantIndex].cabbageCode.size() + 2);
-                                lineNumberPlantAppearsOn =
+                                lineNumberPlantAppearsOn = copy.indexOf(currentLineOfCode.trim());
                                         CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::linenumber);
                                 CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::surrogatelinenumber,
                                                               lineNumberPlantAppearsOn);
@@ -411,18 +416,20 @@ void CabbagePluginProcessor::insertPlantCode (StringArray& linesFromCsd)
                     }
 
                     for (int y = 0; y < importedLines.size(); y++)
-                        linesFromCsd.insert(numberOfImportedLines + lineNumber + 1 + y, importedLines[y]);
-
+                    {
+                        linesFromCsd.insert(lineIndex + y, importedLines[y]);
+                    }
+                    lineIndex+=importedLines.size();
+                    
                     numberOfImportedLines = importedLines.size();
                     importedLines.clear();
 
-                    numberOfLinesInPlantCode += plantStructs[plantIndex].cabbageCode.size();
                 }
             }
 
 
         }
-        lineIndex++;
+
     }
 }
 
