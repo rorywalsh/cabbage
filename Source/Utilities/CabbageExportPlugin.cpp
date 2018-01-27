@@ -12,62 +12,69 @@
 
 
 //===============   methods for exporting plugins ==============================
-void PluginExporter::exportPlugin (String type, File csdFile, String pluginId)
+void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, bool encrypt)
 {
-    String pluginFilename, fileExtension, currentApplicationDirectory;
-    File thisFile;
-
-    if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+    if(csdFile.existsAsFile())
     {
-        fileExtension = "so";
-        thisFile = File::getSpecialLocation (File::currentExecutableFile);
-        currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-    }
-    else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
-    {
-        fileExtension = "vst";
-        thisFile = File::getSpecialLocation (File::currentApplicationFile);
-        currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
-    }
-    else
-    {
-        fileExtension = "dll";
-        thisFile = File::getSpecialLocation (File::currentApplicationFile);
-        currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-    }
+        String pluginFilename, fileExtension, currentApplicationDirectory;
+        File thisFile;
 
-
-    if (type.contains ("VSTi"))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
-    else if (type.contains (String ("VST")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
-    else if (type.contains (String ("LV2-ins")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
-    else if (type.contains (String ("LV2-fx")))
-        pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
-
-    File VSTData (pluginFilename);
-
-    if (!VSTData.exists())
-    {
-        CabbageUtilities::showMessage("Error", pluginFilename + " cannot be found? It should be in the Cabbage root folder", &lookAndFeel);
-    }
-
-    FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
-
-    if (fc.browseForFileToSave (false))
-    {
-        if (fc.getResult().existsAsFile())
+        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
         {
-            const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
-
-            if (result == 1)
-                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
+            fileExtension = "so";
+            thisFile = File::getSpecialLocation (File::currentExecutableFile);
+            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+        }
+        else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+        {
+            if(type.contains("VST"))
+                fileExtension = "vst";
+            else
+                fileExtension = "component";
+            
+            thisFile = File::getSpecialLocation (File::currentApplicationFile);
+            currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
         }
         else
-            writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
-    }
+        {
+            fileExtension = "dll";
+            thisFile = File::getSpecialLocation (File::currentApplicationFile);
+            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+        }
 
+
+        if (type == "VSTi" || type == "AUi")
+            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
+        else  if (type == "VST" || type == "AU")
+            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
+        else if (type.contains (String ("LV2-ins")))
+            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
+        else if (type.contains (String ("LV2-fx")))
+            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
+
+        File VSTData (pluginFilename);
+
+        if (!VSTData.exists())
+        {
+            CabbageUtilities::showMessage("Error", pluginFilename + " cannot be found? It should be in the Cabbage root folder", &lookAndFeel);
+        }
+
+        FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
+
+        if (fc.browseForFileToSave (false))
+        {
+            if (fc.getResult().existsAsFile())
+            {
+                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+
+                if (result == 1)
+                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
+            }
+            else
+                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
+            
+        }
+    }
 }
 
 void PluginExporter::addFilesToPluginBundle (File csdFile, File exportDir)
@@ -139,7 +146,7 @@ void PluginExporter::addFilesToPluginBundle (File csdFile, File exportDir)
 
 }
 
-void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId)
+void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, bool encrypt)
 {
     File dll (fc.withFileExtension (fileExtension).getFullPathName());
 
@@ -151,28 +158,44 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
-        exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
+        if(fileExtension.containsIgnoreCase("component"))
+            exportedCsdFile = dll.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
+        else
+            exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
         exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
 
         File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
         //if(bin.exists())showMessage("binary exists");
 
-
-        File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
-
-        if (bin.moveFileTo (pluginBinary) == false)
-            CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
-
-        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-
         File pl (dll.getFullPathName() + String ("/Contents/Info.plist"));
         String newPList = pl.loadFileAsString();
-        //write our identifiers to the plist file
-        newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
+        
+        if(fileExtension.containsIgnoreCase("vst"))
+        {
+            File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
 
-        //write plist file
+            if (bin.moveFileTo (pluginBinary) == false)
+                CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
+
+            setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
+            
+            newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
+        }
+
+        const String pluginName = "<string>CabbageAudio: " + fc.getFileNameWithoutExtension() + "</string>";
+        newPList = newPList.replace ("<string>CabbageAudio: CabbageEffectNam</string>", pluginName);
+        if(pluginId.isEmpty())
+        {
+            CabbageUtilities::showMessage ("Error", "Your plugin ID identifier is empty, or contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
+            pluginId = "Cab2";
+        }
+        
+        const String auId = "<string>" + pluginId + "</string>";
+        newPList = newPList.replace ("<string>RORY</string>", auId);
+        
         pl.replaceWithText (newPList);
-        //bunlde all auxilary files
+
+        //bundle all auxilary files
         addFilesToPluginBundle(csdFile, exportedCsdFile);
 
     }
@@ -197,6 +220,7 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
 {
     size_t file_size;
     const char* pluginID;
+    
     pluginID = "YROR";
 
     long loc;
@@ -253,7 +277,7 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
             else
             {
                 mFile.seekg (loc, ios::beg);
-                mFile.write (csdFile.getFileNameWithoutExtension().toUTF8(), 16);
+                mFile.write (plugLibName.toUTF8(), 16);
             }
         }
 

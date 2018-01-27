@@ -949,7 +949,10 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 //==================================================================================
 File CabbageMainComponent::getCurrentCsdFile ()
 {
-    return fileTabs[currentFileIndex]->getFile();
+    if(fileTabs[currentFileIndex])
+        return fileTabs[currentFileIndex]->getFile();
+    
+    return File();
 }
 
 void CabbageMainComponent::setCurrentCsdFile (File file)

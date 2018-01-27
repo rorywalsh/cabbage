@@ -263,9 +263,25 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
     menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
-    menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
+    
 
+
+    if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+    {
+        PopupMenu subMenu1, subMenu2;
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+        menu.addSubMenu("VST Export", subMenu1);
+        subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUEffect);
+        subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUSynth);
+        menu.addSubMenu("AU Export", subMenu2);
+    }
+    else
+    {
+        menu.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
+        menu.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+    }
+    
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
         menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
 
@@ -335,11 +351,6 @@ void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
     menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::exportAsSynth);
-    menu.addCommandItem (&commandManager, CommandIDs::exportAsEffect);
-    menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
-    menu.addSeparator();
 }
 
 void CabbageDocumentWindow::createHelpMenu (PopupMenu& menu)
@@ -398,9 +409,11 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::settings,
                               CommandIDs::startAudioGraph,
                               CommandIDs::stopAudioGraph,
-                              CommandIDs::exportAsSynth,
+                              CommandIDs::exportAsVSTSynth,
                               CommandIDs::selectAll,
-                              CommandIDs::exportAsEffect,
+                              CommandIDs::exportAsVSTEffect,
+                              CommandIDs::exportAsAUEffect,
+                              CommandIDs::exportAsAUSynth,
                               CommandIDs::nextTab,
                               CommandIDs::exportAsFMODSoundPlugin,
                               CommandIDs::copy,
@@ -521,12 +534,20 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.addDefaultKeypress (KeyPress::tabKey, ModifierKeys::commandModifier);
             break;
 
-        case CommandIDs::exportAsSynth:
-            result.setInfo ("Export as Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+        case CommandIDs::exportAsVSTSynth:
+            result.setInfo ("Export as VST Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
             break;
 
-        case CommandIDs::exportAsEffect:
-            result.setInfo ("Export as Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+        case CommandIDs::exportAsVSTEffect:
+            result.setInfo ("Export as VST Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsAUSynth:
+            result.setInfo ("Export as AU Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+        
+        case CommandIDs::exportAsAUEffect:
+            result.setInfo ("Export as AU Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
 
         case CommandIDs::exportAsFMODSoundPlugin:
@@ -775,14 +796,22 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->startAudioGraph();
             return true;
 
-        case CommandIDs::exportAsEffect:
+        case CommandIDs::exportAsVSTEffect:
             pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
             return true;
 
-        case CommandIDs::exportAsSynth:
+        case CommandIDs::exportAsVSTSynth:
             pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
             return true;
 
+        case CommandIDs::exportAsAUEffect:
+            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            return true;
+            
+        case CommandIDs::exportAsAUSynth:
+            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            return true;
+            
         case CommandIDs::toggleComments:
             getContentComponent()->getCurrentCodeEditor()->toggleComments();
             return true;

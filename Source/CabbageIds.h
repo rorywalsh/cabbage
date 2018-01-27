@@ -49,8 +49,10 @@ namespace CommandIDs
         createNewExporter       = 0x20007d,
 
         startAudioGraph         = 0x200076,
-        exportAsSynth           = 0x200077,
-        exportAsEffect          = 0x200074,
+        exportAsVSTSynth        = 0x200077,
+        exportAsVSTEffect       = 0x200074,
+        exportAsAUSynth         = 0x200177,
+        exportAsAUEffect        = 0x200174,
         exportAsFMODSoundPlugin = 0x200078,
         stopAudioGraph          = 0x200079,
         clearConsole            = 0x20007a,

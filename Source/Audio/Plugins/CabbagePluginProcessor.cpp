@@ -54,9 +54,6 @@ CabbagePluginProcessor::CabbagePluginProcessor (File inputFile, const int ins, c
         linesFromCsd.addLines (inputFile.loadFileAsString());
         addImportFiles (linesFromCsd);
 
-        File file("/home/rory/Desktop/expandedText.csd");
-        file.replaceWithText(linesFromCsd.joinIntoString("\n"));
-
         parseCsdFile (linesFromCsd);
 
 
