@@ -36,58 +36,7 @@ public:
     void addFilesToPluginBundle (File csdFile, File exportDir);
     void exportPlugin (String type, File csdFile, String pluginId, bool encrypt = false);
 
-    String encodeString (const String& plain)
-    {
-        RSAKey publicKey {"5,5a21cd11b4ca9a97a11defd6501012a2a5cddb673d06e61232301abcc0cd84e5"};
-        
-        CharPointer_UTF8 utf8 = plain.toUTF8();
-        CharPointer_UTF8::CharType* utf8Address = utf8.getAddress();
-        MemoryBlock plainMemoryBlock (utf8Address, utf8.sizeInBytes());
-        
-        BigInteger sourceInteger;
-        sourceInteger.loadFromMemoryBlock (plainMemoryBlock);
-        
-        if (!sourceInteger.isZero())
-        {
-            // Encode
-            BigInteger encodedInteger (sourceInteger);
-            publicKey.applyToValue (encodedInteger);
-            
-            MemoryBlock encodedMemoryBlock = encodedInteger.toMemoryBlock();
-            
-            return encodedMemoryBlock.toBase64Encoding();
-        }
-        else
-        {
-            return String::empty;
-        }
-    }
-    
-    String decodeString (const String& encoded)
-    {
-        RSAKey privateKey {"361447d76c798ff493dec31a3009a4c7459113493da51955861f92f0dc14260d,5a21cd11b4ca9a97a11defd6501012a2a5cddb673d06e61232301abcc0cd84e5"};
-        
-        MemoryBlock encodedMemoryBlock;
-        encodedMemoryBlock.fromBase64Encoding (encoded);
-        
-        BigInteger encodedInteger;
-        encodedInteger.loadFromMemoryBlock (encodedMemoryBlock);
-        
-        if (!encodedInteger.isZero())
-        {
-            // Decode
-            BigInteger decodedInteger (encodedInteger);
-            privateKey.applyToValue (decodedInteger);
-            
-            MemoryBlock decodedMemoryBlock = decodedInteger.toMemoryBlock();
-            
-            return decodedMemoryBlock.toString();
-        }
-        else
-        {
-            return String::empty;
-        }
-    }
+ 
 };
 
 
