@@ -27,7 +27,9 @@
 #include <cwindow.h>
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
-
+#ifdef CabbagePro
+#include "../../Utilities/encrypt.h"
+#endif
 
 //==============================================================================
 class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
@@ -135,6 +137,11 @@ public:
     void compileCsdFile (File csdFile)
     {
         csCompileResult = csound->Compile (const_cast<char*> (csdFile.getFullPathName().toUTF8().getAddress()));
+    }
+
+    void compileCsdString (String csdFileText)
+    {
+        csCompileResult = csound->CompileCsdText (const_cast<char*> (csdFileText.toUTF8().getAddress()));
     }
 
     bool csdCompiledWithoutError()

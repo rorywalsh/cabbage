@@ -70,7 +70,7 @@ private:
     ApplicationCommandManager commandManager;
     PopupMenu createExamplesMenu();
     Array<File> exampleFiles;
-    const String getPluginId (File csdFile);
+    const String getPluginInfo (File csdFile, String info);
     void exportPlugin (String type, File csdFile);
     int setUniquePluginId (File binFile, File csdFile);
     long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);

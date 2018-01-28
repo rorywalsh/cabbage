@@ -100,8 +100,16 @@ void CsoundPluginProcessor::setupAndCompileCsound (File csdFile, File filePath, 
     numCsoundChannels = CabbageUtilities::getIntendedNumberOfChannels (csdFile.loadFileAsString());
     csoundParams->nchnls_override = numCsoundChannels;
     csound->SetParams (csoundParams);
-    compileCsdFile (csdFile);
 
+    if(csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
+        compileCsdFile (csdFile);
+    else
+    {
+#ifdef CabbagePro
+        compileCsdString (Encrypt::decode(csdFile));
+        csound->Start();
+#endif
+    }
 
     addMacros (csdFile.getFullPathName());
 

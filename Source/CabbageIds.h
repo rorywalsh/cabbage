@@ -311,6 +311,7 @@ public:
         add ("tablecolour:");
         add ("metercolour:");
         add ("popuppostfix");
+        add ("manufacturer");
         add ("orientation");
         add ("tablecolour");
         add ("metercolour");
@@ -495,6 +496,7 @@ namespace CabbageIdentifierIds
 	static const Identifier endpoint = "endpoint";
 	static const Identifier endpos = "endpos";
 	static const Identifier macronames = "macronames";
+    static const Identifier manufacturer = "manufacturer";
 	static const Identifier ffttablenumber = "ffttablenumber";
 	static const Identifier file = "file";
 	static const Identifier filetype = "filetype";

@@ -69,7 +69,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             if (File (inputFileName).existsAsFile())
             {
                 content->openFile (inputFileName);
-                pluginExporter.exportPlugin("VSTi", File (inputFileName), getPluginId (File (inputFileName)));
+                pluginExporter.exportPlugin("VSTi", File (inputFileName), getPluginInfo (File (inputFileName), "id"));
                 JUCEApplicationBase::quit();
             }
 
@@ -81,7 +81,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             if (File (inputFileName).existsAsFile())
             {
                 content->openFile (inputFileName);
-                pluginExporter.exportPlugin ("VST", File (inputFileName), getPluginId (File (inputFileName)));
+                pluginExporter.exportPlugin ("VST", File (inputFileName), getPluginInfo (File (inputFileName), "id"));
                 JUCEApplicationBase::quit();
             }
 
@@ -275,7 +275,14 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         subMenu3.addSubMenu("AU Export", subMenu2);
         menu.addSubMenu("Export Plugin", subMenu3);
 #ifdef CabbagePro
-
+        PopupMenu subMenu4, subMenu4, subMenu5;
+        subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
+        subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
+        subMenu6.addSubMenu("VST Export", subMenu4);
+        subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUEffectEncrypted);
+        subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUSynthEncrypted);
+        subMenu6.addSubMenu("AU Export", subMenu5);
+        menu.addSubMenu("Export Plugin (Encrypt CSD)", subMenu6);
 #endif
 
     }
@@ -287,7 +294,6 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         menu.addSubMenu("Export plugin", subMenu1);
 
 #ifdef CabbagePro
-        menu.addSeparator();
         PopupMenu subMenu2;
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
@@ -769,7 +775,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
     String title (CABBAGE_VERSION);
     CabbageIDELookAndFeel tempLookAndFeel;
-
+    const File currentFile = getContentComponent()->getCurrentCsdFile();
     switch (info.commandID)
     {
         case CommandIDs::newFile:
@@ -831,35 +837,35 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::exportAsVSTEffect:
-            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
 
         case CommandIDs::exportAsVSTSynth:
-            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
 
         case CommandIDs::exportAsAUEffect:
-            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
             
         case CommandIDs::exportAsAUSynth:
-            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
+            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
 
         case CommandIDs::exportAsVSTEffectEncrypted:
-            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
             return true;
 
         case CommandIDs::exportAsVSTSynthEncrypted:
-            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
             return true;
 
         case CommandIDs::exportAsAUEffectEncrypted:
-            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
             return true;
 
         case CommandIDs::exportAsAUSynthEncrypted:
-            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
             return true;
 
         case CommandIDs::toggleComments:
@@ -978,7 +984,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     return true;
 }
 
-const String CabbageDocumentWindow::getPluginId (File csdFile)
+const String CabbageDocumentWindow::getPluginInfo (File csdFile, String info)
 {
     StringArray csdLines;
     csdLines.addLines (csdFile.loadFileAsString());
@@ -989,7 +995,13 @@ const String CabbageDocumentWindow::getPluginId (File csdFile)
         CabbageWidgetData::setWidgetState (temp, line, 0);
 
         if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-            return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
+        {
+            if(info == "id")
+                return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
+            else if(info == "manufacturer")
+                return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::manufacturer);
+        }
+
     }
 
     return String::empty;

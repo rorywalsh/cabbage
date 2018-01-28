@@ -34,23 +34,46 @@ public:
 
     long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);
     int setUniquePluginId (File binFile, File csdFile, String pluginId);
-    void writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, bool encrypt = false);
+    void writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String manu = "CabbageAudio", bool encrypt = false);
     void addFilesToPluginBundle (File csdFile, File exportDir);
-    void exportPlugin (String type, File csdFile, String pluginId, bool encrypt = false);
+    void exportPlugin (String type, File csdFile, String pluginId, String manu="CabbageAudio", bool encrypt = false);
 
-    String encodeString (const String &textToEncrypt)
+    String encodeString (File csdFile)
     {
 #ifdef CabbagePro
-        return encode(textToEncrypt);
+
+        StringArray csdLines;
+        csdLines.addLines(csdFile.loadFileAsString());
+        int startOfCsoundCode = 0;
+
+        for ( int i = 0 ; i < csdLines.size(); i++)
+        {
+            if(csdLines[i].contains("</Cabbage>"))
+                startOfCsoundCode = i+1;
+
+        }
+
+        const int numberOfLines = csdLines.size();
+        StringArray cabbageSection = csdLines;
+        cabbageSection.removeRange(startOfCsoundCode, csdLines.size()-startOfCsoundCode);
+        csdLines.removeRange(0, startOfCsoundCode);
+        const String encodedText = Encrypt::encode(csdLines.joinIntoString("\n"));
+        csdLines = cabbageSection;
+        csdLines.add("\n");
+        csdLines.add("<EncryptedSection>\n"+encodedText+"\n</EncryptedSection>");
+        return csdLines.joinIntoString("\n");
 #endif
+        return "";
     }
-    static String decodeString (const String &textToDecrypt)
+    static String decodeString (File csdFile)
     {
 #ifdef CabbagePro
-        return decode(textToDecrypt);
+        return Encrypt::decode(csdFile);
 #endif
+        return "";
     }
 
+    int setPluginManufacturer (File binFile, File csdFile, String pluginId){};
 
 };
 

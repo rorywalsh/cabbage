@@ -12,7 +12,7 @@
 
 
 //===============   methods for exporting plugins ==============================
-void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, bool encrypt)
+void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String manu, bool encrypt)
 {
     if(csdFile.existsAsFile())
     {
@@ -69,15 +69,98 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, b
                 const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
 
                 if (result == 1)
-                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, encrypt);
+                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, manu, encrypt);
             }
             else
-                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, encrypt);
+                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, manu, encrypt);
             
         }
     }
 }
 
+
+void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String manu, bool encrypt)
+{
+    File dll (fc.withFileExtension (fileExtension).getFullPathName());
+
+    if (!VSTData.copyFileTo (dll))
+        CabbageUtilities::showMessage ("Error", "Can't copy plugin lib, is it currently in use?", &lookAndFeel);
+
+
+    File exportedCsdFile;
+
+    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+    {
+        if(fileExtension.containsIgnoreCase("component"))
+            exportedCsdFile = dll.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
+        else
+            exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
+
+        if(encrypt)
+        {
+            exportedCsdFile.replaceWithText(encodeString(csdFile));
+        }
+        else
+            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+
+        File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
+        //if(bin.exists())showMessage("binary exists");
+
+        File pl (dll.getFullPathName() + String ("/Contents/Info.plist"));
+        String newPList = pl.loadFileAsString();
+        
+        if(fileExtension.containsIgnoreCase("vst"))
+        {
+            File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
+
+            if (bin.moveFileTo (pluginBinary) == false)
+                CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
+
+            setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
+            
+            newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
+        }
+
+        const String pluginName = "<string>CabbageAudio: " + fc.getFileNameWithoutExtension() + "</string>";
+        newPList = newPList.replace ("<string>CabbageAudio: CabbageEffectNam</string>", pluginName);
+        if(pluginId.isEmpty())
+        {
+            CabbageUtilities::showMessage ("Error", "Your plugin ID identifier is empty, or contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
+            pluginId = "Cab2";
+        }
+        
+        const String auId = "<string>" + pluginId + "</string>";
+        newPList = newPList.replace ("<string>RORY</string>", auId);
+        
+        pl.replaceWithText (newPList);
+
+        //bundle all auxiliary files
+        addFilesToPluginBundle(csdFile, exportedCsdFile);
+
+    }
+    else
+    {
+        exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
+        if(encrypt)
+        {
+            exportedCsdFile.replaceWithText (encodeString(csdFile));
+        }
+
+        else
+            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+
+        setUniquePluginId (dll, exportedCsdFile, pluginId );
+        //bundle all auxiliary files
+        addFilesToPluginBundle(csdFile, dll);
+    }
+
+
+
+}
+
+//==============================================================================
+// Bundles files with VST
+//==============================================================================
 void PluginExporter::addFilesToPluginBundle (File csdFile, File exportDir)
 {
     StringArray invalidFiles;
@@ -123,20 +206,20 @@ void PluginExporter::addFilesToPluginBundle (File csdFile, File exportDir)
         {
             var bundleFiles = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::bundle);
             if(bundleFiles.size()>0)
-            for( int i = 0 ; i < bundleFiles.size() ; i++)
-            {
-                const File bundleFile = csdFile.getParentDirectory().getChildFile (bundleFiles[i].toString());
-                File newFile(exportDir.getParentDirectory().getFullPathName() + "/" + bundleFiles[i].toString());
-
-                if (bundleFile.existsAsFile())
-                    bundleFile.copyFileTo(newFile);
-                else if(bundleFile.exists())
-                    bundleFile.copyDirectoryTo(newFile);
-                else
+                for( int i = 0 ; i < bundleFiles.size() ; i++)
                 {
-                    invalidFiles.add(csdFile.getParentDirectory().getChildFile (bundleFiles[i].toString()).getFullPathName());
+                    const File bundleFile = csdFile.getParentDirectory().getChildFile (bundleFiles[i].toString());
+                    File newFile(exportDir.getParentDirectory().getFullPathName() + "/" + bundleFiles[i].toString());
+
+                    if (bundleFile.existsAsFile())
+                        bundleFile.copyFileTo(newFile);
+                    else if(bundleFile.exists())
+                        bundleFile.copyDirectoryTo(newFile);
+                    else
+                    {
+                        invalidFiles.add(csdFile.getParentDirectory().getChildFile (bundleFiles[i].toString()).getFullPathName());
+                    }
                 }
-            }
         }
     }
 
@@ -146,84 +229,6 @@ void PluginExporter::addFilesToPluginBundle (File csdFile, File exportDir)
                 "\nPlease make sure they are located in the same folder as your .csd file.", &lookAndFeel);
 
 }
-
-void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, bool encrypt)
-{
-    File dll (fc.withFileExtension (fileExtension).getFullPathName());
-
-    if (!VSTData.copyFileTo (dll))
-        CabbageUtilities::showMessage ("Error", "Can't copy plugin lib, is it currently in use?", &lookAndFeel);
-
-
-    File exportedCsdFile;
-
-    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
-    {
-        if(fileExtension.containsIgnoreCase("component"))
-            exportedCsdFile = dll.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
-        else
-            exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
-
-        if(encrypt)
-            exportedCsdFile.replaceWithText (encodeString(csdFile.loadFileAsString()));
-        else
-            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-
-        File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
-        //if(bin.exists())showMessage("binary exists");
-
-        File pl (dll.getFullPathName() + String ("/Contents/Info.plist"));
-        String newPList = pl.loadFileAsString();
-        
-        if(fileExtension.containsIgnoreCase("vst"))
-        {
-            File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
-
-            if (bin.moveFileTo (pluginBinary) == false)
-                CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
-
-            setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-            
-            newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
-        }
-
-        const String pluginName = "<string>CabbageAudio: " + fc.getFileNameWithoutExtension() + "</string>";
-        newPList = newPList.replace ("<string>CabbageAudio: CabbageEffectNam</string>", pluginName);
-        if(pluginId.isEmpty())
-        {
-            CabbageUtilities::showMessage ("Error", "Your plugin ID identifier is empty, or contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
-            pluginId = "Cab2";
-        }
-        
-        const String auId = "<string>" + pluginId + "</string>";
-        newPList = newPList.replace ("<string>RORY</string>", auId);
-        
-        pl.replaceWithText (newPList);
-
-        //bundle all auxilary files
-        addFilesToPluginBundle(csdFile, exportedCsdFile);
-
-    }
-    else
-    {
-        exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
-        if(encrypt)
-        {
-            exportedCsdFile.replaceWithText (encodeString(csdFile.loadFileAsString()));
-        }
-
-        else
-            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-
-        setUniquePluginId (dll, exportedCsdFile, pluginId );
-        //bunlde all auxilary files
-        addFilesToPluginBundle(csdFile, dll);
-    }
-
-
-
-}
-
 
 //==============================================================================
 // Set unique plugin ID for each plugin based on the file name
@@ -253,12 +258,10 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
 
             if (loc < 0)
             {
-                //showMessage(String("Internel Cabbage Error: The pluginID was not found"));
                 break;
             }
             else
             {
-                //showMessage(newID);
                 mFile.seekg (loc, ios::beg);
                 mFile.write (pluginId.toUTF8(), 4);
             }
@@ -300,6 +303,7 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
         CabbageUtilities::showMessage ("Error", "File could not be opened", &lookAndFeel);
 
     mFile.close();
+
     return 1;
 }
 

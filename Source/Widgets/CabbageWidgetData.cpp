@@ -38,6 +38,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, "resize", 0);
     setProperty (widgetData, CabbageIdentifierIds::active, 1);
     setProperty (widgetData, CabbageIdentifierIds::parentdir, "");
+    setProperty (widgetData, CabbageIdentifierIds::manufacturer, "CabbageAudio");
     setProperty (widgetData, CabbageIdentifierIds::imgdebug, 0);
     setProperty (widgetData, CabbageIdentifierIds::allowboundsupdate, 0);
     setProperty (widgetData, CabbageIdentifierIds::identchannelmessage, "");
@@ -304,6 +305,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("show"):
             case HashStringToInt ("child"):
             case HashStringToInt ("typeface"):
+            case HashStringToInt ("manufacturer"):
             case HashStringToInt ("logger"):
             case HashStringToInt ("namespace"):
                 setProperty (widgetData, identifier, strTokens[0].trim());
