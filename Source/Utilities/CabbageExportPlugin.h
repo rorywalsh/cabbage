@@ -22,7 +22,9 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "../LookAndFeel/CabbageIDELookAndFeel.h"
-
+#ifdef CabbagePro
+#include "encrypt.h"
+#endif
 class PluginExporter
 {
 CabbageIDELookAndFeel lookAndFeel;
@@ -36,7 +38,20 @@ public:
     void addFilesToPluginBundle (File csdFile, File exportDir);
     void exportPlugin (String type, File csdFile, String pluginId, bool encrypt = false);
 
- 
+    String encodeString (const String &textToEncrypt)
+    {
+#ifdef CabbagePro
+        return encode(textToEncrypt);
+#endif
+    }
+    static String decodeString (const String &textToDecrypt)
+    {
+#ifdef CabbagePro
+        return decode(textToDecrypt);
+#endif
+    }
+
+
 };
 
 

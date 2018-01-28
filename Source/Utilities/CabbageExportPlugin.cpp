@@ -57,6 +57,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, b
         if (!VSTData.exists())
         {
             CabbageUtilities::showMessage("Error", pluginFilename + " cannot be found? It should be in the Cabbage root folder", &lookAndFeel);
+            return;
         }
 
         FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
@@ -68,10 +69,10 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, b
                 const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
 
                 if (result == 1)
-                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
+                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, encrypt);
             }
             else
-                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId);
+                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, encrypt);
             
         }
     }
@@ -162,7 +163,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             exportedCsdFile = dll.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
         else
             exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
-        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+
+        if(encrypt)
+            exportedCsdFile.replaceWithText (encodeString(csdFile.loadFileAsString()));
+        else
+            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
 
         File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
         //if(bin.exists())showMessage("binary exists");
@@ -202,7 +207,14 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     else
     {
         exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
-        exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+        if(encrypt)
+        {
+            exportedCsdFile.replaceWithText (encodeString(csdFile.loadFileAsString()));
+        }
+
+        else
+            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+
         setUniquePluginId (dll, exportedCsdFile, pluginId );
         //bunlde all auxilary files
         addFilesToPluginBundle(csdFile, dll);

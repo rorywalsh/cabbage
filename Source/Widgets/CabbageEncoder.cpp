@@ -75,11 +75,13 @@ void CabbageEncoder::mouseWheelMove (const MouseEvent& event, const MouseWheelDe
         if (wheel.deltaY < 0)
         {
             currentEncValue -= sliderIncr;
+            currentEncValue = jmax (min, currentEncValue);
             sliderPos = sliderPos + 50;
         }
         else
         {
             currentEncValue += sliderIncr;
+            currentEncValue = jmin (max, currentEncValue);
             sliderPos = sliderPos - 50;
         }
 

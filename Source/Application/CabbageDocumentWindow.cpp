@@ -263,25 +263,39 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
     menu.addSeparator();
-    
-
 
     if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
     {
-        PopupMenu subMenu1, subMenu2;
+        PopupMenu subMenu1, subMenu2, subMenu3;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
-        menu.addSubMenu("VST Export", subMenu1);
+        subMenu3.addSubMenu("VST Export", subMenu1);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUEffect);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUSynth);
-        menu.addSubMenu("AU Export", subMenu2);
+        subMenu3.addSubMenu("AU Export", subMenu2);
+        menu.addSubMenu("Export Plugin", subMenu3);
+#ifdef CabbagePro
+
+#endif
+
     }
     else
     {
-        menu.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
-        menu.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+        PopupMenu subMenu1;
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+        menu.addSubMenu("Export plugin", subMenu1);
+
+#ifdef CabbagePro
+        menu.addSeparator();
+        PopupMenu subMenu2;
+        subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
+        subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
+        menu.addSubMenu("Export plugin (Encrypt CSD)", subMenu2);
+#endif
     }
-    
+
+
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
         menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
 
@@ -414,6 +428,10 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::exportAsVSTEffect,
                               CommandIDs::exportAsAUEffect,
                               CommandIDs::exportAsAUSynth,
+                              CommandIDs::exportAsAUSynthEncrypted,
+                              CommandIDs::exportAsAUEffectEncrypted,
+                              CommandIDs::exportAsVSTSynthEncrypted,
+                              CommandIDs::exportAsVSTEffectEncrypted,
                               CommandIDs::nextTab,
                               CommandIDs::exportAsFMODSoundPlugin,
                               CommandIDs::copy,
@@ -547,6 +565,22 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
         
         case CommandIDs::exportAsAUEffect:
+            result.setInfo ("Export as AU Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsVSTSynthEncrypted:
+            result.setInfo ("Export as VST Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsVSTEffectEncrypted:
+            result.setInfo ("Export as VST Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsAUSynthEncrypted:
+            result.setInfo ("Export as AU Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsAUEffectEncrypted:
             result.setInfo ("Export as AU Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
 
@@ -811,7 +845,23 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::exportAsAUSynth:
             pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()));
             return true;
-            
+
+        case CommandIDs::exportAsVSTEffectEncrypted:
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            return true;
+
+        case CommandIDs::exportAsVSTSynthEncrypted:
+            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            return true;
+
+        case CommandIDs::exportAsAUEffectEncrypted:
+            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            return true;
+
+        case CommandIDs::exportAsAUSynthEncrypted:
+            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginId (getContentComponent()->getCurrentCsdFile().getFullPathName()), true);
+            return true;
+
         case CommandIDs::toggleComments:
             getContentComponent()->getCurrentCodeEditor()->toggleComments();
             return true;
