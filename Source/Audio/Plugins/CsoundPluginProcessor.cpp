@@ -447,7 +447,7 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     const int outputs = layouts.getNumChannels (false, busIndex);
 
 
-	if (inputs == 4 && outputs == 4)
+	if (inputs == numCsoundChannels && outputs == numCsoundChannels)
 		return true;
 
     return false;

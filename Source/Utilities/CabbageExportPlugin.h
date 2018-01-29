@@ -73,7 +73,6 @@ public:
         return "";
     }
 
-    int setPluginManufacturer (File binFile, File csdFile, String pluginId){};
 
 };
 

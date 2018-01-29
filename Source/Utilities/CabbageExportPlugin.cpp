@@ -117,12 +117,15 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
                 CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
 
             setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-            
+           
             newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
         }
 
-        const String pluginName = "<string>CabbageAudio: " + fc.getFileNameWithoutExtension() + "</string>";
-        newPList = newPList.replace ("<string>CabbageAudio: CabbageEffectNam</string>", pluginName);
+        
+        String manu(JucePlugin_Manufacturer);
+        const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
+        const String toReplace = "<string>" + manu + ": CabbageEffectNam</string>";
+        newPList = newPList.replace (toReplace, pluginName);
         if(pluginId.isEmpty())
         {
             CabbageUtilities::showMessage ("Error", "Your plugin ID identifier is empty, or contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
@@ -149,7 +152,8 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         else
             exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
 
-        setUniquePluginId (dll, exportedCsdFile, pluginId );
+        setUniquePluginId (dll, exportedCsdFile, pluginId);
+
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, dll);
     }
