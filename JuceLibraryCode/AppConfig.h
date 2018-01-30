@@ -27,7 +27,7 @@
  #define JucePlugin_Build_VST3             0
 #endif
 #ifndef  JucePlugin_Build_AU
- #define JucePlugin_Build_AU               0
+ #define JucePlugin_Build_AU               1
 #endif
 #ifndef  JucePlugin_Build_AUv3
  #define JucePlugin_Build_AUv3             0
@@ -64,10 +64,13 @@
 #endif
 
 #ifdef Cabbage_Plugin_Synth
-      #define JucePlugin_IsSynth                1
+#define JucePlugin_IsSynth                1
+#define JucePlugin_AUMainType             kAudioUnitType_MusicDevice
 #else
-    #define JucePlugin_IsSynth                0
+#define JucePlugin_IsSynth                0
+#define JucePlugin_AUMainType             kAudioUnitType_MusicEffect
 #endif
+
 
 #ifndef  JucePlugin_WantsMidiInput
  #define JucePlugin_WantsMidiInput         1
@@ -96,21 +99,21 @@
 #ifndef  JucePlugin_VSTCategory
  #define JucePlugin_VSTCategory            kPlugCategEffect
 #endif
-#ifndef  JucePlugin_AUMainType
- #define JucePlugin_AUMainType             'aumi'
-#endif
-#ifndef  JucePlugin_AUSubType
- #define JucePlugin_AUSubType              JucePlugin_PluginCode
-#endif
-#ifndef  JucePlugin_AUExportPrefix
- #define JucePlugin_AUExportPrefix         CabbagePluginAU
-#endif
-#ifndef  JucePlugin_AUExportPrefixQuoted
- #define JucePlugin_AUExportPrefixQuoted   "CabbagePluginAU"
-#endif
-#ifndef  JucePlugin_AUManufacturerCode
- #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
-#endif
+//#ifndef  JucePlugin_AUMainType
+// #define JucePlugin_AUMainType             'aumi'
+//#endif
+//#ifndef  JucePlugin_AUSubType
+// #define JucePlugin_AUSubType              JucePlugin_PluginCode
+//#endif
+//#ifndef  JucePlugin_AUExportPrefix
+// #define JucePlugin_AUExportPrefix         CabbagePluginAU
+//#endif
+//#ifndef  JucePlugin_AUExportPrefixQuoted
+// #define JucePlugin_AUExportPrefixQuoted   "CabbagePluginAU"
+//#endif
+//#ifndef  JucePlugin_AUManufacturerCode
+// #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
+//#endif
 #ifndef  JucePlugin_CFBundleIdentifier
  #define JucePlugin_CFBundleIdentifier     com.cabbageaudio.CabbagePlugin
 #endif
@@ -182,6 +185,10 @@
 */
 
 // BEGIN SECTION A
+
+#ifndef JUCE_DISPLAY_SPLASH_SCREEN
+ #define JUCE_DISPLAY_SPLASH_SCREEN 1
+#endif
 
 #ifndef JUCE_REPORT_APP_USAGE
  #define JUCE_REPORT_APP_USAGE 1

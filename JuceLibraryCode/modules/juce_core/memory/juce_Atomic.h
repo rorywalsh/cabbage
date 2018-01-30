@@ -37,7 +37,7 @@ namespace juce
      A simple wrapper around std::atomic.
  */
  template <typename Type>
- struct Atomic
+ struct Atomic  final
  {
      typedef typename AtomicHelpers::DiffTypeHelper<Type>::Type DiffType;
 
@@ -135,7 +135,9 @@ namespace juce
 
      //==============================================================================
     #ifndef DOXYGEN
-     // This method has been deprecated as there is no equivalent method in std::atomic.
+     /* This method has been deprecated as there is no equivalent method in
+        std::atomic. Use compareAndSetBool instead.
+     */
      JUCE_DEPRECATED (Type compareAndSetValue (Type, Type) noexcept);
     #endif
  };
@@ -154,7 +156,7 @@ namespace juce
      There are methods to perform most of the basic atomic operations.
  */
  template <typename Type>
- class Atomic : public AtomicBase<Type>
+ class Atomic  final  : public AtomicBase<Type>
  {
  public:
      /** Resulting type when subtracting the underlying Type. */
