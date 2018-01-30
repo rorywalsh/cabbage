@@ -1,41 +1,54 @@
-#!/bin/bash
-# Abort on Error
-set -e
+#!/bin/bash  
+echo "==========================================="
+echo "======== Build Script for Cabbage ========="
+echo "==========================================="
+	
+echo "Removing old binaries"
+rm -rf ./build/Release/Cabbage.app
+rm -rf ./build/Release/CabbagePlugin.vst
 
-export PING_SLEEP=30s
-export WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export BUILD_OUTPUT=$WORKDIR/build.out
+export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 
-touch $BUILD_OUTPUT
+$PROJUCER --resave ../../CabbageIDE.jucer	
 
-dump_output() {
-   echo Tailing the last 500 lines of output:
-   tail -500 $BUILD_OUTPUT  
-}
-error_handler() {
-  echo ERROR: An error was encountered with the build.
-  dump_output
-  exit 1
-}
-# If an error occurs, run our error handler to output a tail of the build
-trap 'error_handler' ERR
+echo "Building Universal build"
 
-# Set up a repeating loop to send some output to Travis.
+xcodebuild -project Cabbage.xcodeproj clean
+xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
-bash -c "while true; do echo \$(date) - building ...; sleep $PING_SLEEP; done" &
-PING_LOOP_PID=$!
+$PROJUCER --resave ../../CabbageLite.jucer
 
-# My build is using maven, but you could build anything with this, E.g.
-# your_build_command_1 >> $BUILD_OUTPUT 2>&1
-# your_build_command_2 >> $BUILD_OUTPUT 2>&1
-#mvn clean install >> $BUILD_OUTPUT 2>&1
-/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ../../CabbageIDE.jucer >> $BUILD_OUTPUT 2>&1
-xcodebuild -project Cabbage.xcodeproj clean >> $BUILD_OUTPUT 2>&1
-xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` >> $BUILD_OUTPUT 2>&1
+xcodebuild -project CabbageLite.xcodeproj clean
+xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+
+$PROJUCER --resave ../../CabbagePluginSynth.jucer
+
+xcodebuild -project CabbagePluginSynth.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
+cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
+cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
+cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.component
+cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.component
+
+$PROJUCER --resave ../../CabbagePlugin.jucer
+
+xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO 
+cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
+cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
+cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.component
+cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.component
+
+rm -rf ./build/Release/CabbagePluginEffect.vst
+rm -rf ./build/Release/CabbagePluginEffect.component
+rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.vst
+rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.component
+cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
+cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
+
+# cp -rf  /Users/walshr/sourcecode/FMOD\ Programmers\ API/api/lowlevel/examples/xcode32/_builds/Debug/fmod_csound.dylib ./build/Release/Cabbage.app/Contents/fmod_csound.dylib
+
+# echo "Bundling all files"	
+# cp -rf ../../Docs/_book ./build/Release/Cabbage.app/Contents/MacOS/Docs
+# cp -rf ../../Docs/_book ./build/Release/CabbageStudio.app/Contents/MacOS/Docs
 
 
-# The build finished without returning an error so dump a tail of the output
-dump_output
-
-# nicely terminate the ping output loop
-kill $PING_LOOP_PID
+cp ../opcodes.txt ./build/Release/Cabbage.app/Contents/MacOS/opcodes.txt 
