@@ -3,10 +3,6 @@ echo "==========================================="
 echo "======== Build Script for Cabbage ========="
 echo "==========================================="
 	
-echo "Removing old binaries"
-rm -rf ./build/Release/Cabbage.app
-rm -rf ./build/Release/CabbagePlugin.vst
-
 export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 
 $PROJUCER --resave ../../CabbageIDE.jucer	
