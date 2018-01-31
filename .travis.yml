@@ -79,6 +79,7 @@ script:
 - echo -en "travis_fold:start:buildingZip"
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
 - ls
+- ls Cabbage.app/Contents/
 - zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 - echo -en "travis_fold:end:buildingZip"
 
