@@ -37,14 +37,14 @@ script:
 - echo -en "travis_fold:start:building"
 - ./buildTravis.sh
 - echo -en "travis_fold:end:building"
-- echo -en "travis_fold:start:gettingManual"
-- curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
-- ls
-- unzip -q "CabbageManual.zip"
-- ls
-- cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
-- cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
-- echo -en "travis_fold:end:gettingManual"
+#- echo -en "travis_fold:start:gettingManual"
+#- curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
+#- ls
+#- unzip -q "CabbageManual.zip"
+#- ls
+#- cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
+#- cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
+#- echo -en "travis_fold:end:gettingManual"
 
 - echo -en "travis_fold:start:buildingZip"
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
