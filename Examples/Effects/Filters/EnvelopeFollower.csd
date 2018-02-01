@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Envelope Follower") size(530, 100), pluginID("envf")
+form caption("Envelope Follower") size(530, 100), pluginid("envf")
 image                  pos(0, 0), size(530, 100), colour("brown"), shape("rounded"), outlinecolour("white"), outlinethickness(4)
 vmeter   bounds(20, 10, 15, 80) channel("Meter") value(0) outlinecolour("black"), overlaycolour(20, 3, 3,255) metercolour:0(255,100,100,255) metercolour:1(255,150,155, 255) metercolour:2(255,255,123, 255) outlinethickness(3) 
 

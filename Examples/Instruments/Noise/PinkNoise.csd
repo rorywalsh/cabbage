@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("Pink Noise"), size(230, 80), pluginID("pnse")
+form caption("Pink Noise"), size(230, 80), pluginid("pnse")
 image bounds(  0,  0,230, 80), colour("pink"), shape("rounded"), outlinecolour("red"), outlinethickness(4) 
 checkbox bounds( 20, 10, 80, 15), text("On/Off"), channel("onoff"), value(0), fontcolour("black"), colour("yellow")
 combobox bounds( 20, 40, 70, 20), channel("method"), value(1), text("Gardner", "Kellet", "Kellet 2")

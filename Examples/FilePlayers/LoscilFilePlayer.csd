@@ -11,7 +11,7 @@
 ;  - loscil will take the values from the last control input moved.
 
 <Cabbage>
-form caption("Loscil File Player") size(685,340), colour(0,0,0) pluginID("Losc")
+form caption("Loscil File Player") size(685,340), colour(0,0,0) pluginid("Losc")
 image                    bounds(  0,  0,685,340), colour(30, 70, 30), outlinecolour("White"), line(3), shape("sharp")	; main panel colouration    
 
 soundfiler bounds(  5,  5,675,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 

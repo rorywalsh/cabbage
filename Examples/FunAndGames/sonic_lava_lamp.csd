@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Sonic Lava Lamp") size(510, 450), pluginID("sonl")
+form caption("Sonic Lava Lamp") size(510, 450), pluginid("sonl")
 image bounds(  5,  0,250, 210), colour(255,255, 50,100),shape("rounded"), oulinecolour("white"), line(0)
 image bounds(255,  0,250, 210), colour(  0,  0,255,100),shape("rounded"), oulinecolour("white"), line(0)
 image bounds(  5,210,250, 210), colour(  5,255,  0,100),shape("rounded"), oulinecolour("white"), line(0)

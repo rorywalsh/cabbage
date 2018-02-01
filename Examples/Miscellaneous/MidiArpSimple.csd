@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("MIDI Out"), size(400,120), pluginID("Mout")
+form caption("MIDI Out"), size(400,120), pluginid("Mout")
 keyboard bounds(0,0,400,80)
 hslider bounds(14, 80, 381, 40) range(0, 10, 5, 1, 0.001), channel("tempo"), text("Tempo")
 </Cabbage>

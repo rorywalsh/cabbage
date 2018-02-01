@@ -30,7 +30,7 @@
 
 
 <Cabbage>
-form caption("ADSR Envelope"), size(300, 330), pluginID("AdEn"), guirefresh(32), colour(0,0,0)
+form caption("ADSR Envelope"), size(300, 330), pluginid("AdEn"), guirefresh(32), colour(0,0,0)
 
 gentable bounds( 10, 10,280,190), tablenumber(1), tablecolour("silver"), identchannel("table1"), amprange(0,1,1), fill(1), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(20,20,20), outlinethickness(2), identchannel("table1")
 image   bounds( -5, -5, 6, 6), colour("black"), identchannel("A"), shape("ellipse"), outlinethickness("1")

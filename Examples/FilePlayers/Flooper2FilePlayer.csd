@@ -11,7 +11,7 @@
 ;  - flooper2 will take the values from the last control input moved.
 
 <Cabbage>
-form caption("Flooper2 File Player") size(805,340), colour(0,0,0) pluginID("FlFP")
+form caption("Flooper2 File Player") size(805,340), colour(0,0,0) pluginid("FlFP")
 image                     bounds(  0,  0,805,340), colour(155, 50,  0), outlinecolour("White"), line(3), shape("sharp")	; main panel colouration    
 
 soundfiler bounds(  5,  5,795,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 

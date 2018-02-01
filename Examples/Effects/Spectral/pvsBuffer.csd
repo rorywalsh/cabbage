@@ -4,7 +4,7 @@
 ; Take Care! Feedback values above 1 are intended to be used only when transposition is not unison. 
 
 <Cabbage>
-form caption("pvsBuffer") size(580,135), pluginID("buff")
+form caption("pvsBuffer") size(580,135), pluginid("buff")
 image             bounds(0, 0, 580, 135), colour(100, 80, 80,125), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 
 label             bounds(10, 97, 48,10), text("RECORD"), align(right), fontcolour(white)

@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Encoder Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+form caption("Encoder Example") size(400, 300), colour(220, 220, 220), pluginid("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")

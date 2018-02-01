@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Multi-mode Delay") size(435, 90), pluginID("MMDl")
+form caption("Multi-mode Delay") size(435, 90), pluginid("MMDl")
 image                    bounds(0, 0,435, 90), colour("Maroon"), shape("rounded"), outlinecolour("white"), outlinethickness(4)
 label    bounds( 10, 22, 80, 12), text("Type"), fontcolour("white")
 combobox bounds( 10, 35, 80, 20),  text("Ping Pong","Stereo"), channel("type"), value(1)

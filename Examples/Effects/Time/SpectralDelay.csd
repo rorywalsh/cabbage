@@ -15,7 +15,7 @@
 ; Level			-	output level
 
 <Cabbage>
-form caption("") size(530,345), colour("black"), pluginID("SpDl")
+form caption("") size(530,345), colour("black"), pluginid("SpDl")
 image     pos(0, 0), size(530,345), colour("black"), shape("rounded"), outlinecolour(125,130,155), outlinethickness(5) 
 ;line      bounds(15, 53, 610,  1), colour(150,150,150)
 

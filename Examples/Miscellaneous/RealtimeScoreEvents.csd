@@ -4,7 +4,7 @@
 ; Written by Iain McCurdy, 2015. Borrowing from Rory Walsh's 'TextEditor.csd' example.
 
 <Cabbage>
-form caption("Realtime Score Events") size(800, 365), pluginID("RTSc"), guirefresh(16)
+form caption("Realtime Score Events") size(800, 365), pluginid("RTSc"), guirefresh(16)
 
 label bounds(5, 5, 390, 15), text("Enter a score event for instrument 2 or 3..."), align("left"),  fontcolour("white")
 texteditor bounds(5, 25, 390, 20), channel("ScoreEvent"), text(""), color(20, 20, 20), fontcolour(0, 0, 0, 255), 

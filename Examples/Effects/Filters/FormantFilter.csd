@@ -7,7 +7,7 @@
 ; 'Freq.Mult.' is a factor by which all cutoff frequencies are multiplied by.
 
 <Cabbage>
-form caption("Formant Filter"), colour("SlateGrey"), size(550, 280), pluginID("form")  
+form caption("Formant Filter"), colour("SlateGrey"), size(550, 280), pluginid("form")  
 
 xypad bounds(5, 5, 350, 260), channel("x", "y"), rangex(0, 1, 0.5), rangey(0, 1, 0), text("upper edge:A E I | lower :U O"), fontcolour("white")
 

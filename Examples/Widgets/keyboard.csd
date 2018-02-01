@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 300), caption("Keyboard"), pluginID("plu1")
+form size(400, 300), caption("Keyboard"), pluginid("plu1")
 keyboard bounds(10, 10, 385, 160), identchannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>

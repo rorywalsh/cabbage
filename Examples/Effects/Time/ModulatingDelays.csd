@@ -33,7 +33,7 @@
 
 
 <Cabbage>
-form size(960, 260), caption("Modulating Delays"), pluginID("mdel")
+form size(960, 260), caption("Modulating Delays"), pluginid("mdel")
 
 label    bounds(200,  5, 80, 11), text("G A T E"), fontcolour("white")
 checkbox bounds( 10, 35,100, 15), text("Gate On/Off") channel("GateActive"), FontColour("White"), colour("lime")  value(1)

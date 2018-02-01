@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 200), caption("Toggling Plants"), pluginID("plu1"), guirefresh(10)
+form size(400, 200), caption("Toggling Plants"), pluginid("plu1"), guirefresh(10)
 button bounds(12, 12, 60, 25), channel("but1"), text("Toggle", "Toggle")
 
 groupbox bounds(80, 10, 200, 160), text("White Sliders"), visible(0), identchannel("sliders1"), plant("GUIabst_1"){

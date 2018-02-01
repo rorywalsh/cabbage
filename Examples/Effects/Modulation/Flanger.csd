@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Flanger") size(510,100), pluginID("flan")
+form caption("Flanger") size(510,100), pluginid("flan")
 image pos(0, 0), size(510,100), colour("lightgreen"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 line	 bounds( 15, 10,190,  2)
 label    bounds( 75,  7, 70, 10), text("MODULATION"), fontcolour("white"), colour(100,110,130)

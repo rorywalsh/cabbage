@@ -22,7 +22,7 @@
 ; Level		-	global control of the level of all signal that may be present at the output.
 
 <Cabbage>
-form caption("pvsCross") size(370, 90), pluginID("crss")
+form caption("pvsCross") size(370, 90), pluginid("crss")
 image            bounds(0, 0, 370, 90), colour("Cream"), outlinecolour("silver"), outlinethickness(5)
 
 ; filter switches

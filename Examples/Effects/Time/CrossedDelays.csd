@@ -39,7 +39,7 @@
 ; Level			-	output level (dry and wet signals)
 
 <Cabbage>
-form caption("Crossed Delays") size(815, 130), pluginID("CrDl")
+form caption("Crossed Delays") size(815, 130), pluginid("CrDl")
 
 
 image   bounds(  5,  5,370,120), outlinethickness(1), outlinecolour("white"), colour("black"), plant("Delays_Plant")

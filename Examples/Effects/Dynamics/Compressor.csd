@@ -23,7 +23,7 @@
 
 <Cabbage>
 #define SLIDER_APPEARANCE trackercolour("DarkSlateGrey"), textcolour("black") 
-form caption("Compressor") size(440,130), pluginID("comp")
+form caption("Compressor") size(440,130), pluginid("comp")
 image            bounds(  0,  0,440,130), outlinethickness(6), outlinecolour("white"), colour("grey")
 rslider bounds( 10, 10, 70, 70), channel("thresh"), text("Threshold"), range(0,120,0), $SLIDER_APPEARANCE
 rslider bounds( 80, 10, 70, 70), channel("att"), text("Attack"),  range(0,1,0.01,0.5), $SLIDER_APPEARANCE

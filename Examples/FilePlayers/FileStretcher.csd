@@ -23,7 +23,7 @@
 ;  evident during long time stretches. Jitter depth and rate can be modified.
 
 <Cabbage>
-form caption("File Stretcher") size(580,430), colour(0,0,0) pluginID("FiSt"), guirefresh(10) 
+form caption("File Stretcher") size(580,430), colour(0,0,0) pluginid("FiSt"), guirefresh(10) 
 image                bounds(  0,  0,580,430), colour(50,50,60), outlinecolour("White"), line(3), shape("sharp")
 
 soundfiler           bounds(  5,  5,570,150), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255)

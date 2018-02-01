@@ -16,7 +16,7 @@
 ; Element Amplitude Envelope - amplitude envelope applied to each sample iteration (bounce)
 
 <Cabbage>
-form caption("Bouncing Object"), size(390, 635), pluginID("bnOb")
+form caption("Bouncing Object"), size(390, 635), pluginid("bnOb")
 
 #define RSliderStyle trackercolour(255,255,255), colour(100,200,140), outlinecolour(40,40,40), textcolour(white)
 

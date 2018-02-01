@@ -10,7 +10,7 @@
 ; The offset value is subtracted so that the envelope can experience values of zero. 
 
 <Cabbage>
-form caption("GEN07"), size(250,400), pluginID("gn07"), colour(13, 50, 67,50)
+form caption("GEN07"), size(250,400), pluginid("gn07"), colour(13, 50, 67,50)
 
 label    bounds( 10,  8, 95, 15), text("Edit Method:")
 combobox bounds(105,  5, 80, 20), text("sliders","drawing"), value(1), channel("mode")

@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form size(650, 265), caption("Guitar Chords"), pluginID("guit"), guirefresh(64)
+form size(650, 265), caption("Guitar Chords"), pluginid("guit"), guirefresh(64)
 
 label  bounds( 54, -1, 25, 10), text("Mute"), FontColour("white")
 label  bounds( 84, -1, 25, 10), text("Open"), FontColour("white")

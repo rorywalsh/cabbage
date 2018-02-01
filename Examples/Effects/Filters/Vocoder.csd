@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("vocoder"), size(530, 230), pluginID("voco")
+form caption("vocoder"), size(530, 230), pluginid("voco")
 
 image pos(0, 0), size(530, 200), colour(255,255,150), shape("rounded"), outlinecolour("white"), line(1)
 

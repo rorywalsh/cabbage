@@ -32,7 +32,7 @@
 ; Level	-	amplitude scaling
 
 <Cabbage>
-form caption("wguide1") size(650,200), pluginID("WGu1"), scrollbars(0)
+form caption("wguide1") size(650,200), pluginid("WGu1"), scrollbars(0)
 image           bounds(0, 0, 650,120), colour(125, 95, 55), shape("sharp"), outlinecolour(225,195,155), outlinethickness(2) 
 label   bounds(505,  4,136, 17), align("centre"), text("W A V E G U I D E"), fontcolour(silver), align("left")
 image   bounds(510,  7,125,  1), colour(200,170,130), shape("sharp"), outlinecolour(silver), outlinethickness(1)

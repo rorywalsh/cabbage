@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Image Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+form caption("Image Example") size(400, 300), colour(220, 220, 220), pluginid("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 label bounds(6, 26, 380, 18) text("Image: click to send info to Csound") fontcolour(118, 118, 118, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")

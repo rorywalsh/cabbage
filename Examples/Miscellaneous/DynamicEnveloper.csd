@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("ADSR Enveloper") size(400, 280), colour(40, 40, 40), pluginID("def1")
+form caption("ADSR Enveloper") size(400, 280), colour(40, 40, 40), pluginid("def1")
 keyboard bounds(8, 170, 381, 95)
 
 gentable bounds(5, 10, 380, 140), tablenumber(1), amprange(0, 1, 1, 0.0100), active(1), tablecolour:0(0, 200, 0, 100), identchannel("genTable1")

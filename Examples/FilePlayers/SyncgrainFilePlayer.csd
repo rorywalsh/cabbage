@@ -5,7 +5,7 @@
 ;  so on accaount of this complication a scrubber line in the waveform view is not yet implemented.
 
 <Cabbage>
-form caption("Syncgrain File Player") size(800,340), colour(0,0,0) pluginID("SGFP")
+form caption("Syncgrain File Player") size(800,340), colour(0,0,0) pluginid("SGFP")
 image                       bounds(  0,  0,800,340), colour( 90, 60, 30), outlinecolour("White"), shape("sharp"), line(3)	; main panel colouration    
 soundfiler                  bounds(  5,  5,790,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
 

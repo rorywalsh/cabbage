@@ -56,7 +56,7 @@
 ; Each cell is associated with a particular note.
 
 <Cabbage>
-form caption("Cellular Automata [vcella]"), size(830, 360),pluginID("CeAu"), guirefresh(64)
+form caption("Cellular Automata [vcella]"), size(830, 360),pluginid("CeAu"), guirefresh(64)
 
 ; Triggering
 image      bounds(  5,  5,205, 70), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("Trigger") {

@@ -41,7 +41,7 @@
 <Cabbage>
 #define RSliderStyle trackercolour(255,255,255), colour(  0, 55,100), textcolour(0,0,0), outlinecolour(50,50,50), valuetextbox(1), textbox(1), fontcolour("black")
 
-form caption("Bassline TB-303") size(615,335), pluginID("T303"), guirefresh(64)
+form caption("Bassline TB-303") size(615,335), pluginid("T303"), guirefresh(64)
 image                bounds(  0,  0,615,335), colour("grey"), shape("sharp"), outlinecolour("white"), line(4)
 checkbox bounds( 65,  8,  5,  5), channel("Act1"),  value(0), colour("yellow"), shape("ellipse"), active(0)
 checkbox bounds(100,  8,  5,  5), channel("Act2"),  value(0), colour("yellow"), shape("ellipse"), active(0)

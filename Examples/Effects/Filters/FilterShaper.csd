@@ -4,7 +4,7 @@
 ; Gestural shaping using rspline random function generators applied to lowpass filter, highpass filter, panning and amplitude
 
 <Cabbage>
-form caption("Filter Shaper") size(595, 200), pluginID("FlSh")
+form caption("Filter Shaper") size(595, 200), pluginid("FlSh")
 image               bounds(  0, 0, 595, 200), colour("Chocolate"), outlinecolour("white"), outlinethickness(2), shape("sharp")
 
 line     bounds( 15,  4,125, 15)

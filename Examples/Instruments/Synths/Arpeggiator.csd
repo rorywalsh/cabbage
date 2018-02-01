@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Arpeggiator") size(700, 440), pluginID("arpe")
+form caption("Arpeggiator") size(700, 440), pluginid("arpe")
 
 #define RSliderStyle #trackercolour(0,255,255), colour(100,100,140), outlinecolour(20,20,20)#
                       

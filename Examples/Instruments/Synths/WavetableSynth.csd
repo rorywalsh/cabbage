@@ -21,7 +21,7 @@
 ; Drop		--		Amount of pitch drop upon note conclusion
 
 <Cabbage>
-form caption("Wavetable Synth") size(720, 290), pluginID("wtsy")
+form caption("Wavetable Synth") size(720, 290), pluginid("wtsy")
 image                pos(0, 0), size(720, 290), colour(150,100,70), shape("sharp"),   outlinecolour("maroon"), outlinethickness(2)
 
 ;INSTRUMENT

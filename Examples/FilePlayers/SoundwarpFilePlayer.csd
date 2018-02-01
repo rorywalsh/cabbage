@@ -6,7 +6,7 @@
 ;   (Transposition range when using mouse clicking-and-dragging is controlled using the 'Transposition' knob. Therefore if 'Transposition' = zero, no transposition occurs.)
 
 <Cabbage>
-form caption("Soundwarp File Player") size(835,340), colour(0,0,0) pluginID("SWPl"), guirefresh(32)
+form caption("Soundwarp File Player") size(835,340), colour(0,0,0) pluginid("SWPl"), guirefresh(32)
 image                       bounds(  0,  0,835,340), colour( 30, 90, 60), outlinecolour("White"), line(3), shape("sharp")	; main panel colouration    
 
 soundfiler bounds(  5,  5,825,175), channel("beg","len"), channel("pos1","end1"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 

@@ -15,7 +15,7 @@
 ; A simple Cabbage metronome
 
 <Cabbage>
-form caption("Metronome"), size(770,140), pluginID("mtro")
+form caption("Metronome"), size(770,140), pluginid("mtro")
 image            bounds(  0,  0,770,140), colour(160, 70,20,100), shape("rounded"), oulinecolour("white"), outlinethickness(4) 
 checkbox bounds( 15, 20,130, 40), text("Start/Stop") channel("OnOff"), FontColour("White"), colour(250,250,100)  value(0)
 

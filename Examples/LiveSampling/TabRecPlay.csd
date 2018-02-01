@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("Tab.Rec/Play") size(300, 360), pluginID("tbrp")
+form caption("Tab.Rec/Play") size(300, 360), pluginid("tbrp")
 
 groupbox bounds(  0,  0,300, 95), text("Transport")
 

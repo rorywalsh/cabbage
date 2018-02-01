@@ -1,5 +1,5 @@
 <Cabbage>
-form size(440, 320), caption("Host Info"), pluginID("plu1"), guirefresh(10), colour("white")
+form size(440, 320), caption("Host Info"), pluginid("plu1"), guirefresh(10), colour("white")
 label bounds(5, 10, 430, 30), colour(100, 0, 0), text("BPM:"), align("left"), identchannel("BPMLabel")
 label bounds(5, 48, 430, 30), colour(90, 0, 0), text("Playing:"), align("left"), identchannel("IsPlayingLabel")
 label bounds(5, 86, 430, 30), colour(80, 0, 0), text("Recording:"), align("left"), identchannel("IsRecordingLabel")

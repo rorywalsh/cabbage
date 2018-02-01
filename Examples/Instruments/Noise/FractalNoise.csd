@@ -4,7 +4,7 @@
 ; GUI colour indicates noise type: 'white' - 'pink' - 'brown'
 
 <Cabbage>
-form caption("Fractal Noise"), size(290,275), pluginID("fnse"), guirefresh(32)
+form caption("Fractal Noise"), size(290,275), pluginid("fnse"), guirefresh(32)
 image bounds(  0,  0,290,275), colour("white"), shape("sharp"), , identchannel(BackgroundColour)
 checkbox bounds( 20, 10, 15, 15), channel("onoff"), value(0), fontcolour("black"), colour("yellow")
 label    bounds( 37, 11, 50, 13), text("On/Off"), fontcolour(30,30,30), identchannel("label1")

@@ -18,7 +18,7 @@
 ; 'Delay OS' fine tunes the delay applied to the dry signal. Normally this should be zero but adjust it to modify how the dry signal lines up with the convoluted signal.
 
 <Cabbage>
-form caption("Convolution Reverb") size(505,230), pluginID("Conv")
+form caption("Convolution Reverb") size(505,230), pluginid("Conv")
 image bounds(0, 0, 505,230), colour(135, 30, 30,220), shape("rounded"), outlinecolour(255,255,150), outlinethickness(4) 
 label   bounds( 29,  10, 55, 12),       text("direction:"), fontcolour(250,250,250)
 button  bounds( 10,  22, 90, 20),       text("forward","backward"),                            channel("FwdBwd"), value(0), fontcolour(250,250,250)

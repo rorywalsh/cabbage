@@ -34,7 +34,7 @@
 ; Level		-	output level
 
 <Cabbage>
-form caption("Gate Reverb"), size(850, 85), pluginID("GtRv"), colour(13, 50, 67,50)
+form caption("Gate Reverb"), size(850, 85), pluginid("GtRv"), colour(13, 50, 67,50)
 image              bounds(  0,  0,850, 85), colour(DarkSlateGrey),  shape("sharp")
 
 #define RSliderStyle # colour(150,205,150), textcolour(200,250,200), outlinecolour(140,140,140), trackercolour(yellow), fontcolour(250,250,150)#

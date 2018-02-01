@@ -19,7 +19,7 @@
 #define	SLIDER_STYLE # trackercolour( 50, 50,155), fontcolour("black"), textcolour("black") #
 #define	CHECKBOX_STYLE # colour(255,255,100) #
 
-form caption("Parp") size(980,221), pluginID("Parp"), colour(170,170,170)
+form caption("Parp") size(980,221), pluginid("Parp"), colour(170,170,170)
 
 image      bounds(  2,  2,976,130), colour(220,220,220), outlinecolour("black"), outlinethickness(1)
 rslider    bounds(  0, 25, 90, 90), valuetextbox(1), textbox(1), text("Breath"),     channel("amp"),      range(0.001,10,1,0.5),        $SLIDER_STYLE

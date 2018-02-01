@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Csound output") size(480,400), pluginID("SMo1"), guirefresh(10)
+form caption("Csound output") size(480,400), pluginid("SMo1"), guirefresh(10)
 infobutton bounds(10, 10, 100, 50), file("example1.html"), text("Help"), colour("red"), fontcolour("blue")
 </Cabbage>
 <CsoundSynthesizer>

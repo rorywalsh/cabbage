@@ -89,7 +89,7 @@
 #define COLOUR2 colour(60,40,40)
 #define TRACKER trackercolour("yellow")
 
-form caption("Micropolyphony") size(1110,335), pluginID("MPSy")
+form caption("Micropolyphony") size(1110,335), pluginid("MPSy")
 
 ;MONO/POLY
 image   bounds(  5,  6,210,115), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), outlinethickness(2), plant("polyphony") {

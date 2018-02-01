@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Checkbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
+form caption("Checkbox Example") size(400, 300), colour(220, 220, 220), pluginid("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 checkbox bounds(116, 38, 150, 50), channel("checkbutton1"), text("Enable Tone", "Disable Tone"),

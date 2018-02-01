@@ -26,7 +26,7 @@
 
 
 <Cabbage>
-form caption("") size(460,395), colour(225,230,255), pluginID("Shrd"), scrollbars(0)
+form caption("") size(460,395), colour(225,230,255), pluginid("Shrd"), scrollbars(0)
 image   bounds(  0,-10,460, 45), colour(0,0,0,0), outlinethickness(0), plant("title")
 {
 label   bounds(  0,  1,460, 51), text("SHREDULATOR"), fontcolour(155,155,155)

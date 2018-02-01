@@ -15,7 +15,7 @@
 ; Port.		-	Portamento time applied to changed made to the pitch scaling interval
 
 <Cabbage>
-form caption("pvscale Pitch Shifter") size(690,  90), pluginID("scal")
+form caption("pvscale Pitch Shifter") size(690,  90), pluginid("scal")
 image                         bounds(0, 0, 690, 90), colour("SlateGrey"), outlinecolour("silver"), outlinethickness(4)
 
 image bounds(  6, 23,678, 30), colour("silver"), shape("ellipse"), outlinethickness(3)

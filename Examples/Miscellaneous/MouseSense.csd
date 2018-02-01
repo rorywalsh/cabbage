@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2014
 
 <Cabbage>
-form caption("Mouse Sense") size(785, 400), pluginID("SMo1"), guirefresh(16)
+form caption("Mouse Sense") size(785, 400), pluginid("SMo1"), guirefresh(16)
 
 nslider bounds( 55, 25, 90, 35), text("MOUSE X"),             fontcolour("white"), textbox(1),                channel("X"),           range(0, 800, 0,1,1)
 nslider bounds(160, 25, 90, 35), text("MOUSE Y"),             fontcolour("white"), textbox(1),                channel("Y"),           range(0, 400, 0,1,1)

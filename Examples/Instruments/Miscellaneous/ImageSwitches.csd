@@ -17,7 +17,7 @@
 
 
 <Cabbage>
-form caption("Image Switches") size(500, 435), pluginID("ImSw"), colour(50,50,50); guirefresh(10)
+form caption("Image Switches") size(500, 435), pluginid("ImSw"), colour(50,50,50); guirefresh(10)
 
 image bounds( 40, 40,30,30), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), line(0), identchannel("image1")
 image bounds( 75, 40,30,30), colour(0,0,0,0), shape("rounded"), outlinecolour("white"), line(0), identchannel("image2")

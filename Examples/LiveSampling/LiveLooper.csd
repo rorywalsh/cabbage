@@ -14,7 +14,7 @@
 ; NB. Loop Mode = "Fwd/Bwd" does not seem to crossfade properly when fading from the backwards pass to the forwards pass. Maybe a bug in flooper2?
 
 <Cabbage>
-form size(385,325), text("Live Looper"), guirefresh(32), pluginID("LiLp")
+form size(385,325), text("Live Looper"), guirefresh(32), pluginid("LiLp")
 image    bounds(  5,  5,375,110), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), plant("Crossfade"), shape("sharp") {
 label    bounds(  0,  4,375, 15), text("Crossfade")
 rslider  bounds(  5, 27, 70, 70), range(0.25,2,0.5,0.5), channel("Shape"), text("Shape")

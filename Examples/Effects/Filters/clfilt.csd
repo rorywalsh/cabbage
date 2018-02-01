@@ -4,7 +4,7 @@
 ; Port.		-	portamento applied to changes that are made to 'Freq.'
 
 <Cabbage>
-form caption("clfilt - Multi-Mode Filter") size(655, 90), pluginID("clfl"), scrollbars(0)
+form caption("clfilt - Multi-Mode Filter") size(655, 90), pluginid("clfl"), scrollbars(0)
 image                              bounds(0, 0, 655, 90), colour( 40,40,100), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 rslider bounds( 10, 11, 70, 70), text("Freq."),       colour( 20,20, 80), 	fontcolour("white"), 	channel("cf"), 		range(20, 20000, 2000, 0.333), trackercolour("white"), outlinecolour(140,140,170), textcolour("white")
 rslider bounds( 75, 16, 60, 60), text("Port."),       colour( 20,20, 80), 	fontcolour("white"), 	channel("port"), 	range(0,  50, 0.1, 0.5,0.01), trackercolour("white"), outlinecolour(140,140,170), textcolour("white")

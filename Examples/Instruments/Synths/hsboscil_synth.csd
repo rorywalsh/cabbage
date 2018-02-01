@@ -64,7 +64,7 @@ Rate	-	Rate of modulation used in the chorus effect
 
 
 <Cabbage>
-form caption("hsboscil Synth") size(590, 450), pluginID("hsbo")
+form caption("hsboscil Synth") size(590, 450), pluginid("hsbo")
 
 ;AMPLITUDE
 groupbox bounds(0, 0, 590, 100), colour( 10, 15, 30, 100) text("Amplitude"), fontcolour(255,0,0), plant("Amplitude") {

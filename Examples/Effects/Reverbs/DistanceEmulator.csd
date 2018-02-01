@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2015
 	
 <Cabbage>
-form caption("Distance Emulator") size(700,300), colour(200,210,180), pluginID("DsEm")
+form caption("Distance Emulator") size(700,300), colour(200,210,180), pluginid("DsEm")
 hslider   bounds(  5,  5,240, 30), channel("Amp1"), text("Amp.1"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 1, 0.5, 0.001)
 hslider   bounds(255,  5,240, 30), channel("Amp2"), text("Amp.2"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 0.25, 0.5, 0.001)
 hslider   bounds(  5, 55,240, 30), channel("Rvb1"), text("Rvb.1"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 0, 0.5, 0.001)

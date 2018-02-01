@@ -8,7 +8,7 @@
 ; In this example the histogram is used as a probability distribution from which notes are randomly chosen. Values define (midi) note numbers.
 
 <Cabbage>
-form caption("GEN41"), size(420, 395), pluginID("gn41"), colour(120,70,170,150)
+form caption("GEN41"), size(420, 395), pluginid("gn41"), colour(120,70,170,150)
 
 gentable bounds(  5,  5, 410, 115), identchannel("table1"), tablenumber(1), tablecolour("yellow"), outlinethickness(2), amprange(36,84,1), zoom(-1), fill(0)
 

@@ -7,7 +7,7 @@
 ; Conventional damping effects are still possible when cutoff frequency ratio = 1.
 
 <Cabbage>
-form caption("Bass Guitar"), size(550, 200), pluginID("basg")
+form caption("Bass Guitar"), size(550, 200), pluginid("basg")
 
 #define RSliderStyle # colour(150,205,150), textcolour("LightGreen"), outlinecolour(0,0,0), trackercolour(yellow)#
 

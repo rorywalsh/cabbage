@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Soundfiler") size(430, 240), colour(58, 110, 182), pluginID("def1")
+form caption("Soundfiler") size(430, 240), colour(58, 110, 182), pluginid("def1")
  
 combobox bounds(324, 188, 100, 25), channel("presetsCombo"), populate("*.snaps")
 filebutton bounds(262, 188, 60, 25) value(0) text("Save", "Save") mode("snapshot") 

@@ -5,7 +5,7 @@
 ; Negative strength values result in inverted phase
 
 <Cabbage>
-form caption("GEN10"), size(410, 340), pluginID("gn10"), colour("20,70,170,150")
+form caption("GEN10"), size(410, 340), pluginid("gn10"), colour("20,70,170,150")
 
 gentable bounds(  5,  5, 400, 120), identchannel("table1"), tablenumber(1), tablecolour("yellow"), zoom(-1)
 

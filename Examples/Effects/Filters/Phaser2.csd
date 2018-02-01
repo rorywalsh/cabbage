@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("phaser2") size(685, 90), pluginID("phs2")
+form caption("phaser2") size(685, 90), pluginid("phs2")
 image pos(0, 0),        size(685, 90), colour(0,0,25), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 label     bounds( 15, 15, 55, 12), text("INPUT"), fontcolour("white")
 checkbox  bounds( 15, 30, 55, 12), text("Live"),  fontcolour("white"), channel("input"),  value(1), radiogroup(1)

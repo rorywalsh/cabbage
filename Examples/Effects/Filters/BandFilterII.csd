@@ -6,7 +6,7 @@
 ; The limit double slider is more just for display.
                                                                                    
 <Cabbage>                                                                                                                   
-form caption("Bandfilter II"), colour("LightSlateGrey"), size(510, 655), pluginID("BFII"), scrollbars(0)
+form caption("Bandfilter II"), colour("LightSlateGrey"), size(510, 655), pluginid("BFII"), scrollbars(0)
 
 checkbox bounds(9,3,90,15), channel("TestSound"), text("Test Sound"), value(0), fontcolour("black")
 

@@ -15,7 +15,7 @@
 ; 		and duty emphasis (emphasis of high state/loud against low state/quiet)
 
 <Cabbage>
-form caption("Autopan / Tremolo") size(565, 102), pluginID("aptr"), guirefresh(32)
+form caption("Autopan / Tremolo") size(565, 102), pluginid("aptr"), guirefresh(32)
 image pos( 0,  0),                size(565, 102),     colour("Maroon"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 rslider  bounds(  5,  6, 90, 90), text("Freq.[Hz]"),  channel("rate"),  range(0.1, 50, 0.5, 0.5),   valuetextbox(1), textbox(1), trackercolour("tomato")
 rslider  bounds( 80,  6, 90, 90), text("Tempo[BPM]"), channel("tempo"), range(6, 3000, 30, 0.5, 1), valuetextbox(1), textbox(1), trackercolour("tomato")

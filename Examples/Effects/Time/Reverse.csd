@@ -19,7 +19,7 @@
 
 
 <Cabbage>
-form caption("Reverse") size(455, 95), pluginID("rvrs")
+form caption("Reverse") size(455, 95), pluginid("rvrs")
 image           bounds(0, 0, 455, 95), colour("darkslategrey"), shape("rounded"), outlinecolour("white"), line(4)
 rslider  bounds( 10, 10,  75, 75), text("Time L"),    channel("timeL"),   range(0.010, 4, 1, 0.5,0.001),colour(37,59,59)   textcolour(255,255,200), trackercolour(lightblue)
 rslider  bounds( 80, 10,  75, 75), text("Time R"),    channel("timeR"),   range(0.010, 4, 1, 0.5,0.001),colour(37,59,59)   textcolour(255,255,200), trackercolour(lightblue)

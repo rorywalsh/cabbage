@@ -16,7 +16,7 @@
 ; will be stretch, compressed and moved appropriately.
 
 <Cabbage>
-form caption("Mouse Chord") size(700, 500), pluginID("MChd"), scrollbars(0), guirefresh(64)
+form caption("Mouse Chord") size(700, 500), pluginid("MChd"), scrollbars(0), guirefresh(64)
 image bounds(0,0,0,0),     colour(255,100,0),   shape("rounded"), outlinecolour("white"), line(1), identchannel("1") 		; I
 image bounds(0,0,0,0),     colour("Blue"),      shape("rounded"), outlinecolour("white"), line(1), identchannel("2") 		; II
 image bounds(0,0,0,0),     colour("Yellow"),    shape("rounded"), outlinecolour("white"), line(1), identchannel("3") 		; III

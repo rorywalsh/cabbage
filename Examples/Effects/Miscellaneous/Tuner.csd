@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2017.
 
 <Cabbage>
-form caption("Tuner"), size(295,100), pluginID("Tunr")
+form caption("Tuner"), size(295,100), pluginid("Tunr")
 image            bounds(0,0,295,100), colour(50,50,80), outlinethickness(4), outlinecolour("silver")
 image bounds(10,10,290,85), colour(0,0,0,0), plant("Indicators") {
 checkbox bounds(  0, 16,  9,  9), colour(255,  5,  5), channel("Err-50"), shape("ellipse"), value(0), active(0)

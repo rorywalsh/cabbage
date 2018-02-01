@@ -25,7 +25,7 @@
 ;	If delay time is zero then the delay is completely bypassed.  
                                                                        
 <Cabbage>                                                                                                                   
-form caption("Gate"), colour( 20, 20, 30), size(430, 305), pluginID("Gate"), scrollbars(0)
+form caption("Gate"), colour( 20, 20, 30), size(430, 305), pluginid("Gate"), scrollbars(0)
 
 image     bounds(  5, 10,420, 40), shape("sharp"), outlinecolour("white"), colour(0,0,0,0), outlinethickness(1), plant("Input") {
 label     bounds( 20, 10,180, 14), fontcolour("white"), text("Processing Configuration:"), colour(0,0,0,0), align("right")

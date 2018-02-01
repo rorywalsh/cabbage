@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 500), caption("Infobutton Example"), pluginID("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Infobutton Example"), pluginid("plu1"), colour(39, 40, 34)
 button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
 infobutton bounds(120, 16, 100, 30), channel("button"),  file("button.csd"), text("Info")
 filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")

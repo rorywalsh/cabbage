@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Grid Sequencer") size(580, 370), colour("black"),pluginID("add1") 
+form caption("Grid Sequencer") size(580, 370), colour("black"),pluginid("add1") 
 
 gentable bounds(10, 10, 560, 245), tablenumber(11:12:13:14:15:16:17:18), active(1), tablebackgroundcolour("black"), tablecolour("lime") zoom(-1), amprange(0, 1, -1, 1)
 rslider bounds(14, 264, 60, 60) channel("bpmSlider") range(20, 500, 200, 1, 0.001) text("BPM")

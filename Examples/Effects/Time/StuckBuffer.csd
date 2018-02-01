@@ -22,7 +22,7 @@
 <Cabbage>
 #define RSliderStyle # colour(150,150,150), trackercolour(white), outlinecolour(85,85,85)#
 
-form caption("Stuck Buffer") size(600,110), colour(50,50,50), pluginID("StBu")
+form caption("Stuck Buffer") size(600,110), colour(50,50,50), pluginid("StBu")
 
 image pos(0, 0), size(600, 110), colour(50,50,50), shape("sharp"), outlinecolour("grey"), outlinethickness(1)
 

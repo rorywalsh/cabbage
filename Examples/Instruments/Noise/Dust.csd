@@ -6,7 +6,7 @@ Added features are stereo panning (spread) of the dust, a random tonal variation
 
 
 <Cabbage>
-form caption("Dust"), size(410, 10), pluginID("dust")
+form caption("Dust"), size(410, 10), pluginid("dust")
 image    bounds(  0,  0,410, 80), colour(155, 50, 50), shape("sharp"), outlinecolour("white"), outlinethickness(2) 
 checkbox bounds( 10, 10, 80, 15), text("On/Off"), channel("onoff"), value(0), fontcolour("white")
 rslider  bounds( 70, 10, 60, 60), text("Amplitude"), channel("amp"),     range(0, 1.00, 0.5, 0.5, 0.001),   textcolour("white"), colour(105, 20, 20), outlinecolour(155,100,100), trackercolour(220,160,160)

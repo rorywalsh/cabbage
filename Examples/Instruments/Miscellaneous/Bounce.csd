@@ -11,7 +11,7 @@
 ; x position controls panning position for both horizontals and verticals
 
 <Cabbage>
-form caption("Bounce") size(610, 360), pluginID("bnce")
+form caption("Bounce") size(610, 360), pluginid("bnce")
 
 ; box 1 image    bounds(  0,  0,230,250), colour(200,100,100,200), 
 shape("rounded"), ouTlinecolour("white"), outlinethickness(0) 

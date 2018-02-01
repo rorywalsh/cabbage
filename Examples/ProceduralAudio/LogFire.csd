@@ -2,7 +2,7 @@
 ; Based on work by Eric Grehan, Rory Walsh and Iain McCurdy, 2017
 
 <Cabbage>
-form caption("Log Fire") size(400, 170),  pluginID("Log Fire")  
+form caption("Log Fire") size(400, 170),  pluginid("Log Fire")  
 image   bounds(  0,  0,400,170) colour(0,0,0,0) identchannel("PanelID")
 button  bounds( 10,  5,380,  40) channel("playButton") text("Start Fire", "Stop Fire") identchannel("ButtonID")
 rslider bounds( 10, 50,100, 100) channel("density"), text("Crackle Density") range(1,80, 16, 1, 0.001), valuetextbox(1), textbox(1)

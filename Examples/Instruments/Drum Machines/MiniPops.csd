@@ -17,7 +17,7 @@
 
 
 <Cabbage>
-form size(840,250), caption("Mini Pops"), pluginID("MPop"), colour(255,255,205), guirefresh(64)
+form size(840,250), caption("Mini Pops"), pluginid("MPop"), colour(255,255,205), guirefresh(64)
 
 checkbox bounds( 13,  6,   45,   44), colour("tomato"), channel("Act1"),  value(0), shape("ellipse")
 checkbox bounds( 68,  6,   45,   44), colour("tomato"), channel("Act2"),  value(0), shape("ellipse")

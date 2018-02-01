@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Csound Filters") size(400, 220), colour(20, 20, 20), pluginID("def1")
+form caption("Csound Filters") size(400, 220), colour(20, 20, 20), pluginid("def1")
 keyboard bounds(12, 84, 381, 95), value(20)
 combobox bounds(12, 8, 381, 30), align("centre"), channel("filerTypeCombo"), items("MOOG_LADDER", "MOOG_VCF   ", "LPF18      ", "BQREZ      ", "CLFILT     ", "BUTTERLP   ", "LOWRES     ", "REZZY      ", "SVFILTER   ", "VLOWRES    ", "STATEVAR   ", "MVCLPF1    ", "MVCLPF2    ", "MVCLPF3    ")
 hslider bounds(12, 40, 361, 39), channel("coeffSlider"), range(0.01, 2, .5), text("LFO Rate")

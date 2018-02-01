@@ -33,7 +33,7 @@
 ; Level			-	Output amplitude control
 
 <Cabbage>
-form caption("Harp Filter") size(1080,205), pluginID("HaFi")
+form caption("Harp Filter") size(1080,205), pluginid("HaFi")
 image             bounds(  0,  0,1080,125), colour("silver"), shape("sharp")
 
 ;checkbox  bounds(  7,  5, 70, 12), text("Keyboard"), channel("input"), fontcolour("black")

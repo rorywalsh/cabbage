@@ -8,13 +8,13 @@ caption
 size
 scrollbars
 colour
-pluginID
+pluginid
 guirefresh
 form caption
 size
 scrollbars
 colour
-pluginID
+pluginid
 guirefresh
 RSliderStyle1 # colour
 outlinecolour

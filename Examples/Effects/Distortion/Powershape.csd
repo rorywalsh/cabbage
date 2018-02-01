@@ -10,7 +10,7 @@
 ; Level		--	output level
 
 <Cabbage>
-form caption("Powershape") size(300,160), pluginID("pshp")
+form caption("Powershape") size(300,160), pluginid("pshp")
 image               bounds(0, 0,300,160), colour("Brown"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 checkbox bounds(10,  8,130, 12), channel("TestTone"), FontColour("white"),  value(0), text("Sine Tone"), colour(yellow)
 hslider bounds(  5, 18,290, 40),          colour("white"), trackercolour("white"), channel("amount"), range(0.1, 1000, 1, 0.25,0.001)

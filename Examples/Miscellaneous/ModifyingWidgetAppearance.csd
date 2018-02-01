@@ -4,7 +4,7 @@
 ; An example that demonstrates the ability to modify various attributes of a widget's appearance in realtime from within the Csound orchestra via Cabbage's own widgets.
 
 <Cabbage>
-form caption("Modifying Widget Appearance") size(800, 500), pluginID("TEx1"), guirefresh(16)
+form caption("Modifying Widget Appearance") size(800, 500), pluginid("TEx1"), guirefresh(16)
 image bounds( 20,180, 50,11), colour(250,250,  0,255), shape("sharp"), outlinecolour("white"), outlinethickness(2), identchannel("image1"), rotate(0, 0, 0)
 hslider bounds(  0, 210, 450, 30), channel("HorPos"),  range(  0,450, 20,1,1), fontcolour(white) colour(SlateGrey)
 label      bounds(210,233, 35, 11), text("X Pos."), fontcolour("white")

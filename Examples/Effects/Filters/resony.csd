@@ -65,7 +65,7 @@
 
 
 <Cabbage>
-form caption("resony") size(750,180), pluginID("rsny"), colour(255,100,0)
+form caption("resony") size(750,180), pluginid("rsny"), colour(255,100,0)
 image        bounds(  0,  0,750,180), colour("black"), shape("rounded"), outlinecolour(255,100,0), outlinethickness(2) 
 label     bounds( 10, 20, 80, 12), text("INPUT:")
 button    bounds( 10, 35, 80, 35), text("Live","Noise"),     channel("input"), value(0)

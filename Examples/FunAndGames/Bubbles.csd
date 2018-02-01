@@ -11,7 +11,7 @@
   
 
 <Cabbage>
-form caption("Bubbles"), scrollbars(0), size(1000, 540), pluginID("Bubl"),colour(170,170,255), guirefresh(32)				; guirefresh might have some bearing on the smoothness of movement of the balloons (traded against CPU efficiency)
+form caption("Bubbles"), scrollbars(0), size(1000, 540), pluginid("Bubl"),colour(170,170,255), guirefresh(32)				; guirefresh might have some bearing on the smoothness of movement of the balloons (traded against CPU efficiency)
 label bounds(  0,250,1000, 30), text("Burst the Bubbles..."), align(centre), fontcolour(0,0,0,0), identchannel("instructions")		; Instructions
 
 image bounds(  0,  0,  0, 0), colour(0,0,0), shape("ellipse"), widgetarray("bubble",10)		; The bubbles

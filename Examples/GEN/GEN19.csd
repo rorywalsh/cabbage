@@ -37,7 +37,7 @@
 
 			 
 <Cabbage>
-form caption("GEN19"), size(560, 490), pluginID("gn19"), guirefresh(32), colour(0,0,0)
+form caption("GEN19"), size(560, 490), pluginid("gn19"), guirefresh(32), colour(0,0,0)
 
 gentable bounds(  0,  5, 560, 120), tablenumber(1), tablecolour("silver"), identchannel("table"), outlinethickness(2), amprange(-1,1,1), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(0,0,0), fill(0)
 image   bounds(-50,-50, 10, 10), colour(250,150, 55), identchannel("ball"), shape("ellipse")

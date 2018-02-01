@@ -6,14 +6,14 @@ Log started: 16 Feb 2017 6:49:00pm
 Plugin constructor
 caption
 size
-pluginID
+pluginid
 guirefresh
 Modifying Widget Appearance
 800, 500
 TEx1
 16
 END
-pluginID
+pluginid
 bounds
 colour
 shape
@@ -1051,14 +1051,14 @@ Log started: 16 Feb 2017 6:50:01pm
 Plugin constructor
 caption
 size
-pluginID
+pluginid
 guirefresh
 Modifying Widget Appearance
 800, 500
 TEx1
 16
 END
-pluginID
+pluginid
 bounds
 colour
 shape

@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Sample load and playback") size(635,430), pluginID("comp"), colour("whitesmoke")
+form caption("Sample load and playback") size(635,430), pluginid("comp"), colour("whitesmoke")
 soundfiler bounds(10, 10, 150, 80) identchannel("soundfiler1") tablenumber(-1) 
 soundfiler bounds(165, 10, 150, 80) identchannel("soundfiler2") tablenumber(-1) 
 soundfiler bounds(320, 10, 150, 80) identchannel("soundfiler3") tablenumber(-1) 

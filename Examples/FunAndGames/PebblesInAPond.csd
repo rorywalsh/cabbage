@@ -10,7 +10,7 @@
 ; The reason 5 circles created, and triggering cycles through these, is to allow circles to overlap. It is assumed that the user won't trigger more that five at once.
 
 <Cabbage>
-form caption("Pebbles in a Pond"), scrollbars(0), size(900, 520), pluginID("Pond"),colour(0,10,20), guirefresh(64)
+form caption("Pebbles in a Pond"), scrollbars(0), size(900, 520), pluginid("Pond"),colour(0,10,20), guirefresh(64)
 image bounds(0,0,0,0), colour(0,0,0), widgetarray("circle",70), shape("ellipse"), outlinecolour("white"), line(0)
 label    bounds(  0, 0,0, 0), text("Drop a pebble into the pond..."), align(centre), fontcolour(0,0,0,0), identchannel("instructions")
 </Cabbage>

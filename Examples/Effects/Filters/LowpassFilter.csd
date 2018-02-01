@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("Lowpass Filter") size(435, 90), pluginID("LPFl")
+form caption("Lowpass Filter") size(435, 90), pluginid("LPFl")
 image    bounds(0, 0, 435, 90), colour(  70, 90,100), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 label    bounds( 22, 22, 38, 11), text("INPUT:"), fontcolour("white")
 combobox bounds( 10, 33, 60, 20), channel("input"), value(1), text("Live","Tone","Noise")

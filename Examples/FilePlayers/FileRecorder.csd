@@ -10,7 +10,7 @@
 
 
 <Cabbage>
-form caption("File Recorder") size(230, 45), colour(0,0,0) pluginID("FRec")
+form caption("File Recorder") size(230, 45), colour(0,0,0) pluginid("FRec")
 image               bounds(  0,  0,230, 45), colour(100,100,100), outlinecolour("White"), line(3)
 checkbox bounds( 10, 10, 75, 25), channel("record"), text("Record"), colour("red"), fontcolour("white")
 button   bounds( 90, 10, 65, 25), colour("red"), text("New File","New File"), channel("reset"), latched(0)

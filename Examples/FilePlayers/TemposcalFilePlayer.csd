@@ -7,7 +7,7 @@ The sound file can be played back using the Play/Stop button (and the 'Transpose
 Playing back using the MIDI keyboard will implement pitch changes based on key played.
 
 <Cabbage>
-form caption("Temposcal File Player") size(570,340), colour(0,0,0) pluginID("TScl")
+form caption("Temposcal File Player") size(570,340), colour(0,0,0) pluginid("TScl")
 image                       bounds(  0,  0,570,340), colour( 30, 70, 70), outlinecolour("White"), shape("sharp"), line(3)
 
 soundfiler bounds(  5,  5,560,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 

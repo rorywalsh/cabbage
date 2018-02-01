@@ -44,7 +44,7 @@
 ; Loss			-	rate of energy loss induced by the rubber.
 
 <Cabbage>
-form caption("Prepared Piano") size(795,245), colour(250,235,255), pluginID("PreP")
+form caption("Prepared Piano") size(795,245), colour(250,235,255), pluginid("PreP")
 nslider  bounds(  5,5,70,34), channel("NS"),    range(2, 50, 3,1,1),       textcolour(black), fontcolour(black), text("Num.Strings"), colour(white)
 nslider  bounds( 85,5,70,34), channel("D"),    range(0,20000, 0),       textcolour(black), fontcolour(black), text("Detuning"), colour(white)
 nslider  bounds(165,5,70,34), channel("K"),    range(1, 40, 1),       textcolour(black), fontcolour(black), text("Stiffness"), colour(white)

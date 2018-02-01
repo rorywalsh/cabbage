@@ -31,7 +31,7 @@
 ; Number of partials in the chosen algorithm is printed to the GUI for the user's information. Algorithms with high numbers of partials will demand more CPU and lower polyphony will be possible.
 
 <Cabbage>
-form caption("Rubbed Resonators"), size(640,320), pluginID("RubR"), guirefresh(32)
+form caption("Rubbed Resonators"), size(640,320), pluginid("RubR"), guirefresh(32)
 image pos(0, 0),                   size(640,290), colour("Sienna"), shape("sharp"), oulinecolour("brown"), outlinethickness(4)
 
 ;EXCITATION
