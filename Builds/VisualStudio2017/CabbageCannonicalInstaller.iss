@@ -43,6 +43,7 @@ Source: "{#BuildDir}/Cabbage.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}/CabbageLite.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}/CabbagePluginEffect.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}/CabbagePluginSynth.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\Examples\*"; DestDir: "{app}\Examples\"; Flags: ignoreversion recursesubdirs
 Source: "..\..\CabbageManual\*"; DestDir: "{app}\CabbageManual\"; Flags: ignoreversion recursesubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
