@@ -59,7 +59,7 @@ void CabbageLookAndFeel2::setDefaultFont(File fontFile)
 //        customFont = Font(fontPtr);
 //    }
 //    else
-        customFont = CabbageUtilities::getComponentFont();
+//        customFont = CabbageUtilities::getComponentFont();
 }
 //=========== ComboBox ============================================================================
 void CabbageLookAndFeel2::drawComboBox (Graphics& g, int width, int height, bool /*isButtonDown*/,
@@ -223,9 +223,10 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
         }
     }
 
+
     //----- Text
     String name = group.getText();
-    Font font = customFont;
+    Font font = CabbageUtilities::getTitleFont();
 #ifndef MACOSX
     font.setFallbackFontName ("Verdana");
 #endif
@@ -243,7 +244,6 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, b
     const File imgButtonOffFile (button.getProperties().getWithDefault (CabbageIdentifierIds::imgbuttonoff, "").toString());
     const int corners = button.getProperties().getWithDefault (CabbageIdentifierIds::corners, 2.f);
     const bool isRectangle = button.getProperties().getWithDefault (CabbageIdentifierIds::shape, false);
-    //float fontSize = jmin (30, button.getHeight());
     const float tickWidth = button.getHeight();
     bool toggleState = button.getToggleState();
 
@@ -1204,10 +1204,10 @@ void CabbageLookAndFeel2::drawLabel (Graphics& g, Label& label)
 //    return Font(customFont);
 //}
 //
-//Font CabbageLookAndFeel2::getLabelFont (Label& label)
-//{
-//    return customFont;
-//}
+Font CabbageLookAndFeel2::getLabelFont (Label& label)
+{
+    return CabbageUtilities::getComponentFont();
+}
 //
 //Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
 //{
