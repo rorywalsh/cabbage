@@ -64,7 +64,7 @@ public:
     ScopedPointer<CabbageSettings> cabbageSettings;
     ApplicationCommandTarget* getNextCommandTarget() override   {        return findFirstTargetParentComponent();    }
     ApplicationCommandManager& getCommandManager() {     return commandManager;  }
-    void exportExamplesAsPlugins();
+    void exportExamplesToPlugins(String type);
 
 private:
     //=======================================================

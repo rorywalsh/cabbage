@@ -305,9 +305,12 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
         menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
 
-    //menu.addSeparator();
-    //menu.addCommandItem (&commandManager, CommandIDs::batchConvertExamples);
-    //menu.addCommandItem (&commandManager, CommandIDs::batchConvertFolder);
+    menu.addSeparator();
+    PopupMenu batch;
+    batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesAU);
+    batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesVST);
+
+    menu.addSubMenu("Batch Convert Examples", batch);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeProject);
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
@@ -464,8 +467,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::cabbageHelp,
                               CommandIDs::contextHelp,
                               CommandIDs::showGenericWidgetWindow,
-                              CommandIDs::batchConvertExamples,
-                              CommandIDs::batchConvertFolder
+                              CommandIDs::batchConvertExamplesAU,
+                              CommandIDs::batchConvertExamplesVST,
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -599,12 +602,12 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as FMOD Sound Plugin", "Exports as plugin", CommandCategories::general, 0);
             break;
 
-        case CommandIDs::batchConvertExamples:
-            result.setInfo ("Convert all examples to plugins", "Batch export as plugin", CommandCategories::general, 0);
+        case CommandIDs::batchConvertExamplesAU:
+            result.setInfo ("As AU plugins", "Batch export as plugin", CommandCategories::general, 0);
             break;
     
-        case CommandIDs::batchConvertFolder:
-            result.setInfo ("Convert folder to plugins", "Batch export folder as plugin", CommandCategories::general, 0);
+        case CommandIDs::batchConvertExamplesVST:
+            result.setInfo ("As VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
             break;
             
         case CommandIDs::closeAllDocuments:
@@ -881,10 +884,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
             return true;
 
-        case CommandIDs::batchConvertExamples:
-            exportExamplesAsPlugins();
+        case CommandIDs::batchConvertExamplesAU:
+            exportExamplesToPlugins("AU");
             return true;
-            
+
+        case CommandIDs::batchConvertExamplesVST:
+            exportExamplesToPlugins("VST");
+            return true;
+
         case CommandIDs::toggleComments:
             getContentComponent()->getCurrentCodeEditor()->toggleComments();
             return true;
@@ -1001,9 +1008,40 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     return true;
 }
 
-void CabbageDocumentWindow::exportExamplesAsPlugins()
+void CabbageDocumentWindow::exportExamplesToPlugins(String type)
 {
     const String examplesDir = cabbageSettings->getUserSettings()->getValue ("CabbageExamplesDir", "");
+    File examples(examplesDir);
+
+    StringArray parentFolders;
+    parentFolders.add("Instruments");
+    parentFolders.add("Effects");
+    parentFolders.add("LiveSampling");
+    parentFolders.add("FilePlayers");
+    CabbageIDELookAndFeel tempLookAndFeel;
+
+    int go = CabbageUtilities::showYesNoMessage("This command will export all examples from the 'Instrument', 'Effects', 'Live Sampling' and 'File Players' folders."
+                                               "This could take up to 2Gb's of had disk space. Do you wish to continue?", &tempLookAndFeel);
+    if(go == 1)
+    {
+        StringArray fxFolders = CabbageExamplesFolder::getEffects();
+        StringArray synthFolders = CabbageExamplesFolder::getInstruments();
+
+        for( auto folder : synthFolders)
+        {
+            File searchDir (examplesDir + "/Instruments/"+ folder);
+            Array<File> exampleFilesArray;
+            searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
+            exampleFilesArray.sort();
+            for( auto file : exampleFilesArray)
+            {
+                CabbageUtilities::debug(file.getFullPathName());
+            }
+        }
+
+    }
+
+
     CabbageUtilities::debug(examplesDir);
 }
 
