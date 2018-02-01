@@ -125,19 +125,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         String manu(JucePlugin_Manufacturer);
         const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
         const String toReplace = "<string>" + manu + ": CabbageEffectNam</string>";
-        
-        //seems like I need to update these strings in the plist file for some reason, Probably has something to do with the jucer files I'm using.
-        if(type == "AU")
-        {
-            const String auType = "<string>aumf</string>";
-            newPList = newPList.replace ("<string>aumu</string>", auType);
-        }
-        else if(type == "AUi")
-        {
-            const String auType = "<string>aumu</string>";
-            newPList = newPList.replace ("<string>aumf</string>", auType);
-        }
-        
+
         newPList = newPList.replace (toReplace, pluginName);
         if(pluginId.isEmpty())
         {

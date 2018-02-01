@@ -91,6 +91,8 @@ namespace CommandIDs
         editMode            = 0x512029,
 
         showGenericWidgetWindow = 0x612000,
+        batchConvertExamples    = 0x612001,
+        batchConvertFolder      = 0x612002,
 
         lastCommandIDEntry
     };

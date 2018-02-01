@@ -305,6 +305,9 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
         menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
 
+    //menu.addSeparator();
+    //menu.addCommandItem (&commandManager, CommandIDs::batchConvertExamples);
+    //menu.addCommandItem (&commandManager, CommandIDs::batchConvertFolder);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeProject);
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
@@ -460,7 +463,9 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::csoundHelp,
                               CommandIDs::cabbageHelp,
                               CommandIDs::contextHelp,
-                              CommandIDs::showGenericWidgetWindow
+                              CommandIDs::showGenericWidgetWindow,
+                              CommandIDs::batchConvertExamples,
+                              CommandIDs::batchConvertFolder
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -594,6 +599,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as FMOD Sound Plugin", "Exports as plugin", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::batchConvertExamples:
+            result.setInfo ("Convert all examples to plugins", "Batch export as plugin", CommandCategories::general, 0);
+            break;
+    
+        case CommandIDs::batchConvertFolder:
+            result.setInfo ("Convert folder to plugins", "Batch export folder as plugin", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::closeAllDocuments:
             result.setInfo ("Close All Documents", "Closes all open documents", CommandCategories::general, 0);
             break;
@@ -868,6 +881,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
             return true;
 
+        case CommandIDs::batchConvertExamples:
+            exportExamplesAsPlugins();
+            return true;
+            
         case CommandIDs::toggleComments:
             getContentComponent()->getCurrentCodeEditor()->toggleComments();
             return true;
@@ -982,6 +999,12 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     }
 
     return true;
+}
+
+void CabbageDocumentWindow::exportExamplesAsPlugins()
+{
+    const String examplesDir = cabbageSettings->getUserSettings()->getValue ("CabbageExamplesDir", "");
+    CabbageUtilities::debug(examplesDir);
 }
 
 const String CabbageDocumentWindow::getPluginInfo (File csdFile, String info)

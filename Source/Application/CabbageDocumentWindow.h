@@ -44,7 +44,7 @@ public:
     ~CabbageDocumentWindow();
     CabbageMainComponent* getContentComponent();
     //=======================================================
-    StringArray getMenuBarNames();
+    StringArray getMenuBarNames() override;
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);
@@ -53,17 +53,18 @@ public:
     void getAllCommands (Array<CommandID>&) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo&) override;
     bool perform (const InvocationInfo&) override;
-    PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
-    void menuItemSelected (int menuItemID, int topLevelMenuIndex);
+    PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName) override;
+    void menuItemSelected (int menuItemID, int topLevelMenuIndex) override;
     //=======================================================
     void initSettings();
     void closeButtonPressed() override;
-    void maximiseButtonPressed();
-    void focusGained (FocusChangeType cause); //grab focus when user clicks on editor
+    void maximiseButtonPressed() override;
+    void focusGained (FocusChangeType cause) override; //grab focus when user clicks on editor
 
     ScopedPointer<CabbageSettings> cabbageSettings;
-    ApplicationCommandTarget* getNextCommandTarget()    {        return findFirstTargetParentComponent();    }
+    ApplicationCommandTarget* getNextCommandTarget() override   {        return findFirstTargetParentComponent();    }
     ApplicationCommandManager& getCommandManager() {     return commandManager;  }
+    void exportExamplesAsPlugins();
 
 private:
     //=======================================================
