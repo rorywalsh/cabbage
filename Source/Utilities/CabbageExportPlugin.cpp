@@ -12,7 +12,7 @@
 
 
 //===============   methods for exporting plugins ==============================
-void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String manu, bool encrypt)
+void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, String manu, bool encrypt)
 {
     if(csdFile.existsAsFile())
     {
@@ -60,20 +60,35 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             return;
         }
 
-        FileChooser fc ("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
-
-        if (fc.browseForFileToSave (false))
+        //if batch converting plugins
+        if(File(destination).exists())
         {
-            if (fc.getResult().existsAsFile())
-            {
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+            const String newFile = destination+"/"+csdFile.getFileName();
+            writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type, manu,
+                                  encrypt);
+        }
+        else
+        {
 
-                if (result == 1)
-                    writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu, encrypt);
+            FileChooser fc("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension,
+                           CabbageUtilities::shouldUseNativeBrowser());
+
+            if (fc.browseForFileToSave(false))
+            {
+                if (fc.getResult().existsAsFile())
+                {
+                    const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?",
+                                                                          &lookAndFeel);
+
+                    if (result == 1)
+                        writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu,
+                                              encrypt);
+                }
+                else
+                    writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu,
+                                          encrypt);
+
             }
-            else
-                writePluginFileToDisk (fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu, encrypt);
-            
         }
     }
 }

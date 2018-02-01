@@ -306,11 +306,19 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
 
     menu.addSeparator();
-    PopupMenu batch;
-    batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesAU);
-    batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesVST);
 
-    menu.addSubMenu("Batch Convert Examples", batch);
+    if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+    {
+        PopupMenu batch;
+        batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesAU);
+        batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesVST);
+        menu.addSubMenu("Batch Convert Examples", batch);
+    }
+    else
+    {
+        menu.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesVST);
+    }
+
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeProject);
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
@@ -605,11 +613,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::batchConvertExamplesAU:
             result.setInfo ("As AU plugins", "Batch export as plugin", CommandCategories::general, 0);
             break;
-    
+
         case CommandIDs::batchConvertExamplesVST:
-            result.setInfo ("As VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
+            if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+                result.setInfo("As VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
+            else
+                result.setInfo("Convert samples to VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
             break;
-            
+
         case CommandIDs::closeAllDocuments:
             result.setInfo ("Close All Documents", "Closes all open documents", CommandCategories::general, 0);
             break;
@@ -869,19 +880,19 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::exportAsVSTEffectEncrypted:
-            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
             return true;
 
         case CommandIDs::exportAsVSTSynthEncrypted:
-            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
+            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
             return true;
 
         case CommandIDs::exportAsAUEffectEncrypted:
-            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
+            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
             return true;
 
         case CommandIDs::exportAsAUSynthEncrypted:
-            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), true);
+            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
             return true;
 
         case CommandIDs::batchConvertExamplesAU:
@@ -1019,30 +1030,56 @@ void CabbageDocumentWindow::exportExamplesToPlugins(String type)
     parentFolders.add("LiveSampling");
     parentFolders.add("FilePlayers");
     CabbageIDELookAndFeel tempLookAndFeel;
-
-    int go = CabbageUtilities::showYesNoMessage("This command will export all examples from the 'Instrument', 'Effects', 'Live Sampling' and 'File Players' folders."
-                                               "This could take up to 2Gb's of had disk space. Do you wish to continue?", &tempLookAndFeel);
+    Array<File> instrumentFiles, effectsFiles, samplingFiles, filePlayerFiles;
+    int go = CabbageUtilities::showYesNoMessage("This command will export all examples from the 'Instruments', 'Effects', 'Live Sampling' and 'File Players' folders. "
+                                               "This could take up to a gigabyte of hard disk space. Do you wish to continue?", &tempLookAndFeel);
     if(go == 1)
     {
-        StringArray fxFolders = CabbageExamplesFolder::getEffects();
-        StringArray synthFolders = CabbageExamplesFolder::getInstruments();
+        StringArray effectFolders = CabbageExamplesFolder::getEffects();
+        StringArray instrumentFolders = CabbageExamplesFolder::getInstruments();
 
-        for( auto folder : synthFolders)
+        for( auto folder : instrumentFolders)
         {
             File searchDir (examplesDir + "/Instruments/"+ folder);
-            Array<File> exampleFilesArray;
-            searchDir.findChildFiles (exampleFilesArray, File::findFiles, false, "*.csd");
-            exampleFilesArray.sort();
-            for( auto file : exampleFilesArray)
-            {
-                CabbageUtilities::debug(file.getFullPathName());
-            }
+            searchDir.findChildFiles (instrumentFiles, File::findFiles, false, "*.csd");
+        }
+        for( auto folder : effectFolders)
+        {
+            File searchDir (examplesDir + "/Instruments/"+ folder);
+            searchDir.findChildFiles (effectsFiles, File::findFiles, false, "*.csd");
         }
 
+        {
+            File searchDir (examplesDir + "/LiveSampling");
+            searchDir.findChildFiles (samplingFiles, File::findFiles, false, "*.csd");
+        }
+        {
+            File searchDir (examplesDir + "/FilePlayers");
+            searchDir.findChildFiles (filePlayerFiles, File::findFiles, false, "*.csd");
+        }
     }
 
+    FileChooser fc ("Select file name and location", File("~"), "", CabbageUtilities::shouldUseNativeBrowser());
 
-    CabbageUtilities::debug(examplesDir);
+    if (fc.browseForDirectory())
+    {
+          const int result = CabbageUtilities::showYesNoMessage ("This will overwrite any existing files, do you wish to continue?", &tempLookAndFeel);
+
+            if (result == 1)
+            {
+                CabbageUtilities::showMessage("Warning", "This could take a few moments. Please be patient...", &tempLookAndFeel);
+                for( auto filename : instrumentFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AUi" : "VSTi", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+                for( auto filename : effectsFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+                for( auto filename : samplingFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+                for( auto filename : filePlayerFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+
+            }
+    }
+
 }
 
 const String CabbageDocumentWindow::getPluginInfo (File csdFile, String info)

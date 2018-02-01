@@ -36,7 +36,7 @@ public:
     int setUniquePluginId (File binFile, File csdFile, String pluginId);
     void writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, String manu = "CabbageAudio", bool encrypt = false);
     void addFilesToPluginBundle (File csdFile, File exportDir);
-    void exportPlugin (String type, File csdFile, String pluginId, String manu="CabbageAudio", bool encrypt = false);
+    void exportPlugin (String type, File csdFile, String pluginId, String destination="", String manu="CabbageAudio", bool encrypt = false);
 
     String encodeString (File csdFile)
     {
