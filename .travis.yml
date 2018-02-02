@@ -16,10 +16,9 @@ before_script:
 - sudo installer -pkg csound6.10.0-OSX-universal.pkg -target /
 - sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 - cd Users/travis/build
-- curl -L -o csound6.10.0-OSX-universal.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
+- curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 - hdiutil mount Packages.dmg
 - sudo installer -pkg /Volumes/Packages\ 1.2.1/Install\ Packages.pkg -target /
-
 - cd /Users/travis/build/rorywalsh/
 - git clone https://github.com/WeAreROLI/JUCE.git
 - touch JUCE/
