@@ -14,6 +14,9 @@
 //===============   methods for exporting plugins ==============================
 void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, String manu, bool encrypt)
 {
+    if(csdFile.hasFileExtension(".csd") == false)
+        return;
+    
     if(csdFile.existsAsFile())
     {
         String pluginFilename, fileExtension, currentApplicationDirectory;
@@ -91,15 +94,20 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             }
         }
     }
+    
+    
+    
 }
 
 
 void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, String manu, bool encrypt)
 {
     File dll (fc.withFileExtension (fileExtension).getFullPathName());
-
     if (!VSTData.copyFileTo (dll))
-        CabbageUtilities::showMessage ("Error", "Can't copy plugin lib, is it currently in use?", &lookAndFeel);
+    {
+        CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin lib, is it currently in use?", &lookAndFeel);
+        return;
+    }
 
 
     File exportedCsdFile;
@@ -144,7 +152,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         newPList = newPList.replace (toReplace, pluginName);
         if(pluginId.isEmpty())
         {
-            CabbageUtilities::showMessage ("Error", "Your plugin ID identifier is empty, or the pluginid identifier string contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
+            CabbageUtilities::showMessage ("Error", "The plugin ID identifier in " + csdFile.getFullPathName() + " is empty, or the pluginid identifier string contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
             pluginId = "Cab2";
         }
         
@@ -173,17 +181,26 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, dll);
     }
+    
+    if(type.containsIgnoreCase("AU"))
+    {
+        File pluginBinary (dll.getFullPathName() + String ("/Contents/Resources/CabbagePlugin.rsrc"));
+        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId, true);
+    }
 }
 
 //==============================================================================
 // Set unique plugin ID for each plugin based on the file name
 //==============================================================================
-int PluginExporter::setUniquePluginId (File binFile, File csdFile, String pluginId)
+int PluginExporter::setUniquePluginId (File binFile, File csdFile, String pluginId, bool isRSRC)
 {
     size_t file_size;
     const char* pluginID;
     
-    pluginID = "YROR";
+    if (isRSRC)
+        pluginID = "RORY";
+    else
+        pluginID = "YROR";
     
     long loc;
     std::fstream mFile (binFile.getFullPathName().toUTF8(), ios_base::in | ios_base::out | ios_base::binary);
@@ -241,11 +258,13 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
             }
         }
         
+        loc = cabbageFindPluginId (buffer, file_size, pluginID);
+        
         free (buffer);
         
     }
     else
-        CabbageUtilities::showMessage ("Error", "File could not be opened", &lookAndFeel);
+        DBG ("===============================\nError/n=======================================\n" + csdFile.getFullPathName()+" File could not be opened");
     
     mFile.close();
     

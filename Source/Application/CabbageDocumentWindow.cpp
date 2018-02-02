@@ -1042,20 +1042,24 @@ void CabbageDocumentWindow::exportExamplesToPlugins(String type)
         {
             File searchDir (examplesDir + "/Instruments/"+ folder);
             searchDir.findChildFiles (instrumentFiles, File::findFiles, false, "*.csd");
+            instrumentFiles.sort();
         }
         for( auto folder : effectFolders)
         {
-            File searchDir (examplesDir + "/Instruments/"+ folder);
+            File searchDir (examplesDir + "/Effects/"+ folder);
             searchDir.findChildFiles (effectsFiles, File::findFiles, false, "*.csd");
+            effectsFiles.sort();
         }
 
         {
             File searchDir (examplesDir + "/LiveSampling");
             searchDir.findChildFiles (samplingFiles, File::findFiles, false, "*.csd");
+            samplingFiles.sort();
         }
         {
             File searchDir (examplesDir + "/FilePlayers");
             searchDir.findChildFiles (filePlayerFiles, File::findFiles, false, "*.csd");
+            filePlayerFiles.sort();
         }
     }
 
@@ -1063,11 +1067,10 @@ void CabbageDocumentWindow::exportExamplesToPlugins(String type)
 
     if (fc.browseForDirectory())
     {
-          const int result = CabbageUtilities::showYesNoMessage ("This will overwrite any existing files, do you wish to continue?", &tempLookAndFeel);
+          const int result = CabbageUtilities::showYesNoMessage ("This will overwrite any existing files, and may take a few moments to process. Do you wish to continue?", &tempLookAndFeel);
 
             if (result == 1)
             {
-                CabbageUtilities::showMessage("Warning", "This could take a few moments. Please be patient...", &tempLookAndFeel);
                 for( auto filename : instrumentFiles)
                     pluginExporter.exportPlugin (type=="AU" ? "AUi" : "VSTi", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
                 for( auto filename : effectsFiles)

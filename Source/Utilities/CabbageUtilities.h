@@ -732,6 +732,11 @@ public:
 
     static void showMessage (String title, String message, LookAndFeel* feel)
     {
+        if(!feel)
+        {
+            NativeMessageBox::showMessageBox(AlertWindow::AlertIconType::WarningIcon, title, message);
+            return;
+        }
         AlertWindow alert (title, message, AlertWindow::WarningIcon);
         alert.setLookAndFeel (feel);
         alert.addButton ("Ok", 1);
