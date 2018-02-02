@@ -12,11 +12,6 @@ PAUSE
 ::C:\\Users\\rory\\Documents\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\Projucer.exe
 SET PROJUCER="C:\\Users\\rory\\sourcecode\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
 
-IF [%1]!=[] 
-SET PROJUCER=%1
-
-ECHO PROJUCER
-
 REM "BUILDING THE MAIN APP"
  %PROJUCER% --resave ../../CabbageIDE.jucer
   msbuild Cabbage.sln /p:Configuration=Release /property:Platform=x64
