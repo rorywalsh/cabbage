@@ -33,15 +33,14 @@ before_script:
 - mkdir ~/SDKs
 - cp -rf VST_SDK ~/SDKs
 - ls /Users/travis/build/rorywalsh/
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
-
-script:
-- cd Users/travis/build
 #- curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 # - hdiutil mount Packages.dmg
 # - hdiutil detach /Volumes/Packages\ 1.2.1
 # - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 #- sudo installer -pkg /Volumes/Packages\ 1.2.1/Install\ Packages.pkg -target /
+script:
 - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 - echo -en "travis_fold:start:buildingIDE"
 - $PROJUCER --resave ../../CabbageIDE.jucer
@@ -96,8 +95,6 @@ script:
 - ls Cabbage.app/Contents/
 - zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 - echo -en "travis_fold:end:buildingZip"
-- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/
-- ls packagesbuild installerTravis.pkgproj 
 
 before_deploy:
   - cd /Users/travis/build/rorywalsh/cabbage/
@@ -115,9 +112,7 @@ deploy:
   prerelease: true
   api_key:
     secure: t1RDH2xfgwBOAyPjqyGezDqxh5GbvOMoH0agnuiBNuIGELWAfA1c3ylcJVu96ydMefV+hbqXajzBS7F8a2doRpmxtAkjrLR27w+c8sW7r33OAfrLJKr3xFAq+tV2IMC6QlS6U8Ts8UxOZkZJd+MIpdT5PLTcFHWDh507pSupMSc7+o7JldKrJH33tiGpcSF+EFs2voSnFwRWW1sVlw7jBVQqhVlmkXbk76LIYxNOmHOjj0GCxUIqMkw55EhsK9BI0uPPN6+U9K0bwpSPAwljBchssAL3Pp46YsScyI8POzkn7PQNm4yXOoXEcJ4IQPfHtW7md/WMAyxwJnU+t36wWbxRUIuIIN74vzbB5KorG4Hj5C/alhhu7Zh/Zf8A1ThhJe19u6IEfItn9cQA9VCyWFMu30WzeJgTcyoPJe0HmbzK6lKe4sBuQWMZ9GL6a8tlVoH2KlSf2ZxwAppHIUgn2MuuvSWMwoSuISTfnzB3z4r2+24XTMzzaJPOAXDGGcHZ+DYlkuGQWztqC1eoj0YoHjupQAzNTw47EhyutIyPcO6O95k/9PH0DdbHlIMGdJBil1192Y9q3SrX8/hHiVmckCQGQT+C6QRSZsP/S+aOeLCn9aiXn2W1op7CYrWGkm8Q60W2hhXdk6Hqt3hxcQ1d5AvLGsC8yY5AIo1KP0FQ3i4=
-  file: 
-  /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip
-  /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/CabbageOSXInstaller.zip
+  file: /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageOSX.zip
   on:
     repo: rorywalsh/cabbage
     tags: false
@@ -130,3 +125,4 @@ env:
 branches:
   except:
     - vBeta
+
