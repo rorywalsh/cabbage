@@ -17,6 +17,7 @@ before_script:
 - sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 - cd /Users/travis/build/rorywalsh/
 - git clone https://github.com/WeAreROLI/JUCE.git
+- touch JUCE/
 - cd JUCE/extras/Projucer/JuceLibraryCode
 - sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 - sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
@@ -51,6 +52,7 @@ script:
 - $PROJUCER --resave ../../CabbagePluginSynth.jucer
 
 - xcodebuild -project CabbagePlugin.xcodeproj clean
+- touch /Users/travis/build/rorywalsh/JuceLibraryCode/include_juce_audio_plugin_client_AU.r
 - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
 - ls ./build/Release
 - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
@@ -60,6 +62,7 @@ script:
 
 - $PROJUCER --resave ../../CabbagePlugin.jucer 
 - xcodebuild -project CabbagePlugin.xcodeproj clean
+- touch /Users/travis/build/rorywalsh/JuceLibraryCode/include_juce_audio_plugin_client_AU.r
 - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
 - ls ./build/Release/
 - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
