@@ -307,6 +307,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 
     menu.addSeparator();
 
+#ifndef CabbagePro
     if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
     {
         PopupMenu batch;
@@ -318,7 +319,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     {
         menu.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesVST);
     }
-
+#endif
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeProject);
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
