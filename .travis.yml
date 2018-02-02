@@ -37,9 +37,11 @@ before_script:
 
 - curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 - hdiutil mount Packages.dmg
-- hdiutil detach /Volumes/Packages\ 1.2.1
+- hdiutil detach /Volumes/Packages 1.2.2
+- sudo installer -pkg /Volumes/Packages\ 1.2.2/Install\ Packages.pkg -target /
+
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
-#- sudo installer -pkg /Volumes/Packages\ 1.2.1/Install\ Packages.pkg -target /
+
 script:
 - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 - echo -en "travis_fold:start:buildingIDE"
@@ -57,7 +59,6 @@ script:
 - $PROJUCER --resave ../../CabbagePluginSynth.jucer
 
 - xcodebuild -project CabbagePlugin.xcodeproj clean
-- touch /Users/travis/build/rorywalsh/cabbage/JuceLibraryCode/include_juce_audio_plugin_client_AU.r
 - xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
 - ls ./build/Release
 - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
@@ -67,7 +68,6 @@ script:
 
 - $PROJUCER --resave ../../CabbagePlugin.jucer 
 - xcodebuild -project CabbagePlugin.xcodeproj clean
-- touch /Users/travis/build/rorywalsh/cabbage/JuceLibraryCode/include_juce_audio_plugin_client_AU.r
 - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
 - ls ./build/Release/
 - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
@@ -95,6 +95,9 @@ script:
 - ls Cabbage.app/Contents/
 - zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 - echo -en "travis_fold:end:buildingZip"
+- cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/
+- echo -en "travis_fold:start:buildingInstaller"
+- packagesbuild InstallerTravis.pkgproj
 
 before_deploy:
   - cd /Users/travis/build/rorywalsh/cabbage/
