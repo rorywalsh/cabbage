@@ -76,5 +76,5 @@ after_build:
   - cmd: iscc CabbageCannonicalInstaller.iss
 
 artifacts:
-  - path: Builds/VisualStudio2017/Output/CabbageCanonicalSetup.exe
+  - path: Builds/VisualStudio2017/Output/Cabbage64Setup.exe
   - path: logs
