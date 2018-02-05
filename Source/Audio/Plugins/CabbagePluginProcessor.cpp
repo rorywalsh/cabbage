@@ -762,7 +762,8 @@ void CabbagePluginProcessor::setParametersFromXml (XmlElement* e)
             }
             else
             {
-                if(type != "combobox")
+                if(CabbageWidgetData::getStringProp (valueTree, "filetype") != "preset"
+                 || CabbageWidgetData::getStringProp (valueTree, "filetype") != "*.snaps")
                 CabbageWidgetData::setNumProp (valueTree, CabbageIdentifierIds::value, e->getAttributeValue (i).getFloatValue());
             }
         }

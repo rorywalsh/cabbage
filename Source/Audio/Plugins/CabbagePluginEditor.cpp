@@ -855,7 +855,8 @@ void CabbagePluginEditor::refreshComboBoxContents()
                     combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i), true);
                 }
 
-                combo->setSelectedItemIndex(combo->getNumItems()-1);
+                if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true)
+                   combo->setSelectedItemIndex(combo->getNumItems()-1);
             }
 
 

@@ -47,7 +47,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     setEditableText (false);
     setTextWhenNothingSelected (text);
     setWantsKeyboardFocus (false);
-
+    getProperties().set("isPresetCombo", false);
     initialiseCommonAttributes (this, wData);
 
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isNotEmpty())
@@ -75,6 +75,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
         if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).contains ("snaps"))
         {
             isPresetCombo = true;
+            getProperties().set("isPresetCombo", true);
             setSelectedItemIndex ((getValue()-1 >= 0 ? getValue() - 1 : 0), dontSendNotification);
         }
         else
