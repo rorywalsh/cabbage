@@ -513,7 +513,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>/Users/travis/build/rorywalsh/cabbage//Builds/MacOSX/build/Release/CabbageLite.app</string>
+									<string>/Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/CabbageLite.app</string>
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
@@ -931,6 +931,21 @@
 				<false/>
 				<key>VERSION</key>
 				<integer>4</integer>
+			</dict>
+			<key>PACKAGE_SCRIPTS</key>
+			<dict>
+				<key>POSTINSTALL_PATH</key>
+				<dict>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
+				</dict>
+				<key>PREINSTALL_PATH</key>
+				<dict>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
+				</dict>
+				<key>RESOURCES</key>
+				<array/>
 			</dict>
 			<key>PACKAGE_SETTINGS</key>
 			<dict>
@@ -1441,7 +1456,121 @@
 		<key>PROJECT_PRESENTATION</key>
 		<dict>
 			<key>BACKGROUND</key>
-			<dict/>
+			<dict>
+				<key>ALIGNMENT</key>
+				<integer>2</integer>
+				<key>BACKGROUND_PATH</key>
+				<dict>
+					<key>PATH</key>
+					<string>/Users/travis/build/rorywalsh/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
+				</dict>
+				<key>CUSTOM</key>
+				<true/>
+				<key>SCALING</key>
+				<integer>1</integer>
+			</dict>
+			<key>INSTALLATION TYPE</key>
+			<dict>
+				<key>HIERARCHIES</key>
+				<dict>
+					<key>INSTALLER</key>
+					<dict>
+						<key>LIST</key>
+						<array>
+							<dict>
+								<key>CHILDREN</key>
+								<array/>
+								<key>DESCRIPTION</key>
+								<array>
+									<dict>
+										<key>LANGUAGE</key>
+										<string>English</string>
+										<key>VALUE</key>
+										<string>Installs the Cabbage IDE and all supporting documentation. Cabbage installs to your Applications/ folder.</string>
+									</dict>
+								</array>
+								<key>OPTIONS</key>
+								<dict>
+									<key>HIDDEN</key>
+									<false/>
+									<key>STATE</key>
+									<integer>1</integer>
+								</dict>
+								<key>PACKAGE_UUID</key>
+								<string>33710518-4710-4BF2-9D18-5B3B948980E7</string>
+								<key>TITLE</key>
+								<array/>
+								<key>TYPE</key>
+								<integer>0</integer>
+								<key>UUID</key>
+								<string>5226E6A5-5A36-4A8B-AE7E-1A8175CC8D64</string>
+							</dict>
+							<dict>
+								<key>CHILDREN</key>
+								<array/>
+								<key>DESCRIPTION</key>
+								<array>
+									<dict>
+										<key>LANGUAGE</key>
+										<string>English</string>
+										<key>VALUE</key>
+										<string>Installs a minimal, barebones version of Cabbage. Useful for use with 3rd party text editors. CabbageLite does not provide any GUI editor for developing interfaces. It's strictly code only.</string>
+									</dict>
+								</array>
+								<key>OPTIONS</key>
+								<dict>
+									<key>HIDDEN</key>
+									<false/>
+									<key>STATE</key>
+									<integer>1</integer>
+								</dict>
+								<key>PACKAGE_UUID</key>
+								<string>DE74D7E6-CB28-4092-BE73-C084B3D8B00B</string>
+								<key>TITLE</key>
+								<array/>
+								<key>TYPE</key>
+								<integer>0</integer>
+								<key>UUID</key>
+								<string>34F099ED-4EE2-4653-8279-0E249672D9B6</string>
+							</dict>
+							<dict>
+								<key>CHILDREN</key>
+								<array/>
+								<key>DESCRIPTION</key>
+								<array>
+									<dict>
+										<key>LANGUAGE</key>
+										<string>English</string>
+										<key>VALUE</key>
+										<string>Select this checkbox to install the latest version of Csound. This installs Csound64Lib.framework to your System/Library/Frameworks folder and will overwrite any previous version of Csound.</string>
+									</dict>
+								</array>
+								<key>OPTIONS</key>
+								<dict>
+									<key>HIDDEN</key>
+									<false/>
+									<key>STATE</key>
+									<integer>1</integer>
+								</dict>
+								<key>PACKAGE_UUID</key>
+								<string>BC46F45E-03C5-40F2-B6D1-90F7323BA01D</string>
+								<key>TITLE</key>
+								<array/>
+								<key>TYPE</key>
+								<integer>0</integer>
+								<key>UUID</key>
+								<string>6BAD7A06-B7E6-4A1F-B423-D0198681930A</string>
+							</dict>
+						</array>
+						<key>REMOVED</key>
+						<dict/>
+					</dict>
+				</dict>
+				<key>MODE</key>
+				<integer>2</integer>
+			</dict>
 			<key>INSTALLATION_STEPS</key>
 			<array>
 				<dict>
