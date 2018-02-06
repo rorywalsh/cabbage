@@ -100,7 +100,12 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "snapshot")
     {
-        const String newFileName = owner->createNewGenericNameForPresetFile();
+        String newFileName;
+        if (owner->isAudioUnit())
+            newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+        else
+            newFileName = owner->createNewGenericNameForPresetFile();
+        
         owner->sendChannelStringDataToCsound (getChannel(), newFileName);
         owner->savePluginStateToFile (File (newFileName));
         owner->refreshComboBoxContents();

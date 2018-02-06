@@ -147,7 +147,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         
         String manu(JucePlugin_Manufacturer);
         const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
-        const String toReplace = "<string>" + manu + ": CabbageEffectNam</string>";
+        const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
 
         newPList = newPList.replace (toReplace, pluginName);
         if(pluginId.isEmpty())
@@ -228,6 +228,32 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                 mFile.write (pluginId.toUTF8(), 4);
             }
         }
+        
+        String manu(JucePlugin_Manufacturer);
+        mFile.seekg (0, ios::end);
+        String manuName;
+        if (manu.length() < 16)
+            for (int y = manu.length(); y < 16; y++)
+                manu.append (String (" "), 1);
+        //set manufacturer do this a few times in case the plugin ID appear in more than one place.
+        for (int r = 0; r < 10; r++)
+        {
+            mFile.seekg (0, ios::beg);
+            mFile.read ((char*)&buffer[0], file_size);
+            loc = cabbageFindPluginId (buffer, file_size, "CabbageAudio");
+            
+            if (loc < 0)
+            {
+                break;
+            }
+            else
+            {
+                mFile.seekg (loc, ios::beg);
+                mFile.write (manu.toUTF8(), 16);
+            }
+        }
+        
+        
         
         //set plugin name based on .csd file
         const char* pluginName = "CabbageEffectNam";
