@@ -19,6 +19,7 @@ xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=
 
 $PROJUCER --resave ../../CabbagePluginSynth.jucer
 
+xcodebuild -project CabbageLite.xcodeproj clean
 xcodebuild -project CabbagePluginSynth.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
@@ -27,6 +28,7 @@ cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/
 
 $PROJUCER --resave ../../CabbagePlugin.jucer
 
+xcodebuild -project CabbagePlugin.xcodeproj clean
 xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO 
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
