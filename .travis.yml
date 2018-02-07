@@ -96,7 +96,6 @@ script:
 - echo -en "travis_fold:end:buildingZip"
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/
 - echo -en "travis_fold:start:buildingInstaller"
-- rm build/CabbageOSXInstaller.pkg
 - packagesbuild InstallerTravis.pkgproj
 - ls build
 - echo -en "travis_fold:end:buildingInstaller"
