@@ -53,7 +53,7 @@ public:
     {
         String newCsoundFile =
             "<Cabbage>\n"
-            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginID(\"def1\")\n"
+            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginid(\"def1\")\n"
             "keyboard bounds(8, 158, 381, 95)\n"
             "</Cabbage>\n"
             "<CsoundSynthesizer>\n"
@@ -89,7 +89,7 @@ public:
     {
         String newCsoundFile =
             "<Cabbage>\n"
-            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginID(\"def1\")\n"
+            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginid(\"def1\")\n"
             "rslider bounds(296, 162, 100, 100), channel(\"gain\"), range(0, 1, 0, 1, .01), text(\"Gain\"), trackercolour(\"lime\"), outlinecolour(0, 0, 0, 50), textcolour(\"black\")\n"
             "\n"
             "</Cabbage>\n"

@@ -382,13 +382,18 @@ void CabbageCodeEditorComponent::sendUpdateMessage (int lineNumber)
 // start to make the editor less responsive...
 void CabbageCodeEditorComponent::codeDocumentTextInserted (const String& text, int startIndex)
 {
-    handleAutoComplete (text);
+    const Range<int> range = CabbageUtilities::getCabbageSectionRange(getDocument().getAllContent());
+
+    
     const String lineFromCsd = getDocument().getLine (getDocument().findWordBreakBefore (getCaretPos()).getLineNumber());
     displayOpcodeHelpInStatusBar (lineFromCsd);
 
     lastAction = "insertText";
     const CodeDocument::Position pos (getDocument(), startIndex);
     sendUpdateMessage (pos.getLineNumber());
+    const int lineNumber = pos.getLineNumber();
+    if(range.contains(pos.getLineNumber()) == false)
+        handleAutoComplete (text);
 }
 
 void CabbageCodeEditorComponent::codeDocumentTextDeleted (int startIndex, int endIndex)
@@ -913,7 +918,10 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
         }
     }
     else
+    {
         moveCaretTo (getPositionAt (e.x, e.y), e.mods.isShiftDown());
+        autoCompleteListBox.setVisible(false);
+    }
 }
 //===========================================================================================================
 void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKeyPressed (TextEditor&)
