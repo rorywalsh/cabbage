@@ -489,7 +489,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
         if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
             param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()));
         else
-            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex() + 1));
+            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()+1));
 
         param->endChangeGesture();
     }

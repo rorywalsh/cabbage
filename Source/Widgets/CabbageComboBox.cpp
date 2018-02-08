@@ -234,6 +234,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
+
     }
 
     else

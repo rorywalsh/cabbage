@@ -30,7 +30,8 @@ public:
     CabbageAudioParameter (ValueTree wData, Csound& csound, String channel, String name, float minValue, float maxValue, float def, float incr, float skew)
         : AudioParameterFloat (name, channel, NormalisableRange<float> (minValue, maxValue, incr, skew), def),  currentValue (def), widgetName (name), channel (channel), csound (csound)
     {
-       // widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
+        if(name.contains("combobox"))
+            isCombo = true;
     }
     ~CabbageAudioParameter() {}
 
@@ -41,8 +42,9 @@ public:
 
     void setValue (float newValue) override
     {
-        csound.SetChannel (channel.toUTF8(), range.convertFrom0to1 (newValue));
-        currentValue = range.convertFrom0to1 (newValue);
+        currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
+        csound.SetChannel (channel.toUTF8(), currentValue);
+
     }
 
     const String getWidgetName() {   return widgetName;  }
@@ -52,7 +54,7 @@ public:
     //ValueTree widgetData;
     //String widgetType;
     float currentValue;
-
+    bool isCombo = false;
     Csound csound;
 };
 
