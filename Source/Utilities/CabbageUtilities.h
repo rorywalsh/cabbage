@@ -749,7 +749,7 @@ public:
 
     static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
     {
-#if !defined(LINUX)
+#if defined(MACOS)
         int messageBoxResult = NativeMessageBox::showYesNoCancelBox (AlertWindow::AlertIconType::WarningIcon,
                                                                      "Warning", message, nullptr, nullptr);
         return messageBoxResult;
@@ -759,7 +759,7 @@ public:
         alert.setLookAndFeel (feel);
         alert.addButton ("Yes", 1);
         alert.addButton ("No", 2);
-
+		alert.setAlwaysOnTop(true);
         if (cancel == 1)
             alert.addButton ("Cancel", 0);
 

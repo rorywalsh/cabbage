@@ -47,6 +47,7 @@ install:
   - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
   - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
+  - cmd: git checkout tags/5.2.0
   - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
