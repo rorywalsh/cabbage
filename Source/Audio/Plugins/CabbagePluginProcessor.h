@@ -127,11 +127,7 @@ private:
     var macroStrings;
     bool xyAutosCreated = false;
     OwnedArray<XYPadAutomator> xyAutomators;
-
-
-
-
-
+    
 };
 
 

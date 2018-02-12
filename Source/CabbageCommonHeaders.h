@@ -11,7 +11,7 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU General Public
+  You should have received a copy of the GNU General Public      
   License along with Csound; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
@@ -24,7 +24,7 @@
 #pragma warning(disable: 4100)
 #pragma warning(disable: 4305)
 
-#define CABBAGE_VERSION "Cabbage(64bit) v2.0"
+#define CABBAGE_VERSION "Cabbage(64bit) v2.0.00"
 
 
 

@@ -99,6 +99,7 @@ void CsoundPluginProcessor::setupAndCompileCsound (File csdFile, File filePath, 
     //instrument must at least be stereo
     numCsoundChannels = CabbageUtilities::getIntendedNumberOfChannels (csdFile.loadFileAsString());
     csoundParams->nchnls_override = numCsoundChannels;
+    csoundParams->sample_rate_override = samplingRate;
     csound->SetParams (csoundParams);
 
     if(csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
@@ -435,7 +436,14 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-	CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(true, 0).getDescription());
+    if(samplingRate != sampleRate)
+    {
+        //if sampling rate is other than default or has been changed, recompile..
+        samplingRate = sampleRate;
+        setupAndCompileCsound(csdFile, csdFilePath);
+    }
+    
+    CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(true, 0).getDescription());
 	CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(false, 0).getDescription());
 }
 

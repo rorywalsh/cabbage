@@ -234,6 +234,7 @@ private:
     bool updateSignalDisplay = false;
     MYFLT cs_scale;
     MYFLT* CSspin, *CSspout;
+    int samplingRate = 44100;
     int csndIndex;
     int csdKsmps;
     File csdFile , csdFilePath;
