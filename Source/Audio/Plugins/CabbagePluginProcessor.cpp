@@ -804,21 +804,19 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
         if (channels.size() == 1 && channels[0].isNotEmpty())
         {
 
-            if (typeOfWidget != "combobox") // don't update combobox in here, it will enter a recursive loop
-            {
-                if (getCsound()->GetChannel (channels[0].toUTF8()) != float (value))
-                    CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
-            }
-            else
-            {
-                CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 0);
+//            if (typeOfWidget != "combobox") // don't update combobox in here, it will enter a recursive loop
+//            {
+//                if (getCsound()->GetChannel (channels[0].toUTF8()) != float (value))
+//                    CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
+//            }
+//            else
+//            {
+//               CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::update, 0);
 
                 if (value.isString() == false)
                 {
-                    if (getCsound()->GetChannel (channels[0].toUTF8()) != float (value))
-                    {
-                        CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
-                    }
+                        if (getCsound()->GetChannel (channels[0].toUTF8()) != float (value))
+                            CabbageWidgetData::setNumProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, getCsound()->GetChannel (channels[0].toUTF8()));
                 }
                 else
                 {
@@ -827,7 +825,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
                     CabbageWidgetData::setProperty (cabbageWidgets.getChild (i), CabbageIdentifierIds::value, String (tmp_str));
                 }
             }
-        }
+//        }
 
         //currently only dealing with a max of 2 channels...
         else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&typeOfWidget != CabbageWidgetTypes::eventsequencer)
