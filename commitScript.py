@@ -6,8 +6,9 @@ import ntpath
 import time
 import subprocess
 
+print( "Usage: python commitScript branch \"commit string\"");
 
-if len(sys.argv) == 1:
+if len(sys.argv) < 1:
 	print "Not enough parameters passed"
 	exit();
 
@@ -29,11 +30,11 @@ with open('./Source/CabbageCommonHeaders.h') as f:
 with open('./Source/CabbageCommonHeaders.h', "w") as f:
     f.write(newFiletext)
 
-gitCommand = 'git commit -m \"'+sys.argv[1]+'\"'
+gitCommand = 'git commit -m \"'+sys.argv[2]+'\"'
 print gitCommand
 process = subprocess.Popen(gitCommand, shell=True, stdout=subprocess.PIPE)
 process.wait()
 
-gitCommand = 'git push origin develop'
+gitCommand = 'git push origin '+sys.argv[1]
 process = subprocess.Popen(gitCommand, shell=True, stdout=subprocess.PIPE)
 process.wait()
