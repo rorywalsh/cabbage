@@ -44,90 +44,104 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
-    Logger::setCurrentLogger (nullptr);
+	resetCsound();
+}
 
-    CabbageUtilities::debug ("Plugin destructor");
-    Logger::setCurrentLogger (nullptr);
+void CsoundPluginProcessor::resetCsound()
+{
+	Logger::setCurrentLogger(nullptr);
 
-    if (csound)
-    {
-        csound = nullptr;
-        csoundParams = nullptr;
-        editorBeingDeleted (this->getActiveEditor());
-    }
+	CabbageUtilities::debug("Plugin destructor");
+	Logger::setCurrentLogger(nullptr);
+
+	if (csound)
+	{
+		csound = nullptr;
+		csoundParams = nullptr;
+		editorBeingDeleted(this->getActiveEditor());
+	}
 }
 
 //==============================================================================
-void CsoundPluginProcessor::setupAndCompileCsound (File csdFile, File filePath, bool debugMode)
+//==============================================================================
+void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool debugMode)
 {
-    csound = new Csound();
-    csdFilePath = filePath;
-    csdFilePath.setAsCurrentWorkingDirectory();
-    csound->SetHostImplementedMIDIIO (true);
-    csound->SetHostImplementedAudioIO (1, 0);
-    csound->SetHostData (this);
+	csound = new Csound();
+	csdFilePath = filePath;
+	csdFilePath.setAsCurrentWorkingDirectory();
+	csound->SetHostImplementedMIDIIO(true);
+	csound->SetHostImplementedAudioIO(1, 0);
+	csound->SetHostData(this);
 
-    csound->CreateMessageBuffer (0);
-    csound->SetExternalMidiInOpenCallback (OpenMidiInputDevice);
-    csound->SetExternalMidiReadCallback (ReadMidiData);
-    csound->SetExternalMidiOutOpenCallback (OpenMidiOutputDevice);
-    csound->SetExternalMidiWriteCallback (WriteMidiData);
-    csoundParams = nullptr;
-    csoundParams = new CSOUND_PARAMS();
+	csound->CreateMessageBuffer(0);
+	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
+	csound->SetExternalMidiReadCallback(ReadMidiData);
+	csound->SetExternalMidiOutOpenCallback(OpenMidiOutputDevice);
+	csound->SetExternalMidiWriteCallback(WriteMidiData);
+	csoundParams = nullptr;
+	csoundParams = new CSOUND_PARAMS();
 
-    csoundParams->displays = 0;
+	csoundParams->displays = 0;
 
-    csound->SetIsGraphable (true);
-    csound->SetMakeGraphCallback (makeGraphCallback);
-    csound->SetDrawGraphCallback (drawGraphCallback);
-    csound->SetKillGraphCallback (killGraphCallback);
-    csound->SetExitGraphCallback (exitGraphCallback);
-
-
-    csound->SetOption ((char*)"-n");
-    csound->SetOption ((char*)"-d");
+	csound->SetIsGraphable(true);
+	csound->SetMakeGraphCallback(makeGraphCallback);
+	csound->SetDrawGraphCallback(drawGraphCallback);
+	csound->SetKillGraphCallback(killGraphCallback);
+	csound->SetExitGraphCallback(exitGraphCallback);
 
 
-    if (debugMode)
-    {
-        csoundDebuggerInit (csound->GetCsound());
-        csoundSetBreakpointCallback (csound->GetCsound(), breakpointCallback, (void*)this);
-        csoundSetInstrumentBreakpoint (csound->GetCsound(), 1, 413);
-        csoundParams->ksmps_override = 4410;
-    }
+	csound->SetOption((char*)"-n");
+	csound->SetOption((char*)"-d");
 
-    //instrument must at least be stereo
-    numCsoundChannels = CabbageUtilities::getIntendedNumberOfChannels (csdFile.loadFileAsString());
-    csoundParams->nchnls_override = numCsoundChannels;
-    csoundParams->sample_rate_override = samplingRate;
-    csound->SetParams (csoundParams);
 
-    if(csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
-        compileCsdFile (csdFile);
-    else
-    {
+	if (debugMode)
+	{
+		csoundDebuggerInit(csound->GetCsound());
+		csoundSetBreakpointCallback(csound->GetCsound(), breakpointCallback, (void*)this);
+		csoundSetInstrumentBreakpoint(csound->GetCsound(), 1, 413);
+		csoundParams->ksmps_override = 4410;
+	}
+
+	//instrument must at least be stereo
+	numCsoundChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+	const int requestedSampleRate = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "sr");
+	const int requestedKsmpsRate = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "ksmps");
+	csoundParams->nchnls_override = numCsoundChannels;
+	//only override sample rate if user insists
+	if (requestedKsmpsRate == -1)
+		csoundParams->ksmps_override = 32;
+
+	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
+
+	csound->SetParams(csoundParams);
+
+	if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
+		compileCsdFile(csdFile);
+	else
+	{
 #ifdef CabbagePro
-        compileCsdString (Encrypt::decode(csdFile));
-        csound->Start();
+		compileCsdString(Encrypt::decode(csdFile));
+		csound->Start();
 #endif
-    }
-
-    addMacros (csdFile.getFullPathName());
-
-
-    if (csdCompiledWithoutError())
-    {
-        csdKsmps = csound->GetKsmps();
-        CSspout = csound->GetSpout();
-        CSspin  = csound->GetSpin();
-        cs_scale = csound->Get0dBFS();
-        csndIndex = csound->GetKsmps();
-
-        this->setLatencySamples (csound->GetKsmps());
-    }
-    else
-        CabbageUtilities::debug ("Csound could not compile your file?");
 }
+
+	addMacros(csdFile.getFullPathName());
+
+
+	if (csdCompiledWithoutError())
+	{
+		csdKsmps = csound->GetKsmps();
+		CSspout = csound->GetSpout();
+		CSspin = csound->GetSpin();
+		cs_scale = csound->Get0dBFS();
+		csndIndex = csound->GetKsmps();
+
+		this->setLatencySamples(csound->GetKsmps());
+	}
+	else
+		CabbageUtilities::debug("Csound could not compile your file?");
+}
+
 
 void CsoundPluginProcessor::createFileLogger (File csdFile)
 {

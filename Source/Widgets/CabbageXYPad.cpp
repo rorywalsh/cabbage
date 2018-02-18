@@ -21,8 +21,7 @@
 
 #include "CabbageXYPad.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
-#include "../Audio/Plugins/CabbageAudioParameter.h"
-
+  
 CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
     owner (editor),
     widgetData (wData),

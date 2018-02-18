@@ -22,7 +22,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "CabbagePluginProcessor.h"
-#include "CabbageAudioParameter.h"
 
 #ifdef Cabbage_IDE_Build
     #include "../../GUIEditor/ComponentLayoutEditor.h"

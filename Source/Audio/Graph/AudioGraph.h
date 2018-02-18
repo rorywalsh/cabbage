@@ -39,13 +39,13 @@ public:
     // This creates new instances of the plugin..
     GenericCabbagePluginProcessor* JUCE_CALLTYPE createGenericPluginFilter (File inputFile)
     {
-		const int numChannels = CabbageUtilities::getIntendedNumberOfChannels(inputFile.loadFileAsString());
+		const int numChannels = CabbageUtilities::getHeaderInfo(inputFile.loadFileAsString(), "nchnls");
         return new GenericCabbagePluginProcessor (inputFile, numChannels, numChannels);
     }
 
     CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile)
     {
-		const int numChannels = CabbageUtilities::getIntendedNumberOfChannels(inputFile.loadFileAsString());
+		const int numChannels = CabbageUtilities::getHeaderInfo(inputFile.loadFileAsString(), "nchnls");
         return new CabbagePluginProcessor (inputFile, numChannels, numChannels);
     }
 

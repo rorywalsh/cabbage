@@ -380,7 +380,7 @@ public:
 #endif
     }
 	//==============================================================
-	static int getIntendedNumberOfChannels(String csdText)
+	static int getHeaderInfo(String csdText, String headerString)
 	{
 
 		while (csdText.indexOf("/*") != -1 && csdText.indexOf("*/") != -1)
@@ -406,7 +406,7 @@ public:
 
 				array.set(i, array[i].removeCharacters("\t").trimStart());
 
-				if (array[i].contains("nchnls") && array[i].contains("="))
+				if (array[i].contains(headerString) && array[i].contains("="))
 				{
 					String channels = array[i].substring(array[i].indexOf("=") + 1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
 					return channels.trim().getIntValue();
@@ -414,7 +414,7 @@ public:
 			}
 		}
 
-		return 2;
+		return headerString=="hncnls" ? 2 : -1;
 	}
     //==============================================================
     static const String getSVGTextFromMemory (const void* svg, size_t size)

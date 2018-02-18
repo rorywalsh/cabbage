@@ -37,8 +37,6 @@
           <FILE id="GJuIsp" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/Graph/AudioGraph.h"/>
         </GROUP>
         <GROUP id="{7DD20367-6FC1-032B-4A6D-FD89F6DB0F84}" name="Plugins">
-          <FILE id="cSb3gW" name="CabbageAudioParameter.h" compile="0" resource="0"
-                file="Source/Audio/Plugins/CabbageAudioParameter.h"/>
           <FILE id="eLMltr" name="CabbageCsoundBreakpointData.h" compile="0"
                 resource="0" file="Source/Audio/Plugins/CabbageCsoundBreakpointData.h"/>
           <FILE id="vaNdtN" name="CabbagePluginEditor.cpp" compile="1" resource="0"

@@ -23,8 +23,9 @@
 #include "CsoundPluginProcessor.h"
 #include "../../Widgets/CabbageWidgetData.h"
 #include "../../CabbageIds.h"
-#include "CabbageAudioParameter.h"
 #include "../../Widgets/CabbageXYPad.h"
+
+class CabbageAudioParameter;
 
 class CabbagePluginProcessor
     : public CsoundPluginProcessor
@@ -66,6 +67,7 @@ public:
 
 
     CabbagePluginProcessor (File inputFile = File(), const int ins=2, const int outs=2);
+	void createCsound(File inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;
@@ -85,25 +87,12 @@ public:
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     void expandMacroText (String &line, ValueTree wData);
-
-
+	void prepareToPlay(double sampleRate, int samplesPerBlock);
+	void setCabbageParameter(String channel, float value);
     CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
-
-    File getCsdFile()
-    {
-        return csdFile;
-    }
-
-    StringArray getCurrentCsdFileAsStringArray()
-    {
-        StringArray csdArray;
-        csdArray.addLines (csdFile.loadFileAsString());
-        return csdArray;
-    }
-
     //===== XYPad methods =========
     void addXYAutomator (CabbageXYPad* xyPad, ValueTree wData);
     void enableXYAutomator (String name, bool enable, Line<float> dragLine);
@@ -116,6 +105,18 @@ public:
     //==============================================================================
     StringArray cabbageScriptGeneratedCode;
     Array<PlantImportStruct> plantStructs;
+
+	File getCsdFile()
+	{
+		return csdFile;
+	}
+
+	StringArray getCurrentCsdFileAsStringArray()
+	{
+		StringArray csdArray;
+		csdArray.addLines(csdFile.loadFileAsString());
+		return csdArray;
+	}
 private:
     controlChannelInfo_s* csoundChanList;
     int numberOfLinesInPlantCode = 0;
@@ -127,7 +128,41 @@ private:
     var macroStrings;
     bool xyAutosCreated = false;
     OwnedArray<XYPadAutomator> xyAutomators;
+	int samplingRate = 44100;
     
+};
+
+class CabbageAudioParameter : public AudioParameterFloat
+{
+
+public:
+	CabbageAudioParameter(CabbagePluginProcessor* owner, ValueTree wData, Csound& csound, String channel, String name, float minValue, float maxValue, float def, float incr, float skew)
+		: AudioParameterFloat(name, channel, NormalisableRange<float>(minValue, maxValue, incr, skew), def), currentValue(def), widgetName(name), channel(channel), owner(owner)
+	{
+		// widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
+	}
+	~CabbageAudioParameter() {}
+
+	float getValue() const override
+	{
+		return range.convertTo0to1(currentValue);
+	}
+
+	void setValue(float newValue) override
+	{
+		//csound.SetChannel (channel.toUTF8(), range.convertFrom0to1 (newValue));
+		currentValue = range.convertFrom0to1(newValue);
+		owner->setCabbageParameter(channel, currentValue);
+
+	}
+
+	const String getWidgetName() { return widgetName; }
+
+	String channel;
+	String widgetName;
+	float currentValue;
+
+	CabbagePluginProcessor* owner;
 };
 
 

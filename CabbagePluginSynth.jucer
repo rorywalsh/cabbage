@@ -16,8 +16,6 @@
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
         <GROUP id="{4B714BDB-49F2-8D6E-A0E6-DD0C6491ADBA}" name="Plugins">
-          <FILE id="xYBUzH" name="CabbageAudioParameter.h" compile="0" resource="0"
-                file="Source/Audio/Plugins/CabbageAudioParameter.h"/>
           <FILE id="LTlu6o" name="CabbageCsoundBreakpointData.h" compile="0"
                 resource="0" file="Source/Audio/Plugins/CabbageCsoundBreakpointData.h"/>
           <FILE id="jah5Ta" name="CabbagePluginEditor.cpp" compile="1" resource="0"
