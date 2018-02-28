@@ -653,7 +653,7 @@ public:
         {
             if (lines[i] == "<Cabbage>")
                 range.setStart(i);
-            else if (lines[i] == "</Cabbage>")
+            else if (lines[i].contains("</Cabbage>"))
                 range.setEnd(i);
         }
 
