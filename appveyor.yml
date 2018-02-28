@@ -18,8 +18,8 @@ clone_folder: c:\cabbage
 install:
   - cmd: dir
   - cmd: cd c:/
-  - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/u7oafdbd9rbntueh/artifacts/csound-windows-x64-6.10.0-rc2-1060.zip'
-  - cmd: 7z.exe x csound-windows-x64-6.10.0-rc2-1060.zip -oc:\Csound6_x64
+  - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.10.0/csound-windows-x64-6.10.0.zip'
+  - cmd: 7z.exe x csound-windows-x64-6.10.0.zip -oc:\Csound6_x64
   - cmd: cd Csound6_x64
   - cmd: mkdir "C:/Program Files/Csound6_x64"
   - ps: Get-ChildItem -Path "C:/Csound6_x64" | Copy-Item -Destination "C:/Program Files/Csound6_x64" -Recurse -Container
