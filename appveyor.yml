@@ -19,8 +19,7 @@ install:
   - cmd: dir
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.10.0/csound-windows-x64-6.10.0.zip'
-  - cmd: mkdir "C:/Program Files"
-  - cmd: 7z.exe x csound-windows-x64-6.10.0.zip -o"C:/Program Files/Csound6_x64"
+  - cmd: 7z.exe x csound-windows-x64-6.10.0.zip -o"C:/Program Files"
   - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: dir
   # - cmd: mkdir "C:/Program Files/Csound6_x64"
