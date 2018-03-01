@@ -19,25 +19,26 @@ install:
   - cmd: dir
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.10.0/csound-windows-x64-6.10.0.zip'
-  - cmd: 7z.exe x csound-windows-x64-6.10.0.zip -oc:\Csound6_x64
-  - cmd: cd Csound6_x64
-  - cmd: mkdir "C:/Program Files/Csound6_x64"
-  - ps: Get-ChildItem -Path "C:/Csound6_x64" | Copy-Item -Destination "C:/Program Files/Csound6_x64" -Recurse -Container
-  - cmd: cd "C:/Program Files/Csound6_x64"
-  - cmd: cd include
-  - cmd: mkdir csound
-  - cmd: cd csound
-  - ps: Copy-Item ../*.h .
-  - ps: Copy-Item ../*.hpp . 
-  - cmd: dir
+  - cmd: 7z.exe x csound-windows-x64-6.10.0.zip -o"C:/Program Files"
   - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: dir
-  - cmd: mkdir lib 
-  - cmd: cd lib  
-  - ps: Copy-Item ../*.dll .
-  - ps: Copy-Item ../*.lib .
-  - cmd: dir
-  - cmd: pwd
+  # - cmd: mkdir "C:/Program Files/Csound6_x64"
+  # - ps: Get-ChildItem -Path "C:/Csound6_x64" | Copy-Item -Destination "C:/Program Files/Csound6_x64" -Recurse -Container
+  # - cmd: cd "C:/Program Files/Csound6_x64"
+  # - cmd: cd include
+  # - cmd: mkdir csound
+  # - cmd: cd csound
+  # - ps: Copy-Item ../*.h .
+  # - ps: Copy-Item ../*.hpp . 
+  # - cmd: dir
+  # - cmd: cd "C:/Program Files/Csound6_x64"
+  # - cmd: dir
+  # - cmd: mkdir lib 
+  # - cmd: cd lib  
+  # - ps: Copy-Item ../*.dll .
+  # - ps: Copy-Item ../*.lib .
+  # - cmd: dir
+  # - cmd: pwd
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip'
   - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/asiosdk2.3.zip'
