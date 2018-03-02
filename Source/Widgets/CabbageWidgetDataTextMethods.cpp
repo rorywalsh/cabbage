@@ -151,6 +151,9 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 
     var macroNames = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macronames);
     var macroStrings = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macrostrings);
+    String expandedMacroText=" ";
+    for ( int i = 0 ; i < macroStrings.size() ;i++)
+        expandedMacroText += macroStrings[i].toString();
 
 
     //deal with macros
@@ -174,7 +177,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
         const String currentIdentName = currentIdentifier.substring(0, currentIdentifier.indexOf(
                 "(")).trim().removeCharacters(", ");
 
-        //I need to check that the current identifiers and not the same as the existing ones, if so don't replace anything
+        //check that the current identifiers are not the same as the existing ones, if so don't replace anything
         if (currentIdentName.isNotEmpty())
         {
             const String newText = getCabbageCodeForIdentifier(widgetData, currentIdentName).trimCharactersAtEnd(", ");
@@ -201,15 +204,22 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
         if (replacedIdentifiers.indexOf(ident) == -1)
         {
             const String newIdent = getCabbageCodeForIdentifier(widgetData, ident).trimCharactersAtEnd(", ").trimCharactersAtStart(",");
-            if (newIdent.isNotEmpty() && macroStrings.indexOf(newIdent) == -1)
-                returnString = returnString.trimEnd() + " " + newIdent;
+            const String indentWithoutParams = newIdent.substring(0, newIdent.indexOf("("));
+            if (newIdent.isNotEmpty() && (expandedMacroText.indexOf(" "+indentWithoutParams) == -1 && expandedMacroText.indexOf(","+indentWithoutParams) == -1 ))
+            {
+                const int pos1 = expandedMacroText.indexOf(" "+indentWithoutParams);
+                const int pos2 = expandedMacroText.indexOf(","+indentWithoutParams);
+
+                if(widgetType.contains("slider") && (ident != CabbageIdentifierIds::value.toString() && ident != CabbageIdentifierIds::increment.toString()))
+                   returnString = returnString.trimEnd() + " " + newIdent;
+            }
         }
     }
 
-        if(widgetType == returnString.substring(0, returnString.indexOf(" ")))
-            return returnString;
-        else
-            return widgetType + returnString.trimEnd();
+    if(widgetType == returnString.substring(0, returnString.indexOf(" ")))
+        return returnString;
+    else
+        return widgetType + returnString.trimEnd();
 }
 
 String CabbageWidgetData::getBoundsTextAsCabbageCode (Rectangle<int> rect)
