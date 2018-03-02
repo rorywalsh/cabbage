@@ -72,9 +72,10 @@ before_build:
   - ps: Start-FileDownload 'http://cabbageaudio.com/beta/CabbageManual.zip'
   - cmd: 7z.exe x CabbageManual.zip  -oC:\cabbage\CabbageManual
   - cmd: ls
-  - cmd: cd c:/cabbage/Builds/VisualStudio2017/
+  - cmd: cd c:/cabbage/Builds/VisualStudio2017/x64
   - ps: Start-FileDownload 'https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll'
   - cmd: ls
+  - cmd: cd c:/cabbage/Builds/VisualStudio2017
 
 after_build:
   - cmd: set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
