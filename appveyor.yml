@@ -74,6 +74,7 @@ before_build:
   - cmd: ls
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/
   - ps: Start-FileDownload 'https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll'
+  - cmd: ls
 
 after_build:
   - cmd: set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
