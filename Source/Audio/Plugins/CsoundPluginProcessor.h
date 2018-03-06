@@ -127,7 +127,8 @@ public:
     //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
     //as is done in CabbagePluginprocessor.
     virtual void triggerCsoundEvents();
-    virtual void sendChannelDataToCsound();
+    virtual void sendChannelDataToCsound() {};
+    void sendHostDataToCsound();
     virtual void getChannelDataFromCsound() {};
     virtual void initAllCsoundChannels (ValueTree cabbageData);
     //=============================================================================

@@ -50,6 +50,8 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
         else  if (type == "VST" || type == "AU")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
+        else  if (type == "AUMIDIFx")
+            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginMIDIEffect." + fileExtension);
         else if (type.contains (String ("LV2-ins")))
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
         else if (type.contains (String ("LV2-fx")))

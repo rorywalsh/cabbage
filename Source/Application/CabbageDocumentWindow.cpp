@@ -272,6 +272,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         subMenu3.addSubMenu("VST Export", subMenu1);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUEffect);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUSynth);
+        subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUMIDIFx);
         subMenu3.addSubMenu("AU Export", subMenu2);
         menu.addSubMenu("Export Plugin", subMenu3);
 #ifdef CabbagePro
@@ -445,6 +446,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::startAudioGraph,
                               CommandIDs::stopAudioGraph,
                               CommandIDs::exportAsVSTSynth,
+                              CommandIDs::exportAsAUMIDIFx,
                               CommandIDs::selectAll,
                               CommandIDs::exportAsVSTEffect,
                               CommandIDs::exportAsAUEffect,
@@ -591,6 +593,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as AU Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::exportAsAUMIDIFx:
+            result.setInfo ("Export as AU MIDI Effect Plugin", "Exports as MIDI effectplugin", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::exportAsVSTSynthEncrypted:
             result.setInfo ("Export as VST Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
             break;
@@ -880,6 +886,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
 
+        case CommandIDs::exportAsAUMIDIFx:
+            pluginExporter.exportPlugin ("AUMIDIFx", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+            
         case CommandIDs::exportAsVSTEffectEncrypted:
             pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
             return true;

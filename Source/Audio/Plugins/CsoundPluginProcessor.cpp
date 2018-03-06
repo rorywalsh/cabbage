@@ -502,20 +502,25 @@ void CsoundPluginProcessor::handleAsyncUpdate()
     sendChannelDataToCsound();
 }
 
-void CsoundPluginProcessor::sendChannelDataToCsound()
+void CsoundPluginProcessor::sendHostDataToCsound()
 {
     if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
     {
-        if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (hostInfo))
+        if (AudioPlayHead* const ph = getPlayHead())
         {
-            csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
-            csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
-            csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
-            csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
-            csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
-            csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
-            csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
-            csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
+            AudioPlayHead::CurrentPositionInfo hostInfo;
+            
+            if (ph->getCurrentPosition (hostInfo))
+            {
+                csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
+                csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
+                csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
+                csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
+                csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
+                csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
+                csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
+                csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
+            }
         }
     }
 }
@@ -577,6 +582,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
                     //trigger any Csound score event on each k-boundary
                     triggerCsoundEvents();
+                    sendHostDataToCsound();
 
                     disableLogging = false;
                 }
