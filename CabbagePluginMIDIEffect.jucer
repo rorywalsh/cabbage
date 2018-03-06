@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="1.0.0"
+              bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
+              buildVST="1" buildVST3="0" buildAU="1" buildAUv3="0" buildRTAS="0"
+              buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
+              pluginManufacturer="CabbageAudio" pluginManufacturerCode="Cabb"
+              pluginCode="RORY" pluginChannelConfigs="" pluginIsSynth="1" pluginWantsMidiIn="1"
+              pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
+              pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
+              aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
+              jucerVersion="5.2.0" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
+              reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
+              companyCopyright="">
+  <MAINGROUP id="MmKYZk" name="CabbagePlugin">
+    <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
+      <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
+        <GROUP id="{4B714BDB-49F2-8D6E-A0E6-DD0C6491ADBA}" name="Plugins">
+          <FILE id="LTlu6o" name="CabbageCsoundBreakpointData.h" compile="0"
+                resource="0" file="Source/Audio/Plugins/CabbageCsoundBreakpointData.h"/>
+          <FILE id="jah5Ta" name="CabbagePluginEditor.cpp" compile="1" resource="0"
+                file="Source/Audio/Plugins/CabbagePluginEditor.cpp"/>
+          <FILE id="hCHUdh" name="CabbagePluginEditor.h" compile="0" resource="0"
+                file="Source/Audio/Plugins/CabbagePluginEditor.h"/>
+          <FILE id="rcYo22" name="CabbagePluginProcessor.cpp" compile="1" resource="0"
+                file="Source/Audio/Plugins/CabbagePluginProcessor.cpp"/>
+          <FILE id="ITWIIx" name="CabbagePluginProcessor.h" compile="0" resource="0"
+                file="Source/Audio/Plugins/CabbagePluginProcessor.h"/>
+          <FILE id="lpVhzd" name="CsoundPluginEditor.cpp" compile="1" resource="0"
+                file="Source/Audio/Plugins/CsoundPluginEditor.cpp"/>
+          <FILE id="tpbG1D" name="CsoundPluginEditor.h" compile="0" resource="0"
+                file="Source/Audio/Plugins/CsoundPluginEditor.h"/>
+          <FILE id="NAhnJl" name="CsoundPluginProcessor.cpp" compile="1" resource="0"
+                file="Source/Audio/Plugins/CsoundPluginProcessor.cpp"/>
+          <FILE id="LLYq8Q" name="CsoundPluginProcessor.h" compile="0" resource="0"
+                file="Source/Audio/Plugins/CsoundPluginProcessor.h"/>
+          <FILE id="N3igrW" name="GenericCabbageEditor.cpp" compile="1" resource="0"
+                file="Source/Audio/Plugins/GenericCabbageEditor.cpp"/>
+          <FILE id="I0ItBo" name="GenericCabbageEditor.h" compile="0" resource="0"
+                file="Source/Audio/Plugins/GenericCabbageEditor.h"/>
+          <FILE id="vQrgAV" name="GenericCabbagePluginProcessor.cpp" compile="1"
+                resource="0" file="Source/Audio/Plugins/GenericCabbagePluginProcessor.cpp"/>
+          <FILE id="DC2jHT" name="GenericCabbagePluginProcessor.h" compile="0"
+                resource="0" file="Source/Audio/Plugins/GenericCabbagePluginProcessor.h"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{441759C0-0204-F125-96A0-D45085BC7182}" name="BinaryData">
+        <FILE id="VobzqI" name="CabbageBinaryData.cpp" compile="1" resource="0"
+              file="Source/BinaryData/CabbageBinaryData.cpp"/>
+        <FILE id="HctRIv" name="CabbageBinaryData.h" compile="0" resource="0"
+              file="Source/BinaryData/CabbageBinaryData.h"/>
+      </GROUP>
+      <GROUP id="{583547E2-9EA9-D831-D13A-6A25772627BE}" name="LookAndFeel">
+        <FILE id="nHVUyj" name="CabbageGenericPluginLookAndFeel.cpp" compile="1"
+              resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.cpp"/>
+        <FILE id="gK4jsl" name="CabbageGenericPluginLookAndFeel.h" compile="0"
+              resource="0" file="Source/LookAndFeel/CabbageGenericPluginLookAndFeel.h"/>
+        <FILE id="xYvPFw" name="CabbageLookAndFeel2.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
+        <FILE id="MLgcCk" name="CabbageLookAndFeel2.h" compile="0" resource="0"
+              file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
+      </GROUP>
+      <GROUP id="{A270562F-B877-794E-F8FB-DED31485BCF2}" name="Utilities">
+        <FILE id="S2CC0u" name="CabbageColourProperty.cpp" compile="1" resource="0"
+              file="Source/Utilities/CabbageColourProperty.cpp"/>
+        <FILE id="RQPYfb" name="CabbageColourProperty.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageColourProperty.h"/>
+        <FILE id="WHFDrK" name="CabbageStrings.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageStrings.h"/>
+        <FILE id="i3o5Zn" name="CabbageUtilities.h" compile="0" resource="0"
+              file="Source/Utilities/CabbageUtilities.h"/>
+      </GROUP>
+      <GROUP id="{06A9B370-E21A-01CA-7B69-FE3EB35876DF}" name="Widgets">
+        <GROUP id="{672F48C9-B35F-4B01-A80B-75D0B37F2403}" name="Legacy">
+          <FILE id="ajMpZI" name="FrequencyRangeDisplayComponent.h" compile="0"
+                resource="0" file="Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h"/>
+          <FILE id="mc03h4" name="Soundfiler.cpp" compile="1" resource="0" file="Source/Widgets/Legacy/Soundfiler.cpp"/>
+          <FILE id="ssoXbS" name="Soundfiler.h" compile="0" resource="0" file="Source/Widgets/Legacy/Soundfiler.h"/>
+          <FILE id="mSCg8K" name="TableManager.cpp" compile="1" resource="0"
+                file="Source/Widgets/Legacy/TableManager.cpp"/>
+          <FILE id="GGg8Tq" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
+        </GROUP>
+        <FILE id="e3KfhK" name="CabbageButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageButton.cpp"/>
+        <FILE id="WX2D9N" name="CabbageButton.h" compile="0" resource="0" file="Source/Widgets/CabbageButton.h"/>
+        <FILE id="eHtyoX" name="CabbageCheckbox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageCheckbox.cpp"/>
+        <FILE id="a17KdQ" name="CabbageCheckbox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageCheckbox.h"/>
+        <FILE id="GxfG8s" name="CabbageComboBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageComboBox.cpp"/>
+        <FILE id="Foohdj" name="CabbageComboBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageComboBox.h"/>
+        <FILE id="nOebuU" name="CabbageCsoundConsole.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageCsoundConsole.cpp"/>
+        <FILE id="EeSScF" name="CabbageCsoundConsole.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageCsoundConsole.h"/>
+        <FILE id="vLyLUh" name="CabbageCustomWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageCustomWidgets.cpp"/>
+        <FILE id="qGaV2E" name="CabbageCustomWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageCustomWidgets.h"/>
+        <FILE id="vMHpST" name="CabbageEncoder.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageEncoder.cpp"/>
+        <FILE id="ypSyhT" name="CabbageNumberSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageNumberSlider.cpp"/>
+        <FILE id="StdKoV" name="CabbageNumberSlider.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageNumberSlider.h"/>
+        <FILE id="L8o1F2" name="CabbageEncoder.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageEncoder.h"/>
+        <FILE id="TrHi3K" name="CabbageFileButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageFileButton.cpp"/>
+        <FILE id="n5DHlQ" name="CabbageFileButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageFileButton.h"/>
+        <FILE id="C5ww3q" name="CabbageGenTable.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageGenTable.cpp"/>
+        <FILE id="kcypJG" name="CabbageGenTable.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageGenTable.h"/>
+        <FILE id="nf0THP" name="CabbageGroupBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageGroupBox.cpp"/>
+        <FILE id="djxKeE" name="CabbageGroupBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageGroupBox.h"/>
+        <FILE id="pq9eRn" name="CabbageImage.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageImage.cpp"/>
+        <FILE id="OpcAb0" name="CabbageImage.h" compile="0" resource="0" file="Source/Widgets/CabbageImage.h"/>
+        <FILE id="qQd6ML" name="CabbageInfoButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageInfoButton.cpp"/>
+        <FILE id="C2QVtH" name="CabbageInfoButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageInfoButton.h"/>
+        <FILE id="t06OvD" name="CabbageKeyboard.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageKeyboard.cpp"/>
+        <FILE id="Ox0jjX" name="CabbageKeyboard.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageKeyboard.h"/>
+        <FILE id="O6khRB" name="CabbageLabel.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageLabel.cpp"/>
+        <FILE id="s2k5MD" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
+        <FILE id="SEOUw4" name="CabbageRangeSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRangeSlider.cpp"/>
+        <FILE id="VBitck" name="CabbageRangeSlider.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRangeSlider.h"/>
+        <FILE id="DAkhJA" name="CabbageSignalDisplay.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageSignalDisplay.cpp"/>
+        <FILE id="ZFgVAy" name="CabbageSignalDisplay.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageSignalDisplay.h"/>
+        <FILE id="wTKFXx" name="CabbageSlider.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageSlider.cpp"/>
+        <FILE id="mtKcHl" name="CabbageSlider.h" compile="0" resource="0" file="Source/Widgets/CabbageSlider.h"/>
+        <FILE id="f06qvo" name="CabbageSoundfiler.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageSoundfiler.cpp"/>
+        <FILE id="oB7g3x" name="CabbageSoundfiler.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageSoundfiler.h"/>
+        <FILE id="qrBqki" name="CabbageEventSequencer.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageEventSequencer.cpp"/>
+        <FILE id="aamN1t" name="CabbageEventSequencer.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageEventSequencer.h"/>
+        <FILE id="u2DzVW" name="CabbageTextBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageTextBox.cpp"/>
+        <FILE id="F8QE5y" name="CabbageTextBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageTextBox.h"/>
+        <FILE id="bPHtz2" name="CabbageTextEditor.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageTextEditor.cpp"/>
+        <FILE id="H6BXHp" name="CabbageTextEditor.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageTextEditor.h"/>
+        <FILE id="pn6BDY" name="CabbageWidgetBase.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageWidgetBase.cpp"/>
+        <FILE id="nsqVMU" name="CabbageWidgetBase.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageWidgetBase.h"/>
+        <FILE id="KQFltz" name="CabbageWidgetData.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageWidgetData.cpp"/>
+        <FILE id="dmQCJ6" name="CabbageWidgetData.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageWidgetData.h"/>
+        <FILE id="KPHIzK" name="CabbageWidgetDataInitMethods.cpp" compile="1"
+              resource="0" file="Source/Widgets/CabbageWidgetDataInitMethods.cpp"/>
+        <FILE id="ejrAXw" name="CabbageWidgetDataTextMethods.cpp" compile="1"
+              resource="0" file="Source/Widgets/CabbageWidgetDataTextMethods.cpp"/>
+        <FILE id="JqTohA" name="CabbageXYPad.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageXYPad.cpp"/>
+        <FILE id="vNWVG7" name="CabbageXYPad.h" compile="0" resource="0" file="Source/Widgets/CabbageXYPad.h"/>
+      </GROUP>
+      <FILE id="ph3HxH" name="CabbageCommonHeaders.h" compile="0" resource="0"
+            file="Source/CabbageCommonHeaders.h"/>
+      <FILE id="bB3qNL" name="CabbageIds.h" compile="0" resource="0" file="Source/CabbageIds.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" externalLibraries="csound64&#10;sndfile"
+                extraCompilerFlags="" extraDefs="Cabbage_Plugin_Synth=1&#10;LINUX=1"
+                extraLinkerFlags="-Wall">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
+                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
+                       defines="Cabbage_Plugin_Synth=1"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
+                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
+                       defines="Cabbage_Plugin_Synth=1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+    <XCODE_MAC targetFolder="Builds/MacOSX" vst3Folder="" extraDefs="MACOSX=1&#10;Cabbage_Plugin_Synth=1"
+               extraFrameworks="/Library/Frameworks/CsoundLib64">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
+                       headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
+                       osxArchitecture="64BitUniversal" osxSDK="default" osxCompatibility="10.8 SDK"
+                       enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
+                       headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
+                       customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
+                       osxCompatibility="10.8 SDK" osxArchitecture="64BitUniversal"
+                       enablePluginBinaryCopyStep="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Synth=1"
+            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
+                       libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
+                       enablePluginBinaryCopyStep="0"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
+                       libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
+                       enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Synth=1"
+            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
+                       libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
+                       enablePluginBinaryCopyStep="0"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
+                       libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
+                       enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </VS2017>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="enabled" JUCE_JACK="enabled"
+               JUCE_WEB_BROWSER="disabled"/>
+  <LIVE_SETTINGS>
+    <LINUX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>

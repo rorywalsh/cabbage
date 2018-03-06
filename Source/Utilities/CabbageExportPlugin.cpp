@@ -19,14 +19,13 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
     
     if(csdFile.existsAsFile())
     {
-        String pluginFilename, fileExtension, currentApplicationDirectory;
-        File thisFile;
-
+        String pluginFilename, fileExtension;
+        File thisFile = File::getSpecialLocation (File::currentApplicationFile);
+        String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+        int platform = 0;
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
         {
             fileExtension = "so";
-            thisFile = File::getSpecialLocation (File::currentExecutableFile);
-            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
         }
         else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
         {
@@ -34,15 +33,14 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 fileExtension = "vst";
             else
                 fileExtension = "component";
-            
-            thisFile = File::getSpecialLocation (File::currentApplicationFile);
+
+            platform = 2;
             currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
         }
         else
         {
+            platform = 1;
             fileExtension = "dll";
-            thisFile = File::getSpecialLocation (File::currentApplicationFile);
-            currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
         }
 
 
@@ -56,6 +54,12 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
         else if (type.contains (String ("LV2-fx")))
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
+        else  if (type == "FMOD")
+        {
+            fileExtension = (platform==1 ? String("dll") : String("dylib"));
+            pluginFilename = currentApplicationDirectory + (platform==1 ? String("/fmod_csoundL64.dll") : String("/fmod_csound.dylib"));
+            
+        }
 
         File VSTData (pluginFilename);
 
@@ -114,55 +118,64 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 
     File exportedCsdFile;
 
+
+    
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = dll.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
-        else
+        else if(fileExtension.containsIgnoreCase("vst"))
             exportedCsdFile = dll.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
 
-        if(encrypt)
+        if(fileExtension.contains("dylib"))
         {
-            exportedCsdFile.replaceWithText(encodeString(csdFile));
+            exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
+            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
         }
         else
-            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-
-        File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
-        //if(bin.exists())showMessage("binary exists");
-
-        File pl (dll.getFullPathName() + String ("/Contents/Info.plist"));
-        String newPList = pl.loadFileAsString();
-        
-        if(fileExtension.containsIgnoreCase("vst"))
         {
-            File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
+            if(encrypt)
+            {
+                exportedCsdFile.replaceWithText(encodeString(csdFile));
+            }
+            else
+                exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
 
-            if (bin.moveFileTo (pluginBinary) == false)
-                CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
+            File bin (dll.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin"));
+            //if(bin.exists())showMessage("binary exists");
 
-            setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-           
-            newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
+            File pl (dll.getFullPathName() + String ("/Contents/Info.plist"));
+            String newPList = pl.loadFileAsString();
+            
+            if(fileExtension.containsIgnoreCase("vst"))
+            {
+                File pluginBinary (dll.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
+
+                if (bin.moveFileTo (pluginBinary) == false)
+                    CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
+
+                setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
+               
+                newPList = newPList.replace ("CabbagePlugin", fc.getFileNameWithoutExtension());
+            }
+
+            
+            String manu(JucePlugin_Manufacturer);
+            const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
+            const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
+
+            newPList = newPList.replace (toReplace, pluginName);
+            if(pluginId.isEmpty())
+            {
+                CabbageUtilities::showMessage ("Error", "The plugin ID identifier in " + csdFile.getFullPathName() + " is empty, or the pluginid identifier string contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
+                pluginId = "Cab2";
+            }
+            
+            const String auId = "<string>" + pluginId + "</string>";
+            newPList = newPList.replace ("<string>RORY</string>", auId);
+            
+            pl.replaceWithText (newPList);
         }
-
-        
-        String manu(JucePlugin_Manufacturer);
-        const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
-        const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
-
-        newPList = newPList.replace (toReplace, pluginName);
-        if(pluginId.isEmpty())
-        {
-            CabbageUtilities::showMessage ("Error", "The plugin ID identifier in " + csdFile.getFullPathName() + " is empty, or the pluginid identifier string contains a typo. Certain hosts may not recognise your plugin. Please use a unique ID for each plugin.", &lookAndFeel);
-            pluginId = "Cab2";
-        }
-        
-        const String auId = "<string>" + pluginId + "</string>";
-        newPList = newPList.replace ("<string>RORY</string>", auId);
-        
-        pl.replaceWithText (newPList);
-
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, exportedCsdFile);
 

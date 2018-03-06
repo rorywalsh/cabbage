@@ -905,7 +905,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::exportAsAUSynthEncrypted:
             pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
             return true;
-
+            
+        case CommandIDs::exportAsFMODSoundPlugin:
+            pluginExporter.exportPlugin ("FMOD", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+            
         case CommandIDs::batchConvertExamplesAU:
             exportExamplesToPlugins("AU");
             return true;
@@ -956,9 +960,6 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 
         case CommandIDs::clearConsole:
             getContentComponent()->getCurrentOutputConsole()->clearText();
-            return true;
-
-        case CommandIDs::exportAsFMODSoundPlugin:
             return true;
 
         case CommandIDs::copy:
