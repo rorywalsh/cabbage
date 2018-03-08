@@ -55,7 +55,8 @@ namespace CommandIDs
         stopAudioGraph          = 0x200079,
         clearConsole            = 0x20007a,
         exportAsAUMIDIFx         = 0x20017b,
-
+        exportAsVCVRackModule   = 0x022017c,
+        
         closeAllDocuments           = 0x201000,
         exportAsVSTEffectEncrypted  = 0x201002,
         exportAsVSTSynthEncrypted   = 0x201003,

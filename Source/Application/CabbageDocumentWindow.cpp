@@ -302,6 +302,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 #endif
     }
 
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsVCVRackModule);
 
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
         menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
@@ -455,6 +456,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::exportAsAUEffectEncrypted,
                               CommandIDs::exportAsVSTSynthEncrypted,
                               CommandIDs::exportAsVSTEffectEncrypted,
+                              CommandIDs::exportAsVCVRackModule,
                               CommandIDs::nextTab,
                               CommandIDs::exportAsFMODSoundPlugin,
                               CommandIDs::copy,
@@ -621,6 +623,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("As AU plugins", "Batch export as plugin", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::exportAsVCVRackModule:
+            result.setInfo ("Export as VCV Rack Module", "VCV Rack export", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::batchConvertExamplesVST:
             if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
                 result.setInfo("As VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
@@ -908,6 +914,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::exportAsFMODSoundPlugin:
             pluginExporter.exportPlugin ("FMOD", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+ 
+        case CommandIDs::exportAsVCVRackModule:
+            pluginExporter.exportPlugin ("VCVRack", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
             
         case CommandIDs::batchConvertExamplesAU:

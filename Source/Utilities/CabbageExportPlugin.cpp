@@ -17,11 +17,14 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
     if(csdFile.hasFileExtension(".csd") == false)
         return;
     
+    
     if(csdFile.existsAsFile())
     {
+        
         String pluginFilename, fileExtension;
         File thisFile = File::getSpecialLocation (File::currentApplicationFile);
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
+
         int platform = 0;
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
         {
@@ -54,6 +57,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
         else if (type.contains (String ("LV2-fx")))
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
+        else if (type == "VCVRack")
+        {
+            fileExtension = "";
+            pluginFilename = currentApplicationDirectory+"/CabbageRack/";
+        }
         else  if (type == "FMOD")
         {
             fileExtension = (platform==1 ? String("dll") : String("dylib"));
@@ -118,7 +126,12 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 
     File exportedCsdFile;
 
-
+    //vcv rack export is teh same on all platforms..
+    if(type=="VCVRack")
+    {
+        File rackCsdFile(dll.getFullPathName()+"/CabbageRack.csd");
+        csdFile.moveFileTo(rackCsdFile);
+    }
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
