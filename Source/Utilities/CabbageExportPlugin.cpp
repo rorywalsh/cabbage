@@ -108,9 +108,6 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             }
         }
     }
-    
-    
-    
 }
 
 
@@ -129,8 +126,14 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     //vcv rack export is teh same on all platforms..
     if(type=="VCVRack")
     {
-        File rackCsdFile(dll.getFullPathName()+"/CabbageRack.csd");
-        csdFile.moveFileTo(rackCsdFile);
+        File rackCsdFile(dll.getFullPathName()+"/"+dll.getFileName()+".csd");
+        //csdFile.moveFileTo(rackCsdFile);
+        rackCsdFile.replaceWithText(csdFile.loadFileAsString());
+        File oldFile(dll.getFullPathName()+"/CabbageRack.csd");
+        oldFile.deleteFile();
+        //bundle all auxiliary files
+        addFilesToPluginBundle(csdFile, dll);
+        return;
     }
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
