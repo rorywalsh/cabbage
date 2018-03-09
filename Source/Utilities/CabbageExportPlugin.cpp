@@ -113,8 +113,10 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 
 void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, String manu, bool encrypt)
 {
+
     File dll (fc.withFileExtension (fileExtension).getFullPathName());
-    if (!VSTData.copyFileTo (dll))
+
+    if (!VSTData.copyFileTo (dll) && type!="VCVRack" )
     {
         CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin lib, is it currently in use?", &lookAndFeel);
         return;
@@ -123,9 +125,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 
     File exportedCsdFile;
 
-    //vcv rack export is teh same on all platforms..
+    //vcv rack export is the same on all platforms..
     if(type=="VCVRack")
     {
+        if(!VSTData.copyDirectoryTo(dll))
+            jassertfalse;
         File rackCsdFile(dll.getFullPathName()+"/"+dll.getFileName()+".csd");
         //csdFile.moveFileTo(rackCsdFile);
         rackCsdFile.replaceWithText(csdFile.loadFileAsString());
