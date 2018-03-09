@@ -95,10 +95,19 @@ script:
 
 - echo -en "travis_fold:start:buildingZip"
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
+- curl -L -o CabbageRack-0.5.0-mac.zip https://github.com/rorywalsh/CabbageRack/blob/master/dist/CabbageRack-0.5.0-mac.zip
+- unzip -q CabbageRack-0.5.0-mac.zip
+- ls
+- cp -R CabbageRack Cabbage.app/Contents/CabbageRack
+- cp fmod_csound.dylib Cabbage.app/Contents/fmod_csound.dylib
+- ls Cabbage.app/Contents/
+
 - curl -L -o fmod_csound.dylib 'https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csound.dylib'
 - ls
 - cp fmod_csound.dylib Cabbage.app/Contents/fmod_csound.dylib
 - ls Cabbage.app/Contents/
+
+
 - zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 - echo -en "travis_fold:end:buildingZip"
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/
