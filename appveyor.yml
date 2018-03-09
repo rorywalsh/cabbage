@@ -71,6 +71,8 @@ before_build:
   - cmd: cd C:/cabbage
   - ps: Start-FileDownload 'http://cabbageaudio.com/beta/CabbageManual.zip'
   - cmd: 7z.exe x CabbageManual.zip  -oC:\cabbage\CabbageManual
+  - ps: Start-FileDownload 'https://github.com/rorywalsh/CabbageRack/blob/master/dist/CabbageRack-0.5.0-win.zip'
+  - cmd: 7z.exe x CabbageRack-0.5.0-win.zip -oC:\cabbage\Builds\VisualStudio2017\x64\CabbageRack
   - cmd: ls
   - cmd: cd c:/cabbage/Builds/VisualStudio2017/x64
   - ps: Start-FileDownload 'https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll'
