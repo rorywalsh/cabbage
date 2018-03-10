@@ -48,12 +48,9 @@ Source: "{#BuildDir}/Cabbage.exe"; DestDir: "{app}"; Flags: ignoreversion; Compo
 Source: "{#BuildDir}/CabbageLite.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginEffect.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginSynth.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
-Source: "{#BuildDir}/fmod_csoundL64.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
-Source: "..\opcodes.txt"; DestDir: "{app}"; Flags: ignoreversion ignoreversion; Components: core; Permissions: users-full;
-Source: "{#BuildDir}\CabbageRack\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
-
-Source: "..\..\Examples\*"; DestDir: "{app}\Examples\"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
+Source: "..\..\Examples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
 Source: "..\..\CabbageManual\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
+Source: "{#BuildDir}\CabbageRack\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
 Source: "C:\Program Files\Csound6_x64\*"; DestDir: "C:\Program Files\Csound6_x64\"; Flags: ignoreversion recursesubdirs; Components: csound; Permissions: users-full;
 
 
