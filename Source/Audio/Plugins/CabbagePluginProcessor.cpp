@@ -187,8 +187,10 @@ void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
             for (int i = 0; i < CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray).size(); i++)
             {
                 ValueTree copy = tempWidget.createCopy();
-//                const String chan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i].toString();
-//                const String iChan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i].toString();
+                const String chan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i].toString();
+                const String iChan = CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i].toString();
+                const String name = CabbageWidgetData::getStringProp (tempWidget, CabbageIdentifierIds::name)+String(9999+i);
+                CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::name, name);
                 CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::channel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::widgetarray)[i]);
                 CabbageWidgetData::setStringProp (copy, CabbageIdentifierIds::identchannel, CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::identchannelarray)[i]);
                 cabbageWidgets.addChild (copy, -1, 0);

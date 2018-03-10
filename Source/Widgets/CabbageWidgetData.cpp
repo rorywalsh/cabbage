@@ -622,27 +622,29 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     var array;
     array.append (strTokens[0].trim());
 
-    for (int i = 1; i < strTokens.size(); i++)
+    if (identifier != "widgetarray")
     {
-        array.append (strTokens[i].trim());
+        for (int i = 1; i < strTokens.size(); i++)
+        {
+            array.append (strTokens[i].trim());
+        }
+
+        setProperty (widgetData, CabbageIdentifierIds::channel, array);
+
+        if (array.size() == 2)
+        {
+            setProperty (widgetData, CabbageIdentifierIds::xchannel, array[0]);
+            setProperty (widgetData, CabbageIdentifierIds::ychannel, array[1]);
+        }
     }
-
-    setProperty (widgetData, CabbageIdentifierIds::channel, array);
-
-    if (array.size() == 2)
-    {
-        setProperty (widgetData, CabbageIdentifierIds::xchannel, array[0]);
-        setProperty (widgetData, CabbageIdentifierIds::ychannel, array[1]);
-    }
-
-
-    if (identifier == "widgetarray")
+    else
     {
         var channelArray, identChannelArray;
         int size = strTokens[1].getIntValue();
 
         for (int i = 0; i < size; i++)
         {
+           String chnny = (String (strTokens[0]) + String (i + 1));
             channelArray.append (String (strTokens[0]) + String (i + 1));
             identChannelArray.append (String (strTokens[0]) + String ("_ident") + String (i + 1));
         }
