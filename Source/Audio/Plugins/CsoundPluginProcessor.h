@@ -222,6 +222,7 @@ public:
     OwnedArray<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "");
+
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
@@ -243,6 +244,7 @@ private:
     ScopedPointer<FileLogger> fileLogger;
     int busIndex = 0;
     bool disableLogging = false;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginProcessor)
 

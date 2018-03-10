@@ -73,6 +73,7 @@ public:
     ValueTree cabbageWidgets;
     void getChannelDataFromCsound();
     void triggerCsoundEvents();
+    void setWidthHeight();
     void addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     void createParameters();
@@ -129,7 +130,8 @@ private:
     bool xyAutosCreated = false;
     OwnedArray<XYPadAutomator> xyAutomators;
 	int samplingRate = 44100;
-    
+	int screenWidth, screenHeight;
+
 };
 
 class CabbageAudioParameter : public AudioParameterFloat

@@ -54,6 +54,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
 {
 	if (inputFile.existsAsFile())
 	{
+        setWidthHeight();
 		StringArray linesFromCsd;
 		linesFromCsd.addLines(inputFile.loadFileAsString());
 		addImportFiles(linesFromCsd);
@@ -77,6 +78,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
 		csoundChanList = NULL;
 
 		initAllCsoundChannels(cabbageWidgets);
+
 	}
 }
 
@@ -92,11 +94,32 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 }
 
 //==============================================================================
+void CabbagePluginProcessor::setWidthHeight()
+{
+    StringArray csdLines;
+    csdLines.addLines (csdFile.loadFileAsString());
+
+    for (auto line : csdLines)
+    {
+        ValueTree temp ("temp");
+        CabbageWidgetData::setWidgetState (temp, line, 0);
+
+        if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+        {
+            screenHeight = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::height);
+            screenWidth = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::width);
+        }
+    }
+}
+
 void CabbagePluginProcessor::parseCsdFile (StringArray& linesFromCsd)
 {
     cabbageWidgets.removeAllChildren (0);
     String parentComponent, previousComponent;
     StringArray parents;
+
+
+
     getMacros (linesFromCsd);
 
     for ( int lineNumber = 0; lineNumber < linesFromCsd.size() ; lineNumber++ )
@@ -485,6 +508,7 @@ void CabbagePluginProcessor::generateCabbageCodeFromJS (PlantImportStruct& impor
 void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
 {
     var tempMacroNames, tempMacroStrings;
+
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
     {
         StringArray tokens;
@@ -505,6 +529,20 @@ void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
                 macroStrings = tempMacroStrings;
             }
         }
+    }
+
+    macroText.set ("$SCREEN_WIDTH", " " + String(screenWidth));
+    macroText.set ("$SCREEN_HEIGHT", " " + String(screenHeight));
+    macroNames.append("$SCREEN_WIDTH");
+    macroNames.append("$SCREEN_HEIGHT");
+    macroStrings.append(String(screenWidth));
+    macroStrings.append(String(screenHeight));
+
+
+    for ( int i= 0 ; i < macroNames.size() ; i++)
+    {
+        CabbageUtilities::debug(macroNames[i].toString());
+        CabbageUtilities::debug(macroStrings[i].toString());
     }
 }
 

@@ -163,11 +163,13 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
                                           CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
             }
+
             else
             {
                 csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
                                           CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::text).toUTF8().getAddress());
             }
+
 
         }
         else
@@ -254,12 +256,19 @@ void CsoundPluginProcessor::addMacros (String csdText)
     String macroName, macroText;
 
     csdArray.addLines (csdText);
+//
+//    String width = "--macro:SCREEN_WIDTH="+String(screenWidth);
+//    String height = "--macro:SCREEN_HEIGHT="+String(screenHeight);
+//    csound->SetOption (width.toUTF8().getAddress());
+//    csound->SetOption (height.toUTF8().getAddress());
+    StringArray tokens;
+
 
     for (int i = 0; i < csdArray.size(); i++)
     {
+
         if (csdArray[i].trim().substring (0, 7) == "#define")
         {
-            StringArray tokens;
             tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
             macroName = tokens[1];
             tokens.remove (0);
@@ -272,6 +281,7 @@ void CsoundPluginProcessor::addMacros (String csdText)
         if (csdArray[i].contains ("</Cabbage>"))
             i = csdArray.size();
     }
+
 }
 
 //==============================================================================
