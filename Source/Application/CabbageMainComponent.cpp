@@ -1033,7 +1033,7 @@ void CabbageMainComponent::launchHelpfile (String type)
                 url = cabbageHelpDir + "/docs/" + keyword + "/index.html";
         }
         else
-            url = cabbageHelpDir + "/index.html";
+            url = csoundHelpDir + "/" + keyword +".html";
     }
     else if (type == "csound")
         url = csoundHelpDir + "/index.html";
