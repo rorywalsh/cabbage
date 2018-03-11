@@ -119,7 +119,7 @@ before_deploy:
   - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalsh/cabbage.git
   - git config credential.helper "store --file=.git/credentials"
   - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
-  - git tag -d vBeta
+#  - git tag -d vBeta
   - git push --force origin :refs/tags/vBeta
   - git tag vBeta -a -m "Latest OSX Beta Build"
   - git push origin master && git push origin master --tags
