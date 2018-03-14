@@ -108,7 +108,12 @@ void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	const int requestedKsmpsRate = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "ksmps");
 	csoundParams->nchnls_override = numCsoundChannels;
 	//only override sample rate if user insists
-	if (requestedKsmpsRate == -1)
+	PluginHostType pluginType;
+	if (pluginType.isFruityLoops())
+	{
+		csoundParams->ksmps_override = 1;
+	}
+	else if (requestedKsmpsRate == -1)
 		csoundParams->ksmps_override = 32;
 
 	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
