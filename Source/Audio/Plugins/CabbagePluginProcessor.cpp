@@ -327,7 +327,6 @@ void CabbagePluginProcessor::handleXmlImport (XmlElement* xml, StringArray& line
 
         //numberOfLinesInPlantCode += importData.cabbageCode.size()+1;
         insertUDOCode (importData, linesFromCsd);
-        CabbageUtilities::debug(linesFromCsd.joinIntoString("\n"));
         plantStructs.add(importData);
     }
 }
@@ -359,8 +358,8 @@ void CabbagePluginProcessor::insertPlantCode (StringArray& linesFromCsd)
             bool isPlantWidget = true;
             for (int plantIndex = 0; plantIndex < plantStructs.size(); plantIndex++)
             {
-                CabbageUtilities::debug(type + " " + plantStructs[plantIndex].name.trim());
-                CabbageUtilities::debug(nsp + " " + plantStructs[plantIndex].nsp.trim());
+//                CabbageUtilities::debug(type + " " + plantStructs[plantIndex].name.trim());
+//                CabbageUtilities::debug(nsp + " " + plantStructs[plantIndex].nsp.trim());
                 if (type == plantStructs[plantIndex].name.trim() && plantStructs[plantIndex].nsp.trim() == nsp)
                 {
                     int lineNumberPlantAppearsOn;
@@ -539,11 +538,6 @@ void CabbagePluginProcessor::getMacros (StringArray& linesFromCsd)
     macroStrings.append(String(screenHeight));
 
 
-    for ( int i= 0 ; i < macroNames.size() ; i++)
-    {
-        CabbageUtilities::debug(macroNames[i].toString());
-        CabbageUtilities::debug(macroStrings[i].toString());
-    }
 }
 
 void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
@@ -565,8 +559,7 @@ void CabbagePluginProcessor::expandMacroText (String& line, ValueTree wData)
             for ( auto macro : macroText)
             {
                 const String stringToReplace = token.removeCharacters(",() ");
-                CabbageUtilities::debug(macro.name.toString());
-                CabbageUtilities::debug(stringToReplace);
+
                 if(macro.name.toString() == stringToReplace)
                 {
                     line = line.replace(stringToReplace, macro.value.toString());
