@@ -466,7 +466,7 @@ void CabbagePluginProcessor::insertUDOCode (PlantImportStruct importData, String
     for ( auto str : linesFromCsd )
     {
         str = str.replaceCharacters("\t", " ").trim();
-        if (str.substring(0, 6) == "instr ")
+        if (str == "<CsInstruments>")
         {
             StringArray strArray;
             strArray.addLines (importData.csoundCode);

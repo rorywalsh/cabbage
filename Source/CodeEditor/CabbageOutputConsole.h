@@ -45,6 +45,7 @@ public:
 
     void setText (String text)
     {
+        const MessageManagerLock lock;
         textEditor->insertTextAtCaret (text);
         textEditor->setCaretPosition (textEditor->getText().length());
     }
