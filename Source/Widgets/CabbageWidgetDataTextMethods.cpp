@@ -572,7 +572,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
             String newIdent;
             if(type.contains("button") && (identifier == "fontcolour" || identifier == "fontcolour:1"))
                 newIdent = "fontcolour:1(";
-            else if(type.contains("slider") || type == "label" || type == "csoundoutput" || type == "eventsequencer" || type == "xypad" || type == "encoder")
+            else if(type.contains("slider") || type == "label" || type == "csoundoutput" || type == "combobox" || type == "eventsequencer" || type == "xypad" || type == "encoder")
                 newIdent = "fontcolour(";
             else
                 jassertfalse;

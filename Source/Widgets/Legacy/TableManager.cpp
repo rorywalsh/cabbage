@@ -1129,7 +1129,7 @@ void GenTable::paint (Graphics& g)
         for (double i = visibleStart; i <= visibleEnd; i += incr)
         {
             //when qsteps == 1 we draw a grid
-            if (qsteps == 1)
+            if (qsteps == 1 && genRoutine == 2)
             {
                 if (CabbageUtilities::compDouble (i, gridIndex))
                 {
