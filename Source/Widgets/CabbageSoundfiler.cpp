@@ -63,7 +63,7 @@ void CabbageSoundfiler::changeListenerCallback (ChangeBroadcaster* source)
     owner->sendChannelDataToCsound (getChannelArray()[0], position);
 
     if (getChannelArray().size() > 1)
-        owner->sendChannelDataToCsound (getChannelArray()[0], length);
+        owner->sendChannelDataToCsound (getChannelArray()[1], length);
 }
 
 void CabbageSoundfiler::resized()

@@ -463,15 +463,15 @@ void CabbagePluginProcessor::insertPlantCode (StringArray& linesFromCsd)
 void CabbagePluginProcessor::insertUDOCode (PlantImportStruct importData, StringArray& linesFromCsd)
 {
     //todo don't check blocks of commented code
-    for ( auto str : linesFromCsd )
+    for ( const auto str : linesFromCsd )
     {
-        str = str.replaceCharacters("\t", " ").trim();
+        //str = str.replaceCharacters("\t", " ").trim();
         if (str == "<CsInstruments>")
         {
             StringArray strArray;
             strArray.addLines (importData.csoundCode);
 
-            const int lineToInsertTo = linesFromCsd.indexOf (str);
+            const int lineToInsertTo = linesFromCsd.indexOf (str)+1;
 
             for ( int y = strArray.size() ; y >= 0 ; y--)
                 linesFromCsd.insert (lineToInsertTo, strArray[y]);
