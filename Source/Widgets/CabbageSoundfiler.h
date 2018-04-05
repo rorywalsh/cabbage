@@ -41,7 +41,7 @@ class CabbageSoundfiler : public Component, public ValueTree::Listener, public C
     CabbagePluginEditor* owner;
 public:
 
-    CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner);
+    CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner, int sr);
     ~CabbageSoundfiler() {};
 
     void resized();

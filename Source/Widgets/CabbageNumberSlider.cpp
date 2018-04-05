@@ -46,6 +46,7 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setColour (Slider::textBoxHighlightColourId, slider.findColour (Slider::textBoxBackgroundColourId));
     slider.setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+    slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
     slider.setVelocityBasedMode (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity) == 1 ? true : false);
     slider.setVelocityModeParameters (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity));
@@ -112,6 +113,7 @@ void CabbageNumberSlider::valueTreePropertyChanged (ValueTree& valueTree, const 
         label.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour)));
         slider.setColour (Slider::textBoxHighlightColourId, slider.findColour (Slider::textBoxBackgroundColourId));
         slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
+        slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour)));
         slider.setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
         handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
         align = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::align);

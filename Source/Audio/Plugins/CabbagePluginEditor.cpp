@@ -321,7 +321,7 @@ void CabbagePluginEditor::insertTextEditor (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertSoundfiler (ValueTree cabbageWidgetData)
 {
     CabbageSoundfiler* soundfiler;
-    components.add (soundfiler = new CabbageSoundfiler (cabbageWidgetData, this));
+    components.add (soundfiler = new CabbageSoundfiler (cabbageWidgetData, this, processor.getSampleRate()));
     addToEditorAndMakeVisible (soundfiler, cabbageWidgetData);
     addMouseListenerAndSetVisibility (soundfiler, cabbageWidgetData);
 }
