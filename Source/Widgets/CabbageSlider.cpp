@@ -301,6 +301,11 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
         shouldShowTextBox = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuetextbox);
         setTextBoxOrientation (sliderType, shouldShowTextBox);
         slider.setTooltip (getCurrentPopupText (valueTree));
+        
+        slider.getProperties().set ("trackerthickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackerthickness));
+        slider.getProperties().set ("trackerinnerradius", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackerinsideradius));
+        slider.getProperties().set ("trackerouterradius", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackeroutsideradius));
+        
         handleCommonUpdates (this, valueTree);
         setLookAndFeelColours (valueTree);
 

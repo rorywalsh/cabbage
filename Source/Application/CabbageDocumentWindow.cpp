@@ -119,6 +119,12 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
     addKeyListener (commandManager.getKeyMappings());
 
 #if JUCE_MAC
+    setMacMainMenu (this);
+#else
+    setMenuBar (this);
+#endif
+    
+#if JUCE_MAC
     MenuBarModel::setMacMainMenu (this, nullptr, "Open Recent");
 #endif
     setLookAndFeel (&getContentComponent()->getLookAndFeel());

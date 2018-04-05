@@ -924,14 +924,24 @@ void CabbageWidgetData::setAmpRange (StringArray strTokens, ValueTree widgetData
 
     var array = getProperty (widgetData, CabbageIdentifierIds::amprange);
 
-    for (int i = 0; i < strTokens.size(); i++)
-        array[i] = strTokens[i].trim().getFloatValue();
+    if(array.size()>=3)
+    {
+        for (int i = 0; i < strTokens.size(); i++)
+            array[i] = strTokens[i].trim().getFloatValue();
+    }
+    else
+    {
+        for (int i = 0; i < strTokens.size(); i++)
+            array.append(strTokens[i].trim().getFloatValue());
+    }
+
 
     setProperty (widgetData, CabbageIdentifierIds::amprange, array);
     setProperty (widgetData, CabbageIdentifierIds::amprange_min, array[0]);
     setProperty (widgetData, CabbageIdentifierIds::amprange_max, array[1]);
     setProperty (widgetData, CabbageIdentifierIds::amprange_tablenumber, array[2]);
-    setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, array[3]);
+    if(array.size()==4)
+        setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, array[3]);
 }
 
 void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree widgetData)
