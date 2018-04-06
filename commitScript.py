@@ -30,6 +30,21 @@ with open('./Source/CabbageCommonHeaders.h') as f:
 with open('./Source/CabbageCommonHeaders.h', "w") as f:
     f.write(newFiletext)
 
+gitCommand = 'git add JuceLibraryCode/AppConfig.h'
+print gitCommand
+process = subprocess.Popen(gitCommand, shell=True, stdout=subprocess.PIPE)
+process.wait()
+
+gitCommand = 'git add Source'
+print gitCommand
+process = subprocess.Popen(gitCommand, shell=True, stdout=subprocess.PIPE)
+process.wait()
+
+print gitCommand
+process = subprocess.Popen(gitCommand, shell=True, stdout=subprocess.PIPE)
+process.wait()
+
+
 gitCommand = 'git commit -m \"'+sys.argv[2]+'\"'
 print gitCommand
 process = subprocess.Popen(gitCommand, shell=True, stdout=subprocess.PIPE)
