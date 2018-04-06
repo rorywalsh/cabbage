@@ -163,8 +163,47 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
         menu.setLookAndFeel (&lookAndFeel);
         CabbagePopupWidgets widgets;
 
-        for ( int i = 0 ; i < widgets.size() ; i++ )
-            menu.addItem (i + 1, widgets.getAllKeys()[i]);
+        PopupMenu subM;
+        subM.addItem (1, "Button");
+        subM.addItem (2, "Button - File");
+        subM.addItem (3, "Button - Info");
+        menu.addSubMenu ("Buttons", subM);
+        subM.clear();
+
+
+        menu.addItem (4, "Checkbox");
+        menu.addItem (5, "ComboBox");
+        menu.addItem (6, "Csound Output");
+        menu.addItem (7, "Endless Encoder");
+        menu.addItem (8, "Gentable");
+        menu.addItem (9, "Groupbox");
+
+        menu.addItem (11, "Image");
+        menu.addItem (12, "Keyboard");
+        menu.addItem (13, "Label");
+
+        subM.addItem (10, "Horizontal Meter");
+        subM.addItem (25, "Vertical Meter");
+        menu.addSubMenu( "Meters", subM);
+
+        menu.addItem (14, "Signal Display");
+
+        subM.addItem (15, "Slider - Horizontal");
+        subM.addItem (16, "Slider - Rotary");
+        subM.addItem (17, "Slider - Vertical");
+        subM.addItem (18, "Slider - Range - Vertical");
+        subM.addItem (19, "Slider - Range - Horizontal");
+        subM.addItem (20, "Slider - Number Box");
+        menu.addSubMenu("Sliders", subM);
+        subM.clear();
+
+        menu.addItem (21, "Soundfiler");
+        menu.addItem (22, "Event Sequencer");
+        menu.addItem (23, "Text Box");
+        menu.addItem (24, "Text Editor");
+        menu.addItem (26, "XY Pad");
+
+
 
         CabbageSettings settings;
         settings.setStorageParameters(CabbageUtilities::getStorageProps());
