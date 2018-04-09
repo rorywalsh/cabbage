@@ -20,13 +20,13 @@
 #include "CabbageSoundfiler.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner)
+CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner, int sr)
     : widgetData (wData),
       owner (_owner),
       file (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)),
       zoom (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
       scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
-      soundfiler (44100, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
+      soundfiler (sr, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
                   Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::tablebackgroundcolour)))
 {
     addAndMakeVisible (soundfiler);

@@ -271,9 +271,9 @@ Point<float> CabbageXYPad::getValueAsPosition (Point<float> position)
 void CabbageXYPad::setValues (float x, float y, bool notify)
 {
     xAxis.setValue (x, sendNotification);
-    yAxis.setValue (maxY - y, sendNotification);
+    yAxis.setValue (minY + (maxY - y), sendNotification);
     xValueLabel.setText (String (x, 3), dontSendNotification);
-    yValueLabel.setText (String (maxY - y, 3), dontSendNotification);
+    yValueLabel.setText (String (minY + (maxY - y), 3), dontSendNotification);
 }
 //========================================================================
 XYPadAutomator::XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam, AudioProcessor* _owner)
