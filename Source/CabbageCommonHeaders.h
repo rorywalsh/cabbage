@@ -24,8 +24,7 @@
 #pragma warning(disable: 4100)
 #pragma warning(disable: 4305)
 
-#define CABBAGE_VERSION "Cabbage(64bit) v2.0.01"
-#include "./Settings/CabbageSettings.h"
+#define CABBAGE_VERSION "Cabbage(64bit) v2.0.02"#include "./Settings/CabbageSettings.h"
 #include "LookAndFeel/CabbageIDELookAndFeel.h"
 #include "LookAndFeel/CabbageLookAndFeel2.h"
 #include "Widgets/CabbageWidgetData.h"
