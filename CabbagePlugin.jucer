@@ -191,7 +191,7 @@
                        defines=""/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
                        headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
-                       defines="Cabbage_Plugin_Synth=1"/>
+                       defines=""/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
