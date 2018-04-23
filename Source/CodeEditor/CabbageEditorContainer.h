@@ -90,10 +90,7 @@ public:
     CabbageSettings* settings;
 
 private:
-    bool fileNeedsSaving = false;
     bool isCsdFile = true;
-    int horizontalBarPosition = 0;
-    const int statusBarHeight = 25;
     int startingDragPos;
 
 };
