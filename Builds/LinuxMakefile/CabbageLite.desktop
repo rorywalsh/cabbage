@@ -1,10 +1,10 @@
 [Desktop Entry]
 Version=1.0
-Name=Cabbage
+Name=Cabbage Lite
 GenericName=Audio development toolkit
 Type=Application
 Categories=AudioVideo;Audio;Multimedia
-Exec=CURRENTDIR/CabbageBuild/Cabbage
+Exec=/usr/bin/CabbageLite
 Terminal=false
 StartupNotify=false
-Icon=CURRENTDIR/CabbageBuild/cabbage.png
+Icon=/usr/share/icons/hicolor/512x512/apps/cabbage.png

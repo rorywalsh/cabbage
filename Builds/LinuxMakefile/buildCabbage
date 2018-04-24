@@ -3,27 +3,32 @@ echo "==========================================="
 echo "======== Build Script for Cabbage ========="
 echo "==========================================="
 
+echo "In order to build Cabbage you will need to have Csound installed, and"
+echo "the Projucer from version 5.0 of JUCE built and installed."
+
 echo "This scripts assumes that Csound is installed in the default location, i.e, includes files" 
 echo "should be located in /user/local/include/csound while the Csound library itself should be"
-echo "located in /user/local/lib It is also assumed that the VST SDK is located in ~/SDKs/"
+echo "located in /user/local/lib "
+echo "It is also assumes that the VST SDK is located in ~/SDKs/"
 echo ""
 
-rm -rf CabbageBuild
-mkdir CabbageBuild
+mkdir usr/share/doc/cabbage
+
 
 if [ $1 == "debug" ]
 then
+echo "Hello debug"
 ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
 rm Makefile MakeCabbageIDE
 make -f MakeCabbageIDE clean CONFIG=Debug
 make -f MakeCabbageIDE -j6 CONFIG=Debug
-cp ./build/Cabbage CabbageBuild/Cabbage
+cp ./build/Cabbage opt/Cabbage/Cabbage
 make -f MakePluginEffect clean CONFIG=Debug
 make -f MakePluginEffect -j6 CONFIG=Debug
-cp ./build/CabbagePluginEffect.so CabbageBuild/CabbagePluginEffect.so
+cp ./build/CabbagePluginEffect.so opt/Cabbage/CabbagePluginEffect.so
 make -f MakePluginSynth clean CONFIG=Debug
 make -f MakePluginSynth -j6 CONFIG=Debug
-cp ./build/CabbagePluginSynth.so CabbageBuild/CabbagePluginSynth.so
+cp ./build/CabbagePluginSynth.so opt/Cabbage/CabbagePluginSynth.so
 
 else
 #release mode  default
@@ -31,38 +36,39 @@ else
 mv Makefile MakeCabbageIDE
 make -f MakeCabbageIDE clean CONFIG=Release
 make -f MakeCabbageIDE -j6 CONFIG=Release
-cp ./build/Cabbage CabbageBuild/Cabbage
+cp ./build/Cabbage usr/bin/Cabbage
 
 ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePlugin.jucer
 mv Makefile MakePluginEffect
 
 make -f MakePluginEffect clean CONFIG=Release
 make -f MakePluginEffect -j6 CONFIG=Release
-cp ./build/CabbagePlugin.so CabbageBuild/CabbagePluginEffect.so
+cp ./build/CabbagePlugin.so usr/bin/CabbagePluginEffect.so
 
 ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginSynth.jucer
 mv Makefile MakePluginSynth
 
 make -f MakePluginSynth clean CONFIG=Release
 make -f MakePluginSynth -j6 CONFIG=Release
-cp ./build/CabbagePlugin.so CabbageBuild/CabbagePluginSynth.so
+cp ./build/CabbagePlugin.so usr/bin/CabbagePluginSynth.so
 
 ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageLite.jucer
 mv Makefile MakeCabbageLite
 
 make -f MakeCabbageLite clean CONFIG=Release
 make -f MakeCabbageLite -j6 CONFIG=Release
-cp ./build/CabbageLite CabbageBuild/CabbageLite
+cp ./build/CabbageLite usr/bin/CabbageLite
 
 fi  
 
-cp ./../opcodes.txt CabbageBuild/opcodes.txt
-cp ./../../Images/cabbage.png CabbageBuild/cabbage.png
-cp -rf ../../Examples/ CabbageBuild/Examples
+cp ./../opcodes.txt usr/bin/opcodes.txt
+cp ./../../Images/cabbage.png /usr/share/icons/hicolor/512x512/apps/cabbage.png
+cp -rf ../../Examples/ usr/share/doc/cabbage/Examples
 
 g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csound" -lcsound64
-
+cp testCsoundFile usr/bin/testCsoundFile
 #cp -rf ../../Docs/_book CabbageBuild/Docs
 
-sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > CabbageBuild/cabbage.desktop
-cp CabbageBuild/cabbage.desktop ~/.local/share/applications/
+sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > cabbage.desktop
+# sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > CabbageBuild/cabbagelite.desktop
+cp cabbage.desktop ~/.local/share/applications/
