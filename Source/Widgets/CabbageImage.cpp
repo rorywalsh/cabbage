@@ -37,6 +37,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     widgetData.addListener (this);
 	String file = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getFullPathName();
     imgFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file));
+    img = ImageFileFormat::loadFrom(imgFile);
     this->setWantsKeyboardFocus (false);
     initialiseCommonAttributes (this, wData);
 }
@@ -54,6 +55,7 @@ void CabbageImage::paint (Graphics& g)
     }
     else
     {
+        
         if (imgFile.existsAsFile())
         {
             if (imgFile.hasFileExtension (".svg"))
@@ -61,15 +63,13 @@ void CabbageImage::paint (Graphics& g)
                 CabbageLookAndFeel2::drawFromSVG (g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform::identity);
             }
             else
-                g.drawImage (ImageCache::getFromFile (imgFile), 0, 0, getWidth(), getHeight(), cropx, cropy,
-                             cropwidth == 0 ? ImageCache::getFromFile (imgFile).getWidth() : cropwidth,
-                             cropheight == 0 ? ImageCache::getFromFile (imgFile).getHeight() : cropheight);
+                g.drawImage (img, 0, 0, getWidth(), getHeight(), cropx, cropy,
+                             cropwidth == 0 ? img.getWidth() : cropwidth,
+                             cropheight == 0 ? img.getHeight() : cropheight);
         }
         else
         {
             g.fillAll (Colours::transparentBlack);
-
-
             g.setColour (mainColour);
 
             if (shape == "square")
@@ -116,15 +116,15 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
             owner->setVisible (false);
     }
 
-    lineThickness = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness),
+    lineThickness = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness);
     outlineColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour));
     mainColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     shape = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::shape);
-    imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file));
-    cropy = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropy),
-    cropx = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropx),
-    cropwidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropwidth),
-    cropheight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropheight),
+    imgFile = File(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file));
+    cropy = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropy);
+    cropx = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropx);
+    cropwidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropwidth);
+    cropheight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropheight);
     handleCommonUpdates (this, valueTree);
     repaint();
 }

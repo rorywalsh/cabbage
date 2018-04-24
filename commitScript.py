@@ -24,7 +24,7 @@ with open('./Source/CabbageCommonHeaders.h') as f:
             if patch_number<10:
                 patch_string = str(patch_number).zfill(2)
                 print(patch_string)
-                line = '#define CABBAGE_VERSION "Cabbage(64bit) v2.0.'+patch_string+'"'
+                line = '#define CABBAGE_VERSION "Cabbage(64bit) v2.0.'+patch_string+'"\n'
         newFiletext+=line
     
 with open('./Source/CabbageCommonHeaders.h', "w") as f:

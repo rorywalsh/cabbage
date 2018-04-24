@@ -36,6 +36,7 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
     Colour outlineColour, mainColour;
     bool isLineWidget = false;
     bool currentToggleValue = 0;
+    Image img;
 
 public:
 
