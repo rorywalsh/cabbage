@@ -95,6 +95,7 @@ namespace CommandIDs
         showGenericWidgetWindow = 0x612000,
         batchConvertExamplesAU    = 0x612001,
         batchConvertExamplesVST    = 0x612003,
+        showConsole                 = 0x612004,
 
         lastCommandIDEntry
     };

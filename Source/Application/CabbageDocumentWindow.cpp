@@ -384,6 +384,7 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::nextTab);
     menu.addCommandItem (&commandManager, CommandIDs::showGraph);
+    menu.addCommandItem (&commandManager, CommandIDs::showConsole);
     menu.addSeparator();
 }
 
@@ -473,6 +474,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::zoomOut,
                               CommandIDs::zoomInConsole,
                               CommandIDs::zoomOutConsole,
+                              CommandIDs::showConsole,
                               CommandIDs::paste,
                               CommandIDs::undo,
                               CommandIDs::showFindPanel,
@@ -746,6 +748,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
 
+        case CommandIDs::showConsole:
+            result.setInfo (TRANS ("Show Csound output console"), TRANS ("Shows the Csound console window."), "View", 0);
+            break;
+
         case CommandIDs::showFindPanel:
             result.setInfo (TRANS ("Find"), TRANS ("Searches for text in the current document."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('f', ModifierKeys::commandModifier, 0));
@@ -980,6 +986,12 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 
         case CommandIDs::copy:
             getContentComponent()->getCurrentCodeEditor()->copy();
+            return true;
+
+        case CommandIDs::showConsole:
+            getContentComponent()->getCurrentEditorContainer()->statusBar.setTopLeftPosition(0, getHeight()*.66);
+            getContentComponent()->getCurrentEditorContainer()->resized();
+
             return true;
 
         case CommandIDs::selectAll:
