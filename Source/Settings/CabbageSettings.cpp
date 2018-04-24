@@ -49,7 +49,10 @@ void CabbageSettings::setDefaultSettings()
 #if defined(WIN32)
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
 #elif !defined(MACOSX)
-    manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
+    //manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
+    examplesDir = "/usr/share/doc/cabbage/examples";
+    cabbageHelp = "/usr/share/doc/cabbage/help";
+    manualPath = "/usr/share/doc/csound-doc";
 #else
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/CabbageManual";
