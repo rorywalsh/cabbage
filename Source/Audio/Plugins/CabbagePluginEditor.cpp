@@ -514,6 +514,18 @@ void CabbagePluginEditor::buttonClicked (Button* button)
 
         return;
     }
+    else if (CabbageCheckbox* cabbageButton = dynamic_cast<CabbageCheckbox*> (button))
+    {
+        const StringArray textItems = cabbageButton->getTextArray();
+        CabbageUtilities::debug(cabbageButton->getName());
+        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
+        const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
+
+        if (textItems.size() > 0)
+            cabbageButton->setButtonText ( textItems[ buttonState == false ? 0 : 1]);
+
+        return;
+    }
 
     toggleButtonState (button, buttonState);
 }
