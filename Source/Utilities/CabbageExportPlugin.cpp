@@ -24,7 +24,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         String pluginFilename, fileExtension;
         File thisFile = File::getSpecialLocation (File::currentApplicationFile);
 #if !defined(WIN32) && !defined(MACOSX)
-        String currentApplicationDirectory = "/usr/bin/";
+        String currentApplicationDirectory = "/usr/bin";
 #else
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
 #endif

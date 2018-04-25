@@ -51,7 +51,7 @@ void CabbageSettings::setDefaultSettings()
 #elif !defined(MACOSX)
     //manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
     examplesDir = "/usr/share/doc/cabbage/examples";
-    cabbageHelp = "/usr/share/doc/cabbage/help";
+    cabbageHelp = "/usr/share/doc/cabbage/CabbageManual";
     manualPath = "/usr/share/doc/csound-doc";
 #else
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
