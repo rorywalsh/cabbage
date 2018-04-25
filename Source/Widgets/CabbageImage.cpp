@@ -37,7 +37,8 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     widgetData.addListener (this);
 	String file = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getFullPathName();
     imgFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file));
-    img = ImageFileFormat::loadFrom(imgFile);
+    if(File(imgFile).existsAsFile())
+        img = ImageFileFormat::loadFrom(imgFile);
     this->setWantsKeyboardFocus (false);
     initialiseCommonAttributes (this, wData);
 }

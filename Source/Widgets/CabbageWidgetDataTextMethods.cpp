@@ -570,7 +570,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         {
             const Colour col = Colour::fromString(getStringProp(widgetData, CabbageIdentifierIds::onfontcolour));
             String newIdent;
-            if(type.contains("button") && (identifier == "fontcolour" || identifier == "fontcolour:1"))
+            if(type.contains("button") || type.contains("checkbox") && (identifier == "fontcolour" || identifier == "fontcolour:1"))
                 newIdent = "fontcolour:1(";
             else if(type.contains("slider") || type == "label" || type == "csoundoutput" || type == "combobox" || type == "eventsequencer" || type == "xypad" || type == "encoder")
                 newIdent = "fontcolour(";
