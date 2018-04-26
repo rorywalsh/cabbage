@@ -86,3 +86,18 @@ after_build:
 artifacts:
   - path: Builds/VisualStudio2017/Output/Cabbage64Setup.exe
   - path: logs
+
+  deploy:
+- provider: BinTray
+  username: rorywalsh
+  api_key:
+    secure: 60c7d0c36c046c424cfe3bbabb42eb808f26232d
+  subject: rorywalsh
+  repo: cabbage
+  package: Cabbage64Setup.exe
+  version: version
+  publish: true
+  override: true
+  explode: true
+
+  
