@@ -524,10 +524,11 @@ void CabbagePluginEditor::buttonClicked (Button* button)
         if (textItems.size() > 0)
             cabbageButton->setButtonText ( textItems[ buttonState == false ? 0 : 1]);
 
+        toggleButtonState (button, buttonState);
         return;
     }
 
-    toggleButtonState (button, buttonState);
+
 }
 
 void CabbagePluginEditor::buttonStateChanged (Button* button)
