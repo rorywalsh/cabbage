@@ -87,7 +87,7 @@ artifacts:
   - path: Builds/VisualStudio2017/Output/Cabbage64Setup.exe
   - path: logs
 
-  deploy:
+deploy:
 - provider: BinTray
   username: rorywalsh
   api_key:

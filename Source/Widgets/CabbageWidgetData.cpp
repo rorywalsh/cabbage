@@ -308,7 +308,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("manufacturer"):
             case HashStringToInt ("logger"):
             case HashStringToInt ("namespace"):
-                setProperty (widgetData, identifier, strTokens[0].trim());
+
+                setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
                 break;
 
