@@ -11,7 +11,6 @@ environment:
 platform:
 - x64
 
-
 clone_folder: c:\cabbage
 
 # scripts that run after cloning repository
@@ -91,7 +90,7 @@ deploy:
 - provider: BinTray
   username: rorywalsh
   api_key:
-    secure: 60c7d0c36c046c424cfe3bbabb42eb808f26232d
+    secure: gMAIlZljfEQMFSNZse9AY9nuelv0siT2X5N0ZTFhhKCew8NKWNHeizWlbdMeggi7
   subject: rorywalsh
   repo: cabbage
   package: Cabbage64Setup.exe
