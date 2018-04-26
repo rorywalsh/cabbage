@@ -92,9 +92,9 @@ deploy:
   api_key:
     secure: gMAIlZljfEQMFSNZse9AY9nuelv0siT2X5N0ZTFhhKCew8NKWNHeizWlbdMeggi7
   subject: rorywalsh
-  repo: cabbage
+  repo: Cabbage
   package: Cabbage64Setup.exe
-  version: version
+  version: snapshot
   publish: true
   override: true
   explode: true
