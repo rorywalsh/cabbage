@@ -38,9 +38,9 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     createEditorInterface (processor.cabbageWidgets);
 
     addAndMakeVisible (mainComponent);
-    addAndMakeVisible (viewport = new Viewport());
-    viewport->setViewedComponent(&mainComponent, false);
-    viewport->setScrollBarsShown(false, false);
+    //addAndMakeVisible (viewport = new Viewport());
+    //viewport->setViewedComponent(&mainComponent, false);
+    //viewport->setScrollBarsShown(false, false);
     mainComponent.setInterceptsMouseClicks (false, true);
 
     setSize (400, 300);
@@ -67,29 +67,27 @@ void CabbagePluginEditor::resized()
 #ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
 #endif
-    mainComponent.setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
-    if(viewport)
-    {
-        viewport->setBounds ( getLocalBounds() );
-        if(showScrollbars)
-        {
-            CabbageUtilities::debug(mainComponent.getHeight());
-            CabbageUtilities::debug(instrumentBounds.getY());
-            CabbageUtilities::debug(mainComponent.getWidth());
-            CabbageUtilities::debug(instrumentBounds.getX());
-            if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
-                viewport->setScrollBarsShown(true, true);
-            else if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() <= viewport->getHeight())
-                viewport->setScrollBarsShown(false, true);
-            else if (instrumentBounds.getX() <= viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
-                viewport->setScrollBarsShown(true, false);
-        }
-        else
-            viewport->setScrollBarsShown(false, false);
-    }
-
-
-
+    mainComponent.setBounds (getLocalBounds());
+    // mainComponent.setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
+    // if(viewport)
+    // {
+    //     viewport->setBounds ( getLocalBounds() );
+    //     if(showScrollbars)
+    //     {
+    //         CabbageUtilities::debug(mainComponent.getHeight());
+    //         CabbageUtilities::debug(instrumentBounds.getY());
+    //         CabbageUtilities::debug(mainComponent.getWidth());
+    //         CabbageUtilities::debug(instrumentBounds.getX());
+    //         if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
+    //             viewport->setScrollBarsShown(true, true);
+    //         else if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() <= viewport->getHeight())
+    //             viewport->setScrollBarsShown(false, true);
+    //         else if (instrumentBounds.getX() <= viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
+    //             viewport->setScrollBarsShown(true, false);
+    //     }
+    //     else
+    //         viewport->setScrollBarsShown(false, false);
+    // }
 }
 
 //======================================================================================================
