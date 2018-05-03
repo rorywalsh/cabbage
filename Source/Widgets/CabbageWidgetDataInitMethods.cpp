@@ -35,7 +35,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::guirefresh, 128);
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
-    setProperty (widgetData, CabbageIdentifierIds::scrollbars, 1);
+    setProperty (widgetData, CabbageIdentifierIds::scrollbars, 0);
     setProperty (widgetData, CabbageIdentifierIds::titlebarcolour, "");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
 
