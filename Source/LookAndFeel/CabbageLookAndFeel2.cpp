@@ -1163,6 +1163,27 @@ int CabbageLookAndFeel2::getScrollbarButtonSize (ScrollBar& scrollbar)
                 : scrollbar.getHeight());
 }
 
+//======== Scrollbars ==============================================================================
+void CabbageLookAndFeel2::drawScrollbar (Graphics& g, ScrollBar& scrollbar, int x, int y, int width,
+                                           int height,
+                                           bool isScrollbarVertical,
+                                           int thumbStartPosition,
+                                           int thumbSize,
+                                           bool isMouseOver,
+                                           bool isMouseDown)
+{
+    g.setColour(findColour(ScrollBar::backgroundColourId));
+    g.fillAll();
+
+    g.setColour(findColour(ScrollBar::backgroundColourId).contrasting(.3f));
+    //g.drawRect (x, y, width, height);
+
+    if (isScrollbarVertical == false) //horizontal
+        g.fillRoundedRectangle(thumbStartPosition + 3, 3, jmax(0, thumbSize - 2), height - 6, 5);
+    else //vertical
+        g.fillRoundedRectangle(3, thumbStartPosition + 3, width - 6, jmax(1, thumbSize - 2), 5);
+}
+
 void CabbageLookAndFeel2::drawLabel (Graphics& g, Label& label)
 {
     g.fillAll (label.findColour (Label::backgroundColourId));

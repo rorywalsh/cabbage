@@ -236,15 +236,15 @@ private:
         }
     };
 
-    class MainViewport : public Component
+    class ViewportContainer : public Component
     {
 
     public:
-        MainViewport() : Component("CabbageViewportComponent")
+        ViewportContainer() : Component("CabbageViewportComponent")
         {
             this->setInterceptsMouseClicks(false, true);
         }
-        ~MainViewport() {}
+        ~ViewportContainer() {}
 
         void paint(Graphics &g)
         {
@@ -257,7 +257,7 @@ private:
     };
 
     ScopedPointer<Viewport> viewport;
-    //ScopedPointer<MainViewport> mainViewport;
+    ScopedPointer<ViewportContainer> viewportContainer;
     OwnedArray<Component> components;
     OwnedArray<PopupDocumentWindow> popupPlants;
     String lastOpenedDirectory;
