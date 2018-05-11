@@ -43,8 +43,6 @@
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
       </GROUP>
       <GROUP id="{F4FCCAC1-CEFF-BD54-F444-D73A9CA83E58}" name="Plugins">
-        <FILE id="FwH6zP" name="CabbageAudioParameter.h" compile="0" resource="0"
-              file="Source/Audio/Plugins/CabbageAudioParameter.h"/>
         <FILE id="jvNulP" name="CabbageCsoundBreakpointData.h" compile="0"
               resource="0" file="Source/Audio/Plugins/CabbageCsoundBreakpointData.h"/>
         <FILE id="V6sGdh" name="CabbagePluginEditor.cpp" compile="1" resource="0"
@@ -276,7 +274,7 @@
         <CONFIGURATION name="Debug" enablePluginBinaryCopyStep="1" isDebug="1" optimisation="1"
                        linkTimeOptimisation="0" targetName="CabbageLite" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal"/>
+                       osxArchitecture="64BitUniversal" libraryPath=""/>
         <CONFIGURATION name="Release" enablePluginBinaryCopyStep="1" isDebug="0" optimisation="3"
                        linkTimeOptimisation="1" targetName="CabbageLite" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
@@ -299,6 +297,35 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
       </MODULEPATHS>
     </XCODE_MAC>
+    <XCODE_IPHONE targetFolder="Builds/iOS" iosScreenOrientation="portraitlandscape"
+                  iPadScreenOrientation="portraitlandscape" iosDeviceFamily="1,2"
+                  extraDefs="Cabbage_IDE_Build=1&#10;CABBAGE=1&#10;Cabbage_Lite=1"
+                  externalLibraries="csound&#10;sndfile">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" enablePluginBinaryCopyStep="1" isDebug="1" optimisation="1"
+                       linkTimeOptimisation="0" targetName="CabbageLite" libraryPath="/Users/walshr/sourcecode/csound-iOS/libs"
+                       headerPath="/Users/walshr/sourcecode/csound-iOS/headers"/>
+        <CONFIGURATION name="Release" enablePluginBinaryCopyStep="1" isDebug="0" optimisation="3"
+                       linkTimeOptimisation="1" targetName="CabbageLite" libraryPath="/Users/walshr/sourcecode/csound-iOS/libs"
+                       headerPath="/Users/walshr/sourcecode/csound-iOS/headers"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </XCODE_IPHONE>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
