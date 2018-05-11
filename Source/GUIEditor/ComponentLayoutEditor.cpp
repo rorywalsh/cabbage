@@ -257,7 +257,7 @@ SelectedItemSet <ComponentOverlay*>& ComponentLayoutEditor::getLassoSelection()
 void ComponentLayoutEditor::setTargetComponent (Component* targetComp)
 {
     jassert (targetComp);
-    jassert (targetComp->getParentComponent() == getParentComponent());
+    //jassert (targetComp->getParentComponent() == getParentComponent());
 
     if (target)
     {

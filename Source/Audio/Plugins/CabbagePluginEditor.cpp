@@ -31,16 +31,25 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
       mainComponent()
 {
     setName ("PluginEditor");
-    setSize (400, 300);
+    instrumentBounds.setXY(400, 300);
+
     setLookAndFeel (&lookAndFeel);
 
     createEditorInterface (processor.cabbageWidgets);
 
-    addAndMakeVisible (mainComponent);
+    addAndMakeVisible(viewportContainer = new ViewportContainer());
+
+    viewportContainer->addAndMakeVisible(mainComponent);
+    addAndMakeVisible (viewport = new Viewport());
+    viewport->setViewedComponent(viewportContainer, false);
+    viewport->setScrollBarsShown(false, false);
     mainComponent.setInterceptsMouseClicks (false, true);
 
+
+    setSize (400, 300);
+
 #ifdef Cabbage_IDE_Build
-    addAndMakeVisible (layoutEditor);
+    viewportContainer->addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&mainComponent);
     layoutEditor.updateFrames();
     layoutEditor.setEnabled (false);
@@ -61,7 +70,28 @@ void CabbagePluginEditor::resized()
 #ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
 #endif
-    mainComponent.setBounds (getLocalBounds());
+    if(viewportContainer)
+        viewportContainer->setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
+    mainComponent.setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
+    if(viewport)
+    {
+     viewport->setBounds ( getLocalBounds() );
+     if(showScrollbars)
+     {
+         CabbageUtilities::debug(mainComponent.getHeight());
+         CabbageUtilities::debug(instrumentBounds.getY());
+         CabbageUtilities::debug(mainComponent.getWidth());
+         CabbageUtilities::debug(instrumentBounds.getX());
+         if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
+             viewport->setScrollBarsShown(true, true);
+         else if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() <= viewport->getHeight())
+             viewport->setScrollBarsShown(false, true);
+         else if (instrumentBounds.getX() <= viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
+             viewport->setScrollBarsShown(true, false);
+     }
+     else
+         viewport->setScrollBarsShown(false, false);
+    }
 }
 
 //======================================================================================================
@@ -129,13 +159,17 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     instrumentName = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption);
     setName (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::caption));
     const int width = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::width);
+    showScrollbars = bool(CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::scrollbars));
     const int height = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::height);
     const String backgroundColourString = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
     lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
 
     backgroundColour = Colour::fromString (backgroundColourString);
+    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
     mainComponent.setColour (backgroundColour);
+
     setSize (width, height);
+
     repaint();
 }
 //======================================================================================================
@@ -594,6 +628,11 @@ void CabbagePluginEditor::enableEditMode (bool enable)
     layoutEditor.setEnabled (enable);
     editModeEnabled = enable;
     layoutEditor.toFront (false);
+//    if(enable)
+//        viewport->setViewedComponent(&layoutEditor, false);
+//    else
+//        viewport->setViewedComponent(&mainComponent, false);
+
 #endif
 }
 //======================================================================================================
@@ -654,12 +693,20 @@ void CabbagePluginEditor::addToEditorAndMakeVisible (Component* comp, ValueTree 
 {
     const String parent = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::parentcomponent);
 
+
     if (auto parentComp = getComponentFromName (parent))
     {
         parentComp->addAndMakeVisible (comp);
     }
     else
         mainComponent.addAndMakeVisible (comp);
+
+    if(comp->getWidth()+comp->getX() > mainComponent.getWidth())
+        instrumentBounds.setX(comp->getWidth()+comp->getX());
+
+    if(comp->getHeight()+comp->getY() > mainComponent.getHeight())
+        instrumentBounds.setY(comp->getHeight()+comp->getY());
+
 }
 
 void CabbagePluginEditor::addMouseListenerAndSetVisibility (Component* comp, ValueTree wData)

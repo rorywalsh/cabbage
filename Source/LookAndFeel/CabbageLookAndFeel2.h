@@ -66,6 +66,13 @@ public:
 
     void drawLabel (Graphics&, Label&) override;
 
+    void drawScrollbar (Graphics& g, ScrollBar& scrollbar, int x, int y, int width,
+                                             int height,
+                                             bool isScrollbarVertical,
+                                             int thumbStartPosition,
+                                             int thumbSize,
+                                             bool isMouseOver,
+                                             bool isMouseDown);
 
     void setDefaultFont(File fontFile);
 //    Font getTextButtonFont (TextButton&, int buttonHeight) override;

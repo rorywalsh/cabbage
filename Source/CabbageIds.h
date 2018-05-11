@@ -340,9 +340,10 @@ public:
         add ("radiogroup");
         add ("macronames");
         add ("ballcolour");
+        add ("scrollbars");
+        add ("cellheight");
         add ("menucolor");
         add ("cellwidth");
-        add ("cellheight");
         add ("popuptext");
         add ("textcolor");
         add ("fontstyle");

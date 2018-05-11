@@ -236,19 +236,43 @@ private:
         }
     };
 
+    class ViewportContainer : public Component
+    {
+
+    public:
+        ViewportContainer() : Component("CabbageViewportComponent")
+        {
+            this->setInterceptsMouseClicks(false, true);
+        }
+        ~ViewportContainer() {}
+
+        void paint(Graphics &g)
+        {
+            Viewport* const viewport = findParentComponentOfClass<Viewport>(); //Get the parent viewport
+            if(viewport != nullptr) //Check for nullness
+            {
+                juce::Rectangle<int> viewRect(viewport->getViewPositionX(), viewport->getViewPositionY(), viewport->getViewWidth(), viewport->getViewHeight()); //Get the current displayed area in the viewport
+            }
+        }
+    };
+
+    ScopedPointer<Viewport> viewport;
+    ScopedPointer<ViewportContainer> viewportContainer;
     OwnedArray<Component> components;
     OwnedArray<PopupDocumentWindow> popupPlants;
     String lastOpenedDirectory;
     MainComponent mainComponent;
     int keyboardCount = 0;
-    int xyPadIndex = 0;
+    //int xyPadIndex = 0;
     int consoleCount = 0;
+    bool showScrollbars = false;
     CabbageLookAndFeel2 lookAndFeel;
     int newlyAddedWidgetIndex = 10000;
     TooltipWindow tooltipWindow;
     bool editModeEnabled = false;
     CabbagePluginProcessor& processor;
     String instrumentName;
+    Point<int> instrumentBounds;
 
 #ifdef Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
