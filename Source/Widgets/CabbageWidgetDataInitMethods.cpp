@@ -509,6 +509,7 @@ void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channel, "texteditor");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::transparentBlack.toString());
     setProperty (widgetData, CabbageIdentifierIds::name, "texteditor");
     setProperty (widgetData, CabbageIdentifierIds::type, "texteditor");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");

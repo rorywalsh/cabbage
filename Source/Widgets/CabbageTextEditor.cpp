@@ -39,8 +39,8 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     textEditor.addKeyListener (this);
     textEditor.setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     textEditor.setColour (TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
-    textEditor.setColour (TextEditor::outlineColourId, Colours::transparentBlack);
-    textEditor.setColour (TextEditor::focusedOutlineColourId, Colours::transparentBlack);
+    textEditor.setColour (TextEditor::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
+    textEditor.setColour (TextEditor::focusedOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     textEditor.setText (getText(), dontSendNotification);
 }
@@ -99,8 +99,11 @@ bool CabbageTextEditor::keyPressed (const juce::KeyPress& key, Component*)
 
 void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
-    setColour (TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
+    textEditor.setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
+    textEditor.setColour (TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
+    textEditor.setColour (TextEditor::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour)));
+    textEditor.setColour (TextEditor::focusedOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour)));
+    textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     lookAndFeelChanged();
     repaint();
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
