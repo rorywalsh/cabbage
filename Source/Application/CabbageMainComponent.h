@@ -129,6 +129,7 @@ public:
     void timerCallback();
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
+    Uuid uniqueID;
 
 private:
     int getTabFileIndex (File file);

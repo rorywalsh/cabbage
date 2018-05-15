@@ -245,7 +245,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
         {
             const String filename = tabButton->getFilename();
-            int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (getCurrentCsdFile().getFullPathName(), -99));
+            int32 nodeId = int32 (nodeIdsForPlugins.getWithDefault (fileTabs[currentFileIndex]->getFilename(), -99));
 
             if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
             {
@@ -260,6 +260,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
                         w->setVisible (true);
                 }
             }
+
         }
 
     }
@@ -267,6 +268,12 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
     {
         this->saveDocument();
         setEditMode (true);
+        if(FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
+        {
+            tabButton->setToggleState(false, dontSendNotification);
+            tabButton->getPlayButton().getProperties().set("state", "off");
+        }
+
     }
 }
 
@@ -1326,7 +1333,6 @@ void CabbageMainComponent::runCsoundForNode (String file)
 
             if (node == -99)
             {
-                Uuid uniqueID;
                 node = int32 (*uniqueID.getRawData());
                 nodeIdsForPlugins.set (file, node);
             }
