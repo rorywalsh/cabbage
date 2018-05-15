@@ -70,7 +70,8 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
 			.replace("$gt;", ">"));
 
 		//inputFile.getParentDirectory().setAsCurrentWorkingDirectory();
-		setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate);
+		if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
+            this->suspendProcessing(true);
 
 		if (shouldCreateParameters)
 			createParameters();

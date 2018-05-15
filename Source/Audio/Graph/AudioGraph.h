@@ -64,7 +64,7 @@ public:
 
 
     int getNumPlugins() const noexcept;
-    void addPlugin (File inputFile, int32 nodeId);
+    bool addPlugin (File inputFile, int32 nodeId);
     AudioProcessorGraph::Node::Ptr createNode (const PluginDescription& desc, int32 uid);
     AudioProcessorGraph::Node* createCabbageNode (const PluginDescription& desc, int32 nodeId);
     AudioProcessorGraph::Node* createInternalNode (const PluginDescription& desc, int32 nodeId);

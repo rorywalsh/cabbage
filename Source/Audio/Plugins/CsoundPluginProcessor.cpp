@@ -64,7 +64,7 @@ void CsoundPluginProcessor::resetCsound()
 
 //==============================================================================
 //==============================================================================
-void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool debugMode)
+bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool debugMode)
 {
 	csound = new Csound();
 	csdFilePath = filePath;
@@ -147,6 +147,8 @@ void CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	}
 	else
 		CabbageUtilities::debug("Csound could not compile your file?");
+
+    return csdCompiledWithoutError();
 }
 
 

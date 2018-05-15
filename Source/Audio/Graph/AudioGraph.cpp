@@ -75,7 +75,7 @@ void AudioGraph::createInternalFilters()
 }
 
 //==============================================================================
-void AudioGraph::addPlugin (File inputFile, int32 nodeId)
+bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
 {
     for ( int i = 0 ; i < graph.getNumNodes() ; i++)
     {
@@ -86,16 +86,22 @@ void AudioGraph::addPlugin (File inputFile, int32 nodeId)
             //delete graph.getNodeForId(nodeId)->getProcessor();
             graph.removeNode (nodeId);
             AudioProcessorGraph::Node::Ptr node = createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
+            if(graph.getNodeForId(nodeId)->getProcessor()->isSuspended())
+                return false;
             setNodePosition (nodeId, position.getX(), position.getY());
             restoreConnectionsFromXml (*xml);
             xml = nullptr;
-            return;
+            return true;
         }
     }
 
     setChangedFlag (true);
-    createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
+    const AudioProcessorGraph::Node::Ptr node = createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
+    if(graph.getNodeForId(nodeId)->getProcessor()->isSuspended())
+        return false;
+
     setDefaultConnections (nodeId);
+    return true;
 }
 //==============================================================================
 const PluginDescription AudioGraph::getPluginDescriptor (String type, String name, int32 nodeId, String inputFile )

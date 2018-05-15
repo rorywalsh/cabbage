@@ -225,7 +225,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 {
     if (drawableButton->getName() == "playButton")
     {
-        if (drawableButton->getToggleState() == true)
+        if (drawableButton->getProperties().getWithDefault ("state", "") == "off")
             saveDocument();
         else
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
@@ -1139,7 +1139,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (recompile == true && getCurrentCsdFile().hasFileExtension ((".csd")))
         {
             runCsoundForNode (getCurrentCsdFile().getFullPathName());
-            fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
+            //fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
         }
 
         addInstrumentsAndRegionsToCombobox();
@@ -1342,9 +1342,19 @@ void CabbageMainComponent::runCsoundForNode (String file)
             }
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
-            audioGraph->addPlugin (getCurrentCsdFile(), node);
+            const bool pluginAdded = audioGraph->addPlugin (getCurrentCsdFile(), node);
             createEditorForAudioGraphNode (pos);
             startTimer (100);
+            if(pluginAdded==false)
+            {
+                fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+                fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+            }
+            else
+            {
+                fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "on");
+                fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+            }
             factory.togglePlay (true);
             graphComponent->updateComponents();
         }
@@ -1361,6 +1371,9 @@ void CabbageMainComponent::stopCsoundForNode (String file)
 
         if (audioGraph->getNodeForId (nodeId) != nullptr)
             audioGraph->getNodeForId (nodeId)->getProcessor()->suspendProcessing (true);
+
+        fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+        fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
     }
 }
 //==================================================================================

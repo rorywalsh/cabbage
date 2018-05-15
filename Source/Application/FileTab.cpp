@@ -32,7 +32,6 @@ FileTab::FileTab (String name, String filename, bool isCsdFile):
 
     addChildComponent (overlay);
     overlay.setVisible (false);
-    play.setClickingTogglesState (true);
     play.setName ("playButton");
 
 
@@ -44,8 +43,9 @@ FileTab::FileTab (String name, String filename, bool isCsdFile):
 
     play.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
     play.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
-    play.setClickingTogglesState (true);
+    play.setClickingTogglesState (false);
     play.getProperties().set ("filename", csdFile.getFullPathName());
+    play.getProperties().set ("state", "off");
 
     showEditor.setName ("showEditorButton");
     showEditor.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
