@@ -106,8 +106,11 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             if (File (cabbageSettings->getMostRecentFile (i).getFullPathName()).existsAsFile() &&
                 cabbageSettings->getMostRecentFile (i).getFullPathName() != lastOpenedFile)
             {
-                content->openFile (cabbageSettings->getMostRecentFile (i).getFullPathName(), false);
-                currentFiles.add (cabbageSettings->getMostRecentFile (i).getFullPathName());
+                if(!cabbageSettings->getMostRecentFile (i).hasFileExtension("cabbage"))
+                {
+                    content->openFile(cabbageSettings->getMostRecentFile(i).getFullPathName(), false);
+                    currentFiles.add(cabbageSettings->getMostRecentFile(i).getFullPathName());
+                }
             }
         }
 

@@ -58,7 +58,6 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
 
             if (newlyOpenedFile.existsAsFile())
             {
-                owner.getNodeIds().set (newlyOpenedFile.getFullPathName(), int32 (*uniqueID.getRawData()));
                 owner.runCsoundForNode (newlyOpenedFile.getFullPathName());
             }
         }
@@ -66,13 +65,11 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
         else if ( r > 1 && r < 10000)
         {
             owner.openFile (exampleFiles[r - 3000].getFullPathName());
-            owner.getNodeIds().set (exampleFiles[r - 3000].getFullPathName(), int32 (*uniqueID.getRawData()));
             owner.runCsoundForNode (exampleFiles[r - 3000].getFullPathName());
         }
 
         else if ( r >= 10000)
         {
-            owner.getNodeIds().set (userFiles[r - 10000].getFullPathName(), int32 (*uniqueID.getRawData()));
             owner.openFile (userFiles[r - 10000].getFullPathName());
             owner.runCsoundForNode (userFiles[r - 10000].getFullPathName());
         }

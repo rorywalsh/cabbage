@@ -27,6 +27,7 @@ class FileTab : public TextButton
     DrawableButton play, close, showEditor, editGUI;
     File csdFile;
 
+
     class Overlay : public Component
     {
     public:
@@ -59,4 +60,6 @@ public:
     DrawableButton& getShowEditorButton() {  return showEditor;  }
     DrawableButton& getCloseFileEditorButton() { return close;   }
     DrawableButton& getEditGUIButton() { return editGUI; }
+
+    int32 uniqueFileId = -99;
 };

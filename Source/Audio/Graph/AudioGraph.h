@@ -73,9 +73,10 @@ public:
     void setDefaultConnections (int nodeId);
     void createInternalFilters();
     void showCodeEditorForNode (int32 nodeId);
+    StringArray pluginFiles;
     void updateBusLayout (AudioProcessor* selectedProcessor);
     int getNumberOfParameters();
-    virtual void deletePlugin();
+    virtual void deletePlugins();
     static String getFilePatterns (const String& fileSuffix);
     void setXmlAudioSettings (XmlElement* xmlSettingsString);
     AudioDeviceSelectorComponent* getAudioDeviceSelector();

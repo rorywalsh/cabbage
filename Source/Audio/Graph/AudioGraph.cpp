@@ -53,7 +53,7 @@ AudioGraph::AudioGraph (CabbageMainComponent& owner_, PropertySet* settingsToUse
 
 AudioGraph::~AudioGraph()
 {
-    deletePlugin();
+    deletePlugins();
     shutDownAudioDevices();
     xmlSettings = nullptr;
 }
@@ -91,6 +91,7 @@ bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
             setNodePosition (nodeId, position.getX(), position.getY());
             restoreConnectionsFromXml (*xml);
             xml = nullptr;
+            pluginFiles.add(inputFile.getFullPathName());
             return true;
         }
     }
@@ -100,6 +101,7 @@ bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
     if(graph.getNodeForId(nodeId)->getProcessor()->isSuspended())
         return false;
 
+    pluginFiles.add(inputFile.getFullPathName());
     setDefaultConnections (nodeId);
     return true;
 }
@@ -123,12 +125,15 @@ const PluginDescription AudioGraph::getPluginDescriptor (String type, String nam
 //==============================================================================
 void AudioGraph::showCodeEditorForNode (int32 nodeId)
 {
-    for ( int i = 0 ; i < owner.getNodeIds().size() ; i++)
+    for ( int i = 0 ; i < owner.getNumberOfFileTabs() ; i++)
     {
-        if (int32 (owner.getNodeIds().getValueAt (i)) == nodeId)
+        if (int32 (owner.getFileTab(i)->uniqueFileId == nodeId))
         {
-            const String nodeFilename = owner.getNodeIds().getName (i).toString();
-            owner.bringCodeEditorToFront (File (nodeFilename));
+            AudioProcessorGraph::Node::Ptr n = graph.getNodeForId(nodeId);
+            const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
+
+
+            owner.bringCodeEditorToFront (owner.getFileTabForNodeId(nodeId));
         }
     }
 }
@@ -165,6 +170,7 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
         AudioProcessorGraph::Node* node = graph.addNode (processor, nodeId);
         ScopedPointer<XmlElement> xmlElem;
         xmlElem = desc.createXml();
+        node->properties.set ("pluginFile", desc.fileOrIdentifier);
         node->properties.set ("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
         node->properties.set ("pluginName", "Test");
         node->properties.set ("pluginDesc", xmlElem->createDocument (""));
@@ -240,7 +246,7 @@ void AudioGraph::updateBusLayout (AudioProcessor* selectedProcessor)
 }
 
 //==============================================================================
-void AudioGraph::deletePlugin()
+void AudioGraph::deletePlugins()
 {
     PluginWindow::closeAllCurrentlyOpenWindows();
     stopPlaying();
@@ -406,17 +412,20 @@ bool AudioGraph::addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
 void AudioGraph::removeFilter (const uint32 id)
 {
     PluginWindow::closeCurrentlyOpenWindowsFor (id);
+    AudioProcessorGraph::Node::Ptr n = graph.getNodeForId(id);
+
+    const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
 
     if (graph.removeNode (id))
     {
-        for ( int i = 0; i < owner.getNodeIds().size() ; i++)
-        {
-            if ( int32 (owner.getNodeIds().getValueAt (i)) == id)
-            {
-                owner.getNodeIds().remove (owner.getNodeIds().getName (i));
-                break;
-            }
-        }
+//        for ( int i = 0 ; i < owner.getNumberOfFileTabs() ; i++)
+//        {
+//            if (int32 (owner.getFileTab(i)->uniqueFileId == id))
+//            {
+//                remove file tab from array;
+//                break;
+//            }
+//        }
 
         changed();
 

@@ -81,6 +81,7 @@ public:
     void stopAudioGraph();
     void startAudioGraph();
     void bringCodeEditorToFront (File file);
+    void bringCodeEditorToFront (FileTab* tab);
     void updateEditorColourScheme();
     void addInstrumentsAndRegionsToCombobox();
     void insertCustomPlantToEditor(CabbagePluginEditor* editor);
@@ -98,6 +99,17 @@ public:
     void handleFileTab (FileTab* drawableButton, bool icrement = false) ;
     void addFileTab (File file);
     void arrangeFileTabs();
+    int getNumberOfFileTabs() {     return fileTabs.size();  };
+    FileTab* getFileTab(int index){  return fileTabs[index]; };
+    FileTab* getFileTabForNodeId(int32 nodeId)
+    {
+        for (auto &fileTab : fileTabs)
+        {
+            if(fileTab->uniqueFileId == nodeId)
+                return fileTab;
+        }
+        jassertfalse;
+    }
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -119,7 +131,6 @@ public:
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
     AudioGraph* getAudioGraph() {                return audioGraph;  }
-    NamedValueSet& getNodeIds() {                    return nodeIdsForPlugins;   }
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
@@ -129,9 +140,10 @@ public:
     void timerCallback();
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
-    Uuid uniqueID;
+    int duplicationIndex = 0;
 
 private:
+    int getTabFileIndex (int32 nodeId);
     int getTabFileIndex (File file);
     OwnedArray<FileTab> fileTabs;
     bool fileNeedsSaving = false;
@@ -156,8 +168,6 @@ private:
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
-    NamedValueSet nodeIdsForPlugins;
-
 
     class AudioGraphDocumentWindow : public DocumentWindow
     {
