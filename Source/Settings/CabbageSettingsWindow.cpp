@@ -293,6 +293,8 @@ void CabbageSettingsWindow::addMiscProperties()
 
     const int scrollBy = settings.getUserSettings()->getIntValue ("numberOfLinesToScroll");
     editorProps.add (new TextPropertyComponent (Value (scrollBy), "Editor lines to scroll with MouseWheel", 10, false));
+    const int sapcesInTabs = settings.getUserSettings()->getIntValue ("SpacesInTabs");
+    editorProps.add (new TextPropertyComponent (Value (sapcesInTabs), "Number of spaces in tab", 10, false));
 
     const String examplesDir = settings.getUserSettings()->getValue ("CabbageExamplesDir");
     const String manualDir = settings.getUserSettings()->getValue ("CsoundManualDir");
@@ -330,6 +332,8 @@ void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent*
         settings.getUserSettings()->setValue ("SSHHomeDir", comp->getValue().toString());
     else if (comp->getName() == "Editor lines to scroll with MouseWheel")
         settings.getUserSettings()->setValue ("numberOfLinesToScroll", comp->getValue().toString());
+    else if (comp->getName() == "Number of spaces in tab")
+        settings.getUserSettings()->setValue ("SpacesInTabs", comp->getValue().toString());
 }
 
 void CabbageSettingsWindow::resized()

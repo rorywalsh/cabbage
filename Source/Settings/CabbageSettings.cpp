@@ -87,6 +87,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("showTabs", 1);
     defaultPropSet->setValue ("showTabs", 1);
     defaultPropSet->setValue ("EnablePopupDisplay", 1);
+    defaultPropSet->setValue ("SpacesInTabs", 4);
     defaultPropSet->setValue ("ShowAutoComplete", 0);
     defaultPropSet->setValue ("ShowNativeFileDialogues", 1);
     defaultPropSet->setValue ("EnableNativePopup", 0);
