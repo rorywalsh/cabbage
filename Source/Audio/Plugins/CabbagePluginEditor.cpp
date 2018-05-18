@@ -35,7 +35,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
     setLookAndFeel (&lookAndFeel);
 
-    createEditorInterface (processor.cabbageWidgets);
+
 
     addAndMakeVisible(viewportContainer = new ViewportContainer());
 
@@ -48,6 +48,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
     setSize (400, 300);
 
+    createEditorInterface (processor.cabbageWidgets);
 #ifdef Cabbage_IDE_Build
     viewportContainer->addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&mainComponent);
