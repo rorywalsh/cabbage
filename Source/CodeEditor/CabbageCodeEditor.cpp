@@ -1044,6 +1044,7 @@ bool CabbageCodeEditorComponent::keyPressed (const KeyPress& key, Component* ori
             autoCompleteListBox.setVisible (false);
             return deleteBackwards (ctrlOrAltDown);
         }
+
         else  if (key.isKeyCode (KeyPress::upKey || key.isKeyCode (KeyPress::downKey)))
         {
             if (autoCompleteListBox.isVisible())

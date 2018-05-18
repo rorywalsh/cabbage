@@ -125,17 +125,24 @@ const PluginDescription AudioGraph::getPluginDescriptor (String type, String nam
 //==============================================================================
 void AudioGraph::showCodeEditorForNode (int32 nodeId)
 {
+    bool foundTabForNode = false;
     for ( int i = 0 ; i < owner.getNumberOfFileTabs() ; i++)
     {
         if (int32 (owner.getFileTab(i)->uniqueFileId == nodeId))
         {
-            AudioProcessorGraph::Node::Ptr n = graph.getNodeForId(nodeId);
-            const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
-
-
+            foundTabForNode = true;
             owner.bringCodeEditorToFront (owner.getFileTabForNodeId(nodeId));
         }
     }
+
+    if(foundTabForNode == false)
+    {
+        AudioProcessorGraph::Node::Ptr n = graph.getNodeForId(nodeId);
+        const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
+        owner.openFile(pluginFilename);
+        owner.getFileTab(owner.getCurrentFileIndex())->uniqueFileId = nodeId;
+    }
+
 }
 //==============================================================================
 AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& desc, int32 nodeId)

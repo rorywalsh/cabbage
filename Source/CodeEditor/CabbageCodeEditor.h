@@ -301,6 +301,9 @@ struct CustomTextEditorKeyMapper
         if (key == KeyPress ('z', ModifierKeys::commandModifier, 0))
             return target.undo();
 
+        if (key == KeyPress ('f', ModifierKeys::altModifier, 0))
+            return false;
+
         if (key == KeyPress ('y', ModifierKeys::commandModifier, 0)
             || key == KeyPress ('z', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0))
             return target.redo();

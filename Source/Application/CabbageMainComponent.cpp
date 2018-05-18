@@ -223,14 +223,16 @@ void CabbageMainComponent::bringCodeEditorToFront (File file)
 
 void CabbageMainComponent::bringCodeEditorToFront (FileTab* tab)
 {
+
     tab->setToggleState (true, sendNotification);
-    int fileIndex = 0;
+    int fileIndex = -1;
     for( int i = 0 ; i < fileTabs.size() ; i++)
     {
         if(fileTabs[i] == tab)
             fileIndex = i;
 
     }
+
     currentFileIndex = fileIndex;
 }
 
