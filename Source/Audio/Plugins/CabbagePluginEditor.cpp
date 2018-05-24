@@ -31,7 +31,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
       mainComponent()
 {
     setName ("PluginEditor");
-    instrumentBounds.setXY(400, 300);
+
 
     setLookAndFeel (&lookAndFeel);
 
@@ -57,6 +57,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     layoutEditor.toFront (false);
     layoutEditor.setInterceptsMouseClicks (true, true);
 #endif
+    resized();
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -168,7 +169,8 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     backgroundColour = Colour::fromString (backgroundColourString);
     lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
     mainComponent.setColour (backgroundColour);
-
+    mainComponent.setColour (backgroundColour);
+    instrumentBounds.setXY(width, height);
     setSize (width, height);
 
     repaint();
