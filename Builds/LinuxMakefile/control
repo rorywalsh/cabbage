@@ -1,5 +1,5 @@
 Package: Cabbage
 Version: 2.02
 Maintainer: Rory Walsh
-Architecture: Amd64
+Architecture: amd64
 Description: Audio software development toolkit
