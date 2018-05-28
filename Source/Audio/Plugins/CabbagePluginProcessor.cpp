@@ -889,9 +889,11 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
         if (identChannel.isNotEmpty())
         {
+            memset(&tmp_string[0], 0, sizeof(tmp_string));
             getCsound()->GetStringChannel (identChannel.toUTF8(), tmp_string);
-            const String identifierText (tmp_string);
 
+            const String identifierText (tmp_string);
+            //CabbageUtilities::debug(identifierText);
             if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
             {
                 CabbageWidgetData::setCustomWidgetState (cabbageWidgets.getChild (i), " " + identifierText);

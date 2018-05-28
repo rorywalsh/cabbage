@@ -76,6 +76,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **MOUSE_DOWN_RIGHT** Returns the current state of the right mouse button; 1 if pressed, and 0 if not. 
 
+**LAST_FILE_DROPPED** This will hold the name of the last file dragged and released on the plugin window. 
+
 **IS_A_PLUGIN** Returns 1 if the instrument is running as an audio plugin, and 0 if the instrument is running as a standalone. 
 
 > More info on how to use reserved channels to get information from an audio host to Csound can be found [here](host_info.html)

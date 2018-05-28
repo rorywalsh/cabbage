@@ -1142,6 +1142,7 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
 void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 {
 
+
     if (saveAs == true)
     {
 
@@ -1173,6 +1174,18 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
     }
     else
     {
+        //check if file is part of installed example, prevent overwriting...
+        String examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
+
+#if defined(LINUX)
+        //manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
+        examplesDir = "/usr/share/doc/cabbage/Examples";
+#elif defined(MACOSX)
+    examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
+#endif
+
+
+
         stopCsoundForNode (getCurrentCsdFile().getFullPathName());;
         isGUIEnabled = false;
 
@@ -1181,6 +1194,11 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
         if (getCurrentCodeEditor()->hasFileChanged())
         {
+            if(getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
+                CabbageUtilities::showMessage("You cannot save over an example file. Please use save-as instead", lookAndFeel);
+                return;
+            }
+
             if (getCurrentCsdFile().existsAsFile())
                 getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
         }
