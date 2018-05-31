@@ -86,8 +86,8 @@ bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
             //delete graph.getNodeForId(nodeId)->getProcessor();
             graph.removeNode (nodeId);
             AudioProcessorGraph::Node::Ptr node = createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
-            if(graph.getNodeForId(nodeId)->getProcessor()->isSuspended())
-                return false;
+            //if(graph.getNodeForId(nodeId)->getProcessor()->isSuspended())
+            //    return false;
             setNodePosition (nodeId, position.getX(), position.getY());
             restoreConnectionsFromXml (*xml);
             xml = nullptr;
