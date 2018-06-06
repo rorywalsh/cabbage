@@ -186,6 +186,8 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
         subM.addItem (25, "Vertical Meter");
         menu.addSubMenu( "Meters", subM);
 
+        subM.clear();
+        
         menu.addItem (14, "Signal Display");
 
         subM.addItem (15, "Slider - Horizontal");
