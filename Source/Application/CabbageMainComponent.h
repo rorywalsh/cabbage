@@ -198,7 +198,7 @@ private:
 //==============================================================================
 class CabbageMainComponent::FindPanel  : public Component,
     private TextEditor::Listener,
-    private ButtonListener
+private Button::Listener
 {
 public:
     FindPanel (String searchString, bool isCaseSensitive, bool withReplace)

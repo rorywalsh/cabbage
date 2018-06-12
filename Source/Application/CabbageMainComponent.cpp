@@ -1024,7 +1024,7 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
 
     if (File (filename).existsAsFile() == false)
     {
-        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.csd;*.*", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.csd;*", CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {

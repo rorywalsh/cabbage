@@ -157,6 +157,37 @@ public:
         }
 
         pluginHolder->stopPlaying();
+        
+#ifdef JUCE_IOS
+        const String csdText = "<Cabbage>\n"
+        "form size(1000, 800), colour(\"red)\n"
+        "label bounds(10, 10, 800, 200), text(\"Hello\")\n"
+        "</Cabbage>\n"
+        "<CsoundSynthesizer>\n"
+        "<CsOptions>\n"
+        "-odac\n"
+        "</CsOptions>\n"
+        "<CsInstruments>\n"
+        "sr = 44100\n"
+        "ksmps = 64\n"
+        "nchnls = 2\n"
+        "0dbfs = 1\n"
+        "\n"
+        "instr 1\n"
+        "a1 oscili 1, 400\n"
+        "outs a1, a1  \n"
+        "endin\n"
+        "\n"
+        "</CsInstruments>\n"
+        "<CsScore>\n"
+        "i1 0 z\n"
+        "</CsScore>\n"
+        "</CsoundSynthesizer>";
+        File tempFile(File::getSpecialLocation(File::SpecialLocationType::tempDirectory).getFullPathName()+"test.csd");
+        tempFile.replaceWithText(csdText);
+        CabbageUtilities::debug(tempFile.loadFileAsString());
+        resetPlugin(tempFile);
+#endif
     }
 
     const String getPluginId (File csdFile)

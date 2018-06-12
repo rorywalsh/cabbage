@@ -67,7 +67,7 @@ class CabbagePluginEditor
       public Button::Listener,
       public ChangeBroadcaster,
       public ActionBroadcaster,
-      public ComboBoxListener,
+      public ComboBox::Listener,
       public Slider::Listener,
       public FileDragAndDropTarget
 {

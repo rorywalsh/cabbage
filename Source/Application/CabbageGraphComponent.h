@@ -26,6 +26,7 @@
 
 class CabbageMainComponent;
 
+
 class CabbageGraphComponent : public Component,
     public ChangeListener
 {
@@ -38,6 +39,10 @@ public:
 
     void createNewPlugin (const PluginDescription* desc, int x, int y);
 
+    OwnedArray<CabbagePluginComponent> nodes;
+    OwnedArray<ConnectorComponent> connectors;
+
+    
     CabbagePluginComponent* getComponentForFilter (uint32 filterID) const;
     ConnectorComponent* getComponentForConnection (const AudioProcessorGraph::Connection& conn) const;
     PinComponent* findPinAt (int x, int y) const;
