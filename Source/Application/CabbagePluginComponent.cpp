@@ -180,20 +180,14 @@ void CabbagePluginComponent::resized()
     }
 }
 
-void CabbagePluginComponent::getPinPos (const int index, const bool isInput, float& x, float& y)
+
+Point<float> CabbagePluginComponent::getPinPos (int index, bool isInput) const
 {
-    for (int i = 0; i < getNumChildComponents(); ++i)
-    {
-        if (PinComponent* const pc = dynamic_cast<PinComponent*> (getChildComponent (i)))
-        {
-            if (pc->index == index && isInput == pc->isInput)
-            {
-                x = getX() + pc->getX() + pc->getWidth() * 0.5f;
-                y = getY() + pc->getY() + pc->getHeight() * 0.5f;
-                break;
-            }
-        }
-    }
+    for (auto* pin : pins)
+        if (pin->index == index && isInput == pin->isInput)
+            return getPosition().toFloat() + pin->getBounds().getCentre().toFloat();
+    
+    return {};
 }
 
 void CabbagePluginComponent::update()
@@ -251,16 +245,16 @@ void CabbagePluginComponent::update()
         int i;
 
         for (i = 0; i < f->getProcessor()->getTotalNumInputChannels(); ++i)
-            addAndMakeVisible (new PinComponent (graph, filterID, i, true));
+            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, i, true)));
 
         if (f->getProcessor()->acceptsMidi())
-            addAndMakeVisible (new PinComponent (graph, filterID, AudioGraph::midiChannelNumber, true));
+            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, AudioGraph::midiChannelNumber, true)));
 
         for (i = 0; i < f->getProcessor()->getTotalNumOutputChannels(); ++i)
-            addAndMakeVisible (new PinComponent (graph, filterID, i, false));
+            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, i, false)));
 
         if (f->getProcessor()->producesMidi())
-            addAndMakeVisible (new PinComponent (graph, filterID, AudioGraph::midiChannelNumber, false));
+            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, AudioGraph::midiChannelNumber, false)));
 
         resized();
     }
@@ -288,101 +282,99 @@ ConnectorComponent::ConnectorComponent (AudioGraph& graph_)
     setAlwaysOnTop (true);
 }
 
-void ConnectorComponent::setInput (const uint32 sourceFilterID_, const int sourceFilterChannel_)
+void ConnectorComponent::setInput (AudioProcessorGraph::NodeAndChannel newSource)
 {
-    if (sourceFilterID != sourceFilterID_ || sourceFilterChannel != sourceFilterChannel_)
+    if (connection.source != newSource)
     {
-        sourceFilterID = sourceFilterID_;
-        sourceFilterChannel = sourceFilterChannel_;
+        connection.source = newSource;
         update();
     }
 }
 
-void ConnectorComponent::setOutput (const uint32 destFilterID_, const int destFilterChannel_)
+void ConnectorComponent::setOutput (AudioProcessorGraph::NodeAndChannel newDest)
 {
-    if (destFilterID != destFilterID_ || destFilterChannel != destFilterChannel_)
+    if (connection.destination != newDest)
     {
-        destFilterID = destFilterID_;
-        destFilterChannel = destFilterChannel_;
+        connection.destination = newDest;
         update();
     }
 }
 
-void ConnectorComponent::dragStart (int x, int y)
+//void ConnectorComponent::setInput (const uint32 sourceFilterID_, const int sourceFilterChannel_)
+//{
+//    if (sourceFilterID != sourceFilterID_ || sourceFilterChannel != sourceFilterChannel_)
+//    {
+//        sourceFilterID = sourceFilterID_;
+//        sourceFilterChannel = sourceFilterChannel_;
+//        update();
+//    }
+//}
+//
+//void ConnectorComponent::setOutput (const uint32 destFilterID_, const int destFilterChannel_)
+//{
+//    if (destFilterID != destFilterID_ || destFilterChannel != destFilterChannel_)
+//    {
+//        destFilterID = destFilterID_;
+//        destFilterChannel = destFilterChannel_;
+//        update();
+//    }
+//}
+
+void ConnectorComponent::dragStart (Point<float> pos)
 {
-    lastInputX = (float) x;
-    lastInputY = (float) y;
+    lastInputPos = pos;
     resizeToFit();
 }
 
-void ConnectorComponent::dragEnd (int x, int y)
+void ConnectorComponent::dragEnd (Point<float> pos)
 {
-    lastOutputX = (float) x;
-    lastOutputY = (float) y;
+    lastOutputPos = pos;
     resizeToFit();
 }
 
 void ConnectorComponent::update()
 {
-    float x1, y1, x2, y2;
-    getPoints (x1, y1, x2, y2);
-
-    if (lastInputX != x1
-        || lastInputY != y1
-        || lastOutputX != x2
-        || lastOutputY != y2)
-    {
+    Point<float> p1, p2;
+    getPoints (p1, p2);
+    
+    if (lastInputPos != p1 || lastOutputPos != p2)
         resizeToFit();
-    }
 }
 
 void ConnectorComponent::resizeToFit()
 {
-    float x1, y1, x2, y2;
-    getPoints (x1, y1, x2, y2);
-
-    const Rectangle<int> newBounds ((int) jmin (x1, x2) - 4,
-                                    (int) jmin (y1, y2) - 4,
-                                    (int) std::abs (x1 - x2) + 8,
-                                    (int) std::abs (y1 - y2) + 8);
-
+    Point<float> p1, p2;
+    getPoints (p1, p2);
+    
+    auto newBounds = Rectangle<float> (p1, p2).expanded (4.0f).getSmallestIntegerContainer();
+    
     if (newBounds != getBounds())
         setBounds (newBounds);
     else
         resized();
-
+    
     repaint();
 }
 
-void ConnectorComponent::getPoints (float& x1, float& y1, float& x2, float& y2) const
+void ConnectorComponent::getPoints (Point<float>& p1, Point<float>& p2) const
 {
-    x1 = lastInputX;
-    y1 = lastInputY;
-    x2 = lastOutputX;
-    y2 = lastOutputY;
-
-    if (CabbageGraphComponent* const hostPanel = getCabbageGraphComponent())
-    {
-        if (CabbagePluginComponent* srcFilterComp = hostPanel->getComponentForFilter (sourceFilterID))
-            srcFilterComp->getPinPos (sourceFilterChannel, false, x1, y1);
-
-        if (CabbagePluginComponent* dstFilterComp = hostPanel->getComponentForFilter (destFilterID))
-            dstFilterComp->getPinPos (destFilterChannel, true, x2, y2);
-    }
+    p1 = lastInputPos;
+    p2 = lastOutputPos;
+    
+    if (auto* src = getCabbageGraphComponent()->getComponentForFilter (connection.source.nodeID))
+        p1 = src->getPinPos (connection.source.channelIndex, false);
+    
+    if (auto* dest = getCabbageGraphComponent()->getComponentForFilter (connection.destination.nodeID))
+        p2 = dest->getPinPos (connection.destination.channelIndex, true);
 }
 
 void ConnectorComponent::paint (Graphics& g)
 {
-    if (sourceFilterChannel == AudioGraph::midiChannelNumber
-        || destFilterChannel == AudioGraph::midiChannelNumber)
-    {
+    if (connection.source.isMIDI() || connection.destination.isMIDI())
         g.setColour (Colours::red);
-    }
     else
-    {
         g.setColour (Colours::green);
-    }
-
+    
     g.fillPath (linePath);
 }
 
@@ -391,7 +383,7 @@ bool ConnectorComponent::hitTest (int x, int y)
     if (hitPath.contains ((float) x, (float) y))
     {
         double distanceFromStart, distanceFromEnd;
-        getDistancesFromEnds (x, y, distanceFromStart, distanceFromEnd);
+        getDistancesFromEnds (Point<float>(x, y), distanceFromStart, distanceFromEnd);
 
         // avoid clicking the connector when over a pin
         return distanceFromStart > 7.0 && distanceFromEnd > 7.0;
@@ -414,19 +406,19 @@ void ConnectorComponent::mouseDrag (const MouseEvent& e)
     else if (e.mouseWasDraggedSinceMouseDown())
     {
         dragging = true;
-
-        graph.removeConnection (sourceFilterID, sourceFilterChannel, destFilterID, destFilterChannel);
-
+        
+        graph.graph.removeConnection (connection);
+        
         double distanceFromStart, distanceFromEnd;
-        getDistancesFromEnds (e.x, e.y, distanceFromStart, distanceFromEnd);
+        getDistancesFromEnds (Point<float>(e.x, e.y), distanceFromStart, distanceFromEnd);
         const bool isNearerSource = (distanceFromStart < distanceFromEnd);
+        AudioProcessorGraph::NodeAndChannel dummy { 0, 0 };
+        getCabbageGraphComponent()->beginConnectorDrag (isNearerSource ? dummy : connection.source,
+                                                       isNearerSource ? connection.destination : dummy,
+                                                       e);
 
-        getCabbageGraphComponent()->beginConnectorDrag (isNearerSource ? 0 : sourceFilterID,
-                                                        sourceFilterChannel,
-                                                        isNearerSource ? destFilterID : 0,
-                                                        destFilterChannel,
-                                                        e);
     }
+    
 }
 
 void ConnectorComponent::mouseUp (const MouseEvent& e)
@@ -437,44 +429,39 @@ void ConnectorComponent::mouseUp (const MouseEvent& e)
 
 void ConnectorComponent::resized()
 {
-    float x1, y1, x2, y2;
-    getPoints (x1, y1, x2, y2);
-
-    lastInputX = x1;
-    lastInputY = y1;
-    lastOutputX = x2;
-    lastOutputY = y2;
-
-    x1 -= getX();
-    y1 -= getY();
-    x2 -= getX();
-    y2 -= getY();
+    Point<float> p1, p2;
+    getPoints (p1, p2);
+    
+    lastInputPos = p1;
+    lastOutputPos = p2;
+    
+    p1 -= getPosition().toFloat();
+    p2 -= getPosition().toFloat();
 
     linePath.clear();
-    linePath.startNewSubPath (x1, y1);
-    linePath.cubicTo (x1, y1 + (y2 - y1) * 0.33f,
-                      x2, y1 + (y2 - y1) * 0.66f,
-                      x2, y2);
-
-    PathStrokeType wideStroke (8.0f);
+    linePath.startNewSubPath (p1);
+    linePath.cubicTo (p1.x, p1.y + (p2.y - p1.y) * 0.33f,
+                      p2.x, p1.y + (p2.y - p1.y) * 0.66f,
+                      p2.x, p2.y);
+    
+    PathStrokeType wideStroke (5.0f);
     wideStroke.createStrokedPath (hitPath, linePath);
-
-    PathStrokeType stroke (2.5f);
+    
+    PathStrokeType stroke (1.5f);
     stroke.createStrokedPath (linePath, linePath);
-
-    const float arrowW = 5.0f;
-    const float arrowL = 4.0f;
-
+    
+    auto arrowW = 5.0f;
+    auto arrowL = 4.0f;
+    
     Path arrow;
     arrow.addTriangle (-arrowL, arrowW,
                        -arrowL, -arrowW,
                        arrowL, 0.0f);
-
+    
     arrow.applyTransform (AffineTransform()
-                          .rotated (float_Pi * 0.5f - (float) atan2 (x2 - x1, y2 - y1))
-                          .translated ((x1 + x2) * 0.5f,
-                                       (y1 + y2) * 0.5f));
-
+                          .rotated (MathConstants<float>::halfPi - (float) atan2 (p2.x - p1.x, p2.y - p1.y))
+                          .translated ((p1 + p2) * 0.5f));
+    
     linePath.addPath (arrow);
     linePath.setUsingNonZeroWinding (true);
 }
@@ -541,11 +528,10 @@ void PinComponent::paint (Graphics& g)
 
 void PinComponent::mouseDown (const MouseEvent& e)
 {
-    getCabbageGraphComponent()->beginConnectorDrag (isInput ? 0 : filterID,
-                                                    index,
-                                                    isInput ? filterID : 0,
-                                                    index,
-                                                    e);
+    AudioProcessorGraph::NodeAndChannel dummy { 0, 0 };
+    AudioProcessorGraph::NodeAndChannel filter { filterID, index };
+    getCabbageGraphComponent()->beginConnectorDrag ((isInput ? dummy : filter),
+        (isInput ? filter : dummy), e);    
 }
 
 void PinComponent::mouseDrag (const MouseEvent& e)

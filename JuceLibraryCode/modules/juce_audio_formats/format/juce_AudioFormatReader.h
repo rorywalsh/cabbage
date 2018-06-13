@@ -38,6 +38,8 @@ class AudioFormat;
     an AudioFormat object.
 
     @see AudioFormat, AudioFormatWriter
+
+    @tags{Audio}
 */
 class JUCE_API  AudioFormatReader
 {
@@ -111,14 +113,14 @@ public:
                int numSamplesToRead,
                bool fillLeftoverChannelsWithCopies);
 
-    /** Fills a section of an AudioSampleBuffer from this reader.
+    /** Fills a section of an AudioBuffer from this reader.
 
         This will convert the reader's fixed- or floating-point data to
         the buffer's floating-point format, and will try to intelligently
         cope with mismatches between the number of channels in the reader
         and the buffer.
     */
-    void read (AudioSampleBuffer* buffer,
+    void read (AudioBuffer<float>* buffer,
                int startSampleInDestBuffer,
                int numSamples,
                int64 readerStartSample,
@@ -254,8 +256,8 @@ protected:
     template <class DestSampleType, class SourceSampleType, class SourceEndianness>
     struct ReadHelper
     {
-        typedef AudioData::Pointer<DestSampleType, AudioData::NativeEndian, AudioData::NonInterleaved, AudioData::NonConst>    DestType;
-        typedef AudioData::Pointer<SourceSampleType, SourceEndianness, AudioData::Interleaved, AudioData::Const>               SourceType;
+        using DestType   = AudioData::Pointer<DestSampleType,   AudioData::NativeEndian, AudioData::NonInterleaved, AudioData::NonConst>;
+        using SourceType = AudioData::Pointer<SourceSampleType, SourceEndianness, AudioData::Interleaved, AudioData::Const>;
 
         template <typename TargetType>
         static void read (TargetType* const* destData, int destOffset, int numDestChannels,

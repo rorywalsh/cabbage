@@ -163,8 +163,8 @@ struct VideoComponent::Pimpl  : public Component
     Pimpl()  : videoLoaded (false)
     {
         setOpaque (true);
-        context = new DirectShowContext (*this);
-        componentWatcher = new ComponentWatcher (*this);
+        context.reset (new DirectShowContext (*this));
+        componentWatcher.reset (new ComponentWatcher (*this));
     }
 
     ~Pimpl()
@@ -343,7 +343,7 @@ private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComponentWatcher)
     };
 
-    ScopedPointer<ComponentWatcher> componentWatcher;
+    std::unique_ptr<ComponentWatcher> componentWatcher;
 
     //======================================================================
     struct DirectShowContext    : public AsyncUpdater
@@ -462,7 +462,7 @@ private:
             {
                 if (SystemStats::getOperatingSystemType() >= SystemStats::WinVista)
                 {
-                    videoRenderer = new VideoRenderers::EVR();
+                    videoRenderer.reset (new VideoRenderers::EVR());
                     hr = videoRenderer->create (graphBuilder, baseFilter, hwnd);
 
                     if (FAILED (hr))
@@ -471,7 +471,7 @@ private:
 
                 if (videoRenderer == nullptr)
                 {
-                    videoRenderer = new VideoRenderers::VMR7();
+                    videoRenderer.reset (new VideoRenderers::VMR7());
                     hr = videoRenderer->create (graphBuilder, baseFilter, hwnd);
                 }
             }
@@ -689,7 +689,7 @@ private:
         ComSmartPtr<IBasicAudio> basicAudio;
         ComSmartPtr<IBaseFilter> baseFilter;
 
-        ScopedPointer<VideoRenderers::Base> videoRenderer;
+        std::unique_ptr<VideoRenderers::Base> videoRenderer;
 
         bool hasVideo = false, needToUpdateViewport = true, needToRecreateNativeWindow = false;
 
@@ -700,7 +700,7 @@ private:
 
             if (auto* topLevelPeer = component.getTopLevelComponent()->getPeer())
             {
-                nativeWindow = new NativeWindow ((HWND) topLevelPeer->getNativeHandle(), this);
+                nativeWindow.reset (new NativeWindow ((HWND) topLevelPeer->getNativeHandle(), this));
 
                 hwnd = nativeWindow->hwnd;
 
@@ -772,7 +772,7 @@ private:
             bool isRegistered() const noexcept              { return atom != 0; }
             LPCTSTR getWindowClassName() const noexcept     { return (LPCTSTR) (pointer_sized_uint) MAKELONG (atom, 0); }
 
-            juce_DeclareSingleton_SingleThreaded_Minimal (NativeWindowClass)
+            JUCE_DECLARE_SINGLETON_SINGLETHREADED_MINIMAL (NativeWindowClass)
 
         private:
             NativeWindowClass()
@@ -879,14 +879,14 @@ private:
             JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NativeWindow)
         };
 
-        ScopedPointer<NativeWindow> nativeWindow;
+        std::unique_ptr<NativeWindow> nativeWindow;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DirectShowContext)
     };
 
-    ScopedPointer<DirectShowContext> context;
+    std::unique_ptr<DirectShowContext> context;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pimpl)
 };
 
-juce_ImplementSingleton_SingleThreaded (VideoComponent::Pimpl::DirectShowContext::NativeWindowClass)
+JUCE_IMPLEMENT_SINGLETON (VideoComponent::Pimpl::DirectShowContext::NativeWindowClass)

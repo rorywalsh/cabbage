@@ -44,6 +44,8 @@ class OpenGLTexture;
     stop and the native resources to be freed safely.
 
     @see OpenGLRenderer
+
+    @tags{OpenGL}
 */
 class JUCE_API  OpenGLContext
 {
@@ -321,7 +323,7 @@ private:
     NativeContext* nativeContext = nullptr;
     OpenGLRenderer* renderer = nullptr;
     double currentRenderScale = 1.0;
-    ScopedPointer<Attachment> attachment;
+    std::unique_ptr<Attachment> attachment;
     OpenGLPixelFormat openGLPixelFormat;
     void* contextToShareWith = nullptr;
     OpenGLVersion versionRequired = defaultGLVersion;
@@ -332,7 +334,7 @@ private:
     //==============================================================================
     struct AsyncWorker  : public ReferenceCountedObject
     {
-        typedef ReferenceCountedObjectPtr<AsyncWorker> Ptr;
+        using Ptr = ReferenceCountedObjectPtr<AsyncWorker>;
         virtual void operator() (OpenGLContext&) = 0;
         virtual ~AsyncWorker() {}
     };

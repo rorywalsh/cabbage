@@ -135,7 +135,7 @@ public:
     void restoreConnectionsFromXml (const XmlElement& xml);
 
     OptionalScopedPointer<PropertySet> settings;
-
+    vector<AudioProcessorGraph::Connection> getConnections() { return graph.getConnections(); };
     AudioProcessorGraph graph;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
@@ -197,7 +197,6 @@ public:
 
     void moved() override;
     void closeButtonPressed() override;
-
 
 private:
     AudioProcessorGraph& graph;

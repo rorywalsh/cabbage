@@ -156,8 +156,8 @@ private:
 
         static void initialise (OpenGLFrameBuffer& frameBuffer, Image::BitmapData& bitmapData, int x, int y)
         {
-            DataReleaser* r = new DataReleaser (frameBuffer, x, y, bitmapData.width, bitmapData.height);
-            bitmapData.dataReleaser = r;
+            auto* r = new DataReleaser (frameBuffer, x, y, bitmapData.width, bitmapData.height);
+            bitmapData.dataReleaser.reset (r);
 
             bitmapData.data = (uint8*) r->data.get();
             bitmapData.lineStride = (bitmapData.width * bitmapData.pixelStride + 3) & ~3;
@@ -187,7 +187,7 @@ ImagePixelData::Ptr OpenGLImageType::create (Image::PixelFormat, int width, int 
     OpenGLContext* currentContext = OpenGLContext::getCurrentContext();
     jassert (currentContext != nullptr); // an OpenGL image can only be created when a valid context is active!
 
-    ScopedPointer<OpenGLFrameBufferImage> im (new OpenGLFrameBufferImage (*currentContext, width, height));
+    std::unique_ptr<OpenGLFrameBufferImage> im (new OpenGLFrameBufferImage (*currentContext, width, height));
 
     if (! im->initialise())
         return ImagePixelData::Ptr();

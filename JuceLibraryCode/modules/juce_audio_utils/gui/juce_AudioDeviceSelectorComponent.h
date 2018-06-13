@@ -35,11 +35,11 @@ namespace juce
     Very easy to use - just create one of these and show it to the user.
 
     @see AudioDeviceManager
+
+    @tags{Audio}
 */
 class JUCE_API  AudioDeviceSelectorComponent  : public Component,
                                                 private ChangeListener,
-                                                private ComboBox::Listener,
-                                                private Button::Listener,
                                                 private Timer
 {
 public:
@@ -95,12 +95,9 @@ public:
 
 private:
     //==============================================================================
-    void buttonClicked (Button*) override;
-
-    //==============================================================================
-    ScopedPointer<ComboBox> deviceTypeDropDown;
-    ScopedPointer<Label> deviceTypeDropDownLabel;
-    ScopedPointer<Component> audioDeviceSettingsComp;
+    std::unique_ptr<ComboBox> deviceTypeDropDown;
+    std::unique_ptr<Label> deviceTypeDropDownLabel;
+    std::unique_ptr<Component> audioDeviceSettingsComp;
     String audioDeviceSettingsCompType;
     int itemHeight;
     const int minOutputChannels, maxOutputChannels, minInputChannels, maxInputChannels;
@@ -109,12 +106,14 @@ private:
 
     class MidiInputSelectorComponentListBox;
     friend struct ContainerDeletePolicy<MidiInputSelectorComponentListBox>;
-    ScopedPointer<MidiInputSelectorComponentListBox> midiInputsList;
-    ScopedPointer<ComboBox> midiOutputSelector;
-    ScopedPointer<Label> midiInputsLabel, midiOutputLabel;
-    ScopedPointer<TextButton> bluetoothButton;
+    std::unique_ptr<MidiInputSelectorComponentListBox> midiInputsList;
+    std::unique_ptr<ComboBox> midiOutputSelector;
+    std::unique_ptr<Label> midiInputsLabel, midiOutputLabel;
+    std::unique_ptr<TextButton> bluetoothButton;
 
-    void comboBoxChanged (ComboBox*) override;
+    void handleBluetoothButton();
+    void updateDeviceType();
+    void updateMidiOutput();
     void changeListenerCallback (ChangeBroadcaster*) override;
     void updateAllControls();
 

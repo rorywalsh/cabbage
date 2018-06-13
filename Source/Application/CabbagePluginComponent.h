@@ -13,6 +13,7 @@
 
 #include "../Audio/Graph/AudioGraph.h"
 class CabbageGraphComponent;
+class PinComponent;
 
 //==============================================================================
 class CabbagePluginComponent    : public Component
@@ -26,11 +27,12 @@ public:
     bool hitTest (int x, int y) override;
     void paint (Graphics& g) override;
     void resized() override;
-    void getPinPos (const int index, const bool isInput, float& x, float& y);
+    Point<float> getPinPos (int index, bool isInput) const;
     void update();
     AudioGraph& graph;
     const uint32 filterID;
     int numInputs, numOutputs;
+    OwnedArray<PinComponent> pins;
 
 private:
     int pinSize;
@@ -52,13 +54,13 @@ class ConnectorComponent   : public Component,
 public:
     ConnectorComponent (AudioGraph& graph_);
 
-    void setInput (const uint32 sourceFilterID_, const int sourceFilterChannel_);
-    void setOutput (const uint32 destFilterID_, const int destFilterChannel_);
-    void dragStart (int x, int y);
-    void dragEnd (int x, int y);
+    void setInput (AudioProcessorGraph::NodeAndChannel newSource);
+    void setOutput (AudioProcessorGraph::NodeAndChannel newDest);
+    void dragStart (Point<float> pos);
+    void dragEnd (Point<float> pos);
     void update();
     void resizeToFit();
-    void getPoints (float& x1, float& y1, float& x2, float& y2) const;
+    void getPoints (Point<float>& p1, Point<float>& p2) const;
     void paint (Graphics& g) override;
     bool hitTest (int x, int y) override;
     void mouseDown (const MouseEvent&) override;
@@ -68,22 +70,25 @@ public:
 
     uint32 sourceFilterID, destFilterID;
     int sourceFilterChannel, destFilterChannel;
-
+    AudioProcessorGraph::Connection connection { { 0, 0 }, { 0, 0 } };
+    Point<float> lastInputPos, lastOutputPos;
+    
 private:
     AudioGraph& graph;
+    
     float lastInputX, lastInputY, lastOutputX, lastOutputY;
     Path linePath, hitPath;
     bool dragging;
 
     CabbageGraphComponent* getCabbageGraphComponent() const noexcept;
 
-    void getDistancesFromEnds (int x, int y, double& distanceFromStart, double& distanceFromEnd) const
+    void getDistancesFromEnds (Point<float> p, double& distanceFromStart, double& distanceFromEnd) const
     {
-        float x1, y1, x2, y2;
-        getPoints (x1, y1, x2, y2);
-
-        distanceFromStart = juce_hypot (x - (x1 - getX()), y - (y1 - getY()));
-        distanceFromEnd = juce_hypot (x - (x2 - getX()), y - (y2 - getY()));
+        Point<float> p1, p2;
+        getPoints (p1, p2);
+        
+        distanceFromStart = p1.getDistanceFrom (p);
+        distanceFromEnd   = p2.getDistanceFrom (p);
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ConnectorComponent)

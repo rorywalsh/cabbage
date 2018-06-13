@@ -76,7 +76,7 @@ public:
     class SharedKeyWindow : public ReferenceCountedObject
     {
     public:
-        typedef ReferenceCountedObjectPtr<SharedKeyWindow> Ptr;
+        using Ptr = ReferenceCountedObjectPtr<SharedKeyWindow>;
 
         //==============================================================================
         Window getHandle()    { return keyProxy; }
@@ -523,7 +523,7 @@ private:
                     if (allowResize)
                         configureNotify();
                     else
-                        MessageManager::callAsync([this] () {componentMovedOrResized (owner, true, true);});
+                        MessageManager::callAsync ([this] {componentMovedOrResized (owner, true, true);});
 
                     return true;
             }

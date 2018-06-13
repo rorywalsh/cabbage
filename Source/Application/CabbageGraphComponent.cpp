@@ -109,20 +109,21 @@ ConnectorComponent* CabbageGraphComponent::getComponentForConnection (const Audi
     return nullptr;
 }
 
-PinComponent* CabbageGraphComponent::findPinAt (const int x, const int y) const
+PinComponent* CabbageGraphComponent::findPinAt (Point<float> pos) const
 {
-    for (int i = getNumChildComponents(); --i >= 0;)
+    for (auto* fc : nodes)
     {
-        if (CabbagePluginComponent* fc = dynamic_cast<CabbagePluginComponent*> (getChildComponent (i)))
-        {
-            if (PinComponent* pin = dynamic_cast<PinComponent*> (fc->getComponentAt (x - fc->getX(),
-                                                                                     y - fc->getY())))
-                return pin;
-        }
+        // NB: A Visual Studio optimiser error means we have to put this Component* in a local
+        // variable before trying to cast it, or it gets mysteriously optimised away..
+        auto* comp = fc->getComponentAt (pos.toInt() - fc->getPosition());
+        
+        if (auto* pin = dynamic_cast<PinComponent*> (comp))
+            return pin;
     }
-
+    
     return nullptr;
 }
+
 
 void CabbageGraphComponent::resized()
 {
@@ -141,8 +142,8 @@ void CabbageGraphComponent::updateComponents()
             nodes.remove (i);
     
     for (int i = connectors.size(); --i >= 0;)
-        if (! graph.graph.isConnected (connectors.getUnchecked(i)->connection))
-            connectors.remove (i);
+        if (! graph.graph.isConnected (graph.getConnections()[i]))
+            graph.graph.removeConnection(graph.getConnections()[i]);
     
     for (auto* fc : nodes)
         fc->update();
@@ -154,7 +155,7 @@ void CabbageGraphComponent::updateComponents()
     {
         if (getComponentForFilter (f->nodeID) == 0)
         {
-            auto* comp = nodes.add (new FilterComponent (*this, f->nodeID));
+            auto* comp = nodes.add (new CabbagePluginComponent (graph, f->nodeID));
             addAndMakeVisible (comp);
             comp->update();
         }
@@ -164,7 +165,7 @@ void CabbageGraphComponent::updateComponents()
     {
         if (getComponentForConnection (c) == 0)
         {
-            auto* comp = connectors.add (new ConnectorComponent (*this));
+            auto* comp = connectors.add (new ConnectorComponent (graph));
             addAndMakeVisible (comp);
             
             comp->setInput (c.source);
@@ -231,66 +232,72 @@ void CabbageGraphComponent::updateComponents()
 //    }
 }
 
-void CabbageGraphComponent::beginConnectorDrag (const uint32 sourceFilterID, const int sourceFilterChannel,
-                                                const uint32 destFilterID, const int destFilterChannel,
+void CabbageGraphComponent::beginConnectorDrag (AudioProcessorGraph::NodeAndChannel newSource,
+                                                AudioProcessorGraph::NodeAndChannel newDest,
                                                 const MouseEvent& e)
 {
-    draggingConnector = dynamic_cast<ConnectorComponent*> (e.originalComponent);
-
+//    draggingConnector = dynamic_cast<ConnectorComponent*> (e.originalComponent);
+//
+//    if (draggingConnector == nullptr)
+//        draggingConnector = new ConnectorComponent (graph);
+//
+//    draggingConnector->setInput (newSource);
+//    draggingConnector->setOutput (newDest);
+//
+//    addAndMakeVisible (draggingConnector);
+//    draggingConnector->toFront (false);
+//
+//    dragConnector (e);
+    auto* c = dynamic_cast<ConnectorComponent*> (e.originalComponent);
+    connectors.removeObject (c, false);
+    draggingConnector.reset (c);
+    
     if (draggingConnector == nullptr)
-        draggingConnector = new ConnectorComponent (graph);
-
-    draggingConnector->setInput (sourceFilterID, sourceFilterChannel);
-    draggingConnector->setOutput (destFilterID, destFilterChannel);
-
-    addAndMakeVisible (draggingConnector);
+        draggingConnector.reset (new ConnectorComponent (graph));
+    
+    draggingConnector->setInput (newSource);
+    draggingConnector->setOutput (newDest);
+    
+    addAndMakeVisible (draggingConnector.get());
     draggingConnector->toFront (false);
-
+    
     dragConnector (e);
 }
 
 void CabbageGraphComponent::dragConnector (const MouseEvent& e)
 {
-    const MouseEvent e2 (e.getEventRelativeTo (this));
-
+    auto e2 = e.getEventRelativeTo (this);
+    
     if (draggingConnector != nullptr)
     {
-        draggingConnector->setTooltip (String());
-
-        int x = e2.x;
-        int y = e2.y;
-
-        if (PinComponent* const pin = findPinAt (x, y))
+        draggingConnector->setTooltip ({});
+        
+        auto pos = e2.position;
+        
+        if (auto* pin = findPinAt (pos))
         {
-            uint32 srcFilter = draggingConnector->sourceFilterID;
-            int srcChannel   = draggingConnector->sourceFilterChannel;
-            uint32 dstFilter = draggingConnector->destFilterID;
-            int dstChannel   = draggingConnector->destFilterChannel;
-
-            if (srcFilter == 0 && ! pin->isInput)
+            auto connection = draggingConnector->connection;
+            
+            if (connection.source.nodeID == 0 && ! pin->isInput)
             {
-                srcFilter = pin->filterID;
-                srcChannel = pin->index;
+                connection.source = {pin->filterID, pin->index};
             }
-            else if (dstFilter == 0 && pin->isInput)
+            else if (connection.destination.nodeID == 0 && pin->isInput)
             {
-                dstFilter = pin->filterID;
-                dstChannel = pin->index;
+                connection.destination = {pin->filterID, pin->index};
             }
-
-            if (graph.canConnect (srcFilter, srcChannel, dstFilter, dstChannel))
+            
+            if (graph.graph.canConnect (connection))
             {
-                x = pin->getParentComponent()->getX() + pin->getX() + pin->getWidth() / 2;
-                y = pin->getParentComponent()->getY() + pin->getY() + pin->getHeight() / 2;
-
+                pos = (pin->getParentComponent()->getPosition() + pin->getBounds().getCentre()).toFloat();
                 draggingConnector->setTooltip (pin->getTooltip());
             }
         }
-
-        if (draggingConnector->sourceFilterID == 0)
-            draggingConnector->dragStart (x, y);
+        
+        if (draggingConnector->connection.source.nodeID == 0)
+            draggingConnector->dragStart (pos);
         else
-            draggingConnector->dragEnd (x, y);
+            draggingConnector->dragEnd (pos);
     }
 }
 
@@ -298,38 +305,32 @@ void CabbageGraphComponent::endDraggingConnector (const MouseEvent& e)
 {
     if (draggingConnector == nullptr)
         return;
-
-    draggingConnector->setTooltip (String());
-
-    const MouseEvent e2 (e.getEventRelativeTo (this));
-
-    uint32 srcFilter = draggingConnector->sourceFilterID;
-    int srcChannel   = draggingConnector->sourceFilterChannel;
-    uint32 dstFilter = draggingConnector->destFilterID;
-    int dstChannel   = draggingConnector->destFilterChannel;
-
+    
+    draggingConnector->setTooltip ({});
+    
+    auto e2 = e.getEventRelativeTo (this);
+    auto connection = draggingConnector->connection;
+    
     draggingConnector = nullptr;
-
-    if (PinComponent* const pin = findPinAt (e2.x, e2.y))
+    
+    if (auto* pin = findPinAt (e2.position))
     {
-        if (srcFilter == 0)
+        if (connection.source.nodeID == 0)
         {
             if (pin->isInput)
                 return;
-
-            srcFilter = pin->filterID;
-            srcChannel = pin->index;
+            
+            connection.source = {pin->filterID, pin->index};
         }
         else
         {
             if (! pin->isInput)
                 return;
-
-            dstFilter = pin->filterID;
-            dstChannel = pin->index;
+            
+            connection.destination = {pin->filterID, pin->index};
         }
-
-        graph.addConnection (srcFilter, srcChannel, dstFilter, dstChannel);
+        
+        graph.graph.addConnection (connection);
     }
 }
 

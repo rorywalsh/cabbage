@@ -45,15 +45,15 @@ public:
     
     CabbagePluginComponent* getComponentForFilter (uint32 filterID) const;
     ConnectorComponent* getComponentForConnection (const AudioProcessorGraph::Connection& conn) const;
-    PinComponent* findPinAt (int x, int y) const;
+    PinComponent* findPinAt (Point<float> pos) const;
 
     void resized() override;
     void changeListenerCallback (ChangeBroadcaster*) override;
     void updateComponents();
 
     //==============================================================================
-    void beginConnectorDrag (uint32 sourceFilterID, int sourceFilterChannel,
-                             uint32 destFilterID, int destFilterChannel,
+    void beginConnectorDrag (AudioProcessorGraph::NodeAndChannel newSource,
+                             AudioProcessorGraph::NodeAndChannel newDest,
                              const MouseEvent& e);
     void dragConnector (const MouseEvent& e);
     void endDraggingConnector (const MouseEvent& e);
