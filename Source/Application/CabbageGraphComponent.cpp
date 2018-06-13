@@ -84,28 +84,19 @@ void CabbageGraphComponent::createNewPlugin (const PluginDescription* desc, int 
 
 CabbagePluginComponent* CabbageGraphComponent::getComponentForFilter (const uint32 filterID) const
 {
-    for (int i = getNumChildComponents(); --i >= 0;)
-    {
-        if (CabbagePluginComponent* const fc = dynamic_cast<CabbagePluginComponent*> (getChildComponent (i)))
-            if (fc->filterID == filterID)
-                return fc;
-    }
-
+    for (auto* fc : nodes)
+        if (fc->filterID == filterID)
+            return fc;
+    
     return nullptr;
 }
 
 ConnectorComponent* CabbageGraphComponent::getComponentForConnection (const AudioProcessorGraph::Connection& conn) const
 {
-    for (int i = getNumChildComponents(); --i >= 0;)
-    {
-        if (ConnectorComponent* const c = dynamic_cast<ConnectorComponent*> (getChildComponent (i)))
-            if (c->sourceFilterID == conn.source.nodeID
-                && c->destFilterID == conn.destination.nodeID
-                && c->sourceFilterChannel == conn.source.channelIndex
-                && c->destFilterChannel == conn.destination.channelIndex)
-                return c;
-    }
-
+    for (auto* cc : connectors)
+        if (cc->connection == conn)
+            return cc;
+    
     return nullptr;
 }
 
