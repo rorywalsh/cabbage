@@ -30,7 +30,8 @@ CabbagePluginComponent::CabbagePluginComponent (AudioGraph& graph_, const uint32
 
 CabbagePluginComponent::~CabbagePluginComponent()
 {
-    deleteAllChildren();
+   // pins.clear();
+    //deleteAllChildren();
 }
 
 void CabbagePluginComponent::mouseDown (const MouseEvent& e)

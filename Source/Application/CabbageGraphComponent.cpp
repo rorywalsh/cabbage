@@ -26,7 +26,7 @@ CabbageGraphComponent::~CabbageGraphComponent()
 {
     graph.removeChangeListener (this);
     draggingConnector = nullptr;
-    deleteAllChildren();
+    //deleteAllChildren();
 }
 
 void CabbageGraphComponent::paint (Graphics& g)

@@ -46,7 +46,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     mainComponent.setInterceptsMouseClicks (false, true);
 
 
-    setSize (400, 300);
+    setSize (50, 50);
 
     createEditorInterface (processor.cabbageWidgets);
 #ifdef Cabbage_IDE_Build
