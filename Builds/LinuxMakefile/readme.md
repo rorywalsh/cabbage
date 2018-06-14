@@ -5,7 +5,7 @@ Note that if you are using Arch Linux you can install Cabbage using the package 
 Requirements
 ============
 
-- You will also need to download version 5.2.0 of JUCE, either clone the git repo or grab a zip archive. Once you have the source you will need to build the Projucer. Makefiles can be found in JUCE/extras/Projucer/Builds/LinuxMakefile. 
+- You will also need to download version 5.3.2 of JUCE, either clone the git repo or grab a zip archive. Once you have the source you will need to build the Projucer. Makefiles can be found in JUCE/extras/Projucer/Builds/LinuxMakefile. 
 
 - Please make sure you have a fairly recent version of Csound installed, otherwise you may get build problems. 
 
