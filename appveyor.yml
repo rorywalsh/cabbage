@@ -17,8 +17,8 @@ clone_folder: c:\cabbage
 install:
   - cmd: dir
   - cmd: cd c:/
-  - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.10.0/csound-windows-x64-6.10.0.zip'
-  - cmd: 7z.exe x csound-windows-x64-6.10.0.zip -o"C:/Program Files"
+  - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.10.0/csound-windows-x64-6.11.0.zip'
+  - cmd: 7z.exe x csound-windows-x64-6.11.0.zip -o"C:/Program Files"
   - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: dir
   # - cmd: mkdir "C:/Program Files/Csound6_x64"
@@ -48,7 +48,7 @@ install:
   - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   - cmd: cd c:/JUCE/
-  - cmd: git checkout tags/5.2.0
+  - cmd: git checkout tags/5.3.2
   - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
