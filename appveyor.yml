@@ -17,8 +17,8 @@ clone_folder: c:\cabbage
 install:
   - cmd: dir
   - cmd: cd c:/
-  - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.11.0/Csound6.11.0-Windows_x64-binaries.zip'
-  - cmd: 7z.exe x Csound6.11.0-Windows_x64-binaries.zip -o"C:/Program Files"
+  - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.11.0/Csound6.11.0.zip'
+  - cmd: 7z.exe x Csound6.11.0.zip -o"C:/Program Files"
   - cmd: cd "C:/Program Files/Csound6_x64"
   - cmd: dir
   # - cmd: mkdir "C:/Program Files/Csound6_x64"
