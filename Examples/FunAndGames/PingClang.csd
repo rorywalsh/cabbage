@@ -1,16 +1,16 @@
 ; PingClang.csd
 ; Written by Iain McCurdy, 2014
-; 
+;
 ; A musical toy.
-; 
+;
 ; Blocks can be moved using left click and drag, and can be resized using right click and drag.
-; 
+;
 ; The nature of the sound produced by the blocks is altered by their shape.
 ; Thin blocks will produce a more harmonic and sustaining sound. Thick blocks will produce inharmonic and less sustained sounds.
-; 
+;
 ; Once balls come to rest on the floor they are rethrown from the top.
 ; New balls can also be launched using the 'New Ball' button.
-; 
+;
 ; CONTROLS
 ; --------
 ; Damping		-	damping of energy that occurs when the ball hits a surface. e.g. low values = rubber ball, high values = cannon ball
@@ -23,7 +23,7 @@
 ; Notch		-	turns on a notch filter operating at the fundemental frequency of the 'clang' sounds
 
 <Cabbage>
-form caption("Ping Clang") size(610,500), guirefresh(32)
+form caption("Ping Clang") size(610,500), guirefresh(32), pluginid("PinC")
 image              bounds(0,  0,610,500), shape("sharp"), colour("black") ;background
 image              bounds(0,465,610,35), shape("sharp"), colour(100,100,100) 		; floor
 image bounds( 0, 0, 0,0), shape("sharp"), colour(255,255, 50), identchannel("block1")	; blocks: yellow
@@ -35,7 +35,7 @@ image bounds( 0, 0, 0,0), shape("sharp"), colour(155, 50,255), identchannel("blo
 image bounds( 0, 0, 0,0), shape("sharp"), colour(  0,230,255), identchannel("block7")	; turquoise
 image bounds( 0, 0, 0,0), shape("sharp"), colour(255,  0,255), identchannel("block8")	; pink
 image bounds( 0, 0, 0,0), shape("sharp"), colour(155,155,155), identchannel("block9")	; grey
-                                                             
+
 image bounds(0,0,0,0), shape("ellipse"), colour(255,230,220), identchannel("ball")	; ball
 
 nslider  bounds( 20,465,60,34), channel("damping"),    range(0.00, 0.999, 0.1,1,0.001),     textcolour(white),         text("Damping"),   colour(0,0,0)
@@ -91,21 +91,21 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
  kMOUSE_DOWN_MIDDLE	chnget	"MOUSE_DOWN_MIDDLE"
  kMOUSE_DOWN_RIGHT	chnget	"MOUSE_DOWN_RIGHT"
  kprevX	init	i(kMOUSE_X)	; Mouse position from previous k-pass
- kprevY	init	i(kMOUSE_Y)	
- 
+ kprevY	init	i(kMOUSE_Y)
+
  gkNBlocks	init	5				; number of blocks counter
  kNBlocksDn	chnget	"NBlocksDn"			; read in widgets
  kNBlocksUp	chnget	"NBlocksUp"			;
- if trigger(kNBlocksDn,0.5,0)==1 then			; if 'down' button is triggered... 
+ if trigger(kNBlocksDn,0.5,0)==1 then			; if 'down' button is triggered...
   gkNBlocks	limit	gkNBlocks-1,0,giNumBlocks			; increment counter up one step (within limits)
-  Smess		sprintfk	"text(%d)",gkNBlocks	; create message to change value indicator (a text label) 
+  Smess		sprintfk	"text(%d)",gkNBlocks	; create message to change value indicator (a text label)
   chnset	Smess,"NBlocksID"			; send message to widget
  elseif trigger(kNBlocksUp,0.5,0)==1 then		; do the same for  the 'up' counter button
   gkNBlocks	limit	gkNBlocks+1,0,giNumBlocks
   Smess		sprintfk	"text(%d)",gkNBlocks
   chnset	Smess,"NBlocksID"
  endif
- 
+
  gkdamping	chnget	"damping"
  gkfriction	chnget	"friction"
  gkspeed	chnget	"speed"
@@ -115,7 +115,7 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
  ;gkNBlocks	chnget	"NBlocks"
  gkfundemental	chnget	"fundemental"
  gkNewBall	chnget	"NewBall"
- 
+
  ktrig	metro	kr/(ksmps)
  if ktrig==1 then
 
@@ -132,22 +132,22 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
  gkSizeY$N	init	random(1,170)						; Initial y=size of object
  gkLocX$N	init	random(0,giPanelWidth-i(gkSizeX$N))			; Initial x-location of object
  gkLocY$N	init	random(150,giPanelHeight-i(gkSizeY$N)-giFloorDepth)	; Initial y-location of object
-  
+
  kMoveFlag$N	init	0
- 
+
  kRelL	trigger	kMOUSE_DOWN_LEFT,0.5,1		; If either click button is released, exit click and drag mode.
  kRelR	trigger	kMOUSE_DOWN_RIGHT,0.5,1
  if kRelL==1||kRelR==1 then
   kMoveFlag$N	=	0			; When left or right click are released, exit click and drag mode
- endif 
- 
+ endif
+
  if ((kMOUSE_DOWN_LEFT_trig==1||kMOUSE_DOWN_RIGHT_trig==1) && kMOUSE_X>=(gkLocX$N-1) && kMOUSE_X<=(gkLocX$N+gkSizeX$N+1) && kMOUSE_Y>=(gkLocY$N-1) && kMOUSE_Y<=(gkLocY$N+gkSizeY$N+1)) || kMoveFlag$N==1 then	; If we are in click and drag mode
   kMoveFlag$N	=	1	; Set click and drag flag to 'on'
- 
+
   if changed(gkDeltaX,gkDeltaY)==1 then								; if a change in mouse position during click
    if kMOUSE_DOWN_LEFT==1 then									; CHANGE LOCATION
     gkLocX$N	limit	gkLocX$N + gkDeltaX, 0, giPanelWidth - gkSizeX$N			; Set new x location of object with limits
-    gkLocY$N	limit	gkLocY$N + gkDeltaY, 0, giPanelHeight - gkSizeY$N - giFloorDepth	; Set new y location of object with limits 
+    gkLocY$N	limit	gkLocY$N + gkDeltaY, 0, giPanelHeight - gkSizeY$N - giFloorDepth	; Set new y location of object with limits
    elseif kMOUSE_DOWN_RIGHT==1 then								; CHANGE SIZE
     gkSizeX$N	limit	gkSizeX$N + gkDeltaX, 2,giPanelWidth-gkLocX$N				; Set new x size of object with limits
     gkSizeY$N	limit	gkSizeY$N + gkDeltaY, 2,giPanelHeight-gkLocY$N-giFloorDepth		; Set new x size of object with limits
@@ -157,7 +157,7 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
    Smess	sprintfk	"bounds(%d,%d,%d,%d)",gkLocX$N,gkLocY$N,kSizeX$N,kSizeY$N	; String for new object bounds
    chnset	Smess,"block$N"   								; Send new string to object
   endif
-  
+
  endif
 
  if changed(gkNBlocks)==1 then
@@ -166,7 +166,7 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
   Smess	sprintfk	"bounds(%d,%d,%d,%d)",gkLocX$N,gkLocY$N,kSizeX$N,kSizeY$N	; String for new object bounds
   chnset	Smess, "block$N"   							; Send new string to object
  endif
-  
+
  #
  $BLOCK(1)
  $BLOCK(2)
@@ -177,9 +177,9 @@ instr	1	; Track mouse position and clicks and move objects as appropriate
  $BLOCK(7)
  $BLOCK(8)
  $BLOCK(9)
- 
+
  SKIP:
- 
+
  kprevX	=	kMOUSE_X	; Set 'previous' mouse x and y for next k-pass
  kprevY	=	kMOUSE_Y
 endif
@@ -222,7 +222,7 @@ instr	2
   endif
 
 
-  
+
   #define CHECK_OBJECT_STRIKE(N)
   #
   kcount	=	$N
@@ -231,7 +231,7 @@ instr	2
    kyIncr	=	(-kyIncr*(1-gkdamping)) - gkDeltaY
    kxIncr	=	kxIncr*(1-gkfriction)	; absorb some horizontal energy in the bounce
    event	"i",90+$N,0,gkresonance,kx,kxIncr,kyIncr
-   ky		=	gkLocY$N-isize	
+   ky		=	gkLocY$N-isize
   elseif trigger(kx,gkLocX$N+gkSizeX$N,1)==1 && (ky+isize)>=gkLocY$N && ky<=(gkLocY$N+gkSizeY$N) then		; Striking right hand edge
    kxIncr	=	(-kxIncr*(1-gkdamping)) - gkDeltaX
    event	"i",90+$N,0,gkresonance,kx,kxIncr,kyIncr
@@ -273,8 +273,8 @@ instr	20	; wall ricochet sound effect
   turnoff				;REMOVE THIS NOTE
  endif
  krel release				;IF NOTE HELD = 0, IF NOTE RELEASED = 1
- ktrig trigger krel,0.5,0		;WHEN RELEASE FLAG CROSSES 0.5 UPWARDS, I.E. NOTE HAS BEEN RELEASED...	
- if ktrig==1 then		
+ ktrig trigger krel,0.5,0		;WHEN RELEASE FLAG CROSSES 0.5 UPWARDS, I.E. NOTE HAS BEEN RELEASED...
+ if ktrig==1 then
   gkactive0 = gkactive0 - 1		;...DECREMENT ACTIVE NOTES COUNTER
  endif
  aenv	expon	giWallFloorAmp,p3,giWallFloorAmp*0.001
@@ -299,19 +299,19 @@ instr	$I	; object bounce
   turnoff				;REMOVE THIS NOTE
  endif
  krel release				;IF NOTE HELD = 0, IF NOTE RELEASED = 1
- ktrig trigger krel,0.5,0		;WHEN RELEASE FLAG CROSSES 0.5 UPWARDS, I.E. NOTE HAS BEEN RELEASED...	
- if ktrig==1 then		
+ ktrig trigger krel,0.5,0		;WHEN RELEASE FLAG CROSSES 0.5 UPWARDS, I.E. NOTE HAS BEEN RELEASED...
+ if ktrig==1 then
   gkactive$N = gkactive$N - 1		;...DECREMENT ACTIVE NOTES COUNTER
  endif
 
  iamp	=	(abs(p5) + abs(p6)) * 0.006				; amplitude dependent upon the speed of the ball at the time of the collision.
  aenv	expsegr	iamp,p3,iamp*0.001,0.05,iamp*0.001			; amplitude envelope
- kndx	expsegr	(abs(p5)+abs(p6))*0.01,p3,0.0001,0.05,0.0001		; index of modulation envelope. Overall envelope amplitude (therefore spectral brightness) influenced by the speed of the ball when the object was struck. 
+ kndx	expsegr	(abs(p5)+abs(p6))*0.01,p3,0.0001,0.05,0.0001		; index of modulation envelope. Overall envelope amplitude (therefore spectral brightness) influenced by the speed of the ball when the object was struck.
  kporttime	linseg	0,0.001,0.05
  kcps		=	cpsoct(((1-(gkSizeX$N/giPanelWidth))*8)+4)	; base frequency defined by width of the object
  kcps	portk	kcps,kporttime
  kmod		=	1 + ((gkSizeY$N-1)/300)				; modulator frequency defined by the height of the object: the taller the object the more inharmonic the spectrum. At minimum thinness ratio = 1.
- kmod	portk	kmod,kporttime						
+ kmod	portk	kmod,kporttime
  acar	expseg	0.993,0.04,1,5,1					; carrier ratio envelope. Helps to create a bit of spectral distortion when the objecrt is struck
 
  kampscale	=	(gkspeed-0.01)/(20-0.01)
@@ -354,12 +354,12 @@ instr	999
 	kdlt1	portk	kdlt1,kporttime
 	adlt1	interp	kdlt1
 	acho1	vdelay	gal,adlt1*1000,1*1000
-	
+
 	kdlt2	randomi	ksmps/sr,iChoDep,iChoRte,1
 	kdlt2	portk	kdlt2,kporttime
 	adlt2	interp	kdlt2
 	acho2	vdelay	gal,adlt2*1000,1*1000
-	
+
 		outs	acho1, acho2
 	gal	+=	acho1
 	gar	+=	acho2
@@ -395,7 +395,7 @@ instr	1001	; Print and then hide instructions
 endin
 
 
-</CsInstruments>  
+</CsInstruments>
 
 <CsScore>
 i 1001 0 4		; Instructions fade up then down (currently not working)

@@ -12,23 +12,23 @@
 
 ; Parameters
 ; ----------
-; Sigma      --  the Prandtl number or sigma 
-; Rayleigh   --  the Rayleigh number 
-; Len:Wid    --  the ratio of the length and width of the box in which the convection currents are generated 
+; Sigma      --  the Prandtl number or sigma
+; Rayleigh   --  the Rayleigh number
+; Len:Wid    --  the ratio of the length and width of the box in which the convection currents are generated
 ; Step Size  --  the step size used in approximating the differential equation. This can be used to control the speed/pitch of the output.
 ; X Scale    --  scaling of x output
-; Y Scale    --  scaling of y output  
+; Y Scale    --  scaling of y output
 ; Z Scale    --  scaling of z output
 ; Skip Step  --  can be used to speed up the output
 
 ; x output visualised by the horizonatal location of the balls, y output by vertical position and z output by the size of the balls.
 
 ; Three visualisations/sonifications are implemented represented by the three balls: red, green, blue
- 
 
 
-<Cabbage> 
-form size(1000,550), guirefresh(32), text("Lorenz Synth"), colour(220,220,220)
+
+<Cabbage>
+form size(1000,550), guirefresh(32), text("Lorenz Synth"), colour(220,220,220), pluginid("LorS")
 
 image bounds(0,0,-30,-30), shape("ellipse"), identchannel("IndicatorBallRed"), colour("red"), visible(0), alpha(0.85)
 image bounds(0,0,-30,-30), shape("ellipse"), identchannel("IndicatorBallGreen"), colour("green"), visible(0), alpha(0.85)
@@ -102,15 +102,15 @@ endin
 
 #define LORENZ_GENERATOR(COLOUR)
 #
- ksv	chnget	"sv"				; Prandtl number or sigma 
- krv	chnget	"rv"				; Rayleigh number 
- kbv	chnget	"bv"				; ratio of the length and width of the box in which the convection currents are generated 
+ ksv	chnget	"sv"				; Prandtl number or sigma
+ krv	chnget	"rv"				; Rayleigh number
+ kbv	chnget	"bv"				; ratio of the length and width of the box in which the convection currents are generated
  kh	chnget	"h"				; step size used in approximating the differential equation
  krestart	chnget	"restart"               ; restart button
  krestart	trigger	krestart,0.5,0		; trigger generated whenever restart button is clicked
  kskip		chnget	"skip"			; skip generated values. Can be used to speed up output changes.
  if changed(krestart,kskip)==1 then		; test for reiniting for i-rate input parameters
-  reinit UPDATE					
+  reinit UPDATE
  endif
  UPDATE:
   ax, ay, az lorenz ksv, krv, kbv, kh, (rnd(1)*2)-1, (rnd(1)*2)-1, rnd(1), i(kskip)
@@ -119,19 +119,19 @@ endin
  ky	downsamp	ay
  kz	downsamp	az
  kx_scal	chnget		"x_scal"	; read scaling values
- ky_scal	chnget		"y_scal"	
+ ky_scal	chnget		"y_scal"
  kz_scal	chnget		"z_scal"
  kx		*=	kx_scal			; scale x, y and z values
- ky		*=	ky_scal	
- kz		*=	kz_scal	
+ ky		*=	ky_scal
+ kz		*=	kz_scal
  kx_norm	limit	kx + 0.5, 0, 1		; create normalised x, y and z values
- ky_norm	limit	ky + 0.5, 0, 1	
- kz_norm	limit	kz      , 0, 1	
+ ky_norm	limit	ky + 0.5, 0, 1
+ kz_norm	limit	kz      , 0, 1
  if metro(32)==1 then
   krel	release
   Smsg	sprintfk	"visible(%d), pos(%d,%d), size(%d,%d)",1-krel, (giPanel_Width*0.5) + (kx * giPanel_Width*0.6), (giPanel_Height*0.5)  + (ky * giPanel_Height*0.5), 1 + (kz^2)*200, 1 + (kz^2)*200
   chnset	Smsg,"IndicatorBall$COLOUR"
- endif	
+ endif
 #
 
 
@@ -156,7 +156,7 @@ instr	Red	; red / fof instrument
  kamp	scale	kz_norm,1,0
  kamp	limit	kamp,0,1
  aamp	interp	kamp
- aenv	linsegr	1,0.1,0 
+ aenv	linsegr	1,0.1,0
  kamp	tablei	kx_norm,giHalfSine,1
  kamp	pow	kamp,0.5
  gisine	ftgenonce	0, 0, 1024, 10, 1		;SINE WAVE
@@ -193,7 +193,7 @@ instr	Green	; green / vco moogladder
  kamp	scale	kz_norm,1,0
  kamp	limit	kamp,0,1
  aenv	linsegr	1,0.1,0
- aamp	interp	kamp 
+ aamp	interp	kamp
  kamp	tablei	kx_norm,giHalfSine,1
  kamp	pow	kamp,0.5
  asig	vco2	kamp*0.2,cpsmidinn(knum),2,0.5
@@ -228,7 +228,7 @@ instr	Blue ; blue / hsbocil
  kamp	scale	kz_norm,1,0
  kamp	limit	kamp,0,1
  aenv	linsegr	1,0.1,0
- aamp	interp	kamp 
+ aamp	interp	kamp
  kamp	tablei	kx_norm,giHalfSine,1
  kamp	pow	kamp,0.5
  ibasfreq	=	100

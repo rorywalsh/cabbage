@@ -1,20 +1,20 @@
 ; Splat.csd
 ; Written by Iain McCurdy, 2014.
-; 
-; Left click somewhere within the swarm to splat the flies. 
+;
+; Left click somewhere within the swarm to splat the flies.
 ; Left click again somewhere within the field of splatted flies to unsplat them and bring them back to life.
-; 
+;
 ; Population	-	the number of flies in the swarm
 ; Liveliness	-	the speed with which flies will move about within the swarm
 ; Excursion	-	how far flies will move away from the centre of the swarm, therefore this also defines the area covered by the swarm.
 ; Fly Size	-	doesn't affect the physical size of flies but instead affects the central frequency of the buzzing tone they produce.
 ; Swarm Speed	-	the speed with which the swarm moves around the panel. The swarm can exit the panel completely.
-; 
-; If the swarm area (excursion) is very small it can become difficult to splat (and unsplat) it. 
+;
+; If the swarm area (excursion) is very small it can become difficult to splat (and unsplat) it.
 ; If this becomes a problem, simply raise the value for excursion, even while the swarm is splatted.
 
 <Cabbage>
-form caption("Splat!"), size(1000,530), colour(230,230,230),guirefresh(64)
+form caption("Splat!"), size(1000,530), colour(230,230,230),guirefresh(64), pluginid("Splt")
 image bounds(0,   0, 0, 0), colour(white), shape(ellipse), widgetarray("fly",500)
 nslider  bounds(  5,495,60,34), channel("Population"),    range(1,100, 10,1,1),       textcolour(black), fontcolour(black), text("Population"), colour(white)
 nslider  bounds( 70,495,60,34), channel("Liveliness"),    range(0.1,10.00, 4,1,0.1),  textcolour(black), fontcolour(black), text("Liveliness"), colour(white)
@@ -67,14 +67,14 @@ opcode	Fly,aa,kkkkkkkip
 
  if kSplat==0 then							; if flies are living...
   kX	rspline	-kExcursion,kExcursion,kLiveliness,kLiveliness*2	; variables for fly movement within the swarm
-  kY	rspline	-kExcursion,kExcursion,kLiveliness,kLiveliness*2  
+  kY	rspline	-kExcursion,kExcursion,kLiveliness,kLiveliness*2
   kDist	rspline	0.5,1.5,0.02,0.03						; z-plane distance of the fly. Really just a bit of size modulation.
  endif
 
  kamp	=	((kY*0.5)/kExcursion) + 0.5				; amplitude of the buzzing sound varie according to the distance of the fly along the y-axis from the front of the swarm
  kamp	scale	kamp,1,0.1						; amplitude value scaled so that flies never audibly disappear entirely
  asig	vco2	0.01*kamp,cpsoct(koct)*semitone((kX+kY)*0.02),6		; the buzzing sound: a pulse wave
- 
+
  kpan	=	((kX*0.5)/kExcursion) + 0.5				; buzzing sounds are panned according to their left/right position within the swarm
  aL,aR	pan2	asig,kpan						; panned
 
@@ -93,7 +93,7 @@ opcode	Fly,aa,kkkkkkkip
  if iCount<iMaxFlies then
   aMixL,aMixR	Fly	kSplat,kExcursion,kLiveliness,koct,kFlySize,kOffX,kOffY,iMaxFlies,iCount+1
  endif
-	
+
 	xout	aL+aMixL, aR+aMixR
 endop
 
@@ -104,24 +104,24 @@ instr	1
  kMOUSE_DOWN_RIGHT	chnget	"MOUSE_DOWN_RIGHT"
 
  kSplat	init	0					; splat status: 0 = alive, 1 = splatted
- 
+
  aMixL,aMixR	init	0				; audio mix of all buzzing sounds (initialised)
- kLiveliness	chnget	"Liveliness"			; speed with which flies move within the swarm 
+ kLiveliness	chnget	"Liveliness"			; speed with which flies move within the swarm
  kExcursion	chnget	"Excursion"			; range (in pixels) that individual flies might go from the the centre of the swarm
  kFlySize	chnget	"FlySize"			; fly size (affects pitch of buzzing only)
  koct		scale	(kFlySize-1)/9,7,12		; scale buzzing pitch (oct format)
  kporttime	linseg	0,0.001,0.05			; portamento time rises from zero to a held value
  koct		portk	koct,kporttime			; smooth chages to buzzing frequency
- kSwarmSpeed	chnget	"SwarmSpeed"			; 
+ kSwarmSpeed	chnget	"SwarmSpeed"			;
 
  if kSplat==0 then					; if flies are alive...
   gkPopulation	chnget	"Population"			; read changes to population. This widget is only read while flies are alive so that splatted flies don't appear or disappear while splatted.
  endif
- 
+
  if changed(gkPopulation)==1 then			; if a change to the number of flies is made by the user. (Changes made while flies are dead will only register once the flies are unsplatted.)
   event	"i",10,0,0					; call instrument that hides all active flies. This is done so to ensure that deactivated flies are no longer visible. Flies that should be active flies will be made visible immediately after in this instrument.
  endif
- 
+
  if trigger(kSplat,0.5,0)==1 then			; if a succesful splatting has been made...
   event	"i",20,0,0					; call the instrument that splats all active flies
  endif
@@ -130,7 +130,7 @@ instr	1
   kOffX		rspline	0,giPanelWidth,kSwarmSpeed,kSwarmSpeed*2		; generate variables that move the entire swarm. i.e. the swarm should not move while all flies are splatted.
   kOffY		rspline	0,giPanelHeight,kSwarmSpeed,kSwarmSpeed*2
  endif
- 
+
  ; if a left click is made within the boundaries of the swarm it will be alternately splatted or unsplatted as appropriate
  if trigger(kMOUSE_DOWN_LEFT,0.5,0)==1 && kMOUSE_X>=(kOffX-kExcursion) && kMOUSE_X<=(kOffX+kExcursion)  && kMOUSE_Y>=(kOffY-kExcursion) && kMOUSE_Y<=(kOffY+kExcursion) then
   kSplat	=	(kSplat==1?0:1)
@@ -175,7 +175,7 @@ instr	20	; graphically splat flies
  od
 endin
 
-instr	21	; splat sound effect 
+instr	21	; splat sound effect
  idur	scale_i	rnd(1)^2,0.15,0.08	; random duration
  p3	=	idur			; assign to p3
  imin	random	8,10			; minimum frequency for splat filter (in oct)
@@ -186,7 +186,7 @@ instr	21	; splat sound effect
  aenv	expon	1,p3,0.1		; amplitude envelope which will give the splat sound a percussive shape
  anoise	*=	aenv			; apply envelope
  	outch	1,anoise		; send this signal to the left channel
- 
+
  anoise	dust2	10,1000			; repeat for the left channel. Doing both channels completely seperately create a nice stereo effect
  kcf	random	cpsoct(imin),cpsoct(imin+3)
  anoise	moogladder	anoise,kcf,0.7
@@ -216,7 +216,7 @@ instr	1001	; Print and then hide instructions
 
 endin
 
-</CsInstruments>  
+</CsInstruments>
 
 <CsScore>
 i 1001 0 3		; Instructions fade up then down (currently not working)

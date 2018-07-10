@@ -2,8 +2,8 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("HRTF 3D") size(365, 275)
-image pos(0, 0), size(365, 236), colour(50, 20,  0), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+form caption("HRTF 3D") size(365, 275), pluginid("HRTF")
+image pos(0, 0), size(365, 236), colour(50, 20,  0), shape("rounded"), outlinecolour("white"), outlinethickness(4)
 xypad bounds(6,  6, 250, 224), channel("Az", "Elev"), text("X=Azimuth : Y=Elev."), rangex(-180,  180,   0), rangey(-40, 90, 0)
 
 checkbox bounds(265, 6, 80, 12), channel("TestSound"), FontColour("white"),  value(1), text("Test Sound"), colour(yellow)
@@ -41,7 +41,7 @@ instr	1
 	kL_R_In		chnget		"L_R_In"		;
 	koverlap	chnget		"overlap"		;
 	kradius		chnget		"radius"		;
-	
+
 	kTestSound	chnget		"TestSound"
 	if kTestSound=1 then							; generate a test sound...
 	 aL		pinkish		0.3					; generate some pink noise
@@ -51,7 +51,7 @@ instr	1
 	else
 	 aL,aR		ins					;READ STEREO AUDIO INPUT
 	endif
-	
+
 	asrc		ntrpol		aL,aR,kL_R_In
 	kporttime	linseg		0,0.001,0.02		;PORTAMENTO TIME RISES UP QUICKLY FROM ZERO TO A HELD VALUE
 	;kAz		portk		kAz,kporttime		;SMOOTH RT CHANGES OF AZIMUTH
@@ -70,7 +70,7 @@ instr	1
 	rireturn
 			outs		aleft, aright		;SEND AUDIO TO OUTPUTS
 endin
-		
+
 </CsInstruments>
 
 <CsScore>
