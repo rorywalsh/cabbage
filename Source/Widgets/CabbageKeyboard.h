@@ -47,7 +47,7 @@ public:
 
     ValueTree widgetData;
 
-
+    void updateColours(ValueTree& wData);
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageKeyboard);
 };
 

@@ -297,6 +297,7 @@ public:
         add ("tablegridcolor");
         add ("signalvariable");
         add ("overlaycolour");
+        add ("keydowncolour");
         add ("linethickness");
         add ("outlinecolour");
         add ("numberofsteps");
@@ -477,7 +478,8 @@ namespace CabbageIdentifierIds
 	static const Identifier ballcolour = "ballcolour";
 	static const Identifier basechannel = "basechannel";
 	static const Identifier basetype = "basetype";
-	static const Identifier blacknotecolour = "blacknotecolour";
+    static const Identifier blacknotecolour = "blacknotecolour";
+    static const Identifier keydowncolour = "keydowncolour";
 	static const Identifier bold = "bold";
 	static const Identifier bpm = "bpm";
 	static const Identifier bundle = "bundle";
