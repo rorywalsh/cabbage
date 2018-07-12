@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Reverb"), size(220, 150)
+form caption("Reverb"), size(220, 150), pluginid("SREx")
 groupbox text("Stereo Reverb"), bounds(10, 8, 200, 100)
 rslider channel("size"), bounds(10, 34, 70, 70), text("Size"), range(0, 1, 0.2)
 rslider channel("fco"), bounds(75, 34, 70, 70), text("Cut-off"), range(0, 22000, 10000)
@@ -21,7 +21,7 @@ instr 1
 	kGain chnget "gain"
 	aInL inch 1
 	aInR inch 2
-	aOutL, aOutR reverbsc aInL, aInR, kFDBack, kFco 
+	aOutL, aOutR reverbsc aInL, aInR, kFDBack, kFco
 	outs aOutL*kGain, aOutR*kGain
 endin
 

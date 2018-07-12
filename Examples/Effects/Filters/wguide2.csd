@@ -4,8 +4,8 @@
 ; For a more extensive use of this opcode see the example "Harmonics.csd"
 
 <Cabbage>
-form caption("wguide2") size(595, 90)
-image        pos(0, 0), size(595, 90), colour(25,0,25), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+form caption("wguide2") size(595, 90), pluginid("WGu2")
+image        pos(0, 0), size(595, 90), colour(25,0,25), shape("rounded"), outlinecolour("white"), outlinethickness(4)
 button  bounds( 10, 30, 55, 25), text("PLUCK"), channel("pluck"), toggle(0)
 rslider bounds( 65, 11, 70, 70), text("Freq. 1"),   channel("freq1"),     range(20, 8000, 160, 0.25), colour(150,110,110), trackercolour(white)
 rslider bounds(130, 11, 70, 70), text("Freq. 2"),   channel("freq2"),     range(20, 8000, 160, 0.25), colour(150,110,110), trackercolour(white)
@@ -57,7 +57,7 @@ instr	1
  	 gkfeedback1	=	gkfeedback1
  	 gkfeedback2	=	gkfeedback2
  	endif
-	
+
 	aplk	init	0
 	kpluck	chnget	"pluck"					; pluck button
 	if changed(kpluck)==1 then
@@ -65,16 +65,16 @@ instr	1
 	 asigL	+=	aplk
 	 asigR	+=	aplk
 	endif
-	
+
 	aresL	wguide2 asigL, afreq1, afreq2, gkcutoff1, gkcutoff2, gkfeedback1, gkfeedback2
 	aresR	wguide2 asigR, afreq1, afreq2, gkcutoff1, gkcutoff2, gkfeedback1, gkfeedback2
 	aresL	dcblock2	aresL	;BLOCK DC OFFSET
-	aresR	dcblock2	aresR	;BLOCK DC OFFSET           
+	aresR	dcblock2	aresR	;BLOCK DC OFFSET
 	amixL		ntrpol	asigL,aresL,gkmix
 	amixR		ntrpol	asigR,aresR,gkmix
 			outs	amixL*gklevel, amixR*gklevel		;WGUIDE1 OUTPUTS ARE SENT OUT
 endin
-		
+
 </CsInstruments>
 
 <CsScore>
@@ -83,30 +83,3 @@ i 1 0 [3600*24*7]
 
 
 </CsoundSynthesizer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

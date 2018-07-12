@@ -1,5 +1,5 @@
 <Cabbage>
-form size(520, 450), caption("SignalDisplay")
+form size(520, 450), caption("SignalDisplay"), pluginid("SigD")
 signaldisplay bounds(10, 0, 500, 300), colour("lime"), displaytype("waveform"), signalvariable("a1", "a2"), identchannel("displayIdent")
 combobox bounds(388, 368, 120, 25), align("centre"), channel("displayCombo"), items("Waveform", "Spectroscope", "Spectrogram", "Lissajous")
 keyboard bounds(12, 304, 497, 60)
@@ -35,7 +35,7 @@ a2 oscil 1, p4*.9+aLFO
 
 display	a1, .1, 1
 dispfft a1, .1, 1024
-display	a2, .1, 1  
+display	a2, .1, 1
 endin
 
 
@@ -61,11 +61,11 @@ endif
 ;kTrigger changed kChangeDisplay
 ;if kTrigger == 1 then
 ;	chnset SDisplayIdentString, "displayIdent"
-;endif 
+;endif
 
 endin
 
-</CsInstruments>  
+</CsInstruments>
 <CsScore>
 ;i1 0 3600
 f0 3600

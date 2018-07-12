@@ -2,7 +2,7 @@
 ; Iain McCurdy, 2017
 
 <Cabbage>
-form caption("Stormy Weather") size(300, 310), 
+form caption("Stormy Weather") size(300, 310), pluginid("StWr") 
 button  bounds( 10,  5,70, 30), text("Wind","Wind"), latched(1), fontcolour:0(100,100,100), channel("Wind"), value(1)
 
 rslider bounds(  5, 40, 80, 80), channel("WindLev"), text("Level"), range(0, 1, .5, 1, .01)
@@ -22,10 +22,10 @@ rslider bounds(205,220, 80, 80), channel("RainDens"), text("Density"), range(0, 
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
+-n -d -+rtmidi=NULL -M0 -m0d
 </CsOptions>
 <CsInstruments>
-; Initialize the global variables. 
+; Initialize the global variables.
 sr = 44100
 ksmps = 16
 nchnls = 2
@@ -35,29 +35,29 @@ seed 0
 instr	1
  gkWind			chnget	"Wind"		; on/off
  gkWindLev		chnget	"WindLev"
- 
+
  kThunder		chnget	"Thunder"	; on/off
  kThunderDur	chnget	"ThunderDur"	; on/off
  kThunderDist	scale	chnget:k("ThunderDist"),1,1.7
 
  kRain			chnget	"Rain"		; on/off
- 
- 
+
+
  if trigger:k(gkWind,0.5,0)==1 then
   event	"i",2,0,3600
  endif
- 
+
  if trigger:k(kThunder,0.5,0)==1 then
   event	"i",3,0,kThunderDur,kThunderDist
   event	"i",3,0,kThunderDur,kThunderDist
- endif 
+ endif
 
   if trigger:k(kRain,0.5,0)==1 then
   event	"i",4,0,3600
  elseif trigger:k(kRain,0.5,1)==1 then
   turnoff2	4,0,1
  endif
- 
+
 endin
 
 opcode	Wind,aa,ip
@@ -78,7 +78,7 @@ opcode	Wind,aa,ip
  		xout		aL+aML, aR+aMR
 endop
 
-instr		2	; howling wind 
+instr		2	; howling wind
  if gkWind==0 then
   turnoff
  endif
@@ -89,9 +89,9 @@ instr		2	; howling wind
  RELAYER:
  aL,aR	Wind	i(kLayers)
  		outs	aL,aR
-		
+
 		chnmix	aL*0.3, "SendL"						; also send to the reverb
- 		chnmix	aR*0.3, "SendR" 		
+ 		chnmix	aR*0.3, "SendR"
 endin
 
 
@@ -108,7 +108,7 @@ instr		3	; thunder
  aL,aR	pan2		aNse,ipan
  		outs		aL, aR
 		chnmix	aL*0.15, "SendL"						; also send to the reverb
- 		chnmix	aR*0.15, "SendR" 		
+ 		chnmix	aR*0.15, "SendR"
 endin
 
 
@@ -118,7 +118,7 @@ endin
 instr		4	; rain
  kRainMix	chnget	"RainMix"
  kRainDens	chnget	"RainDens"
- 
+
  kTrig	dust		1, 500*kRainDens
  kenv		linsegr	0,2,1,5,0
  		schedkwhen	kTrig, 0, 0, 5, 0, 0.008, kenv*(1-sqrt(kRainMix))
@@ -140,7 +140,7 @@ instr		5	; rain
  aL,aR	pan2		aSig,ipan
  		outs		aL, aR
 		chnmix	aL*0.3, "SendL"						; also send to the reverb
- 		chnmix	aR*0.3, "SendR" 		
+ 		chnmix	aR*0.3, "SendR"
 endin
 
 
@@ -156,8 +156,8 @@ endin
 
 </CsInstruments>
 <CsScore>
-i 1 0 [60*60*24*7] 
+i 1 0 [60*60*24*7]
 
-i 999 0 [60*60*24*7] 
+i 999 0 [60*60*24*7]
 </CsScore>
 </CsoundSynthesizer>

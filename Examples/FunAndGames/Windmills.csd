@@ -1,10 +1,10 @@
 ; Windmills.csd
 ; Written by Iain McCurdy, 2014
-; 
+;
 ; This doesn't make sound yet!
 
 <Cabbage>
-form caption("Windmills") size(700,500), colour(150,150,255), scrollbars(0), guirefresh(32)
+form caption("Windmills") size(700,500), colour(150,150,255), scrollbars(0), guirefresh(32), pluginid("WinM")
 ; SUN
 image bounds(610, 20,70,70), colour(250,250,100), shape(ellipse)			; sun
 
@@ -102,7 +102,7 @@ instr	1
   		chnset		Smess1b,"cloud1_b"
   		chnset		Smess1c,"cloud1_c"
   		chnset		Smess1d,"cloud1_d"
-  kCloudOffset1	wrap	kCloudOffset1+1,-200,giPanelWidth             
+  kCloudOffset1	wrap	kCloudOffset1+1,-200,giPanelWidth
  elseif kCloudTrig2==1 then
   Smess2a	sprintfk	"bounds(%d, 90, 60,60)",125+kCloudOffset2
   Smess2b	sprintfk	"bounds(%d, 60, 90,90)",155+kCloudOffset2
@@ -112,7 +112,7 @@ instr	1
   		chnset		Smess2b,"cloud2_b"
   		chnset		Smess2c,"cloud2_c"
   		chnset		Smess2d,"cloud2_d"
-  kCloudOffset2	wrap	kCloudOffset2+1,-250,giPanelWidth             
+  kCloudOffset2	wrap	kCloudOffset2+1,-250,giPanelWidth
  elseif kCloudTrig3==1 then
   Smess3a	sprintfk	"bounds(%d, 80, 25, 25)",290+kCloudOffset3
   Smess3b	sprintfk	"bounds(%d, 65, 35, 35)",305+kCloudOffset3
@@ -122,16 +122,16 @@ instr	1
   		chnset		Smess3b,"cloud3_b"
   		chnset		Smess3c,"cloud3_c"
   		chnset		Smess3d,"cloud3_d"
-  kCloudOffset3	wrap	kCloudOffset3+1,-300,giPanelWidth             
- endif       
-             
+  kCloudOffset3	wrap	kCloudOffset3+1,-300,giPanelWidth
+ endif
+
  ; MACRO FOR AN INDIVIDUAL CIRCLE
  #define INDIVIDUAL_CIRCLE(N'P'NUMBER'WIDTH'X'Y'NUM)
  #
 
  kwidth$N	=	$WIDTH
  kspeed2	portk	kspeed,limit((ksize*kMaxWidth)/1000,0,2)
- 
+
  kx$N	oscil	kwidth$N*(1-abs(kSwing2)),kspeed2,gisine,$P
  ky$N	oscil	kwidth$N,kspeed2,gisine,$P+0.25
 
@@ -209,17 +209,17 @@ instr	1
 
  kWidth		=	(1-abs(kSwing2))*kMaxWidth
  kX_Offset	=	(kMaxWidth - kWidth) * 0.5
- 
+
  kColour	=	(kSwing2+1)*0.5
  kR		scale	kColour, $R, 10
  kG		scale	kColour, $G,  0
  kB		scale	kColour, $B,  0
- 
+
  iAxle_Width$NUM	=	$AXLE_WIDTH
 
  kAxleLenMax	=	$AXLE_LENGTH
  kAxleLen	=	kAxleLenMax*abs(kSwing2)
- kAxleX		=	limit(kSwing2,-1,0) * kAxleLenMax		
+ kAxleX		=	limit(kSwing2,-1,0) * kAxleLenMax
 
  kRefreshTrig	metro	giRefreshRate/ksmps,$NUM/4
  if kRefreshTrig==1 then
@@ -276,10 +276,10 @@ instr	1001	; Print and then hide instructions
 endin
 
 
-</CsInstruments>  
+</CsInstruments>
 
 <CsScore>
-i 1 0 [3600*24*7] 
+i 1 0 [3600*24*7]
 i 1001 0 0
 </CsScore>
 
