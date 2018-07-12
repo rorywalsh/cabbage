@@ -339,10 +339,6 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
         {
             resized();
             ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
-            CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type));
-            CabbageUtilities::debug(CabbageWidgetData::getBounds(widgetData).toString());
-            CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::plant));
-            CabbageUtilities::debug("linenUmber:", CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber));
             const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
             CabbageLayoutWidgetStrings layoutWidgets;
             CabbageControlWidgetStrings controlWidgets;
@@ -385,10 +381,6 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
             }
             else
             {
-                CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type));
-                CabbageUtilities::debug(CabbageWidgetData::getBounds(widgetData).toString());
-                CabbageUtilities::debug(
-                        CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::surrogatelinenumber));
                 int lineNumberOfCustomPlant = CabbageWidgetData::getNumProp(widgetData,
                                                                             CabbageIdentifierIds::surrogatelinenumber);
                 const Rectangle<int> rect = CabbageWidgetData::getBounds(widgetData);
