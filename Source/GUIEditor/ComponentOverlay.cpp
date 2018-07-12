@@ -152,8 +152,6 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
 
     if (e.mods.isPopupMenu())
     {
-
-
         PopupMenu menu;
         menu.setLookAndFeel (&this->getLookAndFeel());
         menu.addItem (100, "Delete");

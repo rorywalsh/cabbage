@@ -196,7 +196,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     //remove widget type from first string in array
     identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ") + 1));
     
-    for (const auto ident : fullListOfIdentifierStrings)
+    for (auto &ident : fullListOfIdentifierStrings)
     {
         if (replacedIdentifiers.indexOf(ident) == -1)
         {
