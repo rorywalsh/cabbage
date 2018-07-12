@@ -3,14 +3,14 @@
 
 ; click and drag to generate sparks
 
-; This example makes use of Cabbage's ability to rotate widgets and to make them visible and invisible 
+; This example makes use of Cabbage's ability to rotate widgets and to make them visible and invisible
 ; to create the sparking effect.
 ; It also demonstrates how rate-of-change of mouse position (position delta) is used as a control input (spark density).
-; The tonal variation of the sparks is implemented using 2 comb filters, 
+; The tonal variation of the sparks is implemented using 2 comb filters,
 ;   the loop times of which are linked to the mouse x and y positions.
 
 <Cabbage>
-form size(1000,540), text("Electricity"), guirefresh(32), colour(0,0,0)
+form size(1000,540), text("Electricity"), guirefresh(32), colour(0,0,0), pluginid("Elec")
 image bound(0,0,0,0), shape("sharp"), visible(0), widgetarray("spark",10)	; widget array (10 image widgets with a single line of code)
 label bounds(0,530,100,10), text("Iain McCurdy |2015|")
 label bounds(  0,230,1000,70), text("Click and Drag..."), fontcolour(255,255,255), identchannel("instructions")
@@ -18,7 +18,7 @@ label bounds(  0,230,1000,70), text("Click and Drag..."), fontcolour(255,255,255
 
 <CsoundSynthesizer>
 
-<CsOptions>   
+<CsOptions>
 -dm0 -n
 </CsOptions>
 
@@ -84,8 +84,8 @@ instr 1
   schedkwhen	ktrig,0,0,11,rnd(0.08)*3,0,9,kdelta
   schedkwhen	ktrig,0,0,11,rnd(0.09)*3,0,10,kdelta
   SKIP:
- endif  
- 
+ endif
+
  ; 50 Hz mains hum
  aamp	interp	(1-(ktrig*0.5)) * (0.005 + (kMOUSE_DOWN_LEFT*0.03))	; amplitude derives from mouse down position and inversely to trigger impulses
  kpw	rspline	0.89-(ky_ratio*0.88),0.99-(ky_ratio*0.98),0.2,0.4	; slight pulse width shift
@@ -99,11 +99,11 @@ instr 1
  kjit	rspline	-10,10,1,5					; frequency jitter
  asq	vco2	1, 50*cent(kjit), 4, kpw, 0, 0.125		; square wave
  asq	*=	aamp                                        	; scale amplitude
- kpan	rspline	kx_ratio*0.5,0.5+(kx_ratio*0.5),0.5,5      	; panning function 
+ kpan	rspline	kx_ratio*0.5,0.5+(kx_ratio*0.5),0.5,5      	; panning function
  aL2,aR2	pan2	asq,kpan                    		; create stereo output
- 
+
  	outs	aL1+aL2, aR1+aR2				; mix hum signals and send to output
- 
+
 endin
 
 gasendL,gasendR	init	0					; reverb send variables
@@ -180,7 +180,7 @@ instr	1000	; flash instructions
  asq	atone	asq,2000
  kpan	rspline	0.3,0.7,1,5					; panning function
  aL2,aR2	pan2	asq,kpan                    		; create stereo output
- 
+
  	outs	aL1+aL2, aR1+aR2				; mix hum signals and send to output
 
  ; turn off this instrument and hide instructions when the mouse is first left-clicked.
@@ -188,7 +188,7 @@ instr	1000	; flash instructions
  if kMOUSE_DOWN_LEFT==1 then					; if left clicked...
   chnset	"visible(0)","instructions"			; ...hide instructions
   event	"i",1,0,3600						; start the 'sparks and hum' instrument
-  turnoff							; turn off this instrument 
+  turnoff							; turn off this instrument
  endif
 endin
 
