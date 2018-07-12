@@ -26,6 +26,8 @@ CabbageGraphComponent::~CabbageGraphComponent()
 {
     graph.removeChangeListener (this);
     draggingConnector = nullptr;
+    connectors.clear();
+    nodes.clear();
     //deleteAllChildren();
 }
 
@@ -133,8 +135,8 @@ void CabbageGraphComponent::updateComponents()
             nodes.remove (i);
     
     for (int i = connectors.size(); --i >= 0;)
-        if (! graph.graph.isConnected (graph.getConnections()[i]))
-            graph.graph.removeConnection(graph.getConnections()[i]);
+        if (! graph.graph.isConnected (connectors.getUnchecked(i)->connection))
+            connectors.remove (i);
     
     for (auto* fc : nodes)
         fc->update();
@@ -163,82 +165,12 @@ void CabbageGraphComponent::updateComponents()
             comp->setOutput (c.destination);
         }
     }
-//    for (int i = (int)graph.graph.getConnections().size(); --i >= 0;)
-//        if (! graph.graph.isConnected (graph.graph.getConnections()[i]))
-//            graph.graph.getConnections().erase(graph.graph.getConnections().begin()+i);
-//
-//    for (int i = getNumChildComponents(); --i >= 0;)
-//    {
-//        if (CabbagePluginComponent* const fc = dynamic_cast<CabbagePluginComponent*> (getChildComponent (i)))
-//            fc->update();
-//    }
-//
-////    for (int i = getNumChildComponents(); --i >= 0;)
-////    {
-////        if (CabbagePluginComponent* const fc = dynamic_cast<CabbagePluginComponent*> (getChildComponent (i)))
-////            nodes.remove (i);
-//
-//    for (int i = getNumChildComponents(); --i >= 0;)
-//    {
-//        ConnectorComponent* const cc = dynamic_cast<ConnectorComponent*> (getChildComponent (i));
-//
-//        if (cc != nullptr && cc != draggingConnector)
-//        {
-//            if (graph.getConnectionBetween (cc->sourceFilterID, cc->sourceFilterChannel,
-//                                            cc->destFilterID, cc->destFilterChannel) == nullptr)
-//            {
-//                delete cc;
-//            }
-//            else
-//            {
-//                cc->update();
-//            }
-//        }
-//    }
-//
-//    for (int i = graph.getNumPlugins(); --i >= 0;)
-//    {
-//        const AudioProcessorGraph::Node::Ptr f (graph.getNode (i));
-//
-//        if (getComponentForFilter (f->nodeID) == 0)
-//        {
-//            CabbagePluginComponent* const comp = new CabbagePluginComponent (graph, f->nodeID);
-//            addAndMakeVisible (comp);
-//            comp->update();
-//        }
-//    }
-//
-//    for (int i = graph.getNumConnections(); --i >= 0;)
-//    {
-//        const AudioProcessorGraph::Connection* const c = graph.getConnection (i);
-//
-//        if (getComponentForConnection (*c) == 0)
-//        {
-//            ConnectorComponent* const comp = new ConnectorComponent (graph);
-//            addAndMakeVisible (comp);
-//
-//            comp->setInput (c->source.nodeID, c->source.channelIndex);
-//            comp->setOutput (c->destination.nodeID, c->destination.channelIndex);
-//        }
-//    }
 }
 
 void CabbageGraphComponent::beginConnectorDrag (AudioProcessorGraph::NodeAndChannel newSource,
                                                 AudioProcessorGraph::NodeAndChannel newDest,
                                                 const MouseEvent& e)
 {
-//    draggingConnector = dynamic_cast<ConnectorComponent*> (e.originalComponent);
-//
-//    if (draggingConnector == nullptr)
-//        draggingConnector = new ConnectorComponent (graph);
-//
-//    draggingConnector->setInput (newSource);
-//    draggingConnector->setOutput (newDest);
-//
-//    addAndMakeVisible (draggingConnector);
-//    draggingConnector->toFront (false);
-//
-//    dragConnector (e);
     auto* c = dynamic_cast<ConnectorComponent*> (e.originalComponent);
     connectors.removeObject (c, false);
     draggingConnector.reset (c);

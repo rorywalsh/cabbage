@@ -689,22 +689,39 @@ XmlElement* AudioGraph::createXml() const
 
 XmlElement* AudioGraph::createConnectionsXml() const
 {
-    XmlElement* xml = new XmlElement ("FILTERGRAPH");
-
-    for (int i = 0; i < graph.getConnections().size(); ++i)
+//    XmlElement* xml = new XmlElement ("FILTERGRAPH");
+//
+//    for (int i = 0; i < graph.getConnections().size(); ++i)
+//    {
+//        const AudioProcessorGraph::Connection* const fc = &graph.getConnections()[i];
+//
+//        XmlElement* e = new XmlElement ("CONNECTION");
+//
+//        e->setAttribute ("srcFilter", (int) fc->source.nodeID);
+//        e->setAttribute ("srcChannel", fc->source.channelIndex);
+//        e->setAttribute ("dstFilter", (int) fc->destination.nodeID);
+//        e->setAttribute ("dstChannel", fc->destination.channelIndex);
+//
+//        xml->addChildElement (e);
+//    }
+//
+//    return xml;
+    
+    auto* xml = new XmlElement ("FILTERGRAPH");
+    
+    for (auto* node : graph.getNodes())
+        xml->addChildElement (createNodeXml (node));
+    
+    for (auto& connection : graph.getConnections())
     {
-        const AudioProcessorGraph::Connection* const fc = &graph.getConnections()[i];
-
-        XmlElement* e = new XmlElement ("CONNECTION");
-
-        e->setAttribute ("srcFilter", (int) fc->source.nodeID);
-        e->setAttribute ("srcChannel", fc->source.channelIndex);
-        e->setAttribute ("dstFilter", (int) fc->destination.nodeID);
-        e->setAttribute ("dstChannel", fc->destination.channelIndex);
-
-        xml->addChildElement (e);
+        auto e = xml->createNewChildElement ("CONNECTION");
+        
+        e->setAttribute ("srcFilter", (int) connection.source.nodeID);
+        e->setAttribute ("srcChannel", connection.source.channelIndex);
+        e->setAttribute ("dstFilter", (int) connection.destination.nodeID);
+        e->setAttribute ("dstChannel", connection.destination.channelIndex);
     }
-
+    
     return xml;
 }
 //========================================================================================
