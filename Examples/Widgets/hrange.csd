@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("HRange Example") size(400, 300), colour(220, 220, 220), pluginid("def1")
+form caption("HRange Example") size(400, 300), colour(220, 220, 220), pluginid("HRge")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 hrange bounds(120, 34, 160, 40), channel("hrangeL", "hrangeR"), colour(123, 34, 143), range(100, 1000, 200:300, 1, .01)

@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 500), caption("Form Example"), pluginid("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Form Example"), pluginid("Form"), colour(39, 40, 34)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

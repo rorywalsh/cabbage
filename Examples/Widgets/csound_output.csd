@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 500), caption("Csound output"), pluginid("plu1"), colour(39, 40, 34)
+form size(400, 500), caption("Csound output"), pluginid("WCOp"), colour(39, 40, 34)
 csoundoutput bounds(10, 10, 380, 400)
 </Cabbage>
 <CsoundSynthesizer>

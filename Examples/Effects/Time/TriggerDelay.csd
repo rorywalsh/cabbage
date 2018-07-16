@@ -15,7 +15,7 @@
 ; 'Width' allows the user to vary the delay from a simple monophonic delay to a ping-pong style delay
 
 <Cabbage>
-form caption("Trigger Delay") size(540,240), pluginid("TDel")
+form caption("Trigger Delay") size(540,240), pluginid("TrDl")
 image                  bounds(0, 0,540,240), colour(150,150,205), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 
 rslider  bounds(  5, 11, 70, 70),  text("Threshold"), textcolour("black"),  channel("threshold"), range(0, 1.00, 0.1, 0.5),      colour( 40, 40, 95),trackercolour("white")

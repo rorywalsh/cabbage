@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Groupbox example") size(400, 300), colour(220, 220, 220), pluginid("def1")
+form caption("Groupbox example") size(400, 300), colour(220, 220, 220), pluginid("GrBx")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(10, 34, 378, 73), text("I'm a groupbox"), colour(80, 80, 80)
 groupbox bounds(8, 118, 380, 177), text("Randomly Updated Identifiers")
