@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 190), caption("Simple Synth"), pluginid("plu1")
+form size(400, 190), caption("Simple Synth"), pluginid("SSGS")
 hslider bounds(5, 110, 380, 50), channel("gain"), range(0, 1, .5), colour("white")
 keyboard bounds(10, 5, 380, 100)
 </Cabbage>

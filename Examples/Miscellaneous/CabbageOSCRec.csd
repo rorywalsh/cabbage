@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("OSCRec"), size(470, 260), pluginid("band"), guirefresh(10)
+form caption("OSCRec"), size(470, 260), pluginid("OSCR"), guirefresh(10)
 rslider bounds(10, 10, 80, 80), channel("test1"), range(0, 1, 0, 1, .01)
 rslider bounds(100, 10, 80, 80), channel("test2"), range(0, 1, 0, 1, .01)
 </Cabbage>

@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Radio Buttons") size(300, 200), pluginid("SMo1"), guirefresh(10)
+form caption("Radio Buttons") size(300, 200), pluginid("RdBt"), guirefresh(10)
 
 button bounds(8, 122, 60, 25), channel("but10"), radiogroup(101), colour:1("blue"), value(1), text("Zero", "One")
 button bounds(82, 122, 60, 25), channel("but11"), radiogroup(101), colour:1("blue"), text("Zero", "One")

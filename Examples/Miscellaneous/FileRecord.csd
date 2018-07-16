@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Rercord to file") size(400, 200), colour(58, 110, 182), pluginid("def1")
+form caption("Rercord to file") size(400, 200), colour(58, 110, 182), pluginid("FlRe")
 button bounds(4, 6, 163, 40), channel("record"), text("Record to disk", "Stop recording to disk"), 
 </Cabbage>
 <CsoundSynthesizer>

@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Texteditor Example") size(400, 300), colour(220, 220, 220), pluginid("def1")
+form caption("Texteditor Example") size(400, 300), colour(220, 220, 220), pluginid("TxE1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 label bounds(12, 36, 297, 19), text("Enter some text and hit enter"), align("left") fontcolour(84, 83, 83, 255)

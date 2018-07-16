@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Meter example") size(400, 300), colour(220, 220, 220), pluginid("def1")
+form caption("Meter example") size(400, 300), colour(220, 220, 220), pluginid("Mtr1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 vmeter bounds(116, 32, 35, 80) channel("vMeter1") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
 vmeter bounds(156, 32, 35, 80) channel("vMeter2") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
