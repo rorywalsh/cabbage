@@ -18,7 +18,7 @@
 */
 
 #ifndef CABBAGEAPPLICATION_H_INCLUDED
-#define CABBAGEAPPLICATION_H_INCLUDED
+#define CABBAGEAPPLICATION_H_INCLUDED  
 
 #include "CabbageCommonHeaders.h"
 
