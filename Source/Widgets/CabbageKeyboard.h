@@ -38,6 +38,7 @@ public:
     CabbageKeyboard (ValueTree wData, MidiKeyboardState& state);
     ~CabbageKeyboard() {};
 
+    void updateKeyboardColours(ValueTree& valueTree);
     //VlaueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
