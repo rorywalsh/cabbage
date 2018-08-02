@@ -95,6 +95,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("fillcolour"):
         case HashStringToInt ("highlightcolour"):
         case HashStringToInt ("keyseparatorcolour"):
+        case HashStringToInt ("keydowncolour"):
         case HashStringToInt ("menucolour"):
         case HashStringToInt ("mouseoeverkeycolour"):
         case HashStringToInt ("outlinecolour"):
