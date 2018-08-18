@@ -79,17 +79,13 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
     }
 }
 
-void CabbageGraphComponent::createNewPlugin (const PluginDescription* desc, int x, int y)
-{
-    //graph.addFilter (desc, x / (double) getWidth(), y / (double) getHeight());
-}
 
 CabbagePluginComponent* CabbageGraphComponent::getComponentForFilter (const uint32 filterID) const
 {
-    for (auto* fc : nodes)
-        if (fc->filterID == filterID)
+    for (auto *fc : nodes)
+        if (fc->pluginID == filterID)
             return fc;
-    
+
     return nullptr;
 }
 
@@ -131,7 +127,7 @@ void CabbageGraphComponent::changeListenerCallback (ChangeBroadcaster*)
 void CabbageGraphComponent::updateComponents()
 {
     for (int i = nodes.size(); --i >= 0;)
-        if (graph.graph.getNodeForId (nodes.getUnchecked(i)->filterID) == nullptr)
+        if (graph.graph.getNodeForId (nodes.getUnchecked(i)->pluginID) == nullptr)
             nodes.remove (i);
     
     for (int i = connectors.size(); --i >= 0;)
@@ -148,7 +144,7 @@ void CabbageGraphComponent::updateComponents()
     {
         if (getComponentForFilter (f->nodeID) == 0)
         {
-            auto* comp = nodes.add (new CabbagePluginComponent (graph, f->nodeID));
+            auto* comp = nodes.add (new CabbagePluginComponent(graph, f->nodeID));
             addAndMakeVisible (comp);
             comp->update();
         }
@@ -158,7 +154,7 @@ void CabbageGraphComponent::updateComponents()
     {
         if (getComponentForConnection (c) == 0)
         {
-            auto* comp = connectors.add (new ConnectorComponent (graph));
+            auto* comp = connectors.add (new ConnectorComponent(*this));
             addAndMakeVisible (comp);
             
             comp->setInput (c.source);
@@ -176,7 +172,7 @@ void CabbageGraphComponent::beginConnectorDrag (AudioProcessorGraph::NodeAndChan
     draggingConnector.reset (c);
     
     if (draggingConnector == nullptr)
-        draggingConnector.reset (new ConnectorComponent (graph));
+        draggingConnector.reset (new ConnectorComponent (*this));
     
     draggingConnector->setInput (newSource);
     draggingConnector->setOutput (newDest);
@@ -190,33 +186,33 @@ void CabbageGraphComponent::beginConnectorDrag (AudioProcessorGraph::NodeAndChan
 void CabbageGraphComponent::dragConnector (const MouseEvent& e)
 {
     auto e2 = e.getEventRelativeTo (this);
-    
+
     if (draggingConnector != nullptr)
     {
-        draggingConnector->setTooltip ({});
-        
+        //draggingConnector->setTooltip ({});
+
         auto pos = e2.position;
-        
+
         if (auto* pin = findPinAt (pos))
         {
             auto connection = draggingConnector->connection;
-            
+
             if (connection.source.nodeID == 0 && ! pin->isInput)
             {
-                connection.source = {pin->filterID, pin->index};
+                connection.source = pin->pin;
             }
             else if (connection.destination.nodeID == 0 && pin->isInput)
             {
-                connection.destination = {pin->filterID, pin->index};
+                connection.destination = pin->pin;
             }
-            
+
             if (graph.graph.canConnect (connection))
             {
                 pos = (pin->getParentComponent()->getPosition() + pin->getBounds().getCentre()).toFloat();
-                draggingConnector->setTooltip (pin->getTooltip());
+                //draggingConnector->setTooltip (pin->getTooltip());
             }
         }
-        
+
         if (draggingConnector->connection.source.nodeID == 0)
             draggingConnector->dragStart (pos);
         else
@@ -228,33 +224,36 @@ void CabbageGraphComponent::endDraggingConnector (const MouseEvent& e)
 {
     if (draggingConnector == nullptr)
         return;
-    
-    draggingConnector->setTooltip ({});
-    
+
+    //draggingConnector->setTooltip ({});
+
     auto e2 = e.getEventRelativeTo (this);
     auto connection = draggingConnector->connection;
-    
+
     draggingConnector = nullptr;
-    
+
     if (auto* pin = findPinAt (e2.position))
     {
         if (connection.source.nodeID == 0)
         {
             if (pin->isInput)
                 return;
-            
-            connection.source = {pin->filterID, pin->index};
+
+            connection.source = pin->pin;
         }
         else
         {
             if (! pin->isInput)
                 return;
-            
-            connection.destination = {pin->filterID, pin->index};
+
+            connection.destination = pin->pin;
         }
-        
+
         graph.graph.addConnection (connection);
+        updateComponents();
     }
+
+
 }
 
 

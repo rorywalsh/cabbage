@@ -11,16 +11,10 @@ Author:  rory
 #include "CabbagePluginComponent.h"
 #include "CabbageGraphComponent.h"
 
-CabbagePluginComponent::CabbagePluginComponent (AudioGraph& graph_, const uint32 filterID_)
-    : graph (graph_),
-      filterID (filterID_),
-      numInputs (0),
-      numOutputs (0),
-      pinSize (16),
-      font (13.0f, Font::bold),
-      numIns (0),
-      numOuts (0),
-      lookAndFeel()
+CabbagePluginComponent::CabbagePluginComponent(AudioGraph& p, uint32 id)  :
+    graph (p),
+    pluginID (id),
+    lookAndFeel()
 {
     shadow.setShadowProperties (DropShadow (Colours::black.withAlpha (0.5f), 3, Point<int> (0, 1)));
     setComponentEffect (&shadow);
@@ -55,16 +49,16 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
 
         if (r == 1)
         {
-            graph.removeFilter (filterID);
+            graph.removeFilter (pluginID);
             return;
         }
         else if (r == 2)
         {
-            graph.disconnectFilter (filterID);
+            graph.disconnectFilter (pluginID);
         }
         else if ( r == 3)
         {
-            if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
+            if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (pluginID))
             {
                 AudioProcessor* const processor = f->getProcessor();
                 jassert (processor != nullptr);
@@ -78,7 +72,7 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
             }
         }
         else if ( r == 4)
-            graph.showCodeEditorForNode (filterID);
+            graph.showCodeEditorForNode (pluginID);
     }
 }
 
@@ -86,17 +80,18 @@ void CabbagePluginComponent::mouseDrag (const MouseEvent& e)
 {
     if (! e.mods.isPopupMenu())
     {
-        Point<int> pos (originalPos + Point<int> (e.getDistanceFromDragStartX(), e.getDistanceFromDragStartY()));
+        auto pos = originalPos + e.getOffsetFromDragStart();
 
         if (getParentComponent() != nullptr)
             pos = getParentComponent()->getLocalPoint (nullptr, pos);
 
-        graph.setNodePosition (filterID,
-                               (pos.getX() + getWidth() / 2) / (double) getParentWidth(),
-                               (pos.getY() + getHeight() / 2) / (double) getParentHeight());
+        pos += getLocalBounds().getCentre();
+
+        graph.setNodePosition (pluginID,
+                               { pos.x / (double) getParentWidth(),
+                                 pos.y / (double) getParentHeight() });
 
         getCabbageGraphComponent()->updateComponents();
-        getCabbageGraphComponent()->repaint();
     }
 }
 
@@ -108,20 +103,25 @@ void CabbagePluginComponent::mouseUp (const MouseEvent& e)
     }
     else if (e.getNumberOfClicks() == 2)
     {
-        if (const AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
-            if (PluginWindow* const w = PluginWindow::getWindowFor (f, PluginWindow::Normal, graph.getGraph()))
-            {
-                w->setVisible (true);
+        if (auto f = graph.graph.getNodeForId (pluginID))
+        {
+            AudioProcessor* const processor = f->getProcessor();
+            jassert (processor != nullptr);
+
+            PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
+                                                                         : PluginWindow::Generic;
+
+            if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
                 w->toFront (true);
-                graph.showCodeEditorForNode (filterID);
-            }
+
+        }
     }
 }
 
 bool CabbagePluginComponent::hitTest (int x, int y)
 {
-    for (int i = getNumChildComponents(); --i >= 0;)
-        if (getChildComponent (i)->getBounds().contains (x, y))
+    for (auto* child : getChildren())
+        if (child->getBounds().contains (x, y))
             return true;
 
     return x >= 3 && x < getWidth() - 6 && y >= pinSize && y < getHeight() - pinSize;
@@ -152,30 +152,26 @@ void CabbagePluginComponent::paint (Graphics& g)
 
 void CabbagePluginComponent::resized()
 {
-    if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (filterID))
+    if (auto f = graph.graph.getNodeForId (pluginID))
     {
-        if (AudioProcessor* const processor = f->getProcessor())
+        if (auto* processor = f->getProcessor())
         {
-            for (int i = 0; i < getNumChildComponents(); ++i)
+            for (auto* pin : pins)
             {
-                if (PinComponent* const pc = dynamic_cast<PinComponent*> (getChildComponent (i)))
-                {
-                    const bool isInput = pc->isInput;
-                    int busIdx, channelIdx;
+                const bool isInput = pin->isInput;
+                auto channelIndex = pin->pin.channelIndex;
+                int busIdx = 0;
+                processor->getOffsetInBusBufferForAbsoluteChannelIndex (isInput, channelIndex, busIdx);
 
-                    channelIdx =
-                        processor->getOffsetInBusBufferForAbsoluteChannelIndex (isInput, pc->index, busIdx);
+                const int total = isInput ? numIns : numOuts;
+                const int index = pin->pin.isMIDI() ? (total - 1) : channelIndex;
 
-                    const int total = isInput ? numIns : numOuts;
-                    const int index = pc->index == AudioGraph::midiChannelNumber ? (total - 1) : pc->index;
+                auto totalSpaces = static_cast<float> (total) + (static_cast<float> (jmax (0, processor->getBusCount (isInput) - 1)) * 0.5f);
+                auto indexPos = static_cast<float> (index) + (static_cast<float> (busIdx) * 0.5f);
 
-                    const float totalSpaces = static_cast<float> (total) + (static_cast<float> (jmax (0, processor->getBusCount (isInput) - 1)) * 0.5f);
-                    const float indexPos = static_cast<float> (index) + (static_cast<float> (busIdx) * 0.5f);
-
-                    pc->setBounds (proportionOfWidth ((1.0f + indexPos) / (totalSpaces + 1.0f)) - pinSize / 2,
-                                   pc->isInput ? 0 : (getHeight() - pinSize),
-                                   pinSize, pinSize);
-                }
+                pin->setBounds (proportionOfWidth ((1.0f + indexPos) / (totalSpaces + 1.0f)) - pinSize / 2,
+                                pin->isInput ? 0 : (getHeight() - pinSize),
+                                pinSize, pinSize);
             }
         }
     }
@@ -185,29 +181,22 @@ void CabbagePluginComponent::resized()
 Point<float> CabbagePluginComponent::getPinPos (int index, bool isInput) const
 {
     for (auto* pin : pins)
-        if (pin->index == index && isInput == pin->isInput)
+        if (pin->pin.channelIndex == index && isInput == pin->isInput)
             return getPosition().toFloat() + pin->getBounds().getCentre().toFloat();
-    
+
     return {};
 }
 
 void CabbagePluginComponent::update()
 {
-    const AudioProcessorGraph::Node::Ptr f (graph.getNodeForId (filterID));
-
-    if (f == nullptr)
-    {
-        delete this;
-        return;
-    }
+    const AudioProcessorGraph::Node::Ptr f (graph.graph.getNodeForId (pluginID));
+    jassert (f != nullptr);
 
     numIns = f->getProcessor()->getTotalNumInputChannels();
-
     if (f->getProcessor()->acceptsMidi())
         ++numIns;
 
     numOuts = f->getProcessor()->getTotalNumOutputChannels();
-
     if (f->getProcessor()->producesMidi())
         ++numOuts;
 
@@ -218,7 +207,6 @@ void CabbagePluginComponent::update()
 
     const int textWidth = font.getStringWidth (f->getProcessor()->getName());
     w = jmax (w, 16 + jmin (textWidth, 300));
-
     if (textWidth > 300)
         h = 100;
 
@@ -232,30 +220,29 @@ void CabbagePluginComponent::update()
         setName (f->getProcessor()->getName());
 
     {
-        Point<double> p = graph.getNodePosition (filterID);
+        auto p = graph.getNodePosition (pluginID);
         setCentreRelative ((float) p.x, (float) p.y);
     }
+
 
     if (numIns != numInputs || numOuts != numOutputs)
     {
         numInputs = numIns;
         numOutputs = numOuts;
 
-        deleteAllChildren();
+        pins.clear();
 
-        int i;
-
-        for (i = 0; i < f->getProcessor()->getTotalNumInputChannels(); ++i)
-            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, i, true)));
+        for (int i = 0; i < f->getProcessor()->getTotalNumInputChannels(); ++i)
+            addAndMakeVisible (pins.add (new PinComponent (*getCabbageGraphComponent(), { pluginID, i }, true)));
 
         if (f->getProcessor()->acceptsMidi())
-            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, AudioGraph::midiChannelNumber, true)));
+            addAndMakeVisible (pins.add (new PinComponent (*getCabbageGraphComponent(), { pluginID, AudioProcessorGraph::midiChannelIndex }, true)));
 
-        for (i = 0; i < f->getProcessor()->getTotalNumOutputChannels(); ++i)
-            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, i, false)));
+        for (int i = 0; i < f->getProcessor()->getTotalNumOutputChannels(); ++i)
+            addAndMakeVisible (pins.add (new PinComponent (*getCabbageGraphComponent(), { pluginID, i }, false)));
 
         if (f->getProcessor()->producesMidi())
-            addAndMakeVisible (pins.add(new PinComponent (graph, filterID, AudioGraph::midiChannelNumber, false)));
+            addAndMakeVisible (pins.add (new PinComponent (*getCabbageGraphComponent(), { pluginID, AudioProcessorGraph::midiChannelIndex }, false)));
 
         resized();
     }
@@ -265,16 +252,19 @@ void CabbagePluginComponent::update()
 
 CabbageGraphComponent* CabbagePluginComponent::getCabbageGraphComponent() const noexcept
 {
+    if(!findParentComponentOfClass<CabbageGraphComponent>())
+        jassertfalse;
+
     return findParentComponentOfClass<CabbageGraphComponent>();
 }
-
 //==================================================================================================================
-ConnectorComponent::ConnectorComponent (AudioGraph& graph_)
+ConnectorComponent::ConnectorComponent (CabbageGraphComponent& panel_)
     : sourceFilterID (0),
       destFilterID (0),
       sourceFilterChannel (0),
       destFilterChannel (0),
-      graph (graph_),
+      panel (panel_),
+      graph(panel_.graph),
       lastInputX (0),
       lastInputY (0),
       lastOutputX (0),
@@ -301,25 +291,6 @@ void ConnectorComponent::setOutput (AudioProcessorGraph::NodeAndChannel newDest)
     }
 }
 
-//void ConnectorComponent::setInput (const uint32 sourceFilterID_, const int sourceFilterChannel_)
-//{
-//    if (sourceFilterID != sourceFilterID_ || sourceFilterChannel != sourceFilterChannel_)
-//    {
-//        sourceFilterID = sourceFilterID_;
-//        sourceFilterChannel = sourceFilterChannel_;
-//        update();
-//    }
-//}
-//
-//void ConnectorComponent::setOutput (const uint32 destFilterID_, const int destFilterChannel_)
-//{
-//    if (destFilterID != destFilterID_ || destFilterChannel != destFilterChannel_)
-//    {
-//        destFilterID = destFilterID_;
-//        destFilterChannel = destFilterChannel_;
-//        update();
-//    }
-//}
 
 void ConnectorComponent::dragStart (Point<float> pos)
 {
@@ -361,12 +332,14 @@ void ConnectorComponent::getPoints (Point<float>& p1, Point<float>& p2) const
 {
     p1 = lastInputPos;
     p2 = lastOutputPos;
-    
-    if (auto* src = getCabbageGraphComponent()->getComponentForFilter (connection.source.nodeID))
-        p1 = src->getPinPos (connection.source.channelIndex, false);
-    
-    if (auto* dest = getCabbageGraphComponent()->getComponentForFilter (connection.destination.nodeID))
-        p2 = dest->getPinPos (connection.destination.channelIndex, true);
+
+    //this can't find the graph component at times...
+    if (auto *src = panel.getComponentForFilter(connection.source.nodeID))
+        p1 = src->getPinPos(connection.source.channelIndex, false);
+
+    if (auto *dest = panel.getComponentForFilter(connection.destination.nodeID))
+        p2 = dest->getPinPos(connection.destination.channelIndex, true);
+
 }
 
 void ConnectorComponent::paint (Graphics& g)
@@ -402,7 +375,7 @@ void ConnectorComponent::mouseDrag (const MouseEvent& e)
 {
     if (dragging)
     {
-        getCabbageGraphComponent()->dragConnector (e);
+        panel.dragConnector (e);
     }
     else if (e.mouseWasDraggedSinceMouseDown())
     {
@@ -414,7 +387,7 @@ void ConnectorComponent::mouseDrag (const MouseEvent& e)
         getDistancesFromEnds (Point<float>(e.x, e.y), distanceFromStart, distanceFromEnd);
         const bool isNearerSource = (distanceFromStart < distanceFromEnd);
         AudioProcessorGraph::NodeAndChannel dummy { 0, 0 };
-        getCabbageGraphComponent()->beginConnectorDrag (isNearerSource ? dummy : connection.source,
+        panel.beginConnectorDrag (isNearerSource ? dummy : connection.source,
                                                        isNearerSource ? connection.destination : dummy,
                                                        e);
 
@@ -425,7 +398,7 @@ void ConnectorComponent::mouseDrag (const MouseEvent& e)
 void ConnectorComponent::mouseUp (const MouseEvent& e)
 {
     if (dragging)
-        getCabbageGraphComponent()->endDraggingConnector (e);
+        panel.endDraggingConnector (e);
 }
 
 void ConnectorComponent::resized()
@@ -467,46 +440,34 @@ void ConnectorComponent::resized()
     linePath.setUsingNonZeroWinding (true);
 }
 
-CabbageGraphComponent* ConnectorComponent::getCabbageGraphComponent() const noexcept
-{
-    return findParentComponentOfClass<CabbageGraphComponent>();
-}
 
 //===================================================================================
-PinComponent::PinComponent (AudioGraph& graph_,
-                            const uint32 filterID_, const int index_, const bool isInput_)
-    : filterID (filterID_),
-      index (index_),
-      isInput (isInput_),
-      busIdx (0),
-      graph (graph_)
+PinComponent::PinComponent (CabbageGraphComponent& p, AudioProcessorGraph::NodeAndChannel pinToUse, bool isIn)
+: panel(p), graph (p.graph), pin (pinToUse), isInput (isIn)
 {
-    if (const AudioProcessorGraph::Node::Ptr node = graph.getNodeForId (filterID_))
+    if (auto node = graph.graph.getNodeForId (pin.nodeID))
     {
         String tip;
 
-        if (index == AudioGraph::midiChannelNumber)
+        if (pin.isMIDI())
         {
             tip = isInput ? "MIDI Input"
-                  : "MIDI Output";
+                          : "MIDI Output";
         }
         else
         {
-            const AudioProcessor& processor = *node->getProcessor();
+            auto& processor = *node->getProcessor();
+            auto channel = processor.getOffsetInBusBufferForAbsoluteChannelIndex (isInput, pin.channelIndex, busIdx);
 
-            int channel;
-            channel = processor.getOffsetInBusBufferForAbsoluteChannelIndex (isInput, index, busIdx);
-
-            if (const AudioProcessor::Bus* bus = processor.getBus (isInput, busIdx))
-                tip = bus->getName() + String (": ")
-                      + AudioChannelSet::getAbbreviatedChannelTypeName (bus->getCurrentLayout().getTypeOfChannel (channel));
+            if (auto* bus = processor.getBus (isInput, busIdx))
+                tip = bus->getName() + ": " + AudioChannelSet::getAbbreviatedChannelTypeName (bus->getCurrentLayout().getTypeOfChannel (channel));
             else
                 tip = (isInput ? "Main Input: "
-                       : "Main Output: ") + String (index + 1);
+                               : "Main Output: ") + String (pin.channelIndex + 1);
 
         }
 
-        setTooltip (tip);
+        //setTooltip (tip);
     }
 
     setSize (16, 16);
@@ -514,38 +475,32 @@ PinComponent::PinComponent (AudioGraph& graph_,
 
 void PinComponent::paint (Graphics& g)
 {
-    const float w = (float) getWidth();
-    const float h = (float) getHeight();
+    auto w = (float) getWidth();
+    auto h = (float) getHeight();
 
     Path p;
     p.addEllipse (w * 0.25f, h * 0.25f, w * 0.5f, h * 0.5f);
-
     p.addRectangle (w * 0.4f, isInput ? (0.5f * h) : 0.0f, w * 0.2f, h * 0.5f);
 
-    g.setColour (index == AudioGraph::midiChannelNumber ? Colours::cornflowerblue : Colours::green);
-    g.fillPath (p);
+    auto colour = (pin.isMIDI() ? Colours::red : Colours::green);
 
+    g.setColour (colour.withRotatedHue (busIdx / 5.0f));
+    g.fillPath (p);
 }
 
 void PinComponent::mouseDown (const MouseEvent& e)
 {
     AudioProcessorGraph::NodeAndChannel dummy { 0, 0 };
-    AudioProcessorGraph::NodeAndChannel filter { filterID, index };
-    getCabbageGraphComponent()->beginConnectorDrag ((isInput ? dummy : filter),
-        (isInput ? filter : dummy), e);    
+    panel.beginConnectorDrag (isInput ? dummy : pin, isInput ? pin : dummy, e);
 }
 
 void PinComponent::mouseDrag (const MouseEvent& e)
 {
-    getCabbageGraphComponent()->dragConnector (e);
+    panel.dragConnector (e);
 }
 
 void PinComponent::mouseUp (const MouseEvent& e)
 {
-    getCabbageGraphComponent()->endDraggingConnector (e);
+    panel.endDraggingConnector (e);
 }
 
-CabbageGraphComponent* PinComponent::getCabbageGraphComponent() const noexcept
-{
-    return findParentComponentOfClass<CabbageGraphComponent>();
-}

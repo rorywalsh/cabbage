@@ -37,7 +37,6 @@ public:
     void paint (Graphics& g) override;
     void mouseDown (const MouseEvent& e) override;
 
-    void createNewPlugin (const PluginDescription* desc, int x, int y);
 
     OwnedArray<CabbagePluginComponent> nodes;
     OwnedArray<ConnectorComponent> connectors;
@@ -59,11 +58,12 @@ public:
     void endDraggingConnector (const MouseEvent& e);
 
     //==============================================================================
+    AudioGraph& graph;
 private:
     Array<File> exampleFiles;
     Array<File> userFiles;
     CabbageLookAndFeel2 lookAndFeel;
-    AudioGraph& graph;
+
     CabbageMainComponent& owner;
     ScopedPointer<ConnectorComponent> draggingConnector;
 
