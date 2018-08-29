@@ -136,6 +136,7 @@ namespace CabbageColourIds
     static const Identifier propertyLabelText = "Interface - Property Label Text";
     static const Identifier alertWindowBackground = "Interface - Alert Window Background";
     static const Identifier codeBackground = "Editor - Code Background";
+    static const Identifier scrollbars = "Editor - Scrollbars";
     static const Identifier lineNumberBackground = "Editor - Line Numbers Background";
     static const Identifier lineNumbers = "Editor - Line Numbers";
     static const Identifier selectTextBackground = "Editor - Selected Text Background";

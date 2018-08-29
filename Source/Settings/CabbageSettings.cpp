@@ -135,6 +135,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleBackground, "FF000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleOutline, "ffababab");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::genericPluginInterface, "FF666666");
+    defaultPropSet->setValue ("Colours_" + CabbageColourIds::scrollbars,  "ff222222");
 
 
     getUserSettings()->setFallbackPropertySet (defaultPropSet);

@@ -153,6 +153,7 @@ public:
         colours.add ("Editor - Comment");
         colours.add ("Editor - Numbers");
         colours.add ("Editor - Csd Tags");
+        colours.add ("Editor - Scrollbars");
         colours.add ("Console - Text");
         colours.add ("Console - Background");
         colours.add ("Console - Outline");
