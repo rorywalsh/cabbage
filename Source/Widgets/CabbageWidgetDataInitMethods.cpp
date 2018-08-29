@@ -472,6 +472,31 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
 
+void CabbageWidgetData::setListBoxProperties (ValueTree widgetData, int ID)
+{
+    setProperty (widgetData, "basetype", "layout");
+    setProperty (widgetData, CabbageIdentifierIds::top, 10);
+    setProperty (widgetData, CabbageIdentifierIds::left, 10);
+    setProperty (widgetData, CabbageIdentifierIds::width, 80);
+    setProperty (widgetData, CabbageIdentifierIds::height, 16);
+    setProperty (widgetData, CabbageIdentifierIds::text, "hello");
+    setProperty (widgetData, CabbageIdentifierIds::min, 1);
+    setProperty (widgetData, CabbageIdentifierIds::name, "listbox");
+    setProperty (widgetData, CabbageIdentifierIds::type, "listbox");
+    setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
+    setProperty (widgetData, CabbageIdentifierIds::type, getProperty (widgetData, "name").toString());
+    setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colour(20, 20, 20).toString());
+    setProperty (widgetData, CabbageIdentifierIds::highlightcolour, Colours::transparentBlack.toString());
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colour(200, 200, 200).toString());
+    setProperty (widgetData, CabbageIdentifierIds::align, "left");
+    setProperty (widgetData, CabbageIdentifierIds::fontstyle, 1);
+    setProperty (widgetData, CabbageIdentifierIds::channel, "");
+    setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
+    setProperty (widgetData, CabbageIdentifierIds::corners, 3);
+    setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+}
+
 void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool isVertical)
 {
     var meterColours;

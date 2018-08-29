@@ -8,10 +8,10 @@
               pluginCode="RORY" pluginChannelConfigs="" pluginIsSynth="1" pluginWantsMidiIn="1"
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
-              aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
-              jucerVersion="5.2.0" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
+              aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="2"
+              jucerVersion="5.3.2" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
               reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
-              companyCopyright="">
+              companyCopyright="" pluginFormats="buildVST,buildAU" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
@@ -80,6 +80,10 @@
                 file="Source/Widgets/Legacy/TableManager.cpp"/>
           <FILE id="GGg8Tq" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
         </GROUP>
+        <FILE id="fezjsG" name="CabbageListBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageListBox.h"/>
+        <FILE id="ffDBZ1" name="CabbageListBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageListBox.cpp"/>
         <FILE id="e3KfhK" name="CabbageButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageButton.cpp"/>
         <FILE id="WX2D9N" name="CabbageButton.h" compile="0" resource="0" file="Source/Widgets/CabbageButton.h"/>
@@ -217,7 +221,7 @@
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal" osxSDK="default" osxCompatibility="10.8 SDK"
+                       osxArchitecture="64BitUniversal" osxCompatibility="10.8 SDK"
                        enablePluginBinaryCopyStep="1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
@@ -321,8 +325,7 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="enabled" JUCE_JACK="enabled"
-               JUCE_WEB_BROWSER="disabled"/>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0"/>
   <LIVE_SETTINGS>
     <LINUX/>
   </LIVE_SETTINGS>

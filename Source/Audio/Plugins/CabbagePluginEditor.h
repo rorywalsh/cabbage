@@ -32,6 +32,7 @@
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageButton.h"
 #include "../../Widgets/CabbageFileButton.h"
+#include "../../Widgets/CabbageListBox.h"
 #include "../../Widgets/CabbageInfoButton.h"
 #include "../../Widgets/CabbageGroupBox.h"
 #include "../../Widgets/CabbageGenTable.h"
@@ -106,6 +107,7 @@ public:
     void insertImage (ValueTree cabbageWidgetData);
     void insertLine (ValueTree cabbageWidgetData);
     void insertLabel (ValueTree cabbageWidgetData);
+    void insertListBox (ValueTree cabbageWidgetData);
     void insertTable (ValueTree cabbageWidgetData) {};
     void insertInfoButton (ValueTree cabbageWidgetData);
     void insertGenTable (ValueTree cabbageWidgetData);
@@ -151,7 +153,7 @@ public:
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, Point<int> point, bool isPlant = false);
     //=============================================================================
-    void refreshComboBoxContents();
+    void refreshComboListBoxContents();
     void enableEditMode (bool enable);
     void setCurrentlySelectedComponents (StringArray componentNames);
     void resetCurrentlySelectedComponents();

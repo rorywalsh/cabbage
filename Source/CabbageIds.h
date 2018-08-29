@@ -204,6 +204,7 @@ public:
         add ("eventsequencer");
         add ("filebutton");
         add ("loadbutton");
+        add ("listbox");
         add ("soundfiler");
         add ("texteditor");
         add ("groupbox");

@@ -101,6 +101,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::label))
         setLabelProperties (widgetData, ID);
 
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::listbox))
+        setListBoxProperties (widgetData, ID);
+
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::texteditor))
         setTextEditorProperties (widgetData, ID);
 
