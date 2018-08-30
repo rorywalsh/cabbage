@@ -26,6 +26,7 @@ class CabbageOutputConsole : public Component
 {
     ScopedPointer<TextEditor> textEditor;
     int fontSize;
+    Typeface::Ptr fontPtr;
 public:
     CabbageOutputConsole (ValueTree valueTree): Component(), value (valueTree)
     {
@@ -35,7 +36,9 @@ public:
         textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
         textEditor->setMultiLine (true);
         textEditor->setReadOnly (true);
-        textEditor->setFont (Font ("Arial", 12, 1));
+
+        fontPtr = Typeface::createSystemTypefaceFor (CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
+        textEditor->setFont (Font (fontPtr).withHeight (12));
 
         setText ("Csound output message console\n");
     };
@@ -71,7 +74,7 @@ public:
 
     void setFontSize (int size)
     {
-        textEditor->setFont (Font ("Arial", size, 0));
+        textEditor->setFont (Font (fontPtr).withHeight (size));
         fontSize = size;
     }
 
@@ -89,7 +92,7 @@ public:
 
         String currentText = textEditor->getText();
         textEditor->setText ("");
-        textEditor->setFont (Font ("Arial", fontSize, 0));
+        textEditor->setFont (Font (fontPtr).withHeight (fontSize));
         textEditor->setText (currentText);
         textEditor->setCaretPosition (textEditor->getText().length());
 
