@@ -76,6 +76,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData, bool refreshedFromDisk)
     StringArray fileNames;
     stringItems.clear();
     folderFiles.clear();
+    presets.clear();
 
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
@@ -111,7 +112,6 @@ void CabbageListBox::addItemsToListbox (ValueTree wData, bool refreshedFromDisk)
         if (fileName.existsAsFile())
         {
             ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (fileName);
-            int itemIndex = 1;
 
             if (xmlElement)
                 if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
