@@ -22,6 +22,10 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     listBox.setModel (this);
     getProperties().set("isPresetCombo", false);
 
+    highlightColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour);
+    colour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
+    fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);
+
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -167,15 +171,48 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
 {
     if (prop == CabbageIdentifierIds::value)
     {
-        //set value. This is only needed for widgets that can have their value changed dioverlayRectly using a chnset
+        if (isPresetCombo == false)
+        {
+            if (isStringCombo == false)
+            {
+                int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+
+//                if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
+//                    listBox.selectRow(value - 1, sendNotification);
+//                else
+                listBox.selectRow(value - 1);//, dontSendNotification);
+            }
+            else
+            {
+                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString();
+                const int index = stringItems.indexOf (currentValueAsText);
+
+                if (index != -1)
+                    listBox.selectRow(index);
+
+                CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
+            }
+        }
+
     }
+
     else
     {
+        handleCommonUpdates (this, valueTree);
+        highlightColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour);
+        colour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
+        fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);
+        //setTooltip (getCurrentPopupText (valueTree));
 
+        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir))
+        {
+            addItemsToListbox (valueTree, true);
+            workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+        }
 
-
-        handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
+        listBox.repaint();
     }
+
 }
 
 int CabbageListBox::getNumRows()
@@ -213,11 +250,11 @@ void CabbageListBox::paintListBoxItem (int rowNumber, Graphics& g,
                                        int width, int height, bool rowIsSelected)
 {
     if (rowIsSelected)
-        g.fillAll (Colour::fromString(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour)));
+        g.fillAll (Colour::fromString(highlightColour));
     else
-        g.fillAll(Colour::fromString(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
+        g.fillAll(Colour::fromString(colour));
 
-    g.setColour(Colour::fromString(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour)));
+    g.setColour(Colour::fromString(fontColour));
     g.drawFittedText(stringItems[rowNumber], Rectangle<int> (width, height), justify, 0);
 }
 

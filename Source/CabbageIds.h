@@ -705,6 +705,8 @@ public:
         set ("Text Editor", CabbageWidgetTypes::texteditor);
         set ("Vertical Meter", CabbageWidgetTypes::vmeter);
         set ("XY Pad", CabbageWidgetTypes::xypad);
+        set ("Listbox", CabbageWidgetTypes::listbox);
+
     }
 };
 
@@ -737,6 +739,7 @@ public:
         set ("Menu Colour", CabbageIdentifierIds::menucolour.toString());
         set ("Colour: Off", CabbageIdentifierIds::colour.toString());
         set ("Colour", CabbageIdentifierIds::colour.toString());
+        set ("Selected Row", CabbageIdentifierIds::highlightcolour.toString());
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
