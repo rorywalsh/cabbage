@@ -851,7 +851,7 @@ void CabbageWidgetData::setBounds (StringArray strTokens, ValueTree widgetData)
 {
     if (strTokens.size() < 4)
     {
-        CabbageUtilities::debug ("Not enough paramters passed to bounds(): usage pos(top, left width, height\")\n");
+        //CabbageUtilities::debug ("Not enough paramters passed to bounds(): usage pos(top, left width, height\")\n");
     }
     else
     {
