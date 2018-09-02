@@ -39,8 +39,8 @@ void Cabbage::initialise (const String& commandLine)
 
     if (sendCommandLineToPreexistingInstance())
     {
-        DBG ("Another instance is running - quitting...");
-        quit();
+//        DBG ("Another instance is running - quitting...");
+//        quit();
         return;
     }
 
