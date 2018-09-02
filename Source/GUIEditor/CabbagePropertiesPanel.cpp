@@ -396,7 +396,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createChannelEditors (ValueTre
 
     comps.add (new TextPropertyComponent (Value (identChannel), "Ident Channel", 100, false));
 
-    if (typeOfWidget == "combobox")
+    if (typeOfWidget == "combobox" || typeOfWidget == "listbox")
     {
         channelTypeValue.addListener (this);
         StringArray choices;

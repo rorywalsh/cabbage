@@ -474,27 +474,41 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setListBoxProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
+    setProperty (widgetData, "basetype", "interactive");
+    var array;
+    array.append ("Item 1");
+    array.append ("Item 2");
+    array.append ("Item 3");
+    array.append ("Item 4");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
-    setProperty (widgetData, CabbageIdentifierIds::width, 200);
-    setProperty (widgetData, CabbageIdentifierIds::height, 50);
-    setProperty (widgetData, CabbageIdentifierIds::text, "hello");
-    setProperty (widgetData, CabbageIdentifierIds::min, 1);
-    setProperty (widgetData, CabbageIdentifierIds::name, "listbox");
-    setProperty (widgetData, CabbageIdentifierIds::type, "listbox");
+    setProperty (widgetData, CabbageIdentifierIds::width, 180);
+    setProperty (widgetData, CabbageIdentifierIds::height, 60);
+    var channels;
+    channels.append ("listboxchan");
+    setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
-    setProperty (widgetData, CabbageIdentifierIds::type, getProperty (widgetData, "name").toString());
-    setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
-    setProperty (widgetData, CabbageIdentifierIds::colour, Colour(20, 20, 20).toString());
-    setProperty (widgetData, CabbageIdentifierIds::highlightcolour, Colour(200, 200, 200).toString());
-    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colour(255, 255, 255).toString());
+    setProperty (widgetData, CabbageIdentifierIds::text, array);
     setProperty (widgetData, CabbageIdentifierIds::align, "left");
-    setProperty (widgetData, CabbageIdentifierIds::fontstyle, 1);
-    setProperty (widgetData, CabbageIdentifierIds::channel, "");
+    setProperty (widgetData, CabbageIdentifierIds::value, 1);
+    setProperty (widgetData, CabbageIdentifierIds::update, 1);
+    setProperty (widgetData, CabbageIdentifierIds::currenttext, "");
+    setProperty (widgetData, CabbageIdentifierIds::caption, "");
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::highlightcolour, Colour(100, 100, 100).toString());
+    setProperty (widgetData, CabbageIdentifierIds::type, "listbox");
+    setProperty (widgetData, CabbageIdentifierIds::comborange, 4);
+    setProperty (widgetData, CabbageIdentifierIds::file, "");
+    var populate;
+    //populate.append (String::empty);
+    //populate.append (String::empty);
+    setProperty (widgetData, CabbageIdentifierIds::populate, populate);
+    setProperty (widgetData, CabbageIdentifierIds::name, "listbox");
+    setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
-    setProperty (widgetData, CabbageIdentifierIds::corners, 3);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::workingdir, "");
 }
 
 void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool isVertical)
@@ -787,6 +801,7 @@ void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
+
 void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, "basetype", "interactive");

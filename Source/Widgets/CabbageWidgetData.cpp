@@ -775,7 +775,7 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
 
     else if (identifier == "fontcolour")
     {
-        setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
+        //setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
         setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
 
     }
