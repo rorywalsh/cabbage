@@ -32,8 +32,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
       Thread ("parseVariablesThread"),
       debugLabel (""),
       currentLineMarker(),
-      lookAndFeel3(),
-      lookAndFeel3temp()
+      lookAndFeel3()
 {
     //setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
@@ -100,6 +99,10 @@ void CabbageCodeEditorComponent::updateColourScheme (bool isCsdFile)
     setColour (CodeEditorComponent::ColourIds::highlightColourId,
                CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground,
                                                         Colours::white));
+
+    setColour (ScrollBar::ColourIds::thumbColourId,
+               CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::scrollbars,
+               CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::codeBackground, Colours::white).contrasting(.5f)));
 
     if (isCsdFile)
     {

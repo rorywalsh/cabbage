@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Live SVGs") size(330, 180), colour("black"), pluginid("SMo1"), svgpath(".")
+form caption("Live SVGs") size(330, 180), colour("black"), pluginid("LSVG"), svgpath(".")
 
 rslider bounds(12, 14, 130, 122), channel("rslider"), range(0, 1, 0), identchannel("svgIdent")
 </Cabbage>  

@@ -396,7 +396,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createChannelEditors (ValueTre
 
     comps.add (new TextPropertyComponent (Value (identChannel), "Ident Channel", 100, false));
 
-    if (typeOfWidget == "combobox")
+    if (typeOfWidget == "combobox" || typeOfWidget == "listbox")
     {
         channelTypeValue.addListener (this);
         StringArray choices;
@@ -424,7 +424,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createTextEditors (ValueTree v
     Array<PropertyComponent*> comps;
     const String typeOfWidget = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::type);
 
-    const bool isMultiline = typeOfWidget == "combobox" || typeOfWidget.contains ("button") || typeOfWidget == "gentable" ? true : false;
+    const bool isMultiline = typeOfWidget == "listbox" || typeOfWidget == "combobox" || typeOfWidget.contains ("button") || typeOfWidget == "gentable" ? true : false;
 
     if (isMultiline == true)
     {
@@ -473,11 +473,15 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
             comps.add (new ColourPropertyComponent ("Font: On", onFontColourString));
 
     }
-    else if (typeOfWidget == "combobox")
+    else if (typeOfWidget == "combobox" || typeOfWidget == "listbox"  )
     {
-        const String menuColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour);
         comps.add (new ColourPropertyComponent ("Colour", colourString));
         comps.add (new ColourPropertyComponent ("Font", fontColourString));
+        if (typeOfWidget == "listbox")
+        {
+            const String highlightColour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::highlightcolour);
+            comps.add(new ColourPropertyComponent("Selected Row", highlightColour));
+        }
     }
     else if (typeOfWidget == "image" || typeOfWidget == "soundfiler")
     {

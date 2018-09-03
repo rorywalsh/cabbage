@@ -34,8 +34,8 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, MidiKeyboardState& state)
     setOctaveForMiddleC (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::middlec));
     setKeyWidth (keyWidth);
     setScrollButtonsVisible (scrollbars == 1 ? true : false);
-    updateColours(wData);
 
+    updateColours(wData);
 
 
 }
@@ -43,9 +43,12 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, MidiKeyboardState& state)
 void CabbageKeyboard::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     setOrientation (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::kind) == "horizontal" ? MidiKeyboardComponent::horizontalKeyboard : MidiKeyboardComponent::verticalKeyboardFacingRight);
+
     updateColours(valueTree);
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+
 }
+
 
 void CabbageKeyboard::updateColours(ValueTree& wData)
 {

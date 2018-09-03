@@ -136,6 +136,7 @@ namespace CabbageColourIds
     static const Identifier propertyLabelText = "Interface - Property Label Text";
     static const Identifier alertWindowBackground = "Interface - Alert Window Background";
     static const Identifier codeBackground = "Editor - Code Background";
+    static const Identifier scrollbars = "Editor - Scrollbars";
     static const Identifier lineNumberBackground = "Editor - Line Numbers Background";
     static const Identifier lineNumbers = "Editor - Line Numbers";
     static const Identifier selectTextBackground = "Editor - Selected Text Background";
@@ -203,6 +204,7 @@ public:
         add ("eventsequencer");
         add ("filebutton");
         add ("loadbutton");
+        add ("listbox");
         add ("soundfiler");
         add ("texteditor");
         add ("groupbox");
@@ -301,6 +303,7 @@ public:
         add ("linethickness");
         add ("outlinecolour");
         add ("numberofsteps");
+        add ("keydowncolour");
         add ("textboxcolour");
         add ("trackercolour");
         add ("trackerradius");
@@ -533,6 +536,7 @@ namespace CabbageIdentifierIds
 	static const Identifier items = "items";
 	static const Identifier keyseparatorcolour = "keyseparatorcolour";
 	static const Identifier keywidth = "keywidth";
+    static const Identifier keydowncolour = "keydowncolour";
 	static const Identifier kind = "kind";
 	static const Identifier latched = "latched";
 	static const Identifier left = "left";
@@ -703,6 +707,8 @@ public:
         set ("Text Editor", CabbageWidgetTypes::texteditor);
         set ("Vertical Meter", CabbageWidgetTypes::vmeter);
         set ("XY Pad", CabbageWidgetTypes::xypad);
+        set ("Listbox", CabbageWidgetTypes::listbox);
+
     }
 };
 
@@ -735,6 +741,7 @@ public:
         set ("Menu Colour", CabbageIdentifierIds::menucolour.toString());
         set ("Colour: Off", CabbageIdentifierIds::colour.toString());
         set ("Colour", CabbageIdentifierIds::colour.toString());
+        set ("Selected Row", CabbageIdentifierIds::highlightcolour.toString());
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
@@ -917,7 +924,7 @@ static const char* const CsoundKeywords[] =
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
     "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
-    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm",
+    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile",
     0
 };
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

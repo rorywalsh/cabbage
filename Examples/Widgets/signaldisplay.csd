@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Signaldisplay Example") size(400, 300), colour(220, 220, 220), pluginid("def1")
+form caption("Signaldisplay Example") size(400, 300), colour(220, 220, 220), pluginid("SDis")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 signaldisplay bounds(8, 30, 380, 170), colour("lime"), backgroundcolour("black"), displaytype("waveform"), signalvariable("aSig")
 </Cabbage>

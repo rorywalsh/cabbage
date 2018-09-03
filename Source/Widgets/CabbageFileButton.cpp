@@ -98,7 +98,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         
         owner->sendChannelStringDataToCsound (getChannel(), newFileName);
         owner->savePluginStateToFile (File (newFileName));
-        owner->refreshComboBoxContents();
+        owner->refreshComboListBoxContents();
     }
 
     owner->getProcessor().updateHostDisplay();

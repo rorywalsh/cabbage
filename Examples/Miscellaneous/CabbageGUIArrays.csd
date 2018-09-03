@@ -1,5 +1,5 @@
 <Cabbage>
-form size(500, 535), caption(""), pluginid("plu1")
+form size(500, 535), caption(""), pluginid("CGAr")
 checkbox bounds(-100, -100, 50, 50), text("Push"), widgetarray("test", 100), value(0)
 </Cabbage>
 <CsoundSynthesizer>

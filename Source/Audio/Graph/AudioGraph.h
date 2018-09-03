@@ -81,7 +81,7 @@ public:
     void setXmlAudioSettings (XmlElement* xmlSettingsString);
     AudioDeviceSelectorComponent* getAudioDeviceSelector();
     String getDeviceManagerSettings();
-    void setNodePosition (uint32 nodeId, double x, double y);
+    void setNodePosition (const uint32 nodeID, Point<double> pos);
     Point<double> getNodePosition (uint32 nodeId) const;
     AudioProcessorGraph& getGraph() noexcept         { return graph; }
 

@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Custom ADSR plant") size(320, 300), colour(18, 60, 82), import("adsr.plant"), pluginid("def1")
+form caption("Custom ADSR plant") size(320, 300), colour(18, 60, 82), import("adsr.plant"), pluginid("ADSR")
 adsr bounds(10, 10, 300, 120), channel("adsr"), namespace("cab")
 keyboard bounds(8, 158, 300, 95)
 </Cabbage>

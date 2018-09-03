@@ -5,6 +5,7 @@
     Created: 25 Jan 2017 3:21:05pm
     Author:  rory
 
+
   ==============================================================================
 */
 
@@ -19,7 +20,7 @@ class PinComponent;
 class CabbagePluginComponent    : public Component
 {
 public:
-    CabbagePluginComponent (AudioGraph& graph_, const uint32 filterID_);
+    CabbagePluginComponent (AudioGraph& p, uint32 id);
     ~CabbagePluginComponent();
     void mouseDown (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
@@ -30,18 +31,20 @@ public:
     Point<float> getPinPos (int index, bool isInput) const;
     void update();
     AudioGraph& graph;
-    const uint32 filterID;
-    int numInputs, numOutputs;
+
+
+
+    const AudioProcessorGraph::NodeID pluginID;
     OwnedArray<PinComponent> pins;
-
-private:
-    int pinSize;
+    int numInputs = 0, numOutputs = 0;
+    int pinSize = 16;
     Point<int> originalPos;
-    Font font;
-    int numIns, numOuts;
+    Font font { 13.0f, Font::bold };
+    int numIns = 0, numOuts = 0;
     DropShadowEffect shadow;
-    CabbageLookAndFeel2 lookAndFeel;
+private:
 
+    CabbageLookAndFeel2 lookAndFeel;
     CabbageGraphComponent* getCabbageGraphComponent() const noexcept;
     CabbagePluginComponent (const CabbagePluginComponent&);
     CabbagePluginComponent& operator= (const CabbagePluginComponent&);
@@ -52,7 +55,7 @@ class ConnectorComponent   : public Component,
     public SettableTooltipClient
 {
 public:
-    ConnectorComponent (AudioGraph& graph_);
+    ConnectorComponent (CabbageGraphComponent& p);
 
     void setInput (AudioProcessorGraph::NodeAndChannel newSource);
     void setOutput (AudioProcessorGraph::NodeAndChannel newDest);
@@ -75,12 +78,12 @@ public:
     
 private:
     AudioGraph& graph;
+    CabbageGraphComponent& panel;
     
     float lastInputX, lastInputY, lastOutputX, lastOutputY;
     Path linePath, hitPath;
     bool dragging;
 
-    CabbageGraphComponent* getCabbageGraphComponent() const noexcept;
 
     void getDistancesFromEnds (Point<float> p, double& distanceFromStart, double& distanceFromEnd) const
     {
@@ -99,21 +102,20 @@ class PinComponent   : public Component,
     public SettableTooltipClient
 {
 public:
-    PinComponent (AudioGraph& graph_, const uint32 filterID_, const int index_, const bool isInput_);
+    PinComponent (CabbageGraphComponent& p, AudioProcessorGraph::NodeAndChannel pinToUse, bool isIn);
     void paint (Graphics& g) override;
     void mouseDown (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
     void mouseUp (const MouseEvent& e) override;
 
-    const uint32 filterID;
-    const int index;
+    CabbageGraphComponent& panel;
+    //AudioGraph& graph;
+    AudioProcessorGraph::NodeAndChannel pin;
     const bool isInput;
-    int busIdx;
+    int busIdx = 0;
 
 private:
     AudioGraph& graph;
-
-    CabbageGraphComponent* getCabbageGraphComponent() const noexcept;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PinComponent)
 };

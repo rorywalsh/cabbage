@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("MIDI Out"), size(400,80), pluginid("Mout")
+form caption("MIDI Out"), size(400,80), pluginid("Mot2")
 keyboard bounds(0,0,400,80)
 </Cabbage>
 

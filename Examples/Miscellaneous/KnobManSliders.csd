@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Knobman Filmstrip Example") size(450, 180), colour(93, 93, 93), pluginid("def1")
+form caption("Knobman Filmstrip Example") size(450, 180), colour(93, 93, 93), pluginid("KMSl")
 
 image bounds(10, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent1")
 vslider bounds(10, 22, 27, 106) channel("vslider1") range(0, 1, 0, 1, 0.001) alpha(0)

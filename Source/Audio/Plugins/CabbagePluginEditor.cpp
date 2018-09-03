@@ -289,6 +289,9 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::xypad)
         insertXYPad (cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::listbox)
+        insertListBox (cabbageWidgetData);
+
     else if (widgetType == CabbageWidgetTypes::eventsequencer)
         insertStringSequencer (cabbageWidgetData);
 
@@ -338,6 +341,14 @@ void CabbagePluginEditor::insertLabel (ValueTree cabbageWidgetData)
 {
     CabbageLabel* label;
     components.add (label = new CabbageLabel (cabbageWidgetData, this));
+    addToEditorAndMakeVisible (label, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (label, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertListBox (ValueTree cabbageWidgetData)
+{
+    CabbageListBox* label;
+    components.add (label = new CabbageListBox (cabbageWidgetData, this));
     addToEditorAndMakeVisible (label, cabbageWidgetData);
     addMouseListenerAndSetVisibility (label, cabbageWidgetData);
 }
@@ -910,13 +921,13 @@ void CabbagePluginEditor::restorePluginStateFrom (String childPreset)
 
 }
 
-void CabbagePluginEditor::refreshComboBoxContents()
+void CabbagePluginEditor::refreshComboListBoxContents()
 {
     for ( int i = 0 ; i < processor.cabbageWidgets.getNumChildren() ; i++)
     {
         const String type = CabbageWidgetData::getStringProp (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::type);
 
-        if ( type == "combobox")
+        if ( type == "combobox" || type == "listbox")
         {
             const String name = CabbageWidgetData::getStringProp (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
             const String fileType = CabbageWidgetData::getProperty (processor.cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype);
@@ -933,6 +944,16 @@ void CabbagePluginEditor::refreshComboBoxContents()
                    combo->setSelectedItemIndex(combo->getNumItems()-1);
             }
 
+            else if (CabbageListBox* listbox = dynamic_cast<CabbageListBox*> (getComponentFromName (name)))
+            {
+                if (fileType.isNotEmpty())
+                {
+                    listbox->addItemsToListbox(processor.cabbageWidgets.getChild (i), true);
+                }
+
+                if(bool(listbox->getProperties().getWithDefault("isPresetCombo", false)) == true)
+                    listbox->listBox.selectRow(listbox->stringItems.size()-1);
+            }
 
         }
     }

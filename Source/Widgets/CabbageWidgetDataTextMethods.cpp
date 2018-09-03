@@ -95,6 +95,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("fillcolour"):
         case HashStringToInt ("highlightcolour"):
         case HashStringToInt ("keyseparatorcolour"):
+        case HashStringToInt ("keydowncolour"):
         case HashStringToInt ("menucolour"):
         case HashStringToInt ("mouseoeverkeycolour"):
         case HashStringToInt ("outlinecolour"):
@@ -167,7 +168,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
         }
     }
     
-    //colour identifier is getting missed due to it being name colour:0
+
     for (const auto currentIdentifier : identifiersInLine)
     {
         
@@ -195,14 +196,17 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     
     //remove widget type from first string in array
     identifiersInLine.set(0, identifiersInLine[0].substring(identifiersInLine[0].indexOf(" ") + 1));
-    
+
     for (auto &ident : fullListOfIdentifierStrings)
     {
         if (replacedIdentifiers.indexOf(ident) == -1)
         {
-            const String newIdent = getCabbageCodeForIdentifier(widgetData, ident).trimCharactersAtEnd(", ").trimCharactersAtStart(",");
+            const String newIdent = getCabbageCodeForIdentifier(widgetData, ident).trimCharactersAtEnd(
+                    ", ").trimCharactersAtStart(",");
+
             if (newIdent.isNotEmpty() && macroStrings.indexOf(newIdent) == -1)
                 returnString = returnString.trimEnd() + " " + newIdent;
+
         }
     }
     
@@ -299,7 +303,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
         }
     }
     
-    else if (type == "combobox"
+    else if ((type == "combobox" || type == "listbox")
              && getProperty (widgetData, CabbageIdentifierIds::channeltype).toString() == "string"
              && identifier == "value")
     {
@@ -523,7 +527,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
     setWidgetState(tempData, type + " " + macroText, -99);
     String colourString;
     
-    if (identifier == "colour:0" && type.contains("slider") == false && type != "combobox" && type != "image" && type != "gentable" && type != "soundfiler" && type != "encoder" && type != "label" && type!="textbox" && type!="xypad" && type!="groupbox")
+    if (identifier == "colour:0" && type.contains("slider") == false && type != "combobox" && type != "listbox" && type != "image" && type != "gentable" && type != "soundfiler" && type != "encoder" && type != "label" && type!="textbox" && type!="xypad" && type!="groupbox")
     {
         if (getStringProp(widgetData, CabbageIdentifierIds::colour) !=
             getStringProp(tempData, CabbageIdentifierIds::colour))
@@ -572,7 +576,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
             String newIdent;
             if(type.contains("button") || type.contains("checkbox") && (identifier == "fontcolour" || identifier == "fontcolour:1"))
                 newIdent = "fontcolour:1(";
-            else if(type.contains("slider") || type == "label" || type == "csoundoutput" || type == "combobox" || type == "eventsequencer" || type == "xypad" || type == "encoder")
+            else if(type.contains("slider") || type == "label" || type == "csoundoutput" || type == "combobox" || type == "listbox" || type == "eventsequencer" || type == "xypad" || type == "encoder")
                 newIdent = "fontcolour(";
             else
                 jassertfalse;
@@ -582,9 +586,9 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
             << (float) col.getAlpha() << ")";
         }
     }
-    
-    
-    else if(identifier=="fontcolour:0" && type!="combobox" && type!="encoder" && type != "label" && type != "groupbox" && !type.contains("slider") && type!="textbox" && type!="xypad")
+
+
+    else if(identifier=="fontcolour:0" && type != "combobox" && type != "encoder" && type != "label" && type != "listbox" && type != "groupbox" && !type.contains("slider") && type!="textbox" && type!="xypad")
     {
         if (getStringProp(widgetData, CabbageIdentifierIds::fontcolour) !=
             getStringProp(tempData, CabbageIdentifierIds::fontcolour))
@@ -595,7 +599,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
             << (float) col.getBlue() << ", " << (float) col.getAlpha() << ")";
         }
     }
-    
+
     else if(identifier.contains("metercolour:"))
     {
         if (getProperty(widgetData, CabbageIdentifierIds::metercolour) !=
@@ -615,8 +619,8 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
     else
     {
         if (getStringProp (widgetData, identifier) != getStringProp (tempData, identifier)
-            && type.contains("button") == false
-            && type.contains("checkbox") == false
+            && !type.contains("button")
+            && !type.contains("checkbox")
             && !identifier.contains("tablecolour")
             && !type.contains("meter"))
         {
@@ -624,7 +628,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
             colourString << identifier.trim() << "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";
         }
     }
-    
+
     return colourString;
     
 }

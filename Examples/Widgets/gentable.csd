@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Gentable Example") size(400, 300), colour(220, 220, 220), pluginid("def1")
+form caption("Gentable Example") size(400, 300), colour(220, 220, 220), pluginid("GenT")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 gentable bounds(8, 30, 380, 70), tablenumber(1), tablegridcolour(0, 0, 0, 255), fill(0)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")

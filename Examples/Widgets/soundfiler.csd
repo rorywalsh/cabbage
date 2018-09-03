@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 500), caption("Soundfiler"), size(400, 300), colour(220, 220, 220), pluginid("def1")
+form size(400, 500), caption("Soundfiler"), size(400, 300), colour(220, 220, 220), pluginid("SndF")
 soundfiler bounds(10,10, 380, 200), identchannel("soundfilerIdent")
 filebutton bounds(10, 215, 100, 30), channel("openFile"), text("Browse")
 </Cabbage>

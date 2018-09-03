@@ -162,7 +162,7 @@ private:
     int currentFileIndex = 0;
     int numberOfFiles = 0;
     ScopedPointer<AudioGraph> audioGraph;
-    ScopedPointer<CabbageGraphComponent> graphComponent;
+    CabbageGraphComponent* graphComponent;
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;

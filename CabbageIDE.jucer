@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="5.2.0" displaySplashScreen="1" reportAppUsage="1"
+              jucerVersion="5.3.2" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{C0361D81-2D97-514F-0F91-A8077B17F83D}" name="GUIEditor"/>
@@ -161,6 +161,10 @@
                 file="Source/Widgets/Legacy/TableManager.cpp"/>
           <FILE id="nCrACf" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
         </GROUP>
+        <FILE id="T7lEFh" name="CabbageListBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageListBox.cpp"/>
+        <FILE id="puuBVn" name="CabbageListBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageListBox.h"/>
         <FILE id="EnS9ux" name="CabbageButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageButton.cpp"/>
         <FILE id="PhA7tl" name="CabbageButton.h" compile="0" resource="0" file="Source/Widgets/CabbageButton.h"/>
@@ -418,6 +422,8 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_ALSA="enabled" JUCE_JACK="enabled" JUCE_WEB_BROWSER="enabled"
-               JUCE_ASIO="enabled"/>
+  <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="1" JUCE_ASIO="1"/>
+  <LIVE_SETTINGS>
+    <LINUX/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>

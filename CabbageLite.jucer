@@ -3,7 +3,7 @@
 <JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
-              cppLanguageStandard="11" jucerVersion="5.2.0" companyCopyright="">
+              cppLanguageStandard="11" jucerVersion="5.3.2" companyCopyright="">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
     <GROUP id="{E4950169-7245-8252-D27F-2344F45CAF99}" name="Source">
       <GROUP id="{4AFC1EE2-9934-F4AA-4ECD-50660152DD13}" name="BinaryData">
@@ -114,6 +114,10 @@
                 file="Source/Widgets/Legacy/TableManager.cpp"/>
           <FILE id="pLygmu" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
         </GROUP>
+        <FILE id="rg6t3T" name="CabbageListBox.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageListBox.h"/>
+        <FILE id="O5A7AO" name="CabbageListBox.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageListBox.cpp"/>
         <FILE id="oOp2Ek" name="CabbageButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageButton.cpp"/>
         <FILE id="SFef38" name="CabbageButton.h" compile="0" resource="0" file="Source/Widgets/CabbageButton.h"/>
@@ -343,6 +347,8 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_ASIO="enabled" JUCE_WASAPI="enabled" JUCE_ALSA="enabled"
-               JUCE_JACK="enabled"/>
+  <JUCEOPTIONS JUCE_ASIO="1" JUCE_WASAPI="1" JUCE_ALSA="1" JUCE_JACK="1"/>
+  <LIVE_SETTINGS>
+    <LINUX/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>

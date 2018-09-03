@@ -181,7 +181,7 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
         menu.addItem (11, "Image");
         menu.addItem (12, "Keyboard");
         menu.addItem (13, "Label");
-
+        menu.addItem (27, "Listbox");
         subM.addItem (10, "Horizontal Meter");
         subM.addItem (25, "Vertical Meter");
         menu.addSubMenu( "Meters", subM);
