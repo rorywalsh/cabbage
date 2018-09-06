@@ -18,6 +18,8 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/arrowbackgroundcolour.md !} 
 
+{! ./markdown/Widgets/Properties/keydowncolour.md !} 
+
 {! ./markdown/Widgets/Properties/arrowcolour.md !} 
 
 {! ./markdown/Widgets/Properties/keywidth.md !} 

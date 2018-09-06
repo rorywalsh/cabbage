@@ -299,10 +299,10 @@ public:
         add ("tablegridcolor");
         add ("signalvariable");
         add ("overlaycolour");
+        add ("keydowncolour");
         add ("linethickness");
         add ("outlinecolour");
         add ("numberofsteps");
-        add ("keydowncolour");
         add ("textboxcolour");
         add ("trackercolour");
         add ("trackerradius");
@@ -480,7 +480,8 @@ namespace CabbageIdentifierIds
 	static const Identifier ballcolour = "ballcolour";
 	static const Identifier basechannel = "basechannel";
 	static const Identifier basetype = "basetype";
-	static const Identifier blacknotecolour = "blacknotecolour";
+    static const Identifier blacknotecolour = "blacknotecolour";
+    static const Identifier keydowncolour = "keydowncolour";
 	static const Identifier bold = "bold";
 	static const Identifier bpm = "bpm";
 	static const Identifier bundle = "bundle";
@@ -534,7 +535,6 @@ namespace CabbageIdentifierIds
 	static const Identifier items = "items";
 	static const Identifier keyseparatorcolour = "keyseparatorcolour";
 	static const Identifier keywidth = "keywidth";
-    static const Identifier keydowncolour = "keydowncolour";
 	static const Identifier kind = "kind";
 	static const Identifier latched = "latched";
 	static const Identifier left = "left";

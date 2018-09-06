@@ -38,7 +38,6 @@ public:
     CabbageKeyboard (ValueTree wData, MidiKeyboardState& state);
     ~CabbageKeyboard() {};
 
-    void updateKeyboardColours(ValueTree& valueTree);
     //VlaueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
@@ -48,7 +47,7 @@ public:
 
     ValueTree widgetData;
 
-
+    void updateColours(ValueTree& wData);
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageKeyboard);
 };
 
