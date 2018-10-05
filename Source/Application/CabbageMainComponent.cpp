@@ -775,12 +775,12 @@ String CabbageMainComponent::getAudioDeviceSettings()
     if (audioGraph != nullptr && audioGraph->getDeviceManagerSettings().isNotEmpty())
         return audioGraph->getDeviceManagerSettings();
     else
-        return String::empty;
+        return String();
 }
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
-	CabbageUtilities::debug(fileTabs[currentFileIndex]->getFilename());
+
     if (audioGraph != nullptr && fileTabs[currentFileIndex])
     {
         const int32 nodeId = fileTabs[currentFileIndex]->uniqueFileId;

@@ -122,6 +122,11 @@ void FileTab::drawButtonText (Graphics& g)
 
 }
 
+const String FileTab::getFilename()
+{
+    return csdFile.getFullPathName();
+}
+
 void FileTab::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
     const Colour backgroundColour = Colour (100, 100, 100);
