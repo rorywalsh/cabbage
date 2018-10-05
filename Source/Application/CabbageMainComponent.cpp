@@ -780,6 +780,7 @@ String CabbageMainComponent::getAudioDeviceSettings()
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
+	CabbageUtilities::debug(fileTabs[currentFileIndex]->getFilename());
     if (audioGraph != nullptr && fileTabs[currentFileIndex])
     {
         const int32 nodeId = fileTabs[currentFileIndex]->uniqueFileId;
@@ -788,10 +789,9 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
             if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
             {
                 AudioProcessor* const processor = f->getProcessor();
-
-                //need to check what kind of processor we are dealing with!
-                if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
-                    return editor;
+				if(processor != nullptr)
+	                if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+		                return editor;
             }
     }
 
