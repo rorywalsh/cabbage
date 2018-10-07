@@ -60,15 +60,9 @@ void CabbagePluginComponent::mouseDown (const MouseEvent& e)
         {
             if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (pluginID))
             {
-                AudioProcessor* const processor = f->getProcessor();
-                jassert (processor != nullptr);
-
-                PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
-                                                      : PluginWindow::Generic;
-
-                if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
-                    w->toFront (true);
-
+                if (auto f = graph.graph.getNodeForId (pluginID))
+                    if (auto* w = graph.getOrCreateWindowFor (f, PluginWindow::Type::normal))
+                        w->toFront (true);
             }
         }
         else if ( r == 4)
@@ -103,18 +97,13 @@ void CabbagePluginComponent::mouseUp (const MouseEvent& e)
     }
     else if (e.getNumberOfClicks() == 2)
     {
-        if (auto f = graph.graph.getNodeForId (pluginID))
-        {
-            AudioProcessor* const processor = f->getProcessor();
-            jassert (processor != nullptr);
+            if (AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (pluginID))
+            {
+                if (auto f = graph.graph.getNodeForId (pluginID))
+                    if (auto* w = graph.getOrCreateWindowFor (f, PluginWindow::Type::normal))
+                        w->toFront (true);
+            }
 
-            PluginWindow::WindowFormatType type = processor->hasEditor() ? PluginWindow::Normal
-                                                                         : PluginWindow::Generic;
-
-            if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, graph.getGraph()))
-                w->toFront (true);
-
-        }
     }
 }
 

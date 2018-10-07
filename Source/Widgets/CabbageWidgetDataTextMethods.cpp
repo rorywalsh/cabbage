@@ -312,10 +312,13 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
     
     else
     {
+        CabbageUtilities::debug(identifier);
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
         {
-            if((type.contains ("slider") || type.contains ("slider")) && identifier != "value")
+            if(type.contains ("slider") && identifier != "value" && identifier != "increment")
                 return identifier + "(" + String (getNumProp (widgetData, identifier)) + ")";
+            else if(type.contains ("slider") && identifier == "increment")
+                return "";
             else
                 return identifier + "(" + String (getNumProp (widgetData, identifier)) + ")";
         }

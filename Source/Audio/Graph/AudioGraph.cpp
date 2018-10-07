@@ -265,7 +265,7 @@ void AudioGraph::updateBusLayout (AudioProcessor* selectedProcessor)
 //==============================================================================
 void AudioGraph::deletePlugins()
 {
-    PluginWindow::closeAllCurrentlyOpenWindows();
+    closeAnyOpenPluginWindows();
     stopPlaying();
     graph.clear();
 }
@@ -446,25 +446,26 @@ bool AudioGraph::addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
 
 void AudioGraph::removeFilter (const uint32 id)
 {
-    PluginWindow::closeCurrentlyOpenWindowsFor (id);
-    AudioProcessorGraph::Node::Ptr n = graph.getNodeForId(id);
-
-    const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
-
-    if (graph.removeNode (id))
-    {
-//        for ( int i = 0 ; i < owner.getNumberOfFileTabs() ; i++)
-//        {
-//            if (int32 (owner.getFileTab(i)->uniqueFileId == id))
-//            {
-//                remove file tab from array;
-//                break;
-//            }
-//        }
-
-        changed();
-
-    }
+    jassertfalse;
+    //closeCurrentlyOpenWindowsFor (id);
+//    AudioProcessorGraph::Node::Ptr n = graph.getNodeForId(id);
+//
+//    const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
+//
+//    if (graph.removeNode (id))
+//    {
+////        for ( int i = 0 ; i < owner.getNumberOfFileTabs() ; i++)
+////        {
+////            if (int32 (owner.getFileTab(i)->uniqueFileId == id))
+////            {
+////                remove file tab from array;
+////                break;
+////            }
+////        }
+//
+//        changed();
+//
+//    }
 }
 
 void AudioGraph::disconnectFilter (const uint32 id)
@@ -491,10 +492,70 @@ void AudioGraph::removeConnection (uint32 sourceFilterUID, int sourceFilterChann
 
 void AudioGraph::clear()
 {
-    PluginWindow::closeAllCurrentlyOpenWindows();
-
+    closeAnyOpenPluginWindows();
     graph.clear();
     changed();
+}
+
+Point<int> AudioGraph::getPositionOfCurrentlyOpenWindow (const uint32 nodeId)
+{
+    if(nodeId>3)
+    for (auto* w : activePluginWindows)
+        if (w->node == graph.getNodeForId(nodeId))
+            return w->getPosition();
+
+    return Point<int> (-1000, -1000);
+}
+
+PluginWindow* AudioGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node, PluginWindow::Type type)
+{
+    jassert (node != nullptr);
+
+#if JUCE_IOS || JUCE_ANDROID
+    closeAnyOpenPluginWindows();
+#else
+    for (auto* w : activePluginWindows)
+        if (w->node == node && w->type == type)
+            return w;
+#endif
+
+    if (auto* processor = node->getProcessor())
+    {
+        if (auto* plugin = dynamic_cast<AudioPluginInstance*> (processor))
+        {
+            auto description = plugin->getPluginDescription();
+
+            if (description.pluginFormatName == "Internal")
+            {
+                //getCommandManager().invokeDirectly (CommandIDs::showAudioSettings, false);
+                return nullptr;
+            }
+        }
+
+        return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
+    }
+
+    return nullptr;
+}
+
+bool AudioGraph::closeAnyOpenPluginWindows()
+{
+    bool wasEmpty = activePluginWindows.isEmpty();
+    activePluginWindows.clear();
+    return ! wasEmpty;
+}
+
+
+bool AudioGraph::closeCurrentlyOpenWindowsFor(const uint32 nodeId)
+{
+    for (int i = activePluginWindows.size(); --i >= 0;)
+        if (activePluginWindows.getUnchecked (i)->node == graph.getNodeForId(nodeId))
+        {
+            AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (nodeId);
+            f->getProcessor()->editorBeingDeleted(f->getProcessor()->getActiveEditor());
+            activePluginWindows.remove(i);
+        }
+
 }
 
 //==============================================================================
@@ -823,120 +884,92 @@ void AudioGraph::setLastDocumentOpened (const File& file)
 }
 //========================================================================================
 
-static Array <PluginWindow*> activePluginWindows;
-
-PluginWindow::PluginWindow (Component* const pluginEditor,
-                            AudioProcessorGraph::Node* const o,
-                            WindowFormatType t,
-                            AudioProcessorGraph& audioGraph)
-    : DocumentWindow (pluginEditor->getName(), Colours::black,
-                      DocumentWindow::minimiseButton | DocumentWindow::closeButton),
-      graph (audioGraph),
-      owner (o),
-      type (t)
-{
-    setSize (400, 300);
-    setContentOwned (pluginEditor, true);
-    setVisible (true);
-
-    activePluginWindows.add (this);
-}
-
-void PluginWindow::closeCurrentlyOpenWindowsFor (const uint32 nodeId)
-{
-    for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked (i)->owner->nodeID == nodeId)
-            delete activePluginWindows.getUnchecked (i);
-}
-
-Point<int> PluginWindow::getPositionOfCurrentlyOpenWindow (const uint32 nodeId)
-{
-    for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked (i)->owner->nodeID == nodeId)
-            return Point<int> (activePluginWindows.getUnchecked (i)->getX(), activePluginWindows.getUnchecked (i)->getY());
-
-    return Point<int> (-1000, -1000);
-}
-
-void PluginWindow::closeAllCurrentlyOpenWindows()
-{
-    if (activePluginWindows.size() > 0)
-    {
-        for (int i = activePluginWindows.size(); --i >= 0;)
-            delete activePluginWindows.getUnchecked (i);
-
-        // fixed issue with focus in JUCE 4, doesn't seem to be need in JUCE 5
-        //        Component dummyModalComp;
-        //        dummyModalComp.enterModalState();
-        //        MessageManager::getInstance()->runDispatchLoopUntil (150);
-    }
-}
-
-//==============================================================================
-
-PluginWindow* PluginWindow::getWindowFor (AudioProcessorGraph::Node* const node,
-                                          WindowFormatType type,
-                                          AudioProcessorGraph& audioGraph)
-{
-    jassert (node != nullptr);
-
-    for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked (i)->owner == node
-            && activePluginWindows.getUnchecked (i)->type == type)
-            return activePluginWindows.getUnchecked (i);
-
-    AudioProcessor* processor = node->getProcessor();
-    AudioProcessorEditor* ui = nullptr;
-
-    if (type == Normal)
-    {
-        ui = processor->createEditorIfNeeded();
-
-        if (ui == nullptr)
-            type = Generic;
-    }
-
-    if (ui == nullptr)
-    {
-        if (type == Generic || type == Parameters)
-            ui = new GenericAudioProcessorEditor (processor);
-
-        //        else if (type == Programs)
-        //            ui = new ProgramAudioProcessorEditor (processor);
-        //        else if (type == AudioIO)
-        //            ui = new FilterIOConfigurationWindow (processor);
-    }
-
-    if (ui != nullptr)
-    {
-        if (AudioPluginInstance* const plugin = dynamic_cast<AudioPluginInstance*> (processor))
-            ui->setName (plugin->getName());
-
-        return new PluginWindow (ui, node, type, audioGraph);
-    }
-
-    return nullptr;
-}
-
-PluginWindow::~PluginWindow()
-{
-    activePluginWindows.removeFirstMatchingValue (this);
-
-    if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
-    {
-        owner->getProcessor()->editorBeingDeleted (ed);
-        ed->setLookAndFeel(nullptr);
-        clearContentComponent();
-    }
-}
-
-void PluginWindow::moved()
-{
-
-}
-
-void PluginWindow::closeButtonPressed()
-{
-
-    delete this;
-}
+//static Array <PluginWindow*> activePluginWindows;
+//
+//PluginWindow::PluginWindow (Component* const pluginEditor,
+//                            AudioProcessorGraph::Node* const o,
+//                            WindowFormatType t,
+//                            AudioProcessorGraph& audioGraph)
+//    : DocumentWindow (pluginEditor->getName(), Colours::black,
+//                      DocumentWindow::minimiseButton | DocumentWindow::closeButton),
+//      graph (audioGraph),
+//      owner (o),
+//      type (t)
+//{
+//    setSize (400, 300);
+//    setContentOwned (pluginEditor, true);
+//    setVisible (true);
+//
+//    activePluginWindows.add (this);
+//}
+//
+//
+//
+////==============================================================================
+//
+//PluginWindow* PluginWindow::getWindowFor (AudioProcessorGraph::Node* const node,
+//                                          WindowFormatType type,
+//                                          AudioProcessorGraph& audioGraph)
+//{
+//    jassert (node != nullptr);
+//
+//    for (int i = activePluginWindows.size(); --i >= 0;)
+//        if (activePluginWindows.getUnchecked (i)->owner == node
+//            && activePluginWindows.getUnchecked (i)->type == type)
+//            return activePluginWindows.getUnchecked (i);
+//
+//    AudioProcessor* processor = node->getProcessor();
+//    AudioProcessorEditor* ui = nullptr;
+//
+//    if (type == Normal)
+//    {
+//        ui = processor->createEditorIfNeeded();
+//
+//        if (ui == nullptr)
+//            type = Generic;
+//    }
+//
+//    if (ui == nullptr)
+//    {
+//        if (type == Generic || type == Parameters)
+//            ui = new GenericAudioProcessorEditor (processor);
+//
+//        //        else if (type == Programs)
+//        //            ui = new ProgramAudioProcessorEditor (processor);
+//        //        else if (type == AudioIO)
+//        //            ui = new FilterIOConfigurationWindow (processor);
+//    }
+//
+//    if (ui != nullptr)
+//    {
+//        if (AudioPluginInstance* const plugin = dynamic_cast<AudioPluginInstance*> (processor))
+//            ui->setName (plugin->getName());
+//
+//        return new PluginWindow (ui, node, type, audioGraph);
+//    }
+//
+//    return nullptr;
+//}
+//
+//PluginWindow::~PluginWindow()
+//{
+//    activePluginWindows.removeFirstMatchingValue (this);
+//
+//    if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
+//    {
+//        owner->getProcessor()->editorBeingDeleted (ed);
+//        ed->setLookAndFeel(nullptr);
+//        clearContentComponent();
+//    }
+//}
+//
+//void PluginWindow::moved()
+//{
+//
+//}
+//
+//void PluginWindow::closeButtonPressed()
+//{
+//
+//    delete this;
+//}

@@ -21,7 +21,7 @@
 #include "CabbageDocumentWindow.h"
 #include "../Utilities/CabbageNewProjectWindow.h"
 #include "../Utilities/CabbageSSHFileBrowser.h"
-#include "../Utilities/CabbageStrings.h"
+#include "../Audio/Graph/PluginWindow.h"
 
 //==============================================================================
 CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings)
@@ -283,16 +283,9 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 
             if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
             {
-                PluginWindow::WindowFormatType type = f->getProcessor()->hasEditor() ? PluginWindow::Normal
-                                                      : PluginWindow::Generic;
-
-                if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
-                {
-                    if (w->isVisible())
-                        w->setVisible (false);
-                    else
-                        w->setVisible (true);
-                }
+                if (auto f = audioGraph->graph.getNodeForId (nodeId))
+                    if (auto* w = audioGraph->getOrCreateWindowFor (f, PluginWindow::Type::normal))
+                        w->toFront (true);
             }
 
         }
@@ -694,7 +687,7 @@ void CabbageMainComponent::resizeAllWindows (int height)
 //==============================================================================
 void CabbageMainComponent::createAudioGraph()
 {
-    const Point<int> lastPoint = PluginWindow::getPositionOfCurrentlyOpenWindow (1);
+    const Point<int> lastPoint = audioGraph->getPositionOfCurrentlyOpenWindow (1);
 
     if (lastPoint.getX() > 0)
     {
@@ -723,10 +716,10 @@ void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
 
     if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
     {
-        PluginWindow::WindowFormatType type = f->getProcessor()->hasEditor() ? PluginWindow::Normal
-                                              : PluginWindow::Generic;
+        PluginWindow::Type type = f->getProcessor()->hasEditor() ? PluginWindow::Type::normal
+                                              : PluginWindow::Type::generic;
 
-        if (PluginWindow* const w = PluginWindow::getWindowFor (f, type, audioGraph->graph))
+        if (PluginWindow* const w = audioGraph->getOrCreateWindowFor(f, type))
         {
             if (GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
                 w->setVisible (false);
@@ -831,7 +824,7 @@ void CabbageMainComponent::setEditMode (bool enable)
         {
             //createAudioGraph();
             audioGraph->addPlugin (getCurrentCsdFile(), nodeId);
-            const Point<int> pos (PluginWindow::getPositionOfCurrentlyOpenWindow (nodeId));
+            const Point<int> pos (audioGraph->getPositionOfCurrentlyOpenWindow (nodeId));
             createEditorForAudioGraphNode (pos);
         }
 
@@ -1396,8 +1389,9 @@ void CabbageMainComponent::runCsoundForNode (String file)
                 fileTabs[currentFileIndex]->uniqueFileId = node;
             }
 
-            Point<int> pos (PluginWindow::getPositionOfCurrentlyOpenWindow (node));
-            PluginWindow::closeCurrentlyOpenWindowsFor (node);
+            Point<int> pos (audioGraph->getPositionOfCurrentlyOpenWindow (node));
+            audioGraph->closeCurrentlyOpenWindowsFor (node);
+            //audioGraph->graph.removeNode(node);
 
             if (pos.getX() == -1000 && pos.getY() == -1000)
             {
