@@ -554,8 +554,9 @@ bool AudioGraph::closeCurrentlyOpenWindowsFor(const uint32 nodeId)
             AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (nodeId);
             f->getProcessor()->editorBeingDeleted(f->getProcessor()->getActiveEditor());
             activePluginWindows.remove(i);
+            return true; 
         }
-
+    return false;
 }
 
 //==============================================================================
