@@ -658,6 +658,18 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
     if (!midiOutputBuffer.isEmpty())
     {
+//        if (!midiOutputBuffer.isEmpty())
+//        {
+//            MidiMessage message (0xf4, 0, 0, 0);
+//            MidiBuffer::Iterator i (midiOutputBuffer);
+//            int messageFrameRelativeTothisProcess;
+//
+//            while (i.getNextEvent (message, messageFrameRelativeTothisProcess))
+//            {
+//                CabbageUtilities::debug(message.getNoteNumber());
+//            }
+//        }
+
         midiMessages.swapWith (midiOutputBuffer);
     }
     else
