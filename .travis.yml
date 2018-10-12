@@ -39,8 +39,8 @@ before_script:
 
 - curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 - hdiutil mount Packages.dmg
-- sudo installer -pkg /Volumes/Packages\ 1.2.3/Install\ Packages.pkg -target /
-- hdiutil detach /Volumes/Packages\ 1.2.3/
+- sudo installer -pkg /Volumes/Packages\ 1.2.4/Install\ Packages.pkg -target /
+- hdiutil detach /Volumes/Packages\ 1.2.4/
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
