@@ -596,7 +596,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
         {
             if (csndIndex == csdKsmps)
             {
-                result = csound->PerformKsmps();
+                    result = csound->PerformKsmps();
 
                 if (result == 0)
                 {

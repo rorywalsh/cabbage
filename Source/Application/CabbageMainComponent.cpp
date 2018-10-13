@@ -712,12 +712,16 @@ void CabbageMainComponent::showGraph()
 void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
 {
 
+    String pluginName = "";
     int32 nodeId = fileTabs[currentFileIndex]->uniqueFileId;;
 
     if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
     {
         PluginWindow::Type type = f->getProcessor()->hasEditor() ? PluginWindow::Type::normal
                                               : PluginWindow::Type::generic;
+
+        if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
+            pluginName = cabbagePlugin->getPluginName();
 
         if (PluginWindow* const w = audioGraph->getOrCreateWindowFor(f, type))
         {
@@ -735,6 +739,8 @@ void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
 
             if (position.getY() > 0 && position.getX() > 0)
                 w->setTopLeftPosition (position.getX(), position.getY());
+
+            w->setName(pluginName.length()>0 ? pluginName : "Plugin has no name?");
         }
     }
 }
