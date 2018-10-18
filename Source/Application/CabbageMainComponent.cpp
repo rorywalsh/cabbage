@@ -1202,10 +1202,23 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
         if (recompile == true && getCurrentCsdFile().hasFileExtension ((".csd")))
         {
+            // TO AVOID SOME INSTABILITY PROBLEMS IN REPLAYING THE SAME FILE:
+            // --------------------------------------------------------------
+            // CLOSE THE OPEN WINDOWS RELATED TO THIS CSD:
+            int32 node = fileTabs[currentFileIndex]->uniqueFileId;
+            audioGraph->closeCurrentlyOpenWindowsFor(node);
+            // SAVE THE CURRENT FILENAME BEFORE CLOSING THE DOCUMENT:
+            const String currentFile = getCurrentCsdFile().getFullPathName();
+            closeDocument();
+            // REOPEN THE CLOSED FILE:
+            openFile(currentFile);
+            fileTabs[currentFileIndex]->uniqueFileId = node;
+            // --------------------------------------------------------------
+            
             runCsoundForNode (getCurrentCsdFile().getFullPathName());
             //fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
         }
-
+        
         addInstrumentsAndRegionsToCombobox();
     }
 
@@ -1223,6 +1236,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
         }
     }
+    
 
 }
 //==================================================================================

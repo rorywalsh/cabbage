@@ -77,8 +77,10 @@ void AudioGraph::createInternalFilters()
 //==============================================================================
 bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
 {
+    
     for ( int i = 0 ; i < graph.getNumNodes() ; i++)
     {
+        CabbageUtilities::debug(graph.getNode (i)->nodeID);
         if (graph.getNode (i)->nodeID == nodeId)
         {
             Point<double> position = this->getNodePosition (nodeId);
@@ -92,10 +94,11 @@ bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
             restoreConnectionsFromXml (*xml);
             xml = nullptr;
             pluginFiles.add(inputFile.getFullPathName());
+            CabbageUtilities::debug(graph.getNumNodes());
             return true;
         }
     }
-
+    
     setChangedFlag (true);
     const AudioProcessorGraph::Node::Ptr node = createNode (getPluginDescriptor ("Cabbage", "Cabbage", nodeId, inputFile.getFullPathName()), nodeId);
     if(graph.getNodeForId(nodeId)->getProcessor()->isSuspended())
@@ -103,6 +106,7 @@ bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
 
     pluginFiles.add(inputFile.getFullPathName());
     setDefaultConnections (nodeId);
+    
     return true;
 }
 //==============================================================================
