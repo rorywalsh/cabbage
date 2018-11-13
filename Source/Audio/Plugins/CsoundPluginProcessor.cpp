@@ -495,7 +495,6 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     return true;
 #else
     // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
     if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
         && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
@@ -574,7 +573,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
 
 	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
-	const int outputs =  getTotalNumOutputChannels();;
+	const int outputs =  getTotalNumOutputChannels();
 
 
 
@@ -587,17 +586,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
         keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
         midiBuffer = midiMessages;
 
-#if JucePlugin_ProducesMidiOutput
-
-        if (!midiOutputBuffer.isEmpty())
-        {
-            midiMessages.swapWith (midiOutputBuffer);
-        }
-        else
-            midiMessages.clear();
-
-#endif
-
         //mute unused channels
         for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
         {
@@ -608,7 +596,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
         {
             if (csndIndex == csdKsmps)
             {
-                result = csound->PerformKsmps();
+                    result = csound->PerformKsmps();
 
                 if (result == 0)
                 {
@@ -665,6 +653,18 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
             buffer.clear (channel, 0, buffer.getNumSamples());
         }
     }
+
+#if JucePlugin_ProducesMidiOutput
+
+    if (!midiOutputBuffer.isEmpty())
+    {
+        midiMessages.clear();
+        midiMessages.swapWith (midiOutputBuffer);
+    }
+    else
+        midiMessages.clear();
+
+#endif
 }
 
 //==============================================================================
@@ -837,7 +837,6 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
     }
 
     MidiMessage message (mbuf, nbytes, 0);
-
     userData->midiOutputBuffer.addEvent (message, 0);
     return nbytes;
 }

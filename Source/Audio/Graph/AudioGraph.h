@@ -27,6 +27,7 @@
 #include "../Plugins/CabbagePluginProcessor.h"
 #include "../Plugins/CabbagePluginEditor.h"
 #include "../../Settings/CabbageSettings.h"
+#include "PluginWindow.h"
 
 class CabbageMainComponent;
 const char* const filenameSuffix = ".cabbagepatch";
@@ -134,6 +135,11 @@ public:
     void restoreFromXml (const XmlElement& xml);
     void restoreConnectionsFromXml (const XmlElement& xml);
 
+    PluginWindow* getOrCreateWindowFor (AudioProcessorGraph::Node*, PluginWindow::Type);
+//    void closeCurrentlyOpenWindowsFor (AudioProcessorGraph::NodeID);
+    bool closeAnyOpenPluginWindows();
+    Point<int> getPositionOfCurrentlyOpenWindow (const uint32 nodeId);
+    bool closeCurrentlyOpenWindowsFor(const uint32 nodeId);
     OptionalScopedPointer<PropertySet> settings;
     vector<AudioProcessorGraph::Connection> getConnections() { return graph.getConnections(); };
     AudioProcessorGraph graph;
@@ -168,10 +174,12 @@ private:
         deviceManager.removeAudioCallback (&player);
     }
 
+    OwnedArray<PluginWindow> activePluginWindows;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioGraph)
 };
 
-
+/*
 class PluginWindow  : public DocumentWindow
 {
 public:
@@ -210,5 +218,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginWindow)
 };
-
+*/
 #endif   // JUCE_PluginWrapperWindow_H_INCLUDED

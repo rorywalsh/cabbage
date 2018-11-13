@@ -1763,7 +1763,7 @@ void HandleComponent::mouseDrag (const MouseEvent& e)
             else if (previousX >= xPos)
                 xPos = previousX + 1;
 
-            else if (xPos + getWidth() > nextX)
+            else if (xPos > nextX)
                 xPos = nextX + 1;
         }
         else

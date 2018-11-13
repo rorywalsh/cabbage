@@ -44,7 +44,7 @@ public:
 
 
     FileTab (String name, String filename, bool isCsdFile=true);
-    const String getFilename() { return csdFile.getFullPathName();    }
+    const String getFilename();
 
     void drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height);
     void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
