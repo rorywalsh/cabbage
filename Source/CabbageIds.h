@@ -281,6 +281,7 @@ public:
         add ("trackerinsideradius");
         add ("surrogatelinenumber");
         add ("mouseoeverkeycolour");
+	add ("keypressbaseoctave");
         add ("keyseparatorcolour");
         add ("amprange_quantise");
         add ("currentnotecolour");
@@ -533,6 +534,7 @@ namespace CabbageIdentifierIds
 	static const Identifier importfiles = "importfiles";
 	static const Identifier increment = "increment";
 	static const Identifier items = "items";
+	static const Identifier keypressbaseoctave = "keypressbaseoctave";
 	static const Identifier keyseparatorcolour = "keyseparatorcolour";
 	static const Identifier keywidth = "keywidth";
 	static const Identifier kind = "kind";
