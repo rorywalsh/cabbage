@@ -299,6 +299,7 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::height, 100);
     setProperty (widgetData, CabbageIdentifierIds::value, 60);
     setProperty (widgetData, CabbageIdentifierIds::middlec, 3);
+    setProperty (widgetData, CabbageIdentifierIds::keypressbaseoctave, 3);
     setProperty (widgetData, CabbageIdentifierIds::type, "keyboard");
     setProperty (widgetData, CabbageIdentifierIds::name, "keyboard");
     setProperty (widgetData, CabbageIdentifierIds::kind, "horizontal");
