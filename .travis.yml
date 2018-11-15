@@ -32,7 +32,7 @@ before_script:
 - cd /Users/travis/build/
 
 - curl -L -o VSTModuleArchitectureSDK.zip http://www.steinberg.net/sdk_downloads/VSTModuleArchitectureSDK.zip
-- unzip -q VSTModuleArchitectureSDK.zip.zip
+- unzip -q VSTModuleArchitectureSDK.zip
 - mkdir ~/SDKs
 - cp -rf VSTModuleArchitectureSDK ~/SDKs
 - ls /Users/travis/build/rorywalsh/
