@@ -900,9 +900,9 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
     return processor;
 }
 
-void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
+void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName)
 {
-    XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), processor.getCsdFile().withFileExtension (".snaps"));
+    XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), processor.getCsdFile().withFileExtension (".snaps"), presetName);
     xml.writeToFile (processor.getCsdFile().withFileExtension (".snaps"), "");
 }
 

@@ -654,7 +654,7 @@ void CabbagePluginProcessor::setStateInformation(const void *data, int sizeInByt
 }
 
 //==============================================================================
-XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile) {
+XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName) {
     ScopedPointer <XmlElement> xml;
 
     if (xmlFile.existsAsFile()) {
@@ -668,7 +668,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile) 
 
 
     const String presetName = "PRESET" + String(xml->getNumChildElements());
-    const String childName = xmlTag + " " + String(xml->getNumChildElements());
+    const String childName = newPresetName.isNotEmpty() ? newPresetName : xmlTag + " " + String(xml->getNumChildElements());
 
     xml->createNewChildElement(presetName);
     xml->getChildByName(presetName)->setAttribute("PresetName", childName);
