@@ -26,6 +26,12 @@ cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Conten
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.component
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.component
 
+$PROJUCER --resave ../../CabbagePluginMIDIEffect.jucer
+xcodebuild -project CabbagePlugin.xcodeproj clean
+xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 Cabbage_MIDI_Effect=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginMIDIEffect.component
+cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginMIDIEffect.component
+
 $PROJUCER --resave ../../CabbagePlugin.jucer
 
 xcodebuild -project CabbagePlugin.xcodeproj clean
