@@ -931,6 +931,7 @@ void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, con
 
     File imgButtonOnFile = File (button.getProperties().getWithDefault ("imgbuttonon", "").toString());
     File imgButtonOffFile = File (button.getProperties().getWithDefault ("imgbuttonoff", "").toString());
+    File imgButtonOverFile = File (button.getProperties().getWithDefault ("imgbuttonover", "").toString());
 
     if (imgButtonOnFile.existsAsFile() && imgButtonOffFile.existsAsFile()
         && imgButtonOnFile.hasFileExtension (".csd") == false
@@ -939,12 +940,17 @@ void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, con
         if (imgButtonOnFile.hasFileExtension ("png") && imgButtonOffFile.hasFileExtension ("png"))
         {
             Image image = ImageCache::getFromFile (File (toggleState == true ? imgButtonOnFile : imgButtonOffFile));
+            if(isMouseOverButton && toggleState == false)
+                image = ImageCache::getFromFile (File (imgButtonOverFile));
             image = image.rescaled (button.getWidth(), button.getHeight());
             g.drawImage (image, 0.0f, 0, button.getWidth(), button.getHeight(), 0, 0, button.getWidth(), button.getHeight(), false);
         }
         else if (imgButtonOnFile.hasFileExtension ("svg") && imgButtonOffFile.hasFileExtension ("svg"))
         {
-            drawFromSVG (g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
+            if(isMouseOverButton && toggleState == false)
+                drawFromSVG (g, imgButtonOverFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
+            else
+                drawFromSVG (g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
         }
     }
 

@@ -523,6 +523,7 @@ namespace CabbageIdentifierIds
 	static const Identifier identchannelmessage = "identchannelmessage";
 	static const Identifier imgbuttonoff = "imgbuttonoff";
 	static const Identifier imgbuttonon = "imgbuttonon";
+    static const Identifier imgbuttonover = "imgbuttonover";
 	static const Identifier imgdebug = "imgdebug";
 	static const Identifier imgfile = "imgfile";
 	static const Identifier imggroupbox = "imggroupbox";
@@ -785,6 +786,7 @@ public:
         set ("Background Image", CabbageIdentifierIds::imgsliderbg.toString());
         set ("Groupbox Image", CabbageIdentifierIds::imggroupbox.toString());
         set ("On Image", CabbageIdentifierIds::imgbuttonon.toString());
+        set ("Over Image", CabbageIdentifierIds::imgbuttonover.toString());
         set ("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
         set ("Mouse Over", CabbageIdentifierIds::mouseoeverkeycolour.toString());
         set ("Max Amp", CabbageIdentifierIds::amprange_max.toString());

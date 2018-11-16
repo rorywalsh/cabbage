@@ -36,6 +36,7 @@ CabbageButton::CabbageButton (ValueTree wData)
 
     setImgProperties (*this, wData, "buttonon");
     setImgProperties (*this, wData, "buttonoff");
+    setImgProperties (*this, wData, "buttonover");
 
     setLookAndFeelColours (wData);
 }
