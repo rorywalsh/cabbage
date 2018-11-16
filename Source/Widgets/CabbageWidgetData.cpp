@@ -355,6 +355,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("surrogatelinenumber"):
             case HashStringToInt ("imgdebug"):
             case HashStringToInt ("middlec"):
+            case HashStringToInt ("keypressbaseoctave"):
             case HashStringToInt ("fill"):
             case HashStringToInt ("updaterate"):
             case HashStringToInt ("keywidth"):
