@@ -31,10 +31,10 @@ before_script:
 - pwd
 - cd /Users/travis/build/
 
-- curl -L -o VSTModuleArchitectureSDK.zip http://www.steinberg.net/sdk_downloads/VSTModuleArchitectureSDK.zip
-- unzip -q VSTModuleArchitectureSDK.zip
+- curl -L -o vstsdk3610_11_06_2018_build_37.zip https://download.steinberg.net/sdk_downloads/vstsdk3610_11_06_2018_build_37.zip
+- unzip -q vstsdk3610_11_06_2018_build_37.zip
 - mkdir ~/SDKs
-- cp -rf VSTModuleArchitectureSDK ~/SDKs
+- cp -rf VST3_SDK ~/SDKs
 - ls /Users/travis/build/rorywalsh/
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 

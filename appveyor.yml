@@ -39,11 +39,11 @@ install:
   # - cmd: dir
   # - cmd: pwd
   - cmd: cd c:/
-  - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/VSTModuleArchitectureSDK.zip'
-  - cmd: 7z.exe x VSTModuleArchitectureSDK.zip
+  - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk3610_11_06_2018_build_37.zip'
+  - cmd: 7z.exe x vstsdk3610_11_06_2018_build_37.zip
   - cmd: 7z.exe x asiosdk2.3.zip
   - cmd: mkdir SDKs
-  - ps: Get-ChildItem -Path "C:/VSTModuleArchitectureSDK" | Copy-Item -Destination "C:/SDKs/VSTModuleArchitectureSDK" -Recurse -Container
+  - ps: Get-ChildItem -Path "C:/VST3 SDK" | Copy-Item -Destination "C:/SDKs/VST3 SDK" -Recurse -Container
   - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   - cmd: cd c:/JUCE/
