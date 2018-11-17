@@ -237,6 +237,36 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
             }
         }
     }
+    else if (imgType == "buttonover")
+    {
+        String test2 = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff);
+        imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonover));
+        
+        if (imgFile.existsAsFile())
+        {
+            if (imgFile.getFileExtension().contains ("svg"))
+            {
+                comp.getProperties().set (CabbageIdentifierIds::imgbuttonover, imgFile.getFullPathName());
+            }
+            else
+                comp.getProperties().set (CabbageIdentifierIds::imgbuttonover, imgFile.getFullPathName());
+        }
+        else if (imgPath.exists())
+        {
+            File filename = File (csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonover." + fileType);
+            
+            if (filename.existsAsFile())
+            {
+                
+                if (imgFile.getFileExtension().contains ("svg"))
+                {
+                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
+                }
+                else
+                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
+            }
+        }
+    }
     else if (imgType.contains ("sliderbg"))
     {
         imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgsliderbg));

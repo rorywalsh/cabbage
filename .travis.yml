@@ -6,7 +6,7 @@ before_script:
 - gem install xcpretty
 - gem install xcpretty-travis-formatter
 - git remote rm origin
-- cd ..
+- cd .. 
 - curl -L -o csound6.10.0-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.10.0/csound6.10.0-OSX-universal.dmg'
 - ls
 - hdiutil attach csound6.10.0-OSX-universal.dmg
@@ -30,10 +30,11 @@ before_script:
 - ls /Library/Frameworks/
 - pwd
 - cd /Users/travis/build/
-- curl -L -o vstsdk368_08_11_2017_build_121.zip https://download.steinberg.net/sdk_downloads/vstsdk368_08_11_2017_build_121.zip
-- unzip -q vstsdk368_08_11_2017_build_121.zip
+
+- curl -L -o vstsdk3610_11_06_2018_build_37.zip https://download.steinberg.net/sdk_downloads/vstsdk3610_11_06_2018_build_37.zip
+- unzip -q vstsdk3610_11_06_2018_build_37.zip
 - mkdir ~/SDKs
-- cp -rf VST_SDK ~/SDKs
+- cp -rf VST3_SDK ~/SDKs
 - ls /Users/travis/build/rorywalsh/
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 

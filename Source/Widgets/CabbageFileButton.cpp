@@ -100,6 +100,37 @@ void CabbageFileButton::buttonClicked (Button* button)
         owner->savePluginStateToFile (File (newFileName));
         owner->refreshComboListBoxContents();
     }
+    
+    else if (mode == "named snapshot")
+    {
+        String newFileName;
+        if (owner->isAudioUnit())
+            newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+        else
+            newFileName = owner->createNewGenericNameForPresetFile();
+        
+        
+#if JUCE_MODAL_LOOPS_PERMITTED
+        String presetname;
+        AlertWindow w ("Preset",
+                       "Set preset name (warning, will overwrite previous preset of same name)",
+                       AlertWindow::NoIcon);
+        w.setLookAndFeel(&getLookAndFeel());
+        w.setSize(100, 100);
+        w.addTextEditor ("text", "enter name here", "");
+        w.addButton ("OK",     1, KeyPress (KeyPress::returnKey, 0, 0));
+        w.addButton ("Cancel", 0, KeyPress (KeyPress::escapeKey, 0, 0));
+        
+        if (w.runModalLoop() != 0) // is they picked 'ok'
+        {
+            presetname = w.getTextEditorContents ("text");
+        }
+#endif
+        
+        owner->sendChannelStringDataToCsound (getChannel(), newFileName);
+        owner->savePluginStateToFile (File (newFileName), presetname);
+        owner->refreshComboListBoxContents();
+    }
 
     owner->getProcessor().updateHostDisplay();
 }

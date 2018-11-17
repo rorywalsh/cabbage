@@ -489,7 +489,7 @@ void CabbagePluginEditor::insertMIDIKeyboard (ValueTree cabbageWidgetData)
     {
         CabbageKeyboard* midiKeyboard;
         components.add (midiKeyboard = new CabbageKeyboard (cabbageWidgetData, processor.keyboardState));
-        midiKeyboard->setKeyPressBaseOctave (3);
+        //midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
         addToEditorAndMakeVisible (midiKeyboard, cabbageWidgetData);
         addMouseListenerAndSetVisibility (midiKeyboard, cabbageWidgetData);
         keyboardCount++;
@@ -561,13 +561,12 @@ void CabbagePluginEditor::buttonClicked (Button* button)
     if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
     {
         const StringArray textItems = cabbageButton->getTextArray();
-        CabbageUtilities::debug(cabbageButton->getName());
         const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
         const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
 
         if (textItems.size() > 0)
             cabbageButton->setButtonText ( textItems[ buttonState == false ? 0 : 1]);
-
+        
         if (latched == 1)
             toggleButtonState (button, buttonState);
 
@@ -603,6 +602,14 @@ void CabbagePluginEditor::buttonStateChanged (Button* button)
                 toggleButtonState (button, true);
             else
                 toggleButtonState (button, false);
+        }
+        else if (latched == 2)
+        {
+            int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+            if (button->isMouseButtonDown() && value==1)
+                toggleButtonState (button, false);
+            else if (button->isMouseButtonDown() && value==0)
+                toggleButtonState (button, true);          
         }
     }
 
@@ -900,9 +907,9 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
     return processor;
 }
 
-void CabbagePluginEditor::savePluginStateToFile (File snapshotFile)
+void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName)
 {
-    XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), processor.getCsdFile().withFileExtension (".snaps"));
+    XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), processor.getCsdFile().withFileExtension (".snaps"), presetName);
     xml.writeToFile (processor.getCsdFile().withFileExtension (".snaps"), "");
 }
 

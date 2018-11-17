@@ -355,6 +355,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("surrogatelinenumber"):
             case HashStringToInt ("imgdebug"):
             case HashStringToInt ("middlec"):
+            case HashStringToInt ("keypressbaseoctave"):
             case HashStringToInt ("fill"):
             case HashStringToInt ("updaterate"):
             case HashStringToInt ("keywidth"):
@@ -834,8 +835,10 @@ void CabbageWidgetData::setImageFiles (StringArray strTokens, ValueTree widgetDa
     {
         if (strTokens[0].trim().containsIgnoreCase ("off"))
             setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, strTokens[1].trim());
-        else
+        else if (strTokens[0].trim().containsIgnoreCase ("on"))
             setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, strTokens[1].trim());
+        else
+            setProperty (widgetData, CabbageIdentifierIds::imgbuttonover, strTokens[1].trim());
     }
 }
 

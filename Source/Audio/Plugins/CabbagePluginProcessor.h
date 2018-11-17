@@ -101,7 +101,7 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     void setParametersFromXml (XmlElement* e);
-    XmlElement savePluginState (String tag, File xmlFile = File());
+    XmlElement savePluginState (String tag, File xmlFile = File(), String presetName="");
     void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
     StringArray cabbageScriptGeneratedCode;

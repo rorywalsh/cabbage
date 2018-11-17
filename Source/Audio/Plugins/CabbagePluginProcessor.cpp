@@ -654,7 +654,7 @@ void CabbagePluginProcessor::setStateInformation(const void *data, int sizeInByt
 }
 
 //==============================================================================
-XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile) {
+XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName) {
     ScopedPointer <XmlElement> xml;
 
     if (xmlFile.existsAsFile()) {
@@ -667,10 +667,26 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile) 
         xml = new XmlElement("CABBAGE_PRESETS");
 
 
-    const String presetName = "PRESET" + String(xml->getNumChildElements());
-    const String childName = xmlTag + " " + String(xml->getNumChildElements());
-
-    xml->createNewChildElement(presetName);
+    String presetName = "PRESET" + String(xml->getNumChildElements());
+    const String childName = newPresetName.isNotEmpty() ? newPresetName : xmlTag + " " + String(xml->getNumChildElements());
+    bool presetNameExists = false;
+    for( int i = 0 ; i < xml->getNumChildElements() ; i++)
+    {
+        String preset = "PRESET"+String(i);
+        if(auto e = xml->getChildByName(preset))
+        {
+            if(e->getStringAttribute("PresetName") == childName)
+            {
+                presetNameExists = true;
+                presetName = preset;
+            }
+        }
+            
+    }
+    
+    if(presetNameExists == false)
+        xml->createNewChildElement(presetName);
+    
     xml->getChildByName(presetName)->setAttribute("PresetName", childName);
 
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {

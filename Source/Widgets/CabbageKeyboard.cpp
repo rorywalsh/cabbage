@@ -32,11 +32,11 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, MidiKeyboardState& state)
 
     setLowestVisibleKey (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value));
     setOctaveForMiddleC (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::middlec));
+    setKeyPressBaseOctave (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keypressbaseoctave)); // octave num. in [0, 10]
     setKeyWidth (keyWidth);
     setScrollButtonsVisible (scrollbars == 1 ? true : false);
-
+    
     updateColours(wData);
-
 
 }
 
