@@ -195,6 +195,7 @@ public:
         return editModeEnabled;
     }
     Colour backgroundColour;
+    Colour titlebarColour;
 
     //---- popup plant window ----
     class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
