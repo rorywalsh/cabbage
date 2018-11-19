@@ -51,10 +51,12 @@ public:
          node (n), type (t)
     {
         setSize (400, 300);
-
-        if (auto* ui = createProcessorEditor (*node->getProcessor(), type))
-            setContentOwned (ui, true);
-
+		
+		if (auto* ui = createProcessorEditor(*node->getProcessor(), type))
+		{
+			setContentOwned(ui, true);
+			setBackgroundColour( ((CabbagePluginEditor*)ui)->titlebarColour ); // <-- set titlebar colour of the plugin window
+		}
        #if JUCE_IOS || JUCE_ANDROID
         auto screenBounds = Desktop::getInstance().getDisplays().getTotalBounds (true).toFloat();
 
