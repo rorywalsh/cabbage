@@ -175,11 +175,12 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     showScrollbars = bool(CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::scrollbars));
     const int height = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::height);
     const String backgroundColourString = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
+    const String titlebarColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::titlebarcolour);
     lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
 
     backgroundColour = Colour::fromString (backgroundColourString);
-    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
-    mainComponent.setColour (backgroundColour);
+    titlebarColour	 = Colour::fromString (titlebarColourString);
+    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);  
     mainComponent.setColour (backgroundColour);
     instrumentBounds.setXY(width, height);
     setSize (width, height);
