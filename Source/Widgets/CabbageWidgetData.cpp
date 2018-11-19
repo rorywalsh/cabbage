@@ -288,6 +288,10 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
             //======== strings ===============================
+            case HashStringToInt ("caption"):
+				setProperty (widgetData, identifier, strTokens[0]);
+				break;
+
             case HashStringToInt ("kind"):
             case HashStringToInt ("file"):
             case HashStringToInt ("imgpath"):
@@ -303,7 +307,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("align"):
             case HashStringToInt ("displaytype"):
             case HashStringToInt ("name"):
-            case HashStringToInt ("caption"):
             case HashStringToInt ("plant"):
             case HashStringToInt ("show"):
             case HashStringToInt ("child"):
@@ -311,9 +314,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("manufacturer"):
             case HashStringToInt ("logger"):
             case HashStringToInt ("namespace"):
-
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
-                break;
                 break;
 
             case HashStringToInt ("channel"):
