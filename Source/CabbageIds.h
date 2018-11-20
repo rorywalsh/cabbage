@@ -273,7 +273,6 @@ public:
     {
         add ("scrubberposition_sample");
         add ("scrubberposition_table");
-        add ("titlebargradientamount");
         add ("tablebackgroundcolour");
         add ("arrowbackgroundcolour");
         add ("amprange_tablenumber");
@@ -291,13 +290,14 @@ public:
         add ("activecellcolour");
         add ("outlinethickness");
         add ("scrubberposition");
-        add ("whitenotecolour");
+        add ("titlebargradient");
+	add ("whitenotecolour");
         add ("blacknotecolour");
         add ("highlightcolour");
         add ("tablegridcolour");
         add ("backgroundcolor");
         add ("showstepnumbers");
-		add ("titlebarcolour");
+	add ("titlebarcolour");
         add ("tablegridcolor");
         add ("signalvariable");
         add ("overlaycolour");
@@ -625,7 +625,7 @@ namespace CabbageIdentifierIds
 	static const Identifier textboxoutlinecolour = "textboxoutlinecolour";
 	static const Identifier textcolour = "textcolour";
 	static const Identifier titlebarcolour = "titlebarcolour";
-	static const Identifier titlebargradientamount = "titlebargradientamount";
+	static const Identifier titlebargradient = "titlebargradient";
     static const Identifier tofront = "tofront";
     static const Identifier top = "top";
 	static const Identifier trackercolour = "trackercolour";
