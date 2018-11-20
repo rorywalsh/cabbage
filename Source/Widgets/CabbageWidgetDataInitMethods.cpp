@@ -37,7 +37,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 0);
     setProperty (widgetData, CabbageIdentifierIds::titlebarcolour, CabbageUtilities::getBackgroundSkin().toString());
-    setProperty (widgetData, CabbageIdentifierIds::titlebargradientamount, 0.15f);
+    setProperty (widgetData, CabbageIdentifierIds::titlebargradient, 0.15f);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
 
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, "");
