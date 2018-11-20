@@ -105,7 +105,7 @@ void CabbageLookAndFeel2::drawDocumentWindowTitleBar (DocumentWindow& window, Gr
 	}
 
 	if (window.isColourSpecified (DocumentWindow::textColourId) || isColourSpecified (DocumentWindow::textColourId))
-		g.setColour (window.findColour (DocumentWindow::textColourId));
+		g.setColour (window.findColour (DocumentWindow::textColourId).contrasting (isActive ? 0.0f : 0.4f));
 	else
 		g.setColour (window.getBackgroundColour().contrasting (isActive ? 0.7f : 0.4f));
 
