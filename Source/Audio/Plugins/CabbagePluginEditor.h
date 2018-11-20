@@ -196,6 +196,9 @@ public:
     }
     Colour backgroundColour;
     Colour titlebarColour;
+    Colour fontColour;
+    bool defaultFontColour = true;
+    float titlebarGradientAmount;
 
     //---- popup plant window ----
     class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
