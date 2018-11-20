@@ -291,13 +291,13 @@ public:
         add ("outlinethickness");
         add ("scrubberposition");
         add ("titlebargradient");
-	add ("whitenotecolour");
+        add ("whitenotecolour");
         add ("blacknotecolour");
         add ("highlightcolour");
         add ("tablegridcolour");
         add ("backgroundcolor");
         add ("showstepnumbers");
-	add ("titlebarcolour");
+        add ("titlebarcolour");
         add ("tablegridcolor");
         add ("signalvariable");
         add ("overlaycolour");
@@ -356,8 +356,8 @@ public:
         add ("arraysize");
         add ("increment");
         add ("namespace");
-		add ("rowprefix");
-		add ("colprefix");
+        add ("rowprefix");
+        add ("colprefix");
         add ("populate");
         add ("keywidth");
         add ("pluginid");
