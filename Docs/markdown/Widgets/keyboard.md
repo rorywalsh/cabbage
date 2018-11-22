@@ -12,6 +12,8 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/mouseoeverkeycolour.md !}  
 
+{! ./markdown/Widgets/Properties/keypressbaseoctave.md !}  
+
 {! ./markdown/Widgets/Properties/whitenotecolour.md !}  
 
 {! ./markdown/Widgets/Properties/blacknotecolour.md !} 

@@ -19,11 +19,13 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/bundle.md !}  
 
-{! ./markdown/Widgets/Properties/typeface.md !}  
+{! ./markdown/Widgets/Properties/titlebarcolour.md !}  
 
 ### Common Identifiers
 
-{! ./markdown/Widgets/Properties/colour.md !}     
+{! ./markdown/Widgets/Properties/colour.md !}   
+
+{! ./markdown/Widgets/Properties/fontcolour.md !}  
 
 <!--(End of identifiers)/-->
 ![](../images/formExample.png)
