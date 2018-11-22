@@ -690,19 +690,20 @@ void CabbageMainComponent::createAudioGraph()
     if(fileTabs[currentFileIndex])
     {
         AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-        const Point<int> lastPoint = audioGraph->getPositionOfCurrentlyOpenWindow (nodeId);
-
+        const Point<int> lastPoint = audioGraph->getPositionOfCurrentlyOpenWindow(nodeId);
         if (lastPoint.getX() > 0)
         {
             cabbageSettings->setProperty ("windowX", lastPoint.getX());
             cabbageSettings->setProperty ("windowY", lastPoint.getY());
         }
-
-        audioGraph = new AudioGraph (*this, cabbageSettings->getUserSettings(), false);
-        audioGraph->setXmlAudioSettings (cabbageSettings->getUserSettings()->getXmlValue ("audioSetup"));
-        graphComponent = new CabbageGraphComponent (*audioGraph, *this);
-        audioGraphWindow->setContentNonOwned (graphComponent, false);
     }
+
+
+    audioGraph = new AudioGraph (*this, cabbageSettings->getUserSettings(), false);
+    audioGraph->setXmlAudioSettings (cabbageSettings->getUserSettings()->getXmlValue ("audioSetup"));
+    graphComponent = new CabbageGraphComponent (*audioGraph, *this);
+    audioGraphWindow->setContentNonOwned (graphComponent, false);
+
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
@@ -1435,16 +1436,16 @@ void CabbageMainComponent::runCsoundForNode (String file)
 
 void CabbageMainComponent::stopCsoundForNode (String file)
 {
-    if (fileTabs[currentFileIndex] && File (file).existsAsFile())
-    {
-        AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+        if (fileTabs[currentFileIndex] && File(file).existsAsFile())
+        {
+            AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 
-        if (audioGraph->getNodeForId (nodeId) != nullptr)
-            audioGraph->getNodeForId (nodeId)->getProcessor()->suspendProcessing (true);
+            if (audioGraph->getNodeForId(nodeId) != nullptr)
+                audioGraph->getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
 
-        fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
-        fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
-    }
+            fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+            fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+        }
 }
 //==================================================================================
 void CabbageMainComponent::startAudioGraph()
