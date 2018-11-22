@@ -512,7 +512,7 @@ Point<int> AudioGraph::getPositionOfCurrentlyOpenWindow ( AudioProcessorGraph::N
 //        if (w->node = graph.getNodeForId(nodeId))
 //            return w->getPosition();
 //
-//    return Point<int> (-1000, -1000);
+	 return Point<int> (-1000, -1000);
 }
 
 PluginWindow* AudioGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node, PluginWindow::Type type)
@@ -561,17 +561,18 @@ bool AudioGraph::closeAnyOpenPluginWindows()
 }
 
 
+
 bool AudioGraph::closeCurrentlyOpenWindowsFor(const  AudioProcessorGraph::NodeID  nodeId)
 {
-//    for (int i = activePluginWindows.size(); --i >= 0;)
-//        if (activePluginWindows.getUnchecked (i)->node == graph.getNodeForId(nodeId))
-//        {
-//            AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (nodeId);
-//            f->getProcessor()->editorBeingDeleted(f->getProcessor()->getActiveEditor());
-//            activePluginWindows.remove(i);
-//            return true;
-//        }
-//    return false;
+    //for (int i = activePluginWindows.size(); --i >= 0;)
+    //    if (activePluginWindows.getUnchecked (i)->node == graph.getNodeForId(nodeId))
+    //    {
+    //        AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (nodeId);
+    //        f->getProcessor()->editorBeingDeleted(f->getProcessor()->getActiveEditor());
+    //        activePluginWindows.remove(i);
+    //        return true;
+    //    }
+    return false;
 }
 
 //==============================================================================

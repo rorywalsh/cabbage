@@ -868,7 +868,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::buildNow:
         case CommandIDs::saveDocument:
             getContentComponent()->saveDocument();
-            getContentComponent()->setEditMode (false);
+            //getContentComponent()->setEditMode (false);
             isGUIEnabled = false;
             break;
 
