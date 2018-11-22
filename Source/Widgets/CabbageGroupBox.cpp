@@ -20,8 +20,9 @@
 #include "CabbageGroupBox.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageGroupBox::CabbageGroupBox (ValueTree wData)
+CabbageGroupBox::CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner)
     : widgetData (wData),
+      owner (_owner),
       text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
       colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
       fontColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
@@ -84,6 +85,18 @@ void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     getProperties().set ("cornersize", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::corners));
     getProperties().set ("outlinethickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness));
     getProperties().set ("linethickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::linethickness));
+    
+    isVisible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
+    
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    
+    //if plant is hidden, mark all widgets are invisible..
+    for( int i = 0 ; i < getNumChildComponents(); i++)
+    {
+        auto valueTree = CabbageWidgetData::getValueTreeForComponent(owner->getProcessor().cabbageWidgets, getChildComponent(i)->getName());
+        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::visible, getVisible());
+    }
+    
+    
 }
 

@@ -382,6 +382,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("valuey"):
             case HashStringToInt ("zoom"):
             case HashStringToInt ("wrap"):
+            case HashStringToInt ("refreshfiles"):
             case HashStringToInt ("readonly"):
             case HashStringToInt ("scrollbars"):
             case HashStringToInt ("titlebargradient"):
@@ -992,6 +993,9 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type) == CabbageWidgetTypes::combobox
         && strTokens[0].trim().isNotEmpty())
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
+    
+    //if populate is called, it's a fair assumption that the widget is using string channels..
+    CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
 
 }
 

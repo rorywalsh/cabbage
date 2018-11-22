@@ -24,18 +24,20 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+class CabbagePluginEditor;
+
 class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
 {
     int outlineThickness, lineThickness, corners, svgDebug;
     String text, colour, fontColour, justification, outlineColour;
     float rotate;
-
+    CabbagePluginEditor* owner;
     File svgPath, svgFile;
-
+    int isVisible = true;
 
 public:
 
-    CabbageGroupBox (ValueTree wData);
+    CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageGroupBox() {};
 
     //ValueTree::Listener virtual methods....

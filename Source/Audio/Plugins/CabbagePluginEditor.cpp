@@ -508,7 +508,7 @@ void CabbagePluginEditor::insertMIDIKeyboard (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertGroupBox (ValueTree cabbageWidgetData)
 {
     CabbageGroupBox* groupBox;
-    components.add (groupBox = new CabbageGroupBox (cabbageWidgetData));
+    components.add (groupBox = new CabbageGroupBox (cabbageWidgetData, this));
     addToEditorAndMakeVisible (groupBox, cabbageWidgetData);
     addMouseListenerAndSetVisibility (groupBox, cabbageWidgetData);
     addPlantToPopupPlantsArray (cabbageWidgetData, groupBox); // only groupboxes and images can be plants
