@@ -102,11 +102,11 @@ public:
     void arrangeFileTabs();
     int getNumberOfFileTabs() {     return fileTabs.size();  };
     FileTab* getFileTab(int index){  return fileTabs[index]; };
-    FileTab* getFileTabForNodeId(int32 nodeId)
+    FileTab* getFileTabForNodeId(AudioProcessorGraph::NodeID nodeId)
     {
         for (auto &fileTab : fileTabs)
         {
-            if(fileTab->uniqueFileId == nodeId)
+            if(fileTab->uniqueFileId == nodeId.uid)
                 return fileTab;
         }
         jassertfalse;

@@ -11,7 +11,7 @@ Author:  rory
 #include "CabbagePluginComponent.h"
 #include "CabbageGraphComponent.h"
 
-CabbagePluginComponent::CabbagePluginComponent(AudioGraph& p, uint32 id)  :
+CabbagePluginComponent::CabbagePluginComponent(AudioGraph& p, AudioProcessorGraph::NodeID id)  :
     graph (p),
     pluginID (id),
     lookAndFeel()
@@ -375,7 +375,7 @@ void ConnectorComponent::mouseDrag (const MouseEvent& e)
         double distanceFromStart, distanceFromEnd;
         getDistancesFromEnds (Point<float>(e.x, e.y), distanceFromStart, distanceFromEnd);
         const bool isNearerSource = (distanceFromStart < distanceFromEnd);
-        AudioProcessorGraph::NodeAndChannel dummy { 0, 0 };
+        AudioProcessorGraph::NodeAndChannel dummy { {}, 0 };
         panel.beginConnectorDrag (isNearerSource ? dummy : connection.source,
                                                        isNearerSource ? connection.destination : dummy,
                                                        e);
@@ -479,7 +479,7 @@ void PinComponent::paint (Graphics& g)
 
 void PinComponent::mouseDown (const MouseEvent& e)
 {
-    AudioProcessorGraph::NodeAndChannel dummy { 0, 0 };
+    AudioProcessorGraph::NodeAndChannel dummy { {}, 0 };
     panel.beginConnectorDrag (isInput ? dummy : pin, isInput ? pin : dummy, e);
 }
 

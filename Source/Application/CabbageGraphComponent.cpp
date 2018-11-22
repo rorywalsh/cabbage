@@ -80,7 +80,7 @@ void CabbageGraphComponent::mouseDown (const MouseEvent& e)
 }
 
 
-CabbagePluginComponent* CabbageGraphComponent::getComponentForFilter (const uint32 filterID) const
+CabbagePluginComponent* CabbageGraphComponent::getComponentForFilter (AudioProcessorGraph::NodeID filterID) const
 {
     for (auto *fc : nodes)
         if (fc->pluginID == filterID)
@@ -186,34 +186,34 @@ void CabbageGraphComponent::beginConnectorDrag (AudioProcessorGraph::NodeAndChan
 void CabbageGraphComponent::dragConnector (const MouseEvent& e)
 {
     auto e2 = e.getEventRelativeTo (this);
-
+    
     if (draggingConnector != nullptr)
     {
-        //draggingConnector->setTooltip ({});
-
+        draggingConnector->setTooltip ({});
+        
         auto pos = e2.position;
-
+        
         if (auto* pin = findPinAt (pos))
         {
             auto connection = draggingConnector->connection;
-
-            if (connection.source.nodeID == 0 && ! pin->isInput)
+            
+            if (connection.source.nodeID == AudioProcessorGraph::NodeID() && ! pin->isInput)
             {
                 connection.source = pin->pin;
             }
-            else if (connection.destination.nodeID == 0 && pin->isInput)
+            else if (connection.destination.nodeID == AudioProcessorGraph::NodeID() && pin->isInput)
             {
                 connection.destination = pin->pin;
             }
-
+            
             if (graph.graph.canConnect (connection))
             {
                 pos = (pin->getParentComponent()->getPosition() + pin->getBounds().getCentre()).toFloat();
-                //draggingConnector->setTooltip (pin->getTooltip());
+                draggingConnector->setTooltip (pin->getTooltip());
             }
         }
-
-        if (draggingConnector->connection.source.nodeID == 0)
+        
+        if (draggingConnector->connection.source.nodeID == AudioProcessorGraph::NodeID())
             draggingConnector->dragStart (pos);
         else
             draggingConnector->dragEnd (pos);
@@ -224,36 +224,33 @@ void CabbageGraphComponent::endDraggingConnector (const MouseEvent& e)
 {
     if (draggingConnector == nullptr)
         return;
-
-    //draggingConnector->setTooltip ({});
-
+    
+    draggingConnector->setTooltip ({});
+    
     auto e2 = e.getEventRelativeTo (this);
     auto connection = draggingConnector->connection;
-
+    
     draggingConnector = nullptr;
-
+    
     if (auto* pin = findPinAt (e2.position))
     {
-        if (connection.source.nodeID == 0)
+        if (connection.source.nodeID == AudioProcessorGraph::NodeID())
         {
             if (pin->isInput)
                 return;
-
+            
             connection.source = pin->pin;
         }
         else
         {
             if (! pin->isInput)
                 return;
-
+            
             connection.destination = pin->pin;
         }
-
+        
         graph.graph.addConnection (connection);
-        updateComponents();
     }
-
-
 }
 
 

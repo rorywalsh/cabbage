@@ -75,12 +75,11 @@ void AudioGraph::createInternalFilters()
 }
 
 //==============================================================================
-bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
+bool AudioGraph::addPlugin (File inputFile, AudioProcessorGraph::NodeID nodeId)
 {
     
     for ( int i = 0 ; i < graph.getNumNodes() ; i++)
     {
-        CabbageUtilities::debug(graph.getNode (i)->nodeID);
         if (graph.getNode (i)->nodeID == nodeId)
         {
             Point<double> position = this->getNodePosition (nodeId);
@@ -115,7 +114,7 @@ bool AudioGraph::addPlugin (File inputFile, int32 nodeId)
     return true;
 }
 //==============================================================================
-const PluginDescription AudioGraph::getPluginDescriptor (String type, String name, int32 nodeId, String inputFile )
+const PluginDescription AudioGraph::getPluginDescriptor (String type, String name, AudioProcessorGraph::NodeID nodeId, String inputFile )
 {
     PluginDescription descript;
     descript.fileOrIdentifier = inputFile;
@@ -124,7 +123,7 @@ const PluginDescription AudioGraph::getPluginDescriptor (String type, String nam
     descript.numInputChannels = 2;
     descript.numOutputChannels = 2;
     descript.isInstrument = true;
-    descript.uid = nodeId;
+    descript.uid = nodeId.uid;
 
     descript.manufacturerName = "CabbageAudio";
     descript.pluginFormatName = type;
@@ -132,12 +131,12 @@ const PluginDescription AudioGraph::getPluginDescriptor (String type, String nam
     return descript;
 }
 //==============================================================================
-void AudioGraph::showCodeEditorForNode (int32 nodeId)
+void AudioGraph::showCodeEditorForNode (AudioProcessorGraph::NodeID nodeId)
 {
     bool foundTabForNode = false;
     for ( int i = 0 ; i < owner.getNumberOfFileTabs() ; i++)
     {
-        if (int32 (owner.getFileTab(i)->uniqueFileId == nodeId))
+        if (owner.getFileTab(i)->uniqueFileId == nodeId.uid)
         {
             foundTabForNode = true;
             owner.bringCodeEditorToFront (owner.getFileTabForNodeId(nodeId));
@@ -149,12 +148,12 @@ void AudioGraph::showCodeEditorForNode (int32 nodeId)
         AudioProcessorGraph::Node::Ptr n = graph.getNodeForId(nodeId);
         const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
         owner.openFile(pluginFilename);
-        owner.getFileTab(owner.getCurrentFileIndex())->uniqueFileId = nodeId;
+        owner.getFileTab(owner.getCurrentFileIndex())->uniqueFileId = nodeId.uid;
     }
 
 }
 //==============================================================================
-AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& desc, int32 nodeId)
+AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& desc, AudioProcessorGraph::NodeID nodeId)
 {
     if (desc.pluginFormatName == "Cabbage")
     {
@@ -230,7 +229,7 @@ AudioProcessorGraph::Node::Ptr AudioGraph::createNode (const PluginDescription& 
 
 }
 //==============================================================================
-void AudioGraph::setDefaultConnections (int nodeId)
+void AudioGraph::setDefaultConnections (AudioProcessorGraph::NodeID nodeId)
 {
     setNodePosition (nodeId, Point<double>(4 + (graph.getNumNodes() - 3)*.05, .5));
     AudioProcessorGraph::NodeAndChannel inputL = {(AudioProcessorGraph::NodeID) internalNodeIds[InternalNodes::AudioInput], 0};
@@ -241,7 +240,7 @@ void AudioGraph::setDefaultConnections (int nodeId)
  
     AudioProcessorGraph::NodeAndChannel outputL = {(AudioProcessorGraph::NodeID) internalNodeIds[InternalNodes::AudioOutput], 0};
     AudioProcessorGraph::NodeAndChannel outputR = {(AudioProcessorGraph::NodeID) internalNodeIds[InternalNodes::AudioOutput], 1};
-    CabbageUtilities::debug(nodeId);
+
     bool connectInput1 = graph.addConnection ({inputL, nodeL});
     bool connectInput2 = graph.addConnection ({inputR, nodeR});
 
@@ -350,7 +349,7 @@ void AudioGraph::reloadAudioDeviceState (const String& preferredDefaultDeviceNam
 }
 
 //==============================================================================
-String AudioGraph::getCsoundOutput (int32 nodeId)
+String AudioGraph::getCsoundOutput (AudioProcessorGraph::NodeID nodeId)
 {
     if (graph.getNodeForId (nodeId) != nullptr &&
         graph.getNodeForId (nodeId)->getProcessor() != nullptr)
@@ -370,7 +369,7 @@ const AudioProcessorGraph::Node::Ptr AudioGraph::getNode (const int index) const
     return graph.getNode (index);
 }
 
-const AudioProcessorGraph::Node::Ptr AudioGraph::getNodeForId (const uint32 uid) const noexcept
+const AudioProcessorGraph::Node::Ptr AudioGraph::getNodeForId (const  AudioProcessorGraph::NodeID  uid) const noexcept
 {
     return graph.getNodeForId (uid);
 }
@@ -381,7 +380,7 @@ int AudioGraph::getNumPlugins() const noexcept
     return graph.getNumNodes();
 }
 
-void AudioGraph::setNodePosition (const uint32 nodeID, Point<double> pos)
+void AudioGraph::setNodePosition (const  AudioProcessorGraph::NodeID  nodeID, Point<double> pos)
 {
     if (auto* n = graph.getNodeForId (nodeID))
     {
@@ -390,7 +389,7 @@ void AudioGraph::setNodePosition (const uint32 nodeID, Point<double> pos)
     }
 }
 
-Point<double> AudioGraph::getNodePosition (const uint32 nodeID) const
+Point<double> AudioGraph::getNodePosition (const  AudioProcessorGraph::NodeID  nodeID) const
 {
     if (auto* n = graph.getNodeForId (nodeID))
         return { static_cast<double> (n->properties ["x"]),
@@ -410,8 +409,8 @@ const AudioProcessorGraph::Connection* AudioGraph::getConnection (const int inde
     return &graph.getConnections()[index];
 }
 
-const AudioProcessorGraph::Connection* AudioGraph::getConnectionBetween (uint32 sourceFilterUID, int sourceFilterChannel,
-                                                                         uint32 destFilterUID, int destFilterChannel) const noexcept
+const AudioProcessorGraph::Connection* AudioGraph::getConnectionBetween ( AudioProcessorGraph::NodeID  sourceFilterUID, int sourceFilterChannel,
+                                                                          AudioProcessorGraph::NodeID  destFilterUID, int destFilterChannel) const noexcept
 {
     std::vector<AudioProcessorGraph::Connection> currentConnections = graph.getConnections();
     
@@ -429,8 +428,8 @@ const AudioProcessorGraph::Connection* AudioGraph::getConnectionBetween (uint32 
     
 }
 
-bool AudioGraph::canConnect (uint32 sourceFilterUID, int sourceFilterChannel,
-                             uint32 destFilterUID, int destFilterChannel) const noexcept
+bool AudioGraph::canConnect ( AudioProcessorGraph::NodeID  sourceFilterUID, int sourceFilterChannel,
+                              AudioProcessorGraph::NodeID  destFilterUID, int destFilterChannel) const noexcept
 {
     
     AudioProcessorGraph::NodeAndChannel source = {(AudioProcessorGraph::NodeID) sourceFilterUID, sourceFilterChannel};
@@ -439,8 +438,8 @@ bool AudioGraph::canConnect (uint32 sourceFilterUID, int sourceFilterChannel,
     return graph.canConnect ({source, dest});
 }
 
-bool AudioGraph::addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
-                                uint32 destFilterUID, int destFilterChannel)
+bool AudioGraph::addConnection ( AudioProcessorGraph::NodeID  sourceFilterUID, int sourceFilterChannel,
+                                 AudioProcessorGraph::NodeID  destFilterUID, int destFilterChannel)
 {
     AudioProcessorGraph::NodeAndChannel source = {(AudioProcessorGraph::NodeID) sourceFilterUID, sourceFilterChannel};
     AudioProcessorGraph::NodeAndChannel dest = {(AudioProcessorGraph::NodeID) destFilterUID, destFilterChannel};
@@ -453,7 +452,7 @@ bool AudioGraph::addConnection (uint32 sourceFilterUID, int sourceFilterChannel,
     return result;
 }
 
-void AudioGraph::removeFilter (const uint32 id)
+void AudioGraph::removeFilter (const AudioProcessorGraph::NodeID id)
 {
     jassertfalse;
     //closeCurrentlyOpenWindowsFor (id);
@@ -477,7 +476,7 @@ void AudioGraph::removeFilter (const uint32 id)
 //    }
 }
 
-void AudioGraph::disconnectFilter (const uint32 id)
+void AudioGraph::disconnectFilter (const  AudioProcessorGraph::NodeID  id)
 {
     if (graph.disconnectNode (id))
         changed();
@@ -489,8 +488,8 @@ void AudioGraph::removeConnection (const int index)
     changed();
 }
 
-void AudioGraph::removeConnection (uint32 sourceFilterUID, int sourceFilterChannel,
-                                   uint32 destFilterUID, int destFilterChannel)
+void AudioGraph::removeConnection ( AudioProcessorGraph::NodeID  sourceFilterUID, int sourceFilterChannel,
+                                    AudioProcessorGraph::NodeID  destFilterUID, int destFilterChannel)
 {
     AudioProcessorGraph::NodeAndChannel source = {(AudioProcessorGraph::NodeID) sourceFilterUID, sourceFilterChannel};
     AudioProcessorGraph::NodeAndChannel dest = {(AudioProcessorGraph::NodeID) destFilterUID, destFilterChannel};
@@ -506,47 +505,54 @@ void AudioGraph::clear()
     changed();
 }
 
-Point<int> AudioGraph::getPositionOfCurrentlyOpenWindow (const uint32 nodeId)
+Point<int> AudioGraph::getPositionOfCurrentlyOpenWindow ( AudioProcessorGraph::NodeID  nodeId)
 {
-    if(nodeId>3)
-    for (auto* w : activePluginWindows)
-        if (w->node == graph.getNodeForId(nodeId))
-            return w->getPosition();
-
-    return Point<int> (-1000, -1000);
+//    if(nodeId.uid>3)
+//    for (auto* w : activePluginWindows)
+//        if (w->node = graph.getNodeForId(nodeId))
+//            return w->getPosition();
+//
+//    return Point<int> (-1000, -1000);
 }
 
 PluginWindow* AudioGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node, PluginWindow::Type type)
 {
     jassert (node != nullptr);
-
+    
 #if JUCE_IOS || JUCE_ANDROID
     closeAnyOpenPluginWindows();
 #else
     for (auto* w : activePluginWindows)
-        if (w->node == node && w->type == type)
+        if (w->node.get() == node && w->type == type)
             return w;
 #endif
-
+    
     if (auto* processor = node->getProcessor())
     {
         if (auto* plugin = dynamic_cast<AudioPluginInstance*> (processor))
         {
             auto description = plugin->getPluginDescription();
-
+            
             if (description.pluginFormatName == "Internal")
             {
-                //getCommandManager().invokeDirectly (CommandIDs::showAudioSettings, false);
-                return nullptr;
+                
             }
         }
-
+        
+#if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
+        if (! node->properties["DPIAware"]
+            && ! node->getProcessor()->getName().contains ("Kontakt")) // Kontakt doesn't behave correctly in DPI unaware mode...
+        {
+            ScopedDPIAwarenessDisabler disableDPIAwareness;
+            return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
+        }
+#endif
+        
         return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
     }
-
+    
     return nullptr;
 }
-
 bool AudioGraph::closeAnyOpenPluginWindows()
 {
     bool wasEmpty = activePluginWindows.isEmpty();
@@ -555,17 +561,17 @@ bool AudioGraph::closeAnyOpenPluginWindows()
 }
 
 
-bool AudioGraph::closeCurrentlyOpenWindowsFor(const uint32 nodeId)
+bool AudioGraph::closeCurrentlyOpenWindowsFor(const  AudioProcessorGraph::NodeID  nodeId)
 {
-    for (int i = activePluginWindows.size(); --i >= 0;)
-        if (activePluginWindows.getUnchecked (i)->node == graph.getNodeForId(nodeId))
-        {
-            AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (nodeId);
-            f->getProcessor()->editorBeingDeleted(f->getProcessor()->getActiveEditor());
-            activePluginWindows.remove(i);
-            return true; 
-        }
-    return false;
+//    for (int i = activePluginWindows.size(); --i >= 0;)
+//        if (activePluginWindows.getUnchecked (i)->node == graph.getNodeForId(nodeId))
+//        {
+//            AudioProcessorGraph::Node::Ptr f = graph.getNodeForId (nodeId);
+//            f->getProcessor()->editorBeingDeleted(f->getProcessor()->getActiveEditor());
+//            activePluginWindows.remove(i);
+//            return true;
+//        }
+//    return false;
 }
 
 //==============================================================================
@@ -649,7 +655,7 @@ static XmlElement* createNodeXml (AudioProcessorGraph::Node* const node) noexcep
 
 
     XmlElement* e = new XmlElement ("FILTER");
-    e->setAttribute ("uid", (int) node->nodeID);
+    e->setAttribute ("uid", (int) node->nodeID.uid);
     e->setAttribute ("x", node->properties ["x"].toString());
     e->setAttribute ("y", node->properties ["y"].toString());
     e->setAttribute ("uiLastX", node->properties ["uiLastX"].toString());
@@ -678,9 +684,9 @@ void AudioGraph::restoreFromXml (const XmlElement& xml)
 
     forEachXmlChildElementWithTagName (xml, e, "CONNECTION")
     {
-        addConnection ((uint32) e->getIntAttribute ("srcFilter"),
+        addConnection (( AudioProcessorGraph::NodeID ) e->getIntAttribute ("srcFilter"),
                        e->getIntAttribute ("srcChannel"),
-                       (uint32) e->getIntAttribute ("dstFilter"),
+                       ( AudioProcessorGraph::NodeID ) e->getIntAttribute ("dstFilter"),
                        e->getIntAttribute ("dstChannel"));
     }
 
@@ -691,9 +697,9 @@ void AudioGraph::restoreConnectionsFromXml (const XmlElement& xml)
 {
     forEachXmlChildElementWithTagName (xml, e, "CONNECTION")
     {
-        addConnection ((uint32) e->getIntAttribute ("srcFilter"),
+        addConnection (( AudioProcessorGraph::NodeID ) e->getIntAttribute ("srcFilter"),
                        e->getIntAttribute ("srcChannel"),
-                       (uint32) e->getIntAttribute ("dstFilter"),
+                       ( AudioProcessorGraph::NodeID ) e->getIntAttribute ("dstFilter"),
                        e->getIntAttribute ("dstChannel"));
     }
 
@@ -713,7 +719,7 @@ void AudioGraph::createNodeFromXml (const XmlElement& xml)
     }
 
     //xml.writeToFile (File ("/home/rory/Desktop/NodeTest.xml"), "");
-    AudioProcessorGraph::Node::Ptr node = createNode (desc, xml.getIntAttribute ("uid"));
+    AudioProcessorGraph::Node::Ptr node = createNode (desc, AudioProcessorGraph::NodeID(xml.getIntAttribute ("uid")));
 
     if (node == nullptr)
         jassertfalse;
@@ -748,9 +754,9 @@ XmlElement* AudioGraph::createXml() const
 
         XmlElement* e = new XmlElement ("CONNECTION");
 
-        e->setAttribute ("srcFilter", (int) fc->source.nodeID);
+        e->setAttribute ("srcFilter", (int) fc->source.nodeID.uid);
         e->setAttribute ("srcChannel", fc->source.channelIndex);
-        e->setAttribute ("dstFilter", (int) fc->destination.nodeID);
+        e->setAttribute ("dstFilter", (int) fc->destination.nodeID.uid);
         e->setAttribute ("dstChannel", fc->destination.channelIndex);
 
         xml->addChildElement (e);
@@ -788,9 +794,9 @@ XmlElement* AudioGraph::createConnectionsXml() const
     {
         auto e = xml->createNewChildElement ("CONNECTION");
         
-        e->setAttribute ("srcFilter", (int) connection.source.nodeID);
+        e->setAttribute ("srcFilter", (int) connection.source.nodeID.uid);
         e->setAttribute ("srcChannel", connection.source.channelIndex);
-        e->setAttribute ("dstFilter", (int) connection.destination.nodeID);
+        e->setAttribute ("dstFilter", (int) connection.destination.nodeID.uid);
         e->setAttribute ("dstChannel", connection.destination.channelIndex);
     }
     

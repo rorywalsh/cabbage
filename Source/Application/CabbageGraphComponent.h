@@ -42,7 +42,7 @@ public:
     OwnedArray<ConnectorComponent> connectors;
 
     
-    CabbagePluginComponent* getComponentForFilter (uint32 filterID) const;
+    CabbagePluginComponent* getComponentForFilter (AudioProcessorGraph::NodeID filterID) const;
     ConnectorComponent* getComponentForConnection (const AudioProcessorGraph::Connection& conn) const;
     PinComponent* findPinAt (Point<float> pos) const;
 
