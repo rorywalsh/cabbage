@@ -39,15 +39,18 @@ install:
   # - cmd: dir
   # - cmd: pwd
   - cmd: cd c:/
-  - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk3610_11_06_2018_build_37.zip'
-  - cmd: 7z.exe x vstsdk3610_11_06_2018_build_37.zip
-  - cmd: 7z.exe x asiosdk2.3.zip
+  - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip'
+  - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip'
+  - ps: Start-FileDownload 'https://www.dropbox.com/s/we6r4s1wseiq0k1/heads.zip?dl=0'
+  - cmd: 7z.exe x vstsdk3611_22_10_2018_build_34.zip
+  - cmd: 7z.exe x asiosdk2.3.2.zip
   - cmd: mkdir SDKs
-  - ps: Get-ChildItem -Path "C:/VST3 SDK" | Copy-Item -Destination "C:/SDKs/VST3 SDK" -Recurse -Container
+  - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
+  - ps: Get-ChildItem -Path "C:/vst2.x" | Copy-Item -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces" -Recurse -Container
   - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   - cmd: cd c:/JUCE/
-  - cmd: git checkout tags/5.3.2
+  - cmd: git checkout tags/5.4.1
   - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"

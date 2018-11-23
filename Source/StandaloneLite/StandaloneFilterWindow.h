@@ -96,14 +96,14 @@ public:
             if (x != -100 && y != -100)
                 setBoundsConstrained ({ x, y, getWidth(), getHeight() });
             else
-                centreWithSize (getWidth(), getHeight());
+                centreWithSize (300, 300);
 
             this->setAlwaysOnTop(props->getIntValue("AlwaysOnTop"));
 
         }
         else
         {
-            centreWithSize (getWidth(), getHeight());
+            centreWithSize (300, 300);
         }
 
 #endif
