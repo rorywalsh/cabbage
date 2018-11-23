@@ -24,7 +24,8 @@ CabbagePluginComponent::CabbagePluginComponent(AudioGraph& p, AudioProcessorGrap
 
 CabbagePluginComponent::~CabbagePluginComponent()
 {
-   // pins.clear();
+	//jassertfalse;
+    pins.clear();
     //deleteAllChildren();
 }
 

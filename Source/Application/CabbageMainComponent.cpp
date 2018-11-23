@@ -50,18 +50,20 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     cycleTabsButton.addListener (this);
     setLookAndFeelColours();
     createAudioGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
-
+	currentPluginEditor = nullptr;
 }
 
 CabbageMainComponent::~CabbageMainComponent()
 {
     editorAndConsole.clear();
-    graphComponent = nullptr;
+	graphComponent->nodes.clear();// = nullptr;
     audioGraph = nullptr;
     setLookAndFeel(nullptr);
 
     if (tempFile.existsAsFile())
         tempFile.deleteFile();
+
+	graphComponent = nullptr;
 }
 
 void CabbageMainComponent::paint (Graphics& g)
@@ -785,33 +787,25 @@ String CabbageMainComponent::getAudioDeviceSettings()
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
 
-    if (audioGraph != nullptr && fileTabs[currentFileIndex])
-    {
-        const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+	if (audioGraph != nullptr && fileTabs[currentFileIndex])
+	{
+		if (getCabbagePluginProcessor() && getCabbagePluginProcessor()->getActiveEditor())
+			currentPluginEditor = dynamic_cast<CabbagePluginEditor*> (getCabbagePluginProcessor()->getActiveEditor());
 
-		//if (auto f = audioGraph->graph.getNodeForId(nodeId))
-		//	if (auto* w = audioGraph->getOrCreateWindowFor(f, PluginWindow::Type::normal))
-		//	{
-		//		const auto processor = w->node->getProcessor();
-		//		if (processor != nullptr)
-		//		{
-		//			auto plug = processor->getActiveEditor();
-		//			if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
-		//				return editor;
-		//		}
-		//	}
-				
+		return currentPluginEditor;
+	}
 
-        if (nodeId.uid != 99)
-            if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
-            {
-                AudioProcessor* const processor = f->getProcessor();
-				auto plug = processor->getActiveEditor();
-				if(processor != nullptr)
-	                if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
-		                return editor;
-            }
-    }
+	//the following code is causing issues on certain versions of Windows..
+    //    if (nodeId.uid != 99)
+    //        if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
+    //        {
+    //            AudioProcessor* const processor = f->getProcessor();
+				//auto plug = processor->getActiveEditor();
+				//if(processor != nullptr)
+	   //             if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+		  //              return editor;
+    //        }
+    
 
     return nullptr;
 }

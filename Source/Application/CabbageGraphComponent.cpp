@@ -28,7 +28,7 @@ CabbageGraphComponent::~CabbageGraphComponent()
     draggingConnector = nullptr;
     connectors.clear();
     nodes.clear();
-    //deleteAllChildren();
+	deleteAllChildren();
 }
 
 void CabbageGraphComponent::paint (Graphics& g)
