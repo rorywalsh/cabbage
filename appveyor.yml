@@ -41,7 +41,7 @@ install:
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip'
   - ps: Start-FileDownload 'http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip'
-  - ps: Start-FileDownload 'https://cabbageaudio.com/beta/heads.zip'
+  - ps: Start-FileDownload 'http://cabbageaudio.com/beta/heads.zip'
   - cmd: 7z.exe x vstsdk3611_22_10_2018_build_34.zip
   - cmd: 7z.exe x asiosdk2.3.2.zip
   - cmd: 7z.exe x heads.zip
