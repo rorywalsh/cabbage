@@ -45,7 +45,7 @@ install:
   - cmd: 7z.exe x vstsdk3611_22_10_2018_build_34.zip
   - cmd: 7z.exe x asiosdk2.3.2.zip
   - cmd: 7z.exe x heads.zip
-  - cmd: mkdir SDKs
+  - cmd: mkdir SDKs  
   - cmd: dir
   - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
   - ps: Get-ChildItem -Path "C:/vst2.x" | Copy-Item -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces" -Recurse -Container
