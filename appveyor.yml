@@ -49,7 +49,7 @@ install:
   - cmd: dir
   - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
   - ps: Get-ChildItem -Path "C:/vst2.x" | Copy-Item -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces" -Recurse -Container
-  - ps: Get-ChildItem -Path "C:/ASIOSDK2.3" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3" -Recurse -Container
+  - ps: Get-ChildItem -Path "C:/ASIOSDK2.3.2" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3.2" -Recurse -Container
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   - cmd: cd c:/JUCE/
   - cmd: git checkout tags/5.4.1
