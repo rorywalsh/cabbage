@@ -15,7 +15,7 @@ clone_folder: c:\cabbage
 
 # scripts that run after cloning repository
 install:
-  - cmd: dir
+  - cmd: dir  
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://github.com/csound/csound/releases/download/6.11.0/csound-windows_x64-6.11.0.zip'
   - cmd: 7z.exe x csound-windows_x64-6.11.0.zip -o"C:/Program Files"
