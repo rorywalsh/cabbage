@@ -53,6 +53,8 @@ install:
   
   - cmd: cd c:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/
   - cmd: dir
+  - cmd: cd c:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x/
+  - cmd: dir
   - cmd: cd c:/
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   - cmd: cd c:/JUCE
