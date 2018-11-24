@@ -50,6 +50,7 @@ install:
   - ps: Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
   - ps: Get-ChildItem -Path "C:/vst2.x" | Copy-Item -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x" -Recurse -Container
   #- ps: Get-ChildItem -Path "C:/ASIOSDK2.3.2" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3.2" -Recurse -Container
+  - ps: mkdir C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x
   - ps: Copy-Item "C:/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x" -Recurse
   - cmd: cd c:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/
   - cmd: dir
