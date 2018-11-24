@@ -281,7 +281,7 @@ public:
         add ("trackerinsideradius");
         add ("surrogatelinenumber");
         add ("mouseoeverkeycolour");
-	add ("keypressbaseoctave");
+        add ("keypressbaseoctave");
         add ("keyseparatorcolour");
         add ("amprange_quantise");
         add ("currentnotecolour");
@@ -290,13 +290,14 @@ public:
         add ("activecellcolour");
         add ("outlinethickness");
         add ("scrubberposition");
+        add ("titlebargradient");
         add ("whitenotecolour");
         add ("blacknotecolour");
         add ("highlightcolour");
         add ("tablegridcolour");
         add ("backgroundcolor");
         add ("showstepnumbers");
-		add ("titlebarcolour");
+        add ("titlebarcolour");
         add ("tablegridcolor");
         add ("signalvariable");
         add ("overlaycolour");
@@ -355,8 +356,8 @@ public:
         add ("arraysize");
         add ("increment");
         add ("namespace");
-		add ("rowprefix");
-		add ("colprefix");
+        add ("rowprefix");
+        add ("colprefix");
         add ("populate");
         add ("keywidth");
         add ("pluginid");
@@ -624,6 +625,7 @@ namespace CabbageIdentifierIds
 	static const Identifier textboxoutlinecolour = "textboxoutlinecolour";
 	static const Identifier textcolour = "textcolour";
 	static const Identifier titlebarcolour = "titlebarcolour";
+	static const Identifier titlebargradient = "titlebargradient";
     static const Identifier tofront = "tofront";
     static const Identifier top = "top";
 	static const Identifier trackercolour = "trackercolour";

@@ -20,6 +20,12 @@ public:
     CabbageLookAndFeel2();
     ~CabbageLookAndFeel2() {};
 
+    float titlebarContrastingGradient; // 0.0: no gradient in the titlebar - 1.0: max contrasting gradient
+
+    void drawDocumentWindowTitleBar (DocumentWindow& window, Graphics& g,
+		int w, int h, int titleSpaceX, int titleSpaceW,
+		const Image* icon, bool drawTitleTextOnLeft) override;
+	
     void drawToggleButton (Graphics& g, ToggleButton& button, bool isMouseOverButton, bool isButtonDown) override;
 
     void drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider& slider)override;
@@ -89,7 +95,6 @@ public:
 private:
 
     Font customFont;
-
 
 };
 

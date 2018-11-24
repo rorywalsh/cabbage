@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="5.3.2" displaySplashScreen="1" reportAppUsage="1"
+              jucerVersion="5.4.1" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{C0361D81-2D97-514F-0F91-A8077B17F83D}" name="GUIEditor"/>
@@ -286,8 +286,6 @@
         <MODULEPATH id="juce_gui_basics" path="../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/modules"/>
         <MODULEPATH id="juce_cryptography" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_devices" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../JUCE/modules"/>
@@ -311,8 +309,6 @@
                        enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_video" path="../../juce"/>
-        <MODULEPATH id="juce_opengl" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_graphics" path="../../juce"/>
@@ -341,19 +337,17 @@
                        linkTimeOptimisation="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_video" path="../../juce"/>
-        <MODULEPATH id="juce_opengl" path="../../juce"/>
-        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
-        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
-        <MODULEPATH id="juce_graphics" path="../../juce"/>
-        <MODULEPATH id="juce_events" path="../../juce"/>
-        <MODULEPATH id="juce_data_structures" path="../../juce"/>
-        <MODULEPATH id="juce_cryptography" path="../../juce"/>
-        <MODULEPATH id="juce_core" path="../../juce"/>
-        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
-        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/"/>
+        <MODULEPATH id="juce_events" path="../JUCE/"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/"/>
+        <MODULEPATH id="juce_core" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/modules"/>
       </MODULEPATHS>
     </VS2015>
@@ -362,35 +356,31 @@
             smallIcon="vNeY7N" bigIcon="vNeY7N">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="Cabbage" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"
+                       isDebug="1" optimisation="1" targetName="Cabbage" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
                        enablePluginBinaryCopyStep="0"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="Cabbage" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"
+                       isDebug="0" optimisation="3" targetName="Cabbage" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
                        enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_video" path="../../juce"/>
-        <MODULEPATH id="juce_opengl" path="../../juce"/>
-        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
-        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
-        <MODULEPATH id="juce_graphics" path="../../juce"/>
-        <MODULEPATH id="juce_events" path="../../juce"/>
-        <MODULEPATH id="juce_data_structures" path="../../juce"/>
-        <MODULEPATH id="juce_cryptography" path="../../juce"/>
-        <MODULEPATH id="juce_core" path="../../juce"/>
-        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
-        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
-        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/"/>
+        <MODULEPATH id="juce_events" path="../JUCE/"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/"/>
+        <MODULEPATH id="juce_core" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
     </VS2017>
     <CLION targetFolder="Builds/CLion" clionMakefileEnabled="1" clionXcodeEnabled="0">
       <MODULEPATHS>
-        <MODULEPATH id="juce_video" path="../../juce"/>
-        <MODULEPATH id="juce_opengl" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_graphics" path="../../juce"/>
@@ -419,12 +409,11 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="1" JUCE_ASIO="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>
+    <WINDOWS/>
   </LIVE_SETTINGS>
 </JUCERPROJECT>

@@ -61,6 +61,57 @@ void CabbageLookAndFeel2::setDefaultFont(File fontFile)
 //    else
 //        customFont = CabbageUtilities::getComponentFont();
 }
+
+void CabbageLookAndFeel2::drawDocumentWindowTitleBar (DocumentWindow& window, Graphics& g,
+	int w, int h, int titleSpaceX, int titleSpaceW,
+	const Image* icon, bool drawTitleTextOnLeft)
+{
+	if (w * h == 0)
+		return;
+
+	const bool isActive = window.isActiveWindow();
+
+	g.setGradientFill (ColourGradient::vertical (window.getBackgroundColour(), 0,
+		window.getBackgroundColour().contrasting (isActive ? titlebarContrastingGradient : std::max(0.0f, titlebarContrastingGradient - 0.10f)), (float)h));
+	g.fillAll();
+
+	Font font (h * 0.65f, Font::bold);
+	g.setFont (font);
+
+	int textW = font.getStringWidth (window.getName());
+	int iconW = 0;
+	int iconH = 0;
+
+	if (icon != nullptr)
+	{
+		iconH = (int)font.getHeight();
+		iconW = icon->getWidth() * iconH / icon->getHeight() + 4;
+	}
+
+	textW = jmin (titleSpaceW, textW + iconW);
+	int textX = drawTitleTextOnLeft ? titleSpaceX
+		: jmax (titleSpaceX, (w - textW) / 2);
+
+	if (textX + textW > titleSpaceX + titleSpaceW)
+		textX = titleSpaceX + titleSpaceW - textW;
+
+	if (icon != nullptr)
+	{
+		g.setOpacity (isActive ? 1.0f : 0.6f);
+		g.drawImageWithin (*icon, textX, (h - iconH) / 2, iconW, iconH,
+			RectanglePlacement::centred, false);
+		textX += iconW;
+		textW -= iconW;
+	}
+
+	if (window.isColourSpecified (DocumentWindow::textColourId) || isColourSpecified (DocumentWindow::textColourId))
+		g.setColour (window.findColour (DocumentWindow::textColourId).contrasting (isActive ? 0.0f : 0.4f));
+	else
+		g.setColour (window.getBackgroundColour().contrasting (isActive ? 0.7f : 0.4f));
+
+	g.drawText (window.getName(), textX, 0, textW, h, Justification::centredLeft, true);
+}
+
 //=========== ComboBox ============================================================================
 void CabbageLookAndFeel2::drawComboBox (Graphics& g, int width, int height, bool /*isButtonDown*/,
                                         int /*buttonX*/,

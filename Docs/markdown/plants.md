@@ -17,5 +17,5 @@ The major advantage in using plants is that you can easily move and resize all w
 
 > Note: Plants have to be created manually. Opening brackets must appear on either the same line as the plant widget, or the following line. Plants cannot be declared inline, meaning they must be spread over a number of lines. 
 
-For more advanced uses of plants, see [Custom plant imports](./custom_plant_import.md)
+For more advanced uses of plants, see [Custom plant imports](./custom_plant_imports.md)
 ![Plants](images/plants.gif)

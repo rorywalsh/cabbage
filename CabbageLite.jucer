@@ -3,7 +3,7 @@
 <JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
-              cppLanguageStandard="11" jucerVersion="5.3.2" companyCopyright="">
+              cppLanguageStandard="11" jucerVersion="5.4.1" companyCopyright="">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
     <GROUP id="{E4950169-7245-8252-D27F-2344F45CAF99}" name="Source">
       <GROUP id="{4AFC1EE2-9934-F4AA-4ECD-50660152DD13}" name="BinaryData">
@@ -233,8 +233,6 @@
         <MODULEPATH id="juce_gui_basics" path="../sourcecode/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../sourcecode/JUCE/modules"/>
         <MODULEPATH id="juce_cryptography" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../sourcecode/JUCE/modules"/>
         <MODULEPATH id="juce_audio_basics" path="../sourcecode/JUCE/modules"/>
         <MODULEPATH id="juce_audio_devices" path="../sourcecode/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../sourcecode/JUCE/modules"/>
@@ -246,18 +244,16 @@
             externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="CabbageLite" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"
+                       isDebug="1" optimisation="1" targetName="CabbageLite" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
                        enablePluginBinaryCopyStep="0"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="0" optimisation="3" targetName="CabbageLite" libraryPath="C:\Program Files\Csound6_x64\lib"
-                       headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3\common"
+                       headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        debugInformationFormat="ProgramDatabase" enablePluginBinaryCopyStep="0"
                        linkTimeOptimisation="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_video" path="..\JUCE\modules"/>
-        <MODULEPATH id="juce_opengl" path="..\JUCE\modules"/>
         <MODULEPATH id="juce_gui_extra" path="..\JUCE\modules"/>
         <MODULEPATH id="juce_gui_basics" path="..\JUCE\modules"/>
         <MODULEPATH id="juce_graphics" path="..\JUCE\modules"/>
@@ -285,8 +281,6 @@
                        osxArchitecture="64BitUniversal"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_video" path="../../juce"/>
-        <MODULEPATH id="juce_opengl" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_graphics" path="../../juce"/>
@@ -314,8 +308,6 @@
                        headerPath="/Users/walshr/sourcecode/csound-iOS/headers"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_video" path="../../juce"/>
-        <MODULEPATH id="juce_opengl" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_graphics" path="../../juce"/>
@@ -344,12 +336,11 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
-    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
-    <MODULE id="juce_video" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_ASIO="1" JUCE_WASAPI="1" JUCE_ALSA="1" JUCE_JACK="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>
+    <WINDOWS/>
   </LIVE_SETTINGS>
 </JUCERPROJECT>
