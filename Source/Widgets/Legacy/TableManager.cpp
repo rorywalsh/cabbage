@@ -1760,6 +1760,12 @@ void HandleComponent::mouseDrag (const MouseEvent& e)
             else if (fixed && xPos < viewer->getWidth() / 2.f)
                 xPos = 1.f;
 
+            else if (previousHandle == 0) // first handle from left
+                xPos = 0;
+
+            else if (nextHandle == 0) // last handle
+                xPos = nextX;
+
             else if (previousX >= xPos)
                 xPos = previousX + 1;
 
