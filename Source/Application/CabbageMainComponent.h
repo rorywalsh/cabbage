@@ -142,7 +142,7 @@ public:
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
-	CabbagePluginEditor* currentPluginEditor;
+	ScopedPointer<CabbagePluginEditor> currentPluginEditor;
 
 private:
     int getTabFileIndex (int32 nodeId);

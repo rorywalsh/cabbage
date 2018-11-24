@@ -808,8 +808,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound() {
         const int visible = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::visible);
         
         //only query components that are currently visible. ALWAYS check widgets that support plants
-        if(visible == 1 || type== "groupbox" || type == "image")
-        {
+        //if(visible == 1 || type== "groupbox" || type == "image")
+        //{
             const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
             const var widgetArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                                    CabbageIdentifierIds::widgetarray);
@@ -897,7 +897,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound() {
 
                 }
             }
-        }
+        //}
     }
 }
 
