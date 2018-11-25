@@ -272,7 +272,8 @@
       </MODULEPATHS>
     </VS2015>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Synth=1"
-            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1">
+            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1"
+            vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
