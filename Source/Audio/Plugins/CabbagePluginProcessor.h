@@ -65,7 +65,7 @@ public:
         StringArray cabbageCode;
     };
 
-
+	
     CabbagePluginProcessor (File inputFile = File(), const int ins=2, const int outs=2);
 	void createCsound(File inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor();

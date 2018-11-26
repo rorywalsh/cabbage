@@ -89,13 +89,7 @@ void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     isVisible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
     
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-    
-    //if plant is hidden, mark all widgets are invisible..
-    for( int i = 0 ; i < getNumChildComponents(); i++)
-    {
-        auto valueTree = CabbageWidgetData::getValueTreeForComponent(owner->getProcessor().cabbageWidgets, getChildComponent(i)->getName());
-        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::visible, getVisible());
-    }
+
     
     
 }

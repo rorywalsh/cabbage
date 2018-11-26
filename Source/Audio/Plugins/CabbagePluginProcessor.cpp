@@ -805,11 +805,16 @@ void CabbagePluginProcessor::getChannelDataFromCsound() {
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
     {
         const String type = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
-        const int visible = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::visible);
-        
+        const String parent = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::parentcomponent);
+		
+		//if no parent set parentIsVisible to 1. 
+		int parentIsVisible = 1;
+		if (parent.isNotEmpty())
+			parentIsVisible = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(parent), CabbageIdentifierIds::visible);
+		
         //only query components that are currently visible. ALWAYS check widgets that support plants
-        //if(visible == 1 || type== "groupbox" || type == "image")
-        //{
+        //if(parentIsVisible == 1 || type== "groupbox" || type == "image")
+       // {
             const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
             const var widgetArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                                    CabbageIdentifierIds::widgetarray);
@@ -896,8 +901,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound() {
                                                    0); //reset value for further updates
 
                 }
-            }
-        //}
+            //}
+        }
     }
 }
 

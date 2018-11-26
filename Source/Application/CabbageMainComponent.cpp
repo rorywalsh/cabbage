@@ -56,7 +56,6 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 CabbageMainComponent::~CabbageMainComponent()
 {
     editorAndConsole.clear();
-	currentPluginEditor = nullptr;
 	graphComponent->nodes.clear();// = nullptr;
     audioGraph = nullptr;
     setLookAndFeel(nullptr);
@@ -789,17 +788,6 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
 	if (fileTabs.size() > 0)
 	{
-		// odd workaround for issues seen on certain versions of Windows..
-		if (cabbageSettings->getUserSettings()->getIntValue("UseModifiedAudioGraph"))
-			if (audioGraph != nullptr && fileTabs[currentFileIndex])
-			{
-				if (getCabbagePluginProcessor() && getCabbagePluginProcessor()->getActiveEditor())
-					currentPluginEditor = dynamic_cast<CabbagePluginEditor*> (getCabbagePluginProcessor()->getActiveEditor());
-
-				return currentPluginEditor;
-			}
-
-		//the following code is causing issues on certain versions of Windows..
 		if (audioGraph != nullptr)
 		{
 			const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
