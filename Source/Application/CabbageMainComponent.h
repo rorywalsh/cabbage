@@ -27,11 +27,14 @@
 #include "../GUIEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"
 #include "CabbageToolbarFactory.h"
-#include "../Audio/Graph/AudioGraph.h"
+#include "../Audio/Filters/FilterGraph.h"
 #include "../Settings/CabbageSettings.h"
-#include "CabbagePluginComponent.h"
-#include "CabbageGraphComponent.h"
+//#include "CabbagePluginComponent.h"
+//#include "CabbageGraphComponent.h"
 #include "FileTab.h"
+#include "../Audio/Plugins/CabbagePluginProcessor.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
+
 
 class CabbageDocumentWindow;
 class FileTab;
@@ -60,8 +63,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void resizeAllWindows (int height);
-    void createEditorForAudioGraphNode (Point<int> position);
-    void createAudioGraph();
+    void createEditorForFilterGraphNode (Point<int> position);
+    void createFilterGraph();
     void createCodeEditorForFile (File file);
     void createNewProject();
     void createNewTextFile(String contents = "");
@@ -78,8 +81,8 @@ public:
     void saveDocument (bool saveAs = false, bool recompile = true);
     void runCsoundForNode (String file);
     void stopCsoundForNode (String file);
-    void stopAudioGraph();
-    void startAudioGraph();
+    void stopFilterGraph();
+    void startFilterGraph();
     void bringCodeEditorToFront (File file);
     void bringCodeEditorToFront (FileTab* tab);
     void updateEditorColourScheme();
@@ -131,7 +134,7 @@ public:
     String getAudioDeviceSettings();
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
-    AudioGraph* getAudioGraph() {                return audioGraph;  }
+    FilterGraph* getFilterGraph() {                return audioGraph;  }
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
@@ -162,7 +165,7 @@ private:
     CabbageSettings* cabbageSettings;
     int currentFileIndex = 0;
     int numberOfFiles = 0;
-    ScopedPointer<AudioGraph> audioGraph;
+    ScopedPointer<FilterGraph> audioGraph;
     CabbageGraphComponent* graphComponent;
     bool isGUIEnabled = false;
     String consoleMessages;
@@ -171,11 +174,11 @@ private:
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
 
-    class AudioGraphDocumentWindow : public DocumentWindow
+    class FilterGraphDocumentWindow : public DocumentWindow
     {
         Colour colour;
     public:
-        AudioGraphDocumentWindow (String caption, Colour backgroundColour)
+        FilterGraphDocumentWindow (String caption, Colour backgroundColour)
             : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
         {
             setSize (600, 600);
@@ -187,7 +190,7 @@ private:
         void paint (Graphics& g)  override { g.fillAll (colour); }
     };
 
-    ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
+    ScopedPointer<FilterGraphDocumentWindow> audioGraphWindow;
 
 
     //ScopedPointer<HtmlHelpDocumentWindow> helpWindow;
