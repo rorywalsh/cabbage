@@ -797,17 +797,19 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 	 }*/
 
 	//the following code is causing issues on certain versions of Windows..
-	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-       if (nodeId.uid != 99)
-           if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
-           {
-               AudioProcessor* const processor = f->getProcessor();
+	if (audioGraph != nullptr && fileTabs.size()>0)
+	{
+		const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+		if (nodeId.uid != 99)
+			if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId(nodeId))
+			{
+				AudioProcessor* const processor = f->getProcessor();
 				//auto plug = processor->getActiveEditor();
-				if(processor != nullptr)
-	               if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
-		               return editor;
-           }
-
+				if (processor != nullptr)
+					if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+						return editor;
+			}
+	}
 
     return nullptr;
 }
