@@ -56,6 +56,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 CabbageMainComponent::~CabbageMainComponent()
 {
     editorAndConsole.clear();
+	currentPluginEditor = nullptr;
 	graphComponent->nodes.clear();// = nullptr;
     audioGraph = nullptr;
     setLookAndFeel(nullptr);
@@ -786,31 +787,33 @@ String CabbageMainComponent::getAudioDeviceSettings()
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
-
-    // odd workaround for issues seen on certain versions of Windows..
-	 /*if (audioGraph != nullptr && fileTabs[currentFileIndex])
-	 {
-	 	if (getCabbagePluginProcessor() && getCabbagePluginProcessor()->getActiveEditor())
-	 		currentPluginEditor = dynamic_cast<CabbagePluginEditor*> (getCabbagePluginProcessor()->getActiveEditor());
-
-	 	return currentPluginEditor;
-	 }*/
-
-	//the following code is causing issues on certain versions of Windows..
-	if (audioGraph != nullptr && fileTabs.size()>0)
+	if (fileTabs.size() > 0)
 	{
-		const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-		if (nodeId.uid != 99)
-			if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId(nodeId))
+		// odd workaround for issues seen on certain versions of Windows..
+		if (cabbageSettings->getUserSettings()->getIntValue("UseModifiedAudioGraph"))
+			if (audioGraph != nullptr && fileTabs[currentFileIndex])
 			{
-				AudioProcessor* const processor = f->getProcessor();
-				//auto plug = processor->getActiveEditor();
-				if (processor != nullptr)
-					if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
-						return editor;
-			}
-	}
+				if (getCabbagePluginProcessor() && getCabbagePluginProcessor()->getActiveEditor())
+					currentPluginEditor = dynamic_cast<CabbagePluginEditor*> (getCabbagePluginProcessor()->getActiveEditor());
 
+				return currentPluginEditor;
+			}
+
+		//the following code is causing issues on certain versions of Windows..
+		if (audioGraph != nullptr)
+		{
+			const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+			if (nodeId.uid != 99)
+				if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId(nodeId))
+				{
+					AudioProcessor* const processor = f->getProcessor();
+					//auto plug = processor->getActiveEditor();
+					if (processor != nullptr)
+						if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+							return editor;
+				}
+		}
+	}
     return nullptr;
 }
 //==================================================================================
