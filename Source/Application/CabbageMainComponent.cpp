@@ -285,7 +285,12 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             {
                 if (auto f = audioGraph->graph.getNodeForId (nodeId))
                     if (auto* w = audioGraph->getOrCreateWindowFor (f, PluginWindow::Type::normal))
+                    {
+                        CabbagePluginProcessor* cabbagePlugin = getCabbagePluginProcessor();
+                        String pluginName = cabbagePlugin->getPluginName();
+                        w->setName (pluginName.length() > 0 ? pluginName : "Plugin has no name?");
                         w->toFront (true);
+                    }
             }
 
         }
