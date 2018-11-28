@@ -89,6 +89,7 @@ public:
 
     void closeButtonPressed() override
     {
+		node->getProcessor()->editorBeingDeleted(node->getProcessor()->getActiveEditor());
         node->properties.set (getOpenProp (type), false);
         activeWindowList.removeObject (this);
     }

@@ -27,7 +27,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "GraphEditorPanel.h"
 #include "../Filters/InternalFilters.h"
-#include "MainHostWindow.h"
+//#include "MainHostWindow.h"
 
 //==============================================================================
 #if JUCE_IOS
@@ -215,21 +215,21 @@ struct GraphEditorPanel::FilterComponent   : public Component,
 
         toFront (true);
 
-        if (isOnTouchDevice())
+        /*if (isOnTouchDevice())
         {
             startTimer (750);
         }
         else
-        {
+        {*/
             if (e.mods.isPopupMenu())
                 showPopupMenu();
-        }
+        //}
     }
 
     void mouseDrag (const MouseEvent& e) override
     {
-        if (isOnTouchDevice() && e.getDistanceFromDragStart() > 5)
-            stopTimer();
+        //if (isOnTouchDevice() && e.getDistanceFromDragStart() > 5)
+        //    stopTimer();
 
         if (! e.mods.isPopupMenu())
         {
@@ -250,11 +250,11 @@ struct GraphEditorPanel::FilterComponent   : public Component,
 
     void mouseUp (const MouseEvent& e) override
     {
-        if (isOnTouchDevice())
+        /*if (isOnTouchDevice())
         {
             stopTimer();
             callAfterDelay (250, []() { PopupMenu::dismissAllActiveMenus(); });
-        }
+        }*/
 
         if (e.mouseWasDraggedSinceMouseDown())
         {
@@ -475,7 +475,7 @@ struct GraphEditorPanel::FilterComponent   : public Component,
     void timerCallback() override
     {
         // this should only be called on touch devices
-        jassert (isOnTouchDevice());
+        //jassert (isOnTouchDevice());
 
         stopTimer();
         showPopupMenu();
@@ -719,11 +719,11 @@ void GraphEditorPanel::paint (Graphics& g)
 
 void GraphEditorPanel::mouseDown (const MouseEvent& e)
 {
-    if (isOnTouchDevice())
-    {
-        originalTouchPos = e.position.toInt();
-        startTimer (750);
-    }
+    //if (isOnTouchDevice())
+    //{
+    //    originalTouchPos = e.position.toInt();
+    //    startTimer (750);
+    //}
 
     if (e.mods.isPopupMenu())
         showPopupMenu (e.position.toInt());
@@ -731,22 +731,25 @@ void GraphEditorPanel::mouseDown (const MouseEvent& e)
 
 void GraphEditorPanel::mouseUp (const MouseEvent&)
 {
-    if (isOnTouchDevice())
+    /*if (isOnTouchDevice())
     {
         stopTimer();
         callAfterDelay (250, []() { PopupMenu::dismissAllActiveMenus(); });
-    }
+    }*/
 }
 
 void GraphEditorPanel::mouseDrag (const MouseEvent& e)
 {
-    if (isOnTouchDevice() && e.getDistanceFromDragStart() > 5)
-        stopTimer();
+    //if (isOnTouchDevice() && e.getDistanceFromDragStart() > 5)
+    //    stopTimer();
 }
 
 void GraphEditorPanel::createNewPlugin (const PluginDescription& desc, Point<int> position)
 {
-    graph.addPlugin (desc, position.toDouble() / Point<double> ((double) getWidth(), (double) getHeight()));
+	if (desc.pluginFormatName == "Cabbage")
+		graph.addCabbagePlugin(desc, position.toDouble() / Point<double>((double)getWidth(), (double)getHeight()));
+	else
+		graph.addPlugin (desc, position.toDouble() / Point<double> ((double) getWidth(), (double) getHeight()));
 }
 
 GraphEditorPanel::FilterComponent* GraphEditorPanel::getComponentForFilter (AudioProcessorGraph::NodeID nodeID) const
@@ -833,20 +836,21 @@ void GraphEditorPanel::updateComponents()
 
 void GraphEditorPanel::showPopupMenu (Point<int> mousePos)
 {
-    menu.reset (new PopupMenu);
+    //menu.reset (new PopupMenu);
 
-    if (auto* mainWindow = findParentComponentOfClass<MainHostWindow>())
-    {
-        mainWindow->addPluginsToMenu (*menu);
 
-        menu->showMenuAsync ({},
-                             ModalCallbackFunction::create ([this, mousePos] (int r)
-                                                            {
-                                                                if (auto* mainWindow = findParentComponentOfClass<MainHostWindow>())
-                                                                    if (auto* desc = mainWindow->getChosenType (r))
-                                                                        createNewPlugin (*desc, mousePos);
-                                                            }));
-    }
+    //if (auto* mainWindow = findParentComponentOfClass<MainHostWindow>())
+    //{
+    //    mainWindow->addPluginsToMenu (*menu);
+
+    //    menu->showMenuAsync ({},
+    //                         ModalCallbackFunction::create ([this, mousePos] (int r)
+    //                                                        {
+    //                                                            if (auto* mainWindow = findParentComponentOfClass<MainHostWindow>())
+    //                                                                if (auto* desc = mainWindow->getChosenType (r))
+    //                                                                    createNewPlugin (*desc, mousePos);
+    //                                                        }));
+    //}
 }
 
 void GraphEditorPanel::beginConnectorDrag (AudioProcessorGraph::NodeAndChannel source,
@@ -939,14 +943,14 @@ void GraphEditorPanel::endDraggingConnector (const MouseEvent& e)
     }
 }
 
-void GraphEditorPanel::timerCallback()
-{
-    // this should only be called on touch devices
-    jassert (isOnTouchDevice());
-
-    stopTimer();
-    showPopupMenu (originalTouchPos);
-}
+//void GraphEditorPanel::timerCallback()
+//{
+//    // this should only be called on touch devices
+//    //jassert (isOnTouchDevice());
+//
+//    stopTimer();
+//    showPopupMenu (originalTouchPos);
+//}
 
 //==============================================================================
 struct GraphDocumentComponent::TooltipBar   : public Component,
@@ -1157,7 +1161,7 @@ GraphDocumentComponent::GraphDocumentComponent (AudioPluginFormatManager& fm,
     : graph (new FilterGraph (fm)),
       deviceManager (dm),
       pluginList (kpl),
-      graphPlayer (getAppProperties().getUserSettings()->getBoolValue ("doublePrecisionProcessing", false))
+      graphPlayer (false)
 {
     init();
 
@@ -1181,7 +1185,7 @@ void GraphDocumentComponent::init()
 
     graphPanel->updateComponents();
 
-    if (isOnTouchDevice())
+   /* if (isOnTouchDevice())
     {
         if (isOnTouchDevice())
         {
@@ -1205,7 +1209,7 @@ void GraphDocumentComponent::init()
             addAndMakeVisible (pluginListSidePanel);
             addAndMakeVisible (mobileSettingsSidePanel);
         }
-    }
+    }*/
 }
 
 GraphDocumentComponent::~GraphDocumentComponent()
@@ -1222,8 +1226,8 @@ void GraphDocumentComponent::resized()
     const int keysHeight = 60;
     const int statusHeight = 20;
 
-    if (isOnTouchDevice())
-        titleBarComponent->setBounds (r.removeFromTop(titleBarHeight));
+    //if (isOnTouchDevice())
+    //    titleBarComponent->setBounds (r.removeFromTop(titleBarHeight));
 
     keyboardComp->setBounds (r.removeFromBottom (keysHeight));
     statusBar->setBounds (r.removeFromBottom (statusHeight));

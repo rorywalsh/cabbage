@@ -21,7 +21,8 @@
 #include "CabbageDocumentWindow.h"
 #include "../Utilities/CabbageNewProjectWindow.h"
 #include "../Utilities/CabbageSSHFileBrowser.h"
-#include "../Audio/Graph/PluginWindow.h"
+#include "../Audio/UI/PluginWindow.h"
+#include "../Audio/Filters/InternalFilters.h"
 
 //==============================================================================
 CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings)
@@ -39,8 +40,12 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     setSize (1200, 800);
 
     bgImage = createBackground();
-    audioGraphWindow = new AudioGraphDocumentWindow ("Cabbage Patcher", Colours::white);
-    audioGraphWindow->setVisible (false);
+	formatManager.addDefaultFormats();
+	
+	formatManager.addFormat(new InternalPluginFormat());
+
+    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colours::black);
+    filterGraphWindow->setVisible (false);
 
     addAndMakeVisible (toolbar);
     toolbar.addDefaultItems (factory);
@@ -49,15 +54,16 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     cycleTabsButton.setSize (50, 28);
     cycleTabsButton.addListener (this);
     setLookAndFeelColours();
-    createAudioGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
-	currentPluginEditor = nullptr;
+
+    createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
+	
+	reloadAudioDeviceState();
 }
 
 CabbageMainComponent::~CabbageMainComponent()
 {
     editorAndConsole.clear();
-	graphComponent->nodes.clear();// = nullptr;
-    audioGraph = nullptr;
+	//graphComponent->nodes.clear();// = nullptr;
     setLookAndFeel(nullptr);
 
     if (tempFile.existsAsFile())
@@ -251,9 +257,9 @@ void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
     else if (toolbarButton->getName() == "togglePlay")
     {
         if (toolbarButton->getToggleState())
-            this->startAudioGraph();
+            this->startFilterGraph();
         else
-            this->stopAudioGraph();
+            this->stopFilterGraph();
     }
 }
 
@@ -283,10 +289,10 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             const String filename = tabButton->getFilename();
             AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 
-            if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
+            if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId (nodeId))
             {
-                if (auto f = audioGraph->graph.getNodeForId (nodeId))
-                    if (auto* w = audioGraph->getOrCreateWindowFor (f, PluginWindow::Type::normal))
+                if (auto f = getFilterGraph()->graph.getNodeForId (nodeId))
+                    if (auto* w = getFilterGraph()->getOrCreateWindowFor (f, PluginWindow::Type::normal))
                         w->toFront (true);
             }
 
@@ -537,7 +543,7 @@ void CabbageMainComponent::timerCallback()
     {
         AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
         
-        if (audioGraph->graph.getNodeForId (nodeId) != nullptr && audioGraph->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+        if (getFilterGraph()->graph.getNodeForId (nodeId) != nullptr && getFilterGraph()->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
         {
             stopCsoundForNode ("");
             stopTimer();
@@ -546,10 +552,10 @@ void CabbageMainComponent::timerCallback()
         if (getCurrentCsdFile().existsAsFile())
         {
 
-            const String csoundOutputString = audioGraph->getCsoundOutput (nodeId);
+          /*  const String csoundOutputString = filterGraph->getCsoundOutput (nodeId);
 
             if (csoundOutputString.length() > 0)
-                getCurrentOutputConsole()->setText (csoundOutputString);
+                getCurrentOutputConsole()->setText (csoundOutputString);*/
 
 
 
@@ -687,42 +693,45 @@ void CabbageMainComponent::resizeAllWindows (int height)
 }
 
 //==============================================================================
-void CabbageMainComponent::createAudioGraph()
+void CabbageMainComponent::createFilterGraph()
 {
 
-	if (fileTabs[currentFileIndex])
-	{
-		AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-		const Point<int> lastPoint = audioGraph->getPositionOfCurrentlyOpenWindow(nodeId);
+	//if (fileTabs[currentFileIndex])
+	//{
+	//	AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+	//	const Point<int> lastPoint = filterGraph->getPositionOfCurrentlyOpenWindow(nodeId);
 
-		if (lastPoint.getX() > 0)
-		{
-			cabbageSettings->setProperty("windowX", lastPoint.getX());
-			cabbageSettings->setProperty("windowY", lastPoint.getY());
-		}
-	}
-        audioGraph = new AudioGraph (*this, cabbageSettings->getUserSettings(), false);
-        audioGraph->setXmlAudioSettings (cabbageSettings->getUserSettings()->getXmlValue ("audioSetup"));
-        graphComponent = new CabbageGraphComponent (*audioGraph, *this);
-        audioGraphWindow->setContentNonOwned (graphComponent, false);
+	//	if (lastPoint.getX() > 0)
+	//	{
+	//		cabbageSettings->setProperty("windowX", lastPoint.getX());
+	//		cabbageSettings->setProperty("windowY", lastPoint.getY());
+	//	}
+	//}
+    //    filterGraph = new FilterGraph (*this, false);
+    //    filterGraph->setXmlAudioSettings (cabbageSettings->getUserSettings()->getXmlValue ("audioSetup"));
+	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
+	graphComponent->setSize(800, 600);
+	filterGraphWindow->setContentOwned(graphComponent, true);
+	//     graphComponent = new GraphEditorPanel(*getFilterGraph());
+   //     filterGraphWindow->setContentNonOwned (graphComponent, false);
   
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
 {
-    audioGraphWindow->setUsingNativeTitleBar (true);
-    audioGraphWindow->setVisible (true);
-    audioGraphWindow->setTopLeftPosition (getWidth() - audioGraphWindow->getWidth(), 10);
-    audioGraphWindow->setAlwaysOnTop (true);
+	filterGraphWindow->setUsingNativeTitleBar (true);
+	filterGraphWindow->setVisible (true);
+	filterGraphWindow->setTopLeftPosition (getWidth() - filterGraphWindow->getWidth(), 10);
+	filterGraphWindow->setAlwaysOnTop (true);
 }
 //==============================================================================
-void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
+void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
 {
 
     String pluginName = "";
     AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
+    if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId (nodeId))
     {
         PluginWindow::Type type = f->getProcessor()->hasEditor() ? PluginWindow::Type::normal
                                               : PluginWindow::Type::generic;
@@ -730,7 +739,7 @@ void CabbageMainComponent::createEditorForAudioGraphNode (Point<int> position)
         if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
             pluginName = cabbagePlugin->getPluginName();
 
-        if (PluginWindow* const w = audioGraph->getOrCreateWindowFor(f, type))
+        if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f, type))
         {
             if (GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
                 w->setVisible (false);
@@ -778,21 +787,21 @@ CabbageOutputConsole* CabbageMainComponent::getCurrentOutputConsole()
 //==================================================================================
 String CabbageMainComponent::getAudioDeviceSettings()
 {
-    if (audioGraph != nullptr && audioGraph->getDeviceManagerSettings().isNotEmpty())
-        return audioGraph->getDeviceManagerSettings();
-    else
-        return String();
+    //if (filterGraph != nullptr && filterGraph->getDeviceManagerSettings().isNotEmpty())
+    //    return filterGraph->getDeviceManagerSettings();
+    //else
+       return String();
 }
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
 	if (fileTabs.size() > 0)
 	{
-		if (audioGraph != nullptr)
+		if (getFilterGraph() != nullptr)
 		{
 			const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 			if (nodeId.uid != 99)
-				if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId(nodeId))
+				if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
 				{
 					AudioProcessor* const processor = f->getProcessor();
 					//auto plug = processor->getActiveEditor();
@@ -810,7 +819,7 @@ CabbagePluginProcessor* CabbageMainComponent::getCabbagePluginProcessor()
 
     const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 
-    if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
+    if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId (nodeId))
     {
         if (CabbagePluginProcessor* const processor = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
             return processor;
@@ -826,50 +835,57 @@ int CabbageMainComponent::getStatusbarYPos()
 //=======================================================================================
 void CabbageMainComponent::setEditMode (bool enable)
 {
-    const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-	//audioGraph->closeAnyOpenPluginWindows();
-	//stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
-	//runCsoundForNode(fileTabs[currentFileIndex]->getFilename());
+ //   const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+	////filterGraph->closeAnyOpenPluginWindows();
+	////stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
+	////runCsoundForNode(fileTabs[currentFileIndex]->getFilename());
 
-    if ( nodeId.uid == -99)
-        return;
+ //   if ( nodeId.uid == -99)
+ //       return;
 
-    const bool isCabbageFile = CabbageUtilities::hasCabbageTags (getCurrentCsdFile());
+ //   const bool isCabbageFile = CabbageUtilities::hasCabbageTags (getCurrentCsdFile());
 
-    if (isCabbageFile == true)
-    {
-        if (!getCabbagePluginEditor())
-        {
-            audioGraph->addPlugin (getCurrentCsdFile(), nodeId);
-            const Point<int> pos (audioGraph->getPositionOfCurrentlyOpenWindow (nodeId));
-            createEditorForAudioGraphNode (pos);
-        }
+ //   if (isCabbageFile == true)
+ //   {
+ //       if (!getCabbagePluginEditor())
+ //       {
+	//		const Point<double> pos(500, 500);
+	//		//const PluginDescription getPluginDescriptor(String type, String name, AudioProcessorGraph::NodeID nodeId, String inputFile)
+	//		filterGraph->addPlugin (getPluginDescriptor("Cabbage", "Test", nodeId, getCurrentCsdFile().getFullPathName()), Point<double>(500, 500));
+ //           //const Point<int> pos (filterGraph->getPositionOfCurrentlyOpenWindow (nodeId));
+ //           //createEditorForFilterGraphNode (const Point<int>(500, 500));
+ //       }
 
-        getCabbagePluginEditor()->addChangeListener (this);
-        getCabbagePluginEditor()->addActionListener (this);
+ //       getCabbagePluginEditor()->addChangeListener (this);
+ //       getCabbagePluginEditor()->addActionListener (this);
 
-        if (enable == true)
-        {
-            audioGraph->getNodeForId (nodeId)->getProcessor()->suspendProcessing (true);
-            fileTabs[currentFileIndex]->getPlayButton().setToggleState (false, dontSendNotification);
-            //audioGraph->stopPlaying();
-            propertyPanel->setInterceptsMouseClicks (true, true);
-        }
-        else
-        {
-            //audioGraph->startPlaying();
-            propertyPanel->setInterceptsMouseClicks (false, false);
-        }
+ //       if (enable == true)
+ //       {
+ //           filterGraph->graph.getNodeForId (nodeId)->getProcessor()->suspendProcessing (true);
+ //           fileTabs[currentFileIndex]->getPlayButton().setToggleState (false, dontSendNotification);
+ //           //filterGraph->stopPlaying();
+ //           propertyPanel->setInterceptsMouseClicks (true, true);
+ //       }
+ //       else
+ //       {
+ //           //filterGraph->startPlaying();
+ //           propertyPanel->setInterceptsMouseClicks (false, false);
+ //       }
 
-        getCabbagePluginEditor()->enableEditMode (enable);
-        isGUIEnabled = enable;
-    }
+ //       getCabbagePluginEditor()->enableEditMode (enable);
+ //       isGUIEnabled = enable;
+ //   }
 }
 //=======================================================================================
 void CabbageMainComponent::showSettingsDialog()
 {
     DialogWindow::LaunchOptions o;
-    o.content.setOwned (new CabbageSettingsWindow (*cabbageSettings, audioGraph->getAudioDeviceSelector()));
+
+    o.content.setOwned (new CabbageSettingsWindow (*cabbageSettings, new AudioDeviceSelectorComponent(deviceManager,
+		0, 256,
+		0, 256,
+		true, true,
+		true, false)));
     o.content->setSize (500, 450);
     o.dialogTitle = TRANS ("Cabbage Settings");
     o.dialogBackgroundColour = Colour (0xfff0f0f0);
@@ -878,19 +894,44 @@ void CabbageMainComponent::showSettingsDialog()
     o.resizable = false;
     o.launchAsync();
 }
+
+String CabbageMainComponent::getDeviceManagerSettings()
+{
+	if (deviceManager.getCurrentAudioDevice())
+	{
+		ScopedPointer<XmlElement> xml(deviceManager.createStateXml());
+
+		if (xml == nullptr)
+			return String::empty;
+		else
+			return xml->createDocument("");
+	}
+	else return String::empty;
+}
+
+void CabbageMainComponent::reloadAudioDeviceState()
+{
+	ScopedPointer<XmlElement> savedState;
+
+	if (cabbageSettings != nullptr)
+		savedState = cabbageSettings->getUserSettings()->getXmlValue("audioSetup");
+
+	deviceManager.initialise(256,
+		256,
+		savedState,
+		true);
+}
 //==============================================================================
 void CabbageMainComponent::createNewProject()
 {
     DialogWindow::LaunchOptions o;
     o.content.setOwned (new CabbageProjectWindow (this));
     o.content->setSize (650, 350);
-
     o.dialogTitle = TRANS ("Select new project type");
     o.dialogBackgroundColour = Colour (0xfff0f0f0);
     o.escapeKeyTriggersCloseButton = true;
     o.useNativeTitleBar = true;
     o.resizable = false;
-
     o.launchAsync();
 }
 
@@ -1001,7 +1042,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 
 
 
-    audioGraph->loadDocument (fileToOpen);
+	getFilterGraph()->loadDocument (fileToOpen);
 }
 //==================================================================================
 File CabbageMainComponent::getCurrentCsdFile ()
@@ -1019,7 +1060,7 @@ void CabbageMainComponent::setCurrentCsdFile (File file)
 //==================================================================================
 void CabbageMainComponent::saveGraph (bool saveAs)
 {
-    audioGraph->saveGraph (saveAs);
+    //filterGraph->saveDocument (saveAs);
 }
 //==================================================================================
 const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles)
@@ -1394,9 +1435,6 @@ void CabbageMainComponent::runCsoundForNode (String file)
     {
         if (File (file).existsAsFile())
         {
-            //PluginWindow::closeAllCurrentlyOpenWindows();
-            //audioGraph = nullptr;
-            //createAudioGraph(); //in future versions we can simply edit the node in question and reconnect within the graph
             AudioProcessorGraph::NodeID node(fileTabs[currentFileIndex]->uniqueFileId);
             
             if (node.uid == -99)
@@ -1406,9 +1444,9 @@ void CabbageMainComponent::runCsoundForNode (String file)
                 fileTabs[currentFileIndex]->uniqueFileId = node.uid;
             }
 
-            Point<int> pos (audioGraph->getPositionOfCurrentlyOpenWindow (node));
-			audioGraph->closeAnyOpenPluginWindows();
-            //audioGraph->graph.removeNode(node);
+			
+
+			Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(node);
 
             if (pos.getX() == -1000 && pos.getY() == -1000)
             {
@@ -1418,10 +1456,16 @@ void CabbageMainComponent::runCsoundForNode (String file)
             }
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
-            const bool pluginAdded = audioGraph->addPlugin (getCurrentCsdFile(), node);
-            createEditorForAudioGraphNode (pos);
-            startTimer (100);
-            if(pluginAdded==false)
+            
+			graphComponent->createNewPlugin(InternalCabbagePluginFormat::getPluginDescriptor("Test", node, getCurrentCsdFile().getFullPathName()), { 500, 500 });
+
+
+			//filterGraph->addPlugin (InternalCabbagePluginFormat::getPluginDescriptor("Test", node, getCurrentCsdFile().getFullPathName()), Point<double>(500, 500));
+            //createEditorForFilterGraphNode (pos);
+			//getFilterGraph()->getNodeForName("Hello");
+			//filterGraph->getOrCreateWindowForCabbagePlugin(filterGraph->getNodeForId(node), PluginWindow::Type::normal);
+            //startTimer (100);
+            /*if(pluginAdded==false)
             {
                 fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
                 fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
@@ -1430,9 +1474,9 @@ void CabbageMainComponent::runCsoundForNode (String file)
             {
                 fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "on");
                 fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
-            }
-            factory.togglePlay (true);
-            graphComponent->updateComponents();
+            }*/
+            //factory.togglePlay (true);
+            //graphComponent->updateComponents();
         }
         else
             CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel);
@@ -1441,30 +1485,30 @@ void CabbageMainComponent::runCsoundForNode (String file)
 
 void CabbageMainComponent::stopCsoundForNode (String file)
 {
-    if (fileTabs[currentFileIndex] && File (file).existsAsFile())
-    {
-        AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-            if (audioGraph->getNodeForId(nodeId) != nullptr)
-                audioGraph->getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
+    //if (fileTabs[currentFileIndex] && File (file).existsAsFile())
+    //{
+    //    AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+    //        if (filterGraph->graph.getNodeForId(nodeId) != nullptr)
+    //            filterGraph->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
 
-            fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
-            fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
-        }
+    //        fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+    //        fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+    //    }
 }
 //==================================================================================
-void CabbageMainComponent::startAudioGraph()
+void CabbageMainComponent::startFilterGraph()
 {
-    factory.togglePlay (true);
-    audioGraph->startPlaying();
+    //factory.togglePlay (true);
+    //filterGraph->startPlaying();
 }
 //==================================================================================
-void CabbageMainComponent::stopAudioGraph()
+void CabbageMainComponent::stopFilterGraph()
 {
-    stopTimer();
-    factory.togglePlay (false);
+    //stopTimer();
+    //factory.togglePlay (false);
 
-    if (audioGraph)
-        audioGraph->stopPlaying();
+    //if (filterGraph)
+    //    filterGraph->
 
 }
 //==============================================================================

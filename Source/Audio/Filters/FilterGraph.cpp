@@ -25,11 +25,11 @@
 */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "../UI/MainHostWindow.h"
+//#include "../UI/MainHostWindow.h"
 #include "FilterGraph.h"
 #include "InternalFilters.h"
 #include "../UI/GraphEditorPanel.h"
-
+#include "../Plugins/CabbagePluginProcessor.h"
 
 //==============================================================================
 FilterGraph::FilterGraph (AudioPluginFormatManager& fm)
@@ -39,6 +39,7 @@ FilterGraph::FilterGraph (AudioPluginFormatManager& fm)
                          "Save a filter graph"),
       formatManager (fm)
 {
+
     newDocument();
     graph.addListener (this);
 }
@@ -90,6 +91,8 @@ void FilterGraph::addPlugin (const PluginDescription& desc, Point<double> p)
         FilterGraph& owner;
         Point<double> position;
     };
+
+
 
     formatManager.createPluginInstanceAsync (desc,
                                              graph.getSampleRate(),
@@ -164,7 +167,7 @@ PluginWindow* FilterGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node
 
             if (description.pluginFormatName == "Internal")
             {
-                getCommandManager().invokeDirectly (CommandIDs::showAudioSettings, false);
+               // getCommandManager().invokeDirectly (CommandIDs::showAudioSettings, false);
                 return nullptr;
             }
         }
@@ -215,6 +218,7 @@ void FilterGraph::newDocument()
 
     MessageManager::callAsync ([this] () {
         setChangedFlag (false);
+        setChangedFlag (false);
         graph.addChangeListener (this);
     } );
 }
@@ -250,23 +254,24 @@ Result FilterGraph::saveDocument (const File& file)
 
 File FilterGraph::getLastDocumentOpened()
 {
-    RecentlyOpenedFilesList recentFiles;
-    recentFiles.restoreFromString (getAppProperties().getUserSettings()
-                                        ->getValue ("recentFilterGraphFiles"));
+    //RecentlyOpenedFilesList recentFiles;
+    //recentFiles.restoreFromString (getAppProperties().getUserSettings()
+    //                                    ->getValue ("recentFilterGraphFiles"));
 
-    return recentFiles.getFile (0);
+    //return recentFiles.getFile (0);
+	return File();
 }
 
 void FilterGraph::setLastDocumentOpened (const File& file)
 {
-    RecentlyOpenedFilesList recentFiles;
-    recentFiles.restoreFromString (getAppProperties().getUserSettings()
-                                        ->getValue ("recentFilterGraphFiles"));
+    //RecentlyOpenedFilesList recentFiles;
+    //recentFiles.restoreFromString (getAppProperties().getUserSettings()
+    //                                    ->getValue ("recentFilterGraphFiles"));
 
-    recentFiles.addFile (file);
+    //recentFiles.addFile (file);
 
-    getAppProperties().getUserSettings()
-        ->setValue ("recentFilterGraphFiles", recentFiles.toString());
+    //getAppProperties().getUserSettings()
+    //    ->setValue ("recentFilterGraphFiles", recentFiles.toString());
 }
 
 //==============================================================================

@@ -28,12 +28,15 @@
 #include "../CabbageIds.h"
 #include "CabbageToolbarFactory.h"
 #include "../Audio/Filters/FilterGraph.h"
+#include "../Audio/UI/GraphEditorPanel.h"
 #include "../Settings/CabbageSettings.h"
 //#include "CabbagePluginComponent.h"
 //#include "CabbageGraphComponent.h"
 #include "FileTab.h"
 #include "../Audio/Plugins/CabbagePluginProcessor.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
+#include "../Audio/Plugins/GenericCabbagePluginProcessor.h"
+#include "../Audio/Plugins/CabbageInternalPluginFormat.h"
 
 
 class CabbageDocumentWindow;
@@ -125,6 +128,16 @@ public:
     int findNext (bool forward);
     void replaceText (bool replaceAll);
 
+	//==============================================================================
+	AudioDeviceManager deviceManager;
+	AudioPluginFormatManager formatManager;
+	OwnedArray<PluginDescription> internalTypes;
+	KnownPluginList knownPluginList;
+	KnownPluginList::SortMethod pluginSortMethod;
+	String getDeviceManagerSettings();
+	void reloadAudioDeviceState();
+
+
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -134,7 +147,7 @@ public:
     String getAudioDeviceSettings();
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
-    FilterGraph* getFilterGraph() {                return audioGraph;  }
+    FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
@@ -146,6 +159,7 @@ public:
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
 	CabbagePluginEditor* currentPluginEditor;
+
 
 private:
     int getTabFileIndex (int32 nodeId);
@@ -165,8 +179,7 @@ private:
     CabbageSettings* cabbageSettings;
     int currentFileIndex = 0;
     int numberOfFiles = 0;
-    ScopedPointer<FilterGraph> audioGraph;
-    CabbageGraphComponent* graphComponent;
+    //ScopedPointer<FilterGraph> filterGraph;
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;
@@ -190,7 +203,8 @@ private:
         void paint (Graphics& g)  override { g.fillAll (colour); }
     };
 
-    ScopedPointer<FilterGraphDocumentWindow> audioGraphWindow;
+	ScopedPointer<GraphDocumentComponent> graphComponent;
+    ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;
 
 
     //ScopedPointer<HtmlHelpDocumentWindow> helpWindow;

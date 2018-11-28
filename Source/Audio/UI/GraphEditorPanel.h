@@ -35,8 +35,7 @@ class MainHostWindow;
     A panel that displays and edits a FilterGraph.
 */
 class GraphEditorPanel   : public Component,
-                           public ChangeListener,
-                           private Timer
+                           public ChangeListener
 {
 public:
     GraphEditorPanel (FilterGraph& graph);
@@ -86,7 +85,7 @@ private:
     //==============================================================================
     Point<int> originalTouchPos;
 
-    void timerCallback() override;
+    //void timerCallback() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphEditorPanel)
 };

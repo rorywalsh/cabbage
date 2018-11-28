@@ -27,7 +27,9 @@
 #pragma once
 
 #include "../UI/PluginWindow.h"
-
+#include "../../Utilities/CabbageUtilities.h"
+#include "../Plugins/CabbagePluginProcessor.h"
+#include "../Plugins/GenericCabbagePluginProcessor.h"
 
 //==============================================================================
 /**
@@ -37,6 +39,7 @@ class FilterGraph   : public FileBasedDocument,
                       public AudioProcessorListener,
                       private ChangeListener
 {
+
 public:
     //==============================================================================
     FilterGraph (AudioPluginFormatManager&);
@@ -47,6 +50,90 @@ public:
 
     void addPlugin (const PluginDescription&, Point<double>);
 
+
+	//================================  FILTERGRAPH MODS  =================================
+	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
+	{
+		AudioProcessor* processor;
+		bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(desc.fileOrIdentifier));
+		const int numChannels = CabbageUtilities::getHeaderInfo(desc.fileOrIdentifier, "nchnls");
+
+		if (isCabbageFile)
+			processor = new CabbagePluginProcessor(File(desc.fileOrIdentifier), numChannels, numChannels);
+		else
+			processor = new GenericCabbagePluginProcessor(File(desc.fileOrIdentifier), numChannels, numChannels);
+
+		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
+		jassert(processor != nullptr);
+		processor->disableNonMainBuses();
+		processor->setRateAndBufferSizeDetails(44100, 512);
+		AudioProcessorGraph::NodeID nodeId(desc.uid);
+		if (auto node = graph.addNode(processor, nodeId))
+		{
+			node->properties.set("x", pos.x);
+			node->properties.set("y", pos.y);
+			changed();
+		}
+	}
+
+	Point<int> getPositionOfCurrentlyOpenWindow(AudioProcessorGraph::NodeID  nodeId)
+	{
+		for (auto* w : activePluginWindows)
+			CabbageUtilities::debug("Hell");
+
+		return Point<int>(-1000, -1000);
+	}
+
+	PluginWindow* getOrCreateWindowForCabbagePlugin(AudioProcessorGraph::Node* node, PluginWindow::Type type)
+	{
+		jassert(node != nullptr);
+
+#if JUCE_IOS || JUCE_ANDROID
+		closeAnyOpenPluginWindows();
+#else
+		for (auto* w : activePluginWindows)
+			if (w->node.get() == node && w->type == type)
+				return w;
+#endif
+
+		if (auto* processor = node->getProcessor())
+		{
+			if (auto* plugin = dynamic_cast<AudioPluginInstance*> (processor))
+			{
+				auto description = plugin->getPluginDescription();
+
+				if (description.pluginFormatName == "Internal")
+				{
+					// getCommandManager().invokeDirectly (CommandIDs::showAudioSettings, false);
+					return nullptr;
+				}
+			}
+
+#if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
+			if (!node->properties["DPIAware"]
+				&& !node->getProcessor()->getName().contains("Kontakt")) // Kontakt doesn't behave correctly in DPI unaware mode...
+			{
+				ScopedDPIAwarenessDisabler disableDPIAwareness;
+				return activePluginWindows.add(new PluginWindow(node, type, activePluginWindows));
+			}
+#endif
+
+			return activePluginWindows.add(new PluginWindow(node, type, activePluginWindows));
+		}
+
+		return nullptr;
+	}
+
+	AudioProcessorGraph::Node::Ptr FilterGraph::getNodeForId(AudioProcessorGraph::NodeID nodeId) const
+	{
+		if (auto* n = graph.getNodeForId(nodeId))
+			return n;
+
+		return nullptr;
+	}
+
+	//======================================================================================
+
     AudioProcessorGraph::Node::Ptr getNodeForName (const String& name) const;
 
     void setNodePosition (NodeID, Point<double>);
@@ -56,7 +143,6 @@ public:
     void clear();
 
     PluginWindow* getOrCreateWindowFor (AudioProcessorGraph::Node*, PluginWindow::Type);
-    void closeCurrentlyOpenWindowsFor (AudioProcessorGraph::NodeID);
     bool closeAnyOpenPluginWindows();
 
     //==============================================================================
@@ -83,10 +169,12 @@ public:
     //==============================================================================
     AudioProcessorGraph graph;
 
+
+
 private:
     //==============================================================================
     AudioPluginFormatManager& formatManager;
-    OwnedArray<PluginWindow> activePluginWindows;
+	OwnedArray<PluginWindow> activePluginWindows;
 
     NodeID lastUID;
     NodeID getNextUID() noexcept;

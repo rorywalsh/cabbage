@@ -107,6 +107,9 @@ public:
     StringArray cabbageScriptGeneratedCode;
     Array<PlantImportStruct> plantStructs;
 
+	//uid needed for Cabbage host
+	AudioProcessorGraph::NodeID nodeId;
+
 	File getCsdFile()
 	{
 		return csdFile;

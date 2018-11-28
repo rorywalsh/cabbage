@@ -114,7 +114,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             }
         }
 
-        content->openFile (lastOpenedFile, false);
+       // content->openFile (lastOpenedFile, false);
     }
 
     setApplicationCommandManagerToWatch (&commandManager);
@@ -176,7 +176,7 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
     if (getContentComponent()->getCurrentCodeEditor() && getContentComponent()->getStatusbarYPos() < (getHeight() - 50))
         cabbageSettings->setProperty ("IDE_StatusBarPos", getContentComponent()->getStatusbarYPos());
 
-    cabbageSettings->setProperty ("audioSetup", getContentComponent()->getAudioDeviceSettings());
+    cabbageSettings->setProperty ("audioSetup", getContentComponent()->getDeviceManagerSettings());
     cabbageSettings->closeFiles();
 
     setLookAndFeel (nullptr);
@@ -196,14 +196,14 @@ void CabbageDocumentWindow::maximiseButtonPressed()
 void CabbageDocumentWindow::closeButtonPressed()
 {
     CabbageIDELookAndFeel lookAndFeel;
-
-    if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
+	/*
+    if (getContentComponent()->getFilterGraph()->hasChangedSinceSaved())
     {
         const int result = CabbageUtilities::showYesNoMessage ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
-
+/
         if (result == 1)
         {
-            if (getContentComponent()->getAudioGraph()->saveGraph() == FileBasedDocument::SaveResult::userCancelledSave)
+            if (getContentComponent()->getFilterGraph()->saveDocument() == FileBasedDocument::SaveResult::userCancelledSave)
                 return;
         }
         else if (result == 2)
@@ -214,7 +214,7 @@ void CabbageDocumentWindow::closeButtonPressed()
         else
             return;
     }
-
+	*/
     JUCEApplicationBase::quit();
 
 }
@@ -888,7 +888,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::startAudioGraph:
-            getContentComponent()->startAudioGraph();
+            getContentComponent()->startFilterGraph();
             return true;
 
         case CommandIDs::exportAsVSTEffect:
@@ -1023,7 +1023,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
 
         case CommandIDs::stopAudioGraph:
-            getContentComponent()->stopAudioGraph();
+            getContentComponent()->stopFilterGraph();
             //getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
             break;
 

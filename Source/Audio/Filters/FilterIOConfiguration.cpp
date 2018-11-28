@@ -27,7 +27,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../UI/GraphEditorPanel.h"
 #include "InternalFilters.h"
-#include "../UI/MainHostWindow.h"
+//#include "../UI/MainHostWindow.h"
 #include "FilterIOConfiguration.h"
 
 
@@ -527,19 +527,19 @@ AudioProcessorGraph::NodeID FilterIOConfigurationWindow::getNodeID() const
 
 MainHostWindow* FilterIOConfigurationWindow::getMainWindow() const
 {
-    auto& desktop = Desktop::getInstance();
+    //auto& desktop = Desktop::getInstance();
 
-    for (int i = desktop.getNumComponents(); --i >= 0;)
-        if (auto* mainWindow = dynamic_cast<MainHostWindow*> (desktop.getComponent(i)))
-            return mainWindow;
+    //for (int i = desktop.getNumComponents(); --i >= 0;)
+    //    if (auto* mainWindow = dynamic_cast<MainHostWindow*> (desktop.getComponent(i)))
+    //        return mainWindow;
 
     return nullptr;
 }
 
 GraphDocumentComponent* FilterIOConfigurationWindow::getGraphEditor() const
 {
-    if (auto* mainWindow = getMainWindow())
-        return mainWindow->graphHolder.get();
+    //if (auto* mainWindow = getMainWindow())
+    //    return mainWindow->graphHolder.get();
 
     return nullptr;
 }
