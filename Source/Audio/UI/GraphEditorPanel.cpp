@@ -359,7 +359,10 @@ struct GraphEditorPanel::FilterComponent   : public Component,
 
         setSize (w, h);
 
-        setName (f->getProcessor()->getName());
+		if (auto* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
+			setName(cabbagePlugin->getPluginName());
+		else
+			setName (f->getProcessor()->getName());
 
         {
             auto p = graph.getNodePosition (pluginID);

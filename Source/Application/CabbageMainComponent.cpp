@@ -813,46 +813,42 @@ int CabbageMainComponent::getStatusbarYPos()
 //=======================================================================================
 void CabbageMainComponent::setEditMode (bool enable)
 {
- //   const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-	////filterGraph->closeAnyOpenPluginWindows();
-	////stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
-	////runCsoundForNode(fileTabs[currentFileIndex]->getFilename());
+	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+	//audioGraph->closeAnyOpenPluginWindows();
+	//stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
+	//runCsoundForNode(fileTabs[currentFileIndex]->getFilename());
 
- //   if ( nodeId.uid == -99)
- //       return;
+	if (nodeId.uid == -99)
+		return;
 
- //   const bool isCabbageFile = CabbageUtilities::hasCabbageTags (getCurrentCsdFile());
+	const bool isCabbageFile = CabbageUtilities::hasCabbageTags(getCurrentCsdFile());
 
- //   if (isCabbageFile == true)
- //   {
- //       if (!getCabbagePluginEditor())
- //       {
-	//		const Point<double> pos(500, 500);
-	//		//const PluginDescription getPluginDescriptor(String type, String name, AudioProcessorGraph::NodeID nodeId, String inputFile)
-	//		filterGraph->addPlugin (getPluginDescriptor("Cabbage", "Test", nodeId, getCurrentCsdFile().getFullPathName()), Point<double>(500, 500));
- //           //const Point<int> pos (filterGraph->getPositionOfCurrentlyOpenWindow (nodeId));
- //           //createEditorForFilterGraphNode (const Point<int>(500, 500));
- //       }
+	if (isCabbageFile == true)
+	{
+		if (!getCabbagePluginEditor())
+		{
+			graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
+			Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
+			createEditorForFilterGraphNode(pos);
+		}
 
- //       getCabbagePluginEditor()->addChangeListener (this);
- //       getCabbagePluginEditor()->addActionListener (this);
+		getCabbagePluginEditor()->addChangeListener(this);
+		getCabbagePluginEditor()->addActionListener(this);
 
- //       if (enable == true)
- //       {
- //           filterGraph->graph.getNodeForId (nodeId)->getProcessor()->suspendProcessing (true);
- //           fileTabs[currentFileIndex]->getPlayButton().setToggleState (false, dontSendNotification);
- //           //filterGraph->stopPlaying();
- //           propertyPanel->setInterceptsMouseClicks (true, true);
- //       }
- //       else
- //       {
- //           //filterGraph->startPlaying();
- //           propertyPanel->setInterceptsMouseClicks (false, false);
- //       }
+		if (enable == true)
+		{
+			getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
+			fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+			propertyPanel->setInterceptsMouseClicks(true, true);
+		}
+		else
+		{
+			propertyPanel->setInterceptsMouseClicks(false, false);
+		}
 
- //       getCabbagePluginEditor()->enableEditMode (enable);
- //       isGUIEnabled = enable;
- //   }
+		getCabbagePluginEditor()->enableEditMode(enable);
+		isGUIEnabled = enable;
+	}
 }
 //=======================================================================================
 void CabbageMainComponent::showSettingsDialog()
@@ -969,6 +965,7 @@ void CabbageMainComponent::launchSSHFileBrowser (String mode)
 //==============================================================================
 void CabbageMainComponent::openGraph (File fileToOpen)
 {
+	stopTimer();
     PluginDescription desc;
     Array<int32> uuids;
     Array<File> files;
@@ -1021,6 +1018,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 
 
 	getFilterGraph()->loadDocument (fileToOpen);
+
 }
 //==================================================================================
 File CabbageMainComponent::getCurrentCsdFile ()
@@ -1038,7 +1036,10 @@ void CabbageMainComponent::setCurrentCsdFile (File file)
 //==================================================================================
 void CabbageMainComponent::saveGraph (bool saveAs)
 {
-    //filterGraph->saveDocument (saveAs);
+    //getFilterGraph()->saveGraph(saveAs);
+	FileChooser fc("Save file as", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+	if(fc.browseForFileToSave(true))
+		getFilterGraph()->saveDocument(fc.getResult().withFileExtension(".cabbage"));
 }
 //==================================================================================
 const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles)
@@ -1166,8 +1167,7 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
 //==============================================================================
 void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 {
-
-
+	stopTimer();
     if (saveAs == true)
     {
 
@@ -1408,7 +1408,6 @@ int CabbageMainComponent::testFileForErrors (String file)
 }
 void CabbageMainComponent::runCsoundForNode (String file)
 {
-
     if (testFileForErrors (file) == 0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a separate process first.
     {
         if (File (file).existsAsFile())
@@ -1432,26 +1431,25 @@ void CabbageMainComponent::runCsoundForNode (String file)
             }
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
-            
-			graphComponent->createNewPlugin(InternalCabbagePluginFormat::getPluginDescriptor("Test", node, getCurrentCsdFile().getFullPathName()), { 500, 500 });
+			//this will create or update plugin...			
+			graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
 
 			createEditorForFilterGraphNode (pos);
 
-            //startTimer (100);
+            startTimer (100);
             if(getFilterGraph()->graph.getNodeForId(node))
             {
                 fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
-                fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+                fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
             }
             else
             {
                 fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "on");
-                fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+                fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
             }
             
 			factory.togglePlay (true);
             
-			//graphComponent->updateComponents();
         }
         else
             CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel);

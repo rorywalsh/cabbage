@@ -31,6 +31,8 @@
 #include "../Plugins/CabbagePluginProcessor.h"
 #include "../Plugins/GenericCabbagePluginProcessor.h"
 
+
+
 //==============================================================================
 /**
     A collection of filters and some connections between them.
@@ -61,7 +63,37 @@ public:
 		AudioOutput
 	};
 
-	//==============================================================================
+	static const String getInstrumentName(File csdFile)
+	{
+		StringArray csdLines;
+		csdLines.addLines(csdFile.loadFileAsString());
+
+		for (auto line : csdLines)
+		{
+			ValueTree temp("temp");
+			CabbageWidgetData::setWidgetState(temp, line, 0);
+
+			if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+				return CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::caption);
+		}
+	}
+
+	static const PluginDescription getPluginDescriptor(AudioProcessorGraph::NodeID nodeId, String inputFile)
+	{
+		PluginDescription descript;
+		descript.fileOrIdentifier = inputFile;
+		descript.descriptiveName = "Cabbage:" + inputFile;
+		descript.name = getInstrumentName(File(inputFile));
+		descript.numInputChannels = 2;
+		descript.numOutputChannels = 2;
+		descript.isInstrument = true;
+		descript.uid = nodeId.uid;
+		descript.manufacturerName = "CabbageAudio";
+		descript.pluginFormatName = "Cabbage";
+
+		return descript;
+	}
+
 	String getCsoundOutput(AudioProcessorGraph::NodeID nodeId)
 	{
 		if (graph.getNodeForId(nodeId) != nullptr &&
@@ -76,25 +108,6 @@ public:
 		return String::empty;
 	}
 
-	XmlElement* createConnectionsXml()
-	{
-		auto* xml = new XmlElement("FILTERGRAPH");
-
-		for (auto* node : graph.getNodes())
-			xml->addChildElement(createNodeXml(node));
-
-		for (auto& connection : graph.getConnections())
-		{
-			auto e = xml->createNewChildElement("CONNECTION");
-
-			e->setAttribute("srcFilter", (int)connection.source.nodeID.uid);
-			e->setAttribute("srcChannel", connection.source.channelIndex);
-			e->setAttribute("dstFilter", (int)connection.destination.nodeID.uid);
-			e->setAttribute("dstChannel", connection.destination.channelIndex);
-		}
-
-		return xml;
-	}
 
 	bool addConnection(AudioProcessorGraph::NodeID  sourceFilterUID, int sourceFilterChannel,
 		AudioProcessorGraph::NodeID  destFilterUID, int destFilterChannel)
@@ -110,42 +123,76 @@ public:
 		return result;
 	}
 
-	static XmlElement* createNodeXml(AudioProcessorGraph::Node* const node) noexcept
+	XmlElement* createConnectionsXml()
 	{
-		PluginDescription pd;
+		auto* xml = new XmlElement("FILTERGRAPH");
 
-		if (AudioPluginInstance* plugin = dynamic_cast <AudioPluginInstance*> (node->getProcessor()))
-			plugin->fillInPluginDescription(pd);
-		else if (dynamic_cast <CabbagePluginProcessor*> (node->getProcessor()) ||
-			dynamic_cast <CsoundPluginProcessor*> (node->getProcessor()))
+		for (auto* node : graph.getNodes())
+			xml->addChildElement(createXmlForNode(node));
+
+		for (auto& connection : graph.getConnections())
 		{
-			//grab description of native plugin for saving...
-			String xmlPluginDescriptor = node->properties.getWithDefault("pluginDesc", "").toString();
-			//cUtils::debug(xmlPluginDescriptor);
-			XmlElement* xmlElem;
-			xmlElem = XmlDocument::parse(xmlPluginDescriptor);
-			pd.loadFromXml(*xmlElem);
+			auto e = xml->createNewChildElement("CONNECTION");
+
+			e->setAttribute("srcFilter", (int)connection.source.nodeID.uid);
+			e->setAttribute("srcChannel", connection.source.channelIndex);
+			e->setAttribute("dstFilter", (int)connection.destination.nodeID.uid);
+			e->setAttribute("dstChannel", connection.destination.channelIndex);
 		}
 
-
-		XmlElement* e = new XmlElement("FILTER");
-		e->setAttribute("uid", (int)node->nodeID.uid);
-		e->setAttribute("x", node->properties["x"].toString());
-		e->setAttribute("y", node->properties["y"].toString());
-		e->setAttribute("uiLastX", node->properties["uiLastX"].toString());
-		e->setAttribute("uiLastY", node->properties["uiLastY"].toString());
-		e->addChildElement(pd.createXml());
-
-		XmlElement* state = new XmlElement("STATE");
-
-		MemoryBlock m;
-		node->getProcessor()->getStateInformation(m);
-		state->addTextElement(m.toBase64Encoding());
-		e->addChildElement(state);
-
-		return e;
+		return xml;
 	}
 
+	static XmlElement* createXmlForNode(AudioProcessorGraph::Node* const node) noexcept
+	{
+		if (dynamic_cast<AudioPluginInstance*> (node->getProcessor()) ||
+			dynamic_cast <CabbagePluginProcessor*> (node->getProcessor()) ||
+			dynamic_cast <CsoundPluginProcessor*> (node->getProcessor()))
+		{
+			auto e = new XmlElement("FILTER");
+			e->setAttribute("uid", (int)node->nodeID.uid);
+			e->setAttribute("x", node->properties["x"].toString());
+			e->setAttribute("y", node->properties["y"].toString());
+
+			for (int i = 0; i < (int)PluginWindow::Type::numTypes; ++i)
+			{
+				auto type = (PluginWindow::Type) i;
+
+				if (node->properties.contains(PluginWindow::getOpenProp(type)))
+				{
+					e->setAttribute(PluginWindow::getLastXProp(type), node->properties[PluginWindow::getLastXProp(type)].toString());
+					e->setAttribute(PluginWindow::getLastYProp(type), node->properties[PluginWindow::getLastYProp(type)].toString());
+					e->setAttribute(PluginWindow::getOpenProp(type), node->properties[PluginWindow::getOpenProp(type)].toString());
+				}
+			}
+
+			{
+				PluginDescription pd;
+
+				if (auto* plugin = dynamic_cast <AudioPluginInstance*> (node->getProcessor()))
+					plugin->fillInPluginDescription(pd);
+				else if (auto* plugin = dynamic_cast <CabbagePluginProcessor*> (node->getProcessor()))
+				{
+					//grab description of native plugin for saving...
+					pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
+				}
+				
+				e->addChildElement(pd.createXml());
+			}
+
+			{
+				MemoryBlock m;
+				node->getProcessor()->getStateInformation(m);
+				e->createNewChildElement("STATE")->addTextElement(m.toBase64Encoding());
+			}
+
+			return e;
+		}
+
+		jassertfalse;
+		return nullptr;
+	}
+	
 	void restoreConnectionsFromXml(const XmlElement& xml)
 	{
 		forEachXmlChildElementWithTagName(xml, e, "CONNECTION")
@@ -196,13 +243,15 @@ public:
 			{
 				node->properties.set("x", pos.x);
 				node->properties.set("y", pos.y);
-
+				node->properties.set("pluginFile", desc.fileOrIdentifier);
+				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
+				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				//createNodeFromXml(*nodeXml);
 				//setNodePosition(nodeId, Point<double>(pos.getX(), pos.getY()));
-				//restoreConnectionsFromXml(*xml);
+				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				//pluginFiles.add(inputFile.getFullPathName());
-				return;
+				changed();
 			}
 		}
 
@@ -216,8 +265,7 @@ public:
 				xmlElem = desc.createXml();
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
-				node->properties.set("pluginName", "Test");
-				node->properties.set("pluginDesc", xmlElem->createDocument(""));
+				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				changed();
 			}
 		}
@@ -228,10 +276,11 @@ public:
 		setDefaultConnections(nodeId);
 	}
 
+
 	Point<int> getPositionOfCurrentlyOpenWindow(AudioProcessorGraph::NodeID  nodeId)
 	{
 		for (auto* w : activePluginWindows)
-			CabbageUtilities::debug("Hell");
+			return w->getPosition();
 
 		return Point<int>(-1000, -1000);
 	}
