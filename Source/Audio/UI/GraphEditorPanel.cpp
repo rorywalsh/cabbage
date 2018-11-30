@@ -27,7 +27,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "GraphEditorPanel.h"
 #include "../Filters/InternalFilters.h"
-//#include "MainHostWindow.h"
+
+#include "../../Application/CabbageMainComponent.h"
 
 //==============================================================================
 #if JUCE_IOS
@@ -263,8 +264,15 @@ struct GraphEditorPanel::FilterComponent   : public Component,
         else if (e.getNumberOfClicks() == 2)
         {
             if (auto f = graph.graph.getNodeForId (pluginID))
-                if (auto* w = graph.getOrCreateWindowFor (f, PluginWindow::Type::normal))
-                    w->toFront (true);
+				if (auto* w = graph.getOrCreateWindowFor(f, PluginWindow::Type::normal))
+				{
+					//mod RW
+					panel.showEditorForNode(pluginID);
+					w->setAlwaysOnTop(true);
+					w->toFront(true);
+
+				}
+                    
         }
     }
 
@@ -405,7 +413,8 @@ struct GraphEditorPanel::FilterComponent   : public Component,
         menu.reset (new PopupMenu);
         menu->addItem (1, "Delete this filter");
         menu->addItem (2, "Disconnect all pins");
-        menu->addItem (3, "Toggle Bypass");
+        //mod RW
+		//menu->addItem (3, "Toggle Bypass");
 
         if (getProcessor()->hasEditor())
         {
@@ -423,14 +432,25 @@ struct GraphEditorPanel::FilterComponent   : public Component,
         }
 
         menu->addSeparator();
-        menu->addItem (20, "Configure Audio I/O");
-        menu->addItem (21, "Test state save/load");
+		//mod RW
+        //menu->addItem (20, "Configure Audio I/O");
+        // menu->addItem (21, "Test state save/load");
 
         menu->showMenuAsync ({}, ModalCallbackFunction::create
                              ([this] (int r) {
         switch (r)
         {
-            case 1:   graph.graph.removeNode (pluginID); break;
+            case 1:
+			{
+				//mod RW
+				if (auto* plug = graph.graph.getNodeForId(pluginID)->getProcessor())
+				{
+					plug->editorBeingDeleted(plug->getActiveEditor());
+					graph.graph.removeNode(pluginID);
+				}
+				break;
+			}
+				
             case 2:   graph.graph.disconnectNode (pluginID); break;
             case 3:
             {
@@ -727,7 +747,6 @@ void GraphEditorPanel::mouseDown (const MouseEvent& e)
     //    originalTouchPos = e.position.toInt();
     //    startTimer (750);
     //}
-
     if (e.mods.isPopupMenu())
         showPopupMenu (e.position.toInt());
 }
@@ -793,6 +812,30 @@ void GraphEditorPanel::resized()
     updateComponents();
 }
 
+//mod RW
+void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
+{
+	if (auto* mainComponent = findParentComponentOfClass<CabbageMainComponent>())
+	{
+		bool foundTabForNode = false;
+		for (int i = 0; i < mainComponent->getNumberOfFileTabs(); i++)
+		{
+			if (mainComponent->getFileTab(i)->uniqueFileId == pluginID.uid)
+			{
+				foundTabForNode = true;
+				mainComponent->bringCodeEditorToFront(mainComponent->getFileTabForNodeId(pluginID));
+			}
+		}
+
+		if (foundTabForNode == false)
+		{
+			AudioProcessorGraph::Node::Ptr n = graph.graph.getNodeForId(pluginID);
+			const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
+			mainComponent->openFile(pluginFilename);
+			mainComponent->getFileTab(mainComponent->getCurrentFileIndex())->uniqueFileId = pluginID.uid;
+		}
+	}
+}
 void GraphEditorPanel::changeListenerCallback (ChangeBroadcaster*)
 {
     updateComponents();
@@ -837,23 +880,49 @@ void GraphEditorPanel::updateComponents()
     }
 }
 
-void GraphEditorPanel::showPopupMenu (Point<int> mousePos)
+void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 {
-    //menu.reset (new PopupMenu);
+	//mod RW
+	if (auto* mainComponent = findParentComponentOfClass<CabbageMainComponent>())
+	{
+		Uuid uniqueID;
+		Array<File> exampleFiles;
+		Array<File> userFiles;
+		PopupMenu m, subMenu1, subMenu2;
+		//m.setLookAndFeel(&lookAndFeel);
+		const String examplesDir = mainComponent->getCabbageSettings()->getUserSettings()->getValue("CabbageExamplesDir", "");
+		CabbageUtilities::addExampleFilesToPopupMenu(subMenu1, exampleFiles, examplesDir, "*.csd", 3000);
 
+		const String userFilesDir = mainComponent->getCabbageSettings()->getUserSettings()->getValue("UserFilesDir", "");
+		CabbageUtilities::addFilesToPopupMenu(subMenu2, userFiles, userFilesDir, 10000);
 
-    //if (auto* mainWindow = findParentComponentOfClass<MainHostWindow>())
-    //{
-    //    mainWindow->addPluginsToMenu (*menu);
+		m.addItem(1, "Open file..");
+		m.addSubMenu("Examples", subMenu1);
+		m.addSubMenu("User files", subMenu2);
+		const int r = m.show();
 
-    //    menu->showMenuAsync ({},
-    //                         ModalCallbackFunction::create ([this, mousePos] (int r)
-    //                                                        {
-    //                                                            if (auto* mainWindow = findParentComponentOfClass<MainHostWindow>())
-    //                                                                if (auto* desc = mainWindow->getChosenType (r))
-    //                                                                    createNewPlugin (*desc, mousePos);
-    //                                                        }));
-    //}
+		if (r == 1)
+		{
+			File newlyOpenedFile = mainComponent->openFile();
+
+			if (newlyOpenedFile.existsAsFile())
+			{
+				mainComponent->runCsoundForNode(newlyOpenedFile.getFullPathName());
+			}
+		}
+
+		else if (r > 1 && r < 10000)
+		{
+			mainComponent->openFile(exampleFiles[r - 3000].getFullPathName());
+			mainComponent->runCsoundForNode(exampleFiles[r - 3000].getFullPathName());
+		}
+
+		else if (r >= 10000)
+		{
+			mainComponent->openFile(userFiles[r - 10000].getFullPathName());
+			mainComponent->runCsoundForNode(userFiles[r - 10000].getFullPathName());
+		}
+	}
 }
 
 void GraphEditorPanel::beginConnectorDrag (AudioProcessorGraph::NodeAndChannel source,

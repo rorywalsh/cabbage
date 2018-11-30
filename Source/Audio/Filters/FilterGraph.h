@@ -252,6 +252,10 @@ public:
 				xml = nullptr;
 				//pluginFiles.add(inputFile.getFullPathName());
 				changed();
+
+#if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
+				node->properties.set("DPIAware", true);
+#endif
 			}
 		}
 
@@ -267,6 +271,9 @@ public:
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				changed();
+#if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
+				node->properties.set("DPIAware", true);
+#endif
 			}
 		}
 

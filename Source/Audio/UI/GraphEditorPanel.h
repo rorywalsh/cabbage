@@ -28,8 +28,6 @@
 
 #include "../Filters/FilterGraph.h"
 
-class MainHostWindow;
-
 //==============================================================================
 /**
     A panel that displays and edits a FilterGraph.
@@ -67,6 +65,9 @@ public:
 
     //==============================================================================
     FilterGraph& graph;
+
+	//mod RW
+	void showEditorForNode(AudioProcessorGraph::NodeID pluginID);
 
 private:
     struct FilterComponent;

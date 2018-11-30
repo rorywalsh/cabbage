@@ -266,7 +266,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 {
     if (drawableButton->getName() == "playButton")
     {
-        if (drawableButton->getProperties().getWithDefault ("state", "") == "off")
+        if (drawableButton->getProperties().getWithDefault ("state", "") == "on")
             saveDocument();
         else
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
@@ -693,6 +693,7 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(800, 600);
 	filterGraphWindow->setContentOwned(graphComponent, true);
+	addChildComponent(filterGraphWindow);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
@@ -1466,7 +1467,7 @@ void CabbageMainComponent::stopCsoundForNode (String file)
 
             fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
             fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
-        }
+    }
 }
 //==================================================================================
 void CabbageMainComponent::startFilterGraph()
