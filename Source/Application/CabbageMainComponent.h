@@ -82,7 +82,7 @@ public:
     void closeDocument();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);
-    void runCsoundForNode (String file);
+    void runCsoundForNode (String file, Point<int> pos = Point<int>(-1000, -1000));
     void stopCsoundForNode (String file);
     void stopFilterGraph();
     void startFilterGraph();

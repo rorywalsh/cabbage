@@ -1407,7 +1407,7 @@ int CabbageMainComponent::testFileForErrors (String file)
     return 0;
 
 }
-void CabbageMainComponent::runCsoundForNode (String file)
+void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
 {
     if (testFileForErrors (file) == 0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a separate process first.
     {
@@ -1422,7 +1422,8 @@ void CabbageMainComponent::runCsoundForNode (String file)
                 fileTabs[currentFileIndex]->uniqueFileId = node.uid;
             }
 
-			Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(node);
+			if ( pos == Point<int>(-1000, -1000))
+				pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(node);
 
             if (pos.getX() == -1000 && pos.getY() == -1000)
             {
@@ -1433,7 +1434,7 @@ void CabbageMainComponent::runCsoundForNode (String file)
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
 			//this will create or update plugin...			
-			graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
+			graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pos);
 
 			createEditorForFilterGraphNode (pos);
 

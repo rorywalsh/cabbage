@@ -287,23 +287,44 @@ struct GraphEditorPanel::FilterComponent   : public Component,
 
     void paint (Graphics& g) override
     {
-        auto boxArea = getLocalBounds().reduced (4, pinSize);
-        bool isBypassed = false;
+		//mod RW
+		const int x = 4;
+		const int y = pinSize;
+		const int w = getWidth() - x * 2;
+		const int h = getHeight() - pinSize * 2;
+		
+		g.setColour(CabbageUtilities::getComponentSkin());
+		//g.setColour(Colour(220, 220, 220));
+		g.fillRoundedRectangle(x, y, w, h, 5);
 
-        if (auto* f = graph.graph.getNodeForId (pluginID))
-            isBypassed = f->isBypassed();
+		g.drawRoundedRectangle(x, y, w, h, 5, 1.f);
+		g.setColour(Colour(120, 120, 120));
+		g.setFont(CabbageUtilities::getComponentFont());
+		g.drawFittedText(getName(),
+			x + 4, y - 2, w - 8, h - 4,
+			Justification::centred, 2);
 
-        auto boxColour = findColour (TextEditor::backgroundColourId);
+		g.setOpacity(0.2);
+		g.setColour(Colours::green.withAlpha(.3f));
+		g.drawRoundedRectangle(x + 0.5, y + 0.5, w - 1, h - 1, 5, 1.0f);
 
-        if (isBypassed)
-            boxColour = boxColour.brighter();
+        //auto boxArea = getLocalBounds().reduced (4, pinSize);
+        //bool isBypassed = false;
 
-        g.setColour (boxColour);
-        g.fillRect (boxArea.toFloat());
+        //if (auto* f = graph.graph.getNodeForId (pluginID))
+        //    isBypassed = f->isBypassed();
 
-        g.setColour (findColour (TextEditor::textColourId));
-        g.setFont (font);
-        g.drawFittedText (getName(), boxArea, Justification::centred, 2);
+        //auto boxColour = findColour (TextEditor::backgroundColourId);
+
+        //if (isBypassed)
+        //    boxColour = boxColour.brighter();
+
+        //g.setColour (boxColour);
+        //g.fillRect (boxArea.toFloat());
+
+        //g.setColour (findColour (TextEditor::textColourId));
+        //g.setFont (font);
+        //g.drawFittedText (getName(), boxArea, Justification::centred, 2);
     }
 
     void resized() override
@@ -372,10 +393,10 @@ struct GraphEditorPanel::FilterComponent   : public Component,
 		else
 			setName (f->getProcessor()->getName());
 
-        {
-            auto p = graph.getNodePosition (pluginID);
-            setCentreRelative ((float) p.x, (float) p.y);
-        }
+		{
+			auto p = graph.getNodePosition(pluginID);
+			setCentreRelative((float)p.x, (float)p.y);
+		}
 
         if (numIns != numInputs || numOuts != numOutputs)
         {
@@ -737,7 +758,9 @@ GraphEditorPanel::~GraphEditorPanel()
 
 void GraphEditorPanel::paint (Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+	//mod RW
+	g.fillAll(Colour(uint8(20), uint8(20), uint8(20)));
+    //g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 }
 
 void GraphEditorPanel::mouseDown (const MouseEvent& e)
@@ -843,6 +866,7 @@ void GraphEditorPanel::changeListenerCallback (ChangeBroadcaster*)
 
 void GraphEditorPanel::updateComponents()
 {
+
     for (int i = nodes.size(); --i >= 0;)
         if (graph.graph.getNodeForId (nodes.getUnchecked(i)->pluginID) == nullptr)
             nodes.remove (i);
@@ -878,6 +902,7 @@ void GraphEditorPanel::updateComponents()
             comp->setOutput (c.destination);
         }
     }
+
 }
 
 void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
@@ -914,13 +939,13 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 		else if (r > 1 && r < 10000)
 		{
 			mainComponent->openFile(exampleFiles[r - 3000].getFullPathName());
-			mainComponent->runCsoundForNode(exampleFiles[r - 3000].getFullPathName());
+			mainComponent->runCsoundForNode(exampleFiles[r - 3000].getFullPathName(), Point<int>(mousePos));
 		}
 
 		else if (r >= 10000)
 		{
 			mainComponent->openFile(userFiles[r - 10000].getFullPathName());
-			mainComponent->runCsoundForNode(userFiles[r - 10000].getFullPathName());
+			mainComponent->runCsoundForNode(userFiles[r - 10000].getFullPathName(), Point<int>(mousePos));
 		}
 	}
 }

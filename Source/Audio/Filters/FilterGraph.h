@@ -241,13 +241,11 @@ public:
 
 			if (auto node = graph.addNode(processor, nodeId))
 			{
-				node->properties.set("x", pos.x);
-				node->properties.set("y", pos.y);
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				//createNodeFromXml(*nodeXml);
-				//setNodePosition(nodeId, Point<double>(pos.getX(), pos.getY()));
+				setNodePosition(nodeId, Point<double>(pos.getX(), pos.getY()));
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				//pluginFiles.add(inputFile.getFullPathName());
@@ -263,14 +261,14 @@ public:
 		{
 			if (auto node = graph.addNode(processor, nodeId))
 			{
-				node->properties.set("x", pos.x);
-				node->properties.set("y", pos.y);
+				setNodePosition(nodeId, pos);
+				changed();
 				ScopedPointer<XmlElement> xmlElem;
 				xmlElem = desc.createXml();
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
-				changed();
+				
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
 				node->properties.set("DPIAware", true);
 #endif
@@ -294,7 +292,6 @@ public:
 
 	void setDefaultConnections(AudioProcessorGraph::NodeID nodeId)
 	{
-		setNodePosition(nodeId, Point<double>(4 + (graph.getNumNodes() - 3)*.05, .5));
 		AudioProcessorGraph::NodeAndChannel inputL = { (AudioProcessorGraph::NodeID) InternalNodes::AudioInput, 0 };
 		AudioProcessorGraph::NodeAndChannel inputR = { (AudioProcessorGraph::NodeID) InternalNodes::AudioInput, 1 };
 
