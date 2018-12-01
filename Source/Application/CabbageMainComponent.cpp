@@ -694,6 +694,7 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent->setSize(800, 600);
 	filterGraphWindow->setContentOwned(graphComponent, true);
 	addChildComponent(filterGraphWindow);
+	filterGraphWindow->addToDesktop();
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
