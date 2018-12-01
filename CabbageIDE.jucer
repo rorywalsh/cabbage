@@ -18,27 +18,31 @@
               file="Source/Application/CabbageDocumentWindow.cpp"/>
         <FILE id="su6diz" name="CabbageDocumentWindow.h" compile="0" resource="0"
               file="Source/Application/CabbageDocumentWindow.h"/>
-        <FILE id="I9C3AQ" name="CabbageGraphComponent.cpp" compile="1" resource="0"
-              file="Source/Application/CabbageGraphComponent.cpp"/>
-        <FILE id="lnPlHy" name="CabbageGraphComponent.h" compile="0" resource="0"
-              file="Source/Application/CabbageGraphComponent.h"/>
-        <FILE id="csxrNo" name="CabbagePluginComponent.cpp" compile="1" resource="0"
-              file="Source/Application/CabbagePluginComponent.cpp"/>
-        <FILE id="aFQfex" name="CabbagePluginComponent.h" compile="0" resource="0"
-              file="Source/Application/CabbagePluginComponent.h"/>
         <FILE id="k9Y1Dw" name="CabbageToolbarFactory.cpp" compile="1" resource="0"
               file="Source/Application/CabbageToolbarFactory.cpp"/>
         <FILE id="rYkveY" name="CabbageToolbarFactory.h" compile="0" resource="0"
               file="Source/Application/CabbageToolbarFactory.h"/>
       </GROUP>
       <GROUP id="{9205CC0D-0001-83B4-0964-80FA3B5F3228}" name="Audio">
-        <GROUP id="{D7CC3B0A-213D-D74F-9D80-FBF21D5A9E9E}" name="Graph">
-          <FILE id="VYZPSC" name="AudioGraph.cpp" compile="1" resource="0" file="Source/Audio/Graph/AudioGraph.cpp"/>
-          <FILE id="GJuIsp" name="AudioGraph.h" compile="0" resource="0" file="Source/Audio/Graph/AudioGraph.h"/>
+        <GROUP id="{A5121536-CB02-FF7E-4CEF-DF2488C3FFF8}" name="Filters">
+          <FILE id="d1uIK4" name="FilterGraph.cpp" compile="1" resource="0" file="Source/Audio/Filters/FilterGraph.cpp"/>
+          <FILE id="d4LJW7" name="FilterGraph.h" compile="0" resource="0" file="Source/Audio/Filters/FilterGraph.h"/>
+          <FILE id="KjB7fL" name="FilterIOConfiguration.cpp" compile="1" resource="0"
+                file="Source/Audio/Filters/FilterIOConfiguration.cpp"/>
+          <FILE id="JkgE99" name="FilterIOConfiguration.h" compile="0" resource="0"
+                file="Source/Audio/Filters/FilterIOConfiguration.h"/>
+          <FILE id="bpniV8" name="InternalFilters.cpp" compile="1" resource="0"
+                file="Source/Audio/Filters/InternalFilters.cpp"/>
+          <FILE id="KDWNIB" name="InternalFilters.h" compile="0" resource="0"
+                file="Source/Audio/Filters/InternalFilters.h"/>
         </GROUP>
         <GROUP id="{7DD20367-6FC1-032B-4A6D-FD89F6DB0F84}" name="Plugins">
           <FILE id="eLMltr" name="CabbageCsoundBreakpointData.h" compile="0"
                 resource="0" file="Source/Audio/Plugins/CabbageCsoundBreakpointData.h"/>
+          <FILE id="mcXDFH" name="CabbageInternalPluginFormat.cpp" compile="1"
+                resource="0" file="Source/Audio/Plugins/CabbageInternalPluginFormat.cpp"/>
+          <FILE id="bge5qp" name="CabbageInternalPluginFormat.h" compile="0"
+                resource="0" file="Source/Audio/Plugins/CabbageInternalPluginFormat.h"/>
           <FILE id="vaNdtN" name="CabbagePluginEditor.cpp" compile="1" resource="0"
                 file="Source/Audio/Plugins/CabbagePluginEditor.cpp"/>
           <FILE id="cI7F8F" name="CabbagePluginEditor.h" compile="0" resource="0"
@@ -63,6 +67,13 @@
                 resource="0" file="Source/Audio/Plugins/GenericCabbagePluginProcessor.cpp"/>
           <FILE id="y1WFqb" name="GenericCabbagePluginProcessor.h" compile="0"
                 resource="0" file="Source/Audio/Plugins/GenericCabbagePluginProcessor.h"/>
+        </GROUP>
+        <GROUP id="{CE02EC4A-64B6-1DF4-34CB-3B008CF02D50}" name="UI">
+          <FILE id="NDRhTu" name="GraphEditorPanel.cpp" compile="1" resource="0"
+                file="Source/Audio/UI/GraphEditorPanel.cpp"/>
+          <FILE id="PuKFri" name="GraphEditorPanel.h" compile="0" resource="0"
+                file="Source/Audio/UI/GraphEditorPanel.h"/>
+          <FILE id="BYGIYC" name="PluginWindow.h" compile="0" resource="0" file="Source/Audio/UI/PluginWindow.h"/>
         </GROUP>
       </GROUP>
       <GROUP id="{32AD2C91-57CE-D3EF-F185-2CD9A89DD7E1}" name="BinaryData">

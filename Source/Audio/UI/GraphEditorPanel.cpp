@@ -914,7 +914,8 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 		Array<File> exampleFiles;
 		Array<File> userFiles;
 		PopupMenu m, subMenu1, subMenu2;
-		//m.setLookAndFeel(&lookAndFeel);
+		CabbageLookAndFeel2 lookAndFeel;
+		m.setLookAndFeel (&lookAndFeel);
 		const String examplesDir = mainComponent->getCabbageSettings()->getUserSettings()->getValue("CabbageExamplesDir", "");
 		CabbageUtilities::addExampleFilesToPopupMenu(subMenu1, exampleFiles, examplesDir, "*.csd", 3000);
 
@@ -947,6 +948,8 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 			mainComponent->openFile(userFiles[r - 10000].getFullPathName());
 			mainComponent->runCsoundForNode(userFiles[r - 10000].getFullPathName(), Point<int>(mousePos));
 		}
+
+		m.setLookAndFeel(nullptr);
 	}
 }
 
