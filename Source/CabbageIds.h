@@ -40,12 +40,11 @@ namespace CommandIDs
         showGraph               = 0x200044,
         saveGraph               = 0x200045,
         saveGraphAs             = 0x200046,
-
+		toggleProperties		= 0x200047,
         closeProject            = 0x200051,
         saveProject             = 0x200060,
         saveAll                 = 0x200080,
         runDiagnostics          = 0x200072,
-
         startAudioGraph         = 0x200076,
         exportAsVSTSynth        = 0x200077,
         exportAsVSTEffect       = 0x200074,
@@ -56,13 +55,11 @@ namespace CommandIDs
         clearConsole            = 0x20007a,
         exportAsAUMIDIFx         = 0x20017b,
         exportAsVCVRackModule   = 0x022017c,
-        
         closeAllDocuments           = 0x201000,
         exportAsVSTEffectEncrypted  = 0x201002,
         exportAsVSTSynthEncrypted   = 0x201003,
         exportAsAUEffectEncrypted   = 0x201004,
         exportAsAUSynthEncrypted    = 0x201005,
-
         showFindPanel           = 0x2010a0,
         findSelection           = 0x2010a1,
         findNext                = 0x2010a2,
@@ -78,7 +75,6 @@ namespace CommandIDs
         cabbageHelp             = 0x4100c2,
         csoundHelp              = 0x4100c3,
         contextHelp             = 0x4100c4,
-
         undo            = 0x512011,
         redo            = 0x512012,
         cut             = 0x512013,

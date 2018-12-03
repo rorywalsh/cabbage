@@ -388,6 +388,8 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::nextTab);
     menu.addCommandItem (&commandManager, CommandIDs::showGraph);
     menu.addCommandItem (&commandManager, CommandIDs::showConsole);
+	menu.addCommandItem(&commandManager, CommandIDs::toggleProperties);
+
     menu.addSeparator();
 }
 
@@ -489,6 +491,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::runDiagnostics,
                               CommandIDs::csoundHelp,
                               CommandIDs::cabbageHelp,
+							  CommandIDs::toggleProperties,
                               CommandIDs::contextHelp,
                               CommandIDs::showGenericWidgetWindow,
                               CommandIDs::batchConvertExamplesAU,
@@ -755,6 +758,12 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo (TRANS ("Show Csound output console"), TRANS ("Shows the Csound console window."), "View", 0);
             break;
 
+		case CommandIDs::toggleProperties:
+			result.setInfo(TRANS("Toggle Properties"), TRANS("Toggle property pnel"), "View", 0);
+			result.addDefaultKeypress('h', ModifierKeys::commandModifier);
+			result.setActive((shouldShowEditMenu ? true : false));
+			break;
+
         case CommandIDs::showFindPanel:
             result.setInfo (TRANS ("Find"), TRANS ("Searches for text in the current document."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('f', ModifierKeys::commandModifier, 0));
@@ -980,6 +989,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::showFindPanel:
             getContentComponent()->showFindPanel (false);
             return true;
+
+		case CommandIDs::toggleProperties:
+			getContentComponent()->togglePropertyPanel();
+			return true;
 
         case CommandIDs::showReplacePanel:
             getContentComponent()->showFindPanel (true);

@@ -150,6 +150,15 @@ public:
     FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
+	void togglePropertyPanel()
+	{
+		if (getCurrentCodeEditor())
+		{
+			propertyPanel->setVisible(!propertyPanel->isVisible());
+			resized();
+		}
+	}
+
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
@@ -158,7 +167,6 @@ public:
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
-	CabbagePluginEditor* currentPluginEditor;
 
 
 private:

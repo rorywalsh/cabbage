@@ -270,6 +270,7 @@ void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
+	this->setVisible(false);
 }
 
 void CabbagePropertiesPanel::textPropertyComponentChanged (TextPropertyComponent* comp)
