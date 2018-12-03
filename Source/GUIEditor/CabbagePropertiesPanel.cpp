@@ -89,12 +89,17 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
 // Property Panel for editing widgets
 //==============================================================================
 CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
-    : widgetData (widgetData)
+    : widgetData (widgetData), hideButton("X")
 {
     //addAndMakeVisible(tooltipWindow);
     setOpaque (true);
     setSize (300, 500);
+	hideButton.setColour(TextButton::ColourIds::buttonColourId, Colours::black);
+	hideButton.setColour(TextButton::ColourIds::textColourOffId, Colours::white);
+
     addAndMakeVisible (propertyPanel);
+	addAndMakeVisible(hideButton);
+	hideButton.addListener(this);
     propertyPanel.getLookAndFeel().setColour (TextEditor::ColourIds::highlightedTextColourId, Colours::black);
 }
 
@@ -106,6 +111,11 @@ CabbagePropertiesPanel::~CabbagePropertiesPanel()
     sectionStates.clear();
 }
 
+void CabbagePropertiesPanel::buttonClicked(Button *button)
+{
+	hide = true;
+	sendChangeMessage();
+}
 void CabbagePropertiesPanel::saveOpenessState()
 {
     const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::name);
@@ -168,6 +178,7 @@ void CabbagePropertiesPanel::paint (Graphics& g)
 
 void CabbagePropertiesPanel::resized()
 {
+	hideButton.setBounds(getWidth()-40, 5, 16, 16);
     propertyPanel.setBounds (getLocalBounds().reduced (4));
 }
 
