@@ -65,11 +65,12 @@
 
 #ifdef Cabbage_Plugin_Synth
 #define JucePlugin_IsSynth                1
-#define JucePlugin_AUMainType             kAudioUnitType_MusicDevice
+#define JucePlugin_AUMainType             'aumu'
 #else
 #define JucePlugin_IsSynth                0
-#define JucePlugin_AUMainType             kAudioUnitType_MusicEffect
+#define JucePlugin_AUMainType             'aumf'
 #endif
+
 
 
 #ifndef  JucePlugin_WantsMidiInput
