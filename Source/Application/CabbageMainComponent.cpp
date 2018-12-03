@@ -786,29 +786,22 @@ String CabbageMainComponent::getAudioDeviceSettings()
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
-
-    // odd workaround for issues seen on certain versions of Windows..
-	 /*if (audioGraph != nullptr && fileTabs[currentFileIndex])
-	 {
-	 	if (getCabbagePluginProcessor() && getCabbagePluginProcessor()->getActiveEditor())
-	 		currentPluginEditor = dynamic_cast<CabbagePluginEditor*> (getCabbagePluginProcessor()->getActiveEditor());
-
-	 	return currentPluginEditor;
-	 }*/
-
-	//the following code is causing issues on certain versions of Windows..
-	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-       if (nodeId.uid != 99)
-           if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId (nodeId))
-           {
-               AudioProcessor* const processor = f->getProcessor();
-				//auto plug = processor->getActiveEditor();
-				if(processor != nullptr)
-	               if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
-		               return editor;
-           }
-
-
+	if (fileTabs.size() > 0)
+	{
+		if (audioGraph != nullptr)
+		{
+			const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+			if (nodeId.uid != 99)
+				if (AudioProcessorGraph::Node::Ptr f = audioGraph->graph.getNodeForId(nodeId))
+				{
+					AudioProcessor* const processor = f->getProcessor();
+					//auto plug = processor->getActiveEditor();
+					if (processor != nullptr)
+						if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+							return editor;
+				}
+		}
+	}
     return nullptr;
 }
 //==================================================================================
