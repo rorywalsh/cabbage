@@ -29,6 +29,7 @@
 class CabbagePropertiesPanel :
     public Component,
     public ChangeBroadcaster,
+	public Button::Listener,
     public Value::Listener,
     public TextPropertyComponent::Listener,
     public ChangeListener,
@@ -48,6 +49,8 @@ public:
     void valueChanged (Value& value);
     void filenameComponentChanged (FilenameComponent* fileComponent);
     void saveOpenessState();
+
+	void buttonClicked(Button *);
     Array<PropertyComponent*> createPositionEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTextEditors (ValueTree valueTree);
     Array<PropertyComponent*> createNumberEditors (ValueTree valueTree);
@@ -63,7 +66,7 @@ public:
           sliderNumberBoxValue, alignValue, velocityValue, fileModeValue,
           fillTableWaveformValue, zoomValue, channelTypeValue;
     Colour backgroundColour, borderColour;
-
+	bool hide = false;
 
     void setBackgroundColour (Colour colour)
     {
@@ -80,6 +83,7 @@ private:
     TooltipWindow tooltipWindow;
     PropertyPanel propertyPanel;
     String previousWidgetName = "";
+	
 
     struct SectionState
     {
@@ -103,8 +107,8 @@ private:
     }
 
     ValueTree widgetData;
-
-
+	TextButton hideButton;
+	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePropertiesPanel)
 };
 
