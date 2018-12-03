@@ -213,7 +213,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         if (refresh != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles))
         {
             refresh = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles) == 1 ? 0 : 1;
-            addItemsToListbox (valueTree);
+            addItemsToListbox (valueTree, true);
         }
       
         listBox.repaint();
