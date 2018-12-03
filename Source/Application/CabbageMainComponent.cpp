@@ -394,12 +394,14 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
         }
     }
 
-    else if (dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
+    else if (CabbagePropertiesPanel* props = dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
     {
         if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
-
-            updateCodeInEditor (ed, true, true);
+			if (props->hide == true)
+				togglePropertyPanel();
+			else
+				updateCodeInEditor (ed, true, true);
         }
     }
 
