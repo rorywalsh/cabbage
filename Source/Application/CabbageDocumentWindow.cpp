@@ -114,7 +114,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
             }
         }
 
-        content->openFile (lastOpenedFile, false);
+       // content->openFile (lastOpenedFile, false);
     }
 
     setApplicationCommandManagerToWatch (&commandManager);
@@ -176,7 +176,7 @@ CabbageDocumentWindow::~CabbageDocumentWindow()
     if (getContentComponent()->getCurrentCodeEditor() && getContentComponent()->getStatusbarYPos() < (getHeight() - 50))
         cabbageSettings->setProperty ("IDE_StatusBarPos", getContentComponent()->getStatusbarYPos());
 
-    cabbageSettings->setProperty ("audioSetup", getContentComponent()->getAudioDeviceSettings());
+    cabbageSettings->setProperty ("audioSetup", getContentComponent()->getDeviceManagerSettings());
     cabbageSettings->closeFiles();
 
     setLookAndFeel (nullptr);
@@ -196,14 +196,14 @@ void CabbageDocumentWindow::maximiseButtonPressed()
 void CabbageDocumentWindow::closeButtonPressed()
 {
     CabbageIDELookAndFeel lookAndFeel;
-
-    if (getContentComponent()->getAudioGraph()->hasChangedSinceSaved())
+	/*
+    if (getContentComponent()->getFilterGraph()->hasChangedSinceSaved())
     {
         const int result = CabbageUtilities::showYesNoMessage ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
-
+/
         if (result == 1)
         {
-            if (getContentComponent()->getAudioGraph()->saveGraph() == FileBasedDocument::SaveResult::userCancelledSave)
+            if (getContentComponent()->getFilterGraph()->saveDocument() == FileBasedDocument::SaveResult::userCancelledSave)
                 return;
         }
         else if (result == 2)
@@ -214,7 +214,7 @@ void CabbageDocumentWindow::closeButtonPressed()
         else
             return;
     }
-
+	*/
     JUCEApplicationBase::quit();
 
 }
@@ -388,6 +388,8 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::nextTab);
     menu.addCommandItem (&commandManager, CommandIDs::showGraph);
     menu.addCommandItem (&commandManager, CommandIDs::showConsole);
+	menu.addCommandItem(&commandManager, CommandIDs::toggleProperties);
+
     menu.addSeparator();
 }
 
@@ -489,6 +491,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::runDiagnostics,
                               CommandIDs::csoundHelp,
                               CommandIDs::cabbageHelp,
+							  CommandIDs::toggleProperties,
                               CommandIDs::contextHelp,
                               CommandIDs::showGenericWidgetWindow,
                               CommandIDs::batchConvertExamplesAU,
@@ -747,13 +750,19 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::editMode:
             result.setInfo (String ("Edit Mode"), String ("Edit Mode"), CommandCategories::edit, 0);
             result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
-           // result.setTicked (getContentComponent()->getCabbagePluginEditor() == nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
+            result.setTicked (getContentComponent()->getCabbagePluginEditor() == nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
 
         case CommandIDs::showConsole:
             result.setInfo (TRANS ("Show Csound output console"), TRANS ("Shows the Csound console window."), "View", 0);
             break;
+
+		case CommandIDs::toggleProperties:
+			result.setInfo(TRANS("Toggle Properties"), TRANS("Toggle property pnel"), "View", 0);
+			result.addDefaultKeypress('h', ModifierKeys::commandModifier);
+			result.setActive((shouldShowEditMenu ? true : false));
+			break;
 
         case CommandIDs::showFindPanel:
             result.setInfo (TRANS ("Find"), TRANS ("Searches for text in the current document."), "Editing", 0);
@@ -867,7 +876,9 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 
         case CommandIDs::buildNow:
         case CommandIDs::saveDocument:
-            getContentComponent()->saveDocument();
+            
+			getContentComponent()->saveDocument();
+
             getContentComponent()->setEditMode (false);
             isGUIEnabled = false;
             break;
@@ -888,7 +899,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::startAudioGraph:
-            getContentComponent()->startAudioGraph();
+            getContentComponent()->startFilterGraph();
             return true;
 
         case CommandIDs::exportAsVSTEffect:
@@ -979,6 +990,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->showFindPanel (false);
             return true;
 
+		case CommandIDs::toggleProperties:
+			getContentComponent()->togglePropertyPanel();
+			return true;
+
         case CommandIDs::showReplacePanel:
             getContentComponent()->showFindPanel (true);
             return true;
@@ -1023,7 +1038,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
 
         case CommandIDs::stopAudioGraph:
-            getContentComponent()->stopAudioGraph();
+            getContentComponent()->stopFilterGraph();
             //getContentComponent()->getCurrentCodeEditor()->stopDebugMode();
             break;
 

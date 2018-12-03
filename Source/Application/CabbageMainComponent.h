@@ -27,11 +27,17 @@
 #include "../GUIEditor/CabbagePropertiesPanel.h"
 #include "../CabbageIds.h"
 #include "CabbageToolbarFactory.h"
-#include "../Audio/Graph/AudioGraph.h"
+#include "../Audio/Filters/FilterGraph.h"
+#include "../Audio/UI/GraphEditorPanel.h"
 #include "../Settings/CabbageSettings.h"
-#include "CabbagePluginComponent.h"
-#include "CabbageGraphComponent.h"
+//#include "CabbagePluginComponent.h"
+//#include "CabbageGraphComponent.h"
 #include "FileTab.h"
+#include "../Audio/Plugins/CabbagePluginProcessor.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
+#include "../Audio/Plugins/GenericCabbagePluginProcessor.h"
+#include "../Audio/Plugins/CabbageInternalPluginFormat.h"
+
 
 class CabbageDocumentWindow;
 class FileTab;
@@ -60,8 +66,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void resizeAllWindows (int height);
-    void createEditorForAudioGraphNode (Point<int> position);
-    void createAudioGraph();
+    void createEditorForFilterGraphNode (Point<int> position);
+    void createFilterGraph();
     void createCodeEditorForFile (File file);
     void createNewProject();
     void createNewTextFile(String contents = "");
@@ -76,10 +82,10 @@ public:
     void closeDocument();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);
-    void runCsoundForNode (String file);
+    void runCsoundForNode (String file, Point<int> pos = Point<int>(-1000, -1000));
     void stopCsoundForNode (String file);
-    void stopAudioGraph();
-    void startAudioGraph();
+    void stopFilterGraph();
+    void startFilterGraph();
     void bringCodeEditorToFront (File file);
     void bringCodeEditorToFront (FileTab* tab);
     void updateEditorColourScheme();
@@ -122,6 +128,16 @@ public:
     int findNext (bool forward);
     void replaceText (bool replaceAll);
 
+	//==============================================================================
+	AudioDeviceManager deviceManager;
+	AudioPluginFormatManager formatManager;
+	OwnedArray<PluginDescription> internalTypes;
+	KnownPluginList knownPluginList;
+	KnownPluginList::SortMethod pluginSortMethod;
+	String getDeviceManagerSettings();
+	void reloadAudioDeviceState();
+
+
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
     CabbagePluginProcessor* getCabbagePluginProcessor();
@@ -131,9 +147,18 @@ public:
     String getAudioDeviceSettings();
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
-    AudioGraph* getAudioGraph() {                return audioGraph;  }
+    FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
     //==============================================================================
     ScopedPointer<CabbagePropertiesPanel> propertyPanel;
+	void togglePropertyPanel()
+	{
+		if (getCurrentCodeEditor())
+		{
+			propertyPanel->setVisible(!propertyPanel->isVisible());
+			resized();
+		}
+	}
+
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
@@ -142,7 +167,7 @@ public:
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
-	CabbagePluginEditor* currentPluginEditor;
+
 
 private:
     int getTabFileIndex (int32 nodeId);
@@ -162,8 +187,7 @@ private:
     CabbageSettings* cabbageSettings;
     int currentFileIndex = 0;
     int numberOfFiles = 0;
-    ScopedPointer<AudioGraph> audioGraph;
-    CabbageGraphComponent* graphComponent;
+    //ScopedPointer<FilterGraph> filterGraph;
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;
@@ -171,11 +195,11 @@ private:
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
 
-    class AudioGraphDocumentWindow : public DocumentWindow
+    class FilterGraphDocumentWindow : public DocumentWindow
     {
         Colour colour;
     public:
-        AudioGraphDocumentWindow (String caption, Colour backgroundColour)
+        FilterGraphDocumentWindow (String caption, Colour backgroundColour)
             : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
         {
             setSize (600, 600);
@@ -187,7 +211,8 @@ private:
         void paint (Graphics& g)  override { g.fillAll (colour); }
     };
 
-    ScopedPointer<AudioGraphDocumentWindow> audioGraphWindow;
+	ScopedPointer<GraphDocumentComponent> graphComponent;
+    ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;
 
 
     //ScopedPointer<HtmlHelpDocumentWindow> helpWindow;

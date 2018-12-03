@@ -21,6 +21,7 @@
 #define __CabbUtilities_h__
 
 
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../BinaryData/CabbageBinaryData.h"
 
@@ -954,6 +955,7 @@ public:
         }
         return linesFromXmlFile.joinIntoString("\n");
     }
+
 
     //==========================================================================================
     static void addCustomPlantsToMenu (PopupMenu& m, Array<File>& plantFiles, String userDir)
