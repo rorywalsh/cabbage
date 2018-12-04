@@ -169,24 +169,24 @@ public:
 
         Path p, dashedP;
         p.addRoundedRectangle (0, 0, width, height, 2);
-        g.setColour (Colour (30, 30, 30));
+        g.setColour (Colour (0x1a1a1a00)/*Colour (30, 30, 30)*/);
         p.closeSubPath();
         g.fillPath (p);
         p.clear();
 
-        g.setColour (Colours::cornflowerblue);
+        g.setColour (Colours::lightgrey/*Colours::cornflowerblue*/);
         p.addEllipse (4, 4, width - 8, height - 8);
         const float dashLengths[] = { 3.0f, 3.0f };
         PathStrokeType (6.0, PathStrokeType::mitered).createDashedStroke (dashedP, p, dashLengths, 2);
         g.fillPath (dashedP);
         p.clear();
 
-        g.setColour (Colours::cornflowerblue.darker());
+        g.setColour (Colours::grey.brighter(0.2f)/*Colours::cornflowerblue.darker()*/);
         p.addEllipse (3, 3, width - 6, height - 6);
         g.fillPath (p);
         p.clear();
 
-        g.setColour (Colour (30, 30, 30));
+        g.setColour (Colour (82, 99, 106)/*(92, 92, 89)*//*Colour (30, 30, 30)*/);
         p.addEllipse (6, 6, width - 12, height - 12);
         g.fillPath (p);
         return img;
@@ -203,21 +203,23 @@ public:
         const int newHeight = (isPressed == true ? height - 1 : height);
 
         p.addRoundedRectangle (0, 0, newWidth, newHeight, 2);
-        g.setColour (Colour (30, 30, 30));
+        g.setColour (Colour (50, 62, 68) /*Colour (30, 30, 30)*/);
         p.closeSubPath();
         g.fillPath (p);
         p.clear();
 
+        int scaleFactor = -3; // <-- in pixel
 
         if (isPlaying == false)
         {
-            g.setColour (Colours::lime.darker());
-            p.addTriangle (newWidth * .62f, 2, newWidth - 5, newHeight / 2, newWidth * .62f, newHeight - 3);
+            g.setColour (Colours::white/*Colours::lime.darker()*/);
+            p.addTriangle (newWidth * .62f - scaleFactor, 2 - scaleFactor, newWidth - 5 + scaleFactor, newHeight / 2, newWidth * .62f - scaleFactor, newHeight - 3 + scaleFactor);
+
         }
         else
         {
-            g.setColour (Colours::lime.darker (.7f));
-            p.addRectangle (newWidth * .62f, 4, newWidth * .3, newHeight - 8);
+            g.setColour (Colours::white/*Colours::lime.darker (.7f)*/);
+            p.addRectangle (newWidth * .62f - scaleFactor, 4 - scaleFactor, newWidth * .3 + scaleFactor * 2, newHeight - 11 + scaleFactor);
         }
 
         p.closeSubPath();
@@ -235,11 +237,11 @@ public:
 
         Path p;
         p.addRoundedRectangle (0, 0, width - 5, height - 5, 2);
-        g.setColour (Colour (30, 30, 30));
+        g.setColour (Colour (0x1a1a1a00)/*Colour (30, 30, 30)*/);
         p.closeSubPath();
         g.fillPath (p);
         p.clear();
-        g.setColour (Colours::red);
+        g.setColour (Colours::lightgrey/*Colours::red*/);
         p.startNewSubPath (5, 5);
         p.lineTo (width - 10, height - 10);
         p.closeSubPath();
@@ -260,12 +262,12 @@ public:
 
 
         p.addRoundedRectangle (0, 0, width, height, 2);
-        g.setColour (Colour (30, 30, 30));
+        g.setColour (Colour (0x1a1a1a00)/*Colour (30, 30, 30)*/);
         p.closeSubPath();
         g.fillPath (p);
         p.clear();
 
-        g.setColour (Colours::cornflowerblue.darker());
+        g.setColour (Colours::black/*Colours::cornflowerblue.darker()*/);
 
         for ( int i = 0 ; i < 3; i++)
         {
@@ -277,7 +279,7 @@ public:
         }
 
         Random rand;
-        g.setColour (Colours::lime.darker());
+        g.setColour (Colours::whitesmoke/*Colours::lime.darker()*/);
 
         for ( int i = 0 ; i < 3; i++)
         {
