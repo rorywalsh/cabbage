@@ -117,8 +117,10 @@ void CabbageSettingsWindow::addColourProperties()
             editorProps.add (new ColourPropertyComponent (name, colour.toString(), true));
         else if (name.contains ("Console -"))
             consoleProps.add (new ColourPropertyComponent (name, colour.toString(), true));
-        else if (name.contains ("Interface -"))
-            interfaceProps.add (new ColourPropertyComponent (name, colour.toString(), true ));
+		else if (name.contains("Interface -"))
+		{
+			interfaceProps.add(new ColourPropertyComponent(name, colour.toString(), true));
+		}
     }
 
     colourPanel.clear();

@@ -69,7 +69,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ShowEditorConsole", 1);
     defaultPropSet->setValue ("ExternalEditor", 0);
     defaultPropSet->setValue ("UseCabbageIO", 1);
-    defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 0);
+    defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 1);
     defaultPropSet->setValue ("FontSize", 14);
     defaultPropSet->setValue ("FontSizeConsole", 14);
     defaultPropSet->setValue ("ShowConsoleWithEditor", 1);
@@ -137,8 +137,11 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleOutline, "ffa6b3b9"/*"ffababab"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::genericPluginInterface, "FF666666");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::scrollbars,  "ff5a626f"/*"ff222222"*/);
-
-
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabBar, Colour(50, 50, 50).toString());
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabButton, Colour(82, 99, 106).toString());
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabText, Colour(200, 200, 200).toString());
+	defaultPropSet->setValue("Colours_" + CabbageColourIds::fileTabPlayButton, Colour(50, 62, 68).toString());
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::patcher, Colour(200, 200, 200).toString());
     getUserSettings()->setFallbackPropertySet (defaultPropSet);
 
     valueTree.addChild (ValueTree ("Colours"), -1, 0);

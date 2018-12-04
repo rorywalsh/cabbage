@@ -44,8 +44,9 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 	
 	formatManager.addFormat(new InternalPluginFormat());
 
-    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colours::black);
+    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200));
     filterGraphWindow->setVisible (false);
+
 
     addAndMakeVisible (toolbar);
     toolbar.addDefaultItems (factory);
@@ -73,11 +74,15 @@ CabbageMainComponent::~CabbageMainComponent()
 
 void CabbageMainComponent::paint (Graphics& g)
 {
+	//maruo
     if (editorAndConsole.size() == 0)
         g.drawImage (bgImage, getLocalBounds().toFloat());
-    else
-        g.fillAll ( CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::lineNumberBackground, Colour (50, 50, 50)));
+	else
+	{
 
+
+		g.fillAll(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::lineNumberBackground, Colour(50, 50, 50)));
+	}
 }
 
 void CabbageMainComponent::setLookAndFeelColours()
@@ -574,11 +579,21 @@ void CabbageMainComponent::updateEditorColourScheme()
     propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour (50, 50, 50)));
     propertyPanel->setBorderColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour (50, 50, 50)));
 
+	for (auto* tab : fileTabs)
+	{
+		tab->setButtonColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::fileTabButton, Colour(50, 50, 50)));
+		tab->setFontColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::fileTabText, Colour(50, 50, 50)));
+		tab->setPlayButtonColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::fileTabPlayButton, Colour(50, 50, 50)));
+		tab->repaint();
+	}
+
     if (getCurrentEditorContainer() != nullptr)
         getCurrentEditorContainer()->updateLookAndFeel();
 
     toolbar.setColour (Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour (50, 50, 50)));
     toolbar.repaint();
+
+	graphComponent->graphPanel->setBackgroundColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::patcher, Colour(50, 50, 50)));
 }
 //==============================================================================
 Image CabbageMainComponent::createBackground()
@@ -699,7 +714,7 @@ void CabbageMainComponent::resizeAllWindows (int height)
 void CabbageMainComponent::createFilterGraph()
 {
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
-	graphComponent->setSize(800, 600);
+	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
 	addChildComponent(filterGraphWindow);
 }

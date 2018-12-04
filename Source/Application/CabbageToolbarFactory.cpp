@@ -82,15 +82,8 @@ static const String getSVGTextFromFile (const String filename)
 
 ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
 {
-    /* 
-    FOR RORY: THE FOLLOWING IS THE PATH WHERE ARE STORED THE ICONS ON MY MACHINE...
-              IT SHOULD BE CHANGED WITH A PATH RELATIVE TO THE INSTALLATION FOLDER OF CABBAGE
-              WHERE IT SHOULD BE CREATED AN "Icons/modern-darkBG" FOLDER WITH MY NEW ICONS.
-              THE BEST THING WOULD BE TO LET THE USER SELECT THE FOLDER IN THE CABBAGE SETTTINGS,
-              SO THAT HE COULD CUSTOMIZE THE ICONS AS HE/SHE WISH.
-              Regards, Mauro
-    */
-    String iconsPath = "C:\\gitprojects\\cabbage-new\\cabbage\\Icons\\modern-darkBG\\";
+
+	const String iconsPath = "C:\\Users\\rory\\sourcecode\\cabbage\\Icons\\modern-darkBG\\";
 
     switch (itemId)
     {

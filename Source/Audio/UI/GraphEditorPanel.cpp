@@ -760,7 +760,7 @@ void GraphEditorPanel::paint (Graphics& g)
 {
 	//mod RW
 	//g.fillAll(Colour(uint8(20), uint8(20), uint8(20)));
-	g.fillAll(Colours::whitesmoke);
+	g.fillAll(backgroundColour);
 	//g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 }
 
