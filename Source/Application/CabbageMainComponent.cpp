@@ -309,7 +309,8 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         setEditMode (true);
         if(FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
         {
-            tabButton->setToggleState(false, dontSendNotification);
+            // I commented the following line, because the tab appearance should not change when clicking on EditGUI:
+            //tabButton->setToggleState(false, dontSendNotification);
             tabButton->getPlayButton().getProperties().set("state", "off");
         }
 
