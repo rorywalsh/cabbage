@@ -41,11 +41,11 @@ void CabbageSettings::setDefaultSettings()
     ScopedPointer<XmlElement> xml;
     xml = new XmlElement ("PLANTS");
     String homeDir = File::getSpecialLocation (File::userHomeDirectory).getFullPathName();
-    String manualPath, examplesDir, cabbageHelp;
+    String manualPath, examplesDir, cabbageHelp, iconsPath;
 
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CabbageManual";
-
+	iconsPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Icons/modern-darkBG";
 #if defined(WIN32)
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
 #elif !defined(MACOSX)
@@ -63,13 +63,14 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("CabbagePlantDir", homeDir + "/Plants");
     defaultPropSet->setValue ("CabbageExamplesDir", examplesDir);
     defaultPropSet->setValue ("CabbageManualDir", cabbageHelp);
+	defaultPropSet->setValue("CustomIconsDir", iconsPath);
     defaultPropSet->setValue ("MostRecentDirectory", homeDir);
     defaultPropSet->setValue ("UserFilesDir", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);
     defaultPropSet->setValue ("ShowEditorConsole", 1);
     defaultPropSet->setValue ("ExternalEditor", 0);
     defaultPropSet->setValue ("UseCabbageIO", 1);
-    defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 0);
+    defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 1);
     defaultPropSet->setValue ("FontSize", 14);
     defaultPropSet->setValue ("FontSizeConsole", 14);
     defaultPropSet->setValue ("ShowConsoleWithEditor", 1);
@@ -137,8 +138,11 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleOutline, "ffa6b3b9"/*"ffababab"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::genericPluginInterface, "FF666666");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::scrollbars,  "ff5a626f"/*"ff222222"*/);
-
-
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabBar, Colour(50, 50, 50).toString());
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabButton, Colour(82, 99, 106).toString());
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabText, Colour(200, 200, 200).toString());
+	defaultPropSet->setValue("Colours_" + CabbageColourIds::fileTabPlayButton, Colour(50, 62, 68).toString());
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::patcher, Colour(200, 200, 200).toString());
     getUserSettings()->setFallbackPropertySet (defaultPropSet);
 
     valueTree.addChild (ValueTree ("Colours"), -1, 0);

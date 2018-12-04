@@ -35,6 +35,7 @@ FileTab::FileTab (String name, String filename, bool isCsdFile):
     play.setName ("playButton");
 
 
+
     close.setName ("closeButton");
     close.setColour (DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
     close.setColour (DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
@@ -97,9 +98,7 @@ void FileTab::drawButtonText (Graphics& g)
 {
     Font font(jmin(15.0f, getHeight() * 0.6f));
     g.setFont(font);
-    g.setColour(findColour(getToggleState() ? TextButton::textColourOnId
-                                            : TextButton::textColourOnId)
-                        .darker(getToggleState() ? 0.f : 0.5f));
+    g.setColour(fontColour.darker(getToggleState() ? 0.f : 0.5f));
 
     const int yIndent = jmin(4, proportionOfHeight(0.3f));
     const int cornerSize = jmin(getHeight(), getWidth()) / 2;
@@ -130,12 +129,10 @@ const String FileTab::getFilename()
 
 void FileTab::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
-    const Colour backgroundColour = Colour (82, 99, 106); // Colour (100, 100, 100);
-
     if (isEnabled() == false)
         jassert (false);
 
-    Colour baseColour (getToggleState() ? backgroundColour : Colour (30, 30, 30));
+    Colour baseColour (getToggleState() ? buttonColour : Colour (30, 30, 30));
 
     if (isButtonDown || isMouseOverButton)
         baseColour = baseColour.contrasting (isButtonDown ? 0.2f : 0.1f);
@@ -203,10 +200,10 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
     if (type == "play")
     {
         DrawableImage imageDown;
-        imageNormalPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, false, true));
-        imageDownPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, true, true));
-        imageNormal.setImage (CabbageImages::drawPlayStopIcon (width, height, false));
-        imageDown.setImage (CabbageImages::drawPlayStopIcon (width, height, true));
+        imageNormalPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, playButtonColour, false, true));
+        imageDownPressed.setImage (CabbageImages::drawPlayStopIcon (width, height, playButtonColour, true, true));
+        imageNormal.setImage (CabbageImages::drawPlayStopIcon (width, height, playButtonColour, false));
+        imageDown.setImage (CabbageImages::drawPlayStopIcon (width, height, playButtonColour, true));
         button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageDown, nullptr,  &imageDownPressed, &imageDownPressed);
     }
     else if (type == "close")

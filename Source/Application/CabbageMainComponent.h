@@ -204,6 +204,7 @@ private:
         {
             setSize (600, 600);
             setName (caption);
+			this->setTitleBarHeight(15);
             this->setResizable (true, true);
         }
 
