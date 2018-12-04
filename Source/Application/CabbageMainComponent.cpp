@@ -292,7 +292,12 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             {
                 if (auto f = getFilterGraph()->graph.getNodeForId (nodeId))
                     if (auto* w = getFilterGraph()->getOrCreateWindowFor (f, PluginWindow::Type::normal))
+                    {
+                        CabbagePluginProcessor* cabbagePlugin = getCabbagePluginProcessor();
+                        String pluginName = cabbagePlugin->getPluginName();
+                        w->setName (pluginName.length() > 0 ? pluginName : "Plugin has no name?");
                         w->toFront (true);
+                    }
             }
 
         }
@@ -1468,7 +1473,7 @@ void CabbageMainComponent::stopCsoundForNode (String file)
             if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
                 getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
 
-            fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "ffn");
+            fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
             fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
     }
 }

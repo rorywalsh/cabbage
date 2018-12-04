@@ -27,6 +27,7 @@
 #pragma once
 
 #include "../Filters/FilterIOConfiguration.h"
+#include "../Plugins/CabbagePluginEditor.h"
 
 class FilterGraph;
 
@@ -55,8 +56,17 @@ public:
     {
         setSize (400, 300);
 
-        if (auto* ui = createProcessorEditor (*node->getProcessor(), type))
-            setContentOwned (ui, true);
+        setLookAndFeel (&pluginWindowLookAndFeel);
+
+        if (auto* ui = createProcessorEditor(*node->getProcessor(), type))
+        {
+            setContentOwned(ui, true);
+            setBackgroundColour(((CabbagePluginEditor*)ui)->titlebarColour); // <-- set titlebar colour of the plugin window
+            
+            pluginWindowLookAndFeel.titlebarContrastingGradient = ((CabbagePluginEditor*)ui)->titlebarGradientAmount;
+            if (((CabbagePluginEditor*)ui)->defaultFontColour == false)
+                setColour(DocumentWindow::textColourId, ((CabbagePluginEditor*)ui)->fontColour); // <-- set customized titlebar font colour
+        }
 
        #if JUCE_IOS || JUCE_ANDROID
         auto screenBounds = Desktop::getInstance().getDisplays().getTotalBounds (true).toFloat();
@@ -78,6 +88,7 @@ public:
 
     ~PluginWindow()
     {
+        setLookAndFeel (nullptr);
         clearContentComponent();
     }
 
@@ -105,6 +116,8 @@ public:
     const Type type;
 
 private:
+    CabbageLookAndFeel2 pluginWindowLookAndFeel;
+
     float getDesktopScaleFactor() const override     { return 1.0f; }
 
     static AudioProcessorEditor* createProcessorEditor (AudioProcessor& processor, PluginWindow::Type type)
