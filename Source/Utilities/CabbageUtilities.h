@@ -192,18 +192,17 @@ public:
         return img;
     }
 
-    static const Image drawPlayStopIcon (int width, int height, bool isPlaying, bool isPressed = false)
+    static const Image drawPlayStopIcon (int width, int height, Colour colour, bool isPlaying, bool isPressed = false)
     {
         Image img = Image (Image::ARGB, width, height, true);
         Graphics g (img);
-
         Path p;
 
         const int newWidth = (isPressed == true ? width - 1 : width);
         const int newHeight = (isPressed == true ? height - 1 : height);
-
+		
         p.addRoundedRectangle (0, 0, newWidth, newHeight, 2);
-        g.setColour (Colour (50, 62, 68) /*Colour (30, 30, 30)*/);
+		g.setColour(colour);//  /*Colour (30, 30, 30)*/);
         p.closeSubPath();
         g.fillPath (p);
         p.clear();

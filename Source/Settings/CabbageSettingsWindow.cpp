@@ -117,8 +117,10 @@ void CabbageSettingsWindow::addColourProperties()
             editorProps.add (new ColourPropertyComponent (name, colour.toString(), true));
         else if (name.contains ("Console -"))
             consoleProps.add (new ColourPropertyComponent (name, colour.toString(), true));
-        else if (name.contains ("Interface -"))
-            interfaceProps.add (new ColourPropertyComponent (name, colour.toString(), true ));
+		else if (name.contains("Interface -"))
+		{
+			interfaceProps.add(new ColourPropertyComponent(name, colour.toString(), true));
+		}
     }
 
     colourPanel.clear();
@@ -304,12 +306,14 @@ void CabbageSettingsWindow::addMiscProperties()
     const String cabbageManualDir = settings.getUserSettings()->getValue ("CabbageManualDir");
     const String plantDir = settings.getUserSettings()->getValue ("CabbagePlantDir");
     const String userFilesDir = settings.getUserSettings()->getValue ("UserFilesDir");
+	const String customIcons = settings.getUserSettings()->getValue("CabbageCustomIcons");
 
     dirProps.add (new CabbageFilePropertyComponent ("Csound manual dir.", true, false,  "*", manualDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage manual dir.", true, false,  "*", cabbageManualDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage examples dir.", true, false, "*", examplesDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage plants dir.", true, false, "*", plantDir));
     dirProps.add (new CabbageFilePropertyComponent ("User files dir.", true, false, "*", userFilesDir));
+	dirProps.add(new CabbageFilePropertyComponent ("Custom icons dir.", true, false, "*", customIcons));
 
     const String sshAddress = settings.getUserSettings()->getValue ("SSHAddress");
     sshProps.add (new TextPropertyComponent (Value (sshAddress), "SSH Address", 200, false));
@@ -406,14 +410,14 @@ void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileCom
 
     if (fileComponent->getName() == "Csound manual dir.")
         settings.getUserSettings()->setValue ("CsoundManualDir", fileComponent->getCurrentFileText());
-    else if (fileComponent->getName() == "Cabbage manual dir.")
-        settings.getUserSettings()->setValue ("CabbageManualDir", fileComponent->getCurrentFileText());
     else if (fileComponent->getName() == "Cabbage plants dir.")
         settings.getUserSettings()->setValue ("CabbagePlantDir", fileComponent->getCurrentFileText());
     else if (fileComponent->getName() == "Cabbage examples dir.")
         settings.getUserSettings()->setValue ("CabbageExamplesDir", fileComponent->getCurrentFileText());
     else if (fileComponent->getName() == "User files dir.")
         settings.getUserSettings()->setValue ("UserFilesDir", fileComponent->getCurrentFileText());
+	else if (fileComponent->getName() == "Custom icons dir.")
+		settings.getUserSettings()->setValue("CustomIconsDir", fileComponent->getCurrentFileText());
 }
 
 void CabbageSettingsWindow::selectPanel (String button)

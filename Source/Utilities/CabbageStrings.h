@@ -142,6 +142,11 @@ public:
         colours.add ("Interface - Property Label Background");
         colours.add ("Interface - Property Label Text");
         colours.add ("Interface - Alart Window Background");
+		colours.add("Interface - File Tab Bar");
+		colours.add("Interface - File Tab Button");
+		colours.add("Interface - File Tab Text");
+		colours.add("Interface - File Tab Play Button");
+		colours.add("Interface - Patcher");
         colours.add ("Editor - Code Background");
         colours.add ("Editor - Line Numbers Background");
         colours.add ("Editor - Line Numbers");

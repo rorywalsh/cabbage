@@ -69,6 +69,11 @@ public:
 
 	//mod RW
 	void showEditorForNode(AudioProcessorGraph::NodeID pluginID);
+	Colour backgroundColour = { 30, 30, 30 };
+	void setBackgroundColour(Colour colour) {
+		backgroundColour = colour;
+		repaint();
+	}
 
 private:
     struct FilterComponent;

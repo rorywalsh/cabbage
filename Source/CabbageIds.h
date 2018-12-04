@@ -125,8 +125,13 @@ namespace CabbageColourIds
     static const Identifier popupMenuText = "Interface - PopupMenu Text";
     static const Identifier popupMenuHighlightedText = "Interface - PopupMenu Highlighted Text";
     static const Identifier mainBackground = "Interface - Main Background";
-    static const Identifier statusBar = "Interface - Status Bar";
-    static const Identifier statusBarText = "Interface - Status Bar Text";
+	static const Identifier statusBar = "Interface - Status Bar";
+	static const Identifier fileTabBar = "Interface - File Tab Bar";
+	static const Identifier fileTabButton = "Interface - File Tab Button";
+	static const Identifier fileTabText = "Interface - File Tab Text";
+	static const Identifier fileTabPlayButton = "Interface - File Tab Play Button";
+	static const Identifier patcher = "Interface - Patcher";
+	static const Identifier statusBarText = "Interface - Status Bar Text";
     static const Identifier propertyPanelBackground = "Interface - Property Panel Background";
     static const Identifier propertyLabelBackground = "Interface - Property Label Background";
     static const Identifier propertyLabelText = "Interface - Property Label Text";
