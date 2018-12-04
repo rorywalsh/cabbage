@@ -187,7 +187,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             String manu(JucePlugin_Manufacturer);
             const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
             const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
-
+#ifdef CabbagePro
+            //be sure to remove CabbageAudio from plugin plist..
+            const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
+            newPList = newPList.replace (toReplace2, pluginName);
+#endif
             newPList = newPList.replace (toReplace, pluginName);
             if(pluginId.isEmpty())
             {
