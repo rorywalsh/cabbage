@@ -266,7 +266,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 {
     if (drawableButton->getName() == "playButton")
     {
-        if (drawableButton->getProperties().getWithDefault ("state", "") == "on")
+        if (drawableButton->getProperties().getWithDefault ("state", "") == "off")
             saveDocument();
         else
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
@@ -1236,7 +1236,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (recompile == true && getCurrentCsdFile().hasFileExtension ((".csd")))
         {
             runCsoundForNode (getCurrentCsdFile().getFullPathName());
-            //fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
+            fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
         }
 
         addInstrumentsAndRegionsToCombobox();
@@ -1443,7 +1443,7 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             startTimer (100);
             if(getFilterGraph()->graph.getNodeForId(node))
             {
-                fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+                fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "on");
                 fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
             }
             else
@@ -1468,7 +1468,7 @@ void CabbageMainComponent::stopCsoundForNode (String file)
             if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
                 getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
 
-            fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+            fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "ffn");
             fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
     }
 }

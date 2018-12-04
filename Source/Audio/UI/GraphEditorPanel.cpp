@@ -293,12 +293,12 @@ struct GraphEditorPanel::FilterComponent   : public Component,
 		const int w = getWidth() - x * 2;
 		const int h = getHeight() - pinSize * 2;
 		
-		g.setColour(CabbageUtilities::getComponentSkin());
+		g.setColour(Colour(60, 60, 60));
 		//g.setColour(Colour(220, 220, 220));
 		g.fillRoundedRectangle(x, y, w, h, 5);
 
 		g.drawRoundedRectangle(x, y, w, h, 5, 1.f);
-		g.setColour(Colour(120, 120, 120));
+		g.setColour(Colour(220, 220, 220));
 		g.setFont(CabbageUtilities::getComponentFont());
 		g.drawFittedText(getName(),
 			x + 4, y - 2, w - 8, h - 4,
@@ -745,7 +745,7 @@ struct GraphEditorPanel::ConnectorComponent   : public Component,
 GraphEditorPanel::GraphEditorPanel (FilterGraph& g)  : graph (g)
 {
     graph.addChangeListener (this);
-    setOpaque (true);
+    setOpaque (false);
 }
 
 GraphEditorPanel::~GraphEditorPanel()
@@ -759,8 +759,9 @@ GraphEditorPanel::~GraphEditorPanel()
 void GraphEditorPanel::paint (Graphics& g)
 {
 	//mod RW
-	g.fillAll(Colour(uint8(20), uint8(20), uint8(20)));
-    //g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+	//g.fillAll(Colour(uint8(20), uint8(20), uint8(20)));
+	g.fillAll(Colours::whitesmoke);
+	//g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 }
 
 void GraphEditorPanel::mouseDown (const MouseEvent& e)
