@@ -79,8 +79,9 @@ void FileTab::drawButtonShape (Graphics& g, const Path& outline, Colour baseColo
     const float mainBrightness = baseColour.getBrightness();
     const float mainAlpha = baseColour.getFloatAlpha();
 
-    g.setGradientFill (ColourGradient (baseColour.brighter (0.2f), 0.0f, 0.0f,
-                                       baseColour.darker (0.25f), 0.0f, height, false));
+    //g.setGradientFill (ColourGradient (baseColour.brighter (0.2f), 0.0f, 0.0f,
+    //                                   baseColour.darker (0.25f), 0.0f, height, false));
+    g.setColour (baseColour);
     g.fillPath (outline);
 
     g.setColour (Colours::white.withAlpha (0.4f * mainAlpha * mainBrightness * mainBrightness));
@@ -129,7 +130,7 @@ const String FileTab::getFilename()
 
 void FileTab::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
-    const Colour backgroundColour = Colour (100, 100, 100);
+    const Colour backgroundColour = Colour (82, 99, 106); // Colour (100, 100, 100);
 
     if (isEnabled() == false)
         jassert (false);
