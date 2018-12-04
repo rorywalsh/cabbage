@@ -121,7 +121,7 @@ public:
     void resized() override;
     void unfocusKeyboardComponent();
     void releaseGraph();
-
+	//void paint(Graphics&) override;
     //==============================================================================
     bool isInterestedInDragSource (const SourceDetails&) override;
     void itemDropped (const SourceDetails&) override;
