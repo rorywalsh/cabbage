@@ -41,11 +41,11 @@ void CabbageSettings::setDefaultSettings()
     ScopedPointer<XmlElement> xml;
     xml = new XmlElement ("PLANTS");
     String homeDir = File::getSpecialLocation (File::userHomeDirectory).getFullPathName();
-    String manualPath, examplesDir, cabbageHelp;
+    String manualPath, examplesDir, cabbageHelp, iconsPath;
 
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CabbageManual";
-
+	iconsPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Icons/modern-darkBG";
 #if defined(WIN32)
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
 #elif !defined(MACOSX)
@@ -63,6 +63,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("CabbagePlantDir", homeDir + "/Plants");
     defaultPropSet->setValue ("CabbageExamplesDir", examplesDir);
     defaultPropSet->setValue ("CabbageManualDir", cabbageHelp);
+	defaultPropSet->setValue("CustomIconsDir", iconsPath);
     defaultPropSet->setValue ("MostRecentDirectory", homeDir);
     defaultPropSet->setValue ("UserFilesDir", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);

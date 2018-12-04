@@ -49,6 +49,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 
 
     addAndMakeVisible (toolbar);
+	factory.setIconsPath(cabbageSettings->getUserSettings()->getValue("CustomIconsDir"));
     toolbar.addDefaultItems (factory);
     propertyPanel->addChangeListener (this);
     factory.combo->getCombo().addListener (this);
@@ -589,6 +590,8 @@ void CabbageMainComponent::updateEditorColourScheme()
 
     if (getCurrentEditorContainer() != nullptr)
         getCurrentEditorContainer()->updateLookAndFeel();
+
+
 
     toolbar.setColour (Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour (50, 50, 50)));
     toolbar.repaint();
