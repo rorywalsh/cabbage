@@ -75,14 +75,11 @@ CabbageMainComponent::~CabbageMainComponent()
 
 void CabbageMainComponent::paint (Graphics& g)
 {
-	//maruo
     if (editorAndConsole.size() == 0)
         g.drawImage (bgImage, getLocalBounds().toFloat());
 	else
 	{
-
-
-		g.fillAll(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::lineNumberBackground, Colour(50, 50, 50)));
+		g.fillAll(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::fileTabBar, Colour(50, 50, 50)));
 	}
 }
 
@@ -98,6 +95,7 @@ void CabbageMainComponent::setLookAndFeelColours()
     lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
     lookAndFeelChanged();
     toolbar.repaint();
+	resized();
 }
 //==============================================================================
 void CabbageMainComponent::buttonClicked (Button* button)
