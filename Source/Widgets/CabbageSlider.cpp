@@ -28,8 +28,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel))
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
-
-	wData.addListener (this);
+	widgetData.addListener (this);
     setLookAndFeelColours (widgetData);
     addAndMakeVisible (textLabel);
     addAndMakeVisible (&slider);
