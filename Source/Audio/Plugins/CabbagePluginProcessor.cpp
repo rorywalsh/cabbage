@@ -44,13 +44,14 @@ createPluginFilter() {
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, const int outs)
         : CsoundPluginProcessor(inputFile, ins, outs),
           csdFile(inputFile),
-          cabbageWidgets("CabbageWidgetData") {
-
-    //initAllCsoundChannels(cabbageWidgets);
+          cabbageWidgets("CabbageWidgetData") 
+{
     createCsound(inputFile);
 }
 
-void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters) {
+
+void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)
+{
     if (inputFile.existsAsFile()) {
         setWidthHeight();
         StringArray linesFromCsd;
@@ -800,110 +801,106 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
 }
 
 //==============================================================================
-void CabbagePluginProcessor::getChannelDataFromCsound() {
-    int widgetsToCheck = 0;
-    for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
-    {
-        const String type = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
-        const String parent = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::parentcomponent);
-		
-		//if no parent set parentIsVisible to 1. 
-		int parentIsVisible = 1;
-		if (parent.isNotEmpty())
-			parentIsVisible = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(parent), CabbageIdentifierIds::visible);
-		
-        //only query components that are currently visible. ALWAYS check widgets that support plants
-        //if(parentIsVisible == 1 || type== "groupbox" || type == "image")
-       // {
-            const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
-            const var widgetArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                                   CabbageIdentifierIds::widgetarray);
+void CabbagePluginProcessor::getChannelDataFromCsound() 
+{
+	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) 
+	{
+		const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+		const var widgetArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+			CabbageIdentifierIds::widgetarray);
 
-            StringArray channels;
+		StringArray channels;
 
-            if (widgetArray.size() > 0)
-                channels.add(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel));
-            else if (chanArray.size() == 1)
-                channels.add(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel));
-            else if (chanArray.size() > 1) {
-                for (int j = 0; j < chanArray.size(); j++)
-                    channels.add(var(chanArray[j]));
-            }
+		if (widgetArray.size() > 0)
+			channels.add(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel));
+		else if (chanArray.size() == 1)
+			channels.add(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel));
+		else if (chanArray.size() > 1) {
+			for (int j = 0; j < chanArray.size(); j++)
+				channels.add(var(chanArray[j]));
+		}
 
-            const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
-            const float valuex = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex);
-            const float valuey = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey);
-            const String identChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                         CabbageIdentifierIds::identchannel);
-            const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                                CabbageIdentifierIds::identchannelmessage);
-            const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                         CabbageIdentifierIds::type);
+		const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+		const float valuex = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex);
+		const float valuey = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey);
+		const String identChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+			CabbageIdentifierIds::identchannel);
+		const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+			CabbageIdentifierIds::identchannelmessage);
+		const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+			CabbageIdentifierIds::type);
 
-            const String chann = channels[0];
+		const String chann = channels[0];
 
 
-            if (channels.size() == 1 && channels[0].isNotEmpty())
-            {
-                if (value.isString() == false) {
-                    if (getCsound()->GetChannel(channels[0].toUTF8()) != float(value))
-                        CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
-                                                      getCsound()->GetChannel(channels[0].toUTF8()));
-                } else {
-                    char tmp_str[4096] = {0};
-                    getCsound()->GetStringChannel(channels[0].toUTF8(), tmp_str);
-                    CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
-                                                   String(tmp_str));
-                }
-            }
+		if (channels.size() == 1 && channels[0].isNotEmpty()) {
 
-                //currently only dealing with a max of 2 channels...
-            else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&
-                     typeOfWidget != CabbageWidgetTypes::eventsequencer) {
-                if (getCsound()->GetChannel(channels[0].toUTF8()) != valuex
-                    || getCsound()->GetChannel(channels[1].toUTF8()) != valuey) {
-                    if (typeOfWidget == CabbageWidgetTypes::xypad) {
-                        CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex,
-                                                      getCsound()->GetChannel(channels[0].toUTF8()));
-                        CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey,
-                                                      getCsound()->GetChannel(channels[1].toUTF8()));
-                    } else if (typeOfWidget.contains("range")) {
-                        CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::minvalue,
-                                                      getCsound()->GetChannel(channels[0].toUTF8()));
-                        CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::maxvalue,
-                                                      getCsound()->GetChannel(channels[1].toUTF8()));
-                    }
-                }
-            }
+			if (value.isString() == false) 
+			{
+				if (getCsound()->GetChannel(channels[0].toUTF8()) != float(value))
+				{
+					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
+						getCsound()->GetChannel(channels[0].toUTF8()));
+				}
 
-            if (identChannel.isNotEmpty()) {
-                memset(&tmp_string[0], 0, sizeof(tmp_string));
-                getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
+			}
+			else 
+			{
+				char tmp_str[4096] = { 0 };
+				getCsound()->GetStringChannel(channels[0].toUTF8(), tmp_str);
+				CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
+					String(tmp_str));
+			}
+		}
 
-                const String identifierText(tmp_string);
-                //CabbageUtilities::debug(identifierText);
-                if (identifierText.isNotEmpty() && identifierText != identChannelMessage) {
-                    CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " " + identifierText);
+		//currently only dealing with a max of 2 channels...
+		else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&
+			typeOfWidget != CabbageWidgetTypes::eventsequencer) {
+			if (getCsound()->GetChannel(channels[0].toUTF8()) != valuex
+				|| getCsound()->GetChannel(channels[1].toUTF8()) != valuey) {
+				if (typeOfWidget == CabbageWidgetTypes::xypad) {
+					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex,
+						getCsound()->GetChannel(channels[0].toUTF8()));
+					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey,
+						getCsound()->GetChannel(channels[1].toUTF8()));
+				}
+				else if (typeOfWidget.contains("range")) {
+					const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::minvalue);
+					const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::maxvalue);
+					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::minvalue,
+						getCsound()->GetChannel(channels[0].toUTF8()));
+					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::maxvalue,
+						getCsound()->GetChannel(channels[1].toUTF8()));
+				}
+			}
+		}
 
-                    if (identifierText.contains("tablenumber")) //update even if table number has not changed
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
-                    else if (identifierText == CabbageIdentifierIds::tofront.toString() + "()") {
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::tofront,
-                                                       Random::getSystemRandom().nextInt());
-                    }
-                    else if (identifierText.contains(CabbageIdentifierIds::refreshfiles)) {
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::refreshfiles,
-                                                       Random::getSystemRandom().nextInt());
-                    }
-                    getCsound()->SetChannel(identChannel.toUTF8(), (char *) "");
+		if (identChannel.isNotEmpty()) {
+			memset(&tmp_string[0], 0, sizeof(tmp_string));
+			getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
 
-                    CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update,
-                                                   0); //reset value for further updates
+			const String identifierText(tmp_string);
+			//CabbageUtilities::debug(identifierText);
+			if (identifierText.isNotEmpty() && identifierText != identChannelMessage) {
+				CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " " + identifierText);
 
-                }
-            //}
-        }
-    }
+				if (identifierText.contains("tablenumber")) //update even if table number has not changed
+					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
+				else if (identifierText == CabbageIdentifierIds::tofront.toString() + "()") {
+					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::tofront,
+						Random::getSystemRandom().nextInt());
+				}
+
+				getCsound()->SetChannel(identChannel.toUTF8(), (char *) "");
+
+				CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update,
+					0); //reset value for further updates
+
+			}
+		}
+	}
 }
 
 void CabbagePluginProcessor::triggerCsoundEvents() {
