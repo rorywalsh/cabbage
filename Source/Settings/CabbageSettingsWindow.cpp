@@ -306,7 +306,7 @@ void CabbageSettingsWindow::addMiscProperties()
     const String cabbageManualDir = settings.getUserSettings()->getValue ("CabbageManualDir");
     const String plantDir = settings.getUserSettings()->getValue ("CabbagePlantDir");
     const String userFilesDir = settings.getUserSettings()->getValue ("UserFilesDir");
-	const String customIcons = settings.getUserSettings()->getValue("CustomIconsDir");
+	const String customIcons = settings.getUserSettings()->getValue("CabbageCustomIcons");
 
     dirProps.add (new CabbageFilePropertyComponent ("Csound manual dir.", true, false,  "*", manualDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage manual dir.", true, false,  "*", cabbageManualDir));
