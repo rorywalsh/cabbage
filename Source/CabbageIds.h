@@ -118,7 +118,7 @@ namespace CabbageInterfaceModes
 namespace CabbageColourIds
 {
     static const Identifier menuBarBackground = "Interface - MenuBar Background";
-    static const Identifier menuBarText = "Interface - MenuBarText";
+    static const Identifier menuBarText = "Interface - MenuBar Text";
     static const Identifier menuBarMouseOverBackground = "Interface - MenuBar MouseOver Background";
     static const Identifier popupMenuMouseOverBackground = "Interface - PopupMenu MouseOver Background";
     static const Identifier popupMenuBackground = "Interface - PopupMenu Background";
