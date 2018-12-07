@@ -130,7 +130,7 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
     case toggle_play:
         //return createToggleButtonFromPNG (itemId, "togglePlay", CabbageBinaryData::audiovolumemuted_png, CabbageBinaryData::audiovolumemuted_pngSize,
         //                                  CabbageBinaryData::audiovolumehigh_png, CabbageBinaryData::audiovolumehigh_pngSize);
-        return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromFile (iconsPath + "/audio-muted.svg"), getSVGTextFromFile (iconsPath + "audio-on.svg"));
+        return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromFile (iconsPath + "/audio-muted.svg"), getSVGTextFromFile (iconsPath + "/audio-on.svg"));
         //return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromMemory (CabbageBinaryData::Audiovolumemuted_svg, CabbageBinaryData::Audiovolumemuted_svgSize),
         //                            getSVGTextFromMemory (CabbageBinaryData::Audiovolumehigh_svg, CabbageBinaryData::Audiovolumehigh_svgSize));
 
