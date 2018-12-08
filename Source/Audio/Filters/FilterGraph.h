@@ -76,6 +76,8 @@ public:
 			if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
 				return CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::caption);
 		}
+
+        return "";
 	}
 
 	static const PluginDescription getPluginDescriptor(AudioProcessorGraph::NodeID nodeId, String inputFile)
