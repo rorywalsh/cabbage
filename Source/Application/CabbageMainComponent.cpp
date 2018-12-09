@@ -309,14 +309,24 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
     }
     else if (drawableButton->getName() == "editGUIButton")
     {
-        this->saveDocument();
-        setEditMode (true);
-        if(FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
-        {
-            // I commented the following line, because the tab appearance should not change when clicking on EditGUI:
-            //tabButton->setToggleState(false, dontSendNotification);
-            tabButton->getPlayButton().getProperties().set("state", "off");
-        }
+       
+		if (isGUIEnabled == false)
+		{
+			this->saveDocument();
+			setEditMode(true);
+			if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
+			{
+				tabButton->getPlayButton().getProperties().set("state", "off");
+				resized();
+			}
+		}
+		else
+		{
+			this->saveDocument();
+			propertyPanel->setVisible(false);
+			resized();
+		}
+
 
     }
 }
@@ -722,8 +732,6 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
-
-	//addChildComponent(filterGraphWindow);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
