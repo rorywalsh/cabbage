@@ -408,10 +408,15 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
     {
         if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
-			if (props->hide == true)
-				togglePropertyPanel();
-			else
-				updateCodeInEditor (ed, true, true);
+            if (props->hide == true)
+            {
+                props->hide = false;
+                togglePropertyPanel();
+            }
+            else
+            {
+                updateCodeInEditor (ed, true, true);
+            }
         }
     }
 
@@ -575,8 +580,8 @@ void CabbageMainComponent::updateEditorColourScheme()
     getLookAndFeel().setColour (PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)));
     getLookAndFeel().setColour (PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
     lookAndFeelChanged();
-    propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour (50, 50, 50)));
-    propertyPanel->setBorderColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour (50, 50, 50)));
+    propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
+    propertyPanel->setBorderColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
 
 	for (auto* tab : fileTabs)
 	{

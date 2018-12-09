@@ -23,7 +23,8 @@
 #include "../CabbageCommonHeaders.h"
 #include "../Utilities/CabbageColourProperty.h"
 #include "../Utilities/CabbageFilePropertyComponent.h"
-
+#include "../LookAndFeel/FlatButtonLookAndFeel.h"
+#include "../LookAndFeel/PropertyPanelLookAndFeel.h"
 
 //==============================================================================
 class CabbagePropertiesPanel :
@@ -71,6 +72,7 @@ public:
     void setBackgroundColour (Colour colour)
     {
         backgroundColour = colour;
+        propertyPanelLook->setBackgroundColour (colour);
         repaint();
     }
 
@@ -108,7 +110,9 @@ private:
 
     ValueTree widgetData;
 	TextButton hideButton;
-	
+    ScopedPointer<FlatButtonLookAndFeel> flatLook;
+    ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePropertiesPanel)
 };
 

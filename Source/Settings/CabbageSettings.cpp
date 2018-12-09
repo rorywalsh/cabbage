@@ -118,7 +118,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::mainBackground, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::statusBar, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::statusBarText, "ffffffff");
-    defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyPanelBackground, "ff222222");
+    defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyPanelBackground, "ffa6b3b9");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelText, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelBackground, "ffd4d4d4");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::alertWindowBackground, "ff000000");
@@ -135,13 +135,13 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::csdtags, "ffbf74c5"/*"ff575757"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleText, "ff566c7b"/*"FFFFFFFF"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleBackground, "ff16191d"/*"FF000000"*/);
-    defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleOutline, "ffa6b3b9"/*"ffababab"*/);
+    defaultPropSet->setValue ("Colours_" + CabbageColourIds::consoleOutline, "ff16191d"/*"ffababab"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::genericPluginInterface, "FF666666");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::scrollbars,  "ff5a626f"/*"ff222222"*/);
-	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabBar, Colour(50, 50, 50).toString());
-	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabButton, Colour(82, 99, 106).toString());
-	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabText, Colour(200, 200, 200).toString());
-	defaultPropSet->setValue("Colours_" + CabbageColourIds::fileTabPlayButton, Colour(50, 62, 68).toString());
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabBar, "ff323e44");
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabButton, "ff52636a");
+	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabText, "ffffffff");
+	defaultPropSet->setValue("Colours_" + CabbageColourIds::fileTabPlayButton, "ff323e44");
 	defaultPropSet->setValue ("Colours_" + CabbageColourIds::patcher, Colour(200, 200, 200).toString());
     getUserSettings()->setFallbackPropertySet (defaultPropSet);
 
