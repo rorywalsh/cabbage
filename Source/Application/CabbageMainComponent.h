@@ -168,7 +168,28 @@ public:
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
 
+	class FilterGraphDocumentWindow : public DocumentWindow
+	{
+		Colour colour;
+		CabbageMainComponent* owner;
+	public:
+		FilterGraphDocumentWindow(String caption, Colour backgroundColour, CabbageMainComponent* owner)
+			: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), owner(owner), colour(backgroundColour)
+		{
+			setSize(600, 600);
+			setName(caption);
+			this->setTitleBarHeight(15);
+			this->setResizable(true, true);
+		}
 
+		void closeButtonPressed() override { setVisible(false); }
+		void paint(Graphics& g)  override { g.fillAll(colour); }
+
+		CabbageMainComponent* getOwner() {
+			return owner;
+		}
+
+	};
 private:
     int getTabFileIndex (int32 nodeId);
     int getTabFileIndex (File file);
@@ -194,24 +215,6 @@ private:
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
-
-    class FilterGraphDocumentWindow : public DocumentWindow
-    {
-        Colour colour;
-    public:
-        FilterGraphDocumentWindow (String caption, Colour backgroundColour)
-            : DocumentWindow (caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour (backgroundColour)
-        {
-            setSize (600, 600);
-            setName (caption);
-			this->setTitleBarHeight(15);
-            this->setResizable (true, true);
-        }
-
-        void closeButtonPressed() override {    setVisible (false);  }
-        void paint (Graphics& g)  override { g.fillAll (colour); }
-    };
-
 	ScopedPointer<GraphDocumentComponent> graphComponent;
     ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;
 

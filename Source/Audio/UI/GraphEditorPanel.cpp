@@ -839,15 +839,15 @@ void GraphEditorPanel::resized()
 //mod RW
 void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
 {
-	if (auto* mainComponent = findParentComponentOfClass<CabbageMainComponent>())
+	if (auto* graphWindow = findParentComponentOfClass<CabbageMainComponent::FilterGraphDocumentWindow>())
 	{
 		bool foundTabForNode = false;
-		for (int i = 0; i < mainComponent->getNumberOfFileTabs(); i++)
+		for (int i = 0; i < graphWindow->getOwner()->getNumberOfFileTabs(); i++)
 		{
-			if (mainComponent->getFileTab(i)->uniqueFileId == pluginID.uid)
+			if (graphWindow->getOwner()->getFileTab(i)->uniqueFileId == pluginID.uid)
 			{
 				foundTabForNode = true;
-				mainComponent->bringCodeEditorToFront(mainComponent->getFileTabForNodeId(pluginID));
+				graphWindow->getOwner()->bringCodeEditorToFront(graphWindow->getOwner()->getFileTabForNodeId(pluginID));
 			}
 		}
 
@@ -855,8 +855,8 @@ void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
 		{
 			AudioProcessorGraph::Node::Ptr n = graph.graph.getNodeForId(pluginID);
 			const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
-			mainComponent->openFile(pluginFilename);
-			mainComponent->getFileTab(mainComponent->getCurrentFileIndex())->uniqueFileId = pluginID.uid;
+			graphWindow->getOwner()->openFile(pluginFilename);
+			graphWindow->getOwner()->getFileTab(graphWindow->getOwner()->getCurrentFileIndex())->uniqueFileId = pluginID.uid;
 		}
 	}
 }

@@ -174,19 +174,19 @@ public:
         g.fillPath (p);
         p.clear();
 
-        g.setColour (Colours::lightgrey/*Colours::cornflowerblue*/);
+        g.setColour (Colours::grey.darker(.3f)/*Colours::cornflowerblue*/);
         p.addEllipse (4, 4, width - 8, height - 8);
         const float dashLengths[] = { 3.0f, 3.0f };
         PathStrokeType (6.0, PathStrokeType::mitered).createDashedStroke (dashedP, p, dashLengths, 2);
         g.fillPath (dashedP);
         p.clear();
 
-        g.setColour (Colours::grey.brighter(0.2f)/*Colours::cornflowerblue.darker()*/);
+        g.setColour (Colours::grey.darker(0.35f)/*Colours::cornflowerblue.darker()*/);
         p.addEllipse (3, 3, width - 6, height - 6);
         g.fillPath (p);
         p.clear();
 
-        g.setColour (Colour (82, 99, 106)/*(92, 92, 89)*//*Colour (30, 30, 30)*/);
+		g.setColour(Colour(82, 99, 106).darker(.5f));//*Colour (30, 30, 30));
         p.addEllipse (6, 6, width - 12, height - 12);
         g.fillPath (p);
         return img;

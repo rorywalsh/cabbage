@@ -44,7 +44,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 	
 	formatManager.addFormat(new InternalPluginFormat());
 
-    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200));
+    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200), this);
     filterGraphWindow->setVisible (false);
 
 
@@ -722,7 +722,8 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
-	addChildComponent(filterGraphWindow);
+
+	//addChildComponent(filterGraphWindow);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
@@ -843,6 +844,12 @@ int CabbageMainComponent::getStatusbarYPos()
 //=======================================================================================
 void CabbageMainComponent::setEditMode (bool enable)
 {
+	if (enable == false)
+	{
+		propertyPanel->setVisible(false);
+		resized();
+	}
+		
 	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 	//audioGraph->closeAnyOpenPluginWindows();
 	//stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
