@@ -89,13 +89,19 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
 // Property Panel for editing widgets
 //==============================================================================
 CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
-    : widgetData (widgetData), hideButton("X")
+    : widgetData (widgetData), hideButton("x")
 {
     //addAndMakeVisible(tooltipWindow);
     setOpaque (true);
     setSize (300, 500);
-	hideButton.setColour(TextButton::ColourIds::buttonColourId, Colours::black);
-	hideButton.setColour(TextButton::ColourIds::textColourOffId, Colours::white);
+    
+    propertyPanelLook = new PropertyPanelLookAndFeel();
+    propertyPanel.setLookAndFeel (propertyPanelLook);
+    
+    flatLook = new FlatButtonLookAndFeel();
+    hideButton.setLookAndFeel (flatLook);
+    hideButton.setColour(TextButton::ColourIds::buttonColourId, backgroundColour);// Colours::black);
+    hideButton.setColour(TextButton::ColourIds::textColourOffId, backgroundColour.contrasting(1.0f));//Colours::white);
 
     addAndMakeVisible (propertyPanel);
 	addAndMakeVisible(hideButton);
@@ -109,12 +115,14 @@ CabbagePropertiesPanel::~CabbagePropertiesPanel()
         open->xmlElement  = nullptr;
 
     sectionStates.clear();
+    hideButton.setLookAndFeel (nullptr);
+    propertyPanel.setLookAndFeel (nullptr);
 }
 
 void CabbagePropertiesPanel::buttonClicked(Button *button)
 {
-	hide = true;
-	sendChangeMessage();
+    hide = true;
+    sendChangeMessage();
 }
 void CabbagePropertiesPanel::saveOpenessState()
 {
@@ -174,11 +182,14 @@ void CabbagePropertiesPanel::updateProperties (ValueTree wData)
 void CabbagePropertiesPanel::paint (Graphics& g)
 {
     g.fillAll (backgroundColour.withAlpha (1.f));
+    
+    hideButton.setColour(TextButton::ColourIds::buttonColourId, backgroundColour);
+    hideButton.setColour(TextButton::ColourIds::textColourOffId, backgroundColour.contrasting(1.0f));
 }
 
 void CabbagePropertiesPanel::resized()
 {
-	hideButton.setBounds(getWidth()-40, 5, 16, 16);
+	hideButton.setBounds (getWidth() - 23, -2, 20, 12);
     propertyPanel.setBounds (getLocalBounds().reduced (4));
 }
 
@@ -281,7 +292,7 @@ void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
-	this->setVisible(false);
+	//this->setVisible(false);
 }
 
 void CabbagePropertiesPanel::textPropertyComponentChanged (TextPropertyComponent* comp)
@@ -958,4 +969,3 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createValueEditors (CabbagePro
     return comps;
 }
 //==============================================================================
-

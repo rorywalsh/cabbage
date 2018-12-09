@@ -44,7 +44,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 	
 	formatManager.addFormat(new InternalPluginFormat());
 
-    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200));
+    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200), this);
     filterGraphWindow->setVisible (false);
 
 
@@ -309,14 +309,24 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
     }
     else if (drawableButton->getName() == "editGUIButton")
     {
-        this->saveDocument();
-        setEditMode (true);
-        if(FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
-        {
-            // I commented the following line, because the tab appearance should not change when clicking on EditGUI:
-            //tabButton->setToggleState(false, dontSendNotification);
-            tabButton->getPlayButton().getProperties().set("state", "off");
-        }
+       
+		if (isGUIEnabled == false)
+		{
+			this->saveDocument();
+			setEditMode(true);
+			if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
+			{
+				tabButton->getPlayButton().getProperties().set("state", "off");
+				resized();
+			}
+		}
+		else
+		{
+			this->saveDocument();
+			propertyPanel->setVisible(false);
+			resized();
+		}
+
 
     }
 }
@@ -406,12 +416,14 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
     else if (CabbagePropertiesPanel* props = dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
     {
-        if (CabbagePluginEditor* ed = getCabbagePluginEditor())
+        if (props->hide == true)
         {
-			if (props->hide == true)
-				togglePropertyPanel();
-			else
-				updateCodeInEditor (ed, true, true);
+            props->hide = false; // reset the hide status
+            togglePropertyPanel();
+        }
+        else if (CabbagePluginEditor* ed = getCabbagePluginEditor())
+        {
+            updateCodeInEditor (ed, true, true);
         }
     }
 
@@ -572,11 +584,14 @@ void CabbageMainComponent::timerCallback()
 //==============================================================================
 void CabbageMainComponent::updateEditorColourScheme()
 {
-    getLookAndFeel().setColour (PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)));
-    getLookAndFeel().setColour (PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
-    lookAndFeelChanged();
-    propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour (50, 50, 50)));
-    propertyPanel->setBorderColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::consoleOutline, Colour (50, 50, 50)));
+    //getLookAndFeel().setColour (PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)));
+    //getLookAndFeel().setColour (PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
+    //lookAndFeelChanged();
+    //propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
+    propertyPanel->setColours (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)),
+        CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)),
+        CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
+    propertyPanel->setBorderColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
 
 	for (auto* tab : fileTabs)
 	{
@@ -717,7 +732,6 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
-	addChildComponent(filterGraphWindow);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
@@ -838,6 +852,12 @@ int CabbageMainComponent::getStatusbarYPos()
 //=======================================================================================
 void CabbageMainComponent::setEditMode (bool enable)
 {
+	if (enable == false)
+	{
+		propertyPanel->setVisible(false);
+		resized();
+	}
+		
 	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 	//audioGraph->closeAnyOpenPluginWindows();
 	//stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
