@@ -7,10 +7,14 @@ public:
     PropertyPanelLookAndFeel() {};
     ~PropertyPanelLookAndFeel() {};
 
-    void setBackgroundColour (Colour bg);
+    void setColours (Colour panelBG, Colour labelBG, Colour labelText);
 
     void drawPropertyPanelSectionHeader(Graphics& g, const String& name, bool isOpen, int width, int height) override;
+    void drawPropertyComponentBackground (Graphics&, int width, int height, PropertyComponent&) override;
+    void drawPropertyComponentLabel (Graphics&, int width, int height, PropertyComponent&) override;
 
 private:
-    Colour backgroundColour;
+    Colour panelBGcolour;
+    Colour labelBGcolour;
+    Colour labelTextColour;
 };

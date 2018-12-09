@@ -69,10 +69,10 @@ public:
     Colour backgroundColour, borderColour;
 	bool hide = false;
 
-    void setBackgroundColour (Colour colour)
+    void setColours (Colour panelBG, Colour labelBG, Colour labelText)
     {
-        backgroundColour = colour;
-        propertyPanelLook->setBackgroundColour (colour);
+        backgroundColour = panelBG;
+        propertyPanelLook->setColours (panelBG, labelBG, labelText);
         repaint();
     }
 

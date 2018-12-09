@@ -121,8 +121,8 @@ CabbagePropertiesPanel::~CabbagePropertiesPanel()
 
 void CabbagePropertiesPanel::buttonClicked(Button *button)
 {
-	hide = true;
-	sendChangeMessage();
+    hide = true;
+    sendChangeMessage();
 }
 void CabbagePropertiesPanel::saveOpenessState()
 {
@@ -292,7 +292,7 @@ void CabbagePropertiesPanel::changeListenerCallback (ChangeBroadcaster* source)
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
-	this->setVisible(false);
+	//this->setVisible(false);
 }
 
 void CabbagePropertiesPanel::textPropertyComponentChanged (TextPropertyComponent* comp)

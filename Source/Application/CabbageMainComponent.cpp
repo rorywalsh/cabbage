@@ -406,17 +406,14 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
     else if (CabbagePropertiesPanel* props = dynamic_cast<CabbagePropertiesPanel*> (source)) // update code when a user changes a property
     {
-        if (CabbagePluginEditor* ed = getCabbagePluginEditor())
+        if (props->hide == true)
         {
-            if (props->hide == true)
-            {
-                props->hide = false;
-                togglePropertyPanel();
-            }
-            else
-            {
-                updateCodeInEditor (ed, true, true);
-            }
+            props->hide = false; // reset the hide status
+            togglePropertyPanel();
+        }
+        else if (CabbagePluginEditor* ed = getCabbagePluginEditor())
+        {
+            updateCodeInEditor (ed, true, true);
         }
     }
 
@@ -577,10 +574,13 @@ void CabbageMainComponent::timerCallback()
 //==============================================================================
 void CabbageMainComponent::updateEditorColourScheme()
 {
-    getLookAndFeel().setColour (PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)));
-    getLookAndFeel().setColour (PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
-    lookAndFeelChanged();
-    propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
+    //getLookAndFeel().setColour (PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)));
+    //getLookAndFeel().setColour (PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
+    //lookAndFeelChanged();
+    //propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
+    propertyPanel->setColours (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)),
+        CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)),
+        CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
     propertyPanel->setBorderColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
 
 	for (auto* tab : fileTabs)
