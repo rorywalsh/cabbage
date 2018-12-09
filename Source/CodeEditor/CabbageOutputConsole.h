@@ -34,6 +34,8 @@ public:
         textEditor->setColour (Label::outlineColourId, Colours::white);
         textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleText, Colours::grey.darker()));
         textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
+        textEditor->setColour (TextEditor::highlightColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground, Colours::grey));
+        textEditor->setColour (TextEditor::highlightedTextColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground, Colours::grey).contrasting(0.8f));
         textEditor->setMultiLine (true);
         textEditor->setReadOnly (true);
 
