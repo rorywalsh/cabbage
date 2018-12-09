@@ -75,7 +75,7 @@ GenericCabbageEditor::GenericCabbageEditor (AudioProcessor& parent)
 
 GenericCabbageEditor::~GenericCabbageEditor()
 {
-
+    setLookAndFeel (nullptr);
 }
 
 void GenericCabbageEditor::resized()
