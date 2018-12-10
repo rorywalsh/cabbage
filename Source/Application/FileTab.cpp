@@ -19,7 +19,7 @@
 
 #include "FileTab.h"
 
-FileTab::FileTab (String name, String filename, bool isCsdFile):
+FileTab::FileTab (String name, String filename, bool isCsdFile, String iconsPathName):
     TextButton (name, filename),
     isCsdFile(isCsdFile),
     csdFile (filename),
@@ -27,6 +27,7 @@ FileTab::FileTab (String name, String filename, bool isCsdFile):
     close ("", DrawableButton::ButtonStyle::ImageStretched),
     showEditor ("", DrawableButton::ButtonStyle::ImageStretched),
     editGUI ("", DrawableButton::ButtonStyle::ImageStretched),
+    iconsPath (iconsPathName),
     overlay()
 {
 
@@ -189,9 +190,11 @@ void FileTab::resized()
     overlay.setBounds (5, 3, 125, 25);
     play.setBounds (5, 3, 60, 25);
     showEditor.setBounds (67, 3, 30, 25);
-    editGUI.setBounds (99, 3, 30, 25);
+    editGUI.setBounds (99, 5, 25, 23);
     close.setBounds (getWidth() - 22, 3, 20, 20);
 }
+
+extern const String getSVGTextFromFile (const String filename);
 
 void FileTab::setDrawableImages (DrawableButton& button, int width, int height, String type)
 {
@@ -220,8 +223,38 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
     }
     else if (type == "editGUI")
     {
-        imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
-        imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));
-        button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr,  &imageNormalPressed, &imageNormalPressed);
+        if (iconsPath == "") // if there is no iconsPath defined, then we fallback on the previous hard-coded icon:
+        {
+            imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
+            imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));
+            button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr, &imageNormalPressed, &imageNormalPressed);
+        }
+        else
+        {
+            String svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-off.svg");
+            ScopedPointer<XmlElement> svgOff (XmlDocument::parse (svgFile));
+
+            svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-on.svg");
+            ScopedPointer<XmlElement> svgOn (XmlDocument::parse (svgFile));
+
+            if (svgOff == nullptr || svgOn == nullptr)
+                jassert (false);
+
+            Drawable* drawableOff = nullptr;
+            Drawable* drawableOn = nullptr;
+
+            if (svgOff != nullptr)
+                drawableOff = Drawable::createFromSVG (*svgOff);
+
+            if (svgOn != nullptr)
+                drawableOn = Drawable::createFromSVG (*svgOn);
+
+            button.setImages (drawableOff, drawableOff, drawableOff, drawableOff, drawableOn, drawableOn, drawableOn, drawableOn);
+        }
     }
+}
+
+void FileTab::setIconsPath(String path)
+{
+    iconsPath = path;
 }
