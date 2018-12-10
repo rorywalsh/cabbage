@@ -420,6 +420,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
         {
             props->hide = false; // reset the hide status
             togglePropertyPanel();
+			saveDocument();
         }
         else if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {

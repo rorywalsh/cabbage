@@ -29,6 +29,7 @@
 #include "../Filters/FilterIOConfiguration.h"
 #include "../Plugins/CabbagePluginEditor.h"
 
+
 class FilterGraph;
 
 //==============================================================================
@@ -102,7 +103,6 @@ public:
     {
 		//mod RW
 		node->getProcessor()->editorBeingDeleted(node->getProcessor()->getActiveEditor());
-        
 		node->properties.set (getOpenProp (type), false);
         activeWindowList.removeObject (this);
     }

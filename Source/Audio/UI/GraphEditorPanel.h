@@ -138,7 +138,6 @@ public:
     //==============================================================================
     void showSidePanel (bool isSettingsPanel);
     void hideLastSidePanel();
-
     BurgerMenuComponent burgerMenu;
 
 private:

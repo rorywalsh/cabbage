@@ -30,6 +30,7 @@
 
 #include "../../Application/CabbageMainComponent.h"
 
+
 //==============================================================================
 #if JUCE_IOS
  class AUScanner
@@ -860,6 +861,8 @@ void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
 		}
 	}
 }
+
+
 void GraphEditorPanel::changeListenerCallback (ChangeBroadcaster*)
 {
     updateComponents();

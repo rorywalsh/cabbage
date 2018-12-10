@@ -180,16 +180,17 @@ public:
 			setName(caption);
 			this->setTitleBarHeight(15);
 			this->setResizable(true, true);
+			
 		}
 
 		void closeButtonPressed() override { setVisible(false); }
-		void paint(Graphics& g)  override { g.fillAll(colour); }
-
+		
 		CabbageMainComponent* getOwner() {
 			return owner;
-		}
+		};
 
 	};
+
 private:
     int getTabFileIndex (int32 nodeId);
     int getTabFileIndex (File file);
@@ -215,6 +216,7 @@ private:
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
     TooltipWindow tooltipWindow;
+
 	ScopedPointer<GraphDocumentComponent> graphComponent;
     ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;
 
