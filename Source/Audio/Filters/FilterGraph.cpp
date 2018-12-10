@@ -178,6 +178,7 @@ PluginWindow* FilterGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node
             && ! node->getProcessor()->getName().contains ("Kontakt")) // Kontakt doesn't behave correctly in DPI unaware mode...
         {
             ScopedDPIAwarenessDisabler disableDPIAwareness;
+			PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
             return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
         }
        #endif
@@ -449,7 +450,7 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 	{
 		const Point<double> pos(xml.getDoubleAttribute("x"), xml.getDoubleAttribute("y"));
 		addCabbagePlugin(pd, pos);
-
+		
 		if (auto* node = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid)))
 			if (auto w = getOrCreateWindowFor(node, PluginWindow::Type::normal))
 				w->toFront(true);

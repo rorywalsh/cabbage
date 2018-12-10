@@ -227,6 +227,7 @@ public:
 		return processor;
 	}
 
+
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);

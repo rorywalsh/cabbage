@@ -340,6 +340,11 @@ void CabbageMainComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //==============================================================================
 void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
+	if (dynamic_cast<PluginWindow*> (source)) // update lookandfeel whenever a user changes colour settings
+	{
+			togglePropertyPanel();
+			saveDocument();
+	}
     if (dynamic_cast<CabbageSettings*> (source)) // update lookandfeel whenever a user changes colour settings
     {
         lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
@@ -763,6 +768,8 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
                 w->setVisible (false);
             else
                 w->toFront (true);
+	
+			w->addChangeListener(this);
 
             const int alwaysOnTop = cabbageSettings->getUserSettings()->getIntValue ("SetAlwaysOnTopPlugin");
 
