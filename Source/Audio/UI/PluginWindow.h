@@ -108,7 +108,8 @@ public:
 		
 
 		node->properties.set (getOpenProp (type), false);
-        //activeWindowList.removeObject (this);
+		setVisible(false);
+		//activeWindowList.removeObject (this);
     }
 
     static String getLastXProp (Type type)    { return "uiLastX_" + getTypeName (type); }

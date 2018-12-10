@@ -342,9 +342,10 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
 	if (dynamic_cast<PluginWindow*> (source)) // update lookandfeel whenever a user changes colour settings
 	{
-			togglePropertyPanel();
-			saveDocument();
+		propertyPanel->setVisible(false);
+		resized();
 	}
+
     if (dynamic_cast<CabbageSettings*> (source)) // update lookandfeel whenever a user changes colour settings
     {
         lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
