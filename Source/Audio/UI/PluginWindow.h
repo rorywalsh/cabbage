@@ -29,13 +29,14 @@
 #include "../Filters/FilterIOConfiguration.h"
 #include "../Plugins/CabbagePluginEditor.h"
 
+
 class FilterGraph;
 
 //==============================================================================
 /**
     A desktop window containing a plugin's GUI.
 */
-class PluginWindow  : public DocumentWindow
+class PluginWindow  : public DocumentWindow, public ChangeBroadcaster
 {
 public:
     enum class Type
@@ -92,6 +93,7 @@ public:
         clearContentComponent();
     }
 
+
     void moved() override
     {
         node->properties.set (getLastXProp (type), getX());
@@ -101,10 +103,13 @@ public:
     void closeButtonPressed() override
     {
 		//mod RW
+		sendChangeMessage();
 		node->getProcessor()->editorBeingDeleted(node->getProcessor()->getActiveEditor());
-        
+		
+
 		node->properties.set (getOpenProp (type), false);
-        activeWindowList.removeObject (this);
+		setVisible(false);
+		//activeWindowList.removeObject (this);
     }
 
     static String getLastXProp (Type type)    { return "uiLastX_" + getTypeName (type); }

@@ -340,6 +340,12 @@ void CabbageMainComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //==============================================================================
 void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
+	if (dynamic_cast<PluginWindow*> (source)) // update lookandfeel whenever a user changes colour settings
+	{
+		propertyPanel->setVisible(false);
+		resized();
+	}
+
     if (dynamic_cast<CabbageSettings*> (source)) // update lookandfeel whenever a user changes colour settings
     {
         lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
@@ -420,6 +426,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
         {
             props->hide = false; // reset the hide status
             togglePropertyPanel();
+			saveDocument();
         }
         else if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
@@ -643,7 +650,7 @@ void CabbageMainComponent::addFileTab (File file)
 {
 
     FileTab* fileButton;
-    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd")));
+    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd"), cabbageSettings->getUserSettings()->getValue("CustomIconsDir")));
 
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
@@ -762,6 +769,8 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
                 w->setVisible (false);
             else
                 w->toFront (true);
+	
+			w->addChangeListener(this);
 
             const int alwaysOnTop = cabbageSettings->getUserSettings()->getIntValue ("SetAlwaysOnTopPlugin");
 
