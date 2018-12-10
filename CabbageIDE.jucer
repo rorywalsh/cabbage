@@ -127,6 +127,10 @@
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="coSsb2" name="CabbageLookAndFeel2.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
+        <FILE id="AN23Yc" name="FlatButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.cpp"/>
+        <FILE id="XTxDIU" name="PropertyPanelLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.cpp"/>
       </GROUP>
       <GROUP id="{69E35355-3DAC-F5B2-4CD9-1629400BE29F}" name="Settings">
         <FILE id="JnuR22" name="CabbageSettings.cpp" compile="1" resource="0"
