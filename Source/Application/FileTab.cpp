@@ -239,19 +239,23 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
 
             if (svgOff == nullptr || svgOn == nullptr)
                 jassert (false);
-
-            Drawable* drawableOff = nullptr;
-            Drawable* drawableOn = nullptr;
-
+            
             if (svgOff != nullptr)
-                drawableOff = Drawable::createFromSVG (*svgOff);
-
+                drawable_editGUIoff = Drawable::createFromSVG (*svgOff);
+            
             if (svgOn != nullptr)
-                drawableOn = Drawable::createFromSVG (*svgOn);
+                drawable_editGUIon = Drawable::createFromSVG (*svgOn);
 
-            button.setImages (drawableOff, drawableOff, drawableOff, drawableOff, drawableOn, drawableOn, drawableOn, drawableOn);
+            button.setImages (drawable_editGUIoff, drawable_editGUIoff, drawable_editGUIoff, drawable_editGUIoff,
+                drawable_editGUIon, drawable_editGUIon, drawable_editGUIon, drawable_editGUIon);
         }
     }
+}
+
+FileTab::~FileTab()
+{
+    delete drawable_editGUIoff;
+    delete drawable_editGUIon;
 }
 
 void FileTab::setIconsPath(String path)
