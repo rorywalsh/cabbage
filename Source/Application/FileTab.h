@@ -27,6 +27,7 @@ class FileTab : public TextButton
     DrawableButton play, close, showEditor, editGUI;
     File csdFile;
 	Colour fileBarBackground, fileTabBackground, fileTabText;
+    String iconsPath;
 
     class Overlay : public Component
     {
@@ -46,9 +47,10 @@ class FileTab : public TextButton
 public:
 
 
-    FileTab (String name, String filename, bool isCsdFile=true);
+    FileTab (String name, String filename, bool isCsdFile=true, String iconsPathName="");
     const String getFilename();
 
+    void setIconsPath(String path);
     void drawButtonShape (Graphics& g, const Path& outline, Colour baseColour, float height);
     void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
     void addButtonListeners (Button::Listener* listener);
