@@ -72,7 +72,7 @@ static const String getSVGTextFromMemory (const void* svg, size_t size)
     return svgStream.readString();
 }
 
-static const String getSVGTextFromFile (const String filename)
+const String getSVGTextFromFile (const String filename)
 {
     File svgFile (filename);
     if (!svgFile.existsAsFile())

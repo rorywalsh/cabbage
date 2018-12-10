@@ -643,7 +643,7 @@ void CabbageMainComponent::addFileTab (File file)
 {
 
     FileTab* fileButton;
-    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd")));
+    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd"), cabbageSettings->getUserSettings()->getValue("CustomIconsDir")));
 
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
