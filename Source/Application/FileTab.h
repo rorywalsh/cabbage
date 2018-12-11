@@ -29,6 +29,9 @@ class FileTab : public TextButton
 	Colour fileBarBackground, fileTabBackground, fileTabText;
     String iconsPath;
 
+    Drawable* drawable_editGUIoff = nullptr;
+    Drawable* drawable_editGUIon = nullptr;
+
     class Overlay : public Component
     {
     public:
@@ -48,6 +51,8 @@ public:
 
 
     FileTab (String name, String filename, bool isCsdFile=true, String iconsPathName="");
+    ~FileTab ();
+
     const String getFilename();
 
     void setIconsPath(String path);

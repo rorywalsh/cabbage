@@ -371,7 +371,9 @@ void CabbageSettingsWindow::resized()
 void CabbageSettingsWindow::paint (Graphics& g)
 {
     Rectangle<int> r (getLocalBounds());
-    g.fillAll (Colour (147, 210, 0));
+	g.fillAll(CabbageSettings::getColourFromValueTree(settings.getValueTree(), CabbageColourIds::menuBarBackground, Colour(147, 210, 0)));
+	//lime green
+    //g.fillAll (Colour (147, 210, 0));
     g.setColour (Colours::black.withAlpha (.1f));
     g.fillRect (r.withLeft (90));
     g.setFont (Font (18, 1));
