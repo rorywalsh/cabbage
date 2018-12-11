@@ -343,6 +343,8 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 	if (dynamic_cast<PluginWindow*> (source)) // update lookandfeel whenever a user changes colour settings
 	{
 		propertyPanel->setVisible(false);
+        getFileTab(getCurrentFileIndex())->getEditGUIButton().setToggleState(false, dontSendNotification);
+        isGUIEnabled = false;
 		resized();
 	}
 
@@ -427,6 +429,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
             props->hide = false; // reset the hide status
             togglePropertyPanel();
 			saveDocument();
+            getFileTab(getCurrentFileIndex())->getEditGUIButton().setToggleState(false, dontSendNotification);
         }
         else if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
