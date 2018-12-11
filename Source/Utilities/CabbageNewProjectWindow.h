@@ -69,13 +69,7 @@ public:
 
     void buttonClicked (Button* button);
 
-    void paint (Graphics& g)  override
-    {
-        g.fillAll (Colour (147, 210, 0));
-        g.setColour (Colours::white);
-        g.setFont (Font (20));
-        g.drawFittedText (information, 0, 200, getWidth(), 100, Justification::centred, 10);
-    }
+	void paint(Graphics& g)  override;
 
     void resized() override
     {
