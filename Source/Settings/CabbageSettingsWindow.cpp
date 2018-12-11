@@ -59,6 +59,10 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     propertyPanelLook->setColours(bgColour, labelBgColour, labelTextColour);
     miscPanel.setLookAndFeel(propertyPanelLook);
     colourPanel.setLookAndFeel(propertyPanelLook);
+    audioDeviceSelector->getLookAndFeel().setColour(Label::ColourIds::textColourId, labelTextColour);
+    audioDeviceSelector->getLookAndFeel().setColour(ListBox::ColourIds::textColourId, labelTextColour);
+    audioDeviceSelector->getLookAndFeel().setColour(ListBox::ColourIds::outlineColourId, labelBgColour.contrasting(0.5f));
+    audioDeviceSelector->lookAndFeelChanged();
 
     saveRepoButton.addListener (this);
     deleteRepoButton.addListener (this);
