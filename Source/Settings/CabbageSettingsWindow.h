@@ -27,6 +27,7 @@
 #include "../Utilities/CabbageUtilities.h"
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../CodeEditor/CsoundTokeniser.h"
+#include "../LookAndFeel/PropertyPanelLookAndFeel.h"
 
 
 class CabbageSettingsWindow :
@@ -47,6 +48,8 @@ public:
         colourPanel.clear();
         miscPanel.clear();
         setLookAndFeel (nullptr);
+        miscPanel.setLookAndFeel (nullptr);
+        colourPanel.setLookAndFeel (nullptr);
     };
 
     CabbageSettings& settings;
@@ -107,6 +110,8 @@ public:
 
 private:
     PropertyPanel colourPanel, miscPanel;
+    ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
+    Colour bgColour, labelBgColour, labelTextColour;
 
     ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;

@@ -38,7 +38,7 @@ static void addCustomListener (Array<PropertyComponent*> comps, CabbageSettingsW
     }
 }
 
-CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice):
+CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice) :
     Component (""),
     settings (settings),
     listBox (this),
@@ -52,6 +52,14 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     deleteRepoButton ("Delete/Remove"),
     saveRepoButton ("Save/Update")
 {
+    bgColour = CabbageSettings::getColourFromValueTree (settings.getValueTree(), CabbageColourIds::menuBarBackground, Colour (147, 210, 0));
+    labelBgColour = bgColour.contrasting(0.05f);
+    labelTextColour = labelBgColour.contrasting(0.85f);
+    propertyPanelLook = new PropertyPanelLookAndFeel();
+    propertyPanelLook->setColours(bgColour, labelBgColour, labelTextColour);
+    miscPanel.setLookAndFeel(propertyPanelLook);
+    colourPanel.setLookAndFeel(propertyPanelLook);
+
     saveRepoButton.addListener (this);
     deleteRepoButton.addListener (this);
     addColourProperties();
@@ -102,6 +110,7 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     CabbageUtilities::setImagesForButton (&codeRepoButton, codeSettingsImage);
 
     listBox.setDefaultItem();
+
 }
 
 void CabbageSettingsWindow::addColourProperties()
@@ -370,14 +379,14 @@ void CabbageSettingsWindow::resized()
 
 void CabbageSettingsWindow::paint (Graphics& g)
 {
-    Rectangle<int> r (getLocalBounds());
-	g.fillAll(CabbageSettings::getColourFromValueTree(settings.getValueTree(), CabbageColourIds::menuBarBackground, Colour(147, 210, 0)));
+    Rectangle<int> r (getLocalBounds());   
+	g.fillAll (bgColour);
 	//lime green
     //g.fillAll (Colour (147, 210, 0));
     g.setColour (Colours::black.withAlpha (.1f));
     g.fillRect (r.withLeft (90));
     g.setFont (Font (18, 1));
-    g.setColour (Colours::black);
+    g.setColour (labelTextColour);//(Colours::black);
 
     if (miscPanel.isVisible())
         g.drawFittedText ("Miscellaneous", 100, 10, r.getWidth() - 100, 20, Justification::centred, 1);
