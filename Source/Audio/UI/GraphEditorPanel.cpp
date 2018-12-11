@@ -912,7 +912,7 @@ void GraphEditorPanel::updateComponents()
 void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 {
 	//mod RW
-	if (auto* mainComponent = findParentComponentOfClass<CabbageMainComponent>())
+	if (auto* graphWindow = findParentComponentOfClass<CabbageMainComponent::FilterGraphDocumentWindow>())
 	{
 		Uuid uniqueID;
 		Array<File> exampleFiles;
@@ -920,10 +920,10 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 		PopupMenu m, subMenu1, subMenu2;
 		CabbageLookAndFeel2 lookAndFeel;
 		m.setLookAndFeel (&lookAndFeel);
-		const String examplesDir = mainComponent->getCabbageSettings()->getUserSettings()->getValue("CabbageExamplesDir", "");
+		const String examplesDir = graphWindow->getOwner()->getCabbageSettings()->getUserSettings()->getValue("CabbageExamplesDir", "");
 		CabbageUtilities::addExampleFilesToPopupMenu(subMenu1, exampleFiles, examplesDir, "*.csd", 3000);
 
-		const String userFilesDir = mainComponent->getCabbageSettings()->getUserSettings()->getValue("UserFilesDir", "");
+		const String userFilesDir = graphWindow->getOwner()->getCabbageSettings()->getUserSettings()->getValue("UserFilesDir", "");
 		CabbageUtilities::addFilesToPopupMenu(subMenu2, userFiles, userFilesDir, 10000);
 
 		m.addItem(1, "Open file..");
@@ -933,24 +933,24 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 
 		if (r == 1)
 		{
-			File newlyOpenedFile = mainComponent->openFile();
+			File newlyOpenedFile = graphWindow->getOwner()->openFile();
 
 			if (newlyOpenedFile.existsAsFile())
 			{
-				mainComponent->runCsoundForNode(newlyOpenedFile.getFullPathName());
+				graphWindow->getOwner()->runCsoundForNode(newlyOpenedFile.getFullPathName());
 			}
 		}
 
 		else if (r > 1 && r < 10000)
 		{
-			mainComponent->openFile(exampleFiles[r - 3000].getFullPathName());
-			mainComponent->runCsoundForNode(exampleFiles[r - 3000].getFullPathName(), Point<int>(mousePos));
+			graphWindow->getOwner()->openFile(exampleFiles[r - 3000].getFullPathName());
+			graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName(), Point<int>(mousePos));
 		}
 
 		else if (r >= 10000)
 		{
-			mainComponent->openFile(userFiles[r - 10000].getFullPathName());
-			mainComponent->runCsoundForNode(userFiles[r - 10000].getFullPathName(), Point<int>(mousePos));
+			graphWindow->getOwner()->openFile(userFiles[r - 10000].getFullPathName());
+			graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName(), Point<int>(mousePos));
 		}
 
 		m.setLookAndFeel(nullptr);
