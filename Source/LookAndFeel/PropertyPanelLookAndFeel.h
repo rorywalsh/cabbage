@@ -1,3 +1,4 @@
+#pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../CabbageCommonHeaders.h"
 
