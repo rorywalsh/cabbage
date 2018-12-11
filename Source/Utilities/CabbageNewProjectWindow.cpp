@@ -49,6 +49,15 @@ CabbageProjectWindow::CabbageProjectWindow (CabbageMainComponent* owner):
 
 }
 
+void CabbageProjectWindow::paint(Graphics& g)
+{
+	g.fillAll(CabbageSettings::getColourFromValueTree(owner->getCabbageSettings()->getValueTree(), CabbageColourIds::menuBarBackground, Colour(147, 210, 0)));
+	//g.fillAll(Colour(147, 210, 0));
+	g.setColour(Colours::white);
+	g.setFont(Font(20));
+	g.drawFittedText(information, 0, 200, getWidth(), 100, Justification::centred, 10);
+}
+
 void CabbageProjectWindow::writeNewFile (File fc, String fileText)
 {
     fc.replaceWithText (fileText);
