@@ -301,6 +301,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
                         String pluginName = cabbagePlugin->getPluginName();
                         w->setName (pluginName.length() > 0 ? pluginName : "Plugin has no name?");
                         w->toFront (true);
+                        w->setVisible (true);
                     }
             }
 
