@@ -285,18 +285,18 @@
                        osxArchitecture="64BitUniversal"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
-        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
-        <MODULEPATH id="juce_graphics" path="../../juce"/>
-        <MODULEPATH id="juce_events" path="../../juce"/>
-        <MODULEPATH id="juce_data_structures" path="../../juce"/>
-        <MODULEPATH id="juce_cryptography" path="../../juce"/>
-        <MODULEPATH id="juce_core" path="../../juce"/>
-        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
-        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
-        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/"/>
+        <MODULEPATH id="juce_events" path="../JUCE/"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/"/>
+        <MODULEPATH id="juce_core" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <XCODE_IPHONE targetFolder="Builds/iOS" iosScreenOrientation="portraitlandscape"
@@ -312,18 +312,18 @@
                        headerPath="/Users/walshr/sourcecode/csound-iOS/headers"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
-        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
-        <MODULEPATH id="juce_graphics" path="../../juce"/>
-        <MODULEPATH id="juce_events" path="../../juce"/>
-        <MODULEPATH id="juce_data_structures" path="../../juce"/>
-        <MODULEPATH id="juce_cryptography" path="../../juce"/>
-        <MODULEPATH id="juce_core" path="../../juce"/>
-        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
-        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
-        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/"/>
+        <MODULEPATH id="juce_events" path="../JUCE/"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/"/>
+        <MODULEPATH id="juce_core" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
     </XCODE_IPHONE>
   </EXPORTFORMATS>
