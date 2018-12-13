@@ -41,6 +41,10 @@
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="qJE9Tz" name="CabbageLookAndFeel2.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
+        <FILE id="WUDaac" name="FlatButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.cpp"/>
+        <FILE id="TbwKgk" name="PropertyPanelLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.cpp"/>
       </GROUP>
       <GROUP id="{F4FCCAC1-CEFF-BD54-F444-D73A9CA83E58}" name="Plugins">
         <FILE id="jvNulP" name="CabbageCsoundBreakpointData.h" compile="0"
