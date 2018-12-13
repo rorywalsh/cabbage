@@ -278,7 +278,7 @@ private:
     bool showScrollbars = false;
     CabbageLookAndFeel2 lookAndFeel;
     int newlyAddedWidgetIndex = 10000;
-    TooltipWindow tooltipWindow;
+    //TooltipWindow tooltipWindow;
     bool editModeEnabled = false;
     CabbagePluginProcessor& processor;
     String instrumentName;

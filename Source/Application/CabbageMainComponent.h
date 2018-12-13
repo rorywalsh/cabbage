@@ -215,7 +215,7 @@ private:
     const int toolbarThickness = 35;
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
-    TooltipWindow tooltipWindow;
+    //TooltipWindow tooltipWindow;
 
 	ScopedPointer<GraphDocumentComponent> graphComponent;
     ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;
