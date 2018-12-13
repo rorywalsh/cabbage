@@ -15,6 +15,7 @@ clone_folder: c:\cabbage
 
 # scripts that run after cloning repository
 install:
+  - cmd: git checkout develop
   - cmd: dir  
   - cmd: cd c:/
   - ps: Start-FileDownload 'https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.12.0.zip'
@@ -97,17 +98,5 @@ artifacts:
   - path: Builds/VisualStudio2017/Output/Cabbage64Setup.exe
   - path: logs
 
-deploy:
-- provider: BinTray
-  username: rorywalsh
-  api_key:
-    secure: gMAIlZljfEQMFSNZse9AY9nuelv0siT2X5N0ZTFhhKCew8NKWNHeizWlbdMeggi7
-  subject: rorywalsh
-  repo: Cabbage
-  package: CabbageWin64
-  version: beta
-  publish: true
-  override: true
-  explode: true
 
   
