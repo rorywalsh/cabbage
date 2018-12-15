@@ -76,7 +76,7 @@ CabbageMainComponent::~CabbageMainComponent()
 void CabbageMainComponent::paint (Graphics& g)
 {
     if (editorAndConsole.size() == 0)
-        g.drawImage (bgImage, getLocalBounds().toFloat());
+        g.drawImage (bgImage, getLocalBounds().toFloat().withWidth(getWidth()));
 	else
 	{
 		g.fillAll(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::fileTabBar, Colour(50, 50, 50)));
@@ -353,6 +353,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
     {
         lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
         lookAndFeelChanged();
+        owner->setColour(owner->backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
         owner->lookAndFeelChanged();
         updateEditorColourScheme();
     }
@@ -628,24 +629,26 @@ Image CabbageMainComponent::createBackground()
     Image backgroundImg;
     backgroundImg = Image (Image::RGB, getWidth(), getHeight(), true);
     ScopedPointer<Drawable> drawable;
-    const int whiteScale = 150;
+    const Colour colour(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::fileTabBar, Colour(50, 50, 50)));
     Graphics g (backgroundImg);
     {
-        g.fillAll (Colour (whiteScale, whiteScale, whiteScale));
-        Random pos, width, colour;
+		g.fillAll(colour);
+        Random pos, width, randBrightness;
 
         for (int i = 0; i < getWidth();)
         {
-            const int brightness = colour.nextInt (Range<int> (whiteScale, whiteScale + 5));
-            g.setColour (Colour (brightness, brightness, brightness));
+            const int brightness = randBrightness.nextFloat();
+            g.setColour (colour.darker(brightness*.2));
             g.drawLine (i, 0, i + width.nextInt (Range<int> (0, 10)), getHeight() );
             g.drawLine (0, i, getWidth(), i + width.nextInt (Range<int> (0, 10)));
             i += pos.nextInt (Range<int> (0, 5));
         }
 
         const Image cabbageLogo = ImageCache::getFromMemory (CabbageBinaryData::CabbageLogoBig_png, CabbageBinaryData::CabbageLogoBig_pngSize);
-        g.drawImage (cabbageLogo, getLocalBounds().toFloat(), RectanglePlacement::Flags::doNotResize);
-        return backgroundImg;
+		//g.drawImage(cabbageLogo, 400, 400, 400, 400, 0, 0, cabbageLogo.getWidth(), cabbageLogo.getHeight(), RectanglePlacement::Flags::doNotResize);
+		//g.drawImage(cabbageLogo, getLocalBounds().reduced(.01f, .05f).toFloat(), RectanglePlacement::Flags::onlyReduceInSize);
+		g.drawImage(cabbageLogo, {getWidth()/2.f - 175, 200, 350, 400}, RectanglePlacement::Flags::stretchToFit);
+		return backgroundImg;
     }
 }
 
@@ -743,7 +746,6 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
-	//addChildComponent(filterGraphWindow);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
