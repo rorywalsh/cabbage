@@ -35,10 +35,13 @@ class FileTab : public TextButton
     class Overlay : public Component
     {
     public:
-        Overlay(): Component() {}
+        Overlay() : Component() {}
+
+        Colour overlayColour = Colours::black;
+
         void paint (Graphics& g)  override
         {
-            g.fillAll (Colours::black.withAlpha (.5f));
+            g.fillAll (overlayColour.withAlpha (.7f));
         }
     };
 
@@ -65,6 +68,7 @@ public:
     void drawButtonText (Graphics& g);
 	void setButtonColour(Colour colour) {
 		buttonColour = colour;
+        overlay.overlayColour = colour;
 	}
 	void setFontColour(Colour colour) {
 		fontColour = colour;

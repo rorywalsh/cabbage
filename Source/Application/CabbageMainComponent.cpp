@@ -667,6 +667,7 @@ void CabbageMainComponent::addFileTab (File file)
     fileButton->setToggleState (true, dontSendNotification);
     currentFileIndex = fileTabs.size() - 1;
     fileButton->addButtonListeners (this);
+    fileButton->setButtonColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::fileTabButton, Colour(50, 50, 50)));
 
     for ( auto button : fileTabs )
     {
