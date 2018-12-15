@@ -20,7 +20,7 @@ public:
     CabbageLookAndFeel2();
     ~CabbageLookAndFeel2() {};
 
-    float titlebarContrastingGradient; // 0.0: no gradient in the titlebar - 1.0: max contrasting gradient
+    float titlebarContrastingGradient = 0; // 0.0: no gradient in the titlebar - 1.0: max contrasting gradient
 
     void drawDocumentWindowTitleBar (DocumentWindow& window, Graphics& g,
 		int w, int h, int titleSpaceX, int titleSpaceW,

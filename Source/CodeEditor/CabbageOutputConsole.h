@@ -66,6 +66,8 @@ public:
 #ifndef CabbageLite
         textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleText, Colours::grey.darker()));
         textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleBackground, Colours::grey.darker()));
+        textEditor->setColour (ScrollBar::ColourIds::thumbColourId,
+            CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleBackground, Colours::white).contrasting (.1f));
         repaint();
 #else
         textEditor->setColour (TextEditor::textColourId, Colours::green);

@@ -94,14 +94,14 @@ void CabbageIDELookAndFeel::drawPopupMenuItem (Graphics& g, const Rectangle<int>
 
         Font font (getPopupMenuFont());
 
-        const float maxFontHeight = area.getHeight() / 1.3f;
+        const float maxFontHeight = area.getHeight() / 1.4f;
 
         if (font.getHeight() > maxFontHeight)
             font.setHeight (maxFontHeight);
 
         g.setFont (font);
 
-        Rectangle<float> iconArea (r.removeFromLeft ((r.getHeight() * 5) / 4).reduced (3).toFloat());
+        Rectangle<float> iconArea (r.removeFromLeft ((r.getHeight() * 3/*5*/) / 4).reduced (3).toFloat());
 
         if (icon != nullptr)
         {
