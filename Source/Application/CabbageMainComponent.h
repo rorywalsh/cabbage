@@ -106,6 +106,9 @@ public:
     void handleFileTab (FileTab* drawableButton, bool icrement = false) ;
     void addFileTab (File file);
     void arrangeFileTabs();
+	void importTheme();
+	void exportTheme();
+
     int getNumberOfFileTabs() {     return fileTabs.size();  };
     FileTab* getFileTab(int index){  return fileTabs[index]; };
     FileTab* getFileTabForNodeId(AudioProcessorGraph::NodeID nodeId)
