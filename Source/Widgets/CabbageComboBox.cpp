@@ -55,7 +55,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
 
     addItemsToCombobox (wData);
 
-    if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string")
+    if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string" &&
+		!CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filetype).contains("snaps"))
     {
         isStringCombo = true;
 

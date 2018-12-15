@@ -29,7 +29,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     : cabbageSettings (settings),
       owner (owner),
       factory (this),
-      tooltipWindow (this, 300),
+      //tooltipWindow (this, 300),
       cycleTabsButton ("...")
 {
 
@@ -301,6 +301,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
                         String pluginName = cabbagePlugin->getPluginName();
                         w->setName (pluginName.length() > 0 ? pluginName : "Plugin has no name?");
                         w->toFront (true);
+                        w->setVisible (true);
                     }
             }
 
@@ -343,6 +344,8 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 	if (dynamic_cast<PluginWindow*> (source)) // update lookandfeel whenever a user changes colour settings
 	{
 		propertyPanel->setVisible(false);
+        getFileTab(getCurrentFileIndex())->getEditGUIButton().setToggleState(false, dontSendNotification);
+        isGUIEnabled = false;
 		resized();
 	}
 
@@ -427,6 +430,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
             props->hide = false; // reset the hide status
             togglePropertyPanel();
 			saveDocument();
+            getFileTab(getCurrentFileIndex())->getEditGUIButton().setToggleState(false, dontSendNotification);
         }
         else if (CabbagePluginEditor* ed = getCabbagePluginEditor())
         {
@@ -739,6 +743,7 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
+	//addChildComponent(filterGraphWindow);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()
