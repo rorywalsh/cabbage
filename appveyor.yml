@@ -66,7 +66,7 @@ install:
 
 branches:
   only:
-    - master
+    - develop
     
 build:
   project: c:/cabbage/Builds/VisualStudio2017/Cabbage.sln
@@ -97,17 +97,5 @@ artifacts:
   - path: Builds/VisualStudio2017/Output/Cabbage64Setup.exe
   - path: logs
 
-deploy:
-- provider: BinTray
-  username: rorywalsh
-  api_key:
-    secure: gMAIlZljfEQMFSNZse9AY9nuelv0siT2X5N0ZTFhhKCew8NKWNHeizWlbdMeggi7
-  subject: rorywalsh
-  repo: Cabbage
-  package: CabbageWin64
-  version: beta
-  publish: true
-  override: true
-  explode: true
 
   

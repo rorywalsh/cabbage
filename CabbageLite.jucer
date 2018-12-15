@@ -41,6 +41,10 @@
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="qJE9Tz" name="CabbageLookAndFeel2.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
+        <FILE id="WUDaac" name="FlatButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.cpp"/>
+        <FILE id="TbwKgk" name="PropertyPanelLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.cpp"/>
       </GROUP>
       <GROUP id="{F4FCCAC1-CEFF-BD54-F444-D73A9CA83E58}" name="Plugins">
         <FILE id="jvNulP" name="CabbageCsoundBreakpointData.h" compile="0"
@@ -241,7 +245,7 @@
       </MODULEPATHS>
     </LINUX_MAKE>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1&#10;Cabbage_Lite=1"
-            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1">
+            externalLibraries="csound64.lib" windowsTargetPlatformVersion="10.0.17763.0">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="CabbageLite" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
@@ -281,18 +285,18 @@
                        osxArchitecture="64BitUniversal"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
-        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
-        <MODULEPATH id="juce_graphics" path="../../juce"/>
-        <MODULEPATH id="juce_events" path="../../juce"/>
-        <MODULEPATH id="juce_data_structures" path="../../juce"/>
-        <MODULEPATH id="juce_cryptography" path="../../juce"/>
-        <MODULEPATH id="juce_core" path="../../juce"/>
-        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
-        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
-        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/"/>
+        <MODULEPATH id="juce_events" path="../JUCE/"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/"/>
+        <MODULEPATH id="juce_core" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <XCODE_IPHONE targetFolder="Builds/iOS" iosScreenOrientation="portraitlandscape"
@@ -308,18 +312,18 @@
                        headerPath="/Users/walshr/sourcecode/csound-iOS/headers"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
-        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
-        <MODULEPATH id="juce_graphics" path="../../juce"/>
-        <MODULEPATH id="juce_events" path="../../juce"/>
-        <MODULEPATH id="juce_data_structures" path="../../juce"/>
-        <MODULEPATH id="juce_cryptography" path="../../juce"/>
-        <MODULEPATH id="juce_core" path="../../juce"/>
-        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
-        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
-        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/"/>
+        <MODULEPATH id="juce_events" path="../JUCE/"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/"/>
+        <MODULEPATH id="juce_core" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
     </XCODE_IPHONE>
   </EXPORTFORMATS>

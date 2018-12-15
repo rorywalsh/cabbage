@@ -61,12 +61,13 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
             listBox.selectRow (getValue() - 1, dontSendNotification);
         }
     }
+	resized();
 
 }
 
 void CabbageListBox::resized()
 {
-    listBox.setBounds(getLocalBounds());
+    listBox.setBounds(getLocalBounds().withHeight(20*getNumRows()));
 }
 
 void CabbageListBox::paint(Graphics& g)
