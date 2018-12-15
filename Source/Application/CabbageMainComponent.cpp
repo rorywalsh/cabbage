@@ -23,6 +23,7 @@
 #include "../Utilities/CabbageSSHFileBrowser.h"
 #include "../Audio/UI/PluginWindow.h"
 #include "../Audio/Filters/InternalFilters.h"
+#include "../Utilities/CabbageStrings.h"
 
 //==============================================================================
 CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings)
@@ -87,6 +88,26 @@ void CabbageMainComponent::paint (Graphics& g)
 //===============================================================================================================
 void CabbageMainComponent::exportTheme()
 {
+	FileChooser fc("Export theme XML", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.xml", CabbageUtilities::shouldUseNativeBrowser());
+
+	if (fc.browseForFileToSave(true))
+	{
+		//doing this manually as the settings file fails some XML tests...
+		File themeFile(fc.getResult());
+		StringArray theme;
+		String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PROPERTIES>";
+		theme.addLines(xmlHeader);
+		const StringArray colourIDStrings = CabbageStrings::getColourIDStrings();
+
+		for (int i = 0; i < colourIDStrings.size(); i++)
+		{
+			const auto colourValue = cabbageSettings->getValueTree().getChildWithName("Colours").getProperty(colourIDStrings[i]);
+			theme.add("<VALUE name=\"Colours_" + colourIDStrings[i] + "\" val=\"" + colourValue.toString() + "\"/>");
+		}
+		
+		theme.add("</PROPERTIES>");
+		themeFile.replaceWithText(theme.joinIntoString("\n"));
+	}
 }
 
 void CabbageMainComponent::importTheme()
@@ -99,14 +120,12 @@ void CabbageMainComponent::importTheme()
 		XmlDocument myDocument(fc.getResult());
 		std::unique_ptr<XmlElement> myElement(myDocument.getDocumentElement());
 
-
-		// now we'll iterate its sub-elements looking for 'giraffe' elements..
 		forEachXmlChildElement(*myElement, e)
 		{
 			cabbageSettings->setProperty(e->getStringAttribute("name"), e->getStringAttribute("val"));	
 		}
-		//CabbageUtilities::debug(File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Themes/" + fc.getResult().getFileNameWithoutExtension());
-		cabbageSettings->setProperty("CustomIconsDir", File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Themes/" + fc.getResult().getFileNameWithoutExtension());
+		
+		cabbageSettings->setProperty("CustomIconsDir", fc.getResult().getParentDirectory().getFullPathName());
 	}
 }
 //=====================================================================================================================
