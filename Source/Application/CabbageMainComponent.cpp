@@ -629,7 +629,7 @@ Image CabbageMainComponent::createBackground()
     Image backgroundImg;
     backgroundImg = Image (Image::RGB, getWidth(), getHeight(), true);
     ScopedPointer<Drawable> drawable;
-    const Colour colour(47, 79, 79);
+    const Colour colour(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::fileTabBar, Colour(50, 50, 50)));
     Graphics g (backgroundImg);
     {
 		g.fillAll(colour);
@@ -645,6 +645,8 @@ Image CabbageMainComponent::createBackground()
         }
 
         const Image cabbageLogo = ImageCache::getFromMemory (CabbageBinaryData::CabbageLogoBig_png, CabbageBinaryData::CabbageLogoBig_pngSize);
+		//g.drawImage(cabbageLogo, 400, 400, 400, 400, 0, 0, cabbageLogo.getWidth(), cabbageLogo.getHeight(), RectanglePlacement::Flags::doNotResize);
+		//g.drawImage(cabbageLogo, getLocalBounds().reduced(.01f, .05f).toFloat(), RectanglePlacement::Flags::onlyReduceInSize);
 		g.drawImage(cabbageLogo, {getWidth()/2.f - 175, 200, 350, 400}, RectanglePlacement::Flags::stretchToFit);
 		return backgroundImg;
     }
