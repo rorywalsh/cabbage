@@ -60,6 +60,11 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
         }
     }
 
+	const Colour backgroundColour = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
+	
+	listBox.setColour(ScrollBar::backgroundColourId, Colours::red);
+	listBox.setColour(ListBox::backgroundColourId, backgroundColour);
+	//listBox.lookAndFeelChanged();
 	resized();
 
 }
@@ -67,11 +72,6 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
 void CabbageListBox::resized()
 {
     listBox.setBounds(getLocalBounds());
-}
-
-void CabbageListBox::paint(Graphics& g)
-{
-    g.fillAll(Colour::fromString(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
 }
 
 void CabbageListBox::addItemsToListbox (ValueTree wData, bool refreshedFromDisk)

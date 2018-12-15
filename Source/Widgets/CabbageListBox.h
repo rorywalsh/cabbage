@@ -56,7 +56,7 @@ public:
                            int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged (int /*lastRowselected*/) override;
     void addItemsToListbox (ValueTree wData, bool refreshedFromDisk);
-    void paint(Graphics& g) override;
+    //void paint(Graphics& g) override;
     void resized();
 
 

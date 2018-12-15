@@ -645,8 +645,6 @@ Image CabbageMainComponent::createBackground()
         }
 
         const Image cabbageLogo = ImageCache::getFromMemory (CabbageBinaryData::CabbageLogoBig_png, CabbageBinaryData::CabbageLogoBig_pngSize);
-		//g.drawImage(cabbageLogo, 400, 400, 400, 400, 0, 0, cabbageLogo.getWidth(), cabbageLogo.getHeight(), RectanglePlacement::Flags::doNotResize);
-		//g.drawImage(cabbageLogo, getLocalBounds().reduced(.01f, .05f).toFloat(), RectanglePlacement::Flags::onlyReduceInSize);
 		g.drawImage(cabbageLogo, {getWidth()/2.f - 175, 200, 350, 400}, RectanglePlacement::Flags::stretchToFit);
 		return backgroundImg;
     }
