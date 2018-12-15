@@ -353,6 +353,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
     {
         lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
         lookAndFeelChanged();
+        owner->setColour(owner->backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
         owner->lookAndFeelChanged();
         updateEditorColourScheme();
     }
@@ -743,7 +744,6 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
-	//addChildComponent(filterGraphWindow);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()

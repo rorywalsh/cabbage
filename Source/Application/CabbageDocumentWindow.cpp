@@ -29,29 +29,29 @@ enum
 };
 
 //=================================================================================================================
-CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLineParams)  : DocumentWindow (name,
-            Colours::lightgrey,
-            DocumentWindow::allButtons),
-    lookAndFeel (new LookAndFeel_V3()),
+CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLineParams) : DocumentWindow (name,
+    Colours::lightgrey,
+    DocumentWindow::allButtons),
+    lookAndFeel (new FlatButtonLookAndFeel()),
     commandLineArgs (commandLineParams),
-                                                                                        pluginExporter()
-
+    pluginExporter()
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
-    setUsingNativeTitleBar (true);
+    setUsingNativeTitleBar (false/*true*/);
+    setTitleBarHeight (20);
     setResizable (true, true);
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
-
 
     Desktop::getInstance().setDefaultLookAndFeel (lookAndFeel); //set default look and feel for project
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
 
     initSettings();
+    setColour (backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
     content->propertyPanel->setVisible (false);
     cabbageSettings->addChangeListener (content);
-    setMenuBar (this, 25);
+    setMenuBar (this, 18/*25*/);
     getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel);
 
 
@@ -129,7 +129,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (this, nullptr, "Open Recent");
 #endif
-    setLookAndFeel (&getContentComponent()->getLookAndFeel());
+    setLookAndFeel (lookAndFeel); //(&getContentComponent()->getLookAndFeel());
     lookAndFeelChanged();
 
 
@@ -187,10 +187,10 @@ CabbageMainComponent* CabbageDocumentWindow::getContentComponent()
     return content;
 }
 
-void CabbageDocumentWindow::maximiseButtonPressed()
+/*void CabbageDocumentWindow::maximiseButtonPressed()
 {
     getContentComponent()->resizeAllWindows (getHeight());
-}
+}*/
 
 void CabbageDocumentWindow::closeButtonPressed()
 {

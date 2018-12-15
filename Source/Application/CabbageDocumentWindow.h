@@ -58,7 +58,7 @@ public:
     //=======================================================
     void initSettings();
     void closeButtonPressed() override;
-    void maximiseButtonPressed() override;
+    //void maximiseButtonPressed() override;
     void focusGained (FocusChangeType cause) override; //grab focus when user clicks on editor
 
     ScopedPointer<CabbageSettings> cabbageSettings;
@@ -79,7 +79,7 @@ private:
     //=======================================================
 
     PluginExporter pluginExporter;
-    ScopedPointer<LookAndFeel_V3> lookAndFeel;
+    ScopedPointer<FlatButtonLookAndFeel> lookAndFeel;
     String commandLineArgs = "";
     bool isGUIEnabled = false;
     ScopedPointer<CabbageMainComponent> content;
