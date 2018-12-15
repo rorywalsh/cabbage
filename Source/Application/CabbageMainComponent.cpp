@@ -23,6 +23,7 @@
 #include "../Utilities/CabbageSSHFileBrowser.h"
 #include "../Audio/UI/PluginWindow.h"
 #include "../Audio/Filters/InternalFilters.h"
+#include "../Utilities/CabbageStrings.h"
 
 //==============================================================================
 CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings)
@@ -30,7 +31,8 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
       owner (owner),
       factory (this),
       //tooltipWindow (this, 300),
-      cycleTabsButton ("...")
+      cycleTabsButton ("..."),
+	  lookAndFeel(new CabbageIDELookAndFeel())
 {
 
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
@@ -76,16 +78,60 @@ CabbageMainComponent::~CabbageMainComponent()
 void CabbageMainComponent::paint (Graphics& g)
 {
     if (editorAndConsole.size() == 0)
-        g.drawImage (bgImage, getLocalBounds().toFloat().withWidth(getWidth()));
+        g.drawImage (bgImage, getLocalBounds().toFloat());
 	else
 	{
 		g.fillAll(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::fileTabBar, Colour(50, 50, 50)));
 	}
 }
 
+//===============================================================================================================
+void CabbageMainComponent::exportTheme()
+{
+	FileChooser fc("Export theme XML", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.xml", CabbageUtilities::shouldUseNativeBrowser());
+
+	if (fc.browseForFileToSave(true))
+	{
+		//doing this manually as the settings file fails some XML tests...
+		File themeFile(fc.getResult());
+		StringArray theme;
+		String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PROPERTIES>";
+		theme.addLines(xmlHeader);
+		const StringArray colourIDStrings = CabbageStrings::getColourIDStrings();
+
+		for (int i = 0; i < colourIDStrings.size(); i++)
+		{
+			const auto colourValue = cabbageSettings->getValueTree().getChildWithName("Colours").getProperty(colourIDStrings[i]);
+			theme.add("<VALUE name=\"Colours_" + colourIDStrings[i] + "\" val=\"" + colourValue.toString() + "\"/>");
+		}
+		
+		theme.add("</PROPERTIES>");
+		themeFile.replaceWithText(theme.joinIntoString("\n"));
+	}
+}
+
+void CabbageMainComponent::importTheme()
+{
+	FileChooser fc("Open theme XML", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.xml", CabbageUtilities::shouldUseNativeBrowser());
+
+	if (fc.browseForFileToOpen())
+	{
+
+		XmlDocument myDocument(fc.getResult());
+		std::unique_ptr<XmlElement> myElement(myDocument.getDocumentElement());
+
+		forEachXmlChildElement(*myElement, e)
+		{
+			cabbageSettings->setProperty(e->getStringAttribute("name"), e->getStringAttribute("val"));	
+		}
+		
+		cabbageSettings->setProperty("CustomIconsDir", fc.getResult().getParentDirectory().getFullPathName());
+	}
+}
+//=====================================================================================================================
+
 void CabbageMainComponent::setLookAndFeelColours()
 {
-    lookAndFeel = new CabbageIDELookAndFeel();
     lookAndFeel->setColour (Slider::ColourIds::thumbColourId, Colour (110, 247, 0));
     lookAndFeel->setColour (ScrollBar::backgroundColourId, Colour (70, 70, 70));
     toolbar.setColour (Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour (50, 50, 50)));
@@ -596,13 +642,9 @@ void CabbageMainComponent::timerCallback()
 //==============================================================================
 void CabbageMainComponent::updateEditorColourScheme()
 {
-    //getLookAndFeel().setColour (PropertyComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)));
-    //getLookAndFeel().setColour (PropertyComponent::ColourIds::labelTextColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
-    //lookAndFeelChanged();
-    //propertyPanel->setBackgroundColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
     propertyPanel->setColours (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)),
-        CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)),
-        CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
+    CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelBackground, Colour (50, 50, 50)),
+    CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyLabelText, Colour (50, 50, 50)));
     propertyPanel->setBorderColour (CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::propertyPanelBackground, Colour (50, 50, 50)));
 
 	for (auto* tab : fileTabs)
@@ -615,8 +657,6 @@ void CabbageMainComponent::updateEditorColourScheme()
 
     if (getCurrentEditorContainer() != nullptr)
         getCurrentEditorContainer()->updateLookAndFeel();
-
-
 
     toolbar.setColour (Toolbar::backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->getValueTree(), CabbageColourIds::menuBarBackground, Colour (50, 50, 50)));
     toolbar.repaint();
@@ -667,6 +707,7 @@ void CabbageMainComponent::addFileTab (File file)
     fileButton->setToggleState (true, dontSendNotification);
     currentFileIndex = fileTabs.size() - 1;
     fileButton->addButtonListeners (this);
+    fileButton->setButtonColour(CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::fileTabButton, Colour(50, 50, 50)));
 
     for ( auto button : fileTabs )
     {

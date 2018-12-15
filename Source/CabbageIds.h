@@ -41,6 +41,8 @@ namespace CommandIDs
         saveGraph               = 0x200045,
         saveGraphAs             = 0x200046,
 		toggleProperties		= 0x200047,
+		importTheme				= 0x200048,
+		exportTheme				= 0x200049,
         closeProject            = 0x200051,
         saveProject             = 0x200060,
         saveAll                 = 0x200080,

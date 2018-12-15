@@ -133,10 +133,12 @@ void FileTab::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDow
     if (isEnabled() == false)
         jassert (false);
 
-    Colour baseColour (getToggleState() ? buttonColour : Colour (30, 30, 30));
+    Colour baseColour (getToggleState() ? buttonColour : buttonColour.darker (1.0f)); // Colour (30, 30, 30));
 
     if (isButtonDown || isMouseOverButton)
         baseColour = baseColour.contrasting (isButtonDown ? 0.2f : 0.1f);
+
+    overlay.overlayColour = baseColour;
 
     const bool flatOnLeft   = isConnectedOnLeft();
     const bool flatOnRight  = isConnectedOnRight();
