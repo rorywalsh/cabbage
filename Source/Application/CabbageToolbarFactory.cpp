@@ -83,54 +83,66 @@ const String getSVGTextFromFile (const String filename)
 ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
 {
 
+    ToolbarButton *button = nullptr;
+
     switch (itemId)
     {
     case doc_new:
-        //return createButtonFromPNG (itemId, "new", CabbageBinaryData::documentnew_png, CabbageBinaryData::documentnew_pngSize);
-        return createButtonFromSVG (itemId, "new", getSVGTextFromFile (iconsPath + "/document-new.svg"));
+        button = createButtonFromSVG (itemId, "new", getSVGTextFromFile (iconsPath + "/document-new.svg"));
+        if (!button)
+            button = createButtonFromPNG (itemId, "new", CabbageBinaryData::documentnew_png, CabbageBinaryData::documentnew_pngSize);
         //return createButtonFromSVG (itemId, "new", getSVGTextFromMemory (CabbageBinaryData::documentnew_svg, CabbageBinaryData::documentnew_svgSize));
-
+        break;
     case doc_open:
-        //return createButtonFromPNG (itemId, "open", CabbageBinaryData::documentopen_png, CabbageBinaryData::documentopen_pngSize);
-        return createButtonFromSVG (itemId, "open", getSVGTextFromFile (iconsPath + "/document-open.svg"));
+        button = createButtonFromSVG (itemId, "open", getSVGTextFromFile (iconsPath + "/document-open.svg"));
+        if (!button)
+            button = createButtonFromPNG (itemId, "open", CabbageBinaryData::documentopen_png, CabbageBinaryData::documentopen_pngSize);
         //return createButtonFromSVG (itemId, "open", getSVGTextFromMemory (CabbageBinaryData::documentopen_svg, CabbageBinaryData::documentopen_svgSize));
-
+        break;
     case doc_save:
-        //return createButtonFromPNG (itemId, "save", CabbageBinaryData::documentsave_png, CabbageBinaryData::documentsave_pngSize);
-        return createButtonFromSVG (itemId, "save", getSVGTextFromFile (iconsPath + "/document-save.svg"));
+        button = createButtonFromSVG (itemId, "save", getSVGTextFromFile (iconsPath + "/document-save.svg"));
+        if (!button)
+            button = createButtonFromPNG (itemId, "save", CabbageBinaryData::documentsave_png, CabbageBinaryData::documentsave_pngSize);
         //return createButtonFromSVG (itemId, "save", getSVGTextFromMemory (CabbageBinaryData::documentsave_svg, CabbageBinaryData::documentsave_svgSize));
-
+        break;
     case doc_saveAs:
-        //return createButtonFromPNG (itemId, "save as", CabbageBinaryData::documentsaveas_png, CabbageBinaryData::documentsaveas_pngSize);
-        return createButtonFromSVG (itemId, "save as", getSVGTextFromFile (iconsPath + "/document-save-as.svg"));
+        button = createButtonFromSVG (itemId, "save as", getSVGTextFromFile (iconsPath + "/document-save-as.svg"));
+        if (!button)
+            button = createButtonFromPNG (itemId, "save as", CabbageBinaryData::documentsaveas_png, CabbageBinaryData::documentsaveas_pngSize);
         //return createButtonFromSVG (itemId, "save as", getSVGTextFromMemory (CabbageBinaryData::documentsaveas_svg, CabbageBinaryData::documentsaveas_svgSize));
-
+        break;
     case edit_copy:
-        //return createButtonFromSVG (itemId, "copy", getSVGTextFromMemory (CabbageBinaryData::editcopy_svg, CabbageBinaryData::editcopy_svgSize));
-        return createButtonFromSVG (itemId, "copy", getSVGTextFromFile (iconsPath + "/edit-copy.svg"));
-
+        button = createButtonFromSVG (itemId, "copy", getSVGTextFromFile (iconsPath + "/edit-copy.svg"));
+        if (!button)
+            button = createButtonFromSVG (itemId, "copy", getSVGTextFromMemory (CabbageBinaryData::editcopy_svg, CabbageBinaryData::editcopy_svgSize));
+        break;
     case edit_cut:
-        //return createButtonFromPNG (itemId, "cut", CabbageBinaryData::editcut_png, CabbageBinaryData::editcut_pngSize);
-        return createButtonFromSVG (itemId, "cut", getSVGTextFromFile (iconsPath + "/edit-cut.svg"));
+        button = createButtonFromSVG (itemId, "cut", getSVGTextFromFile (iconsPath + "/edit-cut.svg"));
+        if (!button)
+            button = createButtonFromPNG (itemId, "cut", CabbageBinaryData::editcut_png, CabbageBinaryData::editcut_pngSize);
         //return createButtonFromSVG (itemId, "cut", getSVGTextFromMemory (CabbageBinaryData::editcut_svg, CabbageBinaryData::editcut_svgSize));
-
+        break;
     case edit_paste:
-        //return createButtonFromPNG (itemId, "paste", CabbageBinaryData::editpaste_png, CabbageBinaryData::editpaste_pngSize);
-        return createButtonFromSVG (itemId, "paste", getSVGTextFromFile (iconsPath + "/edit-paste.svg"));
+        button = createButtonFromSVG (itemId, "paste", getSVGTextFromFile (iconsPath + "/edit-paste.svg"));
+        if (!button)
+            button = createButtonFromPNG (itemId, "paste", CabbageBinaryData::editpaste_png, CabbageBinaryData::editpaste_pngSize);
         //return createButtonFromSVG (itemId, "paste", getSVGTextFromMemory (CabbageBinaryData::editpaste_svg, CabbageBinaryData::editpaste_svgSize));
-
+        break;
     case system_prefs:
-        //return createButtonFromPNG (itemId, "settings", CabbageBinaryData::emblemsystem_png, CabbageBinaryData::emblemsystem_pngSize);
-        return createButtonFromSVG (itemId, "settings", getSVGTextFromFile (iconsPath + "/preferences-system.svg"));
+        button = createButtonFromSVG (itemId, "settings", getSVGTextFromFile (iconsPath + "/preferences-system.svg"));
+        if (!button)
+            button = createButtonFromPNG (itemId, "settings", CabbageBinaryData::emblemsystem_png, CabbageBinaryData::emblemsystem_pngSize);
         //return createButtonFromSVG (itemId, "settings", getSVGTextFromMemory (CabbageBinaryData::emblemsystem_svg, CabbageBinaryData::emblemsystem_svgSize));
-
+        break;
     case custom_comboBox:
         return (combo = new ToolbarComboBox (itemId));
 
     case toggle_play:
-        //return createToggleButtonFromPNG (itemId, "togglePlay", CabbageBinaryData::audiovolumemuted_png, CabbageBinaryData::audiovolumemuted_pngSize,
-        //                                  CabbageBinaryData::audiovolumehigh_png, CabbageBinaryData::audiovolumehigh_pngSize);
-        return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromFile (iconsPath + "/audio-muted.svg"), getSVGTextFromFile (iconsPath + "/audio-on.svg"));
+        button = createButtonFromSVG (itemId, "togglePlay", getSVGTextFromFile (iconsPath + "/audio-muted.svg"), getSVGTextFromFile (iconsPath + "/audio-on.svg"));
+        if (!button)
+            button = createToggleButtonFromPNG (itemId, "togglePlay", CabbageBinaryData::audiovolumemuted_png, CabbageBinaryData::audiovolumemuted_pngSize,
+                                              CabbageBinaryData::audiovolumehigh_png, CabbageBinaryData::audiovolumehigh_pngSize);
+        break;
         //return createButtonFromSVG (itemId, "togglePlay", getSVGTextFromMemory (CabbageBinaryData::Audiovolumemuted_svg, CabbageBinaryData::Audiovolumemuted_svgSize),
         //                            getSVGTextFromMemory (CabbageBinaryData::Audiovolumehigh_svg, CabbageBinaryData::Audiovolumehigh_svgSize));
 
@@ -138,7 +150,7 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
         break;
     }
 
-    return nullptr;
+    return button;// nullptr;
 }
 
 
@@ -171,7 +183,7 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
     ScopedPointer<XmlElement> svgNormal (XmlDocument::parse (svgFile));
 
     if (svgNormal == nullptr)
-        jassert (false);
+        return nullptr;//jassert (false);
 
     Drawable* drawableNormal = nullptr;
 

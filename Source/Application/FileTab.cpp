@@ -225,20 +225,20 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
     }
     else if (type == "editGUI")
     {
-        if (iconsPath == "") // if there is no iconsPath defined, then we fallback on the previous hard-coded icon:
-        {
+        String svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-off.svg");
+        ScopedPointer<XmlElement> svgOff (XmlDocument::parse (svgFile));
+
+        svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-on.svg");
+        ScopedPointer<XmlElement> svgOn (XmlDocument::parse (svgFile));
+
+        if (iconsPath == "" || svgOn == nullptr || svgOff == nullptr) 
+        { // if there is no iconsPath defined (or the svg files are missing), then we fallback on the previous hard-coded icon:
             imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
             imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));
             button.setImages (&imageNormal, &imageNormal, &imageNormalPressed, &imageNormal, &imageNormal, nullptr, &imageNormalPressed, &imageNormalPressed);
         }
         else
         {
-            String svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-off.svg");
-            ScopedPointer<XmlElement> svgOff (XmlDocument::parse (svgFile));
-
-            svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-on.svg");
-            ScopedPointer<XmlElement> svgOn (XmlDocument::parse (svgFile));
-
             if (svgOff == nullptr || svgOn == nullptr)
                 jassert (false);
             
