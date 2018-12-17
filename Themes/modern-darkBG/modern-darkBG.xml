@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <PROPERTIES>
- <VALUE name="Colours_Interface - MenuBar Background" val="00000000"/>
-  <VALUE name="Colours_Interface - MenuBar Text" val="FFFFFFFF"/>
-  <VALUE name="Colours_Interface - MenuBar MouseOver Background" val="ff5c7387"/>
-  <VALUE name="Colours_Interface - PopupMenu MouseOver Background" val="ff6c8090"/>
-  <VALUE name="Colours_Interface - PopupMenu Background" val="ff474e54"/>
-  <VALUE name="Colours_Interface - PopupMenu Text" val="ffd9e4e7"/>
-  <VALUE name="Colours_Interface - PopupMenu Highlighted Text" val="ffffffff"/>
-  <VALUE name="Colours_Interface - Main Background" val="ff52636a"/>
-  <VALUE name="Colours_Interface - Status Bar" val="ff000000"/>
-  <VALUE name="Colours_Interface - Status Bar Text" val="ffffffff"/>
-  <VALUE name="Colours_Interface - Property Panel Background" val="ffa6b3b9"/>
-  <VALUE name="Colours_Interface - Property Label Background" val="ffd4d4d4"/>
-  <VALUE name="Colours_Interface - Property Label Text" val="ff000000"/>
-  <VALUE name="Colours_Interface - File Tab Bar" val="ff323e44"/>
-  <VALUE name="Colours_Interface - File Tab Button" val="ff52636a"/>
-  <VALUE name="Colours_Interface - File Tab Text" val="ffffffff"/>
-  <VALUE name="Colours_Interface - File Tab Play Button" val="ff323e44"/>
-  <VALUE name="Colours_Interface - Patcher" val="ffc8c8c8"/>
-  <VALUE name="Colours_Editor - Code Background" val="ff263238"/>
-  <VALUE name="Colours_Editor - Line Numbers Background" val="ff323e44"/>
-  <VALUE name="Colours_Editor - Line Numbers" val="e999a7ae"/>
-  <VALUE name="Colours_Editor - Selected Text Background" val="ff3f616c"/>
-  <VALUE name="Colours_Editor - Caret" val="fff39636"/>
-  <VALUE name="Colours_Editor - Identifier" val="ffcfcfcf"/>
-  <VALUE name="Colours_Editor - Strings" val="ffff7154"/>
-  <VALUE name="Colours_Editor - Keyword" val="ff81a0d4"/>
-  <VALUE name="Colours_Editor - Comment" val="ff72d20c"/>
-  <VALUE name="Colours_Editor - Numbers" val="ffe9ec64"/>
-  <VALUE name="Colours_Editor - Csd Tags" val="ffbf74c5"/>
-  <VALUE name="Colours_Editor - Scrollbars" val="ff5a626f"/>
-  <VALUE name="Colours_Console - Text" val="ff566c7b"/>
-  <VALUE name="Colours_Console - Background" val="ff16191d"/>
-  <VALUE name="Colours_Console - Outline" val="ff16191d"/>
+<VALUE name="Colours_Interface - MenuBar Background" val="ff52636a"/>
+<VALUE name="Colours_Interface - MenuBar Text" val="ffffffff"/>
+<VALUE name="Colours_Interface - MenuBar MouseOver Background" val="ff5c7387"/>
+<VALUE name="Colours_Interface - PopupMenu MouseOver Background" val="ff6c8090"/>
+<VALUE name="Colours_Interface - PopupMenu Background" val="ff474e54"/>
+<VALUE name="Colours_Interface - PopupMenu Text" val="ffd9e4e7"/>
+<VALUE name="Colours_Interface - PopupMenu Highlighted Text" val="ffffffff"/>
+<VALUE name="Colours_Interface - Main Background" val="ff52636a"/>
+<VALUE name="Colours_Interface - Status Bar" val="ff000000"/>
+<VALUE name="Colours_Interface - Status Bar Text" val="ffffffff"/>
+<VALUE name="Colours_Interface - Property Panel Background" val="ffa6b3b9"/>
+<VALUE name="Colours_Interface - Property Label Background" val="ffd4d4d4"/>
+<VALUE name="Colours_Interface - Property Label Text" val="ff000000"/>
+<VALUE name="Colours_Interface - Alart Window Background" val="ff000000"/>
+<VALUE name="Colours_Interface - File Tab Bar" val="ff323e44"/>
+<VALUE name="Colours_Interface - File Tab Button" val="ff52636a"/>
+<VALUE name="Colours_Interface - File Tab Text" val="ffffffff"/>
+<VALUE name="Colours_Interface - File Tab Play Button" val="ff323e44"/>
+<VALUE name="Colours_Interface - Patcher" val="ffc8c8c8"/>
+<VALUE name="Colours_Editor - Code Background" val="ff263238"/>
+<VALUE name="Colours_Editor - Line Numbers Background" val="ff323e44"/>
+<VALUE name="Colours_Editor - Line Numbers" val="e999a7ae"/>
+<VALUE name="Colours_Editor - Selected Text Background" val="ff3f616c"/>
+<VALUE name="Colours_Editor - Caret" val="fff39636"/>
+<VALUE name="Colours_Editor - Identifier" val="ffcfcfcf"/>
+<VALUE name="Colours_Editor - Strings" val="ff8ac3f3"/>
+<VALUE name="Colours_Editor - Keyword" val="ffee6f6f"/>
+<VALUE name="Colours_Editor - Comment" val="ff72d20c"/>
+<VALUE name="Colours_Editor - Numbers" val="ffe9ec64"/>
+<VALUE name="Colours_Editor - Csd Tags" val="ffbf74c5"/>
+<VALUE name="Colours_Editor - Scrollbars" val="ff5a626f"/>
+<VALUE name="Colours_Console - Text" val="ff566c7b"/>
+<VALUE name="Colours_Console - Background" val="ff16191d"/>
+<VALUE name="Colours_Console - Outline" val="ff16191d"/>
 </PROPERTIES>
