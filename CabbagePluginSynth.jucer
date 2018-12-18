@@ -59,6 +59,14 @@
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="MLgcCk" name="CabbageLookAndFeel2.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
+        <FILE id="p960tU" name="FlatButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.cpp"/>
+        <FILE id="U0lJta" name="FlatButtonLookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.h"/>
+        <FILE id="KkufvO" name="PropertyPanelLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.cpp"/>
+        <FILE id="P4aZcc" name="PropertyPanelLookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.h"/>
       </GROUP>
       <GROUP id="{A270562F-B877-794E-F8FB-DED31485BCF2}" name="Utilities">
         <FILE id="S2CC0u" name="CabbageColourProperty.cpp" compile="1" resource="0"
