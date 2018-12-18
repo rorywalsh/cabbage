@@ -40,6 +40,7 @@ rm -rf ./build/Release/CabbagePluginEffect.component
 rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.vst
 rm -rf ~/Library/Audio/Plug-Ins/VST/CabbagePlugin.component
 cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
+cp -rf ../../Themes ./build/Release/Cabbage.app/Contents/Themes
 cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 
 # cp -rf  /Users/walshr/sourcecode/FMOD\ Programmers\ API/api/lowlevel/examples/xcode32/_builds/Debug/fmod_csound.dylib ./build/Release/Cabbage.app/Contents/fmod_csound.dylib
