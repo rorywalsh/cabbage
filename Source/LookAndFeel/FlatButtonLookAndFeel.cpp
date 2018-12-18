@@ -9,12 +9,18 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
     
     Colour bg = button.findColour (toggleState == true ? TextButton::buttonOnColourId : TextButton::buttonColourId);
 
-    if (isButtonDown == true)
+    if (isButtonDown == true || isMouseOverButton == true)
         bg = bg.contrasting (0.2f);
 
-    g.setColour (bg);
-    g.fillRect (0, 0, width, height);
-
+	const int corners = button.getProperties().getWithDefault("cornersize", 0);
+	const Colour outlineColour(Colour::fromString(button.getProperties().getWithDefault("outlinecolour", Colours::white.toString()).toString()));
+	const int outlineThickness = button.getProperties().getWithDefault("outlinethickness", 0);
+	const int offset = outlineThickness == 0 ? 0 : outlineThickness * .5;
+	g.setColour(outlineColour);
+	g.fillRoundedRectangle(0, 0, width, height, corners);
+	g.setColour(bg);
+	g.fillRoundedRectangle(offset, offset, width - outlineThickness, height - outlineThickness, corners);
+	
 }
 
 void FlatButtonLookAndFeel::drawButtonText(Graphics &g, TextButton &button, bool isMouseOverButton, bool isButtonDown)

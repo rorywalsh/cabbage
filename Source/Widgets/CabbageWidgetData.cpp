@@ -303,6 +303,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("align"):
             case HashStringToInt ("displaytype"):
             case HashStringToInt ("name"):
+			case HashStringToInt ("style"):
             case HashStringToInt ("caption"):
             case HashStringToInt ("plant"):
             case HashStringToInt ("show"):
