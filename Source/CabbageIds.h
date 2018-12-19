@@ -402,6 +402,7 @@ public:
         add ("value");
         add ("range");
         add ("plant");
+		add ("style");
         add ("align");
         add ("file");
         add ("wrap");
@@ -614,6 +615,7 @@ namespace CabbageIdentifierIds
 	static const Identifier stack = "stack";
 	static const Identifier startpoint = "startpoint";
 	static const Identifier startpos = "startpos";
+	static const Identifier style = "style";
 	static const Identifier surrogatelinenumber = "surrogatelinenumber";
 	static const Identifier tabbed = "tabbed";
 	static const Identifier tablebackgroundcolour = "tablebackgroundcolour";

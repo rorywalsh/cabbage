@@ -21,7 +21,8 @@
 
 CabbageButton::CabbageButton (ValueTree wData)
     : widgetData (wData),
-      TextButton()
+      TextButton(),
+	  flatLookAndFeel()
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -39,6 +40,17 @@ CabbageButton::CabbageButton (ValueTree wData)
     setImgProperties (*this, wData, "buttonover");
 
     setLookAndFeelColours (wData);
+	
+	getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
+	getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
+	getProperties().set("cornersize", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
+
+	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat")
+	{
+		setLookAndFeel(&flatLookAndFeel);
+	}
+
+
 }
 
 void CabbageButton::setLookAndFeelColours (ValueTree wData)
@@ -46,7 +58,8 @@ void CabbageButton::setLookAndFeelColours (ValueTree wData)
     setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
     setColour (TextButton::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
-    setColour (TextButton::buttonOnColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::oncolour)));
+	setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+
 }
 
 void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)

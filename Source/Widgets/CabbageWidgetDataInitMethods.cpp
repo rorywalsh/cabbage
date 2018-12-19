@@ -370,6 +370,7 @@ void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+	setProperty(widgetData, CabbageIdentifierIds::style, "normal");
 }
 
 void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
@@ -406,6 +407,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::filetype, "*");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+	setProperty(widgetData, CabbageIdentifierIds::style, "normal");
 }
 
 void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
@@ -430,6 +432,7 @@ void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+	setProperty(widgetData, CabbageIdentifierIds::style, "normal");
 }
 void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)
 {
