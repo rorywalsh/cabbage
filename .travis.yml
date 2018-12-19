@@ -120,15 +120,25 @@ script:
 - packagesbuild InstallerTravis.pkgproj
 - ls build
 - echo -en "travis_fold:end:buildingInstaller"
+
+before_deploy:
+      # Set up git user name and tag this commit
+      - git config --local user.name "YOUR GIT USER NAME"
+      - git config --local user.email "YOUR GIT USER EMAIL"
+      - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+      - git tag $TRAVIS_TAG
+
 before_deploy:
   - cd /Users/travis/build/rorywalsh/cabbage/
   - git remote add origin https://rorywalsh:${GH_TOKEN}@github.com/rorywalsh/cabbage.git
   - git config credential.helper "store --file=.git/credentials"
   - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
-  - git tag -d vBeta
-  - git push --force origin :refs/tags/vBeta
-  - git tag vBeta -a -m "Latest OSX Beta Build"
-  - git push origin master && git push origin master --tags
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
+  # - git tag -d vBeta
+  # - git push --force origin :refs/tags/vBeta
+  # - git tag vBeta -a -m "Latest OSX Beta Build"
+  # - git push origin master && git push origin master --tags
 
 deploy:
   skip_cleanup: true
