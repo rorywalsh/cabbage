@@ -7,9 +7,9 @@ before_script:
 - gem install xcpretty-travis-formatter
 - git remote rm origin
 - cd .. 
-- curl -L -o csound6.12.1-OSX_universal.dmg 'https://github.com/csound/csound/releases/download/6.10.0/csound6.12.1-OSX_universal.dmg'
+- curl -L -o Csound6.12.1-MacOS_universal.dmg 'https://github.com/csound/csound/releases/download/6.10.0/Csound6.12.1-MacOS_universal.dmg'
 - ls
-- hdiutil attach csound6.12.1-OSX_universal.dmg
+- hdiutil attach Csound6.12.1-MacOS_universal.dmg
 - cp -R /Volumes/Csound6.12.1/ Csound
 - hdiutil detach /Volumes/Csound6.12.1/
 - cd Csound
