@@ -5,7 +5,7 @@ before_script:
 - ls
 - gem install xcpretty
 - gem install xcpretty-travis-formatter
-- git remote rm origin
+- git remote rm origin   
 - cd .. 
 - curl -L -o Csound6.12.1-MacOS_universal.dmg 'https://github.com/csound/csound/releases/download/6.12.2/Csound6.12.1-MacOS_universal.dmg'
 - ls
