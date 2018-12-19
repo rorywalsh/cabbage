@@ -51,7 +51,7 @@ before_script:
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
 
 script:
-# - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+ - export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 # - echo -en "travis_fold:start:buildingIDE"
 # - $PROJUCER --resave ../../CabbageIDE.jucer
 # - xcodebuild -project Cabbage.xcodeproj/ clean
