@@ -174,7 +174,8 @@ public:
 	class FilterGraphDocumentWindow : public DocumentWindow
 	{
 		Colour colour;
-		CabbageMainComponent* owner;
+		CabbageMainComponent* owner;		
+
 	public:
 		FilterGraphDocumentWindow(String caption, Colour backgroundColour, CabbageMainComponent* owner)
 			: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), owner(owner), colour(backgroundColour)
@@ -183,7 +184,11 @@ public:
 			setName(caption);
 			this->setTitleBarHeight(15);
 			this->setResizable(true, true);
-			
+		}
+
+		void paint(Graphics &g)
+		{
+			g.fillAll(Colours::transparentBlack);
 		}
 
 		void closeButtonPressed() override { setVisible(false); }
@@ -191,6 +196,7 @@ public:
 		CabbageMainComponent* getOwner() {
 			return owner;
 		};
+
 
 	};
 

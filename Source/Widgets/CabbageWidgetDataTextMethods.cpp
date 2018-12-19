@@ -61,6 +61,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("channeltype"):
         case HashStringToInt ("file"):
         case HashStringToInt ("mode"):
+		case HashStringToInt ("style"):
         case HashStringToInt ("plant"):
         case HashStringToInt ("popuppostfix"):
         case HashStringToInt ("popupprefix"):
