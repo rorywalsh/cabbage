@@ -1,5 +1,37 @@
 #include "FlatButtonLookAndFeel.h"
 
+namespace LookAndFeelHelpers
+{
+    static Colour createBaseColour (Colour buttonColour,
+        bool hasKeyboardFocus,
+        bool isMouseOverButton,
+        bool isButtonDown) noexcept
+    {
+        const float sat = hasKeyboardFocus ? 1.3f : 0.9f;
+        const Colour baseColour (buttonColour.withMultipliedSaturation (sat));
+
+        if (isButtonDown)      return baseColour.contrasting (0.2f);
+
+        if (isMouseOverButton) return baseColour.contrasting (0.1f);
+
+        return baseColour;
+    }
+
+    static TextLayout layoutTooltipText (const String& text, Colour colour) noexcept
+    {
+        const float tooltipFontSize = 13.0f;
+        const int maxToolTipWidth = 400;
+
+        AttributedString s;
+        s.setJustification (Justification::centred);
+        s.append (text, Font (tooltipFontSize, Font::bold), colour);
+
+        TextLayout tl;
+        tl.createLayoutWithBalancedLineLengths (s, (float)maxToolTipWidth);
+        return tl;
+    }
+}
+
 void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, const Colour &backgroundColour, bool isMouseOverButton, bool isButtonDown)
 {
     const int width = button.getWidth();
@@ -12,7 +44,7 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
     if (isButtonDown == true || isMouseOverButton == true)
         bg = bg.contrasting (0.2f);
 
-	const int corners = button.getProperties().getWithDefault("cornersize", 0);
+	const int corners = button.getProperties().getWithDefault("corners", 0);
 	const Colour outlineColour(Colour::fromString(button.getProperties().getWithDefault("outlinecolour", Colours::white.toString()).toString()));
 	const int outlineThickness = button.getProperties().getWithDefault("outlinethickness", 0);
 	const int offset = outlineThickness == 0 ? 0 : outlineThickness * .5;
@@ -100,4 +132,243 @@ void FlatButtonLookAndFeel::drawDocumentWindowTitleBar (DocumentWindow& window, 
         g.setColour (window.getBackgroundColour().contrasting (isActive ? 0.7f : 0.4f));
 
     g.drawText (window.getName(), textX, 0, textW, h, Justification::centredLeft, true);
+}
+
+//=========== Linear Slider Background ===========================================================================
+void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int y, int width, int height, float sliderPos,
+    float minSliderPos,
+    float maxSliderPos,
+    const Slider::SliderStyle style,
+    Slider& slider)
+{
+    const float sliderRadius = (float)(getSliderThumbRadius (slider) - 2);
+    float xOffset = (sliderRadius / width);
+    const Colour trackColour (slider.findColour (Slider::trackColourId));
+    float zeroPosProportional = 0;
+
+    if (slider.getMinimum() < 0)
+        zeroPosProportional = slider.valueToProportionOfLength (0); //takes into account skew factor
+
+    const float trackerThickness = slider.getProperties().getWithDefault ("trackerthickness", .75);
+    
+    Path indent;
+
+    if (slider.isHorizontal())
+    {
+        width = width - 8;
+        g.setColour (Colours::whitesmoke);
+        g.setOpacity (0.6);
+        const float midPoint = (width / 2.f + sliderRadius) + 3;
+        const float markerGap = width / 9.f;
+        g.drawLine (midPoint, height * 0.25, midPoint, height * 0.75, 1.5);
+        g.setOpacity (0.3);
+
+        for (int i = 1; i < 5; i++)
+        {
+            g.drawLine (midPoint + markerGap * i, height * 0.3, midPoint + markerGap * i, height * 0.7, .7);
+            g.drawLine (midPoint - markerGap * i, height * 0.3, midPoint - markerGap * i, height * 0.7, .7);
+        }
+
+        //backgrounds
+        g.setColour (Colours::whitesmoke);
+        g.setOpacity (0.1);
+        g.fillRoundedRectangle (sliderRadius, height * 0.44, width * 1.021, height * 0.15, height * 0.05); //for light effect
+        g.setColour (Colour::fromRGBA (5, 5, 5, 255));
+        g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.016, height * 0.15, height * 0.05); //main rectangle
+        
+        const float scale = trackerThickness;
+        const float ih = (height * scale);
+        const float iy = ((height - ih) / 2.f);
+
+        //gradient fill for tracker...
+        if (slider.getSliderStyle() == Slider::TwoValueHorizontal)
+        {
+            g.setColour (trackColour);
+            const double minPos = slider.valueToProportionOfLength (slider.getMinValue()) * width;
+            const double maxPos = slider.valueToProportionOfLength (slider.getMaxValue()) * width;
+            g.fillRoundedRectangle (minPos + sliderRadius * 1.5, height * 0.425, (maxPos - minPos) + (sliderRadius * .5), height * 0.15, height * 0.05);
+        }
+        else
+        {
+            //set fill colour for tracker...
+            g.setColour (trackColour);
+
+            if (slider.getValue() > 0)
+                g.fillRoundedRectangle (zeroPosProportional * width + sliderRadius, iy,
+                    sliderPos - sliderRadius * 0.5 - zeroPosProportional * width, ih,
+                    5.0f);
+            else
+                g.fillRoundedRectangle (sliderPos, iy,
+                    jmax (0.f, zeroPosProportional * width + sliderRadius - sliderPos), ih,
+                    5.0f);
+
+        }
+    }
+    else //vertical
+    {
+        height = height - 6;
+        g.setColour (Colours::whitesmoke);
+        g.setOpacity (0.6);
+        const float midPoint = (height / 2.f + sliderRadius) + 3;
+        const float markerGap = height / 9.f;
+        g.drawLine (width * 0.25, midPoint, width * 0.75, midPoint, 1.59);
+        g.setOpacity (0.3);
+
+        for (int i = 1; i < 5; i++)
+        {
+            g.drawLine (width * 0.3, midPoint + markerGap * i, width * 0.7, midPoint + markerGap * i, .7);
+            g.drawLine (width * 0.3, midPoint - markerGap * i, width * 0.7, midPoint - markerGap * i, .7);
+        }
+
+        g.setColour (Colour::fromRGBA (5, 5, 5, 255));
+        g.fillRoundedRectangle (width * 0.425, sliderRadius, width * 0.15, height * 1.005 + sliderRadius * 2.0f - 6.0f, width * 0.05);
+        
+        const float scale = trackerThickness;
+        const float iw = (width * scale);
+        const float ix = ((width - iw) / 2.f);
+
+        if (slider.getSliderStyle() == Slider::TwoValueVertical)
+        {
+            g.setColour (trackColour);
+            const float minPos = slider.valueToProportionOfLength (slider.getMinValue()) * height;
+            const float maxPos = slider.valueToProportionOfLength (slider.getMaxValue()) * height;
+            g.fillRoundedRectangle (width * 0.44, jmax (0.f, height - maxPos) + sliderRadius * 1.5f, width * 0.15, maxPos - minPos, width * 0.05);
+        }
+        else
+        {
+            g.setColour (trackColour);
+
+            if (slider.getValue() >= 0)
+            {
+                const int sliderHeight = jmax (0.f, height - sliderPos + sliderRadius * 2.0f - zeroPosProportional * height);
+                g.fillRoundedRectangle (ix, y + sliderPos - sliderRadius/* * 2*/,
+                    iw, sliderHeight,
+                    3.0f);
+            }
+            else
+                g.fillRoundedRectangle (ix, zeroPosProportional * height + sliderRadius,
+                    iw, sliderPos - sliderRadius - zeroPosProportional * height,
+                    3.0f);
+        }
+    }
+
+}
+
+
+//========== Linear Slider Thumb =========================================================================
+void FlatButtonLookAndFeel::drawLinearSliderThumb (Graphics& g, int x, int y, int width, int height,
+    float sliderPos, float minSliderPos, float maxSliderPos,
+    const Slider::SliderStyle style, Slider& slider)
+{
+    const float sliderRadius = (float)(getSliderThumbRadius (slider) - 2);
+    float sliderWidth, sliderHeight;
+
+    Colour knobColour (LookAndFeelHelpers::createBaseColour (slider.findColour (Slider::thumbColourId),
+        slider.hasKeyboardFocus (false) && slider.isEnabled(),
+        slider.isMouseOverOrDragging() && slider.isEnabled(),
+        slider.isMouseButtonDown() && slider.isEnabled()));
+
+    const float outlineThickness = slider.isEnabled() ? 0.8f : 0.3f;
+
+    if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
+    {
+        float kx, ky;
+
+        if (style == Slider::LinearVertical)
+        {
+            kx = x + width * 0.5f;
+            ky = sliderPos;
+            sliderWidth = sliderRadius * 2.0f;
+            sliderHeight = sliderRadius * 1.25f;
+        }
+        else
+        {
+            kx = sliderPos;
+            ky = y + height * 0.5f;
+            sliderWidth = sliderRadius * 1.25f;
+            sliderHeight = sliderRadius * 2.0f;
+        }
+
+        drawThumb (g,
+            kx - sliderRadius,
+            ky - sliderRadius,
+            sliderWidth,
+            sliderHeight,
+            knobColour, outlineThickness);
+    }
+
+    if (style == Slider::TwoValueVertical || style == Slider::ThreeValueVertical)
+    {
+        const float sr = jmin (sliderRadius, width * 0.4f);
+        drawTwoValueThumb (g, jmax (0.0f, x + width * 0.5f - sliderRadius * 2.0f),
+            minSliderPos - sliderRadius,
+            sliderRadius * 2.0f, knobColour, outlineThickness, 1);
+
+        drawTwoValueThumb (g, jmin (x + width - sliderRadius * 2.0f, x + width * 0.5f), maxSliderPos - sr,
+            sliderRadius * 2.0f, knobColour, outlineThickness, 3);
+    }
+    else if (style == Slider::TwoValueHorizontal || style == Slider::ThreeValueHorizontal)
+    {
+        const float sr = jmin (sliderRadius, height * 0.4f);
+        drawTwoValueThumb (g, minSliderPos - sr,
+            jmax (0.0f, y + height * 0.5f - sliderRadius * 2.0f) - height * .01,
+            sliderRadius * 2.0f, knobColour, outlineThickness, 2);
+
+        drawTwoValueThumb (g, maxSliderPos - sliderRadius,
+            jmin (y + height - sliderRadius * 2.0f, y + height * 0.5f) + height * .01,
+            sliderRadius * 2.0f, knobColour, outlineThickness, 4);
+    }
+    
+}
+
+//==========================================================================================================================================
+void FlatButtonLookAndFeel::drawThumb (Graphics& g, const float x, const float y,
+    const float w, const float h, const Colour& colour,
+    const float outlineThickness)
+{
+    ColourGradient cg = ColourGradient (Colours::white, 0, 0, colour, w / 2, h / 2, false);
+    cg.addColour (0.4, Colours::white.overlaidWith (colour));
+    g.setGradientFill (cg);
+    g.fillRoundedRectangle (x, y, w, h, 3);
+}
+//====================================================================================================
+void FlatButtonLookAndFeel::drawTwoValueThumb (Graphics& g, float x, float y, float diameter,
+    const Colour& colour, float outlineThickness, int direction)
+{
+    if (diameter <= outlineThickness)
+        return;
+
+    Path p;
+
+    p.startNewSubPath (x + diameter * .2, y - diameter * .2);
+    p.lineTo (x + diameter * .8, y - diameter * .2);
+    p.lineTo (x + diameter, y + diameter);
+    p.lineTo (x, y + diameter);
+    p.closeSubPath();
+
+    p.applyTransform (AffineTransform::rotation (direction * (float_Pi * 0.5f), x + diameter * 0.5f, y + diameter * 0.5f));
+
+    {
+        ColourGradient cg (Colours::white.overlaidWith (colour.withMultipliedAlpha (0.7f)), 0, y,
+            Colours::white.overlaidWith (colour.withMultipliedAlpha (0.5f)), 0, y + diameter, false);
+
+        cg.addColour (0.4, Colours::white.overlaidWith (colour));
+
+        g.setGradientFill (cg);
+        g.fillPath (p);
+    }
+
+    ColourGradient cg (Colours::transparentBlack,
+        x + diameter * 0.5f, y + diameter * 0.5f,
+        Colours::black.withAlpha (0.5f * outlineThickness * colour.getFloatAlpha()),
+        x - diameter * 0.2f, y + diameter * 0.5f, true);
+
+    cg.addColour (0.5, Colours::transparentBlack);
+    cg.addColour (0.7, Colours::black.withAlpha (0.07f * outlineThickness));
+
+    g.setGradientFill (cg);
+    g.fillPath (p);
+
+    g.setColour (Colours::black.withAlpha (0.5f * colour.getFloatAlpha()));
+    g.strokePath (p, PathStrokeType (outlineThickness));
 }

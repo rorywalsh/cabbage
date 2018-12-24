@@ -25,7 +25,8 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       widgetData (wData),
       popupBubble (250),
       sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
-      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel))
+      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
+      flatLookAndFeel()
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
@@ -44,11 +45,15 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     //slider.setLookAndFeel (&owner->getLookAndFeel());
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+
+    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::style) == "flat")
+        slider.setLookAndFeel (&flatLookAndFeel);
+
 }
 
 CabbageSlider::~CabbageSlider()
 {
-   // slider.setLookAndFeel(nullptr);
+    slider.setLookAndFeel (nullptr);
 }
 
 void CabbageSlider::initialiseSlider (ValueTree wData)
