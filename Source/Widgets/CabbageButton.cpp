@@ -43,7 +43,7 @@ CabbageButton::CabbageButton (ValueTree wData)
 	
 	getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
 	getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
-	getProperties().set("cornersize", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
+	getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
 
 	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat")
 	{

@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../LookAndFeel/FlatButtonLookAndFeel.h"
 
 class CabbagePluginEditor;
 
@@ -49,6 +50,8 @@ class CabbageSlider
     void setLookAndFeelColours (ValueTree wData);
     String prefix = "";
     String postfix = "";
+
+    FlatButtonLookAndFeel flatLookAndFeel;
 
 public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);
