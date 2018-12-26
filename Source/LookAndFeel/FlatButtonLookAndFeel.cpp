@@ -41,8 +41,10 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
     
     Colour bg = button.findColour (toggleState == true ? TextButton::buttonOnColourId : TextButton::buttonColourId);
 
-    if (isButtonDown == true || isMouseOverButton == true)
+    if (isButtonDown == true)
         bg = bg.contrasting (0.2f);
+    else if (isMouseOverButton == true)
+        bg = bg.contrasting (0.3f);
 
 	const int corners = button.getProperties().getWithDefault("corners", 0);
 	const Colour outlineColour(Colour::fromString(button.getProperties().getWithDefault("outlinecolour", Colours::white.toString()).toString()));

@@ -199,11 +199,11 @@
                 extraLinkerFlags="-Wall">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
-                       defines="Cabbage_Plugin_Synth=1"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;" defines="Cabbage_Plugin_Synth=1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
-                       defines="Cabbage_Plugin_Synth=1"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;" defines="Cabbage_Plugin_Synth=1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
