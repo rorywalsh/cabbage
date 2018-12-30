@@ -18,7 +18,7 @@ public:
         int w, int h, int titleSpaceX, int titleSpaceW,
         const Image* icon, bool drawTitleTextOnLeft) override;
 
-    // H/V SLIDERS L&F:
+    // H/V/ROTARY SLIDERS L&F:
     void drawLinearSliderBackground (Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider) override;
 
     void drawLinearSliderThumb (Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider) override;
@@ -26,5 +26,7 @@ public:
     void drawThumb (Graphics& g, const float x, const float y, const float w, const float h, const Colour& colour, const float outlineThickness);
 
     void drawTwoValueThumb (Graphics& g, float x, float y, float diameter, const Colour& colour, float outlineThickness, int direction);
-    // ----------------
+
+    void drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider);
+    // -----------------------
 };
