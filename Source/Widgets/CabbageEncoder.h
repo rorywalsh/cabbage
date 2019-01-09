@@ -50,6 +50,7 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     int decimalPlaces = 1;
     String outlinecolour, colour, trackercolour, text, textcolour, popupText;
     BubbleMessageComponent popupBubble;
+    bool flatStyle = false;
 
 public:
 
