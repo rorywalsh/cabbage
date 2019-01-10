@@ -393,6 +393,10 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     const float innerRadiusProportion = slider.getProperties().getWithDefault ("trackerinnerradius", .7);
     const float outerRadiusProportion = slider.getProperties().getWithDefault ("trackerouterradius", 1);
     const float thumbThickness = (outerRadiusProportion - innerRadiusProportion) / 4.0f / 2.0f;
+    const float markerThickness = (float)(slider.getProperties().getWithDefault ("markerthickness", 1.0f)) * rw * thumbThickness;
+    const float markerStart = slider.getProperties().getWithDefault ("markerstart", 0.5);
+    const float markerEnd = slider.getProperties().getWithDefault ("markerend", 0.9);
+    const Colour markerColour = Colour::fromString(slider.getProperties().getWithDefault ("markercolour", Colours::white.toString()).toString());
 
     slider.setSliderStyle (Slider::RotaryVerticalDrag);
 
@@ -436,18 +440,18 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     g.setColour (thumbColour);
     g.fillPath (newPolygon);
 
-    // Draw the thumb segment:
-    Path p;
-    g.setColour (slider.findColour (Slider::trackColourId).withAlpha (1.0f).contrasting (isMouseOver ? 0.1f : 0.0f));
-    float thumbLength = radius * innerRadiusProportion * 0.95f;
-    p.addLineSegment (Line<float> (0.0f, -thumbLength * 0.5f, 0.0f, -thumbLength * 0.9f), rw * thumbThickness);
-    PathStrokeType (rw * thumbThickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded).createStrokedPath (p, p);
-    g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
-
     // Draw the slider arc background:
     g.setColour (outlineColour);
     Path bgArc;
     bgArc.addPieSegment (rx, ry, rw, rw, angle/* + 0.07f * (rotaryEndAngle - rotaryStartAngle)*/, rotaryEndAngle, innerRadiusProportion);
     bgArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
     g.fillPath (bgArc);
+
+    // Draw the thumb segment:
+    Path p;
+    g.setColour (markerColour.contrasting (isMouseOver ? 0.1f : 0.0f));
+    float thumbLength = radius * innerRadiusProportion * 0.95f;
+    p.addLineSegment (Line<float> (0.0f, -thumbLength * markerStart, 0.0f, -thumbLength * markerEnd), markerThickness);
+    PathStrokeType (markerThickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded).createStrokedPath (p, p);
+    g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
 }
