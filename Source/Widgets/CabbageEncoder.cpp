@@ -46,6 +46,8 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     valueLabel.setColour (Label::backgroundColourId, Colours::black);
     valueLabel.setColour (Label::outlineColourId, Colours::whitesmoke);
 
+    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::style) == "flat")
+        flatStyle = true;
 }
 
 void CabbageEncoder::createPopupBubble()
@@ -186,7 +188,7 @@ void CabbageEncoder::paint (Graphics& g)
 
         if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
         {
-            newPolygon.addPolygon (centre, 12.f, radius, 0.f);
+            newPolygon.addPolygon (centre, 24.f, radius, 0.f);
             newPolygon.applyTransform (AffineTransform::rotation (angle,
                                                                   centreX, centreY));
         }
@@ -196,11 +198,16 @@ void CabbageEncoder::paint (Graphics& g)
         g.setColour (Colour::fromString (colour));
 
         Colour thumbColour = Colour::fromString (colour).withAlpha (isMouseOver ? 1.0f : 0.9f);
-        ColourGradient cg = ColourGradient (Colours::white, 0, 0, thumbColour, diameter * 0.6, diameter * 0.4, false);
-        //if(slider.findColour (Slider::thumbColourId)!=Colour(0.f,0.f,0.f,0.f))
-        g.setGradientFill (cg);
-        g.fillPath (newPolygon);
+        if (!flatStyle)
+        {
+            ColourGradient cg = ColourGradient (Colours::white, 0, 0, thumbColour, diameter * 0.6, diameter * 0.4, false);
+            //if(slider.findColour (Slider::thumbColourId)!=Colour(0.f,0.f,0.f,0.f))
+            g.setGradientFill (cg);
+        }
+        else
+            g.setColour (thumbColour);
 
+        g.fillPath (newPolygon);
 
         g.setColour (Colour::fromString (trackercolour).withAlpha (isMouseOver ? 1.0f : 0.9f));
 
