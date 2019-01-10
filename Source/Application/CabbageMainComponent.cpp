@@ -344,9 +344,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
                     if (auto* w = getFilterGraph()->getOrCreateWindowFor (f, PluginWindow::Type::normal))
                     {
                         CabbagePluginProcessor* cabbagePlugin = getCabbagePluginProcessor();
-                        String pluginName = "";
-                        if (cabbagePlugin)
-                            pluginName = cabbagePlugin->getPluginName();
+                        String pluginName = cabbagePlugin->getPluginName();
                         w->setName (pluginName.length() > 0 ? pluginName : "Plugin has no name?");
                         w->toFront (true);
                         w->setVisible (true);
