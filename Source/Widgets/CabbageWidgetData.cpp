@@ -387,6 +387,9 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("readonly"):
             case HashStringToInt ("scrollbars"):
             case HashStringToInt ("titlebargradient"):
+            case HashStringToInt ("markerthickness"):
+            case HashStringToInt ("markerstart"):
+            case HashStringToInt ("markerend"):
                 if (getStringProp (widgetData, CabbageIdentifierIds::channeltype) == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else
@@ -513,6 +516,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("textcolour"):
             case HashStringToInt ("textboxcolour"):
             case HashStringToInt ("textboxoutlinecolour"):
+            case HashStringToInt ("markercolour"):
                 setProperty (widgetData, identifier, getColourFromText (strTokens.joinIntoString (",")).toString());
                 break;
 
