@@ -164,6 +164,7 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
+	setProperty (widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setLineProperties (ValueTree widgetData, int ID)
@@ -407,7 +408,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::filetype, "*");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
-	setProperty(widgetData, CabbageIdentifierIds::style, "normal");
+	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
@@ -432,7 +433,7 @@ void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
-	setProperty(widgetData, CabbageIdentifierIds::style, "normal");
+	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
 }
 void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)
 {
