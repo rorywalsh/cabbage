@@ -35,6 +35,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     addAndMakeVisible (&slider);
     slider.setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerthickness));
+    slider.getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackerbgcolour));
     slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::markercolour));
     slider.getProperties().set("markerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerthickness));
     slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerstart));

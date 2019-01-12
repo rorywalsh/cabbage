@@ -396,6 +396,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     const float markerThickness = (float)(slider.getProperties().getWithDefault ("markerthickness", 1.0f)) * rw * thumbThickness;
     const float markerStart = slider.getProperties().getWithDefault ("markerstart", 0.5);
     const float markerEnd = slider.getProperties().getWithDefault ("markerend", 0.9);
+    const Colour trackerBgColour = Colour::fromString(slider.getProperties().getWithDefault ("trackerbgcolour", Colours::black.toString()).toString());
     const Colour markerColour = Colour::fromString(slider.getProperties().getWithDefault ("markercolour", Colours::white.toString()).toString());
 
     slider.setSliderStyle (Slider::RotaryVerticalDrag);
@@ -411,7 +412,14 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         g.fillPath (filledArc);
     }
 
-    //outinecolour
+    // Draw the slider arc background:
+    g.setColour (trackerBgColour);
+    Path bgArc;
+    bgArc.addPieSegment (rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
+    bgArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+    g.fillPath (bgArc);
+
+    //outlinecolour
     Colour outlineColour = slider.findColour (Slider::rotarySliderOutlineColourId);
     g.setColour (outlineColour);
 
@@ -433,23 +441,14 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     else //Else just use a circle. This is clearer than a polygon when very small.
         newPolygon.addEllipse (-radius * .2, -radius * .2, radius * .3f, radius * .3f);
 
-    g.setColour (slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f));
-
     Colour thumbColour = slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f);
 
     g.setColour (thumbColour);
     g.fillPath (newPolygon);
 
-    // Draw the slider arc background:
-    g.setColour (outlineColour);
-    Path bgArc;
-    bgArc.addPieSegment (rx, ry, rw, rw, angle/* + 0.07f * (rotaryEndAngle - rotaryStartAngle)*/, rotaryEndAngle, innerRadiusProportion);
-    bgArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
-    g.fillPath (bgArc);
-
     // Draw the thumb segment:
     Path p;
-    g.setColour (markerColour.contrasting (isMouseOver ? 0.1f : 0.0f));
+    g.setColour (markerColour.getAlpha() == 0 ? markerColour : markerColour.contrasting (isMouseOver ? 0.1f : 0.0f));
     float thumbLength = radius * innerRadiusProportion * 0.95f;
     p.addLineSegment (Line<float> (0.0f, -thumbLength * markerStart, 0.0f, -thumbLength * markerEnd), markerThickness);
     PathStrokeType (markerThickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded).createStrokedPath (p, p);

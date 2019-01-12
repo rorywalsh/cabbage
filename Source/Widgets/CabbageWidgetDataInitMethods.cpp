@@ -146,6 +146,7 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
     setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
+    setProperty (widgetData, CabbageIdentifierIds::trackerbgcolour, Colour (0, 0, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::markercolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::markerthickness, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::markerstart, 0.5f);

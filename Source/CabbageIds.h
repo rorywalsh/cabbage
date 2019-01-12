@@ -298,6 +298,7 @@ public:
         add ("blacknotecolour");
         add ("highlightcolour");
         add ("tablegridcolour");
+        add ("trackerbgcolour");
         add ("backgroundcolor");
         add ("showstepnumbers");
         add ("markerthickness");
@@ -642,6 +643,7 @@ namespace CabbageIdentifierIds
     static const Identifier tofront = "tofront";
     static const Identifier top = "top";
 	static const Identifier trackercolour = "trackercolour";
+    static const Identifier trackerbgcolour = "trackerbgcolour";
 	static const Identifier trackerthickness = "trackerthickness";
     static const Identifier trackeroutsideradius = "trackeroutsideradius";
     static const Identifier trackerinsideradius = "trackerinsideradius";
