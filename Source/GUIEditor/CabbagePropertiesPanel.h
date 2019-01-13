@@ -65,7 +65,7 @@ public:
     Array<PropertyComponent*> createTwoValueEditors (ValueTree valueTree, Identifier identifier);
     Value isActiveValue, isVisibleValue, alphaValue, shapeValue,
           sliderNumberBoxValue, alignValue, velocityValue, fileModeValue,
-          fillTableWaveformValue, zoomValue, channelTypeValue;
+          fillTableWaveformValue, zoomValue, channelTypeValue, innerRadius, outerRadius;
     Colour backgroundColour, borderColour;
 	bool hide = false;
 
