@@ -35,9 +35,15 @@ CabbageButton::CabbageButton (ValueTree wData)
     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup) != 0)
         setRadioGroupId (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup));
 
+
+
     setImgProperties (*this, wData, "buttonon");
     setImgProperties (*this, wData, "buttonoff");
     setImgProperties (*this, wData, "buttonover");
+
+	const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
+	const String imgOver = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonover);
+	const String imgOn = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonon);
 
     setLookAndFeelColours (wData);
 	
@@ -45,7 +51,9 @@ CabbageButton::CabbageButton (ValueTree wData)
 	getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
 	getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
 
-	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat")
+	//if users are passing custom images, use old style look and feel
+	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
+		imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
 	{
 		setLookAndFeel(&flatLookAndFeel);
 	}

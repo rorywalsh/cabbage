@@ -35,19 +35,31 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     addAndMakeVisible (&slider);
     slider.setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerthickness));
+    slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::markercolour));
+    slider.getProperties().set("markerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerthickness));
+    slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerstart));
+    slider.getProperties().set("markerend", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerend));
     initialiseSlider (wData);
     textLabel.setVisible (false);
     initialiseCommonAttributes (this, wData);
     createPopupBubble();
     setImgProperties (this->slider, wData, "slider");
     setImgProperties (this->slider, wData, "sliderbg");
+
+	const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
+	const String sliderImgBg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg);
+
     setTextBoxOrientation (sliderType, shouldShowTextBox);
     //slider.setLookAndFeel (&owner->getLookAndFeel());
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
 
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::style) == "flat")
-        slider.setLookAndFeel (&flatLookAndFeel);
+	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
+		&& sliderImg.isEmpty() && sliderImgBg.isEmpty())
+	{
+		slider.setLookAndFeel(&flatLookAndFeel);
+	}
+        
 
 }
 

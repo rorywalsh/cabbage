@@ -300,6 +300,7 @@ public:
         add ("tablegridcolour");
         add ("backgroundcolor");
         add ("showstepnumbers");
+        add ("markerthickness");
         add ("titlebarcolour");
         add ("tablegridcolor");
         add ("signalvariable");
@@ -311,6 +312,7 @@ public:
         add ("textboxcolour");
         add ("trackercolour");
         add ("trackerradius");
+        add ("markercolour");
         add ("valuetextbox");
         add ("fontcolour:1");
         add ("amprange_min");
@@ -325,6 +327,7 @@ public:
         add ("metercolour:");
         add ("popuppostfix");
         add ("manufacturer");
+        add ("markerstart");
         add ("orientation");
         add ("tablecolour");
         add ("metercolour");
@@ -350,6 +353,7 @@ public:
         add ("ballcolour");
         add ("scrollbars");
         add ("cellheight");
+        add ("markerend");
         add ("menucolor");
         add ("cellwidth");
         add ("popuptext");
@@ -550,6 +554,10 @@ namespace CabbageIdentifierIds
 	static const Identifier linethickness = "linethickness";
 	static const Identifier logger = "logger";
 	static const Identifier macrostrings = "macrostrings";
+    static const Identifier markercolour = "markercolour";
+    static const Identifier markerend = "markerend";
+    static const Identifier markerstart = "markerstart";
+    static const Identifier markerthickness = "markerthickness";
 	static const Identifier matrixcols = "matrixcols";
 	static const Identifier matrixrows = "matrixrows";
 	static const Identifier max = "max";
@@ -753,8 +761,8 @@ public:
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
-        set ("Tracker Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
-        set ("Tracker Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
+        set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
+        set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
         set ("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
         set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set ("Value Box", CabbageIdentifierIds::valuetextbox.toString());
