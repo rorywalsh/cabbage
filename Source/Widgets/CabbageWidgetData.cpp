@@ -447,6 +447,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("cellwidth"):
             case HashStringToInt ("cellheight"):
             case HashStringToInt ("resize"):
+            case HashStringToInt ("gapmarkers"):
                 setProperty (widgetData, identifier, strTokens[0].trim().getIntValue());
                 break;
                 break;

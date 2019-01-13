@@ -40,6 +40,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     slider.getProperties().set("markerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerthickness));
     slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerstart));
     slider.getProperties().set("markerend", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerend));
+    slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::gapmarkers));
     initialiseSlider (wData);
     textLabel.setVisible (false);
     initialiseCommonAttributes (this, wData);
