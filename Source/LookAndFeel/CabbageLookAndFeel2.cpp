@@ -998,6 +998,8 @@ void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, con
     File imgButtonOnFile = File (button.getProperties().getWithDefault ("imgbuttonon", "").toString());
     File imgButtonOffFile = File (button.getProperties().getWithDefault ("imgbuttonoff", "").toString());
     File imgButtonOverFile = File (button.getProperties().getWithDefault ("imgbuttonover", "").toString());
+	if (imgButtonOverFile.existsAsFile() == false)
+		imgButtonOverFile = imgButtonOffFile;
 
     if (imgButtonOnFile.existsAsFile() && imgButtonOffFile.existsAsFile()
         && imgButtonOnFile.hasFileExtension (".csd") == false
