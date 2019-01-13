@@ -320,6 +320,13 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
     else if (value.refersToSameSourceAs (alphaValue))
         setPropertyByName ("Alpha", value.getValue());
 
+	else if (value.refersToSameSourceAs(innerRadius))
+		setPropertyByName("Inner Radius", value.getValue());
+
+	else if (value.refersToSameSourceAs(outerRadius))
+		setPropertyByName("Outer Radius", value.getValue());
+
+
     else if (value.refersToSameSourceAs (zoomValue))
         setPropertyByName ("Zoom", value.getValue());
 
@@ -540,7 +547,6 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         comps.add (new ColourPropertyComponent ("Tracker", trackerColourString));
         comps.add (new ColourPropertyComponent ("Value Box Colour", textboxColourString));
         comps.add (new ColourPropertyComponent ("Value Box Outline", textboxOutlineColourString));
-
     }
 
     else if (typeOfWidget == "label" || typeOfWidget == "groupbox" || typeOfWidget == "numberbox" || typeOfWidget == "csoundoutput" || typeOfWidget == "textbox")
@@ -853,6 +859,14 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
         sliderNumberBoxValue.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuetextbox));
         sliderNumberBoxValue.addListener (this);
         comps.add (new BooleanPropertyComponent (sliderNumberBoxValue, "Value Box", "Is Visible"));
+
+		innerRadius.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerinsideradius));
+		innerRadius.addListener(this);
+		comps.add(new SliderPropertyComponent(innerRadius, "Inner Radius", 0, 1, .01, 1, 1));
+
+		outerRadius.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackeroutsideradius));
+		outerRadius.addListener(this);
+		comps.add(new SliderPropertyComponent(outerRadius, "Outer Radius", 0, 1, .01, 1, 1));
     }
 
     else if (typeOfWidget == "filebutton")

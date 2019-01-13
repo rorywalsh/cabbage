@@ -761,8 +761,8 @@ public:
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
-        set ("Tracker Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
-        set ("Tracker Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
+        set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
+        set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
         set ("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
         set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set ("Value Box", CabbageIdentifierIds::valuetextbox.toString());
