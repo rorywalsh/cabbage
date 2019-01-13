@@ -347,6 +347,7 @@ public:
         add ("fontcolour");
         add ("textcolour");
         add ("updaterate");
+        add ("gapmarkers");
         add ("guirefresh");
         add ("tablecolor");
         add ("radiogroup");
@@ -516,6 +517,7 @@ namespace CabbageIdentifierIds
 	static const Identifier drawmode = "drawmode";
 	static const Identifier endpoint = "endpoint";
 	static const Identifier endpos = "endpos";
+    static const Identifier gapmarkers = "gapmarkers";
 	static const Identifier macronames = "macronames";
     static const Identifier manufacturer = "manufacturer";
 	static const Identifier ffttablenumber = "ffttablenumber";
