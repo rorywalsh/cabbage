@@ -5,15 +5,15 @@ before_script:
 - ls
 - gem install xcpretty
 - gem install xcpretty-travis-formatter
-- git remote rm origin
+- git remote rm origin   
 - cd .. 
-- curl -L -o csound6.10.0-OSX-universal.dmg 'https://github.com/csound/csound/releases/download/6.10.0/csound6.10.0-OSX-universal.dmg'
+- curl -L -o Csound6.12.1-MacOS_universal.dmg 'https://github.com/csound/csound/releases/download/6.12.2/Csound6.12.1-MacOS_universal.dmg'
 - ls
-- hdiutil attach csound6.10.0-OSX-universal.dmg
-- cp -R /Volumes/Csound6.10.0/ Csound
-- hdiutil detach /Volumes/Csound6.10.0/
+- hdiutil attach Csound6.12.1-MacOS_universal.dmg
+- cp -R /Volumes/Csound6.12.1/ Csound
+- hdiutil detach /Volumes/Csound6.12.1/
 - cd Csound
-- sudo installer -pkg csound6.10.0-OSX-universal.pkg -target /
+- sudo installer -pkg csound6.12.1-OSX-universal.pkg -target /
 - sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 - cd /Users/travis/build/rorywalsh/
 - git clone https://github.com/WeAreROLI/JUCE.git
@@ -39,6 +39,7 @@ before_script:
 - curl -L -o heads.zip http://cabbageaudio.com/beta/heads.zip
 - unzip -q heads.zip
 - cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
+- ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 
 - ls /Users/travis/build/rorywalsh/
 - cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
@@ -71,12 +72,12 @@ script:
 
 - $PROJUCER --resave ../../CabbagePluginSynth.jucer
 - xcodebuild -project CabbagePlugin.xcodeproj clean
-- xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+- xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
 - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
 - cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
 - cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.component
 - cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.component
-
+  
 - $PROJUCER --resave ../../CabbagePlugin.jucer 
 - xcodebuild -project CabbagePlugin.xcodeproj clean
 - xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null

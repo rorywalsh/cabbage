@@ -59,6 +59,14 @@
               file="Source/LookAndFeel/CabbageLookAndFeel2.cpp"/>
         <FILE id="MLgcCk" name="CabbageLookAndFeel2.h" compile="0" resource="0"
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
+        <FILE id="HRyCk2" name="FlatButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.cpp"/>
+        <FILE id="H1v67Y" name="FlatButtonLookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.h"/>
+        <FILE id="eKB3sa" name="PropertyPanelLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.cpp"/>
+        <FILE id="QOh0PG" name="PropertyPanelLookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.h"/>
       </GROUP>
       <GROUP id="{A270562F-B877-794E-F8FB-DED31485BCF2}" name="Utilities">
         <FILE id="S2CC0u" name="CabbageColourProperty.cpp" compile="1" resource="0"
@@ -191,11 +199,11 @@
                 extraLinkerFlags="-Wall">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
-                       defines=""/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;" defines=""/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
-                       defines=""/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;" defines=""/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
@@ -227,34 +235,6 @@
                        enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
-        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
-        <MODULEPATH id="juce_graphics" path="../../juce"/>
-        <MODULEPATH id="juce_events" path="../../juce"/>
-        <MODULEPATH id="juce_data_structures" path="../../juce"/>
-        <MODULEPATH id="juce_cryptography" path="../../juce"/>
-        <MODULEPATH id="juce_core" path="../../juce"/>
-        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
-        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
-        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
-        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
-      </MODULEPATHS>
-    </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Effect=1"
-            externalLibraries="csound64.lib">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
-                       libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
-                       enablePluginBinaryCopyStep="0"/>
-        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
-                       libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
-                       enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
-      </CONFIGURATIONS>
-      <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
         <MODULEPATH id="juce_gui_basics" path="../JUCE/"/>
         <MODULEPATH id="juce_graphics" path="../JUCE/"/>
@@ -269,9 +249,9 @@
         <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
-    </VS2015>
+    </XCODE_MAC>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Effect=1"
-            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1"
+            externalLibraries="csound64.lib" windowsTargetPlatformVersion="10.0.17763.0"
             vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"

@@ -41,6 +41,8 @@ namespace CommandIDs
         saveGraph               = 0x200045,
         saveGraphAs             = 0x200046,
 		toggleProperties		= 0x200047,
+		importTheme				= 0x200048,
+		exportTheme				= 0x200049,
         closeProject            = 0x200051,
         saveProject             = 0x200060,
         saveAll                 = 0x200080,
@@ -298,6 +300,7 @@ public:
         add ("tablegridcolour");
         add ("backgroundcolor");
         add ("showstepnumbers");
+        add ("markerthickness");
         add ("titlebarcolour");
         add ("tablegridcolor");
         add ("signalvariable");
@@ -309,6 +312,7 @@ public:
         add ("textboxcolour");
         add ("trackercolour");
         add ("trackerradius");
+        add ("markercolour");
         add ("valuetextbox");
         add ("fontcolour:1");
         add ("amprange_min");
@@ -323,6 +327,7 @@ public:
         add ("metercolour:");
         add ("popuppostfix");
         add ("manufacturer");
+        add ("markerstart");
         add ("orientation");
         add ("tablecolour");
         add ("metercolour");
@@ -348,6 +353,7 @@ public:
         add ("ballcolour");
         add ("scrollbars");
         add ("cellheight");
+        add ("markerend");
         add ("menucolor");
         add ("cellwidth");
         add ("popuptext");
@@ -400,6 +406,7 @@ public:
         add ("value");
         add ("range");
         add ("plant");
+		add ("style");
         add ("align");
         add ("file");
         add ("wrap");
@@ -547,6 +554,10 @@ namespace CabbageIdentifierIds
 	static const Identifier linethickness = "linethickness";
 	static const Identifier logger = "logger";
 	static const Identifier macrostrings = "macrostrings";
+    static const Identifier markercolour = "markercolour";
+    static const Identifier markerend = "markerend";
+    static const Identifier markerstart = "markerstart";
+    static const Identifier markerthickness = "markerthickness";
 	static const Identifier matrixcols = "matrixcols";
 	static const Identifier matrixrows = "matrixrows";
 	static const Identifier max = "max";
@@ -612,6 +623,7 @@ namespace CabbageIdentifierIds
 	static const Identifier stack = "stack";
 	static const Identifier startpoint = "startpoint";
 	static const Identifier startpos = "startpos";
+	static const Identifier style = "style";
 	static const Identifier surrogatelinenumber = "surrogatelinenumber";
 	static const Identifier tabbed = "tabbed";
 	static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
@@ -749,8 +761,8 @@ public:
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
-        set ("Tracker Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
-        set ("Tracker Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
+        set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
+        set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
         set ("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
         set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set ("Value Box", CabbageIdentifierIds::valuetextbox.toString());

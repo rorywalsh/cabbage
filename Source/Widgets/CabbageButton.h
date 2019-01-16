@@ -22,13 +22,14 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../LookAndFeel/FlatButtonLookAndFeel.h"
 
 class CabbageButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase
 {
 public:
 
     CabbageButton (ValueTree wData);
-    ~CabbageButton() {};
+	~CabbageButton() { setLookAndFeel(nullptr); };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -38,6 +39,8 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
 
     void setLookAndFeelColours (ValueTree wData);
+
+	FlatButtonLookAndFeel flatLookAndFeel;
 
     ValueTree widgetData;
 

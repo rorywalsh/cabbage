@@ -21,11 +21,9 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     listBox.setRowHeight (20);
     listBox.setModel (this);
     getProperties().set("isPresetCombo", false);
-
     highlightColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour);
     colour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
     fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);
-
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -62,16 +60,18 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
         }
     }
 
+	const Colour backgroundColour = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
+	
+	listBox.setColour(ScrollBar::backgroundColourId, Colours::red);
+	listBox.setColour(ListBox::backgroundColourId, backgroundColour);
+	//listBox.lookAndFeelChanged();
+	resized();
+
 }
 
 void CabbageListBox::resized()
 {
     listBox.setBounds(getLocalBounds());
-}
-
-void CabbageListBox::paint(Graphics& g)
-{
-    g.fillAll(Colour::fromString(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
 }
 
 void CabbageListBox::addItemsToListbox (ValueTree wData, bool refreshedFromDisk)

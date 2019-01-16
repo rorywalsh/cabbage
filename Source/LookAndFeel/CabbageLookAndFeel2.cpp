@@ -1,11 +1,20 @@
 /*
-  ==============================================================================
+Copyright (C) 2016 Rory Walsh
 
-    CabbageLookAndFeel2.cpp
-    Created: 10 Nov 2016 5:36:11pm
-    Author:  rory
+Cabbage is free software; you can redistribute it
+and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
 
-  ==============================================================================
+Cabbage is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU General Public
+License along with Csound; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA
 */
 
 #include "CabbageLookAndFeel2.h"
@@ -989,6 +998,8 @@ void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, con
     File imgButtonOnFile = File (button.getProperties().getWithDefault ("imgbuttonon", "").toString());
     File imgButtonOffFile = File (button.getProperties().getWithDefault ("imgbuttonoff", "").toString());
     File imgButtonOverFile = File (button.getProperties().getWithDefault ("imgbuttonover", "").toString());
+	if (imgButtonOverFile.existsAsFile() == false)
+		imgButtonOverFile = imgButtonOffFile;
 
     if (imgButtonOnFile.existsAsFile() && imgButtonOffFile.existsAsFile()
         && imgButtonOnFile.hasFileExtension (".csd") == false

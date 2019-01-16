@@ -42,7 +42,7 @@ CabbageInfoButton::CabbageInfoButton (ValueTree wData)
 void CabbageInfoButton::buttonClicked (Button* button)
 {
     
-    if (File(getCsdFile()).getParentDirectory().getChildFile (filename).existsAsFile() || filename.contains("http://"))
+    if (File(getCsdFile()).getParentDirectory().getChildFile (filename).existsAsFile() || filename.contains("http://") || filename.contains("https://"))
     {
         URL url (filename);
         url.launchInDefaultBrowser();

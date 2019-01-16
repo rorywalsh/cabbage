@@ -29,29 +29,29 @@ enum
 };
 
 //=================================================================================================================
-CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLineParams)  : DocumentWindow (name,
-            Colours::lightgrey,
-            DocumentWindow::allButtons),
-    lookAndFeel (new LookAndFeel_V3()),
+CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLineParams) : DocumentWindow (name,
+    Colours::lightgrey,
+    DocumentWindow::allButtons),
+    lookAndFeel (new FlatButtonLookAndFeel()),
     commandLineArgs (commandLineParams),
-                                                                                        pluginExporter()
-
+    pluginExporter()
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
-    setUsingNativeTitleBar (true);
+    setUsingNativeTitleBar (false/*true*/);
+    setTitleBarHeight (20);
     setResizable (true, true);
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
-
 
     Desktop::getInstance().setDefaultLookAndFeel (lookAndFeel); //set default look and feel for project
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
 
     initSettings();
+    setColour (backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
     content->propertyPanel->setVisible (false);
     cabbageSettings->addChangeListener (content);
-    setMenuBar (this, 25);
+    setMenuBar (this, 18/*25*/);
     getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel);
 
 
@@ -129,7 +129,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (this, nullptr, "Open Recent");
 #endif
-    setLookAndFeel (&getContentComponent()->getLookAndFeel());
+    setLookAndFeel (lookAndFeel); //(&getContentComponent()->getLookAndFeel());
     lookAndFeelChanged();
 
 
@@ -187,10 +187,10 @@ CabbageMainComponent* CabbageDocumentWindow::getContentComponent()
     return content;
 }
 
-void CabbageDocumentWindow::maximiseButtonPressed()
+/*void CabbageDocumentWindow::maximiseButtonPressed()
 {
     getContentComponent()->resizeAllWindows (getHeight());
-}
+}*/
 
 void CabbageDocumentWindow::closeButtonPressed()
 {
@@ -199,7 +199,7 @@ void CabbageDocumentWindow::closeButtonPressed()
     if (getContentComponent()->getFilterGraph()->hasChangedSinceSaved())
     {
         const int result = CabbageUtilities::showYesNoMessage ("Save changes made to Cabbage\npatch?", &lookAndFeel, 1);
-/
+
         if (result == 1)
         {
             if (getContentComponent()->getFilterGraph()->saveDocument() == FileBasedDocument::SaveResult::userCancelledSave)
@@ -331,6 +331,10 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     }
 #endif
     menu.addSeparator();
+	menu.addCommandItem(&commandManager, CommandIDs::importTheme);
+	menu.addCommandItem(&commandManager, CommandIDs::exportTheme);
+	menu.addSeparator();
+
     menu.addCommandItem (&commandManager, CommandIDs::closeProject);
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
     menu.addSeparator();
@@ -440,18 +444,20 @@ void CabbageDocumentWindow::focusGained (FocusChangeType cause) //grab focus whe
 void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 {
 
-    const CommandID ids[] = { CommandIDs::openCabbagePatch,
-                              CommandIDs::newFile,
-                              CommandIDs::newTextFile,
-                              CommandIDs::open,
-                              CommandIDs::openFromRPi,
-                              CommandIDs::closeAllDocuments,
-                              CommandIDs::closeDocument,
-                              CommandIDs::saveDocument,
-                              CommandIDs::buildNow,
-                              CommandIDs::saveGraph,
-                              CommandIDs::saveGraphAs,
-                              CommandIDs::saveDocumentToRPi,
+	const CommandID ids[] = { CommandIDs::openCabbagePatch,
+							  CommandIDs::newFile,
+							  CommandIDs::newTextFile,
+							  CommandIDs::open,
+							  CommandIDs::openFromRPi,
+							  CommandIDs::closeAllDocuments,
+							  CommandIDs::closeDocument,
+							  CommandIDs::saveDocument,
+							  CommandIDs::buildNow,
+							  CommandIDs::saveGraph,
+							  CommandIDs::saveGraphAs,
+							  CommandIDs::exportTheme,
+							  CommandIDs::importTheme,
+							  CommandIDs::saveDocumentToRPi,
                               CommandIDs::saveDocumentAs,
                               CommandIDs::examples,
                               CommandIDs::settings,
@@ -547,6 +553,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Save file", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
             break;
+
+		case CommandIDs::importTheme:
+			result.setInfo("Import theme", "import a custom theme", CommandCategories::general, 0);
+			break;
+
+		case CommandIDs::exportTheme:
+			result.setInfo("Export theme", "Export a custom theme", CommandCategories::general, 0);
+			break;
 
         case CommandIDs::saveGraph:
             result.setInfo ("Save Cabbage patch", "Save a patch document", CommandCategories::general, 0);
@@ -937,10 +951,18 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
             return true;
             
-        case CommandIDs::exportAsFMODSoundPlugin:
-            pluginExporter.exportPlugin ("FMOD", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
-            return true;
+		case CommandIDs::exportAsFMODSoundPlugin:
+			pluginExporter.exportPlugin("FMOD", getContentComponent()->getCurrentCsdFile(), getPluginInfo(currentFile, "id"));
+			return true;
  
+		case CommandIDs::exportTheme:
+			getContentComponent()->exportTheme();
+			return true;
+
+		case CommandIDs::importTheme:
+			getContentComponent()->importTheme();
+			return true;
+
         case CommandIDs::exportAsVCVRackModule:
             pluginExporter.exportPlugin ("VCVRack", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
@@ -1076,6 +1098,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     return true;
 }
 
+
+//==================================================================================================================
 void CabbageDocumentWindow::exportExamplesToPlugins(String type)
 {
     const String examplesDir = cabbageSettings->getUserSettings()->getValue ("CabbageExamplesDir", "");

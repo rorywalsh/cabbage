@@ -45,7 +45,7 @@ void CabbageSettings::setDefaultSettings()
 
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CabbageManual";
-	iconsPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Icons/modern-darkBG";
+	iconsPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Themes/modern-darkBG";
 #if defined(WIN32)
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
 #elif !defined(MACOSX)
@@ -115,7 +115,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::popupMenuMouseOverBackground,  "ff6c8090"/*"ffa4a4a4"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::popupMenuText,  "ffd9e4e7"/*"ff484848"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::popupMenuHighlightedText, "ffffffff" /*"ff000000"*/);
-    defaultPropSet->setValue ("Colours_" + CabbageColourIds::mainBackground, "ff000000");
+    defaultPropSet->setValue ("Colours_" + CabbageColourIds::mainBackground, "ff52636a");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::statusBar, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::statusBarText, "ffffffff");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyPanelBackground, "ffa6b3b9");

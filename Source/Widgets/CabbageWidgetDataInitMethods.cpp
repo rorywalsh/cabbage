@@ -146,6 +146,10 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
     setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
+    setProperty (widgetData, CabbageIdentifierIds::markercolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::markerthickness, 1.0f);
+    setProperty (widgetData, CabbageIdentifierIds::markerstart, 0.5f);
+    setProperty (widgetData, CabbageIdentifierIds::markerend, 0.9f);
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::black.brighter (.3f).toString());
@@ -164,6 +168,7 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
+	setProperty (widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setLineProperties (ValueTree widgetData, int ID)
@@ -370,6 +375,7 @@ void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
@@ -406,6 +412,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::filetype, "*");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
@@ -430,6 +437,7 @@ void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
 }
 void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)
 {
@@ -735,6 +743,7 @@ void CabbageWidgetData::setHSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::gradient, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
+    setProperty (widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
@@ -775,6 +784,7 @@ void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
+    setProperty (widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)
