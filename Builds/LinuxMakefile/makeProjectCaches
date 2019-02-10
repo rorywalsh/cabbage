@@ -1,0 +1,37 @@
+#!/bin/bash
+set -e
+
+echo "==========================================="
+echo "======= Caching Script for Cabbage ========"
+echo "==========================================="
+
+echo "This generates archives of sources and build files created by Projucer for each project."
+echo "The archives are located under the subdirectory: project-caches"
+echo "When they are present, this allows to build Cabbage in a situation where Projucer cannot run."
+echo "Projucer cannot run without X11, which can make it difficult to build Linux packages on headless machines."
+
+cabbage_dir="$(pwd)/../.."
+juce_dir="${cabbage_dir}/../JUCE"
+
+make_project_cache() {
+  local proj="$1"
+  local makefilename="$2"
+
+  echo "$(tput bold)Caching $proj…$(tput sgr0)"
+
+  mkdir -p project-caches
+  "$juce_dir/extras/Projucer/Builds/LinuxMakefile/build/Projucer" --resave "$cabbage_dir/$proj.jucer"
+  mv -f Makefile "$makefilename"
+
+  echo "$(tput bold)Saving cache results $proj…$(tput sgr0)"
+
+  tar -C "$cabbage_dir" -c -z -f "$(pwd)/project-caches/$proj.tar.gz" \
+    JuceLibraryCode \
+    "Builds/LinuxMakefile/$makefilename"
+}
+
+make_project_cache CabbageIDE MakeCabbageIDE
+make_project_cache CabbageLite MakeCabbageLite
+make_project_cache CabbagePlugin MakePluginEffect
+make_project_cache CabbagePluginMIDIEffect MakePluginMIDIEffect
+make_project_cache CabbagePluginSynth MakePluginSynth
