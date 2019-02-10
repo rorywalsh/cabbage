@@ -9,8 +9,8 @@
               pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="2"
-              jucerVersion="5.4.1" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
-              reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
+              jucerVersion="5.4.1" buildStandalone="0" enableIAA="0" displaySplashScreen="0"
+              reportAppUsage="0" splashScreenColour="Dark" cppLanguageStandard="11"
               companyCopyright="" pluginFormats="buildVST,buildAU" pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
@@ -191,11 +191,11 @@
                 extraLinkerFlags="-Wall">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
-                       defines=""/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;" defines=""/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
-                       defines=""/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;" defines=""/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
@@ -332,7 +332,7 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="1"/>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>
