@@ -12,7 +12,7 @@ echo "located in /user/local/lib "
 echo "It is also assumes that the VST SDK is located in ~/SDKs/"
 echo ""
 
-if [ $1 == "debug" ]; then
+if [ "$1" == "debug" ]; then
   echo "Hello debug"
   ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
   mv Makefile MakeCabbageIDE
