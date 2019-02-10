@@ -152,30 +152,34 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
         zeroPosProportional = slider.valueToProportionOfLength (0); //takes into account skew factor
 
     const float trackerThickness = slider.getProperties().getWithDefault ("trackerthickness", .75);
-    
+    const int gapMarkers = slider.getProperties().getWithDefault ("gapmarkers", 0);
+    const Colour trackerBgColour = Colour::fromString(slider.getProperties().getWithDefault ("trackerbgcolour", Colours::black.toString()).toString());
+
     Path indent;
 
     if (slider.isHorizontal())
     {
         width = width - 8;
-        g.setColour (Colours::whitesmoke);
-        g.setOpacity (0.6);
-        const float midPoint = (width / 2.f + sliderRadius) + 3;
-        const float markerGap = width / 9.f;
-        g.drawLine (midPoint, height * 0.25, midPoint, height * 0.75, 1.5);
-        g.setOpacity (0.3);
 
-        for (int i = 1; i < 5; i++)
+        // gap markers:
+        if (gapMarkers)
         {
-            g.drawLine (midPoint + markerGap * i, height * 0.3, midPoint + markerGap * i, height * 0.7, .7);
-            g.drawLine (midPoint - markerGap * i, height * 0.3, midPoint - markerGap * i, height * 0.7, .7);
+            g.setColour (Colours::whitesmoke);
+            g.setOpacity (0.6);
+            const float midPoint = (width / 2.f + sliderRadius) + 3;
+            const float markerGap = width / 9.f;
+            g.drawLine (midPoint, height * 0.25, midPoint, height * 0.75, 1.5);
+            g.setOpacity (0.3);
+
+            for (int i = 1; i < 5; i++)
+            {
+                g.drawLine (midPoint + markerGap * i, height * 0.3, midPoint + markerGap * i, height * 0.7, .7);
+                g.drawLine (midPoint - markerGap * i, height * 0.3, midPoint - markerGap * i, height * 0.7, .7);
+            }
         }
 
         //backgrounds
-        g.setColour (Colours::whitesmoke);
-        g.setOpacity (0.1);
-        g.fillRoundedRectangle (sliderRadius, height * 0.44, width * 1.021, height * 0.15, height * 0.05); //for light effect
-        g.setColour (Colour::fromRGBA (5, 5, 5, 255));
+        g.setColour (trackerBgColour);
         g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.016, height * 0.15, height * 0.05); //main rectangle
         
         const float scale = trackerThickness;
@@ -209,20 +213,25 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
     else //vertical
     {
         height = height - 6;
-        g.setColour (Colours::whitesmoke);
-        g.setOpacity (0.6);
-        const float midPoint = (height / 2.f + sliderRadius) + 3;
-        const float markerGap = height / 9.f;
-        g.drawLine (width * 0.25, midPoint, width * 0.75, midPoint, 1.59);
-        g.setOpacity (0.3);
 
-        for (int i = 1; i < 5; i++)
+        // gap markers:
+        if (gapMarkers)
         {
-            g.drawLine (width * 0.3, midPoint + markerGap * i, width * 0.7, midPoint + markerGap * i, .7);
-            g.drawLine (width * 0.3, midPoint - markerGap * i, width * 0.7, midPoint - markerGap * i, .7);
+            g.setColour (Colours::whitesmoke);
+            g.setOpacity (0.6);
+            const float midPoint = (height / 2.f + sliderRadius) + 3;
+            const float markerGap = height / 9.f;
+            g.drawLine (width * 0.25, midPoint, width * 0.75, midPoint, 1.59);
+            g.setOpacity (0.3);
+
+            for (int i = 1; i < 5; i++)
+            {
+                g.drawLine (width * 0.3, midPoint + markerGap * i, width * 0.7, midPoint + markerGap * i, .7);
+                g.drawLine (width * 0.3, midPoint - markerGap * i, width * 0.7, midPoint - markerGap * i, .7);
+            }
         }
 
-        g.setColour (Colour::fromRGBA (5, 5, 5, 255));
+        g.setColour (trackerBgColour);
         g.fillRoundedRectangle (width * 0.425, sliderRadius, width * 0.15, height * 1.005 + sliderRadius * 2.0f - 6.0f, width * 0.05);
         
         const float scale = trackerThickness;
@@ -392,10 +401,11 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     
     const float innerRadiusProportion = slider.getProperties().getWithDefault ("trackerinnerradius", .7);
     const float outerRadiusProportion = slider.getProperties().getWithDefault ("trackerouterradius", 1);
-    const float thumbThickness = (outerRadiusProportion - innerRadiusProportion) / 4.0f / 2.0f;
+    const float thumbThickness = abs(outerRadiusProportion - innerRadiusProportion) / 4.0f / 2.0f;
     const float markerThickness = (float)(slider.getProperties().getWithDefault ("markerthickness", 1.0f)) * rw * thumbThickness;
     const float markerStart = slider.getProperties().getWithDefault ("markerstart", 0.5);
     const float markerEnd = slider.getProperties().getWithDefault ("markerend", 0.9);
+    const Colour trackerBgColour = Colour::fromString(slider.getProperties().getWithDefault ("trackerbgcolour", Colours::black.toString()).toString());
     const Colour markerColour = Colour::fromString(slider.getProperties().getWithDefault ("markercolour", Colours::white.toString()).toString());
 
     slider.setSliderStyle (Slider::RotaryVerticalDrag);
@@ -411,7 +421,14 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         g.fillPath (filledArc);
     }
 
-    //outinecolour
+    // Draw the slider arc background:
+    g.setColour (trackerBgColour);
+    Path bgArc;
+    bgArc.addPieSegment (rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
+    bgArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+    g.fillPath (bgArc);
+
+    //outlinecolour
     Colour outlineColour = slider.findColour (Slider::rotarySliderOutlineColourId);
     g.setColour (outlineColour);
 
@@ -433,23 +450,14 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     else //Else just use a circle. This is clearer than a polygon when very small.
         newPolygon.addEllipse (-radius * .2, -radius * .2, radius * .3f, radius * .3f);
 
-    g.setColour (slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f));
-
     Colour thumbColour = slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f);
 
     g.setColour (thumbColour);
     g.fillPath (newPolygon);
 
-    // Draw the slider arc background:
-    g.setColour (outlineColour);
-    Path bgArc;
-    bgArc.addPieSegment (rx, ry, rw, rw, angle/* + 0.07f * (rotaryEndAngle - rotaryStartAngle)*/, rotaryEndAngle, innerRadiusProportion);
-    bgArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
-    g.fillPath (bgArc);
-
     // Draw the thumb segment:
     Path p;
-    g.setColour (markerColour.contrasting (isMouseOver ? 0.1f : 0.0f));
+    g.setColour (markerColour.getAlpha() == 0 ? markerColour : markerColour.contrasting (isMouseOver ? 0.1f : 0.0f));
     float thumbLength = radius * innerRadiusProportion * 0.95f;
     p.addLineSegment (Line<float> (0.0f, -thumbLength * markerStart, 0.0f, -thumbLength * markerEnd), markerThickness);
     PathStrokeType (markerThickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded).createStrokedPath (p, p);
