@@ -12,7 +12,7 @@ echo "located in /user/local/lib "
 echo "It is also assumes that the VST SDK is located in ~/SDKs/"
 echo ""
 
-if [ $1 == "debug" ]; then
+if [ "$1" == "debug" ]; then
   echo "Hello debug"
   ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
   mv Makefile MakeCabbageIDE
@@ -73,7 +73,7 @@ cp ./../../Images/cabbage.png ./install/images/cabbage.png
 cp ./../../Images/cabbage.png ./install/images/cabbagelite.png
 cp -rf ../../Examples ./install/
 
-g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csound" -lcsound64
+g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csound" -I"/usr/include/csound" -lcsound64
 cp testCsoundFile ./install/bin/testCsoundFile
 #cp -rf ../../Docs/_book CabbageBuild/Docs
 
