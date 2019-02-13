@@ -35,6 +35,8 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 	  lookAndFeel(new CabbageIDELookAndFeel())
 {
 
+
+
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
     addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (cabbageSettings->valueTree));
@@ -57,11 +59,20 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     factory.combo->getCombo().addListener (this);
     cycleTabsButton.setSize (50, 28);
     cycleTabsButton.addListener (this);
-    setLookAndFeelColours();
+    
 
     createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 	
 	reloadAudioDeviceState();
+
+	fileList.setDirectory(getCurrentCsdFile().getParentDirectory(), true, true);
+	directoryThread.startThread(1);
+
+	fileTree.addListener(this);
+
+	fileTree.setColour(TreeView::backgroundColourId, Colours::grey);
+	addAndMakeVisible(fileTree);
+	setLookAndFeelColours();
 }
 
 CabbageMainComponent::~CabbageMainComponent()
@@ -141,7 +152,12 @@ void CabbageMainComponent::setLookAndFeelColours()
     lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
     lookAndFeelChanged();
     toolbar.repaint();
+	fileTree.setColour(FileTreeComponent::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).darker());
+	fileTree.setColour(FileTreeComponent::textColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::keyword, Colour(50, 50, 50)));
+	fileTree.setColour(FileTreeComponent::highlightColourId, Colours::whitesmoke);
+	fileTree.repaint();
 	resized();
+
 }
 //==============================================================================
 void CabbageMainComponent::buttonClicked (Button* button)
@@ -721,7 +737,7 @@ void CabbageMainComponent::addFileTab (File file)
 
 void CabbageMainComponent::arrangeFileTabs()
 {
-    int xPos = 10;
+    int xPos = 204;
     const int numTabs = 5;
     int tabIndex = 0;
     const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 30 : getWidth() - 25;
@@ -771,11 +787,12 @@ void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
 void CabbageMainComponent::resizeAllWindows (int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
-
+	fileTree.setBounds(0, toolbar.getHeight()+3, 195, getHeight());
+	
     for ( CabbageEditorContainer* editor : editorAndConsole )
     {
         editor->statusBar.setSize (getWidth(), 28);
-        editor->setBounds (0, height, getWidth() - (isPropPanelVisible ? 200 : 0), getHeight() - 5);
+        editor->setBounds (200, height, getWidth() - (isPropPanelVisible ? 200 : 0)-200, getHeight() - 5);
     }
 
     arrangeFileTabs();
@@ -1177,6 +1194,8 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
     }
 
     createCodeEditorForFile (currentCsdFile);
+
+	fileList.setDirectory(currentCsdFile.getParentDirectory(), true, true);
 
     return currentCsdFile;
 

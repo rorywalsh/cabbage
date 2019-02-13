@@ -42,6 +42,7 @@
 class CabbageDocumentWindow;
 class FileTab;
 
+
 class CabbageMainComponent
     : public Component,
       public Button::Listener,
@@ -49,9 +50,26 @@ class CabbageMainComponent
       public ChangeListener,
       public Timer,
       public ComboBox::Listener,
-      public FileDragAndDropTarget
+      public FileDragAndDropTarget,
+	  public FileBrowserListener
 {
 public:
+
+	void selectionChanged() override
+	{
+		// we're only really interested in when the selection changes, regardless of if it was
+		// clicked or not so we'll only override this method
+		auto selectedFile = fileTree.getSelectedFile();
+
+	}
+
+	void fileClicked(const File& file, const MouseEvent&) override 
+	{
+		openFile(file.getFullPathName());
+	}
+
+	void fileDoubleClicked(const File&)              override {}
+	void browserRootChanged(const File&)             override {}
 
     //==============================================================================
     CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
@@ -194,7 +212,15 @@ public:
 
 	};
 
+	TimeSliceThread directoryThread{ "File Scanner Thread" };
+	WildcardFileFilter wildcardFilter{ "*", "*", "Movies File Filter" };
+	DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
+	FileTreeComponent fileTree{ fileList };
+
 private:
+
+
+
     int getTabFileIndex (int32 nodeId);
     int getTabFileIndex (File file);
     OwnedArray<FileTab> fileTabs;
