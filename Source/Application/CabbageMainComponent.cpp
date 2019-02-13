@@ -32,7 +32,8 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
       factory (this),
       //tooltipWindow (this, 300),
       cycleTabsButton ("..."),
-	  lookAndFeel(new CabbageIDELookAndFeel())
+	  lookAndFeel(new CabbageIDELookAndFeel()),
+      resizerBar(settings->getValueTree(), this)
 {
 
 
@@ -72,6 +73,8 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 
 	fileTree.setColour(TreeView::backgroundColourId, Colours::grey);
 	addAndMakeVisible(fileTree);
+    addAndMakeVisible(resizerBar);
+    resizerBar.addMouseListener(this, true);
 	setLookAndFeelColours();
 }
 
@@ -139,8 +142,10 @@ void CabbageMainComponent::importTheme()
 		cabbageSettings->setProperty("CustomIconsDir", fc.getResult().getParentDirectory().getFullPathName());
 	}
 }
-//=====================================================================================================================
 
+
+
+//=====================================================================================================================
 void CabbageMainComponent::setLookAndFeelColours()
 {
     lookAndFeel->setColour (Slider::ColourIds::thumbColourId, Colour (110, 247, 0));
@@ -153,8 +158,9 @@ void CabbageMainComponent::setLookAndFeelColours()
     lookAndFeelChanged();
     toolbar.repaint();
 	fileTree.setColour(FileTreeComponent::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).darker());
-	fileTree.setColour(FileTreeComponent::textColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::keyword, Colour(50, 50, 50)));
+    fileTree.setColour(FileTreeComponent::textColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::identifierLiteral, Colour(50, 50, 50)));
 	fileTree.setColour(FileTreeComponent::highlightColourId, Colours::whitesmoke);
+    fileTree.setColour(FileTreeComponent::selectedItemBackgroundColourId, Colours::whitesmoke);
 	fileTree.repaint();
 	resized();
 
@@ -163,7 +169,9 @@ void CabbageMainComponent::setLookAndFeelColours()
 void CabbageMainComponent::buttonClicked (Button* button)
 {
     if (FileTab* tabButton = dynamic_cast<FileTab*> (button))
+    {
         handleFileTab (tabButton);
+    }
     else if (ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*> (button))
         handleToolbarButtons (toolbarButton);
     else if (DrawableButton* drawableButton = dynamic_cast<DrawableButton*> (button))
@@ -187,11 +195,37 @@ void CabbageMainComponent::buttonClicked (Button* button)
             setCurrentCsdFile (fileTabs[fileTabs.size() - 1]->getFile());
         }
     }
+    
+    if(fileTree.isVisible())
+    {
+        StringArray files;
+        for ( int i = 0 ; i < fileTabs.size() ; i++)
+            if (fileTabs[i]->isVisible() == false)
+            {
+                files.add(fileTabs[i]->getFile().getFullPathName());
+                
+                //CabbageUtilities::debug(fileTabs[i]->getFile().getFullPathName());
+            }
+        
+        const int result = files.indexOf(getCurrentCsdFile().getFullPathName()) + 1;
+        
+        if ( result > 0 )
+        {
+            fileTabs.move (result - 1, fileTabs.size() - 1);
+            editorAndConsole.move (result - 1, fileTabs.size() - 1);
+            arrangeFileTabs();
+            fileTabs[fileTabs.size() - 1]->setToggleState (true, sendNotification);
+            setCurrentCsdFile (fileTabs[fileTabs.size() - 1]->getFile());
+        }
+        
+        fileTree.setSelectedFile(getCurrentCsdFile());
+    }
+    
+    
 }
 
 void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
 {
-
     if (increment && tabButton == nullptr)
     {
         currentFileIndex = (currentFileIndex  < fileTabs.size() - 1 ? currentFileIndex + 1 : 0);
@@ -203,7 +237,7 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
     editorAndConsole[currentFileIndex]->toFront (true);
     cabbageSettings->setProperty ("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
 
-
+    
     if (CabbageDocumentWindow* docWindow = this->findParentComponentOfClass<CabbageDocumentWindow>())
     {
         docWindow->setName (fileTabs[currentFileIndex]->getFile().getFullPathName());
@@ -237,6 +271,12 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
         this->arrangeFileTabs();
     }
 
+
+//    if( fileList.contains(fileTabs[currentFileIndex]->getFile()))
+//       jassertfalse;
+//    fileTree.setSelectedFile(fileTabs[currentFileIndex]->getFile());
+//    fileTree.repaint();
+    fileTree.refresh();
 
 }
 
@@ -399,6 +439,43 @@ void CabbageMainComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     int index = comboBoxThatHasChanged->getSelectedId();
     const int lineToScrollTo = getCurrentCodeEditor()->instrumentsAndRegions.getValueAt (index - 1);
     getCurrentCodeEditor()->scrollToLine (lineToScrollTo);
+}
+
+//==============================================================================
+void CabbageMainComponent::mouseExit (const MouseEvent& e)
+{
+    if (e.eventComponent->getName() == "ResizerBar")
+        resizerBar.setMouseCursor (MouseCursor::NormalCursor);
+}
+
+void CabbageMainComponent::mouseDown (const MouseEvent& e)
+{
+    if (e.eventComponent->getName() == "ResizerBar")
+        startingVBarDragPos = resizerBar.getPosition().getX();
+}
+
+void CabbageMainComponent::mouseUp (const MouseEvent& e)
+{
+
+}
+
+void CabbageMainComponent:: mouseEnter (const MouseEvent& e)
+{
+    
+    
+    if (e.eventComponent->getName() == "ResizerBar")
+        resizerBar.setMouseCursor (MouseCursor::LeftRightResizeCursor);
+}
+
+void CabbageMainComponent::mouseDrag (const MouseEvent& e)
+{
+    if (e.eventComponent->getName() == "ResizerBar")
+    {
+        CabbageUtilities::debug(startingVBarDragPos + e.getDistanceFromDragStartX());
+        resizerBar.setBounds (startingVBarDragPos + e.getDistanceFromDragStartX(), 0, resizerBar.getWidth(), resizerBar.getHeight());
+        resizerBarCurrentXPos = startingVBarDragPos + e.getDistanceFromDragStartX();
+        resized();
+    }
 }
 //==============================================================================
 void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
@@ -737,7 +814,7 @@ void CabbageMainComponent::addFileTab (File file)
 
 void CabbageMainComponent::arrangeFileTabs()
 {
-    int xPos = 204;
+    int xPos = resizerBarCurrentXPos;
     const int numTabs = 5;
     int tabIndex = 0;
     const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 30 : getWidth() - 25;
@@ -787,12 +864,14 @@ void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
 void CabbageMainComponent::resizeAllWindows (int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
-	fileTree.setBounds(0, toolbar.getHeight()+3, 195, getHeight());
+	fileTree.setBounds(0, toolbar.getHeight()+3, resizerBarCurrentXPos-7, getHeight());
 	
+    resizerBar.setBounds(resizerBarCurrentXPos-5, toolbar.getHeight(), 3, getHeight());
+    
     for ( CabbageEditorContainer* editor : editorAndConsole )
     {
         editor->statusBar.setSize (getWidth(), 28);
-        editor->setBounds (200, height, getWidth() - (isPropPanelVisible ? 200 : 0)-200, getHeight() - 5);
+        editor->setBounds (resizerBarCurrentXPos, height, getWidth() - (isPropPanelVisible ? 200 : 0)-200, getHeight() - 5);
     }
 
     arrangeFileTabs();
@@ -1196,6 +1275,8 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
     createCodeEditorForFile (currentCsdFile);
 
 	fileList.setDirectory(currentCsdFile.getParentDirectory(), true, true);
+    fileTree.refresh();
+    fileTree.setSelectedFile(currentCsdFile);
 
     return currentCsdFile;
 

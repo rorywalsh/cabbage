@@ -89,6 +89,7 @@ namespace CommandIDs
         selectAll           = 0x512027,
         deselectAll         = 0x512028,
         editMode            = 0x512029,
+        toggleFileBrowser   = 0x512030,
 
         showGenericWidgetWindow = 0x612000,
         batchConvertExamplesAU    = 0x612001,
