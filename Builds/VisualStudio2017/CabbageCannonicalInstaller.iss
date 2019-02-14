@@ -51,6 +51,8 @@ Source: "{#BuildDir}/CabbagePluginSynth.dll"; DestDir: "{app}"; Flags: ignorever
 Source: "{#BuildDir}/fmod_csoundL64.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "..\..\Examples\*"; DestDir: "{app}\Examples"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
 Source: "..\..\Icons\*"; DestDir: "{app}\Icons"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
+Source: "..\..\Themes\*"; DestDir: "{app}\Themes"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
+
 
 Source: "..\..\CabbageManual\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;
 Source: "{#BuildDir}\CabbageRack\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: core; Permissions: users-full;

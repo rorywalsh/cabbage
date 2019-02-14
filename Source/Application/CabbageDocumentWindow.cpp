@@ -119,6 +119,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
     setApplicationCommandManagerToWatch (&commandManager);
     commandManager.registerAllCommandsForTarget (this);
     addKeyListener (commandManager.getKeyMappings());
+    
 
 #if JUCE_MAC
     setMacMainMenu (this);
@@ -392,6 +393,7 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::showGraph);
     menu.addCommandItem (&commandManager, CommandIDs::showConsole);
 	menu.addCommandItem(&commandManager, CommandIDs::toggleProperties);
+    menu.addCommandItem(&commandManager, CommandIDs::toggleFileBrowser);
 
     menu.addSeparator();
 }
@@ -501,6 +503,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::showGenericWidgetWindow,
                               CommandIDs::batchConvertExamplesAU,
                               CommandIDs::batchConvertExamplesVST,
+                              CommandIDs::toggleFileBrowser
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -772,10 +775,15 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
 
 		case CommandIDs::toggleProperties:
-			result.setInfo(TRANS("Toggle Properties"), TRANS("Toggle property pnel"), "View", 0);
+			result.setInfo(TRANS("Toggle Properties"), TRANS("Toggle property panel"), "View", 0);
 			result.addDefaultKeypress('h', ModifierKeys::commandModifier);
 			result.setActive((shouldShowEditMenu ? true : false));
 			break;
+            
+        case CommandIDs::toggleFileBrowser:
+            result.setInfo(TRANS("Toggle File Browser"), TRANS("Toggle file browser"), "View", 0);
+            result.addDefaultKeypress('b', ModifierKeys::commandModifier);
+            break;
 
         case CommandIDs::showFindPanel:
             result.setInfo (TRANS ("Find"), TRANS ("Searches for text in the current document."), "Editing", 0);
@@ -1014,6 +1022,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 		case CommandIDs::toggleProperties:
 			getContentComponent()->togglePropertyPanel();
 			return true;
+            
+        case CommandIDs::toggleFileBrowser:
+            getContentComponent()->toggleBrowser();
+            break;
+            
 
         case CommandIDs::showReplacePanel:
             getContentComponent()->showFindPanel (true);
