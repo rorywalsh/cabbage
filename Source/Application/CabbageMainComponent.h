@@ -42,6 +42,7 @@
 class CabbageDocumentWindow;
 class FileTab;
 
+
 class CabbageMainComponent
     : public Component,
       public Button::Listener,
@@ -49,9 +50,32 @@ class CabbageMainComponent
       public ChangeListener,
       public Timer,
       public ComboBox::Listener,
-      public FileDragAndDropTarget
+      public FileDragAndDropTarget,
+	  public FileBrowserListener
 {
 public:
+
+    void mouseDown (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
+    void mouseExit (const MouseEvent& e) override;
+    void mouseEnter (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
+    
+	void selectionChanged() override
+	{
+		// we're only really interested in when the selection changes, regardless of if it was
+		// clicked or not so we'll only override this method
+		auto selectedFile = fileTree.getSelectedFile();
+
+	}
+
+	void fileClicked(const File& file, const MouseEvent&) override 
+	{
+        bringCodeEditorToFront(file);
+	}
+
+	void fileDoubleClicked(const File&)              override {}
+	void browserRootChanged(const File&)             override {}
 
     //==============================================================================
     CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
@@ -161,7 +185,7 @@ public:
 			resized();
 		}
 	}
-
+    
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
@@ -194,7 +218,60 @@ public:
 
 	};
 
+    class VerticalResizerBar : public Component
+    {
+    public:
+        VerticalResizerBar (ValueTree valueTree, CabbageMainComponent* parent)
+        :   Component ("ResizerBar"),
+        valueTree (valueTree),
+        owner (parent)
+        {
+            
+        }
+        
+        void paint (Graphics& g)  override
+        {
+            g.fillAll(CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::menuBarBackground, Colours::black));
+        };
+        
+        int getCurrentYPos() {   return currentYPos; }
+        
+    private:
+        ValueTree valueTree;
+        int startingYPos;
+        int currentYPos = 550;
+        CabbageMainComponent* owner;
+    };
+    
+    VerticalResizerBar resizerBar;
+    int startingVBarDragPos = 195;
+    int resizerBarCurrentXPos = 195;
+    
+    void toggleBrowser()
+    {
+        if(resizerBar.isVisible())
+        {
+            resizerBar.setVisible(false);
+            resizerBarCurrentXPos = 0;
+            resized();
+        }
+        else
+        {
+            resizerBarCurrentXPos = 195;
+            resizerBar.setVisible(true);
+            resized();
+        }
+    }
+    
+	TimeSliceThread directoryThread{ "File Scanner Thread" };
+	WildcardFileFilter wildcardFilter{ "*", "*", "Movies File Filter" };
+	DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
+	FileTreeComponent fileTree{ fileList };
+
 private:
+
+
+
     int getTabFileIndex (int32 nodeId);
     int getTabFileIndex (File file);
     OwnedArray<FileTab> fileTabs;

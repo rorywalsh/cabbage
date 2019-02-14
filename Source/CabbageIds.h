@@ -89,6 +89,7 @@ namespace CommandIDs
         selectAll           = 0x512027,
         deselectAll         = 0x512028,
         editMode            = 0x512029,
+        toggleFileBrowser   = 0x512030,
 
         showGenericWidgetWindow = 0x612000,
         batchConvertExamplesAU    = 0x612001,
@@ -298,6 +299,7 @@ public:
         add ("blacknotecolour");
         add ("highlightcolour");
         add ("tablegridcolour");
+        add ("trackerbgcolour");
         add ("backgroundcolor");
         add ("showstepnumbers");
         add ("markerthickness");
@@ -346,6 +348,7 @@ public:
         add ("fontcolour");
         add ("textcolour");
         add ("updaterate");
+        add ("gapmarkers");
         add ("guirefresh");
         add ("tablecolor");
         add ("radiogroup");
@@ -515,6 +518,7 @@ namespace CabbageIdentifierIds
 	static const Identifier drawmode = "drawmode";
 	static const Identifier endpoint = "endpoint";
 	static const Identifier endpos = "endpos";
+    static const Identifier gapmarkers = "gapmarkers";
 	static const Identifier macronames = "macronames";
     static const Identifier manufacturer = "manufacturer";
 	static const Identifier ffttablenumber = "ffttablenumber";
@@ -642,6 +646,7 @@ namespace CabbageIdentifierIds
     static const Identifier tofront = "tofront";
     static const Identifier top = "top";
 	static const Identifier trackercolour = "trackercolour";
+    static const Identifier trackerbgcolour = "trackerbgcolour";
 	static const Identifier trackerthickness = "trackerthickness";
     static const Identifier trackeroutsideradius = "trackeroutsideradius";
     static const Identifier trackerinsideradius = "trackerinsideradius";
