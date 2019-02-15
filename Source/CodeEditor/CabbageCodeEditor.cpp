@@ -156,54 +156,54 @@ void CabbageCodeEditorComponent::updateColourScheme (bool isCsdFile)
     }
     else
     {
-        Colour background = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground,
-                                                                     Colour (70, 70, 70));
+        //Colour background = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground,
+        //                                                             Colour (70, 70, 70));
 
 
 
-        const Type types[] =
-        {
-            {
-                "Error",             CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::numbers,
-                Colours::grey.darker()).getARGB()
-            },
-            {
-                "Comment",           CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::comment,
-                Colours::grey.darker()).getARGB()
-            },
-            {"Keyword",           background.contrasting (.3f).getARGB()},
-            {
-                "Identifier",        CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::identifierLiteral,
-                Colours::grey.darker()).getARGB()
-            },
-            {"Integer",           background.contrasting (.8f).getARGB()},
-            {"Float",             Colours::cornflowerblue.getARGB()},
-            {
-                "String",            CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::stringLiteral,
-                Colours::grey.darker()).getARGB()
-            },
-            {"Operator",          Colours::pink.darker().getARGB()},
-            {"Bracket",           background.contrasting (.3f).getARGB()},
-            {"Punctuation",       Colours::red.darker().getARGB()},
-            {"Preprocessor Text", Colours::red.darker().getARGB()},
-            {
-                "Csd Tag",           CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::csdtags,
-                Colours::grey.darker()).getARGB()
-            }
-        };
+        //const Type types[] =
+        //{
+        //    {
+        //        "Error",             CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::numbers,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {
+        //        "Comment",           CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::comment,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {"Keyword",           background.contrasting (.3f).getARGB()},
+        //    {
+        //        "Identifier",        CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::identifierLiteral,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {"Integer",           background.contrasting (.8f).getARGB()},
+        //    {"Float",             Colours::cornflowerblue.getARGB()},
+        //    {
+        //        "String",            CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::stringLiteral,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {"Operator",          Colours::pink.darker().getARGB()},
+        //    {"Bracket",           background.contrasting (.3f).getARGB()},
+        //    {"Punctuation",       Colours::red.darker().getARGB()},
+        //    {"Preprocessor Text", Colours::red.darker().getARGB()},
+        //    {
+        //        "Csd Tag",           CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::csdtags,
+        //        Colours::grey.darker()).getARGB()
+        //    }
+        //};
 
-        CodeEditorComponent::ColourScheme cs;
+        //CodeEditorComponent::ColourScheme cs;
 
-        for (std::size_t i = 0;
-             i < sizeof (types) / sizeof (types[0]); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
-            cs.set (types[i].name, Colour (types[i].colour));
+        //for (std::size_t i = 0;
+        //     i < sizeof (types) / sizeof (types[0]); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
+        //    cs.set (types[i].name, Colour (types[i].colour));
 
-        this->setColourScheme (cs);
+        //this->setColourScheme (cs);
     }
 }
 //==============================================================================

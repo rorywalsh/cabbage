@@ -29,7 +29,7 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool 
     if (isCsdFile)
         addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
     else
-        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &xmlTokeniser));
+        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
 
     addAndMakeVisible (outputConsole = new CabbageOutputConsole (settings->valueTree));
 
