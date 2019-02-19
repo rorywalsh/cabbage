@@ -73,6 +73,14 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 
 	fileTree.setColour(TreeView::backgroundColourId, Colours::grey);
 	addAndMakeVisible(fileTree);
+    
+    if(cabbageSettings->getUserSettings()->getIntValue("ShowFileBrowser")==0)
+    {
+        resizerBar.setVisible(false);
+        resizerBarCurrentXPos = 0;
+        resized();
+    }
+    
     addAndMakeVisible(resizerBar);
     resizerBar.addMouseListener(this, true);
 	setLookAndFeelColours();
@@ -864,14 +872,14 @@ void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
 void CabbageMainComponent::resizeAllWindows (int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
-	fileTree.setBounds(0, toolbar.getHeight()+3, resizerBarCurrentXPos-7, getHeight());
+	fileTree.setBounds(0, height, resizerBarCurrentXPos-7, getHeight()-height);
 	
     resizerBar.setBounds(resizerBarCurrentXPos-5, toolbar.getHeight(), 3, getHeight());
     
     for ( CabbageEditorContainer* editor : editorAndConsole )
     {
         editor->statusBar.setSize (getWidth(), 28);
-        editor->setBounds (resizerBarCurrentXPos, height, getWidth() - (isPropPanelVisible ? 200 : 0)-200, getHeight() - 5);
+        editor->setBounds (resizerBarCurrentXPos, height, getWidth() - (isPropPanelVisible ? 200 : 0)-fileTree.getWidth(), getHeight() - 5);
     }
 
     arrangeFileTabs();
