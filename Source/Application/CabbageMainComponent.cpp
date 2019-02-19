@@ -1282,9 +1282,12 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
 
     createCodeEditorForFile (currentCsdFile);
 
-	fileList.setDirectory(currentCsdFile.getParentDirectory(), true, true);
+    if(!currentCsdFile.isAChildOf(fileList.getDirectory()))
+        fileList.setDirectory(currentCsdFile.getParentDirectory(), true, true);
+    
     fileTree.refresh();
     fileTree.setSelectedFile(currentCsdFile);
+    
 
     return currentCsdFile;
 
