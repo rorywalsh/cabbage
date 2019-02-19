@@ -879,7 +879,7 @@ void CabbageMainComponent::resizeAllWindows (int height)
     for ( CabbageEditorContainer* editor : editorAndConsole )
     {
         editor->statusBar.setSize (getWidth(), 28);
-        editor->setBounds (resizerBarCurrentXPos, height, getWidth() - (isPropPanelVisible ? 200 : 0)-fileTree.getWidth(), getHeight() - 5);
+        editor->setBounds (resizerBarCurrentXPos, height, getWidth() - (isPropPanelVisible ? 200 : 0)-resizerBarCurrentXPos, getHeight() - 5);
     }
 
     arrangeFileTabs();
