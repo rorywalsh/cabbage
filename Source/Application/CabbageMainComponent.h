@@ -254,11 +254,13 @@ public:
             resizerBar.setVisible(false);
             resizerBarCurrentXPos = 0;
             resized();
+            cabbageSettings->setProperty ("ShowFileBrowser", 0);
         }
         else
         {
             resizerBarCurrentXPos = 195;
             resizerBar.setVisible(true);
+            cabbageSettings->setProperty ("ShowFileBrowser", 1);
             resized();
         }
     }

@@ -68,6 +68,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("UserFilesDir", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);
     defaultPropSet->setValue ("ShowEditorConsole", 1);
+    defaultPropSet->setValue ("ShowFileBrowser", 0);
     defaultPropSet->setValue ("ExternalEditor", 0);
     defaultPropSet->setValue ("UseCabbageIO", 1);
     defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 1);
@@ -92,7 +93,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ShowAutoComplete", 0);
     defaultPropSet->setValue ("ShowNativeFileDialogues", 1);
     defaultPropSet->setValue ("EnableNativePopup", 0);
-	defaultPropSet->setValue("UseModifiedAudioGraph", 0);
+	defaultPropSet->setValue ("UseModifiedAudioGraph", 0);
     defaultPropSet->setValue ("SSHHomeDir", "/pi");
     defaultPropSet->setValue ("SSHAddress", "empty");
     defaultPropSet->setValue ("SSHLocalDir", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory).getFullPathName());
