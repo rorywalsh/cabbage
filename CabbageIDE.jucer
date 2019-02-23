@@ -99,6 +99,10 @@
               file="Source/CodeEditor/CabbageOutputConsole.h"/>
         <FILE id="ELc9CC" name="CsoundTokeniser.h" compile="0" resource="0"
               file="Source/CodeEditor/CsoundTokeniser.h"/>
+        <FILE id="m3V9Zl" name="JavascriptCodeTokeniser.cpp" compile="1" resource="0"
+              file="Source/CodeEditor/JavascriptCodeTokeniser.cpp"/>
+        <FILE id="dIiKQp" name="JavascriptCodeTokeniser.h" compile="0" resource="0"
+              file="Source/CodeEditor/JavascriptCodeTokeniser.h"/>
       </GROUP>
       <GROUP id="{F3304E24-7CA0-262D-A950-37F7AF181CEE}" name="GUIEditor">
         <FILE id="p63bOa" name="CabbagePropertiesPanel.cpp" compile="1" resource="0"
