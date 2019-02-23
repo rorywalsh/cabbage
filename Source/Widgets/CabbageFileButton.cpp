@@ -72,6 +72,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         }
 
         owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
+		owner->refreshComboListBoxContents();
     }
 
     else if (mode == "directory")
