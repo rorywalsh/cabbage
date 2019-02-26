@@ -190,6 +190,7 @@ class CabbageLayoutWidgetStrings : public StringArray
 public:
     CabbageLayoutWidgetStrings()
     {
+		add ("keyboarddisplay");
         add ("form");
         add ("image");
         add ("socketsend");
@@ -330,6 +331,7 @@ public:
         add ("popuppostfix");
         add ("manufacturer");
         add ("markerstart");
+		add ("keyreleased");
         add ("orientation");
         add ("tablecolour");
         add ("metercolour");
@@ -354,6 +356,7 @@ public:
         add ("radiogroup");
         add ("macronames");
         add ("ballcolour");
+		add ("keypressed");
         add ("scrollbars");
         add ("cellheight");
         add ("markerend");
@@ -451,6 +454,7 @@ namespace CabbageWidgetTypes
 	static const String image = "image";
 	static const String infobutton = "infobutton";
 	static const String keyboard = "keyboard";
+	static const String keyboarddisplay = "keyboarddisplay";
 	static const String label = "label";
 	static const String line = "line";
 	static const String listbox = "listbox";
@@ -582,6 +586,8 @@ namespace CabbageIdentifierIds
 	static const Identifier mode = "mode";
 	static const Identifier mouseoeverkeycolour = "mouseoeverkeycolour";
 	static const Identifier name = "name";
+	static const Identifier keypressed = "keypressed";
+	static const Identifier keyreleased = "keyreleased";
 	static const Identifier oncolour = "oncolour";
 	static const Identifier onfontcolour = "onfontcolour";
 	static const Identifier orientation = "orientation";

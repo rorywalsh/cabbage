@@ -297,7 +297,7 @@ void CabbageWidgetData::setLoadButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 }
 
-void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID)
+void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, bool displayOnly)
 {
     setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
@@ -307,8 +307,8 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::value, 60);
     setProperty (widgetData, CabbageIdentifierIds::middlec, 3);
     setProperty (widgetData, CabbageIdentifierIds::keypressbaseoctave, 3);
-    setProperty (widgetData, CabbageIdentifierIds::type, "keyboard");
-    setProperty (widgetData, CabbageIdentifierIds::name, "keyboard");
+    setProperty (widgetData, CabbageIdentifierIds::type, displayOnly == true ? "keyboarddisplay" : "keyboard");
+    setProperty (widgetData, CabbageIdentifierIds::name, displayOnly == true ? "keyboarddisplay" : "keyboard");
     setProperty (widgetData, CabbageIdentifierIds::kind, "horizontal");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::whitenotecolour, Colours::whitesmoke.toString());
