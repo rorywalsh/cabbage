@@ -79,6 +79,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{06A9B370-E21A-01CA-7B69-FE3EB35876DF}" name="Widgets">
+        <FILE id="vo6ava" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
+        <FILE id="Lqsrt8" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <GROUP id="{672F48C9-B35F-4B01-A80B-75D0B37F2403}" name="Legacy">
           <FILE id="ajMpZI" name="FrequencyRangeDisplayComponent.h" compile="0"
                 resource="0" file="Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h"/>
