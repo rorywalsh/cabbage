@@ -25,7 +25,7 @@
 
 class CabbagePluginEditor;
 
-class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener
+class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener, public Timer
 {
     CabbagePluginEditor* owner;
     String mode, filetype;
@@ -33,7 +33,7 @@ class CabbageFileButton : public TextButton, public ValueTree::Listener, public 
 public:
 
     CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageFileButton() {};
+    ~CabbageFileButton() {  stopTimer();  };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -46,6 +46,8 @@ public:
 
     void buttonClicked (Button* button)  override;
     ValueTree widgetData;
+    
+    void timerCallback() override;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageFileButton);

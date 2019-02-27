@@ -91,7 +91,7 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
 CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     : widgetData (widgetData), hideButton("x")
 {
-    //addAndMakeVisible(tooltipWindow);
+
     setOpaque (true);
     setSize (300, 500);
     

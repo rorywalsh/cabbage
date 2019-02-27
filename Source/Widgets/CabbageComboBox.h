@@ -49,7 +49,7 @@ public:
     ~CabbageComboBox();
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
-    void addItemsToCombobox (ValueTree wData, bool refreshedFromDisk = false);
+    void addItemsToCombobox (ValueTree wData);
 
     void comboBoxChanged (ComboBox* combo)  override; //is preset combo use this listener
 
