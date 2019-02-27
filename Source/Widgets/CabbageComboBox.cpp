@@ -93,11 +93,10 @@ CabbageComboBox::~CabbageComboBox()
 
 }
 
-void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDisk)
+void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 {
-    presets.clear();
     Array<File> dirFiles;
-    StringArray fileNames;
+    presets.clear();
     clear (dontSendNotification);
     folderFiles.clear();
 
@@ -153,6 +152,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData, bool refreshedFromDis
     }
     else
     {
+        
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
         if (workingDir.isNotEmpty())

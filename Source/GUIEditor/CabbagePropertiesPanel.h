@@ -82,7 +82,7 @@ public:
         repaint();
     }
 private:
-    TooltipWindow tooltipWindow;
+
     PropertyPanel propertyPanel;
     String previousWidgetName = "";
 	

@@ -965,7 +965,7 @@ void CabbagePluginEditor::refreshComboListBoxContents()
             {
                 if (fileType.isNotEmpty())
                 {
-                    combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i), true);
+                    combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i));
                 }
 
                 if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true)
@@ -976,7 +976,7 @@ void CabbagePluginEditor::refreshComboListBoxContents()
             {
                 if (fileType.isNotEmpty())
                 {
-                    listbox->addItemsToListbox(processor.cabbageWidgets.getChild (i), true);
+                    listbox->addItemsToListbox(processor.cabbageWidgets.getChild (i));
                 }
 
                 if(bool(listbox->getProperties().getWithDefault("isPresetCombo", false)) == true)

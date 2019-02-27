@@ -55,7 +55,7 @@ public:
     void paintListBoxItem (int rowNumber, Graphics& g,
                            int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged (int /*lastRowselected*/) override;
-    void addItemsToListbox (ValueTree wData, bool refreshedFromDisk);
+    void addItemsToListbox (ValueTree wData);
     //void paint(Graphics& g) override;
     void resized();
 

@@ -30,7 +30,6 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     : cabbageSettings (settings),
       owner (owner),
       factory (this),
-      //tooltipWindow (this, 300),
       cycleTabsButton ("..."),
 	  lookAndFeel(new CabbageIDELookAndFeel()),
       resizerBar(settings->getValueTree(), this)

@@ -43,7 +43,6 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
 //===============================================================================
 void CabbageFileButton::buttonClicked (Button* button)
 {
-
     if (mode == "file")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
@@ -73,6 +72,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
         owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
 		owner->refreshComboListBoxContents();
+        startTimer(500);
     }
 
     else if (mode == "directory")
@@ -87,6 +87,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         }
 
         owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
+        
     }
 
     else if (mode == "snapshot")
@@ -134,6 +135,12 @@ void CabbageFileButton::buttonClicked (Button* button)
     }
 
     owner->getProcessor().updateHostDisplay();
+}
+
+//===============================================================================
+void CabbageFileButton::timerCallback()
+{
+    owner->refreshComboListBoxContents();
 }
 
 //===============================================================================
