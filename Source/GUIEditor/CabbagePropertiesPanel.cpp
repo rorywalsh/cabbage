@@ -570,7 +570,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String noteSeparator = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::keyseparatorcolour);
         const String arrowBg = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::arrowbackgroundcolour);
         const String arrow = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::arrowcolour);
-        const String mouseOverKey = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mouseoeverkeycolour);
+        const String mouseOverKey = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mouseoverkeycolour);
 
         comps.add (new ColourPropertyComponent ("White Notes", whiteNotes));
         comps.add (new ColourPropertyComponent ("Black Notes", blackNotes));

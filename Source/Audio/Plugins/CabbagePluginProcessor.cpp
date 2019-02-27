@@ -98,6 +98,9 @@ void CabbagePluginProcessor::setWidthHeight() {
     csdLines.addLines(csdFile.loadFileAsString());
 
     for (auto line : csdLines) {
+        if(line.contains("</Cabbage>"))
+            return;
+        
         ValueTree temp("temp");
         CabbageWidgetData::setWidgetState(temp, line, 0);
 

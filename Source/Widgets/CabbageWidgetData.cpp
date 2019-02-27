@@ -484,12 +484,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setScrubberPosition (strTokens, widgetData);
                 break;
 
-			case HashStringToInt("notepressed"):
-				setKeyboardDisplayNotes(strTokens, widgetData, true);
-				break;
-
-			case HashStringToInt("notereleased"):
-				setKeyboardDisplayNotes(strTokens, widgetData, false);
+			case HashStringToInt("keypressed"):
+				setKeyboardDisplayNotes(strTokens, widgetData);
 				break;
 
             case HashStringToInt ("samplerange"):
@@ -512,7 +508,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("blacknotecolour"):
             case HashStringToInt ("keydowncolour"):
             case HashStringToInt ("whitenotecolour"):
-            case HashStringToInt ("mouseoeverkeycolour"):
+            case HashStringToInt ("mouseoverkeycolour"):
             case HashStringToInt ("arrowbackgroundcolour"):
             case HashStringToInt ("arrowcolour"):
             case HashStringToInt ("ballcolour"):
@@ -968,7 +964,7 @@ void CabbageWidgetData::setAmpRange (StringArray strTokens, ValueTree widgetData
         setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, array[3]);
 }
 
-void CabbageWidgetData::setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData, bool pressed)
+void CabbageWidgetData::setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData)
 {
 	var notes;
 	notes.append(strTokens[0].trim().getIntValue());
@@ -977,8 +973,9 @@ void CabbageWidgetData::setKeyboardDisplayNotes(StringArray strTokens, ValueTree
 	for (int i = 1; i < strTokens.size(); i++)
 	{
 		notes.append(strTokens[i].trim().getIntValue());
-		setProperty(widgetData, (pressed == true ? CabbageIdentifierIds::keypressed : CabbageIdentifierIds::keyreleased), notes);
 	}
+    
+    setProperty(widgetData, CabbageIdentifierIds::keypressed, notes);
 }
 
 void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree widgetData)

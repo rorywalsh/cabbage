@@ -515,7 +515,6 @@ void CabbagePluginEditor::insertKeyboardDisplay(ValueTree cabbageWidgetData)
 	//midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
 	addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);
 	addMouseListenerAndSetVisibility(midiKeyboard, cabbageWidgetData);
-	keyboardCount++;
 }
 //======================================================================================================
 void CabbagePluginEditor::insertGroupBox (ValueTree cabbageWidgetData)

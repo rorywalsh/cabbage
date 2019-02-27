@@ -27,8 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 /* A component that displays a piano keyboard, whose notes can be clicked on.*/
 class MidiKeyboardDisplay : public Component,
 	public MidiKeyboardStateListener,
-	public ChangeBroadcaster,
-	private Timer
+	public ChangeBroadcaster
 {
 public:
 	//==============================================================================
@@ -53,51 +52,13 @@ public:
 	~MidiKeyboardDisplay();
 
 	//==============================================================================
-	/** Changes the velocity used in midi note-on messages that are triggered by clicking
-	on the component.
-
-	Values are 0 to 1.0, where 1.0 is the heaviest.
-
-	@see setMidiChannel
-	*/
+    void updateKeys();
+    Array<int> notesDown;
 	void setVelocity(float velocity, bool useMousePositionForVelocity);
-
-	/** Changes the midi channel number that will be used for events triggered by clicking
-	on the component.
-
-	The channel must be between 1 and 16 (inclusive). This is the channel that will be
-	passed on to the MidiKeyboardState::noteOn() method when the user clicks the component.
-
-	Although this is the channel used for outgoing events, the component can display
-	incoming events from more than one channel - see setMidiChannelsToDisplay()
-
-	@see setVelocity
-	*/
 	void setMidiChannel(int midiChannelNumber);
-
-	/** Returns the midi channel that the keyboard is using for midi messages.
-	@see setMidiChannel
-	*/
 	int getMidiChannel() const noexcept { return midiChannel; }
-
-	/** Sets a mask to indicate which incoming midi channels should be represented by
-	key movements.
-
-	The mask is a set of bits, where bit 0 = midi channel 1, bit 1 = midi channel 2, etc.
-
-	If the MidiKeyboardState has a key down for any of the channels whose bits are set
-	in this mask, the on-screen keys will also go down.
-
-	By default, this mask is set to 0xffff (all channels displayed).
-
-	@see setMidiChannel
-	*/
-	void setMidiChannelsToDisplay(int midiChannelMask);
-
-	/** Returns the current set of midi channels represented by the component.
-	This is the value that was set with setMidiChannelsToDisplay().
-	*/
-	int getMidiChannelsToDisplay() const noexcept { return midiInChannelMask; }
+    void setMidiChannelsToDisplay(int midiChannelMask);
+    int getMidiChannelsToDisplay() const noexcept { return midiInChannelMask; }
 
 	//==============================================================================
 	/** Changes the width used to draw the white keys. */
@@ -210,52 +171,7 @@ public:
 	float getTotalKeyboardWidth() const noexcept;
 
 	/** Returns the key at a given coordinate. */
-	int getNoteAtPosition(Point<float> position);
-
-	//==============================================================================
-	/** Deletes all key-mappings.
-	@see setKeyPressForNote
-	*/
-	void clearKeyMappings();
-
-	/** Maps a key-press to a given note.
-
-	@param key                  the key that should trigger the note
-	@param midiNoteOffsetFromC  how many semitones above C the triggered note should
-	be. The actual midi note that gets played will be
-	this value + (12 * the current base octave). To change
-	the base octave, see setKeyPressBaseOctave()
-	*/
-	void setKeyPressForNote(const KeyPress& key,
-		int midiNoteOffsetFromC);
-
-	/** Removes any key-mappings for a given note.
-	For a description of what the note number means, see setKeyPressForNote().
-	*/
-	void removeKeyPressForNote(int midiNoteOffsetFromC);
-
-	/** Changes the base note above which key-press-triggered notes are played.
-
-	The set of key-mappings that trigger notes can be moved up and down to cover
-	the entire scale using this method.
-
-	The value passed in is an octave number between 0 and 10 (inclusive), and
-	indicates which C is the base note to which the key-mapped notes are
-	relative.
-	*/
-	void setKeyPressBaseOctave(int newOctaveNumber);
-
-	/** This sets the octave number which is shown as the octave number for middle C.
-
-	This affects only the default implementation of getWhiteNoteText(), which
-	passes this octave number to MidiMessage::getMidiNoteName() in order to
-	get the note text. See MidiMessage::getMidiNoteName() for more info about
-	the parameter.
-
-	By default this value is set to 3.
-
-	@see getOctaveForMiddleC
-	*/
+	int getNoteAtPosition(Point<float> position);	
 	void setOctaveForMiddleC(int octaveNumForMiddleC);
 
 	/** This returns the value set by setOctaveForMiddleC().
@@ -282,12 +198,6 @@ public:
 	void mouseExit(const MouseEvent&) override;
 	/** @internal */
 	void mouseWheelMove(const MouseEvent&, const MouseWheelDetails&) override;
-	/** @internal */
-	void timerCallback() override;
-	/** @internal */
-	bool keyStateChanged(bool isKeyDown) override;
-	/** @internal */
-	bool keyPressed(const KeyPress&) override;
 	/** @internal */
 	void focusLost(FocusChangeType) override;
 	/** @internal */
@@ -439,7 +349,7 @@ public:
 	void valueTreeParentChanged(ValueTree&) override {};
 
 	ValueTree widgetData;
-
+    void colourPressedNotes(ValueTree wData);
 	void updateColours(ValueTree& wData);
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbageKeyboardDisplay);
 };

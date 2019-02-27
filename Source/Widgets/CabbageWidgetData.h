@@ -98,7 +98,7 @@ public:
     static void setRange (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setFontStyle (StringArray strTokens, ValueTree widgetData);
     static void setScrubberPosition (StringArray strTokens, ValueTree widgetData);
-	static void setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData, bool pressed);
+	static void setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData);
     static void setAmpRange (StringArray strTokens, ValueTree widgetData);
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
     static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);

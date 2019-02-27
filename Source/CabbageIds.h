@@ -285,7 +285,7 @@ public:
         add ("trackeroutsideradius");
         add ("trackerinsideradius");
         add ("surrogatelinenumber");
-        add ("mouseoeverkeycolour");
+        add ("mouseoverkeycolour");
         add ("keypressbaseoctave");
         add ("keyseparatorcolour");
         add ("amprange_quantise");
@@ -584,7 +584,7 @@ namespace CabbageIdentifierIds
 	static const Identifier minx = "minx";
 	static const Identifier miny = "miny";
 	static const Identifier mode = "mode";
-	static const Identifier mouseoeverkeycolour = "mouseoeverkeycolour";
+	static const Identifier mouseoverkeycolour = "mouseoverkeycolour";
 	static const Identifier name = "name";
 	static const Identifier keypressed = "keypressed";
 	static const Identifier keyreleased = "keyreleased";
@@ -816,7 +816,7 @@ public:
         set ("On Image", CabbageIdentifierIds::imgbuttonon.toString());
         set ("Over Image", CabbageIdentifierIds::imgbuttonover.toString());
         set ("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
-        set ("Mouse Over", CabbageIdentifierIds::mouseoeverkeycolour.toString());
+        set ("Mouse Over", CabbageIdentifierIds::mouseoverkeycolour.toString());
         set ("Max Amp", CabbageIdentifierIds::amprange_max.toString());
         set ("Min Amp", CabbageIdentifierIds::amprange_min.toString());
         set ("Table No.", CabbageIdentifierIds::amprange_tablenumber.toString());

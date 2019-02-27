@@ -32,20 +32,50 @@ CabbageKeyboardDisplay::CabbageKeyboardDisplay(ValueTree wData)
 
 	setLowestVisibleKey(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value));
 	setOctaveForMiddleC(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::middlec));
-	setKeyPressBaseOctave(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::keypressbaseoctave)); // octave num. in [0, 10]
 	setKeyWidth(keyWidth);
 	setScrollButtonsVisible(scrollbars == 1 ? true : false);
-
+    
 	updateColours(wData);
+    colourPressedNotes(wData);
 
 }
 
+void CabbageKeyboardDisplay::colourPressedNotes(ValueTree wData)
+{
+    var keysPressed = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::keypressed);
+    Array<var>* array = keysPressed.getArray();
+    Array<int> keys;
+    if (array)
+    {
+        if (array->size()>0)
+        {
+            for( int i = 0 ; i < array->size() ; i++)
+            {
+                if(!keys.contains(int(array->getReference(i))))
+                   keys.add(int(array->getReference(i)));
+            }
+            notesDown = keys;
+        }
+    }
+    else
+    {
+        const int note = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::keypressed);
+        notesDown = Array<int>(note);
+    }
+    
+    
+    updateKeys();
+}
 void CabbageKeyboardDisplay::valueTreePropertyChanged(ValueTree& valueTree, const Identifier& prop)
 {
 	setOrientation(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::kind) == "horizontal" ? MidiKeyboardDisplay::horizontalKeyboard : MidiKeyboardDisplay::verticalKeyboardFacingRight);
 
+
+    
 	updateColours(valueTree);
 	handleCommonUpdates(this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    
+    colourPressedNotes(valueTree);
 
 }
 
@@ -57,7 +87,7 @@ void CabbageKeyboardDisplay::updateColours(ValueTree& wData)
 	setColour(MidiKeyboardComponent::upDownButtonArrowColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::arrowcolour)));
 	setColour(MidiKeyboardComponent::upDownButtonBackgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::arrowbackgroundcolour)));
 	setColour(MidiKeyboardComponent::keySeparatorLineColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::keyseparatorcolour)));
-	setColour(MidiKeyboardComponent::mouseOverKeyOverlayColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mouseoeverkeycolour)));
+	setColour(MidiKeyboardComponent::mouseOverKeyOverlayColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mouseoverkeycolour)));
 	setColour(MidiKeyboardComponent::keyDownOverlayColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::keydowncolour)));
 }
 
@@ -108,11 +138,6 @@ MidiKeyboardDisplay::MidiKeyboardDisplay(Orientation o)
 	addChildComponent(scrollDown.get());
 	addChildComponent(scrollUp.get());
 
-	// initialise with a default set of qwerty key-mappings..
-	int note = 0;
-
-	for (char c : "awsedftgyhujkolp;")
-		setKeyPressForNote(KeyPress(c, 0, 0), note++);
 
 	mouseOverNotes.insertMultiple(0, -1, 32);
 	mouseDownNotes.insertMultiple(0, -1, 32);
@@ -120,9 +145,6 @@ MidiKeyboardDisplay::MidiKeyboardDisplay(Orientation o)
 	colourChanged();
 	setWantsKeyboardFocus(true);
 
-	//state.addListener(this);
-
-	startTimerHz(20);
 }
 
 MidiKeyboardDisplay::~MidiKeyboardDisplay()
@@ -401,11 +423,10 @@ void MidiKeyboardDisplay::paint(Graphics& g)
 		for (int white = 0; white < 7; ++white)
 		{
 			auto noteNum = octave + whiteNotes[white];
-			//setting isDown to false
 			if (noteNum >= rangeStart && noteNum <= rangeEnd)
 				drawWhiteNote(noteNum, g, getRectangleForKey(noteNum),
 					false,
-					mouseOverNotes.contains(noteNum), lineColour, textColour);
+					notesDown.contains(noteNum), lineColour, textColour);
 		}
 	}
 
@@ -463,7 +484,7 @@ void MidiKeyboardDisplay::paint(Graphics& g)
 			if (noteNum >= rangeStart && noteNum <= rangeEnd)
 				drawBlackNote(noteNum, g, getRectangleForKey(noteNum),
 					false,
-					mouseOverNotes.contains(noteNum), blackNoteColour);
+					notesDown.contains(noteNum), blackNoteColour);
 		}
 	}
 }
@@ -847,102 +868,23 @@ void MidiKeyboardDisplay::mouseWheelMove(const MouseEvent&, const MouseWheelDeta
 	setLowestVisibleKeyFloat(firstKey - amount * keyWidth);
 }
 
-void MidiKeyboardDisplay::timerCallback()
+
+void MidiKeyboardDisplay::updateKeys()
 {
-	if (shouldCheckState)
-	{
-		shouldCheckState = false;
+    bool isOn = false;
+    for (int i = rangeStart; i <= rangeEnd; ++i)
+    {
+        
+        isOn = notesDown.contains(i);
 
-		for (int i = rangeStart; i <= rangeEnd; ++i)
-		{
-			bool isOn = false;// state.isNoteOnForChannels(midiInChannelMask, i);
-
-			if (keysCurrentlyDrawnDown[i] != isOn)
-			{
-				keysCurrentlyDrawnDown.setBit(i, isOn);
-				repaintNote(i);
-			}
-		}
-	}
-
-	if (shouldCheckMousePos)
-	{
-		for (auto& ms : Desktop::getInstance().getMouseSources())
-			if (ms.getComponentUnderMouse() == this || isParentOf(ms.getComponentUnderMouse()))
-				updateNoteUnderMouse(getLocalPoint(nullptr, ms.getScreenPosition()), ms.isDragging(), ms.getIndex());
-	}
+        if (keysCurrentlyDrawnDown[i] != isOn)
+        {
+            keysCurrentlyDrawnDown.setBit(i, isOn);
+            repaintNote(i);
+        }
+    }
 }
 
-//==============================================================================
-void MidiKeyboardDisplay::clearKeyMappings()
-{
-	resetAnyKeysInUse();
-	keyPressNotes.clear();
-	keyPresses.clear();
-}
-
-void MidiKeyboardDisplay::setKeyPressForNote(const KeyPress& key, int midiNoteOffsetFromC)
-{
-	removeKeyPressForNote(midiNoteOffsetFromC);
-
-	keyPressNotes.add(midiNoteOffsetFromC);
-	keyPresses.add(key);
-}
-
-void MidiKeyboardDisplay::removeKeyPressForNote(int midiNoteOffsetFromC)
-{
-	for (int i = keyPressNotes.size(); --i >= 0;)
-	{
-		if (keyPressNotes.getUnchecked(i) == midiNoteOffsetFromC)
-		{
-			keyPressNotes.remove(i);
-			keyPresses.remove(i);
-		}
-	}
-}
-
-void MidiKeyboardDisplay::setKeyPressBaseOctave(int newOctaveNumber)
-{
-	jassert(newOctaveNumber >= 0 && newOctaveNumber <= 10);
-
-	keyMappingOctave = newOctaveNumber;
-}
-
-bool MidiKeyboardDisplay::keyStateChanged(bool /*isKeyDown*/)
-{
-	bool keyPressUsed = false;
-
-	for (int i = keyPresses.size(); --i >= 0;)
-	{
-		auto note = 12 * keyMappingOctave + keyPressNotes.getUnchecked(i);
-
-		if (keyPresses.getReference(i).isCurrentlyDown())
-		{
-			if (!keysPressed[note])
-			{
-				keysPressed.setBit(note);
-				//state.noteOn(midiChannel, note, velocity);
-				keyPressUsed = true;
-			}
-		}
-		else
-		{
-			if (keysPressed[note])
-			{
-				keysPressed.clearBit(note);
-				//state.noteOff(midiChannel, note, 0.0f);
-				keyPressUsed = true;
-			}
-		}
-	}
-
-	return keyPressUsed;
-}
-
-bool MidiKeyboardDisplay::keyPressed(const KeyPress& key)
-{
-	return keyPresses.contains(key);
-}
 
 void MidiKeyboardDisplay::focusLost(FocusChangeType)
 {
