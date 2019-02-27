@@ -259,7 +259,10 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
         insertGroupBox (cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::keyboard)
-        insertMIDIKeyboard (cabbageWidgetData);
+        insertKeyboard (cabbageWidgetData);
+
+	else if (widgetType == CabbageWidgetTypes::keyboarddisplay)
+		insertKeyboardDisplay(cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::csoundoutput)
         insertCsoundOutputConsole (cabbageWidgetData);
@@ -491,7 +494,7 @@ void CabbagePluginEditor::insertCsoundOutputConsole (ValueTree cabbageWidgetData
     }
 }
 
-void CabbagePluginEditor::insertMIDIKeyboard (ValueTree cabbageWidgetData)
+void CabbagePluginEditor::insertKeyboard (ValueTree cabbageWidgetData)
 {
     if (keyboardCount < 1)
     {
@@ -504,6 +507,16 @@ void CabbagePluginEditor::insertMIDIKeyboard (ValueTree cabbageWidgetData)
     }
 }
 
+void CabbagePluginEditor::insertKeyboardDisplay(ValueTree cabbageWidgetData)
+{
+	CabbageKeyboardDisplay* midiKeyboard;
+	MidiKeyboardState dummy;
+	components.add(midiKeyboard = new CabbageKeyboardDisplay(cabbageWidgetData));
+	//midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
+	addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);
+	addMouseListenerAndSetVisibility(midiKeyboard, cabbageWidgetData);
+	keyboardCount++;
+}
 //======================================================================================================
 void CabbagePluginEditor::insertGroupBox (ValueTree cabbageWidgetData)
 {

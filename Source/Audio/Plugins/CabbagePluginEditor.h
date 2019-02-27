@@ -45,6 +45,7 @@
 #include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageXYPad.h"
 #include "../../Widgets/CabbageKeyboard.h"
+#include "../../Widgets/CabbageKeyboardDisplay.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageSoundfiler.h"
 #include "../../Widgets/CabbageRangeSlider.h"
@@ -102,7 +103,8 @@ public:
     void insertSourceButton (ValueTree cabbageWidgetData) {};
     void insertTextEditor (ValueTree cabbageWidgetData);
     void insertCsoundOutputConsole (ValueTree cabbageWidgetData);
-    void insertMIDIKeyboard (ValueTree cabbageWidgetData);
+    void insertKeyboard (ValueTree cabbageWidgetData);
+	void insertKeyboardDisplay(ValueTree cabbageWidgetData);
     void insertFileButton (ValueTree cabbageWidgetData);
     void insertImage (ValueTree cabbageWidgetData);
     void insertLine (ValueTree cabbageWidgetData);
