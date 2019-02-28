@@ -38,7 +38,11 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
 
     CabbageUtilities::debug ("Plugin constructor");
-
+	if (this->wrapperType == AudioProcessor::wrapperType_Unity)
+	{
+		isUnityPlugin = true;
+		unityWorkingDirectory = File::getCurrentWorkingDirectory();
+	}
 
 }
 
@@ -148,7 +152,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	else
 		CabbageUtilities::debug("Csound could not compile your file?");
 
+	unityWorkingDirectory.setAsCurrentWorkingDirectory();
     return csdCompiledWithoutError();
+
 }
 
 
@@ -258,6 +264,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("IS_A_PLUGIN", 0.0);
 
     csound->PerformKsmps();
+	unityWorkingDirectory.setAsCurrentWorkingDirectory();
 
 }
 //==============================================================================

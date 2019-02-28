@@ -68,7 +68,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
                                          .replace("$quote;", "\"")
                                          .replace("$gt;", ">"));
 
-        //inputFile.getParentDirectory().setAsCurrentWorkingDirectory();
+
         if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
             this->suspendProcessing(true);
 

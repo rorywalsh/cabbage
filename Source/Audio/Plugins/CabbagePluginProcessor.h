@@ -134,6 +134,7 @@ private:
     OwnedArray<XYPadAutomator> xyAutomators;
 	int samplingRate = 44100;
 	int screenWidth, screenHeight;
+	bool isUnityPlugin = false;
 
 };
 
