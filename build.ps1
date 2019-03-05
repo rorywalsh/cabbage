@@ -8,7 +8,7 @@ cd c:/
 Invoke-WebRequest -Uri "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip" -OutFile "C:\vstsdk3611_22_10_2018_build_34.zip" 
 Invoke-WebRequest -Uri "http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip" -OutFile "C:\ASIOSDK2.3.2.zip" 
 Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/heads.zip" -OutFile "C:\heads.zip" 
-
+ 
 7z.exe x vstsdk3611_22_10_2018_build_34.zip
 7z.exe x asiosdk2.3.2.zip
 7z.exe x heads.zip
@@ -51,7 +51,7 @@ Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/downlo
 ls
 cd D:/a/1/s/Builds/VisualStudio2017/x64
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "C:\fmod_csoundL64.dll" 
+Invoke-WebRequest -Uri "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\fmod_csoundL64.dll" 
 
 ls
 cd D:/a/1/s/Builds/VisualStudio2017
