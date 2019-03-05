@@ -30,6 +30,7 @@ cd c:/JUCE/extras/Projucer/JuceLibraryCode
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
 
 cd ../Builds/VisualStudio2017/
+dir
 "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" Projucer.sln /property:Platform=x64
 cd c:/cabbage/Builds/VisualStudio2017/
 appveyorBuildCabbage64.bat  
