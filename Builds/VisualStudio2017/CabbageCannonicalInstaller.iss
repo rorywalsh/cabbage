@@ -28,6 +28,7 @@ OutputBaseFilename=Cabbage64Setup
 SetupIconFile=icon.ico
 Compression=lzma
 SolidCompression=yes
+ChangesEnvironment=yes
 
 [Components]
 Name: "core"; Description: "Cabbage Installation"; Types: full custom; Flags: fixed
