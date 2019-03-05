@@ -152,7 +152,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	else
 		CabbageUtilities::debug("Csound could not compile your file?");
 
-	unityWorkingDirectory.setAsCurrentWorkingDirectory();
+	if (this->wrapperType == AudioProcessor::wrapperType_Unity)
+		unityWorkingDirectory.setAsCurrentWorkingDirectory();
     return csdCompiledWithoutError();
 
 }
