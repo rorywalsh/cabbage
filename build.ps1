@@ -37,9 +37,10 @@ $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MS
 msbuild.exe Projucer.sln /property:Platform=x64
 cd c:/cabbage/Builds/VisualStudio2017/
 appveyorBuildCabbage64.bat  
-cd c:/cabbage/CsoundTestWin64 
+
+cd D:/a/1/s/CsoundTestWin64 
 msbuild.exe CsoundTest.sln /property:Platform=x64
-cd C:/cabbage
+cd D:/a/1/s/
 Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "C:\CabbageManual.zip" 
 7z.exe x CabbageManual.zip  -oC:\cabbage\CabbageManual
 
@@ -47,11 +48,11 @@ Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/downlo
 
 7z.exe x CabbageRack-0.5.0-win.zip -oC:\cabbage\Builds\VisualStudio2017\x64\CabbageRack
 ls
-cd c:/cabbage/Builds/VisualStudio2017/x64
+cd D:/a/1/s/Builds/VisualStudio2017/x64
 
 Invoke-WebRequest -Uri "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "C:\fmod_csoundL64.dll" 
 
 ls
-cd c:/cabbage/Builds/VisualStudio2017
+cd D:/a/1/s/Builds/VisualStudio2017
 set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
 iscc CabbageCannonicalInstaller.iss
