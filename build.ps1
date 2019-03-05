@@ -24,17 +24,17 @@ dir
 cd c:/
 git clone https://github.com/WeAreROLI/JUCE.git
 cd c:/JUCE
-git checkout tags/5.4.1
+git checkout tags/5.4.3
 cd c:/JUCE/extras/Projucer/JuceLibraryCode
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
 
 cd ../Builds/VisualStudio2017/
-msbuild Projucer.sln /property:Platform=x64
+"C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" Projucer.sln /property:Platform=x64
 cd c:/cabbage/Builds/VisualStudio2017/
 appveyorBuildCabbage64.bat  
 cd c:/cabbage/CsoundTestWin64 
-msbuild CsoundTest.sln /property:Platform=x64
+"C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" CsoundTest.sln /property:Platform=x64
 cd C:/cabbage
 Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "C:\CabbageManual.zip" 
 7z.exe x CabbageManual.zip  -oC:\cabbage\CabbageManual
