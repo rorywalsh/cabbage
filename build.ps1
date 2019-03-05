@@ -35,7 +35,7 @@ dir
 $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin"
 
 msbuild.exe Projucer.sln /property:Platform=x64
-cd c:/cabbage/Builds/VisualStudio2017/
+cd D:/a/1/s/Builds/VisualStudio2017/
 appveyorBuildCabbage64.bat  
 
 cd D:/a/1/s/CsoundTestWin64 
