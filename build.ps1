@@ -13,7 +13,7 @@ Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/heads.zip" -OutFile "C:\hea
 7z.exe x asiosdk2.3.2.zip
 7z.exe x heads.zip
 mkdir SDKs  
-dir
+dir SDKs
 Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
 Get-ChildItem -Path "C:/ASIOSDK2.3.2" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3.2" -Recurse -Container
 Copy-Item "C:/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/" -Recurse
