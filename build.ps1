@@ -31,11 +31,14 @@ cd c:/JUCE/extras/Projucer/JuceLibraryCode
 
 cd ../Builds/VisualStudio2017/
 dir
-"C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" Projucer.sln /property:Platform=x64
+
+$env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin"
+
+msbuild.exe Projucer.sln /property:Platform=x64
 cd c:/cabbage/Builds/VisualStudio2017/
 appveyorBuildCabbage64.bat  
 cd c:/cabbage/CsoundTestWin64 
-"C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" CsoundTest.sln /property:Platform=x64
+msbuild.exe CsoundTest.sln /property:Platform=x64
 cd C:/cabbage
 Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "C:\CabbageManual.zip" 
 7z.exe x CabbageManual.zip  -oC:\cabbage\CabbageManual
