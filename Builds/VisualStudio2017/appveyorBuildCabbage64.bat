@@ -16,23 +16,23 @@ REM "BUILDING THE MAIN APP"
  copy ".\x64\Release\App\Cabbage.exe" ".\x64\Cabbage.exe"
 
  
-REM "BUILDING EFFECT PLUGIN"
- %PROJUCER% --resave ../../CabbagePlugin.jucer
- msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64 
- copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginEffect.dll"
+REM REM "BUILDING EFFECT PLUGIN"
+REM  %PROJUCER% --resave ../../CabbagePlugin.jucer
+REM  msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64 
+REM  copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginEffect.dll"
 
 
-REM "BUILDING VST PLUGIN"
- %PROJUCER% --resave ../../CabbagePluginSynth.jucer
- msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64
+REM REM "BUILDING VST PLUGIN"
+REM  %PROJUCER% --resave ../../CabbagePluginSynth.jucer
+REM  msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64
 
- copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginSynth.dll"
+REM  copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginSynth.dll"
 
-REM "BUILDING CABBAGE LITE"
- %PROJUCER% --resave ../../CabbageLite.jucer
-  msbuild CabbageLite.sln /p:Configuration=Release /property:Platform=x64
- copy ".\x64\Release\App\CabbageLite.exe" ".\x64\CabbageLite.exe"
+REM REM "BUILDING CABBAGE LITE"
+REM  %PROJUCER% --resave ../../CabbageLite.jucer
+REM   msbuild CabbageLite.sln /p:Configuration=Release /property:Platform=x64
+REM  copy ".\x64\Release\App\CabbageLite.exe" ".\x64\CabbageLite.exe"
 
 
-REM %MYPATH%Projucer.exe --resave ../../CabbageIDE.jucer
+REM REM %MYPATH%Projucer.exe --resave ../../CabbageIDE.jucer
 
