@@ -45,13 +45,13 @@ cd D:/a/1/s/
 Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "D:\a\1\s\CabbageManual.zip" 
 7z.exe x CabbageManual.zip 
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-0.5.0-win.zip" -OutFile "D:\a\1\s\CabbageRack-0.5.0-win.zip" 
+Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-0.5.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-0.5.0-win.zip" 
 
 7z.exe x CabbageRack-0.5.0-win.zip 
 ls
 cd D:/a/1/s/Builds/VisualStudio2017/x64
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\fmod_csoundL64.dll" 
+Invoke-WebRequest -Uri "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csoundL64.dll" 
 
 ls
 cd D:/a/1/s/Builds/VisualStudio2017
