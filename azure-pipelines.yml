@@ -28,4 +28,4 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: '${SYSTEM_DEFAULTWORKINGDIRECTORY}/Cabbage64Setup.exe'
+      artifactName: 'Cabbage64Setup.exe'

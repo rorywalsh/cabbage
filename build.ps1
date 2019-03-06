@@ -60,7 +60,6 @@ cd D:/a/1/s/Builds/VisualStudio2017
 set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
 iscc CabbageCannonicalInstaller.iss
 
-
-Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination "D:/a/1/a/Cabbage64Setup.exe"
+Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination "$(Build.ArtifactStagingDirectory)/Cabbage64Setup.exe"
 
 
