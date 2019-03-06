@@ -36,7 +36,9 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
         {
-            if(type.contains("VST"))
+            if(type.contains("VST3"))
+                fileExtension = "vst3";
+            else if(type.contains("VST"))
                 fileExtension = "vst";
             else
                 fileExtension = "component";
@@ -51,9 +53,9 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
 
 
-        if (type == "VSTi" || type == "AUi")
+        if (type == "VSTi" || type == "AUi" || type == "VST3i")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
-        else  if (type == "VST" || type == "AU")
+        else  if (type == "VST" || type == "AU" || type == "VST3")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
         else  if (type == "AUMIDIFx")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginMIDIEffect." + fileExtension);

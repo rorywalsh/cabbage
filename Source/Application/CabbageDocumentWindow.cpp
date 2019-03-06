@@ -278,6 +278,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu1, subMenu2, subMenu3;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVST3Effect);
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVST3Synth);
         subMenu3.addSubMenu("VST Export", subMenu1);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUEffect);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUSynth);
@@ -288,6 +290,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu4, subMenu5, subMenu6;
         subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
         subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
+        subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVST3EffectEncrypted);
+        subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVST3SynthEncrypted);
         subMenu6.addSubMenu("VST Export", subMenu4);
         subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUEffectEncrypted);
         subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUSynthEncrypted);
@@ -466,15 +470,19 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::startAudioGraph,
                               CommandIDs::stopAudioGraph,
                               CommandIDs::exportAsVSTSynth,
+                              CommandIDs::exportAsVST3Synth,
                               CommandIDs::exportAsAUMIDIFx,
                               CommandIDs::selectAll,
                               CommandIDs::exportAsVSTEffect,
+                              CommandIDs::exportAsVST3Effect,
                               CommandIDs::exportAsAUEffect,
                               CommandIDs::exportAsAUSynth,
                               CommandIDs::exportAsAUSynthEncrypted,
                               CommandIDs::exportAsAUEffectEncrypted,
                               CommandIDs::exportAsVSTSynthEncrypted,
                               CommandIDs::exportAsVSTEffectEncrypted,
+                              CommandIDs::exportAsVST3SynthEncrypted,
+                              CommandIDs::exportAsVST3EffectEncrypted,
                               CommandIDs::exportAsVCVRackModule,
                               CommandIDs::nextTab,
                               CommandIDs::exportAsFMODSoundPlugin,
@@ -617,6 +625,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as VST Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::exportAsVST3Synth:
+            result.setInfo ("Export as VST3 Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
+        case CommandIDs::exportAsVST3Effect:
+            result.setInfo ("Export as VST3 Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::exportAsAUSynth:
             result.setInfo ("Export as AU Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
             break;
@@ -637,6 +653,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as VST Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::exportAsVST3SynthEncrypted:
+            result.setInfo ("Export as VST3 Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
+        case CommandIDs::exportAsVST3EffectEncrypted:
+            result.setInfo ("Export as VST3 Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::exportAsAUSynthEncrypted:
             result.setInfo ("Export as AU Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
             break;
@@ -931,6 +955,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
 
+        case CommandIDs::exportAsVST3Effect:
+            pluginExporter.exportPlugin ("VST3", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+            
+        case CommandIDs::exportAsVST3Synth:
+            pluginExporter.exportPlugin ("VST3i", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+            
         case CommandIDs::exportAsAUEffect:
             pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
