@@ -113,10 +113,10 @@ public:
         CabbageIDELookAndFeel lAndF;
         outputConsole = new CsoundOutputWindow();
         outputConsole->getEditor().setFont(Font(14, 1));
-
-        if (commandLineParams.isNotEmpty())
+		if (commandLineParams.isNotEmpty())
         {
             String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "");
+			String fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"");
 
             if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
                 //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
@@ -148,10 +148,9 @@ public:
                 }
 
             }
-            else if (File::getCurrentWorkingDirectory().getChildFile (commandLine.trim().removeCharacters ("\"")).existsAsFile())
+            else if (File(fileToOpen).existsAsFile())
             {
-                String csd = commandLine.trim().removeCharacters ("\"");
-                openFile (csd);
+                openFile (fileToOpen);
                 return;
             }
         }

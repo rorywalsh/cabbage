@@ -3,7 +3,7 @@
 <JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
-              cppLanguageStandard="11" jucerVersion="5.4.1" companyCopyright="">
+              cppLanguageStandard="11" jucerVersion="5.4.3" companyCopyright="">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
     <GROUP id="{E4950169-7245-8252-D27F-2344F45CAF99}" name="Source">
       <GROUP id="{4AFC1EE2-9934-F4AA-4ECD-50660152DD13}" name="BinaryData">
