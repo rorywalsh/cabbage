@@ -17,7 +17,7 @@ jobs:
   # The Windows build involves running a powershell script
   # to execute the Cake build script
   steps:
-  - powershell: gci env:* | sort-object name | Format-Table -AutoSize | Out-File $env:BUILD_ARTIFACTSTAGINGDIRECTORY/environment-variables.txt
+  - powershell: gci env:* | sort-object name | Format-Table -AutoSize | Out-File ${BUILD_SOURCESDIRECTORY}/Builds/VisualStudio2017/Output/Cabbage64Setup.exe
   - powershell: .\build.ps1
     env:
       COREHOST_TRACE: 0
