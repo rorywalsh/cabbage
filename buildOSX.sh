@@ -1,8 +1,3 @@
-ls
-gem install xcpretty
-gem install xcpretty-travis-formatter
-git remote rm origin   
-cd .. 
 curl -L -o Csound6.12.1-MacOS_universal.dmg 'https://github.com/csound/csound/releases/download/6.12.2/Csound6.12.1-MacOS_universal.dmg'
 ls
 hdiutil attach Csound6.12.1-MacOS_universal.dmg
@@ -11,18 +6,19 @@ hdiutil detach /Volumes/Csound6.12.1/
 cd Csound
 sudo installer -pkg csound6.12.1-OSX-universal.pkg -target /
 sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
-cd /Users/travis/build/rorywalsh/
+
+cd /Users/vsts/agent/2.148.0/work/1
 git clone https://github.com/WeAreROLI/JUCE.git
 touch JUCE/
-cd /Users/travis/build/rorywalsh/JUCE
+cd /Users/vsts/agent/2.148.0/work/1/JUCE
 git checkout tags/5.4.1
-cd /Users/travis/build/rorywalsh/JUCE/extras/Projucer/JuceLibraryCode
+cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
 cat AppConfig.h
-cd /Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/
+cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/
 xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`  > /dev/null
-cd /Users/travis/build/rorywalsh/
+cd /Users/vsts/agent/2.148.0/work/1/
 ls /Library/Frameworks/
 pwd
 cd /Users/travis/build/
@@ -34,15 +30,15 @@ curl -L -o heads.zip http://cabbageaudio.com/beta/heads.zip
 unzip -q heads.zip
 cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
-ls /Users/travis/build/rorywalsh/
-cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
+ls /Users/vsts/agent/2.148.0/work/1/
+cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
 curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 hdiutil mount Packages.dmg
 sudo installer -pkg /Volumes/Packages\ 1.2.4/Install\ Packages.pkg -target /
 hdiutil detach /Volumes/Packages\ 1.2.4/
-cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX
+cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
 cript:
-export PROJUCER=/Users/travis/build/rorywalsh/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+export PROJUCER=/Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 echo -en "travis_fold:start:buildingIDE"
 $PROJUCER --resave ../../CabbageIDE.jucer
 xcodebuild -project Cabbage.xcodeproj/ clean
@@ -85,7 +81,7 @@ cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
 cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
 echo -en "travis_fold:end:gettingManual"
 echo -en "travis_fold:start:buildingZip"
-cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/build/Release/
+cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/build/Release/
 curl -L -o CabbageRack-0.5.0-mac.zip https://github.com/rorywalsh/CabbageRack/blob/master/dist/CabbageRack-0.5.0-mac.zip?raw=true
 unzip -q CabbageRack-0.5.0-mac.zip
 ls
@@ -97,7 +93,7 @@ cp fmod_csound.dylib Cabbage.app/Contents/fmod_csound.dylib
 ls Cabbage.app/Contents/
 zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 echo -en "travis_fold:end:buildingZip"
-cd /Users/travis/build/rorywalsh/cabbage/Builds/MacOSX/
+cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/
 echo -en "travis_fold:start:buildingInstaller"
 packagesbuild InstallerTravis.pkgproj
 ls build
