@@ -29,7 +29,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
 #endif
 
-        int platform = 0;
+
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
         {
             fileExtension = "so";
@@ -43,13 +43,14 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             else
                 fileExtension = "component";
 
-            platform = 2;
             currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
         }
         else
         {
-            platform = 1;
-            fileExtension = "dll";
+			if(type.contains("VST3"))
+				fileExtension = "vst3";
+			else
+	            fileExtension = "dll";
         }
 
 
@@ -70,8 +71,8 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else  if (type == "FMOD")
         {
-            fileExtension = (platform==1 ? String("dll") : String("dylib"));
-            pluginFilename = currentApplicationDirectory + (platform==1 ? String("/fmod_csoundL64.dll") : String("/fmod_csound.dylib"));
+            fileExtension = (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows  ? String("dll") : String("dylib"));
+            pluginFilename = currentApplicationDirectory + (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows ? String("/fmod_csoundL64.dll") : String("/fmod_csound.dylib"));
             
         }
 
