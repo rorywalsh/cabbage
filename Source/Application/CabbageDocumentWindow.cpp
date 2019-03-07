@@ -305,6 +305,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu1;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+		subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Effect);
+		subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Synth);
         menu.addSubMenu("Export plugin", subMenu1);
 
 #ifdef CabbagePro

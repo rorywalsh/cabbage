@@ -669,28 +669,29 @@ public:
         StringArray tokens;
 
         const char* str = code.toUTF8().getAddress();
+		if (str != NULL)
+		{
+			do
+			{
+				const char* begin = str;
 
-        do
-        {
-            const char* begin = str;
+				while (*str != breakChar && *str)
+				{
+					if (*str == '\"')   //excuse anything in quotes..
+					{
+						str++;
 
-            while (*str != breakChar && *str)
-            {
-                if (*str == '\"')   //excuse anything in quotes..
-                {
-                    str++;
+						while (*str != '\"')
+							str++;
+					}
 
-                    while (*str != '\"')
-                        str++;
-                }
+					str++;
+				}
 
-                str++;
-            }
+				tokens.add(string(begin, str));
 
-            tokens.add (string (begin, str));
-        }
-        while (0 != *str++);
-
+			} while (0 != *str++);
+		}
 
         return tokens;
     }

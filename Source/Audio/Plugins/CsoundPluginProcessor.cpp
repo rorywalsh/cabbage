@@ -60,7 +60,7 @@ void CsoundPluginProcessor::resetCsound()
 
 	if (csound)
 	{
-#ifndef Cabbage_Lite
+#if !defined(Cabbage_Lite)
 		csound = nullptr;
 #endif
 		csoundParams = nullptr;
