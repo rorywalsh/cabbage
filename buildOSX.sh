@@ -17,11 +17,11 @@ sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" A
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
 cat AppConfig.h
 cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/
-xcodebuild -project Projucer.xcodeproj | xcpretty -f `xcpretty-travis-formatter`  > /dev/null
+xcodebuild -project Projucer.xcodeproj
 cd /Users/vsts/agent/2.148.0/work/1/
 ls /Library/Frameworks/
 pwd
-cd /Users/travis/build/
+cd ~
 curl -L -o vstsdk3611_22_10_2018_build_34.zip.zip https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip
 unzip -q vstsdk3611_22_10_2018_build_34.zip
 mkdir ~/SDKs
@@ -39,19 +39,16 @@ hdiutil detach /Volumes/Packages\ 1.2.4/
 cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
 cript:
 export PROJUCER=/Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
-echo -en "travis_fold:start:buildingIDE"
+
 $PROJUCER --resave ../../CabbageIDE.jucer
 xcodebuild -project Cabbage.xcodeproj/ clean
-xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-echo -en "travis_fold:end:buildingIDE"
-echo -en "travis_fold:start:buildingLite"
+xcodebuild -project Cabbage.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release 
 $PROJUCER --resave ../../CabbageLite.jucer
-xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release | xcpretty -f `xcpretty-travis-formatter` > /dev/null
-echo -en "travis_fold:end:buildingLite"
-echo -en "travis_fold:start:buildingPlugins"
+xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+
 $PROJUCER --resave ../../CabbagePluginMIDIEffect.jucer
 xcodebuild -project CabbagePlugin.xcodeproj clean
-xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 Cabbage_MIDI_Effect=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 Cabbage_MIDI_Effect=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" 
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginMIDIEffect.component
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginMIDIEffect.component
 $PROJUCER --resave ../../CabbagePluginSynth.jucer
@@ -64,23 +61,21 @@ cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/
 
 $PROJUCER --resave ../../CabbagePlugin.jucer 
 xcodebuild -project CabbagePlugin.xcodeproj clean
-xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" | xcpretty -f `xcpretty-travis-formatter` > /dev/null
+xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS="MACOSX=1 USE_DOUBLE=1" 
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.component
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.component
 cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
 cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
-echo -en "travis_fold:end:buildingPlugins"
-echo -en "travis_fold:start:gettingManual"
+
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 ls
 unzip -q "CabbageManual.zip"
 ls
 cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
 cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
-echo -en "travis_fold:end:gettingManual"
-echo -en "travis_fold:start:buildingZip"
+
 cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/build/Release/
 curl -L -o CabbageRack-0.5.0-mac.zip https://github.com/rorywalsh/CabbageRack/blob/master/dist/CabbageRack-0.5.0-mac.zip?raw=true
 unzip -q CabbageRack-0.5.0-mac.zip
@@ -92,9 +87,8 @@ ls
 cp fmod_csound.dylib Cabbage.app/Contents/fmod_csound.dylib
 ls Cabbage.app/Contents/
 zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
-echo -en "travis_fold:end:buildingZip"
+
 cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/
-echo -en "travis_fold:start:buildingInstaller"
+
 packagesbuild InstallerTravis.pkgproj
 ls build
-echo -en "travis_fold:end:buildingInstaller"
