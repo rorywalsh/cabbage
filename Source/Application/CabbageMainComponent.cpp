@@ -25,6 +25,51 @@
 #include "../Audio/Filters/InternalFilters.h"
 #include "../Utilities/CabbageStrings.h"
 
+
+class CabbageMainComponent::PluginListWindow  : public DocumentWindow
+{
+public:
+    PluginListWindow (CabbageMainComponent& mw, AudioPluginFormatManager& pluginFormatManager)
+    : DocumentWindow ("Available Plugins",
+                      LookAndFeel::getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
+                      DocumentWindow::minimiseButton | DocumentWindow::closeButton),
+    owner (mw)
+    {
+        setLookAndFeel(&lookAndFeel);
+        auto deadMansPedalFile = owner.getCabbageSettings()->getUserSettings()->getFile().getSiblingFile ("RecentlyCrashedPluginsList");
+        
+        setContentOwned (new PluginListComponent (pluginFormatManager,
+                                                  owner.knownPluginList,
+                                                  deadMansPedalFile,
+                                                  owner.getCabbageSettings()->getUserSettings(), true), true);
+        
+        setResizable (true, false);
+        setResizeLimits (300, 400, 800, 1500);
+        setTopLeftPosition (60, 60);
+        
+        restoreWindowStateFromString (owner.getCabbageSettings()->getUserSettings()->getValue ("listWindowPos"));
+        setVisible (true);
+    }
+    
+    ~PluginListWindow()
+    {
+        setLookAndFeel(nullptr);
+        owner.getCabbageSettings()->getUserSettings()->setValue ("listWindowPos", getWindowStateAsString());
+        clearContentComponent();
+    }
+    
+    void closeButtonPressed() override
+    {
+        owner.pluginListWindow = nullptr;
+    }
+    
+private:
+    CabbageMainComponent& owner;
+    LookAndFeel_V4 lookAndFeel;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginListWindow)
+};
+
 //==============================================================================
 CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings)
     : cabbageSettings (settings),
@@ -51,9 +96,23 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200), this);
     filterGraphWindow->setVisible (false);
 
-
+    InternalPluginFormat internalFormat;
+    internalFormat.getAllTypes (internalTypes);
+    
+    std::unique_ptr<XmlElement> savedPluginList (cabbageSettings->getUserSettings()->getXmlValue ("pluginList"));
+    
+    if (savedPluginList != nullptr)
+        knownPluginList.recreateFromXml (*savedPluginList);
+    
+    for (auto* t : internalTypes)
+        knownPluginList.addType (*t);
+    
+    pluginSortMethod = (KnownPluginList::SortMethod) cabbageSettings->getUserSettings()->getIntValue ("pluginSortMethod", KnownPluginList::sortByManufacturer);
+    
+    knownPluginList.addChangeListener (this);
+    
     addAndMakeVisible (toolbar);
-	factory.setIconsPath(cabbageSettings->getUserSettings()->getValue("CustomIconsDir"));
+	factory.setIconsPath(cabbageSettings->getUserSettings()->getValue("CustomThemeDir"));
     toolbar.addDefaultItems (factory);
     propertyPanel->addChangeListener (this);
     factory.combo->getCombo().addListener (this);
@@ -87,6 +146,9 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 
 CabbageMainComponent::~CabbageMainComponent()
 {
+    pluginListWindow = nullptr;
+    knownPluginList.removeChangeListener (this);
+    
     editorAndConsole.clear();
     setLookAndFeel(nullptr);
 
@@ -146,7 +208,7 @@ void CabbageMainComponent::importTheme()
 			cabbageSettings->setProperty(e->getStringAttribute("name"), e->getStringAttribute("val"));	
 		}
 		
-		cabbageSettings->setProperty("CustomIconsDir", fc.getResult().getParentDirectory().getFullPathName());
+		cabbageSettings->setProperty("CustomThemeDir", fc.getResult().getParentDirectory().getFullPathName());
 	}
 }
 
@@ -495,6 +557,19 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 		resized();
 	}
 
+    if (source == &knownPluginList)
+    {
+        // save the plugin list every time it gets changed, so that if we're scanning
+        // and it crashes, we've still saved the previous ones
+        std::unique_ptr<XmlElement> savedPluginList (knownPluginList.createXml());
+        
+        if (savedPluginList != nullptr)
+        {
+            cabbageSettings->getUserSettings()->setValue ("pluginList", savedPluginList.get());
+            cabbageSettings->saveIfNeeded();
+        }
+    }
+    
     if (dynamic_cast<CabbageSettings*> (source)) // update lookandfeel whenever a user changes colour settings
     {
         lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
@@ -797,7 +872,7 @@ void CabbageMainComponent::addFileTab (File file)
 {
 
     FileTab* fileButton;
-    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd"), cabbageSettings->getUserSettings()->getValue("CustomIconsDir")));
+    fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd"), cabbageSettings->getUserSettings()->getValue("CustomThemeDir")));
 
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
@@ -898,6 +973,14 @@ void CabbageMainComponent::showGraph()
 	filterGraphWindow->setVisible (true);
 	filterGraphWindow->setTopLeftPosition (getWidth() - filterGraphWindow->getWidth(), 10);
 	filterGraphWindow->setAlwaysOnTop (true);
+}
+//==============================================================================
+void CabbageMainComponent::showPluginListEditor()
+{
+    if (pluginListWindow == nullptr)
+        pluginListWindow.reset (new PluginListWindow (*this, formatManager));
+    
+    pluginListWindow->toFront (true);
 }
 //==============================================================================
 void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)

@@ -99,6 +99,7 @@ namespace CommandIDs
         batchConvertExamplesAU    = 0x612001,
         batchConvertExamplesVST    = 0x612003,
         showConsole                 = 0x612004,
+        showPluginListEditor    = 0x612005,
 
         lastCommandIDEntry
     };

@@ -95,8 +95,8 @@ public:
     void createCodeEditorForFile (File file);
     void createNewProject();
     void createNewTextFile(String contents = "");
-    bool isInterestedInFileDrag (const StringArray& files);
-    void filesDropped (const StringArray& files, int x, int y);
+    bool isInterestedInFileDrag (const StringArray& files) override;
+    void filesDropped (const StringArray& files, int x, int y) override;
     Image createBackground();
     void removeEditor();
     //==============================================================================
@@ -117,6 +117,7 @@ public:
     void insertCustomPlantToEditor(CabbagePluginEditor* editor);
     void setLookAndFeelColours();
     void showGraph();
+    void showPluginListEditor();
     void saveGraph (bool saveAs);
     void openGraph (File fileToOpen = File());
     File getCurrentCsdFile ();
@@ -164,6 +165,9 @@ public:
 	String getDeviceManagerSettings();
 	void reloadAudioDeviceState();
 
+   
+    class PluginListWindow;
+    std::unique_ptr<PluginListWindow> pluginListWindow;
 
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();

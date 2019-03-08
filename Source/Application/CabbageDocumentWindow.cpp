@@ -400,7 +400,8 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::showConsole);
 	menu.addCommandItem(&commandManager, CommandIDs::toggleProperties);
     menu.addCommandItem(&commandManager, CommandIDs::toggleFileBrowser);
-
+    menu.addCommandItem(&commandManager, CommandIDs::showPluginListEditor);
+    
     menu.addSeparator();
 }
 
@@ -513,7 +514,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::showGenericWidgetWindow,
                               CommandIDs::batchConvertExamplesAU,
                               CommandIDs::batchConvertExamplesVST,
-                              CommandIDs::toggleFileBrowser
+                              CommandIDs::toggleFileBrowser,
+                              CommandIDs::showPluginListEditor,
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -789,6 +791,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo (String ("Show Generic Widget Window"), String ("Show genric channel based widgets"), CommandCategories::general, 0);
             break;
 
+        case CommandIDs::showPluginListEditor:
+            result.setInfo (String ("Show 3rd party plugins"), String ("Show 3rd party plugins"), CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::editMode:
             result.setInfo (String ("Edit Mode"), String ("Edit Mode"), CommandCategories::edit, 0);
             result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
@@ -1130,6 +1136,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->launchHelpfile ("cabbage");
             break;
 
+        case CommandIDs::showPluginListEditor:
+            getContentComponent()->showPluginListEditor();
+            break;
+
+            
         case CommandIDs::editMode:
             getContentComponent()->setEditMode (isGUIEnabled = ! isGUIEnabled);
 
