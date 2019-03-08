@@ -62,11 +62,14 @@ public:
         if (auto* ui = createProcessorEditor(*node->getProcessor(), type))
         {
             setContentOwned(ui, true);
-            setBackgroundColour(((CabbagePluginEditor*)ui)->titlebarColour); // <-- set titlebar colour of the plugin window
+            if( auto* cabbgeEditor = dynamic_cast<CabbagePluginEditor*>(ui))
+            {
+            setBackgroundColour(cabbgeEditor->titlebarColour); // <-- set titlebar colour of the plugin window
             
-            pluginWindowLookAndFeel.titlebarContrastingGradient = ((CabbagePluginEditor*)ui)->titlebarGradientAmount;
-            if (((CabbagePluginEditor*)ui)->defaultFontColour == false)
-                setColour(DocumentWindow::textColourId, ((CabbagePluginEditor*)ui)->fontColour); // <-- set customized titlebar font colour
+            pluginWindowLookAndFeel.titlebarContrastingGradient = cabbgeEditor->titlebarGradientAmount;
+            if (cabbgeEditor->defaultFontColour == false)
+                setColour(DocumentWindow::textColourId, cabbgeEditor->fontColour); // <-- set customized titlebar font colour
+            }
         }
 
        #if JUCE_IOS || JUCE_ANDROID

@@ -856,8 +856,11 @@ void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
 		{
 			AudioProcessorGraph::Node::Ptr n = graph.graph.getNodeForId(pluginID);
 			const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
-			graphWindow->getOwner()->openFile(pluginFilename);
-			graphWindow->getOwner()->getFileTab(graphWindow->getOwner()->getCurrentFileIndex())->uniqueFileId = pluginID.uid;
+            if(File(pluginFilename).existsAsFile())
+            {
+                graphWindow->getOwner()->openFile(pluginFilename);
+                graphWindow->getOwner()->getFileTab(graphWindow->getOwner()->getCurrentFileIndex())->uniqueFileId = pluginID.uid;
+            }
 		}
 	}
 }
@@ -917,7 +920,7 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 		Uuid uniqueID;
 		Array<File> exampleFiles;
 		Array<File> userFiles;
-		PopupMenu m, subMenu1, subMenu2;
+		PopupMenu m, subMenu1, subMenu2, subMenu3;
 		CabbageLookAndFeel2 lookAndFeel;
 		m.setLookAndFeel (&lookAndFeel);
 		const String examplesDir = graphWindow->getOwner()->getCabbageSettings()->getUserSettings()->getValue("CabbageExamplesDir", "");
@@ -926,9 +929,14 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 		const String userFilesDir = graphWindow->getOwner()->getCabbageSettings()->getUserSettings()->getValue("UserFilesDir", "");
 		CabbageUtilities::addFilesToPopupMenu(subMenu2, userFiles, userFilesDir, 10000);
 
+        
+        graphWindow->getOwner()->knownPluginList.addToMenu (subMenu3, graphWindow->getOwner()->pluginSortMethod);
+        
 		m.addItem(1, "Open file..");
 		m.addSubMenu("Examples", subMenu1);
 		m.addSubMenu("User files", subMenu2);
+        m.addSubMenu("3rd Party Plugin", subMenu3);
+        
 		const int r = m.show();
 
 		if (r == 1)
@@ -947,11 +955,18 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 			graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName(), Point<int>(mousePos));
 		}
 
-		else if (r >= 10000)
+		else if (r >= 10000 && r <= 20000)
 		{
 			graphWindow->getOwner()->openFile(userFiles[r - 10000].getFullPathName());
 			graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName(), Point<int>(mousePos));
 		}
+        
+        else if(r >= 20000)
+        {
+            auto* desc = graphWindow->getOwner()->knownPluginList.getType (graphWindow->getOwner()->knownPluginList.getIndexChosenByMenu (r));
+            createNewPlugin (*desc, mousePos);
+        }
+        
 
 		m.setLookAndFeel(nullptr);
 	}

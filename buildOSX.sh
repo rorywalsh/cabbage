@@ -11,33 +11,40 @@ cd /Users/vsts/agent/2.148.0/work/1
 git clone https://github.com/WeAreROLI/JUCE.git
 touch JUCE/
 cd /Users/vsts/agent/2.148.0/work/1/JUCE
-git checkout tags/5.4.1
+git checkout tags/5.4.3
 cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
 cat AppConfig.h
 cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/
 xcodebuild -project Projucer.xcodeproj
-cd /Users/vsts/agent/2.148.0/work/1/
-ls /Library/Frameworks/
+
+
+echo "====================\n=======\n======\n============\n===========\n==========="
 pwd
 cd ~
+pwd
+ls
 curl -L -o vstsdk3611_22_10_2018_build_34.zip.zip https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip
 unzip -q vstsdk3611_22_10_2018_build_34.zip
+ls
+
 mkdir ~/SDKs
 cp -rf VST_SDK ~/SDKs
 curl -L -o heads.zip http://cabbageaudio.com/beta/heads.zip
 unzip -q heads.zip
 cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
+echo "\n"
 ls /Users/vsts/agent/2.148.0/work/1/
-cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
+# cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
+
 curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 hdiutil mount Packages.dmg
-sudo installer -pkg /Volumes/Packages\ 1.2.4/Install\ Packages.pkg -target /
-hdiutil detach /Volumes/Packages\ 1.2.4/
+sudo installer -pkg /Volumes/Packages\ 1.2.5/Install\ Packages.pkg -target /
+hdiutil detach /Volumes/Packages\ 1.2.5/
+
 cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
-cript:
 export PROJUCER=/Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 
 $PROJUCER --resave ../../CabbageIDE.jucer
@@ -90,5 +97,5 @@ zip -r CabbageOSX.zip Cabbage.app CabbageLite.app
 
 cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/
 
-packagesbuild InstallerTravis.pkgproj
+packagesbuild InstallerAzure.pkgproj
 ls build

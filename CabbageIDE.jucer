@@ -405,7 +405,8 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="1" JUCE_ASIO="1"/>
+  <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="1" JUCE_ASIO="1"
+               JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>

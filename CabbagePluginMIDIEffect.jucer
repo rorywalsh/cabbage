@@ -2,16 +2,17 @@
 
 <JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
-              buildVST="1" buildVST3="0" buildAU="1" buildAUv3="0" buildRTAS="0"
+              buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
               pluginManufacturer="CabbageAudio" pluginManufacturerCode="Cabb"
               pluginCode="RORY" pluginChannelConfigs="" pluginIsSynth="1" pluginWantsMidiIn="1"
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="2"
-              jucerVersion="5.4.1" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
+              jucerVersion="5.4.3" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
               reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
-              companyCopyright="" pluginFormats="buildVST,buildAU" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut,pluginIsMidiEffectPlugin">
+              companyCopyright="" pluginFormats="buildAU,buildVST,buildVST3"
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut,pluginIsMidiEffectPlugin">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
@@ -218,7 +219,8 @@
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="MACOSX=1&#10;Cabbage_Plugin_Synth=1"
-               extraFrameworks="/Library/Frameworks/CsoundLib64">
+               extraFrameworks="/Library/Frameworks/CsoundLib64" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK"
+               vst3Folder="~/SDKs/VST_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
