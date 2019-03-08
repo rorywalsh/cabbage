@@ -44,7 +44,7 @@ public:
                                                   owner.getCabbageSettings()->getUserSettings(), true), true);
         
         setResizable (true, false);
-        setResizeLimits (300, 400, 800, 1500);
+        setResizeLimits (300, 400, 1200, 500);
         setTopLeftPosition (60, 60);
         
         restoreWindowStateFromString (owner.getCabbageSettings()->getUserSettings()->getValue ("listWindowPos"));
