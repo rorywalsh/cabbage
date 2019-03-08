@@ -97,5 +97,5 @@ zip -r CabbageOSX.zip Cabbage.app CabbageLite.app
 
 cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/
 
-packagesbuild InstallerTravis.pkgproj
+packagesbuild InstallerAzure.pkgproj
 ls build
