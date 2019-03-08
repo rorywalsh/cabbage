@@ -19,8 +19,6 @@ cat AppConfig.h
 cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/
 xcodebuild -project Projucer.xcodeproj
 
-
-echo "====================\n=======\n======\n============\n===========\n==========="
 pwd
 cd ~
 pwd
@@ -99,3 +97,4 @@ cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/
 
 packagesbuild InstallerAzure.pkgproj
 ls build
+cp Cabbage.pkg /Users/vsts/agent/2.148.0/work/1/s/Cabbage.pkg
