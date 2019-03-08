@@ -41,11 +41,11 @@ ls /Users/vsts/agent/2.148.0/work/1/
 
 curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 hdiutil mount Packages.dmg
-sudo installer -pkg /Volumes/Packages\ 1.2.4/Install\ Packages.pkg -target /
-hdiutil detach /Volumes/Packages\ 1.2.4/
+sudo installer -pkg /Volumes/Packages\ 1.2.5/Install\ Packages.pkg -target /
+hdiutil detach /Volumes/Packages\ 1.2.5/
 
-#cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
-# export PROJUCER=/Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX
+export PROJUCER=/Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 
 # $PROJUCER --resave ../../CabbageIDE.jucer
 # xcodebuild -project Cabbage.xcodeproj/ clean
@@ -53,9 +53,9 @@ hdiutil detach /Volumes/Packages\ 1.2.4/
 # $PROJUCER --resave ../../CabbageLite.jucer
 # xcodebuild -project CabbageLite.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
-# $PROJUCER --resave ../../CabbagePluginMIDIEffect.jucer
-# xcodebuild -project CabbagePlugin.xcodeproj clean
-# xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 Cabbage_MIDI_Effect=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" 
+$PROJUCER --resave ../../CabbagePluginMIDIEffect.jucer
+xcodebuild -project CabbagePlugin.xcodeproj clean
+xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 Cabbage_MIDI_Effect=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" 
 # cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginMIDIEffect.component
 # cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginMIDIEffect.component
 # $PROJUCER --resave ../../CabbagePluginSynth.jucer
