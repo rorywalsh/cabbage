@@ -18,12 +18,17 @@ sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_
 cat AppConfig.h
 cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/Builds/MacOSX/
 xcodebuild -project Projucer.xcodeproj
-cd /Users/vsts/agent/2.148.0/work/1/
-ls /Library/Frameworks/
+
+
+echo "====================\n=======\n======\n============\n===========\n==========="
 pwd
 cd ~
+pwd
+ls
 curl -L -o vstsdk3611_22_10_2018_build_34.zip.zip https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip
 unzip -q vstsdk3611_22_10_2018_build_34.zip
+ls
+
 mkdir ~/SDKs
 cp -rf VST_SDK ~/SDKs
 curl -L -o heads.zip http://cabbageaudio.com/beta/heads.zip
