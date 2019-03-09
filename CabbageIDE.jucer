@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="5.4.3" displaySplashScreen="1" reportAppUsage="1"
+              jucerVersion="5.4.3" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{C0361D81-2D97-514F-0F91-A8077B17F83D}" name="GUIEditor"/>
@@ -297,9 +297,11 @@
                 extraCompilerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
@@ -405,7 +407,7 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="1" JUCE_ASIO="1"
+  <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0" JUCE_ASIO="1"
                JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
