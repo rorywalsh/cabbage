@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="1" reportAppUsage="1"
+<JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
               cppLanguageStandard="11" jucerVersion="5.4.3" companyCopyright="">
@@ -238,18 +238,18 @@
                        libraryPath="&quot;/usr/local/lib&quot;" headerPath="&quot;/usr/local/include/csound&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../sourcecode/JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../sourcecode/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1&#10;Cabbage_Lite=1"
