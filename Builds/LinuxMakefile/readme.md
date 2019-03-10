@@ -5,11 +5,11 @@ Note that if you are using Arch Linux you can install Cabbage using the package 
 Requirements
 ============
 
-- You will also need to download version 5.4.1 of JUCE, either clone the git repo or grab a zip archive. Once you have the source you will need to build the Projucer. Makefiles can be found in JUCE/extras/Projucer/Builds/LinuxMakefile. 
+- You will also need to download the latest version of of JUCE, either clone the git repo or grab a zip archive. Once you have the source you will need to build the Projucer. Makefiles can be found in JUCE/extras/Projucer/Builds/LinuxMakefile. 
 
 - Please make sure you have a fairly recent version of Csound installed, otherwise you may get build problems. 
 
-- Cabbage needs the VST SDK in order to build its plugins libraries. The VST SDK can be downloed from [here](https://www.steinberg.net/en/company/developers.html)
+- Cabbage needs the VST SDK2 in order to build its plugins libraries.  
 
 - The following are dependencies you **may** need. It's probably best to skip this step for now and try building Cabbage. If you have any unmet dependencies you can simply ```sudo apt-get install``` any of the packages you may need from the following list. Your compiler output should specify what's missing. 
 
