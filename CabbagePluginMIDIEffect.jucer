@@ -9,7 +9,7 @@
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="2"
-              jucerVersion="5.4.3" buildStandalone="0" enableIAA="0" displaySplashScreen="1"
+              jucerVersion="5.4.3" buildStandalone="0" enableIAA="0" displaySplashScreen="0"
               reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
               companyCopyright="" pluginFormats="buildAU,buildVST,buildVST3"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut,pluginIsMidiEffectPlugin">
@@ -196,10 +196,10 @@
                 extraLinkerFlags="-Wall">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;~/SDKs/VST_SDK/VST3_SDK&quot;" libraryPath="&quot;/usr/local/lib&quot;"
                        defines="Cabbage_Plugin_Synth=1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;~/SDKs/VST_SDK/VST3_SDK&quot;" libraryPath="&quot;/usr/local/lib&quot;"
                        defines="Cabbage_Plugin_Synth=1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
