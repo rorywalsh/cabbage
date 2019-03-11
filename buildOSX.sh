@@ -98,4 +98,4 @@ cd /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/
 packagesbuild InstallerAzure.pkgproj
 ls build  
 pwd
-cp /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/build/Cabbage.pkg /Users/vsts/agent/2.148.0/work/1/s/Cabbage.pkg
+cp /Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/build/Cabbage.pkg /Users/vsts/agent/2.148.0/work/1/a/Cabbage.pkg
