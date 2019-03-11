@@ -318,7 +318,7 @@
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
                extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="vNeY7N"
-               bigIcon="vNeY7N">
+               bigIcon="vNeY7N" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
