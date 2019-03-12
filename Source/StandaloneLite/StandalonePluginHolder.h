@@ -310,6 +310,7 @@ public:
 #endif
         }
 		
+#ifdef WIN32
 		//load ASIO drivers by default
 		if(savedState == nullptr)
 		{
@@ -318,7 +319,7 @@ public:
 			savedState->setAttribute("audioOutputDeviceName", "ASIO4ALL v2");
 			savedState->setAttribute("audioInputDeviceName", "ASIO4ALL v2");
 		}
-
+#endif
         auto totalInChannels  = processor->getMainBusNumInputChannels();
         auto totalOutChannels = processor->getMainBusNumOutputChannels();
 
