@@ -350,7 +350,7 @@
     </XCODE_MAC>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
             externalLibraries="csound64.lib" windowsTargetPlatformVersion="10.0.17763.0"
-            smallIcon="vNeY7N" bigIcon="vNeY7N">
+            smallIcon="vNeY7N" bigIcon="vNeY7N" vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="Cabbage" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
