@@ -238,6 +238,7 @@ public:
         {
             processor->setPlayHead (device->getAudioPlayHead());
             device->setMidiMessageCollector (&player.getMidiMessageCollector());
+            device->setMidiMessageCollector (&player.getMidiMessageCollector());
         }
 
 #endif
@@ -308,6 +309,15 @@ public:
             shouldMuteInput.setValue (settings->getBoolValue ("shouldMuteInput", true));
 #endif
         }
+		
+		//load ASIO drivers by default
+		if(savedState == nullptr)
+		{
+			savedState = new XmlElement("DEVICESETUP");
+			savedState->setAttribute("deviceType", "ASIO");
+			savedState->setAttribute("audioOutputDeviceName", "ASIO4ALL v2");
+			savedState->setAttribute("audioInputDeviceName", "ASIO4ALL v2");
+		}
 
         auto totalInChannels  = processor->getMainBusNumInputChannels();
         auto totalOutChannels = processor->getMainBusNumOutputChannels();
