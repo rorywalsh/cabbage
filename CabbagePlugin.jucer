@@ -204,10 +204,10 @@
                 extraLinkerFlags="-Wall">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
                        libraryPath="&quot;/usr/local/lib&quot;" defines=""/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
-                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
                        libraryPath="&quot;/usr/local/lib&quot;" defines=""/>
       </CONFIGURATIONS>
       <MODULEPATHS>
