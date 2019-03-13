@@ -1059,16 +1059,31 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 	{
 		if (getFilterGraph() != nullptr)
 		{
+
 			const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 			if (nodeId.uid != 99)
-				if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
+			{
+				auto& pluginWindows = getFilterGraph()->activePluginWindows;
+				AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId);
+
+				for (int i = 0; i < pluginWindows.size(); i++)
 				{
-					AudioProcessor* const processor = f->getProcessor();
-					//auto plug = processor->getActiveEditor();
-					if (processor != nullptr)
-						if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+					if (pluginWindows[i]->node == f)
+					{
+						if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (pluginWindows[i]->getContentComponent()))
 							return editor;
+					}
 				}
+			}
+
+			//if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
+			//	{
+			//		AudioProcessor* const processor = f->getProcessor();
+			//		//auto plug = processor->getActiveEditor();
+			//		if (processor != nullptr)
+			//			if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+			//				return editor;
+			//	}
 		}
 	}
     return nullptr;

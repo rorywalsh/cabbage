@@ -352,13 +352,11 @@ public:
 
     //==============================================================================
     AudioProcessorGraph graph;
-
-
-
+	OwnedArray<PluginWindow> activePluginWindows;
 private:
     //==============================================================================
     AudioPluginFormatManager& formatManager;
-	OwnedArray<PluginWindow> activePluginWindows;
+	
 
     NodeID lastUID;
     NodeID getNextUID() noexcept;
