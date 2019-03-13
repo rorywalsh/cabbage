@@ -306,6 +306,8 @@ void CabbageSlider::setLookAndFeelColours (ValueTree wData)
     slider.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     slider.setColour (Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
 
+    slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::markercolour));
+    
     slider.setColour (Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
     slider.lookAndFeelChanged();
 }

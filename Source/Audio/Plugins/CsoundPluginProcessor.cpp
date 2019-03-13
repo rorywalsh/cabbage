@@ -579,8 +579,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
 	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
 
-
-
     //if no inputs are used clear buffer in case it's not empty..
     if (getTotalNumInputChannels() == 0)
         buffer.clear();

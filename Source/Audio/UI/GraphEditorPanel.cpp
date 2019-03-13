@@ -1283,7 +1283,7 @@ GraphDocumentComponent::GraphDocumentComponent (AudioPluginFormatManager& fm,
       graphPlayer (false)
 {
     init();
-
+    
     deviceManager.addChangeListener (graphPanel.get());
     deviceManager.addAudioCallback (&graphPlayer);
     deviceManager.addMidiInputCallback (String(), &graphPlayer.getMidiMessageCollector());

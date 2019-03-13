@@ -964,8 +964,6 @@ void CabbageMainComponent::createFilterGraph()
 {
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
-//    stopFilterGraph();
-
 	filterGraphWindow->setContentOwned(graphComponent, true);
 }
 //==================================================================================
@@ -1078,15 +1076,6 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 					}
 				}
 			}
-
-			//if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
-			//	{
-			//		AudioProcessor* const processor = f->getProcessor();
-			//		//auto plug = processor->getActiveEditor();
-			//		if (processor != nullptr)
-			//			if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
-			//				return editor;
-			//	}
 		}
 	}
     return nullptr;
@@ -1131,12 +1120,12 @@ void CabbageMainComponent::setEditMode (bool enable)
 
 	if (isCabbageFile == true)
 	{
-		if (!getCabbagePluginEditor())
-		{
-			graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
-			Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
-			createEditorForFilterGraphNode(pos);
-		}
+//        if (!getCabbagePluginEditor())
+//        {
+//            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
+//            Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
+//            createEditorForFilterGraphNode(pos);
+//        }
 
 		getCabbagePluginEditor()->addChangeListener(this);
 		getCabbagePluginEditor()->addActionListener(this);
@@ -1721,7 +1710,6 @@ int CabbageMainComponent::testFileForErrors (String file)
 }
 void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
 {
-//    stopFilterGraph();
     
     if (testFileForErrors (file) == 0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a separate process first.
     {
@@ -1747,10 +1735,10 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             }
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
-			//this will create or update plugin...			
-			graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pos);
+			//this will create or update plugin...
+            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pos);
 
-			createEditorForFilterGraphNode (pos);
+            createEditorForFilterGraphNode (pos);
 
             startTimer (100);
             if(getFilterGraph()->graph.getNodeForId(node))
