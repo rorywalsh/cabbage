@@ -21,6 +21,8 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/titlebarcolour.md !}  
 
+{! ./markdown/Widgets/Properties/style.md !}  
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/colour.md !}   

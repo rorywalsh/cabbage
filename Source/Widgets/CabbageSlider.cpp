@@ -56,7 +56,12 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
 
-	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
+    const String globalStyle = owner->globalStyle;
+    if(globalStyle == "legacy")
+    {
+        return;
+    }
+    else if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
 		&& sliderImg.isEmpty() && sliderImgBg.isEmpty())
 	{
 		slider.setLookAndFeel(&flatLookAndFeel);

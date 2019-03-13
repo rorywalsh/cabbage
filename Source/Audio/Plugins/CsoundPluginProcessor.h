@@ -244,8 +244,7 @@ private:
     ScopedPointer<FileLogger> fileLogger;
     int busIndex = 0;
     bool disableLogging = false;
-	bool isUnityPlugin = false;
-	File unityWorkingDirectory;
+
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginProcessor)

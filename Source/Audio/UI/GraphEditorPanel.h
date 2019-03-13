@@ -140,6 +140,14 @@ public:
     void hideLastSidePanel();
     BurgerMenuComponent burgerMenu;
 
+    //RW edit...
+    void enableGraph(bool shouldEnable){
+        if(shouldEnable)
+            graphPlayer.setProcessor (&graph->graph);
+        else
+            graphPlayer.setProcessor (nullptr);
+    }
+    
 private:
     //==============================================================================
     AudioDeviceManager& deviceManager;

@@ -798,7 +798,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::editMode:
             result.setInfo (String ("Edit Mode"), String ("Edit Mode"), CommandCategories::edit, 0);
             result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
-            result.setTicked (getContentComponent()->getCabbagePluginEditor() == nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
+//            result.setTicked (getContentComponent()->getCabbagePluginEditor() == nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
 

@@ -28,7 +28,7 @@ class CabbageButton : public TextButton, public ValueTree::Listener, public Cabb
 {
 public:
 
-    CabbageButton (ValueTree wData);
+    CabbageButton (ValueTree wData, String style);
 	~CabbageButton() { setLookAndFeel(nullptr); };
 
     //ValueTree::Listener virtual methods....

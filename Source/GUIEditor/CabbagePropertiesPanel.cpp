@@ -531,6 +531,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String textColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour);
         const String fontColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour);
         const String trackerColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::trackercolour);
+        const String markerColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::markercolour);
         const String textboxColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textboxcolour);
         const String textboxOutlineColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textboxoutlinecolour);
 
@@ -542,7 +543,10 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         comps.add (new ColourPropertyComponent ("Font", fontColourString));
 
         if (typeOfWidget == "rslider")
+        {
             comps.add (new ColourPropertyComponent ("Outline", outlineColourString));
+            comps.add (new ColourPropertyComponent ("Marker", markerColourString));
+        }
 
         comps.add (new ColourPropertyComponent ("Tracker", trackerColourString));
         comps.add (new ColourPropertyComponent ("Value Box Colour", textboxColourString));

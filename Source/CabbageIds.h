@@ -776,6 +776,7 @@ public:
         set ("Selected Row", CabbageIdentifierIds::highlightcolour.toString());
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
+        set ("Marker", CabbageIdentifierIds::markercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
         set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
         set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());

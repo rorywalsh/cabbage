@@ -964,6 +964,8 @@ void CabbageMainComponent::createFilterGraph()
 {
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
+//    stopFilterGraph();
+
 	filterGraphWindow->setContentOwned(graphComponent, true);
 }
 //==================================================================================
@@ -1055,6 +1057,7 @@ String CabbageMainComponent::getAudioDeviceSettings()
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
+
 	if (fileTabs.size() > 0)
 	{
 		if (getFilterGraph() != nullptr)
@@ -1064,9 +1067,8 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 				if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
 				{
 					AudioProcessor* const processor = f->getProcessor();
-					//auto plug = processor->getActiveEditor();
-					if (processor != nullptr)
-						if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (processor->getActiveEditor()))
+					auto pluginEditor = processor->getActiveEditor();
+					if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (pluginEditor))
 							return editor;
 				}
 		}
@@ -1703,6 +1705,8 @@ int CabbageMainComponent::testFileForErrors (String file)
 }
 void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
 {
+//    stopFilterGraph();
+    
     if (testFileForErrors (file) == 0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a separate process first.
     {
         if (File (file).existsAsFile())
@@ -1745,6 +1749,7 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             }
             
 			factory.togglePlay (true);
+
             
         }
         else
@@ -1767,17 +1772,12 @@ void CabbageMainComponent::stopCsoundForNode (String file)
 //==================================================================================
 void CabbageMainComponent::startFilterGraph()
 {
-    //factory.togglePlay (true);
-    //filterGraph->startPlaying();
+    graphComponent->enableGraph(true);
 }
 //==================================================================================
 void CabbageMainComponent::stopFilterGraph()
 {
-    //stopTimer();
-    //factory.togglePlay (false);
-
-    //if (filterGraph)
-    //    filterGraph->
+     graphComponent->enableGraph(false);
 
 }
 //==============================================================================

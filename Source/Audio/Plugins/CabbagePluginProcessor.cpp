@@ -1002,7 +1002,6 @@ CabbageAudioParameter *CabbagePluginProcessor::getParameterForXYPad(String name)
         if (CabbageAudioParameter *cabbageParam = dynamic_cast<CabbageAudioParameter *> (param)) {
             if (name == cabbageParam->getWidgetName())
                 return dynamic_cast<CabbageAudioParameter *> (cabbageParam);
-
         }
     }
 

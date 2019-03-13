@@ -38,11 +38,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
 
     CabbageUtilities::debug ("Plugin constructor");
-	if (this->wrapperType == AudioProcessor::wrapperType_Unity)
-	{
-		isUnityPlugin = true;
-		unityWorkingDirectory = File::getCurrentWorkingDirectory();
-	}
+
 
 }
 
@@ -118,7 +114,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	PluginHostType pluginType;
 	if (pluginType.isFruityLoops())
 	{
-		csoundParams->ksmps_override = 1;
+        //fruity loops has issues with certain ksmps sizes. Best that users set their own ksmps values
+		//csoundParams->ksmps_override = 1;
 	}
 #else
 	if (requestedKsmpsRate == -1)
@@ -154,8 +151,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	else
 		CabbageUtilities::debug("Csound could not compile your file?");
 
-	if (this->wrapperType == AudioProcessor::wrapperType_Unity)
-		unityWorkingDirectory.setAsCurrentWorkingDirectory();
     return csdCompiledWithoutError();
 
 }
@@ -267,7 +262,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("IS_A_PLUGIN", 0.0);
 
     csound->PerformKsmps();
-	unityWorkingDirectory.setAsCurrentWorkingDirectory();
+
 
 }
 //==============================================================================
@@ -583,7 +578,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
 
 	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
-	const int outputs =  getTotalNumOutputChannels();
 
 
 

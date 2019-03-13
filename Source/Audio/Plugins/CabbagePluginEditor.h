@@ -199,6 +199,7 @@ public:
     Colour backgroundColour;
     Colour titlebarColour;
     Colour fontColour;
+    String globalStyle = "";
     bool defaultFontColour = true;
     float titlebarGradientAmount;
 

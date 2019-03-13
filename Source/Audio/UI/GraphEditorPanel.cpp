@@ -1304,31 +1304,6 @@ void GraphDocumentComponent::init()
 
     graphPanel->updateComponents();
 
-   /* if (isOnTouchDevice())
-    {
-        if (isOnTouchDevice())
-        {
-            titleBarComponent.reset (new TitleBarComponent (*this));
-            addAndMakeVisible (titleBarComponent.get());
-        }
-
-        pluginListBoxModel.reset (new PluginListBoxModel (pluginListBox, pluginList));
-
-        pluginListBox.setModel (pluginListBoxModel.get());
-        pluginListBox.setRowHeight (40);
-
-        pluginListSidePanel.setContent (&pluginListBox, false);
-
-        mobileSettingsSidePanel.setContent (new AudioDeviceSelectorComponent (deviceManager,
-                                                                              0, 2, 0, 2,
-                                                                              true, true, true, false));
-
-        if (isOnTouchDevice())
-        {
-            addAndMakeVisible (pluginListSidePanel);
-            addAndMakeVisible (mobileSettingsSidePanel);
-        }
-    }*/
 }
 
 GraphDocumentComponent::~GraphDocumentComponent()

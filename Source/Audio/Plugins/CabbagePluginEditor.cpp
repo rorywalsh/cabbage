@@ -180,6 +180,8 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     const String fontColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour);
     lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
 
+    globalStyle = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::style);
+    
     backgroundColour = Colour::fromString (backgroundColourString);
     titlebarColour   = Colour::fromString (titlebarColourString);
     fontColour       = Colour::fromString (fontColourString);
@@ -443,7 +445,7 @@ void CabbagePluginEditor::insertSignalDisplay (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
 {
     CabbageInfoButton* infoButton;
-    components.add (infoButton = new CabbageInfoButton (cabbageWidgetData));
+    components.add (infoButton = new CabbageInfoButton (cabbageWidgetData, globalStyle));
     addToEditorAndMakeVisible (infoButton, cabbageWidgetData);
     addMouseListenerAndSetVisibility (infoButton, cabbageWidgetData);
 }
@@ -451,7 +453,7 @@ void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
 {
     CabbageButton* button;
-    components.add (button = new CabbageButton (cabbageWidgetData));
+    components.add (button = new CabbageButton (cabbageWidgetData, globalStyle));
     button->addListener (this);
     addToEditorAndMakeVisible (button, cabbageWidgetData);
     addMouseListenerAndSetVisibility (button, cabbageWidgetData);
