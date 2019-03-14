@@ -1753,7 +1753,9 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             }
             
 			factory.togglePlay (true);
-
+            
+            graphComponent->enableAudioInput();
+            
             
         }
         else
