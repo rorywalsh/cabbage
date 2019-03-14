@@ -77,11 +77,12 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
       factory (this),
       cycleTabsButton ("..."),
 	  lookAndFeel(new CabbageIDELookAndFeel()),
-      resizerBar(settings->getValueTree(), this)
+wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
+      resizerBar(settings->getValueTree(), this),
+      lookAndFeel4(),
+      fileTree(FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles, File::getSpecialLocation (File::currentExecutableFile), wildcardFilter, nullptr)
 {
-
-
-
+    
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
     addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (cabbageSettings->valueTree));
@@ -123,11 +124,13 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
     createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 	
 	reloadAudioDeviceState();
-
-	fileList.setDirectory(getCurrentCsdFile().getParentDirectory(), true, true);
-	directoryThread.startThread(1);
-
-	fileTree.addListener(this);
+    String lastOpenDir = cabbageSettings->getUserSettings()->getValue ("lastOpenedDir", "");
+    fileTree.setRoot(File(lastOpenDir));
+//    fileList.setDirectory(getCurrentCsdFile().getParentDirectory(), true, true);
+//    directoryThread.startThread(1);
+//
+    fileTree.addListener(this);
+    fileTree.setLookAndFeel(&lookAndFeel4);
 
 	fileTree.setColour(TreeView::backgroundColourId, Colours::grey);
 	addAndMakeVisible(fileTree);
@@ -147,6 +150,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 CabbageMainComponent::~CabbageMainComponent()
 {
     pluginListWindow = nullptr;
+    fileTree.setLookAndFeel(nullptr);
     knownPluginList.removeChangeListener (this);
     
     editorAndConsole.clear();
@@ -155,6 +159,7 @@ CabbageMainComponent::~CabbageMainComponent()
     if (tempFile.existsAsFile())
         tempFile.deleteFile();
 
+    stopFilterGraph();
 	graphComponent = nullptr;
 }
 
@@ -166,6 +171,16 @@ void CabbageMainComponent::paint (Graphics& g)
 	{
 		g.fillAll(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::fileTabBar, Colour(50, 50, 50)));
 	}
+}
+
+void CabbageMainComponent::fileClicked (const File &file, const MouseEvent &e)
+{
+    bringCodeEditorToFront(file);
+}
+
+void CabbageMainComponent::fileDoubleClicked (const File &file)
+{
+    openFile(file.getFullPathName());
 }
 
 //===============================================================================================================
@@ -226,10 +241,12 @@ void CabbageMainComponent::setLookAndFeelColours()
     lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
     lookAndFeelChanged();
     toolbar.repaint();
-	fileTree.setColour(FileTreeComponent::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).darker());
-    fileTree.setColour(FileTreeComponent::textColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::identifierLiteral, Colour(50, 50, 50)));
-	fileTree.setColour(FileTreeComponent::highlightColourId, Colours::whitesmoke);
-    fileTree.setColour(FileTreeComponent::selectedItemBackgroundColourId, Colours::whitesmoke);
+	fileTree.getLookAndFeel().setColour(ListBox::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).darker());
+//    fileTree.getLookAndFeel().setColour(ListBox::textColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50).contrasting()));
+    fileTree.getLookAndFeel().setColour(DirectoryContentsDisplayComponent::textColourId, Colours::whitesmoke);
+    fileTree.getLookAndFeel().setColour(DirectoryContentsDisplayComponent::ColourIds::highlightColourId, Colours::whitesmoke.darker());
+    fileTree.getLookAndFeel().setColour(TextButton::textColourOffId, Colours::red.darker());
+//    fileTree.setColour(ListBox::selectedItemBackgroundColourId, Colours::whitesmoke);
 	fileTree.repaint();
 	resized();
 
@@ -272,8 +289,6 @@ void CabbageMainComponent::buttonClicked (Button* button)
             if (fileTabs[i]->isVisible() == false)
             {
                 files.add(fileTabs[i]->getFile().getFullPathName());
-                
-                //CabbageUtilities::debug(fileTabs[i]->getFile().getFullPathName());
             }
         
         const int result = files.indexOf(getCurrentCsdFile().getFullPathName()) + 1;
@@ -287,7 +302,11 @@ void CabbageMainComponent::buttonClicked (Button* button)
             setCurrentCsdFile (fileTabs[fileTabs.size() - 1]->getFile());
         }
         
-        fileTree.setSelectedFile(getCurrentCsdFile());
+        fileTree.setRoot(getCurrentCsdFile().getParentDirectory());
+        Timer::callAfterDelay(100, [this](){
+            fileTree.setFileName(getCurrentCsdFile().getFullPathName());
+        });
+        
     }
     
     
@@ -341,10 +360,6 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
     }
 
 
-//    if( fileList.contains(fileTabs[currentFileIndex]->getFile()))
-//       jassertfalse;
-//    fileTree.setSelectedFile(fileTabs[currentFileIndex]->getFile());
-//    fileTree.repaint();
     fileTree.refresh();
 
 }
@@ -398,8 +413,8 @@ void CabbageMainComponent::bringCodeEditorToFront (File file)
         fileTabs[fileIndex]->setToggleState (true, sendNotification);
         currentFileIndex = fileIndex;
     }
-    else
-        this->openFile (file.getFullPathName());
+//    else
+//        this->openFile (file.getFullPathName());
 
 }
 
@@ -862,7 +877,7 @@ Image CabbageMainComponent::createBackground()
         const Image cabbageLogo = ImageCache::getFromMemory (CabbageBinaryData::CabbageLogoBig_png, CabbageBinaryData::CabbageLogoBig_pngSize);
 		//g.drawImage(cabbageLogo, 400, 400, 400, 400, 0, 0, cabbageLogo.getWidth(), cabbageLogo.getHeight(), RectanglePlacement::Flags::doNotResize);
 		//g.drawImage(cabbageLogo, getLocalBounds().reduced(.01f, .05f).toFloat(), RectanglePlacement::Flags::onlyReduceInSize);
-		g.drawImage(cabbageLogo, {getWidth()/2.f - 175, 200, 350, 400}, RectanglePlacement::Flags::stretchToFit);
+        g.drawImage(cabbageLogo, {getWidth()/2.f - 175, 200, 350, 400});
 		return backgroundImg;
     }
 }
@@ -946,7 +961,7 @@ void CabbageMainComponent::addInstrumentsAndRegionsToCombobox()
 void CabbageMainComponent::resizeAllWindows (int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
-	fileTree.setBounds(0, height, resizerBarCurrentXPos-7, getHeight()-height);
+	fileTree.setBounds(-15, toolbarThickness, resizerBarCurrentXPos+25, getHeight()-5);
 	
     resizerBar.setBounds(resizerBarCurrentXPos-5, toolbar.getHeight(), 3, getHeight());
     
@@ -1337,6 +1352,39 @@ void CabbageMainComponent::saveGraph (bool saveAs)
 		getFilterGraph()->saveDocument(fc.getResult().withFileExtension(".cabbage"));
 }
 //==================================================================================
+void CabbageMainComponent::openFolder ()
+{
+    FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.csd;*", CabbageUtilities::shouldUseNativeBrowser());
+    
+    if (fc.browseForDirectory())
+    {
+//        fileList.setDirectory(fc.getResult(), true, true);
+        fileTree.refresh();
+    }
+    
+    cabbageSettings->setProperty("lastOpenedDir", fc.getResult().getFullPathName());
+}
+//==================================================================================
+void CabbageMainComponent::toggleBrowser()
+{
+    if(resizerBar.isVisible())
+    {
+        resizerBar.setVisible(false);
+        resizerBarCurrentXPos = 0;
+        resized();
+        cabbageSettings->setProperty ("ShowFileBrowser", 0);
+    }
+    else
+    {
+        resizerBarCurrentXPos = 195;
+//        fileList.refresh();
+        fileTree.refresh();
+        resizerBar.setVisible(true);
+        cabbageSettings->setProperty ("ShowFileBrowser", 1);
+        resized();
+    }
+}
+//==================================================================================
 const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles)
 {
     stopTimer();
@@ -1370,13 +1418,6 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
     }
 
     createCodeEditorForFile (currentCsdFile);
-
-    if(!currentCsdFile.isAChildOf(fileList.getDirectory()))
-        fileList.setDirectory(currentCsdFile.getParentDirectory(), true, true);
-    
-    fileTree.refresh();
-    fileTree.setSelectedFile(currentCsdFile);
-    
 
     return currentCsdFile;
 

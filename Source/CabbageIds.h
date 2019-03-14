@@ -30,6 +30,7 @@ namespace CommandIDs
         newFile                 = 0x200020,
         newTextFile             = 0x200022,
         open                    = 0x200023,
+        openFolder              = 0x200024,
         openFromRPi             = 0x200021,
         closeDocument           = 0x200030,
         saveDocumentToRPi       = 0x200039,
