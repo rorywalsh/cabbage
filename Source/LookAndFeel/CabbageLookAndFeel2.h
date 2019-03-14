@@ -34,7 +34,7 @@ static Drawable* createDrawableFromSVG (const char* data)
 class CabbageFoldersLookAndFeel   : public LookAndFeel_V4
 {
 public:
-    CabbageFoldersLookAndFeel();
+    CabbageFoldersLookAndFeel(){};
     ~CabbageFoldersLookAndFeel() {};
     
     const Drawable* getDefaultFolderImage() override
