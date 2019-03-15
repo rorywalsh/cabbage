@@ -431,7 +431,7 @@ void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileCom
         settings.getUserSettings()->setValue ("CabbageExamplesDir", fileComponent->getCurrentFileText());
     else if (fileComponent->getName() == "User files dir.")
         settings.getUserSettings()->setValue ("UserFilesDir", fileComponent->getCurrentFileText());
-	else if (fileComponent->getName() == "Custom icons dir.")
+	else if (fileComponent->getName() == "Custom theme dir.")
 		settings.getUserSettings()->setValue("CustomThemeDir", fileComponent->getCurrentFileText());
 }
 

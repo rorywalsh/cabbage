@@ -122,7 +122,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
     
 
     createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
-	
+
 	reloadAudioDeviceState();
     String lastOpenDir = cabbageSettings->getUserSettings()->getValue ("lastOpenedDir", "");
     fileTree.setRoot(File(lastOpenDir));
@@ -1751,7 +1751,7 @@ int CabbageMainComponent::testFileForErrors (String file)
 }
 void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
 {
-    
+    startFilterGraph();
     if (testFileForErrors (file) == 0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a separate process first.
     {
         if (File (file).existsAsFile())

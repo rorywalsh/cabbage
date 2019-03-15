@@ -37,28 +37,7 @@ public:
     CabbageFoldersLookAndFeel(){};
     ~CabbageFoldersLookAndFeel() {};
     
-    const Drawable* getDefaultFolderImage() override
-    {
-        if (newFolderImage == nullptr)
-            newFolderImage.reset (createDrawableFromSVG (R"svgdata(
-                                                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="706" height="532">
-                                                      <defs>
-                                                      <linearGradient id="a">
-                                                      <stop stop-color="#adf" offset="0"/>
-                                                      <stop stop-color="#ecfaff" offset="1"/>
-                                                      </linearGradient>
-                                                      <linearGradient id="b" x1=".6" x2="0" y1=".9" xlink:href="#a"/>
-                                                      <linearGradient id="c" x1=".6" x2=".1" y1=".9" y2=".3" xlink:href="#a"/>
-                                                      </defs>
-                                                      <g class="currentLayer">
-                                                      <path d="M112.1 104c-8.2 2.2-13.2 11.6-11.3 21l68.3 342.7c1.9 9.4 10.1 15.2 18.4 13l384.3-104.1c8.2-2.2 13.2-11.6 11.3-21l-48-266a15.8 15.8 0 0 0-18.4-12.8l-224.2 38s-20.3-41.3-28.3-39.3z" display="block" fill="url(#b)" stroke="#444444" stroke-width="7"/>
-                                                      <path d="M608.6 136.8L235.2 208a22.7 22.7 0 0 0-16 19l-40.8 241c1.7 8.4 9.6 14.5 17.8 12.3l380-104c8-2.2 10.7-10.2 12.3-18.4l38-210.1c.4-15.4-10.4-11.8-18-11.1z" display="block" fill="url(#c)" opacity=".8" stroke="#446c98" stroke-width="7"/>
-                                                      </g>
-                                                      </svg>
-                                                      )svgdata"));
-                               
-                                  return newFolderImage.get();
-    }
+    const Drawable* getDefaultFolderImage() override;
 private:
     std::unique_ptr<Drawable> newFolderImage;
 };

@@ -152,7 +152,10 @@ public:
     
     void enableGraph(bool shouldEnable){
         if(shouldEnable)
-            graphPlayer.setProcessor (&graph->graph);
+        {
+            if(graphPlayer.getCurrentProcessor() == nullptr)
+                graphPlayer.setProcessor (&graph->graph);
+        }
         else
             graphPlayer.setProcessor (nullptr);
     }
@@ -188,7 +191,7 @@ public:
     void audioDeviceStopped() override
     {
         graphPlayer.audioDeviceStopped();
-//        emptyBuffer.setSize (0, 0);
+        //emptyBuffer.setSize (0, 0);
     }
     
      //end RW ==============================================================================
