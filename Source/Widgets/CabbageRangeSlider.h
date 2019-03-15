@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../LookAndFeel/FlatButtonLookAndFeel.h"
 
 class CabbagePluginEditor;
 class CabbageRangeSlider;
@@ -46,6 +47,7 @@ private:
     float xMaxAtThumbDown = 0;
     float yMinAtThumbDown = 0;
     float yMaxAtThumbDown = 0;
+    
 };
 
 class CabbageRangeSlider  : public Component, public ValueTree::Listener, public CabbageWidgetBase
@@ -62,10 +64,11 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
     void createPopupBubble();
     void setLookAndFeelColours (ValueTree wData);
     void setSliderValues (ValueTree wData);
+    FlatButtonLookAndFeel flatLookAndFeel;
 
 public:
     CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageRangeSlider() {};
+    ~CabbageRangeSlider() {slider.setLookAndFeel (nullptr); setLookAndFeel(nullptr);};
 
     void setCurrentValues (float min, float max);
     void resized()  override;
