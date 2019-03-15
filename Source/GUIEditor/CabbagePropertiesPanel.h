@@ -81,6 +81,7 @@ public:
         borderColour = colour;
         repaint();
     }
+
 private:
 
     PropertyPanel propertyPanel;

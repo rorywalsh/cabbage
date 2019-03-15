@@ -28,6 +28,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
       flatLookAndFeel()
 {
+    CabbageUtilities::debug(widgetData.getType().toString());
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
     setLookAndFeelColours (widgetData);

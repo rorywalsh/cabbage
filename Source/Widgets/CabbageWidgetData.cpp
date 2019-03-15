@@ -706,8 +706,6 @@ void CabbageWidgetData::setMatrixPrefix(StringArray strTokens, String parameters
 	//else //rowprefix
 	//	setProperty(widgetData, "rowprefix", prefixes);
 
-	for (auto str : prefixes)
-		CabbageUtilities::debug(str);
 }
 
 

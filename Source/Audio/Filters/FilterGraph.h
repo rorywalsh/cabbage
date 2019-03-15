@@ -240,6 +240,10 @@ public:
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
 			graph.removeNode(nodeId);
+            for (auto* w : activePluginWindows)
+                if( w->node->getProcessor() == plugin->getProcessor())
+                    activePluginWindows.removeObject(w);
+            
 			graph.releaseResources();
 
 			if (auto node = graph.addNode(processor, nodeId))

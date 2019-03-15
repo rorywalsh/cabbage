@@ -218,7 +218,9 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
             getScrubberPositionForTable (identifier, value);
 
         else
+        {
             CabbageWidgetData::setProperty (widgetData, identifier, value);
+        }
 
         sendChangeMessage();    //update code in editor when changes are made...
     }

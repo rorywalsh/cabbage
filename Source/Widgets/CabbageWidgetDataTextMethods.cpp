@@ -314,7 +314,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
     
     else
     {
-        CabbageUtilities::debug(identifier);
+//        CabbageUtilities::debug(identifier);
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
         {
             if(type.contains ("slider") && identifier != "value" && identifier != "increment")

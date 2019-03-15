@@ -165,7 +165,7 @@ public:
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();
     CabbageEditorContainer* getCurrentEditorContainer();
-    String getAudioDeviceSettings();
+
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
     FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
@@ -180,13 +180,14 @@ public:
 		}
 	}
     
+    CabbagePluginEditor* currentEditor = nullptr;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
     
     void openFolder();
     //==============================================================================
-    void timerCallback();
+    void timerCallback() override;
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
     int duplicationIndex = 0;

@@ -123,8 +123,10 @@ void ComponentLayoutEditor::updateCodeEditor()
 
             for ( int i = 0 ; i < child->getTarget()->getNumChildComponents() ; i++)
             {
-                if (child->getTarget()->getChildComponent (i)->getName().isNotEmpty())
+                if (child->getTarget()->getChildComponent (i)->getName().isNotEmpty()){
                     compNames.add (child->getTarget()->getChildComponent (i)->getName());
+                    CabbageUtilities::debug(child->getTarget()->getChildComponent (i)->getName());
+                }
             }
         }
     else

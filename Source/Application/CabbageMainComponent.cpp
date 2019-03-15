@@ -85,7 +85,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
     
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
-    addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (cabbageSettings->valueTree));
+    addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (ValueTree("empty")));
     propertyPanel->setVisible (false);
     setSize (1200, 800);
 
@@ -301,11 +301,13 @@ void CabbageMainComponent::buttonClicked (Button* button)
             fileTabs[fileTabs.size() - 1]->setToggleState (true, sendNotification);
             setCurrentCsdFile (fileTabs[fileTabs.size() - 1]->getFile());
         }
-        
-        fileTree.setRoot(getCurrentCsdFile().getParentDirectory());
-        Timer::callAfterDelay(100, [this](){
-            fileTree.setFileName(getCurrentCsdFile().getFullPathName());
-        });
+        if(fileTabs.size()>0)
+        {
+            fileTree.setRoot(getCurrentCsdFile().getParentDirectory());
+            Timer::callAfterDelay(100, [this](){
+                fileTree.setFileName(getCurrentCsdFile().getFullPathName());
+            });
+        }
         
     }
     
@@ -555,7 +557,7 @@ void CabbageMainComponent::mouseDrag (const MouseEvent& e)
 {
     if (e.eventComponent->getName() == "ResizerBar")
     {
-        CabbageUtilities::debug(startingVBarDragPos + e.getDistanceFromDragStartX());
+//        CabbageUtilities::debug(startingVBarDragPos + e.getDistanceFromDragStartX());
         resizerBar.setBounds (startingVBarDragPos + e.getDistanceFromDragStartX(), 0, resizerBar.getWidth(), resizerBar.getHeight());
         resizerBarCurrentXPos = startingVBarDragPos + e.getDistanceFromDragStartX();
         resized();
@@ -605,6 +607,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
         {
             resized();
             ValueTree widgetData = editor->getValueTreesForCurrentlySelectedComponents()[0];
+            CabbageUtilities::debug(widgetData.getType().toString());
             const String typeOfWidget = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::type);
             CabbageLayoutWidgetStrings layoutWidgets;
             CabbageControlWidgetStrings controlWidgets;
@@ -621,8 +624,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
                 propertyPanel->updateProperties(widgetData);
                 resized();
 
-                if (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber) >
-                    9999) //if widget was added in edit mode...
+                if (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
                 {
                     StringArray csdArray;
                     csdArray.addLines(getCurrentCodeEditor()->getDocument().getAllContent());
@@ -686,7 +688,7 @@ void CabbageMainComponent::insertCustomPlantToEditor(CabbagePluginEditor* editor
 {
     //add import file to form if not already there...
     ValueTree widgetData = editor->getValueTreeForComponent("form");
-    CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::name));
+//    CabbageUtilities::debug(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::name));
     var importFiles = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::importfiles);
 
     bool alreadyContainsFile = false;
@@ -771,10 +773,10 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
 
             if (CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber) >= 1 && CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::surrogatelinenumber)<=0)
             {
-                CabbageUtilities::debug(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::type));
-                CabbageUtilities::debug(CabbageWidgetData::getBounds(wData).toString());
-                CabbageUtilities::debug(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::plant));
-                CabbageUtilities::debug("linenUmber:", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber));
+//                CabbageUtilities::debug(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::type));
+//                CabbageUtilities::debug(CabbageWidgetData::getBounds(wData).toString());
+//                CabbageUtilities::debug(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::plant));
+//                CabbageUtilities::debug("linenUmber:", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber));
                 
                 lineNumber = jmin(cabbageSection.getEnd(),
                                   int(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::linenumber)));
@@ -1010,10 +1012,15 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
                                               : PluginWindow::Type::generic;
 
         if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
+        {
             pluginName = cabbagePlugin->getPluginName();
+        }
 
         if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f, type))
         {
+//             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
+//                 currentEditor = dynamic_cast<CabbagePluginEditor*>(cabbagePlugin->getActiveEditor());
+            
             if (GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
                 w->setVisible (false);
             else
@@ -1059,40 +1066,52 @@ CabbageOutputConsole* CabbageMainComponent::getCurrentOutputConsole()
     else
         return nullptr;
 }
-//==================================================================================
-String CabbageMainComponent::getAudioDeviceSettings()
-{
-    //if (filterGraph != nullptr && filterGraph->getDeviceManagerSettings().isNotEmpty())
-    //    return filterGraph->getDeviceManagerSettings();
-    //else
-       return String();
-}
+
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
 
-	if (fileTabs.size() > 0)
-	{
-		if (getFilterGraph() != nullptr)
-		{
+//    if (fileTabs.size() > 0)
+//    {
+//        if (getFilterGraph() !=  nullptr)
+//        {
+//            const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+//            if (nodeId.uid != -99)
+//                if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
+//                {
+//                    if(CabbagePluginProcessor* processor = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
+//                    {
+//                    //auto plug = processor->getActiveEditor();
+//                        if (processor != nullptr)
+//                            if(((CabbagePluginEditor*)processor->createEditorIfNeeded()) == currentEditor)
+//                                return currentEditor;
+//                    }
+//                }
+//        }
+//    }
+//    return nullptr;
+    if (fileTabs.size() > 0)
+    {
+        if (getFilterGraph() != nullptr)
+        {
 
-			const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-			if (nodeId.uid != 99)
-			{
-				auto& pluginWindows = getFilterGraph()->activePluginWindows;
-				AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId);
+            const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+            if (nodeId.uid != 99)
+            {
+                auto& pluginWindows = getFilterGraph()->activePluginWindows;
+                AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId);
 
-				for (int i = 0; i < pluginWindows.size(); i++)
-				{
-					if (pluginWindows[i]->node == f)
-					{
-						if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (pluginWindows[i]->getContentComponent()))
-							return editor;
-					}
-				}
-			}
-		}
-	}
+                for (int i = 0; i < pluginWindows.size(); i++)
+                {
+                    if (pluginWindows[i]->node == f)
+                    {
+                        if (CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (pluginWindows[i]->getContentComponent()))
+                            return editor;
+                    }
+                }
+            }
+        }
+    }
     return nullptr;
 }
 //==================================================================================
@@ -1119,15 +1138,13 @@ void CabbageMainComponent::setEditMode (bool enable)
 {
 	if (enable == false)
 	{
+//        propertyPanel->updateWidgetData(plug->cabbageWidgets);
+//        propertyPanel->updateWidgetData(getCabbagePluginProcessor()->cabbageWidgets);
 		propertyPanel->setVisible(false);
 		resized();
 	}
 		
 	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-	//audioGraph->closeAnyOpenPluginWindows();
-	//stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
-	//runCsoundForNode(fileTabs[currentFileIndex]->getFilename());
-
 	if (nodeId.uid == -99)
 		return;
 
@@ -1135,12 +1152,13 @@ void CabbageMainComponent::setEditMode (bool enable)
 
 	if (isCabbageFile == true)
 	{
-//        if (!getCabbagePluginEditor())
-//        {
+        if (!getCabbagePluginEditor())
+        {
+            return;
 //            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
 //            Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
 //            createEditorForFilterGraphNode(pos);
-//        }
+        }
 
 		getCabbagePluginEditor()->addChangeListener(this);
 		getCabbagePluginEditor()->addActionListener(this);
@@ -1778,7 +1796,7 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
 			//this will create or update plugin...
             graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pos);
-
+            
             createEditorForFilterGraphNode (pos);
 
             startTimer (100);
