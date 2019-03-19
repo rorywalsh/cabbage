@@ -1308,6 +1308,7 @@ void GraphDocumentComponent::init()
 
 GraphDocumentComponent::~GraphDocumentComponent()
 {
+	deviceManager.removeAudioCallback(this);
     releaseGraph();
 
     keyState.removeListener (&graphPlayer.getMidiMessageCollector());

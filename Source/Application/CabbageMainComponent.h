@@ -131,10 +131,10 @@ public:
         jassertfalse;
     }
     
-    void selectionChanged () override {}
+	void selectionChanged() override {};
     void fileClicked (const File &file, const MouseEvent &e) override;
     void fileDoubleClicked (const File &file) override;
-    void browserRootChanged (const File &newRoot) override {}
+	void browserRootChanged(const File &newRoot) override;
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);

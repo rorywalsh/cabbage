@@ -72,7 +72,53 @@ const Drawable* CabbageFoldersLookAndFeel::getDefaultFolderImage()
    return newFolderImage.get();
 }
 
+Button* CabbageFoldersLookAndFeel::createFileBrowserGoUpButton()
+{
+	auto* goUpButton = new DrawableButton("up", DrawableButton::ImageOnButtonBackground);
 
+	Path arrowPath;
+	arrowPath.addArrow({ 50.0f, 100.0f, 50.0f, 0.0f }, 40.0f, 100.0f, 50.0f);
+
+	DrawablePath arrowImage;
+	arrowImage.setFill(Colours::whitesmoke);
+	arrowImage.setPath(arrowPath);
+
+	goUpButton->setImages(&arrowImage);
+
+	return goUpButton;
+}
+
+void CabbageFoldersLookAndFeel::layoutFileBrowserComponent(FileBrowserComponent& browserComp,
+	DirectoryContentsDisplayComponent* fileListComponent,
+	FilePreviewComponent* previewComp,
+	ComboBox* currentPathBox,
+	TextEditor* filenameBox,
+	Button* goUpButton)
+{
+	auto sectionHeight = 22;
+	auto buttonWidth = 50;
+
+	auto b = browserComp.getLocalBounds().reduced(20, 5);
+
+	auto topSlice = b.removeFromTop(sectionHeight);
+	auto bottomSlice = b.removeFromBottom(sectionHeight);
+
+	currentPathBox->setBounds(topSlice.removeFromLeft(topSlice.getWidth() - buttonWidth));
+
+	goUpButton = createFileBrowserGoUpButton();
+
+	topSlice.removeFromLeft(6);
+	goUpButton->setBounds(topSlice);
+
+	bottomSlice.removeFromLeft(20);
+	filenameBox->setBounds(bottomSlice);
+
+	if (previewComp != nullptr)
+		previewComp->setBounds(b.removeFromRight(b.getWidth() / 3));
+
+	if (auto* listAsComp = dynamic_cast<Component*> (fileListComponent))
+		listAsComp->setBounds(b.reduced(0, 10));
+}
 
 //Cabbage IDE look and feel class
 CabbageLookAndFeel2::CabbageLookAndFeel2()

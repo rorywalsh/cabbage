@@ -120,19 +120,21 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
     cycleTabsButton.setSize (50, 28);
     cycleTabsButton.addListener (this);
     
+	fileTree.setLookAndFeel(&lookAndFeel4);
 
     createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 
 	reloadAudioDeviceState();
     String lastOpenDir = cabbageSettings->getUserSettings()->getValue ("lastOpenedDir", "");
-    fileTree.setRoot(File(lastOpenDir));
-//    fileList.setDirectory(getCurrentCsdFile().getParentDirectory(), true, true);
-//    directoryThread.startThread(1);
-//
-    fileTree.addListener(this);
-    fileTree.setLookAndFeel(&lookAndFeel4);
+	if (File(lastOpenDir).exists() == false)
+	{
+		fileTree.setRoot(File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory));
+	}
+	else
+		fileTree.setRoot(File(lastOpenDir));
 
-	fileTree.setColour(TreeView::backgroundColourId, Colours::grey);
+    fileTree.addListener(this);
+ 	fileTree.setColour(TreeView::backgroundColourId, Colours::grey);
 	addAndMakeVisible(fileTree);
     
     if(cabbageSettings->getUserSettings()->getIntValue("ShowFileBrowser")==0)
@@ -183,6 +185,10 @@ void CabbageMainComponent::fileDoubleClicked (const File &file)
     openFile(file.getFullPathName());
 }
 
+void CabbageMainComponent::browserRootChanged(const File &newRoot)
+{
+	cabbageSettings->setProperty("lastOpenedDir", newRoot.getFullPathName());
+}
 //===============================================================================================================
 void CabbageMainComponent::exportTheme()
 {
@@ -242,11 +248,11 @@ void CabbageMainComponent::setLookAndFeelColours()
     lookAndFeelChanged();
     toolbar.repaint();
 	fileTree.getLookAndFeel().setColour(ListBox::backgroundColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).darker());
-//    fileTree.getLookAndFeel().setColour(ListBox::textColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50).contrasting()));
     fileTree.getLookAndFeel().setColour(DirectoryContentsDisplayComponent::textColourId, Colours::whitesmoke);
     fileTree.getLookAndFeel().setColour(DirectoryContentsDisplayComponent::ColourIds::highlightColourId, Colours::whitesmoke.darker());
-    fileTree.getLookAndFeel().setColour(TextButton::textColourOffId, Colours::red.darker());
-//    fileTree.setColour(ListBox::selectedItemBackgroundColourId, Colours::whitesmoke);
+	fileTree.getLookAndFeel().setColour(ScrollBar::thumbColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).brighter());
+	fileTree.getLookAndFeel().setColour(TextButton::textColourOffId, Colours::whitesmoke);
+	fileTree.lookAndFeelChanged();
 	fileTree.repaint();
 	resized();
 

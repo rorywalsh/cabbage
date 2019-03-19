@@ -191,7 +191,7 @@ public:
     void audioDeviceStopped() override
     {
         graphPlayer.audioDeviceStopped();
-        //emptyBuffer.setSize (0, 0);
+        emptyBuffer.setSize (0, 0);
     }
     
      //end RW ==============================================================================

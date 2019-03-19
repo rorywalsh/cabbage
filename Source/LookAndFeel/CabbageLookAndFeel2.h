@@ -38,6 +38,13 @@ public:
     ~CabbageFoldersLookAndFeel() {};
     
     const Drawable* getDefaultFolderImage() override;
+	Button* createFileBrowserGoUpButton() override;
+	void layoutFileBrowserComponent(FileBrowserComponent&,
+		DirectoryContentsDisplayComponent*,
+		FilePreviewComponent*,
+		ComboBox* currentPathBox,
+		TextEditor* filenameBox,
+		Button* goUpButton) override;
 private:
     std::unique_ptr<Drawable> newFolderImage;
 };
