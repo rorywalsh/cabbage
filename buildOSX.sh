@@ -1,3 +1,4 @@
+pwd
 curl -L -o Csound6.12.1-MacOS_universal.dmg 'https://github.com/csound/csound/releases/download/6.12.2/Csound6.12.1-MacOS_universal.dmg'
 ls
 hdiutil attach Csound6.12.1-MacOS_universal.dmg
@@ -11,7 +12,7 @@ cd /Users/vsts/agent/2.148.0/work/1
 git clone https://github.com/WeAreROLI/JUCE.git
 touch JUCE/
 cd /Users/vsts/agent/2.148.0/work/1/JUCE
-git checkout tags/5.4.3
+git checkout master
 cd /Users/vsts/agent/2.148.0/work/1/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h

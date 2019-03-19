@@ -25,7 +25,6 @@
 #include "../Audio/Filters/InternalFilters.h"
 #include "../Utilities/CabbageStrings.h"
 
-
 class CabbageMainComponent::PluginListWindow  : public DocumentWindow
 {
 public:
@@ -80,9 +79,11 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
 wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
       resizerBar(settings->getValueTree(), this),
       lookAndFeel4(),
+      goUpButton(),
       fileTree(FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles, File::getSpecialLocation (File::currentExecutableFile), wildcardFilter, nullptr)
 {
-    
+
+
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
     addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (ValueTree("empty")));
@@ -113,6 +114,8 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
     knownPluginList.addChangeListener (this);
     
     addAndMakeVisible (toolbar);
+    
+    
 	factory.setIconsPath(cabbageSettings->getUserSettings()->getValue("CustomThemeDir"));
     toolbar.addDefaultItems (factory);
     propertyPanel->addChangeListener (this);
@@ -121,6 +124,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
     cycleTabsButton.addListener (this);
     
 	fileTree.setLookAndFeel(&lookAndFeel4);
+    fileTree.lookAndFeelChanged();
 
     createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 
@@ -147,6 +151,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
     addAndMakeVisible(resizerBar);
     resizerBar.addMouseListener(this, true);
 	setLookAndFeelColours();
+    addAndMakeVisible(goUpButton);
 }
 
 CabbageMainComponent::~CabbageMainComponent()
@@ -251,7 +256,8 @@ void CabbageMainComponent::setLookAndFeelColours()
     fileTree.getLookAndFeel().setColour(DirectoryContentsDisplayComponent::textColourId, Colours::whitesmoke);
     fileTree.getLookAndFeel().setColour(DirectoryContentsDisplayComponent::ColourIds::highlightColourId, Colours::whitesmoke.darker());
 	fileTree.getLookAndFeel().setColour(ScrollBar::thumbColourId, CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).brighter());
-	fileTree.getLookAndFeel().setColour(TextButton::textColourOffId, Colours::whitesmoke);
+    goUpButton.upArrowColour = CabbageSettings::getColourFromValueTree(cabbageSettings->getValueTree(), CabbageColourIds::codeBackground, Colour(50, 50, 50)).brighter(.6f);
+    goUpButton.repaint();
 	fileTree.lookAndFeelChanged();
 	fileTree.repaint();
 	resized();
@@ -970,7 +976,7 @@ void CabbageMainComponent::resizeAllWindows (int height)
 {
     const bool isPropPanelVisible = propertyPanel->isVisible();
 	fileTree.setBounds(-15, toolbarThickness, resizerBarCurrentXPos+25, getHeight()-5);
-	
+    goUpButton.setBounds(resizerBarCurrentXPos-55, toolbarThickness+5, 45, 22);
     resizerBar.setBounds(resizerBarCurrentXPos-5, toolbar.getHeight(), 3, getHeight());
     
     for ( CabbageEditorContainer* editor : editorAndConsole )

@@ -43,6 +43,7 @@ class CabbageDocumentWindow;
 class FileTab;
 
 
+
 class CabbageMainComponent
     : public Component,
       public Button::Listener,
@@ -130,6 +131,29 @@ public:
         }
         jassertfalse;
     }
+    
+    //overlaying this component on FileBrowserComponent to take contorl of up button colour..
+    class GoUpButton : public Component
+    {
+    public:
+        GoUpButton() : Component(""), upArrowColour(160, 160, 160){
+            setInterceptsMouseClicks(false, true);
+        };
+        ~GoUpButton(){};
+        
+        void paint(Graphics& g)
+        {
+            g.fillAll(Colours::transparentBlack);
+            Path arrowPath;
+            arrowPath.addArrow({ 23.0f, 16.0f, 23.0f, 5.0f }, 5.0f, 13.0f, 5.0f);
+            g.setColour(upArrowColour);
+            g.fillPath(arrowPath);
+        }
+        
+        Colour upArrowColour;
+    };
+
+    GoUpButton goUpButton;
     
 	void selectionChanged() override {};
     void fileClicked (const File &file, const MouseEvent &e) override;
