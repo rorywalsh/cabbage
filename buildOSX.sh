@@ -17,7 +17,7 @@ cd /JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
 cat AppConfig.h
-cd ~/JUCE/extras/Projucer/Builds/MacOSX/
+cd /Users/vsts/agent/2.148.1/work/1/JUCE/extras/Projucer/Builds/MacOSX/
 xcodebuild -project Projucer.xcodeproj
 
 pwd
@@ -35,16 +35,16 @@ unzip -q heads.zip
 cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 echo "\n"
-ls ~/
-
+ls /Users/vsts/agent/2.148.1/work/1/
+# cd /Users/vsts/agent/2.148.1/work/1/s/Builds/MacOSX
 
 curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 hdiutil mount Packages.dmg
 sudo installer -pkg /Volumes/Packages\ 1.2.5/Install\ Packages.pkg -target /
 hdiutil detach /Volumes/Packages\ 1.2.5/
 
-cd ~/s/Builds/MacOSX
-export PROJUCER=~/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+cd /Users/vsts/agent/2.148.1/work/1/s/Builds/MacOSX
+export PROJUCER=/Users/vsts/agent/2.148.1/work/1/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 
 $PROJUCER --resave ../../CabbageIDE.jucer
 xcodebuild -project Cabbage.xcodeproj/ clean
@@ -82,7 +82,7 @@ ls
 cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
 cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
 
-cd ~/s/Builds/MacOSX/build/Release/
+cd /Users/vsts/agent/2.148.1/work/1/s/Builds/MacOSX/build/Release/
 curl -L -o CabbageRack-0.5.0-mac.zip https://github.com/rorywalsh/CabbageRack/blob/master/dist/CabbageRack-0.5.0-mac.zip?raw=true
 unzip -q CabbageRack-0.5.0-mac.zip
 ls
@@ -94,9 +94,9 @@ cp fmod_csound.dylib Cabbage.app/Contents/fmod_csound.dylib
 ls Cabbage.app/Contents/
 zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 
-cd ~/s/Builds/MacOSX/
+cd /Users/vsts/agent/2.148.1/work/1/s/Builds/MacOSX/
 
 packagesbuild InstallerAzure.pkgproj
 ls build  
 pwd
-cp ~/s/Builds/MacOSX/build/Cabbage.pkg ~//a/Cabbage.pkg
+cp /Users/vsts/agent/2.148.1/work/1/s/Builds/MacOSX/build/Cabbage.pkg /Users/vsts/agent/2.148.1/work/1/a/Cabbage.pkg
