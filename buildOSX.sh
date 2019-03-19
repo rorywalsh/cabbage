@@ -13,7 +13,7 @@ git clone https://github.com/WeAreROLI/JUCE.git
 touch JUCE/
 cd ~/JUCE
 git checkout master
-cd /JUCE/extras/Projucer/JuceLibraryCode
+cd ~/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
 cat AppConfig.h
