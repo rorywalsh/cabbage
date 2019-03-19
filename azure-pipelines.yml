@@ -35,7 +35,7 @@ jobs:
     vmImage: 'xcode9-macos10.13'
   steps:
   - bash: chmod 777 buildOSX.sh
-  - bash: pwd
+  - bash: cd ~/s
   - bash: ./buildOSX.sh
     env:
       COREHOST_TRACE: 0
