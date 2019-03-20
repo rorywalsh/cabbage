@@ -23,6 +23,7 @@ newFileText = ""
 for root, dirs, files in os.walk(currentDir):
     for f in files:
         filename = os.path.relpath(os.path.join(root, f), ".")
+        newFileText = ""
         if "Widgets" not in filename and "Miscellaneous" not in filename and ".csd" in filename:
             # print(filename)
             with open(filename, "rt", encoding="utf-8") as inputFile:
