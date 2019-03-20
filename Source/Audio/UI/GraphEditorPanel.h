@@ -106,7 +106,8 @@ private:
 */
 class GraphDocumentComponent  : public Component,
                                 public DragAndDropTarget,
-                                public DragAndDropContainer
+                                public DragAndDropContainer,
+                                public AudioIODeviceCallback
 {
 public:
     GraphDocumentComponent (AudioPluginFormatManager& formatManager,
@@ -140,6 +141,60 @@ public:
     void hideLastSidePanel();
     BurgerMenuComponent burgerMenu;
 
+    //RW edit...
+    //==============================================================================
+    void enableAudioInput()
+    {
+        Timer::callAfterDelay(500, [this](){
+            shouldMuteInput = false;
+        });
+    }
+    
+    void enableGraph(bool shouldEnable){
+        if(shouldEnable)
+        {
+            if(graphPlayer.getCurrentProcessor() == nullptr)
+                graphPlayer.setProcessor (&graph->graph);
+        }
+        else
+            graphPlayer.setProcessor (nullptr);
+    }
+    bool shouldMuteInput = true;
+    AudioSampleBuffer emptyBuffer;
+    //inherting audioIODeviceCallback so as to get rid of feedback when graph first starts..
+    //==============================================================================
+    void audioDeviceIOCallback (const float** inputChannelData,
+                                int numInputChannels,
+                                float** outputChannelData,
+                                int numOutputChannels,
+                                int numSamples) override
+    {
+
+        if (shouldMuteInput)
+        {
+            emptyBuffer.clear();
+            inputChannelData = emptyBuffer.getArrayOfReadPointers();
+        }
+        
+        graphPlayer.audioDeviceIOCallback (inputChannelData, numInputChannels,
+                                      outputChannelData, numOutputChannels, numSamples);
+    }
+    
+    void audioDeviceAboutToStart (AudioIODevice* device) override
+    {
+        emptyBuffer.setSize (device->getActiveInputChannels().countNumberOfSetBits(), device->getCurrentBufferSizeSamples());
+        emptyBuffer.clear();
+        
+        graphPlayer.audioDeviceAboutToStart (device);
+    }
+    
+    void audioDeviceStopped() override
+    {
+        graphPlayer.audioDeviceStopped();
+        emptyBuffer.setSize (0, 0);
+    }
+    
+     //end RW ==============================================================================
 private:
     //==============================================================================
     AudioDeviceManager& deviceManager;

@@ -43,6 +43,7 @@ class CabbageDocumentWindow;
 class FileTab;
 
 
+
 class CabbageMainComponent
     : public Component,
       public Button::Listener,
@@ -51,7 +52,7 @@ class CabbageMainComponent
       public Timer,
       public ComboBox::Listener,
       public FileDragAndDropTarget,
-	  public FileBrowserListener
+      public FileBrowserListener
 {
 public:
 
@@ -60,22 +61,7 @@ public:
     void mouseExit (const MouseEvent& e) override;
     void mouseEnter (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
-    
-	void selectionChanged() override
-	{
-		// we're only really interested in when the selection changes, regardless of if it was
-		// clicked or not so we'll only override this method
-		auto selectedFile = fileTree.getSelectedFile();
-
-	}
-
-	void fileClicked(const File& file, const MouseEvent&) override 
-	{
-        bringCodeEditorToFront(file);
-	}
-
-	void fileDoubleClicked(const File&)              override {}
-	void browserRootChanged(const File&)             override {}
+ 
 
     //==============================================================================
     CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
@@ -145,6 +131,34 @@ public:
         }
         jassertfalse;
     }
+    
+    //overlaying this component on FileBrowserComponent to take contorl of up button colour..
+    class GoUpButton : public Component
+    {
+    public:
+        GoUpButton() : Component(""), upArrowColour(160, 160, 160){
+            setInterceptsMouseClicks(false, true);
+        };
+        ~GoUpButton(){};
+        
+        void paint(Graphics& g)
+        {
+            g.fillAll(Colours::transparentBlack);
+            Path arrowPath;
+            arrowPath.addArrow({ 23.0f, 16.0f, 23.0f, 5.0f }, 5.0f, 13.0f, 5.0f);
+            g.setColour(upArrowColour);
+            g.fillPath(arrowPath);
+        }
+        
+        Colour upArrowColour;
+    };
+
+    GoUpButton goUpButton;
+    
+	void selectionChanged() override {};
+    void fileClicked (const File &file, const MouseEvent &e) override;
+    void fileDoubleClicked (const File &file) override;
+	void browserRootChanged(const File &newRoot) override;
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -175,7 +189,7 @@ public:
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();
     CabbageEditorContainer* getCurrentEditorContainer();
-    String getAudioDeviceSettings();
+
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
     FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
@@ -190,11 +204,14 @@ public:
 		}
 	}
     
+    CabbagePluginEditor* currentEditor = nullptr;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
+    
+    void openFolder();
     //==============================================================================
-    void timerCallback();
+    void timerCallback() override;
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
@@ -251,29 +268,14 @@ public:
     int startingVBarDragPos = 195;
     int resizerBarCurrentXPos = 195;
     
-    void toggleBrowser()
-    {
-        if(resizerBar.isVisible())
-        {
-            resizerBar.setVisible(false);
-            resizerBarCurrentXPos = 0;
-            resized();
-            cabbageSettings->setProperty ("ShowFileBrowser", 0);
-        }
-        else
-        {
-            resizerBarCurrentXPos = 195;
-            resizerBar.setVisible(true);
-            cabbageSettings->setProperty ("ShowFileBrowser", 1);
-            resized();
-        }
-    }
+    void toggleBrowser(); 
     
-	TimeSliceThread directoryThread{ "File Scanner Thread" };
-	WildcardFileFilter wildcardFilter{ "*", "*", "Movies File Filter" };
-	DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
-	FileTreeComponent fileTree{ fileList };
-
+//    TimeSliceThread directoryThread{ "File Scanner Thread" };
+     ScopedPointer<WildcardFileFilter> wildcardFilter;
+//    DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
+//    FileTreeComponent fileTree{ fileList };
+    FileBrowserComponent fileTree;
+//    WildcardFileFilter fileFilter;;
 private:
 
 
@@ -287,7 +289,7 @@ private:
     bool isCaseSensitive = false;
     File tempFile;
     CabbageDocumentWindow* owner;
-    //ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
+    CabbageFoldersLookAndFeel lookAndFeel4;
     CabbageToolbarFactory factory;
     Image bgImage;
     //File currentCsdFile;

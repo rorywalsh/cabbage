@@ -34,7 +34,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>/Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/build/Release/Cabbage.app</string>
+									<string>/Users/vsts/agent/2.148.1/work/1/s/Builds/MacOSX/build/Release/Cabbage.app</string>
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
@@ -477,7 +477,7 @@
 				<false/>
 				<key>VERSION</key>
 				<string>1.0</string>
-			</dict>
+			</dict>   
 			<key>TYPE</key>
 			<integer>0</integer>
 			<key>UUID</key>
@@ -513,7 +513,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>/Users/vsts/agent/2.148.0/work/1/s/Builds/MacOSX/build/Release/CabbageLite.app</string>
+									<string>/Users/vsts/agent/2.148.1/work/1/s/Builds/MacOSX/build/Release/CabbageLite.app</string>
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
@@ -1462,7 +1462,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/vsts/agent/2.148.0/work/1/s/Images/CabbageOSXInstallerBackground.png</string>
+					<string>/Users/vsts/agent/2.148.1/work/1/s/Images/CabbageOSXInstallerBackground.png</string>
 					<key>PATH_TYPE</key>
 					<integer>0</integer>
 				</dict>

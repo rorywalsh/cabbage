@@ -28,6 +28,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
       flatLookAndFeel()
 {
+    CabbageUtilities::debug(widgetData.getType().toString());
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
     setLookAndFeelColours (widgetData);
@@ -56,7 +57,12 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
 
-	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
+    const String globalStyle = owner->globalStyle;
+    if(globalStyle == "legacy")
+    {
+        return;
+    }
+    else if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
 		&& sliderImg.isEmpty() && sliderImgBg.isEmpty())
 	{
 		slider.setLookAndFeel(&flatLookAndFeel);
@@ -301,6 +307,8 @@ void CabbageSlider::setLookAndFeelColours (ValueTree wData)
     slider.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     slider.setColour (Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
 
+    slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::markercolour));
+    
     slider.setColour (Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
     slider.lookAndFeelChanged();
 }

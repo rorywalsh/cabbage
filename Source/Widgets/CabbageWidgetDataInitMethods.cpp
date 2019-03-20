@@ -36,8 +36,9 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 0);
-    setProperty (widgetData, CabbageIdentifierIds::titlebarcolour, CabbageUtilities::getBackgroundSkin().toString());
+    setProperty (widgetData, CabbageIdentifierIds::titlebarcolour, Colour(57, 70, 76).toString());
     setProperty (widgetData, CabbageIdentifierIds::titlebargradient, 0.15f);
+    setProperty (widgetData, CabbageIdentifierIds::style, "");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
 
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, "");
@@ -82,6 +83,7 @@ void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
+    setProperty (widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
@@ -121,6 +123,7 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
+    setProperty (widgetData, CabbageIdentifierIds::style, "flat");
 }
 
 void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
@@ -147,7 +150,7 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
     setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
     setProperty (widgetData, CabbageIdentifierIds::trackerbgcolour, Colour (0, 0, 0).toString());
-    setProperty (widgetData, CabbageIdentifierIds::markercolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::markercolour, Colour(80, 80, 80).toString());
     setProperty (widgetData, CabbageIdentifierIds::markerthickness, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::markerstart, 0.5f);
     setProperty (widgetData, CabbageIdentifierIds::markerend, 0.9f);

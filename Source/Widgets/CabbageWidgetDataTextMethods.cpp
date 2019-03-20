@@ -108,6 +108,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("textcolour"):
         case HashStringToInt ("titlebarcolour"):
         case HashStringToInt ("trackercolour"):
+        case HashStringToInt ("markercolour"):
         case HashStringToInt ("whitenotecolour"):
         case HashStringToInt ("colour"):
         case HashStringToInt ("fontcolour"):
@@ -313,7 +314,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
     
     else
     {
-        CabbageUtilities::debug(identifier);
+//        CabbageUtilities::debug(identifier);
         if (getNumProp (widgetData, identifier) != getNumProp (tempData, identifier))
         {
             if(type.contains ("slider") && identifier != "value" && identifier != "increment")

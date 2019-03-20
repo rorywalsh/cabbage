@@ -38,6 +38,24 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     setImgProperties (*this, wData, "buttonoff");
     addListener (this);
 
+    const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
+    const String imgOver = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonover);
+    const String imgOn = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonon);
+    
+    const String globalStyle = owner->globalStyle;
+    if(globalStyle == "legacy")
+    {
+        return;
+    }
+    
+    //if users are passing custom images, use old style look and feel
+    if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
+        imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
+    {
+        setLookAndFeel(&flatLookAndFeel);
+    }
+
+    
 }
 
 //===============================================================================

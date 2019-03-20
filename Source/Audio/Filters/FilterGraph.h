@@ -227,7 +227,7 @@ public:
 		return processor;
 	}
 
-
+    //RW
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
@@ -240,6 +240,10 @@ public:
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
 			graph.removeNode(nodeId);
+            for (auto* w : activePluginWindows)
+                if( w->node->getProcessor() == plugin->getProcessor())
+                    activePluginWindows.removeObject(w);
+            
 			graph.releaseResources();
 
 			if (auto node = graph.addNode(processor, nodeId))
@@ -281,7 +285,7 @@ public:
 		
 		
 
-		setDefaultConnections(nodeId);
+       setDefaultConnections(nodeId);
 	}
 
 
@@ -352,13 +356,11 @@ public:
 
     //==============================================================================
     AudioProcessorGraph graph;
-
-
-
+	OwnedArray<PluginWindow> activePluginWindows;
 private:
     //==============================================================================
     AudioPluginFormatManager& formatManager;
-	OwnedArray<PluginWindow> activePluginWindows;
+	
 
     NodeID lastUID;
     NodeID getNextUID() noexcept;

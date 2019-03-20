@@ -74,7 +74,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("UserFilesDir", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);
     defaultPropSet->setValue ("ShowEditorConsole", 1);
-    defaultPropSet->setValue ("ShowFileBrowser", 0);
+    defaultPropSet->setValue ("ShowFileBrowser", 1);
     defaultPropSet->setValue ("ExternalEditor", 0);
     defaultPropSet->setValue ("UseCabbageIO", 1);
     defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 1);

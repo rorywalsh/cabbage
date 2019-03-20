@@ -116,6 +116,10 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
        // content->openFile (lastOpenedFile, false);
     }
 
+    String lastOpenDir = cabbageSettings->getUserSettings()->getValue ("lastOpenedDir", "");
+//    getContentComponent()->fileTree.
+//    getContentComponent()->fileList.setDirectory(File(lastOpenDir), true, true);
+//    getContentComponent()->fileList.refresh();
     setApplicationCommandManagerToWatch (&commandManager);
     commandManager.registerAllCommandsForTarget (this);
     addKeyListener (commandManager.getKeyMappings());
@@ -248,6 +252,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::open);
     menu.addCommandItem (&commandManager, CommandIDs::openCabbagePatch);
+    menu.addCommandItem (&commandManager, CommandIDs::openFolder);
 
     PopupMenu recentFilesMenu;
     cabbageSettings->updateRecentFilesList();
@@ -457,6 +462,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 							  CommandIDs::newFile,
 							  CommandIDs::newTextFile,
 							  CommandIDs::open,
+                              CommandIDs::openFolder,
 							  CommandIDs::openFromRPi,
 							  CommandIDs::closeAllDocuments,
 							  CommandIDs::closeDocument,
@@ -548,6 +554,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::open:
             result.setInfo ("Open Csound file", "Opens a project", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
+            break;
+            
+        case CommandIDs::openFolder:
+            result.setInfo ("Open Folder", "Opens a folder in file browser", CommandCategories::general, 0);
             break;
 
         case CommandIDs::closeDocument:
@@ -910,6 +920,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::open:
             getContentComponent()->openFile();
             return true;
+            
+        case CommandIDs::openFolder:
+            getContentComponent()->openFolder();
+            return true;
 
         case CommandIDs::openFromRPi:
             getContentComponent()->launchSSHFileBrowser ("open");
@@ -932,7 +946,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
 			getContentComponent()->saveDocument();
 
-            getContentComponent()->setEditMode (false);
+//            getContentComponent()->setEditMode (false);
             isGUIEnabled = false;
             break;
 

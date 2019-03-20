@@ -351,11 +351,7 @@ void FlatButtonLookAndFeel::drawTwoValueThumb (Graphics& g, float x, float y, fl
 
     Path p;
 
-    p.startNewSubPath (x + diameter * .2, y - diameter * .2);
-    p.lineTo (x + diameter * .8, y - diameter * .2);
-    p.lineTo (x + diameter, y + diameter);
-    p.lineTo (x, y + diameter);
-    p.closeSubPath();
+    p.addRoundedRectangle(x, y-3, diameter*.6f, diameter, 3);
 
     p.applyTransform (AffineTransform::rotation (direction * (float_Pi * 0.5f), x + diameter * 0.5f, y + diameter * 0.5f));
 

@@ -19,7 +19,7 @@
 
 #include "CabbageButton.h"
 
-CabbageButton::CabbageButton (ValueTree wData)
+CabbageButton::CabbageButton (ValueTree wData, String style)
     : widgetData (wData),
       TextButton(),
 	  flatLookAndFeel()
@@ -51,6 +51,11 @@ CabbageButton::CabbageButton (ValueTree wData)
 	getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
 	getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
 
+    if(style == "legacy")
+    {
+        return;
+    }
+    
 	//if users are passing custom images, use old style look and feel
 	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
 		imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())

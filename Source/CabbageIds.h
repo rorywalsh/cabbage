@@ -30,6 +30,7 @@ namespace CommandIDs
         newFile                 = 0x200020,
         newTextFile             = 0x200022,
         open                    = 0x200023,
+        openFolder              = 0x200024,
         openFromRPi             = 0x200021,
         closeDocument           = 0x200030,
         saveDocumentToRPi       = 0x200039,
@@ -776,6 +777,7 @@ public:
         set ("Selected Row", CabbageIdentifierIds::highlightcolour.toString());
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
+        set ("Marker", CabbageIdentifierIds::markercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
         set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
         set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());

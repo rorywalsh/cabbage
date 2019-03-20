@@ -35,10 +35,15 @@ public:
         StandalonePluginHolder::PluginInOuts channels[] = { JucePlugin_PreferredChannelConfigurations };
 #endif
 
+		ScopedPointer<AudioDeviceManager::AudioDeviceSetup> setup = new AudioDeviceManager::AudioDeviceSetup();
+		setup->sampleRate = 44100;
+		setup->outputDeviceName = "ASIO4ALL v2";
+		setup->inputDeviceName = "ASIO4ALL v2";
+
         return new StandaloneFilterWindow (getApplicationName(),  getCommandLineParameters(),
                                            LookAndFeel::getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
                                            appProperties.getUserSettings(),
-                                           false, {}, nullptr
+                                           false, "ASIO4ALL v2", setup
 #ifdef JucePlugin_PreferredChannelConfigurations
                                            , juce::Array<StandalonePluginHolder::PluginInOuts> (channels, juce::numElementsInArray (channels))
 #endif

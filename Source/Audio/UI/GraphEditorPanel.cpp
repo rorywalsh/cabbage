@@ -1283,9 +1283,9 @@ GraphDocumentComponent::GraphDocumentComponent (AudioPluginFormatManager& fm,
       graphPlayer (false)
 {
     init();
-
+    
     deviceManager.addChangeListener (graphPanel.get());
-    deviceManager.addAudioCallback (&graphPlayer);
+    deviceManager.addAudioCallback (this);
     deviceManager.addMidiInputCallback (String(), &graphPlayer.getMidiMessageCollector());
 }
 
@@ -1304,35 +1304,11 @@ void GraphDocumentComponent::init()
 
     graphPanel->updateComponents();
 
-   /* if (isOnTouchDevice())
-    {
-        if (isOnTouchDevice())
-        {
-            titleBarComponent.reset (new TitleBarComponent (*this));
-            addAndMakeVisible (titleBarComponent.get());
-        }
-
-        pluginListBoxModel.reset (new PluginListBoxModel (pluginListBox, pluginList));
-
-        pluginListBox.setModel (pluginListBoxModel.get());
-        pluginListBox.setRowHeight (40);
-
-        pluginListSidePanel.setContent (&pluginListBox, false);
-
-        mobileSettingsSidePanel.setContent (new AudioDeviceSelectorComponent (deviceManager,
-                                                                              0, 2, 0, 2,
-                                                                              true, true, true, false));
-
-        if (isOnTouchDevice())
-        {
-            addAndMakeVisible (pluginListSidePanel);
-            addAndMakeVisible (mobileSettingsSidePanel);
-        }
-    }*/
 }
 
 GraphDocumentComponent::~GraphDocumentComponent()
 {
+	deviceManager.removeAudioCallback(this);
     releaseGraph();
 
     keyState.removeListener (&graphPlayer.getMidiMessageCollector());
