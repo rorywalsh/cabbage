@@ -53,6 +53,7 @@ void CabbageSettings::setDefaultSettings()
     examplesDir = "/usr/share/doc/cabbage/examples";
     cabbageHelp = "/usr/share/doc/cabbage/CabbageManual";
     manualPath = "/usr/share/doc/csound-doc";
+    themePath = "/usr/share/cabbage/Themes/modern-darkBG";
 #else
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/CabbageManual";
