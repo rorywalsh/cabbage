@@ -1,4 +1,4 @@
-cd $(agent.buildDirectory)
+cd $(Agent.BuildDirectory)
 ls
 pwd
 
