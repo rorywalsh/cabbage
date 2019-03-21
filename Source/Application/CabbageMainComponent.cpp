@@ -35,13 +35,14 @@ public:
     owner (mw)
     {
         setLookAndFeel(&lookAndFeel);
-        auto deadMansPedalFile = owner.getCabbageSettings()->getUserSettings()->getFile().getSiblingFile ("RecentlyCrashedPluginsList");
+
+		auto deadMansPedalFile = owner.getCabbageSettings()->getUserSettings()->getFile().getSiblingFile ("RecentlyCrashedPluginsList");
         
-        setContentOwned (new PluginListComponent (pluginFormatManager,
+        setContentOwned (new CabbagePluginListComponent (pluginFormatManager,
                                                   owner.knownPluginList,
                                                   deadMansPedalFile,
                                                   owner.getCabbageSettings()->getUserSettings(), true), true);
-        
+
         setResizable (true, false);
         setResizeLimits (300, 400, 1200, 500);
         setTopLeftPosition (60, 60);

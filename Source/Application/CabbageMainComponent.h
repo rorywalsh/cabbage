@@ -37,7 +37,7 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 #include "../Audio/Plugins/GenericCabbagePluginProcessor.h"
 #include "../Audio/Plugins/CabbageInternalPluginFormat.h"
-
+#include "../Utilities/CabbagePluginList.h"
 
 class CabbageDocumentWindow;
 class FileTab;
