@@ -87,7 +87,7 @@ public:
     void removeEditor();
     //==============================================================================
     void launchSSHFileBrowser (String mode);
-    void setEditMode (bool enable);
+    void enableEditMode();
     const File openFile (String filename = "", bool updateRecentFiles = true);
     void closeDocument();
     void showSettingsDialog();

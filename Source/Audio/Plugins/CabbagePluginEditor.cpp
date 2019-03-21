@@ -52,12 +52,6 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 #endif
     resized();
 
-	//refresh listeners each time the editor is opened...
-	for (int i = 0; i < components.size(); i++)
-	{
-		if(ValueTree::Listener* valueTreeListener = dynamic_cast<ValueTree::Listener*>(components[i]))
-			processor.cabbageWidgets.addListener(valueTreeListener);
-	}
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -67,6 +61,15 @@ CabbagePluginEditor::~CabbagePluginEditor()
     setLookAndFeel (nullptr);
 }
 
+void CabbagePluginEditor::refreshValueTreeListeners()
+{
+	//refresh listeners each time the editor is opened...
+	for (int i = 0; i < components.size(); i++)
+	{
+		if(ValueTree::Listener* valueTreeListener = dynamic_cast<ValueTree::Listener*>(components[i]))
+			processor.cabbageWidgets.addListener(valueTreeListener);
+	}
+}
 void CabbagePluginEditor::resized()
 {
 #ifdef Cabbage_IDE_Build

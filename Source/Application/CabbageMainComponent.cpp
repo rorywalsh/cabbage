@@ -514,7 +514,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 		if (isGUIEnabled == false)
 		{
 			this->saveDocument();
-			setEditMode(true);
+			enableEditMode();
 			if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
 			{
 				tabButton->getPlayButton().getProperties().set("state", "off");
@@ -751,7 +751,7 @@ void CabbageMainComponent::insertCustomPlantToEditor(CabbagePluginEditor* editor
 
     getCurrentCodeEditor()->insertCode(cabbageSection.getEnd(), newText, false, true);
     saveDocument();
-    setEditMode(true);
+    enableEditMode();
 
 }
 
@@ -768,7 +768,7 @@ void CabbageMainComponent::actionListenerCallback (const String& message)
         //getCurrentCodeEditor()->removeLine (getCurrentCodeEditor()->getSel);
         getCurrentCodeEditor()->removeSelectedText();
         saveDocument();
-        setEditMode (true);
+        enableEditMode();
     }
 }
 //=======================================================================================
@@ -1082,27 +1082,25 @@ CabbageOutputConsole* CabbageMainComponent::getCurrentOutputConsole()
 //==================================================================================
 CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
 {
-
-//    if (fileTabs.size() > 0)
-//    {
-//        if (getFilterGraph() !=  nullptr)
-//        {
-//            const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-//            if (nodeId.uid != -99)
-//                if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
-//                {
-//                    if(CabbagePluginProcessor* processor = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
-//                    {
-//                    //auto plug = processor->getActiveEditor();
-//                        if (processor != nullptr)
-//                            if(((CabbagePluginEditor*)processor->createEditorIfNeeded()) == currentEditor)
-//                                return currentEditor;
-//                    }
-//                }
-//        }
-//    }
-//    return nullptr;
     if (fileTabs.size() > 0)
+    {
+        if (getFilterGraph() !=  nullptr)
+        {
+            const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+            if (nodeId.uid != -99)
+                if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId(nodeId))
+                {
+                    if(CabbagePluginProcessor* processor = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
+                    {
+						//if (processor->getActiveEditor() == nullptr)
+						//	jassertfalse;
+						return ((CabbagePluginEditor*)processor->getActiveEditor());
+                    }
+                }
+        }
+    }
+    return nullptr;
+  /*  if (fileTabs.size() > 0)
     {
         if (getFilterGraph() != nullptr)
         {
@@ -1124,7 +1122,7 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
             }
         }
     }
-    return nullptr;
+    return nullptr;*/
 }
 //==================================================================================
 CabbagePluginProcessor* CabbageMainComponent::getCabbagePluginProcessor()
@@ -1146,21 +1144,18 @@ int CabbageMainComponent::getStatusbarYPos()
     return getCurrentEditorContainer()->getStatusBarPosition();
 }
 //=======================================================================================
-void CabbageMainComponent::setEditMode (bool enable)
+void CabbageMainComponent::enableEditMode()
 {
-	if (enable == false)
-	{
-//        propertyPanel->updateWidgetData(plug->cabbageWidgets);
-//        propertyPanel->updateWidgetData(getCabbagePluginProcessor()->cabbageWidgets);
-		propertyPanel->setVisible(false);
-		resized();
-	}
-		
+	
 	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 	if (nodeId.uid == -99)
 		return;
 
 	const bool isCabbageFile = CabbageUtilities::hasCabbageTags(getCurrentCsdFile());
+
+	//stopCsoundForNode(getCurrentCsdFile().getFullPathName());
+	//runCsoundForNode(getCurrentCsdFile().getFullPathName());
+
 
 	if (isCabbageFile == true)
 	{
@@ -1175,19 +1170,14 @@ void CabbageMainComponent::setEditMode (bool enable)
 		getCabbagePluginEditor()->addChangeListener(this);
 		getCabbagePluginEditor()->addActionListener(this);
 
-		if (enable == true)
-		{
-			getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
-			fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
-			propertyPanel->setInterceptsMouseClicks(true, true);
-		}
-		else
-		{
-			propertyPanel->setInterceptsMouseClicks(false, false);
-		}
+		getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
+		fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+		propertyPanel->setInterceptsMouseClicks(true, true);
 
-		getCabbagePluginEditor()->enableEditMode(enable);
-		isGUIEnabled = enable;
+		//getCabbagePluginEditor()->refreshValueTreeListeners();
+		getCabbagePluginEditor()->enableEditMode(true);
+		
+		isGUIEnabled = true;
 	}
 }
 //=======================================================================================
@@ -1887,7 +1877,7 @@ void CabbageMainComponent::resized()
 
     if (propertyPanel->isVisible())
     {
-        propertyPanel->setBounds (getWidth() - 200, toolbar.getHeight(), 200, getHeight() - toolbar.getHeight());
+        propertyPanel->setBounds (getWidth() - 200, toolbarThickness + heightOfTabButtons, 200, getHeight() - (toolbarThickness + heightOfTabButtons));
     }
 
     resizeAllWindows (toolbarThickness + heightOfTabButtons);

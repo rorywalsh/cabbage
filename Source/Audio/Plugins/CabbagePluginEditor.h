@@ -119,6 +119,8 @@ public:
     void insertMeter (ValueTree cabbageWidgetData);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
+	void refreshValueTreeListeners();
+	//=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (String channel, float value);
     void sendChannelStringDataToCsound (String channel, String value);
