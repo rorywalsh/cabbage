@@ -1095,9 +1095,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::showConsole:
-            getContentComponent()->getCurrentEditorContainer()->statusBar.setTopLeftPosition(0, getHeight()*.66);
-            getContentComponent()->getCurrentEditorContainer()->resized();
-
+			if (getContentComponent()->getNumberOfFileTabs() > 0)
+			{
+				getContentComponent()->getCurrentEditorContainer()->statusBar.setTopLeftPosition(0, getHeight()*.66);
+				getContentComponent()->getCurrentEditorContainer()->resized();
+			}
             return true;
 
         case CommandIDs::selectAll:

@@ -276,6 +276,8 @@ public:
 //    FileTreeComponent fileTree{ fileList };
     FileBrowserComponent fileTree;
 //    WildcardFileFilter fileFilter;;
+	bool shouldUpdateAudioSettings = false;
+
 private:
 
 
