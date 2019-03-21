@@ -28,7 +28,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
     rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
     pivotx (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivotx)),
     pivoty (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivoty)),
-    tooltipText (String::empty),
+    tooltipText (String()),
     refresh (0),
     owner (_owner),
     widgetData (wData),

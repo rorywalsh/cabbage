@@ -284,8 +284,8 @@ private:
     int getTabFileIndex (File file);
     OwnedArray<FileTab> fileTabs;
     bool fileNeedsSaving = false;
-    String searchString = String::empty;
-    String replaceString = String::empty;
+    String searchString = "";
+    String replaceString = "";
     bool isCaseSensitive = false;
     File tempFile;
     CabbageDocumentWindow* owner;

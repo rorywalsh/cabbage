@@ -285,7 +285,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
     if (imgFile.existsAsFile() && imgFile.hasFileExtension (".csd") == false)
     {
         if (imgFile.hasFileExtension ("svg"))
-            drawFromSVG (g, imgFile, 0, 0, group.getWidth(), group.getHeight(), AffineTransform::identity);
+            drawFromSVG (g, imgFile, 0, 0, group.getWidth(), group.getHeight(), AffineTransform());
         else if (imgFile.hasFileExtension ("png"))
         {
             Image image = ImageCache::getFromFile (imgFile);
@@ -354,7 +354,7 @@ void CabbageLookAndFeel2::drawToggleButton (Graphics& g, ToggleButton& button, b
         }
         else if (imgButtonOnFile.hasFileExtension ("svg") && imgButtonOffFile.hasFileExtension ("svg"))
         {
-            drawFromSVG (g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
+            drawFromSVG (g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform());
         }
     }
 
@@ -502,7 +502,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
         }
         else if (imgSliderBackground.hasFileExtension ("svg"))
         {
-            drawFromSVG (g, imgSliderBackground, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform::identity);
+            drawFromSVG (g, imgSliderBackground, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform());
         }
 
         useSliderBackgroundImg = true;
@@ -520,7 +520,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
         {
             Path filledArc;
             filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-            filledArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
+            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
             g.fillPath (filledArc);
         }
 
@@ -535,7 +535,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
             {
                 Path filledArc;
                 filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-                filledArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
+                filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
                 g.fillPath (filledArc);
             }
 
@@ -571,7 +571,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
 
             Path outlineArc;
             outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
-            outlineArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
+            outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
             outlineArc.closeSubPath();
 
             g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
@@ -752,9 +752,9 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics& g, int x, int y,
         else if (imgSliderBackground.hasFileExtension ("svg"))
         {
             if (slider.isVertical())
-                drawFromSVG (g, imgSliderBackground, 0, height * .05,  width, height * 1.1, AffineTransform::identity);
+                drawFromSVG (g, imgSliderBackground, 0, height * .05,  width, height * 1.1, AffineTransform());
             else
-                drawFromSVG (g, imgSliderBackground, 0, 0, width * 1.08, height, AffineTransform::identity);
+                drawFromSVG (g, imgSliderBackground, 0, 0, width * 1.08, height, AffineTransform());
 
             usingImg = true;
         }
@@ -937,12 +937,12 @@ void CabbageLookAndFeel2::drawLinearSliderThumb (Graphics& g, int x, int y, int 
             if (slider.isVertical())
             {
                 sliderHeight = sliderRadius * 1.5f;
-                drawFromSVG (g, imgSlider, 0,  sliderPos - height * .05,  width, sliderHeight, AffineTransform::identity);
+                drawFromSVG (g, imgSlider, 0,  sliderPos - height * .05,  width, sliderHeight, AffineTransform());
             }
             else
             {
                 sliderWidth = sliderRadius * 2.0f;
-                drawFromSVG (g, imgSlider, sliderPos - width * .05, 0, sliderWidth, height, AffineTransform::identity);
+                drawFromSVG (g, imgSlider, sliderPos - width * .05, 0, sliderWidth, height, AffineTransform());
             }
 
             useImg = true;
@@ -1038,9 +1038,9 @@ void CabbageLookAndFeel2::drawButtonBackground (Graphics& g, Button& button, con
         else if (imgButtonOnFile.hasFileExtension ("svg") && imgButtonOffFile.hasFileExtension ("svg"))
         {
             if(isMouseOverButton && toggleState == false)
-                drawFromSVG (g, imgButtonOverFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
+                drawFromSVG (g, imgButtonOverFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform());
             else
-                drawFromSVG (g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform::identity);
+                drawFromSVG (g, toggleState == true ? imgButtonOnFile : imgButtonOffFile, 0, 0, button.getWidth(), button.getHeight(), AffineTransform());
         }
     }
 
@@ -1227,7 +1227,7 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
             drawable = Drawable::createFromSVG (*svg);
             Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
             drawable->setTransformToFit (rect.reduced (30), RectanglePlacement::stretchToFit);
-            drawable->draw (g, 1.f, AffineTransform::identity);
+            drawable->draw (g, 1.f, AffineTransform());
         }
     }
 

@@ -107,7 +107,7 @@ public:
 				return dynamic_cast<GenericCabbagePluginProcessor*> (graph.getNodeForId(nodeId)->getProcessor())->getCsoundOutput();
 		}
 
-		return String::empty;
+		return String();
 	}
 
 

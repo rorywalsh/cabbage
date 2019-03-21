@@ -134,7 +134,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
             return getImagesTextAsCabbageCode (widgetData, "");
             
         default:
-            return String::empty;
+            return String();
             break;
             
     }
@@ -326,7 +326,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
         }
     }
     
-    return String::empty;
+    return String();
 }
 
 String CabbageWidgetData::getRotateTextAsCabbageCode (ValueTree widgetData, const String macroText)
@@ -346,7 +346,7 @@ String CabbageWidgetData::getRotateTextAsCabbageCode (ValueTree widgetData, cons
         return "rotate(" + String (rotate) + ", " + String (pivotx) + ", " + String (pivoty) + ")";
     }
     
-    return String::empty;
+    return String();
 }
 
 String CabbageWidgetData::getSimpleTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
@@ -361,7 +361,7 @@ String CabbageWidgetData::getSimpleTextAsCabbageCode (ValueTree widgetData, Stri
         return identifier + "(\"" + text + "\")";
     }
     
-    return String::empty;
+    return String();
 }
 
 String CabbageWidgetData::getImagesTextAsCabbageCode (ValueTree widgetData, const String macroText)
@@ -430,11 +430,11 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
                 + String (float (array->getReference (3)), 4) + ")";
             }
             
-            return String::empty;
+            return String();
         }
     }
     
-    return String::empty;
+    return String();
 }
 
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
@@ -448,12 +448,12 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
     var tempItems = getProperty (tempData, identifier);
     
     if(tempItems.equalsWithSameType(items))
-        return String::empty;
+        return String();
     
     identifier = (identifier == CabbageIdentifierIds::importfiles.toString() ? "import" : identifier);
     
     if (typeOfWidget == "gentable" && identifier == "channel")
-        return String::empty;
+        return String();
     
     String itemString = "";
     
@@ -506,7 +506,7 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
     if (stringArray.joinIntoString ("\n").length() > 0)
         return identifier + "(" + stringArray.joinIntoString (", ") + ")";
     else
-        return String::empty;
+        return String();
 }
 
 String CabbageWidgetData::getWidgetArrayAsCabbageCode (ValueTree widgetData, const String macroText)
@@ -520,7 +520,7 @@ String CabbageWidgetData::getWidgetArrayAsCabbageCode (ValueTree widgetData, con
         return String ("widgetarray(\"" + baseChannel + "\", " + String (arraySize) + ")");
     }
     
-    return String::empty;
+    return String();
     
 }
 

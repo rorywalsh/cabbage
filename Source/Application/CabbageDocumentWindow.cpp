@@ -1254,5 +1254,5 @@ const String CabbageDocumentWindow::getPluginInfo (File csdFile, String info)
 
     }
 
-    return String::empty;
+    return String();
 }

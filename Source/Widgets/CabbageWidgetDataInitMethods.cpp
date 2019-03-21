@@ -521,8 +521,6 @@ void CabbageWidgetData::setListBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::comborange, 4);
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     var populate;
-    //populate.append (String::empty);
-    //populate.append (String::empty);
     setProperty (widgetData, CabbageIdentifierIds::populate, populate);
     setProperty (widgetData, CabbageIdentifierIds::name, "listbox");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));

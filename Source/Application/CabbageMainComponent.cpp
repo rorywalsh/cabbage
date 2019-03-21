@@ -586,7 +586,14 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 		resized();
 	}
 
-    if (source == &knownPluginList)
+	else if (dynamic_cast<AudioDeviceManager*> (source))
+	{
+		if (deviceManager.getCurrentAudioDeviceType() == "Windows Audio")
+			CabbageUtilities::showMessage("Warning", "Edit mode on Windows only works when using \"ASIO drivers\", \"Windows Audio - Exclusive Mode\", or \"DirectSound\". Please go to your audio settings and select one of these options. For best audio performance always use ASIO drivers. If you don't have any, consider installing ASIO4ALL which is available for free.", lookAndFeel);
+
+	}
+
+    else if (source == &knownPluginList)
     {
         // save the plugin list every time it gets changed, so that if we're scanning
         // and it crashes, we've still saved the previous ones
@@ -599,7 +606,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
         }
     }
     
-    if (dynamic_cast<CabbageSettings*> (source)) // update lookandfeel whenever a user changes colour settings
+    else if (dynamic_cast<CabbageSettings*> (source)) // update lookandfeel whenever a user changes colour settings
     {
         lookAndFeel->refreshLookAndFeel (cabbageSettings->getValueTree());
         lookAndFeelChanged();
@@ -991,6 +998,7 @@ void CabbageMainComponent::resizeAllWindows (int height)
 //==============================================================================
 void CabbageMainComponent::createFilterGraph()
 {
+	deviceManager.addChangeListener(this);
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
@@ -1092,8 +1100,6 @@ CabbagePluginEditor* CabbageMainComponent::getCabbagePluginEditor()
                 {
                     if(CabbagePluginProcessor* processor = dynamic_cast<CabbagePluginProcessor*>(f->getProcessor()))
                     {
-						//if (processor->getActiveEditor() == nullptr)
-						//	jassertfalse;
 						return ((CabbagePluginEditor*)processor->getActiveEditor());
                     }
                 }
@@ -1197,6 +1203,7 @@ void CabbageMainComponent::showSettingsDialog()
     o.useNativeTitleBar = true;
     o.resizable = false;
     o.launchAsync();
+
 }
 
 String CabbageMainComponent::getDeviceManagerSettings()
@@ -1206,11 +1213,11 @@ String CabbageMainComponent::getDeviceManagerSettings()
 		ScopedPointer<XmlElement> xml(deviceManager.createStateXml());
 
 		if (xml == nullptr)
-			return String::empty;
+			return String();
 		else
 			return xml->createDocument("");
 	}
-	else return String::empty;
+	else return String();
 }
 
 void CabbageMainComponent::reloadAudioDeviceState()
@@ -1224,6 +1231,7 @@ void CabbageMainComponent::reloadAudioDeviceState()
 		256,
 		savedState,
 		true);
+
 }
 //==============================================================================
 void CabbageMainComponent::createNewProject()

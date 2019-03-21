@@ -413,7 +413,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     {
         Path filledArc;
         filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-        filledArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
         g.fillPath (filledArc);
     }
 
@@ -421,7 +421,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     g.setColour (trackerBgColour);
     Path bgArc;
     bgArc.addPieSegment (rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
-    bgArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+    bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
     g.fillPath (bgArc);
 
     //outlinecolour
@@ -430,7 +430,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
 
     Path outlineArc;
     outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
-    outlineArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+    outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
     outlineArc.closeSubPath();
 
     g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));

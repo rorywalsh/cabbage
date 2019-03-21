@@ -128,7 +128,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyPanelBackground, "ffa6b3b9");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelText, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelBackground, "ffd4d4d4");
-    defaultPropSet->setValue ("Colours_" + CabbageColourIds::alertWindowBackground, "ff000000");
+    defaultPropSet->setValue ("Colours_" + CabbageColourIds::alertWindowBackground, "ff52636a");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::codeBackground,  "ff263238"/*"ff222222"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::lineNumberBackground,  "ff323e44"/*"ff000000"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::lineNumbers,  "e999a7ae"/*"E9B2B2B2"*/);

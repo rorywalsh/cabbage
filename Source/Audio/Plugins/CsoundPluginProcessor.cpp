@@ -334,7 +334,7 @@ void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, St
 StringArray CsoundPluginProcessor::getTableStatement (int tableNum)
 {
     StringArray fdata;
-    fdata.add (String::empty);
+    fdata.add (String());
 
     if (csCompileResult == OK)
     {
@@ -415,7 +415,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
         return csoundOutput;
     }
 
-    return String::empty;
+    return String();
 }
 
 //==============================================================================

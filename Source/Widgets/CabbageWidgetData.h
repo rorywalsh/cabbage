@@ -44,7 +44,7 @@ public:
     ~CabbageWidgetData() {};
     //============================================================================
     static void setWidgetState (ValueTree widgetData, String lineFromCsd, int ID);
-    static void setCustomWidgetState (ValueTree widgetData, String lineFromCsd, String identifier = String::empty);
+    static void setCustomWidgetState (ValueTree widgetData, String lineFromCsd, String identifier = String());
     //============================================================================
     // these methods are implemented in CabbageWidgetDataInitMethods.h
     static void setCheckBoxProperties (ValueTree widgetData, int ID);
