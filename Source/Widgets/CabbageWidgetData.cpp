@@ -578,7 +578,7 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
-    StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
+    StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")+1).trimCharactersAtStart ("), "), ')');
 
     StringArray parameters;
 

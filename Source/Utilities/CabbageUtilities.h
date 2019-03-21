@@ -663,36 +663,15 @@ public:
         return range;
     }
 
-    //===========================================================================================
     static StringArray getTokens (String code, char breakChar)
     {
         StringArray tokens;
-
-        const char* str = code.toUTF8().getAddress();
-		if (str != NULL)
-		{
-			do
-			{
-				const char* begin = str;
-
-				while (*str != breakChar && *str)
-				{
-					if (*str == '\"')   //excuse anything in quotes..
-					{
-						str++;
-
-						while (*str != '\"')
-							str++;
-					}
-
-					str++;
-				}
-
-				tokens.add(string(begin, str));
-
-			} while (0 != *str++);
-		}
-
+        std::vector<string> elems;
+        std::stringstream ss(code.toStdString());
+        std::string token;
+        while(std::getline(ss, token, breakChar)) {
+            tokens.add(String(token));
+        }
         return tokens;
     }
 
