@@ -32,7 +32,7 @@ jobs:
   
 - job: macOS
   pool:
-    vmImage: 'macos10.13'
+    vmImage: 'macos-10.13'
     xcodeVersion: '9.4.1'
   steps:
   - bash: chmod 777 buildOSX.sh
