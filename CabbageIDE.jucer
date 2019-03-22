@@ -147,6 +147,10 @@
               file="Source/Settings/CabbageSettingsWindow.h"/>
       </GROUP>
       <GROUP id="{8D9B8DF5-3215-02BE-1D61-4761D82ACE8A}" name="Utilities">
+        <FILE id="zKYtCD" name="CabbagePluginList.cpp" compile="1" resource="0"
+              file="Source/Utilities/CabbagePluginList.cpp"/>
+        <FILE id="BQKgv4" name="CabbagePluginList.h" compile="0" resource="0"
+              file="Source/Utilities/CabbagePluginList.h"/>
         <FILE id="EjL0Yf" name="CabbageExportPlugin.h" compile="0" resource="0"
               file="Source/Utilities/CabbageExportPlugin.h"/>
         <FILE id="ZxldDQ" name="CabbageExportPlugin.cpp" compile="1" resource="0"
@@ -408,7 +412,8 @@
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0" JUCE_ASIO="1"
-               JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1"/>
+               JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1" JUCE_WASAPI_EXCLUSIVE="1"
+               JUCE_WASAPI="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>
