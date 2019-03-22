@@ -32,6 +32,9 @@ namespace LookAndFeelHelpers
     }
 }
 
+FlatButtonLookAndFeel::FlatButtonLookAndFeel() {};
+FlatButtonLookAndFeel::~FlatButtonLookAndFeel() {};
+
 void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, const Colour &backgroundColour, bool isMouseOverButton, bool isButtonDown)
 {
     const int width = button.getWidth();

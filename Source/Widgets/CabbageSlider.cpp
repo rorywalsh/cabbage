@@ -25,8 +25,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       widgetData (wData),
       popupBubble (250),
       sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
-      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
-      flatLookAndFeel()
+      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel))
 {
     CabbageUtilities::debug(widgetData.getType().toString());
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

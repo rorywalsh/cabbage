@@ -64,8 +64,7 @@ public:
 
     void setTextBoxOrientation (String type, bool textBox);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop) override;
-
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&) override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
