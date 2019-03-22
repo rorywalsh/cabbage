@@ -59,7 +59,7 @@ public:
 
     void setTextBoxWidth();
     void setSliderVelocity (ValueTree wData);
-    void resized();
+    void resized() override;
     void initialiseSlider (ValueTree wData);
 
     void setTextBoxOrientation (String type, bool textBox);
