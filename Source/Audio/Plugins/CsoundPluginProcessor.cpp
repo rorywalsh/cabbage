@@ -94,6 +94,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 
 	csound->SetOption((char*)"-n");
 	csound->SetOption((char*)"-d");
+	csound->SetOption((char*)"-b0");
 
 
 	if (debugMode)
