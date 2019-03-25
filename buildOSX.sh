@@ -123,6 +123,8 @@ zip -r CabbageOSX.zip Cabbage.app CabbageLite.app
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/
 
+sed -i "s/SOURCE_PATH/$SYSTEM_DEFAULTWORKINGDIRECTORY/g" InstallerAzure.pkgproj
+
 packagesbuild InstallerAzure.pkgproj
 ls build  
 pwd
