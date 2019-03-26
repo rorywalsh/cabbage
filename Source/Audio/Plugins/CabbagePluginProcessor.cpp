@@ -58,9 +58,9 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, co
           cabbageWidgets("CabbageWidgetData") 
 {
 	//pause creation of Csound for 500ms to avoid issues when plugin is first scanned..
-	Timer::callAfterDelay(500, [this, inputFile]() {
+	//Timer::callAfterDelay(100, [this, inputFile]() {
 		createCsound(inputFile);
-	});    
+	//});    
 }
 
 
