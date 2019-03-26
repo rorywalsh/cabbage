@@ -586,9 +586,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
     if (csdCompiledWithoutError())
     {
-        keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
-        midiBuffer = midiMessages;
-
         //mute unused channels
         for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
         {
@@ -597,6 +594,9 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
         for (int i = 0; i < numSamples; i++, ++csndIndex)
         {
+			keyboardState.processNextMidiBuffer(midiMessages, 0, 1, true);
+			midiBuffer = midiMessages;
+
             if (csndIndex == csdKsmps)
             {
                     result = csound->PerformKsmps();
@@ -628,23 +628,18 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
             }
 
-            if (result == 0)
+            pos = csndIndex * output_channel_count;
+
+            for (int channel = 0; channel < output_channel_count; ++channel)
             {
-                pos = csndIndex * output_channel_count;
+                float*& current_sample = audioBuffers[channel];
+                newSamp = *current_sample * cs_scale;
+                CSspin[pos] = newSamp;
+                *current_sample = (CSspout[pos] / cs_scale);
+                ++current_sample;
+                ++pos;
 
-                for (int channel = 0; channel < output_channel_count; ++channel)
-                {
-                    float*& current_sample = audioBuffers[channel];
-                    newSamp = *current_sample * cs_scale;
-                    CSspin[pos] = newSamp;
-                    *current_sample = (CSspout[pos] / cs_scale);
-                    ++current_sample;
-                    ++pos;
-
-                }
             }
-            else
-                buffer.clear();
         }
 
 
