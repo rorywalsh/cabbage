@@ -17,7 +17,6 @@ outputDir = os.path.abspath(sys.argv[1])+"/_docs"
 imagesDir = os.path.abspath(sys.argv[1])+"/images/docs/"
 copy_tree("../images/", imagesDir)
 
-
 if os.path.isdir("../markdown/Widgets/ExpandedWidgetEntries/gifs/"):
 	copy_tree("../markdown/Widgets/ExpandedWidgetEntries/gifs/", imagesDir)
 
