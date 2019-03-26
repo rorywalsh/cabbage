@@ -584,6 +584,9 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     if (getTotalNumInputChannels() == 0)
         buffer.clear();
 
+	keyboardState.processNextMidiBuffer(midiMessages, 0, 1, true);
+	midiBuffer = midiMessages;
+
     if (csdCompiledWithoutError())
     {
         //mute unused channels
@@ -594,8 +597,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
         for (int i = 0; i < numSamples; i++, ++csndIndex)
         {
-			keyboardState.processNextMidiBuffer(midiMessages, 0, 1, true);
-			midiBuffer = midiMessages;
+
 
             if (csndIndex == csdKsmps)
             {
