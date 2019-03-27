@@ -118,7 +118,7 @@ public:
             String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "");
 			String fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"");
 
-            if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
+            if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
                 //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
                 commandLine = commandLineParams.substring (0, commandLineParams.indexOf ("-") - 1);
 
@@ -148,9 +148,14 @@ public:
                 }
 
             }
-            else if (File(fileToOpen).existsAsFile())
+            else if (File(fileToOpen).existsAsFile())   //first try to open a file that resides in the same dir as the exe
             {
                 openFile (fileToOpen);
+                return;
+            }
+            else if(File(commandLine).existsAsFile()) //now try to open a file that contains a full file path
+            {
+                openFile (commandLine);
                 return;
             }
         }
