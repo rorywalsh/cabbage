@@ -129,10 +129,14 @@ public:
 
                 if (File (inputFileName).existsAsFile())
                 {
-                    openFile (inputFileName);
+                    //openFile (inputFileName);
                     CabbageIDELookAndFeel lAndF;
-                    pluginExporter.exportPlugin ("VSTi", File (inputFileName), getPluginId (csdFile));
-                    JUCEApplicationBase::quit();
+#ifdef CabbagePro
+					pluginExporter.exportPlugin("VSTi", File(inputFileName), getPluginInfo(csdFile, "id"), "", false, true);
+#else
+                    pluginExporter.exportPlugin ("VSTi", File (inputFileName), getPluginInfo(csdFile, "id"));
+#endif
+					JUCEApplicationBase::quit();
                 }
 
             }
@@ -142,8 +146,11 @@ public:
 
                 if (File (inputFileName).existsAsFile())
                 {
-                    openFile (inputFileName);
-                    pluginExporter.exportPlugin ("VST", File (inputFileName),getPluginId (csdFile));
+#ifdef CabbagePro
+					pluginExporter.exportPlugin("VST", File(inputFileName), getPluginInfo(csdFile, "id"), "", false, true);
+#else
+                    pluginExporter.exportPlugin ("VST", File (inputFileName), getPluginInfo(csdFile, "id"));
+#endif
                     JUCEApplicationBase::quit();
                 }
 
@@ -194,22 +201,29 @@ public:
 #endif
     }
 
-    const String getPluginId (File csdFile)
-    {
-        StringArray csdLines;
-        csdLines.addLines (csdFile.loadFileAsString());
+	const String getPluginInfo(File csdFile, String info)
+	{
+		StringArray csdLines;
+		csdLines.addLines(csdFile.loadFileAsString());
 
-        for (auto line : csdLines)
-        {
-            ValueTree temp ("temp");
-            CabbageWidgetData::setWidgetState (temp, line, 0);
+		for (auto line : csdLines)
+		{
+			ValueTree temp("temp");
+			CabbageWidgetData::setWidgetState(temp, line, 0);
 
-            if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-                return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
-        }
+			if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+			{
+				if (info == "id")
+					return CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::pluginid);
+				else if (info == "manufacturer")
+					return CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::manufacturer);
+			}
 
-        return String::empty;
-    }
+		}
+
+		return String();
+	}
+
 
     ~StandaloneFilterWindow()
     {

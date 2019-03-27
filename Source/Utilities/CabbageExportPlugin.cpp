@@ -12,7 +12,7 @@
 
 
 //===============   methods for exporting plugins ==============================
-void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, String manu, bool encrypt)
+void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, bool promptForFilename, bool encrypt)
 {
     if(csdFile.hasFileExtension(".csd") == false)
         return;
@@ -88,9 +88,16 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         if(File(destination).exists())
         {
             const String newFile = destination+"/"+csdFile.getFileName();
-            writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type, manu,
+            writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type,
                                   encrypt);
         }
+		else if(promptForFilename == false)
+		{
+			const String newFile = csdFile.getParentDirectory().getFullPathName()+"/"+csdFile.getFileNameWithoutExtension();
+			writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type,
+				encrypt);
+
+		}
         else
         {
 
@@ -105,11 +112,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                                                                           &lookAndFeel);
 
                     if (result == 1)
-                        writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu,
+                        writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
                                               encrypt);
                 }
                 else
-                    writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu,
+                    writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
                                           encrypt);
 
             }
@@ -118,7 +125,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 }
 
 
-void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, String manu, bool encrypt)
+void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type,  bool encrypt)
 {
 
     File dll (fc.withFileExtension (fileExtension).getFullPathName());
