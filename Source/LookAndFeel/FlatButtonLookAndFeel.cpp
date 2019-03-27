@@ -1,3 +1,22 @@
+/*
+ Copyright (C) 2016 @maurocsound, Rory Walsh
+ 
+ Cabbage is free software; you can redistribute it
+ and/or modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ 
+ Cabbage is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public
+ License along with Csound; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA
+ */
+
 #include "FlatButtonLookAndFeel.h"
 
 namespace LookAndFeelHelpers
@@ -52,9 +71,10 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
 	const int corners = button.getProperties().getWithDefault("corners", 0);
 	const Colour outlineColour(Colour::fromString(button.getProperties().getWithDefault("outlinecolour", Colours::white.toString()).toString()));
 	const int outlineThickness = button.getProperties().getWithDefault("outlinethickness", 0);
+    CabbageUtilities::debug(outlineThickness);
 	const int offset = outlineThickness == 0 ? 0 : outlineThickness * .5;
 	g.setColour(outlineColour);
-	g.fillRoundedRectangle(0, 0, width, height, corners);
+	g.drawRoundedRectangle(0, 0, width, height, corners, outlineThickness);
 	g.setColour(bg);
 	g.fillRoundedRectangle(offset, offset, width - outlineThickness, height - outlineThickness, corners);
 	
