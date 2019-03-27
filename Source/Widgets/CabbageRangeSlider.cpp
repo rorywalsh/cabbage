@@ -260,8 +260,6 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
         {
             setMinValue (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
             setMaxValue (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
-            CabbageUtilities::debug (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
-            CabbageUtilities::debug (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
         }
         else
         {

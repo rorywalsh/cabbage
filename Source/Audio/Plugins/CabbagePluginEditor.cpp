@@ -83,10 +83,6 @@ void CabbagePluginEditor::resized()
      viewport->setBounds ( getLocalBounds() );
      if(showScrollbars)
      {
-         CabbageUtilities::debug(mainComponent.getHeight());
-         CabbageUtilities::debug(instrumentBounds.getY());
-         CabbageUtilities::debug(mainComponent.getWidth());
-         CabbageUtilities::debug(instrumentBounds.getX());
          if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
              viewport->setScrollBarsShown(true, true);
          else if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() <= viewport->getHeight())
@@ -607,7 +603,6 @@ void CabbagePluginEditor::buttonClicked (Button* button)
     else if (CabbageCheckbox* cabbageButton = dynamic_cast<CabbageCheckbox*> (button))
     {
         const StringArray textItems = cabbageButton->getTextArray();
-        CabbageUtilities::debug(cabbageButton->getName());
         const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
         const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
 

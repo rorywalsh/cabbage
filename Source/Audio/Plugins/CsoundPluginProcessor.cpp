@@ -484,8 +484,6 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         setupAndCompileCsound(csdFile, csdFilePath);
     }
     
-    CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(true, 0).getDescription());
-	CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(false, 0).getDescription());
 }
 
 void CsoundPluginProcessor::releaseResources()
@@ -574,6 +572,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 {
     float** audioBuffers = buffer.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
+    
     MYFLT newSamp;
     int result = -1;
 
@@ -584,8 +583,10 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     if (getTotalNumInputChannels() == 0)
         buffer.clear();
 
-	keyboardState.processNextMidiBuffer(midiMessages, 0, 1, true);
-	midiBuffer = midiMessages;
+	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
+	midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
+    
+
 
     if (csdCompiledWithoutError())
     {
@@ -597,8 +598,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
         for (int i = 0; i < numSamples; i++, ++csndIndex)
         {
-
-
             if (csndIndex == csdKsmps)
             {
                     result = csound->PerformKsmps();
@@ -780,6 +779,7 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
 
     int cnt = 0;
 
+    
     if (!midiData->midiBuffer.isEmpty() && cnt <= (nbytes - 3))
     {
         MidiMessage message (0xf4, 0, 0, 0);
@@ -788,6 +788,7 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
 
         while (i.getNextEvent (message, messageFrameRelativeTothisProcess))
         {
+            
             const uint8* data = message.getRawData();
             *mbuf++ = *data++;
 
@@ -805,8 +806,10 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
         }
 
         midiData->midiBuffer.clear();
+        
     }
 
+    
     return cnt;
 
 }

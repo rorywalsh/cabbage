@@ -27,7 +27,6 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
       channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel))
 {
-    CabbageUtilities::debug(widgetData.getType().toString());
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
     setLookAndFeelColours (widgetData);
