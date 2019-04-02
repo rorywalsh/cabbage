@@ -77,7 +77,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
       factory (this),
       cycleTabsButton ("..."),
 	  lookAndFeel(new CabbageIDELookAndFeel()),
-wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html", "*.*", "")),
+wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "*.*", "")),
       resizerBar(settings->getValueTree(), this),
       lookAndFeel4(),
       goUpButton(),

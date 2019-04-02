@@ -554,6 +554,17 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         }
     }
     
+    else if (identifier == "outlinecolour")
+    {
+        if (getStringProp(widgetData, CabbageIdentifierIds::outlinecolour) !=
+            getStringProp(tempData, CabbageIdentifierIds::outlinecolour))
+        {
+            const Colour col = Colour::fromString(getStringProp(widgetData, CabbageIdentifierIds::outlinecolour));
+            colourString = colourString << "outlinecolour(" << (float) col.getRed() << ", " << (float) col.getGreen() << ", "
+            << (float) col.getBlue() << ", " << (float) col.getAlpha() << ")";
+        }
+    }
+    
     else if (identifier.contains("tablecolour:"))
     {
         if (getProperty(widgetData, CabbageIdentifierIds::tablecolour) !=
