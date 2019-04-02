@@ -303,6 +303,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("author"):
             case HashStringToInt ("align"):
             case HashStringToInt ("displaytype"):
+            case HashStringToInt ("radiogroup"):
             case HashStringToInt ("name"):
 			case HashStringToInt ("style"):
             case HashStringToInt ("caption"):
@@ -369,7 +370,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("latched"):
             case HashStringToInt ("alpha"):
             case HashStringToInt ("corners"):
-            case HashStringToInt ("radiogroup"):
             case HashStringToInt ("guirefresh"):
             case HashStringToInt ("textbox"):
             case HashStringToInt ("valuetextbox"):

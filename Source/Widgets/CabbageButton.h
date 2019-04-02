@@ -23,12 +23,14 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 #include "../LookAndFeel/FlatButtonLookAndFeel.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 class CabbageButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase
 {
+    CabbagePluginEditor* owner;
 public:
 
-    CabbageButton (ValueTree wData, String style);
+    CabbageButton (ValueTree wData, CabbagePluginEditor* owner);
 	~CabbageButton() { setLookAndFeel(nullptr); };
 
     //ValueTree::Listener virtual methods....

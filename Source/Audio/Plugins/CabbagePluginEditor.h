@@ -204,6 +204,7 @@ public:
     String globalStyle = "";
     bool defaultFontColour = true;
     float titlebarGradientAmount;
+    NamedValueSet radioGroups;
 
     //---- popup plant window ----
     class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster

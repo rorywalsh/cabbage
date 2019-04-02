@@ -319,7 +319,7 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertCheckbox (ValueTree cabbageWidgetData)
 {
     CabbageCheckbox* checkbox;
-    components.add (checkbox = new CabbageCheckbox (cabbageWidgetData));
+    components.add (checkbox = new CabbageCheckbox (cabbageWidgetData, this));
     checkbox->addListener (this);
     addToEditorAndMakeVisible (checkbox, cabbageWidgetData);
     addMouseListenerAndSetVisibility (checkbox, cabbageWidgetData);
@@ -452,7 +452,7 @@ void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
 {
     CabbageButton* button;
-    components.add (button = new CabbageButton (cabbageWidgetData, globalStyle));
+    components.add (button = new CabbageButton (cabbageWidgetData, this));
     button->addListener (this);
     addToEditorAndMakeVisible (button, cabbageWidgetData);
     addMouseListenerAndSetVisibility (button, cabbageWidgetData);

@@ -24,7 +24,7 @@
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================
-CabbageCheckbox::CabbageCheckbox (ValueTree wData) : CabbageWidgetBase(),
+CabbageCheckbox::CabbageCheckbox (ValueTree wData, CabbagePluginEditor* _owner) : owner(_owner), CabbageWidgetBase(),
     name (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
     buttonText (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
     isRect (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::shape).equalsIgnoreCase ("square")),
@@ -36,10 +36,20 @@ CabbageCheckbox::CabbageCheckbox (ValueTree wData) : CabbageWidgetBase(),
     setButtonText (buttonText);
     setTooltip (tooltipText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext));
 
-    const int radioID = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup);
-
-    if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup) != 0)
-        setRadioGroupId (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup));
+    const String radioId = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::radiogroup);
+    
+    if (radioId.isNotEmpty())
+    {
+        const int id = owner->radioGroups.getWithDefault(radioId, -1);
+        CabbageUtilities::debug(id);
+        if(id != -1)
+            setRadioGroupId (id);
+        else{
+            owner->radioGroups.set(radioId, owner->radioGroups.size()+100);
+            setRadioGroupId (owner->radioGroups.getWithDefault(radioId, -1));
+            CabbageUtilities::debug(owner->radioGroups.getWithDefault(radioId, -1).toString());
+        }
+    }
 
     this->setWantsKeyboardFocus (false);
 
