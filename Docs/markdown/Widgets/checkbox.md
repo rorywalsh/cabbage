@@ -11,6 +11,8 @@ checkbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/checkbox_corner.md !} 
 
+{! ./markdown/Widgets/Properties/radiogroup.md !} 
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/active.md !} 
