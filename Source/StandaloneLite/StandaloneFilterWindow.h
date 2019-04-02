@@ -77,6 +77,8 @@ public:
         optionsButton.addListener (this);
         optionsButton.setTriggeredOnMouseDown (true);
          bool signalToQuit = false;
+        
+        
 #ifdef CabbagePro
        
         
@@ -134,7 +136,7 @@ public:
             if (x != -100 && y != -100)
                 setBoundsConstrained ({ x, y, getWidth(), getHeight() });
             else
-                centreWithSize (300, 300);
+                centreWithSize (500, 500);
 
             this->setAlwaysOnTop(props->getIntValue("AlwaysOnTop"));
 
@@ -156,13 +158,24 @@ public:
             String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "");
 			String fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"");
 
-            if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
-                //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
-                commandLine = commandLineParams.substring (0, commandLineParams.indexOf ("-") - 1);
-
-
-            if (commandLine.contains ("--export-VSTi"))
+            if (File(fileToOpen).existsAsFile())   //first try to open a file that resides in the same dir as the exe
             {
+                jassertfalse;
+                CabbageUtilities::debug(fileToOpen);
+                openFile (fileToOpen);
+                return;
+            }
+            else if(File(commandLine).existsAsFile()) //now try to open a file that contains a full file path
+            {
+                jassertfalse;
+                CabbageUtilities::debug(commandLine);
+                openFile (commandLine);
+                return;
+            }
+            
+            else if (commandLine.contains ("--export-VSTi"))
+            {
+                jassertfalse;
                 String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VSTi") + 13).trim().removeCharacters ("\"");
 
                 if (File (inputFileName).existsAsFile())
@@ -176,6 +189,7 @@ public:
             }
             else if (commandLine.contains ("--export-VST "))
             {
+                jassertfalse;
                 String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VST") + 12).trim().removeCharacters ("\"");
 
                 if (File (inputFileName).existsAsFile())
@@ -184,16 +198,6 @@ public:
                     JUCEApplicationBase::quit();
                 }
 
-            }
-            else if (File(fileToOpen).existsAsFile())   //first try to open a file that resides in the same dir as the exe
-            {
-                openFile (fileToOpen);
-                return;
-            }
-            else if(File(commandLine).existsAsFile()) //now try to open a file that contains a full file path
-            {
-                openFile (commandLine);
-                return;
             }
         }
 
