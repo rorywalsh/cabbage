@@ -155,8 +155,9 @@ public:
         outputConsole->getEditor().setFont(Font(14, 1));
 		if (commandLineParams.isNotEmpty())
         {
-            String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "");
-			String fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"");
+            String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "").removeCharacters("\"'");;
+
+			String fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"'");
 
             if (File(fileToOpen).existsAsFile())   //first try to open a file that resides in the same dir as the exe
             {

@@ -74,7 +74,7 @@ public:
     void getChannelDataFromCsound();
     void triggerCsoundEvents();
     void setWidthHeight();
-    void addImportFiles (StringArray& lineFromCsd);
+    bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     void createParameters();
     void updateWidgets (String csdText);
