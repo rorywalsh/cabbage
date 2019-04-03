@@ -924,7 +924,7 @@ void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, "checkbox");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
-    setProperty (widgetData, CabbageIdentifierIds::radiogroup, "0");
+    setProperty (widgetData, CabbageIdentifierIds::radiogroup, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");

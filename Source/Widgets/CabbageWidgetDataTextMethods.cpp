@@ -44,7 +44,6 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("trackerthickness"):
         case HashStringToInt ("trackeroutsideradius"):
         case HashStringToInt ("trackerinsideradius"):
-        case HashStringToInt ("radiogroup"):
         case HashStringToInt ("samplerange"):
         case HashStringToInt ("scrubberposition"):
         case HashStringToInt ("surrogatelinenumber"):
@@ -67,6 +66,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("popupprefix"):
         case HashStringToInt ("popuptext"):
         case HashStringToInt ("shape"):
+        case HashStringToInt ("radiogroup"):
             return getSimpleTextAsCabbageCode(widgetData, identifier, "");
             
             
