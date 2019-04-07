@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("PVS Rec/Play") size(300, 410), pluginid("pvrp")
+form caption("PVS Rec/Play") size(300, 410), pluginid("pvrp") style("legacy")
 
 groupbox bounds(  0,  0,300, 95), text("Transport")
 

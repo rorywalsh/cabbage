@@ -3,7 +3,7 @@
 ; Written by Iain McCurdy, 2014.
 
 <Cabbage>
-form caption("GEN42"), size(420,495), pluginid("gn42"), colour(210,110, 80,200)
+form caption("GEN42"), size(420,495), pluginid("gn42"), colour(210,110, 80,200) style("legacy")
 
 gentable bounds(  5,  5, 410, 145), identchannel("table1"), tablenumber(1), outlinethickness(2), tablecolour("yellow"), amprange(24,96,1), zoom(-1), fill(0)
 

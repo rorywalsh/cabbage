@@ -44,7 +44,7 @@ public:
     ~CabbageWidgetData() {};
     //============================================================================
     static void setWidgetState (ValueTree widgetData, String lineFromCsd, int ID);
-    static void setCustomWidgetState (ValueTree widgetData, String lineFromCsd, String identifier = String::empty);
+    static void setCustomWidgetState (ValueTree widgetData, String lineFromCsd, String identifier = String());
     //============================================================================
     // these methods are implemented in CabbageWidgetDataInitMethods.h
     static void setCheckBoxProperties (ValueTree widgetData, int ID);
@@ -57,7 +57,7 @@ public:
     static void setVSliderProperties (ValueTree widgetData, int ID);
     static void setNumberSliderProperties (ValueTree widgetData, int ID);
     static void setCsoundOutputProperties (ValueTree widgetData, int ID);
-    static void setKeyboardProperties (ValueTree widgetData, int ID);
+    static void setKeyboardProperties (ValueTree widgetData, int ID, bool displayOnly);
     static void setTextBoxProperties (ValueTree widgetData, int ID);
     static void setLabelProperties (ValueTree widgetData, int ID);
     static void setListBoxProperties (ValueTree widgetData, int ID);
@@ -98,6 +98,7 @@ public:
     static void setRange (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setFontStyle (StringArray strTokens, ValueTree widgetData);
     static void setScrubberPosition (StringArray strTokens, ValueTree widgetData);
+	static void setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData);
     static void setAmpRange (StringArray strTokens, ValueTree widgetData);
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
     static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);

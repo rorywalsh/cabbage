@@ -59,7 +59,7 @@ install:
   - cmd: cd c:/
   - cmd: git clone https://github.com/WeAreROLI/JUCE.git
   - cmd: cd c:/JUCE
-  - cmd: git checkout tags/5.4.1
+  - cmd: git checkout tags/5.4.3
   - cmd: cd c:/JUCE/extras/Projucer/JuceLibraryCode
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
   - ps: (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"

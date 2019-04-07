@@ -170,7 +170,7 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
                                           const Rectangle<int>& textArea,
                                           TextLayout& textLayout)
 {
-    g.fillAll (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::alertWindowBackground, Colour (100, 100, 100)));
+    g.fillAll (CabbageSettings::getColourFromValueTree (colourTree, CabbageColourIds::alertWindowBackground, Colour (Colour::fromString("2ff52636a"))));
 
     int iconSpaceUsed = 160;
 
@@ -206,7 +206,7 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
             drawable = Drawable::createFromSVG (*svg);
             Rectangle<float> rect (20, 20, 80, 80);//alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).withHeight(130).toFloat());
             drawable->setTransformToFit (rect, RectanglePlacement::stretchToFit);
-            drawable->draw (g, 1.f, AffineTransform::identity);
+            drawable->draw (g, 1.f, AffineTransform());
         }
     }
 

@@ -81,8 +81,9 @@ public:
         borderColour = colour;
         repaint();
     }
+
 private:
-    TooltipWindow tooltipWindow;
+
     PropertyPanel propertyPanel;
     String previousWidgetName = "";
 	

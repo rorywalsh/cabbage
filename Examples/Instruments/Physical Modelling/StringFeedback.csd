@@ -35,7 +35,7 @@
 ; Level		-	Level control (pre reverb so reverberation will always die away natuarally)
 
 <Cabbage>
-form caption("String Feedback"), size(885, 180), pluginid("fbck"), colour(0,0,0)
+form caption("String Feedback"), size(885, 180), pluginid("fbck"), colour(0,0,0) style("legacy")
 
 groupbox bounds(  0,  0, 290, 90), text("String"), fontcolour(195,126, 0), plant("String") {
 rslider bounds(  5, 25, 60, 60), text("Feedback"),  colour(195,126,  0), FontColour(195,126,  0), channel("fback"),   range(0, 8, 0.8,0.5)

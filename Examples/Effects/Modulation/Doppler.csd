@@ -20,7 +20,7 @@
 ; Source Position-	Location of the source (for display only unless 'manual' shape is chosen)
 
 <Cabbage>
-form caption("-oOo-"), size(610, 180), pluginid("dopp")  
+form caption("-oOo-"), size(610, 180), pluginid("dopp")   style("legacy")
 label    bounds(20, 10, 35,11), text("Input:")
 combobox bounds(10, 22, 60,18), channel("input"), value(4), text("left","right","mixed","test")
 label    bounds(20, 50, 35,11), text("Shape:")

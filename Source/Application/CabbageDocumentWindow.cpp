@@ -116,6 +116,10 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
        // content->openFile (lastOpenedFile, false);
     }
 
+    String lastOpenDir = cabbageSettings->getUserSettings()->getValue ("lastOpenedDir", "");
+//    getContentComponent()->fileTree.
+//    getContentComponent()->fileList.setDirectory(File(lastOpenDir), true, true);
+//    getContentComponent()->fileList.refresh();
     setApplicationCommandManagerToWatch (&commandManager);
     commandManager.registerAllCommandsForTarget (this);
     addKeyListener (commandManager.getKeyMappings());
@@ -248,6 +252,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::open);
     menu.addCommandItem (&commandManager, CommandIDs::openCabbagePatch);
+    menu.addCommandItem (&commandManager, CommandIDs::openFolder);
 
     PopupMenu recentFilesMenu;
     cabbageSettings->updateRecentFilesList();
@@ -278,6 +283,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu1, subMenu2, subMenu3;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVST3Effect);
+        subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVST3Synth);
         subMenu3.addSubMenu("VST Export", subMenu1);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUEffect);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUSynth);
@@ -288,6 +295,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu4, subMenu5, subMenu6;
         subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
         subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
+        subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVST3EffectEncrypted);
+        subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVST3SynthEncrypted);
         subMenu6.addSubMenu("VST Export", subMenu4);
         subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUEffectEncrypted);
         subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUSynthEncrypted);
@@ -301,6 +310,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu1;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+		subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Effect);
+		subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Synth);
         menu.addSubMenu("Export plugin", subMenu1);
 
 #ifdef CabbagePro
@@ -394,7 +405,8 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::showConsole);
 	menu.addCommandItem(&commandManager, CommandIDs::toggleProperties);
     menu.addCommandItem(&commandManager, CommandIDs::toggleFileBrowser);
-
+    menu.addCommandItem(&commandManager, CommandIDs::showPluginListEditor);
+    
     menu.addSeparator();
 }
 
@@ -450,6 +462,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 							  CommandIDs::newFile,
 							  CommandIDs::newTextFile,
 							  CommandIDs::open,
+                              CommandIDs::openFolder,
 							  CommandIDs::openFromRPi,
 							  CommandIDs::closeAllDocuments,
 							  CommandIDs::closeDocument,
@@ -466,15 +479,19 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::startAudioGraph,
                               CommandIDs::stopAudioGraph,
                               CommandIDs::exportAsVSTSynth,
+                              CommandIDs::exportAsVST3Synth,
                               CommandIDs::exportAsAUMIDIFx,
                               CommandIDs::selectAll,
                               CommandIDs::exportAsVSTEffect,
+                              CommandIDs::exportAsVST3Effect,
                               CommandIDs::exportAsAUEffect,
                               CommandIDs::exportAsAUSynth,
                               CommandIDs::exportAsAUSynthEncrypted,
                               CommandIDs::exportAsAUEffectEncrypted,
                               CommandIDs::exportAsVSTSynthEncrypted,
                               CommandIDs::exportAsVSTEffectEncrypted,
+                              CommandIDs::exportAsVST3SynthEncrypted,
+                              CommandIDs::exportAsVST3EffectEncrypted,
                               CommandIDs::exportAsVCVRackModule,
                               CommandIDs::nextTab,
                               CommandIDs::exportAsFMODSoundPlugin,
@@ -503,7 +520,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
                               CommandIDs::showGenericWidgetWindow,
                               CommandIDs::batchConvertExamplesAU,
                               CommandIDs::batchConvertExamplesVST,
-                              CommandIDs::toggleFileBrowser
+                              CommandIDs::toggleFileBrowser,
+                              CommandIDs::showPluginListEditor,
                             };
 
     commands.addArray (ids, numElementsInArray (ids));
@@ -536,6 +554,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::open:
             result.setInfo ("Open Csound file", "Opens a project", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier, 0));
+            break;
+            
+        case CommandIDs::openFolder:
+            result.setInfo ("Open Folder", "Opens a folder in file browser", CommandCategories::general, 0);
             break;
 
         case CommandIDs::closeDocument:
@@ -617,6 +639,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as VST Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::exportAsVST3Synth:
+            result.setInfo ("Export as VST3 Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
+        case CommandIDs::exportAsVST3Effect:
+            result.setInfo ("Export as VST3 Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::exportAsAUSynth:
             result.setInfo ("Export as AU Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
             break;
@@ -637,6 +667,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as VST Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
 
+        case CommandIDs::exportAsVST3SynthEncrypted:
+            result.setInfo ("Export as VST3 Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
+        case CommandIDs::exportAsVST3EffectEncrypted:
+            result.setInfo ("Export as VST3 Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::exportAsAUSynthEncrypted:
             result.setInfo ("Export as AU Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
             break;
@@ -763,10 +801,14 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo (String ("Show Generic Widget Window"), String ("Show genric channel based widgets"), CommandCategories::general, 0);
             break;
 
+        case CommandIDs::showPluginListEditor:
+            result.setInfo (String ("Show 3rd party plugins"), String ("Show 3rd party plugins"), CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::editMode:
             result.setInfo (String ("Edit Mode"), String ("Edit Mode"), CommandCategories::edit, 0);
             result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
-            result.setTicked (getContentComponent()->getCabbagePluginEditor() == nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
+            //result.setTicked (getContentComponent()->getCabbagePluginEditor() == nullptr ? false : getContentComponent()->getCabbagePluginEditor()->isEditModeEnabled());
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
 
@@ -878,6 +920,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::open:
             getContentComponent()->openFile();
             return true;
+            
+        case CommandIDs::openFolder:
+            getContentComponent()->openFolder();
+            return true;
 
         case CommandIDs::openFromRPi:
             getContentComponent()->launchSSHFileBrowser ("open");
@@ -900,7 +946,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
 			getContentComponent()->saveDocument();
 
-            getContentComponent()->setEditMode (false);
+//            getContentComponent()->setEditMode (false);
             isGUIEnabled = false;
             break;
 
@@ -931,6 +977,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
 
+        case CommandIDs::exportAsVST3Effect:
+            pluginExporter.exportPlugin ("VST3", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+            
+        case CommandIDs::exportAsVST3Synth:
+            pluginExporter.exportPlugin ("VST3i", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+            
         case CommandIDs::exportAsAUEffect:
             pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
@@ -944,19 +998,19 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
             
         case CommandIDs::exportAsVSTEffectEncrypted:
-            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
 
         case CommandIDs::exportAsVSTSynthEncrypted:
-            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
+            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
 
         case CommandIDs::exportAsAUEffectEncrypted:
-            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
+            pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
 
         case CommandIDs::exportAsAUSynthEncrypted:
-            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), getPluginInfo (currentFile, "manufacturer"), "", true);
+            pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
             
 		case CommandIDs::exportAsFMODSoundPlugin:
@@ -1041,9 +1095,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::showConsole:
-            getContentComponent()->getCurrentEditorContainer()->statusBar.setTopLeftPosition(0, getHeight()*.66);
-            getContentComponent()->getCurrentEditorContainer()->resized();
-
+			if (getContentComponent()->getNumberOfFileTabs() > 0)
+			{
+				getContentComponent()->getCurrentEditorContainer()->statusBar.setTopLeftPosition(0, getHeight()*.66);
+				getContentComponent()->getCurrentEditorContainer()->resized();
+			}
             return true;
 
         case CommandIDs::selectAll:
@@ -1096,12 +1152,13 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->launchHelpfile ("cabbage");
             break;
 
+        case CommandIDs::showPluginListEditor:
+            getContentComponent()->showPluginListEditor();
+            break;
+
+            
         case CommandIDs::editMode:
-            getContentComponent()->setEditMode (isGUIEnabled = ! isGUIEnabled);
-
-            if (isGUIEnabled == false)
-                getContentComponent()->saveDocument();
-
+            getContentComponent()->enableEditMode();
             break;
 
         default:
@@ -1199,5 +1256,5 @@ const String CabbageDocumentWindow::getPluginInfo (File csdFile, String info)
 
     }
 
-    return String::empty;
+    return String();
 }

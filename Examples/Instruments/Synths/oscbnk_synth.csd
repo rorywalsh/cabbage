@@ -61,7 +61,7 @@
 
 
 <Cabbage>
-form caption("Oscillator Bank Synth") size(595, 335), pluginid("oscb")
+form caption("Oscillator Bank Synth") size(595, 335), pluginid("oscb") style("legacy")
 
 ;OSCILLATOR
 groupbox bounds(  0,  0,595, 85), text("Oscillators"), fontcolour("white") plant("oscillators"){

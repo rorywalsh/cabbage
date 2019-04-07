@@ -61,7 +61,7 @@
 ; ratio 2 controls the ratio of the frequency of the ring modulator to the fundemental (frequency of the first oscillator.)
 
 <Cabbage>
-form caption("Ring Modulation Synthesizer") size(875,267), pluginid("RMS1")
+form caption("Ring Modulation Synthesizer") size(875,267), pluginid("RMS1") style("legacy")
 
 image      bounds(  5,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("osc1") {
 label      bounds(  5,  5, 60, 14), text("OSC.1")

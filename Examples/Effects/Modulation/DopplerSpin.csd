@@ -40,7 +40,7 @@
 ; The degree to which this is present can be scaled using the 'Reverb Scaling' slider.                                    
 
 <Cabbage>
-form caption("Doppler Spin"), size(700,265), pluginid("SDop")
+form caption("Doppler Spin"), size(700,265), pluginid("SDop") style("legacy")
 
 label    bounds( 8 , 4, 70, 15), text("i  n  p  u  t"), fontcolour("white")
 combobox bounds(10, 30, 60,20), channel("input"), value(1), text("left","right","mixed","test")

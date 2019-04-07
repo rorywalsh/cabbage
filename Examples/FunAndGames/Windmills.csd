@@ -4,7 +4,7 @@
 ; This doesn't make sound yet!
 
 <Cabbage>
-form caption("Windmills") size(700,500), colour(150,150,255), scrollbars(0), guirefresh(32), pluginid("WinM")
+form caption("Windmills") size(700,500), colour(150,150,255), scrollbars(0), guirefresh(32), pluginid("WinM") style("legacy")
 ; SUN
 image bounds(610, 20,70,70), colour(250,250,100), shape(ellipse)			; sun
 

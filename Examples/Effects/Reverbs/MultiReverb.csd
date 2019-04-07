@@ -5,7 +5,7 @@
 ; Pitch Mod. is only used by reverbsc.
 
 <Cabbage>
-form caption("Multi Reverb") size(415, 90), pluginid("Rvrb")
+form caption("Multi Reverb") size(415, 90), pluginid("Rvrb") style("legacy")
 image  bounds(  7, 22, 73, 45), colour( 39, 31, 20), shape("rounded"), outlinecolour(white), outlinethickness(1) 
 image  bounds(  0,  0,415, 90), colour( 39, 31, 20), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 button bounds( 11, 20, 66, 20), text("screverb","screverb"), channel("scType"),   value(1), fontcolour:0(50,50,50), fontcolour:1("lime"), radiogroup(1)

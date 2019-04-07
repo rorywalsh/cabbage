@@ -91,7 +91,7 @@
 ; Damping	-	Cutoff frequency of the damping of reverberant reflections
 
 <Cabbage>
-form caption("Harmonics"), size(970,320), colour(100,150,150), pluginid("Harm")
+form caption("Harmonics"), size(970,320), colour(100,150,150), pluginid("Harm") style("legacy")
 
 #define RSliderStyle valuetextbox(1), textbox(1), colour("silver"), trackercolour("silver"), textcolour("white"), fontcolour("white")
 

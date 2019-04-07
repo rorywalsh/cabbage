@@ -47,7 +47,7 @@
 ;			A value of zero disables this function.
 		
 <Cabbage>
-form caption("MIDI Function Generator"), size(560,115), pluginid("FnGn")
+form caption("MIDI Function Generator"), size(560,115), pluginid("FnGn") style("legacy")
 
 image    bounds(  5,  5,150,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white")
 label    bounds( 10,  9,140, 11), text("G E N E R A T O R"), fontcolour("WHITE")

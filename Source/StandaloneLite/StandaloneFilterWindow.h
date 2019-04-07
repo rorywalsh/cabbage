@@ -76,6 +76,46 @@ public:
         Component::addAndMakeVisible (optionsButton);
         optionsButton.addListener (this);
         optionsButton.setTriggeredOnMouseDown (true);
+         bool signalToQuit = false;
+        
+        
+#ifdef CabbagePro
+       
+        
+        if (commandLineParams.isNotEmpty())
+        {
+            String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "");
+            if (commandLine.contains ("--export-VSTi"))
+            {
+                String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VSTi") + 13).trim().removeCharacters ("\"");
+                if (File (inputFileName).existsAsFile())
+                {
+                    pluginExporter.exportPlugin("VSTi", File(inputFileName), getPluginInfo(File (inputFileName), "id"), "", false, true);
+                    JUCEApplicationBase::quit();
+                    signalToQuit = true;
+                }
+                
+            }
+            else if (commandLine.contains ("--export-VST "))
+            {
+                String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VST") + 12).trim().removeCharacters ("\"");
+                if (File (inputFileName).existsAsFile())
+                {
+                    pluginExporter.exportPlugin("VST", File(inputFileName), getPluginInfo(File (inputFileName), "id"), "", false, true);
+                    JUCEApplicationBase::quit();
+                    signalToQuit = true;
+                    
+                }
+            }
+        }
+ #endif
+        if ( signalToQuit == true)
+        {
+            pluginHolder = nullptr;
+            return;
+        }
+        
+            
         pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings,
                                                    preferredDefaultDeviceName, preferredSetupOptions,
                                                    constrainToConfiguration);
@@ -96,7 +136,7 @@ public:
             if (x != -100 && y != -100)
                 setBoundsConstrained ({ x, y, getWidth(), getHeight() });
             else
-                centreWithSize (300, 300);
+                centreWithSize (500, 500);
 
             this->setAlwaysOnTop(props->getIntValue("AlwaysOnTop"));
 
@@ -113,46 +153,52 @@ public:
         CabbageIDELookAndFeel lAndF;
         outputConsole = new CsoundOutputWindow();
         outputConsole->getEditor().setFont(Font(14, 1));
-
-        if (commandLineParams.isNotEmpty())
+		if (commandLineParams.isNotEmpty())
         {
-            String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "");
+            String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "").removeCharacters("\"'");;
 
-            if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
-                //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
-                commandLine = commandLineParams.substring (0, commandLineParams.indexOf ("-") - 1);
+			String fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"'");
 
-
-            if (commandLine.contains ("--export-VSTi"))
+            if (File(fileToOpen).existsAsFile())   //first try to open a file that resides in the same dir as the exe
             {
+                jassertfalse;
+                CabbageUtilities::debug(fileToOpen);
+                openFile (fileToOpen);
+                return;
+            }
+            else if(File(commandLine).existsAsFile()) //now try to open a file that contains a full file path
+            {
+                jassertfalse;
+                CabbageUtilities::debug(commandLine);
+                openFile (commandLine);
+                return;
+            }
+            
+            else if (commandLine.contains ("--export-VSTi"))
+            {
+                jassertfalse;
                 String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VSTi") + 13).trim().removeCharacters ("\"");
 
                 if (File (inputFileName).existsAsFile())
                 {
-                    openFile (inputFileName);
+                    //openFile (inputFileName);
                     CabbageIDELookAndFeel lAndF;
-                    pluginExporter.exportPlugin ("VSTi", File (inputFileName), getPluginId (csdFile));
-                    JUCEApplicationBase::quit();
+                    pluginExporter.exportPlugin ("VSTi", File (inputFileName), getPluginInfo(csdFile, "id"));
+					JUCEApplicationBase::quit();
                 }
 
             }
             else if (commandLine.contains ("--export-VST "))
             {
+                jassertfalse;
                 String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VST") + 12).trim().removeCharacters ("\"");
 
                 if (File (inputFileName).existsAsFile())
                 {
-                    openFile (inputFileName);
-                    pluginExporter.exportPlugin ("VST", File (inputFileName),getPluginId (csdFile));
+                    pluginExporter.exportPlugin ("VST", File (inputFileName), getPluginInfo(csdFile, "id"));
                     JUCEApplicationBase::quit();
                 }
 
-            }
-            else if (File::getCurrentWorkingDirectory().getChildFile (commandLine.trim().removeCharacters ("\"")).existsAsFile())
-            {
-                String csd = commandLine.trim().removeCharacters ("\"");
-                openFile (csd);
-                return;
             }
         }
 
@@ -190,38 +236,49 @@ public:
 #endif
     }
 
-    const String getPluginId (File csdFile)
-    {
-        StringArray csdLines;
-        csdLines.addLines (csdFile.loadFileAsString());
+	const String getPluginInfo(File csdFile, String info)
+	{
+		StringArray csdLines;
+		csdLines.addLines(csdFile.loadFileAsString());
 
-        for (auto line : csdLines)
-        {
-            ValueTree temp ("temp");
-            CabbageWidgetData::setWidgetState (temp, line, 0);
+		for (auto line : csdLines)
+		{
+			ValueTree temp("temp");
+			CabbageWidgetData::setWidgetState(temp, line, 0);
 
-            if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-                return CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::pluginid);
-        }
+			if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+			{
+				if (info == "id")
+					return CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::pluginid);
+				else if (info == "manufacturer")
+					return CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::manufacturer);
+			}
 
-        return String::empty;
-    }
+		}
+
+		return String();
+	}
+
 
     ~StandaloneFilterWindow()
     {
 #if (! JUCE_IOS) && (! JUCE_ANDROID)
-
-        if (auto* props = pluginHolder->settings.get())
+        if(pluginHolder)
         {
-            props->setValue ("windowX", getX());
-            props->setValue ("windowY", getY());
+            if (auto* props = pluginHolder->settings.get())
+            {
+                props->setValue ("windowX", getX());
+                props->setValue ("windowY", getY());
+            }
+            
+            pluginHolder->stopPlaying();
+            pluginHolder = nullptr;
         }
-
 #endif
 
-        pluginHolder->stopPlaying();
+
         clearContentComponent();
-        pluginHolder = nullptr;
+        
     }
 
     //==============================================================================

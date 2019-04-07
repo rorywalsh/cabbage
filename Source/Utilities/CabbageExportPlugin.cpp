@@ -12,7 +12,7 @@
 
 
 //===============   methods for exporting plugins ==============================
-void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, String manu, bool encrypt)
+void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, bool promptForFilename, bool encrypt)
 {
     if(csdFile.hasFileExtension(".csd") == false)
         return;
@@ -29,31 +29,34 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
 #endif
 
-        int platform = 0;
+
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
         {
             fileExtension = "so";
         }
         else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
         {
-            if(type.contains("VST"))
+            if(type.contains("VST3"))
+                fileExtension = "vst3";
+            else if(type.contains("VST"))
                 fileExtension = "vst";
             else
                 fileExtension = "component";
 
-            platform = 2;
             currentApplicationDirectory = thisFile.getFullPathName() + "/Contents";
         }
         else
         {
-            platform = 1;
-            fileExtension = "dll";
+			if(type.contains("VST3"))
+				fileExtension = "vst3";
+			else
+	            fileExtension = "dll";
         }
 
 
-        if (type == "VSTi" || type == "AUi")
+        if (type == "VSTi" || type == "AUi" || type == "VST3i")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
-        else  if (type == "VST" || type == "AU")
+        else  if (type == "VST" || type == "AU" || type == "VST3")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
         else  if (type == "AUMIDIFx")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginMIDIEffect." + fileExtension);
@@ -68,8 +71,8 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else  if (type == "FMOD")
         {
-            fileExtension = (platform==1 ? String("dll") : String("dylib"));
-            pluginFilename = currentApplicationDirectory + (platform==1 ? String("/fmod_csoundL64.dll") : String("/fmod_csound.dylib"));
+            fileExtension = (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows  ? String("dll") : String("dylib"));
+            pluginFilename = currentApplicationDirectory + (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows ? String("/fmod_csoundL64.dll") : String("/fmod_csound.dylib"));
             
         }
 
@@ -85,9 +88,16 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         if(File(destination).exists())
         {
             const String newFile = destination+"/"+csdFile.getFileName();
-            writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type, manu,
+            writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type,
                                   encrypt);
         }
+		else if(promptForFilename == false)
+		{
+			const String newFile = csdFile.getParentDirectory().getFullPathName()+"/"+csdFile.getFileNameWithoutExtension();
+			writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type,
+				encrypt);
+
+		}
         else
         {
 
@@ -102,11 +112,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                                                                           &lookAndFeel);
 
                     if (result == 1)
-                        writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu,
+                        writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
                                               encrypt);
                 }
                 else
-                    writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, manu,
+                    writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
                                           encrypt);
 
             }
@@ -115,7 +125,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 }
 
 
-void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, String manu, bool encrypt)
+void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type,  bool encrypt)
 {
 
     File dll (fc.withFileExtension (fileExtension).getFullPathName());

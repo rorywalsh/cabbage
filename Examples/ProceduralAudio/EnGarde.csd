@@ -22,7 +22,7 @@
 ; Ring Gain			-	amplitude gain for the ringing resonance part of the sound
 
 <Cabbage>
-form caption("En garde!") size(600, 310), colour(58, 110, 182), pluginid("EnGa")
+form caption("En garde!") size(600, 310), colour(58, 110, 182), pluginid("EnGa") style("legacy")
 button bounds(5,5,590,30) channel("PlaySound") text("Draw Sword") latched(0)
 groupbox bounds(5,40,590,130) outlinethickness(1) outlinecolour(200,200,200) colour(0,0,0,100) plant("Drawing") text("Drawing Sword")
 {

@@ -56,7 +56,7 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
     //init matrix data:
     for( int x = 0 ; x < numColumns ; x++)
         for( int y = 0 ; y < numRows ; y++)
-            owner->setEventMatrixData(x, y, getChannel(), String::empty);
+            owner->setEventMatrixData(x, y, getChannel(), String());
 
 }
 

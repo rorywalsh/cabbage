@@ -44,7 +44,7 @@
 ;        +----------------------------+
 
 <Cabbage>
-form caption("Peeaaoooh") size(650,207), pluginid("Peao")
+form caption("Peeaaoooh") size(650,207), pluginid("Peao") style("legacy")
 image pos(0, 0),          size(650,207), colour( 10, 20, 30), shape("sharp"), outlinecolour("white"), outlinethickness(0) 
 
 rslider   bounds( 10, 10, 70, 70),  channel("Base"),text("Base"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0.5, 1000, 50, 0.5, 0.001)

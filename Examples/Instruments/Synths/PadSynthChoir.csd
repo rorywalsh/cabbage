@@ -34,7 +34,7 @@
 ; Filter	--	The filter section feature three stages in series: low cut (highpass), bandpass and high cut (lowpass)
 
 <Cabbage>
-form caption("Padsynth Choir"), size(1060, 420), pluginid("PSCh")
+form caption("Padsynth Choir"), size(1060, 420), pluginid("PSCh") style("legacy")
 
 #define PlantBoxAppearance # shape("rounded"), colour( 30, 20, 20), outlinecolour("silver"), outlinethickness(3) #
 

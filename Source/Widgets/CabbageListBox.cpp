@@ -28,7 +28,7 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     //listBox.setBounds(CabbageWidgetData::getBounds(wData).withTop(0).withLeft(0));
-    addItemsToListbox(wData, true);
+    addItemsToListbox(wData);
 
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string")
     {
@@ -74,10 +74,9 @@ void CabbageListBox::resized()
     listBox.setBounds(getLocalBounds());
 }
 
-void CabbageListBox::addItemsToListbox (ValueTree wData, bool refreshedFromDisk)
+void CabbageListBox::addItemsToListbox (ValueTree wData)
 {
     Array<File> dirFiles;
-    StringArray fileNames;
     stringItems.clear();
     folderFiles.clear();
     presets.clear();
@@ -206,14 +205,14 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
 
         if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir))
         {
-            addItemsToListbox (valueTree, true);
+            addItemsToListbox (valueTree);
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
         }
 
         if (refresh != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles))
         {
             refresh = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles) == 1 ? 0 : 1;
-            addItemsToListbox (valueTree, true);
+            addItemsToListbox (valueTree);
         }
       
         listBox.repaint();

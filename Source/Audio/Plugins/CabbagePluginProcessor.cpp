@@ -28,7 +28,14 @@ AudioProcessor *JUCE_CALLTYPE
 createPluginFilter() {
     File csdFile;
 #ifndef JUCE_MAC
+	CabbageUtilities::debug(JucePlugin_Manufacturer);
     csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+	if (csdFile.existsAsFile() == false)
+	{
+		String filename = "C:/ProgramData/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+ File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
+		
+		csdFile = File(filename);
+	}
 #else
     //read .csd file from the correct location within the .vst bundle.
     const String dir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
@@ -36,6 +43,10 @@ createPluginFilter() {
     csdFile = File (dir + "/" + filename);
 
 #endif
+
+	if (csdFile.existsAsFile() == false)
+		Logger::writeToLog("Could not find .csd file, please make sure it's in the correct folder");
+
     const int numChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
     return new CabbagePluginProcessor(csdFile, numChannels, numChannels);
 };
@@ -46,7 +57,10 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, co
           csdFile(inputFile),
           cabbageWidgets("CabbageWidgetData") 
 {
-    createCsound(inputFile);
+	//pause creation of Csound for 500ms to avoid issues when plugin is first scanned..
+	//Timer::callAfterDelay(100, [this, inputFile]() {
+		createCsound(inputFile);
+	//});    
 }
 
 
@@ -56,22 +70,32 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
         setWidthHeight();
         StringArray linesFromCsd;
         linesFromCsd.addLines(inputFile.loadFileAsString());
-        addImportFiles(linesFromCsd);
-
+        
+        //only create extended temp file if imported plants are being added...
+        if( addImportFiles(linesFromCsd) == true )
+        {
         parseCsdFile(linesFromCsd);
 
 
-        File tempFile = File::createTempFile("csoundCabbageCsdText");
+        File tempFile = File::createTempFile(inputFile.getFileNameWithoutExtension()+"_temp.csd");
         tempFile.replaceWithText(linesFromCsd.joinIntoString("\n")
                                          .replace("$lt;", "<")
                                          .replace("&amp;", "&")
                                          .replace("$quote;", "\"")
                                          .replace("$gt;", ">"));
 
-        //inputFile.getParentDirectory().setAsCurrentWorkingDirectory();
+
         if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
             this->suspendProcessing(true);
-
+            
+        }
+        
+        else{
+            parseCsdFile(linesFromCsd);
+            if (setupAndCompileCsound(inputFile, inputFile.getParentDirectory(), samplingRate) == false)
+                this->suspendProcessing(true);
+        }
+        
         if (shouldCreateParameters)
             createParameters();
 
@@ -98,6 +122,9 @@ void CabbagePluginProcessor::setWidthHeight() {
     csdLines.addLines(csdFile.loadFileAsString());
 
     for (auto line : csdLines) {
+        if(line.contains("</Cabbage>"))
+            return;
+        
         ValueTree temp("temp");
         CabbageWidgetData::setWidgetState(temp, line, 0);
 
@@ -246,10 +273,10 @@ bool CabbagePluginProcessor::shouldClosePlant(StringArray linesFromCsd, int line
     return false;
 }
 
-void CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
+bool CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
 
     getMacros(linesFromCsd);
-
+    bool hasImportFiles = false;
     for (int i = 0; i < linesFromCsd.size(); i++) {
         ValueTree temp("temp");
         String newLine = linesFromCsd[i];
@@ -259,7 +286,10 @@ void CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
         //if form, check for import files..
         if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form) {
             var files = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::importfiles);
-
+            
+            if(files.size()>0)
+                hasImportFiles = true;
+            
             for (int y = 0; y < files.size(); y++) {
                 CabbageUtilities::debug(
                         csdFile.getParentDirectory().getChildFile(files[y].toString()).getFullPathName());
@@ -290,6 +320,8 @@ void CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
     // once all plants have been imported to plantStructs array,
     // add them to Cabbage section
     insertPlantCode(linesFromCsd);
+    
+    return hasImportFiles;
 }
 
 void CabbagePluginProcessor::handleXmlImport(XmlElement *xml, StringArray &linesFromCsd) {
@@ -988,7 +1020,6 @@ CabbageAudioParameter *CabbagePluginProcessor::getParameterForXYPad(String name)
         if (CabbageAudioParameter *cabbageParam = dynamic_cast<CabbageAudioParameter *> (param)) {
             if (name == cabbageParam->getWidgetName())
                 return dynamic_cast<CabbageAudioParameter *> (cabbageParam);
-
         }
     }
 

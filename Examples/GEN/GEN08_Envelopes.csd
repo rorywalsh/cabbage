@@ -34,7 +34,7 @@
 
 
 <Cabbage>
-form caption("GEN08 Envelopes"), size(800, 510), pluginid("G8En"), guirefresh(32), colour(0,0,0)
+form caption("GEN08 Envelopes"), size(800, 510), pluginid("G8En"), guirefresh(32), colour(0,0,0) style("legacy")
 
 gentable bounds( 10,  5,380,290), tablenumber(1), tablecolour("silver"), identchannel("table1"), amprange(0,1,1), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(20,20,20), outlinethickness(2), identchannel("table1")
 label bounds(10, 5,140,12), text("3 Break-point Envelope"), align("left")

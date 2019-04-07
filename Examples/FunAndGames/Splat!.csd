@@ -14,7 +14,7 @@
 ; If this becomes a problem, simply raise the value for excursion, even while the swarm is splatted.
 
 <Cabbage>
-form caption("Splat!"), size(1000,530), colour(230,230,230),guirefresh(64), pluginid("Splt")
+form caption("Splat!"), size(1000,530), colour(230,230,230),guirefresh(64), pluginid("Splt") style("legacy")
 image bounds(0,   0, 0, 0), colour(white), shape(ellipse), widgetarray("fly",500)
 nslider  bounds(  5,495,60,34), channel("Population"),    range(1,100, 10,1,1),       textcolour(black), fontcolour(black), text("Population"), colour(white)
 nslider  bounds( 70,495,60,34), channel("Liveliness"),    range(0.1,10.00, 4,1,0.1),  textcolour(black), fontcolour(black), text("Liveliness"), colour(white)

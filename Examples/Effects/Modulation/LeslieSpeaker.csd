@@ -26,7 +26,7 @@
 ; Amplitude	-	amount of amplitude modulation
 
 <Cabbage>
-form caption("Leslie Speaker") size(260,120), pluginid("Lsli")
+form caption("Leslie Speaker") size(260,120), pluginid("Lsli") style("legacy")
 
 image     bounds(  0,  0,260,120), outlinethickness(4), outlinecolour("white"), file("DarkWood.jpg");, colour(75,50,50)
 image     bounds(  0,  0,260,120), outlinethickness(4), outlinecolour("silver"), colour(0,0,0,0)

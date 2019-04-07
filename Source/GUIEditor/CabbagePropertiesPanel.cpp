@@ -91,7 +91,7 @@ static void createMultiLineTextEditors (ValueTree valueTree, Array<PropertyCompo
 CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     : widgetData (widgetData), hideButton("x")
 {
-    //addAndMakeVisible(tooltipWindow);
+
     setOpaque (true);
     setSize (300, 500);
     
@@ -218,7 +218,9 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
             getScrubberPositionForTable (identifier, value);
 
         else
+        {
             CabbageWidgetData::setProperty (widgetData, identifier, value);
+        }
 
         sendChangeMessage();    //update code in editor when changes are made...
     }
@@ -531,6 +533,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String textColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour);
         const String fontColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour);
         const String trackerColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::trackercolour);
+        const String markerColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::markercolour);
         const String textboxColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textboxcolour);
         const String textboxOutlineColourString = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textboxoutlinecolour);
 
@@ -542,7 +545,10 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         comps.add (new ColourPropertyComponent ("Font", fontColourString));
 
         if (typeOfWidget == "rslider")
+        {
             comps.add (new ColourPropertyComponent ("Outline", outlineColourString));
+            comps.add (new ColourPropertyComponent ("Marker", markerColourString));
+        }
 
         comps.add (new ColourPropertyComponent ("Tracker", trackerColourString));
         comps.add (new ColourPropertyComponent ("Value Box Colour", textboxColourString));
@@ -570,7 +576,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
         const String noteSeparator = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::keyseparatorcolour);
         const String arrowBg = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::arrowbackgroundcolour);
         const String arrow = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::arrowcolour);
-        const String mouseOverKey = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mouseoeverkeycolour);
+        const String mouseOverKey = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mouseoverkeycolour);
 
         comps.add (new ColourPropertyComponent ("White Notes", whiteNotes));
         comps.add (new ColourPropertyComponent ("Black Notes", blackNotes));

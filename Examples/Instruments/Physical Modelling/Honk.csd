@@ -44,7 +44,7 @@
 ; 'Discord'	-	an integration constant used in the setup of the model. Audibly varies dischord. This control changes at i-rate therefore changing it during a note will cause discontinuities.
 
 <Cabbage>
-form caption("Honk") size(700, 440), pluginid("Honk"), colour("LightGrey")
+form caption("Honk") size(700, 440), pluginid("Honk"), colour("LightGrey") style("legacy")
 
 
 ; amplitude

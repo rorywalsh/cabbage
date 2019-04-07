@@ -39,7 +39,7 @@
 
 
 <Cabbage>
-form caption("Inharmonic Synth"), size(445, 285), pluginid("InSy")
+form caption("Inharmonic Synth"), size(445, 285), pluginid("InSy") style("legacy")
 image pos(0, 0),                  size(445, 285), colour("black"), shape("rounded"), outlinecolour("brown"), line(4)
 
 groupbox bounds(275,10,160, 90), text("Instrument"), plant("instrument"){

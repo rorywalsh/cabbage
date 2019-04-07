@@ -31,24 +31,17 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
       mainComponent()
 {
     setName ("PluginEditor");
-
-
     setLookAndFeel (&lookAndFeel);
-
-
-
     addAndMakeVisible(viewportContainer = new ViewportContainer());
-
     viewportContainer->addAndMakeVisible(mainComponent);
     addAndMakeVisible (viewport = new Viewport());
     viewport->setViewedComponent(viewportContainer, false);
     viewport->setScrollBarsShown(false, false);
     mainComponent.setInterceptsMouseClicks (false, true);
-
-
     setSize (50, 50);
 
     createEditorInterface (processor.cabbageWidgets);
+
 #ifdef Cabbage_IDE_Build
     viewportContainer->addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&mainComponent);
@@ -58,6 +51,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     layoutEditor.setInterceptsMouseClicks (true, true);
 #endif
     resized();
+
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -67,6 +61,15 @@ CabbagePluginEditor::~CabbagePluginEditor()
     setLookAndFeel (nullptr);
 }
 
+void CabbagePluginEditor::refreshValueTreeListeners()
+{
+	//refresh listeners each time the editor is opened...
+	for (int i = 0; i < components.size(); i++)
+	{
+		if(ValueTree::Listener* valueTreeListener = dynamic_cast<ValueTree::Listener*>(components[i]))
+			processor.cabbageWidgets.addListener(valueTreeListener);
+	}
+}
 void CabbagePluginEditor::resized()
 {
 #ifdef Cabbage_IDE_Build
@@ -80,10 +83,6 @@ void CabbagePluginEditor::resized()
      viewport->setBounds ( getLocalBounds() );
      if(showScrollbars)
      {
-         CabbageUtilities::debug(mainComponent.getHeight());
-         CabbageUtilities::debug(instrumentBounds.getY());
-         CabbageUtilities::debug(mainComponent.getWidth());
-         CabbageUtilities::debug(instrumentBounds.getX());
          if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() > viewport->getHeight())
              viewport->setScrollBarsShown(true, true);
          else if (instrumentBounds.getX() > viewport->getWidth() && instrumentBounds.getY() <= viewport->getHeight())
@@ -180,6 +179,8 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     const String fontColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour);
     lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
 
+    globalStyle = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::style);
+    
     backgroundColour = Colour::fromString (backgroundColourString);
     titlebarColour   = Colour::fromString (titlebarColourString);
     fontColour       = Colour::fromString (fontColourString);
@@ -259,7 +260,10 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
         insertGroupBox (cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::keyboard)
-        insertMIDIKeyboard (cabbageWidgetData);
+        insertKeyboard (cabbageWidgetData);
+
+	else if (widgetType == CabbageWidgetTypes::keyboarddisplay)
+		insertKeyboardDisplay(cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::csoundoutput)
         insertCsoundOutputConsole (cabbageWidgetData);
@@ -315,7 +319,7 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertCheckbox (ValueTree cabbageWidgetData)
 {
     CabbageCheckbox* checkbox;
-    components.add (checkbox = new CabbageCheckbox (cabbageWidgetData));
+    components.add (checkbox = new CabbageCheckbox (cabbageWidgetData, this));
     checkbox->addListener (this);
     addToEditorAndMakeVisible (checkbox, cabbageWidgetData);
     addMouseListenerAndSetVisibility (checkbox, cabbageWidgetData);
@@ -440,7 +444,7 @@ void CabbagePluginEditor::insertSignalDisplay (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
 {
     CabbageInfoButton* infoButton;
-    components.add (infoButton = new CabbageInfoButton (cabbageWidgetData));
+    components.add (infoButton = new CabbageInfoButton (cabbageWidgetData, globalStyle));
     addToEditorAndMakeVisible (infoButton, cabbageWidgetData);
     addMouseListenerAndSetVisibility (infoButton, cabbageWidgetData);
 }
@@ -448,7 +452,7 @@ void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
 {
     CabbageButton* button;
-    components.add (button = new CabbageButton (cabbageWidgetData));
+    components.add (button = new CabbageButton (cabbageWidgetData, this));
     button->addListener (this);
     addToEditorAndMakeVisible (button, cabbageWidgetData);
     addMouseListenerAndSetVisibility (button, cabbageWidgetData);
@@ -491,19 +495,35 @@ void CabbagePluginEditor::insertCsoundOutputConsole (ValueTree cabbageWidgetData
     }
 }
 
-void CabbagePluginEditor::insertMIDIKeyboard (ValueTree cabbageWidgetData)
+void CabbagePluginEditor::insertKeyboard (ValueTree cabbageWidgetData)
 {
     if (keyboardCount < 1)
     {
         CabbageKeyboard* midiKeyboard;
         components.add (midiKeyboard = new CabbageKeyboard (cabbageWidgetData, processor.keyboardState));
         //midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
+        
+#ifndef Cabbage_IDE_Build
+        for(int i = 0 ; i < 128 ; i++)
+            midiKeyboard->removeKeyPressForNote(i);
+#endif
         addToEditorAndMakeVisible (midiKeyboard, cabbageWidgetData);
         addMouseListenerAndSetVisibility (midiKeyboard, cabbageWidgetData);
         keyboardCount++;
+        
+
     }
 }
 
+void CabbagePluginEditor::insertKeyboardDisplay(ValueTree cabbageWidgetData)
+{
+	CabbageKeyboardDisplay* midiKeyboard;
+	MidiKeyboardState dummy;
+	components.add(midiKeyboard = new CabbageKeyboardDisplay(cabbageWidgetData));
+	//midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
+	addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);
+	addMouseListenerAndSetVisibility(midiKeyboard, cabbageWidgetData);
+}
 //======================================================================================================
 void CabbagePluginEditor::insertGroupBox (ValueTree cabbageWidgetData)
 {
@@ -583,7 +603,6 @@ void CabbagePluginEditor::buttonClicked (Button* button)
     else if (CabbageCheckbox* cabbageButton = dynamic_cast<CabbageCheckbox*> (button))
     {
         const StringArray textItems = cabbageButton->getTextArray();
-        CabbageUtilities::debug(cabbageButton->getName());
         const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
         const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
 
@@ -952,7 +971,7 @@ void CabbagePluginEditor::refreshComboListBoxContents()
             {
                 if (fileType.isNotEmpty())
                 {
-                    combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i), true);
+                    combo->addItemsToCombobox (processor.cabbageWidgets.getChild (i));
                 }
 
                 if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true)
@@ -963,7 +982,7 @@ void CabbagePluginEditor::refreshComboListBoxContents()
             {
                 if (fileType.isNotEmpty())
                 {
-                    listbox->addItemsToListbox(processor.cabbageWidgets.getChild (i), true);
+                    listbox->addItemsToListbox(processor.cabbageWidgets.getChild (i));
                 }
 
                 if(bool(listbox->getProperties().getWithDefault("isPresetCombo", false)) == true)

@@ -8,7 +8,7 @@
 ; The input waveform is displayed in green, the output in yellow.
 
 <Cabbage>
-form caption("GEN30"), size(410, 290), pluginid("gn30"), colour(80, 30, 50)
+form caption("GEN30"), size(410, 290), pluginid("gn30"), colour(80, 30, 50) style("legacy")
 gentable bounds(  5,  5, 400, 120), identchannel("table1"), tablenumber(1,2), tablecolour("lime","yellow"), tablecolour:0("lime"), tablecolour:1("yellow"), fill(0), outlinethickness(2), tablegridcolour(0,0,0,0)
 
 label    bounds(348,130, 60, 10), text("SOURCE"), fontcolour("lime"), align("right")

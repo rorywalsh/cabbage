@@ -37,10 +37,11 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 #include "../Audio/Plugins/GenericCabbagePluginProcessor.h"
 #include "../Audio/Plugins/CabbageInternalPluginFormat.h"
-
+#include "../Utilities/CabbagePluginList.h"
 
 class CabbageDocumentWindow;
 class FileTab;
+
 
 
 class CabbageMainComponent
@@ -51,7 +52,7 @@ class CabbageMainComponent
       public Timer,
       public ComboBox::Listener,
       public FileDragAndDropTarget,
-	  public FileBrowserListener
+      public FileBrowserListener
 {
 public:
 
@@ -60,22 +61,7 @@ public:
     void mouseExit (const MouseEvent& e) override;
     void mouseEnter (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
-    
-	void selectionChanged() override
-	{
-		// we're only really interested in when the selection changes, regardless of if it was
-		// clicked or not so we'll only override this method
-		auto selectedFile = fileTree.getSelectedFile();
-
-	}
-
-	void fileClicked(const File& file, const MouseEvent&) override 
-	{
-        bringCodeEditorToFront(file);
-	}
-
-	void fileDoubleClicked(const File&)              override {}
-	void browserRootChanged(const File&)             override {}
+ 
 
     //==============================================================================
     CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
@@ -95,13 +81,13 @@ public:
     void createCodeEditorForFile (File file);
     void createNewProject();
     void createNewTextFile(String contents = "");
-    bool isInterestedInFileDrag (const StringArray& files);
-    void filesDropped (const StringArray& files, int x, int y);
+    bool isInterestedInFileDrag (const StringArray& files) override;
+    void filesDropped (const StringArray& files, int x, int y) override;
     Image createBackground();
     void removeEditor();
     //==============================================================================
     void launchSSHFileBrowser (String mode);
-    void setEditMode (bool enable);
+    void enableEditMode();
     const File openFile (String filename = "", bool updateRecentFiles = true);
     void closeDocument();
     void showSettingsDialog();
@@ -117,6 +103,7 @@ public:
     void insertCustomPlantToEditor(CabbagePluginEditor* editor);
     void setLookAndFeelColours();
     void showGraph();
+    void showPluginListEditor();
     void saveGraph (bool saveAs);
     void openGraph (File fileToOpen = File());
     File getCurrentCsdFile ();
@@ -144,6 +131,34 @@ public:
         }
         jassertfalse;
     }
+    
+    //overlaying this component on FileBrowserComponent to take contorl of up button colour..
+    class GoUpButton : public Component
+    {
+    public:
+        GoUpButton() : Component(""), upArrowColour(160, 160, 160){
+            setInterceptsMouseClicks(false, true);
+        };
+        ~GoUpButton(){};
+        
+        void paint(Graphics& g)
+        {
+            g.fillAll(Colours::transparentBlack);
+            Path arrowPath;
+            arrowPath.addArrow({ 23.0f, 16.0f, 23.0f, 5.0f }, 5.0f, 13.0f, 5.0f);
+            g.setColour(upArrowColour);
+            g.fillPath(arrowPath);
+        }
+        
+        Colour upArrowColour;
+    };
+
+    GoUpButton goUpButton;
+    
+	void selectionChanged() override {};
+    void fileClicked (const File &file, const MouseEvent &e) override;
+    void fileDoubleClicked (const File &file) override;
+	void browserRootChanged(const File &newRoot) override;
     //==============================================================================
     String getSearchString();
     void setSearchString (const String& s);
@@ -164,6 +179,9 @@ public:
 	String getDeviceManagerSettings();
 	void reloadAudioDeviceState();
 
+   
+    class PluginListWindow;
+    std::unique_ptr<PluginListWindow> pluginListWindow;
 
     //==============================================================================
     CabbagePluginEditor* getCabbagePluginEditor();
@@ -171,7 +189,7 @@ public:
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();
     CabbageEditorContainer* getCurrentEditorContainer();
-    String getAudioDeviceSettings();
+
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
     FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
@@ -186,11 +204,14 @@ public:
 		}
 	}
     
+    CabbagePluginEditor* currentEditor = nullptr;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
     ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
+    
+    void openFolder();
     //==============================================================================
-    void timerCallback();
+    void timerCallback() override;
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
@@ -247,26 +268,15 @@ public:
     int startingVBarDragPos = 195;
     int resizerBarCurrentXPos = 195;
     
-    void toggleBrowser()
-    {
-        if(resizerBar.isVisible())
-        {
-            resizerBar.setVisible(false);
-            resizerBarCurrentXPos = 0;
-            resized();
-        }
-        else
-        {
-            resizerBarCurrentXPos = 195;
-            resizerBar.setVisible(true);
-            resized();
-        }
-    }
+    void toggleBrowser(); 
     
-	TimeSliceThread directoryThread{ "File Scanner Thread" };
-	WildcardFileFilter wildcardFilter{ "*", "*", "Movies File Filter" };
-	DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
-	FileTreeComponent fileTree{ fileList };
+//    TimeSliceThread directoryThread{ "File Scanner Thread" };
+     ScopedPointer<WildcardFileFilter> wildcardFilter;
+//    DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
+//    FileTreeComponent fileTree{ fileList };
+    FileBrowserComponent fileTree;
+//    WildcardFileFilter fileFilter;;
+	bool shouldUpdateAudioSettings = false;
 
 private:
 
@@ -276,12 +286,12 @@ private:
     int getTabFileIndex (File file);
     OwnedArray<FileTab> fileTabs;
     bool fileNeedsSaving = false;
-    String searchString = String::empty;
-    String replaceString = String::empty;
+    String searchString = "";
+    String replaceString = "";
     bool isCaseSensitive = false;
     File tempFile;
     CabbageDocumentWindow* owner;
-    //ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
+    CabbageFoldersLookAndFeel lookAndFeel4;
     CabbageToolbarFactory factory;
     Image bgImage;
     //File currentCsdFile;
@@ -295,7 +305,7 @@ private:
     const int toolbarThickness = 35;
     class FindPanel;
     ScopedPointer<FindPanel> findPanel;
-    //TooltipWindow tooltipWindow;
+
 
 	ScopedPointer<GraphDocumentComponent> graphComponent;
     ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;

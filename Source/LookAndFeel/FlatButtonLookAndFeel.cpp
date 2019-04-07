@@ -1,3 +1,22 @@
+/*
+ Copyright (C) 2016 @maurocsound, Rory Walsh
+ 
+ Cabbage is free software; you can redistribute it
+ and/or modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ 
+ Cabbage is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public
+ License along with Csound; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA
+ */
+
 #include "FlatButtonLookAndFeel.h"
 
 namespace LookAndFeelHelpers
@@ -32,6 +51,9 @@ namespace LookAndFeelHelpers
     }
 }
 
+FlatButtonLookAndFeel::FlatButtonLookAndFeel() {};
+FlatButtonLookAndFeel::~FlatButtonLookAndFeel() {};
+
 void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, const Colour &backgroundColour, bool isMouseOverButton, bool isButtonDown)
 {
     const int width = button.getWidth();
@@ -51,7 +73,7 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
 	const int outlineThickness = button.getProperties().getWithDefault("outlinethickness", 0);
 	const int offset = outlineThickness == 0 ? 0 : outlineThickness * .5;
 	g.setColour(outlineColour);
-	g.fillRoundedRectangle(0, 0, width, height, corners);
+	g.drawRoundedRectangle(0, 0, width, height, corners, outlineThickness);
 	g.setColour(bg);
 	g.fillRoundedRectangle(offset, offset, width - outlineThickness, height - outlineThickness, corners);
 	
@@ -351,11 +373,7 @@ void FlatButtonLookAndFeel::drawTwoValueThumb (Graphics& g, float x, float y, fl
 
     Path p;
 
-    p.startNewSubPath (x + diameter * .2, y - diameter * .2);
-    p.lineTo (x + diameter * .8, y - diameter * .2);
-    p.lineTo (x + diameter, y + diameter);
-    p.lineTo (x, y + diameter);
-    p.closeSubPath();
+    p.addRoundedRectangle(x, y-3, diameter*.6f, diameter, 3);
 
     p.applyTransform (AffineTransform::rotation (direction * (float_Pi * 0.5f), x + diameter * 0.5f, y + diameter * 0.5f));
 
@@ -417,7 +435,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     {
         Path filledArc;
         filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-        filledArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
         g.fillPath (filledArc);
     }
 
@@ -425,7 +443,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     g.setColour (trackerBgColour);
     Path bgArc;
     bgArc.addPieSegment (rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
-    bgArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+    bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
     g.fillPath (bgArc);
 
     //outlinecolour
@@ -434,7 +452,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
 
     Path outlineArc;
     outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
-    outlineArc.applyTransform(AffineTransform::identity.scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+    outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
     outlineArc.closeSubPath();
 
     g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));

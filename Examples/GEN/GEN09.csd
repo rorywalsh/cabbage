@@ -17,7 +17,7 @@
 ;		The waveform can be played back using oscbnk (if 'voices' is greater than 1), in which case 'spread' and 'speed' can be used to modify the texture of the tone cluster.
 
 <Cabbage>
-form caption("GEN09"), size(420, 555), pluginid("gn09")
+form caption("GEN09"), size(420, 555), pluginid("gn09") style("legacy")
 
 gentable bounds( 10,  5, 400, 120), tablenumber(8), tablecolour("LightBlue"), identchannel("table"), zoom(-1)
 

@@ -65,6 +65,17 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
     setLookAndFeelColours (widgetData);
     createPopupBubble();
 
+    
+    const String globalStyle = owner->globalStyle;
+    if(globalStyle == "legacy")
+    {
+        return;
+    }
+    else if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat")
+    {
+        slider.setLookAndFeel(&flatLookAndFeel);
+    }
+    
     resized();
 }
 
@@ -195,6 +206,7 @@ RangeSlider::RangeSlider (CabbageRangeSlider* _owner)
 
 RangeSlider::~RangeSlider ()
 {
+    
 }
 
 void RangeSlider::mouseDown (const MouseEvent& event)
@@ -248,8 +260,6 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
         {
             setMinValue (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
             setMaxValue (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
-            CabbageUtilities::debug (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
-            CabbageUtilities::debug (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
         }
         else
         {

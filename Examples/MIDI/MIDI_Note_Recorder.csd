@@ -25,7 +25,7 @@
 ; Does not record controllers.
 
 <Cabbage>
-form caption("MIDI Note Recorder") size(445,110), pluginid("MRec")
+form caption("MIDI Note Recorder") size(445,110), pluginid("MRec") style("legacy")
 image                    bounds(  0,  0,445,110), colour(0,0,0)
 button   bounds( 10, 10, 60, 20), fontcolour:0(50,50,50), fontcolour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0), text("RECORD","RECORD"), channel("Record"), latched(1), radiogroup(1)
 button   bounds( 10, 40, 60, 20), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), text("PLAY","PLAY"), channel("Play"), latched(1), radiogroup(1)

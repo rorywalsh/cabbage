@@ -36,7 +36,7 @@
 ; Smooth	--	a small amount of smoothing can be appied to the LFO to smooth abrupt changes in value (may be useful and 'square' and 'rand.S&H' type modulations
 
 <Cabbage>
-form caption("Filter LFO") size(790,170), pluginid("FLFO")
+form caption("Filter LFO") size(790,170), pluginid("FLFO") style("legacy")
 image pos(0, 0),           size(790,170), colour(0,0,0,170), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 rslider bounds( 10, 11, 70, 70), text("Freq."), colour( 30, 30, 30),	trackercolour("white"),	fontcolour("white"), 		channel("cf"), 		range(1, 20000, 300, 0.333)
 rslider bounds( 75, 11, 70, 70), text("Res."),  colour( 30, 30, 30),	trackercolour("white"),	fontcolour("white"), 		channel("res"),		range(0,1.00,0.75)

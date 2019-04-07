@@ -6,7 +6,7 @@
 ; Choosing 'Host Control' allows the VST plugin host to decide 'Tempo' and 'Run/Stop' status
 
 <Cabbage>
-form caption("TR-808") size(800, 400), colour("SlateGrey"), pluginid("808B"), guirefresh(32)
+form caption("TR-808") size(800, 400), colour("SlateGrey"), pluginid("808B"), guirefresh(32) style("legacy")
 
 label 		bounds(  5,385,120, 12), text("Iain McCurdy |2012|"), fontcolour("black")
 

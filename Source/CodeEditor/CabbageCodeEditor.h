@@ -179,7 +179,7 @@ public:
     bool deleteForwards (const bool moveInWholeWordSteps);
     bool deleteBackwards (const bool moveInWholeWordSteps);
     void removeLine (int lineNumber);
-    void sendUpdateMessage (int lineNumber);
+
     StringArray getIdentifiersFromString (String code);
     int findText (String text, bool forwards, bool caseSensitive, bool skipCurrentSelection);
     void replaceText (String text, String replaceWith);

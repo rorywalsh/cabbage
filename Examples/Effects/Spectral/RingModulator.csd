@@ -29,7 +29,7 @@
 ; Level		-	output level
 
 <Cabbage>
-form caption("Ring Modulator") size(755,170), pluginid("rmod")
+form caption("Ring Modulator") size(755,170), pluginid("rmod") style("legacy")
 image               pos(0, 0), size(755, 90), colour("black"), shape("rounded"), outlinecolour("lime"), outlinethickness(5) 
 label    bounds( 10, 20, 65, 13), text("Input"), textcolour(white)
 combobox bounds( 10, 34, 65, 18), text("Knob","Keybd."), channel("input"), textcolour(white)

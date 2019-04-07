@@ -8,7 +8,7 @@
 ; display is set between -1 and 1. Certain distributions may require reduction of the 'level' control in order for them to be fully displayed
 
 <Cabbage>
-form caption("GEN21"), size(410, 220), pluginid("gn21"), colour( 40,110, 80)
+form caption("GEN21"), size(410, 220), pluginid("gn21"), colour( 40,110, 80) style("legacy")
 
 gentable bounds(  5,  5, 400, 120), tablenumber(1), tablecolour("lime"), identchannel("table1"), amprange(-1,1,1), fill(0)
 

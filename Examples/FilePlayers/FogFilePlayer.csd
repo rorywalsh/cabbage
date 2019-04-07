@@ -54,7 +54,7 @@
 
 
 <Cabbage>
-form caption("fog File Player") size(1130,445), colour(0,0,0), pluginid("FgFP"), guirefresh(16)	; guirefresh value adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing.
+form caption("fog File Player") size(1130,445), colour(0,0,0), pluginid("FgFP"), guirefresh(16)	; guirefresh value adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing. style("legacy")
 
 #define RSliderStyle # trackercolour(130,135,170), textcolour("white"), outlinecolour( 10, 15, 50), colour( 50, 45, 90)#
 

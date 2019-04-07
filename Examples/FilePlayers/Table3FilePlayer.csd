@@ -16,7 +16,7 @@
  
  
 <Cabbage>
-form caption("Table3 File Player") size(740,340), colour(0,0,0) pluginid("T3Pl"), guirefresh(64)
+form caption("Table3 File Player") size(740,340), colour(0,0,0) pluginid("T3Pl"), guirefresh(64) style("legacy")
 image                    bounds(  0,  0,740,340), colour(30, 30, 70), outlinecolour("White"), line(3), shape("sharp")	; main panel colouration    
 soundfiler               bounds(  5,  5,730,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
 label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontcolour(200,200,200), identchannel("stringbox")

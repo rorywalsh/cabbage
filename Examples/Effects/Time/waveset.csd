@@ -11,7 +11,7 @@
 ; (resetting the opcode will reset its internal buffer and cancel out any time displacement induced by wavelet repetitions) 
 
 <Cabbage>
-form caption("waveset") size(510, 90), pluginid("wset")
+form caption("waveset") size(510, 90), pluginid("wset") style("legacy")
 image pos(0, 0), size(510, 90), colour("Green"), shape("rounded"), outlinecolour("Grey"), outlinethickness(4) 
 rslider bounds(5, 10, 70, 70),   text("Repeats"), channel("repeats"), range(1, 100, 1, 1, 1),   colour("yellow"), textcolour("white"), trackercolour("white")
 rslider bounds(70, 10, 70, 70),  text("Mult."),   channel("mult"),    range(1, 100, 1, 0.5, 1), colour("yellow"), textcolour("white"), trackercolour("white")

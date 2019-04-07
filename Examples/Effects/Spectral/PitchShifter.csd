@@ -19,7 +19,7 @@
 ; Window	-	Selects the window shape used to envelope the overlapping buffers
 
 <Cabbage>
-form caption("Pitch Shifter") size(840,  90), pluginid("PShf"), scrollbars(0)
+form caption("Pitch Shifter") size(840,  90), pluginid("PShf"), scrollbars(0) style("legacy")
 
 #define RSliderStyle # colour("Grey"), textcolour("white"), outlinecolour("DarkGrey"), trackercolour("Silver")#
 

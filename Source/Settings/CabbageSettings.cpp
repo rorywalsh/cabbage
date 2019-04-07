@@ -41,11 +41,11 @@ void CabbageSettings::setDefaultSettings()
     ScopedPointer<XmlElement> xml;
     xml = new XmlElement ("PLANTS");
     String homeDir = File::getSpecialLocation (File::userHomeDirectory).getFullPathName();
-    String manualPath, examplesDir, cabbageHelp, iconsPath;
+    String manualPath, examplesDir, cabbageHelp, themePath;
 
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CabbageManual";
-	iconsPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Themes/modern-darkBG";
+	themePath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Themes/modern-darkBG";
 #if defined(WIN32)
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
 #elif !defined(MACOSX)
@@ -53,21 +53,28 @@ void CabbageSettings::setDefaultSettings()
     examplesDir = "/usr/share/doc/cabbage/examples";
     cabbageHelp = "/usr/share/doc/cabbage/CabbageManual";
     manualPath = "/usr/share/doc/csound-doc";
+    themePath = "/usr/share/cabbage/Themes/modern-darkBG";
 #else
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/CabbageManual";
+    themePath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Themes/modern-darkBG";
     manualPath = "/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Manual";
+    defaultPropSet->setValue ("lastPluginScanPath_VST", "/Users/walshr/Library/Audio/Plug-Ins/VST");
+    defaultPropSet->setValue ("lastPluginScanPath_VST3", "/Library/Audio/Plug-Ins/VST3;~/Library/Audio/Plug-Ins/VST3");
+    defaultPropSet->setValue ("lastPluginScanPath_AudioUnit", "");
 #endif
 
     defaultPropSet->setValue ("CsoundManualDir", manualPath);
+    
     defaultPropSet->setValue ("CabbagePlantDir", homeDir + "/Plants");
     defaultPropSet->setValue ("CabbageExamplesDir", examplesDir);
     defaultPropSet->setValue ("CabbageManualDir", cabbageHelp);
-	defaultPropSet->setValue("CustomIconsDir", iconsPath);
+	defaultPropSet->setValue ("CustomThemeDir", themePath);
     defaultPropSet->setValue ("MostRecentDirectory", homeDir);
     defaultPropSet->setValue ("UserFilesDir", homeDir);
     defaultPropSet->setValue ("DisablePluginInfo", 0);
     defaultPropSet->setValue ("ShowEditorConsole", 1);
+    defaultPropSet->setValue ("ShowFileBrowser", 1);
     defaultPropSet->setValue ("ExternalEditor", 0);
     defaultPropSet->setValue ("UseCabbageIO", 1);
     defaultPropSet->setValue ("OpenMostRecentFileOnStartup", 1);
@@ -92,7 +99,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ShowAutoComplete", 0);
     defaultPropSet->setValue ("ShowNativeFileDialogues", 1);
     defaultPropSet->setValue ("EnableNativePopup", 0);
-	defaultPropSet->setValue("UseModifiedAudioGraph", 0);
+	defaultPropSet->setValue ("UseModifiedAudioGraph", 0);
     defaultPropSet->setValue ("SSHHomeDir", "/pi");
     defaultPropSet->setValue ("SSHAddress", "empty");
     defaultPropSet->setValue ("SSHLocalDir", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory).getFullPathName());
@@ -121,7 +128,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyPanelBackground, "ffa6b3b9");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelText, "ff000000");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::propertyLabelBackground, "ffd4d4d4");
-    defaultPropSet->setValue ("Colours_" + CabbageColourIds::alertWindowBackground, "ff000000");
+    defaultPropSet->setValue ("Colours_" + CabbageColourIds::alertWindowBackground, "ff52636a");
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::codeBackground,  "ff263238"/*"ff222222"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::lineNumberBackground,  "ff323e44"/*"ff000000"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::lineNumbers,  "e999a7ae"/*"E9B2B2B2"*/);

@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="5.4.1" displaySplashScreen="1" reportAppUsage="1"
+              jucerVersion="5.4.3" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{C0361D81-2D97-514F-0F91-A8077B17F83D}" name="GUIEditor"/>
@@ -99,6 +99,10 @@
               file="Source/CodeEditor/CabbageOutputConsole.h"/>
         <FILE id="ELc9CC" name="CsoundTokeniser.h" compile="0" resource="0"
               file="Source/CodeEditor/CsoundTokeniser.h"/>
+        <FILE id="rk9tMR" name="JavascriptCodeTokeniser.cpp" compile="1" resource="0"
+              file="Source/CodeEditor/JavascriptCodeTokeniser.cpp"/>
+        <FILE id="Wl3fKK" name="JavascriptCodeTokeniser.h" compile="0" resource="0"
+              file="Source/CodeEditor/JavascriptCodeTokeniser.h"/>
       </GROUP>
       <GROUP id="{F3304E24-7CA0-262D-A950-37F7AF181CEE}" name="GUIEditor">
         <FILE id="p63bOa" name="CabbagePropertiesPanel.cpp" compile="1" resource="0"
@@ -129,8 +133,12 @@
               file="Source/LookAndFeel/CabbageLookAndFeel2.h"/>
         <FILE id="AN23Yc" name="FlatButtonLookAndFeel.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/FlatButtonLookAndFeel.cpp"/>
+        <FILE id="bUbXkk" name="FlatButtonLookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/FlatButtonLookAndFeel.h"/>
         <FILE id="XTxDIU" name="PropertyPanelLookAndFeel.cpp" compile="1" resource="0"
               file="Source/LookAndFeel/PropertyPanelLookAndFeel.cpp"/>
+        <FILE id="tZgEDO" name="PropertyPanelLookAndFeel.h" compile="0" resource="0"
+              file="Source/LookAndFeel/PropertyPanelLookAndFeel.h"/>
       </GROUP>
       <GROUP id="{69E35355-3DAC-F5B2-4CD9-1629400BE29F}" name="Settings">
         <FILE id="JnuR22" name="CabbageSettings.cpp" compile="1" resource="0"
@@ -143,6 +151,10 @@
               file="Source/Settings/CabbageSettingsWindow.h"/>
       </GROUP>
       <GROUP id="{8D9B8DF5-3215-02BE-1D61-4761D82ACE8A}" name="Utilities">
+        <FILE id="zKYtCD" name="CabbagePluginList.cpp" compile="1" resource="0"
+              file="Source/Utilities/CabbagePluginList.cpp"/>
+        <FILE id="BQKgv4" name="CabbagePluginList.h" compile="0" resource="0"
+              file="Source/Utilities/CabbagePluginList.h"/>
         <FILE id="EjL0Yf" name="CabbageExportPlugin.h" compile="0" resource="0"
               file="Source/Utilities/CabbageExportPlugin.h"/>
         <FILE id="ZxldDQ" name="CabbageExportPlugin.cpp" compile="1" resource="0"
@@ -167,6 +179,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{75DB6341-3F9B-0D75-CA59-C9FD48A46CD2}" name="Widgets">
+        <FILE id="jaBD7N" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
+        <FILE id="dpqsn7" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <GROUP id="{39718DAA-6F71-5044-A75A-E63898BD3051}" name="Legacy">
           <FILE id="xwsGZ8" name="FrequencyRangeDisplayComponent.h" compile="0"
                 resource="0" file="Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h"/>
@@ -289,9 +305,11 @@
                 extraCompilerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
@@ -310,7 +328,7 @@
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
                extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="vNeY7N"
-               bigIcon="vNeY7N">
+               bigIcon="vNeY7N" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
@@ -340,7 +358,7 @@
     </XCODE_MAC>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
             externalLibraries="csound64.lib" windowsTargetPlatformVersion="10.0.17763.0"
-            smallIcon="vNeY7N" bigIcon="vNeY7N">
+            smallIcon="vNeY7N" bigIcon="vNeY7N" vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="Cabbage" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
@@ -397,7 +415,9 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="1" JUCE_ASIO="1"/>
+  <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0" JUCE_ASIO="1"
+               JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1" JUCE_WASAPI_EXCLUSIVE="1"
+               JUCE_WASAPI="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>

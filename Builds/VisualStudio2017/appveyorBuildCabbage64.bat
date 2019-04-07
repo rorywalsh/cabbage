@@ -1,4 +1,3 @@
-
 REM "Build Script for Cabbage on Windows. 
 REM "Please edit this file to point to the location of your Projucer application"
 REM "And change the variable MYPATH to the directory of projucer.exe"
@@ -35,4 +34,3 @@ REM "BUILDING CABBAGE LITE"
 
 
 REM %MYPATH%Projucer.exe --resave ../../CabbageIDE.jucer
-

@@ -25,7 +25,7 @@
 ; Sync LFO		--	Restart LFO. Can be useful if 'random spline' modulation becomes 'stuck' at a low frequency
 
 <Cabbage>
-form caption("Frequency Shifter") size(560,180), pluginid("fshi")
+form caption("Frequency Shifter") size(560,180), pluginid("fshi") style("legacy")
 image                   bounds( 0,  0, 560,180), colour("darkslategrey"), outlinecolour("silver"), outlinethickness(6), shape("rounded")
 label    bounds(15,  7, 70, 11), text("INPUT"), fontcolour("white")
 combobox bounds(15, 18, 70, 20), channel("input"), value(1), text("Live","Tone","Noise")

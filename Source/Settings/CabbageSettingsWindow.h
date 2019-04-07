@@ -111,6 +111,7 @@ public:
 private:
     PropertyPanel colourPanel, miscPanel;
     ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
+
     Colour bgColour, labelBgColour, labelTextColour;
 
     ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;

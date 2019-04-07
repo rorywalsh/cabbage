@@ -7,7 +7,7 @@
 ; 'Threshold' specifies the threshold level at which triggering will occur. In a noisy environment, raise 'Threshold'
 
 <Cabbage>
-form caption("pvsfreeze"), size(660,100) colour(  0,160,80), pluginid("frez")
+form caption("pvsfreeze"), size(660,100) colour(  0,160,80), pluginid("frez") style("legacy")
 
 image            bounds(  0,  0,270, 80), colour(  0,160,80), shape("rounded"), outlinecolour("white"), outlinethickness(4), plant("Freeze") {
 checkbox bounds( 15, 10, 180, 25), channel("freezb"), text("Freeze Both"), fontcolour("white"), shape("ellipse"), colour("red")

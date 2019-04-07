@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2014, updated 2016
 
 <Cabbage>
-form caption("Buffer Freeze"), size(610, 250), pluginid("BfFr"), colour(50,50,75)
+form caption("Buffer Freeze"), size(610, 250), pluginid("BfFr"), colour(50,50,75) style("legacy")
 gentable      bounds(  5,  5,600,120), tablenumber(1), tablecolour("LightBlue"), amprange(-1,1,1), identchannel(table), zoom(-1)
 
 hslider    bounds(  0,120, 610, 25), channel("ptr"),    range(0, 1.00, 1), trackercolour("LightBlue")

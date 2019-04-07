@@ -24,7 +24,7 @@
 ;			 Higher densities will result in higher amplitudes when stretching.
 
 <Cabbage>
-form caption("Time Slip"), size(700,210), pluginid("TmSl")
+form caption("Time Slip"), size(700,210), pluginid("TmSl") style("legacy")
 image                bounds(0,0,700,210), colour( 40, 40, 60), shape("sharp")
 groupbox bounds(  0,  0,700, 90), plant("SlowSlider"), text("Time Ratio"), colour(0,0,0,10) {
 hslider  bounds(  5, 15,690, 60), range(1,20,1,0.5,0.0001), channel("stretch"), trackercolour(140,140,160)

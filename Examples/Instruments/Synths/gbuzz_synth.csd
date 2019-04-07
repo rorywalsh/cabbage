@@ -1,6 +1,6 @@
 
 <Cabbage>
-form caption("gbuzz Synth") size(855, 375), pluginid("GBuz")
+form caption("gbuzz Synth") size(855, 375), pluginid("GBuz") style("legacy")
 image             bounds(  0,  0,855,295), colour("DarkSlateGrey"), outlinecolour("White"), outlinethickness(1), shape("sharp")	; main panel colouration    
 
 ;MAIN

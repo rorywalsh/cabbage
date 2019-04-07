@@ -75,7 +75,7 @@
 
 
 <Cabbage>
-form caption("Bar Model"), size(955,340), pluginid("BaMo"), colour(0,0,0), guirefresh(128)
+form caption("Bar Model"), size(955,340), pluginid("BaMo"), colour(0,0,0), guirefresh(128) style("legacy")
 label     bounds( 10, 15,150, 15), text("Boundary Conditions")
 combobox  bounds( 10, 32,150, 20), channel("bc"), value(2), text("Clamped-Clamped","Clamped-Pivoted","Pivoted-Pivoted","Clamped-Free")
 checkbox  bounds( 10, 70,150, 15), channel("KybdScal"), text("Keyboard Scaling") value(0)

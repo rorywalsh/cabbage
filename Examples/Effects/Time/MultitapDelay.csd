@@ -21,7 +21,7 @@
 ; Feedback into each delay is a mix of all 4 delays outputs.
 
 <Cabbage>
-form caption("Multitap Delay") size(300,385), pluginid("MtDl")
+form caption("Multitap Delay") size(300,385), pluginid("MtDl") style("legacy")
 image pos(0, 0),               size(300,385), colour( 170, 90,10), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 
 label     bounds( 10, 45, 70, 14), fontcolour("white"), text("%")
