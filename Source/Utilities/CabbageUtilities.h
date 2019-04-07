@@ -26,6 +26,7 @@
 #include "../BinaryData/CabbageBinaryData.h"
 
 #include <fstream>
+#include <regex>
 
 class CabbageIDELookAndFeel;
 
@@ -663,18 +664,39 @@ public:
         return range;
     }
 
-    static StringArray getTokens (String code, char breakChar)
-    {
-        StringArray tokens;
-        std::vector<string> elems;
-        std::stringstream ss(code.toStdString());
-        std::string token;
-        while(std::getline(ss, token, breakChar)) {
-            tokens.add(String(token));
-        }
-        return tokens;
-    }
+	static StringArray getTokens(String code, char breakChar)
+	{
+		//curtesy of https://stackoverflow.com/users/5405086/xinaiz
 
+		std::vector<std::string> splitted;
+		const std::string s = code.toStdString();
+		StringArray tokens;
+		bool flag = false;
+		
+		splitted.push_back("");
+		
+		for (int i = 0; i<s.size(); ++i)
+		{
+			if (s[i] == '\"')
+			{
+				flag = flag ? false : true;
+				continue;
+			}
+
+			if (s[i] == breakChar && !flag)
+				splitted.push_back("");
+			else 
+				splitted[splitted.size() - 1] += s[i];
+			
+		}
+
+		for (auto const & token : splitted)
+			tokens.add(token);
+
+		return tokens;
+	}
+
+ 
     //===========================================================================================
     static void showMessage (double num)
     {
