@@ -26,7 +26,6 @@
 #include "../BinaryData/CabbageBinaryData.h"
 
 #include <fstream>
-#include <regex>
 
 class CabbageIDELookAndFeel;
 
@@ -666,34 +665,39 @@ public:
 
 	static StringArray getTokens(String code, char breakChar)
 	{
-		//curtesy of https://stackoverflow.com/users/5405086/xinaiz
+        StringArray tokens;
+        std::vector<string> elems;
+        std::stringstream ss(code.toStdString());
+        std::string codeline;
+        int from;
 
-		std::vector<std::string> splitted;
-		const std::string s = code.toStdString();
-		StringArray tokens;
-		bool flag = false;
-		
-		splitted.push_back("");
-		
-		for (int i = 0; i<s.size(); ++i)
-		{
-			if (s[i] == '\"')
-			{
-				flag = flag ? false : true;
-				continue;
-			}
+        while (std::getline(ss, codeline))
+        {
+            // now 'codeline' contains a line of code (of std::string type).
 
-			if (s[i] == breakChar && !flag)
-				splitted.push_back("");
-			else 
-				splitted[splitted.size() - 1] += s[i];
-			
-		}
+            from = 0; // index of the first char of the current token in this line of code
+            size_t linesize = codeline.size();
 
-		for (auto const & token : splitted)
-			tokens.add(token);
+            for (std::string::size_type i = 0; i < linesize; i++) // let's find all the tokens in this line of code...
+            {
+                while (i < linesize && codeline[i] != breakChar) // let's find the end of a token...
+                {
+                    if (codeline[i] == '\"')   // excuse anything in quotes..
+                    {
+                        i++; // so, skip the first quote char
 
-		return tokens;
+                        while (i < linesize && codeline[i] != '\"') // continue to skip until endline or end quote char
+                            i++;
+                    }
+                    i++; // move to the next char
+                }
+
+                tokens.add(codeline.substr(from, i - from)); // let's add the token to the tokens array
+                from = i + 1; // set new start position for the next token
+            }
+        }
+
+        return tokens;
 	}
 
  
