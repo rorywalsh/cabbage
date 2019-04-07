@@ -7,7 +7,7 @@
 ; If 'external' is selected as clock source tempo is taken from the host's BPM. 
 
 <Cabbage>
-form caption("Tempo Delay") size(565, 90), pluginid("TpDl")
+form caption("Tempo Delay") size(565, 90), pluginid("TpDl") style("legacy")
 image pos(0, 0), size(565, 90), colour("LightBlue"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 rslider bounds(10, 11, 70, 70), text("Tempo"), 		textcolour("black"), 		channel("tempo"), 	range(40, 500, 90, 1, 1),   colour(100,100,255),trackercolour(100,100,150)
 rslider bounds(75, 11, 70, 70), text("Rhy.Mult."),	textcolour("black"), 		channel("RhyMlt"), 	range(1, 16, 4, 1, 1),      colour(100,100,255),trackercolour(100,100,150)

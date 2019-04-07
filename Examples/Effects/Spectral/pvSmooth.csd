@@ -5,7 +5,7 @@
 ; link	-	links 'Amp.Smooth' and 'Frq.Smooth'
 
 <Cabbage>
-form caption("pvSmooth") size(505, 90), pluginid("smoo"), scrollbars(0)
+form caption("pvSmooth") size(505, 90), pluginid("smoo"), scrollbars(0) style("legacy")
 image bounds(0, 0, 505, 90), colour("Cream"), outlinecolour("silver"), outlinethickness(5)
 label pos(-52, -30), size(615, 150), fontcolour(210,105, 30, 80), text("smooth"), shape("rounded"), outlinecolour("white"), outlinethickness(4)
 rslider bounds( 10, 8, 75, 75), text("Amp.Smooth"), channel("acf"),       range(0, 1.00, 0,16, 0.0001), textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)

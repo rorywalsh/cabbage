@@ -30,6 +30,7 @@ namespace CommandIDs
         newFile                 = 0x200020,
         newTextFile             = 0x200022,
         open                    = 0x200023,
+        openFolder              = 0x200024,
         openFromRPi             = 0x200021,
         closeDocument           = 0x200030,
         saveDocumentToRPi       = 0x200039,
@@ -50,6 +51,8 @@ namespace CommandIDs
         startAudioGraph         = 0x200076,
         exportAsVSTSynth        = 0x200077,
         exportAsVSTEffect       = 0x200074,
+        exportAsVST3Synth        = 0x2000771,
+        exportAsVST3Effect       = 0x2000742,
         exportAsAUSynth         = 0x200177,
         exportAsAUEffect        = 0x200174,
         exportAsFMODSoundPlugin = 0x200078,
@@ -60,6 +63,8 @@ namespace CommandIDs
         closeAllDocuments           = 0x201000,
         exportAsVSTEffectEncrypted  = 0x201002,
         exportAsVSTSynthEncrypted   = 0x201003,
+        exportAsVST3EffectEncrypted  = 0x2010021,
+        exportAsVST3SynthEncrypted   = 0x2010032,
         exportAsAUEffectEncrypted   = 0x201004,
         exportAsAUSynthEncrypted    = 0x201005,
         showFindPanel           = 0x2010a0,
@@ -95,6 +100,7 @@ namespace CommandIDs
         batchConvertExamplesAU    = 0x612001,
         batchConvertExamplesVST    = 0x612003,
         showConsole                 = 0x612004,
+        showPluginListEditor    = 0x612005,
 
         lastCommandIDEntry
     };
@@ -190,6 +196,7 @@ class CabbageLayoutWidgetStrings : public StringArray
 public:
     CabbageLayoutWidgetStrings()
     {
+		add ("keyboarddisplay");
         add ("form");
         add ("image");
         add ("socketsend");
@@ -284,7 +291,7 @@ public:
         add ("trackeroutsideradius");
         add ("trackerinsideradius");
         add ("surrogatelinenumber");
-        add ("mouseoeverkeycolour");
+        add ("mouseoverkeycolour");
         add ("keypressbaseoctave");
         add ("keyseparatorcolour");
         add ("amprange_quantise");
@@ -330,6 +337,7 @@ public:
         add ("popuppostfix");
         add ("manufacturer");
         add ("markerstart");
+		add ("keyreleased");
         add ("orientation");
         add ("tablecolour");
         add ("metercolour");
@@ -354,6 +362,7 @@ public:
         add ("radiogroup");
         add ("macronames");
         add ("ballcolour");
+		add ("keypressed");
         add ("scrollbars");
         add ("cellheight");
         add ("markerend");
@@ -451,6 +460,7 @@ namespace CabbageWidgetTypes
 	static const String image = "image";
 	static const String infobutton = "infobutton";
 	static const String keyboard = "keyboard";
+	static const String keyboarddisplay = "keyboarddisplay";
 	static const String label = "label";
 	static const String line = "line";
 	static const String listbox = "listbox";
@@ -580,8 +590,10 @@ namespace CabbageIdentifierIds
 	static const Identifier minx = "minx";
 	static const Identifier miny = "miny";
 	static const Identifier mode = "mode";
-	static const Identifier mouseoeverkeycolour = "mouseoeverkeycolour";
+	static const Identifier mouseoverkeycolour = "mouseoverkeycolour";
 	static const Identifier name = "name";
+	static const Identifier keypressed = "keypressed";
+	static const Identifier keyreleased = "keyreleased";
 	static const Identifier oncolour = "oncolour";
 	static const Identifier onfontcolour = "onfontcolour";
 	static const Identifier orientation = "orientation";
@@ -765,6 +777,7 @@ public:
         set ("Selected Row", CabbageIdentifierIds::highlightcolour.toString());
         set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
+        set ("Marker", CabbageIdentifierIds::markercolour.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
         set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
         set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
@@ -810,7 +823,7 @@ public:
         set ("On Image", CabbageIdentifierIds::imgbuttonon.toString());
         set ("Over Image", CabbageIdentifierIds::imgbuttonover.toString());
         set ("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
-        set ("Mouse Over", CabbageIdentifierIds::mouseoeverkeycolour.toString());
+        set ("Mouse Over", CabbageIdentifierIds::mouseoverkeycolour.toString());
         set ("Max Amp", CabbageIdentifierIds::amprange_max.toString());
         set ("Min Amp", CabbageIdentifierIds::amprange_min.toString());
         set ("Table No.", CabbageIdentifierIds::amprange_tablenumber.toString());

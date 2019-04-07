@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Highpass Filter"), size(435, 90), pluginid("HPFl")
+form caption("Highpass Filter"), size(435, 90), pluginid("HPFl") style("legacy")
 image pos(0, 0),                size(435, 90), colour(  70,120, 90), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 label    bounds(17, 22, 40, 11), text("INPUT"), fontcolour("white")
 combobox bounds(10, 33, 60, 20), channel("input"), value(1), text("Live","Tone","Noise")

@@ -26,6 +26,7 @@
 #include "../BinaryData/CabbageBinaryData.h"
 
 #include <fstream>
+#include <regex>
 
 class CabbageIDELookAndFeel;
 
@@ -663,38 +664,39 @@ public:
         return range;
     }
 
-    //===========================================================================================
-    static StringArray getTokens (String code, char breakChar)
-    {
-        StringArray tokens;
+	static StringArray getTokens(String code, char breakChar)
+	{
+		//curtesy of https://stackoverflow.com/users/5405086/xinaiz
 
-        const char* str = code.toUTF8().getAddress();
+		std::vector<std::string> splitted;
+		const std::string s = code.toStdString();
+		StringArray tokens;
+		bool flag = false;
+		
+		splitted.push_back("");
+		
+		for (int i = 0; i<s.size(); ++i)
+		{
+			if (s[i] == '\"')
+			{
+				flag = flag ? false : true;
+				continue;
+			}
 
-        do
-        {
-            const char* begin = str;
+			if (s[i] == breakChar && !flag)
+				splitted.push_back("");
+			else 
+				splitted[splitted.size() - 1] += s[i];
+			
+		}
 
-            while (*str != breakChar && *str)
-            {
-                if (*str == '\"')   //excuse anything in quotes..
-                {
-                    str++;
+		for (auto const & token : splitted)
+			tokens.add(token);
 
-                    while (*str != '\"')
-                        str++;
-                }
+		return tokens;
+	}
 
-                str++;
-            }
-
-            tokens.add (string (begin, str));
-        }
-        while (0 != *str++);
-
-
-        return tokens;
-    }
-
+ 
     //===========================================================================================
     static void showMessage (double num)
     {
@@ -802,7 +804,7 @@ public:
     static String getFileAndPath (File csdFile, String filename)
     {
         if (filename.isEmpty())
-            return String::empty;
+            return String();
 
         return File (csdFile).getParentDirectory().getChildFile (filename).getFullPathName();
     }
@@ -1068,7 +1070,7 @@ public:
         ScopedPointer<XmlElement> data (valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
-        data->writeToFile (File (filePath), String::empty);
+        data->writeToFile (File (filePath), String());
     }
 
     //======= method for replacing the contents of an identifier with new values..

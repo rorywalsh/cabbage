@@ -13,7 +13,7 @@
 ; Pick-up Separation		-	the distance in meters between the two pickups (your ears, for example - default: 0.3)
 
 <Cabbage>
-form caption("Ball in a Box") size(800,395), pluginid("BABO"), colour(100,100,120)
+form caption("Ball in a Box") size(800,395), pluginid("BABO"), colour(100,100,120) style("legacy")
 
 image   bounds(  3,  5,394,125), outlinecolour("white"), outlinethickness(1), colour(0,0,0,0), plant("RoomSize") {
 hslider bounds(  5, 10,390, 30), textcolour(white), channel("rx"), range(0.1,20.00, 5), colour(220,220,250), trackercolour(240,210,170)

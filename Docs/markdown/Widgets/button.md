@@ -31,7 +31,15 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/identchannel.md !} 
 
+{! ./markdown/Widgets/Properties/outlinecolour.md !} 
+
+{! ./markdown/Widgets/Properties/outlinecolour.md !} 
+
+{! ./markdown/Widgets/Properties/outlinethickness.md !} 
+
 {! ./markdown/Widgets/Properties/popup.md !} 
+
+{! ./markdown/Widgets/Properties/radiogroup.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 

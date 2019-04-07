@@ -24,7 +24,7 @@
 ; Delay Distr.		--	random delay time distribution: exponential, linear or logarithmic. Effect are quite subtle but exponential might be most natural sounding.
 
 <Cabbage>
-form caption("Delay Grain") size(410, 520), pluginid("DGrn")
+form caption("Delay Grain") size(410, 520), pluginid("DGrn") style("legacy")
 
 ;hslider2 bounds(  5,  5, 400, 30), channel("GSize1","GSize2"), min(0.01), max(0.09)    range(0.005, 2, 0.01, 0.5, 0.0001)
 hrange   bounds(  5,  5, 400, 30), channel("GSize1","GSize2"), range(0.005, 2, 0.01:0.09, 0.5, 0.0001)

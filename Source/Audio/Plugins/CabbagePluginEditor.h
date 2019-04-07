@@ -45,6 +45,7 @@
 #include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageXYPad.h"
 #include "../../Widgets/CabbageKeyboard.h"
+#include "../../Widgets/CabbageKeyboardDisplay.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageSoundfiler.h"
 #include "../../Widgets/CabbageRangeSlider.h"
@@ -102,7 +103,8 @@ public:
     void insertSourceButton (ValueTree cabbageWidgetData) {};
     void insertTextEditor (ValueTree cabbageWidgetData);
     void insertCsoundOutputConsole (ValueTree cabbageWidgetData);
-    void insertMIDIKeyboard (ValueTree cabbageWidgetData);
+    void insertKeyboard (ValueTree cabbageWidgetData);
+	void insertKeyboardDisplay(ValueTree cabbageWidgetData);
     void insertFileButton (ValueTree cabbageWidgetData);
     void insertImage (ValueTree cabbageWidgetData);
     void insertLine (ValueTree cabbageWidgetData);
@@ -117,6 +119,8 @@ public:
     void insertMeter (ValueTree cabbageWidgetData);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
+	void refreshValueTreeListeners();
+	//=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (String channel, float value);
     void sendChannelStringDataToCsound (String channel, String value);
@@ -197,8 +201,10 @@ public:
     Colour backgroundColour;
     Colour titlebarColour;
     Colour fontColour;
+    String globalStyle = "";
     bool defaultFontColour = true;
     float titlebarGradientAmount;
+    NamedValueSet radioGroups;
 
     //---- popup plant window ----
     class PopupDocumentWindow : public DocumentWindow, public ChangeBroadcaster
@@ -278,7 +284,7 @@ private:
     bool showScrollbars = false;
     CabbageLookAndFeel2 lookAndFeel;
     int newlyAddedWidgetIndex = 10000;
-    //TooltipWindow tooltipWindow;
+
     bool editModeEnabled = false;
     CabbagePluginProcessor& processor;
     String instrumentName;

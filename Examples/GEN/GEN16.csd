@@ -8,7 +8,7 @@
 
 
 <Cabbage>
-form caption("GEN16"), size(325, 360), pluginid("gn16"), colour(100,100,110)
+form caption("GEN16"), size(325, 360), pluginid("gn16"), colour(100,100,110) style("legacy")
 
 gentable bounds( 10,  5, 305, 120), tablenumber(1), tablecolour("lime"), identchannel("table"), zoom(-1), amprange(1,0,1)
 

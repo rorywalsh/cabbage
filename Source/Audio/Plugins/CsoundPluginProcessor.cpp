@@ -56,7 +56,9 @@ void CsoundPluginProcessor::resetCsound()
 
 	if (csound)
 	{
+#if !defined(Cabbage_Lite)
 		csound = nullptr;
+#endif
 		csoundParams = nullptr;
 		editorBeingDeleted(this->getActiveEditor());
 	}
@@ -92,6 +94,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 
 	csound->SetOption((char*)"-n");
 	csound->SetOption((char*)"-d");
+	csound->SetOption((char*)"-b0");
 
 
 	if (debugMode)
@@ -112,7 +115,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	PluginHostType pluginType;
 	if (pluginType.isFruityLoops())
 	{
-		csoundParams->ksmps_override = 1;
+        //fruity loops has issues with certain ksmps sizes. Best that users set their own ksmps values
+		//csoundParams->ksmps_override = 1;
 	}
 #else
 	if (requestedKsmpsRate == -1)
@@ -149,6 +153,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 		CabbageUtilities::debug("Csound could not compile your file?");
 
     return csdCompiledWithoutError();
+
 }
 
 
@@ -259,6 +264,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csound->PerformKsmps();
 
+
 }
 //==============================================================================
 void CsoundPluginProcessor::addMacros (String csdText)
@@ -329,7 +335,7 @@ void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, St
 StringArray CsoundPluginProcessor::getTableStatement (int tableNum)
 {
     StringArray fdata;
-    fdata.add (String::empty);
+    fdata.add (String());
 
     if (csCompileResult == OK)
     {
@@ -410,7 +416,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
         return csoundOutput;
     }
 
-    return String::empty;
+    return String();
 }
 
 //==============================================================================
@@ -478,8 +484,6 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         setupAndCompileCsound(csdFile, csdFilePath);
     }
     
-    CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(true, 0).getDescription());
-	CabbageUtilities::debug(AudioProcessor::getChannelLayoutOfBus(false, 0).getDescription());
 }
 
 void CsoundPluginProcessor::releaseResources()
@@ -568,24 +572,24 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 {
     float** audioBuffers = buffer.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
+    
     MYFLT newSamp;
     int result = -1;
 
 
 	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
-	const int outputs =  getTotalNumOutputChannels();
-
-
 
     //if no inputs are used clear buffer in case it's not empty..
     if (getTotalNumInputChannels() == 0)
         buffer.clear();
 
+	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
+	midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
+    
+
+
     if (csdCompiledWithoutError())
     {
-        keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
-        midiBuffer = midiMessages;
-
         //mute unused channels
         for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
         {
@@ -625,23 +629,18 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
             }
 
-            if (result == 0)
+            pos = csndIndex * output_channel_count;
+
+            for (int channel = 0; channel < output_channel_count; ++channel)
             {
-                pos = csndIndex * output_channel_count;
+                float*& current_sample = audioBuffers[channel];
+                newSamp = *current_sample * cs_scale;
+                CSspin[pos] = newSamp;
+                *current_sample = (CSspout[pos] / cs_scale);
+                ++current_sample;
+                ++pos;
 
-                for (int channel = 0; channel < output_channel_count; ++channel)
-                {
-                    float*& current_sample = audioBuffers[channel];
-                    newSamp = *current_sample * cs_scale;
-                    CSspin[pos] = newSamp;
-                    *current_sample = (CSspout[pos] / cs_scale);
-                    ++current_sample;
-                    ++pos;
-
-                }
             }
-            else
-                buffer.clear();
         }
 
 
@@ -780,6 +779,7 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
 
     int cnt = 0;
 
+    
     if (!midiData->midiBuffer.isEmpty() && cnt <= (nbytes - 3))
     {
         MidiMessage message (0xf4, 0, 0, 0);
@@ -788,6 +788,7 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
 
         while (i.getNextEvent (message, messageFrameRelativeTothisProcess))
         {
+            
             const uint8* data = message.getRawData();
             *mbuf++ = *data++;
 
@@ -805,8 +806,10 @@ int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
         }
 
         midiData->midiBuffer.clear();
+        
     }
 
+    
     return cnt;
 
 }

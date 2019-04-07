@@ -31,7 +31,7 @@
 ; Note that the dry signal is included in amplitude and filtering shaping so depending on the three curve settings it may be filtered or even attenuated completely.
 	
 <Cabbage>
-form caption("Bounce Delay"), size(490,385), pluginid("BnDl")
+form caption("Bounce Delay"), size(490,385), pluginid("BnDl") style("legacy")
 rslider   bounds( 10, 10, 70, 70), channel("TotalTime"), text("Total Time"), colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(0.01, 4, 1.7, 0.5)
 rslider   bounds( 90, 10, 70, 70), channel("Number"), text("Number"),        colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(1, 32,20, 1,1)
 rslider   bounds(170, 10, 70, 70), channel("Warp"), text("Warp"),            colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(-3, 3, -0.5)

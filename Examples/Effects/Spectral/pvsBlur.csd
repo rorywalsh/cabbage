@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("pvsBlur"), size(235,125) colour( 70, 90,100), pluginid("blur")
+form caption("pvsBlur"), size(235,125) colour( 70, 90,100), pluginid("blur") style("legacy")
 image             bounds(0, 0,235,125), colour( 70, 90,100), shape("rounded"), outlinecolour("white"), outlinethickness(5) 
 label    bounds(15,20, 60,13), text("FFT Size"), fontcolour("white")
 combobox bounds(15,35, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("att_table"), value(4), fontcolour(220,220,255)

@@ -19,10 +19,11 @@
 
 #include "CabbageButton.h"
 
-CabbageButton::CabbageButton (ValueTree wData)
+
+CabbageButton::CabbageButton (ValueTree wData, CabbagePluginEditor* _owner)
     : widgetData (wData),
-      TextButton(),
-	  flatLookAndFeel()
+      owner(_owner),
+      TextButton()
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -32,8 +33,20 @@ CabbageButton::CabbageButton (ValueTree wData)
 
     setToggleState ((bool)getValue(), dontSendNotification);
 
-    if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup) != 0)
-        setRadioGroupId (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::radiogroup));
+    const String radioId = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::radiogroup);
+    
+    if (radioId.isNotEmpty())
+    {
+        const int id = owner->radioGroups.getWithDefault(radioId, -1);
+        CabbageUtilities::debug(id);
+        if(id != -1)
+            setRadioGroupId (id);
+        else{
+            owner->radioGroups.set(radioId, owner->radioGroups.size()+100);
+            setRadioGroupId (owner->radioGroups.getWithDefault(radioId, -1));
+            CabbageUtilities::debug(owner->radioGroups.getWithDefault(radioId, -1).toString());
+        }
+    }
 
 
 
@@ -51,6 +64,11 @@ CabbageButton::CabbageButton (ValueTree wData)
 	getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
 	getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
 
+    if(owner->globalStyle == "legacy")
+    {
+        return;
+    }
+    
 	//if users are passing custom images, use old style look and feel
 	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
 		imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
@@ -75,6 +93,8 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 
     if (prop == CabbageIdentifierIds::value)
     {
+        CabbageUtilities::debug(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::name));
+        CabbageUtilities::debug(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
         setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
         setToggleState (getValue() == 0 ? false : true, dontSendNotification);
         setButtonText (getTextArray()[getValue()]);

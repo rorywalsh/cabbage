@@ -31,7 +31,7 @@ CabbageGenTable::CabbageGenTable (ValueTree wData, CabbagePluginEditor* owner)
       scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
       startpos (-1),
       endpos (-1),
-      tooltipText (String::empty)
+      tooltipText (String())
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..

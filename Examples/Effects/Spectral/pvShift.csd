@@ -4,7 +4,7 @@
 ; Streaming phase vocoding frequency shifter.
 
 <Cabbage>
-form caption("pvshift Frequency Shifter") size(510,  90), pluginid("shft"), scrollbars(0)
+form caption("pvshift Frequency Shifter") size(510,  90), pluginid("shft"), scrollbars(0) style("legacy")
 
 image bounds( 15,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
 image bounds( 85,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)

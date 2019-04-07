@@ -19,7 +19,7 @@
 ; Level		-	Output level
 
 <Cabbage>
-form caption("Compressor/Expander") size(890, 100), pluginid("CoEx")
+form caption("Compressor/Expander") size(890, 100), pluginid("CoEx") style("legacy")
 image                       bounds(0, 0, 890, 100), colour("tan"), shape("rounded"), outlinecolour("white"), outlinethickness(6)
 rslider  bounds( 10, 13, 75, 75), text("Threshold"), channel("thresh"), range(0,1,0.143,0.5,0.001),     textcolour("black"), colour(37,59,59), trackercolour("Silver")
 rslider  bounds( 80, 13, 75, 75), text("Compress"),  channel("comp"),   range(0,1,0.25),               textcolour("black"), colour(37,59,59), trackercolour("Silver")

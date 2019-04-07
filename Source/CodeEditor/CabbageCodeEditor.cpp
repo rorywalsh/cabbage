@@ -156,54 +156,54 @@ void CabbageCodeEditorComponent::updateColourScheme (bool isCsdFile)
     }
     else
     {
-        Colour background = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground,
-                                                                     Colour (70, 70, 70));
+        //Colour background = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground,
+        //                                                             Colour (70, 70, 70));
 
 
 
-        const Type types[] =
-        {
-            {
-                "Error",             CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::numbers,
-                Colours::grey.darker()).getARGB()
-            },
-            {
-                "Comment",           CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::comment,
-                Colours::grey.darker()).getARGB()
-            },
-            {"Keyword",           background.contrasting (.3f).getARGB()},
-            {
-                "Identifier",        CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::identifierLiteral,
-                Colours::grey.darker()).getARGB()
-            },
-            {"Integer",           background.contrasting (.8f).getARGB()},
-            {"Float",             Colours::cornflowerblue.getARGB()},
-            {
-                "String",            CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::stringLiteral,
-                Colours::grey.darker()).getARGB()
-            },
-            {"Operator",          Colours::pink.darker().getARGB()},
-            {"Bracket",           background.contrasting (.3f).getARGB()},
-            {"Punctuation",       Colours::red.darker().getARGB()},
-            {"Preprocessor Text", Colours::red.darker().getARGB()},
-            {
-                "Csd Tag",           CabbageSettings::getColourFromValueTree (valueTree,
-                CabbageColourIds::csdtags,
-                Colours::grey.darker()).getARGB()
-            }
-        };
+        //const Type types[] =
+        //{
+        //    {
+        //        "Error",             CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::numbers,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {
+        //        "Comment",           CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::comment,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {"Keyword",           background.contrasting (.3f).getARGB()},
+        //    {
+        //        "Identifier",        CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::identifierLiteral,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {"Integer",           background.contrasting (.8f).getARGB()},
+        //    {"Float",             Colours::cornflowerblue.getARGB()},
+        //    {
+        //        "String",            CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::stringLiteral,
+        //        Colours::grey.darker()).getARGB()
+        //    },
+        //    {"Operator",          Colours::pink.darker().getARGB()},
+        //    {"Bracket",           background.contrasting (.3f).getARGB()},
+        //    {"Punctuation",       Colours::red.darker().getARGB()},
+        //    {"Preprocessor Text", Colours::red.darker().getARGB()},
+        //    {
+        //        "Csd Tag",           CabbageSettings::getColourFromValueTree (valueTree,
+        //        CabbageColourIds::csdtags,
+        //        Colours::grey.darker()).getARGB()
+        //    }
+        //};
 
-        CodeEditorComponent::ColourScheme cs;
+        //CodeEditorComponent::ColourScheme cs;
 
-        for (std::size_t i = 0;
-             i < sizeof (types) / sizeof (types[0]); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
-            cs.set (types[i].name, Colour (types[i].colour));
+        //for (std::size_t i = 0;
+        //     i < sizeof (types) / sizeof (types[0]); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
+        //    cs.set (types[i].name, Colour (types[i].colour));
 
-        this->setColourScheme (cs);
+        //this->setColourScheme (cs);
     }
 }
 //==============================================================================
@@ -368,19 +368,6 @@ void CabbageCodeEditorComponent::replaceText (String text, String replaceWith)
 
 }
 //==============================================================================
-void CabbageCodeEditorComponent::sendUpdateMessage (int lineNumber)
-{
-    allowUpdateOfPluginGUI = false;
-    const StringArray csdArray = getAllTextAsStringArray();
-    const int cabbageSectionClosingLineNumber = csdArray.indexOf ("</Cabbage>");
-
-    if (allowUpdateOfPluginGUI && lineNumber < cabbageSectionClosingLineNumber)
-    {
-        //sendChangeMessage();
-    }
-
-}
-//==============================================================================
 // the update messages sent from these method could be plaaced in a timer callback if they
 // start to make the editor less responsive...
 void CabbageCodeEditorComponent::codeDocumentTextInserted (const String& text, int startIndex)
@@ -393,7 +380,7 @@ void CabbageCodeEditorComponent::codeDocumentTextInserted (const String& text, i
 
     lastAction = "insertText";
     const CodeDocument::Position pos (getDocument(), startIndex);
-    sendUpdateMessage (pos.getLineNumber());
+
     const int lineNumber = pos.getLineNumber();
     if(range.contains(pos.getLineNumber()) == false)
         handleAutoComplete (text);
@@ -403,7 +390,7 @@ void CabbageCodeEditorComponent::codeDocumentTextDeleted (int startIndex, int en
 {
     const CodeDocument::Position endPos (getDocument(), endIndex);
     lastAction = "removeText";
-    sendUpdateMessage (endPos.getLineNumber());
+
 }
 
 void CabbageCodeEditorComponent::insertTextAtCaret (const String& textToInsert)
@@ -420,7 +407,7 @@ void CabbageCodeEditorComponent::removeLine (int lineNumber)
     moveCaretTo (CodeDocument::Position (getDocument(), lineNumber, 5000), false);
     moveCaretTo (CodeDocument::Position (getDocument(), lineNumber, 0), true);
     getDocument().replaceSection (getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
-    sendUpdateMessage (lineNumber);
+
 }
 
 void CabbageCodeEditorComponent::removeSelectedText()

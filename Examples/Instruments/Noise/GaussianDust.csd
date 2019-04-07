@@ -5,7 +5,7 @@ A simple encapsulation of the 'gausstrig' opcode.
 Added features are stereo panning (spread) of the dust, a random tonal variation (lowpass filter with jumping cutoff frequency) and constant low and highpass filters.
 
 <Cabbage>
-form caption("Gaussian Dust"), size(490, 350), pluginid("gaus")
+form caption("Gaussian Dust"), size(490, 350), pluginid("gaus") style("legacy")
 image                  bounds(0, 0, 490, 350), colour("DarkSlateGrey"), shape("sharp"), outlinecolour("white"), outlinethickness(4) 
 checkbox bounds( 15, 10, 80, 15), text("On/Off"), channel("onoff"), value(1), fontcolour("white")
 combobox bounds( 10, 40, 70, 20), channel("mode"), value(2), text("Held", "Reinit")

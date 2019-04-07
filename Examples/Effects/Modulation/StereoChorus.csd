@@ -7,7 +7,7 @@
 ; Dereg. (deregulate) adds a random modulation to both LFO rate and depth in both LFO modes
 
 <Cabbage>
-form caption("Stereo Chorus") size(595, 100), pluginid("StCh")
+form caption("Stereo Chorus") size(595, 100), pluginid("StCh") style("legacy")
 image                 bounds(0, 0, 595, 100), colour("DarkSlateGrey"), shape("rounded"), outlinecolour("white"), outlinethickness(6)
 label    bounds( 15, 22, 75, 12), text("LFO Type:"), fontcolour("white")
 combobox bounds( 15, 35, 75, 20), text("Sine","RSpline"), channel("type"), textcolour("white"), colour( 7,29,29), fontcolour("white")

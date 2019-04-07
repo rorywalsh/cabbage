@@ -54,7 +54,7 @@
 
 
 <Cabbage>
-form caption("grain3 File Player") size(1040,440), colour(0,0,0), pluginid("G3FP"), guirefresh(16)	; guirefresh value adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing.
+form caption("grain3 File Player") size(1040,440), colour(0,0,0), pluginid("G3FP"), guirefresh(16)	; guirefresh value adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing. style("legacy")
 
 #define RSliderStyle # trackercolour(170,135,130), textcolour("white"), outlinecolour( 50, 15, 10), colour( 90, 45, 50)#
 

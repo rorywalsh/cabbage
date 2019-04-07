@@ -51,7 +51,7 @@
 ; Level			-	output gain control
 
 <Cabbage>
-form caption("Spiccato"), size(990,285), colour(255,230,220), pluginid("Spic")
+form caption("Spiccato"), size(990,285), colour(255,230,220), pluginid("Spic") style("legacy")
 
 image    bounds(  5,  5,360, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("PresEnv") {
 label    bounds(  0,  5,360, 10), text("B   O   W      P   R   E   S   S   U   R   E"), fontcolour("black")

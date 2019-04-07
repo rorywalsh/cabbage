@@ -13,7 +13,7 @@ The stretch function works by reducing the speed during silent sections.
 During 'silent' sections, audio will be muted completely and 'Str.Ratio' will be multipled to the main 'Speed' 
 
 <Cabbage>
-form caption("Diskin File Player") size(1025, 310), pluginid("DkPl")
+form caption("Diskin File Player") size(1025, 310), pluginid("DkPl") style("legacy")
 image                    bounds(  0,  0,1025, 310), colour( 70, 30, 30), shape("sharp"), outlinecolour("White"), line(3)	; main panel colouration    
 
 soundfiler           bounds(  5,  5,1015,140), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255)

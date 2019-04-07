@@ -23,6 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageCodeEditor.h"
 #include "CabbageOutputConsole.h"
+#include "JavascriptCodeTokeniser.h"
 
 class CabbageMainComponent;
 
@@ -86,7 +87,7 @@ public:
     StatusBar statusBar;
     CodeDocument csoundDocument;
     CsoundTokeniser csoundTokeniser;
-    XmlTokeniser xmlTokeniser;
+	JavascriptTokeniser javaTokeniser;
     CabbageSettings* settings;
 
 private:

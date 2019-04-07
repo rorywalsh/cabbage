@@ -15,7 +15,7 @@
 ; Tempo		in beats per minute
 
 <Cabbage>
-form caption("GEN02"), size(720, 440), scrollbars(0), colour( 50, 50, 50),pluginid("gn02"), guirefresh(32)
+form caption("GEN02"), size(720, 440), scrollbars(0), colour( 50, 50, 50),pluginid("gn02"), guirefresh(32) style("legacy")
 
 #define RSliderStyle1 # colour("yellow"), outlinecolour(100,100,100), trackercolour(150,150,150) #
 #define RSliderStyle2 # colour("green"),  outlinecolour(100,100,100), trackercolour(150,150,150) #

@@ -27,7 +27,7 @@
 ; The phase of the display can be shifted using the small horizontal slider just beneath the waveform display.
 
 <Cabbage>
-form caption("Oscilloscope"), size(930, 450), pluginid("osci"), colour( 20, 20, 20,150)
+form caption("Oscilloscope"), size(930, 450), pluginid("osci"), colour( 20, 20, 20,150) style("legacy")
 
 ;gentable bounds(  5,  5, 910, 240), identchannel("table1"), tablenumbers(1,2,3), tablecolours("lightblue","red","green"), amprange(-1,1,0), zoom(-1)
 gentable bounds(  5,  5, 910, 240), identchannel("table1"), tablenumbers(1), tablecolours("lightblue"), amprange(-1,1,1), zoom(-1)

@@ -13,7 +13,7 @@
 ; Env.Shape	-	Duration of attack and release of synthesizer notes 
 
 <Cabbage>
-form caption("GEN08"), size(410, 300), pluginid("gn08"), colour(120,70,170,150)
+form caption("GEN08"), size(410, 300), pluginid("gn08"), colour(120,70,170,150) style("legacy")
 
 gentable bounds(  5,  5, 400, 120), identchannel("table1"), tablenumber(1), tablecolour("yellow"), amprange(-1,1,1), outlinethickness(2), tablegridcolour(0,0,0,0), zoom(-1), fill(1)
 

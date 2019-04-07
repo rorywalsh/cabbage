@@ -20,7 +20,7 @@
 ; I have been unable to find a clear technical specification of how this was implemented but have nonetheless made my 'best guess'.
 
 <Cabbage>
-form caption("...") size(159, 180), pluginid("basl"), scrollbars(0)
+form caption("...") size(159, 180), pluginid("basl"), scrollbars(0) style("legacy")
 
 label   bounds(  5,  3, 18, 22), text("R"), fontcolour(red)
 label   bounds( 20,  5, 18, 22), text("H"), fontcolour(yellow)

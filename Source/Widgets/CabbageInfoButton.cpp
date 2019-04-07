@@ -20,7 +20,7 @@
 #include "CabbageInfoButton.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageInfoButton::CabbageInfoButton (ValueTree wData)
+CabbageInfoButton::CabbageInfoButton (ValueTree wData, String style)
     : widgetData (wData),
       TextButton()
 {
@@ -36,12 +36,26 @@ CabbageInfoButton::CabbageInfoButton (ValueTree wData)
     setImgProperties (*this, wData, "buttonoff");
     addListener (this);
 
+    const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
+    const String imgOver = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonover);
+    const String imgOn = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonon);
+    
+    if(style == "legacy")
+    {
+        return;
+    }
+    
+    //if users are passing custom images, use old style look and feel
+    if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
+        imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
+    {
+        setLookAndFeel(&flatLookAndFeel);
+    }
 }
 
 //===============================================================================
 void CabbageInfoButton::buttonClicked (Button* button)
-{
-    
+{    
     if (File(getCsdFile()).getParentDirectory().getChildFile (filename).existsAsFile() || filename.contains("http://") || filename.contains("https://"))
     {
         URL url (filename);

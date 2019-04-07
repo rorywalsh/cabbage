@@ -46,7 +46,7 @@
 ; Layers - controls a number of additional dissonant layers added for each note played. This is a feature that is still under development
                                                            
 <Cabbage>
-form caption("Pad Synth"), size(1120, 420), pluginid("PdSy")
+form caption("Pad Synth"), size(1120, 420), pluginid("PdSy") style("legacy")
 
 #define PlantBoxAppearance # shape("sharp"), colour( 20, 20, 40), outlinecolour("grey"), outlinethickness(2) #
 

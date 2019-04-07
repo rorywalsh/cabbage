@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
@@ -29,13 +30,13 @@
 class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public CabbageWidgetBase
 {
     int corners;
-
+    CabbagePluginEditor* owner;
     bool isRect;
     String name, tooltipText, buttonText, colour, fontcolour, oncolour;
 
 public:
 
-    CabbageCheckbox (ValueTree widgetData);
+    CabbageCheckbox (ValueTree widgetData,  CabbagePluginEditor* owner);
     ~CabbageCheckbox() {};
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&) override {};

@@ -20,7 +20,7 @@
 
 
 <Cabbage>
-form caption("Mincer File Player") size(1055,370), colour(  0,  0,  0) pluginid("Minc"), guirefresh(10)
+form caption("Mincer File Player") size(1055,370), colour(  0,  0,  0) pluginid("Minc"), guirefresh(10) style("legacy")
 image                    bounds(  0,  0,1055,370), colour( 50,100,100), outlinecolour("White"), line(3), shape("sharp")
 
 soundfiler bounds(  5,  5,1045,150), channel("beg","len"), channel("pos1","end1"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 

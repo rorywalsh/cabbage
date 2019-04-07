@@ -14,7 +14,7 @@
 ; 'Smooth' applies smoothing to changes of amplitude which can be helpful in stabilising flickering spectrum representations.
 
 <Cabbage>
-form caption("FFT Spectrum"), size(610,640), colour( 50, 50, 50), pluginid("spec"), guirefresh(16)
+form caption("FFT Spectrum"), size(610,640), colour( 50, 50, 50), pluginid("spec"), guirefresh(16) style("legacy")
 gentable outlinethickness(1), bounds( 0,  0, 610,300), tablenumber(1), tablebackgroundcolour("white"), tablegridcolour("WhiteSmoke"), tablecolour(0,0,200,200), identchannel("ampFFT"), amprange(0,1,-1), outlinethickness(0), samplerange(0, 512) 
 
 image bounds(0,305,600,165), plant("source"), colour(0,0,0,0)

@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Band Filter"), colour(10,10,10), size(470, 360), pluginid("BdFl")
+form caption("Band Filter"), colour(10,10,10), size(470, 360), pluginid("BdFl") style("legacy")
 xypad bounds(5, 5, 350, 350), channel("cf", "bw"), rangex(0, 1, 0.5), rangey(0, 1, 0.3), text("x:cutoff | y:bandwidth"), colour(200,200,200)
 checkbox bounds(370, 10, 20, 20), channel("balance"), FontColour("white"),  value(0)
 label    bounds(395, 15, 55, 15), text("Balance"), FontColour("white")

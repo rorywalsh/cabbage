@@ -10,6 +10,14 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/max.md !}  
 
+{! ./markdown/Widgets/Properties/markercolour.md !}  
+
+{! ./markdown/Widgets/Properties/markerthickness.md !}  
+
+{! ./markdown/Widgets/Properties/markerstart.md !} 
+
+{! ./markdown/Widgets/Properties/markerend.md !}  
+
 {! ./markdown/Widgets/Properties/min.md !}  
 
 {! ./markdown/Widgets/Properties/outlinecolour.md !}  

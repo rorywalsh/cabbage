@@ -57,7 +57,7 @@ z
 ; MONO/POLY	-	sets whether a single LFO is used for all notes played (MONO) or whether each note get its own LFO
 
 <Cabbage>
-form caption("Hard Sync Synth") size(1175, 325), pluginid("HdSy")
+form caption("Hard Sync Synth") size(1175, 325), pluginid("HdSy") style("legacy")
 
 ; main waveform
 image    bounds(  5,  0,135,115), plant("waveform"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")

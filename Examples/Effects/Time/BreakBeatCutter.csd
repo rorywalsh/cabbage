@@ -60,7 +60,7 @@
 ; ========================================================================================================================
 
 <Cabbage>
-form          size(440,470), caption("Break Beat Cutter"), pluginid("bbct")
+form          size(440,470), caption("Break Beat Cutter"), pluginid("bbct") style("legacy")
 
 
 groupbox bounds( 0,  0,440,170), text("CUTTER"), plant("cutter"),colour(20,20,20), FontColour(silver){

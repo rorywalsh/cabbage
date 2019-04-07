@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2014
 
 <Cabbage>
-form caption("GEN20"), size(410, 230), pluginid("gn20"), colour("20,70,170,150")
+form caption("GEN20"), size(410, 230), pluginid("gn20"), colour("20,70,170,150") style("legacy")
 
 gentable bounds(  5,  5, 400, 120), tablenumber(1), identchannel("table1"), zoom(-1), amprange(0,1,1), tablecolour("LightSlateGrey"), zoom(-1), tablebackgroundcolour("white"), fill(0), outlinethickness(2) tablegridcolour(220,220,220)
 

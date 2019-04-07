@@ -11,7 +11,7 @@
    
 <Cabbage>
 #define SLIDER_APPEARANCE textcolour("black"), trackercolour("LightSlateGrey")
-form caption("Limiter") size(435,105), pluginid("lmtr")
+form caption("Limiter") size(435,105), pluginid("lmtr") style("legacy")
 image         bounds(  0,  0,435,105), outlinethickness(6), outlinecolour("white"), colour("silver")
 rslider  bounds( 10,15, 80, 80), channel("thresh"), text("Threshold [dB]"), range(-120,0,-24), $SLIDER_APPEARANCE
 rslider  bounds( 90,15, 80, 80), channel("smooth"), text("Smoothing"), range(0.01,1,0.1,0.5), $SLIDER_APPEARANCE

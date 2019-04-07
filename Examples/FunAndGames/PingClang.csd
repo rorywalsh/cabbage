@@ -23,7 +23,7 @@
 ; Notch		-	turns on a notch filter operating at the fundemental frequency of the 'clang' sounds
 
 <Cabbage>
-form caption("Ping Clang") size(610,500), guirefresh(32), pluginid("PinC")
+form caption("Ping Clang") size(610,500), guirefresh(32), pluginid("PinC") style("legacy")
 image              bounds(0,  0,610,500), shape("sharp"), colour("black") ;background
 image              bounds(0,465,610,35), shape("sharp"), colour(100,100,100) 		; floor
 image bounds( 0, 0, 0,0), shape("sharp"), colour(255,255, 50), identchannel("block1")	; blocks: yellow

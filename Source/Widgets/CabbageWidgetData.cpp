@@ -80,8 +80,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::csoundoutput))
         setCsoundOutputProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::keyboard))
-        setKeyboardProperties (widgetData, ID);
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::keyboard) || 
+		strTokens[0].trim() == String(CabbageWidgetTypes::keyboarddisplay))
+        setKeyboardProperties (widgetData, ID, (strTokens[0].trim() == "keyboard" ? false : true));
 
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::form))
         setFormProperties (widgetData, ID);
@@ -302,6 +303,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("author"):
             case HashStringToInt ("align"):
             case HashStringToInt ("displaytype"):
+            case HashStringToInt ("radiogroup"):
             case HashStringToInt ("name"):
 			case HashStringToInt ("style"):
             case HashStringToInt ("caption"):
@@ -368,7 +370,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("latched"):
             case HashStringToInt ("alpha"):
             case HashStringToInt ("corners"):
-            case HashStringToInt ("radiogroup"):
             case HashStringToInt ("guirefresh"):
             case HashStringToInt ("textbox"):
             case HashStringToInt ("valuetextbox"):
@@ -483,6 +484,10 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setScrubberPosition (strTokens, widgetData);
                 break;
 
+			case HashStringToInt("keypressed"):
+				setKeyboardDisplayNotes(strTokens, widgetData);
+				break;
+
             case HashStringToInt ("samplerange"):
                 setProperty (widgetData, CabbageIdentifierIds::startpos, strTokens[0].trim().getFloatValue());
 
@@ -503,7 +508,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("blacknotecolour"):
             case HashStringToInt ("keydowncolour"):
             case HashStringToInt ("whitenotecolour"):
-            case HashStringToInt ("mouseoeverkeycolour"):
+            case HashStringToInt ("mouseoverkeycolour"):
             case HashStringToInt ("arrowbackgroundcolour"):
             case HashStringToInt ("arrowcolour"):
             case HashStringToInt ("ballcolour"):
@@ -573,7 +578,7 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
-    StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")).trimCharactersAtStart ("), "), ')');
+    StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")+1).trimCharactersAtStart ("), "), ')');
 
     StringArray parameters;
 
@@ -701,8 +706,6 @@ void CabbageWidgetData::setMatrixPrefix(StringArray strTokens, String parameters
 	//else //rowprefix
 	//	setProperty(widgetData, "rowprefix", prefixes);
 
-	for (auto str : prefixes)
-		CabbageUtilities::debug(str);
 }
 
 
@@ -957,6 +960,20 @@ void CabbageWidgetData::setAmpRange (StringArray strTokens, ValueTree widgetData
     setProperty (widgetData, CabbageIdentifierIds::amprange_tablenumber, array[2]);
     if(array.size()==4)
         setProperty (widgetData, CabbageIdentifierIds::amprange_quantise, array[3]);
+}
+
+void CabbageWidgetData::setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData)
+{
+	var notes;
+	notes.append(strTokens[0].trim().getIntValue());
+
+
+	for (int i = 1; i < strTokens.size(); i++)
+	{
+		notes.append(strTokens[i].trim().getIntValue());
+	}
+    
+    setProperty(widgetData, CabbageIdentifierIds::keypressed, notes);
 }
 
 void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree widgetData)

@@ -16,7 +16,7 @@
 
 
 <Cabbage>
-form caption("GEN33"), size(520, 320), pluginid("gn33")
+form caption("GEN33"), size(520, 320), pluginid("gn33") style("legacy")
 gentable bounds(  0,  0, 520, 120), identchannel("table1"), tablenumber(1), tablecolour("yellow"), zoom(-1), , fill(0), amprange(1,-1,1)
 
 

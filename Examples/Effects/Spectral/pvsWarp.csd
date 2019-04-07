@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("pvsWarp") size(535, 90), pluginid("warp")
+form caption("pvsWarp") size(535, 90), pluginid("warp") style("legacy")
 image pos(0, 0), size(535, 90), colour( 80, 80,135,220), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
 rslider bounds( 10, 11, 70, 70), text("Scale"),    channel("scal"),      range(0.1, 4, 1, 0.5, 0.001), colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
 rslider bounds( 80, 11, 70, 70), text("Shift"),    channel("shift"),     range(-5000, 5000, 0),        colour("LightSlateGrey"), textcolour("white"), trackercolour("white")

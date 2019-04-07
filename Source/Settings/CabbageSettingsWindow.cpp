@@ -319,14 +319,14 @@ void CabbageSettingsWindow::addMiscProperties()
     const String cabbageManualDir = settings.getUserSettings()->getValue ("CabbageManualDir");
     const String plantDir = settings.getUserSettings()->getValue ("CabbagePlantDir");
     const String userFilesDir = settings.getUserSettings()->getValue ("UserFilesDir");
-	const String customIcons = settings.getUserSettings()->getValue("CustomIconsDir");
+	const String customTheme = settings.getUserSettings()->getValue("CustomThemeDir");
 
     dirProps.add (new CabbageFilePropertyComponent ("Csound manual dir.", true, false,  "*", manualDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage manual dir.", true, false,  "*", cabbageManualDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage examples dir.", true, false, "*", examplesDir));
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage plants dir.", true, false, "*", plantDir));
     dirProps.add (new CabbageFilePropertyComponent ("User files dir.", true, false, "*", userFilesDir));
-	dirProps.add(new CabbageFilePropertyComponent ("Custom icons dir.", true, false, "*", customIcons));
+	dirProps.add(new CabbageFilePropertyComponent ("Custom theme dir.", true, false, "*", customTheme));
 
     const String sshAddress = settings.getUserSettings()->getValue ("SSHAddress");
     sshProps.add (new TextPropertyComponent (Value (sshAddress), "SSH Address", 200, false));
@@ -431,8 +431,8 @@ void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileCom
         settings.getUserSettings()->setValue ("CabbageExamplesDir", fileComponent->getCurrentFileText());
     else if (fileComponent->getName() == "User files dir.")
         settings.getUserSettings()->setValue ("UserFilesDir", fileComponent->getCurrentFileText());
-	else if (fileComponent->getName() == "Custom icons dir.")
-		settings.getUserSettings()->setValue("CustomIconsDir", fileComponent->getCurrentFileText());
+	else if (fileComponent->getName() == "Custom theme dir.")
+		settings.getUserSettings()->setValue("CustomThemeDir", fileComponent->getCurrentFileText());
 }
 
 void CabbageSettingsWindow::selectPanel (String button)

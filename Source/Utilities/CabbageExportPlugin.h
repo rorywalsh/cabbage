@@ -34,9 +34,9 @@ public:
 
     long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);
     int setUniquePluginId (File binFile, File csdFile, String pluginId, bool isRSRC=false);
-    void writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, String manu = "CabbageAudio", bool encrypt = false);
+    void writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, bool encrypt = false);
     void addFilesToPluginBundle (File csdFile, File exportDir);
-    void exportPlugin (String type, File csdFile, String pluginId, String destination="", String manu="CabbageAudio", bool encrypt = false);
+    void exportPlugin (String type, File csdFile, String pluginId, String destination="", bool promptForFilename = true, bool encrypt = false);
 
     String encodeString (File csdFile)
     {

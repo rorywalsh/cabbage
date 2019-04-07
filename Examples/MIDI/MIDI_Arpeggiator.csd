@@ -4,7 +4,7 @@
 ; Duration	-	ratio of the duration that will fill the gap until the next note. Therefore a value of '1' provides a legato arpeggio.
 
 <Cabbage>
-form caption("Arpeggiator") size(720, 100), pluginid("MArp")
+form caption("Arpeggiator") size(720, 100), pluginid("MArp") style("legacy")
 
 #define RSliderStyle #trackercolour(0,255,255), colour(100,100,140), outlinecolour(20,20,20)#
 

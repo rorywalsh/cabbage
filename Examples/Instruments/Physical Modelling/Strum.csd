@@ -13,7 +13,7 @@
 ; Level		-	output level
 
 <Cabbage>
-form caption("Strum") size(320,400), pluginid("strm"), guirefresh(128)
+form caption("Strum") size(320,400), pluginid("strm"), guirefresh(128) style("legacy")
 
 image    bounds(  0,  0,320,300), colour(250,230,255),    shape("sharp"), outlinecolour("black"), outlinethickness(1)
 xypad    bounds(  0,  0,320,300), colour(220,200,250), channel("x", "y"), rangex(0, 1.00, 0), rangey(0, 1, 0), colour("DarkSlateGrey"), textcolour("DarkSlateGrey")

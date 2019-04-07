@@ -52,7 +52,7 @@ Filters
  The four filters are in a parallel arrangement as opposed to being in series.
 
 <Cabbage>
-form caption("Clavinet"), size(550, 170), pluginid("clav"), colour(228,156,28), guirefresh(64)
+form caption("Clavinet"), size(550, 170), pluginid("clav"), colour(228,156,28), guirefresh(64) style("legacy")
 
 #define RSliderStyle textcolour(black), outlinecolour(50,50,50)
 

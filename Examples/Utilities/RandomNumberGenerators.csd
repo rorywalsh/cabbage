@@ -4,7 +4,7 @@
 ; It will be noticed that rspline can output values beyond the maximum allowed amplitude limits (-1 and 1)
 
 <Cabbage>
-form caption("Random Number Generators"), size(920, 280), pluginid("RaFu"), guirefresh(32)
+form caption("Random Number Generators"), size(920, 280), pluginid("RaFu"), guirefresh(32) style("legacy")
 
 image     bounds(  5,  0,910,200), colour(0,0,0,0), plant("Table") {
 gentable  bounds(  0,  0,910,150), identchannel("table1"), tablenumber(1), tablecolour:1(100,0,0), alpha(1), amprange(-1,1,1), zoom(-1), tablebackgroundcolour(50,50,50), tablegridcolour(100,100,100)

@@ -2,7 +2,7 @@
 ; Iain McCurdy, 2017
 
 <Cabbage>
-form caption("Stormy Weather") size(300, 310), pluginid("StWr") 
+form caption("Stormy Weather") size(300, 310), pluginid("StWr")  style("legacy")
 button  bounds( 10,  5,70, 30), text("Wind","Wind"), latched(1), fontcolour:0(100,100,100), channel("Wind"), value(1)
 
 rslider bounds(  5, 40, 80, 80), channel("WindLev"), text("Level"), range(0, 1, .5, 1, .01)

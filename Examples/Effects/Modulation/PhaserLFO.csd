@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Phaser LFO") size(580, 95), pluginid("phsr")
+form caption("Phaser LFO") size(580, 95), pluginid("phsr") style("legacy")
 image          bounds(0, 0, 580, 95), colour( 100, 110, 130), shape("rounded"), outlinecolour("white"), outlinethickness(4)
 label    bounds(10,  8, 75, 10), text("INPUT"), fontcolour(0,10,30)
 combobox bounds(10, 18, 75, 20), channel("input"), value(1), text("Live","Tone","Noise")

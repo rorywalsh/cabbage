@@ -48,7 +48,7 @@ REVERB - a reverb effect using the freeverb opcode
 
 
 <Cabbage>
-form caption("FM Clang") size(945, 320), pluginid("FMCl"), guirefresh(256)
+form caption("FM Clang") size(945, 320), pluginid("FMCl"), guirefresh(256) style("legacy")
 
 #define RSliderStyle # colour("white"), trackercolour("silver"), fontcolour("white"), textcolour("white"), outlinecolour(120,140,140)#
 

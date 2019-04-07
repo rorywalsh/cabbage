@@ -4,7 +4,7 @@
 ; For a more extensive use of this opcode see the example "Harmonics.csd"
 
 <Cabbage>
-form caption("wguide2") size(595, 90), pluginid("WGu2")
+form caption("wguide2") size(595, 90), pluginid("WGu2") style("legacy")
 image        pos(0, 0), size(595, 90), colour(25,0,25), shape("rounded"), outlinecolour("white"), outlinethickness(4)
 button  bounds( 10, 30, 55, 25), text("PLUCK"), channel("pluck"), toggle(0)
 rslider bounds( 65, 11, 70, 70), text("Freq. 1"),   channel("freq1"),     range(20, 8000, 160, 0.25), colour(150,110,110), trackercolour(white)

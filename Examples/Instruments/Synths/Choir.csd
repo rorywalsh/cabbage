@@ -11,7 +11,7 @@ N.Voices value is not strictly speaking accurate: 	1 = 1 voice
 							5 = 8 voices, this is on account of how the mechanism implements a stereo effect
 
 <Cabbage>
-form caption("Choir") size(770, 315), pluginid("choi")
+form caption("Choir") size(770, 315), pluginid("choi") style("legacy")
 
 ; main container
 image bounds(  0,  0,770, 315), colour(255,100,  0, 40), shape("rounded"), outlinecolour("white"), outlinethickness(3)

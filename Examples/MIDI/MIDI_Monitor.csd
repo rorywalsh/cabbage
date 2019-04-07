@@ -5,7 +5,7 @@
 
 
 <Cabbage>
-form caption("Midi Monitor"), size(610, 425), colour( 50, 50, 50),pluginid("MiMo"), guirefresh(16)
+form caption("Midi Monitor"), size(610, 425), colour( 50, 50, 50),pluginid("MiMo"), guirefresh(16) style("legacy")
 
 ; NOTES AND VELOCITIES
 image     bounds(  0,  0, 610,110), colour(75, 85, 90, 100), line(2), shape(sharp)

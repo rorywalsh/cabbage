@@ -28,6 +28,7 @@ public:
         addAndMakeVisible (filenameComp);
         filenameComp.setCurrentFile (File (currentFile), true, dontSendNotification);
         filenameComp.setTooltip (filenameComp.getCurrentFileText());
+        filenameComp.setFilenameIsEditable(true);
     }
 
     void refresh() {}

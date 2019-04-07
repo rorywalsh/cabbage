@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../LookAndFeel/FlatButtonLookAndFeel.h"
 
 
 class CabbageInfoButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener
@@ -31,8 +32,8 @@ class CabbageInfoButton : public TextButton, public ValueTree::Listener, public 
 
 public:
 
-    CabbageInfoButton (ValueTree wData);
-    ~CabbageInfoButton() {};
+    CabbageInfoButton (ValueTree wData, String style);
+    ~CabbageInfoButton() {setLookAndFeel(nullptr);};
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
@@ -46,7 +47,7 @@ public:
     void buttonClicked (Button* button)  override;
     ValueTree widgetData;
 
-
+    FlatButtonLookAndFeel flatLookAndFeel;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageInfoButton);
 };
 
