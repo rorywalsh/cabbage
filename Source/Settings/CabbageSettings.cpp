@@ -99,7 +99,6 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ShowAutoComplete", 0);
     defaultPropSet->setValue ("ShowNativeFileDialogues", 1);
     defaultPropSet->setValue ("EnableNativePopup", 0);
-	defaultPropSet->setValue ("UseModifiedAudioGraph", 0);
     defaultPropSet->setValue ("SSHHomeDir", "/pi");
     defaultPropSet->setValue ("SSHAddress", "empty");
     defaultPropSet->setValue ("SSHLocalDir", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory).getFullPathName());
@@ -114,6 +113,11 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("IDE_LastKnownY", 10);
     defaultPropSet->setValue ("IDE_StatusBarPos", 500);
     defaultPropSet->setValue ("searchCaseSensitive", 0);
+
+	//=====================================================================
+	defaultPropSet->setValue("AudioDriversWarning_dismiss", 0);
+
+	//=====================================================================
 
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::menuBarBackground, "ff52636a" /*"ff636262"*/);
     defaultPropSet->setValue ("Colours_" + CabbageColourIds::menuBarText,  "FFFFFFFF");

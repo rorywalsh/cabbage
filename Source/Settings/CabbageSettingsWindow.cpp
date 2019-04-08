@@ -306,8 +306,7 @@ void CabbageSettingsWindow::addMiscProperties()
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopGraphValue, "Graph Window", "Always show graph on top"));
     //editorProps.add (new BooleanPropertyComponent (compileOnSaveValue, "Compiling", "Compile on save"));
     editorProps.add (new BooleanPropertyComponent (autoCompleteValue, "Auto-complete", "Show auto complete popup"));
-	randProps.add(new BooleanPropertyComponent(useModifiedAudioGraph, "Use modified graph", "Workaround for GUI issues on Windows"));
-	useModifiedAudioGraph.addListener(this);
+	randProps.add(new ButtonProperty("Reset don't show again preferences", settings));
 
     const int scrollBy = settings.getUserSettings()->getIntValue ("numberOfLinesToScroll");
     editorProps.add (new TextPropertyComponent (Value (scrollBy), "Editor lines to scroll with MouseWheel", 10, false));
@@ -416,8 +415,6 @@ void CabbageSettingsWindow::valueChanged (Value& value)
         settings.getUserSettings()->setValue ("IdentifiersBeforeLineBreak", value.getValue().toString());
     else if (value.refersToSameSourceAs (autoCompleteValue))
         settings.getUserSettings()->setValue ("DisableAutoComplete", value.getValue().toString());
-	else if (value.refersToSameSourceAs(useModifiedAudioGraph))
-		settings.getUserSettings()->setValue("UseModifiedAudioGraph", value.getValue().toString());
 }
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)

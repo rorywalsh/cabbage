@@ -108,6 +108,30 @@ public:
     CodeDocument document;
     CsoundTokeniser csoundTokeniser;
 
+
+	class ButtonProperty : public ButtonPropertyComponent
+	{
+	public:
+		ButtonProperty(String text, CabbageSettings& _settings) : ButtonPropertyComponent(text, true),
+		settings(_settings), text(text)
+		{}
+		~ButtonProperty() {}
+
+		String getButtonText() const override
+		{
+			return text;
+		}
+
+		void buttonClicked() override
+		{
+			settings.getUserSettings()->setValue("AudioDriversWarning_dismiss", "0");
+		}
+
+	private:
+		CabbageSettings& settings;
+		String text;
+	};
+
 private:
     PropertyPanel colourPanel, miscPanel;
     ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
@@ -119,7 +143,7 @@ private:
     TextButton deleteRepoButton, saveRepoButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
 
-    Value alwaysOnTopPluginValue, useModifiedAudioGraph, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
+    Value alwaysOnTopPluginValue, resetNotifications, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
     Viewport viewport;
 
 };

@@ -708,7 +708,8 @@ public:
 
     static void showMessage (String title, String message, LookAndFeel* feel, Component* mainWindow)
     {
-        if (title.length() < 1)title = "Cabbage Message";
+        if (title.length() < 1)
+			title = "Cabbage Message";
 
         mainWindow->setAlwaysOnTop (false);
         AlertWindow alert (title, message, AlertWindow::WarningIcon);
@@ -751,6 +752,29 @@ public:
         alert.showMessageBoxAsync (AlertWindow::WarningIcon, "Cabbage Message" , message, "Ok");
 #endif
     }
+
+	static bool showMessageWithHideOption(String title, String message, LookAndFeel* feel, bool dismiss)
+	{		
+		AlertWindow alert(title, message, AlertWindow::WarningIcon);
+		alert.setLookAndFeel(feel);
+		alert.addButton("Ok", 1);
+		ToggleButton tglBox;
+		tglBox.setBounds(10, alert.getHeight() - 20, 200, 30);
+		LookAndFeel_V4 lAndf;
+		tglBox.setLookAndFeel(&lAndf);
+		tglBox.setButtonText("Don't show again");
+		alert.addCustomComponent(&tglBox);
+#if !defined(AndroidBuild)
+		alert.runModalLoop();
+#else
+		alert.showMessageBoxAsync(AlertWindow::WarningIcon, "Cabbage Message", message, "Ok");
+#endif
+		
+		alert.setLookAndFeel(nullptr);
+		tglBox.setLookAndFeel(nullptr);
+
+		return tglBox.getToggleState();
+	}
 
     static int showYesNoMessage (String message, LookAndFeel* feel, int cancel = 0)
     {

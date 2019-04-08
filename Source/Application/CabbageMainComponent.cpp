@@ -591,7 +591,14 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 	{
 
 		if (deviceManager.getCurrentAudioDeviceType() == "Windows Audio")
-			CabbageUtilities::showMessage("Warning", "Edit mode on Windows only works when using \"ASIO drivers\", \"Windows Audio - Exclusive Mode\", or \"DirectSound\". Please open Cabbage audio settings and select one of these options. For best audio performance always use ASIO drivers. If you don't have any, consider installing ASIO4ALL which is available for free.", lookAndFeel);
+		{
+			const int dismiss = cabbageSettings->getUserSettings()->getIntValue("AudioDriversWarning_dismiss");
+			if (dismiss == 0)
+			{
+				bool value = CabbageUtilities::showMessageWithHideOption("Audio drivers warning", "Edit mode on Windows only works when using \"ASIO drivers\", \"Windows Audio - Exclusive Mode\", or \"DirectSound\". Please open Cabbage audio settings and select one of these options. For best audio performance always use ASIO drivers. If you don't have any, consider installing ASIO4ALL which is available for free.", lookAndFeel, dismiss);
+				cabbageSettings->getUserSettings()->setValue("AudioDriversWarning_dismiss", value);
+			}
+		}
 		if (deviceManager.getAudioDeviceSetup().outputDeviceName == "" && shouldUpdateAudioSettings == false)
 		{
 			CabbageUtilities::showMessage("Warning", "No output device selected. Please open Cabbage audio settings and select a valid output device.", lookAndFeel);
