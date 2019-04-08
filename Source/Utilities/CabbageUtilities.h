@@ -666,37 +666,27 @@ public:
 	static StringArray getTokens(String code, char breakChar)
 	{
         StringArray tokens;
-        std::vector<string> elems;
-        std::stringstream ss(code.toStdString());
-        std::string codeline;
-        int from;
-
-        while (std::getline(ss, codeline))
+        int linesize = code.length();
+        int from = 0; // index of the first char of the current token in this line of code
+        
+        for (int i = 0; i < linesize; i++) // let's find all the tokens in this line of code...
         {
-            // now 'codeline' contains a line of code (of std::string type).
-
-            from = 0; // index of the first char of the current token in this line of code
-            size_t linesize = codeline.size();
-
-            for (std::string::size_type i = 0; i < linesize; i++) // let's find all the tokens in this line of code...
+            while (i < linesize && code[i] != breakChar) // let's find the end of a token...
             {
-                while (i < linesize && codeline[i] != breakChar) // let's find the end of a token...
+                if (code[i] == '\"')   // excuse anything in quotes..
                 {
-                    if (codeline[i] == '\"')   // excuse anything in quotes..
-                    {
-                        i++; // so, skip the first quote char
+                    i++; // so, skip the first quote char
 
-                        while (i < linesize && codeline[i] != '\"') // continue to skip until endline or end quote char
-                            i++;
-                    }
-                    i++; // move to the next char
+                    while (i < linesize && code[i] != '\"') // continue to skip until endline or end quote char
+                        i++;
                 }
-
-                tokens.add(codeline.substr(from, i - from)); // let's add the token to the tokens array
-                from = i + 1; // set new start position for the next token
+                i++; // move to the next char
             }
-        }
 
+            tokens.add(code.substring(from, i)); // let's add the token to the tokens array
+            from = i + 1; // set new start position for the next token
+        }
+        
         return tokens;
 	}
 
