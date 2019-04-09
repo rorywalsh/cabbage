@@ -26,7 +26,6 @@
 #include "../BinaryData/CabbageBinaryData.h"
 
 #include <fstream>
-#include <regex>
 
 class CabbageIDELookAndFeel;
 
@@ -666,34 +665,29 @@ public:
 
 	static StringArray getTokens(String code, char breakChar)
 	{
-		//curtesy of https://stackoverflow.com/users/5405086/xinaiz
+        StringArray tokens;
+        int linesize = code.length();
+        int from = 0; // index of the first char of the current token in this line of code
+        
+        for (int i = 0; i < linesize; i++) // let's find all the tokens in this line of code...
+        {
+            while (i < linesize && code[i] != breakChar) // let's find the end of a token...
+            {
+                if (code[i] == '\"')   // excuse anything in quotes..
+                {
+                    i++; // so, skip the first quote char
 
-		std::vector<std::string> splitted;
-		const std::string s = code.toStdString();
-		StringArray tokens;
-		bool flag = false;
-		
-		splitted.push_back("");
-		
-		for (int i = 0; i<s.size(); ++i)
-		{
-			if (s[i] == '\"')
-			{
-				flag = flag ? false : true;
-				continue;
-			}
+                    while (i < linesize && code[i] != '\"') // continue to skip until endline or end quote char
+                        i++;
+                }
+                i++; // move to the next char
+            }
 
-			if (s[i] == breakChar && !flag)
-				splitted.push_back("");
-			else 
-				splitted[splitted.size() - 1] += s[i];
-			
-		}
-
-		for (auto const & token : splitted)
-			tokens.add(token);
-
-		return tokens;
+            tokens.add(code.substring(from, i)); // let's add the token to the tokens array
+            from = i + 1; // set new start position for the next token
+        }
+        
+        return tokens;
 	}
 
  
