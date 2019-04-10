@@ -595,7 +595,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 			const int dismiss = cabbageSettings->getUserSettings()->getIntValue("AudioDriversWarning_dismiss");
 			if (dismiss == 0)
 			{
-				bool value = CabbageUtilities::showMessageWithHideOption("Audio drivers warning", "Edit mode on Windows only works when using \"ASIO drivers\", \"Windows Audio - Exclusive Mode\", or \"DirectSound\". Please open Cabbage audio settings and select one of these options. For best audio performance always use ASIO drivers. If you don't have any, consider installing ASIO4ALL which is available for free.", lookAndFeel, dismiss);
+				bool value = CabbageUtilities::showMessageWithHideOption("Audio drivers warning", "In order for edit mode to work with \"Windows Audio\", you need to ensure that the sample rate for \"Windows Audio\" is set to 44100 in your audio system settings. For best audio performance always use ASIO drivers. If you don't have any, consider installing ASIO4ALL which is available for free.", lookAndFeel, dismiss);
 				cabbageSettings->getUserSettings()->setValue("AudioDriversWarning_dismiss", value);
 			}
 		}

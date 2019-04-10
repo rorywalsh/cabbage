@@ -453,7 +453,7 @@ void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
 {
     CabbageButton* button;
     components.add (button = new CabbageButton (cabbageWidgetData, this));
-    button->addListener (this);
+    button->button.addListener (this);
     addToEditorAndMakeVisible (button, cabbageWidgetData);
     addMouseListenerAndSetVisibility (button, cabbageWidgetData);
 }
@@ -586,14 +586,14 @@ void CabbagePluginEditor::buttonClicked (Button* button)
 {
     const bool buttonState = button->getToggleState();
 
-    if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
+    if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button->getParentComponent()))
     {
         const StringArray textItems = cabbageButton->getTextArray();
         const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
         const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
 
         if (textItems.size() > 0)
-            cabbageButton->setButtonText ( textItems[ buttonState == false ? 0 : 1]);
+            cabbageButton->button.setButtonText ( textItems[ buttonState == false ? 0 : 1]);
         
         if (latched == 1)
             toggleButtonState (button, buttonState);
@@ -618,7 +618,7 @@ void CabbagePluginEditor::buttonClicked (Button* button)
 
 void CabbagePluginEditor::buttonStateChanged (Button* button)
 {
-    if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
+    if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button->getParentComponent()))
     {
         const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
         const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);

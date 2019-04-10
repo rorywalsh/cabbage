@@ -290,6 +290,7 @@ private:
     String instrumentName;
     Point<int> instrumentBounds;
 
+
 #ifdef Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
 #endif

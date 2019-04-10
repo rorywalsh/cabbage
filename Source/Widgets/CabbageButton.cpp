@@ -23,15 +23,23 @@
 CabbageButton::CabbageButton (ValueTree wData, CabbagePluginEditor* _owner)
     : widgetData (wData),
       owner(_owner),
-      TextButton()
+      button(),
+	  popupBubble(250)
 {
+
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-    setButtonText (getTextArray()[getValue()]);
+    button.setButtonText (getTextArray()[getValue()]);
+	button.addMouseListener(this, false);
 
-    setClickingTogglesState (true);
+	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext) == "0")
+		shouldDisplayPopup = false;
+	else
+		shouldDisplayPopup = true;
 
-    setToggleState ((bool)getValue(), dontSendNotification);
+	button.setClickingTogglesState (true);
+
+	button.setToggleState ((bool)getValue(), dontSendNotification);
 
     const String radioId = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::radiogroup);
     
@@ -40,15 +48,15 @@ CabbageButton::CabbageButton (ValueTree wData, CabbagePluginEditor* _owner)
         const int id = owner->radioGroups.getWithDefault(radioId, -1);
         CabbageUtilities::debug(id);
         if(id != -1)
-            setRadioGroupId (id);
+			button.setRadioGroupId (id);
         else{
             owner->radioGroups.set(radioId, owner->radioGroups.size()+100);
-            setRadioGroupId (owner->radioGroups.getWithDefault(radioId, -1));
+			button.setRadioGroupId (owner->radioGroups.getWithDefault(radioId, -1));
             CabbageUtilities::debug(owner->radioGroups.getWithDefault(radioId, -1).toString());
         }
     }
 
-
+	createPopupBubble();
 
     setImgProperties (*this, wData, "buttonon");
     setImgProperties (*this, wData, "buttonoff");
@@ -60,9 +68,9 @@ CabbageButton::CabbageButton (ValueTree wData, CabbagePluginEditor* _owner)
 
     setLookAndFeelColours (wData);
 	
-	getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
-	getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
-	getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
+	button.getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
+	button.getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
+	button.getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
 
     if(owner->globalStyle == "legacy")
     {
@@ -73,19 +81,68 @@ CabbageButton::CabbageButton (ValueTree wData, CabbagePluginEditor* _owner)
 	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
 		imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
 	{
-		setLookAndFeel(&flatLookAndFeel);
+		button.setLookAndFeel(&flatLookAndFeel);
 	}
 
-
+	addAndMakeVisible(button);
+	button.setName(getName());
 }
 
 void CabbageButton::setLookAndFeelColours (ValueTree wData)
 {
-    setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
-    setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
-    setColour (TextButton::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
-	setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+	button.setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+	button.setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+	button.setColour (TextButton::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
+	button.setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
 
+}
+
+void CabbageButton::resized()
+{
+	button.setBounds(getLocalBounds());
+}
+
+void CabbageButton::createPopupBubble()
+{
+	//create popup display for showing value of sliders.
+	popupBubble.setColour(BubbleComponent::backgroundColourId, Colours::white);
+	popupBubble.setBounds(0, 0, 50, 20);
+	owner->addChildComponent(popupBubble);
+	popupBubble.setVisible(false);
+	popupBubble.setAlwaysOnTop(true);
+}
+
+void CabbageButton::showPopupBubble(int time)
+{
+	if (getTooltipText().isNotEmpty())
+		popupText = getTooltipText();
+
+	popupBubble.showAt(&button, AttributedString(popupText), time);
+
+}
+
+void CabbageButton::mouseDrag(const MouseEvent& event)
+{
+	if (shouldDisplayPopup)
+		showPopupBubble(150);
+}
+
+void CabbageButton::mouseMove(const MouseEvent& event)
+{
+	if (shouldDisplayPopup)
+		showPopupBubble(150);
+}
+
+void CabbageButton::mouseEnter(const MouseEvent& event)
+{
+	if (shouldDisplayPopup)
+		showPopupBubble(1000);
+}
+
+void CabbageButton::mouseExit(const MouseEvent& event)
+{
+	if (shouldDisplayPopup)
+		popupBubble.setVisible(false);
 }
 
 void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -96,8 +153,8 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
         CabbageUtilities::debug(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::name));
         CabbageUtilities::debug(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
         setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
-        setToggleState (getValue() == 0 ? false : true, dontSendNotification);
-        setButtonText (getTextArray()[getValue()]);
+		button.setToggleState (getValue() == 0 ? false : true, dontSendNotification);
+		button.setButtonText (getTextArray()[getValue()]);
     }
     else
     {
@@ -107,7 +164,7 @@ void CabbageButton::valueTreePropertyChanged (ValueTree& valueTree, const Identi
         //const String newText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
         //if(newText != getTextArray()[getValue()])
         //CabbageUtilities::debug(getTextArray()[getValue()]);
-        setButtonText (getTextArray()[getValue()]);
+		button.setButtonText (getTextArray()[getValue()]);
     }
 }
 

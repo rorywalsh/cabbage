@@ -25,13 +25,25 @@
 #include "../LookAndFeel/FlatButtonLookAndFeel.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-class CabbageButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase
+class CabbageButton : public ValueTree::Listener, public Component, public CabbageWidgetBase
 {
     CabbagePluginEditor* owner;
+	BubbleMessageComponent popupBubble;
+	String popupText = "";
+	bool shouldDisplayPopup = false;
+	
 public:
 
     CabbageButton (ValueTree wData, CabbagePluginEditor* owner);
-	~CabbageButton() { setLookAndFeel(nullptr); };
+	~CabbageButton() { button.setLookAndFeel(nullptr); };
+	void CabbageButton::resized() override;
+	void createPopupBubble();
+	void showPopupBubble(int time);
+	
+	void mouseDrag(const MouseEvent& event) override;
+	void mouseMove(const MouseEvent& event) override;
+	void mouseEnter(const MouseEvent& event) override;
+	void mouseExit(const MouseEvent& event) override;
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -41,11 +53,9 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
 
     void setLookAndFeelColours (ValueTree wData);
-
 	FlatButtonLookAndFeel flatLookAndFeel;
-
     ValueTree widgetData;
-
+	TextButton button;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageButton);
 };
