@@ -107,6 +107,28 @@ public:
                     
                 }
             }
+            else if (commandLine.contains ("--export-AU "))
+            {
+                String inputFileName = commandLine.substring (commandLine.indexOf ("--export-AU") + 11).trim().removeCharacters ("\"");
+                if (File (inputFileName).existsAsFile())
+                {
+                    pluginExporter.exportPlugin("AU", File(inputFileName), getPluginInfo(File (inputFileName), "id"), "", false, true);
+                    JUCEApplicationBase::quit();
+                    signalToQuit = true;
+                    
+                }
+            }
+            else if (commandLine.contains ("--export-AUi "))
+            {
+                String inputFileName = commandLine.substring (commandLine.indexOf ("--export-AUi") + 12).trim().removeCharacters ("\"");
+                if (File (inputFileName).existsAsFile())
+                {
+                    pluginExporter.exportPlugin("AUi", File(inputFileName), getPluginInfo(File (inputFileName), "id"), "", false, true);
+                    JUCEApplicationBase::quit();
+                    signalToQuit = true;
+                    
+                }
+            }
         }
  #endif
         if ( signalToQuit == true)

@@ -385,6 +385,7 @@ void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+    setProperty (widgetData, CabbageIdentifierIds::popuptext, "0");
 	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
 }
 
@@ -408,6 +409,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::popuptext, "0");
     setProperty (widgetData, CabbageIdentifierIds::type, "filebutton");
     setProperty (widgetData, CabbageIdentifierIds::name, "filebutton");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
@@ -448,6 +450,7 @@ void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
+    setProperty (widgetData, CabbageIdentifierIds::popuptext, "0");
 }
 void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)
 {
