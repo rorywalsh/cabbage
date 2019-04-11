@@ -36,7 +36,7 @@ public:
 
     CabbageButton (ValueTree wData, CabbagePluginEditor* owner);
 	~CabbageButton() { button.setLookAndFeel(nullptr); };
-	void CabbageButton::resized() override;
+	void resized() override;
 	void createPopupBubble();
 	void showPopupBubble(int time);
 	
