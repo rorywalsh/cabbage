@@ -228,6 +228,11 @@ public:
         void setWidgetData(ValueTree wData){    plantWidgetData = wData;    }
     };
 
+    void addToRadioComponents(Component* button)
+    {
+        radioComponents.add(button);
+    }
+    
     String changeMessage = "";
     Point<int> customPlantPosition;
 private:
@@ -275,6 +280,7 @@ private:
     ScopedPointer<Viewport> viewport;
     ScopedPointer<ViewportContainer> viewportContainer;
     OwnedArray<Component> components;
+    Array<Component*> radioComponents;
     OwnedArray<PopupDocumentWindow> popupPlants;
     String lastOpenedDirectory;
     MainComponent mainComponent;

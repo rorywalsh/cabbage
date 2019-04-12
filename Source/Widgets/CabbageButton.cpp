@@ -45,6 +45,7 @@ CabbageButton::CabbageButton (ValueTree wData, CabbagePluginEditor* _owner)
     
     if (radioId.isNotEmpty())
     {
+        owner->addToRadioComponents(&button);
         const int id = owner->radioGroups.getWithDefault(radioId, -1);
         CabbageUtilities::debug(id);
         if(id != -1)

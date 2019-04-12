@@ -58,6 +58,8 @@ CabbagePluginEditor::~CabbagePluginEditor()
 {
     popupPlants.clear();
     components.clear();
+    radioGroups.clear();
+    radioComponents.clear();
     setLookAndFeel (nullptr);
 }
 
@@ -649,6 +651,25 @@ void CabbagePluginEditor::toggleButtonState (Button* button, bool state)
         param->beginChangeGesture();
         param->setValueNotifyingHost (state == true ? 1 : 0);
         param->endChangeGesture();
+    }
+    //manually iterate through radio enabled controls
+    for(auto& comp: radioComponents)
+    {
+        if (TextButton* cabbageButton = dynamic_cast<TextButton*> (comp))
+        {
+            if(cabbageButton->getName()!= button->getName())
+            {
+                if(cabbageButton->getRadioGroupId()!=-1 && (cabbageButton->getRadioGroupId() == button->getRadioGroupId()))
+                {
+                    if (CabbageAudioParameter* param = getParameterForComponent (cabbageButton->getName()))
+                    {
+                        param->beginChangeGesture();
+                        param->setValueNotifyingHost (state == true ? 0 : 1); //toggle other way...
+                        param->endChangeGesture();
+                    }
+                }
+            }
+        }
     }
 }
 //======================================================================================================
