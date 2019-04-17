@@ -66,6 +66,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **HOST_PPQ_POS** Return the position of the start of the last bar, in pulses-per-quarter-note.
 
+> More info on how to use reserved channels to get information from an audio host to Csound can be found [here](host_info.html)
+
 **MOUSE_X** Returns the X coordinate of the current mouse position.
 
 **MOUSE_Y** Returns the Y coordinate of the current mouse position
@@ -80,4 +82,48 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **IS_A_PLUGIN** Returns 1 if the instrument is running as an audio plugin, and 0 if the instrument is running as a standalone. 
 
-> More info on how to use reserved channels to get information from an audio host to Csound can be found [here](host_info.html)
+**WINDOWS** Returns 1 if Cabbage is running on a Windows machine
+
+**LINUX** Returns 1 if Cabbage is running on a Linux machine
+
+**MACOS** Returns 1 if Cabbage is running on a MacOS machine
+
+Cabbage also set the host type, which can be retrieved using the following channels. 
+
+**AbletonLive** Returns 1 if Cabbage is host is Ableton Live
+
+**AdobeAudition** Returns 1 if Cabbage is host is AdobeAudition
+
+**Ardour** Returns 1 if Cabbage is host is Adour
+
+**Bitwig** Returns 1 if Cabbage is host is Bitwig studio
+
+**Cubase** Returns 1 if Cabbage is host is Cubase
+
+**FLStudio** Returns 1 if Cabbage is host is FL Studio
+
+**GarageBand** Returns 1 if Cabbage is host is Garage band
+
+**Logic** Returns 1 if Cabbage is host is Logic
+
+**MainStage** Returns 1 if Cabbage is host is MainStage
+
+**Renoise** Returns 1 if Cabbage is host is Renoise
+
+**Repear** Returns 1 if Cabbage is host is Reaper
+
+**Samplitude** Returns 1 if Cabbage is host is Samplitude
+
+**Sonar** Returns 1 if Cabbage is host is Sonar
+
+**Sonar** Returns 1 if Cabbage is host is Sonar
+
+**StudioOne** Returns 1 if Cabbage is host is Studio One
+
+**Tracktion** Returns 1 if Cabbage is host is Tracktion
+
+**Wavelab** Returns 1 if Cabbage is host is WaveLab
+
+
+
+

@@ -236,13 +236,60 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csdFilePath.setAsCurrentWorkingDirectory();
 
 	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+    {
 		csound->SetChannel ("LINUX", 1.0);
+        csound->SetChannel ("Linux", 1.0);
+    }
 	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
+    {
 		csound->SetChannel ("MAC", 1.0);
+        csound->SetChannel ("Macos", 1.0);
+        csound->SetChannel ("MACOS", 1.0);
+    }
 	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
-		csound->SetChannel ("Windows", 1.0);		
+    {
+		csound->SetChannel ("Windows", 1.0);
+        csound->SetChannel ("WINDOWS", 1.0);
+    }
 
-
+#if !defined(Cabbage_IDE_Build)
+    PluginHostType pluginType;
+    if (pluginType.isFruityLoops())
+        csound->SetChannel ("FLStudio", 1.0);
+    else if (pluginType.isAbletonLive())
+        csound->SetChannel ("AbletonLive", 1.0);
+    else if (pluginType.isLogic())
+        csound->SetChannel ("Logic", 1.0);
+    else if (pluginType.isArdour())
+        csound->SetChannel ("Ardour", 1.0);
+    else if (pluginType.isCubase())
+        csound->SetChannel ("Cubase", 1.0);
+    else if (pluginType.isSonar())
+        csound->SetChannel ("Sonar", 1.0);
+    else if (pluginType.isNuendo())
+        csound->SetChannel ("Neuendo", 1.0);
+    else if (pluginType.isReaper())
+        csound->SetChannel ("Reaper", 1.0);
+    else if (pluginType.isRenoise())
+        csound->SetChannel ("Renoise", 1.0);
+    else if (pluginType.isWavelab())
+        csound->SetChannel ("Wavelab", 1.0);
+    else if (pluginType.isMainStage())
+        csound->SetChannel ("Mainstage", 1.0);
+    else if (pluginType.isGarageBand())
+        csound->SetChannel ("Garageband", 1.0);
+    else if (pluginType.isSamplitude())
+        csound->SetChannel ("Samplitude", 1.0);
+    else if (pluginType.isStudioOne())
+        csound->SetChannel ("StudioOne", 1.0);
+    else if (pluginType.isBitwigStudio())
+        csound->SetChannel ("Bitwig", 1.0);
+    else if (pluginType.isTracktion())
+        csound->SetChannel ("Tracktion", 1.0);
+    else if (pluginType.isAdobeAudition())
+        csound->SetChannel ("AdobeAudition", 1.0);
+#endif
+             
     if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
     {
         csound->SetChannel ("IS_A_PLUGIN", 1.0);

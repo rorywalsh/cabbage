@@ -10,7 +10,7 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/keyseparatorcolour.md !} 
 
-{! ./markdown/Widgets/Properties/mouseoeverkeycolour.md !}  
+{! ./markdown/Widgets/Properties/mouseoverkeycolour.md !}  
 
 {! ./markdown/Widgets/Properties/keypressbaseoctave.md !}  
 
