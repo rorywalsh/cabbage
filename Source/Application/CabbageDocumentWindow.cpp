@@ -200,6 +200,24 @@ CabbageMainComponent* CabbageDocumentWindow::getContentComponent()
 void CabbageDocumentWindow::closeButtonPressed()
 {
     CabbageIDELookAndFeel lookAndFeel;
+	if (getContentComponent()->editorAndConsole.size() > 0)
+	{
+		if (getContentComponent()->getCurrentCodeEditor()->hasFileChanged() == true)
+		{
+			const int result = CabbageUtilities::showYesNoMessage("File has been modified, do you wish to save?\nexiting file?", &lookAndFeel, 1);
+
+			if (result == 1)
+			{
+				getContentComponent()->saveDocument(false, false);
+				getContentComponent()->removeEditor();
+			}
+			else if (result == 2)
+				getContentComponent()->removeEditor();
+			else
+				return;
+		}
+	}
+
 	/*
     if (getContentComponent()->getFilterGraph()->hasChangedSinceSaved())
     {

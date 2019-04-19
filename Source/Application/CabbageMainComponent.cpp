@@ -1622,6 +1622,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         }
 
         addInstrumentsAndRegionsToCombobox();
+		getCurrentCodeEditor()->setSavePoint();
     }
 
     StringArray lines;
