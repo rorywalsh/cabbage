@@ -1080,7 +1080,8 @@ void CabbageCodeEditorComponent::handleTabKey (String direction)
 {
 
     StringArray csdArray = getAllTextAsStringArray();
-    setTabSize(owner->settings->getUserSettings()->getIntValue ("SpacesInTabs"), true);
+	const int numSpaces = owner->settings->getUserSettings()->getIntValue("SpacesInTabs");
+    setTabSize((numSpaces<=0 ? 4 : numSpaces), numSpaces==0 ? false : true);
     const CodeDocument::Position startPos (this->getDocument(), getHighlightedRegion().getStart());
     const CodeDocument::Position endPos (this->getDocument(), getHighlightedRegion().getEnd());
 
