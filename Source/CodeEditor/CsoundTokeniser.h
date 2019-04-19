@@ -233,7 +233,7 @@ private:
                 }
                 else if (source.peekNextChar() == '/')
                 {
-                    // result = CPlusPlusCodeTokeniser::tokenType_comment;
+                    result = tokenType_comment;
                     source.skipToEndOfLine();
                 }
                 else if (source.peekNextChar() == '*')
