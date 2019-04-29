@@ -1033,9 +1033,7 @@ void CabbagePluginProcessor::setCabbageParameter(String channel, float value) {
 
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
     if (sampleRate != samplingRate) {
-        samplingRate = sampleRate;
-        resetCsound();
-        createCsound(csdFile, false);
+        CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
     }
 }
 
