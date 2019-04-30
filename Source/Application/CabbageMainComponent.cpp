@@ -267,6 +267,8 @@ void CabbageMainComponent::setLookAndFeelColours()
 //==============================================================================
 void CabbageMainComponent::buttonClicked (Button* button)
 {
+	hideFindPanel();
+
     if (FileTab* tabButton = dynamic_cast<FileTab*> (button))
     {
         handleFileTab (tabButton);
@@ -351,10 +353,15 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
     {
         for ( auto button : fileTabs )
         {
-            if (button != tabButton)
-                button->disableButtons (true);
-            else
-                button->disableButtons (false);
+			if (button != tabButton)
+			{
+				button->disableButtons(true);
+				button->setToggleState(false, dontSendNotification);
+			}
+			else
+			{
+				button->disableButtons(false);
+			}
         }
     }
     else
@@ -366,9 +373,11 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
                 fileTabs[i]->setToggleState (true, dontSendNotification);
                 fileTabs[i]->disableButtons (false);
             }
-            else
-                fileTabs[i]->disableButtons (true);
-
+			else
+			{
+				fileTabs[i]->setToggleState(false, dontSendNotification);
+				fileTabs[i]->disableButtons(true);
+			}
         }
 
         this->arrangeFileTabs();
@@ -924,9 +933,13 @@ void CabbageMainComponent::addFileTab (File file)
     FileTab* fileButton;
     fileTabs.add (fileButton = new FileTab (file.getFileName(), file.getFullPathName(), file.hasFileExtension(".csd"), cabbageSettings->getUserSettings()->getValue("CustomThemeDir")));
 
+
+	for ( auto* button : fileTabs)
+		button->setToggleState(false, dontSendNotification);
+
     addAndMakeVisible (fileButton);
     fileButton->addListener (this);
-    fileButton->setRadioGroupId (99);
+	fileButton->setName(file.getFileName());
     fileButton->setClickingTogglesState (true);
     fileButton->setLookAndFeel (lookAndFeel);
     fileButton->setToggleState (true, dontSendNotification);
@@ -1904,7 +1917,6 @@ void CabbageMainComponent::resized()
     }
 
     resizeAllWindows (toolbarThickness + heightOfTabButtons);
-
 
     if (findPanel != nullptr)
     {
