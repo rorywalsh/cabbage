@@ -213,6 +213,7 @@ public:
 		AudioProcessor* processor;
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(filename));
 		const int numChannels = CabbageUtilities::getHeaderInfo(filename, "nchnls");
+		const int sampleRate = CabbageUtilities::getHeaderInfo(filename, "sr");
 
 		if (isCabbageFile)
 			processor = new CabbagePluginProcessor(File(filename), numChannels, numChannels);
@@ -222,7 +223,7 @@ public:
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
 		processor->disableNonMainBuses();
-		processor->setRateAndBufferSizeDetails(44100, 512);
+		processor->setRateAndBufferSizeDetails(graph.getSampleRate(), 512);
 
 		return processor;
 	}

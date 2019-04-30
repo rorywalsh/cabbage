@@ -133,13 +133,15 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     {
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
-        if (workingDir.isNotEmpty())
-            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
+			listboxDir = File(workingDir);
+		else if(workingDir.isNotEmpty())
+			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
         else
-            pluginDir = File::getCurrentWorkingDirectory().getParentDirectory();
+			listboxDir = File(getCsdFile()).getParentDirectory();
 
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
-        pluginDir.findChildFiles (dirFiles, 2, false, filetype);
+        listboxDir.findChildFiles (dirFiles, 2, false, filetype);
         stringItems.add ("Select..");
 
         for (int i = 0; i < dirFiles.size(); ++i)

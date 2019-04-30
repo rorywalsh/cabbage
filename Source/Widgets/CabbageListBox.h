@@ -40,7 +40,7 @@ public:
     Justification justify;
     CabbagePluginEditor* owner;
 
-    File pluginDir;
+    File listboxDir;
     bool isStringCombo = false;
     bool isPresetCombo = false;
     String currentValueAsText = "";

@@ -145,13 +145,13 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
 {
 
     File imgFile;
-    const String csdfile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::csdfile));
+    const File csdfile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::csdfile));
     const File imgPath (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgpath));
     const String fileType (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::filetype));
 
     if (imgType == "groupbox")
     {
-        imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imggroupbox));
+        imgFile = csdfile.getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imggroupbox));
 
         if (imgFile.existsAsFile())
         {
@@ -161,26 +161,11 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
             }
             else
                 comp.getProperties().set (CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
-        }
-        else if (imgPath.exists())
-        {
-            File filename = File::getCurrentWorkingDirectory().getChildFile (imgPath.getFullPathName() + "/groupbox." + fileType);
-
-            if (filename.existsAsFile())
-            {
-                if (imgFile.getFileExtension().contains ("svg"))
-                {
-                    comp.getProperties().set (CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
-                }
-                else
-                    comp.getProperties().set (CabbageIdentifierIds::imggroupbox, imgFile.getFullPathName());
-            }
         }
     }
     else if (imgType == "buttonon")
     {
-        String test = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon);
-        imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon));
+        imgFile = csdfile.getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonon));
 
         if (imgFile.existsAsFile())
         {
@@ -191,26 +176,11 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
             }
             else
                 comp.getProperties().set (CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
-        }
-        else if (imgPath.exists())
-        {
-            File filename = File (csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonon." + fileType);
-
-            if (filename.existsAsFile())
-            {
-                if (imgFile.getFileExtension().contains ("svg"))
-                {
-                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
-                }
-                else
-                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonon, imgFile.getFullPathName());
-            }
         }
     }
     else if (imgType == "buttonoff")
     {
-        String test2 = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff);
-        imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff));
+        imgFile = csdfile.getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff));
 
         if (imgFile.existsAsFile())
         {
@@ -221,26 +191,10 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
             else
                 comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, imgFile.getFullPathName());
         }
-        else if (imgPath.exists())
-        {
-            File filename = File (csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonoff." + fileType);
-
-            if (filename.existsAsFile())
-            {
-
-                if (imgFile.getFileExtension().contains ("svg"))
-                {
-                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
-                }
-                else
-                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
-            }
-        }
     }
     else if (imgType == "buttonover")
     {
-        String test2 = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonoff);
-        imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonover));
+        imgFile = csdfile.getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgbuttonover));
         
         if (imgFile.existsAsFile())
         {
@@ -251,25 +205,10 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
             else
                 comp.getProperties().set (CabbageIdentifierIds::imgbuttonover, imgFile.getFullPathName());
         }
-        else if (imgPath.exists())
-        {
-            File filename = File (csdfile).getParentDirectory().getChildFile (imgPath.getFullPathName() + "/buttonover." + fileType);
-            
-            if (filename.existsAsFile())
-            {
-                
-                if (imgFile.getFileExtension().contains ("svg"))
-                {
-                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
-                }
-                else
-                    comp.getProperties().set (CabbageIdentifierIds::imgbuttonoff, filename.getFullPathName());
-            }
-        }
     }
     else if (imgType.contains ("sliderbg"))
     {
-        imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgsliderbg));
+        imgFile = csdfile.getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgsliderbg));
 
         if (imgFile.existsAsFile())
         {
@@ -281,33 +220,11 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
             else
                 comp.getProperties().set ("imgsliderbg", imgFile.getFullPathName());
 
-        }
-        else if (imgPath.exists())
-        {
-            File filename;
-
-            if (imgType == "rsliderbg")
-                filename = File (imgPath.getFullPathName() + "/rslider_background." + fileType);
-            else if (imgType == "hsliderbg")
-                filename = File (imgPath.getFullPathName() + "/hslider_background." + fileType);
-            else
-                filename = File (imgPath.getFullPathName() + "/vslider_background." + fileType);
-
-            if (filename.existsAsFile())
-            {
-
-                if (imgFile.getFileExtension().contains ("svg"))
-                {
-                    comp.getProperties().set ("imgsliderbg", filename.getFullPathName());
-                }
-                else
-                    comp.getProperties().set ("imgsliderbg", imgFile.getFullPathName());
-            }
         }
     }
     else if (imgType.contains ("slider"))
     {
-        imgFile = File::getCurrentWorkingDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgslider));
+        imgFile = csdfile.getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgslider));
 
         if (imgFile.existsAsFile())
         {
@@ -318,28 +235,6 @@ void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String img
             }
             else
                 comp.getProperties().set ("imgslider", imgFile.getFullPathName());
-        }
-        else if (imgPath.exists())
-        {
-            File filename;
-
-            if (imgType == "rslider")
-                filename = File (imgPath.getFullPathName() + "/rslider." + fileType);
-            else if (imgType == "hslider")
-                filename = File (imgPath.getFullPathName() + "/hslider." + fileType);
-            else
-                filename = File (imgPath.getFullPathName() + "/vslider." + fileType);
-
-            if (filename.existsAsFile())
-            {
-
-                if (imgFile.getFileExtension().contains ("svg"))
-                {
-                    comp.getProperties().set ("imgslider", filename.getFullPathName());
-                }
-                else
-                    comp.getProperties().set ("imgslider", filename.getFullPathName());
-            }
         }
     }
 }

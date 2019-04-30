@@ -32,7 +32,6 @@ public:
                                 "</CsOptions>\n"
                                 "<CsInstruments>\n"
                                 "; Initialize the global variables. \n"
-                                "sr = 44100\n"
                                 "ksmps = 32\n"
                                 "nchnls = 2\n"
                                 "0dbfs = 1\n"

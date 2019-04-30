@@ -246,7 +246,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
 }
 
 //===========================================================================================
-// this method parsing the Cabbage text and set each of the Cabbage indentifers
+// this method parses the Cabbage text and set each of the Cabbage indentifers
 //===========================================================================================
 void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineOfText, String currentIdentifier)
 {
@@ -780,8 +780,11 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
         {
             setProperty (widgetData, CabbageIdentifierIds::oncolour, getColourFromText (strTokens.joinIntoString (",")).toString());
         }
-        else
-            setProperty (widgetData, CabbageIdentifierIds::colour, getColourFromText (strTokens.joinIntoString (",")).toString());
+		else
+		{
+			setProperty(widgetData, CabbageIdentifierIds::colour, getColourFromText(strTokens.joinIntoString(",")).toString());
+		}
+            
     }
 
     else if (identifier == "fontcolour")

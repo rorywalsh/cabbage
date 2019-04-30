@@ -57,10 +57,7 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, co
           csdFile(inputFile),
           cabbageWidgets("CabbageWidgetData") 
 {
-	//pause creation of Csound for 500ms to avoid issues when plugin is first scanned..
-	//Timer::callAfterDelay(100, [this, inputFile]() {
-		createCsound(inputFile);
-	//});    
+	createCsound(inputFile);
 }
 
 
@@ -70,7 +67,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
         setWidthHeight();
         StringArray linesFromCsd;
         linesFromCsd.addLines(inputFile.loadFileAsString());
-        
+
         //only create extended temp file if imported plants are being added...
         if( addImportFiles(linesFromCsd) == true )
         {
@@ -83,6 +80,8 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
                                          .replace("&amp;", "&")
                                          .replace("$quote;", "\"")
                                          .replace("$gt;", ">"));
+
+
 
 
         if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
@@ -1032,8 +1031,11 @@ void CabbagePluginProcessor::setCabbageParameter(String channel, float value) {
 }
 
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
+	
     if (sampleRate != samplingRate) {
+		samplingRate = sampleRate;
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
+		createCsound(csdFile, false);
     }
 }
 
