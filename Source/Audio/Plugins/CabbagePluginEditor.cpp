@@ -456,7 +456,7 @@ void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
 {
     CabbageButton* button;
     components.add (button = new CabbageButton (cabbageWidgetData, this));
-    button->button.addListener (this);
+    button->addListener (this);
     addToEditorAndMakeVisible (button, cabbageWidgetData);
     addMouseListenerAndSetVisibility (button, cabbageWidgetData);
 }
@@ -585,93 +585,75 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     }
 }
 //======================================================================================================
-void CabbagePluginEditor::buttonClicked (Button* button)
+//======================================================================================================
+void CabbagePluginEditor::buttonClicked(Button* button)
 {
-    const bool buttonState = button->getToggleState();
+	const bool buttonState = button->getToggleState();
 
-    if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button->getParentComponent()))
-    {
-        const StringArray textItems = cabbageButton->getTextArray();
-        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
-        const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
+	if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
+	{
+		const StringArray textItems = cabbageButton->getTextArray();
+		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
+		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
-        if (textItems.size() > 0)
-            cabbageButton->button.setButtonText ( textItems[ buttonState == false ? 0 : 1]);
-        
-        if (latched == 1)
-            toggleButtonState (button, buttonState);
+		if (textItems.size() > 0)
+			cabbageButton->setButtonText(textItems[buttonState == false ? 0 : 1]);
 
-        return;
-    }
-    else if (CabbageCheckbox* cabbageButton = dynamic_cast<CabbageCheckbox*> (button))
-    {
-        const StringArray textItems = cabbageButton->getTextArray();
-        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
-        const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
+		if (latched == 1)
+			toggleButtonState(button, buttonState);
 
-        if (textItems.size() > 0)
-            cabbageButton->setButtonText ( textItems[ buttonState == false ? 0 : 1]);
+		return;
+	}
+	else if (CabbageCheckbox* cabbageButton = dynamic_cast<CabbageCheckbox*> (button))
+	{
+		const StringArray textItems = cabbageButton->getTextArray();
+		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
+		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
-        toggleButtonState (button, buttonState);
-        return;
-    }
+		if (textItems.size() > 0)
+			cabbageButton->setButtonText(textItems[buttonState == false ? 0 : 1]);
+
+		toggleButtonState(button, buttonState);
+		return;
+	}
 
 
 }
 
-void CabbagePluginEditor::buttonStateChanged (Button* button)
+void CabbagePluginEditor::buttonStateChanged(Button* button)
 {
-    if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button->getParentComponent()))
-    {
-        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent (processor.cabbageWidgets, cabbageButton->getName());
-        const int latched = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::latched);
+	if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
+	{
+		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
+		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
-        if (latched == 0)
-        {
-            if (button->isMouseButtonDown())
-                toggleButtonState (button, true);
-            else
-                toggleButtonState (button, false);
-        }
-        else if (latched == 2)
-        {
-            int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-            if (button->isMouseButtonDown() && value==1)
-                toggleButtonState (button, false);
-            else if (button->isMouseButtonDown() && value==0)
-                toggleButtonState (button, true);          
-        }
-    }
+		if (latched == 0)
+		{
+			if (button->isMouseButtonDown())
+				toggleButtonState(button, true);
+			else
+				toggleButtonState(button, false);
+		}
+		else if (latched == 2)
+		{
+			int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+			if (button->isMouseButtonDown() && value == 1)
+				toggleButtonState(button, false);
+			else if (button->isMouseButtonDown() && value == 0)
+				toggleButtonState(button, true);
+		}
+	}
 
 }
 
-void CabbagePluginEditor::toggleButtonState (Button* button, bool state)
+void CabbagePluginEditor::toggleButtonState(Button* button, bool state)
 {
-    if (CabbageAudioParameter* param = getParameterForComponent (button->getName()))
-    {
-        param->beginChangeGesture();
-        param->setValueNotifyingHost (state == true ? 1 : 0);
-        param->endChangeGesture();
-    }
-    //manually iterate through radio enabled controls
-    for(auto& comp: radioComponents)
-    {
-        if (TextButton* cabbageButton = dynamic_cast<TextButton*> (comp))
-        {
-            if(cabbageButton->getName()!= button->getName())
-            {
-                if(cabbageButton->getRadioGroupId()!=-1 && (cabbageButton->getRadioGroupId() == button->getRadioGroupId()))
-                {
-                    if (CabbageAudioParameter* param = getParameterForComponent (cabbageButton->getName()))
-                    {
-                        param->beginChangeGesture();
-                        param->setValueNotifyingHost (state == true ? 0 : 1); //toggle other way...
-                        param->endChangeGesture();
-                    }
-                }
-            }
-        }
-    }
+	if (CabbageAudioParameter* param = getParameterForComponent(button->getName()))
+	{
+		param->beginChangeGesture();
+		param->setValueNotifyingHost(state == true ? 1 : 0);
+		param->endChangeGesture();
+	}
 }
 //======================================================================================================
 void CabbagePluginEditor::sliderValueChanged (Slider* slider)
