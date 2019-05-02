@@ -319,7 +319,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
         {
             if(type.contains ("slider") && identifier != "value" && identifier != "increment")
                 return identifier + "(" + String (getNumProp (widgetData, identifier)) + ")";
-            else if(type.contains ("slider") && identifier == "increment")
+            else if((type.contains ("slider") && identifier == "increment") || (type.contains ("slider") && identifier == "value"))
                 return "";
             else
                 return identifier + "(" + String (getNumProp (widgetData, identifier)) + ")";

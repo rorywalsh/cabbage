@@ -600,15 +600,15 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 	else if (dynamic_cast<AudioDeviceManager*> (source))
 	{
 
-		if (deviceManager.getCurrentAudioDeviceType() == "Windows Audio")
-		{
-			const int dismiss = cabbageSettings->getUserSettings()->getIntValue("AudioDriversWarning_dismiss");
-			if (dismiss == 0)
-			{
-				bool value = CabbageUtilities::showMessageWithHideOption("Audio drivers warning", "In order for edit mode to work with \"Windows Audio\", you need to ensure that the sample rate for \"Windows Audio\" is set to 44100 in your audio system settings. For best audio performance always use ASIO drivers. If you don't have any, consider installing ASIO4ALL which is available for free.", lookAndFeel, dismiss);
-				cabbageSettings->getUserSettings()->setValue("AudioDriversWarning_dismiss", value);
-			}
-		}
+//        if (deviceManager.getCurrentAudioDeviceType() == "Windows Audio")
+//        {
+//            const int dismiss = cabbageSettings->getUserSettings()->getIntValue("AudioDriversWarning_dismiss");
+//            if (dismiss == 0)
+//            {
+//                bool value = CabbageUtilities::showMessageWithHideOption("Audio drivers warning", "In order for edit mode to work with \"Windows Audio\", you need to ensure that the sample rate for \"Windows Audio\" is set to 44100 in your audio system settings. For best audio performance always use ASIO drivers. If you don't have any, consider installing ASIO4ALL which is available for free.", lookAndFeel, dismiss);
+//                cabbageSettings->getUserSettings()->setValue("AudioDriversWarning_dismiss", value);
+//            }
+//        }
 		if (deviceManager.getAudioDeviceSetup().outputDeviceName == "" && shouldUpdateAudioSettings == false)
 		{
 			CabbageUtilities::showMessage("Warning", "No output device selected. Please open Cabbage audio settings and select a valid output device.", lookAndFeel);
