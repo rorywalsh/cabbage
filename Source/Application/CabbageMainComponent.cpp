@@ -6,7 +6,7 @@
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
 
-  Cabbage is distributed in the hope that it will be useful,
+  Cabbage is distributed in the hope that it will besave useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
@@ -591,6 +591,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 	if (dynamic_cast<PluginWindow*> (source)) // update lookandfeel whenever a user changes colour settings
 	{
 		propertyPanel->setVisible(false);
+        if(getFileTab(getCurrentFileIndex()))
         getFileTab(getCurrentFileIndex())->getEditGUIButton().setToggleState(false, dontSendNotification);
         isGUIEnabled = false;
 		resized();
@@ -1615,16 +1616,15 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (getCabbagePluginEditor() != nullptr)
             getCabbagePluginEditor()->enableEditMode (false);
 
-        if (getCurrentCodeEditor()->hasFileChanged())
-        {
-            if(getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
-                CabbageUtilities::showMessage("You cannot save over an example file. Please use save-as instead", lookAndFeel);
-                return;
-            }
 
-            if (getCurrentCsdFile().existsAsFile())
-                getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
+        if(getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
+            CabbageUtilities::showMessage("You cannot overwrite an example file. Please use save-as instead", lookAndFeel);
+            return;
         }
+
+        if (getCurrentCsdFile().existsAsFile())
+            getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
+
 
         propertyPanel->setEnabled (false);
 
