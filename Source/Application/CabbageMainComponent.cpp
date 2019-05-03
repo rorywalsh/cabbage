@@ -1904,7 +1904,8 @@ void CabbageMainComponent::showFindPanel (bool withReplace)
 void CabbageMainComponent::hideFindPanel()
 {
     findPanel = nullptr;
-    getCurrentCodeEditor()->grabKeyboardFocus();
+    if(getCurrentCodeEditor())
+        getCurrentCodeEditor()->grabKeyboardFocus();
 }
 //==============================================================================
 void CabbageMainComponent::resized()
