@@ -1616,15 +1616,16 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
         if (getCabbagePluginEditor() != nullptr)
             getCabbagePluginEditor()->enableEditMode (false);
 
+        if (getCurrentCodeEditor()->hasFileChanged())
+        {
+            if(getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
+                CabbageUtilities::showMessage("You cannot overwrite an example file. Please use save-as instead", lookAndFeel);
+                return;
+            }
 
-        if(getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
-            CabbageUtilities::showMessage("You cannot overwrite an example file. Please use save-as instead", lookAndFeel);
-            return;
+            if (getCurrentCsdFile().existsAsFile())
+                getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
         }
-
-        if (getCurrentCsdFile().existsAsFile())
-            getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
-
 
         propertyPanel->setEnabled (false);
 
