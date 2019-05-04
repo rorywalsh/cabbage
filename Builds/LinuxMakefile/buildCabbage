@@ -75,7 +75,7 @@ cp -rf ../../Examples ./install/
 cp -rf ../../Themes ./install/
 
 g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csound" -lcsound64
-cp testCsoundFile ./install/bin/testCsoundFile
+# cp testCsoundFile ./install/bin/testCsoundFile
 #cp -rf ../../Docs/_book CabbageBuild/Docs
 
 sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbage.desktop
