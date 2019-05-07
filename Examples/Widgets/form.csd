@@ -7,7 +7,7 @@ form size(400, 500), caption("Form Example"), pluginid("Form"), colour(39, 40, 3
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

@@ -9,7 +9,7 @@ button bounds(90, 8, 80, 40) channel("button1") text("Play", "Stop")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

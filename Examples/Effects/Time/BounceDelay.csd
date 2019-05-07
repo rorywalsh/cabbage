@@ -72,7 +72,7 @@ image bounds(  -100,  0,  4,100), colour(250,250,250), shape(sharp), visible(1),
 
 <CsInstruments>
 
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

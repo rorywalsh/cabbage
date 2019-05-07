@@ -39,7 +39,7 @@ checkbox bounds(260, 63, 90, 15), text("TEST TONE"), colour("lime"), channel("te
 -d -n
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

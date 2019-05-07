@@ -71,7 +71,7 @@ keyboard bounds(-561, 110,1200, 70)
 </CsOptions>
 
 <CsInstruments>
-sr 	= 	44100
+;sr is set by the host
 ksmps 	= 	64
 nchnls 	= 	2
 0dbfs	=	1

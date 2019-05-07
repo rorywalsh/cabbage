@@ -10,7 +10,7 @@ rslider channel("gain"), bounds(140, 34, 70, 70), text("Gain"), range(0, 1, 0.5)
 -d -n
 </CsOptions>
 <CsInstruments>
-sr = 44100			;sampling rate
+;sr is set by the host
 ksmps = 64			;audio samples per control cycle
 nchnls = 2			;number of channels
 0dbfs = 1			;sets 0dbfs to 1

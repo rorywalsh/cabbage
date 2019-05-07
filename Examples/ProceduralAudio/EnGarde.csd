@@ -54,7 +54,7 @@ rslider bounds(495,25,70,90) channel("RingGain") text("Ring Gain") valuetextbox(
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

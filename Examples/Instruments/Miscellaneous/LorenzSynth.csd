@@ -59,7 +59,7 @@ label bounds(0,530,100,10), text("Iain McCurdy |2015|"), fontcolour(50,50,50)
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

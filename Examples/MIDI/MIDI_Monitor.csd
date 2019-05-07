@@ -44,7 +44,7 @@ keyboard bounds(  0,345,610, 80)
                                   
 <CsInstruments>
 
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (1=MONO)
 0dbfs		=	1	;MAXIMUM AMPLITUDE     

@@ -11,7 +11,7 @@ button bounds(514, 132, 70, 27) channel("shuffle") text("Shuffle")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100 
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

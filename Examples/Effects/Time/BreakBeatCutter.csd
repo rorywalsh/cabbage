@@ -124,7 +124,7 @@ rslider bounds(150, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour
 </CsOptions>
 
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

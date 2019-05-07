@@ -11,7 +11,7 @@ label bounds(110, 140, 165, 62) identchannel("widgetIdent")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

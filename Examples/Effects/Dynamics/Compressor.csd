@@ -43,7 +43,7 @@ label    bounds( 10,108,420, 13), text("Soft Knee"), fontcolour("black")
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

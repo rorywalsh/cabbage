@@ -65,7 +65,7 @@ rslider   bounds(220,305, 70, 70),  channel("Level"),text("Level"), colour(  0, 
 
 <CsInstruments>
 
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

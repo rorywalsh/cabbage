@@ -104,7 +104,7 @@ keyboard bounds(5,335,1050, 80)
 </CsOptions>
 
 <CsInstruments>
-sr	=	44100
+;sr is set by the host
 ksmps	=	32
 nchnls	=	2
 0dbfs	=	1

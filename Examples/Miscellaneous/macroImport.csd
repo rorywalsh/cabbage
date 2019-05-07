@@ -8,7 +8,7 @@ groupbox bounds(18, 12, 258, 110), $colourMacro
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables.
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

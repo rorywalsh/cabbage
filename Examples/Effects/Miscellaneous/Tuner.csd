@@ -31,7 +31,7 @@ checkbox bounds( 15, 58, 60, 14), text("mute"), colour( 55,255, 55), channel("mu
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 1
 0dbfs = 1

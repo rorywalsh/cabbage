@@ -33,7 +33,7 @@ rslider bounds(480,210, 60, 60), text("Gain"),      channel("gain"),   range(0, 
 -dm0 -n -+rtmidi=null -M0
 </CsOptions>
 <CsInstruments>
-sr 	= 	44100
+;sr is set by the host
 ksmps 	= 	32
 nchnls 	= 	2
 0dbfs	=	1

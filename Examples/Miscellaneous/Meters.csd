@@ -19,7 +19,7 @@ hmeter bounds(170, 130, 180, 35) channel("hMeter4") value(0) overlaycolour(70, 5
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables.
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

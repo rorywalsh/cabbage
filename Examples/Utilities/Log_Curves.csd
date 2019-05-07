@@ -45,7 +45,7 @@ nslider bounds(135, 5, 60, 30), text("Output"), channel("output"), range(0,1000.
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 1
 0dbfs = 1

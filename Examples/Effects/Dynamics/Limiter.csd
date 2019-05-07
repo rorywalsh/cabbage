@@ -28,7 +28,7 @@ checkbox bounds(335,35,100, 20), channel("limiting"), text("Limiting"), shape("e
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

@@ -29,7 +29,7 @@ hslider bounds(0, 120, 200, 30), channel("hslider12"), range(0, 100, 96), colour
 -n -d
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

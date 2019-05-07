@@ -14,7 +14,7 @@ rslider  bounds(150, 10, 70, 70), text("Beta"),      channel("beta"), outlinecol
 
 <CsInstruments>
 
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	64
 nchnls 		= 	2
 0dbfs		=	1	;MAXIMUM AMPLITUDE

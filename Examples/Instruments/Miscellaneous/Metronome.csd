@@ -51,7 +51,7 @@ label   bounds( 10,120, 180, 12), text("Author: Iain McCurdy |2013|"), FontColou
 
 <CsInstruments>
 
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	16	; for maximum timing accuracy set ksmps = 1
 nchnls 		= 	2
 0dbfs		=	1	;MAXIMUM AMPLITUDE

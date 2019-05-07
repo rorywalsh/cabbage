@@ -28,7 +28,7 @@ label    bounds(  7,180, 100, 11), text("FFT Spectrum"), fontcolour(255,255,255,
 
 <CsInstruments>
 
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	16
 nchnls 		= 	2
 0dbfs		=	1

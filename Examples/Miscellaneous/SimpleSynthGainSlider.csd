@@ -8,7 +8,7 @@ keyboard bounds(10, 5, 380, 100)
 -n -d -+rtmidi=NULL -M0 --midi-key-cps=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
-sr = 44100			;sampling rate
+;sr is set by the host
 ksmps = 64			;audio samples per control cycle
 nchnls = 2			;number of channels
 0dbfs=1

@@ -27,7 +27,7 @@ image bounds(190, 18, 120, 120) crop(0, 0, 128, 128), file("meter_black.png") id
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

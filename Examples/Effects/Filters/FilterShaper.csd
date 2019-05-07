@@ -55,7 +55,7 @@ rslider  bounds(210, 20, 75, 75), text("Max."),channel("HPFmax"), range(4,14, 6)
 </CsOptions>
 
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

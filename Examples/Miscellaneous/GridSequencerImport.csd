@@ -11,7 +11,7 @@ rslider bounds(162, 354, 110, 110) channel("tempo") range(0.1, 20, 8, 1, 0.5) te
 -d -n -+rtmidi=null -m0d
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

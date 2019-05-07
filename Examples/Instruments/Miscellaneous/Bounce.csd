@@ -37,7 +37,7 @@ xypad    bounds(500,  0,110,360), colour(100,200,100,200), channel("x4", "y4"), 
 </CsOptions>
 
 <CsInstruments>
-sr 	= 	44100
+;sr is set by the host
 ksmps 	= 	32
 nchnls 	= 	2
 0dbfs	=	1

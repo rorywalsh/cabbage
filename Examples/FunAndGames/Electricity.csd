@@ -24,7 +24,7 @@ label bounds(  0,230,1000,70), text("Click and Drag..."), fontcolour(255,255,255
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

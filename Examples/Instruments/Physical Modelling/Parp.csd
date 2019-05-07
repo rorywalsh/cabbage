@@ -63,7 +63,7 @@ keyboard   bounds(  2,134,976, 85)
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs = 1

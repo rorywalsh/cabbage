@@ -51,7 +51,7 @@ rslider  bounds(570,100,80,95), range(0,1,1),              channel("level"),    
 
 <CsInstruments>
 
-sr 		= 	44100	; SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	; NUMBER OF CHANNELS (1=MONO)
 0dbfs		=	1	; MAXIMUM AMPLITUDE

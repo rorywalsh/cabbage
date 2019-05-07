@@ -11,7 +11,7 @@ button bounds(224, 14, 80, 40), channel("button1") text("Toggle to front")
 -n -d
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

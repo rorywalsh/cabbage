@@ -207,7 +207,7 @@ vslider bounds(1065,250, 20, 70),  channel("OutLevel"), range(0,10,2,1,0.01), $T
 
 <CsInstruments>
 
-sr 			= 	44100
+;sr is set by the host
 ksmps 		= 	32
 nchnls 		= 	2
 0dbfs		=	1	;MAXIMUM AMPLITUDE

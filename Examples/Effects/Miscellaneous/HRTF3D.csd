@@ -27,7 +27,7 @@ label bounds(0.03, 0.1, .95, .7), text("Author: Iain McCurdy |2012|"), fontcolou
 
 <CsInstruments>
 
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	16	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

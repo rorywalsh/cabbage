@@ -22,7 +22,7 @@ textbox bounds(405, 5,390,350), file("RealtimeScoreEvents.txt"), colour("white")
 
 <CsInstruments>
 
-sr	=	44100
+;sr is set by the host
 ksmps	=	32
 nchnls	=	2
 0dbfs	=	1

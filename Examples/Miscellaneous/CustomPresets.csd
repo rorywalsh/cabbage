@@ -14,7 +14,7 @@ filebutton bounds(78, 92, 60, 28), channel("openFile") text("Open", "Open"), pop
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

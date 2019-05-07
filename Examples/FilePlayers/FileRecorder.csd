@@ -25,7 +25,7 @@ checkbox bounds(165, 10, 75, 25), channel("play"), text("Play"), colour("green")
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs = 1

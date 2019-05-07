@@ -67,7 +67,7 @@ label    bounds(  1,454,100, 10), text("Iain McCurdy 2014"), align(left), fontco
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs=1

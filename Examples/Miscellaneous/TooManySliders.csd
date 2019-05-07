@@ -47,7 +47,7 @@ image bounds(0, 0, 20, 218), colour(20, 20, 20)
 -n --displays
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs=1

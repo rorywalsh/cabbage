@@ -23,7 +23,7 @@ button bounds(20, 379, 85, 50) channel("but3") identchannel("svgIdent") fontcolo
 -d -n
 </CsOptions>
 <CsInstruments>
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

@@ -26,7 +26,7 @@ rslider bounds(240,5,60,60), channel("arp"), range(-12,12,0,1,1), text("Arpeggio
 
 <CsInstruments>
 
-sr 	= 	44100
+;sr is set by the host
 ksmps 	= 	16
 nchnls 	= 	2
 0dbfs	=	1

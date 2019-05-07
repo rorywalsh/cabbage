@@ -14,7 +14,7 @@ label bounds(5, 240, 430, 30), colour(40, 0, 0),, text("Pulses per quater note:"
 -n -d
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

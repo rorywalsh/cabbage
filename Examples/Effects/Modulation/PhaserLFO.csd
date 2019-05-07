@@ -24,7 +24,7 @@ rslider bounds(505, 20, 70, 70), text("Level"), 	channel("level"), 	range(0, 1.0
 -d -n
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

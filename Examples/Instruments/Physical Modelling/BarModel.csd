@@ -147,7 +147,7 @@ keyboard bounds(4, 254, 945, 80) mouseoeverkeycolour(255, 255, 0, 128)
 
 <CsInstruments>
 
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	4
 nchnls 		= 	2
 0dbfs		=	1

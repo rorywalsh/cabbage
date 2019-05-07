@@ -69,7 +69,7 @@ button   bounds(455,100, 65, 20), colour("Green"), text("Sync LFO", "Sync LFO"),
 </CsOptions>
 
 <CsInstruments>
-sr 	= 	48000
+;sr is set by the host
 ksmps 	= 	32
 nchnls 	= 	2
 0dbfs 	= 	1

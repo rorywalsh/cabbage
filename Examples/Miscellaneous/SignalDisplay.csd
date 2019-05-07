@@ -11,7 +11,7 @@ hslider bounds(152, 368, 200, 30), channel("lfoRateSlider"), visible(0), range(0
 -n --displays -+rtmidi=NULL -M0 --midi-key-cps=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs=1

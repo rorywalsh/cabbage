@@ -11,7 +11,7 @@ groupbox bounds(142, 140, 146, 145), identchannel("widgetIdent"), text("Groupbox
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

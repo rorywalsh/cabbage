@@ -12,7 +12,7 @@ label bounds(12, 252, 387, 20), text("previous entries."), align("centre"),  col
 -n -d -+rtmidi=NULL -M0 
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs = 1

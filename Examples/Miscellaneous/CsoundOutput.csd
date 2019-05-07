@@ -7,7 +7,7 @@ csoundoutput bounds(8, 4, 467, 353), colour("black"), fontcolour("lime")
 -d -n
 </CsOptions>
 <CsInstruments>
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

@@ -80,7 +80,7 @@ rslider  bounds(130,  5, 80, 80), range(0,2,1,0.5,0.01),  channel("Gain"), text(
 
 <CsInstruments>
 
-sr	=	44100
+;sr is set by the host
 ksmps	=	32
 nchnls	=	2
 0dbfs	=	1

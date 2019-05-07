@@ -155,7 +155,7 @@ label   bounds(695,239, 145, 10), text("Author: Iain McCurdy |2014|"), FontColou
 -n -dm0 -+rtmidi=NULL -M0
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

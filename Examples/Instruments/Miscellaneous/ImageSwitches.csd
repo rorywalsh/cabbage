@@ -173,7 +173,7 @@ label bounds(2,424,100, 10), text("Iain McCurdy |2013|"), fontcolour(110,110,110
 
 <CsInstruments>
 
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

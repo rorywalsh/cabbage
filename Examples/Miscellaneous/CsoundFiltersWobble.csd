@@ -9,7 +9,7 @@ hslider bounds(12, 40, 361, 39), channel("coeffSlider"), range(0.01, 2, .5), tex
 -n -d -+rtmidi=NULL -M0 --midi-key-cps=4
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

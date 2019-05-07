@@ -7,7 +7,7 @@ checkbox bounds(-100, -100, 50, 50), text("Push"), widgetarray("test", 100), val
 -n -d -+rtmidi=NULL -M0 -m0d --midi-key=4
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

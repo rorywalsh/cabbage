@@ -16,7 +16,7 @@ rslider bounds(280, 50,100, 100) channel("flameGain"), text("Flame Gain") range(
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs = 1

@@ -11,7 +11,7 @@ hrange bounds(110, 140, 162, 32), channel("range1", "range2"), identchannel("wid
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

@@ -46,7 +46,7 @@ rslider bounds(285, 8, 75, 75), text("Level"),      channel("lev"),       range(
 </CsOptions>
 
 <CsInstruments>
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	64
 nchnls 		= 	2
 0dbfs		=	1	;MAXIMUM AMPLITUDE

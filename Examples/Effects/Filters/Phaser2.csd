@@ -28,7 +28,7 @@ combobox bounds(330, 34, 80,25), channel("mode"), value(1), text("Equal", "Power
 
 <CsInstruments>
 
-sr 		= 	48000	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

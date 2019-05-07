@@ -52,7 +52,7 @@ button   bounds(350, 70, 90, 20), fontcolour:0(50,50,50), fontcolour:1(255,255,2
 
 <CsInstruments>
 
-sr     = 44100
+;sr is set by the host
 ksmps  = 8
 nchnls = 1
 0dbfs  = 1

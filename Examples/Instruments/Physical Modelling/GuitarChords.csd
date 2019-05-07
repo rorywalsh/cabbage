@@ -159,7 +159,7 @@ label bounds(0.005, 0.2, 1, .7), text("Author: Iain McCurdy |2013|"), FontColour
 -n -dm0 -+rtmidi=NULL -M0 --midi-key-cps=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs = 1

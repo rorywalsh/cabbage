@@ -53,7 +53,7 @@ label    bounds(275,322,235, 14), text("Frequencies Table")
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs = 1

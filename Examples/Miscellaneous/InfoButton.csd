@@ -7,7 +7,7 @@ infobutton bounds(10, 10, 100, 50), file("example1.html"), text("Help"), colour(
 -d -n
 </CsOptions>
 <CsInstruments>
-sr 		= 	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

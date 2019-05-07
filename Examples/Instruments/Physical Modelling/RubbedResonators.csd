@@ -101,7 +101,7 @@ label bounds(0.03, 0.15, .9, .7), text("Author: Iain McCurdy |2012|"), fontcolou
 
 <CsInstruments>
 
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	64
 nchnls 		= 	2
 0dbfs		=	1	;MAXIMUM AMPLITUDE

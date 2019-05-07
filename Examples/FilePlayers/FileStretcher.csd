@@ -23,14 +23,14 @@
 ;  evident during long time stretches. Jitter depth and rate can be modified.
 
 <Cabbage>
-form caption("File Stretcher") size(580,430), colour(0,0,0) pluginid("FiSt"), guirefresh(10)  style("legacy")
+form caption("File Stretcher") size(580,270), colour(0,0,0) pluginid("FiSt"), guirefresh(10)  style("legacy")
 image                bounds(  0,  0,580,430), colour(50,50,60), outlinecolour("White"), line(3), shape("sharp")
 
 soundfiler           bounds(  5,  5,570,150), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255)
 label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontcolour(200,200,200), identchannel("stringbox")
 label      bounds( 6, 20,450, 13), text("Click and drag on waveform to select sound portion for time stretching..."), align(left), colour("black"), fontcolour("white"), visible(0), identchannel("InstructionID")
 
-filebutton bounds(  7,160, 83, 20), text("OPEN FILE","OPEN FILE"), fontcolour(255,255,100) channel("filename"), shape("ellipse"), channel("beg","len")
+filebutton bounds(  7,160, 83, 20), text("OPEN FILE","OPEN FILE"), fontcolour(255,255,100) channel("filename"), shape("ellipse")
 button     bounds(  7,183, 83, 20), text("PLAY STR.","PLAY STR."), channel("PlayStr"), value(0), latched(0), fontcolour(100,255,100)
 button     bounds( 96,183, 83, 20), text("PLAY NORM.","PLAY NORM."), channel("PlayNorm"), value(0), latched(0), fontcolour(150,150,255)
 button     bounds(  7,206, 83, 20), text("RECORD","RECORD"), channel("Record"), value(0), latched(0), fontcolour(255,100,100)
@@ -47,8 +47,6 @@ rslider    bounds(390,160, 60, 60), text("Aud.Lev."), channel("Level"),  range(0
 rslider    bounds(450,160, 60, 60), text("Jit.Dep."), channel("JitDep"), range(0, 1.00, 0.2),       colour(30,30,40), trackercolour("white"), fontcolour("white"), outlinecolour(150,150,150)
 rslider    bounds(510,160, 60, 60), text("Jit.Rte."), channel("JitRte"), range(0.5, 100.00, 2,0.5), colour(30,30,40), trackercolour("white"), fontcolour("white"), outlinecolour(150,150,150)
 
-csoundoutput bounds(  0,230,580,200), text("Csound Output")
-
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -59,7 +57,7 @@ csoundoutput bounds(  0,230,580,200), text("Csound Output")
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1
@@ -88,7 +86,8 @@ instr	1
  gkPlayStr	chnget	"PlayStr"
  gkPlayNorm	chnget	"PlayNorm"
  gkRecord	chnget	"Record"
- gSfilepath	chnget	"filename"
+ gSfilepath	chngetks	"filename"
+ 
  kNewFileTrg	changed	gSfilepath		; if a new file is loaded generate a trigger
  gkLevel	chnget	"Level"
  gkTranspose	chnget	"Transpose"
@@ -102,7 +101,8 @@ instr	1
   chnset "visible(0)", "InstructionID" 
  endif
  
- if kNewFileTrg==1 then				; if a new file has been loaded...
+ if changed:k(gSfilepath)==1 then				; if a new file has been loaded...
+ printks "Hello", 0
   event	"i",99,0,0.01				; call instrument to update sample storage function table 
  endif   
  
@@ -118,7 +118,7 @@ instr	1
 endin
 
 instr	99	; load sound file
- 
+ prints "Loadng file"
  /* write file selection to function tables */
  gichans	filenchnls	gSfilepath			; derive the number of channels (mono=1,stereo=2) in the sound file
  gitableL	ftgen	1,0,0,1,gSfilepath,0,0,1

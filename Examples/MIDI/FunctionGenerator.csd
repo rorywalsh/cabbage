@@ -100,7 +100,7 @@ combobox bounds( 25, 70, 80, 20), channel("controller"), text("1","2","3","4","5
 
 <CsInstruments>
 
-sr 	=	44100
+;sr is set by the host
 ksmps 	=	32
 nchnls 	=	2
 0dbfs	=	1

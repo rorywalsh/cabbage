@@ -84,7 +84,7 @@ rslider  bounds(120, 20, 90, 90), text("Level"), channel("Level"), valuetextbox(
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs = 1

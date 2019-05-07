@@ -52,7 +52,7 @@ label    bounds(230,  5, 70, 11), text("Instrument"), fontcolour("white"), align
 
 <CsInstruments>
 
-sr	= 	44100
+;sr is set by the host
 ksmps	= 	32
 nchnls	= 	2
 0dbfs	=	1	;MAXIMUM AMPLITUDE REGARDLESS OF BIT DEPTH

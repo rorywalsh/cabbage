@@ -8,7 +8,7 @@ hslider bounds(14, 80, 381, 40) range(0, 10, 5, 1, 0.001), channel("tempo"), tex
 -dm0 -n -+rtmidi=NULL -M0 -Q0 --midi-key=4 --midi-velocity=5
 </CsOptions>
 <CsInstruments>
-sr 	= 	44100
+;sr is set by the host
 ksmps 	= 	16
 nchnls 	= 	2
 0dbfs	=	1

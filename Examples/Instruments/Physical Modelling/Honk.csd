@@ -106,7 +106,7 @@ keyboard pos( 0, 360), size(700, 80)
 </CsOptions>
 
 <CsInstruments>
-sr 	= 	44100
+;sr is set by the host
 ksmps 	= 	32
 nchnls 	= 	2
 ;0dbfs	=	1

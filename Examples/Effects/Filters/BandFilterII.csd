@@ -50,7 +50,7 @@ hslider bounds(330,635,170,15), range(0,1,1),  channel("Gain"), textcolour("blac
 
 <CsInstruments>
 
-sr	=	44100
+;sr is set by the host
 ksmps	=	32
 nchnls	=	2
 0dbfs	=	1

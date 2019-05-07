@@ -23,7 +23,7 @@ label    bounds(  0, 0,0, 0), text("Drop a pebble into the pond..."), align(cent
 
 <CsInstruments>
 
-sr 		=  	44100	;SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE (higher values will cause quantisation noise in the mode filter)
 nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
 0dbfs		=	1

@@ -74,7 +74,7 @@ label   bounds(  5,245,390, 12), text("Pick-up Separation"), fontcolour(200,200,
 
 <CsInstruments>
 
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	32
 nchnls 		= 	2
 0dbfs		=	1

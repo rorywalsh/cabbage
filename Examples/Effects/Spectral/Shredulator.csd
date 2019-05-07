@@ -86,7 +86,7 @@ rslider  bounds(250, 15, 90,90), text("Level"), textbox(1), valuetextbox(1), cha
                                            
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 2
 0dbfs = 1

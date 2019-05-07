@@ -37,7 +37,7 @@ nslider bounds(405,505,60,30), text("y value"), channel("yval"), range(-100,100,
 
 <CsInstruments>
 
-sr = 44100
+;sr is set by the host
 ksmps = 16
 nchnls = 1
 0dbfs = 1

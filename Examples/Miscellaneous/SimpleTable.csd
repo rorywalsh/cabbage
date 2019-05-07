@@ -13,7 +13,7 @@ checkbox bounds(8, 378, 120, 20), channel("normal"), text("Normalise"), colour(2
 -d -n -m0d
 </CsOptions>
 <CsInstruments>
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	32
 nchnls 		= 	2
 0dbfs		=	1

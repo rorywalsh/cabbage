@@ -76,7 +76,7 @@ label    bounds(  5,508, 160, 11), text("Author: Iain McCurdy |2013|"), FontColo
 -dm0 -n
 </CsOptions>
 <CsInstruments>
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

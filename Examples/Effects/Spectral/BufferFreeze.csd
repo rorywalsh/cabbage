@@ -31,7 +31,7 @@ rslider    bounds(535,170, 70, 70), channel("TransRand"), text("Trans.Rand."), t
 
 <CsInstruments>
 
-sr 		= 	44100	; SAMPLE RATE
+;sr is set by the host
 ksmps 		= 	16	; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls 		= 	2	; NUMBER OF CHANNELS
 0dbfs		=	1	; MAXIMUM AMPLITUDE

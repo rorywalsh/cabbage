@@ -48,7 +48,7 @@ keyboard bounds(5, 80,790, 75)
 
 <CsInstruments>
 
-sr = 48000
+;sr is set by the host
 ksmps = 64
 nchnls = 2
 0dbfs=1

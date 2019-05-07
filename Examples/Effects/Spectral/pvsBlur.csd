@@ -16,7 +16,7 @@ label   bounds( 85,103, 60, 11), text("Blur Time"), fontcolour("white")
 -d -n
 </CsOptions>
 <CsInstruments>
-sr 		= 	44100
+;sr is set by the host
 ksmps 		= 	64
 nchnls 		= 	2
 0dbfs		=	1	;MAXIMUM AMPLITUDE

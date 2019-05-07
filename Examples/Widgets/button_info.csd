@@ -11,7 +11,7 @@ filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), 
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1

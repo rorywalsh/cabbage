@@ -36,7 +36,7 @@ checkbox bounds( 25,380,110, 16), text("Include Edges"), colour("yellow"), chann
 </CsOptions>
 
 <CsInstruments>
-sr 	= 	44100
+;sr is set by the host
 ksmps 	= 	16
 nchnls 	= 	2
 0dbfs	=	1

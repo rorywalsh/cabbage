@@ -20,7 +20,7 @@ image bounds(640,220, 200, 200),     colour(150,150,170), shape("rounded"), outl
 
 <CsInstruments>
 
-sr	= 	44100
+;sr is set by the host
 ksmps	= 	16
 nchnls	= 	2
 0dbfs	=	1

@@ -15,7 +15,7 @@ label bounds(280, 140, 15, 15), text("R"), colour(255, 255, 255, 255), identchan
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
+;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1
