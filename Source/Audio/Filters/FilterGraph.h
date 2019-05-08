@@ -211,9 +211,9 @@ public:
 	AudioProcessor* createCabbageProcessor(const String filename)
 	{
 		AudioProcessor* processor;
+        
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(filename));
-		const int numChannels = CabbageUtilities::getHeaderInfo(filename, "nchnls");
-		const int sampleRate = CabbageUtilities::getHeaderInfo(filename, "sr");
+		const int numChannels = CabbageUtilities::getHeaderInfo(File(filename).loadFileAsString(), "nchnls");
 
 		if (isCabbageFile)
 			processor = new CabbagePluginProcessor(File(filename), numChannels, numChannels);
@@ -232,12 +232,15 @@ public:
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
+        AudioProcessorGraph::Node* currentNode = graph.getNodeForId(nodeId);
 		AudioProcessor* processor = createCabbageProcessor(desc.fileOrIdentifier);
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(desc.fileOrIdentifier));
 
 		if (auto* plugin = graph.getNodeForId(nodeId))
 		{
 			ScopedPointer<XmlElement> xml = createConnectionsXml();
+//            const int x = currentNode->properties.getWithDefault("x", pos.x);
+//            const int y = currentNode->properties.getWithDefault("y", pos.y);
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
 			graph.removeNode(nodeId);
@@ -253,7 +256,7 @@ public:
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				//createNodeFromXml(*nodeXml);
-				setNodePosition(nodeId, Point<double>(pos.getX(), pos.getY()));
+				setNodePosition(nodeId, Point<double>(pos.x, pos.y));
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				//pluginFiles.add(inputFile.getFullPathName());

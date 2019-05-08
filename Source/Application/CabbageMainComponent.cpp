@@ -1828,8 +1828,8 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             if (pos.getX() == -1000 && pos.getY() == -1000)
             {
                 Random rand;//nextInt();
-                pos.setX (rand.nextInt (Range<int> (getWidth() / 2, getWidth() / 1.8)));
-                pos.setY (rand.nextInt (Range<int> (getHeight() / 2, (getHeight() / 2) + 100)));
+                pos.setX (rand.nextDouble ());
+                pos.setY (rand.nextDouble ());
             }
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
