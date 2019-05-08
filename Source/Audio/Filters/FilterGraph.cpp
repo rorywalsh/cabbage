@@ -126,7 +126,7 @@ void FilterGraph::setNodePosition (NodeID nodeID, Point<double> pos)
 {
     if (auto* n = graph.getNodeForId (nodeID))
     {
-        n->properties.set ("x", jlimit (0.0, 1.0, pos.x));
+		n->properties.set ("x", jlimit (0.0, 1.0, pos.x));
         n->properties.set ("y", jlimit (0.0, 1.0, pos.y));
     }
 }

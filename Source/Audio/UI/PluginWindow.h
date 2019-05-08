@@ -101,6 +101,10 @@ public:
     {
         node->properties.set (getLastXProp (type), getX());
         node->properties.set (getLastYProp (type), getY());
+		//mod RW
+		node->properties.set("PluginWindowX", getX());
+		node->properties.set("PluginWindowY", getY());
+
     }
 
     void closeButtonPressed() override

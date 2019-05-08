@@ -1054,12 +1054,14 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
     String pluginName = "";
     AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 
+	
     if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId (nodeId))
     {
         PluginWindow::Type type = f->getProcessor()->hasEditor() ? PluginWindow::Type::normal
                                               : PluginWindow::Type::generic;
 
-        if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
+
+		if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
         {
             pluginName = cabbagePlugin->getPluginName();
         }
@@ -1068,7 +1070,11 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
         {
 //             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
 //                 currentEditor = dynamic_cast<CabbagePluginEditor*>(cabbagePlugin->getActiveEditor());
-            
+        
+			f->properties.set("PluginWindowX", position.getX());
+			f->properties.set("PluginWindowY", position.getY());
+
+
             if (GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
                 w->setVisible (false);
             else
@@ -1822,21 +1828,31 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
                 fileTabs[currentFileIndex]->uniqueFileId = node.uid;
             }
 
-			if ( pos == Point<int>(-1000, -1000))
-				pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(node);
+			Point<double> pluginNodePos(.5, .5);
+			Point<int> pluginWindowPos(-1000, -1000);
+			Random rand;
 
-            if (pos.getX() == -1000 && pos.getY() == -1000)
-            {
-                Random rand;//nextInt();
-                pos.setX (rand.nextDouble ());
-                pos.setY (rand.nextDouble ());
-            }
+
+			if (getFilterGraph()->graph.getNodeForId(node))
+			{
+				pluginNodePos = Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
+					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
+
+				pluginWindowPos = Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
+					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
+
+			}
+			
+
+
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
 			//this will create or update plugin...
-            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pos);
+
+            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
             
-            createEditorForFilterGraphNode (pos);
+			
+            createEditorForFilterGraphNode (pluginWindowPos);
 
             startTimer (100);
             if(getFilterGraph()->graph.getNodeForId(node))

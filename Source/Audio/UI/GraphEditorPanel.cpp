@@ -791,12 +791,13 @@ void GraphEditorPanel::mouseDrag (const MouseEvent& e)
     //    stopTimer();
 }
 
-void GraphEditorPanel::createNewPlugin (const PluginDescription& desc, Point<int> position)
+void GraphEditorPanel::createNewPlugin (const PluginDescription& desc, Point<double> position)
 {
+
     if (desc.pluginFormatName == "Cabbage")
-        graph.addCabbagePlugin(desc, position.toDouble() / Point<double>((double)getWidth(), (double)getHeight()));
+        graph.addCabbagePlugin(desc, position);
     else
-        graph.addPlugin (desc, position.toDouble() / Point<double> ((double) getWidth(), (double) getHeight()));
+        graph.addPlugin (desc, position);
 }
 
 GraphEditorPanel::FilterComponent* GraphEditorPanel::getComponentForFilter (AudioProcessorGraph::NodeID nodeID) const
@@ -964,7 +965,7 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
         else if(r >= 20000)
         {
             auto* desc = graphWindow->getOwner()->knownPluginList.getType (graphWindow->getOwner()->knownPluginList.getIndexChosenByMenu (r));
-            createNewPlugin (*desc, mousePos);
+            createNewPlugin (*desc, mousePos.toDouble());
         }
         
         
@@ -1331,7 +1332,7 @@ void GraphDocumentComponent::resized()
     checkAvailableWidth();
 }
 
-void GraphDocumentComponent::createNewPlugin (const PluginDescription& desc, Point<int> pos)
+void GraphDocumentComponent::createNewPlugin (const PluginDescription& desc, Point<double> pos)
 {
     graphPanel->createNewPlugin (desc, pos);
 }
@@ -1378,7 +1379,7 @@ void GraphDocumentComponent::itemDropped (const SourceDetails& details)
     // must be a valid index!
     jassert (isPositiveAndBelow (pluginTypeIndex, pluginList.getNumTypes()));
     
-    createNewPlugin (*pluginList.getType (pluginTypeIndex), details.localPosition);
+    createNewPlugin (*pluginList.getType (pluginTypeIndex), details.localPosition.toDouble());
 }
 
 void GraphDocumentComponent::showSidePanel (bool showSettingsPanel)
