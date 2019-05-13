@@ -232,22 +232,20 @@ public:
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
-        AudioProcessorGraph::Node* currentNode = graph.getNodeForId(nodeId);
 		AudioProcessor* processor = createCabbageProcessor(desc.fileOrIdentifier);
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(desc.fileOrIdentifier));
 
 		if (auto* plugin = graph.getNodeForId(nodeId))
 		{
 			ScopedPointer<XmlElement> xml = createConnectionsXml();
-//            const int x = currentNode->properties.getWithDefault("x", pos.x);
-//            const int y = currentNode->properties.getWithDefault("y", pos.y);
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
-			graph.removeNode(nodeId);
-            for (auto* w : activePluginWindows)
-                if( w->node->getProcessor() == plugin->getProcessor())
-                    activePluginWindows.removeObject(w);
+			
+//            for (auto* w : activePluginWindows)
+//                if( w->node->nodeID.uid == nodeId.uid)
+//                        activePluginWindows.removeObject(w);
             
+            graph.removeNode(nodeId);
 			graph.releaseResources();
 
 			if (auto node = graph.addNode(processor, nodeId))
@@ -255,11 +253,9 @@ public:
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
-				//createNodeFromXml(*nodeXml);
 				setNodePosition(nodeId, Point<double>(pos.x, pos.y));
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
-				//pluginFiles.add(inputFile.getFullPathName());
 				changed();
 
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE

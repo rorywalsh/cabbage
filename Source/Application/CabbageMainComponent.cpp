@@ -1371,19 +1371,21 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     }
 
     StringArray pluginFiles;
+    getFilterGraph()->loadDocument (fileToOpen);
+    
     for ( int i = 0 ; i < files.size() ; i++)
     {
         if (files[i].existsAsFile())
         {
             openFile (files[i].getFullPathName());
-            const int current = currentFileIndex;
-            fileTabs[currentFileIndex]->uniqueFileId = uuids[i];
+            fileTabs[getTabFileIndex(files[i])]->uniqueFileId = uuids[i];
+//            fileTabs[getTabFileIndex(files[i])]->getPlayButton().setToggleState(true, dontSendNotification);
         }
     }
 
 
 
-	getFilterGraph()->loadDocument (fileToOpen);
+	
 
 }
 //==================================================================================
