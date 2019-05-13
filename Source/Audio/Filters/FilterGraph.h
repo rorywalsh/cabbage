@@ -254,6 +254,7 @@ public:
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				setNodePosition(nodeId, Point<double>(pos.x, pos.y));
+
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				changed();
@@ -268,6 +269,7 @@ public:
 		{
 			if (auto node = graph.addNode(processor, nodeId))
 			{
+
 				setNodePosition(nodeId, pos);
 				changed();
 				ScopedPointer<XmlElement> xmlElem;
@@ -275,7 +277,7 @@ public:
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
-				
+
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
 				node->properties.set("DPIAware", true);
 #endif

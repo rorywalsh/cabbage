@@ -40,7 +40,7 @@ public:
     GraphEditorPanel (FilterGraph& graph);
     ~GraphEditorPanel();
     
-    void createNewPlugin (const PluginDescription&, Point<int> position);
+    void createNewPlugin (const PluginDescription&, Point<double> position);
     
     void paint (Graphics&) override;
     void resized() override;
@@ -117,7 +117,7 @@ public:
     ~GraphDocumentComponent();
     
     //==============================================================================
-    void createNewPlugin (const PluginDescription&, Point<int> position);
+    void createNewPlugin (const PluginDescription&, Point<double> position);
     void setDoublePrecision (bool doublePrecision);
     bool closeAnyOpenPluginWindows();
     
