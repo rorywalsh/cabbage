@@ -1795,15 +1795,18 @@ void CabbageMainComponent::replaceText (bool replaceAll)
 //==============================================================================
 int CabbageMainComponent::testFileForErrors (String file)
 {
+    //this method will start a Csound process and test it for i-time errors and possible infinite loops.
+    //It only runs 16 k-cycles, so it will not be able to detect perf-time hangs
     ChildProcess process;
     const String applicationDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName();
-    const String processName = applicationDir + "/CsoundTest " + file;
+    const String processName = applicationDir + "/CsoundTest";
 
     if (File (processName).existsAsFile())
     {
-        process.start (processName);
+        const String output = process.readAllProcessOutput();
 
-        process.readAllProcessOutput();
+        process.start (processName + " " + file);
+        process.waitForProcessToFinish(400);
 
         const int exitCode = process.getExitCode();
 
@@ -1814,6 +1817,7 @@ int CabbageMainComponent::testFileForErrors (String file)
             stopCsoundForNode (file);
             return 1;
         }
+
     }
 
     return 0;

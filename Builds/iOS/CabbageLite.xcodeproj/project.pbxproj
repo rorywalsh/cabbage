@@ -1,0 +1,2018 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+		B97E0D691D8C9F1B67F86E34 = {
+			isa = PBXBuildFile;
+			fileRef = 4847BD246218969C8497F41B;
+		};
+		5504D75F7F26AF6131CE37CC = {
+			isa = PBXBuildFile;
+			fileRef = FB0C5E16D5613E963A73393C;
+		};
+		E54F5FED3C025F05EF814B70 = {
+			isa = PBXBuildFile;
+			fileRef = 0CFD09DCF01624F31D546B62;
+		};
+		553C6496C5D269664B9D8292 = {
+			isa = PBXBuildFile;
+			fileRef = AA7B604D2B338523139C293C;
+		};
+		9C581B9683EA8197AFE1632B = {
+			isa = PBXBuildFile;
+			fileRef = 2629B6ED7B86539C87472A32;
+		};
+		9C7F4CBAF8C6C0BC46B400F2 = {
+			isa = PBXBuildFile;
+			fileRef = DA15E7CAB4CFFC98B8192336;
+		};
+		3F8AA955860FBE165C9104A6 = {
+			isa = PBXBuildFile;
+			fileRef = 23B95811630AA5A80D53875D;
+		};
+		74C07E1559B8D087FF91D24A = {
+			isa = PBXBuildFile;
+			fileRef = 675CE93C9375A59EDB36F3D8;
+		};
+		5E38CB22D4233D1D1A0FA524 = {
+			isa = PBXBuildFile;
+			fileRef = 75C362D16A329874664EC86B;
+		};
+		72F22E65319946A50EFF3534 = {
+			isa = PBXBuildFile;
+			fileRef = BA39BE33BD77BB93637F7E6A;
+		};
+		024CBBC8506BE6E07B656929 = {
+			isa = PBXBuildFile;
+			fileRef = 451CEA48FFCA289DD7A4386C;
+		};
+		A2EF5662F6415B6F34807171 = {
+			isa = PBXBuildFile;
+			fileRef = F6AE936B35FE334301120052;
+		};
+		D613C52B06DBAF77B8887023 = {
+			isa = PBXBuildFile;
+			fileRef = E69C48259AFD016EE7AFA6C1;
+		};
+		802B37C92034DB03517E9910 = {
+			isa = PBXBuildFile;
+			fileRef = 816CF338D85ECA8A8C0FB6F6;
+		};
+		7DAF068BA4E20F7C7E0F715C = {
+			isa = PBXBuildFile;
+			fileRef = BE819CA90AAED86D862EEEC2;
+		};
+		F2E3760AF07C55E5373EC829 = {
+			isa = PBXBuildFile;
+			fileRef = C3AF6D186DD900FA5E192C10;
+		};
+		017683072338F73E256246C2 = {
+			isa = PBXBuildFile;
+			fileRef = 9C732A1764C1DA622117ECD6;
+		};
+		2495D9BBC8DB2C862ED077BD = {
+			isa = PBXBuildFile;
+			fileRef = C15DA6C8262E0A5F19B915C5;
+		};
+		573A8D0D6E50FFBD6297E486 = {
+			isa = PBXBuildFile;
+			fileRef = 7C9223AC2E8F1897F5D537CB;
+		};
+		54331BD2567CBB144237DF13 = {
+			isa = PBXBuildFile;
+			fileRef = B0E00708567EBD27F47E1776;
+		};
+		999B106EC0C1B5103A48706B = {
+			isa = PBXBuildFile;
+			fileRef = 4D503DD5981EB106CEBA9633;
+		};
+		4261FC0D9D5726DA22E625BE = {
+			isa = PBXBuildFile;
+			fileRef = CC89AAA80421BCD6D1A8C980;
+		};
+		766CC54C3F0001631D7E34DF = {
+			isa = PBXBuildFile;
+			fileRef = 965638A8F5C2A22E7675B9B9;
+		};
+		F0D50EA6818601A9329AAD63 = {
+			isa = PBXBuildFile;
+			fileRef = 82161EA094D26E863174EA36;
+		};
+		034EC9BE70EA9EAAD69D86CD = {
+			isa = PBXBuildFile;
+			fileRef = 34228B55DD3C39A38C8E091A;
+		};
+		6757E5C4EDAE7353C0081B11 = {
+			isa = PBXBuildFile;
+			fileRef = 5C51CC696B0C1851194E1510;
+		};
+		35017290B068C7B4093AE81C = {
+			isa = PBXBuildFile;
+			fileRef = 7D0589165E63DBFB191DEDCF;
+		};
+		D8CD33FCD9BCD09EBFB2B414 = {
+			isa = PBXBuildFile;
+			fileRef = A12CF2017A63465B3DFB9720;
+		};
+		72ADB73D3E746840A7F329BE = {
+			isa = PBXBuildFile;
+			fileRef = 5193F92C257DD7851F8D9AE9;
+		};
+		0ED2ADD1C577127DF475FD21 = {
+			isa = PBXBuildFile;
+			fileRef = 5CF646F5433E4EC60F5E7488;
+		};
+		00283CCBCBB28EFC6FADF231 = {
+			isa = PBXBuildFile;
+			fileRef = 14DCC39D70122E1C30D5303C;
+		};
+		918CB3E984C3C6D20B792B56 = {
+			isa = PBXBuildFile;
+			fileRef = 42BECCB9B56517ECAF8E9352;
+		};
+		2560A61A8FEA5CBDD2FA7ECF = {
+			isa = PBXBuildFile;
+			fileRef = 58B26B527FA95381ACC9FBF1;
+		};
+		1120EBF8C81AD63CDC58AAA3 = {
+			isa = PBXBuildFile;
+			fileRef = 573E919A1BDFB585222DDD01;
+		};
+		E320E4C30DA1FF944680BA2C = {
+			isa = PBXBuildFile;
+			fileRef = C0D915003DCFF9371EAAE741;
+		};
+		3763A59281D5B393932E3619 = {
+			isa = PBXBuildFile;
+			fileRef = 059AE3E94F79DB290EF2E6B7;
+		};
+		D793D3183C127503B90B08B3 = {
+			isa = PBXBuildFile;
+			fileRef = 52578B26CD5869DACA64D447;
+		};
+		812421BFAFD1542E8FC4CDCE = {
+			isa = PBXBuildFile;
+			fileRef = FDF3D4CF67148FB6E57C3B94;
+		};
+		B8AE4D78F2E387F4E11D8932 = {
+			isa = PBXBuildFile;
+			fileRef = EDC473BB1658A2FFF160FD2F;
+		};
+		C4D066389CE830E6A1F5465E = {
+			isa = PBXBuildFile;
+			fileRef = 3849A2CD8F4F8CD2413F48AC;
+		};
+		231C15C74F09967273AA8687 = {
+			isa = PBXBuildFile;
+			fileRef = 2BF241E56C8AC63347FC3B5E;
+		};
+		37BBCE7C39BD88EF876DECD1 = {
+			isa = PBXBuildFile;
+			fileRef = 6D73DF7BD3A983BBDD83EA4B;
+		};
+		1E382A11FF8532CF50914776 = {
+			isa = PBXBuildFile;
+			fileRef = 738180A0D681FC3DA5B2CAD1;
+		};
+		2CB95C22BDC002EF18F5885C = {
+			isa = PBXBuildFile;
+			fileRef = 44AAD2C82012EC20672059B0;
+		};
+		B2CBB8F2F9D89A5645412901 = {
+			isa = PBXBuildFile;
+			fileRef = 45670FD3C2C9827E21E5AA85;
+		};
+		1ADEB20E96338D3C9AA30618 = {
+			isa = PBXBuildFile;
+			fileRef = BAE5A3A097760BBD36087E7D;
+		};
+		5FA7E432BBEAC3A814F8ADBA = {
+			isa = PBXBuildFile;
+			fileRef = 4746FF62ECF57D148B734068;
+		};
+		2EFACC745FFEF3E76B36219B = {
+			isa = PBXBuildFile;
+			fileRef = 6260A5C5CA05EE47936831BB;
+		};
+		06E12250B65D07AED7076FBD = {
+			isa = PBXBuildFile;
+			fileRef = 3F714AA4A5016FE1A830F57D;
+		};
+		1444524C02B12B1EC4D960FD = {
+			isa = PBXBuildFile;
+			fileRef = 4E9E3E8B073A55ACBD3B3B0B;
+		};
+		514B3C96EC97413F9E126861 = {
+			isa = PBXBuildFile;
+			fileRef = 36912167123633BFCA536681;
+		};
+		750F64B0E5B6E8ABE4DA0522 = {
+			isa = PBXBuildFile;
+			fileRef = 5BB899E3A2A69AC52090A921;
+		};
+		7CCF12E886352A83E7CCA080 = {
+			isa = PBXBuildFile;
+			fileRef = 98E3E5A8CFA5CA8EF1CE2B3E;
+		};
+		9191BE8AD73E9C663633BD0E = {
+			isa = PBXBuildFile;
+			fileRef = 90244A164F3D66013B0D28C9;
+		};
+		7C0352B77FE397CB99664DD2 = {
+			isa = PBXBuildFile;
+			fileRef = D08903B17B335826BD8964B8;
+		};
+		16B79AF3FAEB1D736E90AA8E = {
+			isa = PBXBuildFile;
+			fileRef = 6A848A763B9D171A7BAB1B92;
+		};
+		C69028CFE8704970EAF187DE = {
+			isa = PBXBuildFile;
+			fileRef = 1CE5C5307F1CE5525B6A4A12;
+		};
+		7D6703F6BFBAAB260E31BA1D = {
+			isa = PBXBuildFile;
+			fileRef = B2A6BCFB5B5981CCB33494DE;
+		};
+		DA2C5019D21CBFDD3951C0C6 = {
+			isa = PBXBuildFile;
+			fileRef = E9E4511DE0598F7724FA4AAF;
+		};
+		0917DDFA78727D0470CF6186 = {
+			isa = PBXBuildFile;
+			fileRef = 48FB0F0749C060D7BD2F7F40;
+		};
+		59B083CCE1957FDECD0FD3B3 = {
+			isa = PBXBuildFile;
+			fileRef = 3DBA238ABA85EFCC7D7154AD;
+		};
+		85073B767348E721546DD869 = {
+			isa = PBXBuildFile;
+			fileRef = 595F7D8F28B85F28A6E733A9;
+		};
+		DEC1653F9E84F2FE6FB60AFF = {
+			isa = PBXBuildFile;
+			fileRef = 9602949DD6B7830C840A50AC;
+		};
+		BF255542BCEDBDB1A46CB1E8 = {
+			isa = PBXBuildFile;
+			fileRef = 7B563527DFC4470C5DDA9D95;
+		};
+		D284FBC68C1D0D17342D139E = {
+			isa = PBXBuildFile;
+			fileRef = C30C02CEB82058DC8D4DCB71;
+		};
+		6BB1A8AD54AA352D1600BD98 = {
+			isa = PBXBuildFile;
+			fileRef = 7D99532AC5AE6399BA5FA949;
+		};
+		B8E19818C0001B7156F0DAAD = {
+			isa = PBXBuildFile;
+			fileRef = E4D8253C4DC74A4E01E9C992;
+		};
+		5A950737E289FC2D5873A7A1 = {
+			isa = PBXBuildFile;
+			fileRef = 95181C7C5C8B1658A392FBCC;
+		};
+		1AAA9DFC77BE46F6BF9E252F = {
+			isa = PBXBuildFile;
+			fileRef = C9939AC9730E1A76929612BB;
+		};
+		47A863DB410D4CC07F3E29ED = {
+			isa = PBXBuildFile;
+			fileRef = 3850EE67086819980D96C116;
+		};
+		EDD1FFF399F1B80CA0CBB03B = {
+			isa = PBXBuildFile;
+			fileRef = C4D987B06C560FD480607C8F;
+		};
+		EF09D6CF0AA4942A35D93226 = {
+			isa = PBXBuildFile;
+			fileRef = FA83B49A81BBB97399A14D98;
+		};
+		AFE3FDB054AC85159AE21BE1 = {
+			isa = PBXBuildFile;
+			fileRef = 5C17A782F9CA0124E3105350;
+		};
+		B931B6D21E75B8C4B533D54B = {
+			isa = PBXBuildFile;
+			fileRef = E3C93C2F1567336A2EC9F7D4;
+		};
+		BA05F416BA43E667C440A025 = {
+			isa = PBXBuildFile;
+			fileRef = FD87A5B9209DF72E59A0C50A;
+		};
+		2DED6CFD6309711E3DB77AA3 = {
+			isa = PBXBuildFile;
+			fileRef = 1C73F3060CA62C8522886F0E;
+		};
+		7358A7A0EC5FDEDE7ED9CB4C = {
+			isa = PBXBuildFile;
+			fileRef = 5D394C91B747400EA30E6932;
+		};
+		91273D0750F111BB61ED9C20 = {
+			isa = PBXBuildFile;
+			fileRef = A24EA6626875883D879A8376;
+		};
+		D5141AD38AF9860D193B5081 = {
+			isa = PBXBuildFile;
+			fileRef = 6DA9257A1F4B3EEABE88A15F;
+		};
+		3886FB4730FB337814E616FF = {
+			isa = PBXBuildFile;
+			fileRef = 5AD1AB43B56BFC23465CC50B;
+		};
+		038848841036483436007764 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = StandalonePluginHolder.h;
+			path = ../../Source/StandaloneLite/StandalonePluginHolder.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		059AE3E94F79DB290EF2E6B7 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageExportPlugin.cpp;
+			path = ../../Source/Utilities/CabbageExportPlugin.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		07704E6F6B740351682891E0 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = FrequencyRangeDisplayComponent.h;
+			path = ../../Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		0776D45F064717C00E3365EC = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageTextEditor.h;
+			path = ../../Source/Widgets/CabbageTextEditor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		09473BDD91F91B851AF9203B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageBinaryData.h;
+			path = ../../Source/BinaryData/CabbageBinaryData.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		0CFD09DCF01624F31D546B62 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = AudioToolbox.framework;
+			path = System/Library/Frameworks/AudioToolbox.framework;
+			sourceTree = SDKROOT;
+		};
+		0CFD25DC5404871FD887B6BB = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageStrings.h;
+			path = ../../Source/Utilities/CabbageStrings.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		1391847FCD72EB323C662220 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbagePluginProcessor.h;
+			path = ../../Source/Audio/Plugins/CabbagePluginProcessor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		14DCC39D70122E1C30D5303C = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = GenericCabbageEditor.cpp;
+			path = ../../Source/Audio/Plugins/GenericCabbageEditor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		17486C9A1C99D93F34580CD0 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CsoundPluginProcessor.h;
+			path = ../../Source/Audio/Plugins/CsoundPluginProcessor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		179AC8F9B0ADCD870CE8E48D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = PropertyPanelLookAndFeel.h;
+			path = ../../Source/LookAndFeel/PropertyPanelLookAndFeel.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		18A5FD78D81192340112E8DF = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageImage.h;
+			path = ../../Source/Widgets/CabbageImage.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		1B908DB01FE960C5EF5ACA6D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageLabel.h;
+			path = ../../Source/Widgets/CabbageLabel.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		1C73F3060CA62C8522886F0E = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_data_structures.mm";
+			path = "../../JuceLibraryCode/include_juce_data_structures.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		1CE5C5307F1CE5525B6A4A12 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageSignalDisplay.cpp;
+			path = ../../Source/Widgets/CabbageSignalDisplay.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		1F88F6CFBFE5DC9592B4197D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageWidgetBase.h;
+			path = ../../Source/Widgets/CabbageWidgetBase.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		225B41CB5E6D04D5A3BE1137 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = ComponentLayoutEditor.h;
+			path = ../../Source/GUIEditor/ComponentLayoutEditor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		23B95811630AA5A80D53875D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreGraphics.framework;
+			path = System/Library/Frameworks/CoreGraphics.framework;
+			sourceTree = SDKROOT;
+		};
+		25DB1807538D9B44B68D2058 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageExportPlugin.h;
+			path = ../../Source/Utilities/CabbageExportPlugin.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		2629B6ED7B86539C87472A32 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreAudio.framework;
+			path = System/Library/Frameworks/CoreAudio.framework;
+			sourceTree = SDKROOT;
+		};
+		2BF241E56C8AC63347FC3B5E = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageListBox.cpp;
+			path = ../../Source/Widgets/CabbageListBox.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		2F34C27791059927585AF295 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_gui_extra";
+			path = "../../JuceLibraryCode/modules/juce_gui_extra";
+			sourceTree = "SOURCE_ROOT";
+		};
+		30B5096A719A3276C3CD779B = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_basics";
+			path = "../../JuceLibraryCode/modules/juce_audio_basics";
+			sourceTree = "SOURCE_ROOT";
+		};
+		334DC6EC8F42B61ADF9DB640 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageFilePropertyComponent.h;
+			path = ../../Source/Utilities/CabbageFilePropertyComponent.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		34228B55DD3C39A38C8E091A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = FlatButtonLookAndFeel.cpp;
+			path = ../../Source/LookAndFeel/FlatButtonLookAndFeel.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		36912167123633BFCA536681 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageImage.cpp;
+			path = ../../Source/Widgets/CabbageImage.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3849A2CD8F4F8CD2413F48AC = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = TableManager.cpp;
+			path = ../../Source/Widgets/Legacy/TableManager.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3850EE67086819980D96C116 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_devices.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_devices.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		3A38685148954CE099484D29 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageFileButton.h;
+			path = ../../Source/Widgets/CabbageFileButton.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3BCC78EC79A7C2220852DF28 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageSettingsWindow.h;
+			path = ../../Source/Settings/CabbageSettingsWindow.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3DBA238ABA85EFCC7D7154AD = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageTextBox.cpp;
+			path = ../../Source/Widgets/CabbageTextBox.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3EE7FDF067346BECE0E24557 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageEncoder.h;
+			path = ../../Source/Widgets/CabbageEncoder.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3F5B5A06F476568FDB765A07 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "Info-App.plist";
+			path = "Info-App.plist";
+			sourceTree = "SOURCE_ROOT";
+		};
+		3F714AA4A5016FE1A830F57D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageGenTable.cpp;
+			path = ../../Source/Widgets/CabbageGenTable.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4186778320E40F30138DFC47 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageCustomWidgets.h;
+			path = ../../Source/Widgets/CabbageCustomWidgets.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		42BECCB9B56517ECAF8E9352 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = GenericCabbagePluginProcessor.cpp;
+			path = ../../Source/Audio/Plugins/GenericCabbagePluginProcessor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		44AAD2C82012EC20672059B0 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageComboBox.cpp;
+			path = ../../Source/Widgets/CabbageComboBox.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		451CEA48FFCA289DD7A4386C = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Foundation.framework;
+			path = System/Library/Frameworks/Foundation.framework;
+			sourceTree = SDKROOT;
+		};
+		45670FD3C2C9827E21E5AA85 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageCsoundConsole.cpp;
+			path = ../../Source/Widgets/CabbageCsoundConsole.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		46ECC847380E1EC6609169A6 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageWidgetData.h;
+			path = ../../Source/Widgets/CabbageWidgetData.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		47367073AFD7B7B396E3B12C = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbagePropertiesPanel.h;
+			path = ../../Source/GUIEditor/CabbagePropertiesPanel.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4746FF62ECF57D148B734068 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageEncoder.cpp;
+			path = ../../Source/Widgets/CabbageEncoder.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		479665DF0694B2ACEA28202A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageRangeSlider.h;
+			path = ../../Source/Widgets/CabbageRangeSlider.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		48340D99FA0E361DEA25761A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageKeyboardDisplay.h;
+			path = ../../Source/Widgets/CabbageKeyboardDisplay.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4847BD246218969C8497F41B = {
+			isa = PBXFileReference;
+			explicitFileType = wrapper.application;
+			includeInIndex = 0;
+			path = CabbageLite.app;
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		48FB0F0749C060D7BD2F7F40 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageEventSequencer.cpp;
+			path = ../../Source/Widgets/CabbageEventSequencer.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4919CF03FF2D97156A1FCD83 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_devices";
+			path = "../../JuceLibraryCode/modules/juce_audio_devices";
+			sourceTree = "SOURCE_ROOT";
+		};
+		4D503DD5981EB106CEBA9633 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = ComponentOverlay.cpp;
+			path = ../../Source/GUIEditor/ComponentOverlay.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4E19F8E739FA69CDDA2EAB55 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageGroupBox.h;
+			path = ../../Source/Widgets/CabbageGroupBox.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4E9E3E8B073A55ACBD3B3B0B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageGroupBox.cpp;
+			path = ../../Source/Widgets/CabbageGroupBox.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		5193F92C257DD7851F8D9AE9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CsoundPluginEditor.cpp;
+			path = ../../Source/Audio/Plugins/CsoundPluginEditor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		52578ACEB1A483645966CCD3 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = StandaloneFilterWindow.h;
+			path = ../../Source/StandaloneLite/StandaloneFilterWindow.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		52578B26CD5869DACA64D447 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageColourProperty.cpp;
+			path = ../../Source/Utilities/CabbageColourProperty.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		53A6FF01652FD012B31A9E69 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageSoundfiler.h;
+			path = ../../Source/Widgets/CabbageSoundfiler.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		53ADFEECEB31E8DDE2B42423 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_graphics";
+			path = "../../JuceLibraryCode/modules/juce_graphics";
+			sourceTree = "SOURCE_ROOT";
+		};
+		573E919A1BDFB585222DDD01 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageSettingsWindow.cpp;
+			path = ../../Source/Settings/CabbageSettingsWindow.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		583221C84079EBA088DFDAA8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = TableManager.h;
+			path = ../../Source/Widgets/Legacy/TableManager.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		58B26B527FA95381ACC9FBF1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageSettings.cpp;
+			path = ../../Source/Settings/CabbageSettings.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		595F7D8F28B85F28A6E733A9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageTextEditor.cpp;
+			path = ../../Source/Widgets/CabbageTextEditor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		5AD1AB43B56BFC23465CC50B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_gui_extra.mm";
+			path = "../../JuceLibraryCode/include_juce_gui_extra.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		5BB899E3A2A69AC52090A921 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageInfoButton.cpp;
+			path = ../../Source/Widgets/CabbageInfoButton.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		5C17A782F9CA0124E3105350 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_utils.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_utils.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		5C51CC696B0C1851194E1510 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = PropertyPanelLookAndFeel.cpp;
+			path = ../../Source/LookAndFeel/PropertyPanelLookAndFeel.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		5CF646F5433E4EC60F5E7488 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CsoundPluginProcessor.cpp;
+			path = ../../Source/Audio/Plugins/CsoundPluginProcessor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		5D394C91B747400EA30E6932 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_events.mm";
+			path = "../../JuceLibraryCode/include_juce_events.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		60D507AA5D6F7B7B2FD55F51 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = BinaryData.h;
+			path = ../../JuceLibraryCode/BinaryData.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		6260A5C5CA05EE47936831BB = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageFileButton.cpp;
+			path = ../../Source/Widgets/CabbageFileButton.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		675CE93C9375A59EDB36F3D8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreImage.framework;
+			path = System/Library/Frameworks/CoreImage.framework;
+			sourceTree = SDKROOT;
+		};
+		6A848A763B9D171A7BAB1B92 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageRangeSlider.cpp;
+			path = ../../Source/Widgets/CabbageRangeSlider.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		6BC42079321AF8CFB0AE2DF0 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageGenTable.h;
+			path = ../../Source/Widgets/CabbageGenTable.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		6D73DF7BD3A983BBDD83EA4B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageButton.cpp;
+			path = ../../Source/Widgets/CabbageButton.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		6DA9257A1F4B3EEABE88A15F = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_gui_basics.mm";
+			path = "../../JuceLibraryCode/include_juce_gui_basics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		71D1812EE51FEFB2E050AFA5 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbagePluginEditor.h;
+			path = ../../Source/Audio/Plugins/CabbagePluginEditor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		738180A0D681FC3DA5B2CAD1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageCheckbox.cpp;
+			path = ../../Source/Widgets/CabbageCheckbox.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		74EC101E78ACC5EC9461B287 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageSettings.h;
+			path = ../../Source/Settings/CabbageSettings.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		75C362D16A329874664EC86B = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreMIDI.framework;
+			path = System/Library/Frameworks/CoreMIDI.framework;
+			sourceTree = SDKROOT;
+		};
+		7800A366A3D99029EF3705F7 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageCsoundBreakpointData.h;
+			path = ../../Source/Audio/Plugins/CabbageCsoundBreakpointData.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		7B563527DFC4470C5DDA9D95 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageWidgetData.cpp;
+			path = ../../Source/Widgets/CabbageWidgetData.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		7C64510DF6CAA419FF3C6617 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageGenericPluginLookAndFeel.h;
+			path = ../../Source/LookAndFeel/CabbageGenericPluginLookAndFeel.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		7C9223AC2E8F1897F5D537CB = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbagePropertiesPanel.cpp;
+			path = ../../Source/GUIEditor/CabbagePropertiesPanel.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		7D0589165E63DBFB191DEDCF = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbagePluginEditor.cpp;
+			path = ../../Source/Audio/Plugins/CabbagePluginEditor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		7D99532AC5AE6399BA5FA949 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageWidgetDataTextMethods.cpp;
+			path = ../../Source/Widgets/CabbageWidgetDataTextMethods.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		7DA950FA57AF2A737745D012 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageEventSequencer.h;
+			path = ../../Source/Widgets/CabbageEventSequencer.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		80761A36DB34073F305AD67D = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_cryptography";
+			path = "../../JuceLibraryCode/modules/juce_cryptography";
+			sourceTree = "SOURCE_ROOT";
+		};
+		816CF338D85ECA8A8C0FB6F6 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = UIKit.framework;
+			path = System/Library/Frameworks/UIKit.framework;
+			sourceTree = SDKROOT;
+		};
+		82161EA094D26E863174EA36 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageLookAndFeel2.cpp;
+			path = ../../Source/LookAndFeel/CabbageLookAndFeel2.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		837B6AF5F33F20A911F84C3B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageNumberSlider.h;
+			path = ../../Source/Widgets/CabbageNumberSlider.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		88D0E65A72B4E2EC2382DB04 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageKeyboard.h;
+			path = ../../Source/Widgets/CabbageKeyboard.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		8BF514B8EFD7BB89267DC520 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = GenericCabbageEditor.h;
+			path = ../../Source/Audio/Plugins/GenericCabbageEditor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		8F8ED32A8206B2365A206933 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageSlider.h;
+			path = ../../Source/Widgets/CabbageSlider.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		90244A164F3D66013B0D28C9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageLabel.cpp;
+			path = ../../Source/Widgets/CabbageLabel.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		90784C4BD771638093E8EF88 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageComboBox.h;
+			path = ../../Source/Widgets/CabbageComboBox.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		95181C7C5C8B1658A392FBCC = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = BinaryData.cpp;
+			path = ../../JuceLibraryCode/BinaryData.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		9602949DD6B7830C840A50AC = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageWidgetBase.cpp;
+			path = ../../Source/Widgets/CabbageWidgetBase.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		965638A8F5C2A22E7675B9B9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageIDELookAndFeel.cpp;
+			path = ../../Source/LookAndFeel/CabbageIDELookAndFeel.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		98D63EC585A3104095D666BB = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageXYPad.h;
+			path = ../../Source/Widgets/CabbageXYPad.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		98E3E5A8CFA5CA8EF1CE2B3E = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageKeyboard.cpp;
+			path = ../../Source/Widgets/CabbageKeyboard.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		9C732A1764C1DA622117ECD6 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = cabbage.png;
+			path = ../../Images/cabbage.png;
+			sourceTree = "SOURCE_ROOT";
+		};
+		9DFB9793EFB88650D1565D42 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_formats";
+			path = "../../JuceLibraryCode/modules/juce_audio_formats";
+			sourceTree = "SOURCE_ROOT";
+		};
+		9EB38E29782472CEFC312251 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = JuceHeader.h;
+			path = ../../JuceLibraryCode/JuceHeader.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		A12CF2017A63465B3DFB9720 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbagePluginProcessor.cpp;
+			path = ../../Source/Audio/Plugins/CabbagePluginProcessor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		A24EA6626875883D879A8376 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_graphics.mm";
+			path = "../../JuceLibraryCode/include_juce_graphics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		A6D32E7FD40FCE4BA1D7F8F5 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = Soundfiler.h;
+			path = ../../Source/Widgets/Legacy/Soundfiler.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		A7C5DA4A25B0ED53BC95CC47 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_gui_basics";
+			path = "../../JuceLibraryCode/modules/juce_gui_basics";
+			sourceTree = "SOURCE_ROOT";
+		};
+		A85CDFC37B5256A49F9E7102 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = AppConfig.h;
+			path = ../../JuceLibraryCode/AppConfig.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		AA7B604D2B338523139C293C = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = AVFoundation.framework;
+			path = System/Library/Frameworks/AVFoundation.framework;
+			sourceTree = SDKROOT;
+		};
+		AB3F3DE40C626D33F322E6ED = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageUtilities.h;
+			path = ../../Source/Utilities/CabbageUtilities.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		AFD7D051C85B2605080677C5 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = ComponentOverlay.h;
+			path = ../../Source/GUIEditor/ComponentOverlay.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		B0E00708567EBD27F47E1776 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = ComponentLayoutEditor.cpp;
+			path = ../../Source/GUIEditor/ComponentLayoutEditor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		B14AD0EFB582E46701E8678E = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageButton.h;
+			path = ../../Source/Widgets/CabbageButton.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		B2A6BCFB5B5981CCB33494DE = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageSlider.cpp;
+			path = ../../Source/Widgets/CabbageSlider.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		BA39BE33BD77BB93637F7E6A = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreText.framework;
+			path = System/Library/Frameworks/CoreText.framework;
+			sourceTree = SDKROOT;
+		};
+		BAE5A3A097760BBD36087E7D = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageCustomWidgets.cpp;
+			path = ../../Source/Widgets/CabbageCustomWidgets.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		BE6D9849626E8AC5F15B28DE = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageTextBox.h;
+			path = ../../Source/Widgets/CabbageTextBox.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		BE819CA90AAED86D862EEEC2 = {
+			isa = PBXFileReference;
+			lastKnownFileType = folder.assetcatalog;
+			name = Images.xcassets;
+			path = CabbageLite/Images.xcassets;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C0D915003DCFF9371EAAE741 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = StandaloneFilterApp.cpp;
+			path = ../../Source/StandaloneLite/StandaloneFilterApp.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C15DA6C8262E0A5F19B915C5 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageBinaryData.cpp;
+			path = ../../Source/BinaryData/CabbageBinaryData.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C30C02CEB82058DC8D4DCB71 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageWidgetDataInitMethods.cpp;
+			path = ../../Source/Widgets/CabbageWidgetDataInitMethods.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C3AF6D186DD900FA5E192C10 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.storyboard;
+			name = LaunchScreen.storyboard;
+			path = LaunchScreen.storyboard;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C4D987B06C560FD480607C8F = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_formats.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_formats.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		C5B1DD247355B13880162E9B = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageListBox.h;
+			path = ../../Source/Widgets/CabbageListBox.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C9939AC9730E1A76929612BB = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_basics.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_basics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		CC89AAA80421BCD6D1A8C980 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageGenericPluginLookAndFeel.cpp;
+			path = ../../Source/LookAndFeel/CabbageGenericPluginLookAndFeel.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		D08903B17B335826BD8964B8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageNumberSlider.cpp;
+			path = ../../Source/Widgets/CabbageNumberSlider.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		D65E4559FB041B4DB7913C12 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageColourProperty.h;
+			path = ../../Source/Utilities/CabbageColourProperty.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		DA15E7CAB4CFFC98B8192336 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreAudioKit.framework;
+			path = System/Library/Frameworks/CoreAudioKit.framework;
+			sourceTree = SDKROOT;
+		};
+		DB4294F6A8637D2323156D82 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CsoundPluginEditor.h;
+			path = ../../Source/Audio/Plugins/CsoundPluginEditor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		E3C93C2F1567336A2EC9F7D4 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_core.mm";
+			path = "../../JuceLibraryCode/include_juce_core.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		E4D8253C4DC74A4E01E9C992 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageXYPad.cpp;
+			path = ../../Source/Widgets/CabbageXYPad.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		E69963105B5143D507BCC646 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = FlatButtonLookAndFeel.h;
+			path = ../../Source/LookAndFeel/FlatButtonLookAndFeel.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		E69C48259AFD016EE7AFA6C1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = QuartzCore.framework;
+			path = System/Library/Frameworks/QuartzCore.framework;
+			sourceTree = SDKROOT;
+		};
+		E9E4511DE0598F7724FA4AAF = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageSoundfiler.cpp;
+			path = ../../Source/Widgets/CabbageSoundfiler.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		EA019BE985DA6107F39E2A54 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageLookAndFeel2.h;
+			path = ../../Source/LookAndFeel/CabbageLookAndFeel2.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		EB1578F3318317EBF191A1E2 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_core";
+			path = "../../JuceLibraryCode/modules/juce_core";
+			sourceTree = "SOURCE_ROOT";
+		};
+		ECE9037BDF3D8ACFF131E220 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_utils";
+			path = "../../JuceLibraryCode/modules/juce_audio_utils";
+			sourceTree = "SOURCE_ROOT";
+		};
+		ED5B0B8ACE6818B4AC6FB19C = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageInfoButton.h;
+			path = ../../Source/Widgets/CabbageInfoButton.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		EDC473BB1658A2FFF160FD2F = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = Soundfiler.cpp;
+			path = ../../Source/Widgets/Legacy/Soundfiler.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		EFA712A3B90413BDAE161209 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_events";
+			path = "../../JuceLibraryCode/modules/juce_events";
+			sourceTree = "SOURCE_ROOT";
+		};
+		F29003296FB412322574B0FB = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_processors";
+			path = "../../JuceLibraryCode/modules/juce_audio_processors";
+			sourceTree = "SOURCE_ROOT";
+		};
+		F2DE0E5A8C63ACB5BCC6F701 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageCheckbox.h;
+			path = ../../Source/Widgets/CabbageCheckbox.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F6AE936B35FE334301120052 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = MobileCoreServices.framework;
+			path = System/Library/Frameworks/MobileCoreServices.framework;
+			sourceTree = SDKROOT;
+		};
+		F705DD7C87E3FAAB403A5B54 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_data_structures";
+			path = "../../JuceLibraryCode/modules/juce_data_structures";
+			sourceTree = "SOURCE_ROOT";
+		};
+		F7BEF31D9A6257F823687A62 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageIDELookAndFeel.h;
+			path = ../../Source/LookAndFeel/CabbageIDELookAndFeel.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		FA83B49A81BBB97399A14D98 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_processors.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		FB0C5E16D5613E963A73393C = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Accelerate.framework;
+			path = System/Library/Frameworks/Accelerate.framework;
+			sourceTree = SDKROOT;
+		};
+		FCB490B550A55093F002A9EE = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageCsoundConsole.h;
+			path = ../../Source/Widgets/CabbageCsoundConsole.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		FD0C51620E7F9DDC1C51EC29 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = GenericCabbagePluginProcessor.h;
+			path = ../../Source/Audio/Plugins/GenericCabbagePluginProcessor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		FD87A5B9209DF72E59A0C50A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_cryptography.mm";
+			path = "../../JuceLibraryCode/include_juce_cryptography.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		FDF3D4CF67148FB6E57C3B94 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CabbageKeyboardDisplay.cpp;
+			path = ../../Source/Widgets/CabbageKeyboardDisplay.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		FE383A9E410E322553FADA03 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CabbageSignalDisplay.h;
+			path = ../../Source/Widgets/CabbageSignalDisplay.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		0291E81A188E5DBC40043EFE = {
+			isa = PBXGroup;
+			children = (
+				C15DA6C8262E0A5F19B915C5,
+				09473BDD91F91B851AF9203B,
+			);
+			name = BinaryData;
+			sourceTree = "<group>";
+		};
+		DCFE3433061EC2DAAAC89C83 = {
+			isa = PBXGroup;
+			children = (
+				7C9223AC2E8F1897F5D537CB,
+				47367073AFD7B7B396E3B12C,
+				B0E00708567EBD27F47E1776,
+				225B41CB5E6D04D5A3BE1137,
+				4D503DD5981EB106CEBA9633,
+				AFD7D051C85B2605080677C5,
+			);
+			name = GUIEditor;
+			sourceTree = "<group>";
+		};
+		4F0F116F0FA8AF0CAFF6D431 = {
+			isa = PBXGroup;
+			children = (
+				CC89AAA80421BCD6D1A8C980,
+				7C64510DF6CAA419FF3C6617,
+				965638A8F5C2A22E7675B9B9,
+				F7BEF31D9A6257F823687A62,
+				82161EA094D26E863174EA36,
+				EA019BE985DA6107F39E2A54,
+				34228B55DD3C39A38C8E091A,
+				E69963105B5143D507BCC646,
+				5C51CC696B0C1851194E1510,
+				179AC8F9B0ADCD870CE8E48D,
+			);
+			name = LookAndFeel;
+			sourceTree = "<group>";
+		};
+		7023231965928C4D2A99ED47 = {
+			isa = PBXGroup;
+			children = (
+				7800A366A3D99029EF3705F7,
+				7D0589165E63DBFB191DEDCF,
+				71D1812EE51FEFB2E050AFA5,
+				A12CF2017A63465B3DFB9720,
+				1391847FCD72EB323C662220,
+				5193F92C257DD7851F8D9AE9,
+				DB4294F6A8637D2323156D82,
+				5CF646F5433E4EC60F5E7488,
+				17486C9A1C99D93F34580CD0,
+				14DCC39D70122E1C30D5303C,
+				8BF514B8EFD7BB89267DC520,
+				42BECCB9B56517ECAF8E9352,
+				FD0C51620E7F9DDC1C51EC29,
+			);
+			name = Plugins;
+			sourceTree = "<group>";
+		};
+		EDAF76393610744736026A87 = {
+			isa = PBXGroup;
+			children = (
+				58B26B527FA95381ACC9FBF1,
+				74EC101E78ACC5EC9461B287,
+				573E919A1BDFB585222DDD01,
+				3BCC78EC79A7C2220852DF28,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		9F47DA44050DD17C3D08BBDA = {
+			isa = PBXGroup;
+			children = (
+				038848841036483436007764,
+				C0D915003DCFF9371EAAE741,
+				52578ACEB1A483645966CCD3,
+			);
+			name = StandaloneLite;
+			sourceTree = "<group>";
+		};
+		70466BEEB6ECAED8E6854A0F = {
+			isa = PBXGroup;
+			children = (
+				059AE3E94F79DB290EF2E6B7,
+				25DB1807538D9B44B68D2058,
+				52578B26CD5869DACA64D447,
+				D65E4559FB041B4DB7913C12,
+				334DC6EC8F42B61ADF9DB640,
+				0CFD25DC5404871FD887B6BB,
+				AB3F3DE40C626D33F322E6ED,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		8AE044966C199E25DBE93B95 = {
+			isa = PBXGroup;
+			children = (
+				07704E6F6B740351682891E0,
+				EDC473BB1658A2FFF160FD2F,
+				A6D32E7FD40FCE4BA1D7F8F5,
+				3849A2CD8F4F8CD2413F48AC,
+				583221C84079EBA088DFDAA8,
+			);
+			name = Legacy;
+			sourceTree = "<group>";
+		};
+		43A3B15D398DCBACBD65818A = {
+			isa = PBXGroup;
+			children = (
+				48340D99FA0E361DEA25761A,
+				FDF3D4CF67148FB6E57C3B94,
+				8AE044966C199E25DBE93B95,
+				C5B1DD247355B13880162E9B,
+				2BF241E56C8AC63347FC3B5E,
+				6D73DF7BD3A983BBDD83EA4B,
+				B14AD0EFB582E46701E8678E,
+				738180A0D681FC3DA5B2CAD1,
+				F2DE0E5A8C63ACB5BCC6F701,
+				44AAD2C82012EC20672059B0,
+				90784C4BD771638093E8EF88,
+				45670FD3C2C9827E21E5AA85,
+				FCB490B550A55093F002A9EE,
+				BAE5A3A097760BBD36087E7D,
+				4186778320E40F30138DFC47,
+				4746FF62ECF57D148B734068,
+				3EE7FDF067346BECE0E24557,
+				6260A5C5CA05EE47936831BB,
+				3A38685148954CE099484D29,
+				3F714AA4A5016FE1A830F57D,
+				6BC42079321AF8CFB0AE2DF0,
+				4E9E3E8B073A55ACBD3B3B0B,
+				4E19F8E739FA69CDDA2EAB55,
+				36912167123633BFCA536681,
+				18A5FD78D81192340112E8DF,
+				5BB899E3A2A69AC52090A921,
+				ED5B0B8ACE6818B4AC6FB19C,
+				98E3E5A8CFA5CA8EF1CE2B3E,
+				88D0E65A72B4E2EC2382DB04,
+				90244A164F3D66013B0D28C9,
+				1B908DB01FE960C5EF5ACA6D,
+				D08903B17B335826BD8964B8,
+				837B6AF5F33F20A911F84C3B,
+				6A848A763B9D171A7BAB1B92,
+				479665DF0694B2ACEA28202A,
+				1CE5C5307F1CE5525B6A4A12,
+				FE383A9E410E322553FADA03,
+				B2A6BCFB5B5981CCB33494DE,
+				8F8ED32A8206B2365A206933,
+				E9E4511DE0598F7724FA4AAF,
+				53A6FF01652FD012B31A9E69,
+				48FB0F0749C060D7BD2F7F40,
+				7DA950FA57AF2A737745D012,
+				3DBA238ABA85EFCC7D7154AD,
+				BE6D9849626E8AC5F15B28DE,
+				595F7D8F28B85F28A6E733A9,
+				0776D45F064717C00E3365EC,
+				9602949DD6B7830C840A50AC,
+				1F88F6CFBFE5DC9592B4197D,
+				7B563527DFC4470C5DDA9D95,
+				46ECC847380E1EC6609169A6,
+				C30C02CEB82058DC8D4DCB71,
+				7D99532AC5AE6399BA5FA949,
+				E4D8253C4DC74A4E01E9C992,
+				98D63EC585A3104095D666BB,
+			);
+			name = Widgets;
+			sourceTree = "<group>";
+		};
+		2ACF90EA54EC792BC4D0102E = {
+			isa = PBXGroup;
+			children = (
+				0291E81A188E5DBC40043EFE,
+				DCFE3433061EC2DAAAC89C83,
+				4F0F116F0FA8AF0CAFF6D431,
+				7023231965928C4D2A99ED47,
+				EDAF76393610744736026A87,
+				9F47DA44050DD17C3D08BBDA,
+				70466BEEB6ECAED8E6854A0F,
+				43A3B15D398DCBACBD65818A,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		7DCE4B67816D97858E598F85 = {
+			isa = PBXGroup;
+			children = (
+				2ACF90EA54EC792BC4D0102E,
+			);
+			name = CabbageLite;
+			sourceTree = "<group>";
+		};
+		5ABEA7F868CB2F3EC684FE25 = {
+			isa = PBXGroup;
+			children = (
+				30B5096A719A3276C3CD779B,
+				4919CF03FF2D97156A1FCD83,
+				9DFB9793EFB88650D1565D42,
+				F29003296FB412322574B0FB,
+				ECE9037BDF3D8ACFF131E220,
+				EB1578F3318317EBF191A1E2,
+				80761A36DB34073F305AD67D,
+				F705DD7C87E3FAAB403A5B54,
+				EFA712A3B90413BDAE161209,
+				53ADFEECEB31E8DDE2B42423,
+				A7C5DA4A25B0ED53BC95CC47,
+				2F34C27791059927585AF295,
+			);
+			name = "JUCE Modules";
+			sourceTree = "<group>";
+		};
+		03F96F2D96337773A13D4EB9 = {
+			isa = PBXGroup;
+			children = (
+				A85CDFC37B5256A49F9E7102,
+				95181C7C5C8B1658A392FBCC,
+				60D507AA5D6F7B7B2FD55F51,
+				C9939AC9730E1A76929612BB,
+				3850EE67086819980D96C116,
+				C4D987B06C560FD480607C8F,
+				FA83B49A81BBB97399A14D98,
+				5C17A782F9CA0124E3105350,
+				E3C93C2F1567336A2EC9F7D4,
+				FD87A5B9209DF72E59A0C50A,
+				1C73F3060CA62C8522886F0E,
+				5D394C91B747400EA30E6932,
+				A24EA6626875883D879A8376,
+				6DA9257A1F4B3EEABE88A15F,
+				5AD1AB43B56BFC23465CC50B,
+				9EB38E29782472CEFC312251,
+			);
+			name = "JUCE Library Code";
+			sourceTree = "<group>";
+		};
+		56712EFBC2CDBD2C62CD2A0D = {
+			isa = PBXGroup;
+			children = (
+				3F5B5A06F476568FDB765A07,
+				BE819CA90AAED86D862EEEC2,
+				C3AF6D186DD900FA5E192C10,
+				9C732A1764C1DA622117ECD6,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		6F6F3AD2A85BDB5FB0D652CA = {
+			isa = PBXGroup;
+			children = (
+				FB0C5E16D5613E963A73393C,
+				0CFD09DCF01624F31D546B62,
+				AA7B604D2B338523139C293C,
+				2629B6ED7B86539C87472A32,
+				DA15E7CAB4CFFC98B8192336,
+				23B95811630AA5A80D53875D,
+				675CE93C9375A59EDB36F3D8,
+				75C362D16A329874664EC86B,
+				BA39BE33BD77BB93637F7E6A,
+				451CEA48FFCA289DD7A4386C,
+				F6AE936B35FE334301120052,
+				E69C48259AFD016EE7AFA6C1,
+				816CF338D85ECA8A8C0FB6F6,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8455AABBBD5EDABE2AA55CDE = {
+			isa = PBXGroup;
+			children = (
+				4847BD246218969C8497F41B,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		90278DD3851412C9B90A88F2 = {
+			isa = PBXGroup;
+			children = (
+				7DCE4B67816D97858E598F85,
+				5ABEA7F868CB2F3EC684FE25,
+				03F96F2D96337773A13D4EB9,
+				56712EFBC2CDBD2C62CD2A0D,
+				6F6F3AD2A85BDB5FB0D652CA,
+				8455AABBBD5EDABE2AA55CDE,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		B293FD22AB84228E0F5016B5 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG=1",
+					"DEBUG=1",
+					"Cabbage_IDE_Build=1",
+					"CABBAGE=1",
+					"Cabbage_Lite=1",
+					"JUCER_XCODE_IPHONE_5BC26AE3=1",
+					"JUCE_APP_VERSION=1.0.0",
+					"JUCE_APP_VERSION_HEX=0x10000",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_RTAS=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					"../../JuceLibraryCode",
+					"../../JuceLibraryCode/modules",
+					"/Users/walshr/sourcecode/csound-iOS/headers",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Info-App.plist;
+				INFOPLIST_PREPROCESS = NO;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/walshr/sourcecode/csound-iOS/libs\"",
+				);
+				OTHER_LDFLAGS = "-lcsound -lsndfile";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.CabbageLite;
+				PRODUCT_NAME = "CabbageLite";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		976617942F46F923B621A238 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				DEAD_CODE_STRIPPING = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_NDEBUG=1",
+					"NDEBUG=1",
+					"Cabbage_IDE_Build=1",
+					"CABBAGE=1",
+					"Cabbage_Lite=1",
+					"JUCER_XCODE_IPHONE_5BC26AE3=1",
+					"JUCE_APP_VERSION=1.0.0",
+					"JUCE_APP_VERSION_HEX=0x10000",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_RTAS=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					"../../JuceLibraryCode",
+					"../../JuceLibraryCode/modules",
+					"/Users/walshr/sourcecode/csound-iOS/headers",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Info-App.plist;
+				INFOPLIST_PREPROCESS = NO;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/walshr/sourcecode/csound-iOS/libs\"",
+				);
+				LLVM_LTO = YES;
+				OTHER_LDFLAGS = "-lcsound -lsndfile";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.CabbageLite;
+				PRODUCT_NAME = "CabbageLite";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		02979A42240E059AD5AD5B05 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "CabbageLite";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wreorder";
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		8AD1F9B296496921BF4E7411 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				PRODUCT_NAME = "CabbageLite";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wreorder";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		6927D59B3EF915B16CBEFAB1 = {
+			isa = PBXTargetDependency;
+			target = 3C99208A04A440E691A2A0CD;
+		};
+		477F639D27006E2DA1BC4646 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02979A42240E059AD5AD5B05,
+				8AD1F9B296496921BF4E7411,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C3DE0605C7AF9EB520E6694B = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B293FD22AB84228E0F5016B5,
+				976617942F46F923B621A238,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8E6EEC71F9F30C87F04D5EE0 = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DAF068BA4E20F7C7E0F715C,
+				F2E3760AF07C55E5373EC829,
+				017683072338F73E256246C2,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB764A8CB73AE5ED27162283 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2495D9BBC8DB2C862ED077BD,
+				573A8D0D6E50FFBD6297E486,
+				54331BD2567CBB144237DF13,
+				999B106EC0C1B5103A48706B,
+				4261FC0D9D5726DA22E625BE,
+				766CC54C3F0001631D7E34DF,
+				F0D50EA6818601A9329AAD63,
+				034EC9BE70EA9EAAD69D86CD,
+				6757E5C4EDAE7353C0081B11,
+				35017290B068C7B4093AE81C,
+				D8CD33FCD9BCD09EBFB2B414,
+				72ADB73D3E746840A7F329BE,
+				0ED2ADD1C577127DF475FD21,
+				00283CCBCBB28EFC6FADF231,
+				918CB3E984C3C6D20B792B56,
+				2560A61A8FEA5CBDD2FA7ECF,
+				1120EBF8C81AD63CDC58AAA3,
+				E320E4C30DA1FF944680BA2C,
+				3763A59281D5B393932E3619,
+				D793D3183C127503B90B08B3,
+				812421BFAFD1542E8FC4CDCE,
+				B8AE4D78F2E387F4E11D8932,
+				C4D066389CE830E6A1F5465E,
+				231C15C74F09967273AA8687,
+				37BBCE7C39BD88EF876DECD1,
+				1E382A11FF8532CF50914776,
+				2CB95C22BDC002EF18F5885C,
+				B2CBB8F2F9D89A5645412901,
+				1ADEB20E96338D3C9AA30618,
+				5FA7E432BBEAC3A814F8ADBA,
+				2EFACC745FFEF3E76B36219B,
+				06E12250B65D07AED7076FBD,
+				1444524C02B12B1EC4D960FD,
+				514B3C96EC97413F9E126861,
+				750F64B0E5B6E8ABE4DA0522,
+				7CCF12E886352A83E7CCA080,
+				9191BE8AD73E9C663633BD0E,
+				7C0352B77FE397CB99664DD2,
+				16B79AF3FAEB1D736E90AA8E,
+				C69028CFE8704970EAF187DE,
+				7D6703F6BFBAAB260E31BA1D,
+				DA2C5019D21CBFDD3951C0C6,
+				0917DDFA78727D0470CF6186,
+				59B083CCE1957FDECD0FD3B3,
+				85073B767348E721546DD869,
+				DEC1653F9E84F2FE6FB60AFF,
+				BF255542BCEDBDB1A46CB1E8,
+				D284FBC68C1D0D17342D139E,
+				6BB1A8AD54AA352D1600BD98,
+				B8E19818C0001B7156F0DAAD,
+				5A950737E289FC2D5873A7A1,
+				1AAA9DFC77BE46F6BF9E252F,
+				47A863DB410D4CC07F3E29ED,
+				EDD1FFF399F1B80CA0CBB03B,
+				EF09D6CF0AA4942A35D93226,
+				AFE3FDB054AC85159AE21BE1,
+				B931B6D21E75B8C4B533D54B,
+				BA05F416BA43E667C440A025,
+				2DED6CFD6309711E3DB77AA3,
+				7358A7A0EC5FDEDE7ED9CB4C,
+				91273D0750F111BB61ED9C20,
+				D5141AD38AF9860D193B5081,
+				3886FB4730FB337814E616FF,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DF67543974E25247082679F3 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5504D75F7F26AF6131CE37CC,
+				E54F5FED3C025F05EF814B70,
+				553C6496C5D269664B9D8292,
+				9C581B9683EA8197AFE1632B,
+				9C7F4CBAF8C6C0BC46B400F2,
+				3F8AA955860FBE165C9104A6,
+				74C07E1559B8D087FF91D24A,
+				5E38CB22D4233D1D1A0FA524,
+				72F22E65319946A50EFF3534,
+				024CBBC8506BE6E07B656929,
+				A2EF5662F6415B6F34807171,
+				D613C52B06DBAF77B8887023,
+				802B37C92034DB03517E9910,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3C99208A04A440E691A2A0CD = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3DE0605C7AF9EB520E6694B;
+			buildPhases = (
+				8E6EEC71F9F30C87F04D5EE0,
+				DB764A8CB73AE5ED27162283,
+				DF67543974E25247082679F3,
+			);
+			buildRules = ( );
+			dependencies = ( );
+			name = "CabbageLite - App";
+			productName = CabbageLite;
+			productReference = 4847BD246218969C8497F41B;
+			productType = "com.apple.product-type.application";
+		};
+		5D9F8ECEE2E6D0D0DF01D042 = {
+			isa = PBXProject;
+			buildConfigurationList = 477F639D27006E2DA1BC4646;
+			attributes = { LastUpgradeCheck = 0930; ORGANIZATIONNAME = ""; TargetAttributes = { 3C99208A04A440E691A2A0CD = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; }; }; };
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 90278DD3851412C9B90A88F2;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (3C99208A04A440E691A2A0CD);
+			knownRegions = (en, Base);
+		};
+	};
+	rootObject = 5D9F8ECEE2E6D0D0DF01D042;
+}
