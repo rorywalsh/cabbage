@@ -497,48 +497,53 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
     }
     else if (drawableButton->getName() == "showEditorButton")
     {
-        if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
+        if (CabbageUtilities::hasCabbageTags(fileTabs[currentFileIndex]->getFilename()))
         {
-            const String filename = tabButton->getFilename();
-            AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-
-            if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId (nodeId))
+            if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
             {
-                if (auto f = getFilterGraph()->graph.getNodeForId (nodeId))
-                    if (auto* w = getFilterGraph()->getOrCreateWindowFor (f, PluginWindow::Type::normal))
-                    {
-                        CabbagePluginProcessor* cabbagePlugin = getCabbagePluginProcessor();
-                        String pluginName = cabbagePlugin->getPluginName();
-                        w->setName (pluginName.length() > 0 ? pluginName : "Plugin has no name?");
-                        w->toFront (true);
-                        w->setVisible (true);
-                    }
+                const String filename = tabButton->getFilename();
+                AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+
+                if (AudioProcessorGraph::Node::Ptr f = getFilterGraph()->graph.getNodeForId (nodeId))
+                {
+                    if (auto f = getFilterGraph()->graph.getNodeForId (nodeId))
+                        if (auto* w = getFilterGraph()->getOrCreateWindowFor (f, PluginWindow::Type::normal))
+                        {
+                            CabbagePluginProcessor* cabbagePlugin = getCabbagePluginProcessor();
+                            String pluginName = cabbagePlugin->getPluginName();
+                            w->setName (pluginName.length() > 0 ? pluginName : "Plugin has no name?");
+                            w->toFront (true);
+                            w->setVisible (true);
+                        }
+                }
             }
-
         }
-
+        else
+            CabbageUtilities::showMessage("No Cabbage code block found. GUI editing only works in Cabbage .csd files", lookAndFeel);
     }
     else if (drawableButton->getName() == "editGUIButton")
     {
-       
-		if (isGUIEnabled == false)
-		{
-			this->saveDocument();
-			enableEditMode();
-			if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
-			{
-				tabButton->getPlayButton().getProperties().set("state", "off");
-				resized();
-			}
-		}
-		else
-		{
-			this->saveDocument();
-			propertyPanel->setVisible(false);
-			resized();
-		}
-
-
+        if (CabbageUtilities::hasCabbageTags(fileTabs[currentFileIndex]->getFilename()))
+        {
+            if (isGUIEnabled == false)
+            {
+                this->saveDocument();
+                enableEditMode();
+                if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
+                {
+                    tabButton->getPlayButton().getProperties().set("state", "off");
+                    resized();
+                }
+            }
+            else
+            {
+                this->saveDocument();
+                propertyPanel->setVisible(false);
+                resized();
+            }
+        }
+        else
+            CabbageUtilities::showMessage("No Cabbage code block found. GUI editing only works in Cabbage .csd files", lookAndFeel);
     }
 }
 
