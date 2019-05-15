@@ -55,5 +55,10 @@ cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 # cp -rf ../../Docs/_book ./build/Release/Cabbage.app/Contents/MacOS/Docs
 # cp -rf ../../Docs/_book ./build/Release/CabbageStudio.app/Contents/MacOS/Docs
 
-
 cp ../opcodes.txt ./build/Release/Cabbage.app/Contents/MacOS/opcodes.txt 
+
+
+xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj clean
+xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj -configuration Release
+
+cp ../../CsoundTestXcode/build/CsoundTest/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
