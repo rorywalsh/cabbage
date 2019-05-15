@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:CsoundTestXcode.xcodeproj">
+      location = "self:/Users/walshr/sourcecode/cabbage/CsoundTestXcode/CsoundTest.xcodeproj">
    </FileRef>
 </Workspace>

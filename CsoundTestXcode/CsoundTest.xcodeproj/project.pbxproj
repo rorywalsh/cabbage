@@ -24,7 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		61128629228B044900CD63B6 /* CsoundTestXcode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CsoundTestXcode; sourceTree = BUILT_PRODUCTS_DIR; };
+		61128629228B044900CD63B6 /* CsoundTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CsoundTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6112862C228B044900CD63B6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		61128634228B047500CD63B6 /* CsoundLib64.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CsoundLib64.framework; path = ../../../../../../Library/Frameworks/CsoundLib64.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,7 +53,7 @@
 		6112862A228B044900CD63B6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61128629228B044900CD63B6 /* CsoundTestXcode */,
+				61128629228B044900CD63B6 /* CsoundTest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -77,9 +77,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		61128628228B044900CD63B6 /* CsoundTestXcode */ = {
+		61128628228B044900CD63B6 /* CsoundTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61128630228B044900CD63B6 /* Build configuration list for PBXNativeTarget "CsoundTestXcode" */;
+			buildConfigurationList = 61128630228B044900CD63B6 /* Build configuration list for PBXNativeTarget "CsoundTest" */;
 			buildPhases = (
 				61128625228B044900CD63B6 /* Sources */,
 				61128626228B044900CD63B6 /* Frameworks */,
@@ -89,9 +89,9 @@
 			);
 			dependencies = (
 			);
-			name = CsoundTestXcode;
+			name = CsoundTest;
 			productName = CsoundTestXcode;
-			productReference = 61128629228B044900CD63B6 /* CsoundTestXcode */;
+			productReference = 61128629228B044900CD63B6 /* CsoundTest */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -108,7 +108,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61128624228B044900CD63B6 /* Build configuration list for PBXProject "CsoundTestXcode" */;
+			buildConfigurationList = 61128624228B044900CD63B6 /* Build configuration list for PBXProject "CsoundTest" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -120,7 +120,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				61128628228B044900CD63B6 /* CsoundTestXcode */,
+				61128628228B044900CD63B6 /* CsoundTest */,
 			);
 		};
 /* End PBXProject section */
@@ -277,7 +277,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61128624228B044900CD63B6 /* Build configuration list for PBXProject "CsoundTestXcode" */ = {
+		61128624228B044900CD63B6 /* Build configuration list for PBXProject "CsoundTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6112862E228B044900CD63B6 /* Debug */,
@@ -286,7 +286,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61128630228B044900CD63B6 /* Build configuration list for PBXNativeTarget "CsoundTestXcode" */ = {
+		61128630228B044900CD63B6 /* Build configuration list for PBXNativeTarget "CsoundTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61128631228B044900CD63B6 /* Debug */,
