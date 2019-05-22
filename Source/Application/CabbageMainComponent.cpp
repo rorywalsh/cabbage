@@ -1579,93 +1579,96 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
 //==============================================================================
 void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 {
-	stopTimer();
-    if (saveAs == true)
-    {
+	if (fileTabs.size() > 0)
+	{
+		stopTimer();
+		if (saveAs == true)
+		{
 
-        stopCsoundForNode (getCurrentCsdFile().getFullPathName());
+			stopCsoundForNode(getCurrentCsdFile().getFullPathName());
 
-        isGUIEnabled = false;
+			isGUIEnabled = false;
 
-        if (getCabbagePluginEditor() != nullptr)
-            getCabbagePluginEditor()->enableEditMode (false);
+			if (getCabbagePluginEditor() != nullptr)
+				getCabbagePluginEditor()->enableEditMode(false);
 
-        FileChooser fc ("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+			FileChooser fc("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
 
-        if (fc.browseForFileToSave (false))
-        {
-            if (fc.getResult().withFileExtension ("csd").existsAsFile())
-            {
-                const int result = CabbageUtilities::showYesNoMessage ("Do you wish to overwrite\nexiting file?", lookAndFeel);
+			if (fc.browseForFileToSave(false))
+			{
+				if (fc.getResult().withFileExtension("csd").existsAsFile())
+				{
+					const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel);
 
-                if (result == 1)
-                    writeFileToDisk (fc.getResult().withFileExtension (".csd"));
-            }
-            else
-                writeFileToDisk (fc.getResult().withFileExtension (".csd"));
+					if (result == 1)
+						writeFileToDisk(fc.getResult().withFileExtension(".csd"));
+				}
+				else
+					writeFileToDisk(fc.getResult().withFileExtension(".csd"));
 
-            getCurrentCodeEditor()->setSavePoint();
-        }
+				getCurrentCodeEditor()->setSavePoint();
+			}
 
-        addInstrumentsAndRegionsToCombobox();
-    }
-    else
-    {
-        //check if file is part of installed example, prevent overwriting...
-        String examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
+			addInstrumentsAndRegionsToCombobox();
+		}
+		else
+		{
+			//check if file is part of installed example, prevent overwriting...
+			String examplesDir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
 
 #if defined(LINUX)
-        //manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
-        examplesDir = "/usr/share/doc/cabbage/Examples";
+			//manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
+			examplesDir = "/usr/share/doc/cabbage/Examples";
 #elif defined(MACOSX)
-    examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
+			examplesDir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
 #endif
 
 
 
-        stopCsoundForNode (getCurrentCsdFile().getFullPathName());;
-        isGUIEnabled = false;
+			stopCsoundForNode(getCurrentCsdFile().getFullPathName());;
+			isGUIEnabled = false;
 
-        if (getCabbagePluginEditor() != nullptr)
-            getCabbagePluginEditor()->enableEditMode (false);
+			if (getCabbagePluginEditor() != nullptr)
+				getCabbagePluginEditor()->enableEditMode(false);
 
-        if (getCurrentCodeEditor()->hasFileChanged())
-        {
-            if(getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
-                CabbageUtilities::showMessage("You cannot overwrite an example file. Please use save-as instead", lookAndFeel);
-                return;
-            }
+			if (getCurrentCodeEditor()->hasFileChanged())
+			{
+				if (getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
+					CabbageUtilities::showMessage("You cannot overwrite an example file. Please use save-as instead", lookAndFeel);
+					return;
+				}
 
-            if (getCurrentCsdFile().existsAsFile())
-                getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getDocument().getAllContent());
-        }
+				if (getCurrentCsdFile().existsAsFile())
+					getCurrentCsdFile().replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
+			}
 
-        propertyPanel->setEnabled (false);
+			propertyPanel->setEnabled(false);
 
-        if (recompile == true && getCurrentCsdFile().hasFileExtension ((".csd")))
-        {
-            runCsoundForNode (getCurrentCsdFile().getFullPathName());
-            fileTabs[currentFileIndex]->getPlayButton().setToggleState (true, dontSendNotification);
-        }
+			if (recompile == true && getCurrentCsdFile().hasFileExtension((".csd")))
+			{
+				runCsoundForNode(getCurrentCsdFile().getFullPathName());
+				fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+			}
 
-        addInstrumentsAndRegionsToCombobox();
-		getCurrentCodeEditor()->setSavePoint();
-    }
+			addInstrumentsAndRegionsToCombobox();
+			getCurrentCodeEditor()->setSavePoint();
+		}
 
-    StringArray lines;
-    lines.addLines(getCurrentCsdFile().loadFileAsString());
-    for( int i = 0 ; i < lines.size() ; i++)
-    {
-        if(lines[i] == "<CsOptions>")
-        {
-            const String csOptions = lines[i+1];
-            if(csOptions.contains("-+rtaudio"))
-                CabbageUtilities::showMessage("You are using -+rtaudio to set an audio device. This is unsupported. Please set the audio device in the Cabbage audio settings and remove the -+rtaudio flag from your CsOptions.", lookAndFeel);
-            if(csOptions.contains("-+rtmidi=") && (!csOptions.contains("-+rtmidi=NULL") && !csOptions.contains("-+rtmidi=null")))
-                CabbageUtilities::showMessage("You are using -+rtmidi to set a MIDI device. This is unsupported. Please use -+rtmidi=NULL in your CsOptions, and select a MIDI device in the Cabbage audio settings.", lookAndFeel);
+		StringArray lines;
+		lines.addLines(getCurrentCsdFile().loadFileAsString());
+		for (int i = 0; i < lines.size(); i++)
+		{
+			if (lines[i] == "<CsOptions>")
+			{
+				const String csOptions = lines[i + 1];
+				if (csOptions.contains("-+rtaudio"))
+					CabbageUtilities::showMessage("You are using -+rtaudio to set an audio device. This is unsupported. Please set the audio device in the Cabbage audio settings and remove the -+rtaudio flag from your CsOptions.", lookAndFeel);
+				if (csOptions.contains("-+rtmidi=") && (!csOptions.contains("-+rtmidi=NULL") && !csOptions.contains("-+rtmidi=null")))
+					CabbageUtilities::showMessage("You are using -+rtmidi to set a MIDI device. This is unsupported. Please use -+rtmidi=NULL in your CsOptions, and select a MIDI device in the Cabbage audio settings.", lookAndFeel);
 
-        }
-    }
+			}
+		}
+	}
 
 }
 //==================================================================================
