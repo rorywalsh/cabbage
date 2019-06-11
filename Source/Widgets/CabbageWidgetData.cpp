@@ -1126,7 +1126,7 @@ float CabbageWidgetData::getNumProp (ValueTree widgetData, Identifier prop)
     if (props.size() > 0)
         return props[0];
     else
-        return getProperty (widgetData, prop);
+        return props;
 }
 
 

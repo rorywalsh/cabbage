@@ -118,6 +118,7 @@ public:
 
     };
 
+	int numMatrixEventSequencers = 0;
     void createMatrixEventSequencer(int rows, int cols, String channel);
     void setMatrixEventSequencerCellData(int row, int col, String channel, String data);
     //=============================================================================

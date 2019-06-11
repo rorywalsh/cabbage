@@ -365,17 +365,23 @@ void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, Strin
     }
 
     matrixEventSequencers.add(matrix);
+	numMatrixEventSequencers = matrixEventSequencers.size();
+
+
 }
 
 void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, String channel, String data)
 {
-    for (int i = 0 ; i < matrixEventSequencers.size(); i++)
-    {
-        if (matrixEventSequencers[i]->channel == channel)
-        {
-            matrixEventSequencers[i]->setEventString(col, row, data);
-        }
-    }
+	if (numMatrixEventSequencers > 0)
+	{
+		for (int i = 0; i < matrixEventSequencers.size(); i++)
+		{
+			if (matrixEventSequencers[i]->channel == channel)
+			{
+				matrixEventSequencers[i]->setEventString(col, row, data);
+			}
+		}
+	}
 }
 
 //==============================================================================

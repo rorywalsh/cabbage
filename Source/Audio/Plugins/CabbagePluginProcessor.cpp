@@ -837,27 +837,26 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) 
 	{
 		const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
+		const String channelName = (chanArray.size()>0 ? chanArray[0].toString() : chanArray.toString());
 		const var widgetArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 			CabbageIdentifierIds::widgetarray);
 
 		StringArray channels;
 
 		if (widgetArray.size() > 0)
-			channels.add(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel));
+			channels.add(channelName);
 		else if (chanArray.size() == 1)
-			channels.add(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel));
+			channels.add(channelName);
 		else if (chanArray.size() > 1) {
 			for (int j = 0; j < chanArray.size(); j++)
 				channels.add(var(chanArray[j]));
 		}
 
 		const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
-		const float valuex = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex);
-		const float valuey = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey);
+
 		const String identChannel = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 			CabbageIdentifierIds::identchannel);
-		const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-			CabbageIdentifierIds::identchannelmessage);
+
 		const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 			CabbageIdentifierIds::type);
 
@@ -886,7 +885,10 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
 		//currently only dealing with a max of 2 channels...
 		else if (channels.size() == 2 && channels[0].isNotEmpty() && channels[1].isNotEmpty() &&
-			typeOfWidget != CabbageWidgetTypes::eventsequencer) {
+			typeOfWidget != CabbageWidgetTypes::eventsequencer) 
+		{
+			const float valuex = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex);
+			const float valuey = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey);
 			if (getCsound()->GetChannel(channels[0].toUTF8()) != valuex
 				|| getCsound()->GetChannel(channels[1].toUTF8()) != valuey) {
 				if (typeOfWidget == CabbageWidgetTypes::xypad) {
@@ -909,6 +911,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 		}
 
 		if (identChannel.isNotEmpty()) {
+			const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+				CabbageIdentifierIds::identchannelmessage);
 			memset(&tmp_string[0], 0, sizeof(tmp_string));
 			getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
 
