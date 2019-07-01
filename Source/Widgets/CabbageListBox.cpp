@@ -134,7 +134,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
 		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
-			listboxDir = File(workingDir);
+			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
 		else if(workingDir.isNotEmpty())
 			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
         else
