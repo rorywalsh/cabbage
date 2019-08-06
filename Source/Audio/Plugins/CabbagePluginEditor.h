@@ -124,6 +124,7 @@ public:
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (String channel, float value);
     void sendChannelStringDataToCsound (String channel, String value);
+    float getChannelDataFromCsound (String channel);
     void sendScoreEventToCsound (String scoreEvent);
     void createEventMatrix(int cols, int rows, String channel);
     void setEventMatrixData(int cols, int rows, String channel, String data);
