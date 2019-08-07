@@ -1022,7 +1022,9 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
     
     //if populate is called, it's a fair assumption that the widget is using string channels..
-    CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
+    //.. however, if it's a preset combo, set the type to number so we can automate it..
+    if(!strTokens[0].contains("snaps"))
+        CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
 
 }
 

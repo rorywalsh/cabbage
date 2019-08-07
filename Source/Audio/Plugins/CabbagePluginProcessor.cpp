@@ -832,6 +832,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
 }
 
 //==============================================================================
+// This method is responsible for updating widget valuetrees based on the current
+// data stored in each widget's software channel bus. 
+//==============================================================================
 void CabbagePluginProcessor::getChannelDataFromCsound() 
 {
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) 
