@@ -20,7 +20,7 @@ hdiutil attach csound6.13.0-MacOS_x86_64.dmg
 cp -R /Volumes/Csound6.13.0/ Csound
 hdiutil detach /Volumes/Csound6.13.0/
 cd Csound
-sudo installer -pkg csound6.13.0-MacOS_x86_64 -target /
+sudo installer -pkg csound6.13.0-MacOS_x86_64.pkg -target /
 sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 
 cd $AGENT_BUILDDIRECTORY
