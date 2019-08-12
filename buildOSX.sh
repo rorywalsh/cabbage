@@ -27,7 +27,7 @@ cd $AGENT_BUILDDIRECTORY
 git clone https://github.com/WeAreROLI/JUCE.git
 touch JUCE/
 cd $AGENT_BUILDDIRECTORY/JUCE
-git checkout master
+git checkout tags/5.4.3
 cd $AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
@@ -50,9 +50,6 @@ unzip -q heads.zip
 cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 echo "\n"
-
-126000
-
 
 cd $AGENT_BUILDDIRECTORY
 
