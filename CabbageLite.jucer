@@ -281,16 +281,17 @@
       </MODULEPATHS>
     </VS2017>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="Cabbage_IDE_Build=1&#10;CABBAGE=1&#10;Cabbage_Lite=1"
-               smallIcon="Cl3fhx" bigIcon="Cl3fhx" extraFrameworks="/Library/Frameworks/CsoundLib64">
+               smallIcon="Cl3fhx" bigIcon="Cl3fhx" extraFrameworks="/Library/Frameworks/CsoundLib64"
+               microphonePermissionNeeded="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" enablePluginBinaryCopyStep="1" isDebug="1" optimisation="1"
                        linkTimeOptimisation="0" targetName="CabbageLite" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal" libraryPath=""/>
+                       osxArchitecture="64BitIntel" libraryPath=""/>
         <CONFIGURATION name="Release" enablePluginBinaryCopyStep="1" isDebug="0" optimisation="3"
                        linkTimeOptimisation="1" targetName="CabbageLite" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal"/>
+                       osxArchitecture="64BitIntel"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>

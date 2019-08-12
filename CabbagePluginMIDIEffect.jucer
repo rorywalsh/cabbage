@@ -229,13 +229,11 @@
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal" osxCompatibility="10.8 SDK"
-                       enablePluginBinaryCopyStep="1"/>
+                       osxArchitecture="64BitIntel" osxCompatibility="10.8 SDK" enablePluginBinaryCopyStep="1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxCompatibility="10.8 SDK" osxArchitecture="64BitUniversal"
-                       enablePluginBinaryCopyStep="1"/>
+                       osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
