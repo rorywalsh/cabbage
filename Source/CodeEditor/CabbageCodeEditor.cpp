@@ -918,12 +918,12 @@ void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKe
 {
     if (editor.getText() != "Enter name for GUI code")
     {
-        ScopedPointer<XmlElement> repoXml;
+        std::unique_ptr<XmlElement> repoXml;
         XmlElement* newEntryXml;
         repoXml = owner->owner->settings->getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
         if (!repoXml)
-            repoXml = new XmlElement ("CodeRepoXmlData");
+            repoXml = std::unique_ptr<XmlElement>(new XmlElement ("CodeRepoXmlData"));
 
         StringArray snippetNames;
 
@@ -937,7 +937,7 @@ void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKe
             if (result == 1)
             {
                 repoXml->setAttribute (editor.getText(), owner->getSelectedText());
-                owner->owner->settings->getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+                owner->owner->settings->getUserSettings()->setValue ("CopeRepoXmlData", repoXml.get());
             }
             else
                 CabbageUtilities::showMessage ("Nothing written to repository", &cabbageLoookAndFeel);
@@ -945,7 +945,7 @@ void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKe
         else
         {
             repoXml->setAttribute (editor.getText(), owner->getSelectedText());
-            owner->owner->settings->getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+            owner->owner->settings->getUserSettings()->setValue ("CopeRepoXmlData", repoXml.get());
 
         }
 
@@ -964,7 +964,7 @@ void CabbageCodeEditorComponent::addToGUIEditorContextMenu()
 StringArray CabbageCodeEditorComponent::addItemsToPopupMenu (PopupMenu& m)
 {
     StringArray customCodeSnippets;
-    ScopedPointer<XmlElement> repoXml;
+    std::unique_ptr<XmlElement> repoXml;
     XmlElement* newEntryXml, *newEntryXml1;
 
     repoXml = owner->settings->getUserSettings()->getXmlValue ("CopeRepoXmlData");

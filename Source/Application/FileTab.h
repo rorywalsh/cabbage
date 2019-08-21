@@ -29,8 +29,9 @@ class FileTab : public TextButton
 	Colour fileBarBackground, fileTabBackground, fileTabText;
     String iconsPath;
 
-    Drawable* drawable_editGUIoff = nullptr;
-    Drawable* drawable_editGUIon = nullptr;
+
+	std::unique_ptr <Drawable> drawable_editGUIoff = nullptr;
+	std::unique_ptr <Drawable> drawable_editGUIon = nullptr;
 
     class Overlay : public Component
     {

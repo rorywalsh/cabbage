@@ -137,7 +137,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
         if (fileName.existsAsFile())
         {
-            ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (fileName);
+            std::unique_ptr<XmlElement> xmlElement = XmlDocument::parse (fileName);
             int itemIndex = 1;
 
             if (xmlElement)

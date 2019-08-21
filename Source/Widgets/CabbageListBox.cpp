@@ -114,7 +114,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
 
         if (fileName.existsAsFile())
         {
-            ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (fileName);
+            std::unique_ptr<XmlElement> xmlElement = XmlDocument::parse (fileName);
 
             if (xmlElement)
                 if (xmlElement->hasTagName ("CABBAGE_PRESETS"))

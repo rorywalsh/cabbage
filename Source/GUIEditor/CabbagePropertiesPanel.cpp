@@ -129,9 +129,9 @@ void CabbagePropertiesPanel::saveOpenessState()
     const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::name);
 
     if (getSectionState (name) == nullptr)
-        sectionStates.add (new SectionState (name, propertyPanel.getOpennessState()));
+        sectionStates.add (new SectionState (name, propertyPanel.getOpennessState().get()));
     else
-        getSectionState (name)->xmlElement = propertyPanel.getOpennessState();
+        getSectionState (name)->xmlElement = propertyPanel.getOpennessState().get();
 
 }
 

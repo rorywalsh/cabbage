@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../CabbageCommonHeaders.h"
 
-static Drawable* createDrawableFromSVG (const char* data)
+static std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
 {
     auto xml = parseXML (data);
     jassert (xml != nullptr);

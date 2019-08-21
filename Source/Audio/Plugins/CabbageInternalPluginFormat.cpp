@@ -11,9 +11,9 @@
 #include "CabbageInternalPluginFormat.h"
 
 
-AudioProcessor* InternalCabbagePluginFormat::createCabbagePlugin(const String file)
+std::unique_ptr<AudioProcessor> InternalCabbagePluginFormat::createCabbagePlugin(const String file)
 {
-		AudioProcessor* processor;
+		std::unique_ptr < AudioProcessor> processor;
 		bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(file));
 
 		if (isCabbageFile)
@@ -30,15 +30,19 @@ AudioProcessor* InternalCabbagePluginFormat::createCabbagePlugin(const String fi
 }
 
 void InternalCabbagePluginFormat::createPluginInstance(const PluginDescription& desc,
-	double /*initialSampleRate*/,
-	int /*initialBufferSize*/,
-	void* userData,
+	double /*initialSampleRate*/, int /*initialBufferSize*/,
 	PluginCreationCallback callback)
 {
-	
-	auto* p = (CabbagePluginProcessor*)createCabbagePlugin(desc.fileOrIdentifier);
-	p->nodeId = AudioProcessorGraph::NodeID(desc.uid);
-	callback(userData, (AudioPluginInstance*)p, p == nullptr ? NEEDS_TRANS("Invalid internal filter name") : String());
+	/*if (auto p = createInstance(desc.name))
+		callback(std::move(p), {});
+	else
+		callback(nullptr, NEEDS_TRANS("Invalid internal plugin name"));*/
+
+	std::unique_ptr < AudioProcessor > p(createCabbagePlugin(desc.fileOrIdentifier));
+	std::unique_ptr <AudioPluginInstance> p1(dynamic_cast<AudioPluginInstance*>(p.get()));
+
+	//p-> = AudioProcessorGraph::NodeID(desc.uid);
+	callback(std::move(p1), {});
 }
 
 bool InternalCabbagePluginFormat::requiresUnblockedMessageThreadDuringCreation(const PluginDescription&) const noexcept

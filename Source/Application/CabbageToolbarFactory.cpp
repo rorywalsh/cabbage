@@ -156,9 +156,8 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
 
 ToolbarButton* CabbageToolbarFactory::createButtonFromPNG (const int itemId, const String& text, const void* png, size_t size, const String onFile)
 {
-    Drawable* drawableNormal = nullptr;
-    drawableNormal = Drawable::createFromImageData (png, size);
-    ToolbarButton* button = new ToolbarButton (itemId, text, drawableNormal, 0);
+    std::unique_ptr< Drawable>  drawableNormal ( Drawable::createFromImageData (png, size));
+    ToolbarButton* button = new ToolbarButton(itemId, text, std::move(drawableNormal), 0);
     button->setTooltip (text);
     button->addListener (owner);
     return button;
@@ -166,11 +165,10 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromPNG (const int itemId, con
 
 ToolbarButton* CabbageToolbarFactory::createToggleButtonFromPNG (const int itemId, const String& text, const void* png1, size_t size1, const void* png2, size_t size2)
 {
-    Drawable* drawableNormal = nullptr;
-    drawableNormal = Drawable::createFromImageData (png1, size1);
-    Drawable* drawableOn = nullptr;
-    drawableOn = Drawable::createFromImageData (png2, size2);
-    togglePlayButton = new ToolbarButton (itemId, text, drawableNormal, drawableOn);
+
+    std::unique_ptr<Drawable> drawableNormal(Drawable::createFromImageData (png1, size1));
+	std::unique_ptr<Drawable> drawableOn(Drawable::createFromImageData (png2, size2));
+    togglePlayButton = new ToolbarButton (itemId, text, std::move(drawableNormal), std::move(drawableOn));
     togglePlayButton->setClickingTogglesState (true);
     togglePlayButton->addListener (owner);
     togglePlayButton->setToggleState (true, false);
@@ -180,30 +178,30 @@ ToolbarButton* CabbageToolbarFactory::createToggleButtonFromPNG (const int itemI
 
 ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, const String& text, const String svgFile, const String onFile)
 {
-    ScopedPointer<XmlElement> svgNormal (XmlDocument::parse (svgFile));
+    std::unique_ptr<XmlElement> svgNormal (XmlDocument::parse (svgFile));
 
     if (svgNormal == nullptr)
         return nullptr;//jassert (false);
 
-    Drawable* drawableNormal = nullptr;
+    std::unique_ptr<Drawable> drawableNormal;
 
     if (svgNormal != nullptr)
     {
         drawableNormal = Drawable::createFromSVG (*svgNormal);
     }
 
-    ScopedPointer<XmlElement> svgOn (XmlDocument::parse (onFile));
+	std::unique_ptr<XmlElement> svgOn (XmlDocument::parse (onFile));
 
     if (svgOn != nullptr)
     {
-        Drawable* drawableOn = nullptr;
+        std::unique_ptr<Drawable> drawableOn;
 
         if (svgOn != nullptr)
         {
             drawableOn = Drawable::createFromSVG (*svgOn);
         }
 
-        togglePlayButton = new ToolbarButton (itemId, text, drawableNormal, drawableOn);
+        togglePlayButton = new ToolbarButton (itemId, text, std::move(drawableNormal), std::move(drawableOn));
         togglePlayButton->setClickingTogglesState (true);
         togglePlayButton->addListener (owner);
         togglePlayButton->setToggleState (true, false);
@@ -211,7 +209,7 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromSVG (const int itemId, con
         return togglePlayButton;
     }
 
-    ToolbarButton* button = new ToolbarButton (itemId, text, drawableNormal, 0);
+    ToolbarButton* button = new ToolbarButton (itemId, text, std::move(drawableNormal), 0);
     button->setTooltip (text);
     button->addListener (owner);
     return button;

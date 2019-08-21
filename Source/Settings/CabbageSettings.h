@@ -71,8 +71,9 @@ private:
     String audioSettingsXml;
     void changed()
     {
-        ScopedPointer<XmlElement> data (valueTree.createXml());
-        getUserSettings()->setValue ("PROJECT_DEFAULT_SETTINGS", data);
+		std::unique_ptr<XmlElement> data;
+		data = valueTree.createXml();
+        getUserSettings()->setValue ("PROJECT_DEFAULT_SETTINGS", &data);
         sendChangeMessage();
         //XmlElement * el = valueTree.createXml();
         //el->writeToFile(File("/home/rory/Desktop/Example1.xml"), String::empty);

@@ -249,7 +249,7 @@ void CabbageSettings::valueTreePropertyChanged (ValueTree& tree, const Identifie
 
 XmlElement* CabbageSettings::getXML (String identifier)
 {
-    return getUserSettings()->getXmlValue (identifier);
+    return getUserSettings()->getXmlValue (identifier).get();
 }
 
 int CabbageSettings::getIndexOfProperty (String child, String identifier)

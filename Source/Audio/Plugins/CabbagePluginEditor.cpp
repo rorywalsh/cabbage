@@ -954,7 +954,7 @@ void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String prese
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset)
 {
-    ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (processor.getCsdFile().withFileExtension (".snaps"));
+    std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (processor.getCsdFile().withFileExtension (".snaps")));
 
     if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
     {

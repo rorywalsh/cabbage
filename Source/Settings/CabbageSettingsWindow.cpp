@@ -155,7 +155,7 @@ CabbageSettingsWindow::RepoListBox::RepoListBox (CabbageSettingsWindow* _owner):
     listBox.setModel (this);   // Tell the listbox where to get its data model
 
     StringArray customCodeSnippets;
-    ScopedPointer<XmlElement> repoXml;
+    std::unique_ptr<XmlElement> repoXml;
     XmlElement* newEntryXml, *newEntryXml1;
 
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
@@ -207,7 +207,7 @@ void CabbageSettingsWindow::RepoListBox::listBoxItemClicked (int row, const Mous
 
 void CabbageSettingsWindow::RepoListBox::updateEntry (String updatedCode)
 {
-    ScopedPointer<XmlElement> repoXml;
+    std::unique_ptr<XmlElement> repoXml;
     XmlElement* newEntryXml, *newEntryXml1;
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
@@ -215,13 +215,13 @@ void CabbageSettingsWindow::RepoListBox::updateEntry (String updatedCode)
         return;
 
     repoXml->setAttribute (items[currentIndex], updatedCode);
-    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml.get());
     codeSnippets.set (currentIndex, updatedCode);
 }
 
 void CabbageSettingsWindow::RepoListBox::removeEntry()
 {
-    ScopedPointer<XmlElement> repoXml;
+    std::unique_ptr<XmlElement> repoXml;
     XmlElement* newEntryXml, *newEntryXml1;
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
@@ -229,7 +229,7 @@ void CabbageSettingsWindow::RepoListBox::removeEntry()
         return;
 
     repoXml->removeAttribute (items[currentIndex]);
-    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml.get());
 
 
     items.remove (currentIndex);

@@ -185,7 +185,7 @@ void CabbageWidgetBase::populateTextArrays (ValueTree data)
 
 int CabbageWidgetBase::getSVGWidth (File svgFile)
 {
-    ScopedPointer<XmlElement> svg (XmlDocument::parse (svgFile.loadFileAsString()));
+    std::unique_ptr<XmlElement> svg (XmlDocument::parse (svgFile.loadFileAsString()));
 
     for (int i = 0; i < svg->getNumAttributes(); i++)
     {
@@ -198,7 +198,7 @@ int CabbageWidgetBase::getSVGWidth (File svgFile)
 
 int CabbageWidgetBase::getSVGHeight (File svgFile)
 {
-    ScopedPointer<XmlElement> svg (XmlDocument::parse (svgFile.loadFileAsString()));
+    std::unique_ptr<XmlElement> svg (XmlDocument::parse (svgFile.loadFileAsString()));
 
     for (int i = 0; i < svg->getNumAttributes(); i++)
     {

@@ -107,8 +107,8 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "
     if (savedPluginList != nullptr)
         knownPluginList.recreateFromXml (*savedPluginList);
     
-    for (auto* t : internalTypes)
-        knownPluginList.addType (*t);
+    for (auto& t : internalTypes)
+        knownPluginList.addType (t);
     
     pluginSortMethod = (KnownPluginList::SortMethod) cabbageSettings->getUserSettings()->getIntValue ("pluginSortMethod", KnownPluginList::sortByManufacturer);
     
@@ -125,7 +125,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "
     cycleTabsButton.addListener (this);
     
 	fileTree.setLookAndFeel(&lookAndFeel4);
-    fileTree.lookAndFeelChanged();
+    //fileTree.lookAndFeelChanged();
 
     createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 
@@ -758,7 +758,7 @@ void CabbageMainComponent::insertCustomPlantToEditor(CabbagePluginEditor* editor
     Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
     String name;
     String namespce;
-    ScopedPointer<XmlElement> xml;
+    std::unique_ptr<XmlElement> xml;
     StringArray cabbageCode;
     xml = XmlDocument::parse (CabbageUtilities::getPlantFileAsXmlString(editor->changeMessage));
 
@@ -1249,7 +1249,7 @@ String CabbageMainComponent::getDeviceManagerSettings()
 {
 	if (deviceManager.getCurrentAudioDevice())
 	{
-		ScopedPointer<XmlElement> xml(deviceManager.createStateXml());
+		std::unique_ptr<XmlElement> xml(deviceManager.createStateXml());
 
 		if (xml == nullptr)
 			return String();
@@ -1261,14 +1261,14 @@ String CabbageMainComponent::getDeviceManagerSettings()
 
 void CabbageMainComponent::reloadAudioDeviceState()
 {
-	ScopedPointer<XmlElement> savedState;
+	std::unique_ptr<XmlElement> savedState;
 
 	if (cabbageSettings != nullptr)
 		savedState = cabbageSettings->getUserSettings()->getXmlValue("audioSetup");
 
 	deviceManager.initialise(256,
 		256,
-		savedState,
+		savedState.get(),
 		true);
 
 }
@@ -1359,7 +1359,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 
 
     XmlDocument doc (fileToOpen);
-    ScopedPointer<XmlElement> xml (doc.getDocumentElement());
+    std::unique_ptr<XmlElement> xml (doc.getDocumentElement());
 
     if (xml == nullptr || ! xml->hasTagName ("FILTERGRAPH"))
         return;

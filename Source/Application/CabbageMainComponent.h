@@ -173,7 +173,7 @@ public:
 	//==============================================================================
 	AudioDeviceManager deviceManager;
 	AudioPluginFormatManager formatManager;
-	OwnedArray<PluginDescription> internalTypes;
+	Array<PluginDescription> internalTypes;
 	KnownPluginList knownPluginList;
 	KnownPluginList::SortMethod pluginSortMethod;
 	String getDeviceManagerSettings();

@@ -51,6 +51,8 @@ public:
     using NodeID = AudioProcessorGraph::NodeID;
 
     void addPlugin (const PluginDescription&, Point<double>);
+	void addPluginCallback(std::unique_ptr<AudioPluginInstance>, const String& error, Point<double>);
+
 
 
 	//================================  FILTERGRAPH MODS  =================================
@@ -179,7 +181,7 @@ public:
 					pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
 				}
 				
-				e->addChildElement(pd.createXml());
+				e->addChildElement(pd.createXml().get());
 			}
 
 			{
@@ -208,17 +210,17 @@ public:
 		graph.removeIllegalConnections();
 	}
 
-	AudioProcessor* createCabbageProcessor(const String filename)
+	std::unique_ptr < AudioProcessor> createCabbageProcessor(const String filename)
 	{
-		AudioProcessor* processor;
+		std::unique_ptr < AudioProcessor> processor;
         
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(filename));
 		const int numChannels = CabbageUtilities::getHeaderInfo(File(filename).loadFileAsString(), "nchnls");
 
 		if (isCabbageFile)
-			processor = new CabbagePluginProcessor(File(filename), numChannels, numChannels);
+			processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), numChannels, numChannels));
 		else
-			processor = new GenericCabbagePluginProcessor(File(filename), numChannels, numChannels);
+			processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), numChannels, numChannels));
 
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
@@ -232,7 +234,7 @@ public:
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
-		AudioProcessor* processor = createCabbageProcessor(desc.fileOrIdentifier);
+		std::unique_ptr <AudioProcessor> processor = createCabbageProcessor(desc.fileOrIdentifier);
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(desc.fileOrIdentifier));
 
 		if (auto* plugin = graph.getNodeForId(nodeId))
@@ -248,7 +250,7 @@ public:
             graph.removeNode(nodeId);
 			graph.releaseResources();
 
-			if (auto node = graph.addNode(processor, nodeId))
+			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
@@ -267,12 +269,12 @@ public:
 
 		else
 		{
-			if (auto node = graph.addNode(processor, nodeId))
+			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{
 
 				setNodePosition(nodeId, pos);
 				changed();
-				ScopedPointer<XmlElement> xmlElem;
+				std::unique_ptr<XmlElement> xmlElem;
 				xmlElem = desc.createXml();
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
@@ -361,7 +363,7 @@ public:
 	OwnedArray<PluginWindow> activePluginWindows;
 private:
     //==============================================================================
-    AudioPluginFormatManager& formatManager;
+	AudioPluginFormatManager& formatManager;
 	
 
     NodeID lastUID;

@@ -298,9 +298,8 @@ bool CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
                     linesFromImportedFile.addLines(
                             csdFile.getParentDirectory().getChildFile(files[y].toString()).loadFileAsString());
 
-                    ScopedPointer <XmlElement> xml;
-                    xml = XmlDocument::parse(CabbageUtilities::getPlantFileAsXmlString(
-                            csdFile.getParentDirectory().getChildFile(files[y].toString())));
+                    std::unique_ptr<XmlElement> xml(XmlDocument::parse(CabbageUtilities::getPlantFileAsXmlString(
+                            csdFile.getParentDirectory().getChildFile(files[y].toString()))));
 
                     if (!xml) //if plain text...
                     {
@@ -309,7 +308,7 @@ bool CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
                         }
                     } else//if plant xml
                     {
-                        handleXmlImport(xml, linesFromCsd);
+                        handleXmlImport(xml.get(), linesFromCsd);
                     }
                 }
             }
@@ -681,22 +680,23 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock &destData) {
 }
 
 void CabbagePluginProcessor::setStateInformation(const void *data, int sizeInBytes) {
-    ScopedPointer <XmlElement> xmlElement = getXmlFromBinary(data, sizeInBytes);
-    restorePluginState(xmlElement);
+    std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
+    restorePluginState(xmlElement.get());
 }
 
 //==============================================================================
-XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName) {
-    ScopedPointer <XmlElement> xml;
+XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName) 
+{
+    std::unique_ptr<XmlElement> xml;
 
     if (xmlFile.existsAsFile()) {
         xml = XmlDocument::parse(xmlFile);
 
         if (!xml)
-            xml = new XmlElement("CABBAGE_PRESETS");
+            xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
 
     } else
-        xml = new XmlElement("CABBAGE_PRESETS");
+        xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
 
 
     String presetName = "PRESET" + String(xml->getNumChildElements());
