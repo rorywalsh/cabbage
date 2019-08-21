@@ -71,8 +71,7 @@ private:
     String audioSettingsXml;
     void changed()
     {
-		std::unique_ptr<XmlElement> data;
-		data = valueTree.createXml();
+		std::unique_ptr<XmlElement> data(valueTree.createXml());
         getUserSettings()->setValue ("PROJECT_DEFAULT_SETTINGS", &data);
         sendChangeMessage();
         //XmlElement * el = valueTree.createXml();

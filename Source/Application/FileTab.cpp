@@ -226,10 +226,10 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
     else if (type == "editGUI")
     {
         String svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-off.svg");
-		std::unique_ptr<XmlElement> svgOff = XmlDocument::parse (svgFile);
+		std::unique_ptr<XmlElement> svgOff(XmlDocument::parse (svgFile));
 
         svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-on.svg");
-		std::unique_ptr<XmlElement> svgOn = XmlDocument::parse(svgFile);
+		std::unique_ptr<XmlElement> svgOn(XmlDocument::parse(svgFile));
 
         if (iconsPath == "" || svgOn == nullptr || svgOff == nullptr) 
         { // if there is no iconsPath defined (or the svg files are missing), then we fallback on the previous hard-coded icon:
@@ -243,10 +243,10 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
                 jassert (false);
             
             if (svgOff != nullptr)
-                drawable_editGUIoff = Drawable::createFromSVG (*svgOff);
+                drawable_editGUIoff = std::unique_ptr<Drawable>(Drawable::createFromSVG (*svgOff));
             
             if (svgOn != nullptr)
-                drawable_editGUIon = Drawable::createFromSVG (*svgOn);
+                drawable_editGUIon = std::unique_ptr<Drawable>(Drawable::createFromSVG (*svgOn));
 
             button.setImages (drawable_editGUIoff.get(), drawable_editGUIoff.get(), drawable_editGUIoff.get(), drawable_editGUIoff.get(),
                 drawable_editGUIon.get(), drawable_editGUIon.get(), drawable_editGUIon.get(), drawable_editGUIon.get());

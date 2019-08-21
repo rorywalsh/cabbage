@@ -1001,8 +1001,7 @@ public:
 
             for (int i = 0; i < plantFiles.size(); ++i)
             {
-				std::unique_ptr<XmlElement> xml;
-                xml = XmlDocument::parse (getPlantFileAsXmlString(plantFiles[i]));
+				std::unique_ptr<XmlElement> xml(XmlDocument::parse (getPlantFileAsXmlString(plantFiles[i])));
 
                 if (xml) //if valid xml
                 {
@@ -1086,8 +1085,7 @@ public:
     //======================================================================================
     static void writeValueTreeToFile (ValueTree valueTree, String filePath)
     {
-		std::unique_ptr<XmlElement> data;
-		data = valueTree.createXml();
+		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
         data->writeToFile (File (filePath), String());

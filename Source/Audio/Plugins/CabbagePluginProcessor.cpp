@@ -27,7 +27,7 @@ AudioProcessor *JUCE_CALLTYPE
 
 createPluginFilter() {
     File csdFile;
-#ifndef JUCE_MAC
+#ifdef JUCE_WINDOWS
 	CabbageUtilities::debug(JucePlugin_Manufacturer);
     csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
 	if (csdFile.existsAsFile() == false)
@@ -36,12 +36,20 @@ createPluginFilter() {
 		
 		csdFile = File(filename);
 	}
-#else
+#elif JUCE_MAC
     //read .csd file from the correct location within the .vst bundle.
     const String dir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
     const String filename (File::getSpecialLocation (File::currentExecutableFile).withFileExtension (String (".csd")).getFileName());
     csdFile = File (dir + "/" + filename);
+#else
+    CabbageUtilities::debug(JucePlugin_Manufacturer);
+    csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+    if (csdFile.existsAsFile() == false)
+    {
+        String filename = "/usr/share/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+ File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
 
+        csdFile = File(filename);
+    }
 #endif
 
 	if (csdFile.existsAsFile() == false)
