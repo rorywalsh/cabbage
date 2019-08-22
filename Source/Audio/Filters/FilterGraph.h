@@ -181,7 +181,7 @@ public:
 					pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
 				}
 				
-				e->addChildElement(pd.createXml().get());
+				e->addChildElement(pd.createXml().release());
 			}
 
 			{

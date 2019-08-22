@@ -1,6 +1,6 @@
 <Cabbage>
 form size(520, 450), caption("SignalDisplay"), pluginid("SigD")
-signaldisplay bounds(10, 0, 500, 300), colour("lime"), displaytype("waveform"), signalvariable("a1", "a2"), identchannel("displayIdent")
+signaldisplay bounds(10, 0, 500, 300), colour("lime") displaytype("waveform"), signalvariable("a1", "a2"), identchannel("displayIdent")
 combobox bounds(388, 368, 120, 25), align("centre"), channel("displayCombo"), items("Waveform", "Spectroscope", "Spectrogram", "Lissajous")
 keyboard bounds(12, 304, 497, 60)
 combobox bounds(12, 368, 100, 30), align("centre"), channel("waveshape"), items("Sine", "Saw", "Square")
@@ -58,10 +58,10 @@ if changed:k(kChangeDisplay)==1 then
 	endif
 endif
 
-;kTrigger changed kChangeDisplay
-;if kTrigger == 1 then
-;	chnset SDisplayIdentString, "displayIdent"
-;endif
+kTrigger changed kChangeDisplay
+if kTrigger == 1 then
+	chnset SDisplayIdentString, "displayIdent"
+endif
 
 endin
 
