@@ -806,6 +806,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
             ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i),
                                                                               true);
             const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+            const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
 
             if (type == CabbageWidgetTypes::texteditor)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
@@ -834,6 +835,20 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
                     || CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps")
                     CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
                                                   e->getAttributeValue(i).getFloatValue());
+                    //now make changes parameter changes so host can see them..
+                
+                    for (auto param : getParameters())
+                    {
+                        if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
+                        {
+                            if (widgetName == cabbageParam->getWidgetName())
+                            {
+                                param->beginChangeGesture();
+                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (e->getAttributeValue(i).getFloatValue()));
+                                param->endChangeGesture();
+                            }
+                        }
+                    }
             }
         }
     }
