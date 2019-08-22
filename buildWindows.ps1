@@ -24,7 +24,7 @@ dir
 cd D:/a/1/
 git clone https://github.com/WeAreROLI/JUCE.git
 cd D:/a/1/JUCE
-git checkout tags/5.4.3
+git checkout master
 cd D:/a/1/JUCE/extras/Projucer/JuceLibraryCode
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
