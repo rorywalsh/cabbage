@@ -285,9 +285,9 @@ public:
     {
         if (settings != nullptr)
         {
-            ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
+            std::unique_ptr<XmlElement> xml (deviceManager.createStateXml());
 
-            settings->setValue ("audioSetup", xml);
+            settings->setValue ("audioSetup", xml.get());
 
 #if ! (JUCE_IOS || JUCE_ANDROID)
             settings->setValue ("shouldMuteInput", (bool) shouldMuteInput.getValue());
@@ -299,11 +299,11 @@ public:
                                  const String& preferredDefaultDeviceName,
                                  const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
     {
-        ScopedPointer<XmlElement> savedState;
+        std::unique_ptr<XmlElement> savedState;
 
         if (settings != nullptr)
         {
-            savedState      = settings->getXmlValue ("audioSetup");
+            savedState = settings->getXmlValue ("audioSetup");
 
 #if ! (JUCE_IOS || JUCE_ANDROID)
             shouldMuteInput.setValue (settings->getBoolValue ("shouldMuteInput", true));
@@ -314,7 +314,7 @@ public:
 		//load ASIO drivers by default
 		if(savedState == nullptr)
 		{
-			savedState = new XmlElement("DEVICESETUP");
+			savedState = std::unique_ptr<XmlElement>(new XmlElement("DEVICESETUP"));
 			savedState->setAttribute("deviceType", "ASIO");
 			savedState->setAttribute("audioOutputDeviceName", "ASIO4ALL v2");
 			savedState->setAttribute("audioInputDeviceName", "ASIO4ALL v2");
@@ -332,7 +332,7 @@ public:
 
         deviceManager.initialise (enableAudioInput ? totalInChannels : 0,
                                   totalOutChannels,
-                                  savedState,
+                                  savedState.get(),
                                   true,
                                   preferredDefaultDeviceName,
                                   preferredSetupOptions);
