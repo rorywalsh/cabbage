@@ -64,6 +64,10 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("lastPluginScanPath_AudioUnit", "");
 #endif
 
+#ifdef CabbagePro
+    defaultPropSet->setValue ("CsoundPath", "/Library/Frameworks/CsoundLib64.framework/CsoundLib64"); 
+#endif
+    
     defaultPropSet->setValue ("CsoundManualDir", manualPath);
     
     defaultPropSet->setValue ("CabbagePlantDir", homeDir + "/Plants");

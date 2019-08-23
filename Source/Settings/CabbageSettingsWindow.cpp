@@ -288,6 +288,7 @@ void CabbageSettingsWindow::addMiscProperties()
     Array<PropertyComponent*> dirProps;
     Array<PropertyComponent*> sshProps;
 	Array<PropertyComponent*> randProps;
+    
 
     showLastOpenedFileValue.setValue (settings.getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup"));
     showLastOpenedFileValue.addListener (this);
@@ -314,6 +315,8 @@ void CabbageSettingsWindow::addMiscProperties()
     editorProps.add (new TextPropertyComponent (Value (sapcesInTabs), "Spaces in tab (set to 0 to use tabs instead of spaces)", 10, false));
 
     const String examplesDir = settings.getUserSettings()->getValue ("CabbageExamplesDir");
+    
+    
     const String manualDir = settings.getUserSettings()->getValue ("CsoundManualDir");
     const String cabbageManualDir = settings.getUserSettings()->getValue ("CabbageManualDir");
     const String plantDir = settings.getUserSettings()->getValue ("CabbagePlantDir");
@@ -326,7 +329,7 @@ void CabbageSettingsWindow::addMiscProperties()
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage plants dir.", true, false, "*", plantDir));
     dirProps.add (new CabbageFilePropertyComponent ("User files dir.", true, false, "*", userFilesDir));
 	dirProps.add(new CabbageFilePropertyComponent ("Custom theme dir.", true, false, "*", customTheme));
-
+    
     const String sshAddress = settings.getUserSettings()->getValue ("SSHAddress");
     sshProps.add (new TextPropertyComponent (Value (sshAddress), "SSH Address", 200, false));
 
@@ -341,8 +344,17 @@ void CabbageSettingsWindow::addMiscProperties()
     miscPanel.clear();
     miscPanel.addSection ("Editor", editorProps);
     miscPanel.addSection ("Directories", dirProps);
+#ifdef CabbagePro
+    Array<PropertyComponent*> csoundProps;
+    const String csoundPath = settings.getUserSettings()->getValue ("CsoundPath");
+    csoundProps.add (new TextPropertyComponent (Value (csoundPath), "Csound Path (otool -L)", 200, false));
+    miscPanel.addSection("Cabbage Pro", csoundProps);
+    addCustomListener (csoundProps, this);
+#endif
     miscPanel.addSection ("SSH", sshProps);
 	miscPanel.addSection("Misc.", randProps);
+    
+
 }
 
 void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent* comp)
@@ -355,6 +367,8 @@ void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent*
         settings.getUserSettings()->setValue ("numberOfLinesToScroll", comp->getValue().toString());
     else if (comp->getName() == "Spaces in tab (set to 0 to use tabs instead of spaces)")
         settings.getUserSettings()->setValue ("SpacesInTabs", comp->getValue().toString());
+    else if (comp->getName() == "Csound Path (otool -L)")
+        settings.getUserSettings()->setValue ("CsoundPath", comp->getValue().toString());
 }
 
 void CabbageSettingsWindow::resized()

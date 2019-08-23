@@ -47,6 +47,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
 
     initSettings();
+    pluginExporter.settingsToUse(cabbageSettings->getUserSettings());
     setColour (backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
     content->propertyPanel->setVisible (false);

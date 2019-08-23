@@ -27,10 +27,11 @@
 #endif
 class PluginExporter
 {
-CabbageIDELookAndFeel lookAndFeel;
-
+    CabbageIDELookAndFeel lookAndFeel;
+    PropertiesFile* settings;
 public:
-    PluginExporter():lookAndFeel() {}
+    PluginExporter():lookAndFeel(){}
+    void settingsToUse(PropertiesFile* cabSettings){   settings = cabSettings; }
 
     long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);
     int setUniquePluginId (File binFile, File csdFile, String pluginId, bool isRSRC=false);
