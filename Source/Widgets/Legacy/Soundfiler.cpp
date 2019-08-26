@@ -33,7 +33,7 @@ public:
     }
     ~ZoomButton() {}
 
-    void mouseDown (const MouseEvent& e)
+    void mouseDown (const MouseEvent& e) override
     {
         sendChangeMessage();
     }
@@ -55,18 +55,21 @@ public:
 // soundfiler display  component
 //==============================================================================
 
-Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):   thumbnailCache (5), colour (col),                                                        sampleRate (sr),
-    currentPlayPosition (0),
+Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):
+    selectableRange (true),
+    showScrubber (true),
+    currentPositionMarker (new DrawableRectangle()),
+    scrubberPosition (0),
+    sampleRate (sr),
+    regionWidth (1),
+    thumbnailCache (5),
+    colour (col),
+    bgColour (bgcol),
     mouseDownX (0),
     mouseUpX (0),
-    drawWaveform (false),
-    regionWidth (1),
     loopLength (0),
-    scrubberPosition (0),
-    showScrubber (true),
-    selectableRange (true),
-    bgColour (bgcol),
-    currentPositionMarker (new DrawableRectangle())
+    currentPlayPosition (0),
+    drawWaveform (false)
 {
     formatManager.registerBasicFormats();
     thumbnail = new AudioThumbnail (2, formatManager, thumbnailCache);

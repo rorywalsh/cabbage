@@ -45,22 +45,22 @@ public:
     ~ComponentLayoutEditor ();
 
     ValueTree widgetData;
-    void resized ();
+    void resized () override;
     void paint (Graphics& g)  override;
     void setTargetComponent (Component* target);
     void bindWithTarget ();
     void updateFrames ();
-    void enablementChanged ();
-    void mouseUp (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
-    void mouseDown (const MouseEvent& e);
+    void enablementChanged () override;
+    void mouseUp (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
+    void mouseDown (const MouseEvent& e) override;
     const Component* getTarget();
-    void findLassoItemsInArea (Array <ComponentOverlay*>& results, const juce::Rectangle<int>& area);
+    void findLassoItemsInArea (Array <ComponentOverlay*>& results, const juce::Rectangle<int>& area) override;
     void updateCodeEditor();
     void updateSelectedComponentBounds();
     void setComponentBoundsProperties (Component* child, Rectangle<int> bounds);
 
-    SelectedItemSet <ComponentOverlay*>& getLassoSelection();
+    SelectedItemSet <ComponentOverlay*>& getLassoSelection() override;
     LassoComponent <ComponentOverlay*> lassoComp;
     SelectedComponents selectedComponents;
     Point<int> currentMouseCoors;

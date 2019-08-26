@@ -352,7 +352,6 @@ void CsoundPluginProcessor::addMacros (String csdText)
 void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, String channel)
 {
     MatrixEventSequencer* matrix = new MatrixEventSequencer(channel);
-    (channel);
 
     for (int i = 0 ; i < cols ; i++)
     {

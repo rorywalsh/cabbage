@@ -71,8 +71,8 @@ public:
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;
-    void getChannelDataFromCsound();
-    void triggerCsoundEvents();
+    void getChannelDataFromCsound() override;
+    void triggerCsoundEvents() override;
     void setWidthHeight();
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
@@ -88,7 +88,7 @@ public:
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     void expandMacroText (String &line, ValueTree wData);
-	void prepareToPlay(double sampleRate, int samplesPerBlock);
+	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
 	void setCabbageParameter(String channel, float value);
     CabbageAudioParameter* getParameterForXYPad (String name);
     //==============================================================================
@@ -143,7 +143,7 @@ class CabbageAudioParameter : public AudioParameterFloat
 
 public:
 	CabbageAudioParameter(CabbagePluginProcessor* owner, ValueTree wData, Csound& csound, String channel, String name, float minValue, float maxValue, float def, float incr, float skew)
-		: AudioParameterFloat(name, channel, NormalisableRange<float>(minValue, maxValue, incr, skew), def), currentValue(def), widgetName(name), channel(channel), owner(owner)
+		: AudioParameterFloat(name, channel, NormalisableRange<float>(minValue, maxValue, incr, skew), def), channel(channel), widgetName(name), currentValue(def), owner(owner)
 	{
 		// widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
         if(name.contains("combobox"))

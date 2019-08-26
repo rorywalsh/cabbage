@@ -44,14 +44,14 @@ public:
     void getAmpRangeForTable (String identifier, var value);
     void getScrubberPositionForTable (String identifier, var value);
     void setPropertyByName (String name, var value);
-    void textPropertyComponentChanged (TextPropertyComponent* comp);
+    void textPropertyComponentChanged (TextPropertyComponent* comp) override;
     void changeListenerCallback (juce::ChangeBroadcaster* source) override;
     void updateProperties (ValueTree widgetData);
-    void valueChanged (Value& value);
-    void filenameComponentChanged (FilenameComponent* fileComponent);
+    void valueChanged (Value& value) override;
+    void filenameComponentChanged (FilenameComponent* fileComponent) override;
     void saveOpenessState();
 
-	void buttonClicked(Button *);
+	void buttonClicked(Button *) override;
     Array<PropertyComponent*> createPositionEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTextEditors (ValueTree valueTree);
     Array<PropertyComponent*> createNumberEditors (ValueTree valueTree);

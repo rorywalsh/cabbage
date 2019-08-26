@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../CabbageCommonHeaders.h"
 
-static std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
+inline std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
 {
     auto xml = parseXML (data);
     jassert (xml != nullptr);
@@ -106,7 +106,7 @@ public:
                                              int thumbStartPosition,
                                              int thumbSize,
                                              bool isMouseOver,
-                                             bool isMouseDown);
+                                             bool isMouseDown) override;
 
     void setDefaultFont(File fontFile);
 //    Font getTextButtonFont (TextButton&, int buttonHeight) override;

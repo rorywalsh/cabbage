@@ -331,7 +331,7 @@ public:
     }
 
     //==============================================================================
-    void timerCallback()
+    void timerCallback() override
     {
         int64 modTime = csdFile.getLastModificationTime().toMilliseconds();
 

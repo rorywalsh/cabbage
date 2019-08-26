@@ -20,9 +20,11 @@
 #ifndef CABBAGECOMMONHEADERS_H_INCLUDED
 #define CABBAGECOMMONHEADERS_H_INCLUDED
 
+#ifdef _MSC_VER
 #pragma warning(disable: 4244)
 #pragma warning(disable: 4100)
 #pragma warning(disable: 4305)
+#endif
 
 #define CABBAGE_VERSION "Cabbage(64bit) v2.1.06beta"
 #include "./Settings/CabbageSettings.h"

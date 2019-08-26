@@ -105,10 +105,10 @@ public:
     public:
         AddCodeToGUIEditorComponent (CabbageCodeEditorComponent* _owner, String caption, Colour backgroundColour)
             : DocumentWindow (caption, Colour (100, 100, 100), DocumentWindow::TitleBarButtons::allButtons),
-              editor ("editor"),
-              colour (backgroundColour),
               owner (_owner),
-              cabbageLoookAndFeel()
+              colour (backgroundColour),
+              cabbageLoookAndFeel(),
+              editor ("editor")
         {
 
             setName (caption);
@@ -120,7 +120,7 @@ public:
             editor.addListener (this);
         }
 
-        void textEditorReturnKeyPressed (TextEditor&);
+        void textEditorReturnKeyPressed (TextEditor&) override;
 
         void closeButtonPressed() override
         {
@@ -192,7 +192,7 @@ public:
     //void undo() {    this->undo();               }
     //void redo() {    this->redo();               }
     //=========================================================
-    void timerCallback();
+    void timerCallback() override;
     ValueTree breakpointData;
     var findValueForCsoundVariable (String varName);
     bool debugModeEnabled = false;

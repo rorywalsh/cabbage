@@ -107,7 +107,7 @@ public :
     ColourPropertyComponent (String name, String colourString, bool colourSettings = false);
     ~ColourPropertyComponent() {}
     void paint (Graphics& g)  override;
-    void mouseDown (const MouseEvent& e);
+    void mouseDown (const MouseEvent& e) override;
     void changeListenerCallback (juce::ChangeBroadcaster* source) override;
     void refresh() override {}
     String getCurrentColourString();
@@ -144,10 +144,10 @@ public :
     ColourMultiPropertyComponent (String name, var colours, bool colourSettings = false);
     ~ColourMultiPropertyComponent() {}
     void paint (Graphics& g)  override;
-    void mouseDown (const MouseEvent& e);
+    void mouseDown (const MouseEvent& e) override;
     void changeListenerCallback (juce::ChangeBroadcaster* source) override;
     void refresh() override {}
-    void resized();
+    void resized() override;
     void buttonClicked (Button* button) override;
     String getCurrentColourString();
     Colour colour;

@@ -44,7 +44,7 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    String getTooltip()
+    String getTooltip() override
     {
         return tooltipText;
     }

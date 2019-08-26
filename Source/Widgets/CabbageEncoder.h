@@ -66,12 +66,12 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
 
-    void labelTextChanged (Label* label);
+    void labelTextChanged (Label* label) override;
     void mouseDown (const MouseEvent& e)  override;
     void mouseEnter (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
     void mouseExit (const MouseEvent& e) override;
-    void mouseWheelMove (const MouseEvent& event, const MouseWheelDetails& wheel);
+    void mouseWheelMove (const MouseEvent& event, const MouseWheelDetails& wheel) override;
     void paint (Graphics& g) override;
     void showPopup (int displayTime = 250);
     void resized() override;

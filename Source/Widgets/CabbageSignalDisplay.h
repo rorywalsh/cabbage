@@ -67,7 +67,7 @@ public:
     ValueTree widgetData;
 
     void setBins (int min, int max);
-    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
+    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
     void drawSonogram();
     void drawSpectroscope (Graphics& g);

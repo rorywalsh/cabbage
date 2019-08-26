@@ -30,7 +30,7 @@ class CabbageProjectWindow : public Component, public Button::Listener
     class SimpleImageButton : public ImageButton
     {
     public:
-        SimpleImageButton (String name, CabbageProjectWindow* owner): owner (owner), name (name), ImageButton (name) {}
+        SimpleImageButton (String name, CabbageProjectWindow* owner): ImageButton (name), owner (owner), name (name) {}
         ~SimpleImageButton() {}
 
         void mouseEnter (const MouseEvent& e)
@@ -67,13 +67,13 @@ public:
         information = informationStr;
     }
 
-    void buttonClicked (Button* button);
+    void buttonClicked (Button* button) override;
 
 	void paint(Graphics& g)  override;
 
     void resized() override
     {
-        Rectangle<int> r (getLocalBounds());
+        // Rectangle<int> r (getLocalBounds());
 
         newInstrumentButton.setBounds (50, 50, 150, 150);
         newEffectButton.setBounds (250, 50, 150, 150);

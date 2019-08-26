@@ -170,7 +170,7 @@ public:
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
     //=============================================================================
     void buttonClicked (Button* button) override;
-    void buttonStateChanged (Button* button);
+    void buttonStateChanged (Button* button) override;
     void toggleButtonState (Button* button, bool state);
     void comboBoxChanged (ComboBox* combo) override;
     void sliderValueChanged (Slider* slider) override;
@@ -225,7 +225,7 @@ public:
             CabbageWidgetData::setNumProp(plantWidgetData, CabbageIdentifierIds::visible, 0);
         }
 
-        void paint (Graphics& g){               g.fillAll (colour);         }
+        void paint (Graphics& g) override {               g.fillAll (colour);         }
         void setWidgetData(ValueTree wData){    plantWidgetData = wData;    }
     };
 

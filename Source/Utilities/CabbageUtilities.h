@@ -29,8 +29,10 @@
 
 class CabbageIDELookAndFeel;
 
+#ifdef _MSC_VER
 #pragma warning(disable: 4244) // possible loss of data
 #pragma warning(disable: 4100) // possible loss of data
+#endif
 
 using namespace std;
 
@@ -985,7 +987,7 @@ public:
     {
 
         PopupMenu menu;
-        int fileCnt = 0;
+        // int fileCnt = 0;
 
         if (File (userDir).exists())
         {
