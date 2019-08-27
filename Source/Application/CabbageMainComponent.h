@@ -130,6 +130,7 @@ public:
                 return fileTab;
         }
         jassertfalse;
+        return nullptr;
     }
     
     //overlaying this component on FileBrowserComponent to take contorl of up button colour..
