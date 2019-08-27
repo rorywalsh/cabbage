@@ -1629,7 +1629,7 @@ void HandleComponent::paint (Graphics& g)
         else
         {
             g.setColour (colour);
-            g.drawRoundedRectangle (getLocalBounds().reduced (1.2f).toFloat(), 2.f, 1.f);
+            g.drawRoundedRectangle (getLocalBounds().toFloat().reduced (1.2f), 2.f, 1.f);
             g.setColour (colour.withAlpha (.7f));
             g.drawRoundedRectangle (getLocalBounds().toFloat(), 2.f, 1.f);
         }
