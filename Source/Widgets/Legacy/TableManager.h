@@ -68,7 +68,7 @@ public:
     void timerCallback();
     void updateScrollbars();
     void setRange (double start, double end);
-    ScopedPointer<DrawableRectangle> currentPositionMarker;
+    std::unique_ptr<DrawableRectangle> currentPositionMarker;
     double getLengthInSamples();
     void setScrubberPos (double pos, int tableNum);
     void scroll (double newRangeStart);
@@ -79,7 +79,7 @@ public:
     void setFile (const File file);
     void enableEditMode (StringArray pFields, int ftnumber);
     void toggleEditMode (bool enable);
-    ScopedPointer<RoundButton> zoomIn, zoomOut;
+    std::unique_ptr<RoundButton> zoomIn, zoomOut;
     OwnedArray<RoundButton> tableButtons;
     OwnedArray<GenTable> tables;
     void showZoomButtons (bool show);
@@ -151,7 +151,7 @@ public:
     void setRange (Range<double> newRange, bool isScrolling = false);
     Range<double> globalRange;
     bool isTableOnTop;
-    ScopedPointer<ScrollBar> scrollbar;
+    std::unique_ptr<ScrollBar> scrollbar;
     void resized() override;
     Range<double> visibleRange;
     bool drawGrid;
@@ -161,7 +161,7 @@ public:
 
     HandleViewer* getHandleViewer()
     {
-        return handleViewer;
+        return handleViewer.get();
     }
 
     double quantiseSpace;
@@ -242,7 +242,7 @@ private:
     double numPixelsPerIndex;
     ColourGradient gradient;
     StringArray pFields;
-    ScopedPointer<DrawableRectangle> currentPositionMarker;
+    std::unique_ptr<DrawableRectangle> currentPositionMarker;
     juce::Rectangle<int> thumbArea;
     juce::Rectangle<int> handleViewerRect;
     void paint (Graphics& g)  override;
@@ -255,13 +255,13 @@ private:
     double scrubberPosition;
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
-    ScopedPointer<HandleViewer> handleViewer;
+    std::unique_ptr<HandleViewer> handleViewer;
     AudioFormatManager formatManager;
     double sampleRate;
     float regionWidth;
     Image waveformImage;
     AudioThumbnailCache thumbnailCache;
-    ScopedPointer<AudioThumbnail> thumbnail;
+    std::unique_ptr<AudioThumbnail> thumbnail;
     Colour tableColour, fontcolour;
     int mouseDownX, mouseUpX;
     juce::Rectangle<int> localBounds;
@@ -304,8 +304,8 @@ class HandleViewer : public Component
 public:
     HandleViewer();
     ~HandleViewer();
-    ScopedPointer<TextButton> button1;
-    ScopedPointer<TextButton> button2;
+    std::unique_ptr<TextButton> button1;
+    std::unique_ptr<TextButton> button2;
     void mouseDown (const MouseEvent& e);
     void mouseDrag (const MouseEvent& e);
     void positionHandle (const MouseEvent& e);

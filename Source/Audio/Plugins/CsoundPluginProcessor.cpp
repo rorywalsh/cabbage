@@ -25,14 +25,15 @@
 
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const int outs, bool debugMode)
-    : csdFile (csdFile), AudioProcessor (BusesProperties()
+    : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                                          .withInput  ("Input",  (ins==2 ? AudioChannelSet::stereo() : AudioChannelSet::discreteChannels (ins)), true)
 #endif
                                          .withOutput ("Output", (outs == 2 ? AudioChannelSet::stereo() : AudioChannelSet::discreteChannels (outs)), true)
 #endif
-                                        )
+                                        ),
+      csdFile (csdFile)
 {
 
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
@@ -68,7 +69,7 @@ void CsoundPluginProcessor::resetCsound()
 //==============================================================================
 bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool debugMode)
 {
-	csound = new Csound();
+	csound.reset (new Csound());
 	csdFilePath = filePath;
 	csdFilePath.setAsCurrentWorkingDirectory();
 	csound->SetHostImplementedMIDIIO(true);
@@ -81,7 +82,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	csound->SetExternalMidiOutOpenCallback(OpenMidiOutputDevice);
 	csound->SetExternalMidiWriteCallback(WriteMidiData);
 	csoundParams = nullptr;
-	csoundParams = new CSOUND_PARAMS();
+	csoundParams.reset (new CSOUND_PARAMS());
 
 	csoundParams->displays = 0;
 
@@ -124,7 +125,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 #endif
 	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
 
-	csound->SetParams(csoundParams);
+	csound->SetParams(csoundParams.get());
 
 	if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
 		compileCsdFile(csdFile);
@@ -160,8 +161,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 void CsoundPluginProcessor::createFileLogger (File csdFile)
 {
     String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");
-    fileLogger = new FileLogger (File (logFileName), String ("Cabbage Log.."));
-    Logger::setCurrentLogger (fileLogger);
+    fileLogger.reset (new FileLogger (File (logFileName), String ("Cabbage Log..")));
+    Logger::setCurrentLogger (fileLogger.get());
 }
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)

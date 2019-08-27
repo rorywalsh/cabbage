@@ -143,7 +143,7 @@ public:
 
     };
 
-    ScopedPointer<AddCodeToGUIEditorComponent> addToGUIEditorPopup;
+    std::unique_ptr<AddCodeToGUIEditorComponent> addToGUIEditorPopup;
 
     void run() override// thread for parsing text for variables on startup
     {

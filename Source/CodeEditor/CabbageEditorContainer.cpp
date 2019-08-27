@@ -21,17 +21,25 @@
 #include "../Application/CabbageMainComponent.h"
 
 CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool isCsd)
-    : settings (settings), isCsdFile (isCsd),
-      statusBar (settings->valueTree, this)
+    : statusBar (settings->valueTree, this),
+      settings (settings),
+      isCsdFile (isCsd)
 {
     addAndMakeVisible (statusBar);
 
     if (isCsdFile)
-        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
+    {
+        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
+        addAndMakeVisible (editor.get());
+    }
     else
-        addAndMakeVisible (editor = new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
+    {
+        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
+        addAndMakeVisible (editor.get());
+    }
 
-    addAndMakeVisible (outputConsole = new CabbageOutputConsole (settings->valueTree));
+    outputConsole.reset (new CabbageOutputConsole (settings->valueTree));
+    addAndMakeVisible (outputConsole.get());
 
     editor->setLineNumbersShown (true);
     editor->addMouseListener (this, true);

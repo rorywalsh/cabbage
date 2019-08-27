@@ -195,7 +195,7 @@ public:
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
     FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
     //==============================================================================
-    ScopedPointer<CabbagePropertiesPanel> propertyPanel;
+    std::unique_ptr<CabbagePropertiesPanel> propertyPanel;
 	void togglePropertyPanel()
 	{
 		if (getCurrentCodeEditor())
@@ -207,7 +207,7 @@ public:
     
     CabbagePluginEditor* currentEditor = nullptr;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
-    ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
+    std::unique_ptr<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
     
     void openFolder();
@@ -272,7 +272,7 @@ public:
     void toggleBrowser(); 
     
 //    TimeSliceThread directoryThread{ "File Scanner Thread" };
-     ScopedPointer<WildcardFileFilter> wildcardFilter;
+     std::unique_ptr<WildcardFileFilter> wildcardFilter;
 //    DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
 //    FileTreeComponent fileTree{ fileList };
     FileBrowserComponent fileTree;
@@ -300,19 +300,19 @@ private:
     CabbageSettings* cabbageSettings;
     int currentFileIndex = 0;
     int numberOfFiles = 0;
-    //ScopedPointer<FilterGraph> filterGraph;
+    //std::unique_ptr<FilterGraph> filterGraph;
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;
     class FindPanel;
-    ScopedPointer<FindPanel> findPanel;
+    std::unique_ptr<FindPanel> findPanel;
 
 
-	ScopedPointer<GraphDocumentComponent> graphComponent;
-    ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;
+    GraphDocumentComponent* graphComponent = nullptr;
+    std::unique_ptr<FilterGraphDocumentWindow> filterGraphWindow;
 
 
-    //ScopedPointer<HtmlHelpDocumentWindow> helpWindow;
+    //std::unique_ptr<HtmlHelpDocumentWindow> helpWindow;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainComponent)

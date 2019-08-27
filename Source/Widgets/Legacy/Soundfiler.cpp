@@ -72,18 +72,21 @@ Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):
     drawWaveform (false)
 {
     formatManager.registerBasicFormats();
-    thumbnail = new AudioThumbnail (2, formatManager, thumbnailCache);
+    thumbnail.reset (new AudioThumbnail (2, formatManager, thumbnailCache));
     thumbnail->addChangeListener (this);
     //setSize(400, 200);
     sampleRate = sr;
-    addAndMakeVisible (scrollbar = new ScrollBar (false));
+    scrollbar.reset (new ScrollBar (false));
+    addAndMakeVisible (scrollbar.get());
     scrollbar->setRangeLimits (visibleRange);
     //scrollbar->setAutoHide (false);
     scrollbar->addListener (this);
     currentPositionMarker->setFill (Colours::white.withAlpha (0.85f));
-    addAndMakeVisible (currentPositionMarker);
-    addAndMakeVisible (zoomIn = new ZoomButton ("zoomIn"));
-    addAndMakeVisible (zoomOut = new ZoomButton ("zoomOut"));
+    addAndMakeVisible (currentPositionMarker.get());
+    zoomIn.reset (new ZoomButton ("zoomIn"));
+    addAndMakeVisible (zoomIn.get());
+    zoomOut.reset (new ZoomButton ("zoomOut"));
+    addAndMakeVisible (zoomOut.get());
     zoomIn->addChangeListener (this);
     zoomOut->addChangeListener (this);
 }
@@ -120,7 +123,7 @@ void Soundfiler::resized()
 //==============================================================================
 void Soundfiler::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart)
 {
-    if (scrollBarThatHasMoved == scrollbar)
+    if (scrollBarThatHasMoved == scrollbar.get())
         setRange (visibleRange.movedToStartAt (newRangeStart));
 }
 

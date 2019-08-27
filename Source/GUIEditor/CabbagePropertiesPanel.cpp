@@ -95,11 +95,11 @@ CabbagePropertiesPanel::CabbagePropertiesPanel (ValueTree widgetData)
     setOpaque (true);
     setSize (300, 500);
     
-    propertyPanelLook = new PropertyPanelLookAndFeel();
-    propertyPanel.setLookAndFeel (propertyPanelLook);
+    propertyPanelLook.reset (new PropertyPanelLookAndFeel());
+    propertyPanel.setLookAndFeel (propertyPanelLook.get());
     
-    flatLook = new FlatButtonLookAndFeel();
-    hideButton.setLookAndFeel (flatLook);
+    flatLook.reset (new FlatButtonLookAndFeel());
+    hideButton.setLookAndFeel (flatLook.get());
     hideButton.setColour(TextButton::ColourIds::buttonColourId, backgroundColour);// Colours::black);
     hideButton.setColour(TextButton::ColourIds::textColourOffId, backgroundColour.contrasting(1.0f));//Colours::white);
 
@@ -131,7 +131,7 @@ void CabbagePropertiesPanel::saveOpenessState()
     if (getSectionState (name) == nullptr)
         sectionStates.add (new SectionState (name, propertyPanel.getOpennessState().get()));
     else
-        getSectionState (name)->xmlElement = propertyPanel.getOpennessState().get();
+        getSectionState (name)->xmlElement = propertyPanel.getOpennessState();
 
 }
 

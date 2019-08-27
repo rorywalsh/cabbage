@@ -61,7 +61,7 @@ public:
     //void maximiseButtonPressed() override;
     void focusGained (FocusChangeType cause) override; //grab focus when user clicks on editor
 
-    ScopedPointer<CabbageSettings> cabbageSettings;
+    std::unique_ptr<CabbageSettings> cabbageSettings;
     ApplicationCommandTarget* getNextCommandTarget() override   {        return findFirstTargetParentComponent();    }
     ApplicationCommandManager& getCommandManager() {     return commandManager;  }
     void exportExamplesToPlugins(String type);
@@ -79,10 +79,10 @@ private:
     //=======================================================
 
     PluginExporter pluginExporter;
-    ScopedPointer<FlatButtonLookAndFeel> lookAndFeel;
+    std::unique_ptr<FlatButtonLookAndFeel> lookAndFeel;
     String commandLineArgs = "";
     bool isGUIEnabled = false;
-    ScopedPointer<CabbageMainComponent> content;
+    CabbageMainComponent* content = nullptr;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };
 

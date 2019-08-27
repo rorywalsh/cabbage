@@ -25,14 +25,14 @@
 //==============================================================================
 CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser)
     : CodeEditorComponent (document, codeTokeniser),
-      valueTree (valueTree),
-      statusBar (statusBar),
-      owner (owner),
-      autoCompleteListBox(),
       Thread ("parseVariablesThread"),
-      debugLabel (""),
+      statusBar (statusBar),
+      autoCompleteListBox(),
+      owner (owner),
+      lookAndFeel3(),
+      valueTree (valueTree),
       currentLineMarker(),
-      lookAndFeel3()
+      debugLabel ("")
 {
     //setMouseClickGrabsKeyboardFocus (true);
     String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
@@ -40,7 +40,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     this->setLookAndFeel (&lookAndFeel3);
     setScrollbarThickness (20);
 
-    addToGUIEditorPopup = new AddCodeToGUIEditorComponent (this, "Add to code repository", Colour (25, 25, 25));
+    addToGUIEditorPopup.reset (new AddCodeToGUIEditorComponent (this, "Add to code repository", Colour (25, 25, 25)));
     addToGUIEditorPopup->setVisible (false);
 
     if (File (opcodeFile).existsAsFile())
@@ -273,7 +273,7 @@ void CabbageCodeEditorComponent::updateCurrenLineMarker (ArrowKeys arrowKey)
     const Range<int> highlight (getHighlightedRegion());
     CodeDocument::Position start;
     CodeDocument::Position linePos (getDocument(), getCaretPos().getPosition());
-    bool draggingBackwards = false;
+    // bool draggingBackwards = false;
 
     if ( highlight.getLength() > 0)
     {
@@ -381,7 +381,7 @@ void CabbageCodeEditorComponent::codeDocumentTextInserted (const String& text, i
     lastAction = "insertText";
     const CodeDocument::Position pos (getDocument(), startIndex);
 
-    const int lineNumber = pos.getLineNumber();
+    // const int lineNumber = pos.getLineNumber();
     if(range.contains(pos.getLineNumber()) == false)
         handleAutoComplete (text);
 }
@@ -919,7 +919,7 @@ void CabbageCodeEditorComponent::AddCodeToGUIEditorComponent::textEditorReturnKe
     if (editor.getText() != "Enter name for GUI code")
     {
         std::unique_ptr<XmlElement> repoXml;
-        XmlElement* newEntryXml;
+        // XmlElement* newEntryXml;
         repoXml = owner->owner->settings->getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
         if (!repoXml)
@@ -965,7 +965,7 @@ StringArray CabbageCodeEditorComponent::addItemsToPopupMenu (PopupMenu& m)
 {
     StringArray customCodeSnippets;
     std::unique_ptr<XmlElement> repoXml;
-    XmlElement* newEntryXml, *newEntryXml1;
+    // XmlElement* newEntryXml, *newEntryXml1;
 
     repoXml = owner->settings->getUserSettings()->getXmlValue ("CopeRepoXmlData");
 

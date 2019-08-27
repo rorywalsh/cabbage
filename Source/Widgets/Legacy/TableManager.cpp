@@ -23,11 +23,14 @@
 // Class to hold all tables
 //==============================================================================
 TableManager::TableManager(): Component(), zoom (0.0), largestTable (0), scrubberPosition (0),
-    scrubberFreq (0), shouldShowTableButtons (true), shouldShowZoomButtons (true), tableIndex (0),
-    mainFooterHeight (25), backgroundColour (CabbageUtilities::getDarkerBackgroundSkin()), scrollbarEnabled (true)
+    scrubberFreq (0), shouldShowTableButtons (true), shouldShowZoomButtons (true),
+    mainFooterHeight (25), backgroundColour (CabbageUtilities::getDarkerBackgroundSkin()),
+    tableIndex (0), scrollbarEnabled (true)
 {
-    addAndMakeVisible (zoomIn = new RoundButton ("zoomIn", Colours::white));
-    addAndMakeVisible (zoomOut = new RoundButton ("zoomOut", Colours::white));
+    zoomIn.reset (new RoundButton ("zoomIn", Colours::white));
+    addAndMakeVisible (zoomIn.get());
+    zoomOut.reset (new RoundButton ("zoomOut", Colours::white));
+    addAndMakeVisible (zoomOut.get());
     //setOpaque(true);
     zoomIn->toFront (false);
     zoomIn->addChangeListener (this);
@@ -548,41 +551,43 @@ void TableManager::bringTableToFront (int ftNumber)
 //==============================================================================
 // GenTable display  component
 //==============================================================================
-GenTable::GenTable():   thumbnailCache (5),
-    currentPlayPosition (0),
-    mouseDownX (0),
-    mouseUpX (0),
-    drawWaveform (false),
-    regionWidth (1),
-    loopLength (0),
-    scrubberPosition (0),
-    currentPositionMarker (new DrawableRectangle()),
-    genRoutine (0),
-    zoom (0.0),
-    currentWidth (0),
-    normalised (0),
+GenTable::GenTable():
     tableNumber (-1),
-    showScroll (true),
-    shouldScroll (true),
+    genRoutine (0),
+    drawGrid (false),
     mainFooterHeight (25),
     paintFooterHeight (15),
-    quantiseSpace (0.01),
-    qsteps (0),
-    drawAsVUMeter (false),
     zoomButtonsOffset (10),
-    drawGrid (false),
+    quantiseSpace (0.01),
+    drawAsVUMeter (false),
     shouldFill (true),
+    shouldScroll (true),
+    normalised (0),
+    currentWidth (0),
+    zoom (0.0),
+    showScroll (true),
+    qsteps (0),
+    currentPositionMarker (new DrawableRectangle()),
+    scrubberPosition (0),
+    regionWidth (1),
+    thumbnailCache (5),
+    mouseDownX (0),
+    mouseUpX (0),
+    loopLength (0),
+    currentPlayPosition (0),
+    drawWaveform (false),
     vuGradient (Colours::yellow, 0.f, 0.f, Colours::red, getWidth(), getHeight(), false)
 {
     thumbnail = nullptr;
-    addAndMakeVisible (scrollbar = new ScrollBar (false));
+    scrollbar.reset (new ScrollBar (false));
+    addAndMakeVisible (scrollbar.get());
     scrollbar->setRangeLimits (visibleRange);
     scrollbar->setAutoHide (false);
     scrollbar->addListener (this);
-    addAndMakeVisible (currentPositionMarker);
+    addAndMakeVisible (currentPositionMarker.get());
 
-    handleViewer = new HandleViewer();
-    addAndMakeVisible (handleViewer);
+    handleViewer.reset (new HandleViewer());
+    addAndMakeVisible (handleViewer.get());
 
     minMax.setStart (0);
     minMax.setEnd (0);
@@ -615,7 +620,7 @@ void GenTable::addTable (int sr, const Colour col, int igen, var ampRange)
     if (genRoutine == 1)
     {
         formatManager.registerBasicFormats();
-        thumbnail = new AudioThumbnail (2, formatManager, thumbnailCache);
+        thumbnail.reset (new AudioThumbnail (2, formatManager, thumbnailCache));
         thumbnail->addChangeListener (this);
         setZoomFactor (0.0);
     }
@@ -876,7 +881,7 @@ void GenTable::enableEditMode (StringArray m_pFields)
         if (genRoutine == 7 || genRoutine == 5)
         {
             float pFieldAmpValue = (normalised < 0 ? pFields[5].getFloatValue() : pFields[5].getFloatValue() / pFieldMinMax.getEnd());
-            const float amp = ampToPixel (thumbHeight, minMax, pFieldAmpValue);
+            // const float amp = ampToPixel (thumbHeight, minMax, pFieldAmpValue);
             handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->tableColour);
 
             for (int i = 6; i < pFields.size(); i += 2)
@@ -1590,7 +1595,7 @@ void HandleViewer::removeHandle (HandleComponent* thisHandle)
 }
 //==================================================================================
 HandleComponent::HandleComponent (double xPos, double yPos, int _index, bool fixed, int gen, Colour _colour):
-    index (_index), x (0), y (0), colour (_colour), fixed (fixed), status (false)
+    index (_index), x (0), y (0), status (false), colour (_colour), fixed (fixed)
 {
     //our main handle object. xPos and xPos are always between 0 and 1
     //we convert them to pixel positions later, based on the size of the handleViewer

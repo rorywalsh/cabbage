@@ -42,23 +42,23 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     Component (""),
     settings (settings),
     listBox (this),
-    valueTree (settings.getValueTree()),
-    audioSettingsButton ("AudioSettingsButton"),
-    miscSettingsButton ("MiscSettingsButton"),
-    colourSettingsButton ("ColourSettingsButton"),
-    codeRepoButton ("CodeRepoButton"),
     audioDeviceSelector (audioDevice),
-    viewport ("AudioSettingsViewport"),
+    valueTree (settings.getValueTree()),
     deleteRepoButton ("Delete/Remove"),
-    saveRepoButton ("Save/Update")
+    saveRepoButton ("Save/Update"),
+    audioSettingsButton ("AudioSettingsButton"),
+    colourSettingsButton ("ColourSettingsButton"),
+    miscSettingsButton ("MiscSettingsButton"),
+    codeRepoButton ("CodeRepoButton"),
+    viewport ("AudioSettingsViewport")
 {
     bgColour = CabbageSettings::getColourFromValueTree (settings.getValueTree(), CabbageColourIds::menuBarBackground, Colour (147, 210, 0));
     labelBgColour = bgColour.contrasting(0.05f);
     labelTextColour = labelBgColour.contrasting(0.85f);
-    propertyPanelLook = new PropertyPanelLookAndFeel();
+    propertyPanelLook.reset (new PropertyPanelLookAndFeel());
     propertyPanelLook->setColours(bgColour, labelBgColour, labelTextColour);
-    miscPanel.setLookAndFeel(propertyPanelLook);
-    colourPanel.setLookAndFeel(propertyPanelLook);
+    miscPanel.setLookAndFeel(propertyPanelLook.get());
+    colourPanel.setLookAndFeel(propertyPanelLook.get());
     audioDeviceSelector->getLookAndFeel().setColour(Label::ColourIds::textColourId, labelTextColour);
     audioDeviceSelector->getLookAndFeel().setColour(ListBox::ColourIds::textColourId, labelTextColour);
     audioDeviceSelector->getLookAndFeel().setColour(ListBox::ColourIds::outlineColourId, labelBgColour.contrasting(0.5f));
@@ -74,7 +74,8 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     miscPanel.setVisible (false);
     addAndMakeVisible (listBox);
     listBox.setVisible (false);
-    addAndMakeVisible (codeEditor = new CodeEditorComponent (document, &csoundTokeniser));
+    codeEditor.reset (new CodeEditorComponent (document, &csoundTokeniser));
+    addAndMakeVisible (codeEditor.get());
     codeEditor->setVisible (false);
     listBox.getLookAndFeel().setColour (ListBox::backgroundColourId, Colours::transparentWhite);
     updateColourScheme();
@@ -86,7 +87,7 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     addAndMakeVisible (miscSettingsButton);
     addAndMakeVisible (colourSettingsButton);
     addAndMakeVisible (codeRepoButton);
-    viewport.setViewedComponent (audioDeviceSelector, false);
+    viewport.setViewedComponent (audioDeviceSelector.get(), false);
 
     audioDeviceSelector->setVisible (true);
     viewport.setScrollBarsShown (true, false);
@@ -156,7 +157,7 @@ CabbageSettingsWindow::RepoListBox::RepoListBox (CabbageSettingsWindow* _owner):
 
     StringArray customCodeSnippets;
     std::unique_ptr<XmlElement> repoXml;
-    XmlElement* newEntryXml, *newEntryXml1;
+    // XmlElement* newEntryXml, *newEntryXml1;
 
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
@@ -208,7 +209,7 @@ void CabbageSettingsWindow::RepoListBox::listBoxItemClicked (int row, const Mous
 void CabbageSettingsWindow::RepoListBox::updateEntry (String updatedCode)
 {
     std::unique_ptr<XmlElement> repoXml;
-    XmlElement* newEntryXml, *newEntryXml1;
+    // XmlElement* newEntryXml, *newEntryXml1;
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
     if (!repoXml)
@@ -222,7 +223,7 @@ void CabbageSettingsWindow::RepoListBox::updateEntry (String updatedCode)
 void CabbageSettingsWindow::RepoListBox::removeEntry()
 {
     std::unique_ptr<XmlElement> repoXml;
-    XmlElement* newEntryXml, *newEntryXml1;
+    // XmlElement* newEntryXml, *newEntryXml1;
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
     if (!repoXml)

@@ -23,19 +23,21 @@ class CabbageCheckbox;
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
-      processor (p),
+      mainComponent(),
       lookAndFeel(),
+      processor (p)
 #ifdef Cabbage_IDE_Build
-      layoutEditor (processor.cabbageWidgets),
+    , layoutEditor (processor.cabbageWidgets)
 #endif
-      mainComponent()
 {
     setName ("PluginEditor");
     setLookAndFeel (&lookAndFeel);
-    addAndMakeVisible(viewportContainer = new ViewportContainer());
+    viewportContainer.reset (new ViewportContainer());
+    addAndMakeVisible(viewportContainer.get());
     viewportContainer->addAndMakeVisible(mainComponent);
-    addAndMakeVisible (viewport = new Viewport());
-    viewport->setViewedComponent(viewportContainer, false);
+    viewport.reset (new Viewport());
+    addAndMakeVisible (viewport.get());
+    viewport->setViewedComponent(viewportContainer.get(), false);
     viewport->setScrollBarsShown(false, false);
     mainComponent.setInterceptsMouseClicks (false, true);
     setSize (50, 50);
@@ -608,7 +610,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 	{
 		const StringArray textItems = cabbageButton->getTextArray();
 		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
-		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
+		// const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
 		if (textItems.size() > 0)
 			cabbageButton->setButtonText(textItems[buttonState == false ? 0 : 1]);
