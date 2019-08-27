@@ -222,7 +222,7 @@ public:
 		CabbageMainComponent* owner;
 	public:
 		FilterGraphDocumentWindow(String caption, Colour backgroundColour, CabbageMainComponent* owner)
-			: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), owner(owner), colour(backgroundColour)
+			: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour), owner(owner)
 		{
 			setSize(600, 600);
 			setName(caption);
@@ -244,8 +244,8 @@ public:
     public:
         VerticalResizerBar (ValueTree valueTree, CabbageMainComponent* parent)
         :   Component ("ResizerBar"),
-        valueTree (valueTree),
-        owner (parent)
+        valueTree (valueTree)
+        // owner (parent)
         {
             
         }
@@ -259,9 +259,9 @@ public:
         
     private:
         ValueTree valueTree;
-        int startingYPos;
+        // int startingYPos;
         int currentYPos = 550;
-        CabbageMainComponent* owner;
+        // CabbageMainComponent* owner;
     };
     
     VerticalResizerBar resizerBar;
@@ -325,11 +325,11 @@ private Button::Listener
 public:
     FindPanel (String searchString, bool isCaseSensitive, bool withReplace)
         : caseButton ("Case-sensitive"),
+          showReplaceControls (withReplace),
           findPrev ("<"),
           findNext (">"),
           replace ("Replace"),
-          replaceAll ("Replace All"),
-          showReplaceControls (withReplace)
+          replaceAll ("Replace All")
     {
         //find components...
         setSize (260, withReplace == false ? 90 : 180);

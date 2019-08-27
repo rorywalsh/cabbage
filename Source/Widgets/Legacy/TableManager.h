@@ -59,7 +59,7 @@ public:
     void setTableColours (var colours);
     void setBackgroundColour (Colour col);
     void repaintAllTables();
-    void resized();
+    void resized() override;
     void setZoomFactor (double zoom);
     void setDrawMode (String mode);
     void showScrollbar (bool show);
@@ -74,7 +74,7 @@ public:
     void scroll (double newRangeStart);
     void addTable (int sr, const Colour col, int gen, var ampRange, int ftnumber, ChangeListener* listener);
     void setWaveform (AudioSampleBuffer buffer, int ftNumber);
-    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
+    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void setWaveform (Array<float, CriticalSection> buffer, int ftNumber, bool updateRange = true);
     void setFile (const File file);
     void enableEditMode (StringArray pFields, int ftnumber);
@@ -135,7 +135,7 @@ public:
     void setSampleRange (double pos, double end);
     void setZoomFactor (double amount);
     void setFile (const File& file);
-    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel);
+    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
     void setWaveform (AudioSampleBuffer buffer);
     void enableEditMode (StringArray pFields);
     Point<int> tableTopAndHeight;
@@ -152,7 +152,7 @@ public:
     Range<double> globalRange;
     bool isTableOnTop;
     ScopedPointer<ScrollBar> scrollbar;
-    void resized();
+    void resized() override;
     Range<double> visibleRange;
     bool drawGrid;
     int scrollbarReduction;
@@ -253,7 +253,7 @@ private:
     void mouseExit (const MouseEvent& e)  override;
     bool reDraw;
     double scrubberPosition;
-    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
+    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
     ScopedPointer<HandleViewer> handleViewer;
     AudioFormatManager formatManager;

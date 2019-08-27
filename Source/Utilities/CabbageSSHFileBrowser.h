@@ -33,13 +33,13 @@ public:
     ~CabbageSSHFileBrowser();
     void paint (Graphics& g) override;
     void resized() override;
-    int getNumRows();
-    void listBoxItemDoubleClicked (int row, const MouseEvent& e);
+    int getNumRows() override;
+    void listBoxItemDoubleClicked (int row, const MouseEvent& e) override;
 
     void paintListBoxItem (int rowNumber, Graphics& g,
                            int width, int height, bool rowIsSelected) override;
 
-    void selectedRowsChanged (int /*lastRowselected*/) {};
+    void selectedRowsChanged (int /*lastRowselected*/) override {};
     ListBox filesListBox;;
     void launchChildProcess (const String command);
 
@@ -47,7 +47,7 @@ private:
     String ipAddress, homeDirectory, currentLocalFilePath;
     TextEditor currentDirectoryLabel;
     const String getFileOrFolderName (String text);
-    void textEditorReturnKeyPressed (TextEditor&);
+    void textEditorReturnKeyPressed (TextEditor&) override;
     const String getSSHLsCommand (String directory);
 
     ChildProcess childProcess;

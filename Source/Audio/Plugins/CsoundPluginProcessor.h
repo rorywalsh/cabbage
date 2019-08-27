@@ -186,12 +186,12 @@ public:
         String caption;
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
-            caption (_caption),
-            windid (_id),
             yScale (_scale),
+            windid (_id),
             min (_min),
             max (_max),
-            size (_size)
+            size (_size),
+            caption (_caption)
         {}
 
         ~SignalDisplay()

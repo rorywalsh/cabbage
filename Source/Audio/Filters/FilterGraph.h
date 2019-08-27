@@ -312,16 +312,16 @@ public:
 		AudioProcessorGraph::NodeAndChannel outputL = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 0 };
 		AudioProcessorGraph::NodeAndChannel outputR = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 1 };
 
-		bool connectInput1 = graph.addConnection({ inputL, nodeL });
-		bool connectInput2 = graph.addConnection({ inputR, nodeR });
+		/* bool connectInput1 = */ graph.addConnection({ inputL, nodeL });
+		/* bool connectInput2 = */ graph.addConnection({ inputR, nodeR });
 
-		bool connection1 = graph.addConnection({ nodeL, outputL });
-		bool connection2 = graph.addConnection({ nodeR, outputR });
+		/* bool connection1 = */ graph.addConnection({ nodeL, outputL });
+		/* bool connection2 = */ graph.addConnection({ nodeR, outputR });
 		
 		AudioProcessorGraph::NodeAndChannel midiIn = { (AudioProcessorGraph::NodeID) InternalNodes::MIDIInput, AudioProcessorGraph::midiChannelIndex };
 		AudioProcessorGraph::NodeAndChannel midiOut = { (AudioProcessorGraph::NodeID) nodeId, AudioProcessorGraph::midiChannelIndex };
 
-		bool connection3 = graph.addConnection({ midiIn, midiOut });
+		/* bool connection3 = */ graph.addConnection({ midiIn, midiOut });
 
 	}
 	//======================================================================================

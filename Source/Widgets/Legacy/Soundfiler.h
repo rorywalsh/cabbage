@@ -85,7 +85,7 @@ public:
 
     void setZoomFactor (double amount);
     void setFile (const File& file);
-    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel);
+    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
     void setWaveform (AudioSampleBuffer buffer, int channels);
     void createImage (String filename);
 
@@ -100,16 +100,16 @@ private:
     ScopedPointer<DrawableRectangle> currentPositionMarker;
     ScopedPointer<ScrollBar> scrollbar;
     void setRange (Range<double> newRange);
-    void resized();
-    void paint (Graphics& g);
-    void mouseDown (const MouseEvent& e);
-    void mouseUp (const MouseEvent& e);
-    void mouseEnter (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
-    void mouseExit (const MouseEvent& e);
+    void resized() override;
+    void paint (Graphics& g) override;
+    void mouseDown (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
+    void mouseEnter (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
+    void mouseExit (const MouseEvent& e) override;
     bool reDraw;
     double scrubberPosition;
-    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
+    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
     ScopedPointer<ZoomButton> zoomIn, zoomOut;
 

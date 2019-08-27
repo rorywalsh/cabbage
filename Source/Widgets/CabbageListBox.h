@@ -27,7 +27,7 @@ public:
     ~CabbageListBox() {};
 
     //ValueTree::Listener virtual methods....
-    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&);
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
@@ -51,13 +51,13 @@ public:
 
 
     int getNumRows() override;
-    void listBoxItemDoubleClicked(int row, const MouseEvent &e);
+    void listBoxItemDoubleClicked(int row, const MouseEvent &e) override;
     void paintListBoxItem (int rowNumber, Graphics& g,
                            int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged (int /*lastRowselected*/) override;
     void addItemsToListbox (ValueTree wData);
     //void paint(Graphics& g) override;
-    void resized();
+    void resized() override;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageListBox);

@@ -107,7 +107,7 @@ public:
         textEditor->setText ("");
     }
 
-    void resized()
+    void resized() override
     {
         Rectangle<int> area (getLocalBounds());
         textEditor->setBounds (area.reduced (2).withY (0));
