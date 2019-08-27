@@ -74,7 +74,7 @@ cp ./../../Images/cabbage.png ./install/images/cabbagelite.png
 cp -rf ../../Examples ./install/
 cp -rf ../../Themes ./install/
 
-g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csound" -lcsound64
+g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csound" -I"/usr/include/csound" -lcsound64
 # cp testCsoundFile ./install/bin/testCsoundFile
 #cp -rf ../../Docs/_book CabbageBuild/Docs
 

@@ -233,9 +233,10 @@
                 externalLibraries="csound64&#10;sndfile">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbageLite"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbageLite"
-                       libraryPath="&quot;/usr/local/lib&quot;" headerPath="&quot;/usr/local/include/csound&quot;"/>
+                       libraryPath="&quot;/usr/local/lib&quot;" headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
