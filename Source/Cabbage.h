@@ -61,7 +61,7 @@ public:
 
 
 private:
-    ScopedPointer<CabbageDocumentWindow> documentWindow;
+    std::unique_ptr<CabbageDocumentWindow> documentWindow;
 };
 
 

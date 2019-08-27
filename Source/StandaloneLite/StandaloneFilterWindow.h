@@ -138,9 +138,9 @@ public:
         }
         
             
-        pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings,
-                                                   preferredDefaultDeviceName, preferredSetupOptions,
-                                                   constrainToConfiguration);
+        pluginHolder.reset (new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings,
+                                                        preferredDefaultDeviceName, preferredSetupOptions,
+                                                        constrainToConfiguration));
         setName ("CabbageLite");
         setAlwaysOnTop (true);
 #if JUCE_IOS || JUCE_ANDROID
@@ -173,7 +173,7 @@ public:
         startTimer (200);
 
         CabbageIDELookAndFeel lAndF;
-        outputConsole = new CsoundOutputWindow();
+        outputConsole.reset (new CsoundOutputWindow());
         outputConsole->getEditor().setFont(Font(14, 1));
 		if (commandLineParams.isNotEmpty())
         {
@@ -304,7 +304,7 @@ public:
     }
 
     //==============================================================================
-    AudioProcessor* getAudioProcessor() const noexcept      { return pluginHolder->processor; }
+    AudioProcessor* getAudioProcessor() const noexcept      { return pluginHolder->processor.get(); }
     AudioDeviceManager& getDeviceManager() const noexcept   { return pluginHolder->deviceManager; }
 
     /** Deletes and re-creates the plugin, resetting it to its default state. */
@@ -472,9 +472,9 @@ public:
         optionsButton.setBounds (8, 6, 60, getTitleBarHeight() - 8);
     }
 
-    virtual StandalonePluginHolder* getPluginHolder()    { return pluginHolder; }
+    virtual StandalonePluginHolder* getPluginHolder()    { return pluginHolder.get(); }
 
-    ScopedPointer<StandalonePluginHolder> pluginHolder;
+    std::unique_ptr<StandalonePluginHolder> pluginHolder;
 
 private:
     //==============================================================================
@@ -495,7 +495,7 @@ private:
                 editor->addComponentListener (this);
                 componentMovedOrResized (*editor, false, true);
 
-                addAndMakeVisible (editor);
+                addAndMakeVisible (editor.get());
             }
 
             addChildComponent (notification);
@@ -514,7 +514,7 @@ private:
             if (editor != nullptr)
             {
                 editor->removeComponentListener (this);
-                owner.pluginHolder->processor->editorBeingDeleted (editor);
+                owner.pluginHolder->processor->editorBeingDeleted (editor.get());
                 editor = nullptr;
             }
         }
@@ -616,7 +616,7 @@ private:
         //==============================================================================
         StandaloneFilterWindow& owner;
         NotificationArea notification;
-        ScopedPointer<AudioProcessorEditor> editor;
+        std::unique_ptr<AudioProcessorEditor> editor;
         bool shouldShowNotification;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
@@ -626,7 +626,7 @@ private:
     TextButton optionsButton;
     File csdFile;
     int64 lastModified;
-    ScopedPointer<CsoundOutputWindow> outputConsole;
+    std::unique_ptr<CsoundOutputWindow> outputConsole;
     bool cabbageFiledOpened = false;
     String csoundOutput;
     PluginExporter pluginExporter;

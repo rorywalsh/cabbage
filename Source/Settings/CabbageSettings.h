@@ -48,7 +48,7 @@ public:
     XmlElement* getXML (String identifier);
     void setDefaultSettings();
     void setDefaultColourSettings();
-    ScopedPointer<PropertySet> defaultPropSet;
+    std::unique_ptr<PropertySet> defaultPropSet;
     ValueTree valueTree;
     RecentlyOpenedFilesList recentFiles;
     File getMostRecentFile (int index);

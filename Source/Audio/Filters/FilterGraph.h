@@ -239,7 +239,7 @@ public:
 
 		if (auto* plugin = graph.getNodeForId(nodeId))
 		{
-			ScopedPointer<XmlElement> xml = createConnectionsXml();
+			std::unique_ptr<XmlElement> xml (createConnectionsXml());
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
 			

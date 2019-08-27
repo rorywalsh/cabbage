@@ -58,7 +58,7 @@ public:
 
 private:
     CriticalSection bounds;
-    ScopedPointer<ComponentBoundsConstrainer>  constrainer;
+    std::unique_ptr<ComponentBoundsConstrainer>  constrainer;
     ComponentDragger dragger;
     SafePointer<Component> target;
     Array<juce::Rectangle<int> > childBounds;
@@ -66,7 +66,7 @@ private:
     String interest;
     bool userAdjusting;
     Rectangle<int> startBounds;
-    ScopedPointer<ComponentBoundsConstrainer> resizeContainer;
+    std::unique_ptr<ComponentBoundsConstrainer> resizeContainer;
     ResizableBorderComponent* resizer;
     ComponentLayoutEditor* layoutEditor;
 

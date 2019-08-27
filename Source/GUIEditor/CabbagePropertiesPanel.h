@@ -93,7 +93,7 @@ private:
         SectionState (String name, XmlElement* xml): name (name), xmlElement (xml)
         {}
         String name;
-        ScopedPointer<XmlElement> xmlElement;
+        std::unique_ptr<XmlElement> xmlElement;
     };
 
     OwnedArray<SectionState> sectionStates;
@@ -111,8 +111,8 @@ private:
 
     ValueTree widgetData;
 	TextButton hideButton;
-    ScopedPointer<FlatButtonLookAndFeel> flatLook;
-    ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
+    std::unique_ptr<FlatButtonLookAndFeel> flatLook;
+    std::unique_ptr<PropertyPanelLookAndFeel> propertyPanelLook;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePropertiesPanel)
 };

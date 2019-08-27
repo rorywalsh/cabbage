@@ -37,9 +37,8 @@ void CabbageSettings::setDefaultColourSettings()
 
 void CabbageSettings::setDefaultSettings()
 {
-    defaultPropSet = new PropertySet();
-    ScopedPointer<XmlElement> xml;
-    xml = new XmlElement ("PLANTS");
+    defaultPropSet.reset (new PropertySet());
+    std::unique_ptr<XmlElement> xml (new XmlElement ("PLANTS"));
     String homeDir = File::getSpecialLocation (File::userHomeDirectory).getFullPathName();
     String manualPath, examplesDir, cabbageHelp, themePath;
 
@@ -94,7 +93,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("SetAlwaysOnTopGraph", 0);
     defaultPropSet->setValue ("GridSize", 4);
     defaultPropSet->setValue ("CompileOnSave", 1);
-    defaultPropSet->setValue ("PlantRepository", xml);
+    defaultPropSet->setValue ("PlantRepository", xml.get());
     defaultPropSet->setValue ("EditorColourScheme", 0);
     defaultPropSet->setValue ("showTabs", 1);
     defaultPropSet->setValue ("showTabs", 1);
@@ -158,7 +157,7 @@ void CabbageSettings::setDefaultSettings()
 	defaultPropSet->setValue ("Colours_" + CabbageColourIds::fileTabText, "ffffffff");
 	defaultPropSet->setValue("Colours_" + CabbageColourIds::fileTabPlayButton, "ff323e44");
 	defaultPropSet->setValue ("Colours_" + CabbageColourIds::patcher, Colour(200, 200, 200).toString());
-    getUserSettings()->setFallbackPropertySet (defaultPropSet);
+    getUserSettings()->setFallbackPropertySet (defaultPropSet.get());
 
     valueTree.addChild (ValueTree ("Colours"), -1, 0);
     const StringArray colourIDStrings = CabbageStrings::getColourIDStrings();

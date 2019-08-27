@@ -278,8 +278,8 @@ private:
         }
     };
 
-    ScopedPointer<Viewport> viewport;
-    ScopedPointer<ViewportContainer> viewportContainer;
+    std::unique_ptr<Viewport> viewport;
+    std::unique_ptr<ViewportContainer> viewportContainer;
     OwnedArray<Component> components;
     Array<Component*> radioComponents;
     OwnedArray<PopupDocumentWindow> popupPlants;

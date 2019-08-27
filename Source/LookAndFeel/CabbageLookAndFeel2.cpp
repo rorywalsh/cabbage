@@ -83,7 +83,7 @@ void CabbageLookAndFeel2::setDefaultFont(File fontFile)
 {
 //    if(fontFile.existsAsFile())
 //    {
-//        ScopedPointer<InputStream> inStream = fontFile.createInputStream();
+//        std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
 //        MemoryBlock mb;
 //        inStream->readIntoMemoryBlock(mb);
 //        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());

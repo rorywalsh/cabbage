@@ -155,7 +155,7 @@ public:
 
     Csound* getCsound()
     {
-        return csound;
+        return csound.get();
     }
 
     CSOUND* getCsoundStruct()
@@ -231,7 +231,7 @@ private:
     int guiRefreshRate = 128;
     MidiBuffer midiBuffer;
     String csoundOutput;
-    ScopedPointer<CSOUND_PARAMS> csoundParams;
+    std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
     int numCsoundChannels, pos;
     bool updateSignalDisplay = false;
@@ -241,8 +241,8 @@ private:
     int csndIndex;
     int csdKsmps;
     File csdFile , csdFilePath;
-    ScopedPointer<Csound> csound;
-    ScopedPointer<FileLogger> fileLogger;
+    std::unique_ptr<Csound> csound;
+    std::unique_ptr<FileLogger> fileLogger;
     int busIndex = 0;
     bool disableLogging = false;
 

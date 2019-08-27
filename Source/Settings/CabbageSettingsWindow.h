@@ -104,7 +104,7 @@ public:
     };
 
     RepoListBox listBox;
-    ScopedPointer<CodeEditorComponent> codeEditor;
+    std::unique_ptr<CodeEditorComponent> codeEditor;
     CodeDocument document;
     CsoundTokeniser csoundTokeniser;
 
@@ -134,11 +134,11 @@ public:
 
 private:
     PropertyPanel colourPanel, miscPanel;
-    ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
+    std::unique_ptr<PropertyPanelLookAndFeel> propertyPanelLook;
 
     Colour bgColour, labelBgColour, labelTextColour;
 
-    ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
+    std::unique_ptr<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
     TextButton deleteRepoButton, saveRepoButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;

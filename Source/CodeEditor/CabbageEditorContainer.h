@@ -82,8 +82,8 @@ public:
 
     int getStatusBarPosition();
     void hideOutputConsole();
-    ScopedPointer<CabbageCodeEditorComponent> editor;
-    ScopedPointer<CabbageOutputConsole> outputConsole;
+    std::unique_ptr<CabbageCodeEditorComponent> editor;
+    std::unique_ptr<CabbageOutputConsole> outputConsole;
     StatusBar statusBar;
     CodeDocument csoundDocument;
     CsoundTokeniser csoundTokeniser;
