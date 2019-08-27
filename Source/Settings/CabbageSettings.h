@@ -72,7 +72,7 @@ private:
     void changed()
     {
 		std::unique_ptr<XmlElement> data(valueTree.createXml());
-        getUserSettings()->setValue ("PROJECT_DEFAULT_SETTINGS", &data);
+        getUserSettings()->setValue ("PROJECT_DEFAULT_SETTINGS", data.get());
         sendChangeMessage();
         //XmlElement * el = valueTree.createXml();
         //el->writeToFile(File("/home/rory/Desktop/Example1.xml"), String::empty);

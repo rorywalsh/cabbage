@@ -231,7 +231,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("CSD_PATH", csdFilePath.getFullPathName().toUTF8().getAddress());
     }
 
-    csound->SetStringChannel ("LAST_FILE_DROPPED", "");
+    csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
 
     csdFilePath.setAsCurrentWorkingDirectory();
 

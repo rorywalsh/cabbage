@@ -71,8 +71,8 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else  if (type == "FMOD")
         {
-            fileExtension = SystemStats::getOperatingSystemType() & SystemStats::MacOSX != 0 ? String("dll") : String("dylib");
-            pluginFilename = currentApplicationDirectory + (SystemStats::getOperatingSystemType() & SystemStats::MacOSX != 0 ? String("/fmod_csoundL64.dll") : String("/fmod_csound.dylib"));
+            fileExtension = ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("dylib") : String("dll");
+            pluginFilename = currentApplicationDirectory + (((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("/fmod_csound.dylib") : String("/fmod_csoundL64.dll"));
             
         }
 
