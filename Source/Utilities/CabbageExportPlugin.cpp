@@ -1,13 +1,21 @@
 /*
-  ==============================================================================
+  Copyright (C) 2016 Rory Walsh
 
-    CabbageExportPlugin.cpp
-    Created: 27 Nov 2017 2:37:25pm
-    Author:  rory
+  Cabbage is free software; you can redistribute it
+  and/or modify it under the terms of the GNU General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  ==============================================================================
+  Cabbage is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU General Public
+  License along with Csound; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  02111-1307 USA
 */
-
 #include "CabbageExportPlugin.h"
 
 
@@ -386,7 +394,35 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
             }
         }
         
-        loc = cabbageFindPluginId (buffer, file_size, pluginID);
+        //set plugin description to match that of plugin name
+        const char* pluginDesc = "CabbagePlugin";
+        String plugDescName = csdFile.getFileNameWithoutExtension();
+        
+        if (plugDescName.length() < 16)
+            for (int y = plugDescName.length(); y < 16; y++)
+                plugDescName.append (String (" "), 1);
+        
+        mFile.seekg (0, ios::end);
+        //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
+        
+        for (int i = 0; i < 5; i++)
+        {
+            
+            mFile.seekg (0, ios::beg);
+            mFile.read ((char*)&buffer[0], file_size);
+            
+            
+            loc = cabbageFindPluginId (buffer, file_size, pluginDesc);
+            
+            if (loc < 0)
+                break;
+            else
+            {
+                mFile.seekg (loc, ios::beg);
+                mFile.write (plugDescName.toUTF8(), 16);
+            }
+        }
+        
         
         free (buffer);
         
