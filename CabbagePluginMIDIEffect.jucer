@@ -3,7 +3,7 @@
 <JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
-              buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
+              buildAAX="0" pluginName="UniqueCabbageNam" pluginDesc="CabbagePlugin"
               pluginManufacturer="CabbageAudio" pluginManufacturerCode="Cabb"
               pluginCode="RORY" pluginChannelConfigs="" pluginIsSynth="1" pluginWantsMidiIn="1"
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
