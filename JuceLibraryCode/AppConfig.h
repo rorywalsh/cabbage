@@ -42,7 +42,7 @@
  #define JucePlugin_Build_STANDALONE       0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "CabbageEffectNam"
+ #define JucePlugin_Name                   "UniqueCabbageNam"
 #endif
 #ifndef  JucePlugin_Desc
  #define JucePlugin_Desc                   "CabbagePlugin"
