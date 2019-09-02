@@ -20,9 +20,9 @@
 #include "CabbageEditorContainer.h"
 #include "../Application/CabbageMainComponent.h"
 
-CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool isCsd)
-    : statusBar (settings->valueTree, this),
-      settings (settings),
+CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings, bool isCsd)
+    : statusBar (cabbageSettings->valueTree, this),
+      settings (cabbageSettings),
       isCsdFile (isCsd)
 {
     addAndMakeVisible (statusBar);
@@ -68,8 +68,6 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* settings, bool 
 
 CabbageEditorContainer::~CabbageEditorContainer()
 {
-    //settings->getUserSettings()->setValue ("FontSize", editor->getFontSize());
-    settings->getUserSettings()->setValue ("FontSizeConsole", outputConsole->getFontSize());
     editor = nullptr;
     outputConsole = nullptr;
 }

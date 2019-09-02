@@ -1714,6 +1714,7 @@ void CabbageMainComponent::closeDocument()
 //==================================================================================
 void CabbageMainComponent::removeEditor()
 {
+    cabbageSettings->getUserSettings()->setValue ("FontSizeConsole", getCurrentEditorContainer()->outputConsole.get()->getFontSize());
     editorAndConsole.removeObject (getCurrentEditorContainer());
     fileTabs.remove (currentFileIndex);
     currentFileIndex = (currentFileIndex > 0 ? currentFileIndex - 1 : 0);

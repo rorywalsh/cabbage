@@ -3,13 +3,13 @@
 <JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="1.0.0"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
-              buildAAX="0" pluginName="UniqueCabbageNam" pluginDesc="CabbagePlugin"
+              buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
               pluginManufacturer="CabbageAudio" pluginManufacturerCode="Cabb"
               pluginCode="RORY" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="1"
               pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="2"
-              jucerVersion="5.4.4" buildStandalone="0" enableIAA="0" displaySplashScreen="0"
+              jucerVersion="5.4.3" buildStandalone="0" enableIAA="0" displaySplashScreen="0"
               reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
               companyCopyright="" pluginFormats="buildAU,buildVST,buildVST3"
               pluginCharacteristicsValue="pluginWantsMidiIn">
@@ -233,7 +233,7 @@
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
                        osxArchitecture="64BitIntel" osxCompatibility="10.8 SDK" enablePluginBinaryCopyStep="1"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="4" targetName="CabbagePlugin"
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
                        osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
