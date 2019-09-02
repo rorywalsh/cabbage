@@ -153,7 +153,7 @@ void CabbageDocumentWindow::initSettings()
     PropertiesFile::Options options;
     options.applicationName     = "Cabbage2";
     options.filenameSuffix      = "settings";
-    options.osxLibrarySubFolder = "Application Support";
+    options.osxLibrarySubFolder = "Preferences";
 #if JUCE_LINUX
     options.folderName          = "~/.config/Cabbage2";
 #else

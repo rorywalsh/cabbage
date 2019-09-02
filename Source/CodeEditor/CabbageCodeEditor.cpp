@@ -76,7 +76,6 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
 {
-    this->getDocument().removeListener(this);
     setLookAndFeel (nullptr);
 }
 
