@@ -32,9 +32,9 @@ enum
 CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLineParams) : DocumentWindow (name,
     Colours::lightgrey,
     DocumentWindow::allButtons),
+    pluginExporter(),
     lookAndFeel (new FlatButtonLookAndFeel()),
-    commandLineArgs (commandLineParams),
-    pluginExporter()
+    commandLineArgs (commandLineParams)
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
     setUsingNativeTitleBar (false/*true*/);
@@ -43,16 +43,17 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
 
-    Desktop::getInstance().setDefaultLookAndFeel (lookAndFeel); //set default look and feel for project
+    Desktop::getInstance().setDefaultLookAndFeel (lookAndFeel.get()); //set default look and feel for project
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
 
     initSettings();
+    pluginExporter.settingsToUse(cabbageSettings->getUserSettings());
     setColour (backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
-    setContentOwned (content = new CabbageMainComponent (this, cabbageSettings), true);
+    setContentOwned (content = new CabbageMainComponent (this, cabbageSettings.get()), true);
     content->propertyPanel->setVisible (false);
     cabbageSettings->addChangeListener (content);
     setMenuBar (this, 18/*25*/);
-    getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel);
+    getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel.get());
 
 
     if (commandLineArgs.isNotEmpty())
@@ -134,7 +135,7 @@ CabbageDocumentWindow::CabbageDocumentWindow (String name, String commandLinePar
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (this, nullptr, "Open Recent");
 #endif
-    setLookAndFeel (lookAndFeel); //(&getContentComponent()->getLookAndFeel());
+    setLookAndFeel (lookAndFeel.get()); //(&getContentComponent()->getLookAndFeel());
     lookAndFeelChanged();
 
 
@@ -152,14 +153,14 @@ void CabbageDocumentWindow::initSettings()
     PropertiesFile::Options options;
     options.applicationName     = "Cabbage2";
     options.filenameSuffix      = "settings";
-    options.osxLibrarySubFolder = "Preferences";
+    options.osxLibrarySubFolder = "Application Support";
 #if JUCE_LINUX
     options.folderName          = "~/.config/Cabbage2";
 #else
     options.folderName          = "Cabbage2";
 #endif
 
-    cabbageSettings = new CabbageSettings();
+    cabbageSettings.reset (new CabbageSettings());
     cabbageSettings->setStorageParameters (options);
     cabbageSettings->setDefaultSettings();
 }
@@ -1023,6 +1024,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
 
+        case CommandIDs::exportAsVST3EffectEncrypted:
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
+            return true;
+            
+        case CommandIDs::exportAsVST3SynthEncrypted:
+            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
+            return true;
+            
         case CommandIDs::exportAsAUEffectEncrypted:
             pluginExporter.exportPlugin ("AU", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
