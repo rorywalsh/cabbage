@@ -124,12 +124,13 @@ void CabbagePropertiesPanel::buttonClicked(Button *button)
     hide = true;
     sendChangeMessage();
 }
+
 void CabbagePropertiesPanel::saveOpenessState()
 {
     const String name = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::name);
 
     if (getSectionState (name) == nullptr)
-        sectionStates.add (new SectionState (name, propertyPanel.getOpennessState().get()));
+        sectionStates.add (new SectionState (name, propertyPanel.getOpennessState().release()));
     else
         getSectionState (name)->xmlElement = propertyPanel.getOpennessState();
 
