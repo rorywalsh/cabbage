@@ -42,7 +42,10 @@ class CabbageProjectWindow : public Component, public Button::Listener
                 owner->setInformationString ("Choose this option to create a new effect based instrument. This option should be used for any instruments that will be processing incoming audio.");
 
             else if (name == "newCsound")
-                owner->setInformationString ("Choose this option to create a new Csound file. This option should be used for any old-school Csound instruments/files that don't use a GUI.");
+                owner->setInformationString ("Choose this option to create a new Csound file. This option should be used for any old-school Csound instruments that don't use a GUI.");
+            
+            else if (name == "newRackModule")
+                owner->setInformationString ("Choose this option to create a new VCV Rack module file. Note Cabbage Rack modules only support basic widgets. See the docs for more details.");
 
             owner->repaint();
         }
@@ -78,6 +81,7 @@ public:
         newInstrumentButton.setBounds (50, 50, 150, 150);
         newEffectButton.setBounds (250, 50, 150, 150);
         newCsoundFileButton.setBounds (450, 50, 150, 150);
+        newRackModuleFileButton.setBounds(650, 50, 150, 150);
     }
 
 private:
@@ -85,7 +89,7 @@ private:
     void createNewFile (String type);
     CabbageMainComponent* owner;
     String information;
-    SimpleImageButton newInstrumentButton, newEffectButton, newCsoundFileButton;
+    SimpleImageButton newInstrumentButton, newEffectButton, newCsoundFileButton, newRackModuleFileButton;
 };
 
 

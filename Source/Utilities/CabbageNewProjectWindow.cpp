@@ -27,14 +27,17 @@ CabbageProjectWindow::CabbageProjectWindow (CabbageMainComponent* owner):
     owner (owner),
     newInstrumentButton ("newInstrument", this),
     newEffectButton ("newEffect", this),
-    newCsoundFileButton ("newCsound", this)
+    newCsoundFileButton ("newCsound", this),
+    newRackModuleFileButton ("newRackModule", this)
 {
     addAndMakeVisible (newCsoundFileButton);
     addAndMakeVisible (newInstrumentButton);
     addAndMakeVisible (newEffectButton);
+    addAndMakeVisible (newRackModuleFileButton);
     newCsoundFileButton.addListener (this);
     newInstrumentButton.addListener (this);
     newEffectButton.addListener (this);
+    newRackModuleFileButton.addListener(this);
 
     //Image instrumentImage = ImageFileFormat::loadFrom(File("Normal.png"));
     const Image instrumentImage = ImageCache::getFromMemory (CabbageBinaryData::InstrumentButton_png, CabbageBinaryData::InstrumentButton_pngSize);
@@ -46,7 +49,8 @@ CabbageProjectWindow::CabbageProjectWindow (CabbageMainComponent* owner):
     const Image csoundImage = ImageCache::getFromMemory (CabbageBinaryData::CsoundFileButton_png, CabbageBinaryData::CsoundFileButton_pngSize);
     CabbageUtilities::setImagesForButton (&newCsoundFileButton, csoundImage);
 
-
+    const Image rackImage = ImageCache::getFromMemory (CabbageBinaryData::VCVRackFileButton_png, CabbageBinaryData::VCVRackFileButton_pngSize);
+    CabbageUtilities::setImagesForButton (&newRackModuleFileButton, rackImage);
 }
 
 void CabbageProjectWindow::paint(Graphics& g)
@@ -55,7 +59,7 @@ void CabbageProjectWindow::paint(Graphics& g)
 	//g.fillAll(Colour(147, 210, 0));
 	g.setColour(Colours::white);
 	g.setFont(Font(20));
-	g.drawFittedText(information, 0, 200, getWidth(), 100, Justification::centred, 10);
+	g.drawFittedText(information, 50, 200, getWidth()-100, 100, Justification::centred, 10);
 }
 
 void CabbageProjectWindow::writeNewFile (File fc, String fileText)
