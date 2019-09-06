@@ -54,7 +54,6 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     layoutEditor.setInterceptsMouseClicks (true, true);
 #endif
     resized();
-
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -68,7 +67,7 @@ CabbagePluginEditor::~CabbagePluginEditor()
 
 void CabbagePluginEditor::refreshValueTreeListeners()
 {
-	//refresh listeners each time the editor is opened...
+	//refresh listeners each time the editor is opened by the Cabbage host
 	for (int i = 0; i < components.size(); i++)
 	{
 		if(ValueTree::Listener* valueTreeListener = dynamic_cast<ValueTree::Listener*>(components[i]))

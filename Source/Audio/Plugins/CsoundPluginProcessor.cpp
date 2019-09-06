@@ -534,7 +534,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
-        setupAndCompileCsound(csdFile, csdFilePath);
+        setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
     
 }
