@@ -919,7 +919,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
-    String title (CABBAGE_VERSION);
+    String title (ProjectInfo::versionString);
     CabbageIDELookAndFeel tempLookAndFeel;
     const File currentFile = getContentComponent()->getCurrentCsdFile();
     switch (info.commandID)

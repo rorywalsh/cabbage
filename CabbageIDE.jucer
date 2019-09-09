@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.1.3"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="5.4.3" displaySplashScreen="0" reportAppUsage="1"
+              jucerVersion="5.4.4" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{C0361D81-2D97-514F-0F91-A8077B17F83D}" name="GUIEditor"/>

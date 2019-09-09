@@ -82,6 +82,8 @@ void CabbageProjectWindow::createNewFile (String type)
             csdText = CabbageStrings::getNewCsoundFileText();
         else if (type == "newEffect")
             csdText = CabbageStrings::getNewCabbageEffectFileText();
+        else if (type== "newRackModule")
+            csdText = CabbageStrings::getNewRackModuleFileText();
         else
             csdText = CabbageStrings::getNewCabbageInstrumentFileText();
 

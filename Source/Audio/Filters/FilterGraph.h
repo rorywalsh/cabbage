@@ -308,16 +308,39 @@ public:
 
 		AudioProcessorGraph::NodeAndChannel nodeL = { (AudioProcessorGraph::NodeID) nodeId, 0 };
 		AudioProcessorGraph::NodeAndChannel nodeR = { (AudioProcessorGraph::NodeID) nodeId, 1 };
-
+        AudioProcessorGraph::NodeAndChannel nodeL1 = { (AudioProcessorGraph::NodeID) nodeId, 2 };
+        AudioProcessorGraph::NodeAndChannel nodeR1 = { (AudioProcessorGraph::NodeID) nodeId, 3 };
+        
 		AudioProcessorGraph::NodeAndChannel outputL = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 0 };
 		AudioProcessorGraph::NodeAndChannel outputR = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 1 };
+        
+        Array<AudioProcessorGraph::NodeAndChannel> extraHardwareOutputs;
+        Array<AudioProcessorGraph::NodeAndChannel> extraPluginOutputs;
+        
+        // look for extra channels to make connections for, the default is stereo...
+        const int numOutputChannels = graph.getNodeForId(nodeId)->getProcessor()->getTotalNumOutputChannels();
+        for(int i = 0 ; i < numOutputChannels ; i++)
+        {
+            extraPluginOutputs.add({ (AudioProcessorGraph::NodeID) nodeId, i });
+            extraHardwareOutputs.add({ (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, i });
+        }
 
+        
+     
+        // make default connections, stereo in, stereo out
 		/* bool connectInput1 = */ graph.addConnection({ inputL, nodeL });
 		/* bool connectInput2 = */ graph.addConnection({ inputR, nodeR });
 
 		/* bool connection1 = */ graph.addConnection({ nodeL, outputL });
 		/* bool connection2 = */ graph.addConnection({ nodeR, outputR });
-		
+        
+		//now add any extra channels..
+        for ( int i = 0 ; i < numOutputChannels ; i++)
+        {
+            graph.addConnection({ extraPluginOutputs[i], extraHardwareOutputs[i] });
+        }
+        
+        
 		AudioProcessorGraph::NodeAndChannel midiIn = { (AudioProcessorGraph::NodeID) InternalNodes::MIDIInput, AudioProcessorGraph::midiChannelIndex };
 		AudioProcessorGraph::NodeAndChannel midiOut = { (AudioProcessorGraph::NodeID) nodeId, AudioProcessorGraph::midiChannelIndex };
 
