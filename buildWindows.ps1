@@ -62,8 +62,9 @@ iscc CabbageCannonicalInstaller.iss
 
 SET PROJUCER="D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
 
-$OutputVariable = ($PROJUCER --get-version ../../CabbageIDE.jucer) | Out-String
+Invoke-Expression -Command "D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe --get-version ../../CabbageIDE.jucer" -OutVariable outputVariable 
+
 echo "PRINTING VERSION NAME"
-echo $OutputVariable
+echo $outputVariable
 Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination "D:/a/1/a/Cabbage64Setup.exe"
 
