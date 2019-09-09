@@ -64,8 +64,9 @@ SET PROJUCER="D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\D
 
 
 Invoke-Expression -Command "D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe --get-version ../../CabbageIDE.jucer" -OutVariable outputVariable 
-$cabbageVersion = "Cabbage64Setup-"$outputVariable".exe"
+$cabbageVersion = 'D:/a/1/a/Cabbage64Setup-' + $outputVariable + '.exe'
 echo "PRINTING VERSION NAME"
 echo $cabbageVersion
-Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination "D:/a/1/a/Cabbage64Setup.exe"
+
+Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination $cabbageVersion
 
