@@ -130,5 +130,8 @@ sed -i "" -e "s|SOURCE_PATH|$SYSTEM_DEFAULTWORKINGDIRECTORY|" InstallerAzure.pkg
 packagesbuild InstallerAzure.pkgproj
 ls build  
 pwd
-cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Cabbage.pkg $BUILD_ARTIFACTSTAGINGDIRECTORY/CabbageOSXInstaller.pkg
+
+VERSION="CabbageOSXInstaller"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".pgk"
+
+cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Cabbage.pkg $BUILD_ARTIFACTSTAGINGDIRECTORY/$VERSION
 

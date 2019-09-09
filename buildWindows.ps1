@@ -60,5 +60,10 @@ cd D:/a/1/s/Builds/VisualStudio2017
 set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
 iscc CabbageCannonicalInstaller.iss
 
+SET PROJUCER="D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe"
+
+$OutputVariable = ($PROJUCER --get-version ../../CabbageIDE.jucer) | Out-String
+echo "PRINTING VERSION NAME"
+echo $OutputVariable
 Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination "D:/a/1/a/Cabbage64Setup.exe"
 
