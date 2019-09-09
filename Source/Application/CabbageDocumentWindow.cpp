@@ -1025,11 +1025,11 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
 
         case CommandIDs::exportAsVST3EffectEncrypted:
-            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
+            pluginExporter.exportPlugin ("VST3", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
             
         case CommandIDs::exportAsVST3SynthEncrypted:
-            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
+            pluginExporter.exportPlugin ("VST3i", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
             
         case CommandIDs::exportAsAUEffectEncrypted:
