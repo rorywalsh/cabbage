@@ -67,7 +67,7 @@ $OutputVariable = cmd /c "D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio
 Write-Host $outputVariable
 $cabbageVersion = 'D:/a/1/a/Cabbage64Setup-' + $outputVariable + '.exe'
 Write-Host "PRINTING VERSION NAME"
-Write-Host $cabbageVersion
+Write-Host $cabbageVersion 
 
 Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination $cabbageVersion
 
