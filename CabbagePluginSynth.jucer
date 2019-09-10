@@ -80,6 +80,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{06A9B370-E21A-01CA-7B69-FE3EB35876DF}" name="Widgets">
+        <FILE id="emyJ5A" name="CabbageRackWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.cpp"/>
+        <FILE id="Jeinwl" name="CabbageRackWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.h"/>
         <FILE id="vo6ava" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
         <FILE id="Lqsrt8" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
