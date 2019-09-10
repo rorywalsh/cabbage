@@ -313,6 +313,9 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
 
     else if (widgetType == CabbageWidgetTypes::screw)
         insertScrew (cabbageWidgetData);
+
+    else if (widgetType == CabbageWidgetTypes::light)
+        insertLight (cabbageWidgetData);
  
     else if (widgetType == CabbageWidgetTypes::cvinput || widgetType == CabbageWidgetTypes::cvoutput)
         insertPort (cabbageWidgetData);
@@ -578,6 +581,14 @@ void CabbagePluginEditor::insertScrew (ValueTree cabbageWidgetData)
     components.add (screw = new CabbageScrew (cabbageWidgetData));
     addToEditorAndMakeVisible (screw, cabbageWidgetData);
     addMouseListenerAndSetVisibility (screw, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertLight (ValueTree cabbageWidgetData)
+{
+    CabbageLight* light;
+    components.add (light = new CabbageLight (cabbageWidgetData, this));
+    addToEditorAndMakeVisible (light, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (light, cabbageWidgetData);
 }
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)

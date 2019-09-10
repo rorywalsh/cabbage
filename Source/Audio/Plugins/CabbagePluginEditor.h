@@ -121,6 +121,7 @@ public:
     
     void insertPort (ValueTree cabbageWidgetData);
     void insertScrew (ValueTree cabbageWidgetData);
+    void insertLight (ValueTree cabbageWidgetData);
     
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================

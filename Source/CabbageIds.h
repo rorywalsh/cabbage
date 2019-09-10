@@ -417,6 +417,7 @@ public:
         add ("popup");
         add ("alpha");
         add ("items");
+        add ("light");
         add ("color");
         add ("value");
         add ("range");
@@ -464,7 +465,9 @@ namespace CabbageWidgetTypes
     static const String screw = "screw";
     static const String cvoutput = "cvoutput";
     static const String cvinput = "cvinput";
-	static const String infobutton = "infobutton";
+    static const String light = "light";
+
+    static const String infobutton = "infobutton";
 	static const String keyboard = "keyboard";
 	static const String keyboarddisplay = "keyboarddisplay";
 	static const String label = "label";
@@ -720,33 +723,37 @@ class CabbagePopupWidgets : public StringPairArray
 public:
     CabbagePopupWidgets()
     {
-        set ("Button", CabbageWidgetTypes::button);
-        set ("Button - File", CabbageWidgetTypes::filebutton);
-        set ("Button - Info", CabbageWidgetTypes::infobutton);
-        set ("Checkbox", CabbageWidgetTypes::checkbox);
-        set ("ComboBox", CabbageWidgetTypes::combobox);
-        set ("Csound Output", CabbageWidgetTypes::csoundoutput);
-        set ("Endless Encoder", CabbageWidgetTypes::encoder);
-        set ("Gentable", CabbageWidgetTypes::gentable);
-        set ("Groupbox", CabbageWidgetTypes::groupbox);
-        set ("Horizontal Meter", CabbageWidgetTypes::hmeter);
-        set ("Image", CabbageWidgetTypes::image);
-        set ("Keyboard", CabbageWidgetTypes::keyboard);
-        set ("Label", CabbageWidgetTypes::label);
-        set ("Signal Display", CabbageWidgetTypes::signaldisplay);
-        set ("Slider - Horizontal", CabbageWidgetTypes::hslider);
-        set ("Slider - Rotary", CabbageWidgetTypes::rslider);
-        set ("Slider - Vertical", CabbageWidgetTypes::vslider);
-        set ("Slider - Range - Vertical", CabbageWidgetTypes::vrange);
-        set ("Slider - Range - Horizontal", CabbageWidgetTypes::hrange);
-        set ("Slider - Number Box", CabbageWidgetTypes::nslider);
-        set ("Soundfiler", CabbageWidgetTypes::soundfiler);
-        set ("String Sequencer", CabbageWidgetTypes::eventsequencer);
-        set ("Text Box", CabbageWidgetTypes::textbox);
-        set ("Text Editor", CabbageWidgetTypes::texteditor);
-        set ("Vertical Meter", CabbageWidgetTypes::vmeter);
-        set ("XY Pad", CabbageWidgetTypes::xypad);
-        set ("Listbox", CabbageWidgetTypes::listbox);
+        set ("Button", CabbageWidgetTypes::button);                 //1
+        set ("Button - File", CabbageWidgetTypes::filebutton);      //2
+        set ("Button - Info", CabbageWidgetTypes::infobutton);      //3
+        set ("Checkbox", CabbageWidgetTypes::checkbox);             //4
+        set ("ComboBox", CabbageWidgetTypes::combobox);             //5
+        set ("Csound Output", CabbageWidgetTypes::csoundoutput);    //6
+        set ("CV Output - VCVRack", CabbageWidgetTypes::cvoutput);  //7
+        set ("CV Input - VCVRack", CabbageWidgetTypes::cvoutput);   //8
+        set ("Endless Encoder", CabbageWidgetTypes::encoder);       //9
+        set ("Gentable", CabbageWidgetTypes::gentable);             //10
+        set ("Groupbox", CabbageWidgetTypes::groupbox);             //11
+        set ("Horizontal Meter", CabbageWidgetTypes::hmeter);       //12
+        set ("Image", CabbageWidgetTypes::image);                   //13
+        set ("Keyboard", CabbageWidgetTypes::keyboard);             //14
+        set ("Label", CabbageWidgetTypes::label);                   //15
+        set ("light", CabbageWidgetTypes::light);                   //16
+
+        set ("Signal Display", CabbageWidgetTypes::signaldisplay);  //17
+        set ("Slider - Horizontal", CabbageWidgetTypes::hslider);   //18
+        set ("Slider - Rotary", CabbageWidgetTypes::rslider);       //19
+        set ("Slider - Vertical", CabbageWidgetTypes::vslider);     //20
+        set ("Slider - Range - Vertical", CabbageWidgetTypes::vrange);      //21
+        set ("Slider - Range - Horizontal", CabbageWidgetTypes::hrange);    //22
+        set ("Slider - Number Box", CabbageWidgetTypes::nslider);       //23
+        set ("Soundfiler", CabbageWidgetTypes::soundfiler);             //24
+        set ("String Sequencer", CabbageWidgetTypes::eventsequencer);   //25
+        set ("Text Box", CabbageWidgetTypes::textbox);                  //26
+        set ("Text Editor", CabbageWidgetTypes::texteditor);            //27
+        set ("Vertical Meter", CabbageWidgetTypes::vmeter);             //28
+        set ("XY Pad", CabbageWidgetTypes::xypad);                      //29
+        set ("Listbox", CabbageWidgetTypes::listbox);                   //30
 
     }
 };

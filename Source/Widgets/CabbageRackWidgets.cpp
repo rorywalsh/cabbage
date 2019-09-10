@@ -346,3 +346,31 @@ void CabbagePort::valueTreePropertyChanged (ValueTree& valueTree, const Identifi
     repaint();
 }
 
+
+CabbageLight::CabbageLight(ValueTree wData, CabbagePluginEditor* owner) : CabbageWidgetBase(),
+widgetData (wData),
+owner (owner),
+mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)))
+{
+    widgetData.addListener (this);
+    initialiseCommonAttributes (this, wData);
+}
+
+//==============================================================================
+void CabbageLight::paint (Graphics& g)
+{
+    g.fillAll (Colours::transparentBlack);
+    g.setColour (mainColour);
+    g.fillEllipse (0, 0, getWidth(), getHeight());
+}
+
+//==============================================================================
+void CabbageLight::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
+{
+    mainColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
+    handleCommonUpdates (this, valueTree);
+    repaint();
+}
+
+
+

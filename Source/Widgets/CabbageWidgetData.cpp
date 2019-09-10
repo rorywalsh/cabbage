@@ -141,6 +141,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::screw))
         setScrewProperties (widgetData, ID);
 
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::light))
+        setLightProperties (widgetData, ID);
+
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::sourcebutton) || strTokens[0].trim() == String(CabbageWidgetTypes::loadbutton))
         setLoadButtonProperties (widgetData, ID);
 

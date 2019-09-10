@@ -22,6 +22,9 @@
 #include "CabbageWidgetBase.h"
 
 #pragma once
+
+class CabbagePluginEditor;
+
 static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth, int newHeight, AffineTransform affine)
 {
     std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgText));
@@ -37,6 +40,42 @@ static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth,
         drawable->draw(g, 1.f, affine);
     }
 }
+
+
+class CabbagePluginEditor;
+
+class CabbageLight : public Component, public ValueTree::Listener, public CabbageWidgetBase
+{
+    String name, tooltipText, shape;
+    File imgFile;
+    CabbagePluginEditor* owner;
+    float corners, cropx, cropy, cropwidth, cropheight;
+    int lineThickness;
+    ValueTree widgetData;
+    Colour outlineColour, mainColour;
+    bool isLineWidget = false;
+    bool currentToggleValue = 0;
+    Image img;
+
+public:
+
+    CabbageLight (ValueTree cAttr, CabbagePluginEditor* _owner);
+    ~CabbageLight() {};
+
+    void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
+    void paint (Graphics& g) override;
+
+    void valueTreeChildAdded (ValueTree&, ValueTree&) override {}
+    void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
+    void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
+    void valueTreeParentChanged (ValueTree&) override {}
+    String getTooltip()
+    {
+        return tooltipText;
+    }
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLight);
+};
 
 class CabbageScrew : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
