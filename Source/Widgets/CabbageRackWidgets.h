@@ -17,19 +17,18 @@
   02111-1307 USA
 */
 
-#ifndef CABBAGEIMAGE_H_INCLUDED
-#define CABBAGEIMAGE_H_INCLUDED
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+#pragma once
 static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth, int newHeight, AffineTransform affine)
 {
-    ScopedPointer<XmlElement> svg (XmlDocument::parse(svgText));
+    std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgText));
     if(svg == nullptr)
         jassert(false);
 
-    ScopedPointer<Drawable> drawable;
+    std::unique_ptr<Drawable> drawable;
 
     if (svg != nullptr)
     {
@@ -39,21 +38,16 @@ static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth,
     }
 }
 
-class CabbageScrew : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
+class CabbageScrew : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
     String name, tooltipText, shape;
-    File imgFile;
-    CabbagePluginEditor* owner;
     ValueTree widgetData;
-    Colour outlineColour, mainColour;
-    bool isLineWidget = false;
-    bool currentToggleValue = 0;
     Image img;
     String svgText;
 
 public:
 
-    CabbageScrew (ValueTree cAttr, CabbagePluginEditor* _owner, bool isLineWidget = false);
+    CabbageScrew (ValueTree cAttr);
     ~CabbageScrew() {};
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
@@ -63,29 +57,26 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {}
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+
     String getTooltip()
     {
         return tooltipText;
     }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageImage);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageScrew);
 };
 
-class CabbagePort : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
+class CabbagePort : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
     String name, tooltipText, shape;
-    File imgFile;
-    CabbagePluginEditor* owner;
     ValueTree widgetData;
     Colour outlineColour, mainColour;
-    bool isLineWidget = false;
-    bool currentToggleValue = 0;
     Image img;
+    String svgText;
 
 public:
 
-    CabbagePort (ValueTree cAttr, bool isLineWidget = false);
+    CabbagePort (ValueTree cAttr);
     ~CabbagePort() {};
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
@@ -95,14 +86,13 @@ public:
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {}
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+
     String getTooltip()
     {
         return tooltipText;
     }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageImage);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePort);
 };
 
 
-#endif  // CABBAGEIMAGE_H_INCLUDED

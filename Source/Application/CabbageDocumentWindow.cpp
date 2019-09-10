@@ -965,7 +965,6 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
 			getContentComponent()->saveDocument();
 
-//            getContentComponent()->setEditMode (false);
             isGUIEnabled = false;
             break;
 

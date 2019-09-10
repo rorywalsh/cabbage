@@ -78,10 +78,13 @@ void CabbagePluginEditor::resized()
 {
 #ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
+    
 #endif
     if(viewportContainer)
         viewportContainer->setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
     mainComponent.setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
+
+    
     if(viewport)
     {
      viewport->setBounds ( getLocalBounds() );
@@ -308,6 +311,12 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::listbox)
         insertListBox (cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::screw)
+        insertScrew (cabbageWidgetData);
+ 
+    else if (widgetType == CabbageWidgetTypes::cvinput || widgetType == CabbageWidgetTypes::cvoutput)
+        insertPort (cabbageWidgetData);
+    
     else if (widgetType == CabbageWidgetTypes::eventsequencer)
         insertStringSequencer (cabbageWidgetData);
 
@@ -554,6 +563,22 @@ void CabbagePluginEditor::insertLine (ValueTree cabbageWidgetData)
     addToEditorAndMakeVisible (line, cabbageWidgetData);
     addMouseListenerAndSetVisibility (line, cabbageWidgetData);
 }
+
+void CabbagePluginEditor::insertPort (ValueTree cabbageWidgetData)
+{
+    CabbagePort* port;
+    components.add (port = new CabbagePort (cabbageWidgetData));
+    addToEditorAndMakeVisible (port, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (port, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertScrew (ValueTree cabbageWidgetData)
+{
+    CabbageScrew* screw;
+    components.add (screw = new CabbageScrew (cabbageWidgetData));
+    addToEditorAndMakeVisible (screw, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (screw, cabbageWidgetData);
+}
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
@@ -770,6 +795,9 @@ void CabbagePluginEditor::addToEditorAndMakeVisible (Component* comp, ValueTree 
 
     if(comp->getHeight()+comp->getY() > mainComponent.getHeight())
         instrumentBounds.setY(comp->getHeight()+comp->getY());
+    
+    CabbageUtilities::debug(instrumentBounds.getX());
+    setSize(instrumentBounds.getX(), instrumentBounds.getY());
 
 }
 

@@ -380,6 +380,7 @@ public:
         add ("populate");
         add ("keywidth");
         add ("pluginid");
+        add ("cvoutput");
         add ("imgdebug");
         add ("colour:0");
         add ("colour:1");
@@ -388,6 +389,7 @@ public:
         add ("velocity");
         add ("amprange");
         add ("celldata");
+        add ("cvinput");
         add ("color:0");
         add ("caption");
         add ("textbox");
@@ -411,6 +413,7 @@ public:
         add ("rotate");
         add ("active");
         add ("shape");
+        add ("screw");
         add ("popup");
         add ("alpha");
         add ("items");
@@ -458,6 +461,9 @@ namespace CabbageWidgetTypes
 	static const String hslider2 = "hslider2";
 	static const String hslider3 = "hslider3";
 	static const String image = "image";
+    static const String screw = "screw";
+    static const String cvoutput = "cvoutput";
+    static const String cvinput = "cvinput";
 	static const String infobutton = "infobutton";
 	static const String keyboard = "keyboard";
 	static const String keyboarddisplay = "keyboarddisplay";
