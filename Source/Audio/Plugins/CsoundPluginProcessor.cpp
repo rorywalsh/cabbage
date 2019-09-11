@@ -208,6 +208,11 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 }
 
             }
+            else if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type) == CabbageWidgetTypes::cvoutput
+                     ||CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type) == CabbageWidgetTypes::cvinput)
+            {
+                //don't set up any channels for these widgets, even though they use the channel() identifier..
+            }
             else
             {
                 const var value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);

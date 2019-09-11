@@ -360,14 +360,20 @@ mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, Ca
 void CabbageLight::paint (Graphics& g)
 {
     g.fillAll (Colours::transparentBlack);
-    g.setColour (mainColour);
+    g.setColour (Colours::black);
     g.fillEllipse (0, 0, getWidth(), getHeight());
+    g.setColour (mainColour);
+    g.fillEllipse (1, 1, getWidth()-2, getHeight()-2);
 }
 
 //==============================================================================
 void CabbageLight::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    mainColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
+    if (prop == CabbageIdentifierIds::value)
+    {
+        CabbageUtilities::debug(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
+        mainColour = mainColour.withAlpha(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
+    }
     handleCommonUpdates (this, valueTree);
     repaint();
 }
