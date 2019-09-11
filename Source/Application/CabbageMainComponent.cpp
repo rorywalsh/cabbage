@@ -1608,7 +1608,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 				getCurrentCodeEditor()->setSavePoint();
 			}
-
+            
 			addInstrumentsAndRegionsToCombobox();
 		}
 		else
@@ -1678,10 +1678,8 @@ void CabbageMainComponent::writeFileToDisk (File file)
         setCurrentCsdFile (file);
 
     getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
-    owner->setName ("Cabbage " + getCurrentCsdFile().getFullPathName());
-    addInstrumentsAndRegionsToCombobox();
-    fileTabs[currentFileIndex]->setButtonText (getCurrentCsdFile().getFileName());
-    cabbageSettings->updateRecentFilesList (getCurrentCsdFile());
+    openFile(getCurrentCsdFile().getFullPathName());
+
 }
 //==================================================================================
 void CabbageMainComponent::closeDocument()

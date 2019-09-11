@@ -96,7 +96,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	csound->SetOption((char*)"-n");
 	csound->SetOption((char*)"-d");
 	csound->SetOption((char*)"-b0");
-
+    addMacros(csdFile.loadFileAsString());
 
 	if (debugMode)
 	{
@@ -136,8 +136,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 		csound->Start();
 #endif
 }
-
-	addMacros(csdFile.getFullPathName());
 
 
 	if (csdCompiledWithoutError())
@@ -338,8 +336,9 @@ void CsoundPluginProcessor::addMacros (String csdText)
             macroName = tokens[1];
             tokens.remove (0);
             tokens.remove (0);
-            macroText = "\\\"" + tokens.joinIntoString (" ").replace ("\"", "\\\\\\\"") + "\\\"";
-            String fullMacro = "--omacro:" + macroName + "=" + macroText + "\"";
+            macroText = "\"" + tokens.joinIntoString (" ").replace ("\"", "\\\\\\\"") + "\\\"";
+            macroText = tokens.joinIntoString(" ");
+            String fullMacro = "--omacro:" + macroName + "=" + macroText;// + "\"";
             csound->SetOption (fullMacro.toUTF8().getAddress());
         }
 
