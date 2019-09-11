@@ -131,7 +131,7 @@ packagesbuild InstallerAzure.pkgproj
 ls build  
 pwd
 
-VERSION="CabbageOSXInstaller"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".pgk"
+VERSION="CabbageOSXInstaller"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
 
 cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Cabbage.pkg $BUILD_ARTIFACTSTAGINGDIRECTORY/$VERSION
 
