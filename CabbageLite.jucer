@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="0" reportAppUsage="1"
-              splashScreenColour="Dark" projectType="guiapp" version="2.1.3"
+              splashScreenColour="Dark" projectType="guiapp" version="2.1.4"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
               cppLanguageStandard="11" jucerVersion="5.4.4" companyCopyright="">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
@@ -113,6 +113,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{FE7B8445-EC0A-528F-DC90-0F4F2117A865}" name="Widgets">
+        <FILE id="OSwm8Y" name="CabbageRackWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.cpp"/>
+        <FILE id="ZMPPxj" name="CabbageRackWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.h"/>
         <FILE id="gBhW8I" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
               file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <FILE id="B4YryK" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"

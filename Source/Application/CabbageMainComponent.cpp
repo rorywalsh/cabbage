@@ -1074,8 +1074,6 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
 
         if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f, type))
         {
-//             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
-//                 currentEditor = dynamic_cast<CabbagePluginEditor*>(cabbagePlugin->getActiveEditor());
         
 			f->properties.set("PluginWindowX", position.getX());
 			f->properties.set("PluginWindowY", position.getY());
@@ -1610,7 +1608,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 				getCurrentCodeEditor()->setSavePoint();
 			}
-
+            
 			addInstrumentsAndRegionsToCombobox();
 		}
 		else
@@ -1680,10 +1678,8 @@ void CabbageMainComponent::writeFileToDisk (File file)
         setCurrentCsdFile (file);
 
     getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
-    owner->setName ("Cabbage " + getCurrentCsdFile().getFullPathName());
-    addInstrumentsAndRegionsToCombobox();
-    fileTabs[currentFileIndex]->setButtonText (getCurrentCsdFile().getFileName());
-    cabbageSettings->updateRecentFilesList (getCurrentCsdFile());
+    openFile(getCurrentCsdFile().getFullPathName());
+
 }
 //==================================================================================
 void CabbageMainComponent::closeDocument()

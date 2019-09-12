@@ -74,6 +74,9 @@ public:
     static void setHRangeSliderProperties (ValueTree widgetData, int ID);
     static void setVRangeSliderProperties (ValueTree widgetData, int ID);
     static void setLineProperties (ValueTree widgetData, int ID);
+    static void setScrewProperties (ValueTree widgetData, int ID);
+    static void setPortProperties (ValueTree widgetData, int ID, const String type);
+    static void setLightProperties (ValueTree widgetData, int ID);
     static void setMeterProperties (ValueTree widgetData, int ID, bool isVertical);
     static void setEventSequencerProperties (ValueTree widgetData, int ID);
     //============================================================================

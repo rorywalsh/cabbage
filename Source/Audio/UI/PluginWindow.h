@@ -56,7 +56,7 @@ public:
          node (n), type (t)
     {
         setSize (400, 300);
-
+        setResizeLimits(10, 50, 3000, 3000);
         setLookAndFeel (&pluginWindowLookAndFeel);
 
         if (auto* ui = createProcessorEditor(*node->getProcessor(), type))
@@ -64,12 +64,13 @@ public:
             setContentOwned(ui, true);
             if( auto* cabbgeEditor = dynamic_cast<CabbagePluginEditor*>(ui))
             {
-            setBackgroundColour(cabbgeEditor->titlebarColour); // <-- set titlebar colour of the plugin window
+                setSize(cabbgeEditor->getWidth(), cabbgeEditor->getHeight());;
+                setBackgroundColour(cabbgeEditor->titlebarColour); // <-- set titlebar colour of the plugin window
             
-            pluginWindowLookAndFeel.titlebarContrastingGradient = cabbgeEditor->titlebarGradientAmount;
-            if (cabbgeEditor->defaultFontColour == false)
-                setColour(DocumentWindow::textColourId, cabbgeEditor->fontColour); // <-- set customized titlebar font colour
-            }
+                pluginWindowLookAndFeel.titlebarContrastingGradient = cabbgeEditor->titlebarGradientAmount;
+                if (cabbgeEditor->defaultFontColour == false)
+                    setColour(DocumentWindow::textColourId, cabbgeEditor->fontColour); // <-- set customized titlebar font colour
+                }
         }
 
        #if JUCE_IOS || JUCE_ANDROID
@@ -85,6 +86,7 @@ public:
                             node->properties.getWithDefault (getLastYProp (type), Random::getSystemRandom().nextInt (500)));
        #endif
 
+        
         node->properties.set (getOpenProp (type), true);
 
         setVisible (true);
@@ -137,7 +139,12 @@ private:
         if (type == PluginWindow::Type::normal)
         {
             if (auto* ui = processor.createEditorIfNeeded())
+            {
+
                 return ui;
+            }
+            
+
 
             type = PluginWindow::Type::generic;
         }

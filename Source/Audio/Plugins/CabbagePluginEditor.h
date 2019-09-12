@@ -48,6 +48,7 @@
 #include "../../Widgets/CabbageKeyboardDisplay.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageSoundfiler.h"
+#include "../../Widgets/CabbageRackWidgets.h"
 #include "../../Widgets/CabbageRangeSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 #include "../../Widgets/CabbageEventSequencer.h"
@@ -117,6 +118,11 @@ public:
     void insertSignalDisplay (ValueTree cabbageWidgetData);
     void insertStepper (ValueTree cabbageWidgetData) {};
     void insertMeter (ValueTree cabbageWidgetData);
+    
+    void insertPort (ValueTree cabbageWidgetData);
+    void insertScrew (ValueTree cabbageWidgetData);
+    void insertLight (ValueTree cabbageWidgetData);
+    
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
 	void refreshValueTreeListeners();
