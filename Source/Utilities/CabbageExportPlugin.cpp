@@ -149,17 +149,20 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, exportedPlugin);
 
-        File jsonFile(exportedPlugin.getFullPathName()+"plugin.json");
+        File jsonFile(exportedPlugin.getFullPathName()+"/plugin.json");
         StringArray jsonLines;
         jsonLines.addLines(jsonFile.loadFileAsString());
 
         for ( int i = 0 ; i < jsonLines.size() ; i++)
         {
             //replace slugs and name with plugin name
-            if(jsonLines[i].contains("\"slug\": \""))
+            if(jsonLines[i].contains("\"slug\": \"CabbageRack\","))
                 jsonLines.getReference(i) = "\"slug\": \"" + fc.getFileNameWithoutExtension() + "\",";
-            if(jsonLines[i].contains("\"name\": \"") && !jsonLines[i].contains("name\": \"CabbageRackModule\","))
+            if(jsonLines[i].contains("\"name\": \"CabbageRack\","))
                 jsonLines.getReference(i) = "\"name\": \""+fc.getFileNameWithoutExtension()+"\",";
+            if(jsonLines[i].contains("\"brand\": \"CabbageRack\","))
+                jsonLines.getReference(i) = "\"brand\": \""+fc.getFileNameWithoutExtension()+"\",";
+
         }
 
         jsonFile.replaceWithText(jsonLines.joinIntoString("\n"));
