@@ -337,6 +337,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu2;
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
+		subMenu2.addCommandItem(&commandManager, CommandIDs::exportAsVST3EffectEncrypted);
+		subMenu2.addCommandItem(&commandManager, CommandIDs::exportAsVST3SynthEncrypted);
         menu.addSubMenu("Export plugin (Encrypt CSD)", subMenu2);
 #endif
     }
