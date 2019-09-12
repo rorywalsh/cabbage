@@ -68,6 +68,8 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         {
             fileExtension = "";
             pluginFilename = currentApplicationDirectory+"/CabbageRack/";
+            if(!File(pluginFilename).exists())
+                pluginFilename = File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getFullPathName()+"/CabbageRack/";
         }
         else  if (type == "FMOD")
         {
@@ -134,15 +136,6 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 
     File exportedPlugin (fc.withFileExtension (fileExtension).getFullPathName());
 
-    if (!VSTData.copyFileTo (exportedPlugin))
-    {
-        CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin to this location. It currently be in use, or you may be trying to install to a system folder you don't have permission to write in. Please try exporting to a different location.", &lookAndFeel);
-        return;
-    }
-
-
-    File exportedCsdFile;
-
     //vcv rack export is the same on all platforms..
     if(type=="VCVRack")
     {
@@ -155,8 +148,36 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         oldFile.deleteFile();
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, exportedPlugin);
+
+        File jsonFile(exportedPlugin.getFullPathName()+"plugin.json");
+        StringArray jsonLines;
+        jsonLines.addLines(jsonFile.loadFileAsString());
+
+        for ( int i = 0 ; i < jsonLines.size() ; i++)
+        {
+            //replace slugs and name with plugin name
+            if(jsonLines[i].contains("\"slug\": \""))
+                jsonLines.getReference(i) = "\"slug\": \"" + fc.getFileNameWithoutExtension() + "\",";
+            if(jsonLines[i].contains("\"name\": \"") && !jsonLines[i].contains("name\": \"CabbageRackModule\","))
+                jsonLines.getReference(i) = "\"name\": \""+fc.getFileNameWithoutExtension()+"\",";
+        }
+
+        jsonFile.replaceWithText(jsonLines.joinIntoString("\n"));
+
         return;
     }
+
+
+
+    if (!VSTData.copyFileTo (exportedPlugin))
+    {
+        CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin to this location. It currently be in use, or you may be trying to install to a system folder you don't have permission to write in. Please try exporting to a different location.", &lookAndFeel);
+        return;
+    }
+
+
+    File exportedCsdFile;
+
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
