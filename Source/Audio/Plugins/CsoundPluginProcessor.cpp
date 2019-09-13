@@ -329,7 +329,7 @@ void CsoundPluginProcessor::addMacros (String csdText)
 //    String height = "--macro:SCREEN_HEIGHT="+String(screenHeight);
 //    csound->SetOption (width.toUTF8().getAddress());
 //    csound->SetOption (height.toUTF8().getAddress());
-    StringArray tokens;
+    
 
 
     for (int i = 0; i < csdArray.size(); i++)
@@ -337,7 +337,10 @@ void CsoundPluginProcessor::addMacros (String csdText)
 
         if (csdArray[i].trim().substring (0, 7) == "#define")
         {
+			StringArray tokens;
+			CabbageUtilities::debug(csdArray[i]);
             tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
+			CabbageUtilities::debug(tokens[0]);
             macroName = tokens[1];
             tokens.remove (0);
             tokens.remove (0);

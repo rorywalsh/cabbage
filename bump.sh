@@ -4,3 +4,4 @@
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbageLite.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePluginMIDIEffect.jucer
 git add *.jucer
+git add Source
