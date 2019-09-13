@@ -341,7 +341,7 @@ void CsoundPluginProcessor::addMacros (String csdText)
             macroName = tokens[1];
             tokens.remove (0);
             tokens.remove (0);
-            macroText = "\"" + tokens.joinIntoString (" ").replace ("\"", "\\\\\\\"") + "\\\"";
+            macroText = "\"" + tokens.joinIntoString (" ").replace (" ", "\ ").replace("\"", "\\\"")+"\"";
             macroText = tokens.joinIntoString(" ");
             String fullMacro = "--omacro:" + macroName + "=" + macroText;// + "\"";
             csound->SetOption (fullMacro.toUTF8().getAddress());
