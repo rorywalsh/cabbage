@@ -806,9 +806,7 @@ void CabbagePluginEditor::addToEditorAndMakeVisible (Component* comp, ValueTree 
 
     if(comp->getHeight()+comp->getY() > mainComponent.getHeight())
         instrumentBounds.setY(comp->getHeight()+comp->getY());
-    
-    CabbageUtilities::debug(instrumentBounds.getX());
-    setSize(instrumentBounds.getX(), instrumentBounds.getY());
+
 
 }
 

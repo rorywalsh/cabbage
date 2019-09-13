@@ -791,6 +791,7 @@ void CabbagePluginProcessor::restorePluginState(XmlElement *xmlState) {
         }
             //else dealing with preset files loaded in editor...
         else {
+//            xmlState->writeTo(File("/Users/walshr/Desktop/test.txt"));
             setParametersFromXml(xmlState);
         }
 
@@ -800,17 +801,23 @@ void CabbagePluginProcessor::restorePluginState(XmlElement *xmlState) {
     xmlState = nullptr;
 }
 
-void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
-    if (e) {
-        for (int i = 1; i < e->getNumAttributes(); i++) {
-            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i),
-                                                                              true);
+void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
+{
+    if (e)
+    {
+        for (int i = 1; i < e->getNumAttributes(); i++)
+        {
+            CabbageUtilities::debug(e->getAttributeName(i));
+            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), false);
+            CabbageUtilities::debug(valueTree.toXmlString());
             const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
             const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
+            const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
 
             if (type == CabbageWidgetTypes::texteditor)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-            else if (type == CabbageWidgetTypes::filebutton) {
+            else if (type == CabbageWidgetTypes::filebutton)
+            {
                 const String absolutePath =
                         csdFile.getParentDirectory().getFullPathName() + "/" + e->getAttributeValue(i);
                 const String path = File(absolutePath).getFullPathName();
@@ -823,14 +830,16 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
                 CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
                                               e->getAttributeValue(i + 1).getFloatValue());
                 i++;
-            } else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
+            }
+            else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
             {
                 CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex,
                                               e->getAttributeValue(i).getFloatValue());
                 CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey,
                                               e->getAttributeValue(i + 1).getFloatValue());
                 i++;
-            } else {
+            } else
+            {
                 if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
                     || CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps")
                     CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
