@@ -323,6 +323,8 @@ public:
         file.getParentDirectory().setAsCurrentWorkingDirectory();
         pluginHolder->createPlugin (file);
         setContentOwned (new MainContentComponent (*this), true);
+        
+        
         pluginHolder->startPlaying();
 
         if (file.existsAsFile())
@@ -514,7 +516,7 @@ private:
             if (editor != nullptr)
             {
                 editor->removeComponentListener (this);
-                owner.pluginHolder->processor->editorBeingDeleted (editor.get());
+//                owner.pluginHolder->processor->editorBeingDeleted (editor.get());
                 editor = nullptr;
             }
         }

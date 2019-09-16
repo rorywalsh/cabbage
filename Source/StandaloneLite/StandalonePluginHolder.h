@@ -124,6 +124,8 @@ public:
 #else
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
         processor.reset (createCabbagePluginFilter (File (file)));
+        const int numChannels = CabbageUtilities::getHeaderInfo(File(file).loadFileAsString(), "nchnls");
+        processor->setPlayConfigDetails(numChannels, numChannels, 44100, 64);
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 #endif
         jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
@@ -131,18 +133,19 @@ public:
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails (44100, 512);
 
-        int inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
-                          : processor->getMainBusNumInputChannels());
-
-        int outChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numOuts
-                           : processor->getMainBusNumOutputChannels());
-
-        processorHasPotentialFeedbackLoop = (inChannels > 0 && outChannels > 0);
+//        int inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
+//                          : processor->getMainBusNumInputChannels());
+//
+//        int outChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numOuts
+//                           : processor->getMainBusNumOutputChannels());
+//
+//        processorHasPotentialFeedbackLoop = (inChannels > 0 && outChannels > 0);
     }
 
     virtual void deletePlugin()
     {
         stopPlaying();
+        processor->editorBeingDeleted(processor->getActiveEditor());
         processor = nullptr;
     }
 
@@ -240,6 +243,8 @@ public:
             device->setMidiMessageCollector (&player.getMidiMessageCollector());
             device->setMidiMessageCollector (&player.getMidiMessageCollector());
         }
+        
+        
 
 #endif
     }
@@ -255,8 +260,8 @@ public:
     {
         DialogWindow::LaunchOptions o;
 
-        auto totalInChannels  = processor->getMainBusNumInputChannels();
-        auto totalOutChannels = processor->getMainBusNumOutputChannels();
+        auto totalInChannels  = 24;//processor->getMainBusNumInputChannels();
+        auto totalOutChannels = 24;//processor->getMainBusNumOutputChannels();
 
         if (channelConfiguration.size() > 0)
         {
