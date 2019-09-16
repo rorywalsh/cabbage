@@ -1192,16 +1192,22 @@ ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, Str
 {
     for (int i = 0; i < widgetData.getNumChildren(); i++)
     {
+
         if (searchByChannel == true)
         {
             //only need first channel from multichannel widgets..see CabbagePluginProcessor::restorePluginState()
             var channels = widgetData.getChild (i).getProperty (CabbageIdentifierIds::channel);
+			const String channel = CabbageWidgetData::getStringProp(widgetData.getChild(i), CabbageIdentifierIds::channel);
 
             if (channels.size() > 0)
                 if (name == channels[0].toString())
                 {
                     return widgetData.getChild (i);
                 }
+
+			if(name == CabbageWidgetData::getStringProp(widgetData.getChild(i), CabbageIdentifierIds::channel))
+				return  widgetData.getChild(i);
+
         }
         else
         {

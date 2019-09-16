@@ -807,9 +807,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
     {
         for (int i = 1; i < e->getNumAttributes(); i++)
         {
-            CabbageUtilities::debug(e->getAttributeName(i));
-            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), false);
-            CabbageUtilities::debug(valueTree.toXmlString());
+
+            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), true);
+
             const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
             const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
             const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
