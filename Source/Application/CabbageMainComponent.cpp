@@ -72,22 +72,23 @@ private:
 
 //==============================================================================
 CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings)
-    : cabbageSettings (settings),
-      owner (owner),
-      factory (this),
+    : goUpButton(),
+      lookAndFeel(new CabbageIDELookAndFeel()),
       cycleTabsButton ("..."),
-	  lookAndFeel(new CabbageIDELookAndFeel()),
-wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "*.*", "")),
       resizerBar(settings->getValueTree(), this),
+      wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "*.*", "")),
+      fileTree(FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles, File::getSpecialLocation (File::currentExecutableFile), wildcardFilter.get(), nullptr),
+      owner(owner),
       lookAndFeel4(),
-      goUpButton(),
-      fileTree(FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles, File::getSpecialLocation (File::currentExecutableFile), wildcardFilter, nullptr)
+      factory (this),
+      cabbageSettings (settings)
 {
 
 
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
-    addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (ValueTree("empty")));
+    propertyPanel.reset (new CabbagePropertiesPanel (ValueTree("empty")));
+    addAndMakeVisible (propertyPanel.get());
     propertyPanel->setVisible (false);
     setSize (1200, 800);
 
@@ -96,7 +97,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "
 	
 	formatManager.addFormat(new InternalPluginFormat());
 
-    filterGraphWindow = new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200), this);
+    filterGraphWindow.reset (new FilterGraphDocumentWindow("FilterGraph", Colour(200, 200, 200), this));
     filterGraphWindow->setVisible (false);
 
     InternalPluginFormat internalFormat;
@@ -107,8 +108,8 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "
     if (savedPluginList != nullptr)
         knownPluginList.recreateFromXml (*savedPluginList);
     
-    for (auto* t : internalTypes)
-        knownPluginList.addType (*t);
+    for (auto& t : internalTypes)
+        knownPluginList.addType (t);
     
     pluginSortMethod = (KnownPluginList::SortMethod) cabbageSettings->getUserSettings()->getIntValue ("pluginSortMethod", KnownPluginList::sortByManufacturer);
     
@@ -125,7 +126,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "
     cycleTabsButton.addListener (this);
     
 	fileTree.setLookAndFeel(&lookAndFeel4);
-    fileTree.lookAndFeelChanged();
+    //fileTree.lookAndFeelChanged();
 
     createFilterGraph(); //set up graph even though no file is selected. Allows users to change audio devices from the get-go..
 
@@ -519,7 +520,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             }
         }
         else
-            CabbageUtilities::showMessage("No Cabbage code block found. GUI editing only works in Cabbage .csd files", lookAndFeel);
+            CabbageUtilities::showMessage("No Cabbage code block found. GUI editing only works in Cabbage .csd files", lookAndFeel.get());
     }
     else if (drawableButton->getName() == "editGUIButton")
     {
@@ -543,7 +544,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             }
         }
         else
-            CabbageUtilities::showMessage("No Cabbage code block found. GUI editing only works in Cabbage .csd files", lookAndFeel);
+            CabbageUtilities::showMessage("No Cabbage code block found. GUI editing only works in Cabbage .csd files", lookAndFeel.get());
     }
 }
 
@@ -616,7 +617,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 //        }
 		if (deviceManager.getAudioDeviceSetup().outputDeviceName == "" && shouldUpdateAudioSettings == false)
 		{
-			CabbageUtilities::showMessage("Warning", "No output device selected. Please open Cabbage audio settings and select a valid output device.", lookAndFeel);
+			CabbageUtilities::showMessage("Warning", "No output device selected. Please open Cabbage audio settings and select a valid output device.", lookAndFeel.get());
 			deviceManager.closeAudioDevice();
 			shouldUpdateAudioSettings = true;
 		}
@@ -758,7 +759,7 @@ void CabbageMainComponent::insertCustomPlantToEditor(CabbagePluginEditor* editor
     Range<int> cabbageSection = CabbageUtilities::getCabbageSectionRange(getCurrentCodeEditor()->getAllText());
     String name;
     String namespce;
-    ScopedPointer<XmlElement> xml;
+    std::unique_ptr<XmlElement> xml;
     StringArray cabbageCode;
     xml = XmlDocument::parse (CabbageUtilities::getPlantFileAsXmlString(editor->changeMessage));
 
@@ -908,7 +909,7 @@ Image CabbageMainComponent::createBackground()
 {
     Image backgroundImg;
     backgroundImg = Image (Image::RGB, getWidth(), getHeight(), true);
-    ScopedPointer<Drawable> drawable;
+    std::unique_ptr<Drawable> drawable;
     const Colour colour(CabbageSettings::getColourFromValueTree(cabbageSettings->valueTree, CabbageColourIds::fileTabBar, Colour(50, 50, 50)));
     Graphics g (backgroundImg);
     {
@@ -947,7 +948,7 @@ void CabbageMainComponent::addFileTab (File file)
     fileButton->addListener (this);
 	fileButton->setName(file.getFileName());
     fileButton->setClickingTogglesState (true);
-    fileButton->setLookAndFeel (lookAndFeel);
+    fileButton->setLookAndFeel (lookAndFeel.get());
     fileButton->setToggleState (true, dontSendNotification);
     currentFileIndex = fileTabs.size() - 1;
     fileButton->addButtonListeners (this);
@@ -969,7 +970,7 @@ void CabbageMainComponent::arrangeFileTabs()
     const int numTabs = 5;
     int tabIndex = 0;
     const int width = propertyPanel->isVisible() ? getWidth() - propertyPanel->getWidth() - 30 : getWidth() - 25;
-    const int size = fileTabs.size();
+    //const int size = fileTabs.size();
     int startTabIndex = jmax (0, fileTabs.size() - 4);
 
     for ( auto fileButton : fileTabs)
@@ -1073,8 +1074,6 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
 
         if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f, type))
         {
-//             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
-//                 currentEditor = dynamic_cast<CabbagePluginEditor*>(cabbagePlugin->getActiveEditor());
         
 			f->properties.set("PluginWindowX", position.getX());
 			f->properties.set("PluginWindowY", position.getY());
@@ -1113,7 +1112,7 @@ CabbageEditorContainer* CabbageMainComponent::getCurrentEditorContainer()
 CabbageCodeEditorComponent* CabbageMainComponent::getCurrentCodeEditor()
 {
     if (getCurrentEditorContainer())
-        return getCurrentEditorContainer()->editor;
+        return getCurrentEditorContainer()->editor.get();
     else
         return nullptr;
 }
@@ -1121,7 +1120,7 @@ CabbageCodeEditorComponent* CabbageMainComponent::getCurrentCodeEditor()
 CabbageOutputConsole* CabbageMainComponent::getCurrentOutputConsole()
 {
     if (getCurrentEditorContainer())
-        return getCurrentEditorContainer()->outputConsole;
+        return getCurrentEditorContainer()->outputConsole.get();
     else
         return nullptr;
 }
@@ -1249,7 +1248,7 @@ String CabbageMainComponent::getDeviceManagerSettings()
 {
 	if (deviceManager.getCurrentAudioDevice())
 	{
-		ScopedPointer<XmlElement> xml(deviceManager.createStateXml());
+		std::unique_ptr<XmlElement> xml(deviceManager.createStateXml());
 
 		if (xml == nullptr)
 			return String();
@@ -1261,14 +1260,14 @@ String CabbageMainComponent::getDeviceManagerSettings()
 
 void CabbageMainComponent::reloadAudioDeviceState()
 {
-	ScopedPointer<XmlElement> savedState;
+	std::unique_ptr<XmlElement> savedState;
 
 	if (cabbageSettings != nullptr)
 		savedState = cabbageSettings->getUserSettings()->getXmlValue("audioSetup");
 
 	deviceManager.initialise(256,
 		256,
-		savedState,
+		savedState.get(),
 		true);
 
 }
@@ -1277,7 +1276,7 @@ void CabbageMainComponent::createNewProject()
 {
     DialogWindow::LaunchOptions o;
     o.content.setOwned (new CabbageProjectWindow (this));
-    o.content->setSize (650, 350);
+    o.content->setSize (850, 350);
     o.dialogTitle = TRANS ("Select new project type");
     o.dialogBackgroundColour = Colour (0xfff0f0f0);
     o.escapeKeyTriggersCloseButton = true;
@@ -1359,7 +1358,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 
 
     XmlDocument doc (fileToOpen);
-    ScopedPointer<XmlElement> xml (doc.getDocumentElement());
+    std::unique_ptr<XmlElement> xml (doc.getDocumentElement());
 
     if (xml == nullptr || ! xml->hasTagName ("FILTERGRAPH"))
         return;
@@ -1468,7 +1467,7 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
         {
             if (getTabFileIndex (File (filename)) >= 0 && currentFileIndex > -1)
             {
-                CabbageUtilities::showMessage ("File is already open", lookAndFeel);
+                CabbageUtilities::showMessage ("File is already open", lookAndFeel.get());
                 return File();
             }
             else
@@ -1551,9 +1550,10 @@ void CabbageMainComponent::launchHelpfile (String type)
 void CabbageMainComponent::createCodeEditorForFile (File file)
 {
     CabbageEditorContainer* editorConsole;
-    editorAndConsole.add (editorConsole = new CabbageEditorContainer (cabbageSettings, file.hasFileExtension (".csd")));
+    editorAndConsole.add (editorConsole = new CabbageEditorContainer (cabbageSettings, file.hasFileExtension (".csd") || file.hasFileExtension (".orc")));
     addAndMakeVisible (editorConsole);
-    addAndMakeVisible (propertyPanel = new CabbagePropertiesPanel (cabbageSettings->valueTree));
+    propertyPanel.reset (new CabbagePropertiesPanel (cabbageSettings->valueTree));
+    addAndMakeVisible (propertyPanel.get());
     propertyPanel->setVisible (false);
     editorConsole->setVisible (true);
     editorConsole->toFront (true);
@@ -1598,7 +1598,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			{
 				if (fc.getResult().withFileExtension("csd").existsAsFile())
 				{
-					const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel);
+					const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel.get());
 
 					if (result == 1)
 						writeFileToDisk(fc.getResult().withFileExtension(".csd"));
@@ -1608,7 +1608,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 				getCurrentCodeEditor()->setSavePoint();
 			}
-
+            
 			addInstrumentsAndRegionsToCombobox();
 		}
 		else
@@ -1634,7 +1634,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			if (getCurrentCodeEditor()->hasFileChanged())
 			{
 				if (getCurrentCsdFile().getFullPathName().contains(examplesDir)) {
-					CabbageUtilities::showMessage("You cannot overwrite an example file. Please use save-as instead", lookAndFeel);
+					CabbageUtilities::showMessage("You cannot overwrite an example file. Please use save-as instead", lookAndFeel.get());
 					return;
 				}
 
@@ -1662,9 +1662,9 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			{
 				const String csOptions = lines[i + 1];
 				if (csOptions.contains("-+rtaudio"))
-					CabbageUtilities::showMessage("You are using -+rtaudio to set an audio device. This is unsupported. Please set the audio device in the Cabbage audio settings and remove the -+rtaudio flag from your CsOptions.", lookAndFeel);
+					CabbageUtilities::showMessage("You are using -+rtaudio to set an audio device. This is unsupported. Please set the audio device in the Cabbage audio settings and remove the -+rtaudio flag from your CsOptions.", lookAndFeel.get());
 				if (csOptions.contains("-+rtmidi=") && (!csOptions.contains("-+rtmidi=NULL") && !csOptions.contains("-+rtmidi=null")))
-					CabbageUtilities::showMessage("You are using -+rtmidi to set a MIDI device. This is unsupported. Please use -+rtmidi=NULL in your CsOptions, and select a MIDI device in the Cabbage audio settings.", lookAndFeel);
+					CabbageUtilities::showMessage("You are using -+rtmidi to set a MIDI device. This is unsupported. Please use -+rtmidi=NULL in your CsOptions, and select a MIDI device in the Cabbage audio settings.", lookAndFeel.get());
 
 			}
 		}
@@ -1678,10 +1678,8 @@ void CabbageMainComponent::writeFileToDisk (File file)
         setCurrentCsdFile (file);
 
     getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
-    owner->setName ("Cabbage " + getCurrentCsdFile().getFullPathName());
-    addInstrumentsAndRegionsToCombobox();
-    fileTabs[currentFileIndex]->setButtonText (getCurrentCsdFile().getFileName());
-    cabbageSettings->updateRecentFilesList (getCurrentCsdFile());
+    openFile(getCurrentCsdFile().getFullPathName());
+
 }
 //==================================================================================
 void CabbageMainComponent::closeDocument()
@@ -1690,7 +1688,7 @@ void CabbageMainComponent::closeDocument()
     {
         if (getCurrentCodeEditor()->hasFileChanged() == true)
         {
-            const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel, 1);
+            const int result = CabbageUtilities::showYesNoMessage ("File has been modified, do you wish to save?\nexiting file?", lookAndFeel.get(), 1);
 
             if (result == 1)
             {
@@ -1712,6 +1710,7 @@ void CabbageMainComponent::closeDocument()
 //==================================================================================
 void CabbageMainComponent::removeEditor()
 {
+    cabbageSettings->getUserSettings()->setValue ("FontSizeConsole", getCurrentEditorContainer()->outputConsole.get()->getFontSize());
     editorAndConsole.removeObject (getCurrentEditorContainer());
     fileTabs.remove (currentFileIndex);
     currentFileIndex = (currentFileIndex > 0 ? currentFileIndex - 1 : 0);
@@ -1887,7 +1886,7 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             
         }
         else
-            CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel);
+            CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel.get());
     }
 }
 
@@ -1919,8 +1918,8 @@ void CabbageMainComponent::showFindPanel (bool withReplace)
 {
     if (findPanel == nullptr)
     {
-        findPanel = new FindPanel (getSearchString(), isCaseSensitive, withReplace);
-        addAndMakeVisible (findPanel);
+        findPanel.reset (new FindPanel (getSearchString(), isCaseSensitive, withReplace));
+        addAndMakeVisible (findPanel.get());
         resized();
     }
 

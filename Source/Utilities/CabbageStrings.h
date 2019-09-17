@@ -83,6 +83,46 @@ public:
         return newCsoundFile;
     }
 
+    static String getNewRackModuleFileText()
+    {
+            String newRackFile =
+                "<Cabbage>\n"
+                "form caption(\"CabbageModule\") size(100, 380), colour(255, 255, 255), pluginid(\"def1\")\n"
+                "cvinput bounds(40, 60, 20, 20), channel(\"cvInput1\")\n"
+                "label bounds(0, 90, 100, 40), fontcolour(0,0,0) text(\"Input\")\n"
+                "cvoutput bounds(40, 300, 20, 20), channel(\"cvOutput1\")\n"
+                "label bounds(0, 330, 100, 40), fontcolour(0,0,0) text(\"Output\")\n"
+                "rslider bounds(0, 150, 100, 100), channel(\"gain\"), textcolour(0, 0, 0), range(0, 1, 0, 1, .01)\n"
+                "</Cabbage>\n"
+                "<CsoundSynthesizer>\n"
+                "<CsOptions>\n"
+                "-n -d \n"
+                "</CsOptions>\n"
+                "<CsInstruments>\n"
+                "; Initialize the global variables. \n"
+                "ksmps = 32\n"
+                "nchnls = 2\n"
+                "0dbfs = 1\n"
+                "\n"
+                "\n"
+                "instr 1\n"
+                "    aInput chnget \"cvInput1\"\n"
+                "    \n"
+                "    aOut = aInput*chnget:k(\"gain\")\n"
+                "\n"
+                "    chnset a1, \"cvOutput1\"\n"
+                "endin\n"
+                "\n"
+                "</CsInstruments>\n"
+                "<CsScore>\n"
+                ";starts instrument 1 and runs it for a week\n"
+                "i1 0 [60*60*24*7] \n"
+                "</CsScore>\n"
+                "</CsoundSynthesizer>\n"
+        "";
+        return newRackFile;
+    }
+    
     static String getNewCabbageEffectFileText()
     {
         String newCsoundFile =

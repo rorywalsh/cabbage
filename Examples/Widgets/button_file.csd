@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("File Button Example") size(400, 300), colour(220, 220, 220), pluginid("BtnF")
+form caption("File Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 filebutton bounds(108, 30, 150, 50), channel("filebutton1"), text("Browsse", "Browsse") value(0) file("/Users/walshr/sourcecode/cabbage/Examples/Widgets/Sliders.csd")
@@ -12,7 +12,7 @@ texteditor bounds(10, 84, 379, 21), text(""), identchannel("editorIdent")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1

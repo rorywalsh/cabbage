@@ -27,7 +27,7 @@ AudioProcessor *JUCE_CALLTYPE
 
 createPluginFilter() {
     File csdFile;
-#ifndef JUCE_MAC
+#ifdef JUCE_WINDOWS
 	CabbageUtilities::debug(JucePlugin_Manufacturer);
     csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
 	if (csdFile.existsAsFile() == false)
@@ -36,12 +36,20 @@ createPluginFilter() {
 		
 		csdFile = File(filename);
 	}
-#else
+#elif JUCE_MAC
     //read .csd file from the correct location within the .vst bundle.
     const String dir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
     const String filename (File::getSpecialLocation (File::currentExecutableFile).withFileExtension (String (".csd")).getFileName());
     csdFile = File (dir + "/" + filename);
+#else
+    CabbageUtilities::debug(JucePlugin_Manufacturer);
+    csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+    if (csdFile.existsAsFile() == false)
+    {
+        String filename = "/usr/share/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+ File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
 
+        csdFile = File(filename);
+    }
 #endif
 
 	if (csdFile.existsAsFile() == false)
@@ -298,9 +306,8 @@ bool CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
                     linesFromImportedFile.addLines(
                             csdFile.getParentDirectory().getChildFile(files[y].toString()).loadFileAsString());
 
-                    ScopedPointer <XmlElement> xml;
-                    xml = XmlDocument::parse(CabbageUtilities::getPlantFileAsXmlString(
-                            csdFile.getParentDirectory().getChildFile(files[y].toString())));
+                    std::unique_ptr<XmlElement> xml(XmlDocument::parse(CabbageUtilities::getPlantFileAsXmlString(
+                            csdFile.getParentDirectory().getChildFile(files[y].toString()))));
 
                     if (!xml) //if plain text...
                     {
@@ -309,7 +316,7 @@ bool CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
                         }
                     } else//if plant xml
                     {
-                        handleXmlImport(xml, linesFromCsd);
+                        handleXmlImport(xml.get(), linesFromCsd);
                     }
                 }
             }
@@ -681,22 +688,23 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock &destData) {
 }
 
 void CabbagePluginProcessor::setStateInformation(const void *data, int sizeInBytes) {
-    ScopedPointer <XmlElement> xmlElement = getXmlFromBinary(data, sizeInBytes);
-    restorePluginState(xmlElement);
+    std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
+    restorePluginState(xmlElement.get());
 }
 
 //==============================================================================
-XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName) {
-    ScopedPointer <XmlElement> xml;
+XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName) 
+{
+    std::unique_ptr<XmlElement> xml;
 
     if (xmlFile.existsAsFile()) {
         xml = XmlDocument::parse(xmlFile);
 
         if (!xml)
-            xml = new XmlElement("CABBAGE_PRESETS");
+            xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
 
     } else
-        xml = new XmlElement("CABBAGE_PRESETS");
+        xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
 
 
     String presetName = "PRESET" + String(xml->getNumChildElements());
@@ -783,6 +791,7 @@ void CabbagePluginProcessor::restorePluginState(XmlElement *xmlState) {
         }
             //else dealing with preset files loaded in editor...
         else {
+//            xmlState->writeTo(File("/Users/walshr/Desktop/test.txt"));
             setParametersFromXml(xmlState);
         }
 
@@ -792,16 +801,23 @@ void CabbagePluginProcessor::restorePluginState(XmlElement *xmlState) {
     xmlState = nullptr;
 }
 
-void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
-    if (e) {
-        for (int i = 1; i < e->getNumAttributes(); i++) {
-            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i),
-                                                                              true);
+void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
+{
+    if (e)
+    {
+        for (int i = 1; i < e->getNumAttributes(); i++)
+        {
+
+            ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), true);
+
             const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+            const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
+            const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
 
             if (type == CabbageWidgetTypes::texteditor)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-            else if (type == CabbageWidgetTypes::filebutton) {
+            else if (type == CabbageWidgetTypes::filebutton)
+            {
                 const String absolutePath =
                         csdFile.getParentDirectory().getFullPathName() + "/" + e->getAttributeValue(i);
                 const String path = File(absolutePath).getFullPathName();
@@ -814,23 +830,42 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e) {
                 CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
                                               e->getAttributeValue(i + 1).getFloatValue());
                 i++;
-            } else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
+            }
+            else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
             {
                 CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex,
                                               e->getAttributeValue(i).getFloatValue());
                 CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey,
                                               e->getAttributeValue(i + 1).getFloatValue());
                 i++;
-            } else {
+            } else
+            {
                 if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
                     || CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps")
                     CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
                                                   e->getAttributeValue(i).getFloatValue());
+                    //now make changes parameter changes so host can see them..
+                
+                    for (auto param : getParameters())
+                    {
+                        if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
+                        {
+                            if (widgetName == cabbageParam->getWidgetName())
+                            {
+                                param->beginChangeGesture();
+                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (e->getAttributeValue(i).getFloatValue()));
+                                param->endChangeGesture();
+                            }
+                        }
+                    }
             }
         }
     }
 }
 
+//==============================================================================
+// This method is responsible for updating widget valuetrees based on the current
+// data stored in each widget's software channel bus. 
 //==============================================================================
 void CabbagePluginProcessor::getChannelDataFromCsound() 
 {
@@ -1039,7 +1074,7 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
     if (sampleRate != samplingRate) {
 		samplingRate = sampleRate;
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-//        createCsound(csdFile, false);
+        initAllCsoundChannels(cabbageWidgets);
     }
 }
 

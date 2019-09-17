@@ -23,19 +23,21 @@ class CabbageCheckbox;
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
-      processor (p),
+      mainComponent(),
       lookAndFeel(),
+      processor (p)
 #ifdef Cabbage_IDE_Build
-      layoutEditor (processor.cabbageWidgets),
+    , layoutEditor (processor.cabbageWidgets)
 #endif
-      mainComponent()
 {
     setName ("PluginEditor");
     setLookAndFeel (&lookAndFeel);
-    addAndMakeVisible(viewportContainer = new ViewportContainer());
+    viewportContainer.reset (new ViewportContainer());
+    addAndMakeVisible(viewportContainer.get());
     viewportContainer->addAndMakeVisible(mainComponent);
-    addAndMakeVisible (viewport = new Viewport());
-    viewport->setViewedComponent(viewportContainer, false);
+    viewport.reset (new Viewport());
+    addAndMakeVisible (viewport.get());
+    viewport->setViewedComponent(viewportContainer.get(), false);
     viewport->setScrollBarsShown(false, false);
     mainComponent.setInterceptsMouseClicks (false, true);
     setSize (50, 50);
@@ -52,7 +54,6 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     layoutEditor.setInterceptsMouseClicks (true, true);
 #endif
     resized();
-
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -66,7 +67,7 @@ CabbagePluginEditor::~CabbagePluginEditor()
 
 void CabbagePluginEditor::refreshValueTreeListeners()
 {
-	//refresh listeners each time the editor is opened...
+	//refresh listeners each time the editor is opened by the Cabbage host
 	for (int i = 0; i < components.size(); i++)
 	{
 		if(ValueTree::Listener* valueTreeListener = dynamic_cast<ValueTree::Listener*>(components[i]))
@@ -77,10 +78,13 @@ void CabbagePluginEditor::resized()
 {
 #ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
+    
 #endif
     if(viewportContainer)
         viewportContainer->setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
     mainComponent.setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
+
+    
     if(viewport)
     {
      viewport->setBounds ( getLocalBounds() );
@@ -307,6 +311,15 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::listbox)
         insertListBox (cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::screw)
+        insertScrew (cabbageWidgetData);
+
+    else if (widgetType == CabbageWidgetTypes::light)
+        insertLight (cabbageWidgetData);
+ 
+    else if (widgetType == CabbageWidgetTypes::cvinput || widgetType == CabbageWidgetTypes::cvoutput)
+        insertPort (cabbageWidgetData);
+    
     else if (widgetType == CabbageWidgetTypes::eventsequencer)
         insertStringSequencer (cabbageWidgetData);
 
@@ -553,6 +566,30 @@ void CabbagePluginEditor::insertLine (ValueTree cabbageWidgetData)
     addToEditorAndMakeVisible (line, cabbageWidgetData);
     addMouseListenerAndSetVisibility (line, cabbageWidgetData);
 }
+
+void CabbagePluginEditor::insertPort (ValueTree cabbageWidgetData)
+{
+    CabbagePort* port;
+    components.add (port = new CabbagePort (cabbageWidgetData));
+    addToEditorAndMakeVisible (port, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (port, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertScrew (ValueTree cabbageWidgetData)
+{
+    CabbageScrew* screw;
+    components.add (screw = new CabbageScrew (cabbageWidgetData));
+    addToEditorAndMakeVisible (screw, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (screw, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertLight (ValueTree cabbageWidgetData)
+{
+    CabbageLight* light;
+    components.add (light = new CabbageLight (cabbageWidgetData, this));
+    addToEditorAndMakeVisible (light, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (light, cabbageWidgetData);
+}
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
@@ -608,7 +645,7 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 	{
 		const StringArray textItems = cabbageButton->getTextArray();
 		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
-		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
+		// const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
 		if (textItems.size() > 0)
 			cabbageButton->setButtonText(textItems[buttonState == false ? 0 : 1]);
@@ -770,6 +807,7 @@ void CabbagePluginEditor::addToEditorAndMakeVisible (Component* comp, ValueTree 
     if(comp->getHeight()+comp->getY() > mainComponent.getHeight())
         instrumentBounds.setY(comp->getHeight()+comp->getY());
 
+
 }
 
 void CabbagePluginEditor::addMouseListenerAndSetVisibility (Component* comp, ValueTree wData)
@@ -869,6 +907,14 @@ void CabbagePluginEditor::sendChannelDataToCsound (String channel, float value)
         processor.getCsound()->SetChannel (channel.getCharPointer(), value);
 }
 
+float CabbagePluginEditor::getChannelDataFromCsound (String channel)
+{
+    if (csdCompiledWithoutError())
+        return processor.getCsound()->GetChannel (channel.getCharPointer());
+    
+    return 0;
+}
+
 void CabbagePluginEditor::sendChannelStringDataToCsound (String channel, String value)
 {
     if (processor.csdCompiledWithoutError())
@@ -946,7 +992,7 @@ void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String prese
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset)
 {
-    ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (processor.getCsdFile().withFileExtension (".snaps"));
+    std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (processor.getCsdFile().withFileExtension (".snaps")));
 
     if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
     {

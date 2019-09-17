@@ -24,8 +24,8 @@ class ComponentOverlay   :   public Component, public KeyListener
 public:
     ComponentOverlay (Component* targetChild, ComponentLayoutEditor* layoutEditor);
     ~ComponentOverlay ();
-    void resized ();
-    void paint (Graphics& g);
+    void resized () override;
+    void paint (Graphics& g) override;
     const Component* getTargetChild ();
     void updateFromTarget ();
     void applyToTarget ();
@@ -33,13 +33,13 @@ public:
     virtual void userStartedChangingBounds () {};
     virtual void userStoppedChangingBounds () {};
     bool boundsChangedSinceStart ();
-    bool keyPressed (const KeyPress& key, Component* originatingComponent);
+    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
 
-    void mouseEnter (const MouseEvent& e);
-    void mouseExit (const MouseEvent& e);
-    void mouseDown (const MouseEvent& e);
-    void mouseUp (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
+    void mouseEnter (const MouseEvent& e) override;
+    void mouseExit (const MouseEvent& e) override;
+    void mouseDown (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
 
     void setInterest (String isInteresting)
     {
@@ -58,7 +58,7 @@ public:
 
 private:
     CriticalSection bounds;
-    ScopedPointer<ComponentBoundsConstrainer>  constrainer;
+    std::unique_ptr<ComponentBoundsConstrainer>  constrainer;
     ComponentDragger dragger;
     SafePointer<Component> target;
     Array<juce::Rectangle<int> > childBounds;
@@ -66,7 +66,7 @@ private:
     String interest;
     bool userAdjusting;
     Rectangle<int> startBounds;
-    ScopedPointer<ComponentBoundsConstrainer> resizeContainer;
+    std::unique_ptr<ComponentBoundsConstrainer> resizeContainer;
     ResizableBorderComponent* resizer;
     ComponentLayoutEditor* layoutEditor;
 

@@ -29,7 +29,7 @@ Macros defined in the Cabbage section of your code can also be accessed in the C
 It can then accessed in the Csound orchestra like this:
 
 ```csharp
-prints $SLIDER1
+printf_i "%s \n", 1, "$SLIDER1" 
 ```
 
 > Note that macros passed from the Cabbage section to the Csound orchestra are string macros. Therefore you will need to convert to a number if you wish to pass numbered macros between Cabbage and the Csound orchestra.   

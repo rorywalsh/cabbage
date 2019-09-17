@@ -14,13 +14,13 @@ ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 
 
 pwd
-curl -L -o Csound6.12.1-MacOS_universal.dmg 'https://github.com/csound/csound/releases/download/6.12.2/Csound6.12.1-MacOS_universal.dmg'
+curl -L -o csound6.13.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.13.0/csound6.13.0-MacOS_x86_64.dmg'
 ls
-hdiutil attach Csound6.12.1-MacOS_universal.dmg
-cp -R /Volumes/Csound6.12.1/ Csound
-hdiutil detach /Volumes/Csound6.12.1/
+hdiutil attach csound6.13.0-MacOS_x86_64.dmg
+cp -R /Volumes/Csound6.13.0/ Csound
+hdiutil detach /Volumes/Csound6.13.0/
 cd Csound
-sudo installer -pkg csound6.12.1-OSX-universal.pkg -target /
+sudo installer -pkg csound6.13.0-MacOS_x86_64.pkg -target /
 sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 
 cd $AGENT_BUILDDIRECTORY
@@ -51,15 +51,12 @@ cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 echo "\n"
 
-126000
-
-
 cd $AGENT_BUILDDIRECTORY
 
 curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 hdiutil mount Packages.dmg
-sudo installer -pkg /Volumes/Packages\ 1.2.5/Install\ Packages.pkg -target /
-hdiutil detach /Volumes/Packages\ 1.2.5/
+sudo installer -pkg /Volumes/Packages\ 1.2.6/Install\ Packages.pkg -target /
+hdiutil detach /Volumes/Packages\ 1.2.6/
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX
 export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
@@ -115,8 +112,8 @@ cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
 cp ../opcodes.txt ./build/Release/Cabbage.app/Contents/MacOS/opcodes.txt 
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Release/
-curl -L -o CabbageRack-0.5.0-mac.zip https://github.com/rorywalsh/CabbageRack/blob/master/dist/CabbageRack-0.5.0-mac.zip?raw=true
-unzip -q CabbageRack-0.5.0-mac.zip
+curl -L -o CabbageRack-1.0.0-mac.zip https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip
+unzip -q CabbageRack-1.0.0-mac.zip
 ls
 cp -R CabbageRack Cabbage.app/Contents/CabbageRack
 ls Cabbage.app/Contents/
@@ -133,5 +130,8 @@ sed -i "" -e "s|SOURCE_PATH|$SYSTEM_DEFAULTWORKINGDIRECTORY|" InstallerAzure.pkg
 packagesbuild InstallerAzure.pkgproj
 ls build  
 pwd
-cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Cabbage.pkg $BUILD_ARTIFACTSTAGINGDIRECTORY/CabbageOSXInstaller.pkg
+
+VERSION="CabbageOSXInstaller"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
+
+cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Cabbage.pkg $BUILD_ARTIFACTSTAGINGDIRECTORY/$VERSION
 

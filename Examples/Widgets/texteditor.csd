@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Texteditor Example") size(400, 300), colour(220, 220, 220), pluginid("TxE1")
+form caption("Texteditor Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 label bounds(12, 36, 297, 19), text("Enter some text and hit enter"), align("left") fontcolour(84, 83, 83, 255)
@@ -14,7 +14,7 @@ label bounds(192, 60, 192, 21), text(""), identchannel("labelIdent")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1

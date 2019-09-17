@@ -48,6 +48,7 @@
 #include "../../Widgets/CabbageKeyboardDisplay.h"
 #include "../../Widgets/CabbageSlider.h"
 #include "../../Widgets/CabbageSoundfiler.h"
+#include "../../Widgets/CabbageRackWidgets.h"
 #include "../../Widgets/CabbageRangeSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 #include "../../Widgets/CabbageEventSequencer.h"
@@ -117,6 +118,11 @@ public:
     void insertSignalDisplay (ValueTree cabbageWidgetData);
     void insertStepper (ValueTree cabbageWidgetData) {};
     void insertMeter (ValueTree cabbageWidgetData);
+    
+    void insertPort (ValueTree cabbageWidgetData);
+    void insertScrew (ValueTree cabbageWidgetData);
+    void insertLight (ValueTree cabbageWidgetData);
+    
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
 	void refreshValueTreeListeners();
@@ -124,6 +130,7 @@ public:
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (String channel, float value);
     void sendChannelStringDataToCsound (String channel, String value);
+    float getChannelDataFromCsound (String channel);
     void sendScoreEventToCsound (String scoreEvent);
     void createEventMatrix(int cols, int rows, String channel);
     void setEventMatrixData(int cols, int rows, String channel, String data);
@@ -169,7 +176,7 @@ public:
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
     //=============================================================================
     void buttonClicked (Button* button) override;
-    void buttonStateChanged (Button* button);
+    void buttonStateChanged (Button* button) override;
     void toggleButtonState (Button* button, bool state);
     void comboBoxChanged (ComboBox* combo) override;
     void sliderValueChanged (Slider* slider) override;
@@ -224,7 +231,7 @@ public:
             CabbageWidgetData::setNumProp(plantWidgetData, CabbageIdentifierIds::visible, 0);
         }
 
-        void paint (Graphics& g){               g.fillAll (colour);         }
+        void paint (Graphics& g) override {               g.fillAll (colour);         }
         void setWidgetData(ValueTree wData){    plantWidgetData = wData;    }
     };
 
@@ -277,8 +284,8 @@ private:
         }
     };
 
-    ScopedPointer<Viewport> viewport;
-    ScopedPointer<ViewportContainer> viewportContainer;
+    std::unique_ptr<Viewport> viewport;
+    std::unique_ptr<ViewportContainer> viewportContainer;
     OwnedArray<Component> components;
     Array<Component*> radioComponents;
     OwnedArray<PopupDocumentWindow> popupPlants;

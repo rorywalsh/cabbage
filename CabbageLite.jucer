@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="0" reportAppUsage="1"
-              splashScreenColour="Dark" projectType="guiapp" version="1.0.0"
+              splashScreenColour="Dark" projectType="guiapp" version="2.1.9"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
-              cppLanguageStandard="11" jucerVersion="5.4.3" companyCopyright="">
+              cppLanguageStandard="11" jucerVersion="5.4.4" companyCopyright="">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
     <GROUP id="{E4950169-7245-8252-D27F-2344F45CAF99}" name="Source">
       <GROUP id="{4AFC1EE2-9934-F4AA-4ECD-50660152DD13}" name="BinaryData">
@@ -113,6 +113,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{FE7B8445-EC0A-528F-DC90-0F4F2117A865}" name="Widgets">
+        <FILE id="OSwm8Y" name="CabbageRackWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.cpp"/>
+        <FILE id="ZMPPxj" name="CabbageRackWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.h"/>
         <FILE id="gBhW8I" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
               file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <FILE id="B4YryK" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
@@ -233,9 +237,10 @@
                 externalLibraries="csound64&#10;sndfile">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbageLite"
-                       headerPath="&quot;/usr/local/include/csound&quot;" libraryPath="&quot;/usr/local/lib&quot;"/>
+                       headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"
+                       libraryPath="&quot;/usr/local/lib&quot;"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="CabbageLite"
-                       libraryPath="&quot;/usr/local/lib&quot;" headerPath="&quot;/usr/local/include/csound&quot;"/>
+                       libraryPath="&quot;/usr/local/lib&quot;" headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
@@ -281,16 +286,17 @@
       </MODULEPATHS>
     </VS2017>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="Cabbage_IDE_Build=1&#10;CABBAGE=1&#10;Cabbage_Lite=1"
-               smallIcon="Cl3fhx" bigIcon="Cl3fhx" extraFrameworks="/Library/Frameworks/CsoundLib64">
+               smallIcon="Cl3fhx" bigIcon="Cl3fhx" extraFrameworks="/Library/Frameworks/CsoundLib64"
+               microphonePermissionNeeded="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" enablePluginBinaryCopyStep="1" isDebug="1" optimisation="1"
                        linkTimeOptimisation="0" targetName="CabbageLite" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal" libraryPath=""/>
+                       osxArchitecture="64BitIntel" libraryPath=""/>
         <CONFIGURATION name="Release" enablePluginBinaryCopyStep="1" isDebug="0" optimisation="3"
                        linkTimeOptimisation="1" targetName="CabbageLite" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxArchitecture="64BitUniversal"/>
+                       osxArchitecture="64BitIntel"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>

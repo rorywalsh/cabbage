@@ -56,15 +56,15 @@ public:
     void changeListenerCallback (ChangeBroadcaster* source) override;
     void addColourProperties();
     void addMiscProperties();
-    void resized();
-    void buttonClicked (Button* button);
+    void resized() override;
+    void buttonClicked (Button* button) override;
     void paint (Graphics& g)  override;
-    void valueChanged (Value& value);
+    void valueChanged (Value& value) override;
     void updateColourScheme();
     void mouseEnter (const MouseEvent& e) override;
     void selectPanel (String button);
-    void filenameComponentChanged (FilenameComponent*);
-    void textPropertyComponentChanged (TextPropertyComponent* comp);
+    void filenameComponentChanged (FilenameComponent*) override;
+    void textPropertyComponentChanged (TextPropertyComponent* comp) override;
     void loadRepoCode (String codeSnippetName);
 
     class RepoListBox   :   public Component, ListBoxModel
@@ -85,7 +85,7 @@ public:
         void resized() override {};
         int getNumRows() override { return items.size();};
         void setDefaultItem();
-        void listBoxItemClicked (int row, const MouseEvent&) ;
+        void listBoxItemClicked (int row, const MouseEvent&) override;
         void paintListBoxItem (int rowNumber, Graphics& g,
                                int width, int height, bool rowIsSelected) override;
         void selectedRowsChanged (int /*lastRowselected*/) override {};
@@ -104,7 +104,7 @@ public:
     };
 
     RepoListBox listBox;
-    ScopedPointer<CodeEditorComponent> codeEditor;
+    std::unique_ptr<CodeEditorComponent> codeEditor;
     CodeDocument document;
     CsoundTokeniser csoundTokeniser;
 
@@ -134,11 +134,11 @@ public:
 
 private:
     PropertyPanel colourPanel, miscPanel;
-    ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
+    std::unique_ptr<PropertyPanelLookAndFeel> propertyPanelLook;
 
     Colour bgColour, labelBgColour, labelTextColour;
 
-    ScopedPointer<AudioDeviceSelectorComponent> audioDeviceSelector;
+    std::unique_ptr<AudioDeviceSelectorComponent> audioDeviceSelector;
     ValueTree valueTree;
     TextButton deleteRepoButton, saveRepoButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;

@@ -29,8 +29,10 @@
 
 class CabbageIDELookAndFeel;
 
+#ifdef _MSC_VER
 #pragma warning(disable: 4244) // possible loss of data
 #pragma warning(disable: 4100) // possible loss of data
+#endif
 
 using namespace std;
 
@@ -985,7 +987,7 @@ public:
     {
 
         PopupMenu menu;
-        int fileCnt = 0;
+        // int fileCnt = 0;
 
         if (File (userDir).exists())
         {
@@ -1001,8 +1003,7 @@ public:
 
             for (int i = 0; i < plantFiles.size(); ++i)
             {
-                ScopedPointer<XmlElement> xml;
-                xml = XmlDocument::parse (getPlantFileAsXmlString(plantFiles[i]));
+				std::unique_ptr<XmlElement> xml(XmlDocument::parse (getPlantFileAsXmlString(plantFiles[i])));
 
                 if (xml) //if valid xml
                 {
@@ -1086,7 +1087,7 @@ public:
     //======================================================================================
     static void writeValueTreeToFile (ValueTree valueTree, String filePath)
     {
-        ScopedPointer<XmlElement> data (valueTree.createXml());
+		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
         data->writeToFile (File (filePath), String());

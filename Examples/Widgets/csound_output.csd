@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 500), caption("Csound output"), pluginid("WCOp"), colour(39, 40, 34)
+form size(400, 500), caption("Csound output"), pluginID("plu1"), colour(39, 40, 34)
 csoundoutput bounds(10, 10, 380, 400)
 </Cabbage>
 <CsoundSynthesizer>
@@ -8,7 +8,7 @@ csoundoutput bounds(10, 10, 380, 400)
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1

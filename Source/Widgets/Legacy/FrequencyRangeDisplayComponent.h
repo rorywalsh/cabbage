@@ -40,7 +40,7 @@ public:
 
     ~FrequencyRangeDisplayComponent() {}
 
-    void resized()
+    void resized() override
     {
         if (getWidth() < 400)
             resolution = resolution / 2;

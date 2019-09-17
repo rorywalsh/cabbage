@@ -1,6 +1,6 @@
 dir  
 cd c:/
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.12.0.zip" -OutFile "C:\csound-windows_x64-6.12.0.zip" 
+Invoke-WebRequest -Uri "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.13.0.zip" -OutFile "C:\csound-windows_x64-6.12.0.zip" 
 7z.exe x csound-windows_x64-6.12.0.zip -o"C:/Program Files"
 cd "C:/Program Files/Csound6_x64"
 dir
@@ -24,7 +24,7 @@ dir
 cd D:/a/1/
 git clone https://github.com/WeAreROLI/JUCE.git
 cd D:/a/1/JUCE
-git checkout tags/5.4.3
+git checkout master
 cd D:/a/1/JUCE/extras/Projucer/JuceLibraryCode
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
@@ -47,9 +47,9 @@ Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile
 
 cd D:/a/1/s/Builds/VisualStudio2017/x64
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-0.5.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-0.5.0-win.zip" 
+Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-1.0.0-win.zip" 
 
-7z.exe x CabbageRack-0.5.0-win.zip -oD:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack
+7z.exe x CabbageRack-1.0.0-win.zip -oD:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack
 ls
 
 
@@ -60,5 +60,14 @@ cd D:/a/1/s/Builds/VisualStudio2017
 set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
 iscc CabbageCannonicalInstaller.iss
 
-Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination "D:/a/1/a/Cabbage64Setup.exe"
+cd D:/a/1/s
+# generate beta name with version number 
+$OutputVariable = cmd /c "D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\Debug\\App\\Projucer.exe --get-version CabbageIDE.jucer" 2>&1
+# Invoke-Expression -Command $PROJUCER -OutVariable outputVariable 
+Write-Host $outputVariable
+$cabbageVersion = 'D:/a/1/a/Cabbage64Setup-' + $outputVariable + '.exe'
+Write-Host "PRINTING VERSION NAME"
+Write-Host $cabbageVersion 
+
+Copy-Item "D:/a/1/s/Builds/VisualStudio2017/Output/Cabbage64Setup.exe" -Destination $cabbageVersion
 

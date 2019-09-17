@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Label Example") size(400, 300), colour(220, 220, 220), pluginid("Labl")
+form caption("Label Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 label bounds(50, 38, 300, 18), channel("label1"), colour(20, 20, 20), text("Label. Click to send info to Csound")
@@ -11,7 +11,7 @@ label bounds(110, 140, 165, 62) identchannel("widgetIdent")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1

@@ -84,7 +84,7 @@ public:
                            : processor->getMainBusNumInputChannels());
 
         if (preferredSetupOptions != nullptr)
-            options = new AudioDeviceManager::AudioDeviceSetup (*preferredSetupOptions);
+            options.reset (new AudioDeviceManager::AudioDeviceSetup (*preferredSetupOptions));
 
         if (inChannels > 0 && RuntimePermissions::isRequired (RuntimePermissions::recordAudio)
             && ! RuntimePermissions::isGranted (RuntimePermissions::recordAudio))
@@ -96,7 +96,7 @@ public:
 
     void init (bool enableAudioInput, const String& preferredDefaultDeviceName)
     {
-        setupAudioDevices (enableAudioInput, preferredDefaultDeviceName, options);
+        setupAudioDevices (enableAudioInput, preferredDefaultDeviceName, options.get());
         reloadPluginState();
         startPlaying();
 
@@ -120,10 +120,12 @@ public:
     {
 
 #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
-        processor = ::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone);
+        processor.reset (::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone));
 #else
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-        processor = createCabbagePluginFilter (File (file));
+        processor.reset (createCabbagePluginFilter (File (file)));
+        const int numChannels = CabbageUtilities::getHeaderInfo(File(file).loadFileAsString(), "nchnls");
+        processor->setPlayConfigDetails(numChannels, numChannels, 44100, 64);
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 #endif
         jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
@@ -131,18 +133,19 @@ public:
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails (44100, 512);
 
-        int inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
-                          : processor->getMainBusNumInputChannels());
-
-        int outChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numOuts
-                           : processor->getMainBusNumOutputChannels());
-
-        processorHasPotentialFeedbackLoop = (inChannels > 0 && outChannels > 0);
+//        int inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
+//                          : processor->getMainBusNumInputChannels());
+//
+//        int outChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numOuts
+//                           : processor->getMainBusNumOutputChannels());
+//
+//        processorHasPotentialFeedbackLoop = (inChannels > 0 && outChannels > 0);
     }
 
     virtual void deletePlugin()
     {
         stopPlaying();
+        processor->editorBeingDeleted(processor->getActiveEditor());
         processor = nullptr;
     }
 
@@ -230,7 +233,7 @@ public:
     //==============================================================================
     void startPlaying()
     {
-        player.setProcessor (processor);
+        player.setProcessor (processor.get());
 
 #if JucePlugin_Enable_IAA && JUCE_IOS
 
@@ -240,6 +243,8 @@ public:
             device->setMidiMessageCollector (&player.getMidiMessageCollector());
             device->setMidiMessageCollector (&player.getMidiMessageCollector());
         }
+        
+        
 
 #endif
     }
@@ -255,8 +260,8 @@ public:
     {
         DialogWindow::LaunchOptions o;
 
-        auto totalInChannels  = processor->getMainBusNumInputChannels();
-        auto totalOutChannels = processor->getMainBusNumOutputChannels();
+        auto totalInChannels  = 24;//processor->getMainBusNumInputChannels();
+        auto totalOutChannels = 24;//processor->getMainBusNumOutputChannels();
 
         if (channelConfiguration.size() > 0)
         {
@@ -285,9 +290,9 @@ public:
     {
         if (settings != nullptr)
         {
-            ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
+            std::unique_ptr<XmlElement> xml (deviceManager.createStateXml());
 
-            settings->setValue ("audioSetup", xml);
+            settings->setValue ("audioSetup", xml.get());
 
 #if ! (JUCE_IOS || JUCE_ANDROID)
             settings->setValue ("shouldMuteInput", (bool) shouldMuteInput.getValue());
@@ -299,11 +304,11 @@ public:
                                  const String& preferredDefaultDeviceName,
                                  const AudioDeviceManager::AudioDeviceSetup* preferredSetupOptions)
     {
-        ScopedPointer<XmlElement> savedState;
+        std::unique_ptr<XmlElement> savedState;
 
         if (settings != nullptr)
         {
-            savedState      = settings->getXmlValue ("audioSetup");
+            savedState = settings->getXmlValue ("audioSetup");
 
 #if ! (JUCE_IOS || JUCE_ANDROID)
             shouldMuteInput.setValue (settings->getBoolValue ("shouldMuteInput", true));
@@ -314,7 +319,7 @@ public:
 		//load ASIO drivers by default
 		if(savedState == nullptr)
 		{
-			savedState = new XmlElement("DEVICESETUP");
+			savedState = std::unique_ptr<XmlElement>(new XmlElement("DEVICESETUP"));
 			savedState->setAttribute("deviceType", "ASIO");
 			savedState->setAttribute("audioOutputDeviceName", "ASIO4ALL v2");
 			savedState->setAttribute("audioInputDeviceName", "ASIO4ALL v2");
@@ -332,7 +337,7 @@ public:
 
         deviceManager.initialise (enableAudioInput ? totalInChannels : 0,
                                   totalOutChannels,
-                                  savedState,
+                                  savedState.get(),
                                   true,
                                   preferredDefaultDeviceName,
                                   preferredSetupOptions);
@@ -404,7 +409,7 @@ public:
 
     //==============================================================================
     OptionalScopedPointer<PropertySet> settings;
-    ScopedPointer<AudioProcessor> processor;
+    std::unique_ptr<AudioProcessor> processor;
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
     Array<PluginInOuts> channelConfiguration;
@@ -414,7 +419,7 @@ public:
     Value shouldMuteInput;
     AudioSampleBuffer emptyBuffer;
 
-    ScopedPointer<AudioDeviceManager::AudioDeviceSetup> options;
+    std::unique_ptr<AudioDeviceManager::AudioDeviceSetup> options;
 
 #if JUCE_IOS || JUCE_ANDROID
     StringArray lastMidiDevices;

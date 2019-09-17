@@ -134,6 +134,15 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
 
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::line))
         setLineProperties (widgetData, ID);
+    
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::cvoutput) || strTokens[0].trim() == String(CabbageWidgetTypes::cvinput))
+        setPortProperties (widgetData, ID, strTokens[0].trim());
+    
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::screw))
+        setScrewProperties (widgetData, ID);
+
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::light))
+        setLightProperties (widgetData, ID);
 
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::sourcebutton) || strTokens[0].trim() == String(CabbageWidgetTypes::loadbutton))
         setLoadButtonProperties (widgetData, ID);
@@ -1022,7 +1031,9 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
     
     //if populate is called, it's a fair assumption that the widget is using string channels..
-    CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
+    //.. however, if it's a preset combo, set the type to number so we can automate it..
+    if(!strTokens[0].contains("snaps"))
+        CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
 
 }
 
@@ -1181,16 +1192,22 @@ ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, Str
 {
     for (int i = 0; i < widgetData.getNumChildren(); i++)
     {
+
         if (searchByChannel == true)
         {
             //only need first channel from multichannel widgets..see CabbagePluginProcessor::restorePluginState()
             var channels = widgetData.getChild (i).getProperty (CabbageIdentifierIds::channel);
+			const String channel = CabbageWidgetData::getStringProp(widgetData.getChild(i), CabbageIdentifierIds::channel);
 
             if (channels.size() > 0)
                 if (name == channels[0].toString())
                 {
                     return widgetData.getChild (i);
                 }
+
+			if(name == CabbageWidgetData::getStringProp(widgetData.getChild(i), CabbageIdentifierIds::channel))
+				return  widgetData.getChild(i);
+
         }
         else
         {

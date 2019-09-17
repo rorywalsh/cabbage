@@ -26,7 +26,7 @@ public:
 
     OwnedArray<AudioParameterFloat> parameters;
 
-    void sendChannelDataToCsound();
+    void sendChannelDataToCsound() override;
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
 

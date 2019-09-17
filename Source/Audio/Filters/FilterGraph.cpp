@@ -77,49 +77,38 @@ AudioProcessorGraph::Node::Ptr FilterGraph::getNodeForName (const String& name) 
     return nullptr;
 }
 
-void FilterGraph::addPlugin (const PluginDescription& desc, Point<double> p)
+void FilterGraph::addPlugin (const PluginDescription& desc, Point<double> pos)
 {
-    struct AsyncCallback : public AudioPluginFormat::InstantiationCompletionCallback
-    {
-        AsyncCallback (FilterGraph& g, Point<double> pos)  : owner (g), position (pos)
-        {}
-
-        void completionCallback (AudioPluginInstance* instance, const String& error) override
-        {
-            owner.addFilterCallback (instance, error, position);
-        }
-
-        FilterGraph& owner;
-        Point<double> position;
-    };
-
-
-
-    formatManager.createPluginInstanceAsync (desc,
-                                             graph.getSampleRate(),
-                                             graph.getBlockSize(),
-                                             new AsyncCallback (*this, p));
+	formatManager.createPluginInstanceAsync(desc,
+		graph.getSampleRate(),
+		graph.getBlockSize(),
+		[this, pos](std::unique_ptr<AudioPluginInstance> instance, const String& error)
+		{
+			addPluginCallback(std::move(instance), error, pos);
+		});
+  
 }
 
-void FilterGraph::addFilterCallback (AudioPluginInstance* instance, const String& error, Point<double> pos)
+void FilterGraph::addPluginCallback(std::unique_ptr<AudioPluginInstance> instance,
+	const String& error, Point<double> pos)
 {
-    if (instance == nullptr)
-    {
-        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-                                          TRANS("Couldn't create filter"),
-                                          error);
-    }
-    else
-    {
-        instance->enableAllBuses();
+	if (instance == nullptr)
+	{
+		AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon,
+			TRANS("Couldn't create plugin"),
+			error);
+	}
+	else
+	{
+		instance->enableAllBuses();
 
-        if (auto node = graph.addNode (instance))
-        {
-            node->properties.set ("x", pos.x);
-            node->properties.set ("y", pos.y);
-            changed();
-        }
-    }
+		if (auto node = graph.addNode(std::move(instance)))
+		{
+			node->properties.set("x", pos.x);
+			node->properties.set("y", pos.y);
+			changed();
+		}
+	}
 }
 
 void FilterGraph::setNodePosition (NodeID nodeID, Point<double> pos)
@@ -364,7 +353,7 @@ static XmlElement* createNodeXml(AudioProcessorGraph::Node* const node) noexcept
 		{
 			PluginDescription pd;
 			plugin->fillInPluginDescription(pd);
-			e->addChildElement(pd.createXml());
+			e->addChildElement(pd.createXml().release());
 		}
 
 		{
@@ -398,20 +387,20 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 
 	String errorMessage;
 
-	if (auto* instance = formatManager.createPluginInstance(pd, graph.getSampleRate(),
+	if (auto instance = formatManager.createPluginInstance(pd, graph.getSampleRate(),
 		graph.getBlockSize(), errorMessage))
 	{
 		if (auto* layoutEntity = xml.getChildByName("LAYOUT"))
 		{
 			auto layout = instance->getBusesLayout();
 
-			readBusLayoutFromXml(layout, instance, *layoutEntity, true);
-			readBusLayoutFromXml(layout, instance, *layoutEntity, false);
+			readBusLayoutFromXml(layout, instance.get(), *layoutEntity, true);
+			readBusLayoutFromXml(layout, instance.get(), *layoutEntity, false);
 
 			instance->setBusesLayout(layout);
 		}
 
-		if (auto node = graph.addNode(instance, NodeID((uint32)xml.getIntAttribute("uid"))))
+		if (auto node = graph.addNode(std::move(instance), NodeID((uint32)xml.getIntAttribute("uid"))))
 		{
 			if (auto* state = xml.getChildByName("STATE"))
 			{

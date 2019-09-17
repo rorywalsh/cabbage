@@ -55,7 +55,7 @@ namespace LookAndFeelHelpers
 const Drawable* CabbageFoldersLookAndFeel::getDefaultFolderImage()
 {
     if (newFolderImage == nullptr)
-        newFolderImage.reset (createDrawableFromSVG (R"svgdata(
+        newFolderImage = createDrawableFromSVG (R"svgdata(
                                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                      width="706px" height="532px" viewBox="0 0 706 532" enable-background="new 0 0 706 532" xml:space="preserve">
                                                      <g>
@@ -67,7 +67,7 @@ const Drawable* CabbageFoldersLookAndFeel::getDefaultFolderImage()
                                                      c0.4-15.4-10.4-11.8-18-11.1L608.6,136.8z"/>
                                                      </g>
                                                      </svg>
-                                                     )svgdata"));
+                                                     )svgdata");
                               
    return newFolderImage.get();
 }
@@ -83,7 +83,7 @@ void CabbageLookAndFeel2::setDefaultFont(File fontFile)
 {
 //    if(fontFile.existsAsFile())
 //    {
-//        ScopedPointer<InputStream> inStream = fontFile.createInputStream();
+//        std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
 //        MemoryBlock mb;
 //        inStream->readIntoMemoryBlock(mb);
 //        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
@@ -545,8 +545,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
             {
                 image = ImageCache::getFromFile (imgSlider);
                 image = image.rescaled (slider.getWidth(), slider.getHeight());
-                ScopedPointer<Drawable> drawable;
-                drawable = Drawable::createFromImageFile (imgSlider);
+                std::unique_ptr<Drawable> drawable (Drawable::createFromImageFile (imgSlider));
                 drawable->setTransformToFit (Rectangle<float> (0, 0, slider.getWidth(), slider.getWidth()), RectanglePlacement::centred);
                 drawable->draw (g, 1.f, AffineTransform::rotation (angle,
                                                                    slider.getWidth() / 2, slider.getWidth() / 2));
@@ -1171,12 +1170,12 @@ void CabbageLookAndFeel2::drawTwoValueThumb (Graphics& g, float x, float y, floa
 //if using an SVG..
 void CabbageLookAndFeel2::drawFromSVG (Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine)
 {
-    ScopedPointer<XmlElement> svg (XmlDocument::parse (svgFile.loadFileAsString()));
+    std::unique_ptr<XmlElement> svg (XmlDocument::parse (svgFile.loadFileAsString()));
 
     if (svg == nullptr)
         jassert (false);
 
-    ScopedPointer<Drawable> drawable;
+    std::unique_ptr<Drawable> drawable;
 
     if (svg != nullptr)
     {
@@ -1215,12 +1214,12 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
         }
 
         MemoryInputStream svgStream (CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
-        ScopedPointer<XmlElement> svg (XmlDocument::parse (svgStream.readString()));
+        std::unique_ptr<XmlElement> svg (XmlDocument::parse (svgStream.readString()));
 
         if (svg == nullptr)
             jassert (false);
 
-        ScopedPointer<Drawable> drawable;
+        std::unique_ptr<Drawable> drawable;
 
         if (svg != nullptr)
         {

@@ -114,7 +114,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
 
         if (fileName.existsAsFile())
         {
-            ScopedPointer<XmlElement> xmlElement = XmlDocument::parse (fileName);
+            std::unique_ptr<XmlElement> xmlElement = XmlDocument::parse (fileName);
 
             if (xmlElement)
                 if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
@@ -134,7 +134,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
 		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
-			listboxDir = File(workingDir);
+			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
 		else if(workingDir.isNotEmpty())
 			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
         else

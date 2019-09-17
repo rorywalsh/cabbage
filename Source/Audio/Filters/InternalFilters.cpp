@@ -29,375 +29,367 @@
 #include "FilterGraph.h"
 
 //==============================================================================
-class InternalPlugin   : public AudioPluginInstance
+class InternalPlugin : public AudioPluginInstance
 {
 protected:
-    InternalPlugin (const PluginDescription& descr,
-                    const AudioChannelSet& channelSetToUse = AudioChannelSet::stereo())
-        : AudioPluginInstance (getBusProperties (descr.numInputChannels == 0, channelSetToUse)),
-          name  (descr.fileOrIdentifier.upToFirstOccurrenceOf (":", false, false)),
-          state (descr.fileOrIdentifier.fromFirstOccurrenceOf (":", false, false)),
-          isGenerator (descr.numInputChannels == 0),
-          hasMidi (descr.isInstrument),
-          channelSet (channelSetToUse)
-    {
-        jassert (channelSetToUse.size() == descr.numOutputChannels);
-    }
+	InternalPlugin(const PluginDescription& descr,
+		const AudioChannelSet& channelSetToUse = AudioChannelSet::stereo())
+		: AudioPluginInstance(getBusProperties(descr.numInputChannels == 0, channelSetToUse)),
+		name(descr.fileOrIdentifier.upToFirstOccurrenceOf(":", false, false)),
+		state(descr.fileOrIdentifier.fromFirstOccurrenceOf(":", false, false)),
+		isGenerator(descr.numInputChannels == 0),
+		hasMidi(descr.isInstrument),
+		channelSet(channelSetToUse)
+	{
+		jassert(channelSetToUse.size() == descr.numOutputChannels);
+	}
 
 public:
-    //==============================================================================
-    const String getName() const override                     { return name; }
-    double getTailLengthSeconds() const override              { return 0.0; }
-    bool acceptsMidi() const override                         { return hasMidi; }
-    bool producesMidi() const override                        { return hasMidi; }
-    AudioProcessorEditor* createEditor() override             { return nullptr; }
-    bool hasEditor() const override                           { return false; }
-    int getNumPrograms() override                             { return 0; }
-    int getCurrentProgram() override                          { return 0; }
-    void setCurrentProgram (int) override                     {}
-    const String getProgramName (int) override                { return {}; }
-    void changeProgramName (int, const String&) override      {}
-    void getStateInformation (juce::MemoryBlock&) override    {}
-    void setStateInformation (const void*, int) override      {}
+	//==============================================================================
+	const String getName() const override { return name; }
+	double getTailLengthSeconds() const override { return 0.0; }
+	bool acceptsMidi() const override { return hasMidi; }
+	bool producesMidi() const override { return hasMidi; }
+	AudioProcessorEditor* createEditor() override { return nullptr; }
+	bool hasEditor() const override { return false; }
+	int getNumPrograms() override { return 0; }
+	int getCurrentProgram() override { return 0; }
+	void setCurrentProgram(int) override {}
+	const String getProgramName(int) override { return {}; }
+	void changeProgramName(int, const String&) override {}
+	void getStateInformation(juce::MemoryBlock&) override {}
+	void setStateInformation(const void*, int) override {}
 
-    //==============================================================================
-    bool isBusesLayoutSupported (const BusesLayout& layout) const override
-    {
-        if (! isGenerator)
-        {
-            if (layout.getMainOutputChannelSet() != channelSet)
-                return false;
-        }
+	//==============================================================================
+	bool isBusesLayoutSupported(const BusesLayout& layout) const override
+	{
+		if (!isGenerator)
+			if (layout.getMainOutputChannelSet() != channelSet)
+				return false;
 
-        if (layout.getMainInputChannelSet() != channelSet)
-            return false;
+		if (layout.getMainInputChannelSet() != channelSet)
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    //==============================================================================
-    void fillInPluginDescription (PluginDescription& description) const override
-    {
-        description = getPluginDescription (name + ":" + state,
-                                            isGenerator,
-                                            hasMidi,
-                                            channelSet);
-    }
+	//==============================================================================
+	void fillInPluginDescription(PluginDescription& description) const override
+	{
+		description = getPluginDescription(name + ":" + state,
+			isGenerator,
+			hasMidi,
+			channelSet);
+	}
 
-    static PluginDescription getPluginDescription (const String& identifier,
-                                                   bool registerAsGenerator,
-                                                   bool acceptsMidi,
-                                                   const AudioChannelSet& channelSetToUse
-                                                      = AudioChannelSet::stereo())
-    {
-        PluginDescription descr;
-        auto pluginName  = identifier.upToFirstOccurrenceOf (":", false, false);
-        auto pluginState = identifier.fromFirstOccurrenceOf (":", false, false);
+	static PluginDescription getPluginDescription(const String& identifier,
+		bool registerAsGenerator,
+		bool acceptsMidi,
+		const AudioChannelSet& channelSetToUse
+		= AudioChannelSet::stereo())
+	{
+		PluginDescription descr;
+		auto pluginName = identifier.upToFirstOccurrenceOf(":", false, false);
+		auto pluginState = identifier.fromFirstOccurrenceOf(":", false, false);
 
-        descr.name              = pluginName;
-        descr.descriptiveName   = pluginName;
-        descr.pluginFormatName  = "Internal";
-        descr.category          = (registerAsGenerator ? (acceptsMidi ? "Synth" : "Generator") : "Effect");
-        descr.manufacturerName  = "ROLI Ltd.";
-        descr.version           = ProjectInfo::versionString;
-        descr.fileOrIdentifier  = pluginName + ":" + pluginState;
-        descr.uid               = pluginName.hashCode();
-        descr.isInstrument      = (acceptsMidi && registerAsGenerator);
-        descr.numInputChannels  = (registerAsGenerator ? 0 : channelSetToUse.size());
-        descr.numOutputChannels = channelSetToUse.size();
+		descr.name = pluginName;
+		descr.descriptiveName = pluginName;
+		descr.pluginFormatName = "Internal";
+		descr.category = (registerAsGenerator ? (acceptsMidi ? "Synth" : "Generator") : "Effect");
+		descr.manufacturerName = "JUCE";
+		descr.version = ProjectInfo::versionString;
+		descr.fileOrIdentifier = pluginName + ":" + pluginState;
+		descr.uid = pluginName.hashCode();
+		descr.isInstrument = (acceptsMidi && registerAsGenerator);
+		descr.numInputChannels = (registerAsGenerator ? 0 : channelSetToUse.size());
+		descr.numOutputChannels = channelSetToUse.size();
 
-        return descr;
-    }
+		return descr;
+	}
 private:
-    static BusesProperties getBusProperties (bool registerAsGenerator,
-                                             const AudioChannelSet& channelSetToUse)
-    {
-        return registerAsGenerator ? BusesProperties().withOutput ("Output", channelSetToUse)
-                                   : BusesProperties().withInput  ("Input",  channelSetToUse)
-                                                      .withOutput ("Output", channelSetToUse);
-    }
+	static BusesProperties getBusProperties(bool registerAsGenerator,
+		const AudioChannelSet& channelSetToUse)
+	{
+		return registerAsGenerator ? BusesProperties().withOutput("Output", channelSetToUse)
+			: BusesProperties().withInput("Input", channelSetToUse)
+			.withOutput("Output", channelSetToUse);
+	}
 
-    //==============================================================================
-    String name, state;
-    bool isGenerator, hasMidi;
-    AudioChannelSet channelSet;
+	//==============================================================================
+	String name, state;
+	bool isGenerator, hasMidi;
+	AudioChannelSet channelSet;
 
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InternalPlugin)
+	//==============================================================================
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InternalPlugin)
 };
 
 //==============================================================================
-class SineWaveSynth :   public InternalPlugin
+class SineWaveSynth : public InternalPlugin
 {
 public:
-    SineWaveSynth (const PluginDescription& descr) :   InternalPlugin (descr)
-    {
-        const int numVoices = 8;
+	SineWaveSynth(const PluginDescription& descr) : InternalPlugin(descr)
+	{
+		const int numVoices = 8;
 
-        // Add some voices...
-        for (int i = numVoices; --i >= 0;)
-            synth.addVoice (new SineWaveVoice());
+		// Add some voices...
+		for (int i = numVoices; --i >= 0;)
+			synth.addVoice(new SineWaveVoice());
 
-        // ..and give the synth a sound to play
-        synth.addSound (new SineWaveSound());
-    }
+		// ..and give the synth a sound to play
+		synth.addSound(new SineWaveSound());
+	}
 
-    static String getIdentifier()
-    {
-        return "Sine Wave Synth";
-    }
+	static String getIdentifier()
+	{
+		return "Sine Wave Synth";
+	}
 
-    static PluginDescription getPluginDescription()
-    {
-        return InternalPlugin::getPluginDescription (getIdentifier(), true, true);
-    }
+	static PluginDescription getPluginDescription()
+	{
+		return InternalPlugin::getPluginDescription(getIdentifier(), true, true);
+	}
 
-    //==============================================================================
-    void prepareToPlay (double newSampleRate, int) override
-    {
-        synth.setCurrentPlaybackSampleRate (newSampleRate);
-    }
+	//==============================================================================
+	void prepareToPlay(double newSampleRate, int) override
+	{
+		synth.setCurrentPlaybackSampleRate(newSampleRate);
+	}
 
-    void releaseResources() override {}
+	void releaseResources() override {}
 
-    //==============================================================================
-    void processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages) override
-    {
-        const int numSamples = buffer.getNumSamples();
+	//==============================================================================
+	void processBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages) override
+	{
+		const int numSamples = buffer.getNumSamples();
 
-        buffer.clear();
-        synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
-        buffer.applyGain (0.8f);
-    }
+		buffer.clear();
+		synth.renderNextBlock(buffer, midiMessages, 0, numSamples);
+		buffer.applyGain(0.8f);
+	}
+
+	using InternalPlugin::processBlock;
 
 private:
-    //==============================================================================
-    class SineWaveSound : public SynthesiserSound
-    {
-    public:
-        SineWaveSound() {}
+	//==============================================================================
+	struct SineWaveSound : public SynthesiserSound
+	{
+		SineWaveSound() = default;
 
-        bool appliesToNote (int /*midiNoteNumber*/) override    { return true; }
-        bool appliesToChannel (int /*midiChannel*/) override    { return true; }
-    };
+		bool appliesToNote(int /*midiNoteNumber*/) override { return true; }
+		bool appliesToChannel(int /*midiChannel*/) override { return true; }
+	};
 
-    class SineWaveVoice   : public SynthesiserVoice
-    {
-    public:
-        SineWaveVoice()
-        : currentAngle (0), angleDelta (0), level (0), tailOff (0)
-        {
-        }
+	struct SineWaveVoice : public SynthesiserVoice
+	{
+		SineWaveVoice() = default;
 
-        bool canPlaySound (SynthesiserSound* sound) override
-        {
-            return dynamic_cast<SineWaveSound*> (sound) != nullptr;
-        }
+		bool canPlaySound(SynthesiserSound* sound) override
+		{
+			return dynamic_cast<SineWaveSound*> (sound) != nullptr;
+		}
 
-        void startNote (int midiNoteNumber, float velocity,
-                        SynthesiserSound* /*sound*/,
-                        int /*currentPitchWheelPosition*/) override
-        {
-            currentAngle = 0.0;
-            level = velocity * 0.15;
-            tailOff = 0.0;
+		void startNote(int midiNoteNumber, float velocity,
+			SynthesiserSound* /*sound*/,
+			int /*currentPitchWheelPosition*/) override
+		{
+			currentAngle = 0.0;
+			level = velocity * 0.15;
+			tailOff = 0.0;
 
-            double cyclesPerSecond = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-            double cyclesPerSample = cyclesPerSecond / getSampleRate();
+			double cyclesPerSecond = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+			double cyclesPerSample = cyclesPerSecond / getSampleRate();
 
-            angleDelta = cyclesPerSample * 2.0 * double_Pi;
-        }
+			angleDelta = cyclesPerSample * 2.0 * double_Pi;
+		}
 
-        void stopNote (float /*velocity*/, bool allowTailOff) override
-        {
-            if (allowTailOff)
-            {
-                // start a tail-off by setting this flag. The render callback will pick up on
-                // this and do a fade out, calling clearCurrentNote() when it's finished.
+		void stopNote(float /*velocity*/, bool allowTailOff) override
+		{
+			if (allowTailOff)
+			{
+				// start a tail-off by setting this flag. The render callback will pick up on
+				// this and do a fade out, calling clearCurrentNote() when it's finished.
 
-                if (tailOff == 0.0) // we only need to begin a tail-off if it's not already doing so - the
-                    // stopNote method could be called more than once.
-                    tailOff = 1.0;
-            }
-            else
-            {
-                // we're being told to stop playing immediately, so reset everything..
+				if (tailOff == 0.0) // we only need to begin a tail-off if it's not already doing so - the
+					// stopNote method could be called more than once.
+					tailOff = 1.0;
+			}
+			else
+			{
+				// we're being told to stop playing immediately, so reset everything..
 
-                clearCurrentNote();
-                angleDelta = 0.0;
-            }
-        }
+				clearCurrentNote();
+				angleDelta = 0.0;
+			}
+		}
 
-        void pitchWheelMoved (int /*newValue*/) override
-        {
-            // not implemented for the purposes of this demo!
-        }
+		void pitchWheelMoved(int /*newValue*/) override
+		{
+			// not implemented for the purposes of this demo!
+		}
 
-        void controllerMoved (int /*controllerNumber*/, int /*newValue*/) override
-        {
-            // not implemented for the purposes of this demo!
-        }
+		void controllerMoved(int /*controllerNumber*/, int /*newValue*/) override
+		{
+			// not implemented for the purposes of this demo!
+		}
 
-        void renderNextBlock (AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override
-        {
-            if (angleDelta != 0.0)
-            {
-                if (tailOff > 0)
-                {
-                    while (--numSamples >= 0)
-                    {
-                        const float currentSample = (float) (sin (currentAngle) * level * tailOff);
+		void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override
+		{
+			if (angleDelta != 0.0)
+			{
+				if (tailOff > 0)
+				{
+					while (--numSamples >= 0)
+					{
+						const float currentSample = (float)(sin(currentAngle) * level * tailOff);
 
-                        for (int i = outputBuffer.getNumChannels(); --i >= 0;)
-                            outputBuffer.addSample (i, startSample, currentSample);
+						for (int i = outputBuffer.getNumChannels(); --i >= 0;)
+							outputBuffer.addSample(i, startSample, currentSample);
 
-                        currentAngle += angleDelta;
-                        ++startSample;
+						currentAngle += angleDelta;
+						++startSample;
 
-                        tailOff *= 0.99;
+						tailOff *= 0.99;
 
-                        if (tailOff <= 0.005)
-                        {
-                            // tells the synth that this voice has stopped
-                            clearCurrentNote();
+						if (tailOff <= 0.005)
+						{
+							// tells the synth that this voice has stopped
+							clearCurrentNote();
 
-                            angleDelta = 0.0;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    while (--numSamples >= 0)
-                    {
-                        const float currentSample = (float) (sin (currentAngle) * level);
+							angleDelta = 0.0;
+							break;
+						}
+					}
+				}
+				else
+				{
+					while (--numSamples >= 0)
+					{
+						const float currentSample = (float)(sin(currentAngle) * level);
 
-                        for (int i = outputBuffer.getNumChannels(); --i >= 0;)
-                            outputBuffer.addSample (i, startSample, currentSample);
+						for (int i = outputBuffer.getNumChannels(); --i >= 0;)
+							outputBuffer.addSample(i, startSample, currentSample);
 
-                        currentAngle += angleDelta;
-                        ++startSample;
-                    }
-                }
-            }
-        }
+						currentAngle += angleDelta;
+						++startSample;
+					}
+				}
+			}
+		}
 
-    private:
-        double currentAngle, angleDelta, level, tailOff;
-    };
+		using SynthesiserVoice::renderNextBlock;
 
-    //==============================================================================
-    Synthesiser synth;
+	private:
+		double currentAngle = 0, angleDelta = 0, level = 0, tailOff = 0;
+	};
 
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SineWaveSynth)
+	//==============================================================================
+	Synthesiser synth;
+
+	//==============================================================================
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SineWaveSynth)
 };
 
 //==============================================================================
-class ReverbFilter    : public InternalPlugin
+class ReverbPlugin : public InternalPlugin
 {
 public:
-    ReverbFilter (const PluginDescription& descr) :   InternalPlugin (descr)
-    {}
+	ReverbPlugin(const PluginDescription& descr) : InternalPlugin(descr)
+	{}
 
-    static String getIdentifier()
-    {
-        return "Reverb";
-    }
+	static String getIdentifier()
+	{
+		return "Reverb";
+	}
 
-    static PluginDescription getPluginDescription()
-    {
-        return InternalPlugin::getPluginDescription (getIdentifier(), false, false);
-    }
+	static PluginDescription getPluginDescription()
+	{
+		return InternalPlugin::getPluginDescription(getIdentifier(), false, false);
+	}
 
-    void prepareToPlay (double newSampleRate, int) override
-    {
-        reverb.setSampleRate (newSampleRate);
-    }
+	void prepareToPlay(double newSampleRate, int) override
+	{
+		reverb.setSampleRate(newSampleRate);
+	}
 
-    void reset() override
-    {
-        reverb.reset();
-    }
+	void reset() override
+	{
+		reverb.reset();
+	}
 
-    void releaseResources() override {}
+	void releaseResources() override {}
 
-    void processBlock (AudioBuffer<float>& buffer, MidiBuffer&) override
-    {
-        auto numChannels = buffer.getNumChannels();
+	void processBlock(AudioBuffer<float>& buffer, MidiBuffer&) override
+	{
+		auto numChannels = buffer.getNumChannels();
 
-        if (numChannels == 1)
-            reverb.processMono (buffer.getWritePointer (0), buffer.getNumSamples());
-        else
-            reverb.processStereo (buffer.getWritePointer (0),
-                                  buffer.getWritePointer (1),
-                                  buffer.getNumSamples());
+		if (numChannels == 1)
+			reverb.processMono(buffer.getWritePointer(0), buffer.getNumSamples());
+		else
+			reverb.processStereo(buffer.getWritePointer(0),
+				buffer.getWritePointer(1),
+				buffer.getNumSamples());
 
-        for (int ch = 2; ch < numChannels; ++ch)
-            buffer.clear (ch, 0, buffer.getNumSamples());
-    }
+		for (int ch = 2; ch < numChannels; ++ch)
+			buffer.clear(ch, 0, buffer.getNumSamples());
+	}
+
+	using InternalPlugin::processBlock;
 
 private:
-    Reverb reverb;
+	Reverb reverb;
 };
 
 //==============================================================================
-
-
-//==============================================================================
-
 InternalPluginFormat::InternalPluginFormat()
 {
-    {
-        AudioProcessorGraph::AudioGraphIOProcessor p (AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-        p.fillInPluginDescription (audioOutDesc);
-    }
+	{
+		AudioProcessorGraph::AudioGraphIOProcessor p(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+		p.fillInPluginDescription(audioOutDesc);
+	}
 
-    {
-        AudioProcessorGraph::AudioGraphIOProcessor p (AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
-        p.fillInPluginDescription (audioInDesc);
-    }
+	{
+		AudioProcessorGraph::AudioGraphIOProcessor p(AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
+		p.fillInPluginDescription(audioInDesc);
+	}
 
-    {
-        AudioProcessorGraph::AudioGraphIOProcessor p (AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
-        p.fillInPluginDescription (midiInDesc);
-    }
+	{
+		AudioProcessorGraph::AudioGraphIOProcessor p(AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
+		p.fillInPluginDescription(midiInDesc);
+	}
 }
 
-AudioPluginInstance* InternalPluginFormat::createInstance (const String& name)
+std::unique_ptr<AudioPluginInstance> InternalPluginFormat::createInstance(const String& name)
 {
-    if (name == audioOutDesc.name) return new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
-    if (name == audioInDesc.name)  return new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
-    if (name == midiInDesc.name)   return new AudioProcessorGraph::AudioGraphIOProcessor (AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
+	if (name == audioOutDesc.name) return std::make_unique<AudioProcessorGraph::AudioGraphIOProcessor>(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
+	if (name == audioInDesc.name)  return std::make_unique<AudioProcessorGraph::AudioGraphIOProcessor>(AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
+	if (name == midiInDesc.name)   return std::make_unique<AudioProcessorGraph::AudioGraphIOProcessor>(AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode);
 
+	if (name == SineWaveSynth::getIdentifier()) return std::make_unique<SineWaveSynth>(SineWaveSynth::getPluginDescription());
+	if (name == ReverbPlugin::getIdentifier())  return std::make_unique<ReverbPlugin>(ReverbPlugin::getPluginDescription());
 
-    if (name == SineWaveSynth::getIdentifier()) return new SineWaveSynth (SineWaveSynth::getPluginDescription());
-    if (name == ReverbFilter::getIdentifier())  return new ReverbFilter  (ReverbFilter::getPluginDescription());
-
-    return nullptr;
+	return {};
 }
 
-void InternalPluginFormat::createPluginInstance (const PluginDescription& desc,
-                                                 double /*initialSampleRate*/,
-                                                 int /*initialBufferSize*/,
-                                                 void* userData,
-                                                 PluginCreationCallback callback)
+void InternalPluginFormat::createPluginInstance(const PluginDescription& desc,
+	double /*initialSampleRate*/, int /*initialBufferSize*/,
+	PluginCreationCallback callback)
 {
-    auto* p = createInstance (desc.name);
-
-    callback (userData, p, p == nullptr ? NEEDS_TRANS ("Invalid internal filter name") : String());
+	if (auto p = createInstance(desc.name))
+		callback(std::move(p), {});
+	else
+		callback(nullptr, NEEDS_TRANS("Invalid internal plugin name"));
 }
 
-bool InternalPluginFormat::requiresUnblockedMessageThreadDuringCreation (const PluginDescription&) const noexcept
+bool InternalPluginFormat::requiresUnblockedMessageThreadDuringCreation(const PluginDescription&) const
 {
-    return false;
+	return false;
 }
 
-void InternalPluginFormat::getAllTypes (OwnedArray<PluginDescription>& results)
+void InternalPluginFormat::getAllTypes(Array<PluginDescription>& results)
 {
-    results.add (new PluginDescription (audioInDesc));
-    results.add (new PluginDescription (audioOutDesc));
-    results.add (new PluginDescription (midiInDesc));
-    results.add (new PluginDescription (SineWaveSynth::getPluginDescription()));
-    results.add (new PluginDescription (ReverbFilter::getPluginDescription()));
+	results.add(audioInDesc, audioOutDesc, midiInDesc,
+		SineWaveSynth::getPluginDescription(),
+		ReverbPlugin::getPluginDescription());
 }
+

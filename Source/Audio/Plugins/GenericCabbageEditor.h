@@ -107,13 +107,13 @@ private:
 
     AudioParameterFloat* getParameterForSlider (Slider* slider)
     {
-        const OwnedArray<AudioProcessorParameter>& params = getAudioProcessor()->getParameters();
+        auto params = getAudioProcessor()->getParameters();
         return dynamic_cast<AudioParameterFloat*> (params[controls.indexOf (slider)]); // [12]
     }
 
     AudioParameterBool* getParameterForButton (Button* button)
     {
-        const OwnedArray<AudioProcessorParameter>& params = getAudioProcessor()->getParameters();
+        auto params = getAudioProcessor()->getParameters();
         return dynamic_cast<AudioParameterBool*> (params[controls.indexOf (button)]);
     }
 

@@ -109,7 +109,10 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     slider.setRotaryParameters (float_Pi * 1.2f, float_Pi * 2.8f, false);
 
     if (sliderType.contains ("rotary"))
+    {
         slider.setSliderStyle (Slider::RotaryVerticalDrag);
+        slider.setRotaryParameters (MathConstants<float>::pi * 1.2f, MathConstants<float>::pi * 2.8f, true);
+    }
     else if (sliderType.contains ("vertical"))
         slider.setSliderStyle (Slider::LinearVertical);
     else if (sliderType.contains ("horizontal"))

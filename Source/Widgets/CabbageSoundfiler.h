@@ -44,7 +44,7 @@ public:
     CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner, int sr);
     ~CabbageSoundfiler() {};
 
-    void resized();
+    void resized() override;
 
     void setFile (String newFile);
     void setWaveform (AudioSampleBuffer buffer, int channels);

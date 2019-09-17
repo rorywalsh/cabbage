@@ -179,8 +179,6 @@ void CabbageSignalDisplay::drawSonogram()
 //====================================================================================
 void CabbageSignalDisplay::drawSpectroscope (Graphics& g)
 {
-    g.fillAll (backgroundColour);
-
     for (int i = 0; i < vectorSize; i++)
     {
         const int position = jmap (i, 0, vectorSize, leftPos, scopeWidth);
@@ -195,7 +193,6 @@ void CabbageSignalDisplay::drawSpectroscope (Graphics& g)
 //====================================================================================
 void CabbageSignalDisplay::drawWaveform (Graphics& g)
 {
-    g.fillAll (backgroundColour);
     const int offset = isScrollbarShowing == true ? scrollbarHeight : 0;
     const int height = getHeight() - offset;
     int prevXPos = 0;
@@ -215,7 +212,6 @@ void CabbageSignalDisplay::drawWaveform (Graphics& g)
 //====================================================================================
 void CabbageSignalDisplay::drawLissajous (Graphics& g)
 {
-    g.fillAll (backgroundColour);
     const int offset = isScrollbarShowing == true ? scrollbarHeight : 0;
     const int height = getHeight() - offset;
     int prevXPos = jmap (signalFloatArray[0], -1.f, 1.f, (float)leftPos, (float)scopeWidth);;
@@ -235,6 +231,8 @@ void CabbageSignalDisplay::drawLissajous (Graphics& g)
 //====================================================================================
 void CabbageSignalDisplay:: paint (Graphics& g)
 {
+    g.fillAll (backgroundColour);
+    
     if (shouldPaint)
     {
         if (shouldDrawSonogram)

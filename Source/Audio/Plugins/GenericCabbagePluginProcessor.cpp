@@ -49,7 +49,7 @@ AudioProcessorEditor* GenericCabbagePluginProcessor::createEditor()
 
 void GenericCabbagePluginProcessor::sendChannelDataToCsound()
 {
-    const OwnedArray<AudioProcessorParameter>& params = getParameters();
+    auto& params = getParameters();
 
     for (int i = 0; i < params.size(); i++)
     {

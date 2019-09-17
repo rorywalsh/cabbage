@@ -24,13 +24,14 @@
 
 class CabbageOutputConsole : public Component
 {
-    ScopedPointer<TextEditor> textEditor;
+    std::unique_ptr<TextEditor> textEditor;
     int fontSize;
     Typeface::Ptr fontPtr;
 public:
     CabbageOutputConsole (ValueTree valueTree): Component(), value (valueTree)
     {
-        addAndMakeVisible (textEditor = new TextEditor(), true);
+        textEditor.reset (new TextEditor());
+        addAndMakeVisible (textEditor.get(), true);
         textEditor->setColour (Label::outlineColourId, Colours::white);
         textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleText, Colours::grey.darker()));
         textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
@@ -107,7 +108,7 @@ public:
         textEditor->setText ("");
     }
 
-    void resized()
+    void resized() override
     {
         Rectangle<int> area (getLocalBounds());
         textEditor->setBounds (area.reduced (2).withY (0));

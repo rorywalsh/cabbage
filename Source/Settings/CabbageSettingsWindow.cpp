@@ -42,23 +42,23 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     Component (""),
     settings (settings),
     listBox (this),
-    valueTree (settings.getValueTree()),
-    audioSettingsButton ("AudioSettingsButton"),
-    miscSettingsButton ("MiscSettingsButton"),
-    colourSettingsButton ("ColourSettingsButton"),
-    codeRepoButton ("CodeRepoButton"),
     audioDeviceSelector (audioDevice),
-    viewport ("AudioSettingsViewport"),
+    valueTree (settings.getValueTree()),
     deleteRepoButton ("Delete/Remove"),
-    saveRepoButton ("Save/Update")
+    saveRepoButton ("Save/Update"),
+    audioSettingsButton ("AudioSettingsButton"),
+    colourSettingsButton ("ColourSettingsButton"),
+    miscSettingsButton ("MiscSettingsButton"),
+    codeRepoButton ("CodeRepoButton"),
+    viewport ("AudioSettingsViewport")
 {
     bgColour = CabbageSettings::getColourFromValueTree (settings.getValueTree(), CabbageColourIds::menuBarBackground, Colour (147, 210, 0));
     labelBgColour = bgColour.contrasting(0.05f);
     labelTextColour = labelBgColour.contrasting(0.85f);
-    propertyPanelLook = new PropertyPanelLookAndFeel();
+    propertyPanelLook.reset (new PropertyPanelLookAndFeel());
     propertyPanelLook->setColours(bgColour, labelBgColour, labelTextColour);
-    miscPanel.setLookAndFeel(propertyPanelLook);
-    colourPanel.setLookAndFeel(propertyPanelLook);
+    miscPanel.setLookAndFeel(propertyPanelLook.get());
+    colourPanel.setLookAndFeel(propertyPanelLook.get());
     audioDeviceSelector->getLookAndFeel().setColour(Label::ColourIds::textColourId, labelTextColour);
     audioDeviceSelector->getLookAndFeel().setColour(ListBox::ColourIds::textColourId, labelTextColour);
     audioDeviceSelector->getLookAndFeel().setColour(ListBox::ColourIds::outlineColourId, labelBgColour.contrasting(0.5f));
@@ -74,7 +74,8 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     miscPanel.setVisible (false);
     addAndMakeVisible (listBox);
     listBox.setVisible (false);
-    addAndMakeVisible (codeEditor = new CodeEditorComponent (document, &csoundTokeniser));
+    codeEditor.reset (new CodeEditorComponent (document, &csoundTokeniser));
+    addAndMakeVisible (codeEditor.get());
     codeEditor->setVisible (false);
     listBox.getLookAndFeel().setColour (ListBox::backgroundColourId, Colours::transparentWhite);
     updateColourScheme();
@@ -86,7 +87,7 @@ CabbageSettingsWindow::CabbageSettingsWindow (CabbageSettings& settings, AudioDe
     addAndMakeVisible (miscSettingsButton);
     addAndMakeVisible (colourSettingsButton);
     addAndMakeVisible (codeRepoButton);
-    viewport.setViewedComponent (audioDeviceSelector, false);
+    viewport.setViewedComponent (audioDeviceSelector.get(), false);
 
     audioDeviceSelector->setVisible (true);
     viewport.setScrollBarsShown (true, false);
@@ -155,8 +156,8 @@ CabbageSettingsWindow::RepoListBox::RepoListBox (CabbageSettingsWindow* _owner):
     listBox.setModel (this);   // Tell the listbox where to get its data model
 
     StringArray customCodeSnippets;
-    ScopedPointer<XmlElement> repoXml;
-    XmlElement* newEntryXml, *newEntryXml1;
+    std::unique_ptr<XmlElement> repoXml;
+    // XmlElement* newEntryXml, *newEntryXml1;
 
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
@@ -207,29 +208,29 @@ void CabbageSettingsWindow::RepoListBox::listBoxItemClicked (int row, const Mous
 
 void CabbageSettingsWindow::RepoListBox::updateEntry (String updatedCode)
 {
-    ScopedPointer<XmlElement> repoXml;
-    XmlElement* newEntryXml, *newEntryXml1;
+    std::unique_ptr<XmlElement> repoXml;
+    // XmlElement* newEntryXml, *newEntryXml1;
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
     if (!repoXml)
         return;
 
     repoXml->setAttribute (items[currentIndex], updatedCode);
-    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml.get());
     codeSnippets.set (currentIndex, updatedCode);
 }
 
 void CabbageSettingsWindow::RepoListBox::removeEntry()
 {
-    ScopedPointer<XmlElement> repoXml;
-    XmlElement* newEntryXml, *newEntryXml1;
+    std::unique_ptr<XmlElement> repoXml;
+    // XmlElement* newEntryXml, *newEntryXml1;
     repoXml = owner->settings.getUserSettings()->getXmlValue ("CopeRepoXmlData");
 
     if (!repoXml)
         return;
 
     repoXml->removeAttribute (items[currentIndex]);
-    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml);
+    owner->settings.getUserSettings()->setValue ("CopeRepoXmlData", repoXml.get());
 
 
     items.remove (currentIndex);
@@ -288,6 +289,7 @@ void CabbageSettingsWindow::addMiscProperties()
     Array<PropertyComponent*> dirProps;
     Array<PropertyComponent*> sshProps;
 	Array<PropertyComponent*> randProps;
+    
 
     showLastOpenedFileValue.setValue (settings.getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup"));
     showLastOpenedFileValue.addListener (this);
@@ -314,6 +316,8 @@ void CabbageSettingsWindow::addMiscProperties()
     editorProps.add (new TextPropertyComponent (Value (sapcesInTabs), "Spaces in tab (set to 0 to use tabs instead of spaces)", 10, false));
 
     const String examplesDir = settings.getUserSettings()->getValue ("CabbageExamplesDir");
+    
+    
     const String manualDir = settings.getUserSettings()->getValue ("CsoundManualDir");
     const String cabbageManualDir = settings.getUserSettings()->getValue ("CabbageManualDir");
     const String plantDir = settings.getUserSettings()->getValue ("CabbagePlantDir");
@@ -326,7 +330,7 @@ void CabbageSettingsWindow::addMiscProperties()
     dirProps.add (new CabbageFilePropertyComponent ("Cabbage plants dir.", true, false, "*", plantDir));
     dirProps.add (new CabbageFilePropertyComponent ("User files dir.", true, false, "*", userFilesDir));
 	dirProps.add(new CabbageFilePropertyComponent ("Custom theme dir.", true, false, "*", customTheme));
-
+    
     const String sshAddress = settings.getUserSettings()->getValue ("SSHAddress");
     sshProps.add (new TextPropertyComponent (Value (sshAddress), "SSH Address", 200, false));
 
@@ -341,8 +345,17 @@ void CabbageSettingsWindow::addMiscProperties()
     miscPanel.clear();
     miscPanel.addSection ("Editor", editorProps);
     miscPanel.addSection ("Directories", dirProps);
+#ifdef CabbagePro
+    Array<PropertyComponent*> csoundProps;
+    const String csoundPath = settings.getUserSettings()->getValue ("CsoundPath");
+    csoundProps.add (new TextPropertyComponent (Value (csoundPath), "Csound Path (otool -L)", 200, false));
+    miscPanel.addSection("Cabbage Pro", csoundProps);
+    addCustomListener (csoundProps, this);
+#endif
     miscPanel.addSection ("SSH", sshProps);
 	miscPanel.addSection("Misc.", randProps);
+    
+
 }
 
 void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent* comp)
@@ -355,6 +368,8 @@ void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent*
         settings.getUserSettings()->setValue ("numberOfLinesToScroll", comp->getValue().toString());
     else if (comp->getName() == "Spaces in tab (set to 0 to use tabs instead of spaces)")
         settings.getUserSettings()->setValue ("SpacesInTabs", comp->getValue().toString());
+    else if (comp->getName() == "Csound Path (otool -L)")
+        settings.getUserSettings()->setValue ("CsoundPath", comp->getValue().toString());
 }
 
 void CabbageSettingsWindow::resized()

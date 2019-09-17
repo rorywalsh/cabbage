@@ -45,7 +45,7 @@ public:
 #endif
                                            );
 #else
-        ScopedPointer<AudioDeviceManager::AudioDeviceSetup> setup = new AudioDeviceManager::AudioDeviceSetup();
+        std::unique_ptr<AudioDeviceManager::AudioDeviceSetup> setup (new AudioDeviceManager::AudioDeviceSetup());
         setup->sampleRate = 44100;
         setup->outputDeviceName = "ASIO4ALL v2";
         setup->inputDeviceName = "ASIO4ALL v2";
@@ -53,7 +53,7 @@ public:
         return new StandaloneFilterWindow (getApplicationName(),  getCommandLineParameters(),
                                            LookAndFeel::getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
                                            appProperties.getUserSettings(),
-                                           false, "ASIO4ALL v2", setup
+                                           false, "ASIO4ALL v2", setup.get()
 #ifdef JucePlugin_PreferredChannelConfigurations
                                            , juce::Array<StandalonePluginHolder::PluginInOuts> (channels, juce::numElementsInArray (channels))
 #endif
@@ -64,7 +64,7 @@ public:
     //==============================================================================
     void initialise (const String&) override
     {
-        mainWindow = createWindow();
+        mainWindow.reset (createWindow());
 
 #if JUCE_IOS || JUCE_ANDROID
         Desktop::getInstance().setKioskModeComponent (mainWindow, false);
@@ -87,7 +87,7 @@ public:
 
 protected:
     ApplicationProperties appProperties;
-    ScopedPointer<StandaloneFilterWindow> mainWindow;
+    std::unique_ptr<StandaloneFilterWindow> mainWindow;
 };
 
 #if JucePlugin_Build_Standalone && JUCE_IOS

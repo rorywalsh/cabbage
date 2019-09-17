@@ -33,7 +33,7 @@ public:
     }
     ~ZoomButton() {}
 
-    void mouseDown (const MouseEvent& e)
+    void mouseDown (const MouseEvent& e) override
     {
         sendChangeMessage();
     }
@@ -55,32 +55,38 @@ public:
 // soundfiler display  component
 //==============================================================================
 
-Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):   thumbnailCache (5), colour (col),                                                        sampleRate (sr),
-    currentPlayPosition (0),
+Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):
+    selectableRange (true),
+    showScrubber (true),
+    currentPositionMarker (new DrawableRectangle()),
+    scrubberPosition (0),
+    sampleRate (sr),
+    regionWidth (1),
+    thumbnailCache (5),
+    colour (col),
+    bgColour (bgcol),
     mouseDownX (0),
     mouseUpX (0),
-    drawWaveform (false),
-    regionWidth (1),
     loopLength (0),
-    scrubberPosition (0),
-    showScrubber (true),
-    selectableRange (true),
-    bgColour (bgcol),
-    currentPositionMarker (new DrawableRectangle())
+    currentPlayPosition (0),
+    drawWaveform (false)
 {
     formatManager.registerBasicFormats();
-    thumbnail = new AudioThumbnail (2, formatManager, thumbnailCache);
+    thumbnail.reset (new AudioThumbnail (2, formatManager, thumbnailCache));
     thumbnail->addChangeListener (this);
     //setSize(400, 200);
     sampleRate = sr;
-    addAndMakeVisible (scrollbar = new ScrollBar (false));
+    scrollbar.reset (new ScrollBar (false));
+    addAndMakeVisible (scrollbar.get());
     scrollbar->setRangeLimits (visibleRange);
     //scrollbar->setAutoHide (false);
     scrollbar->addListener (this);
     currentPositionMarker->setFill (Colours::white.withAlpha (0.85f));
-    addAndMakeVisible (currentPositionMarker);
-    addAndMakeVisible (zoomIn = new ZoomButton ("zoomIn"));
-    addAndMakeVisible (zoomOut = new ZoomButton ("zoomOut"));
+    addAndMakeVisible (currentPositionMarker.get());
+    zoomIn.reset (new ZoomButton ("zoomIn"));
+    addAndMakeVisible (zoomIn.get());
+    zoomOut.reset (new ZoomButton ("zoomOut"));
+    addAndMakeVisible (zoomOut.get());
     zoomIn->addChangeListener (this);
     zoomOut->addChangeListener (this);
 }
@@ -117,7 +123,7 @@ void Soundfiler::resized()
 //==============================================================================
 void Soundfiler::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart)
 {
-    if (scrollBarThatHasMoved == scrollbar)
+    if (scrollBarThatHasMoved == scrollbar.get())
         setRange (visibleRange.movedToStartAt (newRangeStart));
 }
 

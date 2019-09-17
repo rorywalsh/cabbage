@@ -51,6 +51,8 @@ public:
     using NodeID = AudioProcessorGraph::NodeID;
 
     void addPlugin (const PluginDescription&, Point<double>);
+	void addPluginCallback(std::unique_ptr<AudioPluginInstance>, const String& error, Point<double>);
+
 
 
 	//================================  FILTERGRAPH MODS  =================================
@@ -179,7 +181,7 @@ public:
 					pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
 				}
 				
-				e->addChildElement(pd.createXml());
+				e->addChildElement(pd.createXml().release());
 			}
 
 			{
@@ -208,17 +210,17 @@ public:
 		graph.removeIllegalConnections();
 	}
 
-	AudioProcessor* createCabbageProcessor(const String filename)
+	std::unique_ptr < AudioProcessor> createCabbageProcessor(const String filename)
 	{
-		AudioProcessor* processor;
+		std::unique_ptr < AudioProcessor> processor;
         
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(filename));
 		const int numChannels = CabbageUtilities::getHeaderInfo(File(filename).loadFileAsString(), "nchnls");
 
 		if (isCabbageFile)
-			processor = new CabbagePluginProcessor(File(filename), numChannels, numChannels);
+			processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), numChannels, numChannels));
 		else
-			processor = new GenericCabbagePluginProcessor(File(filename), numChannels, numChannels);
+			processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), numChannels, numChannels));
 
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
@@ -232,12 +234,12 @@ public:
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
-		AudioProcessor* processor = createCabbageProcessor(desc.fileOrIdentifier);
+		std::unique_ptr <AudioProcessor> processor = createCabbageProcessor(desc.fileOrIdentifier);
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(desc.fileOrIdentifier));
 
 		if (auto* plugin = graph.getNodeForId(nodeId))
 		{
-			ScopedPointer<XmlElement> xml = createConnectionsXml();
+			std::unique_ptr<XmlElement> xml (createConnectionsXml());
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
 			
@@ -248,7 +250,7 @@ public:
             graph.removeNode(nodeId);
 			graph.releaseResources();
 
-			if (auto node = graph.addNode(processor, nodeId))
+			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
@@ -267,12 +269,12 @@ public:
 
 		else
 		{
-			if (auto node = graph.addNode(processor, nodeId))
+			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{
 
 				setNodePosition(nodeId, pos);
 				changed();
-				ScopedPointer<XmlElement> xmlElem;
+				std::unique_ptr<XmlElement> xmlElem;
 				xmlElem = desc.createXml();
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
@@ -306,20 +308,43 @@ public:
 
 		AudioProcessorGraph::NodeAndChannel nodeL = { (AudioProcessorGraph::NodeID) nodeId, 0 };
 		AudioProcessorGraph::NodeAndChannel nodeR = { (AudioProcessorGraph::NodeID) nodeId, 1 };
-
+        AudioProcessorGraph::NodeAndChannel nodeL1 = { (AudioProcessorGraph::NodeID) nodeId, 2 };
+        AudioProcessorGraph::NodeAndChannel nodeR1 = { (AudioProcessorGraph::NodeID) nodeId, 3 };
+        
 		AudioProcessorGraph::NodeAndChannel outputL = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 0 };
 		AudioProcessorGraph::NodeAndChannel outputR = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 1 };
+        
+        Array<AudioProcessorGraph::NodeAndChannel> extraHardwareOutputs;
+        Array<AudioProcessorGraph::NodeAndChannel> extraPluginOutputs;
+        
+        // look for extra channels to make connections for, the default is stereo...
+        const int numOutputChannels = graph.getNodeForId(nodeId)->getProcessor()->getTotalNumOutputChannels();
+        for(int i = 0 ; i < numOutputChannels ; i++)
+        {
+            extraPluginOutputs.add({ (AudioProcessorGraph::NodeID) nodeId, i });
+            extraHardwareOutputs.add({ (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, i });
+        }
 
-		bool connectInput1 = graph.addConnection({ inputL, nodeL });
-		bool connectInput2 = graph.addConnection({ inputR, nodeR });
+        
+     
+        // make default connections, stereo in, stereo out
+		/* bool connectInput1 = */ graph.addConnection({ inputL, nodeL });
+		/* bool connectInput2 = */ graph.addConnection({ inputR, nodeR });
 
-		bool connection1 = graph.addConnection({ nodeL, outputL });
-		bool connection2 = graph.addConnection({ nodeR, outputR });
-		
+		/* bool connection1 = */ graph.addConnection({ nodeL, outputL });
+		/* bool connection2 = */ graph.addConnection({ nodeR, outputR });
+        
+		//now add any extra channels..
+        for ( int i = 0 ; i < numOutputChannels ; i++)
+        {
+            graph.addConnection({ extraPluginOutputs[i], extraHardwareOutputs[i] });
+        }
+        
+        
 		AudioProcessorGraph::NodeAndChannel midiIn = { (AudioProcessorGraph::NodeID) InternalNodes::MIDIInput, AudioProcessorGraph::midiChannelIndex };
 		AudioProcessorGraph::NodeAndChannel midiOut = { (AudioProcessorGraph::NodeID) nodeId, AudioProcessorGraph::midiChannelIndex };
 
-		bool connection3 = graph.addConnection({ midiIn, midiOut });
+		/* bool connection3 = */ graph.addConnection({ midiIn, midiOut });
 
 	}
 	//======================================================================================
@@ -361,7 +386,7 @@ public:
 	OwnedArray<PluginWindow> activePluginWindows;
 private:
     //==============================================================================
-    AudioPluginFormatManager& formatManager;
+	AudioPluginFormatManager& formatManager;
 	
 
     NodeID lastUID;

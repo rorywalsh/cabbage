@@ -194,12 +194,12 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
         }
 
         MemoryInputStream svgStream (CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
-        ScopedPointer<XmlElement> svg (XmlDocument::parse (svgStream.readString()));
+        std::unique_ptr<XmlElement> svg (XmlDocument::parse (svgStream.readString()));
 
         if (svg == nullptr)
             jassert (false);
 
-        ScopedPointer<Drawable> drawable;
+        std::unique_ptr<Drawable> drawable;
 
         if (svg != nullptr)
         {

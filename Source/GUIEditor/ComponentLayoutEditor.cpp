@@ -175,37 +175,43 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 
         menu.addItem (4, "Checkbox");
         menu.addItem (5, "ComboBox");
-        menu.addItem (6, "Csound Output");
-        menu.addItem (7, "Endless Encoder");
-        menu.addItem (8, "Gentable");
-        menu.addItem (9, "Groupbox");
 
-        menu.addItem (11, "Image");
-        menu.addItem (12, "Keyboard");
-        menu.addItem (13, "Label");
-        menu.addItem (27, "Listbox");
-        subM.addItem (10, "Horizontal Meter");
-        subM.addItem (25, "Vertical Meter");
+        menu.addItem (6, "Csound Output");
+        menu.addItem (7, "CV Input - VCVRack");
+        menu.addItem (8, "CV Output - VCVRack");
+
+        menu.addItem (9, "Endless Encoder");
+        menu.addItem (10, "Gentable");
+        menu.addItem (11, "Groupbox");
+
+        menu.addItem (13, "Image");
+        menu.addItem (14, "Keyboard");
+        menu.addItem (15, "Label");
+        menu.addItem (16, "Light - VCVRack");
+
+        menu.addItem (30, "Listbox");
+        subM.addItem (12, "Horizontal Meter");
+        subM.addItem (28, "Vertical Meter");
         menu.addSubMenu( "Meters", subM);
 
         subM.clear();
         
-        menu.addItem (14, "Signal Display");
+        menu.addItem (17, "Signal Display");
 
-        subM.addItem (15, "Slider - Horizontal");
-        subM.addItem (16, "Slider - Rotary");
-        subM.addItem (17, "Slider - Vertical");
-        subM.addItem (18, "Slider - Range - Vertical");
-        subM.addItem (19, "Slider - Range - Horizontal");
-        subM.addItem (20, "Slider - Number Box");
+        subM.addItem (18, "Slider - Horizontal");
+        subM.addItem (19, "Slider - Rotary");
+        subM.addItem (20, "Slider - Vertical");
+        subM.addItem (21, "Slider - Range - Vertical");
+        subM.addItem (22, "Slider - Range - Horizontal");
+        subM.addItem (23, "Slider - Number Box");
         menu.addSubMenu("Sliders", subM);
         subM.clear();
 
-        menu.addItem (21, "Soundfiler");
-        menu.addItem (22, "Event Sequencer");
-        menu.addItem (23, "Text Box");
-        menu.addItem (24, "Text Editor");
-        menu.addItem (26, "XY Pad");
+        menu.addItem (24, "Soundfiler");
+        menu.addItem (25, "Event Sequencer");
+        menu.addItem (26, "Text Box");
+        menu.addItem (27, "Text Editor");
+        menu.addItem (29, "XY Pad");
 
 
 

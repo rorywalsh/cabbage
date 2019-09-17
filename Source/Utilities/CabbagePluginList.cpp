@@ -252,17 +252,23 @@ void CabbagePluginListComponent::showSelectedFolder()
 
 void CabbagePluginListComponent::removeMissingPlugins()
 {
-    for (int i = list.getNumTypes(); --i >= 0;)
-        if (! formatManager.doesPluginStillExist (*list.getType (i)))
-            list.removeType (i);
+	auto types = list.getTypes();
+
+	for (int i = types.size(); --i >= 0;)
+	{
+		auto type = types.getUnchecked(i);
+
+		if (!formatManager.doesPluginStillExist(type))
+			list.removeType(type);
+	}
 }
 
 void CabbagePluginListComponent::removePluginItem (int index)
 {
-    if (index < list.getNumTypes())
-        list.removeType (index);
-    else
-        list.removeFromBlacklist (list.getBlacklistedFiles() [index - list.getNumTypes()]);
+	if (index < list.getNumTypes())
+		list.removeType(list.getTypes()[index]);
+	else
+		list.removeFromBlacklist(list.getBlacklistedFiles()[index - list.getNumTypes()]);
 }
 
 void CabbagePluginListComponent::optionsMenuStaticCallback (int result, CabbagePluginListComponent* pluginList)

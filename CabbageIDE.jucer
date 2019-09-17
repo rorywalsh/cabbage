@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="1.0.0"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.1.9"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
-              jucerVersion="5.4.3" displaySplashScreen="0" reportAppUsage="1"
+              jucerVersion="5.4.4" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{C0361D81-2D97-514F-0F91-A8077B17F83D}" name="GUIEditor"/>
@@ -179,6 +179,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{75DB6341-3F9B-0D75-CA59-C9FD48A46CD2}" name="Widgets">
+        <FILE id="ato7Fa" name="CabbageRackWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.cpp"/>
+        <FILE id="Mx9IuR" name="CabbageRackWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.h"/>
         <FILE id="jaBD7N" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
         <FILE id="dpqsn7" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
@@ -328,18 +332,17 @@
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
                extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="vNeY7N"
-               bigIcon="vNeY7N" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK">
+               bigIcon="vNeY7N" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK"
+               microphonePermissionNeeded="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxCompatibility="10.8 SDK" osxArchitecture="64BitUniversal"
-                       enablePluginBinaryCopyStep="1"/>
+                       osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
-                       osxCompatibility="10.8 SDK" osxArchitecture="64BitUniversal"
-                       enablePluginBinaryCopyStep="1"/>
+                       osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/"/>
@@ -400,6 +403,29 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
       </MODULEPATHS>
     </CLION>
+    <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
+            vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK" extraLinkerFlags="csound64.lib">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
+                       libraryPath="C:\Program Files\Csound6_x64\lib"/>
+        <CONFIGURATION isDebug="0" name="Release" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
+                       libraryPath="C:\Program Files\Csound6_x64\lib"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_gui_extra"/>
+        <MODULEPATH id="juce_gui_basics"/>
+        <MODULEPATH id="juce_graphics"/>
+        <MODULEPATH id="juce_events"/>
+        <MODULEPATH id="juce_data_structures"/>
+        <MODULEPATH id="juce_cryptography"/>
+        <MODULEPATH id="juce_core"/>
+        <MODULEPATH id="juce_audio_utils"/>
+        <MODULEPATH id="juce_audio_processors"/>
+        <MODULEPATH id="juce_audio_formats"/>
+        <MODULEPATH id="juce_audio_devices"/>
+        <MODULEPATH id="juce_audio_basics"/>
+      </MODULEPATHS>
+    </VS2019>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>

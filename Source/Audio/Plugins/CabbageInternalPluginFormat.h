@@ -59,23 +59,24 @@ public:
 		return descript;
 	}
 
-	GenericCabbagePluginProcessor* createGenericPluginFilter(File inputFile)
+	std::unique_ptr < GenericCabbagePluginProcessor> createGenericPluginFilter(File inputFile)
 	{
 		const int numChannels = CabbageUtilities::getHeaderInfo(inputFile.loadFileAsString(), "nchnls");
-		return new GenericCabbagePluginProcessor(inputFile, numChannels, numChannels);
+		return std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(inputFile, numChannels, numChannels));
 	}
 
-	CabbagePluginProcessor* createCabbagePluginFilter(File inputFile)
+	std::unique_ptr<CabbagePluginProcessor> createCabbagePluginFilter(File inputFile)
 	{
 		const int numChannels = CabbageUtilities::getHeaderInfo(inputFile.loadFileAsString(), "nchnls");
-		return new CabbagePluginProcessor(inputFile, numChannels, numChannels);
+		return std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(inputFile, numChannels, numChannels));
 	}
 
 private:
 	//==============================================================================
 	void createPluginInstance(const PluginDescription&, double initialSampleRate, int initialBufferSize,
-		void* userData, PluginCreationCallback) override;
-	AudioProcessor* createCabbagePlugin(const String file);
+		PluginCreationCallback) override;
+
+	std::unique_ptr < AudioProcessor> createCabbagePlugin(const String file);
 
 	bool requiresUnblockedMessageThreadDuringCreation(const PluginDescription&) const noexcept override;
 };

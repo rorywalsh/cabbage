@@ -33,34 +33,41 @@
 /**
     Manages the internal plugin types.
 */
-class InternalPluginFormat   : public AudioPluginFormat
+//==============================================================================
+/**
+	Manages the internal plugin types.
+*/
+class InternalPluginFormat : public AudioPluginFormat
 {
 public:
-    //==============================================================================
-    InternalPluginFormat();
-    ~InternalPluginFormat() {}
+	//==============================================================================
+	InternalPluginFormat();
+	~InternalPluginFormat() override {}
 
-    //==============================================================================
-    PluginDescription audioInDesc, audioOutDesc, midiInDesc;
+	//==============================================================================
+	PluginDescription audioInDesc, audioOutDesc, midiInDesc;
+	void getAllTypes(Array<PluginDescription>&);
 
-    void getAllTypes (OwnedArray<PluginDescription>&);
-
-    //==============================================================================
-    String getName() const override                                                     { return "Internal"; }
-    bool fileMightContainThisPluginType (const String&) override                        { return true; }
-    FileSearchPath getDefaultLocationsToSearch() override                               { return {}; }
-    bool canScanForPlugins() const override                                             { return false; }
-    void findAllTypesForFile (OwnedArray <PluginDescription>&, const String&) override  {}
-    bool doesPluginStillExist (const PluginDescription&) override                       { return true; }
-    String getNameOfPluginFromIdentifier (const String& fileOrIdentifier) override      { return fileOrIdentifier; }
-    bool pluginNeedsRescanning (const PluginDescription&) override                      { return false; }
-    StringArray searchPathsForPlugins (const FileSearchPath&, bool, bool) override      { return {}; }
+	//==============================================================================
+	String getName() const override { return "Internal"; }
+	bool fileMightContainThisPluginType(const String&) override { return true; }
+	FileSearchPath getDefaultLocationsToSearch() override { return {}; }
+	bool canScanForPlugins() const override { return false; }
+	bool isTrivialToScan() const override { return true; }
+	void findAllTypesForFile(OwnedArray<PluginDescription>&, const String&) override {}
+	bool doesPluginStillExist(const PluginDescription&) override { return true; }
+	String getNameOfPluginFromIdentifier(const String& fileOrIdentifier) override { return fileOrIdentifier; }
+	bool pluginNeedsRescanning(const PluginDescription&) override { return false; }
+	StringArray searchPathsForPlugins(const FileSearchPath&, bool, bool) override { return {}; }
 
 private:
-    //==============================================================================
-    void createPluginInstance (const PluginDescription&, double initialSampleRate, int initialBufferSize,
-                               void* userData, PluginCreationCallback) override;
-    AudioPluginInstance* createInstance (const String& name);
+	//==============================================================================
+	void createPluginInstance(const PluginDescription&,
+		double initialSampleRate, int initialBufferSize,
+		PluginCreationCallback) override;
 
-    bool requiresUnblockedMessageThreadDuringCreation (const PluginDescription&) const noexcept override;
+	std::unique_ptr<AudioPluginInstance> createInstance(const String& name);
+
+	bool requiresUnblockedMessageThreadDuringCreation(const PluginDescription&) const override;
 };
+

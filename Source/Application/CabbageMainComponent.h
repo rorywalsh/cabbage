@@ -130,6 +130,7 @@ public:
                 return fileTab;
         }
         jassertfalse;
+        return nullptr;
     }
     
     //overlaying this component on FileBrowserComponent to take contorl of up button colour..
@@ -173,7 +174,7 @@ public:
 	//==============================================================================
 	AudioDeviceManager deviceManager;
 	AudioPluginFormatManager formatManager;
-	OwnedArray<PluginDescription> internalTypes;
+	Array<PluginDescription> internalTypes;
 	KnownPluginList knownPluginList;
 	KnownPluginList::SortMethod pluginSortMethod;
 	String getDeviceManagerSettings();
@@ -194,7 +195,7 @@ public:
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
     FilterGraph* getFilterGraph() {                return graphComponent->graph.get();  }
     //==============================================================================
-    ScopedPointer<CabbagePropertiesPanel> propertyPanel;
+    std::unique_ptr<CabbagePropertiesPanel> propertyPanel;
 	void togglePropertyPanel()
 	{
 		if (getCurrentCodeEditor())
@@ -206,7 +207,7 @@ public:
     
     CabbagePluginEditor* currentEditor = nullptr;
     OwnedArray<CabbageEditorContainer> editorAndConsole;
-    ScopedPointer<CabbageIDELookAndFeel> lookAndFeel;
+    std::unique_ptr<CabbageIDELookAndFeel> lookAndFeel;
     Toolbar toolbar;
     
     void openFolder();
@@ -222,7 +223,7 @@ public:
 		CabbageMainComponent* owner;
 	public:
 		FilterGraphDocumentWindow(String caption, Colour backgroundColour, CabbageMainComponent* owner)
-			: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), owner(owner), colour(backgroundColour)
+			: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour), owner(owner)
 		{
 			setSize(600, 600);
 			setName(caption);
@@ -244,8 +245,8 @@ public:
     public:
         VerticalResizerBar (ValueTree valueTree, CabbageMainComponent* parent)
         :   Component ("ResizerBar"),
-        valueTree (valueTree),
-        owner (parent)
+        valueTree (valueTree)
+        // owner (parent)
         {
             
         }
@@ -259,9 +260,9 @@ public:
         
     private:
         ValueTree valueTree;
-        int startingYPos;
+        // int startingYPos;
         int currentYPos = 550;
-        CabbageMainComponent* owner;
+        // CabbageMainComponent* owner;
     };
     
     VerticalResizerBar resizerBar;
@@ -271,7 +272,7 @@ public:
     void toggleBrowser(); 
     
 //    TimeSliceThread directoryThread{ "File Scanner Thread" };
-     ScopedPointer<WildcardFileFilter> wildcardFilter;
+     std::unique_ptr<WildcardFileFilter> wildcardFilter;
 //    DirectoryContentsList fileList{ &wildcardFilter, directoryThread };
 //    FileTreeComponent fileTree{ fileList };
     FileBrowserComponent fileTree;
@@ -299,19 +300,19 @@ private:
     CabbageSettings* cabbageSettings;
     int currentFileIndex = 0;
     int numberOfFiles = 0;
-    //ScopedPointer<FilterGraph> filterGraph;
+    //std::unique_ptr<FilterGraph> filterGraph;
     bool isGUIEnabled = false;
     String consoleMessages;
     const int toolbarThickness = 35;
     class FindPanel;
-    ScopedPointer<FindPanel> findPanel;
+    std::unique_ptr<FindPanel> findPanel;
 
 
-	ScopedPointer<GraphDocumentComponent> graphComponent;
-    ScopedPointer<FilterGraphDocumentWindow> filterGraphWindow;
+    GraphDocumentComponent* graphComponent = nullptr;
+    std::unique_ptr<FilterGraphDocumentWindow> filterGraphWindow;
 
 
-    //ScopedPointer<HtmlHelpDocumentWindow> helpWindow;
+    //std::unique_ptr<HtmlHelpDocumentWindow> helpWindow;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMainComponent)
@@ -325,11 +326,11 @@ private Button::Listener
 public:
     FindPanel (String searchString, bool isCaseSensitive, bool withReplace)
         : caseButton ("Case-sensitive"),
+          showReplaceControls (withReplace),
           findPrev ("<"),
           findNext (">"),
           replace ("Replace"),
-          replaceAll ("Replace All"),
-          showReplaceControls (withReplace)
+          replaceAll ("Replace All")
     {
         //find components...
         setSize (260, withReplace == false ? 90 : 180);

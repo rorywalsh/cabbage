@@ -263,8 +263,8 @@ bool CabbageEventSequencer::keyPressed (const KeyPress& key, Component* originat
 
         setCellData(currentColumn, currentRow, ted->getText()+key.getTextCharacter());
 
-        if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey) ||
-            key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey) ||
+        if ((key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey)) ||
+            (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::leftKey)) ||
             key.isKeyCode (KeyPress::downKey) ||
             key.isKeyCode (KeyPress::upKey) ||
             key.isKeyCode (KeyPress::returnKey))

@@ -44,14 +44,14 @@ public:
     void getAmpRangeForTable (String identifier, var value);
     void getScrubberPositionForTable (String identifier, var value);
     void setPropertyByName (String name, var value);
-    void textPropertyComponentChanged (TextPropertyComponent* comp);
+    void textPropertyComponentChanged (TextPropertyComponent* comp) override;
     void changeListenerCallback (juce::ChangeBroadcaster* source) override;
     void updateProperties (ValueTree widgetData);
-    void valueChanged (Value& value);
-    void filenameComponentChanged (FilenameComponent* fileComponent);
+    void valueChanged (Value& value) override;
+    void filenameComponentChanged (FilenameComponent* fileComponent) override;
     void saveOpenessState();
 
-	void buttonClicked(Button *);
+	void buttonClicked(Button *) override;
     Array<PropertyComponent*> createPositionEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTextEditors (ValueTree valueTree);
     Array<PropertyComponent*> createNumberEditors (ValueTree valueTree);
@@ -93,7 +93,7 @@ private:
         SectionState (String name, XmlElement* xml): name (name), xmlElement (xml)
         {}
         String name;
-        ScopedPointer<XmlElement> xmlElement;
+        std::unique_ptr<XmlElement> xmlElement;
     };
 
     OwnedArray<SectionState> sectionStates;
@@ -111,8 +111,8 @@ private:
 
     ValueTree widgetData;
 	TextButton hideButton;
-    ScopedPointer<FlatButtonLookAndFeel> flatLook;
-    ScopedPointer<PropertyPanelLookAndFeel> propertyPanelLook;
+    std::unique_ptr<FlatButtonLookAndFeel> flatLook;
+    std::unique_ptr<PropertyPanelLookAndFeel> propertyPanelLook;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePropertiesPanel)
 };

@@ -11,14 +11,14 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEditor* owner)
-    :   target (targetChild), layoutEditor (owner), lookAndFeel()
+    :   target (targetChild), lookAndFeel(), layoutEditor (owner)
 {
-    resizeContainer = new ComponentBoundsConstrainer();
+    resizeContainer.reset (new ComponentBoundsConstrainer());
     resizeContainer->setMinimumSize (10, 10); //set minimum size so objects cant be resized too small
-    resizer = new ResizableBorderComponent (this, resizeContainer);
+    resizer = new ResizableBorderComponent (this, resizeContainer.get());
     addAndMakeVisible (resizer);
     resizer->addMouseListener (this, false);
-    constrainer = new ComponentBoundsConstrainer();
+    constrainer.reset (new ComponentBoundsConstrainer());
     interest = "none";
     userAdjusting = false;
     updateFromTarget ();
@@ -210,7 +210,7 @@ void ComponentOverlay::mouseDrag (const MouseEvent& e)
 
             if (multipleSelection == false)
             {
-                dragger.dragComponent (this, e, constrainer);
+                dragger.dragComponent (this, e, constrainer.get());
                 applyToTarget ();
             }
 

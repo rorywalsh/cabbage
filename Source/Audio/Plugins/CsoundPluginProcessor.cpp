@@ -25,14 +25,15 @@
 
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const int outs, bool debugMode)
-    : csdFile (csdFile), AudioProcessor (BusesProperties()
+    : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                                          .withInput  ("Input",  (ins==2 ? AudioChannelSet::stereo() : AudioChannelSet::discreteChannels (ins)), true)
 #endif
                                          .withOutput ("Output", (outs == 2 ? AudioChannelSet::stereo() : AudioChannelSet::discreteChannels (outs)), true)
 #endif
-                                        )
+                                        ),
+      csdFile (csdFile)
 {
 
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
@@ -68,7 +69,7 @@ void CsoundPluginProcessor::resetCsound()
 //==============================================================================
 bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool debugMode)
 {
-	csound = new Csound();
+	csound.reset (new Csound());
 	csdFilePath = filePath;
 	csdFilePath.setAsCurrentWorkingDirectory();
 	csound->SetHostImplementedMIDIIO(true);
@@ -81,7 +82,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	csound->SetExternalMidiOutOpenCallback(OpenMidiOutputDevice);
 	csound->SetExternalMidiWriteCallback(WriteMidiData);
 	csoundParams = nullptr;
-	csoundParams = new CSOUND_PARAMS();
+	csoundParams.reset (new CSOUND_PARAMS());
 
 	csoundParams->displays = 0;
 
@@ -95,7 +96,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	csound->SetOption((char*)"-n");
 	csound->SetOption((char*)"-d");
 	csound->SetOption((char*)"-b0");
-
+    addMacros(csdFile.loadFileAsString());
 
 	if (debugMode)
 	{
@@ -124,7 +125,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 #endif
 	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
 
-	csound->SetParams(csoundParams);
+	csound->SetParams(csoundParams.get());
 
 	if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
 		compileCsdFile(csdFile);
@@ -135,8 +136,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 		csound->Start();
 #endif
 }
-
-	addMacros(csdFile.getFullPathName());
 
 
 	if (csdCompiledWithoutError())
@@ -160,8 +159,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 void CsoundPluginProcessor::createFileLogger (File csdFile)
 {
     String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");
-    fileLogger = new FileLogger (File (logFileName), String ("Cabbage Log.."));
-    Logger::setCurrentLogger (fileLogger);
+    fileLogger.reset (new FileLogger (File (logFileName), String ("Cabbage Log..")));
+    Logger::setCurrentLogger (fileLogger.get());
 }
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
@@ -209,6 +208,11 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 }
 
             }
+            else if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type) == CabbageWidgetTypes::cvoutput
+                     ||CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type) == CabbageWidgetTypes::cvinput)
+            {
+                //don't set up any channels for these widgets, even though they use the channel() identifier..
+            }
             else
             {
                 const var value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
@@ -231,7 +235,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("CSD_PATH", csdFilePath.getFullPathName().toUTF8().getAddress());
     }
 
-    csound->SetStringChannel ("LAST_FILE_DROPPED", "");
+    csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
 
     csdFilePath.setAsCurrentWorkingDirectory();
 
@@ -325,7 +329,7 @@ void CsoundPluginProcessor::addMacros (String csdText)
 //    String height = "--macro:SCREEN_HEIGHT="+String(screenHeight);
 //    csound->SetOption (width.toUTF8().getAddress());
 //    csound->SetOption (height.toUTF8().getAddress());
-    StringArray tokens;
+    
 
 
     for (int i = 0; i < csdArray.size(); i++)
@@ -333,12 +337,16 @@ void CsoundPluginProcessor::addMacros (String csdText)
 
         if (csdArray[i].trim().substring (0, 7) == "#define")
         {
+			StringArray tokens;
+			CabbageUtilities::debug(csdArray[i]);
             tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
+			CabbageUtilities::debug(tokens[0]);
             macroName = tokens[1];
             tokens.remove (0);
             tokens.remove (0);
-            macroText = "\\\"" + tokens.joinIntoString (" ").replace ("\"", "\\\\\\\"") + "\\\"";
-            String fullMacro = "--omacro:" + macroName + "=" + macroText + "\"";
+            macroText = "\"" + tokens.joinIntoString (" ").replace (" ", "\ ").replace("\"", "\\\"")+"\"";
+            macroText = tokens.joinIntoString(" ");
+            String fullMacro = "--omacro:" + macroName + "=" + macroText;// + "\"";
             csound->SetOption (fullMacro.toUTF8().getAddress());
         }
 
@@ -352,7 +360,6 @@ void CsoundPluginProcessor::addMacros (String csdText)
 void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, String channel)
 {
     MatrixEventSequencer* matrix = new MatrixEventSequencer(channel);
-    (channel);
 
     for (int i = 0 ; i < cols ; i++)
     {
@@ -534,7 +541,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
-        setupAndCompileCsound(csdFile, csdFilePath);
+        setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
     
 }
@@ -547,7 +554,7 @@ void CsoundPluginProcessor::releaseResources()
 
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-#if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect || Cabbage_Lite
     ignoreUnused (layouts);
     return true;
 #else
