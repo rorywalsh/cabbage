@@ -13,7 +13,8 @@
     - beginner_synth
     - first_effect
     - audio_graph
-    - exporting
+    - exporting_plugins
+    - exporting_rack_modules
     - cabbage_in_host
     - distributing
 - title: Advanced Features
