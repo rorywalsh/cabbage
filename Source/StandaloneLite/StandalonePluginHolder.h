@@ -260,8 +260,8 @@ public:
     {
         DialogWindow::LaunchOptions o;
 
-        auto totalInChannels  = 24;//processor->getMainBusNumInputChannels();
-        auto totalOutChannels = 24;//processor->getMainBusNumOutputChannels();
+        auto totalInChannels  = processor->getMainBusNumInputChannels();
+        auto totalOutChannels = processor->getMainBusNumOutputChannels();
 
         if (channelConfiguration.size() > 0)
         {
