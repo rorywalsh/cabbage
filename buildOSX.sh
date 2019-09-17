@@ -112,8 +112,8 @@ cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
 cp ../opcodes.txt ./build/Release/Cabbage.app/Contents/MacOS/opcodes.txt 
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Release/
-curl -L -o CabbageRack-0.5.0-mac.zip https://github.com/rorywalsh/CabbageRack/blob/master/dist/CabbageRack-0.5.0-mac.zip?raw=true
-unzip -q CabbageRack-0.5.0-mac.zip
+curl -L -o CabbageRack-1.0.0-mac.zip https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip
+unzip -q CabbageRack-1.0.0-mac.zip
 ls
 cp -R CabbageRack Cabbage.app/Contents/CabbageRack
 ls Cabbage.app/Contents/
