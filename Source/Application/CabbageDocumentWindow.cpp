@@ -1054,12 +1054,6 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 			return true;
 
         case CommandIDs::exportAsVCVRackModule:
-            if(getCurrentPluginBounds(getContentComponent()->getCurrentCsdFile().loadFileAsString()).y!=380)
-            {
-                CabbageUtilities::showMessage("Plugin height needs to be 380 for VCV Rack modules - please resize your plugin and try again.", &tempLookAndFeel);
-                return true;
-            }
-               
             pluginExporter.exportPlugin ("VCVRack", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
             

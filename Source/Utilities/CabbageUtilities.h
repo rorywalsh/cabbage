@@ -24,6 +24,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../BinaryData/CabbageBinaryData.h"
+
 #include <fstream>
 
 class CabbageIDELookAndFeel;

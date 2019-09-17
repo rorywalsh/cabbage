@@ -111,7 +111,6 @@ public:
     void writeFileToDisk (File file);
     int testFileForErrors (String file);
     int getCurrentFileIndex(){  return currentFileIndex;    }
-
     //==============================================================================
     void handleToolbarButtons (ToolbarButton* toolbarButton);
     void handleFileTabs (DrawableButton* button);

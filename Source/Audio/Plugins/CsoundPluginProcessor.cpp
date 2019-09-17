@@ -554,7 +554,7 @@ void CsoundPluginProcessor::releaseResources()
 
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-#if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect || Cabbage_Lite
     ignoreUnused (layouts);
     return true;
 #else

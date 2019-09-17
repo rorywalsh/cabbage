@@ -66,24 +66,6 @@ public:
     ApplicationCommandManager& getCommandManager() {     return commandManager;  }
     void exportExamplesToPlugins(String type);
 
-    const Point<int> getCurrentPluginBounds(String csdText)
-    {
-        StringArray csdLines;
-        csdLines.addLines (csdText);
-        
-        for (auto line : csdLines)
-        {
-            ValueTree temp ("temp");
-            CabbageWidgetData::setWidgetState (temp, line, 0);
-            
-            if (CabbageWidgetData::getStringProp (temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-            {
-                return Point<int>(CabbageWidgetData::getNumProp (temp, CabbageIdentifierIds::width), CabbageWidgetData::getNumProp (temp, CabbageIdentifierIds::height));
-            }
-        }
-        return Point<int>(0,0);
-    }
-    
 private:
     //=======================================================
     ApplicationCommandManager commandManager;

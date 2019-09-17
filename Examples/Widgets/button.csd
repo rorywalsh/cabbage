@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginid("Btn1")
+form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 button bounds(116, 38, 150, 50), channel("button1"), text("Enable Tone", "Disable Tone"),
@@ -11,7 +11,7 @@ button bounds(110, 140, 165, 62) identchannel("widgetIdent")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
@@ -51,6 +51,12 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "fontcolour:1(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent   
+	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdentifier strcat SIdentifier, SIdent  
+	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdentifier strcat SIdentifier, SIdent  
+	SIdent sprintf "outlinethickness(%f) ", rnd(100)/50
+	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "value(%f) ", rnd(1)
