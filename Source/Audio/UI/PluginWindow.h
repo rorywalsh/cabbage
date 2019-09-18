@@ -64,7 +64,7 @@ public:
             setContentOwned(ui, true);
             if( auto* cabbgeEditor = dynamic_cast<CabbagePluginEditor*>(ui))
             {
-                setSize(cabbgeEditor->getWidth(), cabbgeEditor->getHeight());;
+                
                 setBackgroundColour(cabbgeEditor->titlebarColour); // <-- set titlebar colour of the plugin window
             
                 pluginWindowLookAndFeel.titlebarContrastingGradient = cabbgeEditor->titlebarGradientAmount;
