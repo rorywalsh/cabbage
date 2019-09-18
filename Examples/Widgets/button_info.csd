@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 500), caption("Infobutton Example"), pluginid("BtIn"), colour(39, 40, 34)
+form size(400, 500), caption("Infobutton Example"), pluginID("plu1"), colour(39, 40, 34)
 button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
 infobutton bounds(120, 16, 100, 30), channel("button"),  file("button.csd"), text("Info")
 filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
@@ -11,7 +11,7 @@ filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), 
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1

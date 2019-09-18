@@ -572,27 +572,7 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     return true;
 #endif
 }
-//bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
-//{
-//#if JucePlugin_IsMidiEffect
-//    ignoreUnused (layouts);
-//    return true;
-//#else
-//
-//    //audio units can only be stereo for now
-//    if(this->wrapperType == AudioProcessor::wrapperType_AudioUnit)
-//        return true;
-//
-//    const int inputs = layouts.getNumChannels (true, busIndex);
-//    const int outputs = layouts.getNumChannels (false, busIndex);
-//
-//
-//    if (inputs == numCsoundChannels && outputs == numCsoundChannels)
-//        return true;
-//
-//    return false;
-//#endif
-//}
+
 
 //==========================================================================
 void CsoundPluginProcessor::triggerCsoundEvents()

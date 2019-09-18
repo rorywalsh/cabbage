@@ -47,9 +47,9 @@ Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile
 
 cd D:/a/1/s/Builds/VisualStudio2017/x64
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-0.5.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-0.5.0-win.zip" 
+Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-1.0.0-win.zip" 
 
-7z.exe x CabbageRack-0.5.0-win.zip -oD:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack
+7z.exe x CabbageRack-1.0.0-win.zip -oD:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack
 ls
 
 

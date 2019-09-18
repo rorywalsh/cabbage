@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 300), caption("Keyboard"), pluginid("Kbrd")
+form size(400, 300), caption("Keyboard"), pluginID("plu1")
 keyboard bounds(10, 10, 385, 160), identchannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
@@ -8,7 +8,7 @@ keyboard bounds(10, 10, 385, 160), identchannel("widgetIdent")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
@@ -31,13 +31,17 @@ instr ChangeAttributes
     SIdentifier init ""
 	SIdent sprintf "keyseperatorcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "mouseoeverkeycolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "mouseoverkeycolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdentifier strcat SIdentifier, SIdent
+	SIdent sprintf "keypressbaseoctave(%d) ", rnd(10)
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "whitenotecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "blacknotecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "arrowbackgroundcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdentifier strcat SIdentifier, SIdent
+	SIdent sprintf "keydowncolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "arrowcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent

@@ -1,5 +1,5 @@
 <Cabbage>
-form size(400, 500), caption("Soundfiler"), size(400, 300), colour(220, 220, 220), pluginid("SndF")
+form size(400, 500), caption("Soundfiler"), size(400, 300), colour(220, 220, 220), pluginID("def1")
 soundfiler bounds(10,10, 380, 200), identchannel("soundfilerIdent")
 filebutton bounds(10, 215, 100, 30), channel("openFile"), text("Browse")
 </Cabbage>
@@ -9,7 +9,7 @@ filebutton bounds(10, 215, 100, 30), channel("openFile"), text("Browse")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1

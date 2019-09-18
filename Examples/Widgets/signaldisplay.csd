@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Signaldisplay Example") size(400, 300), colour(220, 220, 220), pluginid("SDis")
+form caption("Signaldisplay Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 signaldisplay bounds(8, 30, 380, 170), colour("lime"), backgroundcolour("black"), displaytype("waveform"), signalvariable("aSig")
 </Cabbage>
@@ -9,7 +9,7 @@ signaldisplay bounds(8, 30, 380, 170), colour("lime"), backgroundcolour("black")
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1

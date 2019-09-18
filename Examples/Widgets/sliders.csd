@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Slider Example") size(400, 300), colour(220, 220, 220), pluginid("Slid")
+form caption("Slider Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 hslider bounds(8, 38, 369, 50), channel("gain"), text("Gain") range(0, 1, 0, 1, 0.001) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
@@ -11,7 +11,7 @@ rslider bounds(70, 140, 41, 119) channel("rsliderChannel"), identchannel("widget
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
@@ -33,6 +33,14 @@ endin
 
 instr ChangeAttributes
     SIdentifier init ""
+	SIdent sprintf "markercolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdentifier strcat SIdentifier, SIdent  
+	SIdent sprintf "markerthickness(%f) ", rnd(100)/50
+	SIdentifier strcat SIdentifier, SIdent
+	SIdent sprintf "markerthickness(%f) ", rnd(100)/50
+	SIdentifier strcat SIdentifier, SIdent
+	SIdent sprintf "markerthickness(%f) ", rnd(100)/50
+	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "popuptext(\"Popup Text %d\") ", rnd(1000)

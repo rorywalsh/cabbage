@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("HRange Example") size(400, 300), colour(220, 220, 220), pluginid("HRge")
+form caption("HRange Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
 label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 hrange bounds(120, 34, 160, 40), channel("hrangeL", "hrangeR"), colour(123, 34, 143), range(100, 1000, 200:300, 1, .01)
@@ -11,7 +11,7 @@ hrange bounds(110, 140, 162, 32), channel("range1", "range2"), identchannel("wid
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
+sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
