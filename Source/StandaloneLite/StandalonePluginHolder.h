@@ -3,9 +3,9 @@
 #include "../CodeEditor/CabbageOutputConsole.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
-CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile)
+CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile, int channels)
 {
-    return new CabbagePluginProcessor (inputFile);
+    return new CabbagePluginProcessor (inputFile, channels, channels);
 }
 
 //==================================================================================
@@ -78,7 +78,7 @@ public:
           channelConfiguration (channels),
           shouldMuteInput (! isInterAppAudioConnected())
     {
-        createPlugin (File (""));
+       createPlugin (File ("/Users/walshr/Documents/Csoundfiles/MultiOut8.csd"));
 
         auto inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
                            : processor->getMainBusNumInputChannels());
@@ -123,8 +123,10 @@ public:
         processor.reset (::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone));
 #else
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-        processor.reset (createCabbagePluginFilter (File (file)));
         const int numChannels = CabbageUtilities::getHeaderInfo(File(file).loadFileAsString(), "nchnls");
+        processor.reset (createCabbagePluginFilter (File (file), numChannels));
+        
+
         processor->setPlayConfigDetails(numChannels, numChannels, 44100, 64);
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 #endif
@@ -133,13 +135,13 @@ public:
         processor->disableNonMainBuses();
         processor->setRateAndBufferSizeDetails (44100, 512);
 
-//        int inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
-//                          : processor->getMainBusNumInputChannels());
-//
-//        int outChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numOuts
-//                           : processor->getMainBusNumOutputChannels());
-//
-//        processorHasPotentialFeedbackLoop = (inChannels > 0 && outChannels > 0);
+        int inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
+                          : processor->getMainBusNumInputChannels());
+
+        int outChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numOuts
+                           : processor->getMainBusNumOutputChannels());
+
+        processorHasPotentialFeedbackLoop = (inChannels > 0 && outChannels > 0);
     }
 
     virtual void deletePlugin()

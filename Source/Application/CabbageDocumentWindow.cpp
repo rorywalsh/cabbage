@@ -342,8 +342,9 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         menu.addSubMenu("Export plugin (Encrypt CSD)", subMenu2);
 #endif
     }
-    
+    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsVCVRackModule);
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
     
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
         menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
@@ -502,6 +503,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::exportAsVSTSynth,
         CommandIDs::exportAsVST3Synth,
         CommandIDs::exportAsAUMIDIFx,
+        CommandIDs::exportAsStandaloneApp,
         CommandIDs::selectAll,
         CommandIDs::exportAsVSTEffect,
         CommandIDs::exportAsVST3Effect,
@@ -714,6 +716,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::exportAsVCVRackModule:
             result.setInfo ("Export as VCV Rack Module", "VCV Rack export", CommandCategories::general, 0);
+            break;
+        
+        case CommandIDs::exportAsStandaloneApp:
+            result.setInfo ("Export as Standalone application", "Standalone export", CommandCategories::general, 0);
             break;
             
         case CommandIDs::batchConvertExamplesVST:
@@ -1055,6 +1061,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::exportAsVCVRackModule:
             pluginExporter.exportPlugin ("VCVRack", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+ 
+        case CommandIDs::exportAsStandaloneApp:
+            pluginExporter.exportPlugin ("Standalone", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
             
         case CommandIDs::batchConvertExamplesAU:

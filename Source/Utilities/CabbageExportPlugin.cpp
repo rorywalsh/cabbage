@@ -36,7 +36,9 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
         {
-            if(type.contains("VST3"))
+            if(type == "Standalone")
+                fileExtension = "app";
+            else if(type.contains("VST3"))
                 fileExtension = "vst3";
             else if(type.contains("VST"))
                 fileExtension = "vst";
@@ -47,7 +49,9 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else
         {
-			if(type.contains("VST3"))
+            if(type == "Standalone")
+                fileExtension = "exe";
+			else if(type.contains("VST3"))
 				fileExtension = "vst3";
 			else
 	            fileExtension = "dll";
@@ -76,6 +80,10 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             fileExtension = ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("dylib") : String("dll");
             pluginFilename = currentApplicationDirectory + (((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("/fmod_csound.dylib") : String("/fmod_csoundL64.dll"));
             
+        }
+        else  if (type == "Standalone")
+        {
+            pluginFilename = currentApplicationDirectory + "/CabbagePlugin." + fileExtension;
         }
 
         File VSTData (pluginFilename);
@@ -188,6 +196,8 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
         else if(fileExtension.containsIgnoreCase("vst"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
+        else if(fileExtension.containsIgnoreCase("app"))
+            exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
 
         if(fileExtension.contains("dylib"))
         {
@@ -209,7 +219,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             File pl (exportedPlugin.getFullPathName() + String ("/Contents/Info.plist"));
             String newPList = pl.loadFileAsString();
             
-            if(fileExtension.containsIgnoreCase("vst"))
+            if(fileExtension.containsIgnoreCase("vst") || fileExtension.containsIgnoreCase("app"))
             {
                 File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
 

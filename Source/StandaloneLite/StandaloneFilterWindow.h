@@ -179,18 +179,18 @@ public:
         {
             String commandLine = commandLineParams.replace("-NSDocumentRevisionsDebugMode YES", "").removeCharacters("\"'");;
 
-			String fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"'");
+            String fileToOpen = commandLine.trim().removeCharacters("\"'");
+            if(File(fileToOpen).existsAsFile() ==  false)
+                fileToOpen = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/" + commandLine.trim().removeCharacters("\"'");
 
             if (File(fileToOpen).existsAsFile())   //first try to open a file that resides in the same dir as the exe
             {
-                jassertfalse;
                 CabbageUtilities::debug(fileToOpen);
                 openFile (fileToOpen);
                 return;
             }
             else if(File(commandLine).existsAsFile()) //now try to open a file that contains a full file path
             {
-                jassertfalse;
                 CabbageUtilities::debug(commandLine);
                 openFile (commandLine);
                 return;
@@ -198,7 +198,6 @@ public:
             
             else if (commandLine.contains ("--export-VSTi"))
             {
-                jassertfalse;
                 String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VSTi") + 13).trim().removeCharacters ("\"");
 
                 if (File (inputFileName).existsAsFile())
@@ -212,7 +211,6 @@ public:
             }
             else if (commandLine.contains ("--export-VST "))
             {
-                jassertfalse;
                 String inputFileName = commandLine.substring (commandLine.indexOf ("--export-VST") + 12).trim().removeCharacters ("\"");
 
                 if (File (inputFileName).existsAsFile())

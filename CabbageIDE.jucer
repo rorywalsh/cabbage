@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.2.0"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.2.1"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.4" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
-    <GROUP id="{C0361D81-2D97-514F-0F91-A8077B17F83D}" name="GUIEditor"/>
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
         <FILE id="LrRPa8" name="FileTab.h" compile="0" resource="0" file="Source/Application/FileTab.h"/>
@@ -296,6 +295,8 @@
               file="Source/Widgets/CabbageXYPad.cpp"/>
         <FILE id="oRcPiJ" name="CabbageXYPad.h" compile="0" resource="0" file="Source/Widgets/CabbageXYPad.h"/>
       </GROUP>
+      <FILE id="QPQoQ0" name="CabbageLogoBig.png" compile="0" resource="1"
+            file="Images/CabbageLogoBig.png"/>
       <FILE id="sHnBgF" name="Cabbage.cpp" compile="1" resource="0" file="Source/Cabbage.cpp"/>
       <FILE id="W6M743" name="Cabbage.h" compile="0" resource="0" file="Source/Cabbage.h"/>
       <FILE id="pUfibG" name="CabbageCommonHeaders.h" compile="0" resource="0"
@@ -331,8 +332,8 @@
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
-               extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="vNeY7N"
-               bigIcon="vNeY7N" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK"
+               extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="QPQoQ0"
+               bigIcon="QPQoQ0" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK"
                microphonePermissionNeeded="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"

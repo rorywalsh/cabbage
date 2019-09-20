@@ -40,7 +40,6 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const
 
     CabbageUtilities::debug ("Plugin constructor");
 
-
 }
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
@@ -554,14 +553,20 @@ void CsoundPluginProcessor::releaseResources()
 
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-#if JucePlugin_IsMidiEffect
+    
+    const auto& mainInput  = layouts.getMainInputChannelSet();
+    const String test = mainInput.getDescription();
+    
+#if JucePlugin_IsMidiEffectz
     ignoreUnused (layouts);
     return true;
 #else
     // This is the place where you check if the layout is supported.
+#if ! CabbageLite
     if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
         && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
+#endif
     
     // This checks if the input layout matches the output layout
 #if ! JucePlugin_IsSynth
