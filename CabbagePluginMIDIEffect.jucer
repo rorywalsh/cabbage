@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.2.1"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.2.2"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -196,6 +196,8 @@
       <FILE id="ph3HxH" name="CabbageCommonHeaders.h" compile="0" resource="0"
             file="Source/CabbageCommonHeaders.h"/>
       <FILE id="bB3qNL" name="CabbageIds.h" compile="0" resource="0" file="Source/CabbageIds.h"/>
+      <FILE id="xurFMM" name="CabbageLogoBig.png" compile="0" resource="1"
+            file="Images/CabbageLogoBig.png"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
@@ -256,7 +258,8 @@
       </MODULEPATHS>
     </XCODE_MAC>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Synth=1"
-            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1">
+            externalLibraries="csound64.lib" windowsTargetPlatformVersion="8.1"
+            smallIcon="xurFMM" bigIcon="xurFMM">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound"
