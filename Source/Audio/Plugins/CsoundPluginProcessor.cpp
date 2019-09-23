@@ -553,7 +553,6 @@ void CsoundPluginProcessor::releaseResources()
 
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-    
     const auto& mainInput  = layouts.getMainInputChannelSet();
     const String test = mainInput.getDescription();
     
@@ -562,11 +561,11 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     return true;
 #else
     // This is the place where you check if the layout is supported.
-#if ! CabbageLite
+
     if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
         && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
-#endif
+
     
     // This checks if the input layout matches the output layout
 #if ! JucePlugin_IsSynth
