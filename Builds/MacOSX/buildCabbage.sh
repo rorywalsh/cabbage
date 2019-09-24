@@ -38,6 +38,7 @@ $PROJUCER --resave ../../CabbagePlugin.jucer
 xcodebuild -project CabbagePlugin.xcodeproj clean
 xcodebuild -project CabbagePlugin.xcodeproj/ -configuration Release ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO 
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst
+cp -rf ./build/Release/CabbagePlugin.app/ ./build/Release/Cabbage.app/Contents/CabbagePlugin.app
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.component
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.component
