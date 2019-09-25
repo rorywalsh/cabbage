@@ -19,6 +19,7 @@ REM "BUILDING EFFECT PLUGIN"
  %PROJUCER% --resave ../../CabbagePlugin.jucer
  msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64 
  copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginEffect.dll"
+ copy ".\x64\Release\Standalone Plugin\CabbagePlugin.exe" ".\x64\CabbagePlugin.exe"
 
 
 REM "BUILDING VST PLUGIN"

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.2.4"
+=======
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.2.5"
+>>>>>>> 8dd4893ea3fdbec06b01ba0239b01f6f64cea671
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.4" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">

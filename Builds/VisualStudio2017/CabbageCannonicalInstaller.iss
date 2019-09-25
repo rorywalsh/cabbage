@@ -49,6 +49,7 @@ Source: "{#BuildDir}/Cabbage.exe"; DestDir: "{app}"; Flags: ignoreversion; Compo
 Source: "{#BuildDir}/CabbageLite.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginEffect.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginSynth.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
+Source: "{#BuildDir}/CabbagePlugin.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginEffect.vst3"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginSynth.vst3"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/fmod_csoundL64.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
