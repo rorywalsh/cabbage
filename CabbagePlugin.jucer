@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<<<<<<< HEAD
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.2.4"
-=======
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.2.5"
->>>>>>> 8dd4893ea3fdbec06b01ba0239b01f6f64cea671
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.2.6"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
