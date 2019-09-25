@@ -66,7 +66,7 @@ void CsoundPluginProcessor::resetCsound()
 
 //==============================================================================
 //==============================================================================
-bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool debugMode)
+bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool isMono, bool debugMode)
 {
 	csound.reset (new Csound());
 	csdFilePath = filePath;
@@ -95,6 +95,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	csound->SetOption((char*)"-n");
 	csound->SetOption((char*)"-d");
 	csound->SetOption((char*)"-b0");
+    
     addMacros(csdFile.loadFileAsString());
 
 	if (debugMode)
@@ -106,22 +107,23 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
 	}
 
 	//instrument must at least be stereo
-	numCsoundChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+    if(isMono)
+    {
+        csoundParams->nchnls_override = 1;
+        numCsoundChannels = 1;
+    }
+    else
+    {
+        numCsoundChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+        csoundParams->nchnls_override = numCsoundChannels;
+    }
+    
 	const int requestedSampleRate = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "sr");
 	const int requestedKsmpsRate = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "ksmps");
-	csoundParams->nchnls_override = numCsoundChannels;
-	//only override sample rate if user insists
-#if !defined(Cabbage_IDE_Build)
-	PluginHostType pluginType;
-	if (pluginType.isFruityLoops())
-	{
-        //fruity loops has issues with certain ksmps sizes. Best that users set their own ksmps values
-		//csoundParams->ksmps_override = 1;
-	}
-#else
+	
 	if (requestedKsmpsRate == -1)
 		csoundParams->ksmps_override = 32;
-#endif
+
 	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
 
 	csound->SetParams(csoundParams.get());
@@ -540,7 +542,15 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
-        setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
+        PluginHostType pluginType;
+        if (pluginType.isLogic())
+        {
+            //allow mono plugins for Logic only..
+            if(this->getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
+                setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
+        }
+        else
+            setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
     
 }
@@ -561,10 +571,13 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     return true;
 #else
     // This is the place where you check if the layout is supported.
-
-    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-        && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
-        return false;
+//    PluginHostType pluginType;
+//    if (! pluginType.isLogic())
+//    {
+       if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
+            && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+            return false;
+//    }
 
     
     // This checks if the input layout matches the output layout
@@ -682,7 +695,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                 CSspin[pos] = newSamp;
                 *current_sample = (CSspout[pos] / cs_scale);
                 ++current_sample;
-                ++pos;
+                pos++;
 
             }
         }

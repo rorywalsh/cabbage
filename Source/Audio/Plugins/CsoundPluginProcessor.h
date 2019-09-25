@@ -41,7 +41,7 @@ public:
 	void resetCsound();
     //==============================================================================
     //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
-	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool debugMode = false);
+	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool isMono = false, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
