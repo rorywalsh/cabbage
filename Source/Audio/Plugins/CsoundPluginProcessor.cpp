@@ -542,6 +542,8 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
+        
+#if !Cabbage_IDE_Build && !Cabbage_Lite
         PluginHostType pluginType;
         if (pluginType.isLogic())
         {
@@ -550,6 +552,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
                 setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
         }
         else
+#endif
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
     
