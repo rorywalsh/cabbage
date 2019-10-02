@@ -12,7 +12,7 @@ echo "BUILD_ARTIFACTSTAGINGDIRECTORY is $BUILD_ARTIFACTSTAGINGDIRECTORY"
 echo "BUILD_ARTIFACTSTAGINGDIRECTORY contents:"
 ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 
-
+  
 pwd
 curl -L -o csound6.13.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.13.0/csound6.13.0-MacOS_x86_64.dmg'
 ls
