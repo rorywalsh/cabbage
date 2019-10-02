@@ -27,8 +27,8 @@
 
 class CabbageAudioParameter;
 
-class CabbagePluginProcessor
-    : public CsoundPluginProcessor
+class CabbagePluginProcessor : public CsoundPluginProcessor,
+public Timer
 {
 public:
 
@@ -107,6 +107,8 @@ public:
     StringArray cabbageScriptGeneratedCode;
     Array<PlantImportStruct> plantStructs;
 
+    int64 csdLastModifiedAt;
+    void timerCallback() override;
 	//uid needed for Cabbage host
 	AudioProcessorGraph::NodeID nodeId;
 
@@ -133,6 +135,7 @@ private:
     bool xyAutosCreated = false;
     OwnedArray<XYPadAutomator> xyAutomators;
 	int samplingRate = 44100;
+    int samplesInBlock = 64;
 	int screenWidth, screenHeight;
 	bool isUnityPlugin = false;
 

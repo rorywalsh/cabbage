@@ -353,6 +353,7 @@ public:
         add ("fontcolor:1");
         add ("basechannel");
         add ("popupprefix");
+        add ("autoupdate");
         add ("matrixsize");
         add ("fontcolour");
         add ("textcolour");
@@ -498,6 +499,7 @@ namespace CabbageIdentifierIds
 	static const Identifier active = "active";
 	static const Identifier activecellcolour = "activecellcolour";
 	static const Identifier align = "align";
+    static const Identifier autoupdate = "autoupdate";
 	static const Identifier allowboundsupdate = "allowboundsupdate";
 	static const Identifier alpha = "alpha";
 	static const Identifier amprange = "amprange";

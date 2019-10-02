@@ -71,6 +71,7 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, co
 
 void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)
 {
+   
     if (inputFile.existsAsFile()) {
         setWidthHeight();
         StringArray linesFromCsd;
@@ -95,10 +96,13 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
         if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
             this->suspendProcessing(true);
             
+            csdFile = tempFile;
+            
         }
         
         else{
             parseCsdFile(linesFromCsd);
+            csdFile = inputFile;
             if (setupAndCompileCsound(inputFile, inputFile.getParentDirectory(), samplingRate) == false)
                 this->suspendProcessing(true);
         }
@@ -109,7 +113,9 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
         csoundChanList = NULL;
 
         initAllCsoundChannels(cabbageWidgets);
-
+        
+        csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
+        
     }
 }
 
@@ -121,6 +127,18 @@ CabbagePluginProcessor::~CabbagePluginProcessor() {
 
 //    cabbageWidgets.removeAllChildren(nullptr);
 //    cabbageWidgets.removeAllProperties(nullptr);
+}
+
+void CabbagePluginProcessor::timerCallback()
+{
+    int64 modTime = csdFile.getLastModificationTime().toMilliseconds();
+    
+    if (modTime != csdLastModifiedAt && csdFile.existsAsFile())
+    {
+        csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
+        CabbageUtilities::debug("resetting file due to update of file on disk");
+        createCsound(csdFile, false);
+    }
 }
 
 //==============================================================================
@@ -142,7 +160,22 @@ void CabbagePluginProcessor::setWidthHeight() {
     }
 }
 
-void CabbagePluginProcessor::parseCsdFile(StringArray &linesFromCsd) {
+void CabbagePluginProcessor::parseCsdFile(StringArray &linesFromCsd)
+{
+    
+    for (auto line : linesFromCsd)
+    {
+        ValueTree temp("temp");
+        CabbageWidgetData::setWidgetState(temp, line, 0);
+        
+        if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+        {
+            if (line.contains("autoupdate()"))
+                startTimer(1000);
+        }
+        
+    }
+    
     cabbageWidgets.removeAllChildren(0);
     String parentComponent, previousComponent;
     StringArray parents;
@@ -1070,7 +1103,7 @@ void CabbagePluginProcessor::setCabbageParameter(String channel, float value) {
 }
 
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
-	
+    samplesInBlock = samplesPerBlock;
     if (sampleRate != samplingRate) {
 		samplingRate = sampleRate;
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
