@@ -236,6 +236,7 @@ private:
     int numCsoundChannels, pos;
     bool updateSignalDisplay = false;
     MYFLT cs_scale;
+    bool testLogicForMono = true;
     MYFLT* CSspin, *CSspout;
     int samplingRate = 44100;
     int csndIndex;
