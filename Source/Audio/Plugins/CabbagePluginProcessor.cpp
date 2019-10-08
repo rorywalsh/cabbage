@@ -80,23 +80,23 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
         //only create extended temp file if imported plants are being added...
         if( addImportFiles(linesFromCsd) == true )
         {
-        parseCsdFile(linesFromCsd);
+            parseCsdFile(linesFromCsd);
 
 
-        File tempFile = File::createTempFile(inputFile.getFileNameWithoutExtension()+"_temp.csd");
-        tempFile.replaceWithText(linesFromCsd.joinIntoString("\n")
-                                         .replace("$lt;", "<")
-                                         .replace("&amp;", "&")
-                                         .replace("$quote;", "\"")
-                                         .replace("$gt;", ">"));
+            File tempFile = File::createTempFile(inputFile.getFileNameWithoutExtension()+"_temp.csd");
+            tempFile.replaceWithText(linesFromCsd.joinIntoString("\n")
+                                             .replace("$lt;", "<")
+                                             .replace("&amp;", "&")
+                                             .replace("$quote;", "\"")
+                                             .replace("$gt;", ">"));
 
 
 
 
-        if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
-            this->suspendProcessing(true);
+            if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
+                this->suspendProcessing(true);
             
-            csdFile = tempFile;
+                csdFile = tempFile;
             
         }
         

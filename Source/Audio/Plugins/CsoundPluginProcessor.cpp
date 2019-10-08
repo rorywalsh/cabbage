@@ -557,19 +557,6 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 #endif
                 setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
-    else
-    {
-        PluginHostType pluginType;
-        if (pluginType.isLogic() && testLogicForMono == true)
-        {
-            //allow mono plugins for Logic only..
-            if(this->getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
-            {
-                setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
-                testLogicForMono = false;
-            }
-        }
-    }
     
 }
 
