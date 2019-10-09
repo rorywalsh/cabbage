@@ -4,12 +4,17 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 echo "Linux"
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+# ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --set-version 2.3.0 CabbageIDE.jucer
+# ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --set-version 2.3.0 CabbagePlugin.jucer
+# ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --set-version 2.3.0 CabbagePluginSynth.jucer
+# ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --set-version 2.3.0 CabbageLite.jucer
+# ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --set-version 2.3.0 CabbagePluginMIDIEffect.jucer
+
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbageIDE.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePlugin.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePluginSynth.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbageLite.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePluginMIDIEffect.jucer
-
 elif [[ "$OSTYPE" == "cygwin" ]]; then
 echo "cygwin"
 
