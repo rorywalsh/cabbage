@@ -101,7 +101,7 @@ cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj clean
 xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj -configuration Release
 
-cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
+# cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
 
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 ls
