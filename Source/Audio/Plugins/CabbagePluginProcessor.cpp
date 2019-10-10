@@ -71,7 +71,6 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, co
 
 void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)
 {
-    CabbageUtilities::debug(csdFile.getFullPathName());
     if (inputFile.existsAsFile()) {
         setWidthHeight();
         StringArray linesFromCsd;

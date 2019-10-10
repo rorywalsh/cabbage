@@ -118,7 +118,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     }
     else
     {
-        CabbageUtilities::debug(csdFile.loadFileAsString());
         numCsoundChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
         csoundParams->nchnls_override = numCsoundChannels;
     }
@@ -546,7 +545,6 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
-        CabbageUtilities::debug(csdFile.getFullPathName());
         //allow mono plugins for Logic only..
         if(isLogicAndMono == true)
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);

@@ -406,7 +406,7 @@ public:
 
 			if (inCsoundInstrumentsSection)
 			{
-                CabbageUtilities::debug(array[i]);
+               
 				if (array[i].indexOf(";") != -1)
 					array.set(i, array[i].substring(0, array[i].indexOf(";")));
 
