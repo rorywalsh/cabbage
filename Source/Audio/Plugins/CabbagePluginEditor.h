@@ -141,7 +141,7 @@ public:
     }
     bool shouldUpdateSignalDisplay();
     void savePluginStateToFile (File snapshotFile, String presetName="");
-    void restorePluginStateFrom (String childPreset);
+    void restorePluginStateFrom (String childPreset, File xmlFile);
     const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
     const String getCsoundOutputFromProcessor();
     StringArray getTableStatement (int tableNumber);

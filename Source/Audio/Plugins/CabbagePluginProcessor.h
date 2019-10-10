@@ -157,6 +157,7 @@ public:
 
 	float getValue() const override
 	{
+        
 		return range.convertTo0to1(currentValue);
 	}
 

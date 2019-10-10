@@ -986,13 +986,13 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName)
 {
-    XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), processor.getCsdFile().withFileExtension (".snaps"), presetName);
-    xml.writeToFile (processor.getCsdFile().withFileExtension (".snaps"), "");
+    XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName);
+    xml.writeToFile (snapshotFile, "");
 }
 
-void CabbagePluginEditor::restorePluginStateFrom (String childPreset)
+void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)
 {
-    std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (processor.getCsdFile().withFileExtension (".snaps")));
+    std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (xmlFile));
 
     if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
     {

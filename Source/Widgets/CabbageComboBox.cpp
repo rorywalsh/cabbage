@@ -196,7 +196,13 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
     {
-        owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()]);
+        String presetFilename;
+        if (owner->isAudioUnit())
+            presetFilename = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+        else
+            presetFilename = owner->createNewGenericNameForPresetFile();
+        
+        owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()], presetFilename);
         owner->sendChannelStringDataToCsound (getChannel(), presets[combo->getSelectedItemIndex()]);
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]);
     }

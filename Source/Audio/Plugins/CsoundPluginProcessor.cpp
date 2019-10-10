@@ -66,8 +66,12 @@ void CsoundPluginProcessor::resetCsound()
 
 //==============================================================================
 //==============================================================================
-bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, int sr, bool isMono, bool debugMode)
+bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File filePath, int sr, bool isMono, bool debugMode)
 {
+    
+    csdFile = currentCsdFile;
+    CabbageUtilities::debug(csdFile.getFullPathName());
+    
 	csound.reset (new Csound());
 	csdFilePath = filePath;
 	csdFilePath.setAsCurrentWorkingDirectory();
@@ -114,6 +118,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File csdFile, File filePath, i
     }
     else
     {
+        CabbageUtilities::debug(csdFile.loadFileAsString());
         numCsoundChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
         csoundParams->nchnls_override = numCsoundChannels;
     }
@@ -339,9 +344,9 @@ void CsoundPluginProcessor::addMacros (String csdText)
         if (csdArray[i].trim().substring (0, 7) == "#define")
         {
 			StringArray tokens;
-			CabbageUtilities::debug(csdArray[i]);
+//            CabbageUtilities::debug(csdArray[i]);
             tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
-			CabbageUtilities::debug(tokens[0]);
+//            CabbageUtilities::debug(tokens[0]);
             macroName = tokens[1];
             tokens.remove (0);
             tokens.remove (0);
@@ -541,6 +546,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
+        CabbageUtilities::debug(csdFile.getFullPathName());
         //allow mono plugins for Logic only..
         if(isLogicAndMono == true)
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);

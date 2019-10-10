@@ -71,7 +71,7 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, co
 
 void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)
 {
-   
+    CabbageUtilities::debug(csdFile.getFullPathName());
     if (inputFile.existsAsFile()) {
         setWidthHeight();
         StringArray linesFromCsd;
@@ -115,7 +115,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
         initAllCsoundChannels(cabbageWidgets);
         
         csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
-        
+
     }
 }
 
@@ -331,8 +331,8 @@ bool CabbagePluginProcessor::addImportFiles(StringArray &linesFromCsd) {
                 hasImportFiles = true;
             
             for (int y = 0; y < files.size(); y++) {
-                CabbageUtilities::debug(
-                        csdFile.getParentDirectory().getChildFile(files[y].toString()).getFullPathName());
+//                CabbageUtilities::debug(
+//                        csdFile.getParentDirectory().getChildFile(files[y].toString()).getFullPathName());
 
                 if (csdFile.getParentDirectory().getChildFile(files[y].toString()).existsAsFile()) {
                     StringArray linesFromImportedFile;
@@ -379,7 +379,7 @@ void CabbagePluginProcessor::handleXmlImport(XmlElement *xml, StringArray &lines
                 importData.cabbageCode.addLines(e->getAllSubText().replace("\t", " ").trim());
 
             if (e->getTagName() == "csoundcode")
-                importData.csoundCode = e->getAllSubText();
+                importData.csoundCode = e->getAllSubText().replace("$quote;", "\"");
 
             if (e->getTagName() == "cabbagecodescript")
                 generateCabbageCodeFromJS(importData, e->getAllSubText());
@@ -512,7 +512,7 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
 
 void CabbagePluginProcessor::insertUDOCode(PlantImportStruct importData, StringArray &linesFromCsd) {
     //todo don't check blocks of commented code
-    for (const auto str : linesFromCsd) {
+    for (auto str : linesFromCsd) {
         //str = str.replaceCharacters("\t", " ").trim();
         if (str == "<CsInstruments>") {
             StringArray strArray;
@@ -523,6 +523,8 @@ void CabbagePluginProcessor::insertUDOCode(PlantImportStruct importData, StringA
             for (int y = strArray.size(); y >= 0; y--)
                 linesFromCsd.insert(lineToInsertTo, strArray[y]);
 
+            
+            
             return;
         }
     }

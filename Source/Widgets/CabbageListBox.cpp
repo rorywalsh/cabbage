@@ -232,7 +232,13 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
     {
-        owner->restorePluginStateFrom (presets[row]);
+        String presetFilename;
+        if (owner->isAudioUnit())
+            presetFilename = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+        else
+            presetFilename = owner->createNewGenericNameForPresetFile();
+        
+        owner->restorePluginStateFrom (presets[row], presetFilename);
         owner->sendChannelDataToCsound (getChannel(), row);
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
