@@ -536,28 +536,17 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 //==============================================================================
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-    if(samplingRate != sampleRate)
+    // check for a change in sampling rate - also check if host is logic..
+    if(samplingRate != sampleRate || isLogic)
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
-        
-#if !Cabbage_IDE_Build && !Cabbage_Lite
-        PluginHostType pluginType;
-        if (pluginType.isLogic())
-        {
-            //allow mono plugins for Logic only..
-            if(this->getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
-                setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
-            else
-                setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
-        }
+        //allow mono plugins for Logic only..
+        if(isLogicAndMono == true)
+            setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
         else
-#endif
-                setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
+            setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
-    
 }
 
 void CsoundPluginProcessor::releaseResources()

@@ -139,6 +139,7 @@ private:
 	int screenWidth, screenHeight;
 	bool isUnityPlugin = false;
 
+
 };
 
 class CabbageAudioParameter : public AudioParameterFloat

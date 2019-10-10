@@ -70,7 +70,8 @@ public:
     virtual void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-
+    bool isLogicAndMono = false;
+    bool isLogic = false;
     //==============================================================================
     //Csound API functions for deailing with midi input
     static int OpenMidiInputDevice (CSOUND* csnd, void** userData, const char* devName);
@@ -227,6 +228,7 @@ public:
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
+
     int guiCycles = 0;
     int guiRefreshRate = 128;
     MidiBuffer midiBuffer;

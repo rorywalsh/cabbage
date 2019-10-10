@@ -1102,9 +1102,31 @@ void CabbagePluginProcessor::setCabbageParameter(String channel, float value) {
     getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
 }
 
-void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
+void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+{
+    bool csoundRecompiled = false;
     samplesInBlock = samplesPerBlock;
-    if (sampleRate != samplingRate) {
+#if !Cabbage_IDE_Build && !Cabbage_Lite
+    PluginHostType pluginType;
+    if (pluginType.isLogic())
+    {
+        //allow mono plugins for Logic only..
+        isLogic = true;
+        if(this->getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
+            isLogicAndMono = true;
+        else
+            isLogicAndMono = false;
+    
+        samplingRate = sampleRate;
+        CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
+        initAllCsoundChannels(cabbageWidgets);
+        csoundRecompiled = true;
+
+    }
+#endif
+    
+    
+    if (sampleRate != samplingRate && csoundRecompiled == false) {
 		samplingRate = sampleRate;
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
         initAllCsoundChannels(cabbageWidgets);
