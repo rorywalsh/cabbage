@@ -927,7 +927,13 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
-    String title (ProjectInfo::versionString);
+#ifdef CabbagePro
+    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString)+"\nLicensed to: " + String(JucePlugin_Manufacturer);
+#else
+    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
+//    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
+#endif
+    
     CabbageIDELookAndFeel tempLookAndFeel;
     const File currentFile = getContentComponent()->getCurrentCsdFile();
     switch (info.commandID)
@@ -1171,7 +1177,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
             
         case CommandIDs::about:
-            CabbageUtilities::showMessage (title, &tempLookAndFeel);
+            CabbageUtilities::showMessage (aboutInfo, &tempLookAndFeel);
             break;
             
         case CommandIDs::showGraph:
