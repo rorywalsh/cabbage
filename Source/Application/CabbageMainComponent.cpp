@@ -1036,6 +1036,7 @@ void CabbageMainComponent::createFilterGraph()
 	graphComponent = new GraphDocumentComponent(formatManager, deviceManager, knownPluginList);
 	graphComponent->setSize(600, 400);
 	filterGraphWindow->setContentOwned(graphComponent, true);
+	getFilterGraph()->setCabbageSettings(cabbageSettings);
 }
 //==================================================================================
 void CabbageMainComponent::showGraph()

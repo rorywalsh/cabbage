@@ -436,6 +436,7 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::buildNow);
+    menu.addCommandItem (&commandManager, CommandIDs::buildNoConnect);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
     menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
@@ -490,6 +491,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::closeDocument,
         CommandIDs::saveDocument,
         CommandIDs::buildNow,
+                              CommandIDs::buildNoConnect,
         CommandIDs::saveGraph,
         CommandIDs::saveGraphAs,
         CommandIDs::exportTheme,
@@ -553,9 +555,10 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
     bool shouldShowEditMenu = false;
-    
+    int disableNodeConnections = cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes", 1);
     if (getContentComponent()->getCurrentEditorContainer() != nullptr)
         shouldShowEditMenu = true;
+
     
     switch (commandID)
     {
@@ -637,6 +640,12 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::buildNow:
             result.setInfo ("Build instrument", "Builds the current instrument", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+
+        case CommandIDs::buildNoConnect:
+            result.setInfo ("Auto-connect to graph", "Enables auto connect to audio graph", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('b', ModifierKeys::commandModifier, 0));
+            result.setTicked((disableNodeConnections==1 ? true : false));
             break;
             
         case CommandIDs::startAudioGraph:
@@ -973,8 +982,15 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::saveGraphAs:
             getContentComponent()->saveGraph (true);
             return true;
-            
-        case CommandIDs::buildNow:
+
+        case CommandIDs::buildNoConnect:
+            if(cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes") == 1)
+                cabbageSettings->getUserSettings()->setValue("autoConnectNodes", 0);
+            else
+                cabbageSettings->getUserSettings()->setValue("autoConnectNodes", 1);
+            return true;
+
+            case CommandIDs::buildNow:
         case CommandIDs::saveDocument:
             
             getContentComponent()->saveDocument();

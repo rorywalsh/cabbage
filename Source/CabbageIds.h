@@ -74,6 +74,7 @@ namespace CommandIDs
         findPrevious            = 0x2010a3,
         showReplacePanel        = 0x2010a4,
         buildNow                = 0x41001a,
+        buildNoConnect          = 0x41001c,
         nextTab                 = 0x41001b,
         zoomIn                  = 0x410017,
         zoomOut                 = 0x410018,

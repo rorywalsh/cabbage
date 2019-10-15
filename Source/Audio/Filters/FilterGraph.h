@@ -28,6 +28,7 @@
 
 #include "../UI/PluginWindow.h"
 #include "../../Utilities/CabbageUtilities.h"
+#include "../../Settings/CabbageSettings.h"
 #include "../Plugins/CabbagePluginProcessor.h"
 #include "../Plugins/GenericCabbagePluginProcessor.h"
 
@@ -231,6 +232,11 @@ public:
 	}
 
     //RW
+    CabbageSettings* settings;
+    void setCabbageSettings(CabbageSettings* cabbageSettings)
+    {
+        settings = cabbageSettings;
+    }
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
@@ -288,7 +294,7 @@ public:
 
 		
 		
-
+    if(settings->getUserSettings()->getIntValue("autoConnectNodes")==1)
        setDefaultConnections(nodeId);
 	}
 

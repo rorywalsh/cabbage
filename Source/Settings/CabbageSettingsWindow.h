@@ -143,7 +143,7 @@ private:
     TextButton deleteRepoButton, saveRepoButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
 
-    Value alwaysOnTopPluginValue, resetNotifications, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
+    Value alwaysOnTopPluginValue, resetNotifications, autoConnectNodes, alwaysOnTopGraphValue, showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue;
     Viewport viewport;
 
 };
