@@ -233,6 +233,8 @@ Result FilterGraph::loadDocument (const File& file)
         graph.addChangeListener (this);
     } );
 
+    setLastDocumentOpened(file);
+
     return Result::ok();
 }
 
@@ -253,6 +255,9 @@ File FilterGraph::getLastDocumentOpened()
     //                                    ->getValue ("recentFilterGraphFiles"));
 
     //return recentFiles.getFile (0);
+    if(currentFile.existsAsFile())
+    	return currentFile;
+
 	return File();
 }
 
@@ -266,6 +271,7 @@ void FilterGraph::setLastDocumentOpened (const File& file)
 
     //getAppProperties().getUserSettings()
     //    ->setValue ("recentFilterGraphFiles", recentFiles.toString());
+    currentFile = file;
 }
 
 //==============================================================================

@@ -612,7 +612,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::saveGraph:
             result.setInfo ("Save Cabbage patch", "Save a patch document", CommandCategories::general, 0);
-            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
+            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
             break;
             
         case CommandIDs::saveGraphAs:

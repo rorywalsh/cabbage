@@ -378,7 +378,7 @@ public:
     Result saveDocument (const File& file) override;
     File getLastDocumentOpened() override;
     void setLastDocumentOpened (const File& file) override;
-
+	File currentFile;
     static File getDefaultGraphDocumentOnMobile();
 
     //==============================================================================

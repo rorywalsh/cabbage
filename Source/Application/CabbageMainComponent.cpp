@@ -1414,10 +1414,19 @@ void CabbageMainComponent::setCurrentCsdFile (File file)
 //==================================================================================
 void CabbageMainComponent::saveGraph (bool saveAs)
 {
-    //getFilterGraph()->saveGraph(saveAs);
-	FileChooser fc("Save file as", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
-	if(fc.browseForFileToSave(true))
-		getFilterGraph()->saveDocument(fc.getResult().withFileExtension(".cabbage"));
+    if(saveAs==false)
+    {
+        if(getFilterGraph()->getLastDocumentOpened().existsAsFile()) {
+            getFilterGraph()->saveDocument(getFilterGraph()->getLastDocumentOpened());
+            return;
+        }
+    }
+
+        //getFilterGraph()->saveGraph(saveAs);
+        FileChooser fc("Save file as", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        if(fc.browseForFileToSave(true))
+            getFilterGraph()->saveDocument(fc.getResult().withFileExtension(".cabbage"));
+
 }
 //==================================================================================
 void CabbageMainComponent::openFolder ()
