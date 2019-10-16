@@ -40,7 +40,10 @@
 */
 class FilterGraph   : public FileBasedDocument,
                       public AudioProcessorListener,
-                      private ChangeListener
+                      private ChangeListener,
+                      //RW
+                      public HighResolutionTimer,
+                      public AudioPlayHead
 {
 
 public:
@@ -233,10 +236,119 @@ public:
 
     //RW
     CabbageSettings* settings;
+	int currentBPM = 60;
+	float PPQN = 24;
+	float playPosition = 0;
+	int ppqPosition = 1;
+	int subTicks = 0;
+	int timeInSeconds = 0;
+	bool isPlaying = false;
+	bool isLooping = false;
+	bool isRecording = false;
+
+
+    bool getCurrentPosition (CurrentPositionInfo &result)
+    {
+        result = playHeadPositionInfo;
+        return true;
+    }
+
+    void setPlayHeadInfo(CurrentPositionInfo info)
+    {
+        playHeadPositionInfo = info;
+    }
+
+    void setIsPlaying(bool val)
+    {
+        playHeadPositionInfo.isPlaying=val;
+    }
+
+    void setIsRecording(bool val)
+    {
+        playHeadPositionInfo.isRecording=val;
+    }
+
+    void setTimeInSeconds(int val)
+    {
+        playHeadPositionInfo.timeInSeconds=val;
+    }
+    int getTimeInSeconds()
+    {
+        return playHeadPositionInfo.timeInSeconds;
+    }
+
+    void setPPQPosition(int val)
+    {
+        playHeadPositionInfo.ppqPosition=val;
+    }
+    int getPPQPosition()
+    {
+        return playHeadPositionInfo.ppqPosition;
+    }
+
+    void setBpm(int bpm)
+    {
+        playHeadPositionInfo.bpm = bpm;
+    }
+
+	void setBPM(int bpm)
+	{
+		currentBPM = bpm;
+		setBpm(bpm);
+
+
+		if(isTimerRunning())
+		{
+			stopTimer();
+			startTimer(100*(60.f/currentBPM));
+		}
+	}
+
+	void hiResTimerCallback() override
+	{
+		if(playPosition==0)
+		{
+			timeInSeconds++;
+			setTimeInSeconds(timeInSeconds);
+		}
+
+
+		if(subTicks==0)
+		{
+			setPPQPosition(ppqPosition);
+			ppqPosition++;
+		}
+
+		subTicks = (subTicks > 9 ? 0 : subTicks+1);
+		playPosition = (playPosition > 1 ? 0 : playPosition+((float)getTimerInterval()/1000.f));
+	}
+
+	void setIsHostPlaying(bool value, bool reset)
+	{
+		setIsPlaying(value);
+		if(value == true)
+		{
+			startTimer(100*(60.f/currentBPM));
+		}
+		else
+			stopTimer();
+
+		if(reset==true)
+		{
+			timeInSeconds=0;
+			setPPQPosition(0);
+			setTimeInSeconds(0);
+			ppqPosition=0;
+			timeInSeconds=0;
+
+		}
+	}
+
     void setCabbageSettings(CabbageSettings* cabbageSettings)
     {
         settings = cabbageSettings;
     }
+
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
@@ -262,7 +374,7 @@ public:
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				setNodePosition(nodeId, Point<double>(pos.x, pos.y));
-
+				node->getProcessor()->setPlayHead(graph.getPlayHead());
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				changed();
@@ -285,6 +397,7 @@ public:
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
+				node->getProcessor()->setPlayHead(graph.getPlayHead());
 
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
 				node->properties.set("DPIAware", true);
@@ -292,10 +405,8 @@ public:
 			}
 		}
 
-		
-		
-    if(settings->getUserSettings()->getIntValue("autoConnectNodes")==1)
-       setDefaultConnections(nodeId);
+		if(settings->getUserSettings()->getIntValue("autoConnectNodes")==1)
+		   setDefaultConnections(nodeId);
 	}
 
 
@@ -393,11 +504,11 @@ public:
 private:
     //==============================================================================
 	AudioPluginFormatManager& formatManager;
-	
 
     NodeID lastUID;
     NodeID getNextUID() noexcept;
-
+//RW
+    AudioPlayHead::CurrentPositionInfo playHeadPositionInfo;
     void createNodeFromXml (const XmlElement& xml);
     void addFilterCallback (AudioPluginInstance*, const String& error, Point<double>);
     void changeListenerCallback (ChangeBroadcaster*) override;

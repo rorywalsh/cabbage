@@ -644,7 +644,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
         case CommandIDs::buildNoConnect:
             result.setInfo ("Auto-connect to graph", "Enables auto connect to audio graph", CommandCategories::general, 0);
-            result.defaultKeypresses.add (KeyPress ('b', ModifierKeys::commandModifier, 0));
+            result.defaultKeypresses.add (KeyPress (',', ModifierKeys::commandModifier, 0));
             result.setTicked((disableNodeConnections==1 ? true : false));
             break;
             

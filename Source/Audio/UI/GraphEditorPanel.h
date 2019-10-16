@@ -29,6 +29,7 @@
 #include "../Filters/FilterGraph.h"
 #include "../../CabbageCommonHeaders.h"
 
+class CabbageTransportComponent;
 //==============================================================================
 /**
  A panel that displays and edits a FilterGraph.
@@ -84,7 +85,6 @@ private:
     OwnedArray<ConnectorComponent> connectors;
     std::unique_ptr<ConnectorComponent> draggingConnector;
     std::unique_ptr<PopupMenu> menu;
-    
     FilterComponent* getComponentForFilter (AudioProcessorGraph::NodeID) const;
     ConnectorComponent* getComponentForConnection (const AudioProcessorGraph::Connection&) const;
     PinComponent* findPinAt (Point<float>) const;
@@ -135,6 +135,8 @@ public:
     //==============================================================================
     std::unique_ptr<GraphEditorPanel> graphPanel;
     std::unique_ptr<MidiKeyboardComponent> keyboardComp;
+    //RW
+    std::unique_ptr<CabbageTransportComponent> transportControls;
     
     //==============================================================================
     void showSidePanel (bool isSettingsPanel);

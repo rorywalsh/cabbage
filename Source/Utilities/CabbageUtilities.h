@@ -195,6 +195,39 @@ public:
         return img;
     }
 
+    static const Image drawPlayPauseIcon (int width, int height, Colour colour, bool isPlaying, bool isPressed = false)
+    {
+        Image img = Image (Image::ARGB, width, height, true);
+        Graphics g (img);
+        Path p;
+
+        const int newWidth = (isPressed == true ? width - 1 : width);
+        const int newHeight = (isPressed == true ? height - 1 : height);
+
+        p.addRoundedRectangle (0, 0, newWidth, newHeight, 2);
+        g.setColour(colour);//  /*Colour (30, 30, 30)*/);
+        p.closeSubPath();
+        g.fillPath (p);
+        p.clear();
+
+        int scaleFactor = -3; // <-- in pixel
+
+        if (isPlaying == false)
+        {
+            g.setColour (Colours::white/*Colours::lime.darker()*/);
+            p.addTriangle (newWidth - scaleFactor, 2 - scaleFactor, newWidth - 5 + scaleFactor, newHeight / 2, newWidth - scaleFactor, newHeight - 3 + scaleFactor);
+        }
+        else
+        {
+            g.setColour (Colours::white/*Colours::lime.darker (.7f)*/);
+            p.addRectangle (newWidth, 4 - scaleFactor, newWidth, newHeight - 11 + scaleFactor);
+        }
+
+        p.closeSubPath();
+        g.fillPath (p);
+        return img;
+    }
+
     static const Image drawPlayStopIcon (int width, int height, Colour colour, bool isPlaying, bool isPressed = false)
     {
         Image img = Image (Image::ARGB, width, height, true);

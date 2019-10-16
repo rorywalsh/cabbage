@@ -42,6 +42,7 @@ FilterGraph::FilterGraph (AudioPluginFormatManager& fm)
 
     newDocument();
     graph.addListener (this);
+    graph.setPlayHead(this);
 }
 
 FilterGraph::~FilterGraph()
@@ -104,6 +105,9 @@ void FilterGraph::addPluginCallback(std::unique_ptr<AudioPluginInstance> instanc
 
 		if (auto node = graph.addNode(std::move(instance)))
 		{
+			//RW
+			node->getProcessor()->setPlayHead(graph.getPlayHead());
+			//----------------------------------------------
 			node->properties.set("x", pos.x);
 			node->properties.set("y", pos.y);
 			changed();

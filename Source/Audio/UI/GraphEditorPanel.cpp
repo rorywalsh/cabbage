@@ -27,7 +27,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "GraphEditorPanel.h"
 #include "../Filters/InternalFilters.h"
-
+#include "CabbageTransportComponent.h"
 #include "../../Application/CabbageMainComponent.h"
 
 
@@ -1302,7 +1302,9 @@ void GraphDocumentComponent::init()
     addAndMakeVisible (keyboardComp.get());
     statusBar.reset (new TooltipBar());
     addAndMakeVisible (statusBar.get());
-    
+    //RW
+    transportControls.reset( new CabbageTransportComponent(this));
+    addAndMakeVisible(transportControls.get());
     graphPanel->updateComponents();
     
 }
@@ -1324,9 +1326,11 @@ void GraphDocumentComponent::resized()
     
     //if (isOnTouchDevice())
     //    titleBarComponent->setBounds (r.removeFromTop(titleBarHeight));
-    
-    keyboardComp->setBounds (r.removeFromBottom (keysHeight));
-    statusBar->setBounds (r.removeFromBottom (statusHeight));
+
+//    statusBar->setBounds (r.removeFromBottom (statusHeight));
+    keyboardComp->setBounds (r.removeFromBottom (keysHeight).withLeft(300).withWidth(getWidth()-300));
+    transportControls->setBounds(0, keyboardComp->getBounds().getY()+5, 300, keysHeight-10);
+
     graphPanel->setBounds (r);
     
     checkAvailableWidth();

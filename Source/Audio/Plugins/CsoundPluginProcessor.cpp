@@ -299,24 +299,22 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("AdobeAudition", 1.0);
 #endif
              
-    if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
-    {
-        csound->SetChannel ("IS_A_PLUGIN", 1.0);
-
-        if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (hostInfo))
-        {
-            csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
-            csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
-            csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
-            csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
-            csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
-            csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
-            csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
-            csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
-        }
+    if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE) {
+        csound->SetChannel("IS_A_PLUGIN", 1.0);
     }
-    else
-        csound->SetChannel ("IS_A_PLUGIN", 0.0);
+
+    if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (hostInfo))
+    {
+        csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
+        csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
+        csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
+        csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
+        csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
+        csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
+        csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
+        csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
+    }
+
 
     csound->PerformKsmps();
 
@@ -603,8 +601,8 @@ void CsoundPluginProcessor::handleAsyncUpdate()
 
 void CsoundPluginProcessor::sendHostDataToCsound()
 {
-    if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
-    {
+//    if (CabbageUtilities::getTarget() != CabbageUtilities::TargetTypes::IDE)
+//    {
         if (AudioPlayHead* const ph = getPlayHead())
         {
             AudioPlayHead::CurrentPositionInfo hostInfo;
@@ -621,7 +619,7 @@ void CsoundPluginProcessor::sendHostDataToCsound()
                 csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
             }
         }
-    }
+//    }
 }
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {

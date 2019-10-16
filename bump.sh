@@ -1,7 +1,13 @@
 #!/bin/bash  
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-echo "Linux"
+/home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbageIDE.jucer
+/home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbagePlugin.jucer
+/home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbagePluginSynth.jucer
+/home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbageLite.jucer
+/home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbagePluginMIDIEffect.jucer
+
+
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 # ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --set-version 2.3.0 CabbageIDE.jucer
