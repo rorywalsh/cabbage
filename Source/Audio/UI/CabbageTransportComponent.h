@@ -22,7 +22,8 @@ class GraphDocumentComponent;
 class CabbageTransportComponent : public Component,
     public Button::Listener,
     public Slider::Listener,
-    public Timer
+    public Timer,
+public Label::Listener
 {
 public:
     CabbageTransportComponent(GraphDocumentComponent* graph);
@@ -66,6 +67,8 @@ public:
         g.fillAll(Colours::transparentBlack);
     }
 
+    void labelTextChanged (Label *labelThatHasChanged) override;
+
     class RecordOverlayComponent : public Component, public Timer
     {
         Colour overlayColour = {Colours::transparentBlack};
@@ -104,7 +107,6 @@ public:
     void setDrawableImages (DrawableButton& button, int width, int height, String type);
 private:
     RecordOverlayComponent overlay;
-    Slider bpmSlider, timeSigNum, timeSigDen;
     DrawableButton playButton;
     DrawableButton stopButton;
     DrawableButton recordButton;
@@ -112,6 +114,7 @@ private:
     Label bpmLabel;
     Label timeLabel;
     Label beatsLabel;
+
     DrawablePath timingInfoBox;
     ScopedPointer<LookAndFeel_V4> lookAndFeel;
     Colour playButtonColour = {0, 100, 0};

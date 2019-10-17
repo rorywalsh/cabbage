@@ -28,9 +28,9 @@ CabbageTransportComponent::CabbageTransportComponent(GraphDocumentComponent* gra
     playButton("playButton", DrawableButton::ImageFitted),
     stopButton("stopButton", DrawableButton::ImageFitted),
     recordButton("recordButton", DrawableButton::ImageFitted),
-    bpmSlider("bpmSlider"),
     timeLabel("TimeLabel"),
     beatsLabel("beatsLabel"),
+    bpmLabel("60 bpm"),
     timingInfoBox(),
     overlay(),
     owner(graph)
@@ -45,36 +45,32 @@ CabbageTransportComponent::CabbageTransportComponent(GraphDocumentComponent* gra
     info.ppqPosition = 0;
     owner->graph->setPlayHeadInfo(info);
 
-    bpmSlider.setSliderStyle(Slider::SliderStyle::LinearBarVertical);
-    bpmSlider.setRange(1, 500, 1);
-    bpmSlider.setValue(60, dontSendNotification);
-    bpmSlider.addListener(this);
-    bpmSlider.setVelocityBasedMode(true);
-    bpmSlider.setColour(Slider::ColourIds::thumbColourId,  Colours::transparentBlack);
-    bpmSlider.setColour(Slider::ColourIds::textBoxTextColourId, Colours::green);
-    bpmSlider.setColour(Slider::ColourIds::textBoxBackgroundColourId,  Colours::transparentBlack);
-    bpmSlider.setColour(Slider::ColourIds::textBoxOutlineColourId, Colours::transparentBlack);
-
-
-    bpmSlider.setVelocityModeParameters(0.9);
-    bpmSlider.setColour(Slider::thumbColourId, Colours::transparentBlack);
-    bpmSlider.setTextValueSuffix(" BPM");
-    bpmSlider.setAlwaysOnTop(true);
 
     timeLabel.setJustificationType(Justification::left);
     timeLabel.setFont(Font(24, 1));
     timeLabel.setLookAndFeel(lookAndFeel);
-    timeLabel.setColour(Label::backgroundColourId, Colours::black);
+    timeLabel.setColour(Label::backgroundColourId, Colours::transparentBlack);
     timeLabel.setColour(Label::textColourId, Colours::cornflowerblue);
     timeLabel.setText("00 : 00 : 00", dontSendNotification);
 
     beatsLabel.setJustificationType(Justification::right);
     beatsLabel.setFont(Font(18, 1));
     beatsLabel.setLookAndFeel(lookAndFeel);
-    beatsLabel.setColour(Label::backgroundColourId, Colours::black);
+    beatsLabel.setColour(Label::backgroundColourId, Colours::transparentBlack);
     beatsLabel.setColour(Label::textColourId, Colours::cornflowerblue);
     beatsLabel.setText("Beat 1", dontSendNotification);
 
+    bpmLabel.setJustificationType(Justification::right);
+    bpmLabel.setFont(Font(18, 1));
+    bpmLabel.setLookAndFeel(lookAndFeel);
+    bpmLabel.setEditable(true, true);
+    bpmLabel.addListener(this);
+    bpmLabel.setColour(Label::backgroundColourId, Colours::transparentBlack);
+    bpmLabel.setColour(Label::textColourId, Colours::cornflowerblue);
+    bpmLabel.setColour(Label::outlineWhenEditingColourId, Colours::transparentBlack);
+    bpmLabel.setColour(Label::ColourIds::textWhenEditingColourId, Colours::white);
+    bpmLabel.setText("60 bpm", dontSendNotification);
+    bpmLabel.setAlwaysOnTop(true);
 
     playButton.setLookAndFeel(lookAndFeel);
     playButton.setColour(DrawableButton::backgroundColourId, Colours::transparentBlack);
@@ -94,7 +90,7 @@ CabbageTransportComponent::CabbageTransportComponent(GraphDocumentComponent* gra
     addAndMakeVisible (playButton);
     addAndMakeVisible (stopButton);
     addAndMakeVisible (recordButton);
-    addAndMakeVisible (bpmSlider);
+    addAndMakeVisible (bpmLabel);
     addAndMakeVisible (timeLabel);
     addAndMakeVisible (beatsLabel);
     addAndMakeVisible (overlay);
@@ -106,19 +102,35 @@ CabbageTransportComponent::CabbageTransportComponent(GraphDocumentComponent* gra
     stopButton.addListener (this);
 }
 
+void CabbageTransportComponent::labelTextChanged (Label *labelThatHasChanged)
+{
+
+    const String text = labelThatHasChanged->getText(true).replace("bpm", "");
+    if(text.getIntValue() > 0)
+        owner->graph->setBPM(text.getIntValue());
+
+    labelThatHasChanged->setText(text+ " bpm", dontSendNotification);
+}
+
+
 void CabbageTransportComponent::timerCallback()
 {
-    const int ellapsedTime = owner->graph->getTimeInSeconds();
-    const int hours = (ellapsedTime / 60 / 60) % 24;
-    const int minutes = (ellapsedTime / 60) % 60;
-    const int seconds = ellapsedTime % 60;
+    const double ellapsedTime = owner->graph->getTimeInSeconds();
+    const int hours = (int(ellapsedTime) / 60 / 60) % 24;
+    const int minutes = (int(ellapsedTime) / 60) % 60;
+    const int seconds = int(ellapsedTime) % 60;
     String time = String::formatted("%02d", hours)+" : "+String::formatted("%02d", minutes)+" : "+String::formatted("%02d", seconds);
+
+
+    const double elaspsedQNs = owner->graph->getPPQPosition();
+
+    if(elaspsedQNs>=1)
+    {
+        String ppqPos = "Beat "+String(elaspsedQNs);
+        setBeatsLabel(String(ppqPos));
+    }
     setTimeLabel(time);
 
-    const int elaspsedQNs = owner->graph->getPPQPosition();
-
-    String ppqPos = "Beat "+String(elaspsedQNs);
-    setBeatsLabel(String(ppqPos));
 }
 
 const Image CabbageTransportComponent::drawRecordStopIcon (int width, int height, Colour colour, bool isRecordButton, bool isRecording)
@@ -225,9 +237,8 @@ void CabbageTransportComponent::resized()
     overlay.setBounds(playButton.getX()+playButton.getWidth()+2, 5, getHeight()-9, getHeight()-9);
     r.removeFromLeft(40);
     timeLabel.setBounds(r.withHeight(getHeight()/1.5).reduced(30, 0));
-    beatsLabel.setBounds(r.reduced(30, 0).withTop(30));
-
-    bpmSlider.setBounds(r.getTopLeft().x+20, r.getTopLeft().y+25, 70, 40);
+    beatsLabel.setBounds(r.getTopLeft().x+80, r.getTopLeft().y+23, 70, 30);
+    bpmLabel.setBounds(r.getTopLeft().x+15, r.getTopLeft().y+23, 70, 30);
 
     Path timeBox;
     timeBox.addRoundedRectangle(r, 5);
@@ -257,11 +268,17 @@ void CabbageTransportComponent::buttonClicked (Button* button)
     }
     else if(button->getName()=="playButton")
     {
-        owner->graph->setIsHostPlaying(true, false);
-        startTimer(100);
-        if(recordButton.getToggleState() == true){
-            owner->graph->setIsRecording(true);
-            overlay.startTimer(500);
+        if(button->getToggleState() == true) {
+            owner->graph->setIsHostPlaying(true, false);
+            startTimer(10);
+            if (recordButton.getToggleState() == true) {
+                owner->graph->setIsRecording(true);
+                overlay.startTimer(500);
+            }
+        } else{
+            startTimer(10);;
+            owner->graph->setIsHostPlaying(false, false);
+
         }
 
     }

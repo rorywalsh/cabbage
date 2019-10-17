@@ -238,10 +238,9 @@ public:
     CabbageSettings* settings;
 	int currentBPM = 60;
 	float PPQN = 24;
-	float playPosition = 0;
-	int ppqPosition = 1;
-	int subTicks = 0;
-	int timeInSeconds = 0;
+	double ppqPosition = 1;
+	double subTicks = 0;
+	double timeInSeconds = 0;
 	bool isPlaying = false;
 	bool isLooping = false;
 	bool isRecording = false;
@@ -268,16 +267,17 @@ public:
         playHeadPositionInfo.isRecording=val;
     }
 
-    void setTimeInSeconds(int val)
+    void setTimeInSeconds(double val)
     {
         playHeadPositionInfo.timeInSeconds=val;
     }
-    int getTimeInSeconds()
+
+    double getTimeInSeconds()
     {
         return playHeadPositionInfo.timeInSeconds;
     }
 
-    void setPPQPosition(int val)
+    void setPPQPosition(double val)
     {
         playHeadPositionInfo.ppqPosition=val;
     }
@@ -300,27 +300,31 @@ public:
 		if(isTimerRunning())
 		{
 			stopTimer();
-			startTimer(100*(60.f/currentBPM));
+			//100*(60.f/currentBPM)
+			startTimer(10);
 		}
 	}
 
 	void hiResTimerCallback() override
 	{
-		if(playPosition==0)
-		{
-			timeInSeconds++;
+
+//		if(playPosition==0)
+//		{
+			timeInSeconds+=(getTimerInterval()/1000.f);
 			setTimeInSeconds(timeInSeconds);
-		}
+//		}
 
 
-		if(subTicks==0)
-		{
+		//if(subTicks==0)
+		//{
+            ppqPosition+=(getTimerInterval()/(1000.f)*(currentBPM/60));
 			setPPQPosition(ppqPosition);
-			ppqPosition++;
-		}
+			//*(60.f/currentBPM);
+		//}
 
-		subTicks = (subTicks > 9 ? 0 : subTicks+1);
-		playPosition = (playPosition > 1 ? 0 : playPosition+((float)getTimerInterval()/1000.f));
+        playHeadPositionInfo.timeInSamples = timeInSeconds*graph.getSampleRate();
+		subTicks = (subTicks >= 1 ? 0 : (subTicks+(getTimerInterval()*0.001)*currentBPM/60));
+//		playPosition = (playPosition >= 1 ? 0 : playPosition+(getTimerInterval()*0.1));
 	}
 
 	void setIsHostPlaying(bool value, bool reset)
@@ -328,7 +332,7 @@ public:
 		setIsPlaying(value);
 		if(value == true)
 		{
-			startTimer(100*(60.f/currentBPM));
+			startTimer(10);
 		}
 		else
 			stopTimer();
