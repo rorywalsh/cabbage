@@ -161,7 +161,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         if (workingDir.isNotEmpty())
             pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
         else
-            pluginDir = File::getCurrentWorkingDirectory().getParentDirectory();
+            pluginDir = File::getCurrentWorkingDirectory();
 
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
         pluginDir.findChildFiles (dirFiles, 2, false, filetype);
@@ -176,6 +176,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         {
             addItem (folderFiles[i].getFileNameWithoutExtension(), i + 2);
         }
+
+        setSelectedItemIndex(getNumItems()-1, dontSendNotification);
 
     }
 
@@ -264,9 +266,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         }
 
 
-        if (refresh != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles))
+        if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)
         {
-            refresh = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles) == 1 ? 0 : 1;
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::refreshfiles, 0);
             addItemsToCombobox (valueTree);
         }
     }

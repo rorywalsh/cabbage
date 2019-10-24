@@ -211,9 +211,9 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
         }
 
-        if (refresh != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles))
+        if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)
         {
-            refresh = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles) == 1 ? 0 : 1;
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::refreshfiles, 0);
             addItemsToListbox (valueTree);
         }
       

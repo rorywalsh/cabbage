@@ -798,7 +798,8 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
                                                                      CabbageIdentifierIds::maxvalue);
                 xml->getChildByName(presetName)->setAttribute(channels[0].toString(), minValue);
                 xml->getChildByName(presetName)->setAttribute(channels[1].toString(), maxValue);
-            } else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
+            }
+            else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
             {
                 var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                               CabbageIdentifierIds::channel);
@@ -808,7 +809,16 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
                                                                    CabbageIdentifierIds::valuey);
                 xml->getChildByName(presetName)->setAttribute(channels[0].toString(), xValue);
                 xml->getChildByName(presetName)->setAttribute(channels[1].toString(), yValue);
-            } else {
+            }
+            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                    CabbageIdentifierIds::channeltype) == "string")
+            {
+                const String item = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                        CabbageIdentifierIds::value);
+                xml->getChildByName(presetName)->setAttribute(channelName, item);
+            }
+            else
+            {
                 xml->getChildByName(presetName)->setAttribute(channelName, float(value));
             }
         }
@@ -850,6 +860,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 
             if (type == CabbageWidgetTypes::texteditor)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
+
+            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype)=="string")
+                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
             else if (type == CabbageWidgetTypes::filebutton)
             {
                 const String absolutePath =
@@ -872,7 +885,8 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
                 CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey,
                                               e->getAttributeValue(i + 1).getFloatValue());
                 i++;
-            } else
+            }
+            else
             {
                 if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
                     || CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps")

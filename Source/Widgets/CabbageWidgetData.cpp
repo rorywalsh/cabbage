@@ -393,7 +393,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("valuey"):
             case HashStringToInt ("zoom"):
             case HashStringToInt ("wrap"):
-            case HashStringToInt ("refreshfiles"):
             case HashStringToInt ("readonly"):
             case HashStringToInt ("scrollbars"):
             case HashStringToInt ("titlebargradient"):
@@ -406,7 +405,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                     setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
 
                 break;
-
+            case HashStringToInt ("refreshfiles"):
+                setProperty (widgetData, identifier, 1);
             case HashStringToInt ("crop"):
                 setProperty (widgetData, CabbageIdentifierIds::cropx, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::cropy, strTokens[1].trim().getFloatValue());
@@ -1032,8 +1032,8 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     
     //if populate is called, it's a fair assumption that the widget is using string channels..
     //.. however, if it's a preset combo, set the type to number so we can automate it..
-    if(!strTokens[0].contains("snaps"))
-        CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
+//    if(!strTokens[0].contains("snaps"))
+//        CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
 
 }
 
