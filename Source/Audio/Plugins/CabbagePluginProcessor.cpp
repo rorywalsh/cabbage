@@ -851,8 +851,10 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
     {
         for (int i = 1; i < e->getNumAttributes(); i++)
         {
+			//none of these are being updated in their respective valueTreeChanged listeners..
 
             ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), true);
+
 
             const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
             const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
@@ -861,8 +863,12 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
             if (type == CabbageWidgetTypes::texteditor)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
 
-            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype)=="string")
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
+			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
+			{
+				String test = e->getAttributeValue(i);
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
+			}
             else if (type == CabbageWidgetTypes::filebutton)
             {
                 const String absolutePath =
@@ -889,7 +895,8 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
             else
             {
                 if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
-                    || CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps")
+                   && CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
+					CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
                     CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
                                                   e->getAttributeValue(i).getFloatValue());
                     //now make changes parameter changes so host can see them..

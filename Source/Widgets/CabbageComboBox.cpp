@@ -77,9 +77,9 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
         {
             isPresetCombo = true;
             getProperties().set("isPresetCombo", true);
-            var presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value);
+            String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
 
-            const int index = presets.indexOf(presetName.toString());
+            const int index = presets.indexOf(presetName);
             setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);
         }
         else
@@ -247,6 +247,16 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
+		else
+		{
+			currentValueAsText = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString();
+			const int index = stringItems.indexOf(currentValueAsText);
+
+			if (index != -1)
+				setSelectedItemIndex(index, dontSendNotification);
+
+			//CabbageWidgetData::setProperty(valueTree, CabbageIdentifierIds::value, currentValueAsText);
+		}
 
     }
 

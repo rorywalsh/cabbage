@@ -1206,7 +1206,7 @@ ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, Str
                 }
 
 			if(name == CabbageWidgetData::getStringProp(widgetData.getChild(i), CabbageIdentifierIds::channel))
-				return  widgetData.getChild(i);
+				return  widgetData.getChild(i).createCopy();
 
         }
         else
