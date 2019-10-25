@@ -865,11 +865,6 @@ void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
             const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
             if(File(pluginFilename).existsAsFile())
             {
-				//for (int i = 0; i < graphWindow->getOwner()->getNumberOfFileTabs(); i++)
-				//{
-				//	if (graphWindow->getOwner()->getFileTab(i)->getFilename() == pluginFilename)
-				//		return;
-				//}
                 graphWindow->getOwner()->openFile(pluginFilename);
                 graphWindow->getOwner()->getFileTab(graphWindow->getOwner()->getCurrentFileIndex())->uniqueFileId = pluginID.uid;
             }
@@ -964,13 +959,13 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
         else if (r > 1 && r < 10000)
         {
             graphWindow->getOwner()->openFile(exampleFiles[r - 3000].getFullPathName());
-            graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName(), Point<int>(mousePos));
+            graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName());
         }
         
         else if (r >= 10000 && r <= 20000)
         {
             graphWindow->getOwner()->openFile(userFiles[r - 10000].getFullPathName());
-            graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName(), Point<int>(mousePos));
+            graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName());
         }
         
         else if(r >= 20000)

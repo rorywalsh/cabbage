@@ -92,8 +92,8 @@ public:
     void closeDocument();
     void showSettingsDialog();
     void saveDocument (bool saveAs = false, bool recompile = true);
-    void runCsoundForNode (String file, Point<int> pos = Point<int>(-1000, -1000));
-    void stopCsoundForNode (String file);
+    void runCsoundForNode (String file, int fileTabIndex = -99);
+    void stopCsoundForNode (String file, int fileTabIndex = -99);
     void stopFilterGraph();
     void startFilterGraph();
     void bringCodeEditorToFront (File file);
@@ -190,6 +190,7 @@ public:
     CabbageOutputConsole* getCurrentOutputConsole();
     CabbageCodeEditorComponent* getCurrentCodeEditor();
     CabbageEditorContainer* getCurrentEditorContainer();
+	CabbageEditorContainer* getEditorContainer(int index);
 
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }

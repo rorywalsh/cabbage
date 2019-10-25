@@ -1104,10 +1104,18 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
 //==============================================================================
 CabbageEditorContainer* CabbageMainComponent::getCurrentEditorContainer()
 {
-    if (editorAndConsole.size() > 0)
-        return editorAndConsole[currentFileIndex];
+	if (editorAndConsole.size() > 0)
+		return editorAndConsole[currentFileIndex];
 
-    return nullptr;
+	return nullptr;
+}
+//==============================================================================
+CabbageEditorContainer* CabbageMainComponent::getEditorContainer(int index)
+{
+	if (editorAndConsole.size() < index)
+		return editorAndConsole[index];
+
+	return nullptr;
 }
 //==================================================================================
 CabbageCodeEditorComponent* CabbageMainComponent::getCurrentCodeEditor()
@@ -1569,6 +1577,7 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     CabbageEditorContainer* editorConsole;
     editorAndConsole.add (editorConsole = new CabbageEditorContainer (cabbageSettings, file.hasFileExtension (".csd") || file.hasFileExtension (".orc")));
     addAndMakeVisible (editorConsole);
+	editorConsole->setFile(file);
     propertyPanel.reset (new CabbagePropertiesPanel (cabbageSettings->valueTree));
     addAndMakeVisible (propertyPanel.get());
     propertyPanel->setVisible (false);
@@ -1644,6 +1653,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 			stopCsoundForNode(getCurrentCsdFile().getFullPathName());;
 			isGUIEnabled = false;
+			int modifiedFileIndex = -1;
 
 			if (getCabbagePluginEditor() != nullptr)
 				getCabbagePluginEditor()->enableEditMode(false);
@@ -1657,7 +1667,23 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 				if (getCurrentCsdFile().existsAsFile())
 					getCurrentCsdFile().replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
+			
+				for (int i = 0; i < editorAndConsole.size(); i++)
+				{
+					String thisFile = getCurrentCsdFile().getFullPathName();
+					String otherFile = editorAndConsole[i]->getFile().getFullPathName();
+					if (getCurrentEditorContainer() != editorAndConsole[i] &&
+						getCurrentCsdFile().getFullPathName() == editorAndConsole[i]->getFile().getFullPathName())
+					{
+						editorAndConsole[i]->editor->loadContent(getCurrentCodeEditor()->getDocument().getAllContent());
+						stopCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
+						runCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
+
+					}
+					
+				}
 			}
+
 
 			propertyPanel->setEnabled(false);
 
@@ -1842,25 +1868,26 @@ int CabbageMainComponent::testFileForErrors (String file)
     return 0;
 
 }
-void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
+void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 {
     startFilterGraph();
     if (testFileForErrors (file) == 0) //if Csound seg faults it will take Cabbage down. best to test the instrument in a separate process first.
     {
         if (File (file).existsAsFile())
         {
-            AudioProcessorGraph::NodeID node(fileTabs[currentFileIndex]->uniqueFileId);
+            AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
             
             if (node.uid == -99)
             {
                 Uuid uniqueID;
                 node.uid = int32 (*uniqueID.getRawData());
-                fileTabs[currentFileIndex]->uniqueFileId = node.uid;
+                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId = node.uid;
             }
 
-			Point<double> pluginNodePos(.5, .5);
-			Point<int> pluginWindowPos(-1000, -1000);
 			Random rand;
+			double posOffset = rand.nextDouble() * 0.2;
+			Point<double> pluginNodePos(.5+posOffset, .5+posOffset);
+			Point<int> pluginWindowPos(-1000, -1000);
 
 
 			if (getFilterGraph()->graph.getNodeForId(node))
@@ -1887,13 +1914,13 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
             startTimer (100);
             if(getFilterGraph()->graph.getNodeForId(node))
             {
-                fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "on");
-                fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
+                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
             }
             else
             {
-                fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "on");
-                fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
+                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
             }
             
 			factory.togglePlay (true);
@@ -1907,16 +1934,17 @@ void CabbageMainComponent::runCsoundForNode (String file, Point<int> pos)
     }
 }
 
-void CabbageMainComponent::stopCsoundForNode (String file)
+void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
 {
-    if (fileTabs[currentFileIndex] && File (file).existsAsFile())
+
+    if (fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex] && File (file).existsAsFile())
     {
-        AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
+        AudioProcessorGraph::NodeID nodeId(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
             if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
                 getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
 
-            fileTabs[currentFileIndex]->getPlayButton().getProperties().set("state", "off");
-            fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
     }
 }
 //==================================================================================
