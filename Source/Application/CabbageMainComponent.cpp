@@ -1372,7 +1372,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     forEachXmlChildElementWithTagName (*xml, filter, "FILTER")
     forEachXmlChildElementWithTagName (*filter, plugin, "PLUGIN")
     {
-        const String pluginFile = plugin->getStringAttribute ("file");
+        const String pluginFile = fileToOpen.getChildFile(plugin->getStringAttribute ("file")).getFullPathName();
         files.add (File (pluginFile));
     }
 

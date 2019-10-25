@@ -270,9 +270,15 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::newTextFile);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::open);
-    menu.addCommandItem (&commandManager, CommandIDs::openCabbagePatch);
     menu.addCommandItem (&commandManager, CommandIDs::openFolder);
     
+	PopupMenu subPatchMenu;
+	subPatchMenu.addCommandItem(&commandManager, CommandIDs::openCabbagePatch);
+	subPatchMenu.addCommandItem(&commandManager, CommandIDs::saveGraph);
+	subPatchMenu.addCommandItem(&commandManager, CommandIDs::saveGraphAs);
+	
+	menu.addSubMenu("Cabbage patcher", subPatchMenu);
+	
     PopupMenu recentFilesMenu;
     cabbageSettings->updateRecentFilesList();
     cabbageSettings->recentFiles.createPopupMenuItems (recentFilesMenu, recentProjectsBaseID, true, true);
@@ -287,10 +293,6 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::saveGraph);
-    menu.addCommandItem (&commandManager, CommandIDs::saveGraphAs);
-    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
@@ -574,7 +576,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::openCabbagePatch:
             result.setInfo ("Open Cabbage patch...", "Opens a Cabbage patch", CommandCategories::general, 0);
-            result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
+            //result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
             break;
             
         case CommandIDs::open:
@@ -615,7 +617,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::saveGraph:
             result.setInfo ("Save Cabbage patch", "Save a patch document", CommandCategories::general, 0);
-            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
             break;
             
         case CommandIDs::saveGraphAs:

@@ -91,7 +91,7 @@ public:
 		PluginDescription descript;
 		descript.fileOrIdentifier = inputFile;
 		descript.descriptiveName = "Cabbage:" + inputFile;
-		descript.name = getInstrumentName(File(inputFile));
+		descript.name = inputFile;
 		descript.numInputChannels = 2;
 		descript.numOutputChannels = 2;
 		descript.isInstrument = true;
