@@ -270,7 +270,13 @@ private AudioProcessorParameter::Listener
                     //mod RW
                     panel.showEditorForNode(pluginID);
                     w->setAlwaysOnTop(true);
-                    w->toFront(true);
+					if (w->isVisible())
+						w->setVisible(false);
+					else
+					{
+						w->setVisible(true);
+						w->toFront(true);
+					}
                     
                 }
             
@@ -859,6 +865,11 @@ void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
             const String pluginFilename = n->properties.getWithDefault("pluginFile", "").toString();
             if(File(pluginFilename).existsAsFile())
             {
+				//for (int i = 0; i < graphWindow->getOwner()->getNumberOfFileTabs(); i++)
+				//{
+				//	if (graphWindow->getOwner()->getFileTab(i)->getFilename() == pluginFilename)
+				//		return;
+				//}
                 graphWindow->getOwner()->openFile(pluginFilename);
                 graphWindow->getOwner()->getFileTab(graphWindow->getOwner()->getCurrentFileIndex())->uniqueFileId = pluginID.uid;
             }
