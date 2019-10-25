@@ -498,7 +498,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
         {
             image = ImageCache::getFromFile (imgSliderBackground);
             image = image.rescaled (slider.getWidth(), slider.getHeight());
-            g.drawImage (image, rx, ry, diameter, diameter, 0, 0, svgSliderWidthBg, svgSliderHeightBg, false);
+            g.drawImage (image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
         }
         else if (imgSliderBackground.hasFileExtension ("svg"))
         {
