@@ -43,7 +43,7 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
-{! ./markdown/Widgets/Properties/svgfile.md !} 
+{! ./markdown/Widgets/Properties/imgfile.md !} 
 
 {! ./markdown/Widgets/Properties/text.md !} 
 
