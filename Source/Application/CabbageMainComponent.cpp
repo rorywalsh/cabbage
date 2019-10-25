@@ -1386,17 +1386,15 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     
     for ( int i = 0 ; i < files.size() ; i++)
     {
-        if (files[i].existsAsFile())
+        if (files[i].existsAsFile() && files[i].getFileExtension() != ".cabbage")
         {
             openFile (files[i].getFullPathName());
             fileTabs[getTabFileIndex(files[i])]->uniqueFileId = uuids[i];
-//            fileTabs[getTabFileIndex(files[i])]->getPlayButton().setToggleState(true, dontSendNotification);
-        }
+			fileTabs[getTabFileIndex(files[i])]->getPlayButton().setToggleState(true, dontSendNotification);
+       }
     }
-
-
-
 	
+	getFilterGraph()->bringAllPluginWindowsToFront();
 
 }
 //==================================================================================
@@ -1475,6 +1473,12 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
 
         if (fc.browseForFileToOpen())
         {
+			if (fc.getResult().getFileExtension() == ".cabbage")
+			{
+				openGraph(fc.getResult());
+				return File();
+			}
+				
             if (getTabFileIndex (File (filename)) >= 0 && currentFileIndex > -1)
             {
                 CabbageUtilities::showMessage ("File is already open", lookAndFeel.get());

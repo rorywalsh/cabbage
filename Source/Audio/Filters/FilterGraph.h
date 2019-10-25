@@ -245,6 +245,11 @@ public:
 	bool isLooping = false;
 	bool isRecording = false;
 
+	void bringAllPluginWindowsToFront()
+	{
+		for (auto* w : activePluginWindows)
+			w->toFront(true);
+	}
 
     bool getCurrentPosition (CurrentPositionInfo &result)
     {
@@ -296,35 +301,21 @@ public:
 		currentBPM = bpm;
 		setBpm(bpm);
 
-
 		if(isTimerRunning())
 		{
 			stopTimer();
-			//100*(60.f/currentBPM)
 			startTimer(10);
 		}
 	}
 
 	void hiResTimerCallback() override
 	{
-
-//		if(playPosition==0)
-//		{
-			timeInSeconds+=(getTimerInterval()/1000.f);
-			setTimeInSeconds(timeInSeconds);
-//		}
-
-
-		//if(subTicks==0)
-		//{
-            ppqPosition+=(getTimerInterval()/(1000.f)*(currentBPM/60));
-			setPPQPosition(ppqPosition);
-			//*(60.f/currentBPM);
-		//}
-
+		timeInSeconds+=(getTimerInterval()/1000.f);
+		setTimeInSeconds(timeInSeconds);
+        ppqPosition+=((float)getTimerInterval()/(1000.f)*(currentBPM/60));
+		setPPQPosition(ppqPosition);
         playHeadPositionInfo.timeInSamples = timeInSeconds*graph.getSampleRate();
 		subTicks = (subTicks >= 1 ? 0 : (subTicks+(getTimerInterval()*0.001)*currentBPM/60));
-//		playPosition = (playPosition >= 1 ? 0 : playPosition+(getTimerInterval()*0.1));
 	}
 
 	void setIsHostPlaying(bool value, bool reset)
@@ -411,6 +402,7 @@ public:
 
 		if(settings->getUserSettings()->getIntValue("autoConnectNodes")==1)
 		   setDefaultConnections(nodeId);
+
 	}
 
 

@@ -450,6 +450,13 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 		const Point<double> pos(xml.getDoubleAttribute("x"), xml.getDoubleAttribute("y"));
 		addCabbagePlugin(pd, pos);
 		
+		if (auto * state = xml.getChildByName("STATE"))
+		{
+			MemoryBlock m;
+			m.fromBase64Encoding(state->getAllSubText());
+			graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor()->setStateInformation(m.getData(), (int)m.getSize());
+		}
+
 		if (auto* node = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid)))
 			if (auto w = getOrCreateWindowFor(node, PluginWindow::Type::normal))
 				w->toFront(true);
