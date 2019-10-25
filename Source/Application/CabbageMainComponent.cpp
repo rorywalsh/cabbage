@@ -1372,7 +1372,8 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     forEachXmlChildElementWithTagName (*xml, filter, "FILTER")
     forEachXmlChildElementWithTagName (*filter, plugin, "PLUGIN")
     {
-        const String pluginFile = fileToOpen.getChildFile(plugin->getStringAttribute ("file")).getFullPathName();
+		String pluginName = plugin->getStringAttribute("file");
+        const String pluginFile = fileToOpen.getParentDirectory().getChildFile(pluginName).getFullPathName();
         files.add (File (pluginFile));
     }
 
@@ -1386,8 +1387,10 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     
     for ( int i = 0 ; i < files.size() ; i++)
     {
+		String fileName = files[i].getFullPathName();
         if (files[i].existsAsFile() && files[i].getFileExtension() != ".cabbage")
         {
+
             openFile (files[i].getFullPathName());
             fileTabs[getTabFileIndex(files[i])]->uniqueFileId = uuids[i];
 			fileTabs[getTabFileIndex(files[i])]->getPlayButton().setToggleState(true, dontSendNotification);
