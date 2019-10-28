@@ -485,8 +485,6 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
     Image image;
     const File imgSlider (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgslider, "").toString());
     const File imgSliderBackground (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgsliderbg, "").toString());
-    const int svgSliderWidthBg = slider.getProperties().getWithDefault ("svgsliderbgwidth", 100);
-    const int svgSliderHeightBg = slider.getProperties().getWithDefault ("svgsliderbgheight", 100);
 
     const float innerRadiusProportion = slider.getProperties().getWithDefault ("trackerinnerradius", .7);
     const float outerRadiusProportion = slider.getProperties().getWithDefault ("trackerouterradius", 1);

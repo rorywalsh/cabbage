@@ -80,7 +80,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
             String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
 
             const int index = presets.indexOf(presetName);
-            setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);
+            setSelectedItemIndex ((index-1 >= 0 ? index : 0), sendNotification);
         }
         else
         {
