@@ -42,7 +42,10 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     textEditor.setColour (TextEditor::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::focusedOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
-    textEditor.setText (getText(), dontSendNotification);
+    
+
+	textEditor.setText (getCurrentText(widgetData), dontSendNotification);
+
 }
 
 void CabbageTextEditor::textEditorReturnKeyPressed (TextEditor&)
@@ -107,6 +110,6 @@ void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Id
     lookAndFeelChanged();
     repaint();
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-    textEditor.setText (getText(), dontSendNotification);
+    textEditor.setText (getCurrentText(valueTree), dontSendNotification);
     sendTextToCsound();
 }

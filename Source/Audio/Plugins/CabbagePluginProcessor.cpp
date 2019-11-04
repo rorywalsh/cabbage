@@ -860,12 +860,12 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
             const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
             const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
 
-            if (type == CabbageWidgetTypes::texteditor)
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-
+			if (type == CabbageWidgetTypes::texteditor)
+			{
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
+			}
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
-				String test = e->getAttributeValue(i);
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
 			}
