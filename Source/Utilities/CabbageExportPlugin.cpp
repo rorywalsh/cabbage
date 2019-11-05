@@ -276,7 +276,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     if(type.containsIgnoreCase("AU"))
     {
         File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/Resources/CabbagePlugin.rsrc"));
-        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId, true);
+        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
     }
     
 #ifdef CabbagePro //bundle and relink Csound
@@ -328,15 +328,12 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 //==============================================================================
 // Set unique plugin ID for each plugin based on the file name
 //==============================================================================
-int PluginExporter::setUniquePluginId (File binFile, File csdFile, String pluginId, bool isRSRC)
+int PluginExporter::setUniquePluginId (File binFile, File csdFile, String pluginId)
 {
     size_t file_size;
     const char* pluginID;
-    
-    if (isRSRC)
-        pluginID = "RORY";
-    else
-        pluginID = "YROR";
+
+    pluginID = "RORY";
     
     long loc;
     std::fstream mFile (binFile.getFullPathName().toUTF8(), ios_base::in | ios_base::out | ios_base::binary);
