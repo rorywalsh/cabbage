@@ -333,7 +333,11 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
     size_t file_size;
     const char* pluginID;
 
+#if defined(MACOSX)
+    pluginID = "YROR";
+#else
     pluginID = "RORY";
+#endif
     
     long loc;
     std::fstream mFile (binFile.getFullPathName().toUTF8(), ios_base::in | ios_base::out | ios_base::binary);
