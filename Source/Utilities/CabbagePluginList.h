@@ -51,46 +51,59 @@ public:
 
     /** Changes the text in the panel's options button. */
     void setOptionsButtonText (const String& newText);
-
+    
+    /** Returns a pop-up menu that contains all the options for scanning and updating the list. */
+    PopupMenu createOptionsMenu();
+    
+    /** Returns a menu that can be shown if a row is right-clicked, containing actions
+     like "remove plugin" or "show folder" etc.
+     */
+    PopupMenu createMenuForRow (int rowNumber);
+    
     /** Changes the text in the progress dialog box that is shown when scanning. */
     void setScanDialogText (const String& textForProgressWindowTitle,
                             const String& textForProgressWindowDescription);
-
+    
     /** Sets how many threads to simultaneously scan for plugins.
      If this is 0, then all scanning happens on the message thread (this is the default when
      allowPluginsWhichRequireAsynchronousInstantiation is false). If
      allowPluginsWhichRequireAsynchronousInstantiation is true then numThreads must not
      be zero (it is one by default). */
     void setNumberOfThreadsForScanning (int numThreads);
-
+    
     /** Returns the last search path stored in a given properties file for the specified format. */
     static FileSearchPath getLastSearchPath (PropertiesFile&, AudioPluginFormat&);
-
+    
     /** Stores a search path in a properties file for the given format. */
     static void setLastSearchPath (PropertiesFile&, AudioPluginFormat&, const FileSearchPath&);
-
+    
     /** Triggers an asynchronous scan for the given format. */
     void scanFor (AudioPluginFormat&);
-
+    
     /** Triggers an asynchronous scan for the given format and scans only the given files or identifiers.
-        @see AudioPluginFormat::searchPathsForPlugins
-    */
+     @see AudioPluginFormat::searchPathsForPlugins
+     */
     void scanFor (AudioPluginFormat&, const StringArray& filesOrIdentifiersToScan);
-
+    
     /** Returns true if there's currently a scan in progress. */
     bool isScanning() const noexcept;
-
+    
     /** Removes the plugins currently selected in the table. */
     void removeSelectedPlugins();
-
+    
     /** Sets a custom table model to be used.
-        This will take ownership of the model and delete it when no longer needed.
+     This will take ownership of the model and delete it when no longer needed.
      */
-    void setTableModel (TableListBoxModel* model);
-
+    void setTableModel (TableListBoxModel*);
+    
     /** Returns the table used to display the plugin list. */
     TableListBox& getTableListBox() noexcept            { return table; }
-
+    
+    /** Returns the button used to display the options menu - you can make this invisible
+     if you want to hide it and use some other method for showing the menu.
+     */
+    TextButton& getOptionsButton()                      { return optionsButton; }
+    
 private:
     //==============================================================================
     AudioPluginFormatManager& formatManager;
@@ -102,23 +115,18 @@ private:
     String dialogTitle, dialogText;
     bool allowAsync;
     int numThreads;
-
+    
     class TableModel;
     std::unique_ptr<TableListBoxModel> tableModel;
-
+    
     class Scanner;
     std::unique_ptr<Scanner> currentScanner;
-
+    
     void scanFinished (const StringArray&);
-    static void optionsMenuStaticCallback (int, CabbagePluginListComponent*);
-    void optionsMenuCallback (int);
     void updateList();
-    void showSelectedFolder();
-    bool canShowSelectedFolder() const;
     void removeMissingPlugins();
     void removePluginItem (int index);
-    void showOptionsMenu();
-
+    
     void resized() override;
     bool isInterestedInFileDrag (const StringArray&) override;
     void filesDropped (const StringArray&, int, int) override;
