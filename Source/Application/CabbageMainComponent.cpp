@@ -1082,8 +1082,11 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
 
             if (GenericCabbagePluginProcessor* cabbagePlugin = dynamic_cast<GenericCabbagePluginProcessor*> (f->getProcessor()))
                 w->setVisible (false);
-            else
-                w->toFront (true);
+			else
+			{
+				w->toFront(true);
+				w->setVisible(true);
+			}
 	
 			w->addChangeListener(this);
 
