@@ -172,11 +172,14 @@ PluginWindow* FilterGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node
         {
             ScopedDPIAwarenessDisabler disableDPIAwareness;
 			PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
-            return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
+			w->setVisible(false);
+            return activePluginWindows.add (w);
         }
        #endif
 
-        return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
+		PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
+		w->setVisible(false);
+        return activePluginWindows.add (w);
     }
 
     return nullptr;

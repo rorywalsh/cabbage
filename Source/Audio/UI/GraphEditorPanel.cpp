@@ -269,15 +269,14 @@ private AudioProcessorParameter::Listener
                 {
                     //mod RW
                     panel.showEditorForNode(pluginID);
-                    w->setAlwaysOnTop(true);
+                    //w->setAlwaysOnTop(true);
 					if (w->isVisible())
 						w->setVisible(false);
 					else
 					{
 						w->setVisible(true);
 						w->toFront(true);
-					}
-                    
+					}                    
                 }
             
         }
@@ -971,7 +970,8 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
         else if(r >= 20000)
         {
             auto* desc = graphWindow->getOwner()->knownPluginList.getType (graphWindow->getOwner()->knownPluginList.getIndexChosenByMenu (r));
-            createNewPlugin (*desc, mousePos.toDouble());
+			const Point<double>newPos(double(mousePos.getX()) / getWidth(), double(mousePos.getY()) / getHeight());
+            createNewPlugin (*desc, newPos);
         }
         
         
