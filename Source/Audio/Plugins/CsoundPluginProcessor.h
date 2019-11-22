@@ -36,7 +36,7 @@ class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 {
 public:
     //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, const int ins = 2, const int outs = 2, bool debugMode = false);
+    CsoundPluginProcessor (File csoundInputFile, const AudioChannelSet ins = AudioChannelSet::stereo(), const AudioChannelSet outs = AudioChannelSet::stereo(), bool debugMode = false);
 	~CsoundPluginProcessor();
 	void resetCsound();
     //==============================================================================

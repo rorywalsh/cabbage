@@ -24,13 +24,13 @@
 
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const int ins, const int outs, bool debugMode)
+CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs, bool debugMode)
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-                                         .withInput  ("Input",  (ins==2 ? AudioChannelSet::stereo() : AudioChannelSet::discreteChannels (ins)), true)
+                                         .withInput  ("Input",  ins, true)
 #endif
-                                         .withOutput ("Output", (outs == 2 ? AudioChannelSet::stereo() : AudioChannelSet::discreteChannels (outs)), true)
+                                         .withOutput ("Output", outs, true)
 #endif
                                         ),
       csdFile (csdFile)

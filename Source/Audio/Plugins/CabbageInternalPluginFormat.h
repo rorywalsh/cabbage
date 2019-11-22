@@ -62,13 +62,13 @@ public:
 	std::unique_ptr < GenericCabbagePluginProcessor> createGenericPluginFilter(File inputFile)
 	{
 		const int numChannels = CabbageUtilities::getHeaderInfo(inputFile.loadFileAsString(), "nchnls");
-		return std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(inputFile, numChannels, numChannels));
+		return std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(inputFile, AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
 	}
 
 	std::unique_ptr<CabbagePluginProcessor> createCabbagePluginFilter(File inputFile)
 	{
 		const int numChannels = CabbageUtilities::getHeaderInfo(inputFile.loadFileAsString(), "nchnls");
-		return std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(inputFile, numChannels, numChannels));
+		return std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(inputFile, AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
 	}
 
 private:

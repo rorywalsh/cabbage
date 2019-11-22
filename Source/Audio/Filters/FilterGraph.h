@@ -221,10 +221,12 @@ public:
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(filename));
 		const int numChannels = CabbageUtilities::getHeaderInfo(File(filename).loadFileAsString(), "nchnls");
 
+
+
 		if (isCabbageFile)
-			processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), numChannels, numChannels));
+			processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
 		else
-			processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), numChannels, numChannels));
+			processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
 
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);

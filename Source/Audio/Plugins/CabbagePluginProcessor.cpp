@@ -56,11 +56,34 @@ createPluginFilter() {
 		Logger::writeToLog("Could not find .csd file, please make sure it's in the correct folder");
 
     const int numChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
-    return new CabbagePluginProcessor(csdFile, numChannels, numChannels);
+
+
+
+#if !Cabbage_IDE_Build && !Cabbage_Lite
+	PluginHostType pluginHostType;
+	if (pluginHostType.isFruityLoops || pluginHostType.isBitwigStudio)
+	{
+		switch (numChannels)
+		{
+		case 4: return new CabbagePluginProcessor(csdFile, AudioChannelSet::quadraphonic(), AudioChannelSet::quadraphonic());
+			break;
+		case 6: return new CabbagePluginProcessor(csdFile, AudioChannelSet::hexagonal(), AudioChannelSet::hexagonal());
+			break;
+
+		default:
+			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numChannels), AudioChannelSet::canonicalChannelSet(numChannels));
+		}
+	}
+#endif
+
+	return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels));
+		
+
+    
 };
 
 //============================================================================
-CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, const int ins, const int outs)
+CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
         : CsoundPluginProcessor(inputFile, ins, outs),
           csdFile(inputFile),
           cabbageWidgets("CabbageWidgetData") 
