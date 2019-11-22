@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.3.10"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.3.11"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.5" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11" companyCopyright="">
@@ -76,6 +76,10 @@
                 file="Source/Audio/UI/GraphEditorPanel.cpp"/>
           <FILE id="PuKFri" name="GraphEditorPanel.h" compile="0" resource="0"
                 file="Source/Audio/UI/GraphEditorPanel.h"/>
+          <FILE id="Ut4Yf9" name="IOConfigurationWindow.cpp" compile="1" resource="0"
+                file="Source/Audio/UI/IOConfigurationWindow.cpp"/>
+          <FILE id="hYV8lE" name="IOConfigurationWindow.h" compile="0" resource="0"
+                file="Source/Audio/UI/IOConfigurationWindow.h"/>
           <FILE id="BYGIYC" name="PluginWindow.h" compile="0" resource="0" file="Source/Audio/UI/PluginWindow.h"/>
         </GROUP>
       </GROUP>
