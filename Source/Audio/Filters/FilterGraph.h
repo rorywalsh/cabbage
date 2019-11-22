@@ -151,6 +151,25 @@ public:
 		return xml;
 	}
 
+	static XmlElement* createBusLayoutXml(const AudioProcessor::BusesLayout& layout, const bool isInput)
+	{
+		auto& buses = isInput ? layout.inputBuses
+			: layout.outputBuses;
+
+		auto* xml = new XmlElement(isInput ? "INPUTS" : "OUTPUTS");
+
+		for (int busIdx = 0; busIdx < buses.size(); ++busIdx)
+		{
+			auto& set = buses.getReference(busIdx);
+
+			auto* bus = xml->createNewChildElement("BUS");
+			bus->setAttribute("index", busIdx);
+			bus->setAttribute("layout", set.isDisabled() ? "disabled" : set.getSpeakerArrangementAsString());
+		}
+
+		return xml;
+	}
+
 	static XmlElement* createXmlForNode(AudioProcessorGraph::Node* const node) noexcept
 	{
 		if (dynamic_cast<AudioPluginInstance*> (node->getProcessor()) ||
@@ -161,6 +180,9 @@ public:
 			e->setAttribute("uid", (int)node->nodeID.uid);
 			e->setAttribute("x", node->properties["x"].toString());
 			e->setAttribute("y", node->properties["y"].toString());
+#if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
+			e->setAttribute("DPIAware", node->properties["DPIAware"].toString());
+#endif
 
 			for (int i = 0; i < (int)PluginWindow::Type::numTypes; ++i)
 			{
@@ -193,6 +215,12 @@ public:
 				node->getProcessor()->getStateInformation(m);
 				e->createNewChildElement("STATE")->addTextElement(m.toBase64Encoding());
 			}
+
+			auto layout = node->getProcessor()->getBusesLayout();
+
+			auto layouts = e->createNewChildElement("LAYOUT");
+			layouts->addChildElement(createBusLayoutXml(layout, true));
+			layouts->addChildElement(createBusLayoutXml(layout, false));
 
 			return e;
 		}

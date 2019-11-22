@@ -460,7 +460,7 @@ private AudioProcessorParameter::Listener
         
         menu->addSeparator();
         //mod RW
-        //menu->addItem (20, "Configure Audio I/O");
+        menu->addItem (20, "Configure Audio I/O");
         // menu->addItem (21, "Test state save/load");
         
         menu->showMenuAsync ({}, ModalCallbackFunction::create
@@ -846,7 +846,7 @@ void GraphEditorPanel::resized()
 //mod RW
 void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
 {
-    if (auto* graphWindow = findParentComponentOfClass<CabbageMainComponent::FilterGraphDocumentWindow>())
+    if (auto* graphWindow = findParentComponentOfClass<FilterGraphDocumentWindow>())
     {
         bool foundTabForNode = false;
         for (int i = 0; i < graphWindow->getOwner()->getNumberOfFileTabs(); i++)
@@ -921,7 +921,7 @@ void GraphEditorPanel::updateComponents()
 void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 {
     //mod RW
-    if (auto* graphWindow = findParentComponentOfClass<CabbageMainComponent::FilterGraphDocumentWindow>())
+    if (auto* graphWindow = findParentComponentOfClass<FilterGraphDocumentWindow>())
     {
         Uuid uniqueID;
         Array<File> exampleFiles;

@@ -225,3 +225,27 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphDocumentComponent)
 };
+
+//RW
+class FilterGraphDocumentWindow : public DocumentWindow
+{
+	Colour colour;
+	CabbageMainComponent* owner;
+public:
+	FilterGraphDocumentWindow(String caption, Colour backgroundColour, CabbageMainComponent* owner)
+		: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour), owner(owner)
+	{
+		setSize(600, 600);
+		setName(caption);
+		this->setTitleBarHeight(15);
+		this->setResizable(true, true);
+
+	}
+
+	void closeButtonPressed() override { setVisible(false); }
+
+	CabbageMainComponent* getOwner() {
+		return owner;
+	};
+
+};

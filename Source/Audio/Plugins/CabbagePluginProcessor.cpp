@@ -63,16 +63,7 @@ createPluginFilter() {
 	PluginHostType pluginHostType;
 	if (pluginHostType.isFruityLoops || pluginHostType.isBitwigStudio)
 	{
-		switch (numChannels)
-		{
-		case 4: return new CabbagePluginProcessor(csdFile, AudioChannelSet::quadraphonic(), AudioChannelSet::quadraphonic());
-			break;
-		case 6: return new CabbagePluginProcessor(csdFile, AudioChannelSet::hexagonal(), AudioChannelSet::hexagonal());
-			break;
-
-		default:
-			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numChannels), AudioChannelSet::canonicalChannelSet(numChannels));
-		}
+		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numChannels), AudioChannelSet::canonicalChannelSet(numChannels));
 	}
 #endif
 

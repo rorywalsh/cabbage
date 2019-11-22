@@ -172,13 +172,13 @@ PluginWindow* FilterGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node
         {
             ScopedDPIAwarenessDisabler disableDPIAwareness;
 			PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
-			w->setVisible(false);
+			//w->setVisible(false);
             return activePluginWindows.add (w);
         }
        #endif
 
 		PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
-		w->setVisible(false);
+		//w->setVisible(false);
         return activePluginWindows.add (w);
     }
 
@@ -414,7 +414,16 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 		pd.fileOrIdentifier = pluginFile;
 		addCabbagePlugin(pd, pos);
 
-		
+		if (auto * layoutEntity = xml.getChildByName("LAYOUT"))
+		{
+			auto layout = instance->getBusesLayout();
+
+			readBusLayoutFromXml(layout, instance.get(), *layoutEntity, true);
+			readBusLayoutFromXml(layout, instance.get(), *layoutEntity, false);
+
+			instance->setBusesLayout(layout);
+		}
+
 		if (auto * state = xml.getChildByName("STATE"))
 		{
 			MemoryBlock m;
