@@ -14,7 +14,7 @@ ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 
   
 pwd
-curl -L -o csound6.13.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.13.0/csound6.13.0-MacOS_x86_64.dmg'
+curl -L -o csound6.13.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.13.0/Csound6.13-MacOS_x86_64.dmg'
 ls
 hdiutil attach csound6.13.0-MacOS_x86_64.dmg
 cp -R /Volumes/Csound6.13.0/ Csound
