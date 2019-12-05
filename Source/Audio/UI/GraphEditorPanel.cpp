@@ -445,6 +445,7 @@ private AudioProcessorParameter::Listener
         
         if (getProcessor()->hasEditor())
         {
+			menu->addItem(9, "Set always on top");
             menu->addSeparator();
             menu->addItem (10, "Show plugin GUI");
             menu->addItem (11, "Show all programs");
@@ -488,6 +489,11 @@ private AudioProcessorParameter::Listener
                     
                     break;
                 }
+				case 9:
+					if (auto node = graph.graph.getNodeForId(pluginID))
+						if (auto * w = graph.getOrCreateWindowFor(node, PluginWindow::Type::normal))
+							w->setAlwaysOnTop(true);
+
                 case 10:  showWindow (PluginWindow::Type::normal); break;
                 case 11:  showWindow (PluginWindow::Type::programs); break;
                 case 12:  showWindow (PluginWindow::Type::generic)  ; break;
