@@ -61,7 +61,7 @@ createPluginFilter() {
 
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
-	if (pluginHostType.isFruityLoops || pluginHostType.isBitwigStudio)
+	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio())
 	{
 		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numChannels), AudioChannelSet::canonicalChannelSet(numChannels));
 	}
