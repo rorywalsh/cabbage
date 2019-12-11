@@ -416,12 +416,13 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 
 		if (auto * layoutEntity = xml.getChildByName("LAYOUT"))
 		{
-			auto layout = instance->getBusesLayout();
+			auto layout = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor()->getBusesLayout();
+            auto pluginProcessor = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor();
+            
+			readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, true);
+			readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, false);
 
-			readBusLayoutFromXml(layout, instance.get(), *layoutEntity, true);
-			readBusLayoutFromXml(layout, instance.get(), *layoutEntity, false);
-
-			instance->setBusesLayout(layout);
+			pluginProcessor->setBusesLayout(layout);
 		}
 
 		if (auto * state = xml.getChildByName("STATE"))
