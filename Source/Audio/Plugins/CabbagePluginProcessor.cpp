@@ -26,6 +26,7 @@ char channelMessage[4096] = {0};
 AudioProcessor *JUCE_CALLTYPE
 
 createPluginFilter() {
+    CabbageUtilities::debug("H==========================================");
     File csdFile;
 #ifdef JUCE_WINDOWS
 	CabbageUtilities::debug(JucePlugin_Manufacturer);
