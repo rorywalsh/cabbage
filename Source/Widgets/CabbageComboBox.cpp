@@ -80,7 +80,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
             String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
 
             const int index = presets.indexOf(presetName);
-            setSelectedItemIndex ((index-1 >= 0 ? index : 0), sendNotification);
+            //don't send notification here, otherwise the saved session settings will be overwriten by the presets...
+            setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);
         }
         else
         {
