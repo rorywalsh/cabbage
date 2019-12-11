@@ -49,7 +49,7 @@ void CabbageSettings::setDefaultSettings()
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
 #elif !defined(MACOSX)
     //manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
-    examplesDir = "/usr/share/doc/cabbage/examples";
+    examplesDir = "/usr/share/doc/cabbage/Examples";
     cabbageHelp = "/usr/share/doc/cabbage/CabbageManual";
     manualPath = "/usr/share/doc/csound-doc";
     themePath = "/usr/share/cabbage/Themes/modern-darkBG";
