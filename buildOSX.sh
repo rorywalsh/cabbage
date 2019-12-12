@@ -61,6 +61,10 @@ hdiutil detach /Volumes/Packages\ 1.2.7/
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX
 export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
 
+#building sinmple Csound CLI for testing files
+$PROJUCER --resave ../../CabbageCsoundCLI.jucer
+xcodebuild -project CabbageCsoundCLI.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+
 $PROJUCER --resave ../../CabbageIDE.jucer
 xcodebuild -project Cabbage.xcodeproj/ clean
 xcodebuild -project Cabbage.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release 
@@ -102,6 +106,7 @@ xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj clean
 xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj -configuration Release
 
 # cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
+cp -rf ./build/Release/CabbageCsoundCLI ./build/Release/Cabbage.app/Contents/MacOS/CabbageCsoundCLI 
 
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 ls

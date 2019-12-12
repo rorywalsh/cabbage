@@ -1852,7 +1852,7 @@ int CabbageMainComponent::testFileForErrors (String file)
     //It only runs 16 k-cycles, so it will not be able to detect perf-time hangs
     ChildProcess process;
     const String applicationDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName();
-    const String processName = applicationDir + "/CsoundTest";
+    const String processName = applicationDir + "/CabbageCsoundCLI";
 
     if (File (processName).existsAsFile())
     {
@@ -1871,6 +1871,7 @@ int CabbageMainComponent::testFileForErrors (String file)
             return 1;
         }
 
+        process.kill();
     }
 
     return 0;
