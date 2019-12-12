@@ -39,8 +39,6 @@ cd D:/a/1/s/Builds/VisualStudio2017/
 dir
 D:/a/1/s/Builds/VisualStudio2017/azureBuildCabbage64.bat  
 
-cd D:/a/1/s/CsoundTestWin64 
-msbuild.exe CsoundTest.sln /property:Platform=x64
 cd D:/a/1/s/
 Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "D:\a\1\s\CabbageManual.zip" 
 7z.exe x CabbageManual.zip -oD:\a\1\s\CabbageManual
