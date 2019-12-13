@@ -342,10 +342,10 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
     size_t file_size;
     const char* pluginID;
 
-#if defined(MACOSX)
-    pluginID = "YROR";
-#else
+#if defined(WIN32)
     pluginID = "RORY";
+#else
+    pluginID = "YROR";
 #endif
     
     long loc;
