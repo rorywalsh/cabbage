@@ -26,7 +26,7 @@
 // common memeber variables such as alpha values, tooltiptext, bounds, etc
 // Each cabbage widget should inherit from this class and call initialiseCommonAttributes()
 // in the derived class's constructor, and handleCommonUpdates() in its valueTreePropertyChanged() method.
-class CabbageWidgetBase
+class CabbageWidgetBase : public FileDragAndDropTarget
 {
     int pivotx, pivoty, visible, active, value, valuex, valuey, lineNumber, toFront;
     float rotate, alpha, currentValue;
@@ -136,6 +136,31 @@ public:
     static int getSVGHeight (File svgFile);
     static int getSVGWidth (File svgFile);
 
+    void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override
+    {
+
+    }
+
+    void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override
+    {
+    }
+
+    void fileDragExit (const StringArray& /*files*/) override
+    {
+
+    }
+
+    void filesDropped (const StringArray& files, int /*x*/, int /*y*/) override
+    {
+
+    }
+
+    bool isInterestedInFileDrag (const StringArray& /*files*/) override
+    {
+        // normally you'd check these files to see if they're something that you're
+        // interested in before returning true, but for the demo, we'll say yes to anything..
+        return true;
+    }
 
 };
 

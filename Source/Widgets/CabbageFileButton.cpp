@@ -32,7 +32,7 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     setButtonText (getText());
 
     mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
-    filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).removeCharacters ("*.");
+    filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
     setImgProperties (*this, wData, "buttonon");
     setImgProperties (*this, wData, "buttonoff");
@@ -64,7 +64,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     if (mode == "file")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {
@@ -79,7 +79,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "save")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToSave(true))
         {
@@ -96,7 +96,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "directory")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
