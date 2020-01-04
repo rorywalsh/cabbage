@@ -245,11 +245,12 @@ public:
 private:
 
     //---- main component that holds widgets -----
-    class MainComponent : public Component
+    class MainComponent : public Component, public FileDragAndDropTarget
     {
         Colour colour;
+        CabbagePluginEditor* owner;
     public:
-        MainComponent() : Component()
+        MainComponent(CabbagePluginEditor* _owner) : Component(), owner(_owner)
         {
             setOpaque (false);
         }
@@ -262,6 +263,14 @@ private:
             //g.setOpacity (0);
             g.fillAll (colour);
         }
+        void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override{}
+        void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override {}
+        void fileDragExit (const StringArray& /*files*/) override {}
+        void filesDropped (const StringArray& files, int /*x*/, int /*y*/) override
+        {
+            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastDroppedFile, files[0]);
+        }
+        bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
     };
 
     class ViewportContainer : public Component
