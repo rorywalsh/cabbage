@@ -446,6 +446,7 @@ XmlElement* FilterGraph::createXml() const
 	for (auto* node : graph.getNodes())
 	{
 		PluginDescription pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
+//		String test = File::getCurrentWorkingDirectory().getChildFile(pd.fileOrIdentifier).getRelativePathFrom(currentFile);
 		node->properties.set("pluginFile", File::getCurrentWorkingDirectory().getChildFile(pd.fileOrIdentifier).getRelativePathFrom(currentFile));
 		xml->addChildElement(createXmlForNode(node));
 	}
