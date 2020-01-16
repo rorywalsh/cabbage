@@ -799,7 +799,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
                                                                      CabbageIdentifierIds::file);
 
                 if (file.length() > 2) {
-                    const String relativePath = File(file).getRelativePathFrom(File(csdFile));
+                    const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
                     xml->getChildByName(presetName)->setAttribute(channelName,
                                                                   relativePath.replaceCharacters("\\", "/"));
                 }
@@ -887,9 +887,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
             else if (type == CabbageWidgetTypes::filebutton)
             {
                 const String absolutePath =
-                        csdFile.getParentDirectory().getFullPathName() + "/" + e->getAttributeValue(i);
-                const String path = File(absolutePath).getFullPathName();
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath);
+                        csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
+                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+				//getCsound()->SetStringChannel(channelName.toUTF8().getAddress(), absolutePath.toUTF8().getAddress());
             } else if (type == CabbageWidgetTypes::hrange ||
                        type == CabbageWidgetTypes::vrange) //double channel range widgets
             {

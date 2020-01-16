@@ -54,6 +54,12 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     {
         setLookAndFeel(&flatLookAndFeel);
     }
+	const String file = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+	const String relativePath = File(getCsdFile()).getParentDirectory().getChildFile(file).getFullPathName();
+	if(File(relativePath).existsAsFile())
+		owner->sendChannelStringDataToCsound(getChannel(), relativePath.replaceCharacters("\\", "/"));
+	else
+		owner->sendChannelStringDataToCsound(getChannel(), file.replaceCharacters("\\", "/"));
 
     
 }
