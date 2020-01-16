@@ -828,8 +828,8 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
             else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                     CabbageIdentifierIds::channeltype) == "string")
             {
-                const String item = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                        CabbageIdentifierIds::value);
+                const int item = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                        CabbageIdentifierIds::comboindex);
                 xml->getChildByName(presetName)->setAttribute(channelName, item);
             }
             else
@@ -881,8 +881,10 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 			}
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
+				int test = e->getAttributeValue(i).getIntValue();
+				//CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
+				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i).getIntValue());
+
 			}
             else if (type == CabbageWidgetTypes::filebutton)
             {

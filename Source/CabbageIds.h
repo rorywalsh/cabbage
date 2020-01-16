@@ -529,6 +529,7 @@ namespace CabbageIdentifierIds
 	static const Identifier colour = "colour";
 	static const Identifier colprefix = "colprefix";
 	static const Identifier comborange = "comborange";
+	static const Identifier comboindex = "comboindex";
 	static const Identifier corners = "corners";
 	static const Identifier crop = "crop";
 	static const Identifier cropheight = "cropheight";

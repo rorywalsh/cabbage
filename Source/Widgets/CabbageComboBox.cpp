@@ -175,6 +175,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
         for ( int i = 0; i < folderFiles.size(); i++)
         {
+			stringItems.add(folderFiles[i].getFileNameWithoutExtension());
             addItem (folderFiles[i].getFileNameWithoutExtension(), i + 2);
         }
 
