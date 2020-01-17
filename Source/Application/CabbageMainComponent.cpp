@@ -1385,7 +1385,8 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     {
 		String pluginName = plugin->getStringAttribute("file");
         const String pluginFile = fileToOpen.getParentDirectory().getChildFile(pluginName).getFullPathName();
-        files.add (File (pluginFile));
+        if(File(pluginFile).existsAsFile())
+            files.add (File (pluginFile));
     }
 
     while(fileTabs.size()>0)

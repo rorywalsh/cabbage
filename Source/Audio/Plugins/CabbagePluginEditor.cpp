@@ -23,7 +23,7 @@ class CabbageCheckbox;
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
-      mainComponent(),
+      mainComponent(this),
       lookAndFeel(),
       processor (p)
 #ifdef Cabbage_IDE_Build
@@ -39,7 +39,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     addAndMakeVisible (viewport.get());
     viewport->setViewedComponent(viewportContainer.get(), false);
     viewport->setScrollBarsShown(false, false);
-    mainComponent.setInterceptsMouseClicks (false, true);
+    mainComponent.setInterceptsMouseClicks (true, true);
     setSize (50, 50);
 
 

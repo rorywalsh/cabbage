@@ -799,7 +799,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
                                                                      CabbageIdentifierIds::file);
 
                 if (file.length() > 2) {
-                    const String relativePath = File(file).getRelativePathFrom(File(csdFile));
+                    const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
                     xml->getChildByName(presetName)->setAttribute(channelName,
                                                                   relativePath.replaceCharacters("\\", "/"));
                 }
@@ -828,8 +828,8 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
             else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                     CabbageIdentifierIds::channeltype) == "string")
             {
-                const String item = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                        CabbageIdentifierIds::value);
+                const int item = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                        CabbageIdentifierIds::comboindex);
                 xml->getChildByName(presetName)->setAttribute(channelName, item);
             }
             else
@@ -881,15 +881,17 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 			}
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
+				int test = e->getAttributeValue(i).getIntValue();
+				//CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
+				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i).getIntValue());
+
 			}
             else if (type == CabbageWidgetTypes::filebutton)
             {
                 const String absolutePath =
-                        csdFile.getParentDirectory().getFullPathName() + "/" + e->getAttributeValue(i);
-                const String path = File(absolutePath).getFullPathName();
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath);
+                        csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
+                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+				//getCsound()->SetStringChannel(channelName.toUTF8().getAddress(), absolutePath.toUTF8().getAddress());
             } else if (type == CabbageWidgetTypes::hrange ||
                        type == CabbageWidgetTypes::vrange) //double channel range widgets
             {

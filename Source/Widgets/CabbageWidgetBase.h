@@ -23,7 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 
 // Simple base class for taking care of some widget housekeeping. This class looks after
-// common memeber variables such as alpha values, tooltiptext, bounds, etc
+// common member variables such as alpha values, tooltiptext, bounds, etc
 // Each cabbage widget should inherit from this class and call initialiseCommonAttributes()
 // in the derived class's constructor, and handleCommonUpdates() in its valueTreePropertyChanged() method.
 class CabbageWidgetBase
@@ -135,6 +135,7 @@ public:
     float getCurrentValue (ValueTree data);
     static int getSVGHeight (File svgFile);
     static int getSVGWidth (File svgFile);
+
 
 
 };

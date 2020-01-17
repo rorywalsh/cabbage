@@ -529,6 +529,7 @@ namespace CabbageIdentifierIds
 	static const Identifier colour = "colour";
 	static const Identifier colprefix = "colprefix";
 	static const Identifier comborange = "comborange";
+	static const Identifier comboindex = "comboindex";
 	static const Identifier corners = "corners";
 	static const Identifier crop = "crop";
 	static const Identifier cropheight = "cropheight";
@@ -700,7 +701,9 @@ namespace CabbageIdentifierIds
 	static const String csdfile = "csdfile";
 	static const String hostbpm = "HOST_BPM";
 	static const String hostppqpos = "HOST_PPQ_POS";
-	static const String index = "index";
+    static const String lastDroppedFile = "LAST_DROPPED_FILE";
+
+    static const String index = "index";
 	static const String isplaying = "IS_PLAYING";
 	static const String isrecording = "IS_RECORDING";
 	static const String mousedownleft = "MOUSE_DOWN_LEFT";
