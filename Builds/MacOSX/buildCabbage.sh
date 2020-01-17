@@ -59,3 +59,6 @@ xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj -configuration Re
 cp ../../CsoundTestXcode/build/CsoundTest/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
 
 cp -rf CsoundLib64.framework ./build/Release/Cabbage.app/Contents/CsoundLib64.framework
+
+VERSION="CabbageOSXInstaller"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
+zip $VERSION ./build/Release/Cabbage.app
