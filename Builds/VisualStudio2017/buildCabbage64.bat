@@ -58,4 +58,5 @@ REM "BUILDING CABBAGE LITE"
  copy ".\x64\Release\App\CabbageLite.exe" ".\x64\CabbageLite.exe"
 
 
-REM %MYPATH%Projucer.exe --resave ../../CabbageIDE.jucer
+for /f %%i in ('%PROJUCER% --get-version ../../CabbageIDE.jucer') do set EXECUTABLE=Cabbage-%%i.exe
+ren ".\x64\Cabbage.exe" %EXECUTABLE%
