@@ -445,7 +445,7 @@ public:
 
 				array.set(i, array[i].removeCharacters("\t").trimStart());
 
-				if (array[i].contains(headerString) && array[i].contains("="))
+				if (array[i].contains(headerString) && array[i].contains("=") && array[i].indexOf(headerString) < array[i].indexOf("="))
 				{
 					String channels = array[i].substring(array[i].indexOf("=") + 1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
 					return channels.trim().getIntValue();
