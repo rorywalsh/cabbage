@@ -1147,6 +1147,37 @@ public:
         return firstSection + updatedIdentifier + secondSection;
     }
 
+	static void searchDirectoryForFiles(ValueTree valueTree, String workingDir, String fileType, Array<File> & folderFiles, StringArray &comboItems, int& numberOfFiles)
+	{
+		Array<File> dirFiles;
+		File pluginDir;
+
+		if (workingDir.isNotEmpty())
+			pluginDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
+		else
+			pluginDir = File::getCurrentWorkingDirectory();
+
+		pluginDir.findChildFiles(dirFiles, 2, false, fileType);
+
+		for (int i = 0; i < dirFiles.size(); ++i)
+			folderFiles.add(dirFiles[i]);
+
+		folderFiles.sort();
+
+		for (int i = 0; i < folderFiles.size(); i++)
+		{
+			CabbageUtilities::debug(folderFiles[i].getFullPathName());
+		}
+
+		for (int i = 0; i < folderFiles.size(); i++)
+		{
+			comboItems.add(folderFiles[i].getFileNameWithoutExtension());
+		}
+
+		numberOfFiles = folderFiles.size();
+
+	}
+
 };
 
 //==============================================================================

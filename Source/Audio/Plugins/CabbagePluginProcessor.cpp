@@ -655,7 +655,8 @@ void CabbagePluginProcessor::createParameters() {
 
             if (controlWidgetTypes.contains(
                     CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type))) {
-                if (typeOfWidget == CabbageWidgetTypes::xypad) {
+                if (typeOfWidget == CabbageWidgetTypes::xypad) 
+				{
                     const var channel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                                        CabbageIdentifierIds::channel);
                     const float increment = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
@@ -664,7 +665,9 @@ void CabbagePluginProcessor::createParameters() {
                                                            name + "_x", 0, 1, value, increment, 1));
                     addParameter(new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
                                                            name + "_y", 0, 1, value, increment, 1));
-                } else if (typeOfWidget.contains("range")) {
+                } 
+				else if (typeOfWidget.contains("range")) 
+				{
                     const var channel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                                        CabbageIdentifierIds::channel);
 
@@ -688,15 +691,39 @@ void CabbagePluginProcessor::createParameters() {
                                 new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
                                                           name + "_max", min, max, maxValue, increment, skew));
                     }
-                } else if (typeOfWidget == CabbageWidgetTypes::combobox && channel.isNotEmpty()) {
-                    const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                    CabbageIdentifierIds::min);
-                    const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                    CabbageIdentifierIds::comborange);
-                    addParameter(
-                            new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-                                                      min, max, value, 1, 1));
-                } else if (typeOfWidget.contains("slider") && channel.isNotEmpty()) {
+                } 
+				else if (typeOfWidget == CabbageWidgetTypes::combobox && channel.isNotEmpty()) 
+				{
+					//string combobox need to have their range known when creating the plugin parameter... 
+					if (CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channeltype) == "string")
+					{
+						const String workingDir = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::workingdir);
+						const String fileType = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), "filetype");
+						int numOfFiles;
+						Array<File> folderFiles;
+						StringArray comboItems;
+						CabbageUtilities::searchDirectoryForFiles(cabbageWidgets.getChild(i), workingDir, fileType, folderFiles, comboItems, numOfFiles);
+						const String currentValue = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+						const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+							CabbageIdentifierIds::min);
+						const float max = numOfFiles;
+						addParameter(
+							new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+								min, max, value, 1, 1));
+					}
+					else
+					{
+						const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+							CabbageIdentifierIds::min);
+						const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+							CabbageIdentifierIds::comborange);
+						addParameter(
+							new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+								min, max, value, 1, 1));
+					}
+                } 
+				else if (typeOfWidget.contains("slider") && channel.isNotEmpty()) 
+				{
                     const float increment = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                           CabbageIdentifierIds::increment);
                     const float skew = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
@@ -711,7 +738,9 @@ void CabbagePluginProcessor::createParameters() {
                     addParameter(
                             new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
                                                       min, max, value, increment, skew));
-                } else {
+                }
+				else 
+				{
                     if (channel.isNotEmpty())
                         addParameter(
                                 new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
@@ -828,9 +857,10 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
             else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                     CabbageIdentifierIds::channeltype) == "string")
             {
-                const int item = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                        CabbageIdentifierIds::comboindex);
-                xml->getChildByName(presetName)->setAttribute(channelName, item);
+				char tmp_str[4096] = { 0 };
+                getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
+				const String file(tmp_str);
+                xml->getChildByName(presetName)->setAttribute(channelName, file);
             }
             else
             {
@@ -881,9 +911,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 			}
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
-				int test = e->getAttributeValue(i).getIntValue();
+				const String stringComboItem = e->getAttributeValue(i);
 				//CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i).getIntValue());
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, File(stringComboItem).getFileNameWithoutExtension());
 
 			}
             else if (type == CabbageWidgetTypes::filebutton)
@@ -891,7 +921,6 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
                 const String absolutePath =
                         csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
-				//getCsound()->SetStringChannel(channelName.toUTF8().getAddress(), absolutePath.toUTF8().getAddress());
             } else if (type == CabbageWidgetTypes::hrange ||
                        type == CabbageWidgetTypes::vrange) //double channel range widgets
             {

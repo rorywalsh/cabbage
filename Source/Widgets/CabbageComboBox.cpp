@@ -64,11 +64,11 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
         currentValueAsText = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::value).toString();
-        owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
         const int index = stringItems.indexOf (currentValueAsText);
+		owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
 
         if (index != -1)
-            setSelectedItemIndex (index, dontSendNotification);
+            setSelectedItemIndex (index+1, dontSendNotification);
     }
     else
     {
@@ -215,8 +215,11 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
         const int index = combo->getSelectedItemIndex();
 
-        if (fileType.isNotEmpty())
-            owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index - 1].getFullPathName());
+		if (fileType.isNotEmpty())
+		{
+			String test = folderFiles[index - 1].getFullPathName();
+			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index - 1].getFullPathName().replaceCharacters("\\", "/"));
+		}
         else
             owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
 

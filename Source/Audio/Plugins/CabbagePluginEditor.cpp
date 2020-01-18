@@ -612,7 +612,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     {
         param->beginChangeGesture();
 
-        //preset combos work with 0 index, Cabbage combos start at 1..
+        //preset combos work with 0 index, Cabbage string combos start at 1..
         if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
             param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()));
         else
