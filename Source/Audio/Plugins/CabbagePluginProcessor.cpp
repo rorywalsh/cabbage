@@ -639,7 +639,8 @@ void CabbagePluginProcessor::updateWidgets(String csdText) {
 //==============================================================================
 // create parameters for sliders, buttons, comboboxes, checkboxes, encoders and xypads.
 // Other widgets can communicate with Csound, but they cannot be automated
-void CabbagePluginProcessor::createParameters() {
+void CabbagePluginProcessor::createParameters() 
+{
     CabbageControlWidgetStrings controlWidgetTypes;
 
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
@@ -661,10 +662,19 @@ void CabbagePluginProcessor::createParameters() {
                                                                        CabbageIdentifierIds::channel);
                     const float increment = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                           CabbageIdentifierIds::increment);
-                    addParameter(new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
-                                                           name + "_x", 0, 1, value, increment, 1));
+					const float minX = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::minx);
+					const float minY = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::miny);
+					const float maxX = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::maxx);
+					const float maxY = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::maxy);
+
+					addParameter(new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
+                                                           name + "_x", minX, maxX, value, increment, 1));
                     addParameter(new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
-                                                           name + "_y", 0, 1, value, increment, 1));
+                                                           name + "_y", minY, maxY, value, increment, 1));
                 } 
 				else if (typeOfWidget.contains("range")) 
 				{
