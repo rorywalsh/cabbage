@@ -40,6 +40,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     viewport->setViewedComponent(viewportContainer.get(), false);
     viewport->setScrollBarsShown(false, false);
     mainComponent.setInterceptsMouseClicks (true, true);
+	mainComponent.addMouseListener(this, false);
     setSize (50, 50);
 
 
