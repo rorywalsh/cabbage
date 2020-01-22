@@ -79,7 +79,7 @@ chmod 777 buildCabbageAzure.sh
 ./buildCabbageAzure.sh
 ./buildDebPackage.sh
 
-export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer
-VERSION="CabbageOSXInstaller"-$(xvfb-run $PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
+# export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer
+# VERSION="CabbageOSXInstaller"-$(xvfb-run $PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
 
 cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile/Cabbage.deb $BUILD_ARTIFACTSTAGINGDIRECTORY/$VERSION
