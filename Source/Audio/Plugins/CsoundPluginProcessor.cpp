@@ -30,7 +30,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
 #if ! JucePlugin_IsSynth
                                          .withInput  ("Input",  ins, true)
 #endif
-                                         .withOutput ("Output", outs, true)
+                                         .withOutput ("Output", outs, true).withInput("Sidechain", AudioChannelSet::stereo())
 #endif
                                         ),
       csdFile (csdFile)
@@ -661,7 +661,8 @@ void CsoundPluginProcessor::sendHostDataToCsound()
 }
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    float** audioBuffers = buffer.getArrayOfWritePointers();
+	auto mainInputOutput = getBusBuffer(buffer, true, 0);
+    float** audioBuffers = mainInputOutput.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
     
     MYFLT newSamp;
@@ -730,7 +731,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                 *current_sample = (CSspout[pos] / cs_scale);
                 ++current_sample;
                 pos++;
-
             }
         }
 

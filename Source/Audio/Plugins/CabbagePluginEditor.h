@@ -72,7 +72,8 @@ class CabbagePluginEditor
       public ActionBroadcaster,
       public ComboBox::Listener,
       public Slider::Listener,
-      public FileDragAndDropTarget
+      public FileDragAndDropTarget,
+	  public KeyListener
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
@@ -161,6 +162,20 @@ public:
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
+	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent)
+	{
+		CabbageUtilities::debug(key.getTextDescription());
+		return false;
+	}
+
+	virtual bool keyStateChanged(bool isKeyDown, Component* originatingComponent)
+	{
+
+		CabbageUtilities::debug(isKeyDown ? "KeyDon" : "Keyu");
+		return false;
+	}
+	//=============================================================================
+
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, Point<int> point, bool isPlant = false);
     //=============================================================================

@@ -88,6 +88,11 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **MACOS** Returns 1 if Cabbage is running on a MacOS machine
 
+**KEY_PRESSED** Returns the ASCII key code for the key currently being pressed
+
+**KEY_DOWN** Returns 1 a key-down event, and 0 for a key-up event.  
+
+
 Cabbage also set the host type, which can be retrieved using the following channels. 
 
 **AbletonLive** Returns 1 if Cabbage is host is Ableton Live
