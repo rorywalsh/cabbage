@@ -31,6 +31,8 @@ sudo apt-get install -y libsndfile1
 sudo apt-get install -y libsndfile-dev
 sudo apt-get install -y libjack-dev
 sudo add-apt-repository -y ppa:webkit-team/ppa
+sudo apt-get install flex
+sudo apt-get install bison
 sudo apt-get update
 sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
 sudo apt-get update --fix-missing
@@ -72,7 +74,7 @@ echo "\n"
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile
 pwd
 ls
-./buildCabbage.sh
+./buildCabbage
 ./buildDebPackage.sh
 
 export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
