@@ -164,14 +164,13 @@ public:
     //=============================================================================
 	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent)
 	{
-		CabbageUtilities::debug(key.getTextDescription());
+		processor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
 		return false;
 	}
 
 	virtual bool keyStateChanged(bool isKeyDown, Component* originatingComponent)
 	{
-
-		CabbageUtilities::debug(isKeyDown ? "KeyDon" : "Keyu");
+		processor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
 		return false;
 	}
 	//=============================================================================
