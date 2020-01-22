@@ -8,9 +8,9 @@ mkdir -p Cabbage/usr/share/doc/cabbage/CabbageManual
 mkdir -p Cabbage/usr/share/icons/hicolor/512x512/apps
 
 
-cp CabbagePluginEffect.so Cabbage/usr/bin/CabbagePluginEffect.so
-cp CabbagePluginSynth.so Cabbage/usr/bin/CabbagePluginSynth.so
-cp Cabbage Cabbage/usr/bin/Cabbage
+cp ./install/bin/CabbagePluginEffect.so Cabbage/usr/bin/CabbagePluginEffect.so
+cp ./install/bin/CabbagePluginSynth.so Cabbage/usr/bin/CabbagePluginSynth.so
+cp ./install/bin/Cabbage Cabbage/usr/bin/Cabbage
 # cp /usr/bin/testCsoundFile Cabbage/usr/bin/testCsoundFile
 
 cp ./../opcodes.txt Cabbage/usr/bin/opcodes.txt
