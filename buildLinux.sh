@@ -77,7 +77,7 @@ ls
 ./buildCabbage
 ./buildDebPackage.sh
 
-export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer
 VERSION="CabbageOSXInstaller"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
 
-cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile/Cabbage/Cabbage.deb $BUILD_ARTIFACTSTAGINGDIRECTORY/$VERSION
+cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile/Cabbage.deb $BUILD_ARTIFACTSTAGINGDIRECTORY/$VERSION
