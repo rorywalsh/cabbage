@@ -74,10 +74,10 @@ echo "\n"
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile
 pwd
 ls
-./buildCabbage
+./buildCabbageAzure.sh
 ./buildDebPackage.sh
 
 export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer
-VERSION="CabbageOSXInstaller"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
+VERSION="CabbageOSXInstaller"-$(xvfb-run $PROJUCER --get-version ../../CabbageIDE.jucer)".pkg"
 
 cp $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile/Cabbage.deb $BUILD_ARTIFACTSTAGINGDIRECTORY/$VERSION

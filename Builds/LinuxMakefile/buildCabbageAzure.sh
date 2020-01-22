@@ -12,20 +12,18 @@ echo "located in /user/local/lib "
 echo "It is also assumes that the VST SDK is located in ~/SDKs/"
 echo ""
 
-if [ $1 == "debug" ]; then
+if [[ $1 == "debug" ]]; then
   echo "Hello debug"
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
+  xvfb-run ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
   mv Makefile MakeCabbageIDE
   make -f MakeCabbageIDE clean
-  make -f MakeCabbageIDE -j6 
+  make -f MakeCabbageIDE -j6
   cp ./build/Cabbage /usr/bin/Cabbage
-
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginNoStandalone.jucer
   mv Makefile MakePluginEffect
   make -f MakePluginEffect clean 
   make -f MakePluginEffect -j6
 
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginSynth.jucer
+  xvfb-run ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginSynth.jucer
   mv Makefile MakePluginSynth
   make -f MakePluginSynth clean
   make -f MakePluginSynth -j6 
@@ -34,7 +32,7 @@ else
 
   mkdir -p ./install/bin ./install/images ./install/desktop
 
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
+  xvfb-run ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageIDE.jucer
   mv Makefile MakeCabbageIDE
   echo "$(tput bold)Building CabbageIDE…$(tput sgr0)"
 
@@ -42,7 +40,7 @@ else
   make -f MakeCabbageIDE -j6 CONFIG=Release
   cp ./build/Cabbage ./install/bin/Cabbage
 
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginNoStandalone.jucer
+  xvfb-run ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginNoStandalone.jucer
   mv Makefile MakePluginEffect
   echo "$(tput bold)Building PluginEffect…$(tput sgr0)"
 
@@ -50,7 +48,7 @@ else
   make -f MakePluginEffect -j6 CONFIG=Release
   cp ./build/CabbagePlugin.so ./install/bin/CabbagePluginEffect.so
 
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginSynth.jucer
+  xvfb-run ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginSynth.jucer
   mv Makefile MakePluginSynth
   echo "$(tput bold)Building PluginSynth…$(tput sgr0)"
 
@@ -58,7 +56,7 @@ else
   make -f MakePluginSynth -j6 CONFIG=Release
   cp ./build/CabbagePlugin.so ./install/bin/CabbagePluginSynth.so
 
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageLite.jucer
+  xvfb-run ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbageLite.jucer
   mv Makefile MakeCabbageLite
   echo "$(tput bold)Building CabbageLite…$(tput sgr0)"
 
