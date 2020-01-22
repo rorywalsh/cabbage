@@ -28,6 +28,7 @@ sudo apt-get install -y freeglut3-dev
 sudo apt-get install -y libcurl4-gnutls-dev+
 sudo apt-get install -y libasound2-dev
 sudo apt-get install -y libsndfile1
+sudo apt-get install -y libsndfile-dev
 sudo apt-get install -y libjack-dev
 sudo add-apt-repository -y ppa:webkit-team/ppa
 sudo apt-get update
@@ -57,7 +58,7 @@ pwd
 cd ~
 pwd
 ls
-curl -L -o vstsdk3611_22_10_2018_build_34.zip.zip https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip
+curl -L -o vstsdk3611_22_10_2018_build_34.zip https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip
 unzip -q vstsdk3611_22_10_2018_build_34.zip
 ls
 mkdir ~/SDKs
@@ -70,6 +71,7 @@ echo "\n"
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile
 pwd
+ls
 ./buildCabbage.sh
 ./buildDebPackage.sh
 
