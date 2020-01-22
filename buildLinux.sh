@@ -14,27 +14,25 @@ ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 sudo apt-get build-dep csound
 sudo apt-get update --fix-missing
 sudo apt-get update -qq
-sudo apt-get install -y
-libfreetype6-dev
-libx11-dev
-libstdc++6
-libc++-dev
-libxinerama-dev
-libxrandr-dev
-libxcursor-dev
-libxcomposite-dev
-mesa-common-dev
-libasound2-dev
-freeglut3-dev
-libcurl4-gnutls-dev+
-libasound2-dev
-libsndfile1
-libjack-dev
+sudo apt-get install -y libfreetype6-dev
+sudo apt-get install -y libx11-dev
+sudo apt-get install -y libstdc++6
+sudo apt-get install -y libc++-dev
+sudo apt-get install -y libxinerama-dev
+sudo apt-get install -y libxrandr-dev
+sudo apt-get install -y libxcursor-dev
+sudo apt-get install -y libxcomposite-dev
+sudo apt-get install -y mesa-common-dev
+sudo apt-get install -y libasound2-dev
+sudo apt-get install -y freeglut3-dev
+sudo apt-get install -y libcurl4-gnutls-dev+
+sudo apt-get install -y libasound2-dev
+sudo apt-get install -y libsndfile1
+sudo apt-get install -y libjack-dev
 sudo add-apt-repository -y ppa:webkit-team/ppa
 sudo apt-get update
 sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
 sudo apt-get update --fix-missing
-sudo apt-get install libsndfile1
 cd $AGENT_BUILDDIRECTORY
 git clone https://github.com/WeAreROLI/JUCE.git
 cd $AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/JuceLibraryCode
@@ -71,6 +69,7 @@ ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces
 echo "\n"
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile
+pwd
 ./buildCabbage.sh
 ./buildDebPackage.sh
 
