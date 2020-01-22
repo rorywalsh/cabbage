@@ -75,6 +75,7 @@ cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile
 pwd
 ls
 ./buildCabbage
+./installCabbage
 ./buildDebPackage.sh
 
 export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
