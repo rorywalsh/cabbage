@@ -16,8 +16,8 @@ cp ./install/bin/Cabbage Cabbage/usr/bin/Cabbage
 cp ./../opcodes.txt Cabbage/usr/bin/opcodes.txt
 cp ./../../Images/cabbage.png Cabbage/usr/share/icons/hicolor/512x512/apps/cabbage.png
 cp ./../../Images/cabbage.png Cabbage/usr/share/icons/hicolor/512x512/apps/cabbagelite.png
-cp -rf  /usr/share/doc/cabbage/Examples Cabbage/usr/share/doc/cabbage/Examples
-cp -rf  ../../CabbageManual Cabbage/usr/share/doc/cabbage/CabbageManual
+cp -rf  ./../../Examples Cabbage/usr/share/doc/cabbage/Examples
+# cp -rf  ../../CabbageManual Cabbage/usr/share/doc/cabbage/CabbageManual
 
 # cp Cabbage.desktop ~/.local/share/applications/
 # cp CabbageLite.desktop ~/.local/share/applications/
