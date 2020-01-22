@@ -11,6 +11,7 @@ echo "BUILD_ARTIFACTSTAGINGDIRECTORY is $BUILD_ARTIFACTSTAGINGDIRECTORY"
 echo "BUILD_ARTIFACTSTAGINGDIRECTORY contents:"
 ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 
+
 sudo apt-get build-dep csound
 sudo apt-get update --fix-missing
 sudo apt-get update -qq
@@ -74,6 +75,7 @@ echo "\n"
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/LinuxMakefile
 pwd
 ls
+chmod 777 buildCabbageAzure.sh
 ./buildCabbageAzure.sh
 ./buildDebPackage.sh
 
