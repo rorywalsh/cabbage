@@ -169,13 +169,6 @@ public:
         guiRefreshRate = rate;
     }
 
-
-
-    int getNumberOfCsoundChannels()
-    {
-        return numCsoundChannels;
-    }
-
     MidiKeyboardState keyboardState;
 
     //==================================================================================
@@ -235,7 +228,7 @@ private:
     String csoundOutput;
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
-    int numCsoundChannels, pos;
+    int numCsoundOutputChannels, numCsoundInputChannels, pos;
     bool updateSignalDisplay = false;
     MYFLT cs_scale;
     bool testLogicForMono = true;

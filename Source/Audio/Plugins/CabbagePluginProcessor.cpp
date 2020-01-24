@@ -56,19 +56,22 @@ createPluginFilter() {
 	if (csdFile.existsAsFile() == false)
 		Logger::writeToLog("Could not find .csd file, please make sure it's in the correct folder");
 
-    const int numChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+    const int numOutChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+	const int numInChannels = (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") == -1 ? numOutChannels : 
+		CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i"));
+
 
 
 
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
-	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne())
+	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne() || pluginHostType.isReaper())
 	{
-		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numChannels), AudioChannelSet::canonicalChannelSet(numChannels));
+		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels));
 	}
 #endif
 
-	return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels));
+	return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numOutChannels));
 		
 
     

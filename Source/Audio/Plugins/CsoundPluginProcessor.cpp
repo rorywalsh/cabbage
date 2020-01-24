@@ -30,7 +30,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
 #if ! JucePlugin_IsSynth
                                          .withInput  ("Input",  ins, true)
 #endif
-                                         .withOutput ("Output", outs, true).withInput("Sidechain", AudioChannelSet::stereo())
+                                         .withOutput ("Output", outs, true)
 #endif
                                         ),
       csdFile (csdFile)
@@ -114,16 +114,19 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     if(isMono)
     {
         csoundParams->nchnls_override = 1;
-        numCsoundChannels = 1;
+        numCsoundOutputChannels = 1;
     }
     else
     {
 #ifdef CabbagePro
-        numCsoundChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls");
+		numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls");
+		numCsoundInputChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls_i");
 #else
-		numCsoundChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+		numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+		numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
 #endif
-        csoundParams->nchnls_override = numCsoundChannels;
+        csoundParams->nchnls_override = numCsoundOutputChannels;
+		csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
     
 	
@@ -669,7 +672,8 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     int result = -1;
 
 
-	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
+	const int outputChannelCount = (numCsoundOutputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundOutputChannels);
+	const int inputChannelCount = (numCsoundInputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundInputChannels);
 
     //if no inputs are used clear buffer in case it's not empty..
     if (getTotalNumInputChannels() == 0)
@@ -683,7 +687,7 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     if (csdCompiledWithoutError())
     {
         //mute unused channels
-        for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
+        for (int channelsToClear = outputChannelCount; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
         {
             buffer.clear (channelsToClear, 0, buffer.getNumSamples());
         }
@@ -721,17 +725,27 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
             }
 
-            pos = csndIndex * output_channel_count;
+            pos = csndIndex * inputChannelCount;
 
-            for (int channel = 0; channel < output_channel_count; ++channel)
+            for (int channel = 0; channel < inputChannelCount; ++channel)
             {
                 float*& current_sample = audioBuffers[channel];
                 newSamp = *current_sample * cs_scale;
                 CSspin[pos] = newSamp;
-                *current_sample = (CSspout[pos] / cs_scale);
                 ++current_sample;
                 pos++;
             }
+
+			pos = csndIndex * outputChannelCount;
+
+			for (int channel = 0; channel < outputChannelCount; ++channel)
+			{
+				float*& current_sample = audioBuffers[channel];
+				newSamp = *current_sample * cs_scale;
+				*current_sample = (CSspout[pos] / cs_scale);
+				++current_sample;
+				pos++;
+			}
         }
 
 
