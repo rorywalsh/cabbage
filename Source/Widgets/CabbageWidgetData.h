@@ -103,6 +103,7 @@ public:
     static void setScrubberPosition (StringArray strTokens, ValueTree widgetData);
 	static void setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData);
     static void setAmpRange (StringArray strTokens, ValueTree widgetData);
+	static void setSideChainChannels(StringArray strTokens, ValueTree widgetData);
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
     static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setPopulateProps ( StringArray strTokens, ValueTree widgetData);

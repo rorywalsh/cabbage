@@ -24,11 +24,11 @@
 
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs, bool debugMode)
+CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs, const AudioChannelSet sideChainChannels, bool debugMode)
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-                                         .withInput  ("Input",  ins, true)
+                                         .withInput  ("Input",  ins, true).withInput("Sidechain", sideChainChannels, true)
 #endif
                                          .withOutput ("Output", outs, true)
 #endif
@@ -37,6 +37,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
 {
 
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
+	auto sideChain = this->getBusesLayout().getChannelSet(1, 1);
 
     CabbageUtilities::debug ("Plugin constructor");
 
@@ -665,6 +666,7 @@ void CsoundPluginProcessor::sendHostDataToCsound()
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
 	auto mainInputOutput = getBusBuffer(buffer, true, 0);
+	auto sideChain = getBusBuffer(buffer, true, 1);
     float** audioBuffers = mainInputOutput.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
     

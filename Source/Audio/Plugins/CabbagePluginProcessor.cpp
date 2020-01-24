@@ -53,12 +53,30 @@ createPluginFilter() {
     }
 #endif
 
+
 	if (csdFile.existsAsFile() == false)
 		Logger::writeToLog("Could not find .csd file, please make sure it's in the correct folder");
 
+	StringArray csdLines;
+	csdLines.addLines(csdFile.loadFileAsString());
+	int sideChainChannels;
+	for ( auto line : csdLines)
+	{
+		ValueTree temp("temp");
+		CabbageWidgetData::setWidgetState(temp, line, 0);
+		
+		if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+		{
+			sideChainChannels = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::sidechain);
+			break;
+		}
+		
+	}
+
     const int numOutChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
 	const int numInChannels = (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") == -1 ? numOutChannels : 
-		CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i"));
+		CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i"))-sideChainChannels;
+
 
 
 
@@ -67,19 +85,25 @@ createPluginFilter() {
 	PluginHostType pluginHostType;
 	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne() || pluginHostType.isReaper())
 	{
-		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels));
+		if (sideChainChannels != 0)
+			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels));
+		else
+			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels));
 	}
 #endif
 
-	return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numOutChannels));
-		
+	if (sideChainChannels != 0)
+		return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numOutChannels), AudioChannelSet::discreteChannels(sideChainChannels));
+	else
+		return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numOutChannels));
+
 
     
 };
 
 //============================================================================
-CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
-        : CsoundPluginProcessor(inputFile, ins, outs),
+CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sideChainChannels)
+        : CsoundPluginProcessor(inputFile, ins, outs, sideChainChannels),
           csdFile(inputFile),
           cabbageWidgets("CabbageWidgetData") 
 {
