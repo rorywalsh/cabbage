@@ -54,6 +54,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet
 	csdFile(csdFile)
 {
 	//side chaining is supported, and matchingNumberOfIOChannels must false
+	matchingNumberOfIOChannels = false;
 	supportsSidechain = true;
 }
 
@@ -736,25 +737,19 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 	ScopedNoDenormals noDenormals;
 	auto mainOutput = getBusBuffer(buffer, false, 0);
 	auto mainInput = getBusBuffer(buffer, true, 0);
-
-	if(supportsSidechain)
-		auto sideChain = getBusBuffer(buffer, true, 1);
+	
+	if (supportsSidechain)
+	{
+		sideChain = getBusBuffer(buffer, true, 1);
+		sideChainBuffer = sideChain.getArrayOfWritePointers();
+		numSideChainChannels = sideChain.getNumChannels();
+	}
 
     auto* outputBuffer = mainOutput.getArrayOfWritePointers();
 	auto* inputBuffer = mainInput.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
 
-	const int chanOut = mainOutput.getNumChannels();//returns 2?
-	const int chanIn = mainInput.getNumChannels();//returns 2?
-	//const int outputBus = getBusCount(false);//returns 1
-	//const int inputBus = getBusCount(true);//returns 1
-	//const int inputChan = getNumInputChannels();//returns 2
-	//const int outputChan = getNumOutputChannels();//returns 4
-
-    int result = -1;
-	Random temp;
-	MYFLT newSamp;
-	
+    int result = -1;	
 
 	const int outputChannelCount = (numCsoundOutputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundOutputChannels);
 	const int inputChannelCount = (numCsoundInputChannels > getTotalNumInputChannels() ? getTotalNumInputChannels() : numCsoundInputChannels);
@@ -793,12 +788,31 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 					pos++;
 				}
 			}
-			else if (!matchingNumberOfIOChannels)
+			else if (!supportsSidechain)
 			{
 				pos = csndIndex * inputChannelCount;
 				for (int channel = 0; channel < inputChannelCount; channel++)
 				{
 					processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
+					pos++;
+				}
+
+				pos = csndIndex * outputChannelCount;
+				for (int channel = 0; channel < outputChannelCount; channel++)
+				{
+					processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
+					pos++;
+				}
+			}
+			else {
+				//sidechain processing
+				pos = csndIndex * inputChannelCount;
+				for (int channel = 0; channel < inputChannelCount; channel++)
+				{
+					if(channel< numSideChainChannels)
+						processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
+					else
+						processCsoundIOBuffers(BufferType::input, sideChainBuffer[channel - numSideChainChannels], pos);
 					pos++;
 				}
 

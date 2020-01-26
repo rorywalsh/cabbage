@@ -65,7 +65,9 @@ public:
 	};
 
 	void processCsoundIOBuffers(int bufferType, float*& buffer, int pos);
-
+	AudioSampleBuffer sideChain;
+	float** sideChainBuffer;
+	int numSideChainChannels = 0;
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
     virtual bool hasEditor() const override;
