@@ -706,14 +706,29 @@ void CsoundPluginProcessor::performCsoundKsmps()
 	}
 }
 
-void CsoundPluginProcessor::fillOutputBuffer(float*& buffer, int pos)
+void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, float*& buffer, int pos)
 {
-	MYFLT sample;
-	float*& current_sample = buffer;
-	sample = *current_sample * cs_scale;
-	CSspin[pos] = sample;
-	*current_sample = (CSspout[pos] / cs_scale);
-	++current_sample;
+	if (bufferType == BufferType::inputOutput)
+	{
+		float*& current_sample = buffer;
+		MYFLT sample = *current_sample * cs_scale;
+		CSspin[pos] = sample;
+		*current_sample = (CSspout[pos] / cs_scale);
+		++current_sample;
+	}
+	else if (bufferType == BufferType::output)
+	{
+		float*& current_sample = buffer;
+		*current_sample = (CSspout[pos] / cs_scale);
+		++current_sample;
+	}
+	else //intput
+	{
+		float*& current_sample = buffer;
+		MYFLT newSamp = *current_sample * cs_scale;
+		CSspin[pos] = newSamp;
+		current_sample++;
+	}
 }
 
 void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
@@ -774,31 +789,25 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 				pos = csndIndex * outputChannelCount;
 				for (int channel = 0; channel < outputChannelCount; channel++)
 				{
-					fillOutputBuffer(outputBuffer[channel], pos);
+					processCsoundIOBuffers(BufferType::inputOutput, outputBuffer[channel], pos);
 					pos++;
 				}
 			}
 			else if (!matchingNumberOfIOChannels)
 			{
-				//process input first
-				/*pos = csndIndex * inputChannelCount;
+				pos = csndIndex * inputChannelCount;
 				for (int channel = 0; channel < inputChannelCount; channel++)
 				{
-					float*& current_sample = inputBuffer[channel];
-					newSamp = *current_sample * cs_scale;
-					CSspin[pos] = newSamp;
-					current_sample++;
+					processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
 					pos++;
 				}
 
 				pos = csndIndex * outputChannelCount;
 				for (int channel = 0; channel < outputChannelCount; channel++)
 				{
-					float*& current_sample = outputBuffer[channel];
-					*current_sample = (CSspout[pos] / cs_scale);
-					current_sample++;
+					processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
 					pos++;
-				}*/
+				}
 			}
 			
 		}

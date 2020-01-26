@@ -58,7 +58,13 @@ public:
 	void performCsoundKsmps();
 	int result = -1;
     virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
-	void fillOutputBuffer(float*& buffer, int pos);
+	enum BufferType {
+		inputOutput,
+		output,
+		input
+	};
+
+	void processCsoundIOBuffers(int bufferType, float*& buffer, int pos);
 
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
