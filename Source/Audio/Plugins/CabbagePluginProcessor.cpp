@@ -59,7 +59,7 @@ createPluginFilter() {
 
 	StringArray csdLines;
 	csdLines.addLines(csdFile.loadFileAsString());
-	int sideChainChannels;
+	int sideChainChannels=0;
 	for ( auto line : csdLines)
 	{
 		ValueTree temp("temp");
@@ -76,14 +76,10 @@ createPluginFilter() {
     const int numOutChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
 	const int numInChannels = (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") == -1 ? numOutChannels : 
 		CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i"))-sideChainChannels;
-
-
-
-
-
+	   	  
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
-	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne() || pluginHostType.isReaper())
+	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne())
 	{
 		if (sideChainChannels != 0)
 			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels));
@@ -110,6 +106,15 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet i
 	createCsound(inputFile);
 }
 
+//==== Sidechain constructor =================================================
+//============================================================================
+CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
+	: CsoundPluginProcessor(inputFile, ins, outs),
+	csdFile(inputFile),
+	cabbageWidgets("CabbageWidgetData")
+{
+	createCsound(inputFile);
+}
 
 void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)
 {

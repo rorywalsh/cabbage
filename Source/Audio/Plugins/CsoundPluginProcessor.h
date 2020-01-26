@@ -36,10 +36,17 @@ class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
 {
 public:
     //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, const AudioChannelSet ins = AudioChannelSet::stereo(), 
-							const AudioChannelSet outs = AudioChannelSet::stereo(), const AudioChannelSet sideChainChannels = AudioChannelSet::disabled(),
-							bool debugMode = false);
+    CsoundPluginProcessor (File csoundInputFile, 
+		const AudioChannelSet ins, 
+		const AudioChannelSet outs, 
+		const AudioChannelSet sideChainChannels);
+	CsoundPluginProcessor(File csoundInputFile, 
+		const AudioChannelSet ins,
+		const AudioChannelSet outs);
 	~CsoundPluginProcessor();
+
+	bool supportsSidechain = false;
+	bool matchingNumberOfIOChannels = true;
 	void resetCsound();
     //==============================================================================
     //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
@@ -48,7 +55,10 @@ public:
     void releaseResources() override;
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
 
+	void performCsoundKsmps();
+	int result = -1;
     virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+	void fillOutputBuffer(float*& buffer, int pos);
 
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
@@ -230,7 +240,8 @@ private:
     String csoundOutput;
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
-    int numCsoundOutputChannels, numCsoundInputChannels, pos;
+	int numCsoundOutputChannels, numCsoundInputChannels;
+	int pos = 0;
     bool updateSignalDisplay = false;
     MYFLT cs_scale;
     bool testLogicForMono = true;

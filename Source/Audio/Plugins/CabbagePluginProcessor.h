@@ -65,8 +65,8 @@ public:
         StringArray cabbageCode;
     };
 
-	
-    CabbagePluginProcessor (File inputFile = File(), AudioChannelSet ins = AudioChannelSet::stereo(), AudioChannelSet outs = AudioChannelSet::stereo(), AudioChannelSet sidechain = AudioChannelSet::disabled());
+	CabbagePluginProcessor (File inputFile, AudioChannelSet ins, AudioChannelSet outs);
+    CabbagePluginProcessor (File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sidechain);
 	void createCsound(File inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor();
 
