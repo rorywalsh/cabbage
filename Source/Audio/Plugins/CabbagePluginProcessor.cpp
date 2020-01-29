@@ -79,7 +79,7 @@ createPluginFilter() {
 	   	  
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
-	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne())
+    if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne() || pluginHostType.isAbletonLive())
 	{
 		if (sideChainChannels != 0)
 			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels));
