@@ -616,33 +616,19 @@ void CsoundPluginProcessor::releaseResources()
 
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-    const auto& mainInput  = layouts.getMainInputChannelSet();
-    const String test = mainInput.getDescription();
-    
 #if JucePlugin_IsMidiEffectz
-    ignoreUnused (layouts);
-    return true;
+        ignoreUnused (layouts);
+        return true;
 #else
-    // This is the place where you check if the layout is supported.
-//    PluginHostType pluginType;
-//    if (! pluginType.isLogic())
-//    {
-       if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-            && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
-            return false;
-//    }
-
-    
-    // This checks if the input layout matches the output layout
-#if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-#endif
-    
-    return true;
+    const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
+    const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
+    const int inputChannels = getBus(true, 0)->getNumberOfChannels();
+    const int outputChannels = getBus(false, 0)->getNumberOfChannels();
+    const int testInput = mainInput.size();
+    const int testOutput = mainInput.size();
+    return mainInput.size() == inputChannels && mainOutput.size() == outputChannels;
 #endif
 }
-
 
 //==========================================================================
 void CsoundPluginProcessor::triggerCsoundEvents()
