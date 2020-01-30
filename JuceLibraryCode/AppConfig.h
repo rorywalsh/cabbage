@@ -20,6 +20,14 @@
  #define Use_Native_File_Browser 1
 #endif
 
+#ifdef JucePlugin_Build_LV2
+  #define JucePlugin_MaxNumInputChannels 2
+  #define JucePlugin_MaxNumOutputChannels 2
+  
+  #define JucePlugin_Build_LV2 1
+  #define JucePlugin_LV2URI "https://cabbageaudio.com"
+#endif
+
 #ifndef  JucePlugin_Build_VST
  #define JucePlugin_Build_VST              1
 #endif
@@ -202,6 +210,8 @@
 
 #define JUCE_USE_DARK_SPLASH_SCREEN 1
 
+#define JUCE_PROJUCER_VERSION 0x50405
+
 //==============================================================================
 #define JUCE_MODULE_AVAILABLE_juce_audio_basics          1
 #define JUCE_MODULE_AVAILABLE_juce_audio_devices         1
@@ -234,7 +244,7 @@
 #endif
 
 #ifndef    JUCE_WASAPI_EXCLUSIVE
- #define   JUCE_WASAPI_EXCLUSIVE 1
+ //#define JUCE_WASAPI_EXCLUSIVE 0
 #endif
 
 #ifndef    JUCE_DIRECTSOUND
@@ -292,11 +302,11 @@
 // juce_audio_processors flags:
 
 #ifndef    JUCE_PLUGINHOST_VST
- #define   JUCE_PLUGINHOST_VST 1
+ //#define JUCE_PLUGINHOST_VST 0
 #endif
 
 #ifndef    JUCE_PLUGINHOST_VST3
- #define   JUCE_PLUGINHOST_VST3 1
+ //#define JUCE_PLUGINHOST_VST3 0
 #endif
 
 #ifndef    JUCE_PLUGINHOST_AU
@@ -418,7 +428,7 @@
 // juce_gui_extra flags:
 
 #ifndef    JUCE_WEB_BROWSER
- #define   JUCE_WEB_BROWSER 0
+ //#define JUCE_WEB_BROWSER 1
 #endif
 
 #ifndef    JUCE_ENABLE_LIVE_CONSTANT_EDITOR
