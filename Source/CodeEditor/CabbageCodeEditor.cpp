@@ -470,39 +470,69 @@ void CabbageCodeEditorComponent::toggleComments()
 
     const CodeDocument::Position startPos (this->getDocument(), getHighlightedRegion().getStart());
     const CodeDocument::Position endPos (this->getDocument(), getHighlightedRegion().getEnd());
-
-
-    StringArray selectedText;
-    selectedText.addLines (getSelectedText());
-    StringArray csdArray = getAllTextAsStringArray();
-
-    bool isAlreadyCommented = false;
-
-    for (int i = 0 ; i < commentedSections.size(); i++)
+    if(getDocument().getTextBetween(startPos, endPos).length()==0)
     {
-        if (commentedSections[i] == Range<int> (startPos.getLineNumber(), endPos.getLineNumber()))
+        const CodeDocument::Position lineStartPos (this->getDocument(), startPos.getLineNumber(), 0);
+        const CodeDocument::Position lineStartPlus1 (this->getDocument(), startPos.getLineNumber(), 1);
+        if(getDocument().getTextBetween(lineStartPos, lineStartPlus1) != ";")
         {
-            isAlreadyCommented = true;
-            commentedSections.remove (i);
+            getDocument().insertText(lineStartPos, ";");
+        }
+        else if(getDocument().getTextBetween(lineStartPos, lineStartPlus1) == ";"){
+            getDocument().deleteSection(lineStartPos, lineStartPlus1);
         }
     }
-
-    if (isAlreadyCommented == false)
-        commentedSections.add (Range<int> (startPos.getLineNumber(), endPos.getLineNumber()));
-
-    for (int i = startPos.getLineNumber(); i <= endPos.getLineNumber(); i++)
-    {
-        String lineText = csdArray[i];
-
-        if (isAlreadyCommented)
-            csdArray.set (i, lineText.substring (1));
-        else
-            csdArray.set (i, ";" + lineText);
-
+    else{
+        for ( int i = startPos.getLineNumber() ; i < endPos.getLineNumber()+1 ; i++)
+        {
+            const CodeDocument::Position lineStartPos (this->getDocument(), i, 0);
+            const CodeDocument::Position lineStartPlus1 (this->getDocument(), i, 1);
+            
+            if(getDocument().getTextBetween(lineStartPos, lineStartPlus1) != ";")
+            {
+                getDocument().insertText(lineStartPos, ";");
+            }
+            else if(getDocument().getTextBetween(lineStartPos, lineStartPlus1) == ";"){
+                getDocument().deleteSection(lineStartPos, lineStartPlus1);
+            }
+        }
     }
+   
+    
+    
 
-    setAllText (csdArray.joinIntoString ("\n"));
-    moveCaretTo (CodeDocument::Position (getDocument(), endPos.getLineNumber(), 1000), false);
+//    StringArray commentText;
+//    CabbageUtilities::debug(getDocument().getTextBetween(startPos, endPos));
+//
+//    StringArray csdArray = getAllTextAsStringArray();
+//
+//    bool isAlreadyCommented = false;
+//
+//    for (int i = 0 ; i < commentedSections.size(); i++)
+//    {
+//        if (commentedSections[i] == Range<int> (startPos.getLineNumber(), endPos.getLineNumber()))
+//        {
+//            isAlreadyCommented = true;
+//            commentedSections.remove (i);
+//        }
+//    }
+//
+//    if (isAlreadyCommented == false)
+//        commentedSections.add (Range<int> (startPos.getLineNumber(), endPos.getLineNumber()));
+//
+//    for (int i = startPos.getLineNumber(); i <= endPos.getLineNumber(); i++)
+//    {
+//        String lineText = csdArray[i];
+//
+//        if (isAlreadyCommented)
+//            csdArray.set (i, lineText.substring (1));
+//        else
+//            csdArray.set (i, ";" + lineText);
+//
+//    }
+//
+//    setAllText (csdArray.joinIntoString ("\n"));
+//    //moveCaretTo (startPos, false);
 }
 //==============================================================================
 void CabbageCodeEditorComponent::displayOpcodeHelpInStatusBar (String lineFromCsd)
@@ -1140,9 +1170,10 @@ void CabbageCodeEditorComponent::handleReturnKey ()
 //==============================================================================
 void CabbageCodeEditorComponent::undoText()
 {
-    CodeDocument::Position startPos = getCaretPos();
+    //CodeDocument::Position startPos = getCaretPos();
     //getDocument().undo();
-    moveCaretTo (startPos, false);
+    //moveCaretTo (startPos, false);
+    //scrollToKeepCaretOnScreen();
 }
 //==============================================================================
 const String CabbageCodeEditorComponent::getLineText (int lineNumber)

@@ -385,11 +385,7 @@ public:
 			std::unique_ptr<XmlElement> xml (createConnectionsXml());
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
-			
-//            for (auto* w : activePluginWindows)
-//                if( w->node->nodeID.uid == nodeId.uid)
-//                        activePluginWindows.removeObject(w);
-            
+         
             graph.removeNode(nodeId);
 			graph.releaseResources();
 
