@@ -806,17 +806,25 @@ CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray (Str
     {
         if (signalArrays[i]->caption.isNotEmpty() && signalArrays[i]->caption.contains (variableName))
         {
-            if (displayType.isEmpty())
+            if (displayType.isEmpty()){
+                updateSignalDisplay.set(signalArrays[i]->variableName, true);
                 return signalArrays[i];
+            }
 
-            else if (displayType == "waveform" && !signalArrays[i]->caption.contains ("fft"))
+            else if (displayType == "waveform" && !signalArrays[i]->caption.contains ("fft")){
+                updateSignalDisplay.set(signalArrays[i]->variableName, true);
                 return signalArrays[i];
+            }
 
-            else if (displayType == "lissajous" && !signalArrays[i]->caption.contains ("fft"))
+            else if (displayType == "lissajous" && !signalArrays[i]->caption.contains ("fft")){
+                updateSignalDisplay.set(signalArrays[i]->variableName, true);
                 return signalArrays[i];
+            }
 
-            else if (displayType != "waveform" && signalArrays[i]->caption.contains ("fft"))
+            else if (displayType != "waveform" && signalArrays[i]->caption.contains ("fft")){
+                updateSignalDisplay.set(signalArrays[i]->variableName, true);
                 return signalArrays[i];
+            }
         }
     }
 
@@ -952,8 +960,12 @@ void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, c
             addDisplay  = false;
     }
 
-    if (addDisplay)
+    if (addDisplay){
+        const String variableName = String(windat->caption).substring(String(windat->caption).indexOf("signal ")+7, String(windat->caption).indexOf(":"));
+        display->variableName = variableName;
         ud->signalArrays.add (display);
+        ud->updateSignalDisplay.set(variableName, false);
+    }
 }
 
 void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
@@ -963,7 +975,7 @@ void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
     //only take all samples if dealing with fft, waveforms and lissajous curves can be drawn with less samples
     tablePoints = Array<float, CriticalSection> (&windat->fdata[0], windat->npts);
     ud->getSignalArray (windat->caption)->setPoints (tablePoints);
-    ud->updateSignalDisplay = true;
+    
 }
 
 void CsoundPluginProcessor::killGraphCallback (CSOUND* csound, WINDAT* windat)

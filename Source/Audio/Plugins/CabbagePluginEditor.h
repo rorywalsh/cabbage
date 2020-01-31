@@ -140,7 +140,7 @@ public:
     {
         return processor.wrapperType_AudioUnit;
     }
-    bool shouldUpdateSignalDisplay();
+    bool shouldUpdateSignalDisplay(String variableName);
     void savePluginStateToFile (File snapshotFile, String presetName="");
     void restorePluginStateFrom (String childPreset, File xmlFile);
     const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);

@@ -184,7 +184,7 @@ public:
     public:
         float yScale;
         int windid, min , max, size;
-        String caption;
+        String caption, variableName;
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
             yScale (_scale),
@@ -214,10 +214,10 @@ public:
         Array <float, CriticalSection > points;
     };
 
-    bool shouldUpdateSignalDisplay()
+    bool shouldUpdateSignalDisplay(String signalDisplayName)
     {
-        bool returnVal = updateSignalDisplay;
-        updateSignalDisplay = false;
+        bool returnVal = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
+        updateSignalDisplay.set(signalDisplayName, false);
         return returnVal;
     };
 
@@ -236,7 +236,7 @@ private:
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
     int numCsoundChannels, pos;
-    bool updateSignalDisplay = false;
+    NamedValueSet updateSignalDisplay;
     MYFLT cs_scale;
     bool testLogicForMono = true;
     MYFLT* CSspin, *CSspout;
