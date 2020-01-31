@@ -90,7 +90,7 @@ public:
     virtual void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    bool isLogicAndMono = false;
+    bool hostRequestedMono = false;
     bool isLogic = false;
     //==============================================================================
     //Csound API functions for deailing with midi input

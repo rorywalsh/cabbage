@@ -36,6 +36,8 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
       csdFile (csdFile)
 {
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
+    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
 }
 
 //==============================================================================
@@ -53,9 +55,14 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet
 	),
 	csdFile(csdFile)
 {
-	//side chaining is supported, and matchingNumberOfIOChannels must false
+	
+    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+    
+    //side chaining is supported, and matchingNumberOfIOChannels must false
 	matchingNumberOfIOChannels = false;
 	supportsSidechain = true;
+    numSideChainChannels = getBus(true, 1)->getNumberOfChannels();
 }
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
@@ -601,7 +608,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
         //allow mono plugins for Logic only..
-        if(isLogicAndMono == true)
+        if(hostRequestedMono == true)
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
         else
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
@@ -622,11 +629,21 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 #else
     const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
     const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
-    const int inputChannels = getBus(true, 0)->getNumberOfChannels();
-    const int outputChannels = getBus(false, 0)->getNumberOfChannels();
-    const int testInput = mainInput.size();
-    const int testOutput = mainInput.size();
-    return mainInput.size() == inputChannels && mainOutput.size() == outputChannels;
+
+    if (layouts.getMainInputChannelSet()  == AudioChannelSet::disabled()
+        || layouts.getMainOutputChannelSet() == AudioChannelSet::disabled())
+        return false;
+    
+    
+    if(mainInput.size() == numCsoundInputChannels-numSideChainChannels && mainOutput.size() == numCsoundOutputChannels)
+        return true;
+
+    if(numSideChainChannels==0)
+    if (mainInput.size() == 1 && mainOutput.size() == 1)
+        return true;
+
+    return false;
+    
 #endif
 }
 
@@ -709,7 +726,7 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, float*& buffe
 		*current_sample = (CSspout[pos] / cs_scale);
 		++current_sample;
 	}
-	else //intput
+	else //input
 	{
 		float*& current_sample = buffer;
 		MYFLT newSamp = *current_sample * cs_scale;
@@ -734,8 +751,6 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     auto* outputBuffer = mainOutput.getArrayOfWritePointers();
 	auto* inputBuffer = mainInput.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
-
-    int result = -1;	
 
 	const int outputChannelCount = (numCsoundOutputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundOutputChannels);
 	const int inputChannelCount = (numCsoundInputChannels > getTotalNumInputChannels() ? getTotalNumInputChannels() : numCsoundInputChannels);
