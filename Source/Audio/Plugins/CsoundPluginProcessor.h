@@ -218,6 +218,7 @@ public:
     {
         bool returnVal = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
         updateSignalDisplay.set(signalDisplayName, false);
+        bool newTest = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
         return returnVal;
     };
 
