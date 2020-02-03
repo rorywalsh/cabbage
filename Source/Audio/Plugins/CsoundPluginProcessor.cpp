@@ -38,7 +38,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
 
     //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
 
-    CabbageUtilities::debug ("Plugin constructor");
+    CabbageUtilities::debug ("Plugin constructor");  
 
 }
 
