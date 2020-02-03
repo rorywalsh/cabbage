@@ -58,6 +58,7 @@ public:
 	void performCsoundKsmps();
 	int result = -1;
     virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+    virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {}
 	enum BufferType {
 		inputOutput,
 		output,

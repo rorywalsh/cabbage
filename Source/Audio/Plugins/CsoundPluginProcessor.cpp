@@ -638,7 +638,7 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     if(mainInput.size() == numCsoundInputChannels-numSideChainChannels && mainOutput.size() == numCsoundOutputChannels)
         return true;
 
-    if(numSideChainChannels==0)
+//    if(numSideChainChannels==0)
     if (mainInput.size() == 1 && mainOutput.size() == 1)
         return true;
 
@@ -728,10 +728,13 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, float*& buffe
 	}
 	else //input
 	{
-		float*& current_sample = buffer;
-		MYFLT newSamp = *current_sample * cs_scale;
-		CSspin[pos] = newSamp;
-		current_sample++;
+        if(buffer != nullptr)
+        {
+            float*& current_sample = buffer;
+            MYFLT newSamp = *current_sample * cs_scale;
+            CSspin[pos] = newSamp;
+            current_sample++;
+        }
 	}
 }
 
