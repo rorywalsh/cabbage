@@ -313,6 +313,7 @@ void CabbageWidgetData::setSignalDisplayProperties (ValueTree widgetData, int ID
     setProperty (widgetData, CabbageIdentifierIds::displaytype, "spectroscope");
     setProperty (widgetData, CabbageIdentifierIds::zoom, 0);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::updaterate, 100);
 }
 
 void CabbageWidgetData::setLoadButtonProperties (ValueTree widgetData, int ID)

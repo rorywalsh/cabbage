@@ -949,9 +949,9 @@ const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDispla
     return Array<float, CriticalSection>();
 }
 
-bool CabbagePluginEditor::shouldUpdateSignalDisplay()
+bool CabbagePluginEditor::shouldUpdateSignalDisplay(String signalVariableName)
 {
-    return processor.shouldUpdateSignalDisplay();
+    return processor.shouldUpdateSignalDisplay(signalVariableName);
 }
 
 void CabbagePluginEditor::enableXYAutomator (String name, bool enable, Line<float> dragLine)
