@@ -333,6 +333,11 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
         subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Effect);
         subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Synth);
+        if(SystemStats::getOperatingSystemType() & SystemStats::Linux)
+        {
+            subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsLV2Effect);
+            subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsLV2Synth);
+        }
         menu.addSubMenu("Export plugin", subMenu1);
         
 #ifdef CabbagePro
@@ -510,6 +515,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::exportAsStandaloneApp,
         CommandIDs::selectAll,
         CommandIDs::exportAsVSTEffect,
+        CommandIDs::exportAsLV2Effect,
+        CommandIDs::exportAsLV2Synth,
         CommandIDs::exportAsVST3Effect,
         CommandIDs::exportAsAUEffect,
         CommandIDs::exportAsAUSynth,
@@ -676,7 +683,15 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::exportAsVST3Synth:
             result.setInfo ("Export as VST3 Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
             break;
-            
+
+        case CommandIDs::exportAsLV2Effect:
+            result.setInfo ("Export as LV2 Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsLV2Synth:
+            result.setInfo ("Export as LV2 Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
         case CommandIDs::exportAsVST3Effect:
             result.setInfo ("Export as VST3 Plugin Effect", "Exports as plugin", CommandCategories::general, 0);
             break;
@@ -1024,9 +1039,17 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             return true;
             
         case CommandIDs::exportAsVSTSynth:
-            pluginExporter.exportPlugin ("VSTi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            pluginExporter.exportPlugin ("VST", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
-            
+
+        case CommandIDs::exportAsLV2Effect:
+            pluginExporter.exportPlugin ("LV2-fx", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+
+        case CommandIDs::exportAsLV2Synth:
+            pluginExporter.exportPlugin ("LV2-ins", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+
         case CommandIDs::exportAsVST3Effect:
             pluginExporter.exportPlugin ("VST3", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
             return true;
