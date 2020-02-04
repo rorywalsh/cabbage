@@ -194,8 +194,13 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         }
     }
     
-    
-    if (!VSTData.copyFileTo (exportedPlugin))
+
+    if (fileExtension != "lv2" && !VSTData.copyFileTo (exportedPlugin))
+    {
+        CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin to this location. It currently be in use, or you may be trying to install to a system folder you don't have permission to write in. Please try exporting to a different location.", &lookAndFeel);
+        return;
+    }
+    else if (fileExtension == "lv2" && !VSTData.copyDirectoryTo(exportedPlugin))
     {
         CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin to this location. It currently be in use, or you may be trying to install to a system folder you don't have permission to write in. Please try exporting to a different location.", &lookAndFeel);
         return;
