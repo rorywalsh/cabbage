@@ -57,7 +57,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet
 {
 	
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+    
     
     //side chaining is supported, and matchingNumberOfIOChannels must false
 	matchingNumberOfIOChannels = false;
@@ -137,7 +137,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     if(isMono)
     {
         csoundParams->nchnls_override = 1;
+        csoundParams->nchnls_i_override = 2;
         numCsoundOutputChannels = 1;
+        numCsoundInputChannels = 2;//getBus(true, 0)->getNumberOfChannels() + numSideChainChannels;
     }
     else
     {
@@ -603,7 +605,9 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // check for a change in sampling rate - also check if host is logic..
-    if(samplingRate != sampleRate || isLogic)
+    PluginHostType pluginType;
+    
+    if((samplingRate != sampleRate) || pluginType.isLogic())
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
