@@ -3,7 +3,7 @@
 # build PRs, but you can't currently control that from the YAML directly
 # For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers
 trigger:
-- develop
+- side-chain
 
 # We can run multiple jobs in parallel. For this project
 # I'm running Linux, Windows, and macOS jobs. For syntac details
