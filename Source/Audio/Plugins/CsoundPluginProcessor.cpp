@@ -659,100 +659,112 @@ void CsoundPluginProcessor::sendHostDataToCsound()
         }
 //    }
 }
-void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+//==============================================================================
+void CsoundPluginProcessor::processBlock (AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
+{
+	processSamples(buffer, midiMessages);
+}
+
+void CsoundPluginProcessor::processBlock(AudioBuffer< double >& buffer, MidiBuffer& midiMessages)
+{
+	processSamples(buffer, midiMessages);
+}
+
+template< typename Type >
+void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuffer& midiMessages)
 {
 	auto mainInputOutput = getBusBuffer(buffer, true, 0);
-    float** audioBuffers = mainInputOutput.getArrayOfWritePointers();
-    const int numSamples = buffer.getNumSamples();
-    
-    MYFLT newSamp;
-    int result = -1;
+	Type** audioBuffers = mainInputOutput.getArrayOfWritePointers();
+	const int numSamples = buffer.getNumSamples();
+
+	MYFLT newSamp;
+	int result = -1;
 
 
 	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
 
-    //if no inputs are used clear buffer in case it's not empty..
-    if (getTotalNumInputChannels() == 0)
-        buffer.clear();
+	//if no inputs are used clear buffer in case it's not empty..
+	if (getTotalNumInputChannels() == 0)
+		buffer.clear();
 
 	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
 	midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
-    
 
 
-    if (csdCompiledWithoutError())
-    {
-        //mute unused channels
-        for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
-        {
-            buffer.clear (channelsToClear, 0, buffer.getNumSamples());
-        }
 
-        for (int i = 0; i < numSamples; i++, ++csndIndex)
-        {
-            if (csndIndex == csdKsmps)
-            {
-                    result = csound->PerformKsmps();
+	if (csdCompiledWithoutError())
+	{
+		//mute unused channels
+		for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
+		{
+			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
+		}
 
-                if (result == 0)
-                {
-                    //slow down calls to these functions, no need for them to be firing at k-rate
-                    if (guiCycles > guiRefreshRate)
-                    {
-                        guiCycles = 0;
-                        triggerAsyncUpdate();
-                    }
-                    else
-                        ++guiCycles;
+		for (int i = 0; i < numSamples; i++, ++csndIndex)
+		{
+			if (csndIndex == csdKsmps)
+			{
+				result = csound->PerformKsmps();
 
-                    //trigger any Csound score event on each k-boundary
-                    triggerCsoundEvents();
-                    sendHostDataToCsound();
+				if (result == 0)
+				{
+					//slow down calls to these functions, no need for them to be firing at k-rate
+					if (guiCycles > guiRefreshRate)
+					{
+						guiCycles = 0;
+						triggerAsyncUpdate();
+					}
+					else
+						++guiCycles;
 
-                    disableLogging = false;
-                }
-                else
-                {
-                    disableLogging = true;
-                    return; //return as soon as Csound has stopped
-                }
+					//trigger any Csound score event on each k-boundary
+					triggerCsoundEvents();
+					sendHostDataToCsound();
 
-                csndIndex = 0;
+					disableLogging = false;
+				}
+				else
+				{
+					disableLogging = true;
+					return; //return as soon as Csound has stopped
+				}
 
-            }
+				csndIndex = 0;
 
-            pos = csndIndex * output_channel_count;
+			}
 
-            for (int channel = 0; channel < output_channel_count; ++channel)
-            {
-                float*& current_sample = audioBuffers[channel];
-                newSamp = *current_sample * cs_scale;
-                CSspin[pos] = newSamp;
-                *current_sample = (CSspout[pos] / cs_scale);
-                ++current_sample;
-                pos++;
-            }
-        }
+			pos = csndIndex * output_channel_count;
+
+			for (int channel = 0; channel < output_channel_count; ++channel)
+			{
+				Type*& current_sample = audioBuffers[channel];
+				newSamp = *current_sample * cs_scale;
+				CSspin[pos] = newSamp;
+				*current_sample = (CSspout[pos] / cs_scale);
+				++current_sample;
+				pos++;
+			}
+		}
 
 
-    }//if not compiled just mute output
-    else
-    {
-        for (int channel = 0; channel < getTotalNumOutputChannels(); ++channel)
-        {
-            buffer.clear (channel, 0, buffer.getNumSamples());
-        }
-    }
+	}//if not compiled just mute output
+	else
+	{
+		for (int channel = 0; channel < getTotalNumOutputChannels(); ++channel)
+		{
+			buffer.clear(channel, 0, buffer.getNumSamples());
+		}
+	}
 
 #if JucePlugin_ProducesMidiOutput
 
-    if (!midiOutputBuffer.isEmpty())
-    {
-        midiMessages.clear();
-        midiMessages.swapWith (midiOutputBuffer);
-    }
-    else
-        midiMessages.clear();
+	if (!midiOutputBuffer.isEmpty())
+	{
+		midiMessages.clear();
+		midiMessages.swapWith(midiOutputBuffer);
+	}
+	else
+		midiMessages.clear();
 
 #endif
 }

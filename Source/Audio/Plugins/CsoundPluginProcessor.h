@@ -32,22 +32,25 @@
 #endif
 
 //==============================================================================
-class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
+class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 {
 public:
-    //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, const AudioChannelSet ins = AudioChannelSet::stereo(), const AudioChannelSet outs = AudioChannelSet::stereo(), bool debugMode = false);
+	//==============================================================================
+	CsoundPluginProcessor(File csoundInputFile, const AudioChannelSet ins = AudioChannelSet::stereo(), const AudioChannelSet outs = AudioChannelSet::stereo(), bool debugMode = false);
 	~CsoundPluginProcessor();
 	void resetCsound();
-    //==============================================================================
-    //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
+	//==============================================================================
+	//pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
 	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool isMono = false, bool debugMode = false);
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
-    void releaseResources() override;
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
+	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
+	void releaseResources() override;
+	bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 
-    virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
-
+	virtual void processBlock(AudioBuffer< float >&, MidiBuffer&) override;
+	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;
+	template< typename Type >
+	void processSamples(AudioBuffer< Type >&, MidiBuffer&);
+	bool supportsDoublePrecisionProcessing() const override { return true; }
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
     virtual bool hasEditor() const override;
