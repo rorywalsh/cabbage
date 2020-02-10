@@ -287,23 +287,23 @@ void CabbagePluginListComponent::removePluginItem (int index)
 
 PopupMenu CabbagePluginListComponent::createOptionsMenu()
 {
-    PopupMenu menu;
-    menu.addItem (PopupMenu::Item (TRANS("Clear list"))
-                  .setAction ([this] { list.clear(); }));
-    
-    menu.addSeparator();
-    
-    for (auto format : formatManager.getFormats())
-        if (format->canScanForPlugins())
-            menu.addItem (PopupMenu::Item ("Remove all " + format->getName() + " plug-ins")
-                          .setEnabled (! list.getTypesForFormat (*format).isEmpty())
-                          .setAction ([this, format]
-                                      {
-                                          for (auto& pd : list.getTypesForFormat (*format))
-                                              list.removeType (pd);
-                                      }));
-    
-    menu.addSeparator();
+	PopupMenu menu;
+	menu.addItem(PopupMenu::Item(TRANS("Clear list"))
+		.setAction([this] { list.clear(); }));
+
+	menu.addSeparator();
+
+	for (auto format : formatManager.getFormats())
+		if (format->canScanForPlugins())
+			menu.addItem(PopupMenu::Item("Remove all " + format->getName() + " plug-ins")
+				.setEnabled(!list.getTypesForFormat(*format).isEmpty())
+				.setAction([this, format]
+					{
+						for (auto& pd : list.getTypesForFormat(*format))
+							list.removeType(pd);
+					}));
+
+	menu.addSeparator();
     
     menu.addItem (PopupMenu::Item (TRANS("Remove selected plug-in from list"))
                   .setEnabled (table.getNumSelectedRows() > 0)
