@@ -608,6 +608,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     bool isHostLogic = false;
 #if !defined(Cabbage_IDE_Build)
     PluginHostType pluginType;
+    isHostLogic = pluginType.isLogic();
 #endif
 
     if((samplingRate != sampleRate) || isHostLogic)
