@@ -627,20 +627,7 @@ void CsoundPluginProcessor::releaseResources()
 
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-<<<<<<< HEAD
-#if JucePlugin_IsMidiEffectz
-        ignoreUnused (layouts);
-        return true;
-#else
-    const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
-    const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
-    const int inputChannels = getBus(true, 0)->getNumberOfChannels();
-    const int outputChannels = getBus(false, 0)->getNumberOfChannels();
-    const int testInput = mainInput.size();
-    const int testOutput = mainInput.size();
-    return mainInput.size() == inputChannels && mainOutput.size() == outputChannels;
-#endif
-=======
+
 #if JucePlugin_IsMidiEffectz
         ignoreUnused (layouts);
         return true;
@@ -663,7 +650,7 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     return false;
     
 #endif
->>>>>>> 933c16c63b294bcbe010ecaf9a836c92e0f0567b
+
 }
 
 //==========================================================================
@@ -729,11 +716,12 @@ void CsoundPluginProcessor::performCsoundKsmps()
 	}
 }
 
-void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, float*& buffer, int pos)
+template< typename Type >
+void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type*& buffer, int pos)
 {
 	if (bufferType == BufferType::inputOutput)
 	{
-		float*& current_sample = buffer;
+		Type*& current_sample = buffer;
 		MYFLT sample = *current_sample * cs_scale;
 		CSspin[pos] = sample;
 		*current_sample = (CSspout[pos] / cs_scale);
@@ -741,7 +729,7 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, float*& buffe
 	}
 	else if (bufferType == BufferType::output)
 	{
-		float*& current_sample = buffer;
+		Type*& current_sample = buffer;
 		*current_sample = (CSspout[pos] / cs_scale);
 		++current_sample;
 	}
@@ -749,7 +737,7 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, float*& buffe
 	{
         if(buffer != nullptr)
         {
-            float*& current_sample = buffer;
+			Type*& current_sample = buffer;
             MYFLT newSamp = *current_sample * cs_scale;
             CSspin[pos] = newSamp;
             current_sample++;
@@ -757,21 +745,32 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, float*& buffe
 	}
 }
 
-void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+void CsoundPluginProcessor::processBlock(AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
+{
+	processSamples(buffer, midiMessages);
+}
+
+void CsoundPluginProcessor::processBlock(AudioBuffer< double >& buffer, MidiBuffer& midiMessages)
+{
+	processSamples(buffer, midiMessages);
+}
+
+template< typename Type >
+void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuffer& midiMessages)
 {
 	ScopedNoDenormals noDenormals;
 	auto mainOutput = getBusBuffer(buffer, false, 0);
 	auto mainInput = getBusBuffer(buffer, true, 0);
-	
+	Type** sideChainBuffer = nullptr;
+
 	if (supportsSidechain)
 	{
-		sideChain = getBusBuffer(buffer, true, 1);
-		sideChainBuffer = sideChain.getArrayOfWritePointers();
-		numSideChainChannels = sideChain.getNumChannels();
+		sideChainBuffer = getBusBuffer(buffer, true, 1).getArrayOfWritePointers();
+		numSideChainChannels = getBusBuffer(buffer, true, 1).getNumChannels();
 	}
 
-    auto* outputBuffer = mainOutput.getArrayOfWritePointers();
-	auto* inputBuffer = mainInput.getArrayOfWritePointers();
+    Type** outputBuffer = mainOutput.getArrayOfWritePointers();
+	Type** inputBuffer = mainInput.getArrayOfWritePointers();
     const int numSamples = buffer.getNumSamples();
 
 	const int outputChannelCount = (numCsoundOutputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundOutputChannels);

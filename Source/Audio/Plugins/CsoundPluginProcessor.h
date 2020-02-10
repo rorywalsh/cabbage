@@ -57,17 +57,25 @@ public:
 
 	void performCsoundKsmps();
 	int result = -1;
-    virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+
+
+	virtual void processBlock(AudioBuffer< float >&, MidiBuffer&) override;
+	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;
+	template< typename Type >
+	void processSamples(AudioBuffer< Type >&, MidiBuffer&);
+	bool supportsDoublePrecisionProcessing() const override { return true; }
+
     virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {}
+
 	enum BufferType {
 		inputOutput,
 		output,
 		input
 	};
 
-	void processCsoundIOBuffers(int bufferType, float*& buffer, int pos);
-	AudioSampleBuffer sideChain;
-	float** sideChainBuffer;
+	template< typename Type >
+	void processCsoundIOBuffers(int bufferType, Type*& buffer, int pos);
+
 	int numSideChainChannels = 0;
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
@@ -250,14 +258,9 @@ private:
     String csoundOutput;
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
-<<<<<<< HEAD
 	int numCsoundOutputChannels, numCsoundInputChannels;
-	int pos = 0;
-    bool updateSignalDisplay = false;
-=======
     int numCsoundChannels, pos;
     NamedValueSet updateSignalDisplay;
->>>>>>> develop
     MYFLT cs_scale;
     bool testLogicForMono = true;
     MYFLT* CSspin, *CSspout;
