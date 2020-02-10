@@ -605,9 +605,12 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // check for a change in sampling rate - also check if host is logic..
+    bool isHostLogic = false;
+#if !defined(Cabbage_IDE_Build)
     PluginHostType pluginType;
-    
-    if((samplingRate != sampleRate) || pluginType.isLogic())
+#endif
+
+    if((samplingRate != sampleRate) || isHostLogic)
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
