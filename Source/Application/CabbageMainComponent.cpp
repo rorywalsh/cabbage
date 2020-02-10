@@ -1377,16 +1377,22 @@ void CabbageMainComponent::openGraph (File fileToOpen)
 
     cabbageSettings->updateRecentFilesList (fileToOpen);
 
-    forEachXmlChildElementWithTagName (*xml, filter, "FILTER")
-    uuids.add (filter->getIntAttribute ("uid"));
+    forEachXmlChildElementWithTagName (*xml, filter, "FILTER"){
+        CabbageUtilities::debug(filter->getIntAttribute ("uid"));
+        uuids.add (filter->getIntAttribute ("uid"));
+    }
 
-    forEachXmlChildElementWithTagName (*xml, filter, "FILTER")
-    forEachXmlChildElementWithTagName (*filter, plugin, "PLUGIN")
-    {
-		String pluginName = plugin->getStringAttribute("file");
-        const String pluginFile = fileToOpen.getParentDirectory().getChildFile(pluginName).getFullPathName();
-        if(File(pluginFile).existsAsFile())
-            files.add (File (pluginFile));
+    int uidOffset = 0;
+    forEachXmlChildElementWithTagName (*xml, filter, "FILTER"){
+        forEachXmlChildElementWithTagName (*filter, plugin, "PLUGIN")
+        {
+            String pluginName = plugin->getStringAttribute("file");
+            const String pluginFile = fileToOpen.getParentDirectory().getChildFile(pluginName).getFullPathName();
+            if(File(pluginFile).existsAsFile())
+                files.add (File (pluginFile));
+            else
+                uidOffset++;
+        }
     }
 
     while(fileTabs.size()>0)
@@ -1409,7 +1415,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
         {
 
             File file = openFile (files[i].getFullPathName());
-            fileTabs[getTabFileIndex(files[i])]->uniqueFileId = uuids[i];
+            fileTabs[getTabFileIndex(files[i])]->uniqueFileId = uuids[i+uidOffset];
 			fileTabs[getTabFileIndex(files[i])]->getPlayButton().setToggleState(true, dontSendNotification);
        }
     }

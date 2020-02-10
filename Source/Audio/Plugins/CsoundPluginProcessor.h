@@ -32,7 +32,7 @@
 #endif
 
 //==============================================================================
-class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
+class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 {
 public:
     //==============================================================================
@@ -48,8 +48,8 @@ public:
 	bool supportsSidechain = false;
 	bool matchingNumberOfIOChannels = true;
 	void resetCsound();
-    //==============================================================================
-    //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
+	//==============================================================================
+	//pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
 	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool isMono = false, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -197,7 +197,7 @@ public:
     public:
         float yScale;
         int windid, min , max, size;
-        String caption;
+        String caption, variableName;
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
             yScale (_scale),
@@ -227,10 +227,11 @@ public:
         Array <float, CriticalSection > points;
     };
 
-    bool shouldUpdateSignalDisplay()
+    bool shouldUpdateSignalDisplay(String signalDisplayName)
     {
-        bool returnVal = updateSignalDisplay;
-        updateSignalDisplay = false;
+        bool returnVal = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
+        updateSignalDisplay.set(signalDisplayName, false);
+        bool newTest = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
         return returnVal;
     };
 
@@ -248,9 +249,14 @@ private:
     String csoundOutput;
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
+<<<<<<< HEAD
 	int numCsoundOutputChannels, numCsoundInputChannels;
 	int pos = 0;
     bool updateSignalDisplay = false;
+=======
+    int numCsoundChannels, pos;
+    NamedValueSet updateSignalDisplay;
+>>>>>>> develop
     MYFLT cs_scale;
     bool testLogicForMono = true;
     MYFLT* CSspin, *CSspout;

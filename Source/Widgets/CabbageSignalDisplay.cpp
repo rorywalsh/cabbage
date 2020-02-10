@@ -46,7 +46,9 @@ CabbageSignalDisplay::CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor
       scrollbarHeight (20),
       lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness))
 {
+    
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
+    CabbageUtilities::debug(getName());
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
@@ -70,6 +72,7 @@ CabbageSignalDisplay::CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor
         addAndMakeVisible (zoomOutButton);
     }
 
+    const int updateRate = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::updaterate);
     startTimer (updateRate);
 }
 
@@ -299,9 +302,10 @@ void CabbageSignalDisplay::setSignalFloatArraysForLissajous (Array<float, Critic
 //====================================================================================
 void CabbageSignalDisplay::timerCallback()
 {
-    if (owner->shouldUpdateSignalDisplay())
+    const String variable = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::signalvariable);
+    if (owner->shouldUpdateSignalDisplay(variable))
     {
-        const String variable = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::signalvariable);
+        
         const String displayType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::displaytype);
 
         if (displayType != "lissajous")
@@ -320,7 +324,6 @@ void CabbageSignalDisplay::timerCallback()
 
         repaint();
     }
-
 }
 
 //====================================================================================

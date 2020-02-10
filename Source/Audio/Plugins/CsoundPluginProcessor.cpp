@@ -740,13 +740,12 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 	const int outputChannelCount = (numCsoundOutputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundOutputChannels);
 	const int inputChannelCount = (numCsoundInputChannels > getTotalNumInputChannels() ? getTotalNumInputChannels() : numCsoundInputChannels);
 
-    //if no inputs are used clear buffer in case it's not empty..
-    if (getTotalNumInputChannels() == 0)
-        buffer.clear();
+	//if no inputs are used clear buffer in case it's not empty..
+	if (getTotalNumInputChannels() == 0)
+		buffer.clear();
 
 	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
 	midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
-    
 
 
 	if (csdCompiledWithoutError())
@@ -822,13 +821,13 @@ void CsoundPluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
 #if JucePlugin_ProducesMidiOutput
 
-    if (!midiOutputBuffer.isEmpty())
-    {
-        midiMessages.clear();
-        midiMessages.swapWith (midiOutputBuffer);
-    }
-    else
-        midiMessages.clear();
+	if (!midiOutputBuffer.isEmpty())
+	{
+		midiMessages.clear();
+		midiMessages.swapWith(midiOutputBuffer);
+	}
+	else
+		midiMessages.clear();
 
 #endif
 }
@@ -882,17 +881,22 @@ CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray (Str
     {
         if (signalArrays[i]->caption.isNotEmpty() && signalArrays[i]->caption.contains (variableName))
         {
-            if (displayType.isEmpty())
+            const String varName = signalArrays[i]->variableName;
+            if (displayType.isEmpty()){
                 return signalArrays[i];
+            }
 
-            else if (displayType == "waveform" && !signalArrays[i]->caption.contains ("fft"))
+            else if (displayType == "waveform" && !signalArrays[i]->caption.contains ("fft")){
                 return signalArrays[i];
+            }
 
-            else if (displayType == "lissajous" && !signalArrays[i]->caption.contains ("fft"))
+            else if (displayType == "lissajous" && !signalArrays[i]->caption.contains ("fft")){
                 return signalArrays[i];
+            }
 
-            else if (displayType != "waveform" && signalArrays[i]->caption.contains ("fft"))
+            else if (displayType != "waveform" && signalArrays[i]->caption.contains ("fft")){
                 return signalArrays[i];
+            }
         }
     }
 
@@ -1028,8 +1032,12 @@ void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, c
             addDisplay  = false;
     }
 
-    if (addDisplay)
+    if (addDisplay){
+        const String variableName = String(windat->caption).substring(String(windat->caption).indexOf("signal ")+7, String(windat->caption).indexOf(":"));
+        display->variableName = variableName;
         ud->signalArrays.add (display);
+        ud->updateSignalDisplay.set(variableName, false);
+    }
 }
 
 void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
@@ -1039,7 +1047,8 @@ void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
     //only take all samples if dealing with fft, waveforms and lissajous curves can be drawn with less samples
     tablePoints = Array<float, CriticalSection> (&windat->fdata[0], windat->npts);
     ud->getSignalArray (windat->caption)->setPoints (tablePoints);
-    ud->updateSignalDisplay = true;
+    ud->updateSignalDisplay.set(ud->getSignalArray (windat->caption)->variableName, true);
+    
 }
 
 void CsoundPluginProcessor::killGraphCallback (CSOUND* csound, WINDAT* windat)

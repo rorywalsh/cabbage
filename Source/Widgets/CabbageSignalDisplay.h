@@ -44,7 +44,7 @@ class CabbageSignalDisplay : public Component, public ValueTree::Listener, publi
     bool isScrollbarShowing;
     float rotate;
     bool shouldPaint {false};
-    int updateRate {100};
+    int updateRate {200};
 
     Image spectrogramImage, spectroscopeImage;
     FrequencyRangeDisplayComponent freqRangeDisplay;
