@@ -58,6 +58,7 @@ public:
 	void performCsoundKsmps();
 	int result = -1;
     virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+    virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {}
 	enum BufferType {
 		inputOutput,
 		output,
@@ -90,7 +91,7 @@ public:
     virtual void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    bool isLogicAndMono = false;
+    bool hostRequestedMono = false;
     bool isLogic = false;
     //==============================================================================
     //Csound API functions for deailing with midi input

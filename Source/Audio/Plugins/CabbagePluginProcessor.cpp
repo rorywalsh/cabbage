@@ -1217,22 +1217,16 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
     bool csoundRecompiled = false;
     samplesInBlock = samplesPerBlock;
 #if !Cabbage_IDE_Build && !Cabbage_Lite
-    PluginHostType pluginType;
-    if (pluginType.isLogic())
-    {
-        //allow mono plugins for Logic only..
-        isLogic = true;
         if(this->getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
-            isLogicAndMono = true;
+            hostRequestedMono = true;
         else
-            isLogicAndMono = false;
+            hostRequestedMono = false;
     
         samplingRate = sampleRate;
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
         initAllCsoundChannels(cabbageWidgets);
         csoundRecompiled = true;
 
-    }
 #endif
     
     
