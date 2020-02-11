@@ -57,8 +57,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet
 {
 	
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-    
-    
+    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();    
     //side chaining is supported, and matchingNumberOfIOChannels must false
 	matchingNumberOfIOChannels = false;
 	supportsSidechain = true;
@@ -148,7 +147,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		numCsoundInputChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls_i");
 #else
 		numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
-		numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
+        numCsoundInputChannels = numCsoundOutputChannels;
+        if (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
+            numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
 #endif
         csoundParams->nchnls_override = numCsoundOutputChannels;
 		csoundParams->nchnls_i_override = numCsoundInputChannels;

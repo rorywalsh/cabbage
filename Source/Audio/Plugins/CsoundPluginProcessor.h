@@ -259,7 +259,7 @@ private:
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
 	int numCsoundOutputChannels, numCsoundInputChannels;
-    int numCsoundChannels, pos;
+    int pos;
     NamedValueSet updateSignalDisplay;
     MYFLT cs_scale;
     bool testLogicForMono = true;

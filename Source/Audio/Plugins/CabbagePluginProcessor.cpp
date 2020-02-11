@@ -74,9 +74,10 @@ createPluginFilter() {
 	}
 
     const int numOutChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
-	const int numInChannels = (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") == -1 ? numOutChannels : 
-		CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i"))-sideChainChannels;
-	   	  
+    int numInChannels = numOutChannels;
+    if(CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
+        numInChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i")-sideChainChannels;
+ 
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
     if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne() || pluginHostType.isAbletonLive())
