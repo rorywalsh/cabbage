@@ -143,7 +143,7 @@ CabbagePluginListComponent::CabbagePluginListComponent (AudioPluginFormatManager
                                           const File& deadMansPedal, PropertiesFile* const props,
                                           bool allowPluginsWhichRequireAsynchronousInstantiation)
 : formatManager (manager),
-list (listToEdit),
+pluginList (listToEdit),
 deadMansPedalFile (deadMansPedal),
 optionsButton ("Options..."),
 propertiesToUse (props),
@@ -177,17 +177,17 @@ numThreads (allowAsync ? 1 : 0)
     optionsButton.setTriggeredOnMouseDown (true);
     
     setSize (400, 600);
-    list.addChangeListener (this);
+    pluginList.addChangeListener (this);
     updateList();
     table.getHeader().reSortTable();
     
-    PluginDirectoryScanner::applyBlacklistingsFromDeadMansPedal (list, deadMansPedalFile);
+    PluginDirectoryScanner::applyBlacklistingsFromDeadMansPedal (pluginList, deadMansPedalFile);
     deadMansPedalFile.deleteFile();
 }
 
 CabbagePluginListComponent::~CabbagePluginListComponent()
 {
-    list.removeChangeListener (this);
+    pluginList.removeChangeListener (this);
 }
 
 void CabbagePluginListComponent::setOptionsButtonText (const String& newText)
@@ -266,41 +266,41 @@ static void showFolderForPlugin (KnownPluginList& list, int index)
 
 void CabbagePluginListComponent::removeMissingPlugins()
 {
-    auto types = list.getTypes();
+    auto types = pluginList.getTypes();
     
     for (int i = types.size(); --i >= 0;)
     {
         auto type = types.getUnchecked (i);
         
         if (! formatManager.doesPluginStillExist (type))
-            list.removeType (type);
+            pluginList.removeType (type);
     }
 }
 
 void CabbagePluginListComponent::removePluginItem (int index)
 {
-    if (index < list.getNumTypes())
-        list.removeType (list.getTypes()[index]);
+    if (index < pluginList.getNumTypes())
+        pluginList.removeType (pluginList.getTypes()[index]);
     else
-        list.removeFromBlacklist (list.getBlacklistedFiles() [index - list.getNumTypes()]);
+        pluginList.removeFromBlacklist (pluginList.getBlacklistedFiles() [index - pluginList.getNumTypes()]);
 }
 
 PopupMenu CabbagePluginListComponent::createOptionsMenu()
 {
 	PopupMenu menu;
 	menu.addItem(PopupMenu::Item(TRANS("Clear list"))
-		.setAction([this] { list.clear(); }));
+		.setAction([this] { pluginList.clear(); }));
 
 	menu.addSeparator();
 
 	for (auto format : formatManager.getFormats())
 		if (format->canScanForPlugins())
 			menu.addItem(PopupMenu::Item("Remove all " + format->getName() + " plug-ins")
-				.setEnabled(!list.getTypesForFormat(*format).isEmpty())
+				.setEnabled(!pluginList.getTypesForFormat(*format).isEmpty())
 				.setAction([this, format]
 					{
-						for (auto& pd : list.getTypesForFormat(*format))
-							list.removeType(pd);
+						for (auto& pd : pluginList.getTypesForFormat(*format))
+                            pluginList.removeType(pd);
 					}));
 
 	menu.addSeparator();
@@ -317,8 +317,8 @@ PopupMenu CabbagePluginListComponent::createOptionsMenu()
     auto selectedRow = table.getSelectedRow();
     
     menu.addItem (PopupMenu::Item (TRANS("Show folder containing selected plug-in"))
-                  .setEnabled (canShowFolderForPlugin (list, selectedRow))
-                  .setAction ([this, selectedRow] { showFolderForPlugin (list, selectedRow); }));
+                  .setEnabled (canShowFolderForPlugin (pluginList, selectedRow))
+                  .setAction ([this, selectedRow] { showFolderForPlugin (pluginList, selectedRow); }));
     
     menu.addSeparator();
     
@@ -340,8 +340,8 @@ PopupMenu CabbagePluginListComponent::createMenuForRow (int rowNumber)
                       .setAction ([this, rowNumber] { removePluginItem (rowNumber); }));
         
         menu.addItem (PopupMenu::Item (TRANS("Show folder containing plug-in"))
-                      .setEnabled (canShowFolderForPlugin (list, rowNumber))
-                      .setAction ([this, rowNumber] { showFolderForPlugin (list, rowNumber); }));
+                      .setEnabled (canShowFolderForPlugin (pluginList, rowNumber))
+                      .setAction ([this, rowNumber] { showFolderForPlugin (pluginList, rowNumber); }));
     }
     
     return menu;
@@ -355,7 +355,7 @@ bool CabbagePluginListComponent::isInterestedInFileDrag (const StringArray& /*fi
 void CabbagePluginListComponent::filesDropped (const StringArray& files, int, int)
 {
     OwnedArray<PluginDescription> typesFound;
-    list.scanAndAddDragAndDroppedFiles (formatManager, files, typesFound);
+    pluginList.scanAndAddDragAndDroppedFiles (formatManager, files, typesFound);
 }
 
 FileSearchPath CabbagePluginListComponent::getLastSearchPath (PropertiesFile& properties, AudioPluginFormat& format)
@@ -526,7 +526,7 @@ private:
     {
         pathChooserWindow.setVisible (false);
         
-        scanner.reset (new PluginDirectoryScanner (owner.list, formatToScan, pathList.getPath(),
+        scanner.reset (new PluginDirectoryScanner (owner.pluginList, formatToScan, pathList.getPath(),
                                                    true, owner.deadMansPedalFile, allowAsync));
         
         if (! filesOrIdentifiersToScan.isEmpty())
