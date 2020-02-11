@@ -24,22 +24,45 @@
 
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs, bool debugMode)
+CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs)
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                                          .withInput  ("Input",  ins, true)
 #endif
-                                         .withOutput ("Output", outs, true).withInput("Sidechain", AudioChannelSet::stereo())
+                                         .withOutput ("Output", outs, true)
 #endif
                                         ),
       csdFile (csdFile)
 {
+	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
+    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+}
 
-    //this->getBusesLayout().inputBuses.add(AudioChannelSet::discreteChannels(17));
-
-    CabbageUtilities::debug ("Plugin constructor");  
-
+//==============================================================================
+// side chain constructor
+//==============================================================================
+//==============================================================================
+CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet ins, const AudioChannelSet outs, const AudioChannelSet sideChainChannels)
+	: AudioProcessor(BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+		.withInput("Input", ins, true).withInput("Sidechain", sideChainChannels, true)
+#endif
+		.withOutput("Output", outs, true)
+#endif
+	),
+	csdFile(csdFile)
+{
+	
+    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    
+    
+    //side chaining is supported, and matchingNumberOfIOChannels must false
+	matchingNumberOfIOChannels = false;
+	supportsSidechain = true;
+    numSideChainChannels = getBus(true, 1)->getNumberOfChannels();
 }
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
@@ -114,16 +137,21 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     if(isMono)
     {
         csoundParams->nchnls_override = 1;
-        numCsoundChannels = 1;
+        csoundParams->nchnls_i_override = 2;
+        numCsoundOutputChannels = 1;
+        numCsoundInputChannels = 2;//getBus(true, 0)->getNumberOfChannels() + numSideChainChannels;
     }
     else
     {
 #ifdef CabbagePro
-        numCsoundChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls");
+		numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls");
+		numCsoundInputChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls_i");
 #else
-		numCsoundChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+		numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+		numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
 #endif
-        csoundParams->nchnls_override = numCsoundChannels;
+        csoundParams->nchnls_override = numCsoundOutputChannels;
+		csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
     
 	
@@ -577,12 +605,18 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // check for a change in sampling rate - also check if host is logic..
-    if(samplingRate != sampleRate || isLogic)
+    bool isHostLogic = false;
+#if !defined(Cabbage_IDE_Build)
+    PluginHostType pluginType;
+    isHostLogic = pluginType.isLogic();
+#endif
+
+    if((samplingRate != sampleRate) || isHostLogic)
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
         //allow mono plugins for Logic only..
-        if(isLogicAndMono == true)
+        if(hostRequestedMono == true)
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
         else
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
@@ -597,33 +631,31 @@ void CsoundPluginProcessor::releaseResources()
 
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-    const auto& mainInput  = layouts.getMainInputChannelSet();
-    const String test = mainInput.getDescription();
-    
+
 #if JucePlugin_IsMidiEffectz
-    ignoreUnused (layouts);
-    return true;
+        ignoreUnused (layouts);
+        return true;
 #else
-    // This is the place where you check if the layout is supported.
-//    PluginHostType pluginType;
-//    if (! pluginType.isLogic())
-//    {
-       if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-            && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
-            return false;
-//    }
+    const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
+    const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
 
-    
-    // This checks if the input layout matches the output layout
-#if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+    if (layouts.getMainInputChannelSet()  == AudioChannelSet::disabled()
+        || layouts.getMainOutputChannelSet() == AudioChannelSet::disabled())
         return false;
-#endif
     
-    return true;
-#endif
-}
+    
+    if(mainInput.size() == numCsoundInputChannels-numSideChainChannels && mainOutput.size() == numCsoundOutputChannels)
+        return true;
 
+//    if(numSideChainChannels==0)
+    if (mainInput.size() == 1 && mainOutput.size() == 1)
+        return true;
+
+    return false;
+    
+#endif
+
+}
 
 //==========================================================================
 void CsoundPluginProcessor::triggerCsoundEvents()
@@ -659,8 +691,65 @@ void CsoundPluginProcessor::sendHostDataToCsound()
         }
 //    }
 }
-//==============================================================================
-void CsoundPluginProcessor::processBlock (AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
+
+void CsoundPluginProcessor::performCsoundKsmps()
+{
+	result = csound->PerformKsmps();
+
+	if (result == 0)
+	{
+		//slow down calls to these functions, no need for them to be firing at k-rate
+		if (guiCycles > guiRefreshRate)
+		{
+			guiCycles = 0;
+			triggerAsyncUpdate();
+		}
+		else
+			++guiCycles;
+
+		//trigger any Csound score event on each k-boundary
+		triggerCsoundEvents();
+		sendHostDataToCsound();
+
+		disableLogging = false;
+	}
+	else
+	{
+		disableLogging = true;
+		return; //return as soon as Csound has stopped
+	}
+}
+
+template< typename Type >
+void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type*& buffer, int pos)
+{
+	if (bufferType == BufferType::inputOutput)
+	{
+		Type*& current_sample = buffer;
+		MYFLT sample = *current_sample * cs_scale;
+		CSspin[pos] = sample;
+		*current_sample = (CSspout[pos] / cs_scale);
+		++current_sample;
+	}
+	else if (bufferType == BufferType::output)
+	{
+		Type*& current_sample = buffer;
+		*current_sample = (CSspout[pos] / cs_scale);
+		++current_sample;
+	}
+	else //input
+	{
+        if(buffer != nullptr)
+        {
+			Type*& current_sample = buffer;
+            MYFLT newSamp = *current_sample * cs_scale;
+            CSspin[pos] = newSamp;
+            current_sample++;
+        }
+	}
+}
+
+void CsoundPluginProcessor::processBlock(AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
 {
 	processSamples(buffer, midiMessages);
 }
@@ -673,15 +762,23 @@ void CsoundPluginProcessor::processBlock(AudioBuffer< double >& buffer, MidiBuff
 template< typename Type >
 void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuffer& midiMessages)
 {
-	auto mainInputOutput = getBusBuffer(buffer, true, 0);
-	Type** audioBuffers = mainInputOutput.getArrayOfWritePointers();
-	const int numSamples = buffer.getNumSamples();
+	ScopedNoDenormals noDenormals;
+	auto mainOutput = getBusBuffer(buffer, false, 0);
+	auto mainInput = getBusBuffer(buffer, true, 0);
+	Type** sideChainBuffer = nullptr;
 
-	MYFLT newSamp;
-	int result = -1;
+	if (supportsSidechain)
+	{
+		sideChainBuffer = getBusBuffer(buffer, true, 1).getArrayOfWritePointers();
+		numSideChainChannels = getBusBuffer(buffer, true, 1).getNumChannels();
+	}
 
+    Type** outputBuffer = mainOutput.getArrayOfWritePointers();
+	Type** inputBuffer = mainInput.getArrayOfWritePointers();
+    const int numSamples = buffer.getNumSamples();
 
-	const int output_channel_count = (numCsoundChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundChannels);
+	const int outputChannelCount = (numCsoundOutputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundOutputChannels);
+	const int inputChannelCount = (numCsoundInputChannels > getTotalNumInputChannels() ? getTotalNumInputChannels() : numCsoundInputChannels);
 
 	//if no inputs are used clear buffer in case it's not empty..
 	if (getTotalNumInputChannels() == 0)
@@ -691,11 +788,10 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
 
 
-
 	if (csdCompiledWithoutError())
 	{
 		//mute unused channels
-		for (int channelsToClear = output_channel_count; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
+		for (int channelsToClear = outputChannelCount; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
 		{
 			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
 		}
@@ -704,57 +800,64 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		{
 			if (csndIndex == csdKsmps)
 			{
-				result = csound->PerformKsmps();
-
-				if (result == 0)
-				{
-					//slow down calls to these functions, no need for them to be firing at k-rate
-					if (guiCycles > guiRefreshRate)
-					{
-						guiCycles = 0;
-						triggerAsyncUpdate();
-					}
-					else
-						++guiCycles;
-
-					//trigger any Csound score event on each k-boundary
-					triggerCsoundEvents();
-					sendHostDataToCsound();
-
-					disableLogging = false;
-				}
-				else
-				{
-					disableLogging = true;
-					return; //return as soon as Csound has stopped
-				}
-
+				performCsoundKsmps();
 				csndIndex = 0;
-
 			}
-
-			pos = csndIndex * output_channel_count;
-
-			for (int channel = 0; channel < output_channel_count; ++channel)
+	
+			if (matchingNumberOfIOChannels)
 			{
-				Type*& current_sample = audioBuffers[channel];
-				newSamp = *current_sample * cs_scale;
-				CSspin[pos] = newSamp;
-				*current_sample = (CSspout[pos] / cs_scale);
-				++current_sample;
-				pos++;
+				pos = csndIndex * outputChannelCount;
+				for (int channel = 0; channel < outputChannelCount; channel++)
+				{
+					processCsoundIOBuffers(BufferType::inputOutput, outputBuffer[channel], pos);
+					pos++;
+				}
 			}
-		}
+			else if (!supportsSidechain)
+			{
+				pos = csndIndex * inputChannelCount;
+				for (int channel = 0; channel < inputChannelCount; channel++)
+				{
+					processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
+					pos++;
+				}
 
+				pos = csndIndex * outputChannelCount;
+				for (int channel = 0; channel < outputChannelCount; channel++)
+				{
+					processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
+					pos++;
+				}
+			}
+			else {
+				//sidechain processing
+				pos = csndIndex * inputChannelCount;
+				for (int channel = 0; channel < inputChannelCount; channel++)
+				{
+					if(channel< numSideChainChannels)
+						processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
+					else
+						processCsoundIOBuffers(BufferType::input, sideChainBuffer[channel - numSideChainChannels], pos);
+					pos++;
+				}
 
-	}//if not compiled just mute output
-	else
-	{
-		for (int channel = 0; channel < getTotalNumOutputChannels(); ++channel)
-		{
-			buffer.clear(channel, 0, buffer.getNumSamples());
+				pos = csndIndex * outputChannelCount;
+				for (int channel = 0; channel < outputChannelCount; channel++)
+				{
+					processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
+					pos++;
+				}
+			}
+			
 		}
-	}
+    }//if not compiled just mute output
+    else
+    {
+        for (int channel = 0; channel < getTotalNumOutputChannels(); ++channel)
+        {
+            buffer.clear (channel, 0, buffer.getNumSamples());
+        }
+    }
 
 #if JucePlugin_ProducesMidiOutput
 

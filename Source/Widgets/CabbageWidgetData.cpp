@@ -400,6 +400,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("markerthickness"):
             case HashStringToInt ("markerstart"):
             case HashStringToInt ("markerend"):
+			case HashStringToInt ("sidechain"):
                 if (getStringProp (widgetData, CabbageIdentifierIds::channeltype) == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else
