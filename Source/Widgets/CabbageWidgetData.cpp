@@ -822,8 +822,10 @@ void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widget
     const var colours = getProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour );
     var newColours = colours.clone();
 
-    for (int i = newColours.size(); i < colourIndex + 1; i++)
-        newColours.append (new Colour (0, 0, 0));
+    for (int i = newColours.size(); i < colourIndex + 1; i++){
+        newColours.append ("0");
+    }
+    
 
     newColours[colourIndex] = getColourFromText (strTokens.joinIntoString (",")).toString();
     setProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour, newColours);
