@@ -135,10 +135,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	//instrument must at least be stereo
     if(isMono)
     {
-        csoundParams->nchnls_override = 1;
-        csoundParams->nchnls_i_override = 2;
         numCsoundOutputChannels = 1;
-        numCsoundInputChannels = 2;//getBus(true, 0)->getNumberOfChannels() + numSideChainChannels;
+        numCsoundInputChannels = 1 + numSideChainChannels;
+        csoundParams->nchnls_override = numCsoundOutputChannels;
+        csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
     else
     {
@@ -171,9 +171,14 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
 	csound->SetParams(csoundParams.get());
 
-	if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
-		compileCsdFile(csdFile);
-	else
+    if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
+    {
+        compileCsdFile(csdFile);
+        //these can be updated by the host at any point..
+        csound->SetChannel("NUM_INPUTS", numCsoundInputChannels);
+        csound->SetChannel("NUM_OUTPUTS", numCsoundInputChannels);
+    }
+    else
 	{
 #ifdef CabbagePro
 		compileCsdString(Encrypt::decode(csdFile));
@@ -606,13 +611,7 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // check for a change in sampling rate - also check if host is logic..
-    bool isHostLogic = false;
-#if !defined(Cabbage_IDE_Build)
-    PluginHostType pluginType;
-    isHostLogic = pluginType.isLogic();
-#endif
-
-    if((samplingRate != sampleRate) || isHostLogic)
+    if((samplingRate != sampleRate) || hostRequestedMono)
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
@@ -645,12 +644,22 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         return false;
     
     
-    if(mainInput.size() == numCsoundInputChannels-numSideChainChannels && mainOutput.size() == numCsoundOutputChannels)
+    if (mainInput.size() == numCsoundInputChannels - numSideChainChannels && mainOutput.size() == numCsoundOutputChannels)
+    {
+        csound->SetChannel("NUM_INPUTS", numCsoundInputChannels);
+        csound->SetChannel("NUM_OUTPUTS", numCsoundInputChannels);
         return true;
+    }
+        
 
 //    if(numSideChainChannels==0)
     if (mainInput.size() == 1 && mainOutput.size() == 1)
+    {
+        csound->SetChannel("NUM_INPUTS", 1);
+        csound->SetChannel("NUM_OUTPUTS", 1);
         return true;
+    }
+        
 
     return false;
     
