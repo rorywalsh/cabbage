@@ -835,6 +835,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 				csndIndex = 0;
 			}
 	
+#if !JucePlugin_IsSynth
 			if (matchingNumberOfIOChannels)
 			{
 				pos = csndIndex * outputChannelCount;
@@ -844,7 +845,6 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 					pos++;
 				}
 			}
-#if !JucePlugin_IsSynth
 			else if (!supportsSidechain)
 			{
 				pos = csndIndex * inputChannelCount;
@@ -880,6 +880,13 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 					pos++;
 				}
 			}
+#else
+            pos = csndIndex * outputChannelCount;
+            for (int channel = 0; channel < outputChannelCount; channel++)
+            {
+                processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
+                pos++;
+            }
 #endif
 		}
     }//if not compiled just mute output
