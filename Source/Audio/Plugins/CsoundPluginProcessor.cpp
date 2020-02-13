@@ -28,16 +28,18 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-                                         .withInput  ("Input",  AudioChannelSet::stereo(), true)
+                                         .withInput  ("Input",  ins, true)
 #endif
-                                         .withOutput ("Output", AudioChannelSet::stereo(), true)
+                                         .withOutput ("Output", outs, true)
 #endif
                                         ),
       csdFile (csdFile)
 {
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
     numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+#endif
 }
 
 //==============================================================================
@@ -635,19 +637,26 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         return true;
 #else
  
-    if (layouts.getMainInputChannelSet()  == AudioChannelSet::disabled()
-        || layouts.getMainOutputChannelSet() == AudioChannelSet::disabled())
-        return false;
+//    if (layouts.getMainInputChannelSet()  == AudioChannelSet::disabled()
+//        || layouts.getMainOutputChannelSet() == AudioChannelSet::disabled())
+//        return false;
     
     const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
     const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
     
+
     if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
     {
+#if  JucePlugin_IsSynth
+        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
+        {
+            return true;
+        }
+#else
         //hack to get passed AU validation in logic
         if((mainInput.size()> 0 && mainInput.size()<32) && (mainOutput.size()>0 && mainOutput.size()<32))
             return true;
-       
+#endif
         return false;
     }
 
@@ -781,7 +790,10 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 {
 	ScopedNoDenormals noDenormals;
 	auto mainOutput = getBusBuffer(buffer, false, 0);
+#if !JucePlugin_IsSynth
 	auto mainInput = getBusBuffer(buffer, true, 0);
+#endif
+    
 	Type** sideChainBuffer = nullptr;
 
 	if (supportsSidechain)
@@ -791,7 +803,9 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	}
 
     Type** outputBuffer = mainOutput.getArrayOfWritePointers();
+#if !JucePlugin_IsSynth
 	Type** inputBuffer = mainInput.getArrayOfWritePointers();
+#endif
     const int numSamples = buffer.getNumSamples();
 
 	const int outputChannelCount = (numCsoundOutputChannels > getTotalNumOutputChannels() ? getTotalNumOutputChannels() : numCsoundOutputChannels);
@@ -830,6 +844,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 					pos++;
 				}
 			}
+#if !JucePlugin_IsSynth
 			else if (!supportsSidechain)
 			{
 				pos = csndIndex * inputChannelCount;
@@ -865,7 +880,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 					pos++;
 				}
 			}
-			
+#endif
 		}
     }//if not compiled just mute output
     else
