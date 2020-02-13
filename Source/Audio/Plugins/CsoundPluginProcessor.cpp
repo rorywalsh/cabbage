@@ -28,9 +28,9 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
     : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
-                                         .withInput  ("Input",  ins, true)
+                                         .withInput  ("Input",  AudioChannelSet::stereo(), true)
 #endif
-                                         .withOutput ("Output", outs, true)
+                                         .withOutput ("Output", AudioChannelSet::stereo(), true)
 #endif
                                         ),
       csdFile (csdFile)
@@ -132,11 +132,12 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		csoundParams->ksmps_override = 4410;
 	}
 
-	//instrument must at least be stereo
+	
     if(isMono)
     {
+        //this mode is for logic and cubase
         numCsoundOutputChannels = 1;
-        numCsoundInputChannels = 1 + numSideChainChannels;
+        numCsoundInputChannels = 1 + (numSideChainChannels > 0 ? 1 : 0);
         csoundParams->nchnls_override = numCsoundOutputChannels;
         csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
@@ -174,9 +175,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
     {
         compileCsdFile(csdFile);
-        //these can be updated by the host at any point..
-        csound->SetChannel("NUM_INPUTS", numCsoundInputChannels);
-        csound->SetChannel("NUM_OUTPUTS", numCsoundInputChannels);
     }
     else
 	{
@@ -636,18 +634,29 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         ignoreUnused (layouts);
         return true;
 #else
-    const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
-    const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
-
+ 
     if (layouts.getMainInputChannelSet()  == AudioChannelSet::disabled()
         || layouts.getMainOutputChannelSet() == AudioChannelSet::disabled())
         return false;
     
+    const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
+    const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
+    
+    if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
+    {
+        //hack to get passed AU validation in logic
+        if((mainInput.size()> 0 && mainInput.size()<32) && (mainOutput.size()>0 && mainOutput.size()<32))
+            return true;
+       
+        return false;
+    }
+
+
+
+    
     
     if (mainInput.size() == numCsoundInputChannels - numSideChainChannels && mainOutput.size() == numCsoundOutputChannels)
     {
-        csound->SetChannel("NUM_INPUTS", numCsoundInputChannels);
-        csound->SetChannel("NUM_OUTPUTS", numCsoundInputChannels);
         return true;
     }
         
@@ -655,8 +664,6 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 //    if(numSideChainChannels==0)
     if (mainInput.size() == 1 && mainOutput.size() == 1)
     {
-        csound->SetChannel("NUM_INPUTS", 1);
-        csound->SetChannel("NUM_OUTPUTS", 1);
         return true;
     }
         

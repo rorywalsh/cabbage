@@ -63,7 +63,7 @@ public:
 	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;
 	template< typename Type >
 	void processSamples(AudioBuffer< Type >&, MidiBuffer&);
-	bool supportsDoublePrecisionProcessing() const override { return true; }
+	//bool supportsDoublePrecisionProcessing() const override { return true; }
 
     virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {}
 
