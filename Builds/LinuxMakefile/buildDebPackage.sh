@@ -6,7 +6,7 @@ mkdir -p Cabbage/usr/bin
 mkdir -p Cabbage/usr/share/doc/cabbage/Examples
 mkdir -p Cabbage/usr/share/doc/cabbage/CabbageManual
 mkdir -p Cabbage/usr/share/icons/hicolor/512x512/apps
-mkdir -p Cabbage/~/.local/share/applications/
+mkdir -p Cabbage/usr/share/applications
 
 
 cp ./install/bin/CabbagePluginEffect.so Cabbage/usr/bin/CabbagePluginEffect.so
@@ -20,7 +20,7 @@ cp ./../../Images/cabbage.png Cabbage/usr/share/icons/hicolor/512x512/apps/cabba
 cp -rf  ./../../Examples Cabbage/usr/share/doc/cabbage/Examples
 # cp -rf  ../../CabbageManual Cabbage/usr/share/doc/cabbage/CabbageManual
 
-cp Cabbage.desktop Cabbage/~/.local/share/applications/
+cp Cabbage.desktop Cabbage/usr/share/applications
 # cp CabbageLite.desktop ~/.local/share/applications/
 
 cp control Cabbage/DEBIAN/control
