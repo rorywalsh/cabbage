@@ -24,7 +24,9 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         String pluginFilename, fileExtension;
         File thisFile = File::getSpecialLocation (File::currentApplicationFile);
 #if !defined(WIN32) && !defined(MACOSX)
-        String currentApplicationDirectory = "/usr/bin";
+        //uncomment later
+        //String currentApplicationDirectory = "/usr/bin";
+        String currentApplicationDirectory  = File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getFullPathName();
 #else
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
 #endif
@@ -32,7 +34,10 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
         {
-            fileExtension = "so";
+            if(type.contains("LV2"))
+                fileExtension = "lv2";
+            else
+                fileExtension = "so";
         }
         else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
         {
@@ -65,9 +70,9 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         else  if (type == "AUMIDIFx")
             pluginFilename = currentApplicationDirectory + String ("/CabbagePluginMIDIEffect." + fileExtension);
         else if (type.contains (String ("LV2-ins")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
         else if (type.contains (String ("LV2-fx")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
         else if (type == "VCVRack")
         {
             fileExtension = "";
@@ -93,6 +98,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             CabbageUtilities::showMessage("Error", pluginFilename + " cannot be found? It should be in the Cabbage root folder", &lookAndFeel);
             return;
         }
+
 
         //if batch converting plugins
         if(File(destination).exists())
@@ -188,8 +194,13 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         }
     }
     
-    
-    if (!VSTData.copyFileTo (exportedPlugin))
+
+    if (fileExtension != "lv2" && !VSTData.copyFileTo (exportedPlugin))
+    {
+        CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin to this location. It currently be in use, or you may be trying to install to a system folder you don't have permission to write in. Please try exporting to a different location.", &lookAndFeel);
+        return;
+    }
+    else if (fileExtension == "lv2" && !VSTData.copyDirectoryTo(exportedPlugin))
     {
         CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin to this location. It currently be in use, or you may be trying to install to a system folder you don't have permission to write in. Please try exporting to a different location.", &lookAndFeel);
         return;
@@ -267,6 +278,38 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     }
     else
     {
+        if (fileExtension.contains("LV2"))
+        {
+            String filename(fc.getFileNameWithoutExtension());
+            File bundle(fc.withFileExtension(".lv2").getFullPathName());
+            bundle.createDirectory();
+            File dll(bundle.getChildFile(filename+".so"));
+            Logger::writeToLog(bundle.getFullPathName());
+            Logger::writeToLog(dll.getFullPathName());
+            if(!VSTData.copyFileTo(dll))
+                CabbageUtilities::showMessage("Can not move lib");
+
+            File loc_csdFile(bundle.getChildFile(filename+".csd").getFullPathName());
+            loc_csdFile.replaceWithText(csdFile.loadFileAsString());
+
+            // this generates the ttl data
+            typedef void (*TTL_Generator_Function)(const char* basename);
+            DynamicLibrary lib(dll.getFullPathName());
+            TTL_Generator_Function genFunc = (TTL_Generator_Function)lib.getFunction("lv2_generate_ttl");
+            if(!genFunc)
+            {
+                CabbageUtilities::showMessage("Can not generate LV2 data");
+                return;
+            }
+
+            // change CWD for ttl generation
+            File oldCWD(File::getCurrentWorkingDirectory());
+            bundle.setAsCurrentWorkingDirectory();
+            (genFunc)(filename.toRawUTF8());
+            oldCWD.setAsCurrentWorkingDirectory();
+        }
+
+
         exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
         if(encrypt)
         {
