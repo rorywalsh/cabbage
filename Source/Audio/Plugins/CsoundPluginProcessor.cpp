@@ -59,7 +59,9 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet
 {
 	
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();    
+#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
+    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+#endif
     //side chaining is supported, and matchingNumberOfIOChannels must false
 	matchingNumberOfIOChannels = false;
 	supportsSidechain = true;
@@ -95,6 +97,11 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     
     csdFile = currentCsdFile;
     CabbageUtilities::debug(csdFile.getFullPathName());
+    
+    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
+    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+#endif
     
 	csound.reset (new Csound());
 	csdFilePath = filePath;
@@ -154,8 +161,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         if (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
             numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
 #endif
-        csoundParams->nchnls_override = numCsoundOutputChannels;
-		csoundParams->nchnls_i_override = numCsoundInputChannels;
+        csoundParams->nchnls_override = 2;//numCsoundOutputChannels;
+        csoundParams->nchnls_i_override = 2;//numCsoundInputChannels;
     }
     
 	
@@ -611,7 +618,13 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // check for a change in sampling rate - also check if host is logic..
-    if((samplingRate != sampleRate) || hostRequestedMono)
+    const int inputs = getBus(true, 0)->getNumberOfChannels();
+    const int outputs = getBus(false, 0)->getNumberOfChannels();
+    
+    if((samplingRate != sampleRate)
+       || hostRequestedMono
+       || numCsoundInputChannels != inputs
+       || numCsoundOutputChannels != outputs)
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
@@ -636,23 +649,19 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         ignoreUnused (layouts);
         return true;
 #else
- 
-//    if (layouts.getMainInputChannelSet()  == AudioChannelSet::disabled()
-//        || layouts.getMainOutputChannelSet() == AudioChannelSet::disabled())
-//        return false;
     
     const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
     const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
     
-
     if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
     {
 #if  JucePlugin_IsSynth
-        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
-        {
+        //synth can only be mono or stereo...
+        if (mainInput.size() == 0 && mainOutput.size() == 1)
             return true;
-        }
-#else
+        if (mainInput.size() == 0 && mainOutput.size() == 2)
+            return true;
+#else        
         //hack to get passed AU validation in logic
         if((mainInput.size()> 0 && mainInput.size()<32) && (mainOutput.size()>0 && mainOutput.size()<32))
             return true;
