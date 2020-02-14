@@ -6,6 +6,7 @@ mkdir -p Cabbage/usr/bin
 mkdir -p Cabbage/usr/share/doc/cabbage/Examples
 mkdir -p Cabbage/usr/share/doc/cabbage/CabbageManual
 mkdir -p Cabbage/usr/share/icons/hicolor/512x512/apps
+mkdir -p Cabbage/~/.local/share/applications/
 
 
 cp ./install/bin/CabbagePluginEffect.so Cabbage/usr/bin/CabbagePluginEffect.so
