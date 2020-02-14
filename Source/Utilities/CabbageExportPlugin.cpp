@@ -214,6 +214,8 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     {
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
+        else if(fileExtension.containsIgnoreCase("lv2"))
+            exportedCsdFile = exportedPlugin.getFullPathName() + String ("/") + fc.getFileNameWithoutExtension() + String (".csd");
         else if(fileExtension.containsIgnoreCase("vst"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/") + fc.getFileNameWithoutExtension() + String (".csd");
         else if(fileExtension.containsIgnoreCase("app"))
@@ -278,47 +280,64 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     }
     else
     {
-        if (fileExtension.contains("LV2"))
+
+
+        if (fileExtension.contains("lv2"))
         {
+            File soFileToRemove(exportedPlugin.getFullPathName()+"/"+VSTData.withFileExtension(".so").getFileName());
+            soFileToRemove.deleteFile();
             String filename(fc.getFileNameWithoutExtension());
+            File VSTDataSo(VSTData.getFullPathName()+"/"+VSTData.withFileExtension(".so").getFileName());
+            File ttlFile(exportedPlugin.getFullPathName()+"/"+VSTData.withFileExtension(".ttl").getFileName());
+            ttlFile.moveFileTo (ttlFile.getSiblingFile (filename).withFileExtension(".ttl"));
+
+            File ttfFileToEdit(exportedPlugin.getFullPathName()+"/"+filename+".ttl");
+            StringArray lines;
+            lines.addLines(ttfFileToEdit.loadFileAsString());
+
+            for( int i = 0 ; i < lines.size() ; i++)
+            {
+                if(lines[i].contains("doap:name"))
+                    lines.set(i,"     doap:name \""+filename+"\" ;");
+            }
+            ttfFileToEdit.replaceWithText(lines.joinIntoString("\n"));
+
+
+            File manisfestFileToEdit(exportedPlugin.getFullPathName()+"/manifest.ttl");
+            String manisfestText = manisfestFileToEdit.loadFileAsString();
+            manisfestText = manisfestText.replace("CabbagePlugin.so", filename+".so");
+            manisfestText = manisfestText.replace("CabbagePlugin.ttl", filename+".ttl");
+            manisfestFileToEdit.replaceWithText(manisfestText);
+
+
             File bundle(fc.withFileExtension(".lv2").getFullPathName());
             bundle.createDirectory();
             File dll(bundle.getChildFile(filename+".so"));
             Logger::writeToLog(bundle.getFullPathName());
             Logger::writeToLog(dll.getFullPathName());
-            if(!VSTData.copyFileTo(dll))
+            if(!VSTDataSo.copyFileTo(dll))
                 CabbageUtilities::showMessage("Can not move lib");
 
             File loc_csdFile(bundle.getChildFile(filename+".csd").getFullPathName());
             loc_csdFile.replaceWithText(csdFile.loadFileAsString());
 
-            // this generates the ttl data
-            typedef void (*TTL_Generator_Function)(const char* basename);
-            DynamicLibrary lib(dll.getFullPathName());
-            TTL_Generator_Function genFunc = (TTL_Generator_Function)lib.getFunction("lv2_generate_ttl");
-            if(!genFunc)
-            {
-                CabbageUtilities::showMessage("Can not generate LV2 data");
-                return;
-            }
 
             // change CWD for ttl generation
             File oldCWD(File::getCurrentWorkingDirectory());
             bundle.setAsCurrentWorkingDirectory();
-            (genFunc)(filename.toRawUTF8());
+            //(genFunc)(filename.toRawUTF8());
             oldCWD.setAsCurrentWorkingDirectory();
+
         }
-
-
-        exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
-        if(encrypt)
-        {
-            exportedCsdFile.replaceWithText (encodeString(csdFile));
-        }
-
         else
-            exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
+        {
 
+            exportedCsdFile = fc.withFileExtension(".csd").getFullPathName();
+            if (encrypt) {
+                exportedCsdFile.replaceWithText(encodeString(csdFile));
+            } else
+                exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+        }
         setUniquePluginId (exportedPlugin, exportedCsdFile, pluginId);
 
         //bundle all auxiliary files
