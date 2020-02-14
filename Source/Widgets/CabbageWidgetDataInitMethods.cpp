@@ -40,7 +40,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::titlebargradient, 0.15f);
     setProperty (widgetData, CabbageIdentifierIds::style, "");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
-
+	setProperty(widgetData, CabbageIdentifierIds::sidechain, 0);
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getBackgroundSkin().toString());
 }
@@ -313,6 +313,7 @@ void CabbageWidgetData::setSignalDisplayProperties (ValueTree widgetData, int ID
     setProperty (widgetData, CabbageIdentifierIds::displaytype, "spectroscope");
     setProperty (widgetData, CabbageIdentifierIds::zoom, 0);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::updaterate, 100);
 }
 
 void CabbageWidgetData::setLoadButtonProperties (ValueTree widgetData, int ID)

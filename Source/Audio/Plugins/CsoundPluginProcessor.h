@@ -32,22 +32,51 @@
 #endif
 
 //==============================================================================
-class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
+class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 {
 public:
     //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, const AudioChannelSet ins = AudioChannelSet::stereo(), const AudioChannelSet outs = AudioChannelSet::stereo(), bool debugMode = false);
+    CsoundPluginProcessor (File csoundInputFile, 
+		const AudioChannelSet ins, 
+		const AudioChannelSet outs, 
+		const AudioChannelSet sideChainChannels);
+	CsoundPluginProcessor(File csoundInputFile, 
+		const AudioChannelSet ins,
+		const AudioChannelSet outs);
 	~CsoundPluginProcessor();
+
+	bool supportsSidechain = false;
+	bool matchingNumberOfIOChannels = true;
 	void resetCsound();
-    //==============================================================================
-    //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
+	//==============================================================================
+	//pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
 	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool isMono = false, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
 
-    virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+	void performCsoundKsmps();
+	int result = -1;
 
+
+	virtual void processBlock(AudioBuffer< float >&, MidiBuffer&) override;
+	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;
+	template< typename Type >
+	void processSamples(AudioBuffer< Type >&, MidiBuffer&);
+	//bool supportsDoublePrecisionProcessing() const override { return true; }
+
+    virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {}
+
+	enum BufferType {
+		inputOutput,
+		output,
+		input
+	};
+
+	template< typename Type >
+	void processCsoundIOBuffers(int bufferType, Type*& buffer, int pos);
+
+	int numSideChainChannels = 0;
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
     virtual bool hasEditor() const override;
@@ -70,7 +99,7 @@ public:
     virtual void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    bool isLogicAndMono = false;
+    bool hostRequestedMono = false;
     bool isLogic = false;
     //==============================================================================
     //Csound API functions for deailing with midi input
@@ -169,13 +198,6 @@ public:
         guiRefreshRate = rate;
     }
 
-
-
-    int getNumberOfCsoundChannels()
-    {
-        return numCsoundChannels;
-    }
-
     MidiKeyboardState keyboardState;
 
     //==================================================================================
@@ -184,7 +206,7 @@ public:
     public:
         float yScale;
         int windid, min , max, size;
-        String caption;
+        String caption, variableName;
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
             yScale (_scale),
@@ -214,10 +236,11 @@ public:
         Array <float, CriticalSection > points;
     };
 
-    bool shouldUpdateSignalDisplay()
+    bool shouldUpdateSignalDisplay(String signalDisplayName)
     {
-        bool returnVal = updateSignalDisplay;
-        updateSignalDisplay = false;
+        bool returnVal = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
+        updateSignalDisplay.set(signalDisplayName, false);
+        bool newTest = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
         return returnVal;
     };
 
@@ -235,8 +258,9 @@ private:
     String csoundOutput;
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
-    int numCsoundChannels, pos;
-    bool updateSignalDisplay = false;
+	int numCsoundOutputChannels, numCsoundInputChannels;
+    int pos;
+    NamedValueSet updateSignalDisplay;
     MYFLT cs_scale;
     bool testLogicForMono = true;
     MYFLT* CSspin, *CSspout;

@@ -400,6 +400,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("markerthickness"):
             case HashStringToInt ("markerstart"):
             case HashStringToInt ("markerend"):
+			case HashStringToInt ("sidechain"):
                 if (getStringProp (widgetData, CabbageIdentifierIds::channeltype) == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else
@@ -821,8 +822,10 @@ void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widget
     const var colours = getProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour );
     var newColours = colours.clone();
 
-    for (int i = newColours.size(); i < colourIndex + 1; i++)
-        newColours.append (new Colour (0, 0, 0));
+    for (int i = newColours.size(); i < colourIndex + 1; i++){
+        newColours.append ("0");
+    }
+    
 
     newColours[colourIndex] = getColourFromText (strTokens.joinIntoString (",")).toString();
     setProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour, newColours);

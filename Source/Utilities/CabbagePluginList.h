@@ -107,7 +107,7 @@ public:
 private:
     //==============================================================================
     AudioPluginFormatManager& formatManager;
-    KnownPluginList& list;
+    KnownPluginList& pluginList;
     File deadMansPedalFile;
     TableListBox table;
     TextButton optionsButton;

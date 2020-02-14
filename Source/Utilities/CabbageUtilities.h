@@ -453,7 +453,13 @@ public:
 			}
 		}
 
-		return headerString=="nchnls" ? 2 : -1;
+
+		if(headerString=="nchnls")
+            return 2;
+        else if(headerString == "nchnls_i")
+            return -1;
+        else
+            return -1;
 	}
     //==============================================================
     static const String getSVGTextFromMemory (const void* svg, size_t size)

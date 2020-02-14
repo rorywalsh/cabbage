@@ -53,36 +53,69 @@ createPluginFilter() {
     }
 #endif
 
+
 	if (csdFile.existsAsFile() == false)
 		Logger::writeToLog("Could not find .csd file, please make sure it's in the correct folder");
 
-    const int numChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+	StringArray csdLines;
+	csdLines.addLines(csdFile.loadFileAsString());
+	int sideChainChannels=0;
+	for ( auto line : csdLines)
+	{
+		ValueTree temp("temp");
+		CabbageWidgetData::setWidgetState(temp, line, 0);
+		
+		if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+		{
+			sideChainChannels = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::sidechain);
+			break;
+		}
+		
+	}
 
-
-
+    const int numOutChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+    int numInChannels = numOutChannels;
+    if(CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
+        numInChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i")-sideChainChannels;
+ 
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
-	if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne())
+    if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne() || pluginHostType.isAbletonLive())
 	{
-		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numChannels), AudioChannelSet::canonicalChannelSet(numChannels));
+		if (sideChainChannels != 0)
+			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels));
+		else
+			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels));
 	}
 #endif
 
-	return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels));
-		
+	if (sideChainChannels != 0)
+		return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numOutChannels), AudioChannelSet::discreteChannels(sideChainChannels));
+	else
+		return new CabbagePluginProcessor(csdFile, AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numOutChannels));
+
 
     
 };
 
 //============================================================================
-CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
-        : CsoundPluginProcessor(inputFile, ins, outs),
+CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sideChainChannels)
+        : CsoundPluginProcessor(inputFile, ins, outs, sideChainChannels),
           csdFile(inputFile),
           cabbageWidgets("CabbageWidgetData") 
 {
 	createCsound(inputFile);
 }
 
+//==== Sidechain constructor =================================================
+//============================================================================
+CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
+	: CsoundPluginProcessor(inputFile, ins, outs),
+	csdFile(inputFile),
+	cabbageWidgets("CabbageWidgetData")
+{
+	createCsound(inputFile);
+}
 
 void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)
 {
@@ -1185,22 +1218,16 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
     bool csoundRecompiled = false;
     samplesInBlock = samplesPerBlock;
 #if !Cabbage_IDE_Build && !Cabbage_Lite
-    PluginHostType pluginType;
-    if (pluginType.isLogic())
-    {
-        //allow mono plugins for Logic only..
-        isLogic = true;
         if(this->getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
-            isLogicAndMono = true;
+            hostRequestedMono = true;
         else
-            isLogicAndMono = false;
+            hostRequestedMono = false;
     
         samplingRate = sampleRate;
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
         initAllCsoundChannels(cabbageWidgets);
         csoundRecompiled = true;
 
-    }
 #endif
     
     
