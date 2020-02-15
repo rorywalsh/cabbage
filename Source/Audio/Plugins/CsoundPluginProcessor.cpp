@@ -161,8 +161,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         if (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
             numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
 #endif
-        csoundParams->nchnls_override = 2;//numCsoundOutputChannels;
-        csoundParams->nchnls_i_override = 2;//numCsoundInputChannels;
+        csoundParams->nchnls_override = numCsoundOutputChannels;
+        csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
     
 	

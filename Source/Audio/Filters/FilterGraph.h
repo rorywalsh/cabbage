@@ -258,7 +258,7 @@ public:
 
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
-		processor->disableNonMainBuses();
+		//processor->disableNonMainBuses();
 		processor->setRateAndBufferSizeDetails(graph.getSampleRate(), 512);
 
 		return processor;
