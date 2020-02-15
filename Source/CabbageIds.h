@@ -703,7 +703,7 @@ namespace CabbageIdentifierIds
 	static const String csdfile = "csdfile";
 	static const String hostbpm = "HOST_BPM";
 	static const String hostppqpos = "HOST_PPQ_POS";
-    static const String lastDroppedFile = "LAST_DROPPED_FILE";
+    static const String lastFileDropped = "LAST_FILE_DROPPED";
 
     static const String index = "index";
 	static const String isplaying = "IS_PLAYING";

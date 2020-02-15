@@ -103,16 +103,16 @@ void CabbagePluginEditor::resized()
     }
 }
 
-//======================================================================================================
-void CabbagePluginEditor::filesDropped(const StringArray &files, int x, int y)
-{
-    sendChannelStringDataToCsound("LAST_FILE_DROPPED", files[0]);
-}
-
-bool CabbagePluginEditor::isInterestedInFileDrag(const StringArray &files)
-{
-    return true;
-}
+////======================================================================================================
+//void CabbagePluginEditor::filesDropped(const StringArray &files, int x, int y)
+//{
+//    sendChannelStringDataToCsound("LAST_FILE_DROPPED", files[0]);
+//}
+//
+//bool CabbagePluginEditor::isInterestedInFileDrag(const StringArray &files)
+//{
+//    return true;
+//}
 //======================================================================================================
 
 void CabbagePluginEditor::mouseMove (const MouseEvent& e)

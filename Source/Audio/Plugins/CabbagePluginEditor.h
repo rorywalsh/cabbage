@@ -72,7 +72,7 @@ class CabbagePluginEditor
       public ActionBroadcaster,
       public ComboBox::Listener,
       public Slider::Listener,
-      public FileDragAndDropTarget,
+      //public FileDragAndDropTarget,
 	  public KeyListener
 {
 public:
@@ -152,8 +152,8 @@ public:
     void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
 
 
-    void filesDropped(const StringArray &files, int x, int y) override;
-    bool isInterestedInFileDrag(const StringArray &files) override;
+   /* void filesDropped(const StringArray &files, int x, int y) override;
+    bool isInterestedInFileDrag(const StringArray &files) override;*/
     //=============================================================================
     void mouseMove (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
@@ -282,7 +282,7 @@ private:
         void fileDragExit (const StringArray& /*files*/) override {}
         void filesDropped (const StringArray& files, int /*x*/, int /*y*/) override
         {
-            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastDroppedFile, files[0]);
+            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, files[0]);
         }
         bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
     };
