@@ -257,7 +257,7 @@ public:
     String changeMessage = "";
     Point<int> customPlantPosition;
 private:
-
+	  
     //---- main component that holds widgets -----
     class MainComponent : public Component, public FileDragAndDropTarget
     {
