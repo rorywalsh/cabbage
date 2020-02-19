@@ -98,9 +98,13 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csdFile = currentCsdFile;
     CabbageUtilities::debug(csdFile.getFullPathName());
     
+    // the host should respect the default inputs and outs, which are determined by the
+    // nhcnls and nchnls_i variables in Csound. But the host is king. If it requested a different
+    // config, we must adhere to it.
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
-    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+    const int inputs = getBus(true, 0)->getNumberOfChannels();
+    numCsoundInputChannels = inputs + (inputs==1 ? 1 : numSideChainChannels);
 #endif
     
 	csound.reset (new Csound());
@@ -152,15 +156,17 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     }
     else
     {
-#ifdef CabbagePro
-		numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls");
-		numCsoundInputChannels = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls_i");
-#else
-		numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
-        numCsoundInputChannels = numCsoundOutputChannels;
-        if (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
-            numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
-#endif
+//#ifdef CabbagePro
+//
+//        const int csdNchnls = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls");
+//        const int csdNchnls_i = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls_i");
+//        numCsoundOutputChannels = csdNchnls > numCsoundOutputChannels ? numCsoundOutputChannels
+//#else
+//        numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+//        numCsoundInputChannels = numCsoundOutputChannels;
+//        if (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
+//            numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
+//#endif
         csoundParams->nchnls_override = numCsoundOutputChannels;
         csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
