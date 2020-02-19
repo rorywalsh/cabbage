@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.25"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.26"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -9,7 +9,7 @@
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="2"
-              jucerVersion="5.4.4" buildStandalone="0" enableIAA="0" displaySplashScreen="0"
+              jucerVersion="5.4.7" buildStandalone="0" enableIAA="0" displaySplashScreen="0"
               reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
               companyCopyright="" pluginFormats="buildAU,buildVST,buildVST3"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut,pluginIsMidiEffectPlugin">
