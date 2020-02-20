@@ -623,13 +623,16 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 //==============================================================================
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // check for a change in sampling rate - also check if host is logic..
+#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
     const int inputs = getBus(true, 0)->getNumberOfChannels();
+#endif
     const int outputs = getBus(false, 0)->getNumberOfChannels();
     
     if((samplingRate != sampleRate)
        || hostRequestedMono
+#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
        || numCsoundInputChannels != inputs
+#endif
        || numCsoundOutputChannels != outputs)
     {
         //if sampling rate is other than default or has been changed, recompile..
