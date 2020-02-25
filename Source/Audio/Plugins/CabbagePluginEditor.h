@@ -280,8 +280,10 @@ private:
         void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override{}
         void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override {}
         void fileDragExit (const StringArray& /*files*/) override {}
-        void filesDropped (const StringArray& files, int /*x*/, int /*y*/) override
+        void filesDropped (const StringArray& files, int x, int y) override
         {
+			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
+			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y);
             owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, files[0]);
         }
         bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
