@@ -153,10 +153,13 @@ public:
     }
     
     void enableGraph(bool shouldEnable){
-        if(shouldEnable)
+        if(shouldEnable){
             graphPlayer.setProcessor (&graph->graph);
-        else
+        }
+        else{
             graphPlayer.setProcessor (nullptr);
+            CabbageUtilities::debug("disabling graph");
+        }
     }
     bool shouldMuteInput = true;
     AudioSampleBuffer emptyBuffer;

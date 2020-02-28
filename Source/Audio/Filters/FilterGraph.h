@@ -399,6 +399,7 @@ public:
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				changed();
+                graph.prepareToPlay(graph.getSampleRate(), graph.getBlockSize());
 
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
 				node->properties.set("DPIAware", true);

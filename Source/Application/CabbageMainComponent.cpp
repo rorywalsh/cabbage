@@ -1941,8 +1941,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             
 			factory.togglePlay (true);
 			//hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
-			graphComponent->enableGraph(false);
-			graphComponent->enableGraph(true);
+
             graphComponent->enableAudioInput();
             
             
@@ -1969,11 +1968,13 @@ void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
 void CabbageMainComponent::startFilterGraph()
 {
     graphComponent->enableGraph(true);
+    factory.togglePlay (true);
 }
 //==================================================================================
 void CabbageMainComponent::stopFilterGraph()
 {
      graphComponent->enableGraph(false);
+    factory.togglePlay (false);
 
 }
 //==============================================================================
