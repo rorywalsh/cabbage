@@ -23,9 +23,14 @@
 #ifdef JucePlugin_Build_LV2
   #define JucePlugin_MaxNumInputChannels 2
   #define JucePlugin_MaxNumOutputChannels 2
-  
+    // skips preset generation, as they are not usually a thing for csound
+  #define JucePlugin_WantsLV2Presets 0
+  // if we dont need custom chunk data, consider also:
+  #define JucePlugin_WantsLV2State 0
+  // finally, if fixed block-size buffers are required, use this: (note that it will prevent it from being used in ardour, but also prevents crashes..)
+  #define JucePlugin_WantsLV2FixedBlockSize 1
   #define JucePlugin_Build_LV2 1
-  #define JucePlugin_LV2URI "https://cabbageaudio.com"
+  #define JucePlugin_LV2URI String("urn:cabbage:")+File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension().replace("cabbage-","")
 #endif
 
 #ifndef  JucePlugin_Build_VST
@@ -210,7 +215,7 @@
 
 #define JUCE_USE_DARK_SPLASH_SCREEN 1
 
-#define JUCE_PROJUCER_VERSION 0x50405
+#define JUCE_PROJUCER_VERSION 0x50407
 
 //==============================================================================
 #define JUCE_MODULE_AVAILABLE_juce_audio_basics          1
@@ -244,7 +249,7 @@
 #endif
 
 #ifndef    JUCE_WASAPI_EXCLUSIVE
- //#define JUCE_WASAPI_EXCLUSIVE 0
+ #define   JUCE_WASAPI_EXCLUSIVE 1
 #endif
 
 #ifndef    JUCE_DIRECTSOUND
@@ -302,11 +307,11 @@
 // juce_audio_processors flags:
 
 #ifndef    JUCE_PLUGINHOST_VST
- //#define JUCE_PLUGINHOST_VST 0
+ #define   JUCE_PLUGINHOST_VST 1
 #endif
 
 #ifndef    JUCE_PLUGINHOST_VST3
- //#define JUCE_PLUGINHOST_VST3 0
+ #define   JUCE_PLUGINHOST_VST3 1
 #endif
 
 #ifndef    JUCE_PLUGINHOST_AU
@@ -374,8 +379,8 @@
 //==============================================================================
 // juce_events flags:
 
-#ifndef    JUCE_EXECUTE_APP_SUSPEND_ON_IOS_BACKGROUND_TASK
- //#define JUCE_EXECUTE_APP_SUSPEND_ON_IOS_BACKGROUND_TASK 0
+#ifndef    JUCE_EXECUTE_APP_SUSPEND_ON_BACKGROUND_TASK
+ //#define JUCE_EXECUTE_APP_SUSPEND_ON_BACKGROUND_TASK 0
 #endif
 
 //==============================================================================
@@ -428,7 +433,7 @@
 // juce_gui_extra flags:
 
 #ifndef    JUCE_WEB_BROWSER
- //#define JUCE_WEB_BROWSER 1
+ #define   JUCE_WEB_BROWSER 0
 #endif
 
 #ifndef    JUCE_ENABLE_LIVE_CONSTANT_EDITOR
