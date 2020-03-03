@@ -878,7 +878,19 @@ void CabbageMainComponent::timerCallback()
                 getCurrentOutputConsole()->setText (csoundOutputString);
 
         }
+        
+        for ( int i = 0 ; i < fileTabs.size() ; i++)
+        {
+            if(fileTabs[i]->lastModified != fileTabs[i]->getFile().getLastModificationTime())
+            {
+                setCurrentCsdFile(fileTabs[i]->getFile());
+                saveDocument();
+            }            
+        }
     }
+    
+    
+    
 }
 //==============================================================================
 void CabbageMainComponent::updateEditorColourScheme()
@@ -1200,6 +1212,12 @@ int CabbageMainComponent::getStatusbarYPos()
     return getCurrentEditorContainer()->getStatusBarPosition();
 }
 //=======================================================================================
+void CabbageMainComponent::enableAutoUpdateMode()
+{
+    int shouldUpdate = cabbageSettings->getUserSettings()->getIntValue ("AutoLoadFromDisk");
+
+}
+
 void CabbageMainComponent::enableEditMode()
 {
 	
@@ -1706,6 +1724,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			{
 				runCsoundForNode(getCurrentCsdFile().getFullPathName());
 				fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+                fileTabs[currentFileIndex]->lastModified = getCurrentCsdFile().getLastModificationTime();
 			}
 
 			addInstrumentsAndRegionsToCombobox();

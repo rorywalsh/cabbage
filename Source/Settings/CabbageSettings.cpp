@@ -102,6 +102,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ShowAutoComplete", 0);
     defaultPropSet->setValue ("ShowNativeFileDialogues", 1);
     defaultPropSet->setValue ("EnableNativePopup", 0);
+    defaultPropSet->setValue ("AutoReloadFromDisk", 0);
     defaultPropSet->setValue ("autoConnectNodes", 1);
     defaultPropSet->setValue ("SSHHomeDir", "/pi");
     defaultPropSet->setValue ("SSHAddress", "empty");

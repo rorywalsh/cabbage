@@ -375,6 +375,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::autoReloadFromDisk);
 #if ! JUCE_MAC
     menu.addSeparator();
     menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
@@ -416,7 +418,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
     menu.addSeparator();
     menu.addSubMenu ("Console", subMenu);
-    menu.addSeparator();
+
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::settings);
     
@@ -549,6 +551,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::batchConvertExamplesVST,
         CommandIDs::toggleFileBrowser,
         CommandIDs::showPluginListEditor,
+        CommandIDs::autoReloadFromDisk
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -558,6 +561,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 {
     bool shouldShowEditMenu = false;
     int disableNodeConnections = cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes", 1);
+    int autoReloadFromDisk = cabbageSettings->getUserSettings()->getIntValue ("AutoReloadFromDisk", 0);
     if (getContentComponent()->getCurrentEditorContainer() != nullptr)
         shouldShowEditMenu = true;
 
@@ -878,6 +882,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::findNext:
             result.setInfo (TRANS ("Find Next"), TRANS ("Searches for the next occurrence of the current search-term."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
+            break;
+      
+        case CommandIDs::autoReloadFromDisk:
+            result.setInfo(TRANS("Auto-load from disk"), TRANS("Enable auto-reload"), "File", 0);
+            result.setTicked((autoReloadFromDisk==1 ? true : false));
             break;
             
         case CommandIDs::about:
@@ -1218,6 +1227,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->showPluginListEditor();
             break;
             
+        case CommandIDs::autoReloadFromDisk:
+            if(cabbageSettings->getUserSettings()->getIntValue ("AutoReloadFromDisk") == 1)
+                cabbageSettings->getUserSettings()->setValue("AutoReloadFromDisk", 0);
+            else
+                cabbageSettings->getUserSettings()->setValue("AutoReloadFromDisk", 1);
+            
+            getContentComponent()->enableAutoUpdateMode();
+            break;
             
         case CommandIDs::editMode:
             getContentComponent()->enableEditMode();

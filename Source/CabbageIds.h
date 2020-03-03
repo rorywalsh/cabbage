@@ -103,6 +103,7 @@ namespace CommandIDs
         batchConvertExamplesVST    = 0x612003,
         showConsole                 = 0x612004,
         showPluginListEditor    = 0x612005,
+        autoReloadFromDisk    = 0x612006,
 
         lastCommandIDEntry
     };

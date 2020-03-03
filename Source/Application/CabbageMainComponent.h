@@ -88,6 +88,7 @@ public:
 	//==============================================================================
 	void launchSSHFileBrowser(String mode);
 	void enableEditMode();
+    void enableAutoUpdateMode();
 	const File openFile(String filename = "", bool updateRecentFiles = true);
 	void closeDocument();
 	void showSettingsDialog();
