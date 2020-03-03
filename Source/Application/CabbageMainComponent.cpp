@@ -879,13 +879,15 @@ void CabbageMainComponent::timerCallback()
 
         }
         
-        for ( int i = 0 ; i < fileTabs.size() ; i++)
-        {
-            if(fileTabs[i]->lastModified != fileTabs[i]->getFile().getLastModificationTime())
+        if(cabbageSettings->getUserSettings()->getIntValue("AutoReloadFromDisk")){
+            for ( int i = 0 ; i < fileTabs.size() ; i++)
             {
-                setCurrentCsdFile(fileTabs[i]->getFile());
-                saveDocument();
-            }            
+                if(fileTabs[i]->lastModified != fileTabs[i]->getFile().getLastModificationTime())
+                {
+                    setCurrentCsdFile(fileTabs[i]->getFile());
+                    saveDocument();
+                }
+            }
         }
     }
     
