@@ -94,7 +94,6 @@ public:
 	void showSettingsDialog();
 	void saveDocument(bool saveAs = false, bool recompile = true);
 	void runCsoundForNode(String file, int fileTabIndex = -99);
-	void stopCsoundForNode(String file, int fileTabIndex = -99);
 	void stopFilterGraph();
 	void startFilterGraph();
 	void bringCodeEditorToFront(File file);

@@ -483,8 +483,6 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
     {
         if (drawableButton->getProperties().getWithDefault ("state", "") == "off")
             saveDocument();
-        else
-            stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
 
     }
     else if (drawableButton->getName() == "closeButton")
@@ -865,7 +863,6 @@ void CabbageMainComponent::timerCallback()
         
         if (getFilterGraph()->graph.getNodeForId (nodeId) != nullptr && getFilterGraph()->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
         {
-            stopCsoundForNode ("");
             stopTimer();
         }
 
@@ -1229,18 +1226,11 @@ void CabbageMainComponent::enableEditMode()
 
 	const bool isCabbageFile = CabbageUtilities::hasCabbageTags(getCurrentCsdFile());
 
-	//stopCsoundForNode(getCurrentCsdFile().getFullPathName());
-	//runCsoundForNode(getCurrentCsdFile().getFullPathName());
-
-
 	if (isCabbageFile == true)
 	{
         if (!getCabbagePluginEditor())
         {
             return;
-//            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
-//            Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
-//            createEditorForFilterGraphNode(pos);
         }
 
 		getCabbagePluginEditor()->addChangeListener(this);
@@ -1250,7 +1240,6 @@ void CabbageMainComponent::enableEditMode()
 		fileTabs[currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
 		propertyPanel->setInterceptsMouseClicks(true, true);
 
-		//getCabbagePluginEditor()->refreshValueTreeListeners();
 		getCabbagePluginEditor()->enableEditMode(true);
 		
 		isGUIEnabled = true;
@@ -1510,7 +1499,7 @@ void CabbageMainComponent::toggleBrowser()
 const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles)
 {
     stopTimer();
-    stopCsoundForNode (filename);
+    
     File currentCsdFile;
 
     if (File (filename).existsAsFile() == false)
@@ -1646,8 +1635,6 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 		if (saveAs == true)
 		{
 
-			stopCsoundForNode(getCurrentCsdFile().getFullPathName());
-
 			isGUIEnabled = false;
 
 			if (getCabbagePluginEditor() != nullptr)
@@ -1686,7 +1673,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 
 
-			stopCsoundForNode(getCurrentCsdFile().getFullPathName());;
+
 			isGUIEnabled = false;
 			int modifiedFileIndex = -1;
 
@@ -1711,7 +1698,6 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 						getCurrentCsdFile().getFullPathName() == editorAndConsole[i]->getFile().getFullPathName())
 					{
 						editorAndConsole[i]->editor->loadContent(getCurrentCodeEditor()->getDocument().getAllContent());
-						stopCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
 						runCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
 
 					}
@@ -1895,7 +1881,6 @@ int CabbageMainComponent::testFileForErrors (String file)
         {
             process.start ("csound " + file);
             this->getCurrentOutputConsole()->setText (process.readAllProcessOutput());
-            stopCsoundForNode (file);
             return 1;
         }
 
@@ -1972,19 +1957,6 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
     }
 }
 
-void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
-{
-
-    if (fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex] && File (file).existsAsFile())
-    {
-        AudioProcessorGraph::NodeID nodeId(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
-            if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
-                getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
-
-            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "off");
-            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
-    }
-}
 //==================================================================================
 void CabbageMainComponent::startFilterGraph()
 {
