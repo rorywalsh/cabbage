@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 class CabbageButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase
 {
 	CabbagePluginEditor* owner;
+	String tooltipText;
 public:
 
 	CabbageButton(ValueTree wData, CabbagePluginEditor* owner);
@@ -43,7 +44,7 @@ public:
 	void setLookAndFeelColours(ValueTree wData);
 
 	FlatButtonLookAndFeel flatLookAndFeel;
-
+	
 	ValueTree widgetData;
 
 

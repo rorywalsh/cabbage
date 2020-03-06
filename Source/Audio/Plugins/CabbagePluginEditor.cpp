@@ -55,6 +55,8 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     layoutEditor.setInterceptsMouseClicks (true, true);
 #endif
     resized();
+
+    tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()

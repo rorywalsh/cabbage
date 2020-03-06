@@ -28,7 +28,7 @@ CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
 	widgetData.addListener(this);              //add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 	setButtonText(getTextArray()[getValue()]);
-
+	setTooltip(tooltipText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext));
 	setClickingTogglesState(true);
 
 	setToggleState((bool)getValue(), dontSendNotification);
@@ -108,5 +108,6 @@ void CabbageButton::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 		//if(newText != getTextArray()[getValue()])
 		//CabbageUtilities::debug(getTextArray()[getValue()]);
 		setButtonText(getTextArray()[getValue()]);
+		setTooltip(getCurrentPopupText(valueTree));
 	}
 }

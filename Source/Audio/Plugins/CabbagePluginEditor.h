@@ -327,6 +327,7 @@ private:
     CabbagePluginProcessor& processor;
     String instrumentName;
     Point<int> instrumentBounds;
+    SharedResourcePointer<TooltipWindow> tooltipWindow;
 
 
 #ifdef Cabbage_IDE_Build

@@ -43,7 +43,7 @@ namespace LookAndFeelHelpers
 
         AttributedString s;
         s.setJustification (Justification::centred);
-        s.append (text, Font (tooltipFontSize, Font::bold), colour);
+        s.append (text, Font (tooltipFontSize), colour);
 
         TextLayout tl;
         tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
@@ -148,6 +148,21 @@ void CabbageLookAndFeel2::drawDocumentWindowTitleBar (DocumentWindow& window, Gr
 
 	g.drawText (window.getName(), textX, 0, textW, h, Justification::centredLeft, true);
 }
+
+//tooltip window
+void CabbageLookAndFeel2::drawTooltip(Graphics& g, const String& text, int width, int height)
+{
+    g.fillAll(Colours::white);
+
+#if ! JUCE_MAC // The mac windows already have a non-optional 1 pix outline, so don't double it here..
+    g.setColour(findColour(TooltipWindow::outlineColourId));
+    g.drawRect(0, 0, width, height, 1);
+#endif
+
+    LookAndFeelHelpers::layoutTooltipText(text, findColour(TooltipWindow::textColourId))
+        .draw(g, Rectangle<float>((float)width, (float)height));
+}
+
 
 //=========== ComboBox ============================================================================
 void CabbageLookAndFeel2::drawComboBox (Graphics& g, int width, int height, bool /*isButtonDown*/,
