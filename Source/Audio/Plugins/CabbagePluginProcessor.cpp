@@ -26,7 +26,7 @@ char channelMessage[4096] = {0};
 AudioProcessor *JUCE_CALLTYPE
 
 createPluginFilter() {
-    CabbageUtilities::debug("H==========================================");
+    CabbageUtilities::debug("==========================================");
     File csdFile;
 #ifdef JUCE_WINDOWS
 	CabbageUtilities::debug(JucePlugin_Manufacturer);
@@ -59,7 +59,7 @@ createPluginFilter() {
 
 	StringArray csdLines;
 	csdLines.addLines(csdFile.loadFileAsString());
-	int sideChainChannels=0;
+	int sideChainChannels = 0;
 	for ( auto line : csdLines)
 	{
 		ValueTree temp("temp");

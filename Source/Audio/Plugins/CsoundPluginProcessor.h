@@ -75,6 +75,8 @@ public:
 
 	template< typename Type >
 	void processCsoundIOBuffers(int bufferType, Type*& buffer, int pos);
+    template< typename Type >
+    void processCsoundIOSideChainBuffers(int bufferType, Type* buffer, int pos);
 
 	int numSideChainChannels = 0;
     //==============================================================================

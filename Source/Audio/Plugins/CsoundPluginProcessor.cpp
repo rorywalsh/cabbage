@@ -129,8 +129,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound->SetDrawGraphCallback(drawGraphCallback);
 	csound->SetKillGraphCallback(killGraphCallback);
 	csound->SetExitGraphCallback(exitGraphCallback);
-
-
 	csound->SetOption((char*)"-n");
 	csound->SetOption((char*)"-d");
 	csound->SetOption((char*)"-b0");
@@ -153,6 +151,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         numCsoundInputChannels = 1 + (numSideChainChannels > 0 ? 1 : 0);
         csoundParams->nchnls_override = numCsoundOutputChannels;
         csoundParams->nchnls_i_override = numCsoundInputChannels;
+        getBus(true, 1)->setNumberOfChannels(1);
+        numSideChainChannels = 1;        
     }
     else
     {
@@ -627,13 +627,20 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     const int inputs = getBus(true, 0)->getNumberOfChannels();
 #endif
     const int outputs = getBus(false, 0)->getNumberOfChannels();
+
+    int sideChainChannels = 0;
+    if (supportsSidechain)
+    {
+        numSideChainChannels = getBus(true, 0)->getNumberOfChannels();
+    }
     
     if((samplingRate != sampleRate)
        || hostRequestedMono
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
        || numCsoundInputChannels != inputs
 #endif
-       || numCsoundOutputChannels != outputs)
+       || numCsoundOutputChannels != outputs 
+       || numSideChainChannels != sideChainChannels)
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
@@ -682,7 +689,8 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 
     
     
-    if (mainInput.size() == numCsoundInputChannels - numSideChainChannels && mainOutput.size() == numCsoundOutputChannels)
+    if ((mainInput.size() == numCsoundInputChannels - numSideChainChannels || mainInput.size() == mainOutput.size()) 
+        && mainOutput.size() == numCsoundOutputChannels)
     {
         return true;
     }
@@ -790,7 +798,23 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type*& buffer
             CSspin[pos] = newSamp;
             current_sample++;
         }
+        else
+            CSspin[pos] = 0;
 	}
+}
+
+template< typename Type >
+void CsoundPluginProcessor::processCsoundIOSideChainBuffers(int bufferType, Type* buffer, int pos)
+{
+    if (buffer != nullptr)
+    {
+        Type* current_sample = buffer;
+        MYFLT newSamp = *current_sample * cs_scale;
+        CSspin[pos] = newSamp;
+        current_sample++;
+    }
+    else
+        CSspin[pos] = 0;
 }
 
 void CsoundPluginProcessor::processBlock(AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
@@ -812,11 +836,11 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	auto mainInput = getBusBuffer(buffer, true, 0);
 #endif
     
-	Type** sideChainBuffer = nullptr;
+    const Type** sideChainBuffer = nullptr;
 
 	if (supportsSidechain)
 	{
-		sideChainBuffer = getBusBuffer(buffer, true, 1).getArrayOfWritePointers();
+		sideChainBuffer = getBusBuffer(buffer, true, 1).getArrayOfReadPointers();
 		numSideChainChannels = getBusBuffer(buffer, true, 1).getNumChannels();
 	}
 
@@ -887,7 +911,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 					if(channel< numSideChainChannels)
 						processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
 					else
-						processCsoundIOBuffers(BufferType::input, sideChainBuffer[channel - numSideChainChannels], pos);
+                        processCsoundIOSideChainBuffers(BufferType::input, sideChainBuffer[channel-numSideChainChannels], pos);
 					pos++;
 				}
 
