@@ -26,7 +26,7 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
       text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
       align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
 	  sliderLookAndFeel(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)), 
-		  CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontsize))
+		  CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::height)-3)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

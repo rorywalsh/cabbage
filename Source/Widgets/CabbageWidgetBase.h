@@ -78,17 +78,17 @@ public:
     {
         return rotate;
     }
-    const String&  getText() const
+    const String getText() const
     {
-        return text;
+        return text.replace("\\n", "\n");
     }
     const StringArray&  getTextArray() const
     {
         return textArray;
     }
-    const String&  getTooltipText() const
+    const String getTooltipText() const
     {
-        return tooltipText;
+        return tooltipText.replace("\\n", "\n");
     }
     int  getValue() const
     {

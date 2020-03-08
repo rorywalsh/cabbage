@@ -52,8 +52,8 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
 
     setTextBoxOrientation (sliderType, shouldShowTextBox);
     //slider.setLookAndFeel (&owner->getLookAndFeel());
-    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix).replace("\\n", "\n");;
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix).replace("\\n", "\n");;
 
     const String globalStyle = owner->globalStyle;
     if(globalStyle == "legacy")
@@ -239,6 +239,7 @@ void CabbageSlider::createPopupBubble()
 
 void CabbageSlider::showPopupBubble (int time)
 {
+	
     if (getTooltipText().isNotEmpty())
         popupText = getTooltipText();
     else if ( postfix.isNotEmpty() || prefix.isNotEmpty() )
@@ -246,7 +247,7 @@ void CabbageSlider::showPopupBubble (int time)
     else
         popupText = channel + ": " + String (slider.getValue(), decimalPlaces);
 
-    popupBubble.showAt (&slider, AttributedString (popupText), time);
+	popupBubble.showAt (&slider, AttributedString (popupText), time);
 
 }
 
