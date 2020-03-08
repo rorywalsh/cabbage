@@ -180,7 +180,7 @@ public:
     //=============================================================================
     void refreshComboListBoxContents();
     void enableEditMode (bool enable);
-    void setCurrentlySelectedComponents (StringArray componentNames);
+    void setCurrentlySelectedComponents (StringArray componentNames);  
     void resetCurrentlySelectedComponents();
     Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
     ValueTree getValueTreeForComponent (String compName);

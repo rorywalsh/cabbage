@@ -24,14 +24,16 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
       slider (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
       label(),
       text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
-      align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align))
+      align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
+	  sliderLookAndFeel(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)), 
+		  CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontsize))
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     //slider.setName(text);
     slider.toFront (true);
-
+	slider.setLookAndFeel(&sliderLookAndFeel);
     label.setText (text, dontSendNotification);
     label.setJustificationType (Justification::centred);
     label.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)));
@@ -47,6 +49,7 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
     slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
+	slider.sendLookAndFeelChange();
     slider.setVelocityBasedMode (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity) == 1 ? true : false);
     slider.setVelocityModeParameters (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity));
     slider.getProperties().set ("decimalPlaces", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces));
@@ -58,6 +61,7 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     const float value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
 
     slider.setSkewFactor (skew);
+	
     slider.setRange (min, max, incr);
     slider.setValue (value, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));

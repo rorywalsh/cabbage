@@ -924,6 +924,7 @@ void CabbageWidgetData::setNumberSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::sliderskew, 1);
     setProperty (widgetData, CabbageIdentifierIds::increment, .01);
     setProperty (widgetData, CabbageIdentifierIds::text, "");
+	setProperty(widgetData, CabbageIdentifierIds::fontsize, -1);
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::type, "nslider");

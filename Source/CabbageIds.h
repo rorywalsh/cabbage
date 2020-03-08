@@ -385,6 +385,7 @@ public:
         add ("populate");		
         add ("keywidth");
         add ("pluginid");
+		add ("fontsize");
         add ("cvoutput");
         add ("imgdebug");
         add ("colour:0");
@@ -554,6 +555,7 @@ namespace CabbageIdentifierIds
 	static const Identifier fillcolour = "fillcolour";
 	static const Identifier fontcolour = "fontcolour";
 	static const Identifier fontstyle = "fontstyle";
+	static const Identifier fontsize = "fontsize";
 	static const Identifier gradient = "gradient";
 	static const Identifier guirefresh = "guirefresh";
 	static const Identifier height = "height";
@@ -836,6 +838,7 @@ public:
         set ("Value Min", CabbageIdentifierIds::minvalue.toString());
         set ("Value Max", CabbageIdentifierIds::maxvalue.toString());
         set ("Background", CabbageIdentifierIds::backgroundcolour.toString());
+		set("Font Size", CabbageIdentifierIds::fontsize.toString());
         set ("Ball", CabbageIdentifierIds::ballcolour.toString());
         set ("Mode", CabbageIdentifierIds::mode.toString());
         set ("Base Channel", CabbageIdentifierIds::basechannel.toString());
@@ -897,7 +900,7 @@ static const char* const CsoundKeywords[] =
     "transegr", "trcross", "trfilter", "trhighest", "trlowest", "trmix", "trscale", "trshift", "trsplit", "urandom", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapmove", "vbapg", "vbapgmove", "vdivv_i",
     "vexp_i", "vexpv_i", "vmult_i", "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "writescratch", "encoder", "fftdisplay", "keyboard", "label",
     "listbox", "hrange", "vrange", "active", "align", "alpha", "amprange", "bounds", "caption", "channel", "channelarray", "channeltype", "child", "colour", "colour:0", "colour:1", "corners", "displaytype", "file",
-    "fontcolour", "fontstyle", "guirefresh", "highlightcolour", "identchannel", "items", "latched", "line", "middlec", "max", "min", "mode", "outlinecolour", "outlinethickness", "plant", "pluginid", "populate",
+    "fontcolour", "fontstyle", "fontstyle", "guirefresh", "highlightcolour", "identchannel", "items", "latched", "line", "middlec", "max", "min", "mode", "outlinecolour", "outlinethickness", "plant", "pluginid", "populate",
     "popup", "popuptext", "range", "rangex", "rangey", "rotate", "samplerange", "scrubberpos", "scrubberposition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tablebackgroundcolour", "tablecolour",
     "tablegridcolour", "tablenumber", "text", "textcolour", "textbox", "trackercolour", "trackerthickness", "trackerouterradius", "trackerinnerradius", "typeface", "widgetarray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textbox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",

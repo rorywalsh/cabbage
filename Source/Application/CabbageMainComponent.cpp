@@ -1510,7 +1510,7 @@ void CabbageMainComponent::toggleBrowser()
 const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles)
 {
     stopTimer();
-    stopCsoundForNode (filename);
+    //stopCsoundForNode (filename);
     File currentCsdFile;
 
     if (File (filename).existsAsFile() == false)
