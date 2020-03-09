@@ -151,8 +151,11 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         numCsoundInputChannels = 1 + (numSideChainChannels > 0 ? 1 : 0);
         csoundParams->nchnls_override = numCsoundOutputChannels;
         csoundParams->nchnls_i_override = numCsoundInputChannels;
-        getBus(true, 1)->setNumberOfChannels(1);
-        numSideChainChannels = 1;        
+        if (supportsSidechain)
+        {
+            getBus(true, 1)->setNumberOfChannels(1);
+            numSideChainChannels = 1;
+        }
     }
     else
     {
