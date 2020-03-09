@@ -57,8 +57,13 @@ createPluginFilter() {
 	if (csdFile.existsAsFile() == false)
 		Logger::writeToLog("Could not find .csd file, please make sure it's in the correct folder");
 
+    String csdString = csdFile.loadFileAsString();
+#ifdef CabbagePro
+    csdString = Encrypt::decode(csdFile);
+#endif
+
 	StringArray csdLines;
-	csdLines.addLines(csdFile.loadFileAsString());
+	csdLines.addLines(csdString);
 	int sideChainChannels = 0;
 	for ( auto line : csdLines)
 	{
@@ -73,10 +78,10 @@ createPluginFilter() {
 		
 	}
 
-    const int numOutChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+    const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
     int numInChannels = numOutChannels;
-    if(CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
-        numInChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i")-sideChainChannels;
+    if(CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1)
+        numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i")-sideChainChannels;
  
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;

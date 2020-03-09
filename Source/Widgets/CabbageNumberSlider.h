@@ -27,11 +27,13 @@
 class SliderLookAndFeel : public LookAndFeel_V2
 {
 	Colour fontColour = { 0,0,0 };
-	int fontSize = 0;
+	int fontSize = -1;
 public:
 
-	SliderLookAndFeel(Colour col, int fS):fontColour(col), fontSize(fS){};
+	SliderLookAndFeel(Colour col = { 255, 255, 255 }, int fS = -1) :fontColour(col), fontSize(fS) {};
 	~SliderLookAndFeel() {};
+	void setFontColour(Colour col) { fontColour = col; }
+	void setFontSize(int fS) { fontSize = fS; }
 
 	Label* createSliderTextBox(Slider& slider)
 	{

@@ -25,14 +25,19 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
       label(),
       text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
       align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
-	  sliderLookAndFeel(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)), 
-		  CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::height)-3)
+	  sliderLookAndFeel()
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     //slider.setName(text);
     slider.toFront (true);
+
+    sliderLookAndFeel.setFontColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    const int fontSize = (CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontsize) == -1 ? CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::height) - 10 :
+        CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontsize));
+    sliderLookAndFeel.setFontSize(fontSize);
+
 	slider.setLookAndFeel(&sliderLookAndFeel);
     label.setText (text, dontSendNotification);
     label.setJustificationType (Justification::centred);
