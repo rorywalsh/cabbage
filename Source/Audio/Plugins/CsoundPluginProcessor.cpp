@@ -210,6 +210,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		CSspin = csound->GetSpin();
 		cs_scale = csound->Get0dBFS();
 		csndIndex = csound->GetKsmps();
+        const String version = String("Cabbage version:")+ProjectInfo::versionString+String("\n");
+        csound->Message(version.toRawUTF8());
 
 		this->setLatencySamples(csound->GetKsmps());
 	}
