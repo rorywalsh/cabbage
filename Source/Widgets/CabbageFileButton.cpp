@@ -29,6 +29,10 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     setLookAndFeelColours (wData);
 
+    tooltipText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext);
+    if (tooltipText.isNotEmpty())
+        setTooltip(tooltipText);
+    
     setButtonText (getText());
 
     mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
@@ -41,6 +45,10 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
     const String imgOver = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonover);
     const String imgOn = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonon);
+    
+    getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
+    getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
+    getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
     
     const String globalStyle = owner->globalStyle;
     if(globalStyle == "legacy")
@@ -188,4 +196,5 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
     const String file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
+    setTooltip(getCurrentPopupText(valueTree));
 }
