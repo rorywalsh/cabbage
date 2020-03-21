@@ -29,7 +29,7 @@ class CabbagePluginEditor;
 class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener, public Timer
 {
     CabbagePluginEditor* owner;
-    String mode, filetype;
+    String mode, filetype, tooltipText;;
 
 public:
 
