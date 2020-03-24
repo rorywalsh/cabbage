@@ -49,5 +49,4 @@ echo "What bloody OS are you using dude?!?!"
 fi
 
 git add *.jucer
-git commit -m "updating minor version number"
 git add Source
