@@ -201,6 +201,7 @@ public:
     }
 
     MidiKeyboardState keyboardState;
+    bool hostIsCubase = false;
 
     //==================================================================================
     class SignalDisplay

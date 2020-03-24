@@ -628,6 +628,12 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 //==============================================================================
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+#if !defined(Cabbage_IDE_Build)
+    PluginHostType pluginType;
+    if (pluginType.isCubase())
+        hostIsCubase = true;
+#endif
+    
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
     const int inputs = getBus(true, 0)->getNumberOfChannels();
 #endif
@@ -841,11 +847,13 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	auto mainInput = getBusBuffer(buffer, true, 0);
 #endif
     
-    const Type** sideChainBuffer = nullptr;
+    const Type** sideChainCubase = nullptr;
+    Type** sideChainBuffer = nullptr;
 
 	if (supportsSidechain)
 	{
-		sideChainBuffer = getBusBuffer(buffer, true, 1).getArrayOfReadPointers();
+        sideChainCubase = getBusBuffer(buffer, true, 1).getArrayOfReadPointers();
+		sideChainBuffer = getBusBuffer(buffer, true, 1).getArrayOfWritePointers();
 		numSideChainChannels = getBusBuffer(buffer, true, 1).getNumChannels();
 	}
 
@@ -915,8 +923,12 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 				{
 					if(channel< numSideChainChannels)
 						processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
-					else
-                        processCsoundIOSideChainBuffers(BufferType::input, sideChainBuffer[channel-numSideChainChannels], pos);
+                    else{
+                        if(hostIsCubase)
+                            processCsoundIOSideChainBuffers(BufferType::input, sideChainCubase[channel-numSideChainChannels], pos);
+                        else
+                            processCsoundIOBuffers(BufferType::input, sideChainBuffer[channel-numSideChainChannels], pos);
+                    }
 					pos++;
 				}
 
