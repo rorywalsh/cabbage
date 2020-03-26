@@ -994,6 +994,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
                     CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
                                                   e->getAttributeValue(i).getFloatValue());
                     //now make changes parameter changes so host can see them..
+                    //getParameters().
                 
                     for (auto param : getParameters())
                     {
@@ -1055,6 +1056,21 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 				{
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
 						getCsound()->GetChannel(channels[0].toUTF8()));
+                    //now update plugin parameters..
+                    for (auto param : getParameters())
+                    {
+                        if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
+                        {
+                            
+                            if (cabbageParam->channel == channels[0].toUTF8())
+                            {
+                                param->beginChangeGesture();
+                                CabbageUtilities::debug(cabbageParam->getWidgetName());
+                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (getCsound()->GetChannel(channels[0].toUTF8())));
+                                param->endChangeGesture();
+                            }
+                        }
+                    }
 				}
 
 			}
