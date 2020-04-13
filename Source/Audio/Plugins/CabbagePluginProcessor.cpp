@@ -29,7 +29,7 @@ createPluginFilter() {
     CabbageUtilities::debug("==========================================");
     File csdFile;
 #ifdef JUCE_WINDOWS
-	CabbageUtilities::debug(JucePlugin_Manufacturer);
+	CabbageUtilities::debug(CharPointer_UTF8(JucePlugin_Manufacturer));
     csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
 	if (csdFile.existsAsFile() == false)
 	{
