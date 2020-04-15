@@ -55,8 +55,8 @@ cd $AGENT_BUILDDIRECTORY
 
 curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 hdiutil mount Packages.dmg
-sudo installer -pkg /Volumes/Packages\ 1.2.8/Install\ Packages.pkg -target /
-hdiutil detach /Volumes/Packages\ 1.2.8/
+sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /
+hdiutil detach /Volumes/Packages\ 1.2.9/
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX
 export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
