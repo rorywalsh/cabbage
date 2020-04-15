@@ -67,7 +67,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
         const int index = stringItems.indexOf (currentValueAsText);
 		owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
 
-        if (index != -1)
+        if (index != -1)  
             setSelectedItemIndex (index+1, dontSendNotification);
     }
     else
@@ -75,7 +75,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
 
         if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
         {
-            isPresetCombo = true;
+            isPresetCombo = true;  
             getProperties().set("isPresetCombo", true);
             String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
 
