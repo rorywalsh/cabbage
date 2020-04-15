@@ -143,7 +143,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
                                              .replace("$gt;", ">"));
 
 
-            CabbageUtilities::debug(tempFile.loadFileAsString());
+            //CabbageUtilities::debug(tempFile.loadFileAsString());
 
             if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
                 this->suspendProcessing(true);
