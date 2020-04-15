@@ -258,8 +258,14 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
 
         if (mouseDragBetweenThumbs)
         {
-            setMinValue (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
-            setMaxValue (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
+            double ratioMin = (xMinAtThumbDown + distanceFromStart) / getWidth();
+            double ratioMax = (xMaxAtThumbDown + distanceFromStart) / getWidth();
+            float newMin = proportionOfLengthToValue ( min( max(ratioMin, 0.0), 1.0 ));
+            float newMax = proportionOfLengthToValue ( min( max(ratioMax, 0.0), 1.0 ));
+            if (newMin > getMinimum())
+                setMinValue (newMin);
+            if (newMax < getMaximum())
+                setMaxValue (newMax);
         }
         else
         {
@@ -272,8 +278,14 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
 
         if (mouseDragBetweenThumbs)
         {
-            setMinValue (proportionOfLengthToValue ((yMinAtThumbDown - distanceFromStart) / getHeight()));
-            setMaxValue (proportionOfLengthToValue ((yMaxAtThumbDown - distanceFromStart) / getHeight()));
+            double ratioMin = (yMinAtThumbDown + distanceFromStart) / getHeight();
+            double ratioMax = (yMaxAtThumbDown + distanceFromStart) / getHeight();
+            float newMin = proportionOfLengthToValue ( min( max(ratioMin, 0.0), 1.0 ));
+            float newMax = proportionOfLengthToValue ( min( max(ratioMax, 0.0), 1.0 ));
+            if (newMin > getMinimum())
+                setMinValue (newMin);
+            if (newMax < getMaximum())
+                setMaxValue (newMax);
         }
         else
         {

@@ -1912,6 +1912,10 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
     {
         if (File (file).existsAsFile())
         {
+            auto fileContents = File(file).loadFileAsString();
+            if(!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")){
+                CabbageUtilities::showMessage ("Warning", "Please make sure your Cabbage section is wrapped in <Cabbage> and </Cabbage> tags", lookAndFeel.get());
+            }
             AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
             
             if (node.uid == -99)
@@ -1964,7 +1968,6 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 			//hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
 
             graphComponent->enableAudioInput();
-            
             
         }
         else

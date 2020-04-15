@@ -143,7 +143,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
                                              .replace("$gt;", ">"));
 
 
-
+            CabbageUtilities::debug(tempFile.loadFileAsString());
 
             if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
                 this->suspendProcessing(true);
@@ -1060,8 +1060,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
                     for (auto param : getParameters())
                     {
                         if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
-                        {
-                            
+                        {                            
                             if (cabbageParam->channel == channels[0].toUTF8())
                             {
                                 param->beginChangeGesture();

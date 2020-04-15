@@ -37,7 +37,9 @@ lookAndFeel (new FlatButtonLookAndFeel()),
 commandLineArgs (commandLineParams)
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
-    setUsingNativeTitleBar (false/*true*/);
+    
+    
+    
     setTitleBarHeight (20);
     setResizable (true, true);
     centreWithSize (getWidth(), getHeight());
@@ -47,6 +49,13 @@ commandLineArgs (commandLineParams)
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
     
     initSettings();
+    
+    auto enableKioskMode = cabbageSettings->getUserSettings()->getIntValue ("enableKioskMode");
+    if(enableKioskMode == 1)
+        setUsingNativeTitleBar (true);
+    else
+        setUsingNativeTitleBar (false);
+    
     pluginExporter.settingsToUse(cabbageSettings->getUserSettings());
     setColour (backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings.get()), true);
