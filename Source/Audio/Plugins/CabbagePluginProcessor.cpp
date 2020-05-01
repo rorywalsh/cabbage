@@ -962,7 +962,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
                 csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).getFileNameWithoutExtension() : e->getAttributeValue(i);
                 
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i)); //IMPORTANT: - updates the combobox text..
+                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
 
 			}
@@ -1099,10 +1099,10 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 						getCsound()->GetChannel(channels[1].toUTF8()));
 				}
 				else if (typeOfWidget.contains("range")) {
-					const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-						CabbageIdentifierIds::minvalue);
-					const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-						CabbageIdentifierIds::maxvalue);
+//                    const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+//                        CabbageIdentifierIds::minvalue);
+//                    const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+//                        CabbageIdentifierIds::maxvalue);
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::minvalue,
 						getCsound()->GetChannel(channels[0].toUTF8()));
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::maxvalue,

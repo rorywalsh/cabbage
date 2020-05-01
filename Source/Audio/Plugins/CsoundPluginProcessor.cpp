@@ -270,11 +270,12 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 							folderFiles[index].getFullPathName().replaceCharacters("\\", "/").toUTF8().getAddress());
 						
 					}
-				}
-				else
-				{
-					csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
-						CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text).toUTF8().getAddress());
+                    else{
+//                        const String test = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value);
+//                        const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
+                        csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                                                 CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value).toString().toUTF8().getAddress());
+                    }
 				}
             }
 
