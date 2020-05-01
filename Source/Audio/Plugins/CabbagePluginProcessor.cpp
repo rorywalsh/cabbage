@@ -959,9 +959,11 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 			}
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
-				const String stringComboItem = e->getAttributeValue(i);
-				//CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, File(stringComboItem).getFileNameWithoutExtension());
+				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
+                csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).getFileNameWithoutExtension() : e->getAttributeValue(i);
+                
+                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i)); //IMPORTANT: - updates the combobox text..
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
 
 			}
             else if (type == CabbageWidgetTypes::filebutton)
@@ -1003,7 +1005,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
                             if (widgetName == cabbageParam->getWidgetName())
                             {
                                 param->beginChangeGesture();
-                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (e->getAttributeValue(i).getFloatValue()));
+                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (jlimit(0.f, 1.f, e->getAttributeValue(i).getFloatValue())));
                                 param->endChangeGesture();
                             }
                         }
