@@ -129,8 +129,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         }
     }
     //if dealing with preset files...
-    else if (CabbageWidgetData::getStringProp (wData, "filetype") == "preset"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps"
+    else if ( CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps"
              || CabbageWidgetData::getStringProp (wData, "filetype") == ".snaps"
              || CabbageWidgetData::getStringProp (wData, "filetype") == "snaps") //load items from directory
     {
@@ -198,7 +197,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...
 {
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
-        || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
+        || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype) == ("preset"))
     {
         String presetFilename;
         if (owner->isAudioUnit())
