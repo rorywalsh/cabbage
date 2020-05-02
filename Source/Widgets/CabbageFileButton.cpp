@@ -62,13 +62,8 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     {
         setLookAndFeel(&flatLookAndFeel);
     }
-	const String file = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
-	const String relativePath = File(getCsdFile()).getParentDirectory().getChildFile(file).getFullPathName();
-	if(File(relativePath).existsAsFile())
-		owner->sendChannelStringDataToCsound(getChannel(), relativePath.replaceCharacters("\\", "/"));
-	else
-		owner->sendChannelStringDataToCsound(getChannel(), file.replaceCharacters("\\", "/"));
-
+    
+    setFile(wData);
     
 }
 
@@ -181,6 +176,16 @@ String CabbageFileButton::returnValidPath (File fc)
     return fc.getFullPathName().replaceCharacters ("\\", "/");
 }
 //===============================================================================
+void CabbageFileButton::setFile(ValueTree wData)
+{
+    const String file = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+    const String relativePath = File(getCsdFile()).getParentDirectory().getChildFile(file).getFullPathName();
+    if(File(relativePath).existsAsFile())
+        owner->sendChannelStringDataToCsound(getChannel(), relativePath.replaceCharacters("\\", "/"));
+    else
+        owner->sendChannelStringDataToCsound(getChannel(), file.replaceCharacters("\\", "/"));
+}
+//===============================================================================
 void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 {
     setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
@@ -195,6 +200,6 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
     setLookAndFeelColours (valueTree);
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
-    const String file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
+    setFile(valueTree);
     setTooltip(getCurrentPopupText(valueTree));
 }

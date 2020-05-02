@@ -37,6 +37,7 @@ public:
     ~CabbageFileButton() {  stopTimer();  setLookAndFeel(nullptr); };
 
     //ValueTree::Listener virtual methods....
+    void setFile(ValueTree wData);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
