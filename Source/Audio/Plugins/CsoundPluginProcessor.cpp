@@ -60,6 +60,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet
 	
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
+
     numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
 #endif
     //side chaining is supported, and matchingNumberOfIOChannels must false
@@ -358,8 +359,10 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("FLStudio", 1.0);
     else if (pluginType.isAbletonLive())
         csound->SetChannel ("AbletonLive", 1.0);
-    else if (pluginType.isLogic())
+    else if (pluginType.isLogic()){
         csound->SetChannel ("Logic", 1.0);
+        isLogic = true;
+    }
     else if (pluginType.isArdour())
         csound->SetChannel ("Ardour", 1.0);
     else if (pluginType.isCubase())
@@ -893,7 +896,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
-			if (matchingNumberOfIOChannels && !pluginType.isLogic())
+			if (matchingNumberOfIOChannels && !isLogic)
 			{
 				pos = csndIndex * outputChannelCount;
 				for (int channel = 0; channel < outputChannelCount; channel++)

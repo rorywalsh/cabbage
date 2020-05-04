@@ -254,7 +254,6 @@ public:
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
-    PluginHostType pluginType;
     int guiCycles = 0;
     int guiRefreshRate = 128;
     MidiBuffer midiBuffer;
