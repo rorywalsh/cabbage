@@ -80,18 +80,16 @@ createPluginFilter() {
 
     const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
     int numInChannels = numOutChannels;
-    if(CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1)
+    if(CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1 && CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != 0)
         numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i")-sideChainChannels;
  
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
-    if (pluginHostType.isFruityLoops() || pluginHostType.isBitwigStudio() || pluginHostType.isCubase() || pluginHostType.isStudioOne() || pluginHostType.isAbletonLive())
-	{
-		if (sideChainChannels != 0)
-			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels));
-		else
-			return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels));
-	}
+    if (sideChainChannels != 0)
+        return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels));
+    else
+        return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels));
+
 #endif
 
 	if (sideChainChannels != 0)

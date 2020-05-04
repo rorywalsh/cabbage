@@ -104,7 +104,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
     const int inputs = getBus(true, 0)->getNumberOfChannels();
-    numCsoundInputChannels = inputs + (inputs==1 ? 1 : numSideChainChannels);
+    numCsoundInputChannels = inputs + numSideChainChannels;
 #endif
     
 	csound.reset (new Csound());
@@ -892,7 +892,8 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 			}
 	
 #if !JucePlugin_IsSynth
-			if (matchingNumberOfIOChannels)
+            //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
+			if (matchingNumberOfIOChannels && !pluginType.isLogic())
 			{
 				pos = csndIndex * outputChannelCount;
 				for (int channel = 0; channel < outputChannelCount; channel++)
