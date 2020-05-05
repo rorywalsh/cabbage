@@ -101,6 +101,7 @@ createPluginFilter() {
     
 };
 
+//==== Sidechain constructor =================================================
 //============================================================================
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sideChainChannels)
         : CsoundPluginProcessor(inputFile, ins, outs, sideChainChannels),
@@ -110,7 +111,7 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet i
 	createCsound(inputFile);
 }
 
-//==== Sidechain constructor =================================================
+
 //============================================================================
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
 	: CsoundPluginProcessor(inputFile, ins, outs),
