@@ -1003,7 +1003,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
                             if (widgetName == cabbageParam->getWidgetName())
                             {
                                 param->beginChangeGesture();
-                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (jlimit(0.f, 1.f, e->getAttributeValue(i).getFloatValue())));
+                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (e->getAttributeValue(i).getFloatValue()));
                                 param->endChangeGesture();
                             }
                         }
