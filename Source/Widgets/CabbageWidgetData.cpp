@@ -296,6 +296,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
         strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
 
 
+
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
             //======== strings ===============================
@@ -649,6 +650,8 @@ String CabbageWidgetData::replaceIdentifier (String line, String identifier, Str
 //=========================================================================================================
 void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier)
 {
+
+
     var array;
     array.append (strTokens[0].trim());
 

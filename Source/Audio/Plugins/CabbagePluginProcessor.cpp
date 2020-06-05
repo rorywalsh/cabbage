@@ -142,7 +142,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
                                              .replace("$gt;", ">"));
 
 
-            //CabbageUtilities::debug(tempFile.loadFileAsString());
+            CabbageUtilities::debug(tempFile.loadFileAsString());
 
             if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
                 this->suspendProcessing(true);
@@ -460,6 +460,7 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
             StringArray importedLines("");
             ValueTree temp("temp");
             expandMacroText(currentLineOfCode, temp);
+           // CabbageUtilities::debug(currentLineOfCode);
             CabbageWidgetData::setWidgetState(temp, currentLineOfCode.trim(), lineIndex);
             const String type = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
             const String nsp = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::nsp);
@@ -475,6 +476,7 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
                         if (plantCode.isNotEmpty()) {
                             if (plantCode.contains("}") == false) {
                                 ValueTree temp1("temp1");
+                               
                                 expandMacroText(plantCode, temp);
                                 CabbageWidgetData::setWidgetState(temp1, plantCode.trim(), -99);
                                 CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::plant,
@@ -509,16 +511,21 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
                                 }
 
                                 //add test for multiple channels...
-                                const String currentChannel = CabbageWidgetData::getStringProp(temp1,
-                                                                                               CabbageIdentifierIds::channel);
+                                var currentChannel = CabbageWidgetData::getProperty(temp1, CabbageIdentifierIds::channel);
                                 const String channelPrefix = CabbageWidgetData::getStringProp(temp,
                                                                                               CabbageIdentifierIds::channel);
                                 const String currentIdentChannel = CabbageWidgetData::getStringProp(temp1,
                                                                                                     CabbageIdentifierIds::identchannel);
 
 
-                                CabbageWidgetData::setStringProp(temp1, CabbageIdentifierIds::channel,
-                                                                 channelPrefix + currentChannel);
+                                var chanArray;
+                                for (int i = 0; i < currentChannel.size(); i++)
+                                {
+                                    chanArray.append(channelPrefix + currentChannel[i]);
+                                }
+
+                                CabbageWidgetData::setProperty(temp1, CabbageIdentifierIds::channel, chanArray);
+                               
 
                                 if (CabbageWidgetData::getStringProp(temp1,
                                                                      CabbageIdentifierIds::identchannel).isNotEmpty())
@@ -527,6 +534,17 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
 
                                 CabbageWidgetData::setProperty(temp1, CabbageIdentifierIds::macronames, macroNames);
                                 CabbageWidgetData::setProperty(temp1, CabbageIdentifierIds::macrostrings, macroStrings);
+
+                                //by the time it gets here it's not picked up the right channels....
+
+                                    var items = CabbageWidgetData::getProperty(temp1, "channel");
+
+                                    for (int i = 0; i < items.size(); i++) {
+                                        CabbageUtilities::debug(items[i].toString());
+                                    }
+
+                                    CabbageUtilities::debug(items.toString());
+
 
                                 String replacementText = (plantCode.indexOf("{") != -1 ?
                                                           CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1,
@@ -883,6 +901,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
             {
                 var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                               CabbageIdentifierIds::channel);
+                int number = channels.size();
                 const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                      CabbageIdentifierIds::minvalue);
                 const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),

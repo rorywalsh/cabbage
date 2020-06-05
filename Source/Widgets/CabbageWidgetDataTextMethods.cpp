@@ -202,8 +202,12 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 
     for (auto &ident : fullListOfIdentifierStrings)
     {
+
+
+
         if (replacedIdentifiers.indexOf(ident) == -1)
         {
+
             const String newIdent = getCabbageCodeForIdentifier(widgetData, ident).trimCharactersAtEnd(
                     ", ").trimCharactersAtStart(",");
 
@@ -440,7 +444,8 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
 
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
 {
-    var items = getProperty (widgetData, identifier);
+
+    var items = getProperty(widgetData, identifier);
     const Array<var>* array = items.getArray();
     ValueTree tempData ("tempTree");
     
@@ -480,7 +485,6 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
         {
             for (int i = 0 ; i < array->size() - 1 ; i++)
             {
-                const String text = array->getReference (array->size() - 1).toString();
                 itemString = itemString + "\"" + array->getReference (i).toString() + "\", ";
             }
             
