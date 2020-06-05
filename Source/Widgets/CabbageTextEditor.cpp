@@ -43,8 +43,13 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     textEditor.setColour (TextEditor::focusedOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     
+    const String filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+    const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());
 
-	textEditor.setText (getCurrentText(widgetData), dontSendNotification);
+    if (textFile.existsAsFile())
+        textEditor.setText(textFile.loadFileAsString(), false);
+    else
+        textEditor.setText (getCurrentText(widgetData), dontSendNotification);
 
 }
 
