@@ -521,7 +521,7 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
                                 var chanArray;
                                 for (int i = 0; i < currentChannel.size(); i++)
                                 {
-                                    chanArray.append(channelPrefix + currentChannel[i]);
+                                    chanArray.append(channelPrefix + currentChannel[i].toString());
                                 }
 
                                 CabbageWidgetData::setProperty(temp1, CabbageIdentifierIds::channel, chanArray);
