@@ -289,46 +289,47 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     }
     
 #ifdef CabbagePro //bundle and relink Csound
-    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0 && encrypt)
-    {
-        File csoundFramework(File::getSpecialLocation (File::currentApplicationFile).getFullPathName()+"/Contents/CsoundLib64.framework");
-        if(!csoundFramework.exists())
-            jassertfalse;
-        
-        if(!csoundFramework.copyFileTo(File(exportedPlugin.getFullPathName()+"/Contents/Resources/CsoundLib64.framework")))
-            jassertfalse;
-        
-        ChildProcess childProc;
-        String pluginBinaryPath;
-        
-        if(fileExtension.containsIgnoreCase("vst"))
-            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension();
-        else
-            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin");
-        
-        
-        
-        if(!childProc.start("otool -L "+pluginBinaryPath))
-        {
-            CabbageUtilities::showMessage("You will need Xcode's CLI developer tools in order to include Csound in your plugin bundle. Please install them and try again.", &lookAndFeel);
-            return;
-        }
-        
-        
-        StringArray lines;
-        lines.addLines(childProc.readAllProcessOutput());
-        const String csoundPath = lines[1].substring(0, lines[1].indexOf("("));
-        const String install_name_tool = "install_name_tool -change " + csoundPath + "@loader_path/../Resources/CsoundLib64.framework/CsoundLib64 /" + pluginBinaryPath;
-        
-        
-        childProc.start(install_name_tool);
-        if(childProc.readAllProcessOutput().length()>1)
-            CabbageUtilities::showMessage("There was a problem relinking the Csound binaries: " + childProc.readAllProcessOutput() + " Please contact Cabbage support and quote the following error message:", &lookAndFeel);
-        
-        
-        
-        
-    }
+    //removing this for now to see if I can relink manually...
+//    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0 && encrypt)
+//    {
+//        File csoundFramework(File::getSpecialLocation (File::currentApplicationFile).getFullPathName()+"/Contents/CsoundLib64.framework");
+//        if(!csoundFramework.exists())
+//            jassertfalse;
+//
+//        if(!csoundFramework.copyFileTo(File(exportedPlugin.getFullPathName()+"/Contents/Resources/CsoundLib64.framework")))
+//            jassertfalse;
+//
+//        ChildProcess childProc;
+//        String pluginBinaryPath;
+//
+//        if(fileExtension.containsIgnoreCase("vst"))
+//            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension();
+//        else
+//            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin");
+//
+//
+//
+//        if(!childProc.start("otool -L "+pluginBinaryPath))
+//        {
+//            CabbageUtilities::showMessage("You will need Xcode's CLI developer tools in order to include Csound in your plugin bundle. Please install them and try again.", &lookAndFeel);
+//            return;
+//        }
+//
+//
+//        StringArray lines;
+//        lines.addLines(childProc.readAllProcessOutput());
+//        const String csoundPath = lines[1].substring(0, lines[1].indexOf("("));
+//        const String install_name_tool = "install_name_tool -change " + csoundPath + "@loader_path/../Resources/CsoundLib64.framework/CsoundLib64 /" + pluginBinaryPath;
+//
+//
+//        childProc.start(install_name_tool);
+//        if(childProc.readAllProcessOutput().length()>1)
+//            CabbageUtilities::showMessage("There was a problem relinking the Csound binaries: " + childProc.readAllProcessOutput() + " Please contact Cabbage support and quote the following error message:", &lookAndFeel);
+//
+//
+//
+//
+//    }
 #endif
     
     
