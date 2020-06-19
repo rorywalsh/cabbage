@@ -55,6 +55,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::plant, "");
     setProperty (widgetData, CabbageIdentifierIds::basechannel, "");
     setProperty (widgetData, CabbageIdentifierIds::typeface, "");
+    setProperty (widgetData, CabbageIdentifierIds::mouseinteraction, 1);
     setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
 
     StringArray strTokens;
@@ -399,6 +400,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("scrollbars"):
             case HashStringToInt ("titlebargradient"):
             case HashStringToInt ("markerthickness"):
+            case HashStringToInt ("mouseinteraction"):
             case HashStringToInt ("markerstart"):
             case HashStringToInt ("markerend"):
 			case HashStringToInt ("sidechain"):

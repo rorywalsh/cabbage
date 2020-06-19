@@ -41,6 +41,13 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
         img = ImageFileFormat::loadFrom(imgFile);
     this->setWantsKeyboardFocus (false);
     initialiseCommonAttributes (this, wData);
+    
+    const int allowInteraction = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::mouseinteraction);
+    if(allowInteraction)
+        setInterceptsMouseClicks(true, true);
+    else
+        setInterceptsMouseClicks(false, true);
+    
 }
 
 //==============================================================================

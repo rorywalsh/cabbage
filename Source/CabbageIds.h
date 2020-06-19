@@ -305,6 +305,7 @@ public:
         add ("outlinethickness");
         add ("scrubberposition");
         add ("titlebargradient");
+        add ("mouseinteraction");
         add ("whitenotecolour");
         add ("blacknotecolour");
         add ("highlightcolour");
@@ -608,6 +609,7 @@ namespace CabbageIdentifierIds
 	static const Identifier minx = "minx";
 	static const Identifier miny = "miny";
 	static const Identifier mode = "mode";
+    static const Identifier mouseinteraction = "mouseinteraction";
 	static const Identifier mouseoverkeycolour = "mouseoverkeycolour";
 	static const Identifier name = "name";
 	static const Identifier keypressed = "keypressed";
@@ -929,7 +931,7 @@ static const char* const CsoundKeywords[] =
     "loop", "loopseg", "loopsegp", "lorenz", "lorisread", "lorismorph", "lorisplay", "loscil", "loscil3", "lowpass2", "lowres", "lowresx", "lpf18", "lpfreson", "lphasor", "lpinterp", "lposcil", "lposcil3",
     "lpread", "lpreson", "lpshold", "lpsholdp", "lpslot", "mac", "maca", "madsr", "mandel", "mandol", "marimba", "massign", "maxalloc", "max_k", "mclock", "mdelay", "metro", "midic14", "midic21", "midic7",
     "midichannelaftertouch", "midichn", "midicontrolchange", "midictrl", "mididefault", "midiin", "midinoteoff", "midinoteoncps", "midinoteonkey", "midinoteonoct", "midinoteonpch", "midion", "midion2",
-    "midiout", "midipitchbend", "midipolyaftertouch", "midiprogramchange", "miditempo", "mirror", "MixerSetLevel", "MixerGetLevel", "MixerSend", "MixerReceive", "MixerClear", "moog", "moogladder",
+    "midiout", "midipitchbend", "midipolyaftertouch", "midiprogramchange", "miditempo", "mirror", "MixerSetLevel", "MixerGetLevel", "MixerSend", "MixerReceive", "MixerClear", "moog", "moogladder", "mouseinteraction"
     "moogvcf", "moscil", "mpulse", "mrtmsg", "multitap", "mute", "mxadsr", "nchnls", "nestedap", "nlfilt", "noise", "noteoff", "noteon", "noteondur", "noteondur2", "notnum", "nreverb", "nrpn", "nsamp",
     "nstrnum", "ntrpol", "octave", "octcps", "octmidi", "octmidib octmidib", "octpch", "opcode", "OSCsend", "OSCinit", "OSClisten", "oscbnk", "oscil", "oscil1", "oscil1i", "oscil3", "oscili", "oscilikt",
     "osciliktp", "oscilikts", "osciln", "oscils", "oscilx", "out", "out32", "outc", "outch", "outh", "outiat", "outic", "outic14", "outipat", "outipb", "outipc", "outk", "outkat", "outkc", "outkc14",
