@@ -202,7 +202,7 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
 
         //backgrounds
         g.setColour (trackerBgColour);
-        g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.016, height * 0.15, height * 0.05); //main rectangle
+        g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.08, height * 0.15, height * 0.05); //main rectangle
         
         const float scale = trackerThickness;
         const float ih = (height * scale);

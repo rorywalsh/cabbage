@@ -107,8 +107,11 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     const int inputs = getBus(true, 0)->getNumberOfChannels();
     numCsoundInputChannels = inputs + numSideChainChannels;
 #endif
-    
+    //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
+    CabbageUtilities::debug("Env var set");
+    //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
 	csound.reset (new Csound());
+    
 	csdFilePath = filePath;
 	csdFilePath.setAsCurrentWorkingDirectory();
 	csound->SetHostImplementedMIDIIO(true);
@@ -190,7 +193,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
 
 	csound->SetParams(csoundParams.get());
-
+    
     if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
     {
         compileCsdFile(csdFile);

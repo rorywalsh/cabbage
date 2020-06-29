@@ -755,7 +755,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics& g, int x, int y,
             image = image.rescaled (slider.getWidth(), slider.getHeight());
 
             if (slider.isHorizontal())
-                g.drawImage (image, 0, 0,  width * (1 + xOffset * 2), height, 0, 0, slider.getWidth(), slider.getHeight(), false);
+                g.drawImage(image, 0, 0,  width * (1 + xOffset * 2), height, 0, 0, slider.getWidth(), slider.getHeight(), false);
             else
                 g.drawImage (image, 0, height * .05, width, height + sliderRadius, 0, 0, slider.getWidth(), slider.getHeight(), false);
 
@@ -782,7 +782,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics& g, int x, int y,
             width = width - 8;
             g.setColour (Colours::whitesmoke);
             g.setOpacity (0.6);
-            const float midPoint = (width / 2.f + sliderRadius) + 3;
+            const float midPoint = (width / 2.f + sliderRadius) + 4;
             const float markerGap = width / 9.f;
             g.drawLine (midPoint, height * 0.25, midPoint, height * 0.75, 1.5);
             g.setOpacity (0.3);
@@ -798,7 +798,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics& g, int x, int y,
             g.setOpacity (0.1);
             g.fillRoundedRectangle (sliderRadius, height * 0.44, width * 1.021, height * 0.15, height * 0.05); //for light effect
             g.setColour (Colour::fromRGBA (5, 5, 5, 255));
-            g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.016, height * 0.15, height * 0.05); //main rectangle
+            g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.10, height * 0.15, height * 0.05); //main rectangle
         }
 
         const float scale = trackerThickness;
