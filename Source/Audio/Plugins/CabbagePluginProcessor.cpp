@@ -639,15 +639,15 @@ void CabbagePluginProcessor::getMacros(StringArray &linesFromCsd) {
                         csdLine.substring(csdLine.indexOf(tokens[1]) + tokens[1].length()) + " ";
                 macroText.set("$" + tokens[1], " " + currentMacroText);
                 tempMacroNames.append("$" + tokens[1]);
-                tempMacroStrings.append(currentMacroText.trim());
+                tempMacroStrings.append(" "+currentMacroText.trim());
                 macroNames = tempMacroNames;
                 macroStrings = tempMacroStrings;
             }
         }
     }
 
-    macroText.set("$SCREEN_WIDTH", " " + String(screenWidth));
-    macroText.set("$SCREEN_HEIGHT", " " + String(screenHeight));
+    macroText.set("$SCREEN_WIDTH", String(screenWidth));
+    macroText.set("$SCREEN_HEIGHT", String(screenHeight));
     macroNames.append("$SCREEN_WIDTH");
     macroNames.append("$SCREEN_HEIGHT");
     macroStrings.append(String(screenWidth));
@@ -665,7 +665,7 @@ void CabbagePluginProcessor::expandMacroText(String &line, ValueTree wData) {
 
 
     StringArray tokens;
-    tokens.addTokens(line, " ,");
+    tokens.addTokens(line.replace("(", "( "), " ,");
 
     for (auto token : tokens) {
         if (token.startsWith("$")) {
@@ -674,6 +674,7 @@ void CabbagePluginProcessor::expandMacroText(String &line, ValueTree wData) {
 
                 if (macro.name.toString() == stringToReplace) {
                     line = line.replace(stringToReplace, macro.value.toString());
+                    //CabbageUtilities::debug(line);
                 }
             }
         }
