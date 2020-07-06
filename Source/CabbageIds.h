@@ -356,6 +356,7 @@ public:
         add ("fontcolor:1");
         add ("basechannel");
         add ("popupprefix");
+        add ("automation");
         add ("autoupdate");
         add ("matrixsize");
         add ("fontcolour");
@@ -515,6 +516,7 @@ namespace CabbageIdentifierIds
 	static const Identifier arraysize = "arraysize";
 	static const Identifier arrowbackgroundcolour = "arrowbackgroundcolour";
 	static const Identifier arrowcolour = "arrowcolour";
+    static const Identifier automation = "automation";
 	static const Identifier author = "author";
 	static const Identifier backgroundcolour = "backgroundcolour";
 	static const Identifier ballcolour = "ballcolour";

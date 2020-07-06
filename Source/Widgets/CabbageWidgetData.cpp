@@ -36,6 +36,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, "scalex", 1);
     setProperty (widgetData, "scaley", 1);
     setProperty (widgetData, "resize", 0);
+    setProperty (widgetData, "automation", 0);
     setProperty (widgetData, CabbageIdentifierIds::active, 1);
     setProperty (widgetData, CabbageIdentifierIds::parentdir, "");
     setProperty (widgetData, CabbageIdentifierIds::manufacturer, "CabbageAudio");
@@ -365,45 +366,46 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             //=========== floats ===============================
-            case HashStringToInt ("surrogatelinenumber"):
-            case HashStringToInt ("imgdebug"):
-            case HashStringToInt ("middlec"):
-            case HashStringToInt ("keypressbaseoctave"):
-            case HashStringToInt ("fill"):
-            case HashStringToInt ("updaterate"):
-            case HashStringToInt ("keywidth"):
-            case HashStringToInt ("pivoty"):
-            case HashStringToInt ("ffttablenumber"):
-            case HashStringToInt ("pivotx"):
-            case HashStringToInt ("increment"):
-            case HashStringToInt ("sliderskew"):
-            case HashStringToInt ("visible"):
             case HashStringToInt ("active"):
-            case HashStringToInt ("latched"):
+            case HashStringToInt ("automation"):
             case HashStringToInt ("alpha"):
             case HashStringToInt ("corners"):
+            case HashStringToInt ("ffttablenumber"):
+            case HashStringToInt ("fill"):
             case HashStringToInt ("guirefresh"):
-            case HashStringToInt ("textbox"):
-            case HashStringToInt ("valuetextbox"):
-            case HashStringToInt ("velocity"):
-            case HashStringToInt ("outlinethickness"):
+            case HashStringToInt ("imgdebug"):
+            case HashStringToInt ("increment"):
+            case HashStringToInt ("keypressbaseoctave"):
+            case HashStringToInt ("keywidth"):
+            case HashStringToInt ("latched"):
             case HashStringToInt ("linethickness"):
-            case HashStringToInt ("trackerthickness"):
-            case HashStringToInt ("trackerinsideradius"):
-            case HashStringToInt ("trackeroutsideradius"):
-            case HashStringToInt ("value"):
-            case HashStringToInt ("valuex"):
-            case HashStringToInt ("valuey"):
-            case HashStringToInt ("zoom"):
-            case HashStringToInt ("wrap"):
+            case HashStringToInt ("markerend"):
+            case HashStringToInt ("markerstart"):
+            case HashStringToInt ("markerthickness"):
+            case HashStringToInt ("middlec"):
+            case HashStringToInt ("mouseinteraction"):
+            case HashStringToInt ("outlinethickness"):
+            case HashStringToInt ("pivotx"):
+            case HashStringToInt ("pivoty"):
             case HashStringToInt ("readonly"):
             case HashStringToInt ("scrollbars"):
+            case HashStringToInt ("sidechain"):
+            case HashStringToInt ("sliderskew"):
+            case HashStringToInt ("surrogatelinenumber"):
+            case HashStringToInt ("textbox"):
             case HashStringToInt ("titlebargradient"):
-            case HashStringToInt ("markerthickness"):
-            case HashStringToInt ("mouseinteraction"):
-            case HashStringToInt ("markerstart"):
-            case HashStringToInt ("markerend"):
-			case HashStringToInt ("sidechain"):
+            case HashStringToInt ("trackerinsideradius"):
+            case HashStringToInt ("trackeroutsideradius"):
+            case HashStringToInt ("trackerthickness"):
+            case HashStringToInt ("updaterate"):
+            case HashStringToInt ("value"):
+            case HashStringToInt ("valuetextbox"):
+            case HashStringToInt ("valuex"):
+            case HashStringToInt ("valuey"):
+            case HashStringToInt ("velocity"):
+            case HashStringToInt ("visible"):
+            case HashStringToInt ("wrap"):
+            case HashStringToInt ("zoom"):
                 if (getStringProp (widgetData, CabbageIdentifierIds::channeltype) == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else

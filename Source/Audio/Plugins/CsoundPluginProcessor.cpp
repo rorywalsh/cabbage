@@ -356,6 +356,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("WINDOWS", 1.0);
     }
 
+    csound->SetChannel ("AUTOMATION", 0.0);
 #if !defined(Cabbage_IDE_Build)
     PluginHostType pluginType;
     if (pluginType.isFruityLoops())

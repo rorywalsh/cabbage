@@ -138,6 +138,7 @@ private:
     int samplesInBlock = 64;
 	int screenWidth, screenHeight;
 	bool isUnityPlugin = false;
+    int automationMode = 0;
 
 
 };

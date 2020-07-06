@@ -129,6 +129,10 @@ public:
         return breakPointData.valueTree;
     }
 
+    int getAutomationMode()
+    {
+       return csound->GetControlChannel("AUTOMATION");
+    }
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     int checkTable (int tableNum);

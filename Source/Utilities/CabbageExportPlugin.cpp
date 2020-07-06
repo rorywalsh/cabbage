@@ -57,17 +57,18 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 	            fileExtension = "dll";
         }
 
-
+        const String pluginDesc = String(JucePlugin_Desc);
+        
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynth." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Synth." + fileExtension);
         else  if (type == "VST" || type == "AU" || type == "VST3")
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffect." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Effect." + fileExtension);
         else  if (type == "AUMIDIFx")
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginMIDIEffect." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"MIDIEffect." + fileExtension);
         else if (type.contains (String ("LV2-ins")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginSynthLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"SynthLV2." + fileExtension);
         else if (type.contains (String ("LV2-fx")))
-            pluginFilename = currentApplicationDirectory + String ("/CabbagePluginEffectLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"EffectLV2." + fileExtension);
         else if (type == "VCVRack")
         {
             fileExtension = "";
@@ -201,6 +202,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
+        
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/CabbagePlugin.csd");
         else if(fileExtension.containsIgnoreCase("vst"))
