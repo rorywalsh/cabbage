@@ -24,10 +24,10 @@ sudo installer -pkg csound6.13-MacOS_x86_64.pkg -target /
 sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 
 cd $AGENT_BUILDDIRECTORY
-git clone https://github.com/WeAreROLI/JUCE.git
+git clone https://github.com/juce-framework/JUCE.git
 touch JUCE/
 cd $AGENT_BUILDDIRECTORY/JUCE
-git checkout master
+https://github.com/juce-framework/JUCE.git
 cd $AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
