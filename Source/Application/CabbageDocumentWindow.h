@@ -65,7 +65,13 @@ public:
     ApplicationCommandTarget* getNextCommandTarget() override   {        return findFirstTargetParentComponent();    }
     ApplicationCommandManager& getCommandManager() {     return commandManager;  }
     void exportExamplesToPlugins(String type);
-
+    
+    void openFile(String file)
+    {
+        if(content)
+            content->openFile(file);
+    }
+    
 private:
     //=======================================================
     ApplicationCommandManager commandManager;
