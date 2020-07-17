@@ -702,24 +702,62 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName()))
         {
-            param->beginChangeGesture();
             param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getValue()));
-            param->endChangeGesture();
         }
     }
     else
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
-            param->beginChangeGesture();
             param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMinValue()));
-            param->endChangeGesture();
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_max"))
         {
-            param->beginChangeGesture();
             param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMaxValue()));
+        }
+    }
+}
+void CabbagePluginEditor::sliderDragStarted(Slider* slider)
+{
+    if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+        {
+            param->beginChangeGesture();
+        }
+    }
+    else
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_min"))
+        {
+            param->beginChangeGesture();
+        }
+
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_max"))
+        {
+            param->beginChangeGesture();
+        }
+    }
+}
+void CabbagePluginEditor::sliderDragEnded(Slider* slider)
+{
+    if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+        {
+            param->endChangeGesture();
+        }
+    }
+    else
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_min"))
+        {
+            param->endChangeGesture();
+        }
+
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_max"))
+        {
             param->endChangeGesture();
         }
     }

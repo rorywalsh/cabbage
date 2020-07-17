@@ -194,6 +194,8 @@ public:
     void toggleButtonState (Button* button, bool state);
     void comboBoxChanged (ComboBox* combo) override;
     void sliderValueChanged (Slider* slider) override;
+    void sliderDragStarted(Slider* slider) override;
+    void sliderDragEnded(Slider* slider) override;
     //=============================================================================
     CabbageAudioParameter* getParameterForComponent (const String name);
     //=============================================================================

@@ -1067,8 +1067,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 			CabbageIdentifierIds::type);
 
 		const String chann = channels[0];
-
-
+        
 		if (channels.size() == 1 && channels[0].isNotEmpty()) {
 
 			if (value.isString() == false) 
@@ -1084,7 +1083,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
                         for (auto param : getParameters())
                         {
                             if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
-                            {
+                            {  
                                 if (cabbageParam->channel == channels[0].toUTF8())
                                 {
                                     param->beginChangeGesture();
