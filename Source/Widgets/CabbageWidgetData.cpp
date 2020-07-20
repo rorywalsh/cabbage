@@ -379,6 +379,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("keywidth"):
             case HashStringToInt ("latched"):
             case HashStringToInt ("linethickness"):
+            case HashStringToInt ("latency"):
             case HashStringToInt ("markerend"):
             case HashStringToInt ("markerstart"):
             case HashStringToInt ("markerthickness"):

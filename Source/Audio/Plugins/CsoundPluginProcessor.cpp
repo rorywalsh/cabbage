@@ -217,8 +217,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         const String version = String("Cabbage version:")+ProjectInfo::versionString+String("\n");
         csound->Message(version.toRawUTF8());
 
-		this->setLatencySamples(csound->GetKsmps());
-	}
+    }
 	else
 		CabbageUtilities::debug("Csound could not compile your file?");
 
@@ -236,9 +235,17 @@ void CsoundPluginProcessor::createFileLogger (File csdFile)
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 {
+    
+    this->setLatencySamples(csound->GetKsmps());
+    
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);
+        if(typeOfWidget == CabbageWidgetTypes::form)
+        {
+            const int latency = CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency);
+            this->setLatencySamples(latency);
+        }
 
         if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channeltype) == "string")
         {

@@ -397,6 +397,7 @@ public:
         add ("velocity");
         add ("amprange");
         add ("celldata");
+        add ("latency");
         add ("cvinput");
         add ("color:0");
         add ("caption");
@@ -586,6 +587,7 @@ namespace CabbageIdentifierIds
 	static const Identifier latched = "latched";
 	static const Identifier left = "left";
 	static const Identifier linenumber = "linenumber";
+    static const Identifier latency = "latency";
 	static const Identifier linethickness = "linethickness";
 	static const Identifier logger = "logger";
 	static const Identifier macrostrings = "macrostrings";
