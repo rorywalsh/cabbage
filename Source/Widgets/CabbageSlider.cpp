@@ -93,7 +93,8 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     slider.setSkewFactor (sliderSkew);
     slider.setRange (min, max, sliderIncrement);
 
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext) == "0")
+    const String popup = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext);
+    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext) == "0" || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext)=="")
         shouldDisplayPopup = false;
     else
         shouldDisplayPopup = true;
@@ -125,7 +126,8 @@ void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
 {
     if (shouldShowTextBox > 0)
     {
-        shouldDisplayPopup = false;
+        if(!shouldDisplayPopup)
+            shouldDisplayPopup = false;
         setTextBoxWidth();
     }
     else
