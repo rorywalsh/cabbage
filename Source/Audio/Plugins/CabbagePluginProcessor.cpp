@@ -159,7 +159,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
         }
         
         if (shouldCreateParameters)
-            createParameters();
+            createCabbageParameters();
 
         csoundChanList = NULL;
 
@@ -692,14 +692,25 @@ void CabbagePluginProcessor::updateWidgets(String csdText) {
     editor->updateLayoutEditorFrames();
 }
 
+void CabbagePluginProcessor::addCabbageParameter(CabbageAudioParameter* parameter)
+{
+    parameters.add(parameter);
+    if (parameter->getIsAutomatable()) {
+        addParameter(parameter->releaseHostParameter());
+    }
+}
+
 //==============================================================================
 // create parameters for sliders, buttons, comboboxes, checkboxes, encoders and xypads.
 // Other widgets can communicate with Csound, but they cannot be automated
-void CabbagePluginProcessor::createParameters() 
+void CabbagePluginProcessor::createCabbageParameters()
 {
     CabbageControlWidgetStrings controlWidgetTypes;
 
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
+        const bool automatable = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                CabbageIdentifierIds::automatable);
+        
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                      CabbageIdentifierIds::type);
 
@@ -726,11 +737,14 @@ void CabbagePluginProcessor::createParameters()
 						CabbageIdentifierIds::maxx);
 					const float maxY = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::maxy);
-
-					addParameter(new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
-                                                           name + "_x", minX, maxX, value, increment, 1));
-                    addParameter(new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
-                                                           name + "_y", minY, maxY, value, increment, 1));
+                    
+                    auto* xParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
+                                                             name + "_x", minX, maxX, value, increment, 1, automatable);
+                    auto* yParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
+                                                             name + "_y", minY, maxY, value, increment, 1, automatable);
+                    
+                    addCabbageParameter(xParam);
+                    addCabbageParameter(yParam);
                 } 
 				else if (typeOfWidget.contains("range")) 
 				{
@@ -750,12 +764,14 @@ void CabbagePluginProcessor::createParameters()
                                                                         CabbageIdentifierIds::min);
                         const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                         CabbageIdentifierIds::max);
-                        addParameter(
-                                new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
-                                                          name + "_min", min, max, minValue, increment, skew));
-                        addParameter(
-                                new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
-                                                          name + "_max", min, max, maxValue, increment, skew));
+                        
+                        auto* minParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
+                                                                   name + "_min", min, max, minValue, increment, skew, automatable);
+                        auto* maxParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
+                                                                   name + "_max", min, max, maxValue, increment, skew, automatable);
+                        
+                        addCabbageParameter(minParam);
+                        addCabbageParameter(maxParam);
                     }
                 } 
 				else if (typeOfWidget == CabbageWidgetTypes::combobox && channel.isNotEmpty()) 
@@ -773,9 +789,10 @@ void CabbagePluginProcessor::createParameters()
 						const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::min);
 						const float max = numOfFiles;
-						addParameter(
-							new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-								min, max, value, 1, 1));
+                        
+                        auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+                                                                min, max, value, 1, 1, automatable);
+                        addCabbageParameter(param);
 					}
 					else
 					{
@@ -783,9 +800,10 @@ void CabbagePluginProcessor::createParameters()
 							CabbageIdentifierIds::min);
 						const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::comborange);
-						addParameter(
-							new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-								min, max, value, 1, 1));
+                        
+                        auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+                                                                min, max, value, 1, 1, automatable);
+                        addCabbageParameter(param);
 					}
                 } 
 				else if (typeOfWidget.contains("slider") && channel.isNotEmpty()) 
@@ -800,17 +818,19 @@ void CabbagePluginProcessor::createParameters()
                             CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::max) > min ?
                             CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::max) :
                             min + 1;
-
-                    addParameter(
-                            new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-                                                      min, max, value, increment, skew));
+                    
+                    auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+                                                            min, max, value, increment, skew, automatable);
+                    addCabbageParameter(param);
                 }
 				else 
 				{
                     if (channel.isNotEmpty())
-                        addParameter(
-                                new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-                                                          0, 1, value, 1, 1));
+                    {
+                        auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+                                                                0, 1, value, 1, 1, automatable);
+                        addCabbageParameter(param);
+                    }
                 }
             }
         }
@@ -1010,25 +1030,22 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
             else
             {
                 if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
-                   && CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
-					CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
+                    && CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
+                    CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
                     CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
                                                   e->getAttributeValue(i).getFloatValue());
-                    //now make changes parameter changes so host can see them..
-                    //getParameters().
+                //now make changes parameter changes so host can see them..
+                //getParameters().
                 
-                    for (auto param : getParameters())
+                for (auto cabbageParam : getCabbageParameters())
+                {
+                    if (widgetName == cabbageParam->getWidgetName())
                     {
-                        if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
-                        {
-                            if (widgetName == cabbageParam->getWidgetName())
-                            {
-                                param->beginChangeGesture();
-                                param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (e->getAttributeValue(i).getFloatValue()));
-                                param->endChangeGesture();
-                            }
-                        }
+                        cabbageParam->beginChangeGesture();
+                        cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1 (e->getAttributeValue(i).getFloatValue()));
+                        cabbageParam->endChangeGesture();
                     }
+                }
             }
         }
     }
@@ -1080,16 +1097,13 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
                     const int automationMode = getAutomationMode();
                     if (automationMode == 1)
                     {
-                        for (auto param : getParameters())
+                        for (auto cabbageParam : getCabbageParameters())
                         {
-                            if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
-                            {  
-                                if (cabbageParam->channel == channels[0].toUTF8())
-                                {
-                                    param->beginChangeGesture();
-                                    param->setValueNotifyingHost(((CabbageAudioParameter*)param)->range.convertTo0to1 (getCsound()->GetChannel(channels[0].toUTF8())));
-                                    param->endChangeGesture();
-                                }
+                            if (cabbageParam->getChannel() == channels[0].toUTF8())
+                            {
+                                cabbageParam->beginChangeGesture();
+                                cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1 (getCsound()->GetChannel(channels[0].toUTF8())));
+                                cabbageParam->endChangeGesture();
                             }
                         }
                     }

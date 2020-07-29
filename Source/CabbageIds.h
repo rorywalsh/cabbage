@@ -356,6 +356,7 @@ public:
         add ("fontcolor:1");
         add ("basechannel");
         add ("popupprefix");
+        add ("automatable");
         add ("automation");
         add ("autoupdate");
         add ("matrixsize");
@@ -518,6 +519,7 @@ namespace CabbageIdentifierIds
 	static const Identifier arrowbackgroundcolour = "arrowbackgroundcolour";
 	static const Identifier arrowcolour = "arrowcolour";
     static const Identifier automation = "automation";
+    static const Identifier automatable = "automatable";
 	static const Identifier author = "author";
 	static const Identifier backgroundcolour = "backgroundcolour";
 	static const Identifier ballcolour = "ballcolour";
@@ -883,7 +885,7 @@ public:
 static const char* const CsoundKeywords[] =
 {
     "scale", "!=", "#define", "#include", "#undef", "#ifdef", "#ifndef", "$", "%", "&&", ">", ">=", "<", "<=", "*", "+", "-", "/", "=", "=+", "==", "ˆ", "||", "0dbfs", "<<", ">>", "&",
-    "|", "¬", "#", "a", "alwayson", "ampmidid", "ATSadd", "ATSaddnz", "ATSbufread", "ATScross", "ATSinfo", "ATSinterpread", "ATSread", "ATSreadnz", "ATSpartialtap", "ATSsinnoi", "barmodel", "bformenc1",
+    "|", "¬", "#", "a", "alwayson", "ampmidid", "ATSadd", "ATSaddnz", "ATSbufread", "ATScross", "ATSinfo", "ATSinterpread", "ATSread", "ATSreadnz", "ATSpartialtap", "ATSsinnoi", "automatable", "barmodel", "bformenc1",
     "bformdec1", "binit", "cauchyi", "cell", "centroid", "chebyshevpoly", "chnrecv", "chnsend", "chuap", "combinv", "compress", "compileorc", "compilestr", "connect", "copya2ftab", "copyf2array", "cosseg",
     "cossegb", "cossegr", "cpsmidinn", "cpumeter", "crossfm", "date", "dates", "dcblock2", "diskgrain", "distort", "doppler", "dust", "dust2", "ephasor", "eqfil", "evalstr", "expcurve", "exprandi",
     "expsegb", "expsegba", "faustaudio", "faustcompile", "faustctl", "faustgen", "fareylen", "fareyleni", "ficlose", "filebit", "filevalid", "array", "FLcloseButton", "FLexecButton", "FLgroup_end", "FLhvsBox",
