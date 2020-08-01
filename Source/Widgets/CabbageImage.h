@@ -46,6 +46,7 @@ public:
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void paint (Graphics& g) override;
     void mouseDown (const MouseEvent& e) override;
+    void updateImage(File imgFile);
 
     void valueTreeChildAdded (ValueTree&, ValueTree&) override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
