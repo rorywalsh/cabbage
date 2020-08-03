@@ -596,12 +596,12 @@ void CabbagePluginEditor::insertLight (ValueTree cabbageWidgetData)
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
-    for (auto param : processor.getParameters())
+    for (auto param : processor.getCabbageParameters())
     {
         if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
         {
             if (name == cabbageParam->getWidgetName())
-                return dynamic_cast<CabbageAudioParameter*> (cabbageParam);
+                return cabbageParam;
         }
     }
 
@@ -617,9 +617,9 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 
         //preset combos work with 0 index, Cabbage string combos start at 1..
         if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
-            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()));
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
         else
-            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()+1));
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
 
         param->endChangeGesture();
     }
@@ -702,19 +702,19 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName()))
         {
-            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getValue()));
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getValue()));
         }
     }
     else
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
-            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMinValue()));
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getMinValue()));
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_max"))
         {
-            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMaxValue()));
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getMaxValue()));
         }
     }
 }

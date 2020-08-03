@@ -38,6 +38,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, "resize", 0);
     setProperty (widgetData, "automation", 0);
     setProperty (widgetData, CabbageIdentifierIds::active, 1);
+    setProperty (widgetData, CabbageIdentifierIds::automatable, 0);
     setProperty (widgetData, CabbageIdentifierIds::parentdir, "");
     setProperty (widgetData, CabbageIdentifierIds::manufacturer, "CabbageAudio");
     setProperty (widgetData, CabbageIdentifierIds::imgdebug, 0);
@@ -368,6 +369,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             //=========== floats ===============================
             case HashStringToInt ("active"):
             case HashStringToInt ("automation"):
+            case HashStringToInt ("automatable"):
             case HashStringToInt ("alpha"):
             case HashStringToInt ("corners"):
             case HashStringToInt ("ffttablenumber"):

@@ -76,7 +76,9 @@ public:
     void setWidthHeight();
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
-    void createParameters();
+    // use this instead of AudioProcessor::addParameter
+    void addCabbageParameter(CabbageAudioParameter* parameter);
+    void createCabbageParameters();
     void updateWidgets (String csdText);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
     void getMacros (StringArray& csdText);
@@ -123,6 +125,10 @@ public:
 		csdArray.addLines(csdFile.loadFileAsString());
 		return csdArray;
 	}
+    
+    // use this instead of AudioProcessor::getParameters
+    const OwnedArray<CabbageAudioParameter>& getCabbageParameters() const { return parameters; }
+    
 private:
     controlChannelInfo_s* csoundChanList;
     int numberOfLinesInPlantCode = 0;
@@ -139,47 +145,159 @@ private:
 	int screenWidth, screenHeight;
 	bool isUnityPlugin = false;
     int automationMode = 0;
-
+    OwnedArray<CabbageAudioParameter> parameters;
 
 };
 
-class CabbageAudioParameter : public AudioParameterFloat
+
+/*
+ This is a thin shim around juce::AudioParameterFloat that allows us to use a subset of its interface
+ while being able to intercept calls to the host for parameters that are non-automatable.
+ */
+
+class CabbageAudioParameter
 {
-
+    
 public:
-	CabbageAudioParameter(CabbagePluginProcessor* owner, ValueTree wData, Csound& csound, String channel, String name, float minValue, float maxValue, float def, float incr, float skew)
-		: AudioParameterFloat(name, channel, NormalisableRange<float>(minValue, maxValue, incr, skew), def), channel(channel), widgetName(name), currentValue(def), owner(owner)
-	{
-		// widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
-        if(name.contains("combobox"))
-            isCombo = true;
-	}
-	~CabbageAudioParameter() {}
+    CabbageAudioParameter(CabbagePluginProcessor* owner,
+                          ValueTree wData,
+                          Csound& csound,
+                          const String& channelToUse,
+                          const String& name,
+                          float minValue,
+                          float maxValue,
+                          float def,
+                          float incr,
+                          float skew,
+                          bool automatable = true)
+    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, minValue, maxValue, def, incr, skew, isCombo(name))),
+    widgetName(name),
+    isAutomatable(automatable),
+    owner(owner)
+    {
 
-	float getValue() const override
-	{
+    }
+    
+    ~CabbageAudioParameter()
+    {
+        if (!hostParameterReleased)
+        {
+            delete parameter;
+        }
+    }
+    
+    void setValue(float newValue)
+    {
+        parameter->setValue(newValue);
+    }
+    
+    float getValue() const
+    {
+        return parameter->getValue();
+    }
+    
+    void setValueNotifyingHost(float newValue)
+    {
+        if (isAutomatable)
+        {
+            parameter->setValueNotifyingHost(newValue);
+        }
+        else
+        {
+            setValue(newValue);
+        }
+    }
+    
+    void beginChangeGesture()
+    {
+        if (isAutomatable)
+        {
+            parameter->beginChangeGesture();
+        }
+    }
+    
+    void endChangeGesture()
+    {
+        if (isAutomatable)
+        {
+            parameter->endChangeGesture();
+        }
+    }
+    
+    AudioParameterFloat* releaseHostParameter()
+    {
+        hostParameterReleased = true;
+        return parameter;
+    }
+    
+    const NormalisableRange<float>& getNormalisableRange() const { return parameter->getNormalisableRange(); }
+    
+    const String getChannel() const { return parameter->getChannel(); }
+    const String getWidgetName() { return widgetName; }
+    bool getIsAutomatable() const { return isAutomatable; }
+    
+private:
+    class CabbageHostParameter : public AudioParameterFloat
+    {
+    public:
+        virtual ~CabbageHostParameter() { }
+        float getValue() const override { return range.convertTo0to1(currentValue); }
         
-		return range.convertTo0to1(currentValue);
-	}
-
-	void setValue(float newValue) override
-	{
-		//csound.SetChannel (channel.toUTF8(), range.convertFrom0to1 (newValue));
-        currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
-		owner->setCabbageParameter(channel, currentValue);
-
-	}
-
-	const String getWidgetName() { return widgetName; }
-
-	String channel;
-	String widgetName;
-	float currentValue;
-    bool isCombo = false;
-
-	CabbagePluginProcessor* owner;
+        void setValue(float newValue) override
+        {
+            currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
+            processor->setCabbageParameter(channel, currentValue);
+        }
+        
+        const String& getChannel() const { return channel; }
+        
+    private:
+        CabbageHostParameter(CabbageAudioParameter& owner,
+                             CabbagePluginProcessor* proc,
+                             ValueTree wData,
+                             Csound& csound,
+                             const String& channelToUse,
+                             const String& name,
+                             float minValue,
+                             float maxValue,
+                             float def,
+                             float incr,
+                             float skew,
+                             bool isCombo)
+        : AudioParameterFloat(name, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
+        channel(channelToUse),
+        currentValue(def),
+        isCombo(isCombo),
+        owner(owner),
+        processor(proc)
+        {
+            
+        }
+        
+        const String channel;
+        float currentValue;
+        bool isCombo = false;
+        
+        CabbageAudioParameter& owner;
+        CabbagePluginProcessor* processor;
+        
+        friend class CabbageAudioParameter;
+    };
+    
+    CabbageHostParameter* parameter;
+    bool hostParameterReleased = false;
+    
+    const String widgetName;
+    const bool isAutomatable = true;
+    
+    CabbagePluginProcessor* owner;
+    
+    bool isCombo(const String name)
+    {
+        if(name.contains("combobox"))
+            return true;
+        return false;
+    }
 };
-
-
 
 #endif  // CABBAGEPLUGINPROCESSOR_H_INCLUDED
