@@ -96,7 +96,8 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::height, 150);
     setProperty (widgetData, CabbageIdentifierIds::textboxoutlinecolour, Colour (0xb2808080).toString());
     var channels;
-    channels.append ("rangeslider");
+    channels.append ("rangesliderMin");
+    channels.append ("rangesliderMax");
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::min, 0);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
