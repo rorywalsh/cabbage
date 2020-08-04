@@ -120,12 +120,38 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
-
-        for (int i = 0; i < items.size(); i++)
+        bool createSubMenu = false;
+        PopupMenu subMenu;
+        for( int i = 0 ; i < items.size(); i++)
+            if(items[i].toString().contains("subM:"))
+                createSubMenu = true;
+        
+        if(createSubMenu)
         {
-            const String item  = items[i].toString();
-            addItem (item, i + 1);
-            stringItems.add (item);
+            for( int i = 0 ; i < items.size(); i++)
+            {
+                
+                if(items[i].toString().contains("subM:"))
+                {
+                    //subMenu.clear();
+                    const String subMenuName = items[i].toString().substring(6);
+                    getRootMenu()->addSubMenu(subMenuName, subMenu);
+                }
+                
+                subMenu.addItem(i+1, items[i].toString());
+                stringItems.add (items[i]);
+                   
+                   
+            }
+        }
+        else{
+            for (int i = 0; i < items.size(); i++)
+            {
+                CabbageUtilities::debug(items[i].toString());
+                const String item  = items[i].toString();
+                addItem (item, i + 1);
+                stringItems.add (item);
+            }
         }
     }
     //if dealing with preset files...

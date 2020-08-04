@@ -250,7 +250,10 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
-            newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" +pluginDesc + "</string>");
+            if(fileExtension.containsIgnoreCase("component"))
+                newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + pluginDesc + "</string>");
+            else
+                newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + fc.getFileNameWithoutExtension() + "</string>");
             
 #endif
             newPList = newPList.replace (toReplace, pluginName);

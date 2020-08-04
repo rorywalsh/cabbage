@@ -95,6 +95,7 @@ public:
     static void setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setTextItemArrays (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
     static void setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable = true);
+    static void setComboItemArrays (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setImageFiles (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
     static void setShapes (StringArray strTokens, ValueTree widgetData);
     static void setBounds (StringArray strTokens, ValueTree widgetData);

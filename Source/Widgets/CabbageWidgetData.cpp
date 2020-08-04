@@ -345,7 +345,11 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("text"):
                 setTextItemArrays (strTokens, widgetData, getStringProp(widgetData, CabbageIdentifierIds::type));
                 break;
-
+            case HashStringToInt ("items:"):
+            case HashStringToInt ("text:"):
+                setComboItemArrays (strTokens, widgetData, identifierValueSet.identifier[indx]);
+                break;
+                
             case HashStringToInt ("populate"):
                 setPopulateProps (strTokens, widgetData);
                 break;
@@ -825,6 +829,35 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
     {
         setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
     }
+}
+
+
+void CabbageWidgetData::setComboItemArrays (StringArray strTokens, ValueTree widgetData, String identifier)
+{
+    const int menuIndex = identifier.substring (identifier.indexOf (":") + 1).getIntValue();
+    var items = getProperty (widgetData, CabbageIdentifierIds::text );
+    bool deleteItems = true;
+    for (int i = 0; i < items.size(); i++)
+    {
+        if(items[i].toString().contains("subM"))
+            deleteItems = false;
+    }
+    
+    if(deleteItems)
+        items.resize(0);
+
+    items.append("subM:"+strTokens[0].trim());
+    int comboRange = 0;
+    
+    for (int i = 1; i < strTokens.size(); i++)
+    {
+        items.append (strTokens[i].trim().trimCharactersAtEnd ("\"").trimCharactersAtStart ("\""));
+        comboRange = i + 1;
+    }
+
+    setProperty (widgetData, CabbageIdentifierIds::text, items);
+    setProperty (widgetData, CabbageIdentifierIds::comborange, comboRange);
+    
 }
 
 void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable)
