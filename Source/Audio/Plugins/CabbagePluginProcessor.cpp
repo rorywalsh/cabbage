@@ -711,6 +711,9 @@ void CabbagePluginProcessor::createCabbageParameters()
         const bool automatable = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                 CabbageIdentifierIds::automatable);
         
+        const String& suffix = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                    CabbageIdentifierIds::suffix);
+        
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                      CabbageIdentifierIds::type);
 
@@ -739,9 +742,11 @@ void CabbagePluginProcessor::createCabbageParameters()
 						CabbageIdentifierIds::maxy);
                     
                     auto* xParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
-                                                             name + "_x", minX, maxX, value, increment, 1, automatable);
+                                                             name + "_x", minX, maxX, value, increment, 1, automatable,
+                                                             suffix);
                     auto* yParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
-                                                             name + "_y", minY, maxY, value, increment, 1, automatable);
+                                                             name + "_y", minY, maxY, value, increment, 1, automatable,
+                                                             suffix);
                     
                     addCabbageParameter(xParam);
                     addCabbageParameter(yParam);
@@ -766,9 +771,11 @@ void CabbagePluginProcessor::createCabbageParameters()
                                                                         CabbageIdentifierIds::max);
                         
                         auto* minParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[0],
-                                                                   name + "_min", min, max, minValue, increment, skew, automatable);
+                                                                   name + "_min", min, max, minValue, increment, skew, automatable,
+                                                                   suffix);
                         auto* maxParam = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel[1],
-                                                                   name + "_max", min, max, maxValue, increment, skew, automatable);
+                                                                   name + "_max", min, max, maxValue, increment, skew, automatable,
+                                                                   suffix);
                         
                         addCabbageParameter(minParam);
                         addCabbageParameter(maxParam);
@@ -791,7 +798,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const float max = numOfFiles;
                         
                         auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-                                                                min, max, value, 1, 1, automatable);
+                                                                min, max, value, 1, 1, automatable, suffix);
                         addCabbageParameter(param);
 					}
 					else
@@ -802,7 +809,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 							CabbageIdentifierIds::comborange);
                         
                         auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-                                                                min, max, value, 1, 1, automatable);
+                                                                min, max, value, 1, 1, automatable, suffix);
                         addCabbageParameter(param);
 					}
                 } 
@@ -820,7 +827,7 @@ void CabbagePluginProcessor::createCabbageParameters()
                             min + 1;
                     
                     auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-                                                            min, max, value, increment, skew, automatable);
+                                                            min, max, value, increment, skew, automatable, suffix);
                     addCabbageParameter(param);
                 }
 				else 
@@ -828,7 +835,7 @@ void CabbagePluginProcessor::createCabbageParameters()
                     if (channel.isNotEmpty())
                     {
                         auto* param = new CabbageAudioParameter(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-                                                                0, 1, value, 1, 1, automatable);
+                                                                0, 1, value, 1, 1, automatable, suffix);
                         addCabbageParameter(param);
                     }
                 }

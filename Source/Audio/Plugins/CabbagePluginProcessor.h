@@ -169,8 +169,9 @@ public:
                           float def,
                           float incr,
                           float skew,
-                          bool automatable = true)
-    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, minValue, maxValue, def, incr, skew, isCombo(name))),
+                          bool automatable = true,
+                          const String& suffix = String())
+    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, suffix, minValue, maxValue, def, incr, skew, isCombo(name))),
     widgetName(name),
     isAutomatable(automatable),
     owner(owner)
@@ -249,6 +250,26 @@ private:
             processor->setCabbageParameter(channel, currentValue);
         }
         
+        String getText(float normalizedValue, int length) const override
+        {
+            // TODO: number of decimal places to display is hardcoded right now
+            String asText(range.convertFrom0to1(normalizedValue), 3);
+            
+            if (length > 0 && asText.length() + suffix.length() > length)
+            {
+                asText = asText.substring(0, asText.length() - suffix.length());
+            }
+            
+            asText += suffix;
+            
+            return asText;
+        }
+        
+        float getValueForText(const String& text) const override
+        {
+            return text.dropLastCharacters(suffix.length()).getFloatValue();
+        }
+        
         const String& getChannel() const { return channel; }
         
     private:
@@ -258,6 +279,7 @@ private:
                              Csound& csound,
                              const String& channelToUse,
                              const String& name,
+                             const String& suffixToUse,
                              float minValue,
                              float maxValue,
                              float def,
@@ -266,6 +288,7 @@ private:
                              bool isCombo)
         : AudioParameterFloat(name, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
         channel(channelToUse),
+        suffix(makeSuffix(suffixToUse)),
         currentValue(def),
         isCombo(isCombo),
         owner(owner),
@@ -275,11 +298,24 @@ private:
         }
         
         const String channel;
+        const String suffix { };
         float currentValue;
         bool isCombo = false;
         
         CabbageAudioParameter& owner;
         CabbagePluginProcessor* processor;
+        
+        String makeSuffix(const String& suffixToUse)
+        {
+            String newSuffix = "";
+            
+            if (suffixToUse.length() > 0)
+            {
+                newSuffix = " " + suffixToUse;
+            }
+            
+            return newSuffix;
+        }
         
         friend class CabbageAudioParameter;
     };

@@ -41,7 +41,9 @@ checkbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/shape.md !} 
 
-{! ./markdown/Widgets/Properties/text.md !} 
+{! ./markdown/Widgets/Properties/text.md !}
+
+{! ./markdown/Widgets/Properties/suffix.md !} 
 
 {! ./markdown/Widgets/Properties/value.md !} 
 

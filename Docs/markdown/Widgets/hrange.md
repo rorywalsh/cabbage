@@ -55,7 +55,9 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/tofront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetarray.md !}
+
+{! ./markdown/Widgets/Properties/suffix.md !} 
  
 <!--(End of identifiers)/-->
 

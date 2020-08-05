@@ -51,7 +51,9 @@ numberbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetarray.md !}
+
+{! ./markdown/Widgets/Properties/suffix.md !} 
 
 
 <!--(End of identifiers)/-->

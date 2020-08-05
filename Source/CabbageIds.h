@@ -422,6 +422,7 @@ public:
         add ("rangex");
         add ("rotate");
         add ("active");
+        add ("suffix");
         add ("shape");
         add ("screw");
         add ("popup");
@@ -667,6 +668,7 @@ namespace CabbageIdentifierIds
 	static const Identifier startpoint = "startpoint";
 	static const Identifier startpos = "startpos";
 	static const Identifier style = "style";
+    static const Identifier suffix = "suffix";
 	static const Identifier surrogatelinenumber = "surrogatelinenumber";
 	static const Identifier tabbed = "tabbed";
 	static const Identifier tablebackgroundcolour = "tablebackgroundcolour";
@@ -989,7 +991,7 @@ static const char* const CsoundKeywords[] =
     "readscratch", "rect2pol", "remoteport", "remove", "resyn", "return", "rewindscore", "rfft", "rifft", "round", "scalearray", "scoreline", "scoreline_i", "serialBegin", "serialEnd", "serialFlush", "serialPrint",
     "serialRead", "serialWrite", "serialWrite_i", "setcol", "setrow", "setscorepos", "sflooper", "shiftin", "shiftout", "signalflowgraph", "signum", "slicearray", "slider16table", "slider16tablef", "slider32table",
     "slider32tablef", "slider64table", "slider64tablef", "slider8table", "slider8tablef", "sliderKawai", "sockrecv", "sockrecvs", "socksend", "socksends", "strcatk", "strchar", "strchark", "strecv", "strfromurl",
-    "strindex", "strindexk", "strlen", "strlenk", "strlower", "strlowerk", "strrindex", "strrindexk", "strsub", "strsubk", "strupper", "strupperk", "stsend", "sumarray", "syncloop", "syncphasor", "system", "system_i",
+    "strindex", "strindexk", "strlen", "strlenk", "strlower", "strlowerk", "strrindex", "strrindexk", "strsub", "strsubk", "strupper", "strupperk", "stsend", "suffix", "sumarray", "syncloop", "syncphasor", "system", "system_i",
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
     "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
