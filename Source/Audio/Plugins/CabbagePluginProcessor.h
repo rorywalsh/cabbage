@@ -77,7 +77,7 @@ public:
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     // use this instead of AudioProcessor::addParameter
-    void addCabbageParameter(CabbageAudioParameter* parameter);
+    void addCabbageParameter(std::unique_ptr<CabbageAudioParameter> parameter);
     void createCabbageParameters();
     void updateWidgets (String csdText);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
