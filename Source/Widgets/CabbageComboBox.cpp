@@ -122,32 +122,43 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
         bool createSubMenu = false;
         PopupMenu subMenu;
+        std:vector<StringArray> menus;
+        int menuIndex = -1;
         for( int i = 0 ; i < items.size(); i++)
-            if(items[i].toString().contains("subM:"))
-                createSubMenu = true;
-        
-        if(createSubMenu)
         {
-            for( int i = 0 ; i < items.size(); i++)
+            if(items[i].toString().contains("subM:"))
             {
-                
-                if(items[i].toString().contains("subM:"))
-                {
-                    //subMenu.clear();
-                    const String subMenuName = items[i].toString().substring(6);
-                    getRootMenu()->addSubMenu(subMenuName, subMenu);
-                }
-                
-                subMenu.addItem(i+1, items[i].toString());
-                stringItems.add (items[i]);
-                   
-                   
+                menus.push_back(StringArray());
+                menuIndex++;
             }
+            
+            menus[menuIndex].add(items[i]);
+        }
+        
+        
+        
+        //if working with submenus....
+        menuIndex = 1;
+        if(menus.size()>0)
+        {
+            for( int i = 0 ; i < menus.size() ; i++)
+            {
+                subMenu.clear();
+                for( int x = 1 ; x < menus[i].size() ; x++)
+                {
+                    subMenu.addItem(menuIndex, menus[i][x]);
+                    menuIndex++;
+                    if(x == menus[i].size() - 1){
+                        const String subMenuName = menus[i][0].substring(6);
+                        getRootMenu()->addSubMenu(subMenuName, subMenu);
+                    }
+                }
+            }
+        
         }
         else{
             for (int i = 0; i < items.size(); i++)
             {
-                CabbageUtilities::debug(items[i].toString());
                 const String item  = items[i].toString();
                 addItem (item, i + 1);
                 stringItems.add (item);

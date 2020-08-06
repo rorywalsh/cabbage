@@ -852,8 +852,9 @@ void CabbageWidgetData::setComboItemArrays (StringArray strTokens, ValueTree wid
     for (int i = 1; i < strTokens.size(); i++)
     {
         items.append (strTokens[i].trim().trimCharactersAtEnd ("\"").trimCharactersAtStart ("\""));
-        comboRange = i + 1;
     }
+    
+    comboRange = items.size();
 
     setProperty (widgetData, CabbageIdentifierIds::text, items);
     setProperty (widgetData, CabbageIdentifierIds::comborange, comboRange);
