@@ -368,6 +368,7 @@ public:
         add ("tablecolor");
         add ("radiogroup");
         add ("macronames");
+        add ("monospaced");
         add ("ballcolour");
 		add ("keypressed");
         add ("scrollbars");
@@ -554,6 +555,7 @@ namespace CabbageIdentifierIds
     static const Identifier gapmarkers = "gapmarkers";
 	static const Identifier macronames = "macronames";
     static const Identifier manufacturer = "manufacturer";
+    static const Identifier monospaced = "monospaced";
 	static const Identifier ffttablenumber = "ffttablenumber";
 	static const Identifier file = "file";
 	static const Identifier filetype = "filetype";

@@ -393,6 +393,7 @@ void CabbageWidgetData::setCsoundOutputProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::monospaced, 0);
 }
 
 void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
