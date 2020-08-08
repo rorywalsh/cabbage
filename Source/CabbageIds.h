@@ -20,7 +20,7 @@
 #ifndef CABBAGECOMMANDIDS_H_INCLUDED
 #define CABBAGECOMMANDIDS_H_INCLUDED
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 namespace CommandIDs
 {
