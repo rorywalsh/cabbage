@@ -24,7 +24,7 @@
   ==============================================================================
 */
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "InternalFilters.h"
 #include "FilterGraph.h"
 

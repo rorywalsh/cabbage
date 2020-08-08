@@ -17,7 +17,7 @@
   02111-1307 USA
 */
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "Application/CabbageDocumentWindow.h"
 #include "Cabbage.h"
 #include "Utilities/CabbageUtilities.h"

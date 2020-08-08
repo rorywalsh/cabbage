@@ -19,7 +19,7 @@
 #ifndef CABBAGEIDELOOKANDFEEL_H_INCLUDED
 #define CABBAGEIDELOOKANDFEEL_H_INCLUDED
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "../Settings/CabbageSettings.h"
 #include "../CabbageIds.h"
 #include "../Utilities/CabbageUtilities.h"

@@ -20,7 +20,7 @@
 #ifndef PLUGINPROCESSOR_H_INCLUDED
 #define PLUGINPROCESSOR_H_INCLUDED
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include <csound.hpp>
 #include <csdebug.h>
 #include "csdl.h"

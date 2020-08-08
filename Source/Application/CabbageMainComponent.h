@@ -21,7 +21,7 @@
 #define CABBAGECONTENT_H_INCLUDED
 
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "../CodeEditor/CabbageEditorContainer.h"
 #include "../BinaryData/CabbageBinaryData.h"
 #include "../GUIEditor/CabbagePropertiesPanel.h"

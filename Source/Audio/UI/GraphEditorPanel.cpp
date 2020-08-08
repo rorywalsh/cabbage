@@ -24,7 +24,7 @@
  ==============================================================================
  */
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "GraphEditorPanel.h"
 #include "../Filters/InternalFilters.h"
 #include "CabbageTransportComponent.h"

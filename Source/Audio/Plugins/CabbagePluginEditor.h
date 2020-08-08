@@ -20,7 +20,7 @@
 #ifndef CABBAGEPLUGINEDITOR_H_INCLUDED
 #define CABBAGEPLUGINEDITOR_H_INCLUDED
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "CabbagePluginProcessor.h"
 
 #ifdef Cabbage_IDE_Build

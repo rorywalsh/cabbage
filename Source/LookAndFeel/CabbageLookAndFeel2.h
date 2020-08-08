@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #ifndef CABBAGELOOKANDFEEL2_H_INCLUDED
 #define CABBAGELOOKANDFEEL2_H_INCLUDED
 
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "../CabbageCommonHeaders.h"
 
 inline std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
