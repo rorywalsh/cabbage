@@ -39,12 +39,29 @@ CabbageCsoundConsole::CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor
 
     if (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE)
     {
-        const String initText ("===========================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n===========================");
+        const String initText ("========================================\nCsound output messages are only sent to\nthis widget when your Cabbage instrument\nis running in plugin mode.\n========================================");
         setText (initText);
     }
     else
         startTimer (100);
 
+    this->monospacedFont.setTypefaceName(Font::getDefaultMonospacedFontName());
+    setMonospaced(wData);
+}
+
+void CabbageCsoundConsole::setMonospaced(bool value)
+{
+    if (this->monospaced == value)
+    {
+        return;
+    }
+    this->monospaced = value;
+    applyFontToAllText(this->monospaced ? monospacedFont : defaultFont);
+}
+
+void CabbageCsoundConsole::setMonospaced(const ValueTree &valueTree)
+{
+    setMonospaced(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::style).contains("monospaced"));
 }
 
 void CabbageCsoundConsole::timerCallback()
@@ -69,6 +86,7 @@ void CabbageCsoundConsole::valueTreePropertyChanged (ValueTree& valueTree, const
 {
     setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
     setColour (TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
+    setMonospaced(valueTree);
     lookAndFeelChanged();
     repaint();
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
