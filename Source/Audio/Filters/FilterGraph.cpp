@@ -399,7 +399,7 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 					{
 						jassert(node->getProcessor() != nullptr);
 
-						if (auto w = getOrCreateWindowFor(node, type))
+						if (auto w = getOrCreateWindowFor(node.get(), type))
 							w->toFront(true);
 					}
 				}

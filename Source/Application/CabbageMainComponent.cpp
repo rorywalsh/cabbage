@@ -1087,7 +1087,7 @@ void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
             pluginName = cabbagePlugin->getPluginName();
         }
 
-        if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f, type))
+        if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f.get(), type))
         {
         
 			f->properties.set("PluginWindowX", position.getX());
