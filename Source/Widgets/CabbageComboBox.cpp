@@ -132,7 +132,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
                 menuIndex++;
             }
             
-            menus[menuIndex].add(items[i]);
+            if(menus.size() > 0)
+                menus[menuIndex].add(items[i]);
         }
         
         
