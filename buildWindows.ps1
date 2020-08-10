@@ -6,9 +6,9 @@ Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/cabbage/release
 cd "C:/Program Files/Csound6_x64"
 dir
 cd c:/
-Invoke-WebRequest -Uri "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip" -OutFile "C:\vstsdk3611_22_10_2018_build_34.zip" 
-Invoke-WebRequest -Uri "http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip" -OutFile "C:\ASIOSDK2.3.2.zip" 
-Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/heads.zip" -OutFile "C:\heads.zip" 
+Invoke-WebRequest -UseBasicParsing "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip" -OutFile "C:\vstsdk3611_22_10_2018_build_34.zip" 
+Invoke-WebRequest -UseBasicParsing "http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip" -OutFile "C:\ASIOSDK2.3.2.zip" 
+Invoke-WebRequest -UseBasicParsing "http://cabbageaudio.com/beta/heads.zip" -OutFile "C:\heads.zip" 
  
 7z.exe x vstsdk3611_22_10_2018_build_34.zip
 7z.exe x asiosdk2.3.2.zip
@@ -41,18 +41,18 @@ dir
 D:/a/1/s/Builds/VisualStudio2017/azureBuildCabbage64.bat  
 
 cd D:/a/1/s/
-Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "D:\a\1\s\CabbageManual.zip" 
+Invoke-WebRequest -UseBasicParsing "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "D:\a\1\s\CabbageManual.zip" 
 7z.exe x CabbageManual.zip -oD:\a\1\s\CabbageManual
 
 cd D:/a/1/s/Builds/VisualStudio2017/x64
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-1.0.0-win.zip" 
+Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-1.0.0-win.zip" 
 
 7z.exe x CabbageRack-1.0.0-win.zip -oD:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack
 ls
 
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csoundL64.dll" 
+Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csoundL64.dll" 
 
 ls
 cd D:/a/1/s/Builds/VisualStudio2017
