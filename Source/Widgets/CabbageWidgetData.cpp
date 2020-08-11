@@ -59,7 +59,10 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::typeface, "");
     setProperty (widgetData, CabbageIdentifierIds::mouseinteraction, 1);
     setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
-    setProperty (widgetData, CabbageIdentifierIds::suffix, "");
+    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
+    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -329,8 +332,12 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("manufacturer"):
             case HashStringToInt ("logger"):
             case HashStringToInt ("namespace"):
-            case HashStringToInt ("suffix"):
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
+                break;
+                
+            case HashStringToInt ("prefix"):
+            case HashStringToInt ("postfix"):
+                setPreAndPostfixes(strTokens, widgetData, identifier);
                 break;
 
             case HashStringToInt ("channel"):
@@ -742,6 +749,20 @@ void CabbageWidgetData::setMatrixSize(StringArray strTokens, ValueTree widgetDat
 {
     setNumProp(widgetData, CabbageIdentifierIds::matrixrows, strTokens[0].getIntValue());
     setNumProp(widgetData, CabbageIdentifierIds::matrixcols, strTokens[1].getIntValue());
+}
+
+void CabbageWidgetData::setPreAndPostfixes(StringArray strTokens, ValueTree widgetData, String identifier)
+{
+    var strippedArray, escapedArray;
+    
+    for (const auto& str : strTokens)
+    {
+        strippedArray.append(CabbageUtilities::removeWhitespaceEscapeChars(str));
+        escapedArray.append(CabbageUtilities::convertWhitespaceEscapeChars(str));
+    }
+    
+    setProperty(widgetData, identifier, strippedArray);
+    setProperty(widgetData, identifier + "_escaped", escapedArray);
 }
 
 void CabbageWidgetData::setCellData(StringArray strTokens, String parameters, ValueTree widgetData)

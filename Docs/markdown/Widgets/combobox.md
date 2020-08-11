@@ -45,8 +45,6 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/value.md !}  Comboboxes indices start at 1, not 0. If you set the initial value to 0 the combobox will not show any items.
 
-{! ./markdown/Widgets/Properties/suffix.md !} 
-
 {! ./markdown/Widgets/Properties/visible.md !}   
 
 {! ./markdown/Widgets/Properties/tofront.md !} 

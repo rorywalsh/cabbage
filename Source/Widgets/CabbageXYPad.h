@@ -52,6 +52,11 @@ class CabbageXYPad
 
     Point<float> currentMouseXY;
     Point<float> mouseDownXY;
+    
+    String xPrefix = "";
+    String xPostfix = "";
+    String yPrefix = "";
+    String yPostfix = "";
 
     class XYBall : public Component
     {

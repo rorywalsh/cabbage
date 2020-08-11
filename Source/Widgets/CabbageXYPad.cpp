@@ -55,12 +55,33 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
     yAxis.setName (getName() + "_y");
 
     ball.setColour (ballColour);
+    
+    const auto prefixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::prefix);
+    if (prefixes.isArray())
+    {
+        xPrefix = prefixes[0];
+        if (prefixes.size() > 1)
+        {
+            yPrefix = prefixes[1];
+        }
+    }
+    
+    const auto postfixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::postfix);
+    if (postfixes.isArray())
+    {
+        xPostfix = postfixes[0];
+        if (postfixes.size() > 1)
+        {
+            yPostfix = postfixes[1];
+        }
+    }
+
     xValueLabel.setColour (Label::textColourId, fontColour);
     yValueLabel.setColour (Label::textColourId, fontColour);
     xValueLabel.setJustificationType (Justification::centred);
-    xValueLabel.setText (String (valueX, 3), dontSendNotification);
+    xValueLabel.setText (createValueText(valueX, 3, xPrefix, xPostfix), dontSendNotification);
 
-    yValueLabel.setText (String (valueY, 3), dontSendNotification);
+    yValueLabel.setText (createValueText(valueY, 3, yPrefix, yPostfix), dontSendNotification);
     yValueLabel.setJustificationType (Justification::centred);
     xValueLabel.setFont (Font (12, 1));
     yValueLabel.setFont (Font (12, 1));
@@ -272,8 +293,8 @@ void CabbageXYPad::setValues (float x, float y, bool notify)
 {
     xAxis.setValue (x, sendNotification);
     yAxis.setValue (minY + (maxY - y), sendNotification);
-    xValueLabel.setText (String (x, 3), dontSendNotification);
-    yValueLabel.setText (String (minY + (maxY - y), 3), dontSendNotification);
+    xValueLabel.setText (createValueText(x, 3, xPrefix, xPostfix), dontSendNotification);
+    yValueLabel.setText (createValueText(minY + (maxY - y), 3, yPrefix, yPostfix), dontSendNotification);
 }
 //========================================================================
 XYPadAutomator::XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam, AudioProcessor* _owner)

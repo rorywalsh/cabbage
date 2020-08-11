@@ -170,8 +170,9 @@ public:
                           float incr,
                           float skew,
                           bool automatable = true,
-                          const String& suffix = String())
-    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, suffix, minValue, maxValue, def, incr, skew, isCombo(name))),
+                          const String& prefix  = String(),
+                          const String& postfix = String())
+    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo(name))),
     widgetName(name),
     isAutomatable(automatable),
     owner(owner)
@@ -252,22 +253,45 @@ private:
         
         String getText(float normalizedValue, int length) const override
         {
-            // TODO: number of decimal places to display is hardcoded right now
-            String asText(range.convertFrom0to1(normalizedValue), 3);
+            const int minNumCharsForValue = 3;
+            const int decimalPlaces = 3;        // TODO: this probably shouldn't be hardcoded
+            const auto scaledValue = range.convertFrom0to1(normalizedValue);
+            String asText = "";
             
-            if (length > 0 && asText.length() + suffix.length() > length)
+            // if we can't fit a minimum number of digits for our value within
+            // the requested length, we'll ditch the prefix and postfix
+            if (length > 0 && minNumCharsForValue + prefix.length() + postfix.length() > length)
             {
-                asText = asText.substring(0, asText.length() - suffix.length());
+                showingAffixes = false;
+                asText = String(scaledValue, decimalPlaces);
             }
-            
-            asText += suffix;
+            else
+            {
+                showingAffixes = true;
+                
+                asText = prefix;
+                asText += String(scaledValue, decimalPlaces);
+                
+                if (length > 0 && asText.length() + postfix.length() > length)
+                {
+                    asText = asText.substring(0, asText.length() - postfix.length());
+                }
+                
+                asText += postfix;
+            }
             
             return asText;
         }
         
         float getValueForText(const String& text) const override
         {
-            return text.dropLastCharacters(suffix.length()).getFloatValue();
+            if (showingAffixes)
+            {
+                return text.substring(prefix.length()).
+                dropLastCharacters(postfix.length()).getFloatValue();
+            }
+            
+            return text.getFloatValue();
         }
         
         const String& getChannel() const { return channel; }
@@ -279,7 +303,8 @@ private:
                              Csound& csound,
                              const String& channelToUse,
                              const String& name,
-                             const String& suffixToUse,
+                             const String& prefixToUse,
+                             const String& postfixToUse,
                              float minValue,
                              float maxValue,
                              float def,
@@ -288,7 +313,8 @@ private:
                              bool isCombo)
         : AudioParameterFloat(name, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
         channel(channelToUse),
-        suffix(makeSuffix(suffixToUse)),
+        prefix(prefixToUse),
+        postfix(postfixToUse),
         currentValue(def),
         isCombo(isCombo),
         owner(owner),
@@ -298,24 +324,15 @@ private:
         }
         
         const String channel;
-        const String suffix { };
+        const String prefix { };
+        const String postfix { };
         float currentValue;
         bool isCombo = false;
         
         CabbageAudioParameter& owner;
         CabbagePluginProcessor* processor;
         
-        String makeSuffix(const String& suffixToUse)
-        {
-            String newSuffix = "";
-            
-            if (suffixToUse.length() > 0)
-            {
-                newSuffix = " " + suffixToUse;
-            }
-            
-            return newSuffix;
-        }
+        mutable bool showingAffixes = true;
         
         friend class CabbageAudioParameter;
     };

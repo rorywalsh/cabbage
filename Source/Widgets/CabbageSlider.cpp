@@ -52,8 +52,26 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
 
     setTextBoxOrientation (sliderType, shouldShowTextBox);
     //slider.setLookAndFeel (&owner->getLookAndFeel());
-    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix).replace("\\n", "\n");;
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix).replace("\\n", "\n");;
+    
+    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix);
+    if (prefix == "")
+    {
+        const auto rawPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
+        prefix = CabbageUtilities::removeWhitespaceEscapeChars(rawPrefix);
+        escapedPrefix = CabbageUtilities::convertWhitespaceEscapeChars(rawPrefix);
+    } else
+        escapedPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix_escaped);
+    
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix);
+    if (postfix == "")
+    {
+        const auto rawPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+        postfix = CabbageUtilities::removeWhitespaceEscapeChars(rawPostfix);
+        escapedPrefix = CabbageUtilities::convertWhitespaceEscapeChars(rawPostfix);
+    } else
+        escapedPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix_escaped);
+    
+    slider.setTextValueSuffix(postfix);
 
     const String globalStyle = owner->globalStyle;
     if(globalStyle == "legacy")
@@ -241,13 +259,11 @@ void CabbageSlider::createPopupBubble()
 
 void CabbageSlider::showPopupBubble (int time)
 {
-	
-    if (getTooltipText().isNotEmpty())
-        popupText = getTooltipText();
-    else if ( postfix.isNotEmpty() || prefix.isNotEmpty() )
-        popupText = prefix + String (slider.getValue(), decimalPlaces) + postfix;
-    else
-        popupText = channel + ": " + String (slider.getValue(), decimalPlaces);
+    popupText = createPopupBubbleText(slider.getValue(),
+                                      decimalPlaces,
+                                      channel,
+                                      escapedPrefix,
+                                      escapedPostfix);
 
 	popupBubble.showAt (&slider, AttributedString (popupText), time);
 

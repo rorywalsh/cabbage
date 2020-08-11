@@ -33,10 +33,16 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
     currentEncValue = value;
+    
+    prefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix);
+    escapedPrefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix_escaped);
+    escapedPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix_escaped);
+    
     addAndMakeVisible (textLabel);
     addAndMakeVisible (valueLabel);
     valueLabel.setVisible (true);
-    valueLabel.setText (String (value), dontSendNotification);
+    valueLabel.setText (createValueText(value, 3, "", postfix), dontSendNotification);
     textLabel.setVisible (true);
     createPopupBubble();
     valueLabel.setEditable (true);
@@ -65,7 +71,7 @@ void CabbageEncoder::labelTextChanged (Label* label)
     float value = jlimit (min, max, label->getText().getFloatValue());
     sliderPos = 0;
     currentEncValue = value;
-    valueLabel.setText (String (value, 2), dontSendNotification);
+    valueLabel.setText (createValueText(value, 3, "", postfix), dontSendNotification);
     owner->sendChannelDataToCsound (getChannel(), currentEncValue);
     showPopup();
 }
@@ -132,7 +138,7 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
 
             yAxis = e.getOffsetFromDragStart().getY();
             repaint();
-            valueLabel.setText (String (currentEncValue), dontSendNotification);
+            valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
 
             //  valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
             owner->sendChannelDataToCsound (getChannel(), currentEncValue);
@@ -145,12 +151,11 @@ void CabbageEncoder::showPopup (int displayTime)
 {
     if (shouldDisplayPopup)
     {
-        String popupText;
-
-        if (getTooltipText().isNotEmpty())
-            popupText = getTooltipText();
-        else
-            popupText = getChannel() + ": " + String (currentEncValue);
+        String popupText = createPopupBubbleText(currentEncValue,
+                                                 decimalPlaces,
+                                                 getChannel(),
+                                                 escapedPrefix,
+                                                 escapedPostfix);
 
         popupBubble.showAt (this, AttributedString (popupText), displayTime);
     }
@@ -252,7 +257,7 @@ void CabbageEncoder::resized()
         slider.setBounds (20, 20, getWidth() - 40, getHeight() - 40);
         valueLabel.setBounds (getWidth() / 3, getHeight() - 15, getWidth() / 3, 15);
         valueLabel.setJustificationType (Justification::centred);
-        valueLabel.setText (String (currentEncValue, 2), dontSendNotification);
+        valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
     }
     else if (text.isNotEmpty() && shouldShowValueTextBox == 0)
     {
@@ -270,7 +275,7 @@ void CabbageEncoder::resized()
         slider.setBounds (0, 0, getWidth() - 20, getHeight() - 20);
         valueLabel.setBounds (getWidth() / 3, getHeight() - 15, getWidth() / 3, 15);
         valueLabel.setJustificationType (Justification::centred);
-        valueLabel.setText (String (currentEncValue, 2), dontSendNotification);
+        valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
     }
     else
     {
@@ -288,7 +293,7 @@ void CabbageEncoder::valueTreePropertyChanged (ValueTree& valueTree, const Ident
     if (prop == CabbageIdentifierIds::value)
     {
         currentEncValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-        valueLabel.setText (String (currentEncValue), dontSendNotification);
+        valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
         //sliderPos = 1.f/currentEncValue;
         repaint();
     }

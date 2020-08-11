@@ -208,3 +208,21 @@ int CabbageWidgetBase::getSVGHeight (File svgFile)
 
     return 0;
 }
+
+String CabbageWidgetBase::createPopupBubbleText(double val, int decimalPlaces,
+                                                const String& channel,
+                                                const String& escapedPrefix,
+                                                const String& escapedPostfix)
+{
+    String popupText;
+    auto tooltipText = getTooltipText();
+    
+    if (tooltipText.isNotEmpty())
+        popupText = tooltipText;
+    else if ( escapedPostfix.isNotEmpty() || escapedPrefix.isNotEmpty() )
+        popupText = createValueText(val, decimalPlaces, escapedPrefix, escapedPostfix);
+    else
+        popupText = channel + ": " + createValueText(val, decimalPlaces);
+    
+    return popupText;
+}

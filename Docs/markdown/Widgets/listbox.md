@@ -45,8 +45,6 @@ listbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/value.md !}
 
-{! ./markdown/Widgets/Properties/suffix.md !} 
-
 {! ./markdown/Widgets/Properties/visible.md !}  
 
 {! ./markdown/Widgets/Properties/tofront.md !} 
