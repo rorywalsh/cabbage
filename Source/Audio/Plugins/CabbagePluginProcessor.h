@@ -77,7 +77,7 @@ public:
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     // use this instead of AudioProcessor::addParameter
-    void addCabbageParameter(CabbageAudioParameter* parameter);
+    void addCabbageParameter(std::unique_ptr<CabbageAudioParameter> parameter);
     void createCabbageParameters();
     void updateWidgets (String csdText);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
@@ -169,8 +169,10 @@ public:
                           float def,
                           float incr,
                           float skew,
-                          bool automatable = true)
-    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, minValue, maxValue, def, incr, skew, isCombo(name))),
+                          bool automatable = true,
+                          const String& prefix  = String(),
+                          const String& postfix = String())
+    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo(name))),
     widgetName(name),
     isAutomatable(automatable),
     owner(owner)
@@ -249,6 +251,49 @@ private:
             processor->setCabbageParameter(channel, currentValue);
         }
         
+        String getText(float normalizedValue, int length) const override
+        {
+            const int minNumCharsForValue = 3;
+            const int decimalPlaces = 3;        // TODO: this probably shouldn't be hardcoded
+            const auto scaledValue = range.convertFrom0to1(normalizedValue);
+            String asText = "";
+            
+            // if we can't fit a minimum number of digits for our value within
+            // the requested length, we'll ditch the prefix and postfix
+            if (length > 0 && minNumCharsForValue + prefix.length() + postfix.length() > length)
+            {
+                showingAffixes = false;
+                asText = String(scaledValue, decimalPlaces);
+            }
+            else
+            {
+                showingAffixes = true;
+                
+                asText = prefix;
+                asText += String(scaledValue, decimalPlaces);
+                
+                if (length > 0 && asText.length() + postfix.length() > length)
+                {
+                    asText = asText.substring(0, asText.length() - postfix.length());
+                }
+                
+                asText += postfix;
+            }
+            
+            return asText;
+        }
+        
+        float getValueForText(const String& text) const override
+        {
+            if (showingAffixes)
+            {
+                return text.substring(prefix.length()).
+                dropLastCharacters(postfix.length()).getFloatValue();
+            }
+            
+            return text.getFloatValue();
+        }
+        
         const String& getChannel() const { return channel; }
         
     private:
@@ -258,6 +303,8 @@ private:
                              Csound& csound,
                              const String& channelToUse,
                              const String& name,
+                             const String& prefixToUse,
+                             const String& postfixToUse,
                              float minValue,
                              float maxValue,
                              float def,
@@ -266,6 +313,8 @@ private:
                              bool isCombo)
         : AudioParameterFloat(name, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
         channel(channelToUse),
+        prefix(prefixToUse),
+        postfix(postfixToUse),
         currentValue(def),
         isCombo(isCombo),
         owner(owner),
@@ -275,11 +324,15 @@ private:
         }
         
         const String channel;
+        const String prefix { };
+        const String postfix { };
         float currentValue;
         bool isCombo = false;
         
         CabbageAudioParameter& owner;
         CabbagePluginProcessor* processor;
+        
+        mutable bool showingAffixes = true;
         
         friend class CabbageAudioParameter;
     };

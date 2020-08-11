@@ -136,7 +136,17 @@ public:
     static int getSVGHeight (File svgFile);
     static int getSVGWidth (File svgFile);
 
-
+    String createPopupBubbleText(double val, int decimalPlaces,
+                                 const String& channel,
+                                 const String& escapedPrefix = String(),
+                                 const String& escapedPostfix = String());
+    
+    String createValueText(double val, int decimalPlaces,
+                           const String& prefix = String(),
+                           const String& postfix = String())
+    {
+        return prefix + String(val, decimalPlaces) + postfix;
+    }
 
 };
 

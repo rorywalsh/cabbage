@@ -1183,6 +1183,18 @@ public:
 		numberOfFiles = folderFiles.size();
 
 	}
+    
+    static String convertWhitespaceEscapeChars(const String& str)
+    {
+        auto newStr = str.replace("\\n", "\n");
+        newStr = newStr.replace("\\t", "\t");
+        return newStr;
+    }
+    
+    static String removeWhitespaceEscapeChars(const String& str)
+    {
+        return convertWhitespaceEscapeChars(str).removeCharacters("\n\r\t");
+    }
 
 };
 

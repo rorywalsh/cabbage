@@ -47,7 +47,7 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/imgfile.md !} 
 
-{! ./markdown/Widgets/Properties/text.md !} 
+{! ./markdown/Widgets/Properties/text.md !}
 
 {! ./markdown/Widgets/Properties/value.md !} 
 

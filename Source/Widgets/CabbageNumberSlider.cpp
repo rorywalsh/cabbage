@@ -71,7 +71,11 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setValue (value, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
 
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix);
+    if (postfix == "")
+    {
+        postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    }
     slider.setTextValueSuffix(postfix);
 }
 

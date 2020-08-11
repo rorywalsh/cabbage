@@ -47,7 +47,11 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/identchannel.md !}  
 
-{! ./markdown/Widgets/Properties/popup.md !}  
+{! ./markdown/Widgets/Properties/popup.md !}
+
+{! ./markdown/Widgets/Properties/prefix.md !}
+
+{! ./markdown/Widgets/Properties/postfix.md !}  
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
@@ -55,7 +59,7 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/tofront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetarray.md !}
  
 <!--(End of identifiers)/-->
 

@@ -76,6 +76,11 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
         slider.setLookAndFeel(&flatLookAndFeel);
     }
     
+    prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::prefix);
+    postfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::postfix);
+    escapedPrefix  = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::prefix_escaped);
+    escapedPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::postfix_escaped);
+    
     resized();
 }
 
@@ -122,8 +127,8 @@ void CabbageRangeSlider::showPopup (int displayTime)
     if (getTooltipText().isNotEmpty())
         popupText = getTooltipText();
     else
-        popupText = getChannelArray()[0] + ": " + String (slider.getMinValue(), 2) +
-                    +"\n" + getChannelArray()[1] + ": " + String (slider.getMaxValue(), 2);
+        popupText = getChannelArray()[0] + ": " + createValueText(slider.getMinValue(), 2, escapedPrefix, escapedPostfix) +
+        +"\n" + getChannelArray()[1] + ": " + createValueText(slider.getMaxValue(), 2, escapedPrefix, escapedPostfix);
 
     popupBubble.showAt (&slider, AttributedString (popupText), displayTime);
 }
