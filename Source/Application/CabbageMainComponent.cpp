@@ -880,14 +880,16 @@ void CabbageMainComponent::timerCallback()
         }
         
         if(cabbageSettings->getUserSettings()->getIntValue("AutoReloadFromDisk")){
+            const auto originalFileIndex = getCurrentFileIndex();
             for ( int i = 0 ; i < fileTabs.size() ; i++)
             {
                 if(fileTabs[i]->lastModified != fileTabs[i]->getFile().getLastModificationTime())
                 {
-                    setCurrentCsdFile(fileTabs[i]->getFile());
+                    currentFileIndex = i;
                     saveDocument();
                 }
             }
+            currentFileIndex = originalFileIndex;
         }
     }
     
