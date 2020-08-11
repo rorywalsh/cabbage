@@ -438,24 +438,29 @@ void CsoundPluginProcessor::addMacros (String csdText)
 //    csound->SetOption (width.toUTF8().getAddress());
 //    csound->SetOption (height.toUTF8().getAddress());
     
-
+    auto inCabbageSection = false;
 
     for (int i = 0; i < csdArray.size(); i++)
     {
+        if (!inCabbageSection && csdArray[i].contains ("<Cabbage"))
+            inCabbageSection = true;
 
-        if (csdArray[i].trim().substring (0, 7) == "#define")
+        if (inCabbageSection)
         {
-			StringArray tokens;
-//            CabbageUtilities::debug(csdArray[i]);
-            tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
-//            CabbageUtilities::debug(tokens[0]);
-            macroName = tokens[1];
-            tokens.remove (0);
-            tokens.remove (0);
-            macroText = "\"" + tokens.joinIntoString (" ").replace (" ", "\ ").replace("\"", "\\\"")+"\"";
-            macroText = tokens.joinIntoString(" ");
-            String fullMacro = "--omacro:" + macroName + "=" + macroText;// + "\"";
-            csound->SetOption (fullMacro.toUTF8().getAddress());
+            if (csdArray[i].trim().substring (0, 7) == "#define")
+            {
+			    StringArray tokens;
+//              CabbageUtilities::debug(csdArray[i]);
+                tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
+//              CabbageUtilities::debug(tokens[0]);
+                macroName = tokens[1];
+                tokens.remove (0);
+                tokens.remove (0);
+                macroText = "\"" + tokens.joinIntoString (" ").replace (" ", "\ ").replace("\"", "\\\"")+"\"";
+                macroText = tokens.joinIntoString(" ");
+                String fullMacro = "--omacro:" + macroName + "=" + macroText;// + "\"";
+                csound->SetOption (fullMacro.toUTF8().getAddress());
+            }
         }
 
         if (csdArray[i].contains ("</Cabbage>"))
