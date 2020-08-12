@@ -389,6 +389,17 @@ public:
             graph.removeNode(nodeId);
 			graph.releaseResources();
 
+			// Reset Csound so the Csound resources for this plugin are released (e.g. OSC ports).
+			// 
+			// Normally this is done in the plugin processor destructor when Juce cleans up dead graph nodes, but the
+			// new plugin processor instance will start Csound before the old one is destroyed, so we need to release
+			// Csound resources here instead of waiting until later.
+			auto pluginProcessor = dynamic_cast<CsoundPluginProcessor*>(plugin->getProcessor());
+			if (pluginProcessor)
+			{
+				pluginProcessor->resetCsound();
+			}
+
 			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
