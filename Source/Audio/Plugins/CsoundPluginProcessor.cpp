@@ -288,6 +288,11 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                                                  CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value).toString().toUTF8().getAddress());
                     }
 				}
+                else if (typeOfWidget == CabbageWidgetTypes::texteditor)
+                {
+                    csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                                             CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::text).toUTF8().getAddress());
+                }
             }
 
 
