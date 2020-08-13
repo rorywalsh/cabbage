@@ -346,8 +346,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csdFilePath.setAsCurrentWorkingDirectory();
 
-    auto osType = SystemStats::getOperatingSystemType();
-    auto osName = SystemStats::getOperatingSystemName();
 	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Linux) != 0)
     {
 		csound->SetChannel ("LINUX", 1.0);
