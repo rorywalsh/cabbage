@@ -351,18 +351,18 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csdFilePath.setAsCurrentWorkingDirectory();
 
-	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Linux) != 0)
     {
 		csound->SetChannel ("LINUX", 1.0);
         csound->SetChannel ("Linux", 1.0);
     }
-	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
+	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::MacOSX) != 0)
     {
 		csound->SetChannel ("MAC", 1.0);
         csound->SetChannel ("Macos", 1.0);
         csound->SetChannel ("MACOS", 1.0);
     }
-	if(SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Windows)
+	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Windows) != 0)
     {
 		csound->SetChannel ("Windows", 1.0);
         csound->SetChannel ("WINDOWS", 1.0);
