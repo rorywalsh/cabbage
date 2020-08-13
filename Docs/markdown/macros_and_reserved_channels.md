@@ -113,13 +113,13 @@ Cabbage also set the host type, which can be retrieved using the following chann
 
 **MainStage** Returns 1 if Cabbage is host is MainStage
 
+**Nuendo** Returns 1 if Cabbage is host is Nuendo
+
 **Renoise** Returns 1 if Cabbage is host is Renoise
 
-**Repear** Returns 1 if Cabbage is host is Reaper
+**Reaper** Returns 1 if Cabbage is host is Reaper
 
 **Samplitude** Returns 1 if Cabbage is host is Samplitude
-
-**Sonar** Returns 1 if Cabbage is host is Sonar
 
 **Sonar** Returns 1 if Cabbage is host is Sonar
 

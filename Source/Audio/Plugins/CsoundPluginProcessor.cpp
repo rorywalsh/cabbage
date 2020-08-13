@@ -386,7 +386,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     else if (pluginType.isSonar())
         csound->SetChannel ("Sonar", 1.0);
     else if (pluginType.isNuendo())
-        csound->SetChannel ("Neuendo", 1.0);
+        csound->SetChannel ("Nuendo", 1.0);
     else if (pluginType.isReaper())
         csound->SetChannel ("Reaper", 1.0);
     else if (pluginType.isRenoise())
