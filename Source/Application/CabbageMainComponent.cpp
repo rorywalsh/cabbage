@@ -886,6 +886,7 @@ void CabbageMainComponent::timerCallback()
                 if(fileTabs[i]->lastModified != fileTabs[i]->getFile().getLastModificationTime())
                 {
                     currentFileIndex = i;
+                    getCurrentEditorContainer()->editor->loadContent(fileTabs[i]->getFile().loadFileAsString());
                     saveDocument();
                 }
             }
