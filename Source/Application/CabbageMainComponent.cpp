@@ -866,7 +866,6 @@ void CabbageMainComponent::timerCallback()
         if (getFilterGraph()->graph.getNodeForId (nodeId) != nullptr && getFilterGraph()->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
         {
             stopCsoundForNode ("");
-            stopTimer();
         }
 
         if (getCurrentCsdFile().existsAsFile())
