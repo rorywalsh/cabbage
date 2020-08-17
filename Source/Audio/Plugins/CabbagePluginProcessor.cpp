@@ -539,11 +539,11 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
 
                                     var items = CabbageWidgetData::getProperty(temp1, "channel");
 
-                                    for (int i = 0; i < items.size(); i++) {
-                                        CabbageUtilities::debug(items[i].toString());
-                                    }
+                                for (int i = 0; i < items.size(); i++) {
+                                    CabbageUtilities::debug(items[i].toString());
+                                }
 
-                                    CabbageUtilities::debug(items.toString());
+                                CabbageUtilities::debug(items.toString());
 
 
                                 String replacementText = (plantCode.indexOf("{") != -1 ?
@@ -552,6 +552,7 @@ void CabbagePluginProcessor::insertPlantCode(StringArray &linesFromCsd) {
                                                           "{"
                                                                                        : CabbageWidgetData::getCabbageCodeFromIdentifiers(
                                                 temp1, plantCode));
+
 
                                 importedLines.add(replacementText);
                                 isPlantWidget = false;

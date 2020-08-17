@@ -66,6 +66,8 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("plant"):
         case HashStringToInt ("popuppostfix"):
         case HashStringToInt ("popupprefix"):
+        case HashStringToInt("postfix"):
+        case HashStringToInt("prefix"):
         case HashStringToInt ("popuptext"):
         case HashStringToInt ("shape"):
         case HashStringToInt ("radiogroup"):
@@ -361,6 +363,7 @@ String CabbageWidgetData::getSimpleTextAsCabbageCode (ValueTree widgetData, Stri
     const String type = getStringProp (widgetData, CabbageIdentifierIds::type);
     setWidgetState (tempData, type + " " + macroText, -99);
     
+
     if (getStringProp (widgetData, identifier) != getStringProp (tempData, identifier))
     {
         const String text = getStringProp (widgetData, identifier);
