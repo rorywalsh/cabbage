@@ -436,7 +436,7 @@ void CabbagePluginProcessor::handleXmlImport(XmlElement *xml, StringArray &lines
                 generateCabbageCodeFromJS(importData, e->getAllSubText());
         }
 
-
+        //CabbageUtilities::debug(importData.cabbageCode.joinIntoString("\n"));
         //numberOfLinesInPlantCode += importData.cabbageCode.size()+1;
         insertUDOCode(importData, linesFromCsd);
         plantStructs.add(importData);
