@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.54"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.55"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -310,8 +310,8 @@
       </MODULEPATHS>
     </CLION>
     <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="MSVC=1&#10;CABBAGE=1&#10;Cabbage_Plugin_Effect=1"
-            vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK" externalLibraries="csound64.lib"
-            smallIcon="nMt6S5" bigIcon="nMt6S5">
+            vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK" smallIcon="nMt6S5"
+            bigIcon="nMt6S5" externalLibraries="csound64.lib">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib"/>

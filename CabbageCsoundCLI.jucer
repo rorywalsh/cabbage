@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="AaYTbZ" name="CabbageCsoundCLI" projectType="consoleapp"
-              jucerVersion="5.4.7">
+              jucerVersion="5.4.4">
   <MAINGROUP id="pXmiG3" name="CabbageCsoundCLI">
     <GROUP id="{B4C5CBFD-2524-6A99-4459-958F4C2D6AF9}" name="Source">
       <FILE id="NSZmV0" name="main.cpp" compile="1" resource="0" file="Source/CsoundCLI/main.cpp"/>
@@ -15,7 +15,7 @@
       </CONFIGURATIONS>
       <MODULEPATHS/>
     </XCODE_MAC>
-    <VS2019 targetFolder="Builds/VisualStudio2019">
+    <VS2019 targetFolder="Builds/VisualStudio2019" externalLibraries="csound64.lib">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" headerPath="C:\Program Files\Csound6_x64\include\csound"
                        libraryPath="C:\Program Files\Csound6_x64\lib"/>
