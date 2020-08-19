@@ -1190,36 +1190,44 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 			}
 		}
 
-        const float update = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update);
-        bool resetUpdate = (update == 1.0f ? true : false);
-        
         if (identChannel.isNotEmpty()) {
             const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                                CabbageIdentifierIds::identchannelmessage);
+                CabbageIdentifierIds::identchannelmessage);
             memset(&tmp_string[0], 0, sizeof(tmp_string));
             getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
-            
+
             const String identifierText(tmp_string);
             //CabbageUtilities::debug(identifierText);
             if (identifierText.isNotEmpty() && identifierText != identChannelMessage) {
                 CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " " + identifierText);
-                
-                if (identifierText.contains("tablenumber")) { //update even if table number has not changed
+
+                if (identifierText.contains("tablenumber")) //update even if table number has not changed
                     CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
-                    resetUpdate = false;
-                }
                 else if (identifierText == CabbageIdentifierIds::tofront.toString() + "()") {
                     CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::tofront,
-                                                   Random::getSystemRandom().nextInt());
+                        Random::getSystemRandom().nextInt());
                 }
-                
+
                 getCsound()->SetChannel(identChannel.toUTF8(), (char *) "");
-                
+
+                CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update,
+                    0); //reset value for further updates
+
+            }
+            else
+            {
+                float update = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update);
+                if (update == 1.0f)
+                    CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update,
+                                                   0);
             }
         }
         
-        if (resetUpdate) {
-            CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 0);
+        // reset value for widgets without identchannel
+        else
+        {
+            CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update,
+                                           0);
         }
 	}
 }
