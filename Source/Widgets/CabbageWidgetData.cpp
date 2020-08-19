@@ -496,6 +496,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 {
                     setProperty (widgetData, CabbageIdentifierIds::width, strTokens[0].trim().getFloatValue());
                     setProperty (widgetData, CabbageIdentifierIds::height, strTokens[1].trim().getFloatValue());
+                    setProperty(widgetData, CabbageIdentifierIds::top, getProperty(widgetData, CabbageIdentifierIds::top));
+                    setProperty(widgetData, CabbageIdentifierIds::left, getProperty(widgetData, CabbageIdentifierIds::left));
                 }
 
                 break;
@@ -507,6 +509,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("pos"):
                 setProperty (widgetData, CabbageIdentifierIds::left, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::top, strTokens[1].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::width, getProperty(widgetData, CabbageIdentifierIds::width));
+                setProperty (widgetData, CabbageIdentifierIds::height, getProperty(widgetData, CabbageIdentifierIds::height));
                 break;
 
             case HashStringToInt ("fontstyle"):

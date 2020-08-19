@@ -960,8 +960,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 #ifdef CabbagePro
     String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString)+"\nLicensed to: " + String(JucePlugin_Manufacturer);
 #else
-  //  String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
-    String aboutInfo = commandLineArgs;
+    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
+    //String aboutInfo = commandLineArgs;
 #endif
     
     CabbageIDELookAndFeel tempLookAndFeel;
