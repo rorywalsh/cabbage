@@ -53,8 +53,8 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     bool flatStyle = false;
     String prefix = "";
     String postfix = "";
-    String escapedPrefix = "";
-    String escapedPostfix = "";
+    String popupPrefix = "";
+    String popupPostfix = "";
 
 public:
 

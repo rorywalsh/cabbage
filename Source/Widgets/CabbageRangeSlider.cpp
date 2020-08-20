@@ -76,10 +76,10 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
         slider.setLookAndFeel(&flatLookAndFeel);
     }
     
-    prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::prefix);
-    postfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::postfix);
-    escapedPrefix  = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::prefix_escaped);
-    escapedPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::postfix_escaped);
+    prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valueprefix);
+    postfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valuepostfix);
+    popupPrefix  = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popupprefix);
+    popupPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuppostfix);
     
     resized();
 }
@@ -127,8 +127,8 @@ void CabbageRangeSlider::showPopup (int displayTime)
     if (getTooltipText().isNotEmpty())
         popupText = getTooltipText();
     else
-        popupText = getChannelArray()[0] + ": " + createValueText(slider.getMinValue(), 2, escapedPrefix, escapedPostfix) +
-        +"\n" + getChannelArray()[1] + ": " + createValueText(slider.getMaxValue(), 2, escapedPrefix, escapedPostfix);
+        popupText = getChannelArray()[0] + ": " + createValueText(slider.getMinValue(), 2, popupPrefix, popupPostfix) +
+        +"\n" + getChannelArray()[1] + ": " + createValueText(slider.getMaxValue(), 2, popupPrefix, popupPostfix);
 
     popupBubble.showAt (&slider, AttributedString (popupText), displayTime);
 }

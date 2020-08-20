@@ -714,10 +714,10 @@ void CabbagePluginProcessor::createCabbageParameters()
                                                                 CabbageIdentifierIds::automatable);
         
         String prefix = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                         CabbageIdentifierIds::prefix);
+                                                         CabbageIdentifierIds::valueprefix);
         
         String postfix = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                          CabbageIdentifierIds::postfix);
+                                                          CabbageIdentifierIds::valuepostfix);
         
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                      CabbageIdentifierIds::type);
@@ -752,7 +752,7 @@ void CabbagePluginProcessor::createCabbageParameters()
                     String yPostfix = "";
                     
                     const auto prefixes = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                                         CabbageIdentifierIds::prefix);
+                                                                         CabbageIdentifierIds::valueprefix);
                     if (prefixes.size() > 0)
                     {
                         xPrefix = prefixes[0];
@@ -763,7 +763,7 @@ void CabbagePluginProcessor::createCabbageParameters()
                     }
                     
                     const auto postfixes = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                                          CabbageIdentifierIds::postfix);
+                                                                          CabbageIdentifierIds::valuepostfix);
                     if (postfixes.size() > 0)
                     {
                         xPostfix = postfixes[0];

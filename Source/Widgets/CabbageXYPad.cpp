@@ -56,7 +56,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
 
     ball.setColour (ballColour);
     
-    const auto prefixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::prefix);
+    const auto prefixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::valueprefix);
     if (prefixes.isArray())
     {
         xPrefix = prefixes[0];
@@ -66,7 +66,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
         }
     }
     
-    const auto postfixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::postfix);
+    const auto postfixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::valuepostfix);
     if (postfixes.isArray())
     {
         xPostfix = postfixes[0];
