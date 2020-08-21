@@ -34,10 +34,16 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
     currentEncValue = value;
     
-    prefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix);
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix);
-    escapedPrefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix_escaped);
-    escapedPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix_escaped);
+    prefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
+    popupPrefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
+    popupPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    
+    const auto popup = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext);
+    if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowValueTextBox == 1))
+        shouldDisplayPopup = false;
+    else
+        shouldDisplayPopup = true;
     
     addAndMakeVisible (textLabel);
     addAndMakeVisible (valueLabel);
@@ -154,8 +160,8 @@ void CabbageEncoder::showPopup (int displayTime)
         String popupText = createPopupBubbleText(currentEncValue,
                                                  decimalPlaces,
                                                  getChannel(),
-                                                 escapedPrefix,
-                                                 escapedPostfix);
+                                                 popupPrefix,
+                                                 popupPostfix);
 
         popupBubble.showAt (this, AttributedString (popupText), displayTime);
     }

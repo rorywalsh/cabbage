@@ -49,9 +49,9 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/popup.md !}
 
-{! ./markdown/Widgets/Properties/prefix.md !}
+{! ./markdown/Widgets/Properties/valueprefix.md !}
 
-{! ./markdown/Widgets/Properties/postfix.md !}  
+{! ./markdown/Widgets/Properties/valuepostfix.md !}
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 

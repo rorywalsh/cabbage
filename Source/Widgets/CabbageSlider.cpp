@@ -40,6 +40,12 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerstart));
     slider.getProperties().set("markerend", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerend));
     slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::gapmarkers));
+    
+    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
+    popupPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
+    popupPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    
     initialiseSlider (wData);
     textLabel.setVisible (false);
     initialiseCommonAttributes (this, wData);
@@ -52,24 +58,6 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
 
     setTextBoxOrientation (sliderType, shouldShowTextBox);
     //slider.setLookAndFeel (&owner->getLookAndFeel());
-    
-    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix);
-    if (prefix == "")
-    {
-        const auto rawPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
-        prefix = CabbageUtilities::removeWhitespaceEscapeChars(rawPrefix);
-        escapedPrefix = CabbageUtilities::convertWhitespaceEscapeChars(rawPrefix);
-    } else
-        escapedPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::prefix_escaped);
-    
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix);
-    if (postfix == "")
-    {
-        const auto rawPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
-        postfix = CabbageUtilities::removeWhitespaceEscapeChars(rawPostfix);
-        escapedPrefix = CabbageUtilities::convertWhitespaceEscapeChars(rawPostfix);
-    } else
-        escapedPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::postfix_escaped);
     
     slider.setTextValueSuffix(postfix);
 
@@ -112,7 +100,7 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     slider.setRange (min, max, sliderIncrement);
 
     const String popup = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext);
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext) == "" && shouldShowTextBox == 1)
+    if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
         shouldDisplayPopup = false;
     else
         shouldDisplayPopup = true;
@@ -262,8 +250,8 @@ void CabbageSlider::showPopupBubble (int time)
     popupText = createPopupBubbleText(slider.getValue(),
                                       decimalPlaces,
                                       channel,
-                                      escapedPrefix,
-                                      escapedPostfix);
+                                      popupPrefix,
+                                      popupPostfix);
 
 	popupBubble.showAt (&slider, AttributedString (popupText), time);
 

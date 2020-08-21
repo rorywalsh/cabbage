@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.3.54"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.3.55"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
@@ -413,8 +413,8 @@
       </MODULEPATHS>
     </CLION>
     <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
-            vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK" extraLinkerFlags="csound64.lib"
-            smallIcon="vNeY7N" bigIcon="vNeY7N">
+            vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK" smallIcon="vNeY7N"
+            bigIcon="vNeY7N" externalLibraries="csound64.lib">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib"/>

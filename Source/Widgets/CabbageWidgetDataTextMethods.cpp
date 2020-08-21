@@ -56,6 +56,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("latched"):
         case HashStringToInt ("fontsize"):
         case HashStringToInt ("mouseinteraction"):
+        case HashStringToInt ("automatable"):
             return getNumericalValueTextAsCabbageCode (widgetData, identifier, "").trim();
             
         case HashStringToInt ("align"):
@@ -66,8 +67,6 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("plant"):
         case HashStringToInt ("popuppostfix"):
         case HashStringToInt ("popupprefix"):
-        case HashStringToInt("postfix"):
-        case HashStringToInt("prefix"):
         case HashStringToInt ("popuptext"):
         case HashStringToInt ("shape"):
         case HashStringToInt ("radiogroup"):
@@ -79,9 +78,9 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("populate"):
         case HashStringToInt ("tablenumber"):
         case HashStringToInt ("text"):
+        case HashStringToInt ("valueprefix"):
+        case HashStringToInt ("valuepostfix"):
             return getMultiItemTextAsCabbageCode(widgetData, identifier, "");
-            
-        
 
         case HashStringToInt ("bounds"):
             return getBoundsTextAsCabbageCode (getBounds (widgetData));
@@ -90,8 +89,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("type"):
             return getStringProp (widgetData, CabbageIdentifierIds::type);
             
-        case HashStringToInt ("pos"):
-        case HashStringToInt ("size"):
+
         case HashStringToInt ("amprange"):
             return getMultiItemNumbersAsCabbageCode (widgetData, identifier, "");
             
@@ -433,20 +431,30 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode(ValueTree widgetData,
 
 
 
-    if (identifier == "pos")
+  /* if (identifier == "pos")
     {
         const int left = getNumProp(widgetData, CabbageIdentifierIds::left);
         const int top = getNumProp(widgetData, CabbageIdentifierIds::top);
-        return identifier + "(" + String(left) + ", "
-            + String(top) + ")";
+        const int w = getNumProp(widgetData, CabbageIdentifierIds::width);
+        const int h = getNumProp(widgetData, CabbageIdentifierIds::height);
+        const String boundsText = getBoundsTextAsCabbageCode(getBounds(widgetData));
+        const String boundsTextTemp = getBoundsTextAsCabbageCode(getBounds(tempData));
+
+        if (boundsTextTemp != boundsText)
+            return boundsTextTemp;
+
     }
     else if (identifier == "size")
     {
+        const int left = getNumProp(widgetData, CabbageIdentifierIds::left);
+        const int top = getNumProp(widgetData, CabbageIdentifierIds::top);
         const int w = getNumProp(widgetData, CabbageIdentifierIds::width);
         const int h = getNumProp(widgetData, CabbageIdentifierIds::height);
-        return identifier + "(" + String(w) + ", "
-            + String(h) + ")";
-    }
+        const String boundsText = getBoundsTextAsCabbageCode(getBounds(widgetData));
+        const String boundsTextTemp = getBoundsTextAsCabbageCode(getBounds(tempData));
+        if (boundsTextTemp != boundsText)
+            return boundsTextTemp;
+    }*/
 
     if (array)
     {
