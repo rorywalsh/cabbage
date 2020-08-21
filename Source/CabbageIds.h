@@ -340,6 +340,7 @@ public:
         add ("metercolour:");
         add ("popuppostfix");
         add ("manufacturer");
+        add ("valuepostfix");
         add ("markerstart");
 		add ("keyreleased");
         add ("orientation");
@@ -357,6 +358,7 @@ public:
         add ("basechannel");
         add ("popupprefix");
         add ("automatable");
+        add ("valueprefix");
         add ("automation");
         add ("autoupdate");
         add ("matrixsize");
@@ -414,7 +416,6 @@ public:
         add ("latched");
         add ("rescale");
         add ("tofront");
-        add ("postfix");
         add ("bundle");
         add ("import");
         add ("bounds");
@@ -423,7 +424,6 @@ public:
         add ("rangex");
         add ("rotate");
         add ("active");
-        add ("prefix");
         add ("shape");
         add ("screw");
         add ("popup");
@@ -639,10 +639,6 @@ namespace CabbageIdentifierIds
 	static const Identifier popuppostfix = "popuppostfix";
 	static const Identifier popupprefix = "popupprefix";
 	static const Identifier popuptext = "popuptext";
-    static const Identifier postfix = "postfix";
-    static const Identifier prefix = "prefix";
-    static const Identifier prefix_escaped = "prefix_escaped";
-    static const Identifier postfix_escaped = "postfix_escaped";
 	static const Identifier radiogroup = "radiogroup";
 	static const Identifier range = "range";
 	static const Identifier rangex = "rangex";
@@ -702,6 +698,8 @@ namespace CabbageIdentifierIds
 	static const Identifier valuetextbox = "valuetextbox";
 	static const Identifier valuex = "valuex";
 	static const Identifier valuey = "valuey";
+    static const Identifier valueprefix = "valueprefix";
+    static const Identifier valuepostfix = "valuepostfix";
 	static const Identifier velocity = "velocity";
 	static const Identifier visible = "visible";
 	static const Identifier visiblelength = "visiblelength";
@@ -984,7 +982,7 @@ static const char* const CsoundKeywords[] =
     "midremot", "min", "minabs", "minabsaccum", "minaccum", "minarray", "mincer", "mode", "modmatrix", "monitor", "moogladder2", "moogvcf2", "mp3bitrate", "mp3in", "mp3len", "mp3nchnls", "mp3scal",
     "mp3scal_check", "mp3scal_load", "mp3scal_load2", "mp3scal_play", "mp3scal_play2", "mp3sr", "mvchpf", "mvclpf1", "mvclpf2", "mvclpf3", "mvclpf4", "nchnls_hw", "nlalp", "nlfilt2", "nstance", "octmidib",
     "octmidinn", "olabuffer", "outleta", "outletf", "outletk", "outletkid", "outletv", "outrg", "p", "pan2", "part2txt", "partikkel", "partikkelget", "partikkelset", "partikkelsync", "passign", "paulstretch",
-    "pchmidib", "pchmidinn", "pcount", "pdclip", "pdhalf", "pdhalfy", "pgmchn", "phs", "pindex", "pinker", "pitchac", "platerev", "plltrack", "pol2rect", "polynomial", "postfix", "powershape", "prefix", "prepiano", "print_type",
+    "pchmidib", "pchmidinn", "pcount", "pdclip", "pdhalf", "pdhalfy", "pgmchn", "phs", "pindex", "pinker", "pitchac", "platerev", "plltrack", "pol2rect", "polynomial", "powershape", "prepiano", "print_type",
     "printf_i", "printks2", "ptable", "ptable3", "ptablei", "ptableiw", "ptablew", "ptrack", "pvs2array", "pvs2tab", "pvsbandp", "pvsbandr", "pvsbin", "pvsbuffer", "pvsbufread", "pvsbufread2", "pvsceps",
     "pvsdiskin", "pvsdisp", "pvsenvftw", "pvsfreeze", "pvsfromarray", "pvsfwrite", "pvsgain", "pvsgendy", "pvsin", "pvslock", "pvsmooth", "pvsmorph", "pvsosc", "pvsout", "pvspitch", "pvstanal", "pvswarp",
     "pwd", "pyassign", "pyassigni", "pyassignt", "pycall1", "pycall1i", "pycall1t", "pycall2", "pycall2i", "pycall2t", "pycall3", "pycall3i", "pycall3t", "pycall4", "pycall4i", "pycall4t", "pycall5", "pycall5i",
@@ -998,7 +996,7 @@ static const char* const CsoundKeywords[] =
     "strindex", "strindexk", "strlen", "strlenk", "strlower", "strlowerk", "strrindex", "strrindexk", "strsub", "strsubk", "strupper", "strupperk", "stsend", "sumarray", "syncloop", "syncphasor", "system", "system_i",
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
-    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
+    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuepostfix", "valueprefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
     "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile",
     0
 };

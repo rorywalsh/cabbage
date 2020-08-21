@@ -62,8 +62,8 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
     BubbleMessageComponent popupBubble;
     String prefix  = "";
     String postfix = "";
-    String escapedPrefix  = "";
-    String escapedPostfix = "";
+    String popupPrefix  = "";
+    String popupPostfix = "";
 
     void createPopupBubble();
     void setLookAndFeelColours (ValueTree wData);

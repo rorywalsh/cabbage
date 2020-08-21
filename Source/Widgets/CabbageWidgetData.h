@@ -111,7 +111,7 @@ public:
     static void setCellData(StringArray strTokens, String str, ValueTree widgetData);
 	static void setMatrixPrefix(StringArray strTokens, String str, ValueTree widgetData, String identifier);
     static void setMatrixSize(StringArray strTokens, ValueTree widgetData);
-    static void setPreAndPostfixes(StringArray strTokens, ValueTree widgetData, String identifier);
+    static void setPreAndPostfixes(StringArray strTokens, ValueTree widgetData, String identifier, bool isPopup);
     static String replaceIdentifier (String line, String identifier, String updatedIdentifier);
     //============================================================================
     static Colour getColourFromText (String text);

@@ -59,10 +59,8 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::typeface, "");
     setProperty (widgetData, CabbageIdentifierIds::mouseinteraction, 1);
     setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -314,9 +312,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("popuptext"):
             case HashStringToInt ("mode"):
             case HashStringToInt ("channeltype"):
-            case HashStringToInt ("popuppostfix"):
             case HashStringToInt ("orientation"):
-            case HashStringToInt ("popupprefix"):
             case HashStringToInt ("identchannel"):
             case HashStringToInt ("author"):
             case HashStringToInt ("align"):
@@ -335,9 +331,14 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
                 
-            case HashStringToInt ("prefix"):
-            case HashStringToInt ("postfix"):
-                setPreAndPostfixes(strTokens, widgetData, identifier);
+            case HashStringToInt ("valueprefix"):
+            case HashStringToInt ("valuepostfix"):
+                setPreAndPostfixes(strTokens, widgetData, identifier, false);
+                break;
+                
+            case HashStringToInt ("popupprefix"):
+            case HashStringToInt ("popuppostfix"):
+                setPreAndPostfixes(strTokens, widgetData, identifier, true);
                 break;
 
             case HashStringToInt ("channel"):
@@ -755,18 +756,26 @@ void CabbageWidgetData::setMatrixSize(StringArray strTokens, ValueTree widgetDat
     setNumProp(widgetData, CabbageIdentifierIds::matrixcols, strTokens[1].getIntValue());
 }
 
-void CabbageWidgetData::setPreAndPostfixes(StringArray strTokens, ValueTree widgetData, String identifier)
+void CabbageWidgetData::setPreAndPostfixes(StringArray strTokens, ValueTree widgetData, String identifier, bool isPopup)
 {
-    var strippedArray, escapedArray;
+    var array;
     
-    for (const auto& str : strTokens)
+    if (isPopup)
     {
-        strippedArray.append(CabbageUtilities::removeWhitespaceEscapeChars(str));
-        escapedArray.append(CabbageUtilities::convertWhitespaceEscapeChars(str));
+        for (const auto& str : strTokens)
+        {
+            array.append(CabbageUtilities::convertWhitespaceEscapeChars(str));
+        }
+    }
+    else
+    {
+        for (const auto& str : strTokens)
+        {
+            array.append(CabbageUtilities::removeWhitespaceEscapeChars(str));
+        }
     }
     
-    setProperty(widgetData, identifier, strippedArray);
-    setProperty(widgetData, identifier + "_escaped", escapedArray);
+    setProperty(widgetData, identifier, array);
 }
 
 void CabbageWidgetData::setCellData(StringArray strTokens, String parameters, ValueTree widgetData)
