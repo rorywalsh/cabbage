@@ -1101,6 +1101,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 //==============================================================================
 void CabbagePluginProcessor::getChannelDataFromCsound() 
 {
+    if (!getCsound())
+        return;
+
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) 
 	{
 		const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
