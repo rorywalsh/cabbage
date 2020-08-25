@@ -896,8 +896,13 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		buffer.clear();
 
 	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
-	midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
-
+    
+    //events need to be added at the correct time...
+	//midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
+    
+    int samplePos = 0;
+    MidiMessage message;
+    MidiBuffer::Iterator iter (midiMessages);
 
 	if (csdCompiledWithoutError())
 	{
@@ -909,11 +914,21 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 
 		for (int i = 0; i < numSamples; i++, ++csndIndex)
 		{
-			if (csndIndex == csdKsmps)
+			if (csndIndex > csdKsmps)
 			{
 				performCsoundKsmps();
 				csndIndex = 0;
 			}
+            
+            while(iter.getNextEvent (message, samplePos))
+            {
+                //if current sample position matches time code for MIDI event, add it to buffer...
+                if(samplePos == i)
+                    midiBuffer.addEvent(message, samplePos);
+            }
+            
+            //reset the iterator each time, so that we can step through the events again to see if they should be added
+            iter.setNextSamplePosition(0);
 	
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...

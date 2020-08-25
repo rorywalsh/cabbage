@@ -826,7 +826,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const String currentValue = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
 						const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::min);
-						const float max = numOfFiles;
+                        const float max = numOfFiles == 0 ? 1 : numOfFiles;
                         
                         auto param = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
                                                                              min, max, value, 1, 1, automatable, "", "");
