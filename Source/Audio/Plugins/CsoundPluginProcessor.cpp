@@ -914,7 +914,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 
 		for (int i = 0; i < numSamples; i++, ++csndIndex)
 		{
-			if (csndIndex > csdKsmps)
+			if (csndIndex == csdKsmps)
 			{
 				performCsoundKsmps();
 				csndIndex = 0;
