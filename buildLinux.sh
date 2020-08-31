@@ -39,6 +39,7 @@ sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
 sudo apt-get update --fix-missing
 cd $AGENT_BUILDDIRECTORY
 git clone https://github.com/WeAreROLI/JUCE.git
+git checkout 5.4.7
 cd $AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
