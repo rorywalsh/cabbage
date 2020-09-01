@@ -235,16 +235,14 @@ void CsoundPluginProcessor::createFileLogger (File csdFile)
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 {
-    
-    this->setLatencySamples(csound->GetKsmps());
-    
+        
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);
         if(typeOfWidget == CabbageWidgetTypes::form)
         {
             const int latency = CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency);
-            this->setLatencySamples(latency);
+            preferredLatency = latency;
         }
 
         if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channeltype) == "string")
@@ -686,6 +684,8 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         else
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
+
+	this->setLatencySamples(preferredLatency == 0 ? csound->GetKsmps() : preferredLatency);
 }
 
 void CsoundPluginProcessor::releaseResources()
