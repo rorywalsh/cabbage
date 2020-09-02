@@ -1755,11 +1755,14 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk (File file)
 {
-    if(file.hasFileExtension(".csd"))
-        setCurrentCsdFile (file);
+    if (file.hasFileExtension(".csd"))
+    {
+        file.replaceWithText(getCurrentCodeEditor()->getAllText());
+        //setCurrentCsdFile (file);
+    }
 
-    getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
-    openFile(getCurrentCsdFile().getFullPathName());
+    //getCurrentCsdFile().replaceWithText (getCurrentCodeEditor()->getAllText());
+    openFile(file.getFullPathName());
 
 }
 //==================================================================================
