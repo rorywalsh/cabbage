@@ -25,6 +25,7 @@ sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 
 cd $AGENT_BUILDDIRECTORY
 git clone https://github.com/juce-framework/JUCE.git
+git checkout 5.4.7
 touch JUCE/
 cd $AGENT_BUILDDIRECTORY/JUCE
 https://github.com/juce-framework/JUCE.git

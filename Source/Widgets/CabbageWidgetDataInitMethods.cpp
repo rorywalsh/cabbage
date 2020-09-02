@@ -85,10 +85,8 @@ void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
     setProperty (widgetData, CabbageIdentifierIds::style, "flat");
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 
 void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
@@ -131,10 +129,8 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
     setProperty (widgetData, CabbageIdentifierIds::style, "flat");
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 
 void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
@@ -185,10 +181,8 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
 	setProperty (widgetData, CabbageIdentifierIds::style, "flat");
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 
 void CabbageWidgetData::setLineProperties (ValueTree widgetData, int ID)
@@ -303,10 +297,8 @@ void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 
 void CabbageWidgetData::setSignalDisplayProperties (ValueTree widgetData, int ID)
@@ -697,10 +689,8 @@ void CabbageWidgetData::setEncoderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::minenabled, 0);
     setProperty (widgetData, CabbageIdentifierIds::maxenabled, 0);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 
 void CabbageWidgetData::setGroupBoxProperties (ValueTree widgetData, int ID)
@@ -823,10 +813,8 @@ void CabbageWidgetData::setHSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
     setProperty (widgetData, CabbageIdentifierIds::style, "flat");
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 
 void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
@@ -871,10 +859,8 @@ void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
     setProperty (widgetData, CabbageIdentifierIds::style, "flat");
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 
 void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)
@@ -977,10 +963,8 @@ void CabbageWidgetData::setNumberSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::velocity, 80);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
-    setProperty (widgetData, CabbageIdentifierIds::prefix, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix, "");
-    setProperty (widgetData, CabbageIdentifierIds::prefix_escaped, "");
-    setProperty (widgetData, CabbageIdentifierIds::postfix_escaped, "");
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 }
 void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
 {

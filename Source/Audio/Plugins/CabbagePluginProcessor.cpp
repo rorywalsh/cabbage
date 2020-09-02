@@ -714,10 +714,10 @@ void CabbagePluginProcessor::createCabbageParameters()
                                                                 CabbageIdentifierIds::automatable);
         
         String prefix = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                         CabbageIdentifierIds::prefix);
+                                                         CabbageIdentifierIds::valueprefix);
         
         String postfix = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                          CabbageIdentifierIds::postfix);
+                                                          CabbageIdentifierIds::valuepostfix);
         
         const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                      CabbageIdentifierIds::type);
@@ -752,7 +752,7 @@ void CabbagePluginProcessor::createCabbageParameters()
                     String yPostfix = "";
                     
                     const auto prefixes = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                                         CabbageIdentifierIds::prefix);
+                                                                         CabbageIdentifierIds::valueprefix);
                     if (prefixes.size() > 0)
                     {
                         xPrefix = prefixes[0];
@@ -763,7 +763,7 @@ void CabbagePluginProcessor::createCabbageParameters()
                     }
                     
                     const auto postfixes = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                                          CabbageIdentifierIds::postfix);
+                                                                          CabbageIdentifierIds::valuepostfix);
                     if (postfixes.size() > 0)
                     {
                         xPostfix = postfixes[0];
@@ -826,7 +826,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const String currentValue = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
 						const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::min);
-						const float max = numOfFiles;
+                        const float max = numOfFiles == 0 ? 1 : numOfFiles;
                         
                         auto param = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
                                                                              min, max, value, 1, 1, automatable, "", "");
@@ -1101,6 +1101,9 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement *e)
 //==============================================================================
 void CabbagePluginProcessor::getChannelDataFromCsound() 
 {
+    if (!getCsound())
+        return;
+
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) 
 	{
 		const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);

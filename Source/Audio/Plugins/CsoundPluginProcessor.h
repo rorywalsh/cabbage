@@ -278,6 +278,7 @@ private:
     std::unique_ptr<FileLogger> fileLogger;
     int busIndex = 0;
     bool disableLogging = false;
+	int preferredLatency = 32;
 
 
 

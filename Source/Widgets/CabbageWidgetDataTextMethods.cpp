@@ -56,6 +56,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("latched"):
         case HashStringToInt ("fontsize"):
         case HashStringToInt ("mouseinteraction"):
+        case HashStringToInt ("automatable"):
             return getNumericalValueTextAsCabbageCode (widgetData, identifier, "").trim();
             
         case HashStringToInt ("align"):
@@ -66,8 +67,6 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("plant"):
         case HashStringToInt ("popuppostfix"):
         case HashStringToInt ("popupprefix"):
-        case HashStringToInt("postfix"):
-        case HashStringToInt("prefix"):
         case HashStringToInt ("popuptext"):
         case HashStringToInt ("shape"):
         case HashStringToInt ("radiogroup"):
@@ -79,6 +78,8 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("populate"):
         case HashStringToInt ("tablenumber"):
         case HashStringToInt ("text"):
+        case HashStringToInt ("valueprefix"):
+        case HashStringToInt ("valuepostfix"):
             return getMultiItemTextAsCabbageCode(widgetData, identifier, "");
 
         case HashStringToInt ("bounds"):

@@ -235,16 +235,14 @@ void CsoundPluginProcessor::createFileLogger (File csdFile)
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 {
-    
-    this->setLatencySamples(csound->GetKsmps());
-    
+        
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);
         if(typeOfWidget == CabbageWidgetTypes::form)
         {
             const int latency = CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency);
-            this->setLatencySamples(latency);
+            preferredLatency = latency;
         }
 
         if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channeltype) == "string")
@@ -686,6 +684,8 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         else
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
+
+	this->setLatencySamples(preferredLatency == 0 ? csound->GetKsmps() : preferredLatency);
 }
 
 void CsoundPluginProcessor::releaseResources()
@@ -896,8 +896,13 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		buffer.clear();
 
 	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
-	midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
-
+    
+    //events need to be added at the correct time...
+	//midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
+    
+    int samplePos = 0;
+    MidiMessage message;
+    MidiBuffer::Iterator iter (midiMessages);
 
 	if (csdCompiledWithoutError())
 	{
@@ -914,6 +919,16 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 				performCsoundKsmps();
 				csndIndex = 0;
 			}
+            
+            while(iter.getNextEvent (message, samplePos))
+            {
+                //if current sample position matches time code for MIDI event, add it to buffer...
+                if(samplePos == i)
+                    midiBuffer.addEvent(message, samplePos);
+            }
+            
+            //reset the iterator each time, so that we can step through the events again to see if they should be added
+            iter.setNextSamplePosition(0);
 	
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
