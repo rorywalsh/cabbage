@@ -623,30 +623,29 @@ void CabbagePluginProcessor::generateCabbageCodeFromJS(PlantImportStruct &import
 }
 
 
-void CabbagePluginProcessor::getMacros(StringArray &linesFromCsd) {
+void CabbagePluginProcessor::getMacros(StringArray& linesFromCsd) {
     var tempMacroNames, tempMacroStrings;
-    
+
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
     {
+        StringArray tokens;
+        csdLine = csdLine.replace("\n", " ");
+        tokens.addTokens(csdLine, ", ");
+
         bool commented = false;
 
         if (csdLine.indexOf(";") > -1)
             commented = true;
 
-        StringArray tokens;
-        csdLine = csdLine.replace("\n", " ");
-        tokens.addTokens(csdLine, ", ");
-
         if (tokens[0].containsIgnoreCase("define")) {
-            tokens.removeEmptyStrings();
+            //tokens.removeEmptyStrings();
 
-            if (tokens.size() > 1 && commented == false) 
-            {
-                const String currentMacroText =
-                        csdLine.substring(csdLine.indexOf(tokens[1]) + tokens[1].length()) + " ";
+            if (tokens.size() > 1) {
+                const String currentMacroText = commented ? " " :
+                    csdLine.substring(csdLine.indexOf(tokens[1]) + tokens[1].length()) + " ";
                 macroText.set("$" + tokens[1], " " + currentMacroText);
                 tempMacroNames.append("$" + tokens[1]);
-                tempMacroStrings.append(" "+currentMacroText.trim());
+                tempMacroStrings.append(" " + currentMacroText.trim());
                 macroNames = tempMacroNames;
                 macroStrings = tempMacroStrings;
             }
@@ -663,7 +662,7 @@ void CabbagePluginProcessor::getMacros(StringArray &linesFromCsd) {
 
 }
 
-void CabbagePluginProcessor::expandMacroText(String &line, ValueTree wData) {
+void CabbagePluginProcessor::expandMacroText(String& line, ValueTree wData) {
     String csdLine;
     var macroNames;
     String defineText;
@@ -674,21 +673,27 @@ void CabbagePluginProcessor::expandMacroText(String &line, ValueTree wData) {
     StringArray tokens;
     tokens.addTokens(line.replace("(", "( "), " ,");
 
+    StringArray commentedMacros;
     for (auto token : tokens) {
         if (token.startsWith("$")) {
+            commentedMacros.add(token);
             for (auto macro : macroText) {
                 const String stringToReplace = token.removeCharacters(",() ");
-
+                CabbageUtilities::debug(macro.name.toString());
                 if (macro.name.toString() == stringToReplace) {
+                    commentedMacros.removeString(macro.name);
                     line = line.replace(stringToReplace, macro.value.toString());
-                    //CabbageUtilities::debug(line);
+                    //CabbageUtilities::debug("MacroValue:"+ macro.value.toString());
                 }
-                else
-                    line = line.replace(stringToReplace, "");
             }
         }
-
     }
+
+    //remove any macros that are not valid... 
+    for (auto macro : commentedMacros)
+       line = line.replace(macro, "");
+
+
 }
 
 //rebuild the entire GUi each time something changes.
