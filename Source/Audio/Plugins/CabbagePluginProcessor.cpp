@@ -625,9 +625,14 @@ void CabbagePluginProcessor::generateCabbageCodeFromJS(PlantImportStruct &import
 
 void CabbagePluginProcessor::getMacros(StringArray &linesFromCsd) {
     var tempMacroNames, tempMacroStrings;
-
+    
     for (String csdLine : linesFromCsd) //deal with Cabbage macros
     {
+        bool commented = false;
+
+        if (csdLine.indexOf(";") > -1)
+            commented = true;
+
         StringArray tokens;
         csdLine = csdLine.replace("\n", " ");
         tokens.addTokens(csdLine, ", ");
@@ -635,7 +640,8 @@ void CabbagePluginProcessor::getMacros(StringArray &linesFromCsd) {
         if (tokens[0].containsIgnoreCase("define")) {
             tokens.removeEmptyStrings();
 
-            if (tokens.size() > 1) {
+            if (tokens.size() > 1 && commented == false) 
+            {
                 const String currentMacroText =
                         csdLine.substring(csdLine.indexOf(tokens[1]) + tokens[1].length()) + " ";
                 macroText.set("$" + tokens[1], " " + currentMacroText);
@@ -677,6 +683,8 @@ void CabbagePluginProcessor::expandMacroText(String &line, ValueTree wData) {
                     line = line.replace(stringToReplace, macro.value.toString());
                     //CabbageUtilities::debug(line);
                 }
+                else
+                    line = line.replace(stringToReplace, "");
             }
         }
 
