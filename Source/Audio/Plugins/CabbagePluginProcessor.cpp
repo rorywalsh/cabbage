@@ -1352,6 +1352,7 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
         samplingRate = sampleRate;
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
         initAllCsoundChannels(cabbageWidgets);
+    
         csoundRecompiled = true;
 
 #endif
