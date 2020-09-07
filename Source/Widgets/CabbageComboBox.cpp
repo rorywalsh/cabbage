@@ -23,16 +23,16 @@
 //================================================================================================================
 // combobox widget
 //================================================================================================================
-CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
-    name (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
-    rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
-    pivotx (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivotx)),
+CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
+    : pivotx (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivotx)),
     pivoty (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivoty)),
-    tooltipText (String()),
     refresh (0),
+    name (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
+    tooltipText (String()),
+    workingDir (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir)),
+    rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
     owner (_owner),
-    widgetData (wData),
-    workingDir (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir))
+    widgetData (wData)
 {
     widgetData.addListener (this);
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
@@ -120,7 +120,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
-        bool createSubMenu = false;
         PopupMenu subMenu;
         std:vector<StringArray> menus;
         int menuIndex = -1;

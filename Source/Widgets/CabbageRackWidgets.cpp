@@ -348,8 +348,8 @@ void CabbagePort::valueTreePropertyChanged (ValueTree& valueTree, const Identifi
 
 
 CabbageLight::CabbageLight(ValueTree wData, CabbagePluginEditor* owner) : CabbageWidgetBase(),
-widgetData (wData),
 owner (owner),
+widgetData (wData),
 mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)))
 {
     widgetData.addListener (this);

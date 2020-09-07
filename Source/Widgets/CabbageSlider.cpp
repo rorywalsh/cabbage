@@ -23,9 +23,10 @@
 CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     : owner (_owner),
       widgetData (wData),
-      popupBubble (250),
+
       sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
-      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel))
+      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
+popupBubble (250)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);

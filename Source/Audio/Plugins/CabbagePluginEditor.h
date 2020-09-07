@@ -162,13 +162,13 @@ public:
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
-	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent)
+	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent) override
 	{
 		processor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
 		return false;
 	}
 
-	virtual bool keyStateChanged(bool isKeyDown, Component* originatingComponent)
+	virtual bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override
 	{
 		processor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
 		return false;

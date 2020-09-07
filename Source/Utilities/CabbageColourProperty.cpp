@@ -83,10 +83,10 @@ ColourMultiPropertyComponent::ColourMultiPropertyComponent (String name, var col
     PropertyComponent (name, 60),
     colourSettings (colourSettings),
     editor ("Colours"),
+    lookAndFeel(),
     overlayComponentContainer ("container"),
     addColour ("+"),
-    removeColour ("-"),
-    lookAndFeel()
+    removeColour ("-")
 {
     this->setName (name);
     lookAndFeel.setColour (ScrollBar::ColourIds::thumbColourId, Colours::whitesmoke);

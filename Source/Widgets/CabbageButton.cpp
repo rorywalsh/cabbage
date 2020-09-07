@@ -21,9 +21,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 
 CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
-	: widgetData(wData),
-	owner(_owner),
-	TextButton()
+	: TextButton(),
+    owner(_owner),
+    widgetData(wData)
 {
 	widgetData.addListener(this);              //add listener to valueTree so it gets notified when a widget's property changes
 	initialiseCommonAttributes(this, wData);   //initialise common attributes such as bounds, name, rotation, etc..

@@ -21,11 +21,11 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner):
-    widgetData (wData),
     owner (_owner),
+    textColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
     slider (this),
     popupBubble (250),
-    textColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour))
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -203,8 +203,8 @@ void CabbageRangeSlider::valueTreePropertyChanged (ValueTree& valueTree, const I
 
 //======================================================================================
 RangeSlider::RangeSlider (CabbageRangeSlider* _owner)
-    : mouseDragBetweenThumbs {false},
-      owner (_owner)
+    : owner (_owner),
+    mouseDragBetweenThumbs {false}
 {
     // setSliderStyle (Slider::TwoValueHorizontal);
 }

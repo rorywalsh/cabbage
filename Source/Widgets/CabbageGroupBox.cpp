@@ -21,17 +21,17 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageGroupBox::CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner)
-    : widgetData (wData),
-      owner (_owner),
-      text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
-      colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
-      fontColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
-      outlineColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
-      GroupComponent (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
-      outlineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
-      lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
-      corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
-      justification (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align))
+    : GroupComponent (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
+    outlineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
+    lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
+    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
+     text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
+    colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
+    fontColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
+    justification (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
+    outlineColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
+    owner (_owner),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

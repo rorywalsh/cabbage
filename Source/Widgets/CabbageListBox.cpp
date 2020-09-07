@@ -13,9 +13,9 @@
 
 
 CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
-    owner(_owner),
+    widgetData (wData),
     justify(Justification::centred),
-    widgetData (wData)
+    owner(_owner)
 {
     addAndMakeVisible(listBox);
     listBox.setRowHeight (20);

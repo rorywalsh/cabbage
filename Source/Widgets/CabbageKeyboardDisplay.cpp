@@ -20,10 +20,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "CabbageKeyboardDisplay.h"
 
 CabbageKeyboardDisplay::CabbageKeyboardDisplay(ValueTree wData)
-	: widgetData(wData),
-	keyWidth(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::keywidth)),
-	scrollbars(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrollbars)),
-	MidiKeyboardDisplay(MidiKeyboardDisplay::horizontalKeyboard)
+	:
+	MidiKeyboardDisplay(MidiKeyboardDisplay::horizontalKeyboard),
+    scrollbars(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrollbars)),
+    keyWidth(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::keywidth)),
+    widgetData(wData)
 {
 	setOrientation(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind) == "horizontal" ? MidiKeyboardDisplay::horizontalKeyboard : MidiKeyboardDisplay::verticalKeyboardFacingRight);
 	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
@@ -767,7 +768,7 @@ void MidiKeyboardDisplay::updateNoteUnderMouse(Point<float> pos, bool isDown, in
 	auto newNote = xyToNote(pos, mousePositionVelocity);
 	auto oldNote = mouseOverNotes.getUnchecked(fingerNum);
 	auto oldNoteDown = mouseDownNotes.getUnchecked(fingerNum);
-	auto eventVelocity = useMousePositionForVelocity ? mousePositionVelocity * velocity : velocity;
+
 
 	if (oldNote != newNote)
 	{

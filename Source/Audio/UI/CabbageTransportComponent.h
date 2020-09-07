@@ -34,11 +34,11 @@ public:
         owner = nullptr;
     }
 
-    void resized();
+    void resized() override;
     void refresh() {}
-    void buttonClicked (Button* button);
-    void sliderValueChanged (Slider* sliderThatWasMoved);
-    void sliderDragEnded (Slider *);
+    void buttonClicked (Button* button) override;
+    void sliderValueChanged (Slider* sliderThatWasMoved) override;
+    void sliderDragEnded (Slider *) override;
 
     void setTimeLabel(String value)
     {

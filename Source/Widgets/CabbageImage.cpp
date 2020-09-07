@@ -20,19 +20,20 @@
 #include "CabbageImage.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool isLineWidget) : CabbageWidgetBase(),
-    widgetData (wData),
-    owner (owner),
-    isLineWidget (isLineWidget),
+CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool isLineWidget)
+    : CabbageWidgetBase(),
     shape (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::shape)),
+    owner (owner),
     corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
-    cropy (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cropy)),
     cropx (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cropx)),
+    cropy (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cropy)),
     cropwidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cropwidth)),
     cropheight (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::cropheight)),
     lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
+    widgetData (wData),
     outlineColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::outlinecolour))),
-    mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)))
+    mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour))),
+    isLineWidget (isLineWidget)
 {
     widgetData.addListener (this);
 	String file = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getFullPathName();

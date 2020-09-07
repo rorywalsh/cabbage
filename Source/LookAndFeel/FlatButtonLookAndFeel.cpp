@@ -166,7 +166,6 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
     Slider& slider)
 {
     const float sliderRadius = (float)(getSliderThumbRadius (slider) - 2);
-    float xOffset = (sliderRadius / width);
     const Colour trackColour (slider.findColour (Slider::trackColourId));
     float zeroPosProportional = 0;
 
@@ -431,7 +430,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     //tracker
     g.setColour (slider.findColour (Slider::trackColourId).contrasting (isMouseOver ? 0.1f : 0.0f));
         
-    const float thickness = slider.getProperties().getWithDefault ("trackerthickness", 1);
+
     {
         Path filledArc;
         filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);

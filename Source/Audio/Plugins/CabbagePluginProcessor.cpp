@@ -105,8 +105,8 @@ createPluginFilter() {
 //============================================================================
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sideChainChannels)
         : CsoundPluginProcessor(inputFile, ins, outs, sideChainChannels),
-          csdFile(inputFile),
-          cabbageWidgets("CabbageWidgetData") 
+          cabbageWidgets("CabbageWidgetData"),
+          csdFile(inputFile)
 {
 	createCsound(inputFile);
 }
@@ -115,8 +115,8 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet i
 //============================================================================
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
 	: CsoundPluginProcessor(inputFile, ins, outs),
-	csdFile(inputFile),
-	cabbageWidgets("CabbageWidgetData")
+    cabbageWidgets("CabbageWidgetData"),
+    csdFile(inputFile)
 {
 	createCsound(inputFile);
 }
@@ -605,14 +605,12 @@ void CabbagePluginProcessor::generateCabbageCodeFromJS(PlantImportStruct &import
     engine.maximumExecutionTime = RelativeTime::seconds(5);
     engine.registerNativeObject("Cabbage", new CabbageJavaClass(this));
 
-    const double startTime = Time::getMillisecondCounterHiRes();
 
     Result result = engine.execute(text.replace("$lt;", "<")
                                            .replace("&amp;", "&")
                                            .replace("$quote;", "\"")
                                            .replace("$gt;", ">"));
 
-    const double elapsedMs = Time::getMillisecondCounterHiRes() - startTime;
 
     importData.cabbageCode.addLines(cabbageScriptGeneratedCode.joinIntoString("\n"));
 
@@ -979,7 +977,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
             {
                 var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                               CabbageIdentifierIds::channel);
-                int number = channels.size();
+
                 const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                      CabbageIdentifierIds::minvalue);
                 const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),

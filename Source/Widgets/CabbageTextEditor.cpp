@@ -23,10 +23,10 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _owner)
-    : widgetData (wData),
-      owner (_owner),
-      textEditor (this),
-      isMultiline (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap))
+    : owner (_owner),
+    widgetData (wData),
+    textEditor (this),
+    isMultiline (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap))
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

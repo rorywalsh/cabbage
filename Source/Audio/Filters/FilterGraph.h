@@ -281,7 +281,7 @@ public:
 			w->toFront(true);
 	}
 
-    bool getCurrentPosition (CurrentPositionInfo &result)
+    bool getCurrentPosition (CurrentPositionInfo &result) override
     {
         result = playHeadPositionInfo;
         return true;
@@ -459,8 +459,6 @@ public:
 
 		AudioProcessorGraph::NodeAndChannel nodeL = { (AudioProcessorGraph::NodeID) nodeId, 0 };
 		AudioProcessorGraph::NodeAndChannel nodeR = { (AudioProcessorGraph::NodeID) nodeId, 1 };
-        AudioProcessorGraph::NodeAndChannel nodeL1 = { (AudioProcessorGraph::NodeID) nodeId, 2 };
-        AudioProcessorGraph::NodeAndChannel nodeR1 = { (AudioProcessorGraph::NodeID) nodeId, 3 };
         
 		AudioProcessorGraph::NodeAndChannel outputL = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 0 };
 		AudioProcessorGraph::NodeAndChannel outputR = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 1 };

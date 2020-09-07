@@ -735,9 +735,9 @@ void GenTable::setFile (const File& file)
 
         if (reader) //if a reader got created
         {
-            AudioSampleBuffer buffer (reader->numChannels, reader->lengthInSamples);
+            AudioSampleBuffer buffer (reader->numChannels, (int)reader->lengthInSamples);
             buffer.clear();
-            buffer.setSize (reader->numChannels, reader->lengthInSamples);
+            buffer.setSize (reader->numChannels, (int)reader->lengthInSamples);
             reader->read (&buffer, 0, buffer.getNumSamples(), 0, true, true);
             setWaveform (buffer);
         }

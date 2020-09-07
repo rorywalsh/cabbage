@@ -21,8 +21,9 @@
 #include "GenericCabbagePluginProcessor.h"
 
 GenericCabbageEditor::GenericCabbageEditor (AudioProcessor& parent)
-    : AudioProcessorEditor (parent), lookAndFeel(),
-      noParameterLabel ("noparam", "No Csound channels found in orchestra. If you wish to have real time control of parameters please delcare channels using the chn, or chnexport opecodes.")
+    : AudioProcessorEditor (parent),
+      noParameterLabel ("noparam", "No Csound channels found in orchestra. If you wish to have real time control of parameters please delcare channels using the chn, or chnexport opecodes."),
+    lookAndFeel()
 {
 
     setLookAndFeel (&lookAndFeel);

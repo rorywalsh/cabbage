@@ -169,7 +169,6 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
         {
             const String macroWithIdentifier = identifiersInLine[i].trimCharactersAtStart(", ");
             const String macro = macroWithIdentifier.substring(0, macroWithIdentifier.indexOf(" "));
-            const int indexOfmacro = macroNames.indexOf(macro);
             identifiersInLine.set(i, identifiersInLine[i].replace(macro, ""));
             identifiersInLine.insert(i, macro);
             i++;
@@ -177,7 +176,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     }
     
 
-    for (const auto currentIdentifier : identifiersInLine)
+    for (const juce::String currentIdentifier : identifiersInLine)
     {
         
         const String currentIdentName = currentIdentifier.substring(0, currentIdentifier.indexOf(

@@ -20,10 +20,10 @@
 #include "CabbageKeyboard.h"
 
 CabbageKeyboard::CabbageKeyboard (ValueTree wData, MidiKeyboardState& state)
-    : widgetData (wData),
-      keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),
-      scrollbars (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars)),
-      MidiKeyboardComponent (state, MidiKeyboardComponent::horizontalKeyboard)
+    : MidiKeyboardComponent (state, MidiKeyboardComponent::horizontalKeyboard),
+    scrollbars (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars)),
+    keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),
+    widgetData (wData)
 {
     setOrientation (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind) == "horizontal" ? MidiKeyboardComponent::horizontalKeyboard : MidiKeyboardComponent::verticalKeyboardFacingRight);
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

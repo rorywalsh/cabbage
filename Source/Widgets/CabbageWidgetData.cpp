@@ -870,7 +870,6 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
 
 void CabbageWidgetData::setComboItemArrays (StringArray strTokens, ValueTree widgetData, String identifier)
 {
-    const int menuIndex = identifier.substring (identifier.indexOf (":") + 1).getIntValue();
     var items = getProperty (widgetData, CabbageIdentifierIds::text );
     bool deleteItems = true;
     for (int i = 0; i < items.size(); i++)

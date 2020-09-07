@@ -12,16 +12,16 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
-    : widgetData (wData),
-      owner (_owner),
-      popupBubble (250),
-      outlinecolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
-      colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
-      trackercolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)),
-      text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
-      textcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
-      decimalPlaces (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces)),
-      shouldShowValueTextBox (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuetextbox))
+    :shouldShowValueTextBox (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuetextbox)),
+    decimalPlaces (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces)),
+    outlinecolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
+    colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
+    trackercolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)),
+    text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
+    textcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
+    popupBubble (250),
+    owner (_owner),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

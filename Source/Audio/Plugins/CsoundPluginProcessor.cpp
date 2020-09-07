@@ -334,7 +334,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     }
 
-    char path[8192] = {0};
+
 
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
@@ -1201,7 +1201,7 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
 void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, const char* /*name*/)
 {
     CsoundPluginProcessor* ud = (CsoundPluginProcessor*) csoundGetHostData (csound);
-    SignalDisplay* display = new SignalDisplay (String (windat->caption), windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
+    SignalDisplay* display = new SignalDisplay (String (windat->caption), (int)windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
 
     bool addDisplay = true;
 

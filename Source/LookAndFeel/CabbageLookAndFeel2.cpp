@@ -293,7 +293,6 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
     File imgFile (group.getProperties().getWithDefault ("imggroupbox", "").toString());
     const int outlineThickness = group.getProperties().getWithDefault ("outlinethickness", 1);
     const int lineThickness = group.getProperties().getWithDefault ("linethickness", 1);
-    const int justift = group.getProperties().getWithDefault ("justify", 1);
 
 
     //if valid SVG file....
@@ -529,7 +528,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
         //tracker
         g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver  ? slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
 
-        const float thickness = slider.getProperties().getWithDefault ("trackerthickness", 1);
+     
         {
             Path filledArc;
             filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
@@ -544,7 +543,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
             else
                 g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver ?slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
 
-            const float thickness = slider.getProperties().getWithDefault ("trackerthickness", 1);
+
             {
                 Path filledArc;
                 filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
@@ -1213,15 +1212,13 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
 
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
-            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed).toFloat());
-
             const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(20));
         }
 
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
-            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
+
             const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(25));
         }

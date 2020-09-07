@@ -22,23 +22,23 @@
 #include "CabbageXYPad.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
   
-CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
-    owner (editor),
-    widgetData (wData),
+CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
+    : owner (editor),
+    fontColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour))),
+    textColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour))),
+    colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
+    bgColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour))),
+    ballColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::ballcolour))),
+    xValueLabel(),
+    yValueLabel(),
     minX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx)),
     maxX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxx)),
     minY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::miny)),
     maxY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxy)),
-    ball(),
-    yValueLabel(),
-    xValueLabel(),
     valueX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuex)),
     valueY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuey)),
-    fontColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour))),
-    textColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour))),
-    colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
-    ballColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::ballcolour))),
-    bgColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour)))
+    ball(),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -123,9 +123,6 @@ void CabbageXYPad::mouseUp (const MouseEvent& e)
 {
     if (e.mods.isRightButtonDown())
     {
-        const float xDistance = mouseDownXY.getX() - e.getPosition().getX();
-        const float yDistance = mouseDownXY.getY() - e.getPosition().getY();
-
         rightMouseButtonDown = false;
 
         const Point<float> valueStart (getPositionAsValue (mouseDownXY));
