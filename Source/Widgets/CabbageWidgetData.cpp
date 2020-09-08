@@ -1323,10 +1323,10 @@ Rectangle<int> CabbageWidgetData::getBoundsFromText (String text)
 
 Rectangle<int> CabbageWidgetData::getBounds (ValueTree widgetData)
 {
-    Rectangle<int> rect (getProperty (widgetData, CabbageIdentifierIds::left),
-                         getProperty (widgetData, CabbageIdentifierIds::top),
-                         getProperty (widgetData, CabbageIdentifierIds::width),
-                         getProperty (widgetData, CabbageIdentifierIds::height));
+    Rectangle<int> rect (jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::left)),
+                         jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::top)),
+                         jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::width)),
+                         jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::height)));
     return rect;
 }
 

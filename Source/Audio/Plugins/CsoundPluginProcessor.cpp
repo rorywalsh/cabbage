@@ -226,9 +226,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 }
 
 
-void CsoundPluginProcessor::createFileLogger (File csdFile)
+void CsoundPluginProcessor::createFileLogger (File csdFileToUse)
 {
-    String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");
+    String logFileName = csdFileToUse.getParentDirectory().getFullPathName() + String ("/") + csdFileToUse.getFileNameWithoutExtension() + String ("_Log.txt");
     fileLogger.reset (new FileLogger (File (logFileName), String ("Cabbage Log..")));
     Logger::setCurrentLogger (fileLogger.get());
 }
@@ -763,18 +763,18 @@ void CsoundPluginProcessor::sendHostDataToCsound()
 //    {
         if (AudioPlayHead* const ph = getPlayHead())
         {
-            AudioPlayHead::CurrentPositionInfo hostInfo;
+            AudioPlayHead::CurrentPositionInfo mhostInfo;
             
-            if (ph->getCurrentPosition (hostInfo))
+            if (ph->getCurrentPosition (mhostInfo))
             {
-                csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
-                csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
-                csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
-                csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
-                csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
-                csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
-                csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
-                csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
+                csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), mhostInfo.bpm);
+                csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), mhostInfo.timeInSeconds);
+                csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), mhostInfo.isPlaying);
+                csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), mhostInfo.isRecording);
+                csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), mhostInfo.ppqPosition);
+                csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), mhostInfo.timeInSamples);
+                csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), mhostInfo.timeSigDenominator);
+                csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), mhostInfo.timeSigNumerator);
             }
         }
 //    }

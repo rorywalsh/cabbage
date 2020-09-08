@@ -49,13 +49,13 @@ CabbageCsoundConsole::CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor
     setMonospaced(wData);
 }
 
-void CabbageCsoundConsole::setMonospaced(bool value)
+void CabbageCsoundConsole::setMonospaced(bool valueToUse)
 {
-    if (this->monospaced == value)
+    if (this->monospaced == valueToUse)
     {
         return;
     }
-    this->monospaced = value;
+    this->monospaced = valueToUse;
     applyFontToAllText(this->monospaced ? monospacedFont : defaultFont);
 }
 
