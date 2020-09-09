@@ -3,7 +3,7 @@ cd c:/
 #Start-BitsTransfer -Source "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.13.0.zip" -Destination "C:\csound-windows_x64-6.12.0.zip" 
 
 $start_time = Get-Date
-(New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.13.0.zip", "C:\csound-windows_x64-6.12.0.zip")
+(New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.15.0.zip", "C:\csound-windows_x64-6.12.0.zip")
 Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 # Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.13.0.zip" -OutFile "C:\csound-windows_x64-6.12.0.zip" 
