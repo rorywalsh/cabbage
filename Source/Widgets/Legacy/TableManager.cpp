@@ -716,7 +716,7 @@ void GenTable::showScrollbar (bool show)
 
 //==============================================================================
 
-void GenTable::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStartToUse)
+void GenTable::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart)
 {
     //visibleRange = visibleRange.movedToStartAt (newRangeStart);
     //setRange (visibleRange.movedToStartAt (newRangeStart), true);
@@ -1371,7 +1371,7 @@ void HandleViewer::insertHandle (double x, double y, Colour handleColour)
     //add a handle component to our handleViewer. This should be combined with
     //above function...
 
-    int indx = 0;
+    int indx;
     GenTable* table = findParentComponentOfClass <GenTable>();
 
     if (table)

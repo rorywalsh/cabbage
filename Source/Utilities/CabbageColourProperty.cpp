@@ -125,15 +125,15 @@ void ColourMultiPropertyComponent::resized()
 
 }
 
-void ColourMultiPropertyComponent::addNewColour (Colour mColour)
+void ColourMultiPropertyComponent::addNewColour (Colour colour)
 {
     OverlayComponent* comp;
     overlayComponents.add (comp = new OverlayComponent ("overlay" + String (overlayComponents.size() + 1)));
     comp->addMouseListener (this, false);
 
-    comp->setColour (mColour);
+    comp->setColour (colour);
     overlayComponentContainer.addAndMakeVisible (comp);
-    colours.add (mColour);
+    colours.add (colour);
 }
 
 void ColourMultiPropertyComponent::buttonClicked (Button* button)

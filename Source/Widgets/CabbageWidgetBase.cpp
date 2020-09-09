@@ -48,16 +48,6 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
     handleCommonUpdates (child, data, true);
 }
 
-
-__attribute__((unused)) static CabbagePluginEditor* getPluginEditor(Component* child)
-{
-    if (CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
-        return c;
-    else
-        return nullptr;
-}
-
-
 void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor)
 {
     if (calledFromConstructor == false)
@@ -220,19 +210,19 @@ int CabbageWidgetBase::getSVGHeight (File svgFile)
 }
 
 String CabbageWidgetBase::createPopupBubbleText(double val, int decimalPlaces,
-                                                const String& mChannel,
+                                                const String& channel,
                                                 const String& escapedPrefix,
                                                 const String& escapedPostfix)
 {
     String popupText;
-    auto mTooltipText = getTooltipText();
+    auto tooltipText = getTooltipText();
     
-    if (mTooltipText.isNotEmpty())
-        popupText = mTooltipText;
+    if (tooltipText.isNotEmpty())
+        popupText = tooltipText;
     else if ( escapedPostfix.isNotEmpty() || escapedPrefix.isNotEmpty() )
         popupText = createValueText(val, decimalPlaces, escapedPrefix, escapedPostfix);
     else
-        popupText = mChannel + ": " + createValueText(val, decimalPlaces);
+        popupText = channel + ": " + createValueText(val, decimalPlaces);
     
     return popupText;
 }

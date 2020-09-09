@@ -72,8 +72,8 @@ CabbageSignalDisplay::CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor
         addAndMakeVisible (zoomOutButton);
     }
 
-    const int mUpdateRate = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::updaterate);
-    startTimer (mUpdateRate);
+    const int updateRate = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::updaterate);
+    startTimer (updateRate);
 }
 
 //====================================================================================
@@ -257,12 +257,12 @@ void CabbageSignalDisplay::mouseMove (const MouseEvent& e)
     if (shouldDrawSonogram)
     {
         const int position = jmap (e.getPosition().getY(), 0, getHeight(), 22050, 0);
-        showPopupBubble(String (position) + "Hz.");
+        showPopup (String (position) + "Hz.");
     }
     else
     {
         const int position = jmap (e.getPosition().getX(), 0, scopeWidth, 0, 22050);
-        showPopupBubble(String (position) + "Hz.");
+        showPopup (String (position) + "Hz.");
     }
 }
 
@@ -306,19 +306,19 @@ void CabbageSignalDisplay::timerCallback()
     if (owner->shouldUpdateSignalDisplay(variable))
     {
         
-        const String mDisplayType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::displaytype);
+        const String displayType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::displaytype);
 
-        if (mDisplayType != "lissajous")
+        if (displayType != "lissajous")
         {
-            setSignalFloatArray (owner->getArrayForSignalDisplay (variable, mDisplayType));
+            setSignalFloatArray (owner->getArrayForSignalDisplay (variable, displayType));
         }
         else
         {
-            var mSignalVariables = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::signalvariable);
+            var signalVariables = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::signalvariable);
 
-            if (mSignalVariables.size() == 2)
-                setSignalFloatArraysForLissajous (owner->getArrayForSignalDisplay (mSignalVariables[0], mDisplayType),
-                                                  owner->getArrayForSignalDisplay (mSignalVariables[1], mDisplayType));
+            if (signalVariables.size() == 2)
+                setSignalFloatArraysForLissajous (owner->getArrayForSignalDisplay (signalVariables[0], displayType),
+                                                  owner->getArrayForSignalDisplay (signalVariables[1], displayType));
 
         }
 
@@ -327,7 +327,7 @@ void CabbageSignalDisplay::timerCallback()
 }
 
 //====================================================================================
-void CabbageSignalDisplay::showPopupBubble(String mText)
+void CabbageSignalDisplay::showPopup (String text)
 {
 
 }
