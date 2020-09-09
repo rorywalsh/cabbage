@@ -103,6 +103,7 @@ namespace CommandIDs
         batchConvertExamplesVST    = 0x612003,
         showConsole                 = 0x612004,
         showPluginListEditor    = 0x612005,
+        autoReloadFromDisk    = 0x612006,
 
         lastCommandIDEntry
     };
@@ -304,6 +305,7 @@ public:
         add ("outlinethickness");
         add ("scrubberposition");
         add ("titlebargradient");
+        add ("mouseinteraction");
         add ("whitenotecolour");
         add ("blacknotecolour");
         add ("highlightcolour");
@@ -338,6 +340,7 @@ public:
         add ("metercolour:");
         add ("popuppostfix");
         add ("manufacturer");
+        add ("valuepostfix");
         add ("markerstart");
 		add ("keyreleased");
         add ("orientation");
@@ -354,6 +357,9 @@ public:
         add ("fontcolor:1");
         add ("basechannel");
         add ("popupprefix");
+        add ("automatable");
+        add ("valueprefix");
+        add ("automation");
         add ("autoupdate");
         add ("matrixsize");
         add ("fontcolour");
@@ -380,9 +386,11 @@ public:
         add ("namespace");
         add ("rowprefix");
         add ("colprefix");
-        add ("populate");
+		add ("sidechain");
+        add ("populate");		
         add ("keywidth");
         add ("pluginid");
+		add ("fontsize");
         add ("cvoutput");
         add ("imgdebug");
         add ("colour:0");
@@ -392,6 +400,7 @@ public:
         add ("velocity");
         add ("amprange");
         add ("celldata");
+        add ("latency");
         add ("cvinput");
         add ("color:0");
         add ("caption");
@@ -511,6 +520,8 @@ namespace CabbageIdentifierIds
 	static const Identifier arraysize = "arraysize";
 	static const Identifier arrowbackgroundcolour = "arrowbackgroundcolour";
 	static const Identifier arrowcolour = "arrowcolour";
+    static const Identifier automation = "automation";
+    static const Identifier automatable = "automatable";
 	static const Identifier author = "author";
 	static const Identifier backgroundcolour = "backgroundcolour";
 	static const Identifier ballcolour = "ballcolour";
@@ -529,6 +540,7 @@ namespace CabbageIdentifierIds
 	static const Identifier colour = "colour";
 	static const Identifier colprefix = "colprefix";
 	static const Identifier comborange = "comborange";
+	static const Identifier comboindex = "comboindex";
 	static const Identifier corners = "corners";
 	static const Identifier crop = "crop";
 	static const Identifier cropheight = "cropheight";
@@ -551,6 +563,7 @@ namespace CabbageIdentifierIds
 	static const Identifier fillcolour = "fillcolour";
 	static const Identifier fontcolour = "fontcolour";
 	static const Identifier fontstyle = "fontstyle";
+	static const Identifier fontsize = "fontsize";
 	static const Identifier gradient = "gradient";
 	static const Identifier guirefresh = "guirefresh";
 	static const Identifier height = "height";
@@ -578,6 +591,7 @@ namespace CabbageIdentifierIds
 	static const Identifier latched = "latched";
 	static const Identifier left = "left";
 	static const Identifier linenumber = "linenumber";
+    static const Identifier latency = "latency";
 	static const Identifier linethickness = "linethickness";
 	static const Identifier logger = "logger";
 	static const Identifier macrostrings = "macrostrings";
@@ -603,6 +617,7 @@ namespace CabbageIdentifierIds
 	static const Identifier minx = "minx";
 	static const Identifier miny = "miny";
 	static const Identifier mode = "mode";
+    static const Identifier mouseinteraction = "mouseinteraction";
 	static const Identifier mouseoverkeycolour = "mouseoverkeycolour";
 	static const Identifier name = "name";
 	static const Identifier keypressed = "keypressed";
@@ -644,6 +659,7 @@ namespace CabbageIdentifierIds
 	static const Identifier scrubberposition_table = "scrubberposition_table";
 	static const Identifier shape = "shape";
 	static const Identifier show = "show";
+	static const Identifier sidechain = "sidechain";
 	static const Identifier signalvariable = "signalvariable";
 	static const Identifier sliderrange = "sliderrange";
 	static const Identifier sliderskew = "sliderskew";
@@ -682,6 +698,8 @@ namespace CabbageIdentifierIds
 	static const Identifier valuetextbox = "valuetextbox";
 	static const Identifier valuex = "valuex";
 	static const Identifier valuey = "valuey";
+    static const Identifier valueprefix = "valueprefix";
+    static const Identifier valuepostfix = "valuepostfix";
 	static const Identifier velocity = "velocity";
 	static const Identifier visible = "visible";
 	static const Identifier visiblelength = "visiblelength";
@@ -700,7 +718,9 @@ namespace CabbageIdentifierIds
 	static const String csdfile = "csdfile";
 	static const String hostbpm = "HOST_BPM";
 	static const String hostppqpos = "HOST_PPQ_POS";
-	static const String index = "index";
+    static const String lastFileDropped = "LAST_FILE_DROPPED";
+
+    static const String index = "index";
 	static const String isplaying = "IS_PLAYING";
 	static const String isrecording = "IS_RECORDING";
 	static const String mousedownleft = "MOUSE_DOWN_LEFT";
@@ -830,6 +850,7 @@ public:
         set ("Value Min", CabbageIdentifierIds::minvalue.toString());
         set ("Value Max", CabbageIdentifierIds::maxvalue.toString());
         set ("Background", CabbageIdentifierIds::backgroundcolour.toString());
+		set("Font Size", CabbageIdentifierIds::fontsize.toString());
         set ("Ball", CabbageIdentifierIds::ballcolour.toString());
         set ("Mode", CabbageIdentifierIds::mode.toString());
         set ("Base Channel", CabbageIdentifierIds::basechannel.toString());
@@ -868,7 +889,7 @@ public:
 static const char* const CsoundKeywords[] =
 {
     "scale", "!=", "#define", "#include", "#undef", "#ifdef", "#ifndef", "$", "%", "&&", ">", ">=", "<", "<=", "*", "+", "-", "/", "=", "=+", "==", "ˆ", "||", "0dbfs", "<<", ">>", "&",
-    "|", "¬", "#", "a", "alwayson", "ampmidid", "ATSadd", "ATSaddnz", "ATSbufread", "ATScross", "ATSinfo", "ATSinterpread", "ATSread", "ATSreadnz", "ATSpartialtap", "ATSsinnoi", "barmodel", "bformenc1",
+    "|", "¬", "#", "a", "alwayson", "ampmidid", "ATSadd", "ATSaddnz", "ATSbufread", "ATScross", "ATSinfo", "ATSinterpread", "ATSread", "ATSreadnz", "ATSpartialtap", "ATSsinnoi", "automatable", "barmodel", "bformenc1",
     "bformdec1", "binit", "cauchyi", "cell", "centroid", "chebyshevpoly", "chnrecv", "chnsend", "chuap", "combinv", "compress", "compileorc", "compilestr", "connect", "copya2ftab", "copyf2array", "cosseg",
     "cossegb", "cossegr", "cpsmidinn", "cpumeter", "crossfm", "date", "dates", "dcblock2", "diskgrain", "distort", "doppler", "dust", "dust2", "ephasor", "eqfil", "evalstr", "expcurve", "exprandi",
     "expsegb", "expsegba", "faustaudio", "faustcompile", "faustctl", "faustgen", "fareylen", "fareyleni", "ficlose", "filebit", "filevalid", "array", "FLcloseButton", "FLexecButton", "FLgroup_end", "FLhvsBox",
@@ -891,8 +912,8 @@ static const char* const CsoundKeywords[] =
     "transegr", "trcross", "trfilter", "trhighest", "trlowest", "trmix", "trscale", "trshift", "trsplit", "urandom", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapmove", "vbapg", "vbapgmove", "vdivv_i",
     "vexp_i", "vexpv_i", "vmult_i", "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "writescratch", "encoder", "fftdisplay", "keyboard", "label",
     "listbox", "hrange", "vrange", "active", "align", "alpha", "amprange", "bounds", "caption", "channel", "channelarray", "channeltype", "child", "colour", "colour:0", "colour:1", "corners", "displaytype", "file",
-    "fontcolour", "fontstyle", "guirefresh", "highlightcolour", "identchannel", "items", "latched", "line", "middlec", "max", "min", "mode", "outlinecolour", "outlinethickness", "plant", "pluginid", "populate",
-    "popup", "popuptext", "range", "rangex", "rangey", "rotate", "samplerange", "scrubberpos", "scrubberposition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tablebackgroundcolour", "tablecolour",
+    "fontcolour", "fontstyle", "fontstyle", "guirefresh", "highlightcolour", "identchannel", "items", "latched", "line", "middlec", "max", "min", "mode", "outlinecolour", "outlinethickness", "plant", "pluginid", "populate",
+    "popup", "popuptext", "popuppostfix", "popupprefix", "range", "rangex", "rangey", "rotate", "samplerange", "scrubberpos", "scrubberposition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tablebackgroundcolour", "tablecolour",
     "tablegridcolour", "tablenumber", "text", "textcolour", "textbox", "trackercolour", "trackerthickness", "trackerouterradius", "trackerinnerradius", "typeface", "widgetarray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textbox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",
     "enduntil", "soundfiler", "combobox", "vslider", "vslider2", "vslider3", "hslider2", "define", "hslider3", "hslider", "rslider", "groupbox", "combobox", "xypad", "image", "plant", "csoundoutput", "button", "form", "checkbox",
@@ -920,7 +941,7 @@ static const char* const CsoundKeywords[] =
     "loop", "loopseg", "loopsegp", "lorenz", "lorisread", "lorismorph", "lorisplay", "loscil", "loscil3", "lowpass2", "lowres", "lowresx", "lpf18", "lpfreson", "lphasor", "lpinterp", "lposcil", "lposcil3",
     "lpread", "lpreson", "lpshold", "lpsholdp", "lpslot", "mac", "maca", "madsr", "mandel", "mandol", "marimba", "massign", "maxalloc", "max_k", "mclock", "mdelay", "metro", "midic14", "midic21", "midic7",
     "midichannelaftertouch", "midichn", "midicontrolchange", "midictrl", "mididefault", "midiin", "midinoteoff", "midinoteoncps", "midinoteonkey", "midinoteonoct", "midinoteonpch", "midion", "midion2",
-    "midiout", "midipitchbend", "midipolyaftertouch", "midiprogramchange", "miditempo", "mirror", "MixerSetLevel", "MixerGetLevel", "MixerSend", "MixerReceive", "MixerClear", "moog", "moogladder",
+    "midiout", "midipitchbend", "midipolyaftertouch", "midiprogramchange", "miditempo", "mirror", "MixerSetLevel", "MixerGetLevel", "MixerSend", "MixerReceive", "MixerClear", "moog", "moogladder", "mouseinteraction"
     "moogvcf", "moscil", "mpulse", "mrtmsg", "multitap", "mute", "mxadsr", "nchnls", "nestedap", "nlfilt", "noise", "noteoff", "noteon", "noteondur", "noteondur2", "notnum", "nreverb", "nrpn", "nsamp",
     "nstrnum", "ntrpol", "octave", "octcps", "octmidi", "octmidib octmidib", "octpch", "opcode", "OSCsend", "OSCinit", "OSClisten", "oscbnk", "oscil", "oscil1", "oscil1i", "oscil3", "oscili", "oscilikt",
     "osciliktp", "oscilikts", "osciln", "oscils", "oscilx", "out", "out32", "outc", "outch", "outh", "outiat", "outic", "outic14", "outipat", "outipb", "outipc", "outk", "outkat", "outkc", "outkc14",
@@ -975,7 +996,7 @@ static const char* const CsoundKeywords[] =
     "strindex", "strindexk", "strlen", "strlenk", "strlower", "strlowerk", "strrindex", "strrindexk", "strsub", "strsubk", "strupper", "strupperk", "stsend", "sumarray", "syncloop", "syncphasor", "system", "system_i",
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
-    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
+    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuepostfix", "valueprefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
     "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile",
     0
 };

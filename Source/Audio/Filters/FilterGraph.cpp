@@ -399,7 +399,7 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 					{
 						jassert(node->getProcessor() != nullptr);
 
-						if (auto w = getOrCreateWindowFor(node, type))
+						if (auto w = getOrCreateWindowFor(node.get(), type))
 							w->toFront(true);
 					}
 				}
@@ -411,7 +411,8 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 	{
 		const Point<double> pos(xml.getDoubleAttribute("x"), xml.getDoubleAttribute("y"));
 		String pluginFile = currentFile.getParentDirectory().getChildFile(pd.fileOrIdentifier).getFullPathName();
-		pd.fileOrIdentifier = pluginFile;
+        
+        pd.fileOrIdentifier = pluginFile;
 		addCabbagePlugin(pd, pos);
 
 		if (auto * layoutEntity = xml.getChildByName("LAYOUT"))
@@ -446,7 +447,8 @@ XmlElement* FilterGraph::createXml() const
 	for (auto* node : graph.getNodes())
 	{
 		PluginDescription pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
-		node->properties.set("pluginFile", File::getCurrentWorkingDirectory().getChildFile(pd.fileOrIdentifier).getRelativePathFrom(currentFile));
+		const String file = File::getCurrentWorkingDirectory().getChildFile(pd.fileOrIdentifier).getRelativePathFrom(File(currentFile).getParentDirectory());
+		node->properties.set("pluginFile", file);
 		xml->addChildElement(createXmlForNode(node));
 	}
 		

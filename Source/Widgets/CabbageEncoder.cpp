@@ -12,16 +12,16 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
-    : widgetData (wData),
-      owner (_owner),
-      popupBubble (250),
-      outlinecolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
-      colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
-      trackercolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)),
-      text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
-      textcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
-      decimalPlaces (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces)),
-      shouldShowValueTextBox (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuetextbox))
+    :shouldShowValueTextBox (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuetextbox)),
+    decimalPlaces (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces)),
+    outlinecolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
+    colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
+    trackercolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)),
+    text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
+    textcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
+    popupBubble (250),
+    owner (_owner),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -33,10 +33,22 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
     currentEncValue = value;
+    
+    prefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
+    popupPrefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
+    popupPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    
+    const auto popup = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext);
+    if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowValueTextBox == 1))
+        shouldDisplayPopup = false;
+    else
+        shouldDisplayPopup = true;
+    
     addAndMakeVisible (textLabel);
     addAndMakeVisible (valueLabel);
     valueLabel.setVisible (true);
-    valueLabel.setText (String (value), dontSendNotification);
+    valueLabel.setText (createValueText(value, 3, "", postfix), dontSendNotification);
     textLabel.setVisible (true);
     createPopupBubble();
     valueLabel.setEditable (true);
@@ -62,10 +74,10 @@ void CabbageEncoder::createPopupBubble()
 
 void CabbageEncoder::labelTextChanged (Label* label)
 {
-    float value = jlimit (min, max, label->getText().getFloatValue());
+    float mValue = jlimit (min, max, label->getText().getFloatValue());
     sliderPos = 0;
-    currentEncValue = value;
-    valueLabel.setText (String (value, 2), dontSendNotification);
+    currentEncValue = mValue;
+    valueLabel.setText (createValueText(mValue, 3, "", postfix), dontSendNotification);
     owner->sendChannelDataToCsound (getChannel(), currentEncValue);
     showPopup();
 }
@@ -132,7 +144,7 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
 
             yAxis = e.getOffsetFromDragStart().getY();
             repaint();
-            valueLabel.setText (String (currentEncValue), dontSendNotification);
+            valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
 
             //  valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
             owner->sendChannelDataToCsound (getChannel(), currentEncValue);
@@ -145,14 +157,13 @@ void CabbageEncoder::showPopup (int displayTime)
 {
     if (shouldDisplayPopup)
     {
-        String popupText;
+        String mPopupText = createPopupBubbleText(currentEncValue,
+                                                 decimalPlaces,
+                                                 getChannel(),
+                                                 popupPrefix,
+                                                 popupPostfix);
 
-        if (getTooltipText().isNotEmpty())
-            popupText = getTooltipText();
-        else
-            popupText = getChannel() + ": " + String (currentEncValue);
-
-        popupBubble.showAt (this, AttributedString (popupText), displayTime);
+        popupBubble.showAt (this, AttributedString (mPopupText), displayTime);
     }
 }
 
@@ -252,7 +263,7 @@ void CabbageEncoder::resized()
         slider.setBounds (20, 20, getWidth() - 40, getHeight() - 40);
         valueLabel.setBounds (getWidth() / 3, getHeight() - 15, getWidth() / 3, 15);
         valueLabel.setJustificationType (Justification::centred);
-        valueLabel.setText (String (currentEncValue, 2), dontSendNotification);
+        valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
     }
     else if (text.isNotEmpty() && shouldShowValueTextBox == 0)
     {
@@ -270,7 +281,7 @@ void CabbageEncoder::resized()
         slider.setBounds (0, 0, getWidth() - 20, getHeight() - 20);
         valueLabel.setBounds (getWidth() / 3, getHeight() - 15, getWidth() / 3, 15);
         valueLabel.setJustificationType (Justification::centred);
-        valueLabel.setText (String (currentEncValue, 2), dontSendNotification);
+        valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
     }
     else
     {
@@ -288,7 +299,7 @@ void CabbageEncoder::valueTreePropertyChanged (ValueTree& valueTree, const Ident
     if (prop == CabbageIdentifierIds::value)
     {
         currentEncValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-        valueLabel.setText (String (currentEncValue), dontSendNotification);
+        valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
         //sliderPos = 1.f/currentEncValue;
         repaint();
     }

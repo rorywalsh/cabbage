@@ -95,6 +95,7 @@ public:
     static void setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setTextItemArrays (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
     static void setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable = true);
+    static void setComboItemArrays (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setImageFiles (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
     static void setShapes (StringArray strTokens, ValueTree widgetData);
     static void setBounds (StringArray strTokens, ValueTree widgetData);
@@ -103,12 +104,14 @@ public:
     static void setScrubberPosition (StringArray strTokens, ValueTree widgetData);
 	static void setKeyboardDisplayNotes(StringArray strTokens, ValueTree widgetData);
     static void setAmpRange (StringArray strTokens, ValueTree widgetData);
+	static void setSideChainChannels(StringArray strTokens, ValueTree widgetData);
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
     static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setPopulateProps ( StringArray strTokens, ValueTree widgetData);
     static void setCellData(StringArray strTokens, String str, ValueTree widgetData);
 	static void setMatrixPrefix(StringArray strTokens, String str, ValueTree widgetData, String identifier);
     static void setMatrixSize(StringArray strTokens, ValueTree widgetData);
+    static void setPreAndPostfixes(StringArray strTokens, ValueTree widgetData, String identifier, bool isPopup);
     static String replaceIdentifier (String line, String identifier, String updatedIdentifier);
     //============================================================================
     static Colour getColourFromText (String text);

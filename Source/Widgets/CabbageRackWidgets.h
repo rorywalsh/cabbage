@@ -25,23 +25,6 @@
 
 class CabbagePluginEditor;
 
-static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth, int newHeight, AffineTransform affine)
-{
-    std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgText));
-    if(svg == nullptr)
-        jassert(false);
-
-    std::unique_ptr<Drawable> drawable;
-
-    if (svg != nullptr)
-    {
-        drawable = Drawable::createFromSVG (*svg);
-        drawable->setTransformToFit(Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
-        drawable->draw(g, 1.f, affine);
-    }
-}
-
-
 class CabbagePluginEditor;
 
 class CabbageLight : public Component, public ValueTree::Listener, public CabbageWidgetBase

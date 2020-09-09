@@ -23,10 +23,10 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _owner)
-    : widgetData (wData),
-      owner (_owner),
-      textEditor (this),
-      isMultiline (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap))
+    : owner (_owner),
+    widgetData (wData),
+    textEditor (this),
+    isMultiline (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap))
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -43,8 +43,13 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     textEditor.setColour (TextEditor::focusedOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     
+    const String filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+    const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());
 
-	textEditor.setText (getCurrentText(widgetData), dontSendNotification);
+    if (textFile.existsAsFile())
+        textEditor.setText(textFile.loadFileAsString(), false);
+    else
+        textEditor.setText (getCurrentText(widgetData), dontSendNotification);
 
 }
 

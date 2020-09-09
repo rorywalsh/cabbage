@@ -51,6 +51,10 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     String outlinecolour, colour, trackercolour, text, textcolour, popupText;
     BubbleMessageComponent popupBubble;
     bool flatStyle = false;
+    String prefix = "";
+    String postfix = "";
+    String popupPrefix = "";
+    String popupPostfix = "";
 
 public:
 

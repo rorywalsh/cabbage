@@ -43,7 +43,7 @@ namespace LookAndFeelHelpers
 
         AttributedString s;
         s.setJustification (Justification::centred);
-        s.append (text, Font (tooltipFontSize, Font::bold), colour);
+        s.append (text, Font (tooltipFontSize), colour);
 
         TextLayout tl;
         tl.createLayoutWithBalancedLineLengths (s, (float) maxToolTipWidth);
@@ -148,6 +148,21 @@ void CabbageLookAndFeel2::drawDocumentWindowTitleBar (DocumentWindow& window, Gr
 
 	g.drawText (window.getName(), textX, 0, textW, h, Justification::centredLeft, true);
 }
+
+//tooltip window
+void CabbageLookAndFeel2::drawTooltip(Graphics& g, const String& text, int width, int height)
+{
+    g.fillAll(Colours::white);
+
+#if ! JUCE_MAC // The mac windows already have a non-optional 1 pix outline, so don't double it here..
+    g.setColour(findColour(TooltipWindow::outlineColourId));
+    g.drawRect(0, 0, width, height, 1);
+#endif
+
+    LookAndFeelHelpers::layoutTooltipText(text, findColour(TooltipWindow::textColourId))
+        .draw(g, Rectangle<float>((float)width, (float)height));
+}
+
 
 //=========== ComboBox ============================================================================
 void CabbageLookAndFeel2::drawComboBox (Graphics& g, int width, int height, bool /*isButtonDown*/,
@@ -278,7 +293,6 @@ void CabbageLookAndFeel2::drawGroupComponentOutline (Graphics& g, int w, int h, 
     File imgFile (group.getProperties().getWithDefault ("imggroupbox", "").toString());
     const int outlineThickness = group.getProperties().getWithDefault ("outlinethickness", 1);
     const int lineThickness = group.getProperties().getWithDefault ("linethickness", 1);
-    const int justift = group.getProperties().getWithDefault ("justify", 1);
 
 
     //if valid SVG file....
@@ -514,7 +528,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
         //tracker
         g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver  ? slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
 
-        const float thickness = slider.getProperties().getWithDefault ("trackerthickness", 1);
+     
         {
             Path filledArc;
             filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
@@ -529,7 +543,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
             else
                 g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver ?slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
 
-            const float thickness = slider.getProperties().getWithDefault ("trackerthickness", 1);
+
             {
                 Path filledArc;
                 filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
@@ -740,7 +754,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics& g, int x, int y,
             image = image.rescaled (slider.getWidth(), slider.getHeight());
 
             if (slider.isHorizontal())
-                g.drawImage (image, 0, 0,  width * (1 + xOffset * 2), height, 0, 0, slider.getWidth(), slider.getHeight(), false);
+                g.drawImage(image, 0, 0,  width * (1 + xOffset * 2), height, 0, 0, slider.getWidth(), slider.getHeight(), false);
             else
                 g.drawImage (image, 0, height * .05, width, height + sliderRadius, 0, 0, slider.getWidth(), slider.getHeight(), false);
 
@@ -767,7 +781,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics& g, int x, int y,
             width = width - 8;
             g.setColour (Colours::whitesmoke);
             g.setOpacity (0.6);
-            const float midPoint = (width / 2.f + sliderRadius) + 3;
+            const float midPoint = (width / 2.f + sliderRadius) + 4;
             const float markerGap = width / 9.f;
             g.drawLine (midPoint, height * 0.25, midPoint, height * 0.75, 1.5);
             g.setOpacity (0.3);
@@ -783,7 +797,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground (Graphics& g, int x, int y,
             g.setOpacity (0.1);
             g.fillRoundedRectangle (sliderRadius, height * 0.44, width * 1.021, height * 0.15, height * 0.05); //for light effect
             g.setColour (Colour::fromRGBA (5, 5, 5, 255));
-            g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.016, height * 0.15, height * 0.05); //main rectangle
+            g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.10, height * 0.15, height * 0.05); //main rectangle
         }
 
         const float scale = trackerThickness;
@@ -1198,15 +1212,13 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
 
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
-            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed).toFloat());
-
             const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(20));
         }
 
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
-            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
+
             const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(25));
         }

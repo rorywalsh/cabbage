@@ -33,7 +33,9 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/active.md !}  
 
-{! ./markdown/Widgets/Properties/alpha.md !}  
+{! ./markdown/Widgets/Properties/alpha.md !}
+
+{! ./markdown/Widgets/Properties/automatable.md !}
 
 {! ./markdown/Widgets/Properties/bounds.md !}  
 
@@ -45,7 +47,11 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/identchannel.md !}  
 
-{! ./markdown/Widgets/Properties/popup.md !}  
+{! ./markdown/Widgets/Properties/popup.md !}
+
+{! ./markdown/Widgets/Properties/valueprefix.md !}
+
+{! ./markdown/Widgets/Properties/valuepostfix.md !}
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
@@ -53,7 +59,7 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/tofront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetarray.md !}
  
 <!--(End of identifiers)/-->
 

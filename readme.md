@@ -3,3 +3,4 @@
 
 Cabbage. A framework for developing audio plugins and standalone instruments using the Csound programming language.  
 
+For details on building, please visit the various platform folders within the Builds folder. 

@@ -155,7 +155,7 @@ public:
         }
         else
         {
-            p.addArc (x + w, y + h / 2.f + d / 2.f, 5, 5, 3.14, 3.14);
+            p.addArc (x + w, y + h / 2.f + d / 2.f, 5.f, 5.f, 3.14f, 3.14f);
         }
 
         p.closeSubPath();
@@ -445,7 +445,7 @@ public:
 
 				array.set(i, array[i].removeCharacters("\t").trimStart());
 
-				if (array[i].contains(headerString) && array[i].contains("="))
+				if (array[i].contains(headerString) && array[i].contains("=") && array[i].indexOf(headerString) < array[i].indexOf("="))
 				{
 					String channels = array[i].substring(array[i].indexOf("=") + 1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
 					return channels.trim().getIntValue();
@@ -453,7 +453,13 @@ public:
 			}
 		}
 
-		return headerString=="nchnls" ? 2 : -1;
+
+		if(headerString=="nchnls")
+            return 2;
+        else if(headerString == "nchnls_i")
+            return -1;
+        else
+            return -1;
 	}
     //==============================================================
     static const String getSVGTextFromMemory (const void* svg, size_t size)
@@ -707,13 +713,13 @@ public:
         
         for (int i = 0; i < linesize; i++) // let's find all the tokens in this line of code...
         {
-            while (i < linesize && code[i] != breakChar) // let's find the end of a token...
+            while (i < linesize && (char)code[i] != breakChar) // let's find the end of a token...
             {
                 if (code[i] == '\"')   // excuse anything in quotes..
                 {
                     i++; // so, skip the first quote char
 
-                    while (i < linesize && code[i] != '\"') // continue to skip until endline or end quote char
+                    while (i < linesize && (char)code[i] != '\"') // continue to skip until endline or end quote char
                         i++;
                 }
                 i++; // move to the next char
@@ -1123,7 +1129,7 @@ public:
 		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
-        data->writeToFile (File (filePath), String());
+        //data->writeToFile (File (filePath), String());
     }
 
     //======= method for replacing the contents of an identifier with new values..
@@ -1145,6 +1151,49 @@ public:
         String secondSection = line.substring (line.indexOf (")") + 1);
 
         return firstSection + updatedIdentifier + secondSection;
+    }
+
+	static void searchDirectoryForFiles(ValueTree valueTree, String workingDir, String fileType, Array<File> & folderFiles, StringArray &comboItems, int& numberOfFiles)
+	{
+		Array<File> dirFiles;
+		File pluginDir;
+
+		if (workingDir.isNotEmpty())
+			pluginDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
+		else
+			pluginDir = File::getCurrentWorkingDirectory();
+
+		pluginDir.findChildFiles(dirFiles, 2, false, fileType);
+
+		for (int i = 0; i < dirFiles.size(); ++i)
+			folderFiles.add(dirFiles[i]);
+
+		folderFiles.sort();
+
+		for (int i = 0; i < folderFiles.size(); i++)
+		{
+			CabbageUtilities::debug(folderFiles[i].getFullPathName());
+		}
+
+		for (int i = 0; i < folderFiles.size(); i++)
+		{
+			comboItems.add(folderFiles[i].getFileNameWithoutExtension());
+		}
+
+		numberOfFiles = folderFiles.size();
+
+	}
+    
+    static String convertWhitespaceEscapeChars(const String& str)
+    {
+        auto newStr = str.replace("\\n", "\n");
+        newStr = newStr.replace("\\t", "\t");
+        return newStr;
+    }
+    
+    static String removeWhitespaceEscapeChars(const String& str)
+    {
+        return convertWhitespaceEscapeChars(str).removeCharacters("\n\r\t");
     }
 
 };

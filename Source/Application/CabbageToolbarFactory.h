@@ -59,7 +59,7 @@ public:
 
     void togglePlay (bool enabled)
     {
-        //togglePlayButton->setToggleState (enabled, dontSendNotification);
+        togglePlayButton->setToggleState (enabled, dontSendNotification);
     }
 
     ToolbarButton* togglePlayButton;

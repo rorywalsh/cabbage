@@ -21,13 +21,13 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner, int sr)
-    : widgetData (wData),
-      owner (_owner),
-      file (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)),
-      zoom (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
-      scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
-      soundfiler (sr, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
-                  Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::tablebackgroundcolour)))
+    : soundfiler (sr, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
+                  Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::tablebackgroundcolour))),
+    file (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)),
+    zoom (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
+    scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
+    owner (_owner),
+    widgetData (wData)
 {
     addAndMakeVisible (soundfiler);
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

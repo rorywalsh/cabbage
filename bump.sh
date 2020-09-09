@@ -3,6 +3,7 @@
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 /home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbageIDE.jucer
 /home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbagePlugin.jucer
+/home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbagePluginNoStandalone.jucer
 /home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbagePluginSynth.jucer
 /home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbageLite.jucer
 /home/rory/sourcecode/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --bump-version CabbagePluginMIDIEffect.jucer
@@ -18,6 +19,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbageIDE.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePlugin.jucer
+../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePluginNoStandalone.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePluginSynth.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbageLite.jucer
 ../JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --bump-version CabbagePluginMIDIEffect.jucer
@@ -27,6 +29,7 @@ echo "cygwin"
 elif [[ "$OSTYPE" == "msys" ]]; then
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbageIDE.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePlugin.jucer
+../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePluginNoStandalone.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePluginSynth.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbageLite.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePluginMIDIEffect.jucer
@@ -34,6 +37,7 @@ elif [[ "$OSTYPE" == "msys" ]]; then
 elif [[ "$OSTYPE" == "win32" ]]; then
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbageIDE.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePlugin.jucer
+../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePluginNoStandalone.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePluginSynth.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbageLite.jucer
 ../JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe --bump-version CabbagePluginMIDIEffect.jucer

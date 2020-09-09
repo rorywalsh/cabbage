@@ -51,6 +51,7 @@ class FileTab : public TextButton
     Colour buttonColour = { 82, 99, 106 };
     Colour fontColour = { 200, 200, 200 };
     Colour playButtonColour = { 50, 62, 68 };
+    
 public:
 
 
@@ -87,4 +88,5 @@ public:
     DrawableButton& getEditGUIButton() { return editGUI; }
 
     int32 uniqueFileId = -99;
+    Time lastModified;
 };

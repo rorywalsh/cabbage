@@ -15,7 +15,7 @@
   License along with Csound; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
-*/
+*/ 
 #include "CabbagePluginEditor.h"
 
 class CabbageCheckbox;
@@ -23,7 +23,7 @@ class CabbageCheckbox;
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
-      mainComponent(),
+      mainComponent(this),
       lookAndFeel(),
       processor (p)
 #ifdef Cabbage_IDE_Build
@@ -39,10 +39,11 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     addAndMakeVisible (viewport.get());
     viewport->setViewedComponent(viewportContainer.get(), false);
     viewport->setScrollBarsShown(false, false);
-    mainComponent.setInterceptsMouseClicks (false, true);
+    mainComponent.setInterceptsMouseClicks (true, true);
+	mainComponent.addMouseListener(this, false);
     setSize (50, 50);
-
-
+	mainComponent.addKeyListener(this);
+	mainComponent.setWantsKeyboardFocus(true);
     createEditorInterface (processor.cabbageWidgets);
 
 #ifdef Cabbage_IDE_Build
@@ -54,6 +55,8 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     layoutEditor.setInterceptsMouseClicks (true, true);
 #endif
     resized();
+
+    tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -102,16 +105,16 @@ void CabbagePluginEditor::resized()
     }
 }
 
-//======================================================================================================
-void CabbagePluginEditor::filesDropped(const StringArray &files, int x, int y)
-{
-    sendChannelStringDataToCsound("LAST_FILE_DROPPED", files[0]);
-}
-
-bool CabbagePluginEditor::isInterestedInFileDrag(const StringArray &files)
-{
-    return true;
-}
+////======================================================================================================
+//void CabbagePluginEditor::filesDropped(const StringArray &files, int x, int y)
+//{
+//    sendChannelStringDataToCsound("LAST_FILE_DROPPED", files[0]);
+//}
+//
+//bool CabbagePluginEditor::isInterestedInFileDrag(const StringArray &files)
+//{
+//    return true;
+//}
 //======================================================================================================
 
 void CabbagePluginEditor::mouseMove (const MouseEvent& e)
@@ -593,12 +596,12 @@ void CabbagePluginEditor::insertLight (ValueTree cabbageWidgetData)
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
-    for (auto param : processor.getParameters())
+    for (auto param : processor.getCabbageParameters())
     {
         if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
         {
             if (name == cabbageParam->getWidgetName())
-                return dynamic_cast<CabbageAudioParameter*> (cabbageParam);
+                return cabbageParam;
         }
     }
 
@@ -612,11 +615,11 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     {
         param->beginChangeGesture();
 
-        //preset combos work with 0 index, Cabbage combos start at 1..
+        //preset combos work with 0 index, Cabbage string combos start at 1..
         if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
-            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()));
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
         else
-            param->setValueNotifyingHost (param->range.convertTo0to1 (combo->getSelectedItemIndex()+1));
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
 
         param->endChangeGesture();
     }
@@ -641,10 +644,10 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 
 		return;
 	}
-	else if (CabbageCheckbox* cabbageButton = dynamic_cast<CabbageCheckbox*> (button))
+	else if (CabbageCheckbox* mCabbageButton = dynamic_cast<CabbageCheckbox*> (button))
 	{
-		const StringArray textItems = cabbageButton->getTextArray();
-		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
+		const StringArray textItems = mCabbageButton->getTextArray();
+		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, mCabbageButton->getName());
 		// const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
 		if (textItems.size() > 0)
@@ -699,24 +702,62 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName()))
         {
-            param->beginChangeGesture();
-            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getValue()));
-            param->endChangeGesture();
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getValue()));
         }
     }
     else
     {
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
-            param->beginChangeGesture();
-            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMinValue()));
-            param->endChangeGesture();
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getMinValue()));
         }
 
         if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_max"))
         {
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getMaxValue()));
+        }
+    }
+}
+void CabbagePluginEditor::sliderDragStarted(Slider* slider)
+{
+    if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+        {
             param->beginChangeGesture();
-            param->setValueNotifyingHost (param->range.convertTo0to1 (slider->getMaxValue()));
+        }
+    }
+    else
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_min"))
+        {
+            param->beginChangeGesture();
+        }
+
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_max"))
+        {
+            param->beginChangeGesture();
+        }
+    }
+}
+void CabbagePluginEditor::sliderDragEnded(Slider* slider)
+{
+    if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+        {
+            param->endChangeGesture();
+        }
+    }
+    else
+    {
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_min"))
+        {
+            param->endChangeGesture();
+        }
+
+        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_max"))
+        {
             param->endChangeGesture();
         }
     }
@@ -948,9 +989,9 @@ const Array<float, CriticalSection> CabbagePluginEditor::getArrayForSignalDispla
     return Array<float, CriticalSection>();
 }
 
-bool CabbagePluginEditor::shouldUpdateSignalDisplay()
+bool CabbagePluginEditor::shouldUpdateSignalDisplay(String signalVariableName)
 {
-    return processor.shouldUpdateSignalDisplay();
+    return processor.shouldUpdateSignalDisplay(signalVariableName);
 }
 
 void CabbagePluginEditor::enableXYAutomator (String name, bool enable, Line<float> dragLine)
@@ -987,7 +1028,7 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName)
 {
     XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName);
-    xml.writeToFile (snapshotFile, "");
+    xml.writeTo (snapshotFile, XmlElement::TextFormat().singleLine());
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)

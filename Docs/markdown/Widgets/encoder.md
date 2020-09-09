@@ -26,9 +26,11 @@ encoder WIDGET_SYNTAX
 
 ### Common Identifiers
 
-{! ./markdown/Widgets/Properties/active.md !}  
+{! ./markdown/Widgets/Properties/active.md !} 
 
-{! ./markdown/Widgets/Properties/alpha.md !}  
+{! ./markdown/Widgets/Properties/alpha.md !}
+
+{! ./markdown/Widgets/Properties/automatable.md !}
 
 {! ./markdown/Widgets/Properties/bounds.md !}  
 
@@ -42,13 +44,17 @@ encoder WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/identchannel.md !}  
 
-{! ./markdown/Widgets/Properties/popup.md !}  
+{! ./markdown/Widgets/Properties/popup.md !}
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
 {! ./markdown/Widgets/Properties/svgfile.md !} 
 
-{! ./markdown/Widgets/Properties/value.md !}  
+{! ./markdown/Widgets/Properties/value.md !}
+
+{! ./markdown/Widgets/Properties/valueprefix.md !}
+
+{! ./markdown/Widgets/Properties/valuepostfix.md !}
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 

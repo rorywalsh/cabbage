@@ -25,7 +25,9 @@ combobox WIDGET_SYNTAX
 ### Common Identifiers
 {! ./markdown/Widgets/Properties/active.md !}   
 
-{! ./markdown/Widgets/Properties/alpha.md !}  
+{! ./markdown/Widgets/Properties/alpha.md !}
+
+{! ./markdown/Widgets/Properties/automatable.md !} 
 
 {! ./markdown/Widgets/Properties/bounds.md !}   
 
@@ -41,7 +43,7 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !}   
 
-{! ./markdown/Widgets/Properties/value.md !}  Comboboxes indices start at 1, not 0. If you set the initial value to 0 the combobox will not show any items.  
+{! ./markdown/Widgets/Properties/value.md !}  Comboboxes indices start at 1, not 0. If you set the initial value to 0 the combobox will not show any items.
 
 {! ./markdown/Widgets/Properties/visible.md !}   
 

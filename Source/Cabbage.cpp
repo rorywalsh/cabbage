@@ -32,7 +32,7 @@ void Cabbage::initialise (const String& commandLine)
 {
     documentWindow.reset (new CabbageDocumentWindow (getApplicationName(), getCommandLineParameters()));
 
-    if (commandLine.isNotEmpty())
+    if (commandLine.isEmpty())
     {
         isRunningCommandLine = false;
     }
@@ -46,6 +46,13 @@ void Cabbage::initialise (const String& commandLine)
 
 }
 
+void Cabbage::anotherInstanceStarted (const String& commandLine)
+{
+    if (CabbageDocumentWindow* mainApp = dynamic_cast<CabbageDocumentWindow*> (documentWindow.get()))
+    {
+        mainApp->openFile(commandLine);
+    }
+}
 
 //==============================================================================
 void Cabbage::shutdown()

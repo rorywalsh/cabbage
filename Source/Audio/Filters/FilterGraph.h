@@ -258,7 +258,7 @@ public:
 
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
-		processor->disableNonMainBuses();
+		//processor->disableNonMainBuses();
 		processor->setRateAndBufferSizeDetails(graph.getSampleRate(), 512);
 
 		return processor;
@@ -281,7 +281,7 @@ public:
 			w->toFront(true);
 	}
 
-    bool getCurrentPosition (CurrentPositionInfo &result)
+    bool getCurrentPosition (CurrentPositionInfo &result) override
     {
         result = playHeadPositionInfo;
         return true;
@@ -385,13 +385,20 @@ public:
 			std::unique_ptr<XmlElement> xml (createConnectionsXml());
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
-			
-//            for (auto* w : activePluginWindows)
-//                if( w->node->nodeID.uid == nodeId.uid)
-//                        activePluginWindows.removeObject(w);
-            
+         
             graph.removeNode(nodeId);
 			graph.releaseResources();
+
+			// Reset Csound so the Csound resources for this plugin are released (e.g. OSC ports).
+			// 
+			// Normally this is done in the plugin processor destructor when Juce cleans up dead graph nodes, but the
+			// new plugin processor instance will start Csound before the old one is destroyed, so we need to release
+			// Csound resources here instead of waiting until later.
+			auto pluginProcessor = dynamic_cast<CsoundPluginProcessor*>(plugin->getProcessor());
+			if (pluginProcessor)
+			{
+				pluginProcessor->resetCsound();
+			}
 
 			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{
@@ -403,6 +410,7 @@ public:
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				changed();
+                graph.prepareToPlay(graph.getSampleRate(), graph.getBlockSize());
 
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
 				node->properties.set("DPIAware", true);
@@ -451,8 +459,6 @@ public:
 
 		AudioProcessorGraph::NodeAndChannel nodeL = { (AudioProcessorGraph::NodeID) nodeId, 0 };
 		AudioProcessorGraph::NodeAndChannel nodeR = { (AudioProcessorGraph::NodeID) nodeId, 1 };
-        AudioProcessorGraph::NodeAndChannel nodeL1 = { (AudioProcessorGraph::NodeID) nodeId, 2 };
-        AudioProcessorGraph::NodeAndChannel nodeR1 = { (AudioProcessorGraph::NodeID) nodeId, 3 };
         
 		AudioProcessorGraph::NodeAndChannel outputL = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 0 };
 		AudioProcessorGraph::NodeAndChannel outputR = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 1 };

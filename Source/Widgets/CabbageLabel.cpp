@@ -22,16 +22,16 @@
 
 
 CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
-    : widgetData (wData),
-      text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
-      owner (_owner),
-      colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
-      fontcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
-      align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
-      textAlign (Justification::centred),
-      fontstyle (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle)),
-      corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
-      counter (0)
+    : corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
+    fontstyle (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle)),
+    owner (_owner),
+    counter (0),
+    text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
+    colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
+    fontcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
+    align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
+    textAlign (Justification::centred),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 

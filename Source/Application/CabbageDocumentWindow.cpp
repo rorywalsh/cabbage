@@ -37,7 +37,9 @@ lookAndFeel (new FlatButtonLookAndFeel()),
 commandLineArgs (commandLineParams)
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
-    setUsingNativeTitleBar (false/*true*/);
+    
+    
+    
     setTitleBarHeight (20);
     setResizable (true, true);
     centreWithSize (getWidth(), getHeight());
@@ -47,6 +49,13 @@ commandLineArgs (commandLineParams)
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
     
     initSettings();
+    
+    auto enableKioskMode = cabbageSettings->getUserSettings()->getIntValue ("enableKioskMode");
+    if(enableKioskMode == 1)
+        setUsingNativeTitleBar (true);
+    else
+        setUsingNativeTitleBar (false);
+    
     pluginExporter.settingsToUse(cabbageSettings->getUserSettings());
     setColour (backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings.get()), true);
@@ -55,9 +64,10 @@ commandLineArgs (commandLineParams)
     setMenuBar (this, 18/*25*/);
     getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel.get());
     
-    
+
     if (commandLineArgs.isNotEmpty())
     {
+        
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
             //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
             commandLineParams = commandLineParams.substring (0, commandLineParams.indexOf ("-") - 1);
@@ -145,7 +155,7 @@ commandLineArgs (commandLineParams)
     const int y = cabbageSettings->getUserSettings()->getIntValue ("IDE_LastKnownY");
     this->setTopLeftPosition (x, y);
     setSize (width, height);
-    
+        CabbageUtilities::debug(commandLineArgs);
 }
 
 void CabbageDocumentWindow::initSettings()
@@ -375,6 +385,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::autoReloadFromDisk);
 #if ! JUCE_MAC
     menu.addSeparator();
     menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
@@ -416,7 +428,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
     menu.addSeparator();
     menu.addSubMenu ("Console", subMenu);
-    menu.addSeparator();
+
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::settings);
     
@@ -549,6 +561,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::batchConvertExamplesVST,
         CommandIDs::toggleFileBrowser,
         CommandIDs::showPluginListEditor,
+        CommandIDs::autoReloadFromDisk
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -558,6 +571,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 {
     bool shouldShowEditMenu = false;
     int disableNodeConnections = cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes", 1);
+    int autoReloadFromDisk = cabbageSettings->getUserSettings()->getIntValue ("AutoReloadFromDisk", 0);
     if (getContentComponent()->getCurrentEditorContainer() != nullptr)
         shouldShowEditMenu = true;
 
@@ -879,6 +893,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo (TRANS ("Find Next"), TRANS ("Searches for the next occurrence of the current search-term."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
             break;
+      
+        case CommandIDs::autoReloadFromDisk:
+            result.setInfo(TRANS("Auto-load from disk"), TRANS("Enable auto-reload"), "File", 0);
+            result.setTicked((autoReloadFromDisk==1 ? true : false));
+            break;
             
         case CommandIDs::about:
             result.setInfo (TRANS ("About"), TRANS ("About."), CommandCategories::general, 0);
@@ -942,7 +961,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString)+"\nLicensed to: " + String(JucePlugin_Manufacturer);
 #else
     String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
-//    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
+    //String aboutInfo = commandLineArgs;
 #endif
     
     CabbageIDELookAndFeel tempLookAndFeel;
@@ -1218,6 +1237,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->showPluginListEditor();
             break;
             
+        case CommandIDs::autoReloadFromDisk:
+            if(cabbageSettings->getUserSettings()->getIntValue ("AutoReloadFromDisk") == 1)
+                cabbageSettings->getUserSettings()->setValue("AutoReloadFromDisk", 0);
+            else
+                cabbageSettings->getUserSettings()->setValue("AutoReloadFromDisk", 1);
+            
+            getContentComponent()->enableAutoUpdateMode();
+            break;
             
         case CommandIDs::editMode:
             getContentComponent()->enableEditMode();

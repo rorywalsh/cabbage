@@ -23,7 +23,11 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/style.md !}  
 
+{! ./markdown/Widgets/Properties/latency.md !} 
+
 {! ./markdown/Widgets/Properties/autoupdate.md !}  
+
+{! ./markdown/Widgets/Properties/sidechain.md !}  
 
 ### Common Identifiers
 

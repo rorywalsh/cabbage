@@ -15,7 +15,9 @@ checkbox WIDGET_SYNTAX
 
 ### Common Identifiers
 
-{! ./markdown/Widgets/Properties/active.md !} 
+{! ./markdown/Widgets/Properties/active.md !}
+
+{! ./markdown/Widgets/Properties/automatable.md !}
 
 {! ./markdown/Widgets/Properties/alpha.md !} 
 
@@ -39,7 +41,7 @@ checkbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/shape.md !} 
 
-{! ./markdown/Widgets/Properties/text.md !} 
+{! ./markdown/Widgets/Properties/text.md !}
 
 {! ./markdown/Widgets/Properties/value.md !} 
 

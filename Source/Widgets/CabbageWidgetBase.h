@@ -23,14 +23,14 @@
 #include "../CabbageCommonHeaders.h"
 
 // Simple base class for taking care of some widget housekeeping. This class looks after
-// common memeber variables such as alpha values, tooltiptext, bounds, etc
+// common member variables such as alpha values, tooltiptext, bounds, etc
 // Each cabbage widget should inherit from this class and call initialiseCommonAttributes()
 // in the derived class's constructor, and handleCommonUpdates() in its valueTreePropertyChanged() method.
 class CabbageWidgetBase
 {
-    int pivotx, pivoty, visible, active, value, valuex, valuey, lineNumber, toFront;
-    float rotate, alpha, currentValue;
-    String tooltipText, text, channel, csdFile, file;
+    int pivotx=0, pivoty=0, visible=0, active=0, value=0, valuex=0, valuey=0, lineNumber=0, toFront=0;
+    float rotate=0, alpha=0, currentValue=0;
+    String tooltipText="", text = "", channel = "", csdFile = "", file = "";
     StringArray channelArray;   //can be used if widget supports multiple channels
     StringArray textArray;      //can be used used if widget supports multiple text items
 
@@ -78,17 +78,17 @@ public:
     {
         return rotate;
     }
-    const String&  getText() const
+    const String getText() const
     {
-        return text;
+        return text.replace("\\n", "\n");
     }
     const StringArray&  getTextArray() const
     {
         return textArray;
     }
-    const String&  getTooltipText() const
+    const String getTooltipText() const
     {
-        return tooltipText;
+        return tooltipText.replace("\\n", "\n");
     }
     int  getValue() const
     {
@@ -136,6 +136,17 @@ public:
     static int getSVGHeight (File svgFile);
     static int getSVGWidth (File svgFile);
 
+    String createPopupBubbleText(double val, int decimalPlaces,
+                                 const String& channel,
+                                 const String& escapedPrefix = String(),
+                                 const String& escapedPostfix = String());
+    
+    String createValueText(double val, int decimalPlaces,
+                           const String& prefix = String(),
+                           const String& postfix = String())
+    {
+        return prefix + String(val, decimalPlaces) + postfix;
+    }
 
 };
 

@@ -20,11 +20,13 @@
 #include "CabbageNumberSlider.h"
 
 CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
-    : widgetData (wData),
-      slider (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
-      label(),
-      text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
-      align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align))
+    :
+    slider (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
+    label(),
+    text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
+    align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
+    sliderLookAndFeel(),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -32,6 +34,12 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     //slider.setName(text);
     slider.toFront (true);
 
+    sliderLookAndFeel.setFontColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    const int fontSize = (CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontsize) == -1 ? CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::height) - 10 :
+        CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontsize));
+    sliderLookAndFeel.setFontSize(fontSize);
+
+	slider.setLookAndFeel(&sliderLookAndFeel);
     label.setText (text, dontSendNotification);
     label.setJustificationType (Justification::centred);
     label.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)));
@@ -47,22 +55,24 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
     slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
+	slider.sendLookAndFeelChange();
     slider.setVelocityBasedMode (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity) == 1 ? true : false);
     slider.setVelocityModeParameters (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity));
     slider.getProperties().set ("decimalPlaces", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces));
 
-    const float min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
-    const float max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
+    const float mMin = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
+    const float mMax = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
     const float incr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     const float skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
-    const float value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+    const float mValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
 
     slider.setSkewFactor (skew);
-    slider.setRange (min, max, incr);
-    slider.setValue (value, sendNotification);
+	
+    slider.setRange (mMin, mMax, incr);
+    slider.setValue (mValue, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
 
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
     slider.setTextValueSuffix(postfix);
 }
 
@@ -117,6 +127,9 @@ void CabbageNumberSlider::valueTreePropertyChanged (ValueTree& valueTree, const 
         handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
         align = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::align);
         label.setText (getText(), dontSendNotification);
+        const int fontSize = (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::fontsize) == -1 ? CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::height) - 10 :
+                              CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::fontsize));
+        sliderLookAndFeel.setFontSize(fontSize);
         slider.sendLookAndFeelChange();
         resized();
     }

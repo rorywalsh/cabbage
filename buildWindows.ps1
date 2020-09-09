@@ -1,13 +1,33 @@
 dir  
 cd c:/
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.13.0.zip" -OutFile "C:\csound-windows_x64-6.12.0.zip" 
+#Start-BitsTransfer -Source "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.13.0.zip" -Destination "C:\csound-windows_x64-6.12.0.zip" 
+
+$start_time = Get-Date
+(New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.15.0.zip", "C:\csound-windows_x64-6.12.0.zip")
+Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+
+# Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.13.0.zip" -OutFile "C:\csound-windows_x64-6.12.0.zip" 
 7z.exe x csound-windows_x64-6.12.0.zip -o"C:/Program Files"
 cd "C:/Program Files/Csound6_x64"
 dir
 cd c:/
-Invoke-WebRequest -Uri "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip" -OutFile "C:\vstsdk3611_22_10_2018_build_34.zip" 
-Invoke-WebRequest -Uri "http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip" -OutFile "C:\ASIOSDK2.3.2.zip" 
-Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/heads.zip" -OutFile "C:\heads.zip" 
+
+
+$start_time = Get-Date
+(New-Object System.Net.WebClient).DownloadFile("https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip", "C:\vstsdk3611_22_10_2018_build_34.zip")
+Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+
+$start_time = Get-Date
+(New-Object System.Net.WebClient).DownloadFile("http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip", "C:\ASIOSDK2.3.2.zip")
+Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+
+$start_time = Get-Date
+(New-Object System.Net.WebClient).DownloadFile("http://cabbageaudio.com/beta/heads.zip", "C:\heads.zip")
+Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+
+# Invoke-WebRequest -UseBasicParsing "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip" -OutFile "C:\vstsdk3611_22_10_2018_build_34.zip" 
+# Invoke-WebRequest -UseBasicParsing "http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip" -OutFile "C:\ASIOSDK2.3.2.zip" 
+# Invoke-WebRequest -UseBasicParsing "http://cabbageaudio.com/beta/heads.zip" -OutFile "C:\heads.zip" 
  
 7z.exe x vstsdk3611_22_10_2018_build_34.zip
 7z.exe x asiosdk2.3.2.zip
@@ -22,9 +42,9 @@ dir
 cd c:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x/
 dir
 cd D:/a/1/
-git clone https://github.com/WeAreROLI/JUCE.git
+git clone https://github.com/juce-framework/JUCE.git
 cd D:/a/1/JUCE
-git checkout master
+git checkout 5.4.7
 cd D:/a/1/JUCE/extras/Projucer/JuceLibraryCode
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCER_ENABLE_GPL_MODE 1", "#define JUCER_ENABLE_GPL_MODE 0"} | Set-Content -Path "AppConfig.h"
 (Get-Content -Path "AppConfig.h") | ForEach-Object {$_ -Replace "#define JUCE_USE_DARK_SPLASH_SCREEN 1", "#define JUCE_USE_DARK_SPLASH_SCREEN 0"} | Set-Content -Path "AppConfig.h"
@@ -39,21 +59,33 @@ cd D:/a/1/s/Builds/VisualStudio2017/
 dir
 D:/a/1/s/Builds/VisualStudio2017/azureBuildCabbage64.bat  
 
-cd D:/a/1/s/CsoundTestWin64 
-msbuild.exe CsoundTest.sln /property:Platform=x64
 cd D:/a/1/s/
-Invoke-WebRequest -Uri "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "D:\a\1\s\CabbageManual.zip" 
+
+$start_time = Get-Date
+(New-Object System.Net.WebClient).DownloadFile("http://cabbageaudio.com/beta/CabbageManual.zip", "D:\a\1\s\CabbageManual.zip")
+Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+
+
+# Invoke-WebRequest -UseBasicParsing "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "D:\a\1\s\CabbageManual.zip" 
 7z.exe x CabbageManual.zip -oD:\a\1\s\CabbageManual
 
 cd D:/a/1/s/Builds/VisualStudio2017/x64
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-1.0.0-win.zip" 
+$start_time = Get-Date
+(New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip", "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-1.0.0-win.zip")
+Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+
+
+# Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack-1.0.0-win.zip" 
 
 7z.exe x CabbageRack-1.0.0-win.zip -oD:\a\1\s\Builds\VisualStudio2017\x64\CabbageRack
 ls
 
+$start_time = Get-Date
+(New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll", "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csoundL64.dll")
+Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
-Invoke-WebRequest -Uri "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csoundL64.dll" 
+# Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csoundL64.dll" 
 
 ls
 cd D:/a/1/s/Builds/VisualStudio2017
