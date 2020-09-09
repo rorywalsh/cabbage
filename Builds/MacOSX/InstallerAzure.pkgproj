@@ -1544,7 +1544,7 @@
 										<key>LANGUAGE</key>
 										<string>English</string>
 										<key>VALUE</key>
-										<string>Select this checkbox to install the latest version of Csound. This installs Csound64Lib.framework to your System/Library/Frameworks folder and will overwrite any previous version of Csound.</string>
+										<string>Select this checkbox to install the latest version of Csound (v6.15). This installs Csound64Lib.framework to your System/Library/Frameworks folder and will overwrite any previous version of Csound.</string>
 									</dict>
 								</array>
 								<key>OPTIONS</key>
