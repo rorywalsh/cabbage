@@ -27,7 +27,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "GraphEditorPanel.h"
 #include "../Filters/InternalFilters.h"
-
+#include "CabbageTransportComponent.h"
 #include "../../Application/CabbageMainComponent.h"
 
 
@@ -269,9 +269,14 @@ private AudioProcessorParameter::Listener
                 {
                     //mod RW
                     panel.showEditorForNode(pluginID);
-                    w->setAlwaysOnTop(true);
-                    w->toFront(true);
-                    
+                    //w->setAlwaysOnTop(true);
+					if (w->isVisible())
+						w->setVisible(false);
+					else
+					{
+						w->setVisible(true);
+						w->toFront(true);
+					}                    
                 }
             
         }
@@ -440,6 +445,7 @@ private AudioProcessorParameter::Listener
         
         if (getProcessor()->hasEditor())
         {
+			menu->addItem(9, "Set always on top");
             menu->addSeparator();
             menu->addItem (10, "Show plugin GUI");
             menu->addItem (11, "Show all programs");
@@ -455,7 +461,7 @@ private AudioProcessorParameter::Listener
         
         menu->addSeparator();
         //mod RW
-        //menu->addItem (20, "Configure Audio I/O");
+        menu->addItem (20, "Configure Audio I/O");
         // menu->addItem (21, "Test state save/load");
         
         menu->showMenuAsync ({}, ModalCallbackFunction::create
@@ -483,6 +489,11 @@ private AudioProcessorParameter::Listener
                     
                     break;
                 }
+				case 9:
+					if (auto node = graph.graph.getNodeForId(pluginID))
+						if (auto * w = graph.getOrCreateWindowFor(node, PluginWindow::Type::normal))
+							w->setAlwaysOnTop(true);
+
                 case 10:  showWindow (PluginWindow::Type::normal); break;
                 case 11:  showWindow (PluginWindow::Type::programs); break;
                 case 12:  showWindow (PluginWindow::Type::generic)  ; break;
@@ -841,7 +852,7 @@ void GraphEditorPanel::resized()
 //mod RW
 void GraphEditorPanel::showEditorForNode(AudioProcessorGraph::NodeID pluginID)
 {
-    if (auto* graphWindow = findParentComponentOfClass<CabbageMainComponent::FilterGraphDocumentWindow>())
+    if (auto* graphWindow = findParentComponentOfClass<FilterGraphDocumentWindow>())
     {
         bool foundTabForNode = false;
         for (int i = 0; i < graphWindow->getOwner()->getNumberOfFileTabs(); i++)
@@ -916,7 +927,7 @@ void GraphEditorPanel::updateComponents()
 void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
 {
     //mod RW
-    if (auto* graphWindow = findParentComponentOfClass<CabbageMainComponent::FilterGraphDocumentWindow>())
+    if (auto* graphWindow = findParentComponentOfClass<FilterGraphDocumentWindow>())
     {
         Uuid uniqueID;
         Array<File> exampleFiles;
@@ -953,19 +964,20 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
         else if (r > 1 && r < 10000)
         {
             graphWindow->getOwner()->openFile(exampleFiles[r - 3000].getFullPathName());
-            graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName(), Point<int>(mousePos));
+            graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName());
         }
         
         else if (r >= 10000 && r <= 20000)
         {
             graphWindow->getOwner()->openFile(userFiles[r - 10000].getFullPathName());
-            graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName(), Point<int>(mousePos));
+            graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName());
         }
         
         else if(r >= 20000)
         {
             auto* desc = graphWindow->getOwner()->knownPluginList.getType (graphWindow->getOwner()->knownPluginList.getIndexChosenByMenu (r));
-            createNewPlugin (*desc, mousePos.toDouble());
+			const Point<double>newPos(double(mousePos.getX()) / getWidth(), double(mousePos.getY()) / getHeight());
+            createNewPlugin (*desc, newPos);
         }
         
         
@@ -1302,7 +1314,9 @@ void GraphDocumentComponent::init()
     addAndMakeVisible (keyboardComp.get());
     statusBar.reset (new TooltipBar());
     addAndMakeVisible (statusBar.get());
-    
+    //RW
+    transportControls.reset( new CabbageTransportComponent(this));
+    addAndMakeVisible(transportControls.get());
     graphPanel->updateComponents();
     
 }
@@ -1324,9 +1338,11 @@ void GraphDocumentComponent::resized()
     
     //if (isOnTouchDevice())
     //    titleBarComponent->setBounds (r.removeFromTop(titleBarHeight));
-    
-    keyboardComp->setBounds (r.removeFromBottom (keysHeight));
-    statusBar->setBounds (r.removeFromBottom (statusHeight));
+
+//    statusBar->setBounds (r.removeFromBottom (statusHeight));
+    keyboardComp->setBounds (r.removeFromBottom (keysHeight).withLeft(300).withWidth(getWidth()-300));
+    transportControls->setBounds(0, keyboardComp->getBounds().getY()+5, 300, keysHeight-10);
+
     graphPanel->setBounds (r);
     
     checkAvailableWidth();

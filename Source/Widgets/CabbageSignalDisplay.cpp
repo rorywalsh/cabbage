@@ -22,31 +22,33 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageSignalDisplay::CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor* owner)
-    : widgetData (wData),
-      owner (owner),
-      colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
-      backgroundColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour))),
-      fontColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour))),
-      minFFTBin (0),
-      maxFFTBin (1024),
-      vectorSize (512),
-      shouldDrawSonogram (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::displaytype) == "spectrogram" ? true : false),
-      displayType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::displaytype)),
-      spectrogramImage (Image::RGB, 512, 300, true),
-      spectroscopeImage (Image::RGB, 512, 300, true),
-      freqRangeDisplay (fontColour, backgroundColour),
-      freqRange (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min), CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max)),
-      scrollbar (false),
-      scopeWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width)),
-      zoomInButton ("zoomIn", Colours::white),
-      zoomOutButton ("zoomOut", Colours::white),
-      zoomLevel (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
-      leftPos (0),
-      isScrollbarShowing (false),
-      scrollbarHeight (20),
-      lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness))
+    : displayType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::displaytype)),
+    zoomInButton ("zoomIn", Colours::white),
+    zoomOutButton ("zoomOut", Colours::white),
+    shouldDrawSonogram (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::displaytype) == "spectrogram" ? true : false),
+    leftPos (0),
+    scrollbarHeight (20),
+    minFFTBin (0),
+    maxFFTBin (1024),
+    vectorSize (512),
+    zoomLevel (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
+    scopeWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width)),
+    lineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
+    fontColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour))),
+    colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
+    backgroundColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour))),
+    scrollbar (false),
+    isScrollbarShowing (false),
+    spectrogramImage (Image::RGB, 512, 300, true),
+    spectroscopeImage (Image::RGB, 512, 300, true),
+    freqRangeDisplay (fontColour, backgroundColour),
+    freqRange (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min), CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max)),
+    owner (owner),
+    widgetData (wData)
 {
+    
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
+    CabbageUtilities::debug(getName());
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
@@ -70,7 +72,8 @@ CabbageSignalDisplay::CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor
         addAndMakeVisible (zoomOutButton);
     }
 
-    startTimer (updateRate);
+    const int mUpdateRate = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::updaterate);
+    startTimer (mUpdateRate);
 }
 
 //====================================================================================
@@ -254,12 +257,12 @@ void CabbageSignalDisplay::mouseMove (const MouseEvent& e)
     if (shouldDrawSonogram)
     {
         const int position = jmap (e.getPosition().getY(), 0, getHeight(), 22050, 0);
-        showPopup (String (position) + "Hz.");
+        showPopupBubble(String (position) + "Hz.");
     }
     else
     {
         const int position = jmap (e.getPosition().getX(), 0, scopeWidth, 0, 22050);
-        showPopup (String (position) + "Hz.");
+        showPopupBubble(String (position) + "Hz.");
     }
 }
 
@@ -299,32 +302,32 @@ void CabbageSignalDisplay::setSignalFloatArraysForLissajous (Array<float, Critic
 //====================================================================================
 void CabbageSignalDisplay::timerCallback()
 {
-    if (owner->shouldUpdateSignalDisplay())
+    const String variable = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::signalvariable);
+    if (owner->shouldUpdateSignalDisplay(variable))
     {
-        const String variable = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::signalvariable);
-        const String displayType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::displaytype);
+        
+        const String mDisplayType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::displaytype);
 
-        if (displayType != "lissajous")
+        if (mDisplayType != "lissajous")
         {
-            setSignalFloatArray (owner->getArrayForSignalDisplay (variable, displayType));
+            setSignalFloatArray (owner->getArrayForSignalDisplay (variable, mDisplayType));
         }
         else
         {
-            var signalVariables = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::signalvariable);
+            var mSignalVariables = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::signalvariable);
 
-            if (signalVariables.size() == 2)
-                setSignalFloatArraysForLissajous (owner->getArrayForSignalDisplay (signalVariables[0], displayType),
-                                                  owner->getArrayForSignalDisplay (signalVariables[1], displayType));
+            if (mSignalVariables.size() == 2)
+                setSignalFloatArraysForLissajous (owner->getArrayForSignalDisplay (mSignalVariables[0], mDisplayType),
+                                                  owner->getArrayForSignalDisplay (mSignalVariables[1], mDisplayType));
 
         }
 
         repaint();
     }
-
 }
 
 //====================================================================================
-void CabbageSignalDisplay::showPopup (String text)
+void CabbageSignalDisplay::showPopupBubble(String mText)
 {
 
 }

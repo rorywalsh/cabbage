@@ -32,7 +32,7 @@ ChangesEnvironment=yes
 
 [Components]
 Name: "core"; Description: "Cabbage Installation"; Types: full custom; Flags: fixed
-Name: "csound"; Description: "Installs Csound (skip if you already have Csound 6.09 or later already installed)"; Types: full;
+Name: "csound"; Description: "Installs Csound (skip if you already have Csound 6.15 or later already installed)"; Types: full;
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -46,6 +46,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "{#BuildDir}/Cabbage.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
+;Source: "{#BuildDir}/CabbageCsoundCLI.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbageLite.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginEffect.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginSynth.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;

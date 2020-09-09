@@ -52,6 +52,11 @@ class CabbageXYPad
 
     Point<float> currentMouseXY;
     Point<float> mouseDownXY;
+    
+    String xPrefix = "";
+    String xPostfix = "";
+    String yPrefix = "";
+    String yPostfix = "";
 
     class XYBall : public Component
     {
@@ -147,61 +152,61 @@ public:
     {
         return name;
     }
-    void setDragLine (const Line<float>& dragLine)
+    void setDragLine (const Line<float>& lineToDrag)
     {
-        this->dragLine = dragLine;
+        this->dragLine = lineToDrag;
     }
-    void setIsPluginEditorOpen (bool isPluginEditorOpen)
+    void setIsPluginEditorOpen (bool pluginEditorIsOpen)
     {
-        this->isPluginEditorOpen = isPluginEditorOpen;
+        this->isPluginEditorOpen = pluginEditorIsOpen;
     }
-    void setName (const String& name)
+    void setName (const String& nameToUse)
     {
-        this->name = name;
+        this->name = nameToUse;
     }
-    void setPosition (const Point<double>& position)
+    void setPosition (const Point<double>& positionToUse)
     {
-        this->position = position;
+        this->position = positionToUse;
     }
-    void setRepaintBackground (bool repaintBackground)
+    void setRepaintBackground (bool backgroundToPaint)
     {
-        this->repaintBackground = repaintBackground;
+        this->repaintBackground = backgroundToPaint;
     }
-    void setVelocity (float velocity)
+    void setVelocity (float velocityToUse)
     {
-        this->velocity = velocity;
+        this->velocity = velocityToUse;
     }
-    void setXMax (float xMax)
+    void setXMax (float xMaxToUse)
     {
-        this->xMax = xMax;
+        this->xMax = xMaxToUse;
     }
-    void setXMin (float xMin)
+    void setXMin (float xMinToUse)
     {
-        this->xMin = xMin;
+        this->xMin = xMinToUse;
     }
-    void setXValue (float xValue)
+    void setXValue (float xValueToUse)
     {
-        this->xValue = xValue;
+        this->xValue = xValueToUse;
     }
-    void setXValueIncrement (float xValueIncrement)
+    void setXValueIncrement (float xValueIncrementToUse)
     {
-        this->xValueIncrement = xValueIncrement;
+        this->xValueIncrement = xValueIncrementToUse;
     }
-    void setYMax (float yMax)
+    void setYMax (float yMaxToUse)
     {
-        this->yMax = yMax;
+        this->yMax = yMaxToUse;
     }
-    void setYMin (float yMin)
+    void setYMin (float yMinToUse)
     {
-        this->yMin = yMin;
+        this->yMin = yMinToUse;
     }
-    void setYValue (float yValue)
+    void setYValue (float yValueToUse)
     {
-        this->yValue = yValue;
+        this->yValue = yValueToUse;
     }
-    void setYValueIncrement (float yValueIncrement)
+    void setYValueIncrement (float yValueIncrementToUse)
     {
-        this->yValueIncrement = yValueIncrement;
+        this->yValueIncrement = yValueIncrementToUse;
     }
     bool getIsPluginEditorOpen() const
     {

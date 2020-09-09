@@ -26,12 +26,12 @@ class FileTab : public TextButton
 {
     DrawableButton play, close, showEditor, editGUI;
     File csdFile;
-	Colour fileBarBackground, fileTabBackground, fileTabText;
+    Colour fileBarBackground, fileTabBackground, fileTabText;
     String iconsPath;
 
 
-	std::unique_ptr <Drawable> drawable_editGUIoff = nullptr;
-	std::unique_ptr <Drawable> drawable_editGUIon = nullptr;
+    std::unique_ptr <Drawable> drawable_editGUIoff = nullptr;
+    std::unique_ptr <Drawable> drawable_editGUIon = nullptr;
 
     class Overlay : public Component
     {
@@ -48,9 +48,10 @@ class FileTab : public TextButton
 
     Overlay overlay;
     bool isCsdFile;
-	Colour buttonColour = { 82, 99, 106 };
-	Colour fontColour = { 200, 200, 200 };
-	Colour playButtonColour = { 50, 62, 68 };
+    Colour buttonColour = { 82, 99, 106 };
+    Colour fontColour = { 200, 200, 200 };
+    Colour playButtonColour = { 50, 62, 68 };
+    
 public:
 
 
@@ -67,17 +68,17 @@ public:
     void resized();
     void setDrawableImages (DrawableButton& button, int width, int height, String type);
     void drawButtonText (Graphics& g);
-	void setButtonColour(Colour colour) {
-		buttonColour = colour;
+    void setButtonColour(Colour colour) {
+        buttonColour = colour;
         overlay.overlayColour = colour;
-	}
-	void setFontColour(Colour colour) {
-		fontColour = colour;
-	}
-	void setPlayButtonColour(Colour colour) {
-		playButtonColour = colour;
-		setDrawableImages(play, 60, 25, "play");
-	}
+    }
+    void setFontColour(Colour colour) {
+        fontColour = colour;
+    }
+    void setPlayButtonColour(Colour colour) {
+        playButtonColour = colour;
+        setDrawableImages(play, 60, 25, "play");
+    }
 
     File getFile() {     return csdFile; }
     void setFile (File file) {        csdFile = file;   }
@@ -87,4 +88,5 @@ public:
     DrawableButton& getEditGUIButton() { return editGUI; }
 
     int32 uniqueFileId = -99;
+    Time lastModified;
 };

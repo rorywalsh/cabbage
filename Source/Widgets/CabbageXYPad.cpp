@@ -22,23 +22,23 @@
 #include "CabbageXYPad.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
   
-CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
-    owner (editor),
-    widgetData (wData),
+CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
+    : owner (editor),
+    fontColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour))),
+    textColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour))),
+    colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
+    bgColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour))),
+    ballColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::ballcolour))),
+    xValueLabel(),
+    yValueLabel(),
     minX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx)),
     maxX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxx)),
     minY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::miny)),
     maxY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxy)),
-    ball(),
-    yValueLabel(),
-    xValueLabel(),
     valueX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuex)),
     valueY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuey)),
-    fontColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour))),
-    textColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour))),
-    colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
-    ballColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::ballcolour))),
-    bgColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour)))
+    ball(),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -55,12 +55,33 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor):
     yAxis.setName (getName() + "_y");
 
     ball.setColour (ballColour);
+    
+    const auto prefixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::valueprefix);
+    if (prefixes.isArray())
+    {
+        xPrefix = prefixes[0];
+        if (prefixes.size() > 1)
+        {
+            yPrefix = prefixes[1];
+        }
+    }
+    
+    const auto postfixes = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::valuepostfix);
+    if (postfixes.isArray())
+    {
+        xPostfix = postfixes[0];
+        if (postfixes.size() > 1)
+        {
+            yPostfix = postfixes[1];
+        }
+    }
+
     xValueLabel.setColour (Label::textColourId, fontColour);
     yValueLabel.setColour (Label::textColourId, fontColour);
     xValueLabel.setJustificationType (Justification::centred);
-    xValueLabel.setText (String (valueX, 3), dontSendNotification);
+    xValueLabel.setText (createValueText(valueX, 3, xPrefix, xPostfix), dontSendNotification);
 
-    yValueLabel.setText (String (valueY, 3), dontSendNotification);
+    yValueLabel.setText (createValueText(valueY, 3, yPrefix, yPostfix), dontSendNotification);
     yValueLabel.setJustificationType (Justification::centred);
     xValueLabel.setFont (Font (12, 1));
     yValueLabel.setFont (Font (12, 1));
@@ -102,9 +123,6 @@ void CabbageXYPad::mouseUp (const MouseEvent& e)
 {
     if (e.mods.isRightButtonDown())
     {
-        const float xDistance = mouseDownXY.getX() - e.getPosition().getX();
-        const float yDistance = mouseDownXY.getY() - e.getPosition().getY();
-
         rightMouseButtonDown = false;
 
         const Point<float> valueStart (getPositionAsValue (mouseDownXY));
@@ -272,8 +290,8 @@ void CabbageXYPad::setValues (float x, float y, bool notify)
 {
     xAxis.setValue (x, sendNotification);
     yAxis.setValue (minY + (maxY - y), sendNotification);
-    xValueLabel.setText (String (x, 3), dontSendNotification);
-    yValueLabel.setText (String (minY + (maxY - y), 3), dontSendNotification);
+    xValueLabel.setText (createValueText(x, 3, xPrefix, xPostfix), dontSendNotification);
+    yValueLabel.setText (createValueText(minY + (maxY - y), 3, yPrefix, yPostfix), dontSendNotification);
 }
 //========================================================================
 XYPadAutomator::XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam, AudioProcessor* _owner)

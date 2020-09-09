@@ -13,7 +13,9 @@ button WIDGET_SYNTAX
 ### Common Identifiers
 {! ./markdown/Widgets/Properties/active.md !}
 
-{! ./markdown/Widgets/Properties/alpha.md !} 
+{! ./markdown/Widgets/Properties/alpha.md !}
+
+{! ./markdown/Widgets/Properties/automatable.md !} 
 
 {! ./markdown/Widgets/Properties/bounds.md !} 
 
@@ -43,9 +45,9 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
-{! ./markdown/Widgets/Properties/svgfile.md !} 
+{! ./markdown/Widgets/Properties/imgfile.md !} 
 
-{! ./markdown/Widgets/Properties/text.md !} 
+{! ./markdown/Widgets/Properties/text.md !}
 
 {! ./markdown/Widgets/Properties/value.md !} 
 

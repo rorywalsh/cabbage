@@ -23,16 +23,16 @@
 //================================================================================================================
 // combobox widget
 //================================================================================================================
-CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
-    name (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
-    rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
-    pivotx (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivotx)),
+CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
+    : pivotx (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivotx)),
     pivoty (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::pivoty)),
-    tooltipText (String()),
     refresh (0),
+    name (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
+    tooltipText (String()),
+    workingDir (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir)),
+    rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
     owner (_owner),
-    widgetData (wData),
-    workingDir (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir))
+    widgetData (wData)
 {
     widgetData.addListener (this);
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
@@ -64,22 +64,23 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner):
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
         currentValueAsText = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::value).toString();
-        owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
         const int index = stringItems.indexOf (currentValueAsText);
+		owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
 
-        if (index != -1)
-            setSelectedItemIndex (index, dontSendNotification);
+        if (index != -1)  
+            setSelectedItemIndex (index+1, dontSendNotification);
     }
     else
     {
 
         if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
         {
-            isPresetCombo = true;
+            isPresetCombo = true;  
             getProperties().set("isPresetCombo", true);
-            var presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value);
+            String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
 
-            const int index = presets.indexOf(presetName.toString());
+            const int index = presets.indexOf(presetName);
+            //don't send notification here, otherwise the saved session settings will be overwriten by the presets...
             setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);
         }
         else
@@ -106,8 +107,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
-        StringArray lines = StringArray::fromLines (file);
+        String mfile = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
+        StringArray lines = StringArray::fromLines (mfile);
 
         for (int i = 0; i < lines.size(); ++i)
         {
@@ -119,17 +120,53 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
-
-        for (int i = 0; i < items.size(); i++)
+        PopupMenu subMenu;
+        std::vector<StringArray> menus;
+        int menuIndex = -1;
+        for( int i = 0 ; i < items.size(); i++)
         {
-            const String item  = items[i].toString();
-            addItem (item, i + 1);
-            stringItems.add (item);
+            if(items[i].toString().contains("subM:"))
+            {
+                menus.push_back(StringArray());
+                menuIndex++;
+            }
+            
+            if(menus.size() > 0)
+                menus[menuIndex].add(items[i]);
+        }
+        
+        
+        
+        //if working with submenus....
+        menuIndex = 1;
+        if(menus.size()>0)
+        {
+            for( int i = 0 ; i < menus.size() ; i++)
+            {
+                subMenu.clear();
+                for( int x = 1 ; x < menus[i].size() ; x++)
+                {
+                    subMenu.addItem(menuIndex, menus[i][x]);
+                    menuIndex++;
+                    if(x == menus[i].size() - 1){
+                        const String subMenuName = menus[i][0].substring(6);
+                        getRootMenu()->addSubMenu(subMenuName, subMenu);
+                    }
+                }
+            }
+        
+        }
+        else{
+            for (int i = 0; i < items.size(); i++)
+            {
+                const String item  = items[i].toString();
+                addItem (item, i + 1);
+                stringItems.add (item);
+            }
         }
     }
     //if dealing with preset files...
-    else if (CabbageWidgetData::getStringProp (wData, "filetype") == "preset"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps"
+    else if ( CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps"
              || CabbageWidgetData::getStringProp (wData, "filetype") == ".snaps"
              || CabbageWidgetData::getStringProp (wData, "filetype") == "snaps") //load items from directory
     {
@@ -156,12 +193,12 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else
     {
         
-        const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        const String workingDirToUse = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
-        if (workingDir.isNotEmpty())
-            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+        if (workingDirToUse.isNotEmpty())
+            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDirToUse);
         else
-            pluginDir = File::getCurrentWorkingDirectory().getParentDirectory();
+            pluginDir = File::getCurrentWorkingDirectory();
 
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
         pluginDir.findChildFiles (dirFiles, 2, false, filetype);
@@ -174,8 +211,11 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
         for ( int i = 0; i < folderFiles.size(); i++)
         {
+			stringItems.add(folderFiles[i].getFileNameWithoutExtension());
             addItem (folderFiles[i].getFileNameWithoutExtension(), i + 2);
         }
+
+        setSelectedItemIndex(getNumItems()-1, dontSendNotification);
 
     }
 
@@ -194,7 +234,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...
 {
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
-        || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
+        || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype) == ("preset"))
     {
         String presetFilename;
         if (owner->isAudioUnit())
@@ -211,8 +251,11 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
         const int index = combo->getSelectedItemIndex();
 
-        if (fileType.isNotEmpty())
-            owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index - 1].getFullPathName());
+		if (fileType.isNotEmpty())
+		{
+			String test = folderFiles[index - 1].getFullPathName();
+			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index - 1].getFullPathName().replaceCharacters("\\", "/"));
+		}
         else
             owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
 
@@ -227,12 +270,12 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         {
             if (isStringCombo == false)
             {
-                const int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+                const int mValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
 
                 if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
-                    setSelectedItemIndex (value - 1, sendNotification);
+                    setSelectedItemIndex (mValue - 1, sendNotification);
                 else
-                    setSelectedItemIndex (value - 1, dontSendNotification);
+                    setSelectedItemIndex (mValue - 1, dontSendNotification);
             }
             else
             {
@@ -245,11 +288,22 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
+		else
+		{
+			currentValueAsText = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString();
+			const int index = stringItems.indexOf(currentValueAsText);
+
+			if (index != -1)
+				setSelectedItemIndex(index, dontSendNotification);
+
+			//CabbageWidgetData::setProperty(valueTree, CabbageIdentifierIds::value, currentValueAsText);
+		}
 
     }
 
     else
     {
+        const MessageManagerLock lock;
         handleCommonUpdates (this, valueTree);
         setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
@@ -264,9 +318,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         }
 
 
-        if (refresh != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles))
+        if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)
         {
-            refresh = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles) == 1 ? 0 : 1;
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::refreshfiles, 0);
             addItemsToCombobox (valueTree);
         }
     }

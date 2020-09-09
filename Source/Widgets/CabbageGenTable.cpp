@@ -23,15 +23,15 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageGenTable::CabbageGenTable (ValueTree wData, CabbagePluginEditor* owner)
-    : widgetData (wData),
-      owner (owner),
-      fontcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
-      file (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)),
-      zoom (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
-      scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
-      startpos (-1),
-      endpos (-1),
-      tooltipText (String())
+    :  fontcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
+    file (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)),
+    tooltipText (String()),
+    zoom (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
+    startpos (-1),
+    endpos (-1),
+    scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
+    owner (owner),
+    widgetData (wData)
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..

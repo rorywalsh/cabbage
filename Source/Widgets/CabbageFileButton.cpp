@@ -21,18 +21,22 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner)
-    : widgetData (wData),
-      TextButton(),
-      owner (owner)
+    : TextButton(),
+    owner (owner),
+    widgetData (wData)
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     setLookAndFeelColours (wData);
 
+    tooltipText = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext);
+    if (tooltipText.isNotEmpty())
+        setTooltip(tooltipText);
+    
     setButtonText (getText());
 
     mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
-    filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).removeCharacters ("*.");
+    filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
     setImgProperties (*this, wData, "buttonon");
     setImgProperties (*this, wData, "buttonoff");
@@ -41,6 +45,10 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
     const String imgOver = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonover);
     const String imgOn = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonon);
+    
+    getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
+    getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
+    getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
     
     const String globalStyle = owner->globalStyle;
     if(globalStyle == "legacy")
@@ -54,7 +62,8 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     {
         setLookAndFeel(&flatLookAndFeel);
     }
-
+    
+    setFile(wData);
     
 }
 
@@ -64,7 +73,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     if (mode == "file")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {
@@ -79,7 +88,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "save")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToSave(true))
         {
@@ -96,7 +105,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "directory")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File (lastKnownDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
@@ -167,6 +176,16 @@ String CabbageFileButton::returnValidPath (File fc)
     return fc.getFullPathName().replaceCharacters ("\\", "/");
 }
 //===============================================================================
+void CabbageFileButton::setFile(ValueTree wData)
+{
+    const String mFile = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+    const String relativePath = File(getCsdFile()).getParentDirectory().getChildFile(mFile).getFullPathName();
+    if(File(relativePath).existsAsFile())
+        owner->sendChannelStringDataToCsound(getChannel(), relativePath.replaceCharacters("\\", "/"));
+    else
+        owner->sendChannelStringDataToCsound(getChannel(), mFile.replaceCharacters("\\", "/"));
+}
+//===============================================================================
 void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 {
     setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
@@ -181,5 +200,6 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
     setLookAndFeelColours (valueTree);
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
-    const String file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
+    setFile(valueTree);
+    setTooltip(getCurrentPopupText(valueTree));
 }

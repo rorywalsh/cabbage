@@ -24,6 +24,55 @@
 #include "CabbageWidgetBase.h"
 
 
+class SliderLookAndFeel : public LookAndFeel_V2
+{
+	Colour fontColour = { 0,0,0 };
+	int fontSize = -1;
+public:
+
+	SliderLookAndFeel(Colour col = { 255, 255, 255 }, int fS = -1) :fontColour(col), fontSize(fS) {};
+	~SliderLookAndFeel() {};
+	void setFontColour(Colour col) { fontColour = col; }
+	void setFontSize(int fS) { fontSize = fS; }
+
+	Label* createSliderTextBox(Slider& slider)
+	{
+		auto l = new Label();
+
+		l->setColour(Label::textColourId, fontColour);
+		l->setJustificationType(Justification::centred);
+		l->setKeyboardType(TextInputTarget::decimalKeyboard);
+
+		l->setColour(Label::textColourId, slider.findColour(Slider::textBoxTextColourId));
+		l->setColour(Label::backgroundColourId,
+			(slider.getSliderStyle() == Slider::LinearBar || slider.getSliderStyle() == Slider::LinearBarVertical)
+			? Colours::transparentBlack
+			: slider.findColour(Slider::textBoxBackgroundColourId));
+		l->setColour(Label::outlineColourId, slider.findColour(Slider::textBoxOutlineColourId));
+		l->setColour(TextEditor::textColourId, slider.findColour(Slider::textBoxTextColourId));
+		l->setColour(TextEditor::backgroundColourId,
+			slider.findColour(Slider::textBoxBackgroundColourId)
+			.withAlpha((slider.getSliderStyle() == Slider::LinearBar || slider.getSliderStyle() == Slider::LinearBarVertical)
+				? 0.7f : 1.0f));
+		l->setColour(TextEditor::outlineColourId, slider.findColour(Slider::textBoxOutlineColourId));
+		l->setColour(TextEditor::highlightColourId, slider.findColour(Slider::textBoxHighlightColourId));
+		if(fontSize!=-1)
+			l->setFont(Font(fontSize));
+
+		return l;
+	}
+
+	//========= linear slider ================================================================================
+	void drawLinearSlider(Graphics& g, int x, int y, int width, int height,
+		float sliderPos, float minSliderPos, float maxSliderPos,
+		const Slider::SliderStyle style, Slider& slider)
+	{
+		g.setColour(slider.findColour(Slider::thumbColourId));
+		g.fillRoundedRectangle(x, y, width, height, 3);		
+	}
+
+};
+
 class CabbageNumberSlider : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
     Slider slider;
@@ -31,9 +80,12 @@ class CabbageNumberSlider : public Component, public ValueTree::Listener, public
     String text="", align="", postfix="";
 
 public:
-
+	SliderLookAndFeel sliderLookAndFeel;
     CabbageNumberSlider (ValueTree wData);
-    ~CabbageNumberSlider() {};
+	~CabbageNumberSlider() {
+		slider.setLookAndFeel(nullptr);
+
+	};
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

@@ -24,12 +24,14 @@
 //==============================================================================
 // custom checkbox component with optional surrounding groupbox
 //==============================================================================
-CabbageCheckbox::CabbageCheckbox (ValueTree wData, CabbagePluginEditor* _owner) : owner(_owner), CabbageWidgetBase(),
+CabbageCheckbox::CabbageCheckbox (ValueTree wData, CabbagePluginEditor* _owner)
+    : ToggleButton (""),
+    CabbageWidgetBase(),
+    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
+    owner(_owner),
+    isRect (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::shape).equalsIgnoreCase ("square")),
     name (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
     buttonText (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
-    isRect (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::shape).equalsIgnoreCase ("square")),
-    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
-    ToggleButton (""),
     widgetData (wData)
 {
     widgetData.addListener (this);

@@ -139,9 +139,8 @@ void Soundfiler::setFile (const File& file)
         //creates a reader for the result file (may file, if the result/opened file is no wav or aif)
         if (reader) //if a reader got created
         {
-            AudioSampleBuffer buffer (reader->numChannels, reader->lengthInSamples);
+            AudioBuffer<float> buffer(reader->numChannels, (int)reader->lengthInSamples);
             buffer.clear();
-            buffer.setSize (reader->numChannels, reader->lengthInSamples);
             reader->read (&buffer, 0, buffer.getNumSamples(), 0, true, true);
             setWaveform (buffer, reader->numChannels);
         }

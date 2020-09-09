@@ -37,7 +37,9 @@ lookAndFeel (new FlatButtonLookAndFeel()),
 commandLineArgs (commandLineParams)
 {
     setTitleBarButtonsRequired (DocumentWindow::allButtons, false);
-    setUsingNativeTitleBar (false/*true*/);
+    
+    
+    
     setTitleBarHeight (20);
     setResizable (true, true);
     centreWithSize (getWidth(), getHeight());
@@ -47,6 +49,13 @@ commandLineArgs (commandLineParams)
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
     
     initSettings();
+    
+    auto enableKioskMode = cabbageSettings->getUserSettings()->getIntValue ("enableKioskMode");
+    if(enableKioskMode == 1)
+        setUsingNativeTitleBar (true);
+    else
+        setUsingNativeTitleBar (false);
+    
     pluginExporter.settingsToUse(cabbageSettings->getUserSettings());
     setColour (backgroundColourId, CabbageSettings::getColourFromValueTree (cabbageSettings->valueTree, CabbageColourIds::mainBackground, Colours::lightgrey));
     setContentOwned (content = new CabbageMainComponent (this, cabbageSettings.get()), true);
@@ -55,9 +64,10 @@ commandLineArgs (commandLineParams)
     setMenuBar (this, 18/*25*/);
     getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel.get());
     
-    
+
     if (commandLineArgs.isNotEmpty())
     {
+        
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
             //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
             commandLineParams = commandLineParams.substring (0, commandLineParams.indexOf ("-") - 1);
@@ -145,7 +155,7 @@ commandLineArgs (commandLineParams)
     const int y = cabbageSettings->getUserSettings()->getIntValue ("IDE_LastKnownY");
     this->setTopLeftPosition (x, y);
     setSize (width, height);
-    
+        CabbageUtilities::debug(commandLineArgs);
 }
 
 void CabbageDocumentWindow::initSettings()
@@ -270,9 +280,15 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::newTextFile);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::open);
-    menu.addCommandItem (&commandManager, CommandIDs::openCabbagePatch);
     menu.addCommandItem (&commandManager, CommandIDs::openFolder);
     
+	PopupMenu subPatchMenu;
+	subPatchMenu.addCommandItem(&commandManager, CommandIDs::openCabbagePatch);
+	subPatchMenu.addCommandItem(&commandManager, CommandIDs::saveGraph);
+	subPatchMenu.addCommandItem(&commandManager, CommandIDs::saveGraphAs);
+	
+	menu.addSubMenu("Cabbage patcher", subPatchMenu);
+	
     PopupMenu recentFilesMenu;
     cabbageSettings->updateRecentFilesList();
     cabbageSettings->recentFiles.createPopupMenuItems (recentFilesMenu, recentProjectsBaseID, true, true);
@@ -287,10 +303,6 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveDocument);
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
-    menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::saveGraph);
-    menu.addCommandItem (&commandManager, CommandIDs::saveGraphAs);
-    menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
@@ -373,6 +385,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveProject);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::closeDocument);
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::autoReloadFromDisk);
 #if ! JUCE_MAC
     menu.addSeparator();
     menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
@@ -414,7 +428,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::findPrevious);
     menu.addSeparator();
     menu.addSubMenu ("Console", subMenu);
-    menu.addSeparator();
+
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::settings);
     
@@ -436,6 +450,7 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
 void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::buildNow);
+    menu.addCommandItem (&commandManager, CommandIDs::buildNoConnect);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
     menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
@@ -490,6 +505,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::closeDocument,
         CommandIDs::saveDocument,
         CommandIDs::buildNow,
+                              CommandIDs::buildNoConnect,
         CommandIDs::saveGraph,
         CommandIDs::saveGraphAs,
         CommandIDs::exportTheme,
@@ -545,6 +561,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::batchConvertExamplesVST,
         CommandIDs::toggleFileBrowser,
         CommandIDs::showPluginListEditor,
+        CommandIDs::autoReloadFromDisk
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -553,9 +570,11 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
 void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
     bool shouldShowEditMenu = false;
-    
+    int disableNodeConnections = cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes", 1);
+    int autoReloadFromDisk = cabbageSettings->getUserSettings()->getIntValue ("AutoReloadFromDisk", 0);
     if (getContentComponent()->getCurrentEditorContainer() != nullptr)
         shouldShowEditMenu = true;
+
     
     switch (commandID)
     {
@@ -571,7 +590,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::openCabbagePatch:
             result.setInfo ("Open Cabbage patch...", "Opens a Cabbage patch", CommandCategories::general, 0);
-            result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
+            //result.defaultKeypresses.add (KeyPress ('o', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
             break;
             
         case CommandIDs::open:
@@ -637,6 +656,12 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::buildNow:
             result.setInfo ("Build instrument", "Builds the current instrument", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+
+        case CommandIDs::buildNoConnect:
+            result.setInfo ("Auto-connect to graph", "Enables auto connect to audio graph", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress (',', ModifierKeys::commandModifier, 0));
+            result.setTicked((disableNodeConnections==1 ? true : false));
             break;
             
         case CommandIDs::startAudioGraph:
@@ -868,6 +893,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo (TRANS ("Find Next"), TRANS ("Searches for the next occurrence of the current search-term."), "Editing", 0);
             result.defaultKeypresses.add (KeyPress ('g', ModifierKeys::commandModifier, 0));
             break;
+      
+        case CommandIDs::autoReloadFromDisk:
+            result.setInfo(TRANS("Auto-load from disk"), TRANS("Enable auto-reload"), "File", 0);
+            result.setTicked((autoReloadFromDisk==1 ? true : false));
+            break;
             
         case CommandIDs::about:
             result.setInfo (TRANS ("About"), TRANS ("About."), CommandCategories::general, 0);
@@ -927,7 +957,13 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
-    String title (ProjectInfo::versionString);
+#ifdef CabbagePro
+    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString)+"\nLicensed to: " + String(JucePlugin_Manufacturer);
+#else
+    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
+    //String aboutInfo = commandLineArgs;
+#endif
+    
     CabbageIDELookAndFeel tempLookAndFeel;
     const File currentFile = getContentComponent()->getCurrentCsdFile();
     switch (info.commandID)
@@ -967,8 +1003,15 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::saveGraphAs:
             getContentComponent()->saveGraph (true);
             return true;
-            
-        case CommandIDs::buildNow:
+
+        case CommandIDs::buildNoConnect:
+            if(cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes") == 1)
+                cabbageSettings->getUserSettings()->setValue("autoConnectNodes", 0);
+            else
+                cabbageSettings->getUserSettings()->setValue("autoConnectNodes", 1);
+            return true;
+
+            case CommandIDs::buildNow:
         case CommandIDs::saveDocument:
             
             getContentComponent()->saveDocument();
@@ -1171,7 +1214,7 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             break;
             
         case CommandIDs::about:
-            CabbageUtilities::showMessage (title, &tempLookAndFeel);
+            CabbageUtilities::showMessage (aboutInfo, &tempLookAndFeel);
             break;
             
         case CommandIDs::showGraph:
@@ -1194,6 +1237,14 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->showPluginListEditor();
             break;
             
+        case CommandIDs::autoReloadFromDisk:
+            if(cabbageSettings->getUserSettings()->getIntValue ("AutoReloadFromDisk") == 1)
+                cabbageSettings->getUserSettings()->setValue("AutoReloadFromDisk", 0);
+            else
+                cabbageSettings->getUserSettings()->setValue("AutoReloadFromDisk", 1);
+            
+            getContentComponent()->enableAutoUpdateMode();
+            break;
             
         case CommandIDs::editMode:
             getContentComponent()->enableEditMode();

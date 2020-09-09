@@ -14,20 +14,21 @@ ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 
   
 pwd
-curl -L -o csound6.13.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.13.0/csound6.13.0-MacOS_x86_64.dmg'
+curl -L -o csound6.15.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.15.0/csound-MacOS_x86_64-6.15.0.dmg'
 ls
-hdiutil attach csound6.13.0-MacOS_x86_64.dmg
-cp -R /Volumes/Csound6.13.0/ Csound
-hdiutil detach /Volumes/Csound6.13.0/
+hdiutil attach csound6.15.0-MacOS_x86_64.dmg
+cp -R /Volumes/Csound6.15.0/ Csound
+hdiutil detach /Volumes/Csound6.15.0/
 cd Csound
-sudo installer -pkg csound6.13.0-MacOS_x86_64.pkg -target /
+sudo installer -pkg csound-MacOS_x86_64-6.15.0.pkg -target /
 sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 
 cd $AGENT_BUILDDIRECTORY
-git clone https://github.com/WeAreROLI/JUCE.git
+git clone https://github.com/juce-framework/JUCE.git
+git checkout 5.4.7
 touch JUCE/
 cd $AGENT_BUILDDIRECTORY/JUCE
-git checkout master
+https://github.com/juce-framework/JUCE.git
 cd $AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
@@ -55,11 +56,15 @@ cd $AGENT_BUILDDIRECTORY
 
 curl -L -o Packages.dmg 'http://s.sudre.free.fr/Software/files/Packages.dmg'
 hdiutil mount Packages.dmg
-sudo installer -pkg /Volumes/Packages\ 1.2.6/Install\ Packages.pkg -target /
-hdiutil detach /Volumes/Packages\ 1.2.6/
+sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /
+hdiutil detach /Volumes/Packages\ 1.2.9/
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX
 export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer
+
+#building sinmple Csound CLI for testing files
+$PROJUCER --resave ../../CabbageCsoundCLI.jucer
+xcodebuild -project CabbageCsoundCLI.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
 $PROJUCER --resave ../../CabbageIDE.jucer
 xcodebuild -project Cabbage.xcodeproj/ clean
@@ -80,8 +85,8 @@ xcodebuild -project CabbagePlugin.xcodeproj clean
 xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
-cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst3
-cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst3
+cp -rf ./build/Release/CabbagePlugin.vst3/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst3
+cp -rf ./build/Release/CabbagePlugin.vst3/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst3
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.component
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.component
 
@@ -102,6 +107,7 @@ xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj clean
 xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj -configuration Release
 
 # cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
+cp -rf ./build/Release/CabbageCsoundCLI ./build/Release/Cabbage.app/Contents/MacOS/CabbageCsoundCLI 
 
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 ls

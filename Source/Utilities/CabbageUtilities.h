@@ -155,7 +155,7 @@ public:
         }
         else
         {
-            p.addArc (x + w, y + h / 2.f + d / 2.f, 5, 5, 3.14, 3.14);
+            p.addArc (x + w, y + h / 2.f + d / 2.f, 5.f, 5.f, 3.14f, 3.14f);
         }
 
         p.closeSubPath();
@@ -192,6 +192,39 @@ public:
 		/*g.setColour(Colour(82, 99, 106));//Colour (30, 30, 30));
         p.addEllipse (6, 6, width - 12, height - 12);
         g.fillPath (p);*/
+        return img;
+    }
+
+    static const Image drawPlayPauseIcon (int width, int height, Colour colour, bool isPlaying, bool isPressed = false)
+    {
+        Image img = Image (Image::ARGB, width, height, true);
+        Graphics g (img);
+        Path p;
+
+        const int newWidth = (isPressed == true ? width - 1 : width);
+        const int newHeight = (isPressed == true ? height - 1 : height);
+
+        p.addRoundedRectangle (0, 0, newWidth, newHeight, 2);
+        g.setColour(colour);//  /*Colour (30, 30, 30)*/);
+        p.closeSubPath();
+        g.fillPath (p);
+        p.clear();
+
+        int scaleFactor = -3; // <-- in pixel
+
+        if (isPlaying == false)
+        {
+            g.setColour (Colours::white/*Colours::lime.darker()*/);
+            p.addTriangle (newWidth - scaleFactor, 2 - scaleFactor, newWidth - 5 + scaleFactor, newHeight / 2, newWidth - scaleFactor, newHeight - 3 + scaleFactor);
+        }
+        else
+        {
+            g.setColour (Colours::white/*Colours::lime.darker (.7f)*/);
+            p.addRectangle (newWidth, 4 - scaleFactor, newWidth, newHeight - 11 + scaleFactor);
+        }
+
+        p.closeSubPath();
+        g.fillPath (p);
         return img;
     }
 
@@ -406,13 +439,13 @@ public:
 
 			if (inCsoundInstrumentsSection)
 			{
-                CabbageUtilities::debug(array[i]);
+               
 				if (array[i].indexOf(";") != -1)
 					array.set(i, array[i].substring(0, array[i].indexOf(";")));
 
 				array.set(i, array[i].removeCharacters("\t").trimStart());
 
-				if (array[i].contains(headerString) && array[i].contains("="))
+				if (array[i].contains(headerString) && array[i].contains("=") && array[i].indexOf(headerString) < array[i].indexOf("="))
 				{
 					String channels = array[i].substring(array[i].indexOf("=") + 1, (array[i].contains(";") ? array[i].indexOf(";") : 100));
 					return channels.trim().getIntValue();
@@ -420,7 +453,13 @@ public:
 			}
 		}
 
-		return headerString=="nchnls" ? 2 : -1;
+
+		if(headerString=="nchnls")
+            return 2;
+        else if(headerString == "nchnls_i")
+            return -1;
+        else
+            return -1;
 	}
     //==============================================================
     static const String getSVGTextFromMemory (const void* svg, size_t size)
@@ -674,13 +713,13 @@ public:
         
         for (int i = 0; i < linesize; i++) // let's find all the tokens in this line of code...
         {
-            while (i < linesize && code[i] != breakChar) // let's find the end of a token...
+            while (i < linesize && (char)code[i] != breakChar) // let's find the end of a token...
             {
                 if (code[i] == '\"')   // excuse anything in quotes..
                 {
                     i++; // so, skip the first quote char
 
-                    while (i < linesize && code[i] != '\"') // continue to skip until endline or end quote char
+                    while (i < linesize && (char)code[i] != '\"') // continue to skip until endline or end quote char
                         i++;
                 }
                 i++; // move to the next char
@@ -1090,7 +1129,7 @@ public:
 		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
-        data->writeToFile (File (filePath), String());
+        //data->writeToFile (File (filePath), String());
     }
 
     //======= method for replacing the contents of an identifier with new values..
@@ -1112,6 +1151,49 @@ public:
         String secondSection = line.substring (line.indexOf (")") + 1);
 
         return firstSection + updatedIdentifier + secondSection;
+    }
+
+	static void searchDirectoryForFiles(ValueTree valueTree, String workingDir, String fileType, Array<File> & folderFiles, StringArray &comboItems, int& numberOfFiles)
+	{
+		Array<File> dirFiles;
+		File pluginDir;
+
+		if (workingDir.isNotEmpty())
+			pluginDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
+		else
+			pluginDir = File::getCurrentWorkingDirectory();
+
+		pluginDir.findChildFiles(dirFiles, 2, false, fileType);
+
+		for (int i = 0; i < dirFiles.size(); ++i)
+			folderFiles.add(dirFiles[i]);
+
+		folderFiles.sort();
+
+		for (int i = 0; i < folderFiles.size(); i++)
+		{
+			CabbageUtilities::debug(folderFiles[i].getFullPathName());
+		}
+
+		for (int i = 0; i < folderFiles.size(); i++)
+		{
+			comboItems.add(folderFiles[i].getFileNameWithoutExtension());
+		}
+
+		numberOfFiles = folderFiles.size();
+
+	}
+    
+    static String convertWhitespaceEscapeChars(const String& str)
+    {
+        auto newStr = str.replace("\\n", "\n");
+        newStr = newStr.replace("\\t", "\t");
+        return newStr;
+    }
+    
+    static String removeWhitespaceEscapeChars(const String& str)
+    {
+        return convertWhitespaceEscapeChars(str).removeCharacters("\n\r\t");
     }
 
 };

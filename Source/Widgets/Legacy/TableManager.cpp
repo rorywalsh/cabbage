@@ -716,7 +716,7 @@ void GenTable::showScrollbar (bool show)
 
 //==============================================================================
 
-void GenTable::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart)
+void GenTable::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStartToUse)
 {
     //visibleRange = visibleRange.movedToStartAt (newRangeStart);
     //setRange (visibleRange.movedToStartAt (newRangeStart), true);
@@ -735,9 +735,9 @@ void GenTable::setFile (const File& file)
 
         if (reader) //if a reader got created
         {
-            AudioSampleBuffer buffer (reader->numChannels, reader->lengthInSamples);
+            AudioSampleBuffer buffer (reader->numChannels, (int)reader->lengthInSamples);
             buffer.clear();
-            buffer.setSize (reader->numChannels, reader->lengthInSamples);
+            buffer.setSize (reader->numChannels, (int)reader->lengthInSamples);
             reader->read (&buffer, 0, buffer.getNumSamples(), 0, true, true);
             setWaveform (buffer);
         }
@@ -1371,7 +1371,7 @@ void HandleViewer::insertHandle (double x, double y, Colour handleColour)
     //add a handle component to our handleViewer. This should be combined with
     //above function...
 
-    int indx;
+    int indx = 0;
     GenTable* table = findParentComponentOfClass <GenTable>();
 
     if (table)

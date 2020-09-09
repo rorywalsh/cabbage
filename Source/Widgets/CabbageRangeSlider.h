@@ -60,6 +60,10 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
     bool shouldDisplayPopup;
     float minValue, maxValue, min, max, decimalPlaces, sliderIncrement, sliderSkew;
     BubbleMessageComponent popupBubble;
+    String prefix  = "";
+    String postfix = "";
+    String popupPrefix  = "";
+    String popupPostfix = "";
 
     void createPopupBubble();
     void setLookAndFeelColours (ValueTree wData);

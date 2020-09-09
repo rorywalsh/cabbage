@@ -27,50 +27,52 @@
 
 class CabbageMainComponent;
 
-class CabbageEditorContainer   : public Component
+class CabbageEditorContainer : public Component
 {
 public:
-    //-------------------------------------------------------------
-    class StatusBar : public Component
-    {
-    public:
-        StatusBar (ValueTree valueTree, CabbageEditorContainer* parent)
-            :   Component ("StatusBar"),
-                valueTree (valueTree),
-                owner (parent)
-        {
-            String initString = (SystemStats::getOperatingSystemName() +
-                                 "CPU: " + String (SystemStats::getCpuSpeedInMegaherz())
-                                 + "MHz  Cores: " + String (SystemStats::getNumCpus())
-                                 + "  " + String (SystemStats::getMemorySizeInMegabytes()) + "MB");
-            setText (StringArray (initString));
-        }
+	//-------------------------------------------------------------
+	class StatusBar : public Component
+	{
+	public:
+		StatusBar(ValueTree valueTree, CabbageEditorContainer* parent)
+			: Component("StatusBar"),
+			valueTree(valueTree),
+			owner(parent)
+		{
+			String initString = (SystemStats::getOperatingSystemName() +
+				"CPU: " + String(SystemStats::getCpuSpeedInMegaherz())
+				+ "MHz  Cores: " + String(SystemStats::getNumCpus())
+				+ "  " + String(SystemStats::getMemorySizeInMegabytes()) + "MB");
+			setText(StringArray(initString));
+		}
 
-        void paint (Graphics& g)  override;
+		void paint(Graphics& g)  override;
 
-        void setText (StringArray text)
-        {
-            statusText = text;
-            repaint();
-        }
+		void setText(StringArray text)
+		{
+			statusText = text;
+			repaint();
+		}
 
-        int getCurrentYPos() {   return currentYPos; }
+		int getCurrentYPos() { return currentYPos; }
 
-    private:
-        ValueTree valueTree;
-        StringArray statusText;
-        int startingYPos;
-        bool isActive = false;
-        int currentYPos = 550;
-        CabbageEditorContainer* owner;
-    };
+	private:
+		ValueTree valueTree;
+		StringArray statusText;
+		int startingYPos;
+		bool isActive = false;
+		int currentYPos = 550;
+		CabbageEditorContainer* owner;
+	};
 
-    CabbageMainComponent* getContentComponent();
-    //=============================================================================
-    CabbageEditorContainer (CabbageSettings* settings, bool isCsdFile = true);
-    ~CabbageEditorContainer();
-    void updateLookAndFeel();
-    void openFile (File file);
+	CabbageMainComponent* getContentComponent();
+	//=============================================================================
+	CabbageEditorContainer(CabbageSettings* settings, bool isCsdFile = true);
+	~CabbageEditorContainer();
+	void updateLookAndFeel();
+	void openFile(File file);
+	File getFile() { return currentFile; }
+	void setFile(File file) { currentFile = file; }
     void resized() override;
 
     void updateEditorColourScheme();
@@ -91,6 +93,7 @@ public:
     CabbageSettings* settings;
 
 private:
+	File currentFile;
     bool isCsdFile = true;
     int startingDragPos;
 

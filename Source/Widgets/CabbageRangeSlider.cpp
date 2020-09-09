@@ -21,11 +21,11 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner):
-    widgetData (wData),
     owner (_owner),
+    textColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
     slider (this),
     popupBubble (250),
-    textColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour))
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -76,6 +76,11 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
         slider.setLookAndFeel(&flatLookAndFeel);
     }
     
+    prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valueprefix);
+    postfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valuepostfix);
+    popupPrefix  = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popupprefix);
+    popupPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuppostfix);
+    
     resized();
 }
 
@@ -97,10 +102,10 @@ void CabbageRangeSlider::setSliderValues (ValueTree wData)
     slider.setMinAndMaxValues (minValue, maxValue);
 }
 
-void CabbageRangeSlider::setCurrentValues (float min, float max)
+void CabbageRangeSlider::setCurrentValues (float minToUse, float maxToUse)
 {
-    minValue = min;
-    maxValue = max;
+    minValue = minToUse;
+    maxValue = maxToUse;
     CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::minvalue, minValue);
     CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::maxvalue, maxValue);
 }
@@ -122,8 +127,8 @@ void CabbageRangeSlider::showPopup (int displayTime)
     if (getTooltipText().isNotEmpty())
         popupText = getTooltipText();
     else
-        popupText = getChannelArray()[0] + ": " + String (slider.getMinValue(), 2) +
-                    +"\n" + getChannelArray()[1] + ": " + String (slider.getMaxValue(), 2);
+        popupText = getChannelArray()[0] + ": " + createValueText(slider.getMinValue(), 2, popupPrefix, popupPostfix) +
+        +"\n" + getChannelArray()[1] + ": " + createValueText(slider.getMaxValue(), 2, popupPrefix, popupPostfix);
 
     popupBubble.showAt (&slider, AttributedString (popupText), displayTime);
 }
@@ -198,8 +203,8 @@ void CabbageRangeSlider::valueTreePropertyChanged (ValueTree& valueTree, const I
 
 //======================================================================================
 RangeSlider::RangeSlider (CabbageRangeSlider* _owner)
-    : mouseDragBetweenThumbs {false},
-      owner (_owner)
+    : owner (_owner),
+    mouseDragBetweenThumbs {false}
 {
     // setSliderStyle (Slider::TwoValueHorizontal);
 }
@@ -258,8 +263,14 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
 
         if (mouseDragBetweenThumbs)
         {
-            setMinValue (proportionOfLengthToValue ((xMinAtThumbDown + distanceFromStart) / getWidth()));
-            setMaxValue (proportionOfLengthToValue ((xMaxAtThumbDown + distanceFromStart) / getWidth()));
+            double ratioMin = (xMinAtThumbDown + distanceFromStart) / getWidth();
+            double ratioMax = (xMaxAtThumbDown + distanceFromStart) / getWidth();
+            float newMin = proportionOfLengthToValue ( min( max(ratioMin, 0.0), 1.0 ));
+            float newMax = proportionOfLengthToValue ( min( max(ratioMax, 0.0), 1.0 ));
+            if (newMin > getMinimum())
+                setMinValue (newMin);
+            if (newMax < getMaximum())
+                setMaxValue (newMax);
         }
         else
         {
@@ -272,8 +283,14 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
 
         if (mouseDragBetweenThumbs)
         {
-            setMinValue (proportionOfLengthToValue ((yMinAtThumbDown - distanceFromStart) / getHeight()));
-            setMaxValue (proportionOfLengthToValue ((yMaxAtThumbDown - distanceFromStart) / getHeight()));
+            double ratioMin = (yMinAtThumbDown + distanceFromStart) / getHeight();
+            double ratioMax = (yMaxAtThumbDown + distanceFromStart) / getHeight();
+            float newMin = proportionOfLengthToValue ( min( max(ratioMin, 0.0), 1.0 ));
+            float newMax = proportionOfLengthToValue ( min( max(ratioMax, 0.0), 1.0 ));
+            if (newMin > getMinimum())
+                setMinValue (newMin);
+            if (newMax < getMaximum())
+                setMaxValue (newMax);
         }
         else
         {
