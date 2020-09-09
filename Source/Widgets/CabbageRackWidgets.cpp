@@ -19,6 +19,22 @@
 
 #include "CabbageRackWidgets.h"
 
+static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth, int newHeight, AffineTransform affine)
+{
+    std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgText));
+    if(svg == nullptr)
+        jassert(false);
+
+    std::unique_ptr<Drawable> drawable;
+
+    if (svg != nullptr)
+    {
+        drawable = Drawable::createFromSVG (*svg);
+        drawable->setTransformToFit(Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
+        drawable->draw(g, 1.f, affine);
+    }
+}
+
 CabbageScrew::CabbageScrew (ValueTree wData) : CabbageWidgetBase(),
 widgetData (wData)
 {
@@ -348,8 +364,8 @@ void CabbagePort::valueTreePropertyChanged (ValueTree& valueTree, const Identifi
 
 
 CabbageLight::CabbageLight(ValueTree wData, CabbagePluginEditor* owner) : CabbageWidgetBase(),
-widgetData (wData),
 owner (owner),
+widgetData (wData),
 mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)))
 {
     widgetData.addListener (this);

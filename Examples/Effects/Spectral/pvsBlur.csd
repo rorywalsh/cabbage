@@ -68,7 +68,7 @@ instr	1
 	kblurtime	portk	kblurtime,kporttime
 	aoutL		pvsblur_module	ainL,kblurtime,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
 	aoutR		pvsblur_module	ainR,kblurtime,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
-				outs	aoutR,aoutR
+				outs	aoutL,aoutR
 endin
 
 </CsInstruments>

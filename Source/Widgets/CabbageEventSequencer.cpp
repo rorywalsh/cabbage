@@ -22,9 +22,10 @@
 
 CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEditor* _owner)
     : widgetData (wData),
-      owner (_owner),
-      seqContainer(),
-      vp ("SequencerContainer")
+    vp ("SequencerContainer"),
+    seqContainer(),
+    owner (_owner)
+
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -276,7 +277,7 @@ bool CabbageEventSequencer::keyPressed (const KeyPress& key, Component* originat
 
 void CabbageEventSequencer::swapFocusForEditors (KeyPress key, int col, int row)
 {
-    int newRow, newCol;
+    int newRow = 0, newCol = 0;
 
     if (key.getModifiers().isCtrlDown() && key.isKeyCode (KeyPress::rightKey))
     {

@@ -50,6 +50,8 @@ class CabbageSlider
     void setLookAndFeelColours (ValueTree wData);
     String prefix = "";
     String postfix = "";
+    String popupPrefix = "";
+    String popupPostfix = "";
 
     FlatButtonLookAndFeel flatLookAndFeel;
 

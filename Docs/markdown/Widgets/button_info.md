@@ -30,7 +30,7 @@ infobutton WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
-{! ./markdown/Widgets/Properties/svgfile.md !} 
+{! ./markdown/Widgets/Properties/imgfile.md !} 
 
 {! ./markdown/Widgets/Properties/text.md !} 
 

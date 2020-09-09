@@ -13,9 +13,9 @@
 
 
 CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
-    owner(_owner),
+    widgetData (wData),
     justify(Justification::centred),
-    widgetData (wData)
+    owner(_owner)
 {
     addAndMakeVisible(listBox);
     listBox.setRowHeight (20);
@@ -84,8 +84,8 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
-        StringArray lines = StringArray::fromLines (file);
+        String mFile = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
+        StringArray lines = StringArray::fromLines (mFile);
 
         for (int i = 0; i < lines.size(); ++i)
         {
@@ -131,12 +131,12 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     }
     else
     {
-        const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        const String workingDirToUse = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
-		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
-			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
-		else if(workingDir.isNotEmpty())
-			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
+		if (File::getCurrentWorkingDirectory().getChildFile(workingDirToUse).exists())
+			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDirToUse);
+		else if(workingDirToUse.isNotEmpty())
+			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDirToUse);
         else
 			listboxDir = File(getCsdFile()).getParentDirectory();
 
@@ -156,7 +156,6 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
 
     }
 
-    Justification justify (Justification::centred);
 
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align) == "left")
         justify = Justification::left;
@@ -176,12 +175,12 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         {
             if (isStringCombo == false)
             {
-                int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+                int mValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
 
 //                if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
 //                    listBox.selectRow(value - 1, sendNotification);
 //                else
-                listBox.selectRow(value - 1);//, dontSendNotification);
+                listBox.selectRow(mValue - 1);//, dontSendNotification);
             }
             else
             {
@@ -211,9 +210,9 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
         }
 
-        if (refresh != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles))
+        if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)
         {
-            refresh = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::refreshfiles) == 1 ? 0 : 1;
+            CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::refreshfiles, 0);
             addItemsToListbox (valueTree);
         }
       

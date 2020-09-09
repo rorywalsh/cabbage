@@ -302,10 +302,18 @@ void CabbageSettingsWindow::addMiscProperties()
 
     autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("DisableAutoComplete"));
     autoCompleteValue.addListener (this);
+    autoConnectNodes.setValue (settings.getUserSettings()->getIntValue ("autoConnectNodes"));
+    autoConnectNodes.addListener (this);
+    enableKioskMode.setValue (settings.getUserSettings()->getIntValue ("enableKioskMode"));
+    enableKioskMode.addListener (this);
 
     editorProps.add (new BooleanPropertyComponent (showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopPluginValue, "Plugin Window", "Always show plugin on top"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopGraphValue, "Graph Window", "Always show graph on top"));
+    editorProps.add (new BooleanPropertyComponent (autoConnectNodes, "Auto-connect nodes", "Automatically connect nodes to graph"));
+#if defined(MACOSX)
+    editorProps.add (new BooleanPropertyComponent (enableKioskMode, "Support Kiosk Mode (Requires restart)", "Support Kiosk Mode on OSX"));
+#endif
     //editorProps.add (new BooleanPropertyComponent (compileOnSaveValue, "Compiling", "Compile on save"));
     editorProps.add (new BooleanPropertyComponent (autoCompleteValue, "Auto-complete", "Show auto complete popup"));
 	randProps.add(new ButtonProperty("Reset don't show again preferences", settings));
@@ -430,6 +438,10 @@ void CabbageSettingsWindow::valueChanged (Value& value)
         settings.getUserSettings()->setValue ("IdentifiersBeforeLineBreak", value.getValue().toString());
     else if (value.refersToSameSourceAs (autoCompleteValue))
         settings.getUserSettings()->setValue ("DisableAutoComplete", value.getValue().toString());
+    else if (value.refersToSameSourceAs (autoConnectNodes))
+        settings.getUserSettings()->setValue ("autoConnectNodes", value.getValue().toString());
+    else if (value.refersToSameSourceAs (enableKioskMode))
+        settings.getUserSettings()->setValue ("enableKioskMode", value.getValue().toString());
 }
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)

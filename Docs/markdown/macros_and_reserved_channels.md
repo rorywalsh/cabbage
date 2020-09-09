@@ -66,7 +66,7 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **HOST_PPQ_POS** Return the position of the start of the last bar, in pulses-per-quarter-note.
 
-> More info on how to use reserved channels to get information from an audio host to Csound can be found [here](host_info.html)
+**AUTOMATION** Set the automation mode, 0/1. 0, the default mode instructs Cabbage to listen to automation from a host DAW. Use this mode is you wish to automate parameters using automation envelopes and curves in your DAW. The second mode, 1, will allow the host to track channel updates if they happen in Csound. If you wish to send automation changes from your instrument, you will need to enable this mode using a `chnset`. 
 
 **MOUSE_X** Returns the X coordinate of the current mouse position.
 
@@ -88,6 +88,11 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **MACOS** Returns 1 if Cabbage is running on a MacOS machine
 
+**KEY_PRESSED** Returns the ASCII key code for the key currently being pressed
+
+**KEY_DOWN** Returns 1 a key-down event, and 0 for a key-up event.  
+
+
 Cabbage also set the host type, which can be retrieved using the following channels. 
 
 **AbletonLive** Returns 1 if Cabbage is host is Ableton Live
@@ -108,13 +113,13 @@ Cabbage also set the host type, which can be retrieved using the following chann
 
 **MainStage** Returns 1 if Cabbage is host is MainStage
 
+**Nuendo** Returns 1 if Cabbage is host is Nuendo
+
 **Renoise** Returns 1 if Cabbage is host is Renoise
 
-**Repear** Returns 1 if Cabbage is host is Reaper
+**Reaper** Returns 1 if Cabbage is host is Reaper
 
 **Samplitude** Returns 1 if Cabbage is host is Samplitude
-
-**Sonar** Returns 1 if Cabbage is host is Sonar
 
 **Sonar** Returns 1 if Cabbage is host is Sonar
 

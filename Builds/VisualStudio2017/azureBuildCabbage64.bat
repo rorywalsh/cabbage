@@ -12,13 +12,13 @@ SET PROJUCER="D:\\a\\1\\JUCE\\extras\\Projucer\\Builds\\VisualStudio2017\\x64\\D
 
 REM "BUILDING THE MAIN APP"
  %PROJUCER% --resave ../../CabbageIDE.jucer
-  msbuild Cabbage.sln /p:Configuration=Release /property:Platform=x64
+  msbuild Cabbage.sln /p:Configuration=Release /property:Platform=x64 /m
  copy ".\x64\Release\App\Cabbage.exe" ".\x64\Cabbage.exe"
 
  
 REM "BUILDING EFFECT PLUGIN"
  %PROJUCER% --resave ../../CabbagePlugin.jucer
- msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64 
+ msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64 /m
  copy ".\x64\Release\Standalone Plugin\CabbagePlugin.exe" ".\x64\CabbagePlugin.exe"
  copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginEffect.dll"
  copy ".\x64\Release\VST3\CabbagePlugin.vst3" ".\x64\CabbagePluginEffect.vst3"
@@ -26,14 +26,14 @@ REM "BUILDING EFFECT PLUGIN"
 
 REM "BUILDING VST PLUGIN"
  %PROJUCER% --resave ../../CabbagePluginSynth.jucer
- msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64
+ msbuild CabbagePlugin.sln /p:Configuration=Release /property:Platform=x64 /m
 
  copy ".\x64\Release\VST\CabbagePlugin.dll" ".\x64\CabbagePluginSynth.dll"
  copy ".\x64\Release\VST3\CabbagePlugin.vst3" ".\x64\CabbagePluginSynth.vst3"
 
 REM "BUILDING CABBAGE LITE"
  %PROJUCER% --resave ../../CabbageLite.jucer
-  msbuild CabbageLite.sln /p:Configuration=Release /property:Platform=x64
+  msbuild CabbageLite.sln /p:Configuration=Release /property:Platform=x64 /m
  copy ".\x64\Release\App\CabbageLite.exe" ".\x64\CabbageLite.exe"
 
 

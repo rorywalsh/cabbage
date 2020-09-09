@@ -45,131 +45,132 @@ class FileTab;
 
 
 class CabbageMainComponent
-    : public Component,
-      public Button::Listener,
-      public ActionListener,
-      public ChangeListener,
-      public Timer,
-      public ComboBox::Listener,
-      public FileDragAndDropTarget,
-      public FileBrowserListener
+	: public Component,
+	public Button::Listener,
+	public ActionListener,
+	public ChangeListener,
+	public Timer,
+	public ComboBox::Listener,
+	public FileDragAndDropTarget,
+	public FileBrowserListener
 {
 public:
 
-    void mouseDown (const MouseEvent& e) override;
-    void mouseUp (const MouseEvent& e) override;
-    void mouseExit (const MouseEvent& e) override;
-    void mouseEnter (const MouseEvent& e) override;
-    void mouseDrag (const MouseEvent& e) override;
- 
+	void mouseDown(const MouseEvent& e) override;
+	void mouseUp(const MouseEvent& e) override;
+	void mouseExit(const MouseEvent& e) override;
+	void mouseEnter(const MouseEvent& e) override;
+	void mouseDrag(const MouseEvent& e) override;
 
-    //==============================================================================
-    CabbageMainComponent (CabbageDocumentWindow* owner, CabbageSettings* settings);
-    ~CabbageMainComponent();
-    //==============================================================================
-    void changeListenerCallback (ChangeBroadcaster* source) override;
-    void actionListenerCallback (const String& message) override;
-    void buttonClicked (Button* button) override;
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
-    void updateCodeInEditor (CabbagePluginEditor* pluginEditor, bool replaceExistingLine, bool guiPropUpdate =false);
-    //==============================================================================
-    void paint (Graphics&) override;
-    void resized() override;
-    void resizeAllWindows (int height);
-    void createEditorForFilterGraphNode (Point<int> position);
-    void createFilterGraph();
-    void createCodeEditorForFile (File file);
-    void createNewProject();
-    void createNewTextFile(String contents = "");
-    bool isInterestedInFileDrag (const StringArray& files) override;
-    void filesDropped (const StringArray& files, int x, int y) override;
-    Image createBackground();
-    void removeEditor();
-    //==============================================================================
-    void launchSSHFileBrowser (String mode);
-    void enableEditMode();
-    const File openFile (String filename = "", bool updateRecentFiles = true);
-    void closeDocument();
-    void showSettingsDialog();
-    void saveDocument (bool saveAs = false, bool recompile = true);
-    void runCsoundForNode (String file, Point<int> pos = Point<int>(-1000, -1000));
-    void stopCsoundForNode (String file);
-    void stopFilterGraph();
-    void startFilterGraph();
-    void bringCodeEditorToFront (File file);
-    void bringCodeEditorToFront (FileTab* tab);
-    void updateEditorColourScheme();
-    void addInstrumentsAndRegionsToCombobox();
-    void insertCustomPlantToEditor(CabbagePluginEditor* editor);
-    void setLookAndFeelColours();
-    void showGraph();
-    void showPluginListEditor();
-    void saveGraph (bool saveAs);
-    void openGraph (File fileToOpen = File());
-    File getCurrentCsdFile ();
-    void setCurrentCsdFile (File file);
-    void writeFileToDisk (File file);
-    int testFileForErrors (String file);
-    int getCurrentFileIndex(){  return currentFileIndex;    }
-    //==============================================================================
-    void handleToolbarButtons (ToolbarButton* toolbarButton);
-    void handleFileTabs (DrawableButton* button);
-    void handleFileTab (FileTab* drawableButton, bool icrement = false) ;
-    void addFileTab (File file);
-    void arrangeFileTabs();
+
+	//==============================================================================
+	CabbageMainComponent(CabbageDocumentWindow* owner, CabbageSettings* settings);
+	~CabbageMainComponent();
+	//==============================================================================
+	void changeListenerCallback(ChangeBroadcaster* source) override;
+	void actionListenerCallback(const String& message) override;
+	void buttonClicked(Button* button) override;
+	void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
+	void updateCodeInEditor(CabbagePluginEditor* pluginEditor, bool replaceExistingLine, bool guiPropUpdate = false);
+	//==============================================================================
+	void paint(Graphics&) override;
+	void resized() override;
+	void resizeAllWindows(int height);
+	void createEditorForFilterGraphNode(Point<int> position);
+	void createFilterGraph();
+	void createCodeEditorForFile(File file);
+	void createNewProject();
+	void createNewTextFile(String contents = "");
+	bool isInterestedInFileDrag(const StringArray& files) override;
+	void filesDropped(const StringArray& files, int x, int y) override;
+	Image createBackground();
+	void removeEditor();
+	//==============================================================================
+	void launchSSHFileBrowser(String mode);
+	void enableEditMode();
+    void enableAutoUpdateMode();
+	const File openFile(String filename = "", bool updateRecentFiles = true);
+	void closeDocument();
+	void showSettingsDialog();
+	void saveDocument(bool saveAs = false, bool recompile = true);
+	void runCsoundForNode(String file, int fileTabIndex = -99);
+	void stopCsoundForNode(String file, int fileTabIndex = -99);
+	void stopFilterGraph();
+	void startFilterGraph();
+	void bringCodeEditorToFront(File file);
+	void bringCodeEditorToFront(FileTab* tab);
+	void updateEditorColourScheme();
+	void addInstrumentsAndRegionsToCombobox();
+	void insertCustomPlantToEditor(CabbagePluginEditor* editor);
+	void setLookAndFeelColours();
+	void showGraph();
+	void showPluginListEditor();
+	void saveGraph(bool saveAs);
+	void openGraph(File fileToOpen = File());
+	File getCurrentCsdFile();
+	void setCurrentCsdFile(File file);
+	void writeFileToDisk(File file);
+	int testFileForErrors(String file);
+	int getCurrentFileIndex() { return currentFileIndex; }
+	//==============================================================================
+	void handleToolbarButtons(ToolbarButton* toolbarButton);
+	void handleFileTabs(DrawableButton* button);
+	void handleFileTab(FileTab* drawableButton, bool icrement = false);
+	void addFileTab(File file);
+	void arrangeFileTabs();
 	void importTheme();
 	void exportTheme();
 
-    int getNumberOfFileTabs() {     return fileTabs.size();  };
-    FileTab* getFileTab(int index){  return fileTabs[index]; };
-    FileTab* getFileTabForNodeId(AudioProcessorGraph::NodeID nodeId)
-    {
-        for (auto &fileTab : fileTabs)
-        {
-            if(fileTab->uniqueFileId == nodeId.uid)
-                return fileTab;
-        }
-        jassertfalse;
-        return nullptr;
-    }
-    
-    //overlaying this component on FileBrowserComponent to take contorl of up button colour..
-    class GoUpButton : public Component
-    {
-    public:
-        GoUpButton() : Component(""), upArrowColour(160, 160, 160){
-            setInterceptsMouseClicks(false, true);
-        };
-        ~GoUpButton(){};
-        
-        void paint(Graphics& g)
-        {
-            g.fillAll(Colours::transparentBlack);
-            Path arrowPath;
-            arrowPath.addArrow({ 23.0f, 16.0f, 23.0f, 5.0f }, 5.0f, 13.0f, 5.0f);
-            g.setColour(upArrowColour);
-            g.fillPath(arrowPath);
-        }
-        
-        Colour upArrowColour;
-    };
+	int getNumberOfFileTabs() { return fileTabs.size(); };
+	FileTab* getFileTab(int index) { return fileTabs[index]; };
+	FileTab* getFileTabForNodeId(AudioProcessorGraph::NodeID nodeId)
+	{
+		for (auto& fileTab : fileTabs)
+		{
+			if (fileTab->uniqueFileId == nodeId.uid)
+				return fileTab;
+		}
+		jassertfalse;
+		return nullptr;
+	}
 
-    GoUpButton goUpButton;
-    
+	//overlaying this component on FileBrowserComponent to take contorl of up button colour..
+	class GoUpButton : public Component
+	{
+	public:
+		GoUpButton() : Component(""), upArrowColour(160, 160, 160) {
+			setInterceptsMouseClicks(false, true);
+		};
+		~GoUpButton() {};
+
+		void paint(Graphics& g)
+		{
+			g.fillAll(Colours::transparentBlack);
+			Path arrowPath;
+			arrowPath.addArrow({ 23.0f, 16.0f, 23.0f, 5.0f }, 5.0f, 13.0f, 5.0f);
+			g.setColour(upArrowColour);
+			g.fillPath(arrowPath);
+		}
+
+		Colour upArrowColour;
+	};
+
+	GoUpButton goUpButton;
+
 	void selectionChanged() override {};
-    void fileClicked (const File &file, const MouseEvent &e) override;
-    void fileDoubleClicked (const File &file) override;
-	void browserRootChanged(const File &newRoot) override;
-    //==============================================================================
-    String getSearchString();
-    void setSearchString (const String& s);
-    void setReplaceString (const String& s);
-    bool isCaseSensitiveSearch();
-    void setCaseSensitiveSearch (bool b);
-    void showFindPanel (bool withReplace);
-    void hideFindPanel();
-    int findNext (bool forward);
-    void replaceText (bool replaceAll);
+	void fileClicked(const File& file, const MouseEvent& e) override;
+	void fileDoubleClicked(const File& file) override;
+	void browserRootChanged(const File& newRoot) override;
+	//==============================================================================
+	String getSearchString();
+	void setSearchString(const String& s);
+	void setReplaceString(const String& s);
+	bool isCaseSensitiveSearch();
+	void setCaseSensitiveSearch(bool b);
+	void showFindPanel(bool withReplace);
+	void hideFindPanel();
+	int findNext(bool forward);
+	void replaceText(bool replaceAll);
 
 	//==============================================================================
 	AudioDeviceManager deviceManager;
@@ -180,16 +181,18 @@ public:
 	String getDeviceManagerSettings();
 	void reloadAudioDeviceState();
 
-   
-    class PluginListWindow;
-    std::unique_ptr<PluginListWindow> pluginListWindow;
 
-    //==============================================================================
-    CabbagePluginEditor* getCabbagePluginEditor();
-    CabbagePluginProcessor* getCabbagePluginProcessor();
-    CabbageOutputConsole* getCurrentOutputConsole();
-    CabbageCodeEditorComponent* getCurrentCodeEditor();
-    CabbageEditorContainer* getCurrentEditorContainer();
+	class PluginListWindow;
+	std::unique_ptr<PluginListWindow> pluginListWindow;
+
+	//==============================================================================
+	CabbagePluginEditor* getCabbagePluginEditor();
+	CabbagePluginProcessor* getCabbagePluginProcessor();
+	CabbageOutputConsole* getCurrentOutputConsole();
+	CabbageCodeEditorComponent* getCurrentCodeEditor();
+	CabbageEditorContainer* getCurrentEditorContainer();
+	CabbageEditorContainer* getEditorContainer(int index);
+	GraphDocumentComponent* getGraphComponent(){	return graphComponent;	};
 
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
@@ -216,29 +219,6 @@ public:
     void launchHelpfile (String type);
     TextButton cycleTabsButton;
     int duplicationIndex = 0;
-
-	class FilterGraphDocumentWindow : public DocumentWindow
-	{
-		Colour colour;
-		CabbageMainComponent* owner;
-	public:
-		FilterGraphDocumentWindow(String caption, Colour backgroundColour, CabbageMainComponent* owner)
-			: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour), owner(owner)
-		{
-			setSize(600, 600);
-			setName(caption);
-			this->setTitleBarHeight(15);
-			this->setResizable(true, true);
-			
-		}
-
-		void closeButtonPressed() override { setVisible(false); }
-		
-		CabbageMainComponent* getOwner() {
-			return owner;
-		};
-
-	};
 
     class VerticalResizerBar : public Component
     {

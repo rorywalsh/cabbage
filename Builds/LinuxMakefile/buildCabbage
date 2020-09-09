@@ -20,7 +20,7 @@ if [ $1 == "debug" ]; then
   make -f MakeCabbageIDE -j6 
   cp ./build/Cabbage /usr/bin/Cabbage
 
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePlugin.jucer
+  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginNoStandalone.jucer
   mv Makefile MakePluginEffect
   make -f MakePluginEffect clean 
   make -f MakePluginEffect -j6
@@ -42,7 +42,7 @@ else
   make -f MakeCabbageIDE -j6 CONFIG=Release
   cp ./build/Cabbage ./install/bin/Cabbage
 
-  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePlugin.jucer
+  ../../../JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ../../CabbagePluginNoStandalone.jucer
   mv Makefile MakePluginEffect
   echo "$(tput bold)Building PluginEffect…$(tput sgr0)"
 

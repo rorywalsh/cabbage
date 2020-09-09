@@ -28,220 +28,289 @@
 
 #include "../Filters/FilterIOConfiguration.h"
 #include "../Plugins/CabbagePluginEditor.h"
+#include "../UI/IOConfigurationWindow.h"
 
 
 class FilterGraph;
 
-//==============================================================================
+
+
 /**
-    A desktop window containing a plugin's GUI.
+	A window that shows a log of parameter change messagse sent by the plugin.
 */
-class PluginWindow  : public DocumentWindow, public ChangeBroadcaster
+class PluginDebugWindow : public AudioProcessorEditor,
+	public AudioProcessorParameter::Listener,
+	public ListBoxModel,
+	public AsyncUpdater
 {
 public:
-    enum class Type
-    {
-        normal = 0,
-        generic,
-        programs,
-        audioIO,
-        numTypes
-    };
+	PluginDebugWindow(AudioProcessor& proc)
+		: AudioProcessorEditor(proc), audioProc(proc)
+	{
+		setSize(500, 200);
+		addAndMakeVisible(list);
 
-    PluginWindow (AudioProcessorGraph::Node* n, Type t, OwnedArray<PluginWindow>& windowList)
-       : DocumentWindow (n->getProcessor()->getName(),
-                         LookAndFeel::getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
-                         DocumentWindow::minimiseButton | DocumentWindow::closeButton),
-         activeWindowList (windowList),
-         node (n), type (t)
-    {
-        setSize (400, 300);
-        setResizeLimits(10, 50, 3000, 3000);
-        setLookAndFeel (&pluginWindowLookAndFeel);
+		for (auto* p : audioProc.getParameters())
+			p->addListener(this);
 
-        if (auto* ui = createProcessorEditor(*node->getProcessor(), type))
-        {
-            setContentOwned(ui, true);
-            if( auto* cabbgeEditor = dynamic_cast<CabbagePluginEditor*>(ui))
-            {
-                
-                setBackgroundColour(cabbgeEditor->titlebarColour); // <-- set titlebar colour of the plugin window
-            
-                pluginWindowLookAndFeel.titlebarContrastingGradient = cabbgeEditor->titlebarGradientAmount;
-                if (cabbgeEditor->defaultFontColour == false)
-                    setColour(DocumentWindow::textColourId, cabbgeEditor->fontColour); // <-- set customized titlebar font colour
-                }
-        }
+		log.add("Parameter debug log started");
+	}
 
-       #if JUCE_IOS || JUCE_ANDROID
-        auto screenBounds = Desktop::getInstance().getDisplays().getTotalBounds (true).toFloat();
+	void parameterValueChanged(int parameterIndex, float newValue) override
+	{
+		auto* param = audioProc.getParameters()[parameterIndex];
+		auto value = param->getCurrentValueAsText().quoted() + " (" + String(newValue, 4) + ")";
 
-        auto scaleFactor = jmin ((screenBounds.getWidth() - 50) / getWidth(), (screenBounds.getHeight() - 50) / getHeight());
-        if (scaleFactor < 1.0f)
-            setSize (getWidth() * scaleFactor, getHeight() * scaleFactor);
+		appendToLog("parameter change", *param, value);
+	}
 
-        setTopLeftPosition (20, 20);
-       #else
-        setTopLeftPosition (node->properties.getWithDefault (getLastXProp (type), Random::getSystemRandom().nextInt (500)),
-                            node->properties.getWithDefault (getLastYProp (type), Random::getSystemRandom().nextInt (500)));
-       #endif
+	void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override
+	{
+		auto* param = audioProc.getParameters()[parameterIndex];
+		appendToLog("gesture", *param, gestureIsStarting ? "start" : "end");
+	}
 
-        
-        node->properties.set (getOpenProp (type), true);
+private:
+	void appendToLog(StringRef action, AudioProcessorParameter& param, StringRef value)
+	{
+		String entry(action + " " + param.getName(30).quoted() + " [" + String(param.getParameterIndex()) + "]: " + value);
 
-        setVisible (true);
-    }
+		{
+			ScopedLock lock(pendingLogLock);
+			pendingLogEntries.add(entry);
+		}
 
-    ~PluginWindow()
-    {
-        setLookAndFeel (nullptr);
-        clearContentComponent();
-    }
+		triggerAsyncUpdate();
+}
 
+	void resized() override
+	{
+		list.setBounds(getLocalBounds());
+	}
 
-    void moved() override
-    {
-        node->properties.set (getLastXProp (type), getX());
-        node->properties.set (getLastYProp (type), getY());
+	int getNumRows() override
+	{
+		return log.size();
+	}
+
+	void paintListBoxItem(int rowNumber, Graphics& g, int width, int height, bool) override
+	{
+		g.setColour(getLookAndFeel().findColour(TextEditor::textColourId));
+
+		if (isPositiveAndBelow(rowNumber, log.size()))
+			g.drawText(log[rowNumber], Rectangle<int> { 0, 0, width, height }, Justification::left, true);
+	}
+
+	void handleAsyncUpdate() override
+	{
+		if (log.size() > logSizeTrimThreshold)
+			log.removeRange(0, log.size() - maxLogSize);
+
+		{
+			ScopedLock lock(pendingLogLock);
+			log.addArray(pendingLogEntries);
+			pendingLogEntries.clear();
+		}
+
+		list.updateContent();
+		list.scrollToEnsureRowIsOnscreen(log.size() - 1);
+	}
+
+	JUCE_CONSTEXPR static const int maxLogSize = 300;
+	JUCE_CONSTEXPR static const int logSizeTrimThreshold = 400;
+
+	ListBox list{ "Log", this };
+
+	StringArray log;
+	StringArray pendingLogEntries;
+	CriticalSection pendingLogLock;
+
+	AudioProcessor& audioProc;
+};
+
+//==============================================================================
+/**
+	A desktop window containing a plugin's GUI.
+*/
+class PluginWindow : public DocumentWindow, public ChangeBroadcaster
+{
+public:
+	enum class Type
+	{
+		normal = 0,
+		generic,
+		programs,
+		audioIO,
+		debug,
+		numTypes
+	};
+
+	PluginWindow(AudioProcessorGraph::Node* n, Type t, OwnedArray<PluginWindow>& windowList)
+		: DocumentWindow(n->getProcessor()->getName(),
+			LookAndFeel::getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
+			DocumentWindow::minimiseButton | DocumentWindow::closeButton),
+		activeWindowList(windowList),
+		node(n), type(t)
+	{
+		setSize(400, 300);
+
+		if (auto * ui = createProcessorEditor(*node->getProcessor(), type))
+			setContentOwned(ui, true);
+
+#if JUCE_IOS || JUCE_ANDROID
+		auto screenBounds = Desktop::getInstance().getDisplays().getTotalBounds(true).toFloat();
+		auto scaleFactor = jmin((screenBounds.getWidth() - 50) / getWidth(), (screenBounds.getHeight() - 50) / getHeight());
+
+		if (scaleFactor < 1.0f)
+			setSize((int)(getWidth() * scaleFactor), (int)(getHeight() * scaleFactor));
+
+		setTopLeftPosition(20, 20);
+#else
+		setTopLeftPosition(node->properties.getWithDefault(getLastXProp(type), Random::getSystemRandom().nextInt(500)),
+			node->properties.getWithDefault(getLastYProp(type), Random::getSystemRandom().nextInt(500)));
+#endif
+
+		node->properties.set(getOpenProp(type), true);
+
+		setVisible(true);
+	}
+
+	~PluginWindow() override
+	{
+		clearContentComponent();
+	}
+
+	void moved() override
+	{
+		node->properties.set(getLastXProp(type), getX());
+		node->properties.set(getLastYProp(type), getY());
 		//mod RW
 		node->properties.set("PluginWindowX", getX());
 		node->properties.set("PluginWindowY", getY());
+	}
 
-    }
-
-    void closeButtonPressed() override
-    {
+	void closeButtonPressed() override
+	{
 		//mod RW
 		sendChangeMessage();
 		node->getProcessor()->editorBeingDeleted(node->getProcessor()->getActiveEditor());
-		
 
-		node->properties.set (getOpenProp (type), false);
-		setVisible(false);
-		//activeWindowList.removeObject (this);
-    }
+		node->properties.set(getOpenProp(type), false);
+		activeWindowList.removeObject(this);
+	}
 
-    static String getLastXProp (Type type)    { return "uiLastX_" + getTypeName (type); }
-    static String getLastYProp (Type type)    { return "uiLastY_" + getTypeName (type); }
-    static String getOpenProp  (Type type)    { return "uiopen_"  + getTypeName (type); }
+	static String getLastXProp(Type type) { return "uiLastX_" + getTypeName(type); }
+	static String getLastYProp(Type type) { return "uiLastY_" + getTypeName(type); }
+	static String getOpenProp(Type type) { return "uiopen_" + getTypeName(type); }
 
-    OwnedArray<PluginWindow>& activeWindowList;
-    const AudioProcessorGraph::Node::Ptr node;
-    const Type type;
+	OwnedArray<PluginWindow>& activeWindowList;
+	const AudioProcessorGraph::Node::Ptr node;
+	const Type type;
 
 private:
-    CabbageLookAndFeel2 pluginWindowLookAndFeel;
+	float getDesktopScaleFactor() const override { return 1.0f; }
 
-    float getDesktopScaleFactor() const override     { return 1.0f; }
+	static AudioProcessorEditor* createProcessorEditor(AudioProcessor& processor,
+		PluginWindow::Type type)
+	{
+		if (type == PluginWindow::Type::normal)
+		{
+			if (auto * ui = processor.createEditorIfNeeded())
+				return ui;
 
-    static AudioProcessorEditor* createProcessorEditor (AudioProcessor& processor, PluginWindow::Type type)
-    {
-        if (type == PluginWindow::Type::normal)
-        {
-            if (auto* ui = processor.createEditorIfNeeded())
-            {
+			type = PluginWindow::Type::generic;
+		}
 
-                return ui;
-            }
-            
+		if (type == PluginWindow::Type::generic)  return new GenericAudioProcessorEditor(processor);
+		if (type == PluginWindow::Type::programs) return new ProgramAudioProcessorEditor(processor);
+		if (type == PluginWindow::Type::audioIO)  return new IOConfigurationWindow(processor);
+		if (type == PluginWindow::Type::debug)    return new PluginDebugWindow(processor);
 
+		jassertfalse;
+		return {};
+	}
 
-            type = PluginWindow::Type::generic;
-        }
+	static String getTypeName(Type type)
+	{
+		switch (type)
+		{
+		case Type::normal:     return "Normal";
+		case Type::generic:    return "Generic";
+		case Type::programs:   return "Programs";
+		case Type::audioIO:    return "IO";
+		case Type::debug:      return "Debug";
+		default:               return {};
+		}
+	}
 
-        if (type == PluginWindow::Type::generic)
-            return new GenericAudioProcessorEditor (&processor);
+	//==============================================================================
+	struct ProgramAudioProcessorEditor : public AudioProcessorEditor
+	{
+		ProgramAudioProcessorEditor(AudioProcessor& p) : AudioProcessorEditor(p)
+		{
+			setOpaque(true);
 
-        if (type == PluginWindow::Type::programs)
-            return new ProgramAudioProcessorEditor (processor);
+			addAndMakeVisible(panel);
 
-        if (type == PluginWindow::Type::audioIO)
-            return new FilterIOConfigurationWindow (processor);
+			Array<PropertyComponent*> programs;
 
-        jassertfalse;
-        return {};
-    }
+			auto numPrograms = p.getNumPrograms();
+			int totalHeight = 0;
 
-    static String getTypeName (Type type)
-    {
-        switch (type)
-        {
-            case Type::normal:     return "Normal";
-            case Type::generic:    return "Generic";
-            case Type::programs:   return "Programs";
-            case Type::audioIO:    return "IO";
-            default:               return {};
-        }
-    }
+			for (int i = 0; i < numPrograms; ++i)
+			{
+				auto name = p.getProgramName(i).trim();
 
-    //==============================================================================
-    struct ProgramAudioProcessorEditor  : public AudioProcessorEditor
-    {
-        ProgramAudioProcessorEditor (AudioProcessor& p)  : AudioProcessorEditor (p)
-        {
-            setOpaque (true);
+				if (name.isEmpty())
+					name = "Unnamed";
 
-            addAndMakeVisible (panel);
+				auto pc = new PropertyComp(name, p);
+				programs.add(pc);
+				totalHeight += pc->getPreferredHeight();
+			}
 
-            Array<PropertyComponent*> programs;
+			panel.addProperties(programs);
 
-            auto numPrograms = p.getNumPrograms();
-            int totalHeight = 0;
+			setSize(400, jlimit(25, 400, totalHeight));
+		}
 
-            for (int i = 0; i < numPrograms; ++i)
-            {
-                auto name = p.getProgramName (i).trim();
+		void paint(Graphics& g) override
+		{
+			g.fillAll(Colours::grey);
+		}
 
-                if (name.isEmpty())
-                    name = "Unnamed";
+		void resized() override
+		{
+			panel.setBounds(getLocalBounds());
+		}
 
-                auto pc = new PropertyComp (name, p);
-                programs.add (pc);
-                totalHeight += pc->getPreferredHeight();
-            }
+	private:
+		struct PropertyComp : public PropertyComponent,
+			private AudioProcessorListener
+		{
+			PropertyComp(const String& name, AudioProcessor& p) : PropertyComponent(name), owner(p)
+			{
+				owner.addListener(this);
+			}
 
-            panel.addProperties (programs);
+			~PropertyComp() override
+			{
+				owner.removeListener(this);
+			}
 
-            setSize (400, jlimit (25, 400, totalHeight));
-        }
+			void refresh() override {}
+			void audioProcessorChanged(AudioProcessor*) override {}
+			void audioProcessorParameterChanged(AudioProcessor*, int, float) override {}
 
-        void paint (Graphics& g) override
-        {
-            g.fillAll (Colours::grey);
-        }
+			AudioProcessor& owner;
 
-        void resized() override
-        {
-            panel.setBounds (getLocalBounds());
-        }
+			JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PropertyComp)
+		};
 
-    private:
-        struct PropertyComp  : public PropertyComponent,
-                               private AudioProcessorListener
-        {
-            PropertyComp (const String& name, AudioProcessor& p)  : PropertyComponent (name), owner (p)
-            {
-                owner.addListener (this);
-            }
+		PropertyPanel panel;
 
-            ~PropertyComp()
-            {
-                owner.removeListener (this);
-            }
+		JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ProgramAudioProcessorEditor)
+	};
 
-            void refresh() override {}
-            void audioProcessorChanged (AudioProcessor*) override {}
-            void audioProcessorParameterChanged (AudioProcessor*, int, float) override {}
-
-            AudioProcessor& owner;
-
-            JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PropertyComp)
-        };
-
-        PropertyPanel panel;
-
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProgramAudioProcessorEditor)
-    };
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginWindow)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginWindow)
 };

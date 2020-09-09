@@ -23,9 +23,10 @@
 CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     : owner (_owner),
       widgetData (wData),
-      popupBubble (250),
+
       sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
-      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel))
+      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
+popupBubble (250)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
@@ -40,6 +41,12 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerstart));
     slider.getProperties().set("markerend", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerend));
     slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::gapmarkers));
+    
+    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
+    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
+    popupPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
+    popupPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    
     initialiseSlider (wData);
     textLabel.setVisible (false);
     initialiseCommonAttributes (this, wData);
@@ -52,8 +59,8 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
 
     setTextBoxOrientation (sliderType, shouldShowTextBox);
     //slider.setLookAndFeel (&owner->getLookAndFeel());
-    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
+    
+    slider.setTextValueSuffix(postfix);
 
     const String globalStyle = owner->globalStyle;
     if(globalStyle == "legacy")
@@ -93,7 +100,8 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     slider.setSkewFactor (sliderSkew);
     slider.setRange (min, max, sliderIncrement);
 
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext) == "0")
+    const String popup = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext);
+    if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
         shouldDisplayPopup = false;
     else
         shouldDisplayPopup = true;
@@ -121,11 +129,12 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
 
 }
 
-void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
+void CabbageSlider::setTextBoxOrientation (String type, bool showTextBox)
 {
-    if (shouldShowTextBox > 0)
+    if (showTextBox)
     {
-        shouldDisplayPopup = false;
+        if(!shouldDisplayPopup)
+            shouldDisplayPopup = false;
         setTextBoxWidth();
     }
     else
@@ -239,14 +248,13 @@ void CabbageSlider::createPopupBubble()
 
 void CabbageSlider::showPopupBubble (int time)
 {
-    if (getTooltipText().isNotEmpty())
-        popupText = getTooltipText();
-    else if ( postfix.isNotEmpty() || prefix.isNotEmpty() )
-        popupText = prefix + String (slider.getValue(), decimalPlaces) + postfix;
-    else
-        popupText = channel + ": " + String (slider.getValue(), decimalPlaces);
+    popupText = createPopupBubbleText(slider.getValue(),
+                                      decimalPlaces,
+                                      channel,
+                                      popupPrefix,
+                                      popupPostfix);
 
-    popupBubble.showAt (&slider, AttributedString (popupText), time);
+	popupBubble.showAt (&slider, AttributedString (popupText), time);
 
 }
 

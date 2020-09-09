@@ -36,7 +36,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, "scalex", 1);
     setProperty (widgetData, "scaley", 1);
     setProperty (widgetData, "resize", 0);
+    setProperty (widgetData, "automation", 0);
     setProperty (widgetData, CabbageIdentifierIds::active, 1);
+    setProperty (widgetData, CabbageIdentifierIds::automatable, 0);
     setProperty (widgetData, CabbageIdentifierIds::parentdir, "");
     setProperty (widgetData, CabbageIdentifierIds::manufacturer, "CabbageAudio");
     setProperty (widgetData, CabbageIdentifierIds::imgdebug, 0);
@@ -55,7 +57,10 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::plant, "");
     setProperty (widgetData, CabbageIdentifierIds::basechannel, "");
     setProperty (widgetData, CabbageIdentifierIds::typeface, "");
+    setProperty (widgetData, CabbageIdentifierIds::mouseinteraction, 1);
     setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
+    setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
+    setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -295,6 +300,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
         strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
 
+
+
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
             //======== strings ===============================
@@ -305,9 +312,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("popuptext"):
             case HashStringToInt ("mode"):
             case HashStringToInt ("channeltype"):
-            case HashStringToInt ("popuppostfix"):
             case HashStringToInt ("orientation"):
-            case HashStringToInt ("popupprefix"):
             case HashStringToInt ("identchannel"):
             case HashStringToInt ("author"):
             case HashStringToInt ("align"):
@@ -325,6 +330,16 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("namespace"):
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
+                
+            case HashStringToInt ("valueprefix"):
+            case HashStringToInt ("valuepostfix"):
+                setPreAndPostfixes(strTokens, widgetData, identifier, false);
+                break;
+                
+            case HashStringToInt ("popupprefix"):
+            case HashStringToInt ("popuppostfix"):
+                setPreAndPostfixes(strTokens, widgetData, identifier, true);
+                break;
 
             case HashStringToInt ("channel"):
             case HashStringToInt ("channels"):
@@ -340,7 +355,11 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("text"):
                 setTextItemArrays (strTokens, widgetData, getStringProp(widgetData, CabbageIdentifierIds::type));
                 break;
-
+            case HashStringToInt ("items:"):
+            case HashStringToInt ("text:"):
+                setComboItemArrays (strTokens, widgetData, identifierValueSet.identifier[indx]);
+                break;
+                
             case HashStringToInt ("populate"):
                 setPopulateProps (strTokens, widgetData);
                 break;
@@ -362,51 +381,56 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             //=========== floats ===============================
-            case HashStringToInt ("surrogatelinenumber"):
-            case HashStringToInt ("imgdebug"):
-            case HashStringToInt ("middlec"):
-            case HashStringToInt ("keypressbaseoctave"):
-            case HashStringToInt ("fill"):
-            case HashStringToInt ("updaterate"):
-            case HashStringToInt ("keywidth"):
-            case HashStringToInt ("pivoty"):
-            case HashStringToInt ("ffttablenumber"):
-            case HashStringToInt ("pivotx"):
-            case HashStringToInt ("increment"):
-            case HashStringToInt ("sliderskew"):
-            case HashStringToInt ("visible"):
             case HashStringToInt ("active"):
-            case HashStringToInt ("latched"):
+            case HashStringToInt ("automation"):
+            case HashStringToInt ("automatable"):
             case HashStringToInt ("alpha"):
             case HashStringToInt ("corners"):
+            case HashStringToInt ("ffttablenumber"):
+            case HashStringToInt ("fill"):
             case HashStringToInt ("guirefresh"):
-            case HashStringToInt ("textbox"):
-            case HashStringToInt ("valuetextbox"):
-            case HashStringToInt ("velocity"):
-            case HashStringToInt ("outlinethickness"):
+            case HashStringToInt ("imgdebug"):
+            case HashStringToInt ("increment"):
+            case HashStringToInt ("keypressbaseoctave"):
+            case HashStringToInt ("keywidth"):
+            case HashStringToInt ("latched"):
             case HashStringToInt ("linethickness"):
-            case HashStringToInt ("trackerthickness"):
-            case HashStringToInt ("trackerinsideradius"):
-            case HashStringToInt ("trackeroutsideradius"):
-            case HashStringToInt ("value"):
-            case HashStringToInt ("valuex"):
-            case HashStringToInt ("valuey"):
-            case HashStringToInt ("zoom"):
-            case HashStringToInt ("wrap"):
-            case HashStringToInt ("refreshfiles"):
+            case HashStringToInt ("latency"):
+            case HashStringToInt ("markerend"):
+            case HashStringToInt ("markerstart"):
+            case HashStringToInt ("markerthickness"):
+            case HashStringToInt ("middlec"):
+            case HashStringToInt ("mouseinteraction"):
+            case HashStringToInt ("outlinethickness"):
+            case HashStringToInt ("pivotx"):
+            case HashStringToInt ("pivoty"):
             case HashStringToInt ("readonly"):
             case HashStringToInt ("scrollbars"):
+            case HashStringToInt ("sidechain"):
+            case HashStringToInt ("sliderskew"):
+            case HashStringToInt ("surrogatelinenumber"):
+            case HashStringToInt ("textbox"):
             case HashStringToInt ("titlebargradient"):
-            case HashStringToInt ("markerthickness"):
-            case HashStringToInt ("markerstart"):
-            case HashStringToInt ("markerend"):
+            case HashStringToInt ("trackerinsideradius"):
+            case HashStringToInt ("trackeroutsideradius"):
+            case HashStringToInt ("trackerthickness"):
+            case HashStringToInt ("updaterate"):
+            case HashStringToInt ("value"):
+            case HashStringToInt ("valuetextbox"):
+            case HashStringToInt ("valuex"):
+            case HashStringToInt ("valuey"):
+            case HashStringToInt ("velocity"):
+            case HashStringToInt ("visible"):
+            case HashStringToInt ("wrap"):
+            case HashStringToInt ("zoom"):
                 if (getStringProp (widgetData, CabbageIdentifierIds::channeltype) == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else
                     setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
 
                 break;
-
+            case HashStringToInt ("refreshfiles"):
+                setProperty (widgetData, identifier, 1);
             case HashStringToInt ("crop"):
                 setProperty (widgetData, CabbageIdentifierIds::cropx, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::cropy, strTokens[1].trim().getFloatValue());
@@ -457,6 +481,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("cellwidth"):
             case HashStringToInt ("cellheight"):
             case HashStringToInt ("resize"):
+			case HashStringToInt ("fontsize"):
             case HashStringToInt ("gapmarkers"):
                 setProperty (widgetData, identifier, strTokens[0].trim().getIntValue());
                 break;
@@ -472,6 +497,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 {
                     setProperty (widgetData, CabbageIdentifierIds::width, strTokens[0].trim().getFloatValue());
                     setProperty (widgetData, CabbageIdentifierIds::height, strTokens[1].trim().getFloatValue());
+                    setProperty(widgetData, CabbageIdentifierIds::top, getProperty(widgetData, CabbageIdentifierIds::top));
+                    setProperty(widgetData, CabbageIdentifierIds::left, getProperty(widgetData, CabbageIdentifierIds::left));
                 }
 
                 break;
@@ -483,6 +510,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("pos"):
                 setProperty (widgetData, CabbageIdentifierIds::left, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::top, strTokens[1].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::width, getProperty(widgetData, CabbageIdentifierIds::width));
+                setProperty (widgetData, CabbageIdentifierIds::height, getProperty(widgetData, CabbageIdentifierIds::height));
                 break;
 
             case HashStringToInt ("fontstyle"):
@@ -588,7 +617,7 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
     StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")+1).trimCharactersAtStart ("), "), ')');
-
+//    CabbageUtilities::debug(identifiersInLine.joinIntoString(" - "));
     StringArray parameters;
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
@@ -646,6 +675,8 @@ String CabbageWidgetData::replaceIdentifier (String line, String identifier, Str
 //=========================================================================================================
 void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier)
 {
+
+
     var array;
     array.append (strTokens[0].trim());
 
@@ -723,6 +754,28 @@ void CabbageWidgetData::setMatrixSize(StringArray strTokens, ValueTree widgetDat
 {
     setNumProp(widgetData, CabbageIdentifierIds::matrixrows, strTokens[0].getIntValue());
     setNumProp(widgetData, CabbageIdentifierIds::matrixcols, strTokens[1].getIntValue());
+}
+
+void CabbageWidgetData::setPreAndPostfixes(StringArray strTokens, ValueTree widgetData, String identifier, bool isPopup)
+{
+    var array;
+    
+    if (isPopup)
+    {
+        for (const auto& str : strTokens)
+        {
+            array.append(CabbageUtilities::convertWhitespaceEscapeChars(str));
+        }
+    }
+    else
+    {
+        for (const auto& str : strTokens)
+        {
+            array.append(CabbageUtilities::removeWhitespaceEscapeChars(str));
+        }
+    }
+    
+    setProperty(widgetData, identifier, array);
 }
 
 void CabbageWidgetData::setCellData(StringArray strTokens, String parameters, ValueTree widgetData)
@@ -814,14 +867,45 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
     }
 }
 
+
+void CabbageWidgetData::setComboItemArrays (StringArray strTokens, ValueTree widgetData, String identifier)
+{
+    var items = getProperty (widgetData, CabbageIdentifierIds::text );
+    bool deleteItems = true;
+    for (int i = 0; i < items.size(); i++)
+    {
+        if(items[i].toString().contains("subM"))
+            deleteItems = false;
+    }
+    
+    if(deleteItems)
+        items.resize(0);
+
+    items.append("subM:"+strTokens[0].trim());
+    int comboRange = 0;
+    
+    for (int i = 1; i < strTokens.size(); i++)
+    {
+        items.append (strTokens[i].trim().trimCharactersAtEnd ("\"").trimCharactersAtStart ("\""));
+    }
+    
+    comboRange = items.size();
+
+    setProperty (widgetData, CabbageIdentifierIds::text, items);
+    setProperty (widgetData, CabbageIdentifierIds::comborange, comboRange);
+    
+}
+
 void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widgetData, String identifier, bool isTable)
 {
     const int colourIndex = identifier.substring (identifier.indexOf (":") + 1).getIntValue();
     const var colours = getProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour );
     var newColours = colours.clone();
 
-    for (int i = newColours.size(); i < colourIndex + 1; i++)
-        newColours.append (new Colour (0, 0, 0));
+    for (int i = newColours.size(); i < colourIndex + 1; i++){
+        newColours.append ("0");
+    }
+    
 
     newColours[colourIndex] = getColourFromText (strTokens.joinIntoString (",")).toString();
     setProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour, newColours);
@@ -1032,8 +1116,8 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     
     //if populate is called, it's a fair assumption that the widget is using string channels..
     //.. however, if it's a preset combo, set the type to number so we can automate it..
-    if(!strTokens[0].contains("snaps"))
-        CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
+//    if(!strTokens[0].contains("snaps"))
+//        CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
 
 }
 
@@ -1206,7 +1290,7 @@ ValueTree CabbageWidgetData::getValueTreeForComponent (ValueTree widgetData, Str
                 }
 
 			if(name == CabbageWidgetData::getStringProp(widgetData.getChild(i), CabbageIdentifierIds::channel))
-				return  widgetData.getChild(i);
+				return  widgetData.getChild(i).createCopy();
 
         }
         else
@@ -1239,10 +1323,10 @@ Rectangle<int> CabbageWidgetData::getBoundsFromText (String text)
 
 Rectangle<int> CabbageWidgetData::getBounds (ValueTree widgetData)
 {
-    Rectangle<int> rect (getProperty (widgetData, CabbageIdentifierIds::left),
-                         getProperty (widgetData, CabbageIdentifierIds::top),
-                         getProperty (widgetData, CabbageIdentifierIds::width),
-                         getProperty (widgetData, CabbageIdentifierIds::height));
+    Rectangle<int> rect (jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::left)),
+                         jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::top)),
+                         jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::width)),
+                         jmax(1, (int)getProperty (widgetData, CabbageIdentifierIds::height)));
     return rect;
 }
 

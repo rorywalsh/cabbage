@@ -21,8 +21,9 @@
 #include "GenericCabbagePluginProcessor.h"
 
 GenericCabbageEditor::GenericCabbageEditor (AudioProcessor& parent)
-    : AudioProcessorEditor (parent), lookAndFeel(),
-      noParameterLabel ("noparam", "No Csound channels found in orchestra. If you wish to have real time control of parameters please delcare channels using the chn, or chnexport opecodes.")
+    : AudioProcessorEditor (parent),
+      noParameterLabel ("noparam", "No Csound channels found in orchestra. If you wish to have real time control of parameters please delcare channels using the chn, or chnexport opecodes."),
+    lookAndFeel()
 {
 
     setLookAndFeel (&lookAndFeel);
@@ -48,12 +49,12 @@ GenericCabbageEditor::GenericCabbageEditor (AudioProcessor& parent)
 
             controls.add (aSlider);  // [10]
         }
-        else if (const AudioParameterBool* param = dynamic_cast<AudioParameterBool*> (params[i])) // [11]
+        else if (const AudioParameterBool* mParam = dynamic_cast<AudioParameterBool*> (params[i])) // [11]
         {
             ToggleButton* aButton;
 
-            paramToggles.add (aButton = new ToggleButton (param->name));
-            aButton->setToggleState (*param, dontSendNotification);
+            paramToggles.add (aButton = new ToggleButton (mParam->name));
+            aButton->setToggleState (*mParam, dontSendNotification);
 
             aButton->addListener (this);
             addAndMakeVisible (aButton);

@@ -29,6 +29,7 @@
 #include "../Filters/FilterGraph.h"
 #include "../../CabbageCommonHeaders.h"
 
+class CabbageTransportComponent;
 //==============================================================================
 /**
  A panel that displays and edits a FilterGraph.
@@ -84,7 +85,6 @@ private:
     OwnedArray<ConnectorComponent> connectors;
     std::unique_ptr<ConnectorComponent> draggingConnector;
     std::unique_ptr<PopupMenu> menu;
-    
     FilterComponent* getComponentForFilter (AudioProcessorGraph::NodeID) const;
     ConnectorComponent* getComponentForConnection (const AudioProcessorGraph::Connection&) const;
     PinComponent* findPinAt (Point<float>) const;
@@ -135,6 +135,8 @@ public:
     //==============================================================================
     std::unique_ptr<GraphEditorPanel> graphPanel;
     std::unique_ptr<MidiKeyboardComponent> keyboardComp;
+    //RW
+    std::unique_ptr<CabbageTransportComponent> transportControls;
     
     //==============================================================================
     void showSidePanel (bool isSettingsPanel);
@@ -151,10 +153,13 @@ public:
     }
     
     void enableGraph(bool shouldEnable){
-        if(shouldEnable)
+        if(shouldEnable){
             graphPlayer.setProcessor (&graph->graph);
-        else
+        }
+        else{
             graphPlayer.setProcessor (nullptr);
+            CabbageUtilities::debug("disabling graph");
+        }
     }
     bool shouldMuteInput = true;
     AudioSampleBuffer emptyBuffer;
@@ -222,4 +227,28 @@ private:
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphDocumentComponent)
+};
+
+//RW
+class FilterGraphDocumentWindow : public DocumentWindow
+{
+	Colour colour;
+	CabbageMainComponent* owner;
+public:
+	FilterGraphDocumentWindow(String caption, Colour backgroundColour, CabbageMainComponent* owner)
+		: DocumentWindow(caption, backgroundColour, DocumentWindow::TitleBarButtons::allButtons), colour(backgroundColour), owner(owner)
+	{
+		setSize(600, 600);
+		setName(caption);
+		this->setTitleBarHeight(15);
+		this->setResizable(true, true);
+
+	}
+
+	void closeButtonPressed() override { setVisible(false); }
+
+	CabbageMainComponent* getOwner() {
+		return owner;
+	};
+
 };

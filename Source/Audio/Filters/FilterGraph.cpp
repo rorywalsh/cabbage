@@ -42,6 +42,7 @@ FilterGraph::FilterGraph (AudioPluginFormatManager& fm)
 
     newDocument();
     graph.addListener (this);
+    graph.setPlayHead(this);
 }
 
 FilterGraph::~FilterGraph()
@@ -104,6 +105,9 @@ void FilterGraph::addPluginCallback(std::unique_ptr<AudioPluginInstance> instanc
 
 		if (auto node = graph.addNode(std::move(instance)))
 		{
+			//RW
+			node->getProcessor()->setPlayHead(graph.getPlayHead());
+			//----------------------------------------------
 			node->properties.set("x", pos.x);
 			node->properties.set("y", pos.y);
 			changed();
@@ -168,11 +172,14 @@ PluginWindow* FilterGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node
         {
             ScopedDPIAwarenessDisabler disableDPIAwareness;
 			PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
-            return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
+			//w->setVisible(false);
+            return activePluginWindows.add (w);
         }
        #endif
 
-        return activePluginWindows.add (new PluginWindow (node, type, activePluginWindows));
+		PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
+		//w->setVisible(false);
+        return activePluginWindows.add (w);
     }
 
     return nullptr;
@@ -219,6 +226,9 @@ void FilterGraph::newDocument()
 
 Result FilterGraph::loadDocument (const File& file)
 {
+	//RW
+	currentFile = file;
+
     XmlDocument doc (file);
     std::unique_ptr<XmlElement> xml (doc.getDocumentElement());
 
@@ -233,11 +243,14 @@ Result FilterGraph::loadDocument (const File& file)
         graph.addChangeListener (this);
     } );
 
+    setLastDocumentOpened(file);
+
     return Result::ok();
 }
 
 Result FilterGraph::saveDocument (const File& file)
 {
+	currentFile = file;
     std::unique_ptr<XmlElement> xml (createXml());
 
     if (! xml->writeToFile (file, {}))
@@ -253,6 +266,9 @@ File FilterGraph::getLastDocumentOpened()
     //                                    ->getValue ("recentFilterGraphFiles"));
 
     //return recentFiles.getFile (0);
+    if(currentFile.existsAsFile())
+    	return currentFile;
+
 	return File();
 }
 
@@ -266,6 +282,7 @@ void FilterGraph::setLastDocumentOpened (const File& file)
 
     //getAppProperties().getUserSettings()
     //    ->setValue ("recentFilterGraphFiles", recentFiles.toString());
+    currentFile = file;
 }
 
 //==============================================================================
@@ -329,51 +346,6 @@ static XmlElement* createBusLayoutXml(const AudioProcessor::BusesLayout& layout,
 	return xml;
 }
 
-static XmlElement* createNodeXml(AudioProcessorGraph::Node* const node) noexcept
-{
-	if (auto* plugin = dynamic_cast<AudioPluginInstance*> (node->getProcessor()))
-	{
-		auto e = new XmlElement("FILTER");
-		e->setAttribute("uid", (int)node->nodeID.uid);
-		e->setAttribute("x", node->properties["x"].toString());
-		e->setAttribute("y", node->properties["y"].toString());
-
-		for (int i = 0; i < (int)PluginWindow::Type::numTypes; ++i)
-		{
-			auto type = (PluginWindow::Type) i;
-
-			if (node->properties.contains(PluginWindow::getOpenProp(type)))
-			{
-				e->setAttribute(PluginWindow::getLastXProp(type), node->properties[PluginWindow::getLastXProp(type)].toString());
-				e->setAttribute(PluginWindow::getLastYProp(type), node->properties[PluginWindow::getLastYProp(type)].toString());
-				e->setAttribute(PluginWindow::getOpenProp(type), node->properties[PluginWindow::getOpenProp(type)].toString());
-			}
-		}
-
-		{
-			PluginDescription pd;
-			plugin->fillInPluginDescription(pd);
-			e->addChildElement(pd.createXml().release());
-		}
-
-		{
-			MemoryBlock m;
-			node->getProcessor()->getStateInformation(m);
-			e->createNewChildElement("STATE")->addTextElement(m.toBase64Encoding());
-		}
-
-		auto layout = plugin->getBusesLayout();
-
-		auto layouts = e->createNewChildElement("LAYOUT");
-		layouts->addChildElement(createBusLayoutXml(layout, true));
-		layouts->addChildElement(createBusLayoutXml(layout, false));
-
-		return e;
-	}
-
-	jassertfalse;
-	return nullptr;
-}
 
 void FilterGraph::createNodeFromXml(const XmlElement& xml)
 {
@@ -427,7 +399,7 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 					{
 						jassert(node->getProcessor() != nullptr);
 
-						if (auto w = getOrCreateWindowFor(node, type))
+						if (auto w = getOrCreateWindowFor(node.get(), type))
 							w->toFront(true);
 					}
 				}
@@ -438,8 +410,29 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 	else
 	{
 		const Point<double> pos(xml.getDoubleAttribute("x"), xml.getDoubleAttribute("y"));
+		String pluginFile = currentFile.getParentDirectory().getChildFile(pd.fileOrIdentifier).getFullPathName();
+        
+        pd.fileOrIdentifier = pluginFile;
 		addCabbagePlugin(pd, pos);
-		
+
+		if (auto * layoutEntity = xml.getChildByName("LAYOUT"))
+		{
+			auto layout = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor()->getBusesLayout();
+            auto pluginProcessor = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor();
+            
+			readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, true);
+			readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, false);
+
+			pluginProcessor->setBusesLayout(layout);
+		}
+
+		if (auto * state = xml.getChildByName("STATE"))
+		{
+			MemoryBlock m;
+			m.fromBase64Encoding(state->getAllSubText());
+			graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor()->setStateInformation(m.getData(), (int)m.getSize());
+		}
+
 		if (auto* node = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid)))
 			if (auto w = getOrCreateWindowFor(node, PluginWindow::Type::normal))
 				w->toFront(true);
@@ -452,7 +445,13 @@ XmlElement* FilterGraph::createXml() const
 
 	//mod RW
 	for (auto* node : graph.getNodes())
+	{
+		PluginDescription pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
+		const String file = File::getCurrentWorkingDirectory().getChildFile(pd.fileOrIdentifier).getRelativePathFrom(File(currentFile).getParentDirectory());
+		node->properties.set("pluginFile", file);
 		xml->addChildElement(createXmlForNode(node));
+	}
+		
 
 	for (auto& connection : graph.getConnections())
 	{

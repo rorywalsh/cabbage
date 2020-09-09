@@ -29,7 +29,9 @@ numberbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/active.md !}  
 
-{! ./markdown/Widgets/Properties/alpha.md !}  
+{! ./markdown/Widgets/Properties/alpha.md !}
+
+{! ./markdown/Widgets/Properties/automatable.md !}
 
 {! ./markdown/Widgets/Properties/bounds.md !}  
 
@@ -49,7 +51,9 @@ numberbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetarray.md !}
+
+{! ./markdown/Widgets/Properties/suffix.md !} 
 
 
 <!--(End of identifiers)/-->

@@ -28,6 +28,7 @@
 
 #include "../UI/PluginWindow.h"
 #include "../../Utilities/CabbageUtilities.h"
+#include "../../Settings/CabbageSettings.h"
 #include "../Plugins/CabbagePluginProcessor.h"
 #include "../Plugins/GenericCabbagePluginProcessor.h"
 
@@ -39,7 +40,10 @@
 */
 class FilterGraph   : public FileBasedDocument,
                       public AudioProcessorListener,
-                      private ChangeListener
+                      private ChangeListener,
+                      //RW
+                      public HighResolutionTimer,
+                      public AudioPlayHead
 {
 
 public:
@@ -87,7 +91,7 @@ public:
 		PluginDescription descript;
 		descript.fileOrIdentifier = inputFile;
 		descript.descriptiveName = "Cabbage:" + inputFile;
-		descript.name = getInstrumentName(File(inputFile));
+		descript.name = inputFile;
 		descript.numInputChannels = 2;
 		descript.numOutputChannels = 2;
 		descript.isInstrument = true;
@@ -147,6 +151,25 @@ public:
 		return xml;
 	}
 
+	static XmlElement* createBusLayoutXml(const AudioProcessor::BusesLayout& layout, const bool isInput)
+	{
+		auto& buses = isInput ? layout.inputBuses
+			: layout.outputBuses;
+
+		auto* xml = new XmlElement(isInput ? "INPUTS" : "OUTPUTS");
+
+		for (int busIdx = 0; busIdx < buses.size(); ++busIdx)
+		{
+			auto& set = buses.getReference(busIdx);
+
+			auto* bus = xml->createNewChildElement("BUS");
+			bus->setAttribute("index", busIdx);
+			bus->setAttribute("layout", set.isDisabled() ? "disabled" : set.getSpeakerArrangementAsString());
+		}
+
+		return xml;
+	}
+
 	static XmlElement* createXmlForNode(AudioProcessorGraph::Node* const node) noexcept
 	{
 		if (dynamic_cast<AudioPluginInstance*> (node->getProcessor()) ||
@@ -157,6 +180,9 @@ public:
 			e->setAttribute("uid", (int)node->nodeID.uid);
 			e->setAttribute("x", node->properties["x"].toString());
 			e->setAttribute("y", node->properties["y"].toString());
+#if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
+			e->setAttribute("DPIAware", node->properties["DPIAware"].toString());
+#endif
 
 			for (int i = 0; i < (int)PluginWindow::Type::numTypes; ++i)
 			{
@@ -190,6 +216,12 @@ public:
 				e->createNewChildElement("STATE")->addTextElement(m.toBase64Encoding());
 			}
 
+			auto layout = node->getProcessor()->getBusesLayout();
+
+			auto layouts = e->createNewChildElement("LAYOUT");
+			layouts->addChildElement(createBusLayoutXml(layout, true));
+			layouts->addChildElement(createBusLayoutXml(layout, false));
+
 			return e;
 		}
 
@@ -217,20 +249,131 @@ public:
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(filename));
 		const int numChannels = CabbageUtilities::getHeaderInfo(File(filename).loadFileAsString(), "nchnls");
 
+
+
 		if (isCabbageFile)
-			processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), numChannels, numChannels));
+			processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
 		else
-			processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), numChannels, numChannels));
+			processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
 
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
-		processor->disableNonMainBuses();
+		//processor->disableNonMainBuses();
 		processor->setRateAndBufferSizeDetails(graph.getSampleRate(), 512);
 
 		return processor;
 	}
 
     //RW
+    CabbageSettings* settings;
+	int currentBPM = 60;
+	float PPQN = 24;
+	double ppqPosition = 1;
+	double subTicks = 0;
+	double timeInSeconds = 0;
+	bool isPlaying = false;
+	bool isLooping = false;
+	bool isRecording = false;
+
+	void bringAllPluginWindowsToFront()
+	{
+		for (auto* w : activePluginWindows)
+			w->toFront(true);
+	}
+
+    bool getCurrentPosition (CurrentPositionInfo &result) override
+    {
+        result = playHeadPositionInfo;
+        return true;
+    }
+
+    void setPlayHeadInfo(CurrentPositionInfo info)
+    {
+        playHeadPositionInfo = info;
+    }
+
+    void setIsPlaying(bool val)
+    {
+        playHeadPositionInfo.isPlaying=val;
+    }
+
+    void setIsRecording(bool val)
+    {
+        playHeadPositionInfo.isRecording=val;
+    }
+
+    void setTimeInSeconds(double val)
+    {
+        playHeadPositionInfo.timeInSeconds=val;
+    }
+
+    double getTimeInSeconds()
+    {
+        return playHeadPositionInfo.timeInSeconds;
+    }
+
+    void setPPQPosition(double val)
+    {
+        playHeadPositionInfo.ppqPosition=val;
+    }
+    int getPPQPosition()
+    {
+        return playHeadPositionInfo.ppqPosition;
+    }
+
+    void setBpm(int bpm)
+    {
+        playHeadPositionInfo.bpm = bpm;
+    }
+
+	void setBPM(int bpm)
+	{
+		currentBPM = bpm;
+		setBpm(bpm);
+
+		if(isTimerRunning())
+		{
+			stopTimer();
+			startTimer(10);
+		}
+	}
+
+	void hiResTimerCallback() override
+	{
+		timeInSeconds+=(getTimerInterval()/1000.f);
+		setTimeInSeconds(timeInSeconds);
+        ppqPosition+=((float)getTimerInterval()/(1000.f)*(currentBPM/60));
+		setPPQPosition(ppqPosition);
+        playHeadPositionInfo.timeInSamples = timeInSeconds*graph.getSampleRate();
+		subTicks = (subTicks >= 1 ? 0 : (subTicks+(getTimerInterval()*0.001)*currentBPM/60));
+	}
+
+	void setIsHostPlaying(bool value, bool reset)
+	{
+		setIsPlaying(value);
+		if(value == true)
+		{
+			startTimer(10);
+		}
+		else
+			stopTimer();
+
+		if(reset==true)
+		{
+			timeInSeconds=0;
+			setPPQPosition(0);
+			setTimeInSeconds(0);
+			ppqPosition=0;
+			timeInSeconds=0;
+
+		}
+	}
+
+    void setCabbageSettings(CabbageSettings* cabbageSettings)
+    {
+        settings = cabbageSettings;
+    }
+
 	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
@@ -242,13 +385,20 @@ public:
 			std::unique_ptr<XmlElement> xml (createConnectionsXml());
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
-			
-//            for (auto* w : activePluginWindows)
-//                if( w->node->nodeID.uid == nodeId.uid)
-//                        activePluginWindows.removeObject(w);
-            
+         
             graph.removeNode(nodeId);
 			graph.releaseResources();
+
+			// Reset Csound so the Csound resources for this plugin are released (e.g. OSC ports).
+			// 
+			// Normally this is done in the plugin processor destructor when Juce cleans up dead graph nodes, but the
+			// new plugin processor instance will start Csound before the old one is destroyed, so we need to release
+			// Csound resources here instead of waiting until later.
+			auto pluginProcessor = dynamic_cast<CsoundPluginProcessor*>(plugin->getProcessor());
+			if (pluginProcessor)
+			{
+				pluginProcessor->resetCsound();
+			}
 
 			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{
@@ -256,10 +406,11 @@ public:
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
 				setNodePosition(nodeId, Point<double>(pos.x, pos.y));
-
+				node->getProcessor()->setPlayHead(graph.getPlayHead());
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
 				changed();
+                graph.prepareToPlay(graph.getSampleRate(), graph.getBlockSize());
 
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
 				node->properties.set("DPIAware", true);
@@ -279,6 +430,7 @@ public:
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
+				node->getProcessor()->setPlayHead(graph.getPlayHead());
 
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
 				node->properties.set("DPIAware", true);
@@ -286,10 +438,9 @@ public:
 			}
 		}
 
-		
-		
+		if(settings->getUserSettings()->getIntValue("autoConnectNodes")==1)
+		   setDefaultConnections(nodeId);
 
-       setDefaultConnections(nodeId);
 	}
 
 
@@ -308,8 +459,6 @@ public:
 
 		AudioProcessorGraph::NodeAndChannel nodeL = { (AudioProcessorGraph::NodeID) nodeId, 0 };
 		AudioProcessorGraph::NodeAndChannel nodeR = { (AudioProcessorGraph::NodeID) nodeId, 1 };
-        AudioProcessorGraph::NodeAndChannel nodeL1 = { (AudioProcessorGraph::NodeID) nodeId, 2 };
-        AudioProcessorGraph::NodeAndChannel nodeR1 = { (AudioProcessorGraph::NodeID) nodeId, 3 };
         
 		AudioProcessorGraph::NodeAndChannel outputL = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 0 };
 		AudioProcessorGraph::NodeAndChannel outputR = { (AudioProcessorGraph::NodeID) InternalNodes::AudioOutput, 1 };
@@ -378,7 +527,7 @@ public:
     Result saveDocument (const File& file) override;
     File getLastDocumentOpened() override;
     void setLastDocumentOpened (const File& file) override;
-
+	File currentFile;
     static File getDefaultGraphDocumentOnMobile();
 
     //==============================================================================
@@ -387,11 +536,11 @@ public:
 private:
     //==============================================================================
 	AudioPluginFormatManager& formatManager;
-	
 
     NodeID lastUID;
     NodeID getNextUID() noexcept;
-
+//RW
+    AudioPlayHead::CurrentPositionInfo playHeadPositionInfo;
     void createNodeFromXml (const XmlElement& xml);
     void addFilterCallback (AudioPluginInstance*, const String& error, Point<double>);
     void changeListenerCallback (ChangeBroadcaster*) override;

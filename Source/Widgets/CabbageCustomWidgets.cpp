@@ -38,22 +38,19 @@ void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Id
     }
     else
     {
-
-
-
         handleCommonUpdates (this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
     }
 }
 //add any new custom widgets here to avoid having to edit makefiles and projects
 // ===========================================================================
-CabbageMeter::CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner):
-    widgetData (wData),
-    owner (_owner),
-    overlayRect (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::overlaycolour).toString())),
-    isVertical (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::orientation).toString() == "vertical" ? true : false),
+CabbageMeter::CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner)
+    : owner (_owner),
     outlineColour (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::outlinecolour).toString())),
     outlineThickness (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
-    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners))
+    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
+    isVertical (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::orientation).toString() == "vertical" ? true : false),
+    overlayRect (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::overlaycolour).toString())),
+    widgetData (wData)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

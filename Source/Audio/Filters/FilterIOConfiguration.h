@@ -51,6 +51,7 @@ private:
     InputOutputConfig* getConfig (bool isInput) noexcept    { return isInput ? inConfig.get() : outConfig.get(); }
     void update();
 
+
     MainHostWindow* getMainWindow() const;
     GraphDocumentComponent* getGraphEditor() const;
     AudioProcessorGraph* getGraph() const;

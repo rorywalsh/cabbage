@@ -1,6 +1,8 @@
 # Combo Box
 
-Combobox creates a drop-down list of items which users can choose from. Once the user selects an item, the index of their selection will be sent to Csound on a channel named by the channel string. The default value is 0.
+Combobox creates a drop-down list of items which users can choose from. Once the user selects an item, the index of their selection will be sent to Csound on a channel named by the channel string. The default value is 0. The first item in the combobox will be seen as a 1, while 0 refers to no current selection.
+
+A combobox can also be set up a work with strings. In this case Csound will receive the currently selected string instead of the current index. Note that using a combobox in this way renders it useless in terms of host automation. Host automation can only be achieved when a combobox is sending the current index, rather than the current string.  
 
 
 <big></pre>
@@ -23,7 +25,9 @@ combobox WIDGET_SYNTAX
 ### Common Identifiers
 {! ./markdown/Widgets/Properties/active.md !}   
 
-{! ./markdown/Widgets/Properties/alpha.md !}  
+{! ./markdown/Widgets/Properties/alpha.md !}
+
+{! ./markdown/Widgets/Properties/automatable.md !} 
 
 {! ./markdown/Widgets/Properties/bounds.md !}   
 
@@ -39,7 +43,7 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !}   
 
-{! ./markdown/Widgets/Properties/value.md !}  Comboboxes indices start at 1, not 0. If you set the initial value to 0 the combobox will not show any items.  
+{! ./markdown/Widgets/Properties/value.md !}  Comboboxes indices start at 1, not 0. If you set the initial value to 0 the combobox will not show any items.
 
 {! ./markdown/Widgets/Properties/visible.md !}   
 

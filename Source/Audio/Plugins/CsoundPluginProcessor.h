@@ -32,22 +32,53 @@
 #endif
 
 //==============================================================================
-class CsoundPluginProcessor  : public AudioProcessor, public AsyncUpdater
+class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 {
 public:
     //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, const int ins = 2, const int outs = 2, bool debugMode = false);
+    CsoundPluginProcessor (File csoundInputFile, 
+		const AudioChannelSet ins, 
+		const AudioChannelSet outs, 
+		const AudioChannelSet sideChainChannels);
+	CsoundPluginProcessor(File csoundInputFile, 
+		const AudioChannelSet ins,
+		const AudioChannelSet outs);
 	~CsoundPluginProcessor();
+
+	bool supportsSidechain = false;
+	bool matchingNumberOfIOChannels = true;
 	void resetCsound();
-    //==============================================================================
-    //pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
+	//==============================================================================
+	//pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
 	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool isMono = false, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
 
-    virtual void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+	void performCsoundKsmps();
+	int result = -1;
 
+
+	virtual void processBlock(AudioBuffer< float >&, MidiBuffer&) override;
+	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;
+	template< typename Type >
+	void processSamples(AudioBuffer< Type >&, MidiBuffer&);
+	//bool supportsDoublePrecisionProcessing() const override { return true; }
+
+    virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {}
+
+	enum BufferType {
+		inputOutput,
+		output,
+		input
+	};
+
+	template< typename Type >
+	void processCsoundIOBuffers(int bufferType, Type*& buffer, int pos);
+    template< typename Type >
+    void processCsoundIOSideChainBuffers(int bufferType, Type* buffer, int pos);
+
+	int numSideChainChannels = 0;
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
     virtual bool hasEditor() const override;
@@ -70,7 +101,7 @@ public:
     virtual void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    bool isLogicAndMono = false;
+    bool hostRequestedMono = false;
     bool isLogic = false;
     //==============================================================================
     //Csound API functions for deailing with midi input
@@ -98,6 +129,10 @@ public:
         return breakPointData.valueTree;
     }
 
+    int getAutomationMode()
+    {
+       return csound->GetControlChannel("AUTOMATION");
+    }
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     int checkTable (int tableNum);
@@ -137,9 +172,9 @@ public:
     void addMacros (String csdText);
     const String getCsoundOutput();
 
-    void compileCsdFile (File csdFile)
+    void compileCsdFile (File csdfile)
     {
-        csCompileResult = csound->Compile (const_cast<char*> (csdFile.getFullPathName().toUTF8().getAddress()));
+        csCompileResult = csound->Compile (const_cast<char*> (csdfile.getFullPathName().toUTF8().getAddress()));
     }
 
     void compileCsdString (String csdFileText)
@@ -169,22 +204,16 @@ public:
         guiRefreshRate = rate;
     }
 
-
-
-    int getNumberOfCsoundChannels()
-    {
-        return numCsoundChannels;
-    }
-
     MidiKeyboardState keyboardState;
+    bool hostIsCubase = false;
 
     //==================================================================================
     class SignalDisplay
     {
     public:
         float yScale;
-        int windid, min , max, size;
-        String caption;
+        int windid=0, min=0, max=0, size=0;
+        String caption, variableName;
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
             yScale (_scale),
@@ -214,10 +243,10 @@ public:
         Array <float, CriticalSection > points;
     };
 
-    bool shouldUpdateSignalDisplay()
+    bool shouldUpdateSignalDisplay(String signalDisplayName)
     {
-        bool returnVal = updateSignalDisplay;
-        updateSignalDisplay = false;
+        bool returnVal = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
+        updateSignalDisplay.set(signalDisplayName, false);
         return returnVal;
     };
 
@@ -228,26 +257,27 @@ public:
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
-
     int guiCycles = 0;
     int guiRefreshRate = 128;
     MidiBuffer midiBuffer;
-    String csoundOutput;
+    String csoundOutput = "";
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
-    int numCsoundChannels, pos;
-    bool updateSignalDisplay = false;
-    MYFLT cs_scale;
+	int numCsoundOutputChannels, numCsoundInputChannels;
+    int pos = 0;
+    NamedValueSet updateSignalDisplay;
+    MYFLT cs_scale = 1;
     bool testLogicForMono = true;
-    MYFLT* CSspin, *CSspout;
+    MYFLT* CSspin = 0, *CSspout = 0;
     int samplingRate = 44100;
-    int csndIndex;
-    int csdKsmps;
-    File csdFile , csdFilePath;
+    int csndIndex = 0;
+    int csdKsmps = 32;
+    File csdFile, csdFilePath;
     std::unique_ptr<Csound> csound;
     std::unique_ptr<FileLogger> fileLogger;
     int busIndex = 0;
     bool disableLogging = false;
+	int preferredLatency = 32;
 
 
 

@@ -56,13 +56,6 @@
 class CabbagePluginEditor;
 
 //==============================================================================
-__attribute__ ((unused)) static CabbagePluginEditor* getPluginEditor (Component* child)
-{
-    if (CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
-        return c;
-    else
-        return nullptr;
-}
 
 //==============================================================================
 class CabbagePluginEditor
@@ -72,7 +65,8 @@ class CabbagePluginEditor
       public ActionBroadcaster,
       public ComboBox::Listener,
       public Slider::Listener,
-      public FileDragAndDropTarget
+      //public FileDragAndDropTarget,
+	  public KeyListener
 {
 public:
     CabbagePluginEditor (CabbagePluginProcessor&);
@@ -139,7 +133,7 @@ public:
     {
         return processor.wrapperType_AudioUnit;
     }
-    bool shouldUpdateSignalDisplay();
+    bool shouldUpdateSignalDisplay(String variableName);
     void savePluginStateToFile (File snapshotFile, String presetName="");
     void restorePluginStateFrom (String childPreset, File xmlFile);
     const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
@@ -151,8 +145,8 @@ public:
     void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
 
 
-    void filesDropped(const StringArray &files, int x, int y) override;
-    bool isInterestedInFileDrag(const StringArray &files) override;
+   /* void filesDropped(const StringArray &files, int x, int y) override;
+    bool isInterestedInFileDrag(const StringArray &files) override;*/
     //=============================================================================
     void mouseMove (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
@@ -161,12 +155,25 @@ public:
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
+	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent) override
+	{
+		processor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
+		return false;
+	}
+
+	virtual bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override
+	{
+		processor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
+		return false;
+	}
+	//=============================================================================
+
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, Point<int> point, bool isPlant = false);
     //=============================================================================
     void refreshComboListBoxContents();
     void enableEditMode (bool enable);
-    void setCurrentlySelectedComponents (StringArray componentNames);
+    void setCurrentlySelectedComponents (StringArray componentNames);  
     void resetCurrentlySelectedComponents();
     Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
     ValueTree getValueTreeForComponent (String compName);
@@ -180,12 +187,14 @@ public:
     void toggleButtonState (Button* button, bool state);
     void comboBoxChanged (ComboBox* combo) override;
     void sliderValueChanged (Slider* slider) override;
+    void sliderDragStarted(Slider* slider) override;
+    void sliderDragEnded(Slider* slider) override;
     //=============================================================================
     CabbageAudioParameter* getParameterForComponent (const String name);
     //=============================================================================
-    void setLastOpenedDirectory (const String lastOpenedDirectory)
+    void setLastOpenedDirectory (const String lastDirectoryOpened)
     {
-        this->lastOpenedDirectory = lastOpenedDirectory;
+        this->lastOpenedDirectory = lastDirectoryOpened;
     }
     const String getLastOpenedDirectory() const
     {
@@ -243,13 +252,14 @@ public:
     String changeMessage = "";
     Point<int> customPlantPosition;
 private:
-
+	  
     //---- main component that holds widgets -----
-    class MainComponent : public Component
+    class MainComponent : public Component, public FileDragAndDropTarget
     {
         Colour colour;
+        CabbagePluginEditor* owner;
     public:
-        MainComponent() : Component()
+        MainComponent(CabbagePluginEditor* _owner) : Component(), owner(_owner)
         {
             setOpaque (false);
         }
@@ -262,6 +272,16 @@ private:
             //g.setOpacity (0);
             g.fillAll (colour);
         }
+        void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override{}
+        void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override {}
+        void fileDragExit (const StringArray& /*files*/) override {}
+        void filesDropped (const StringArray& files, int x, int y) override
+        {
+			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
+			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y); 
+            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, files[0]);
+        }
+        bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
     };
 
     class ViewportContainer : public Component
@@ -276,10 +296,10 @@ private:
 
         void paint(Graphics &g)
         {
-            Viewport* const viewport = findParentComponentOfClass<Viewport>(); //Get the parent viewport
-            if(viewport != nullptr) //Check for nullness
+            Viewport* const myViewport = findParentComponentOfClass<Viewport>(); //Get the parent viewport
+            if(myViewport != nullptr) //Check for nullness
             {
-                juce::Rectangle<int> viewRect(viewport->getViewPositionX(), viewport->getViewPositionY(), viewport->getViewWidth(), viewport->getViewHeight()); //Get the current displayed area in the viewport
+                juce::Rectangle<int> viewRect(myViewport->getViewPositionX(), myViewport->getViewPositionY(), myViewport->getViewWidth(), myViewport->getViewHeight()); //Get the current displayed area in the viewport
             }
         }
     };
@@ -302,6 +322,7 @@ private:
     CabbagePluginProcessor& processor;
     String instrumentName;
     Point<int> instrumentBounds;
+    SharedResourcePointer<TooltipWindow> tooltipWindow;
 
 
 #ifdef Cabbage_IDE_Build

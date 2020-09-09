@@ -54,6 +54,9 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("zoom"):
         case HashStringToInt ("range"):
         case HashStringToInt ("latched"):
+        case HashStringToInt ("fontsize"):
+        case HashStringToInt ("mouseinteraction"):
+        case HashStringToInt ("automatable"):
             return getNumericalValueTextAsCabbageCode (widgetData, identifier, "").trim();
             
         case HashStringToInt ("align"):
@@ -75,15 +78,18 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("populate"):
         case HashStringToInt ("tablenumber"):
         case HashStringToInt ("text"):
+        case HashStringToInt ("valueprefix"):
+        case HashStringToInt ("valuepostfix"):
             return getMultiItemTextAsCabbageCode(widgetData, identifier, "");
-            
-            
+
         case HashStringToInt ("bounds"):
             return getBoundsTextAsCabbageCode (getBounds (widgetData));
+
             
         case HashStringToInt ("type"):
             return getStringProp (widgetData, CabbageIdentifierIds::type);
             
+
         case HashStringToInt ("amprange"):
             return getMultiItemNumbersAsCabbageCode (widgetData, identifier, "");
             
@@ -163,7 +169,6 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
         {
             const String macroWithIdentifier = identifiersInLine[i].trimCharactersAtStart(", ");
             const String macro = macroWithIdentifier.substring(0, macroWithIdentifier.indexOf(" "));
-            const int indexOfmacro = macroNames.indexOf(macro);
             identifiersInLine.set(i, identifiersInLine[i].replace(macro, ""));
             identifiersInLine.insert(i, macro);
             i++;
@@ -171,7 +176,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     }
     
 
-    for (const auto currentIdentifier : identifiersInLine)
+    for (const juce::String currentIdentifier : identifiersInLine)
     {
         
         const String currentIdentName = currentIdentifier.substring(0, currentIdentifier.indexOf(
@@ -201,8 +206,12 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 
     for (auto &ident : fullListOfIdentifierStrings)
     {
+
+
+
         if (replacedIdentifiers.indexOf(ident) == -1)
         {
+
             const String newIdent = getCabbageCodeForIdentifier(widgetData, ident).trimCharactersAtEnd(
                     ", ").trimCharactersAtStart(",");
 
@@ -334,102 +343,130 @@ String CabbageWidgetData::getRotateTextAsCabbageCode (ValueTree widgetData, cons
     ValueTree tempData ("tempTree");
     const String type = getStringProp (widgetData, CabbageIdentifierIds::type);
     setWidgetState (tempData, type + " " + macroText, -99);
-    
-    if (getNumProp (widgetData, CabbageIdentifierIds::rotate) != getNumProp (tempData, CabbageIdentifierIds::rotate)
-        || getNumProp (widgetData, CabbageIdentifierIds::pivotx) != getNumProp (tempData, CabbageIdentifierIds::pivotx)
-        || getNumProp (widgetData, CabbageIdentifierIds::pivoty) != getNumProp (tempData, CabbageIdentifierIds::pivoty))
-    {
-        const float rotate = getNumProp (widgetData, CabbageIdentifierIds::rotate);
-        const float pivotx = getNumProp (widgetData, CabbageIdentifierIds::pivotx);
-        const float pivoty = getNumProp (widgetData, CabbageIdentifierIds::pivoty);
-        
-        return "rotate(" + String (rotate) + ", " + String (pivotx) + ", " + String (pivoty) + ")";
-    }
-    
-    return String();
+
+if (getNumProp(widgetData, CabbageIdentifierIds::rotate) != getNumProp(tempData, CabbageIdentifierIds::rotate)
+    || getNumProp(widgetData, CabbageIdentifierIds::pivotx) != getNumProp(tempData, CabbageIdentifierIds::pivotx)
+    || getNumProp(widgetData, CabbageIdentifierIds::pivoty) != getNumProp(tempData, CabbageIdentifierIds::pivoty))
+{
+    const float rotate = getNumProp(widgetData, CabbageIdentifierIds::rotate);
+    const float pivotx = getNumProp(widgetData, CabbageIdentifierIds::pivotx);
+    const float pivoty = getNumProp(widgetData, CabbageIdentifierIds::pivoty);
+
+    return "rotate(" + String(rotate) + ", " + String(pivotx) + ", " + String(pivoty) + ")";
 }
 
-String CabbageWidgetData::getSimpleTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
+return String();
+}
+
+String CabbageWidgetData::getSimpleTextAsCabbageCode(ValueTree widgetData, String identifier, const String macroText)
 {
-    ValueTree tempData ("tempTree");
-    const String type = getStringProp (widgetData, CabbageIdentifierIds::type);
-    setWidgetState (tempData, type + " " + macroText, -99);
-    
-    if (getStringProp (widgetData, identifier) != getStringProp (tempData, identifier))
+    ValueTree tempData("tempTree");
+    const String type = getStringProp(widgetData, CabbageIdentifierIds::type);
+    setWidgetState(tempData, type + " " + macroText, -99);
+
+
+    if (getStringProp(widgetData, identifier) != getStringProp(tempData, identifier))
     {
-        const String text = getStringProp (widgetData, identifier);
+        const String text = getStringProp(widgetData, identifier);
         return identifier + "(\"" + text + "\")";
     }
-    
+
     return String();
 }
 
-String CabbageWidgetData::getImagesTextAsCabbageCode (ValueTree widgetData, const String macroText)
+String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData, const String macroText)
 {
-    ValueTree tempData ("tempTree");
-    const String type = getStringProp (widgetData, CabbageIdentifierIds::type);
-    setWidgetState (tempData, type + " " + macroText, -99);
+    ValueTree tempData("tempTree");
+    const String type = getStringProp(widgetData, CabbageIdentifierIds::type);
+    setWidgetState(tempData, type + " " + macroText, -99);
     String returnText = "";
-    
-    if (getStringProp (widgetData, CabbageIdentifierIds::imgbuttonon)
-        != getStringProp (tempData, CabbageIdentifierIds::imgbuttonon))
+
+    if (getStringProp(widgetData, CabbageIdentifierIds::imgbuttonon)
+        != getStringProp(tempData, CabbageIdentifierIds::imgbuttonon))
     {
-        const String text = getStringProp (widgetData, CabbageIdentifierIds::imgbuttonon);
+        const String text = getStringProp(widgetData, CabbageIdentifierIds::imgbuttonon);
         returnText = "imgfile(\"On\", \"" + text + "\")";
     }
-    
-    if (getStringProp (widgetData, CabbageIdentifierIds::imgbuttonoff)
-        != getStringProp (tempData, CabbageIdentifierIds::imgbuttonoff))
+
+    if (getStringProp(widgetData, CabbageIdentifierIds::imgbuttonoff)
+        != getStringProp(tempData, CabbageIdentifierIds::imgbuttonoff))
     {
-        const String text = getStringProp (widgetData, CabbageIdentifierIds::imgbuttonoff);
+        const String text = getStringProp(widgetData, CabbageIdentifierIds::imgbuttonoff);
         returnText = returnText + "imgfile(\"Off\", \"" + text + "\")";
     }
-    
-    if (getStringProp (widgetData, CabbageIdentifierIds::imgslider)
-        != getStringProp (tempData, CabbageIdentifierIds::imgslider))
+
+    if (getStringProp(widgetData, CabbageIdentifierIds::imgslider)
+        != getStringProp(tempData, CabbageIdentifierIds::imgslider))
     {
-        const String text = getStringProp (widgetData, CabbageIdentifierIds::imgslider);
+        const String text = getStringProp(widgetData, CabbageIdentifierIds::imgslider);
         returnText = returnText + "imgfile(\"Slider\", \"" + text + "\")";
     }
-    
-    if (getStringProp (widgetData, CabbageIdentifierIds::imgsliderbg)
-        != getStringProp (tempData, CabbageIdentifierIds::imgsliderbg))
+
+    if (getStringProp(widgetData, CabbageIdentifierIds::imgsliderbg)
+        != getStringProp(tempData, CabbageIdentifierIds::imgsliderbg))
     {
-        const String text = getStringProp (widgetData, CabbageIdentifierIds::imgsliderbg);
+        const String text = getStringProp(widgetData, CabbageIdentifierIds::imgsliderbg);
         returnText = returnText + "imgfile(\"Background\", \"" + text + "\")";
     }
-    
-    if (getStringProp (widgetData, CabbageIdentifierIds::imggroupbox)
-        != getStringProp (tempData, CabbageIdentifierIds::imggroupbox))
+
+    if (getStringProp(widgetData, CabbageIdentifierIds::imggroupbox)
+        != getStringProp(tempData, CabbageIdentifierIds::imggroupbox))
     {
-        const String text = getStringProp (widgetData, CabbageIdentifierIds::imggroupbox);
+        const String text = getStringProp(widgetData, CabbageIdentifierIds::imggroupbox);
         returnText = returnText + "imgfile(\"" + text + "\")";
     }
-    
+
     return returnText;
 }
 
-String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
+String CabbageWidgetData::getMultiItemNumbersAsCabbageCode(ValueTree widgetData, String identifier, const String macroText)
 {
-    var items = getProperty (widgetData, identifier);
+    var items = getProperty(widgetData, identifier);
     const Array<var>* array = items.getArray();
-    ValueTree tempData ("tempTree");
-    const String type = getStringProp (widgetData, CabbageIdentifierIds::type);
-    setWidgetState (tempData, type + " " + macroText, -99);
-    var tempItems = getProperty (tempData, identifier);
-    
+    ValueTree tempData("tempTree");
+    const String type = getStringProp(widgetData, CabbageIdentifierIds::type);
+    setWidgetState(tempData, type + " " + macroText, -99);
+    var tempItems = getProperty(tempData, identifier);
+
+
+
+  /* if (identifier == "pos")
+    {
+        const int left = getNumProp(widgetData, CabbageIdentifierIds::left);
+        const int top = getNumProp(widgetData, CabbageIdentifierIds::top);
+        const int w = getNumProp(widgetData, CabbageIdentifierIds::width);
+        const int h = getNumProp(widgetData, CabbageIdentifierIds::height);
+        const String boundsText = getBoundsTextAsCabbageCode(getBounds(widgetData));
+        const String boundsTextTemp = getBoundsTextAsCabbageCode(getBounds(tempData));
+
+        if (boundsTextTemp != boundsText)
+            return boundsTextTemp;
+
+    }
+    else if (identifier == "size")
+    {
+        const int left = getNumProp(widgetData, CabbageIdentifierIds::left);
+        const int top = getNumProp(widgetData, CabbageIdentifierIds::top);
+        const int w = getNumProp(widgetData, CabbageIdentifierIds::width);
+        const int h = getNumProp(widgetData, CabbageIdentifierIds::height);
+        const String boundsText = getBoundsTextAsCabbageCode(getBounds(widgetData));
+        const String boundsTextTemp = getBoundsTextAsCabbageCode(getBounds(tempData));
+        if (boundsTextTemp != boundsText)
+            return boundsTextTemp;
+    }*/
+
     if (array)
     {
         if (identifier == "amprange")
         {
-            if (getProperty (widgetData, CabbageIdentifierIds::amprange) != getProperty (tempData, CabbageIdentifierIds::amprange))
+            if (getProperty(widgetData, CabbageIdentifierIds::amprange) != getProperty(tempData, CabbageIdentifierIds::amprange))
             {
-                return identifier + "(" + array->getReference (0).toString() + ", "
-                + array->getReference (1).toString() + ", "
-                + array->getReference (2).toString() + ", "
-                + String (float (array->getReference (3)), 4) + ")";
+                return identifier + "(" + array->getReference(0).toString() + ", "
+                    + array->getReference(1).toString() + ", "
+                    + array->getReference(2).toString() + ", "
+                    + String(float(array->getReference(3)), 4) + ")";
             }
-            
+
             return String();
         }
     }
@@ -439,7 +476,8 @@ String CabbageWidgetData::getMultiItemNumbersAsCabbageCode (ValueTree widgetData
 
 String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
 {
-    var items = getProperty (widgetData, identifier);
+
+    var items = getProperty(widgetData, identifier);
     const Array<var>* array = items.getArray();
     ValueTree tempData ("tempTree");
     
@@ -479,7 +517,6 @@ String CabbageWidgetData::getMultiItemTextAsCabbageCode (ValueTree widgetData, S
         {
             for (int i = 0 ; i < array->size() - 1 ; i++)
             {
-                const String text = array->getReference (array->size() - 1).toString();
                 itemString = itemString + "\"" + array->getReference (i).toString() + "\", ";
             }
             

@@ -83,10 +83,10 @@ ColourMultiPropertyComponent::ColourMultiPropertyComponent (String name, var col
     PropertyComponent (name, 60),
     colourSettings (colourSettings),
     editor ("Colours"),
+    lookAndFeel(),
     overlayComponentContainer ("container"),
     addColour ("+"),
-    removeColour ("-"),
-    lookAndFeel()
+    removeColour ("-")
 {
     this->setName (name);
     lookAndFeel.setColour (ScrollBar::ColourIds::thumbColourId, Colours::whitesmoke);
@@ -125,15 +125,15 @@ void ColourMultiPropertyComponent::resized()
 
 }
 
-void ColourMultiPropertyComponent::addNewColour (Colour colour)
+void ColourMultiPropertyComponent::addNewColour (Colour mColour)
 {
     OverlayComponent* comp;
     overlayComponents.add (comp = new OverlayComponent ("overlay" + String (overlayComponents.size() + 1)));
     comp->addMouseListener (this, false);
 
-    comp->setColour (colour);
+    comp->setColour (mColour);
     overlayComponentContainer.addAndMakeVisible (comp);
-    colours.add (colour);
+    colours.add (mColour);
 }
 
 void ColourMultiPropertyComponent::buttonClicked (Button* button)

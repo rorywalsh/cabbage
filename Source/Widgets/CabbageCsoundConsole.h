@@ -32,6 +32,9 @@ public:
     CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageCsoundConsole() {};
 
+    void setMonospaced(bool value);
+    void setMonospaced(const ValueTree &valueTree);
+
     CabbagePluginEditor* owner;
 
     //ValueTree::Listener virtual methods....
@@ -47,6 +50,11 @@ public:
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCsoundConsole);
+
+private:
+    bool monospaced = false;
+    Font monospacedFont;
+    Font defaultFont;
 };
 
 

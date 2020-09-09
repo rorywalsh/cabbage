@@ -5,7 +5,9 @@
 
 CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile, int channels)
 {
-    return new CabbagePluginProcessor (inputFile, channels, channels);
+
+    return new CabbagePluginProcessor (inputFile,     AudioChannelSet::discreteChannels(channels), AudioChannelSet::discreteChannels(channels)
+    );
 }
 
 //==================================================================================
