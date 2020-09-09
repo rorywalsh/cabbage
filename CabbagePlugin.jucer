@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.58"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.57"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -316,7 +316,7 @@
         <CONFIGURATION isDebug="1" name="Debug" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib"/>
         <CONFIGURATION isDebug="0" name="Release" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
-                       libraryPath="C:\Program Files\Csound6_x64\lib" optimisation="1"/>
+                       libraryPath="C:\Program Files\Csound6_x64\lib"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra"/>

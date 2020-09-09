@@ -43,8 +43,8 @@ CabbageKeyboardDisplay::CabbageKeyboardDisplay(ValueTree wData)
 
 void CabbageKeyboardDisplay::colourPressedNotes(ValueTree wData)
 {
-    var mKeysPressed = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::keypressed);
-    Array<var>* array = mKeysPressed.getArray();
+    var keysPressed = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::keypressed);
+    Array<var>* array = keysPressed.getArray();
     Array<int> keys;
     if (array)
     {

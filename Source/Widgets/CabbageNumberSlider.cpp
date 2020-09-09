@@ -60,16 +60,16 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setVelocityModeParameters (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity));
     slider.getProperties().set ("decimalPlaces", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces));
 
-    const float mMin = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
-    const float mMax = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
+    const float min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
+    const float max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
     const float incr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     const float skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
-    const float mValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+    const float value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
 
     slider.setSkewFactor (skew);
 	
-    slider.setRange (mMin, mMax, incr);
-    slider.setValue (mValue, sendNotification);
+    slider.setRange (min, max, incr);
+    slider.setValue (value, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
 
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
