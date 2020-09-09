@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.57"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.3.58"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -10,7 +10,7 @@
               pluginAUExportPrefix="CabbagePluginAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.CabbagePlugin" pluginAAXCategory="2"
               jucerVersion="5.4.7" buildStandalone="1" enableIAA="0" displaySplashScreen="0"
-              reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
+              reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="17"
               companyCopyright="" pluginFormats="buildAU,buildStandalone,buildVST,buildVST3"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn,pluginProducesMidiOut"
               pluginRTASDisableBypass="0" pluginRTASDisableMultiMono="0" pluginAAXDisableBypass="0"
@@ -272,7 +272,7 @@
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
-                       enablePluginBinaryCopyStep="0"/>
+                       enablePluginBinaryCopyStep="0" warningsAreErrors="1"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"

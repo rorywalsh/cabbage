@@ -60,18 +60,18 @@ void CabbageGroupBox::changeListenerCallback (ChangeBroadcaster* source)
 
 void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    if (CabbagePluginEditor::PopupDocumentWindow* owner = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
+    if (CabbagePluginEditor::PopupDocumentWindow* mOwner = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
     {
-        const int visible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
-        owner->addChangeListener (this);
+        const int mVisible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
+        mOwner->addChangeListener (this);
 
-        if (visible == 1)
+        if (mVisible == 1)
         {
-            owner->setVisible (true);
-            owner->toFront (true);
+            mOwner->setVisible (true);
+            mOwner->toFront (true);
         }
         else
-            owner->setVisible (false);
+            mOwner->setVisible (false);
     }
 
     getProperties().set ("groupLine", var (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::linethickness)));

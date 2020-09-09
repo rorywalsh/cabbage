@@ -644,10 +644,10 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 
 		return;
 	}
-	else if (CabbageCheckbox* cabbageButton = dynamic_cast<CabbageCheckbox*> (button))
+	else if (CabbageCheckbox* mCabbageButton = dynamic_cast<CabbageCheckbox*> (button))
 	{
-		const StringArray textItems = cabbageButton->getTextArray();
-		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, cabbageButton->getName());
+		const StringArray textItems = mCabbageButton->getTextArray();
+		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(processor.cabbageWidgets, mCabbageButton->getName());
 		// const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
 
 		if (textItems.size() > 0)
@@ -1028,7 +1028,7 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName)
 {
     XmlElement xml = processor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName);
-    xml.writeToFile (snapshotFile, "");
+    xml.writeTo (snapshotFile, XmlElement::TextFormat().singleLine());
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)
