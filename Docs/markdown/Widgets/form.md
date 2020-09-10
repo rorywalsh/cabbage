@@ -27,6 +27,8 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/autoupdate.md !}  
 
+{! ./markdown/Widgets/Properties/sidechain.md !}  
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/colour.md !}   
