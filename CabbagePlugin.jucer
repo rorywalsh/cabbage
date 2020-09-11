@@ -235,7 +235,7 @@
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="MACOSX=1" extraFrameworks="/Library/Frameworks/CsoundLib64"
                vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK"
-               smallIcon="nMt6S5" bigIcon="nMt6S5">
+               smallIcon="nMt6S5" bigIcon="nMt6S5" microphonePermissionNeeded="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
