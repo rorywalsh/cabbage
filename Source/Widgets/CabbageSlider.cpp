@@ -129,9 +129,9 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
 
 }
 
-void CabbageSlider::setTextBoxOrientation (String type, bool showTextBox)
+void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
 {
-    if (showTextBox)
+    if (shouldShowTextBox > 0)
     {
         if(!shouldDisplayPopup)
             shouldDisplayPopup = false;

@@ -36,6 +36,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     isLineWidget (isLineWidget)
 {
     widgetData.addListener (this);
+	String file = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getFullPathName();
     imgFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file));
     if(File(imgFile).existsAsFile())
         img = ImageFileFormat::loadFrom(imgFile);
@@ -112,18 +113,18 @@ void CabbageImage::changeListenerCallback (ChangeBroadcaster* source)
 void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
 
-    if (CabbagePluginEditor::PopupDocumentWindow* mOwner = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
+    if (CabbagePluginEditor::PopupDocumentWindow* owner = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
     {
-        const int mVisible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
-        mOwner->addChangeListener (this);
+        const int visible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
+        owner->addChangeListener (this);
 
-        if (mVisible == 1)
+        if (visible == 1)
         {
-            mOwner->setVisible (true);
-            mOwner->toFront (true);
+            owner->setVisible (true);
+            owner->toFront (true);
         }
         else
-            mOwner->setVisible (false);
+            owner->setVisible (false);
     }
 
     lineThickness = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness);
@@ -140,9 +141,9 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     repaint();
 }
 
-void CabbageImage::updateImage(File imgFileToUse)
+void CabbageImage::updateImage(File imgFile)
 {
-    if(imgFileToUse.existsAsFile())
-        img = ImageFileFormat::loadFrom(imgFileToUse);
+    if(imgFile.existsAsFile())
+        img = ImageFileFormat::loadFrom(imgFile);
 }
 

@@ -107,8 +107,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        String mfile = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
-        StringArray lines = StringArray::fromLines (mfile);
+        String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
+        StringArray lines = StringArray::fromLines (file);
 
         for (int i = 0; i < lines.size(); ++i)
         {
@@ -121,7 +121,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
         PopupMenu subMenu;
-        std::vector<StringArray> menus;
+        std:vector<StringArray> menus;
         int menuIndex = -1;
         for( int i = 0 ; i < items.size(); i++)
         {
@@ -193,10 +193,10 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else
     {
         
-        const String workingDirToUse = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
-        if (workingDirToUse.isNotEmpty())
-            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDirToUse);
+        if (workingDir.isNotEmpty())
+            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
         else
             pluginDir = File::getCurrentWorkingDirectory();
 
@@ -270,12 +270,12 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         {
             if (isStringCombo == false)
             {
-                const int mValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+                const int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
 
                 if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
-                    setSelectedItemIndex (mValue - 1, sendNotification);
+                    setSelectedItemIndex (value - 1, sendNotification);
                 else
-                    setSelectedItemIndex (mValue - 1, dontSendNotification);
+                    setSelectedItemIndex (value - 1, dontSendNotification);
             }
             else
             {
@@ -303,7 +303,6 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
     else
     {
-        const MessageManagerLock lock;
         handleCommonUpdates (this, valueTree);
         setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));

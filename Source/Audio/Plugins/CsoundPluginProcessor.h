@@ -172,9 +172,9 @@ public:
     void addMacros (String csdText);
     const String getCsoundOutput();
 
-    void compileCsdFile (File csdfile)
+    void compileCsdFile (File csdFile)
     {
-        csCompileResult = csound->Compile (const_cast<char*> (csdfile.getFullPathName().toUTF8().getAddress()));
+        csCompileResult = csound->Compile (const_cast<char*> (csdFile.getFullPathName().toUTF8().getAddress()));
     }
 
     void compileCsdString (String csdFileText)
@@ -212,7 +212,7 @@ public:
     {
     public:
         float yScale;
-        int windid=0, min=0, max=0, size=0;
+        int windid, min , max, size;
         String caption, variableName;
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
@@ -260,19 +260,19 @@ private:
     int guiCycles = 0;
     int guiRefreshRate = 128;
     MidiBuffer midiBuffer;
-    String csoundOutput = "";
+    String csoundOutput;
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
 	int numCsoundOutputChannels, numCsoundInputChannels;
-    int pos = 0;
+    int pos;
     NamedValueSet updateSignalDisplay;
-    MYFLT cs_scale = 1;
+    MYFLT cs_scale;
     bool testLogicForMono = true;
-    MYFLT* CSspin = 0, *CSspout = 0;
+    MYFLT* CSspin, *CSspout;
     int samplingRate = 44100;
-    int csndIndex = 0;
-    int csdKsmps = 32;
-    File csdFile, csdFilePath;
+    int csndIndex;
+    int csdKsmps;
+    File csdFile , csdFilePath;
     std::unique_ptr<Csound> csound;
     std::unique_ptr<FileLogger> fileLogger;
     int busIndex = 0;

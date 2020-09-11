@@ -32,17 +32,17 @@ class CabbageSignalDisplay : public Component, public ValueTree::Listener, publi
     public Timer, private ScrollBar::Listener
 {
 
-    String name = "", displayType = "";
+    String name, displayType;
     RoundButton zoomInButton, zoomOutButton;
     Array<float, CriticalSection> signalFloatArray;
     Array<float, CriticalSection> signalFloatArray2;
     var signalVariables;
-    int tableNumber=0, freq = 0, shouldDrawSonogram = 0, leftPos = 0, scrollbarHeight = 0,
-        minFFTBin = 0, maxFFTBin = 0, vectorSize = 0, zoomLevel = 0, scopeWidth = 0, lineThickness = 0;
+    int tableNumber, freq, shouldDrawSonogram, leftPos, scrollbarHeight,
+        minFFTBin, maxFFTBin, vectorSize, zoomLevel, scopeWidth, lineThickness;
     Colour fontColour, colour, backgroundColour, outlineColour;
     ScrollBar scrollbar;
-    bool isScrollbarShowing = true;
-    float rotate = 0;
+    bool isScrollbarShowing;
+    float rotate;
     bool shouldPaint {false};
     int updateRate {200};
 
@@ -78,7 +78,7 @@ public:
     void setSignalFloatArraysForLissajous (Array<float, CriticalSection> _points1, Array<float, CriticalSection> _points2);
     void resized() override;
     void mouseMove (const MouseEvent& e) override;
-    void showPopupBubble (String text);
+    void showPopup (String text);
     void showScrollbar (bool show);
     void zoomOut (int factor = 1);
     void zoomIn (int factor = 1);

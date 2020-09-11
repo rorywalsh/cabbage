@@ -84,8 +84,8 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        String mFile = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
-        StringArray lines = StringArray::fromLines (mFile);
+        String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
+        StringArray lines = StringArray::fromLines (file);
 
         for (int i = 0; i < lines.size(); ++i)
         {
@@ -131,12 +131,12 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     }
     else
     {
-        const String workingDirToUse = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
-		if (File::getCurrentWorkingDirectory().getChildFile(workingDirToUse).exists())
-			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDirToUse);
-		else if(workingDirToUse.isNotEmpty())
-			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDirToUse);
+		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
+			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
+		else if(workingDir.isNotEmpty())
+			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
         else
 			listboxDir = File(getCsdFile()).getParentDirectory();
 
@@ -156,6 +156,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
 
     }
 
+    Justification justify (Justification::centred);
 
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align) == "left")
         justify = Justification::left;
@@ -175,12 +176,12 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         {
             if (isStringCombo == false)
             {
-                int mValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+                int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
 
 //                if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
 //                    listBox.selectRow(value - 1, sendNotification);
 //                else
-                listBox.selectRow(mValue - 1);//, dontSendNotification);
+                listBox.selectRow(value - 1);//, dontSendNotification);
             }
             else
             {
