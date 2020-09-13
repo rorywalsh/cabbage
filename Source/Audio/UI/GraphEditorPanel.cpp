@@ -213,7 +213,7 @@ private AudioProcessorParameter::Listener
     
     void mouseDown (const MouseEvent& e) override
     {
-        originalPos = localPointToGlobal (Point<int>());
+        originalPos = localPointToGlobal (juce::Point<int>());
         
         toFront (true);
         
@@ -360,7 +360,7 @@ private AudioProcessorParameter::Listener
         }
     }
     
-    Point<float> getPinPos (int index, bool isInput) const
+    juce::Point<float> getPinPos (int index, bool isInput) const
     {
         for (auto* pin : pins)
             if (pin->pin.channelIndex == index && isInput == pin->isInput)
@@ -550,7 +550,7 @@ private AudioProcessorParameter::Listener
     OwnedArray<PinComponent> pins;
     int numInputs = 0, numOutputs = 0;
     int pinSize = 16;
-    Point<int> originalPos;
+    juce::Point<int> originalPos;
     Font font { 13.0f, Font::bold };
     int numIns = 0, numOuts = 0;
     DropShadowEffect shadow;
@@ -585,13 +585,13 @@ public SettableTooltipClient
         }
     }
     
-    void dragStart (Point<float> pos)
+    void dragStart (juce::Point<float> pos)
     {
         lastInputPos = pos;
         resizeToFit();
     }
     
-    void dragEnd (Point<float> pos)
+    void dragEnd (juce::Point<float> pos)
     {
         lastOutputPos = pos;
         resizeToFit();
@@ -599,7 +599,7 @@ public SettableTooltipClient
     
     void update()
     {
-        Point<float> p1, p2;
+        juce::Point<float> p1, p2;
         getPoints (p1, p2);
         
         if (lastInputPos != p1 || lastOutputPos != p2)
@@ -608,7 +608,7 @@ public SettableTooltipClient
     
     void resizeToFit()
     {
-        Point<float> p1, p2;
+        juce::Point<float> p1, p2;
         getPoints (p1, p2);
         
         auto newBounds = Rectangle<float> (p1, p2).expanded (4.0f).getSmallestIntegerContainer();
@@ -621,7 +621,7 @@ public SettableTooltipClient
         repaint();
     }
     
-    void getPoints (Point<float>& p1, Point<float>& p2) const
+    void getPoints (juce::Point<float>& p1, juce::Point<float>& p2) const
     {
         p1 = lastInputPos;
         p2 = lastOutputPos;
@@ -645,7 +645,7 @@ public SettableTooltipClient
     
     bool hitTest (int x, int y) override
     {
-        auto pos = Point<int> (x, y).toFloat();
+        auto pos = juce::Point<int> (x, y).toFloat();
         
         if (hitPath.contains (pos))
         {
@@ -696,7 +696,7 @@ public SettableTooltipClient
     
     void resized() override
     {
-        Point<float> p1, p2;
+        juce::Point<float> p1, p2;
         getPoints (p1, p2);
         
         lastInputPos = p1;
@@ -733,9 +733,9 @@ public SettableTooltipClient
         linePath.setUsingNonZeroWinding (true);
     }
     
-    void getDistancesFromEnds (Point<float> p, double& distanceFromStart, double& distanceFromEnd) const
+    void getDistancesFromEnds (juce::Point<float> p, double& distanceFromStart, double& distanceFromEnd) const
     {
-        Point<float> p1, p2;
+        juce::Point<float> p1, p2;
         getPoints (p1, p2);
         
         distanceFromStart = p1.getDistanceFrom (p);
@@ -745,7 +745,7 @@ public SettableTooltipClient
     GraphEditorPanel& panel;
     FilterGraph& graph;
     AudioProcessorGraph::Connection connection { { {}, 0 }, { {}, 0 } };
-    Point<float> lastInputPos, lastOutputPos;
+    juce::Point<float> lastInputPos, lastOutputPos;
     Path linePath, hitPath;
     bool dragging = false;
     
@@ -802,7 +802,7 @@ void GraphEditorPanel::mouseDrag (const MouseEvent& e)
     //    stopTimer();
 }
 
-void GraphEditorPanel::createNewPlugin (const PluginDescription& desc, Point<double> position)
+void GraphEditorPanel::createNewPlugin (const PluginDescription& desc, juce::Point<double> position)
 {
 
     if (desc.pluginFormatName == "Cabbage")
@@ -829,7 +829,7 @@ GraphEditorPanel::ConnectorComponent* GraphEditorPanel::getComponentForConnectio
     return nullptr;
 }
 
-GraphEditorPanel::PinComponent* GraphEditorPanel::findPinAt (Point<float> pos) const
+GraphEditorPanel::PinComponent* GraphEditorPanel::findPinAt (juce::Point<float> pos) const
 {
     for (auto* fc : nodes)
     {
@@ -924,7 +924,7 @@ void GraphEditorPanel::updateComponents()
     
 }
 
-void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
+void GraphEditorPanel::showPopupMenu(juce::Point<int> mousePos)
 {
     //mod RW
     if (auto* graphWindow = findParentComponentOfClass<FilterGraphDocumentWindow>())
@@ -976,7 +976,7 @@ void GraphEditorPanel::showPopupMenu(Point<int> mousePos)
         else if(r >= 20000)
         {
             auto* desc = graphWindow->getOwner()->knownPluginList.getType (graphWindow->getOwner()->knownPluginList.getIndexChosenByMenu (r));
-			const Point<double>newPos(double(mousePos.getX()) / getWidth(), double(mousePos.getY()) / getHeight());
+			const juce::Point<double>newPos(double(mousePos.getX()) / getWidth(), double(mousePos.getY()) / getHeight());
             createNewPlugin (*desc, newPos);
         }
         
@@ -1348,7 +1348,7 @@ void GraphDocumentComponent::resized()
     checkAvailableWidth();
 }
 
-void GraphDocumentComponent::createNewPlugin (const PluginDescription& desc, Point<double> pos)
+void GraphDocumentComponent::createNewPlugin (const PluginDescription& desc, juce::Point<double> pos)
 {
     graphPanel->createNewPlugin (desc, pos);
 }

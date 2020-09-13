@@ -76,7 +76,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 	void resizeAllWindows(int height);
-	void createEditorForFilterGraphNode(Point<int> position);
+	void createEditorForFilterGraphNode(juce::Point<int> position);
 	void createFilterGraph();
 	void createCodeEditorForFile(File file);
 	void createNewProject();

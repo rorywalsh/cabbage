@@ -63,7 +63,7 @@ public:
     SelectedItemSet <ComponentOverlay*>& getLassoSelection() override;
     LassoComponent <ComponentOverlay*> lassoComp;
     SelectedComponents selectedComponents;
-    Point<int> currentMouseCoors;
+    juce::Point<int> currentMouseCoors;
     void resetAllInterest();
     CabbagePluginEditor* getPluginEditor();
 #ifndef Cabbage_Lite

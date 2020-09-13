@@ -54,8 +54,8 @@ public:
     //==============================================================================
     using NodeID = AudioProcessorGraph::NodeID;
 
-    void addPlugin (const PluginDescription&, Point<double>);
-	void addPluginCallback(std::unique_ptr<AudioPluginInstance>, const String& error, Point<double>);
+    void addPlugin (const PluginDescription&, juce::Point<double>);
+	void addPluginCallback(std::unique_ptr<AudioPluginInstance>, const String& error, juce::Point<double>);
 
 
 
@@ -374,7 +374,7 @@ public:
         settings = cabbageSettings;
     }
 
-	void addCabbagePlugin(const PluginDescription& desc, Point<double> pos)
+	void addCabbagePlugin(const PluginDescription& desc, juce::Point<double> pos)
 	{
 		AudioProcessorGraph::NodeID nodeId(desc.uid);
 		std::unique_ptr <AudioProcessor> processor = createCabbageProcessor(desc.fileOrIdentifier);
@@ -405,7 +405,7 @@ public:
 				node->properties.set("pluginFile", desc.fileOrIdentifier);
 				node->properties.set("pluginType", isCabbageFile == true ? "Cabbage" : "Csound");
 				node->properties.set("pluginName", getInstrumentName(File(desc.fileOrIdentifier)));
-				setNodePosition(nodeId, Point<double>(pos.x, pos.y));
+				setNodePosition(nodeId, juce::Point<double>(pos.x, pos.y));
 				node->getProcessor()->setPlayHead(graph.getPlayHead());
 				restoreConnectionsFromXml(*xml);
 				xml = nullptr;
@@ -444,12 +444,12 @@ public:
 	}
 
 
-	Point<int> getPositionOfCurrentlyOpenWindow(AudioProcessorGraph::NodeID  nodeId)
+	juce::Point<int> getPositionOfCurrentlyOpenWindow(AudioProcessorGraph::NodeID  nodeId)
 	{
 		for (auto* w : activePluginWindows)
 			return w->getPosition();
 
-		return Point<int>(-1000, -1000);
+		return juce::Point<int>(-1000, -1000);
 	}
 
 	void setDefaultConnections(AudioProcessorGraph::NodeID nodeId)
@@ -500,8 +500,8 @@ public:
 
     AudioProcessorGraph::Node::Ptr getNodeForName (const String& name) const;
 
-    void setNodePosition (NodeID, Point<double>);
-    Point<double> getNodePosition (NodeID) const;
+    void setNodePosition (NodeID, juce::Point<double>);
+    juce::Point<double> getNodePosition (NodeID) const;
 
     //==============================================================================
     void clear();
@@ -542,7 +542,7 @@ private:
 //RW
     AudioPlayHead::CurrentPositionInfo playHeadPositionInfo;
     void createNodeFromXml (const XmlElement& xml);
-    void addFilterCallback (AudioPluginInstance*, const String& error, Point<double>);
+    void addFilterCallback (AudioPluginInstance*, const String& error, juce::Point<double>);
     void changeListenerCallback (ChangeBroadcaster*) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterGraph)

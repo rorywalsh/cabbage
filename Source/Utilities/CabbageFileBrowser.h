@@ -147,7 +147,7 @@ public:
 
     
     void mouseDrag (const MouseEvent &event) override;
-    Point<float> componentPos = {0,0};
+    juce::Point<float> componentPos = {0,0};
     String lastClickedFile = "";
     //==============================================================================
     /** This abstract base class is implemented by LookAndFeel classes to provide
