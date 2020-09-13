@@ -50,8 +50,8 @@ class CabbageXYPad
     float minX, maxX, minY, maxY, valueX, valueY;
     bool rightMouseButtonDown = false;
 
-    Point<float> currentMouseXY;
-    Point<float> mouseDownXY;
+    juce::Point<float> currentMouseXY;
+    juce::Point<float> mouseDownXY;
     
     String xPrefix = "";
     String xPostfix = "";
@@ -60,7 +60,7 @@ class CabbageXYPad
 
     class XYBall : public Component
     {
-        Point<int> ballXY;
+        juce::Point<int> ballXY;
         Colour colour;
 
     public:
@@ -114,10 +114,10 @@ public:
 
     void setValues (float x, float y, bool notify = true);
 
-    Point<int> constrainPosition (float x, float y);
-    Point<float> getPositionAsValue (Point<float> position);
-    Point<float> getValueAsPosition (Point<float> position);
-    void setPositionAsValue (Point<float> position);
+    juce::Point<int> constrainPosition (float x, float y);
+    juce::Point<float> getPositionAsValue (juce::Point<float> position);
+    juce::Point<float> getValueAsPosition (juce::Point<float> position);
+    void setPositionAsValue (juce::Point<float> position);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageXYPad);
 };
@@ -134,7 +134,7 @@ class XYPadAutomator : public ChangeBroadcaster, public Timer
     Line<float> dragLine;
     bool isPluginEditorOpen = false;
     bool repaintBackground = false;
-    Point<double> position;
+    juce::Point<double> position;
     float xMin, xMax, yMin, yMax, velocity;
     AudioProcessor* owner;
 
@@ -164,7 +164,7 @@ public:
     {
         this->name = name;
     }
-    void setPosition (const Point<double>& position)
+    void setPosition (const juce::Point<double>& position)
     {
         this->position = position;
     }
@@ -212,7 +212,7 @@ public:
     {
         return isPluginEditorOpen;
     }
-    const Point<double>& getPosition() const
+    const juce::Point<double>& getPosition() const
     {
         return position;
     }

@@ -1457,7 +1457,7 @@ void HandleViewer::positionHandle (const MouseEvent& e)
             else
             {
                 handles[i]->setTopLeftPosition (getSnapXPosition (e.x), getSnapYPosition (double (e.y)));
-                Point<double> relPos (handles[i]->getPosition().getX(), handles[i]->getPosition().getY());
+                juce::Point<double> relPos (handles[i]->getPosition().getX(), handles[i]->getPosition().getY());
                 handles[i]->setRelativePosition (relPos);
                 handles[i]->sendChangeMessage();
                 handleExists = true;
@@ -1727,7 +1727,7 @@ HandleComponent* HandleComponent::getNextHandle()
     return getParentHandleViewer()->getNextHandle (this);
 }
 //==================================================================================
-void HandleComponent::setRelativePosition (Point<double> pos)
+void HandleComponent::setRelativePosition (juce::Point<double> pos)
 {
     //convert position so that it's scaled between 0 and 1
     xPosRelative = jlimit (0.0, 1.0, pos.getX() / (double)this->getParentHandleViewer()->getWidth());
@@ -1810,7 +1810,7 @@ void HandleComponent::mouseDrag (const MouseEvent& e)
     yPos = jlimit (0.0, getParentComponent()->getHeight() + 0.0, yPos + (getHeight() / 2.f));
 
     setPosition (viewer->getSnapXPosition (xPos), viewer->getSnapYPosition (yPos), (getWidth() == FIXED_WIDTH ? true : false));
-    setRelativePosition (Point<double> (viewer->getSnapXPosition (xPos), viewer->getSnapYPosition (yPos)));
+    setRelativePosition (juce::Point<double> (viewer->getSnapXPosition (xPos), viewer->getSnapYPosition (yPos)));
 
     mouseStatus = "mouseDrag";
     sendChangeMessage();

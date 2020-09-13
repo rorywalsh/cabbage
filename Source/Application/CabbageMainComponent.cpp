@@ -1071,7 +1071,7 @@ void CabbageMainComponent::showPluginListEditor()
     pluginListWindow->toFront (true);
 }
 //==============================================================================
-void CabbageMainComponent::createEditorForFilterGraphNode (Point<int> position)
+void CabbageMainComponent::createEditorForFilterGraphNode (juce::Point<int> position)
 {
 
     String pluginName = "";
@@ -1241,7 +1241,7 @@ void CabbageMainComponent::enableEditMode()
         {
             return;
 //            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
-//            Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
+//            juce::Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
 //            createEditorForFilterGraphNode(pos);
         }
 
@@ -1932,16 +1932,16 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 
 			Random rand;
 			double posOffset = rand.nextDouble() * 0.2;
-			Point<double> pluginNodePos(.5+posOffset, .5+posOffset);
-			Point<int> pluginWindowPos(-1000, -1000);
+			juce::Point<double> pluginNodePos(.5+posOffset, .5+posOffset);
+			juce::Point<int> pluginWindowPos(-1000, -1000);
 
 
 			if (getFilterGraph()->graph.getNodeForId(node))
 			{
-				pluginNodePos = Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
+				pluginNodePos = juce::Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
 					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
 
-				pluginWindowPos = Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
+				pluginWindowPos = juce::Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
 					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
 
 			}

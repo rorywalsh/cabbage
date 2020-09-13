@@ -457,7 +457,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
         
     Path newPolygon;
-    Point<float> centre (centreX, centreY);
+    juce::Point<float> centre (centreX, centreY);
 
     if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
     {

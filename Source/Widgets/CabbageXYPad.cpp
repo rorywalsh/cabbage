@@ -44,7 +44,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
-    const Point<float> pos (getValueAsPosition (Point<float> (valueX, valueY)));
+    const juce::Point<float> pos (getValueAsPosition (juce::Point<float> (valueX, valueY)));
     ball.setBounds (pos.getX(), pos.getY(), 20, 20);
     ball.setInterceptsMouseClicks (false, false);
     addAndMakeVisible (ball);
@@ -97,7 +97,7 @@ CabbageXYPad::~CabbageXYPad()
 void CabbageXYPad::mouseDown (const MouseEvent& e)
 {
     owner->enableXYAutomator (getName(), false);
-    ball.setTopLeftPosition (Point<int> (e.getPosition().getX() - ball.getWidth()*.5f, e.getPosition().getY() - ball.getWidth()*.5f));
+    ball.setTopLeftPosition (juce::Point<int> (e.getPosition().getX() - ball.getWidth()*.5f, e.getPosition().getY() - ball.getWidth()*.5f));
     mouseDownXY.setXY (ball.getPosition().getX() + ball.getWidth()*.5f, ball.getPosition().getY() + ball.getHeight()*.5f);
     setPositionAsValue (ball.getPosition().toFloat());
     isAutomating = false;
@@ -125,8 +125,8 @@ void CabbageXYPad::mouseUp (const MouseEvent& e)
     {
         rightMouseButtonDown = false;
 
-        const Point<float> valueStart (getPositionAsValue (mouseDownXY));
-        const Point<float> valueEnd (getPositionAsValue (e.getPosition().toFloat()));
+        const juce::Point<float> valueStart (getPositionAsValue (mouseDownXY));
+        const juce::Point<float> valueEnd (getPositionAsValue (e.getPosition().toFloat()));
 
         dragLine = Line<float> (valueStart.getX(), valueStart.getY(), valueEnd.getX(), valueEnd.getY());
         owner->enableXYAutomator (getName(), true, dragLine);
@@ -138,7 +138,7 @@ void CabbageXYPad::changeListenerCallback (ChangeBroadcaster* source)
 {
     if (XYPadAutomator* xyAuto = dynamic_cast<XYPadAutomator*> (source))
     {
-        Point<float> pos (getValueAsPosition (Point<float> (xyAuto->getPosition().getX(), xyAuto->getPosition().getY())));
+        juce::Point<float> pos (getValueAsPosition (juce::Point<float> (xyAuto->getPosition().getX(), xyAuto->getPosition().getY())));
         pos.addXY (-ball.getWidth() / 2, -ball.getWidth() / 2);
         ball.setBounds (pos.getX(), pos.getY(), 20, 20);
 
@@ -173,7 +173,7 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 //        const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
 //        const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
 //        //setValues(xPos, maxY - yPos);
-//        Point<float> pos (getValueAsPosition (Point<float> (xPos, maxY - yPos)));
+//        juce::Point<float> pos (getValueAsPosition (juce::Point<float> (xPos, maxY - yPos)));
 //        //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
 //        ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
 //        repaint();
@@ -254,36 +254,36 @@ void CabbageXYPad::resized()
 }
 
 //==================================================================
-Point<int> CabbageXYPad::constrainPosition (float x, float y)
+juce::Point<int> CabbageXYPad::constrainPosition (float x, float y)
 {
     const int xPos = jlimit (xyPadRect.getX(), (xyPadRect.getWidth() + xyPadRect.getX()) - ball.getWidth(), x - ball.getWidth() / 2.f);
     const int yPos = jlimit (xyPadRect.getY(), (xyPadRect.getHeight() + xyPadRect.getY()) - ball.getHeight(), y - ball.getHeight() / 2.f);
-    return Point<int> (xPos, yPos);
+    return juce::Point<int> (xPos, yPos);
 }
 
-Point<float> CabbageXYPad::getPositionAsValue (Point<float> position)
+juce::Point<float> CabbageXYPad::getPositionAsValue (juce::Point<float> position)
 {
     const float xVal = jlimit (minX, maxX, jmap (position.getX(), xyPadRect.getX(), xyPadRect.getWidth() - ball.getWidth(), minX, maxX));
     const float yVal = jlimit (minY, maxY, jmap (position.getY(), xyPadRect.getY(), xyPadRect.getHeight() - ball.getHeight(), minY, maxY));
     setValues (xVal, yVal);
 
-    return Point<float> (xVal, yVal);
+    return juce::Point<float> (xVal, yVal);
 }
 
-void CabbageXYPad::setPositionAsValue (Point<float> position)
+void CabbageXYPad::setPositionAsValue (juce::Point<float> position)
 {
     const float xVal = jlimit (minX, maxX, jmap (position.getX(), xyPadRect.getX(), xyPadRect.getWidth() - ball.getWidth(), minX, maxX));
     const float yVal = jlimit (minY, maxY, jmap (position.getY(), xyPadRect.getY(), xyPadRect.getHeight() - ball.getHeight(), minY, maxY));
     setValues (xVal, yVal);
 }
 
-Point<float> CabbageXYPad::getValueAsPosition (Point<float> position)
+juce::Point<float> CabbageXYPad::getValueAsPosition (juce::Point<float> position)
 {
     //setValues (position.getX(), maxY - position.getY());
     const float xPos = jmap (position.getX(), minX, maxX, xyPadRect.getX() + ball.getWidth() / 2, xyPadRect.getWidth() - ball.getWidth() / 2);
     const float yPos = jmap (position.getY(), minY, maxY, xyPadRect.getY() + ball.getWidth() / 2, xyPadRect.getHeight() - ball.getWidth() / 2);
 
-    return Point<float> (xPos, yPos);
+    return juce::Point<float> (xPos, yPos);
 }
 
 void CabbageXYPad::setValues (float x, float y, bool notify)

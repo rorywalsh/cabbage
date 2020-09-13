@@ -171,7 +171,7 @@ public:
 	float getTotalKeyboardWidth() const noexcept;
 
 	/** Returns the key at a given coordinate. */
-	int getNoteAtPosition(Point<float> position);	
+	int getNoteAtPosition(juce::Point<float> position);	
 	void setOctaveForMiddleC(int octaveNumForMiddleC);
 
 	/** This returns the value set by setOctaveForMiddleC().
@@ -309,10 +309,10 @@ private:
 	int keyMappingOctave = 6, octaveNumForMiddleC = 3;
 
 	Range<float> getKeyPos(int midiNoteNumber) const;
-	int xyToNote(Point<float>, float& mousePositionVelocity);
-	int remappedXYToNote(Point<float>, float& mousePositionVelocity) const;
+	int xyToNote(juce::Point<float>, float& mousePositionVelocity);
+	int remappedXYToNote(juce::Point<float>, float& mousePositionVelocity) const;
 	void resetAnyKeysInUse();
-	void updateNoteUnderMouse(Point<float>, bool isDown, int fingerNum);
+	void updateNoteUnderMouse(juce::Point<float>, bool isDown, int fingerNum);
 	void updateNoteUnderMouse(const MouseEvent&, bool isDown);
 	void repaintNote(int midiNoteNumber);
 	void setLowestVisibleKeyFloat(float noteNumber);

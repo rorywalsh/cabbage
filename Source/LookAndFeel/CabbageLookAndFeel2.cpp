@@ -591,7 +591,7 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
         if (!useSliderSVG)
         {
             Path newPolygon;
-            Point<float> centre (centreX, centreY);
+            juce::Point<float> centre (centreX, centreY);
 
             if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
             {

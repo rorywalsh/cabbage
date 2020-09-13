@@ -206,7 +206,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     repaint();
 }
 //======================================================================================================
-void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position, bool isCustomPlant)
+void CabbagePluginEditor::addNewWidget (String widgetType, juce::Point<int> position, bool isCustomPlant)
 {
 
     if(isCustomPlant == false)

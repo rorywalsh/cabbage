@@ -41,7 +41,7 @@ public:
     GraphEditorPanel (FilterGraph& graph);
     ~GraphEditorPanel();
     
-    void createNewPlugin (const PluginDescription&, Point<double> position);
+    void createNewPlugin (const PluginDescription&, juce::Point<double> position);
     
     void paint (Graphics&) override;
     void resized() override;
@@ -56,7 +56,7 @@ public:
     void updateComponents();
     
     //==============================================================================
-    void showPopupMenu (Point<int> position);
+    void showPopupMenu (juce::Point<int> position);
     
     //==============================================================================
     void beginConnectorDrag (AudioProcessorGraph::NodeAndChannel source,
@@ -87,10 +87,10 @@ private:
     std::unique_ptr<PopupMenu> menu;
     FilterComponent* getComponentForFilter (AudioProcessorGraph::NodeID) const;
     ConnectorComponent* getComponentForConnection (const AudioProcessorGraph::Connection&) const;
-    PinComponent* findPinAt (Point<float>) const;
+    PinComponent* findPinAt (juce::Point<float>) const;
     
     //==============================================================================
-    Point<int> originalTouchPos;
+    juce::Point<int> originalTouchPos;
     
     //void timerCallback() override;
     
@@ -117,7 +117,7 @@ public:
     ~GraphDocumentComponent();
     
     //==============================================================================
-    void createNewPlugin (const PluginDescription&, Point<double> position);
+    void createNewPlugin (const PluginDescription&, juce::Point<double> position);
     void setDoublePrecision (bool doublePrecision);
     bool closeAnyOpenPluginWindows();
     
