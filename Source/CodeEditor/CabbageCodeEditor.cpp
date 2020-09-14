@@ -70,8 +70,6 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
         keywordsArray.add( String (CharPointer_UTF8 (str)));
     }
 
-
-
 }
 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
