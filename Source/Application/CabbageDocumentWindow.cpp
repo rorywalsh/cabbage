@@ -403,7 +403,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::copy);
     menu.addCommandItem (&commandManager, CommandIDs::paste);
     menu.addSeparator();
-    
+    menu.addCommandItem (&commandManager, CommandIDs::addCabbageSection);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::del);
     menu.addCommandItem (&commandManager, CommandIDs::selectAll);
@@ -539,6 +539,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::clearConsole,
         CommandIDs::toggleComments,
         CommandIDs::zoomIn,
+        CommandIDs::addCabbageSection,
         CommandIDs::zoomOut,
         CommandIDs::zoomInConsole,
         CommandIDs::zoomOutConsole,
@@ -642,6 +643,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::saveDocumentToRPi:
             result.setInfo ("Save Csound file to RPi", "Save a document to RPi", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+           
+        case CommandIDs::addCabbageSection:
+            result.setInfo ("Add Cabbage section", "Add a Cababge section", CommandCategories::edit, 0);
             break;
             
         case CommandIDs::saveDocumentAs:
@@ -1004,6 +1009,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->saveGraph (true);
             return true;
 
+        case CommandIDs::addCabbageSection:
+            getContentComponent()->addCabbageSection ();
+            return true;
+            
         case CommandIDs::buildNoConnect:
             if(cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes") == 1)
                 cabbageSettings->getUserSettings()->setValue("autoConnectNodes", 0);

@@ -120,6 +120,7 @@ public:
 	void arrangeFileTabs();
 	void importTheme();
 	void exportTheme();
+    void addCabbageSection();
 
 	int getNumberOfFileTabs() { return fileTabs.size(); };
 	FileTab* getFileTab(int index) { return fileTabs[index]; };

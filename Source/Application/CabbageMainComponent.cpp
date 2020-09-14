@@ -1219,7 +1219,12 @@ int CabbageMainComponent::getStatusbarYPos()
 void CabbageMainComponent::enableAutoUpdateMode()
 {
     int shouldUpdate = cabbageSettings->getUserSettings()->getIntValue ("AutoLoadFromDisk");
+}
 
+void CabbageMainComponent::addCabbageSection()
+{
+    const String cabbageSection = "<Cabbage>\nform size(500, 300), caption(\"Untitled\")\n</Cabbage>\n";
+    getCurrentCodeEditor()->insertCode(0, cabbageSection, false, false);
 }
 
 void CabbageMainComponent::enableEditMode()

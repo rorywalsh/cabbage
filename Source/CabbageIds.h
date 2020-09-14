@@ -104,6 +104,7 @@ namespace CommandIDs
         showConsole                 = 0x612004,
         showPluginListEditor    = 0x612005,
         autoReloadFromDisk    = 0x612006,
+        addCabbageSection    = 0x612007,
 
         lastCommandIDEntry
     };
