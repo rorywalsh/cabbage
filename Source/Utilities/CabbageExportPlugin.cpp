@@ -104,7 +104,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else if(promptForFilename == false)
         {
-            const String newFile = csdFile.getParentDirectory().getFullPathName()+"/"+csdFile.getFileNameWithoutExtension();
+            String newFile = destination;
+            if (newFile == "")
+            {
+                newFile = csdFile.getParentDirectory().getFullPathName()+"/"+csdFile.getFileNameWithoutExtension();
+            }
             writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type,
                                   encrypt);
             
