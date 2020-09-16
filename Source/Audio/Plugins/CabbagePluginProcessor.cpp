@@ -55,7 +55,7 @@ createPluginFilter() {
 
 
 	if (csdFile.existsAsFile() == false)
-		Logger::writeToLog("Could not find .csd file " + csdFile.loadFileAsString() + ", please make sure it's in the correct folder");
+		Logger::writeToLog("Could not find .csd file " + csdFile.getFullPathName() + ", please make sure it's in the correct folder");
 
     String csdString = csdFile.loadFileAsString();
 #ifdef CabbagePro
