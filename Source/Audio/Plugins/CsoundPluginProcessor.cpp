@@ -110,6 +110,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
+    Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%x", long(csound.get())));
 	csound.reset (new Csound());
     
 	csdFilePath = filePath;
@@ -235,7 +236,24 @@ void CsoundPluginProcessor::createFileLogger (File csdFile)
 //==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 {
-        
+    Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) ...");
+    if (!csound)
+    {
+        Logger::writeToLog("csound not initialized");
+        return;
+    }
+    else
+    {
+        Logger::writeToLog(String::formatted("csound = 0x%x", long(csound.get())));
+        Logger::writeToLog(String::formatted("handle = 0x%x", long(csound->GetCsound())));
+    }
+    
+    if (!csdCompiledWithoutError())
+    {
+        Logger::writeToLog("csound not compiled");
+        return;
+    }
+    
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);
@@ -426,6 +444,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csound->PerformKsmps();
 
+    Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) - done");
 
 }
 //==============================================================================
