@@ -50,7 +50,10 @@ void Cabbage::anotherInstanceStarted (const String& commandLine)
 {
     if (CabbageDocumentWindow* mainApp = dynamic_cast<CabbageDocumentWindow*> (documentWindow.get()))
     {
-        mainApp->openFile(commandLine);
+        if (!commandLine.contains("--export-"))
+        {
+            mainApp->openFile(commandLine);
+        }
     }
 }
 
