@@ -1514,7 +1514,7 @@ void CabbageMainComponent::toggleBrowser()
     }
 }
 //==================================================================================
-const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles)
+const File CabbageMainComponent::openFile (String filename, bool updateRecentFiles, bool exportingPlugin)
 {
     stopTimer();
     //stopCsoundForNode (filename);
@@ -1552,7 +1552,10 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
         cabbageSettings->setProperty ("MostRecentFile", currentCsdFile.getFullPathName());
     }
 
-    createCodeEditorForFile (currentCsdFile);
+    if (!exportingPlugin)
+    {
+        createCodeEditorForFile (currentCsdFile);
+    }
 
     return currentCsdFile;
 

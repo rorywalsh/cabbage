@@ -94,7 +94,7 @@ commandLineArgs (commandLineParams)
                     inputFileName = commandLineParams[inputFileNameIndex].trim().removeCharacters ("\"");
                     if (File (inputFileName).existsAsFile())
                     {
-                        content->openFile (inputFileName);
+                        content->openFile (inputFileName, false, true);
                         auto inputFile = File (inputFileName);
                         auto id = getPluginInfo (inputFile, "id");
                         auto promptForFilename = false;
