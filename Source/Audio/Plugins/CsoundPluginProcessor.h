@@ -263,7 +263,8 @@ private:
     String csoundOutput;
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
-	int numCsoundOutputChannels, numCsoundInputChannels;
+    int numCsoundOutputChannels = 0;
+    int numCsoundInputChannels = 0;
     int pos;
     NamedValueSet updateSignalDisplay;
     MYFLT cs_scale;
