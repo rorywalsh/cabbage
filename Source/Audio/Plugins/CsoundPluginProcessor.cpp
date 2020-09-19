@@ -179,6 +179,12 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
     
+    // Update the matchingNumberOfIOChannels flag so the MacOS auval tool doesn't crash when validating
+    // different I/O channel configurations.
+    if (csoundParams->nchnls_i_override != csoundParams->nchnls_override)
+    {
+        matchingNumberOfIOChannels = false;
+    }
 	
 #ifdef CabbagePro
 	const int requestedSampleRate = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "sr");
