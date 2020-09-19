@@ -89,7 +89,7 @@ public:
 	void launchSSHFileBrowser(String mode);
 	void enableEditMode();
     void enableAutoUpdateMode();
-	const File openFile(String filename = "", bool updateRecentFiles = true);
+	const File openFile(String filename = "", bool updateRecentFiles = true, bool exportingPlugin = false);
 	void closeDocument();
 	void showSettingsDialog();
 	void saveDocument(bool saveAs = false, bool recompile = true);
