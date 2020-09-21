@@ -376,9 +376,15 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 addFiles (strTokens, widgetData, "import");
                 break;
 
-            case HashStringToInt ("bundle"):
-                addFiles (strTokens, widgetData, "bundle");
+            case HashStringToInt("bundle"):
+                addFiles(strTokens, widgetData, "bundle");
                 break;
+
+            case HashStringToInt("filmstrip"):
+                setFilmStrip(strTokens, widgetData);
+                break;
+
+
 
             //=========== floats ===============================
             case HashStringToInt ("active"):
@@ -912,6 +918,14 @@ void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widget
 
 }
 
+void CabbageWidgetData::setFilmStrip(StringArray strTokens, ValueTree widgetData)
+{
+    setProperty(widgetData, CabbageIdentifierIds::filmstripimage, strTokens[0].trim());
+    setProperty(widgetData, CabbageIdentifierIds::filmstripframes, strTokens[1].trim());
+    setProperty(widgetData, CabbageIdentifierIds::filmorientation, strTokens[2].trim());
+    setProperty(widgetData, CabbageIdentifierIds::filmframewidth, strTokens[3].trim());
+    setProperty(widgetData, CabbageIdentifierIds::filmframeheight, strTokens[4].trim());
+}
 
 void CabbageWidgetData::setShapes (StringArray strTokens, ValueTree widgetData)
 {

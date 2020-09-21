@@ -98,6 +98,7 @@ public:
     static void setComboItemArrays (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setImageFiles (StringArray strTokens, ValueTree widgetData, String typeOfWidget);
     static void setShapes (StringArray strTokens, ValueTree widgetData);
+    static void setFilmStrip(StringArray strTokens, ValueTree widgetData);
     static void setBounds (StringArray strTokens, ValueTree widgetData);
     static void setRange (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setFontStyle (StringArray strTokens, ValueTree widgetData);

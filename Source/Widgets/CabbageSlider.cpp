@@ -26,54 +26,57 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
 
       sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
       channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
-popupBubble (250)
+popupBubble (250), 
+filmSlider(ImageFileFormat::loadFrom(File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstripimage))),
+    CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::filmstripframes), CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmorientation) == "vertical" ? false : true)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
     setLookAndFeelColours (widgetData);
     addAndMakeVisible (textLabel);
-    addAndMakeVisible (&slider);
-    slider.setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
-    slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerthickness));
-    slider.getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackerbgcolour));
-    slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::markercolour));
-    slider.getProperties().set("markerthickness", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerthickness));
-    slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerstart));
-    slider.getProperties().set("markerend", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::markerend));
-    slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::gapmarkers));
-    
+    if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstripimage).length() == 0)
+    {
+        addAndMakeVisible(&slider);
+        slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+        slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness));
+        slider.getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackerbgcolour));
+        slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::markercolour));
+        slider.getProperties().set("markerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerthickness));
+        slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerstart));
+        slider.getProperties().set("markerend", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerend));
+        slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
+        setImgProperties(this->slider, wData, "slider");
+        setImgProperties(this->slider, wData, "sliderbg");
+        setTextBoxOrientation(sliderType, shouldShowTextBox);
+        initialiseSlider(wData, slider);
+        const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
+        const String sliderImgBg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg);
+        const String globalStyle = owner->globalStyle;
+        if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
+            && sliderImg.isEmpty() && sliderImgBg.isEmpty())
+        {
+            slider.setLookAndFeel(&flatLookAndFeel);
+        }
+        slider.setTextValueSuffix(postfix);
+    }        
+    else 
+    {
+        filmSlider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+        addAndMakeVisible(&filmSlider);
+        initialiseSlider(wData, filmSlider);
+        filmSlider.setTextValueSuffix(postfix);
+    }
+        
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
     popupPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
     popupPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
     
-    initialiseSlider (wData);
+
+    
     textLabel.setVisible (false);
     initialiseCommonAttributes (this, wData);
     createPopupBubble();
-    setImgProperties (this->slider, wData, "slider");
-    setImgProperties (this->slider, wData, "sliderbg");
-
-	const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
-	const String sliderImgBg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg);
-
-    setTextBoxOrientation (sliderType, shouldShowTextBox);
-    //slider.setLookAndFeel (&owner->getLookAndFeel());
-    
-    slider.setTextValueSuffix(postfix);
-
-    const String globalStyle = owner->globalStyle;
-    if(globalStyle == "legacy")
-    {
-        return;
-    }
-    else if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
-		&& sliderImg.isEmpty() && sliderImgBg.isEmpty())
-	{
-		slider.setLookAndFeel(&flatLookAndFeel);
-	}
-        
-
 }
 
 CabbageSlider::~CabbageSlider()
@@ -81,7 +84,7 @@ CabbageSlider::~CabbageSlider()
     slider.setLookAndFeel (nullptr);
 }
 
-void CabbageSlider::initialiseSlider (ValueTree wData)
+void CabbageSlider::initialiseSlider (ValueTree wData, Slider& currentSlider)
 {
     decimalPlaces = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces);
     sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
@@ -93,12 +96,12 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     trackerThickness = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerthickness);
     trackerInnerRadius = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackerinsideradius);
     trackerOuterRadius = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::trackeroutsideradius);
-    slider.getProperties().set ("trackerthickness", trackerThickness);
-    slider.getProperties().set ("trackerinnerradius", trackerInnerRadius);
-    slider.getProperties().set ("trackerouterradius", trackerOuterRadius);
+    currentSlider.getProperties().set ("trackerthickness", trackerThickness);
+    currentSlider.getProperties().set ("trackerinnerradius", trackerInnerRadius);
+    currentSlider.getProperties().set ("trackerouterradius", trackerOuterRadius);
 
-    slider.setSkewFactor (sliderSkew);
-    slider.setRange (min, max, sliderIncrement);
+    currentSlider.setSkewFactor (sliderSkew);
+    currentSlider.setRange (min, max, sliderIncrement);
 
     const String popup = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext);
     if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
@@ -111,20 +114,20 @@ void CabbageSlider::initialiseSlider (ValueTree wData)
     else
         textLabel.setVisible (false);
 
-    slider.setDoubleClickReturnValue (true, value);
+    currentSlider.setDoubleClickReturnValue (true, value);
     setSliderVelocity (wData);
-    slider.addMouseListener (this, false);
-    slider.setRotaryParameters (float_Pi * 1.2f, float_Pi * 2.8f, false);
+    currentSlider.addMouseListener (this, false);
+    currentSlider.setRotaryParameters (float_Pi * 1.2f, float_Pi * 2.8f, false);
 
     if (sliderType.contains ("rotary"))
     {
-        slider.setSliderStyle (Slider::RotaryVerticalDrag);
-        slider.setRotaryParameters (MathConstants<float>::pi * 1.2f, MathConstants<float>::pi * 2.8f, true);
+        currentSlider.setSliderStyle (Slider::RotaryVerticalDrag);
+        currentSlider.setRotaryParameters (MathConstants<float>::pi * 1.2f, MathConstants<float>::pi * 2.8f, true);
     }
     else if (sliderType.contains ("vertical"))
-        slider.setSliderStyle (Slider::LinearVertical);
+        currentSlider.setSliderStyle (Slider::LinearVertical);
     else if (sliderType.contains ("horizontal"))
-        slider.setSliderStyle (Slider::LinearHorizontal);
+        currentSlider.setSliderStyle (Slider::LinearHorizontal);
 
 
 }
@@ -150,90 +153,96 @@ void CabbageSlider::setTextBoxWidth()
         slider.setTextBoxStyle (Slider::TextBoxRight, false, jmin (55.f, getWidth()*.65f), 15);
     else
         slider.setTextBoxStyle (Slider::TextBoxBelow, false, jmin (55.f, getWidth()*.65f), 15);
-
-
 }
 
 void CabbageSlider::resized()
 {
-    if (sliderType.contains ("rotary"))
+    if (CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filmstripimage).length() > 0)
     {
-        if (getText().isNotEmpty())
-        {
-
-            textLabel.setText (getText(), dontSendNotification);
-            textLabel.setJustificationType (Justification::centred);
-            textLabel.setVisible (true);
-
-            if (shouldShowTextBox > 0)
-            {
-                textLabel.setBounds (0, 0, getWidth(), 20);
-                slider.setBounds (0, 20, getWidth(), getHeight() - 20);
-            }
-            else
-            {
-                textLabel.setBounds (0, getHeight() - 20, getWidth(), 20);
-                slider.setBounds (0, 0, getWidth(), getHeight() - 15);
-            }
-        }
-        else
-            slider.setBounds (0, 0, getWidth(), getHeight());
-
-        setTextBoxWidth();
+        filmSlider.setBounds(0, 0, getWidth(), getHeight());
     }
-
-    //else if vertical
-    else if (sliderType.contains ("vertical"))
-    {
-        if (getText().isNotEmpty())
-        {
-            textLabel.setJustificationType (Justification::centred);
-            textLabel.setText (getText(), dontSendNotification);
-            textLabel.setVisible (true);
-
-            if (shouldShowTextBox > 0)
-            {
-                textLabel.setBounds (0, 1, getWidth(), 20);
-                slider.setBounds (0, 20, getWidth(), getHeight() - 20);
-            }
-            else
-            {
-                textLabel.setBounds (0, getHeight() - 20, getWidth(), 20);
-                slider.setBounds (0, 0, getWidth(), getHeight() - 20);
-            }
-        }
-        else
-        {
-            slider.setBounds (0, 0, getWidth(), getHeight());
-        }
-    }
-
-    //else if horizontal
     else
     {
-        if (getText().isNotEmpty())
+        if (sliderType.contains("rotary"))
         {
-            const float width = textLabel.getFont().getStringWidthFloat (getText()) + 10.f;
-            textLabel.setText (getText(), dontSendNotification);
-            textLabel.setVisible (true);
-
-            if (shouldShowTextBox > 0)
+            if (getText().isNotEmpty())
             {
-                textLabel.setBounds (0, 0, width, getHeight());
-                slider.setBounds (width - 3, 0, getWidth() - (width - 4), getHeight());
+
+                textLabel.setText(getText(), dontSendNotification);
+                textLabel.setJustificationType(Justification::centred);
+                textLabel.setVisible(true);
+
+                if (shouldShowTextBox > 0)
+                {
+                    textLabel.setBounds(0, 0, getWidth(), 20);
+                    slider.setBounds(0, 20, getWidth(), getHeight() - 20);
+                }
+                else
+                {
+                    textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
+                    slider.setBounds(0, 0, getWidth(), getHeight() - 15);
+                }
+            }
+            else
+                slider.setBounds(0, 0, getWidth(), getHeight());
+
+            setTextBoxWidth();
+        }
+
+        //else if vertical
+        else if (sliderType.contains("vertical"))
+        {
+            if (getText().isNotEmpty())
+            {
+                textLabel.setJustificationType(Justification::centred);
+                textLabel.setText(getText(), dontSendNotification);
+                textLabel.setVisible(true);
+
+                if (shouldShowTextBox > 0)
+                {
+                    textLabel.setBounds(0, 1, getWidth(), 20);
+                    slider.setBounds(0, 20, getWidth(), getHeight() - 20);
+                }
+                else
+                {
+                    textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
+                    slider.setBounds(0, 0, getWidth(), getHeight() - 20);
+                }
             }
             else
             {
-                textLabel.setBounds (0, 0, width, getHeight());
-                slider.setBounds (width - 3, 0, getWidth() - (width - 4), getHeight());
+                slider.setBounds(0, 0, getWidth(), getHeight());
             }
         }
+
+        //else if horizontal
         else
-            slider.setBounds (0, 0, getWidth(), getHeight());
+        {
+            if (getText().isNotEmpty())
+            {
+                const float width = textLabel.getFont().getStringWidthFloat(getText()) + 10.f;
+                textLabel.setText(getText(), dontSendNotification);
+                textLabel.setVisible(true);
 
+                if (shouldShowTextBox > 0)
+                {
+                    textLabel.setBounds(0, 0, width, getHeight());
+                    slider.setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
+                }
+                else
+                {
+                    textLabel.setBounds(0, 0, width, getHeight());
+                    slider.setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
+                }
+            }
+            else
+                slider.setBounds(0, 0, getWidth(), getHeight());
+
+        }
+
+        slider.setValue(value, dontSendNotification);
     }
-
-    slider.setValue (value, dontSendNotification);
+    
 }
 
 void CabbageSlider::createPopupBubble()

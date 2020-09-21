@@ -26,6 +26,64 @@
 
 class CabbagePluginEditor;
 
+//https://forum.juce.com/t/skew-friendly-filmstrip-knob/15360
+class FilmStripSlider : public Slider
+{
+public:
+    FilmStripSlider(Image image, const int numFrames, const bool stripIsHorizontal)
+        : Slider(),
+        numFrames_(numFrames),
+        isHorizontal_(stripIsHorizontal),
+        filmStrip(image)
+    {
+        if (!filmStrip.isNull()) 
+        {
+            setTextBoxStyle(NoTextBox, 0, 0, 0);
+            imageIsNull = false;
+            if (isHorizontal_) {
+                frameHeight = filmStrip.getHeight();
+                frameWidth = filmStrip.getWidth() / numFrames_;
+            }
+            else {
+                frameHeight = filmStrip.getHeight() / numFrames_;
+                frameWidth = filmStrip.getWidth();
+            }
+        }
+    }
+
+    void paint(Graphics& g)
+    {
+        if (imageIsNull == false)
+        {
+            const float sliderPos = (float)valueToProportionOfLength(getValue());
+
+            int value = sliderPos * (numFrames_ - 1);
+            CabbageUtilities::debug(value);
+            CabbageUtilities::debug("Width:", getWidth());
+            CabbageUtilities::debug("Height", getHeight());
+            if (isHorizontal_) {
+                g.drawImage(filmStrip, 0, 0, getWidth(), getHeight(),
+                    value * frameWidth, 0, frameWidth, frameHeight);
+            }
+            else {
+                g.drawImage(filmStrip, 0, 0, getWidth(), getHeight(),
+                    0, value * frameHeight, frameWidth, frameHeight);
+            }
+        }
+    }
+
+    int getFrameWidth() const { return frameWidth; }
+    int getFrameHeight() const { return frameHeight; }
+
+private:
+    const int numFrames_;
+    const bool isHorizontal_;
+    bool imageIsNull = true;
+    Image filmStrip;
+    int frameWidth = 32, frameHeight = 32;
+};
+
+
 class CabbageSlider
     : public Component,
       public ValueTree::Listener,
@@ -39,6 +97,7 @@ class CabbageSlider
     String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
     bool shouldDisplayPopup = true;
     Slider slider;
+    FilmStripSlider filmSlider;
     BubbleMessageComponent popupBubble;
 
     void mouseDrag (const MouseEvent& event) override;
@@ -62,7 +121,7 @@ public:
     void setTextBoxWidth();
     void setSliderVelocity (ValueTree wData);
     void resized() override;
-    void initialiseSlider (ValueTree wData);
+    void initialiseSlider (ValueTree wData, Slider& currentSlider);
 
     void setTextBoxOrientation (String type, bool textBox);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop) override;
@@ -78,7 +137,5 @@ public:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)
 
 };
-
-
 
 #endif  // CABBAGESLIDER_H_INCLUDED

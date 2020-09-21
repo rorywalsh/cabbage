@@ -382,6 +382,7 @@ public:
         add ("textcolor");
         add ("fontstyle");
         add ("fontcolor");
+        add ("filmstrip");
         add ("arraysize");
         add ("increment");
         add ("namespace");
@@ -561,6 +562,11 @@ namespace CabbageIdentifierIds
 	static const Identifier file = "file";
 	static const Identifier filetype = "filetype";
 	static const Identifier fill = "fill";
+    static const Identifier filmstripimage = "filmstripimage";
+    static const Identifier filmstripframes = "filmstripframes";
+    static const Identifier filmframewidth = "filmframewidth";
+    static const Identifier filmframeheight = "filmframeheight";
+    static const Identifier filmorientation = "filmorientation";
 	static const Identifier fillcolour = "fillcolour";
 	static const Identifier fontcolour = "fontcolour";
 	static const Identifier fontstyle = "fontstyle";
