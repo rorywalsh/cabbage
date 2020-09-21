@@ -1,0 +1,4 @@
+<a name="filmstrip"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
+**filmstrip("filename", numFrames, "orientation")** The `filmstrip` identifier allow users to use a filmstrip style png to skin their sliders. "filename" is the name of the .png file to be used. `numFrames` is the number of frames in the film strip image. "orientation" should be 'vertical' or 'horiztonal'. This tells Cabbage which way the frames are aligned. If you leave out the orientation, Cabbage will defaul tto vertical, which seems the most common alignment for film strips. 
+
+>Try to avoid full path names at all costs. They will work fine on a local machine, but will not be valid on another machine.
