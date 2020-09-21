@@ -58,9 +58,6 @@ public:
             const float sliderPos = (float)valueToProportionOfLength(getValue());
 
             int value = sliderPos * (numFrames_ - 1);
-            CabbageUtilities::debug(value);
-            CabbageUtilities::debug("Width:", getWidth());
-            CabbageUtilities::debug("Height", getHeight());
             if (isHorizontal_) {
                 g.drawImage(filmStrip, 0, 0, getWidth(), getHeight(),
                     value * frameWidth, 0, frameWidth, frameHeight);
