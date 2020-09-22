@@ -28,7 +28,7 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
 popupBubble (250), 
 filmSlider(ImageFileFormat::loadFrom(File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstripimage))),
-    CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::filmstripframes), CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmorientation) == "vertical" ? false : true)
+    CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::filmstripframes), CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstriporientation) == "vertical" ? false : true)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
@@ -61,10 +61,12 @@ filmSlider(ImageFileFormat::loadFrom(File(CabbageWidgetData::getStringProp(wData
     }        
     else 
     {
+        isFilmStripSlider = true;
         filmSlider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
         addAndMakeVisible(&filmSlider);
         initialiseSlider(wData, filmSlider);
         filmSlider.setTextValueSuffix(postfix);
+        setTextBoxOrientation(sliderType, shouldShowTextBox);
     }
         
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
@@ -157,7 +159,7 @@ void CabbageSlider::setTextBoxWidth()
 
 void CabbageSlider::resized()
 {
-    if (CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filmstripimage).length() > 0)
+    if (isFilmStripSlider == true)
     {
         filmSlider.setBounds(0, 0, getWidth(), getHeight());
     }
@@ -257,13 +259,16 @@ void CabbageSlider::createPopupBubble()
 
 void CabbageSlider::showPopupBubble (int time)
 {
-    popupText = createPopupBubbleText(slider.getValue(),
+    popupText = createPopupBubbleText(isFilmStripSlider ? filmSlider.getValue() : slider.getValue(),
                                       decimalPlaces,
                                       channel,
                                       popupPrefix,
                                       popupPostfix);
 
-	popupBubble.showAt (&slider, AttributedString (popupText), time);
+    if(isFilmStripSlider)
+        popupBubble.showAt(&filmSlider, AttributedString(popupText), time);
+    else
+        popupBubble.showAt (&slider, AttributedString (popupText), time);
 
 }
 

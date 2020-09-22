@@ -57,7 +57,7 @@ public:
         {
             const float sliderPos = (float)valueToProportionOfLength(getValue());
 
-            int value = sliderPos * (numFrames_ - 1);
+            int value = sliderPos * (numFrames_-1);
             if (isHorizontal_) {
                 g.drawImage(filmStrip, 0, 0, getWidth(), getHeight(),
                     value * frameWidth, 0, frameWidth, frameHeight);
@@ -108,6 +108,7 @@ class CabbageSlider
     String postfix = "";
     String popupPrefix = "";
     String popupPostfix = "";
+    bool isFilmStripSlider = false;
 
     FlatButtonLookAndFeel flatLookAndFeel;
 

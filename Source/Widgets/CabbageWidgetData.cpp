@@ -61,6 +61,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
+    setProperty (widgetData, CabbageIdentifierIds::filmstriporientation, "vertical");
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -922,9 +923,8 @@ void CabbageWidgetData::setFilmStrip(StringArray strTokens, ValueTree widgetData
 {
     setProperty(widgetData, CabbageIdentifierIds::filmstripimage, strTokens[0].trim());
     setProperty(widgetData, CabbageIdentifierIds::filmstripframes, strTokens[1].trim());
-    setProperty(widgetData, CabbageIdentifierIds::filmorientation, strTokens[2].trim());
-    setProperty(widgetData, CabbageIdentifierIds::filmframewidth, strTokens[3].trim());
-    setProperty(widgetData, CabbageIdentifierIds::filmframeheight, strTokens[4].trim());
+    if(strTokens.size()>2)
+        setProperty(widgetData, CabbageIdentifierIds::filmstriporientation, strTokens[2].trim());
 }
 
 void CabbageWidgetData::setShapes (StringArray strTokens, ValueTree widgetData)

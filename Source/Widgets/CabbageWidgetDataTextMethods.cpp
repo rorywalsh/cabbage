@@ -85,7 +85,9 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("bounds"):
             return getBoundsTextAsCabbageCode (getBounds (widgetData));
 
-            
+        case HashStringToInt("filmstrip"):
+            return getFilmStripTextAsCabbageCode(widgetData);
+
         case HashStringToInt ("type"):
             return getStringProp (widgetData, CabbageIdentifierIds::type);
             
@@ -231,6 +233,16 @@ String CabbageWidgetData::getBoundsTextAsCabbageCode (Rectangle<int> rect)
 {
     const String boundsText = "bounds(" + String (rect.getX()) + ", " + String (rect.getY()) + ", " + String (rect.getWidth()) + ", " + String (rect.getHeight()) + ")";
     return boundsText;
+}
+
+
+String CabbageWidgetData::getFilmStripTextAsCabbageCode(ValueTree widgetData)
+{
+    const String filmImage = getStringProp(widgetData, CabbageIdentifierIds::filmstripimage);
+    const int numberOfFrames = getNumProp(widgetData, CabbageIdentifierIds::filmstripframes);
+    const String orientation = getStringProp(widgetData, CabbageIdentifierIds::filmstriporientation);
+    const String filmStrip = "filmstrip(\"" + filmImage + "\", " + String(numberOfFrames) + ", \"" + orientation + "\")";
+    return filmStrip;
 }
 
 String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)
