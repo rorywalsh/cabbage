@@ -81,7 +81,7 @@ commandLineArgs (commandLineParams)
             }
         }
 
-        const auto exportTypes = StringArray ("AU", "AUi", "VST", "VSTi");
+        const auto exportTypes = StringArray ("AU", "AUi", "VST", "VSTi", "VST3", "VST3i");
         for (const auto &type : exportTypes)
         {
             const auto param = "--export-" + type;
