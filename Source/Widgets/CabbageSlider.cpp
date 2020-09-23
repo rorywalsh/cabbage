@@ -47,8 +47,9 @@ filmSlider(ImageFileFormat::loadFrom(File(CabbageWidgetData::getStringProp(wData
         slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
         setImgProperties(this->slider, wData, "slider");
         setImgProperties(this->slider, wData, "sliderbg");
-        setTextBoxOrientation(sliderType, shouldShowTextBox);
+        
         initialiseSlider(wData, slider);
+        setTextBoxOrientation(sliderType, shouldShowTextBox);
         const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
         const String sliderImgBg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg);
         const String globalStyle = owner->globalStyle;
@@ -84,6 +85,7 @@ filmSlider(ImageFileFormat::loadFrom(File(CabbageWidgetData::getStringProp(wData
 CabbageSlider::~CabbageSlider()
 {
     slider.setLookAndFeel (nullptr);
+    filmSlider.setLookAndFeel(nullptr);
 }
 
 void CabbageSlider::initialiseSlider (ValueTree wData, Slider& currentSlider)
@@ -134,9 +136,9 @@ void CabbageSlider::initialiseSlider (ValueTree wData, Slider& currentSlider)
 
 }
 
-void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
+void CabbageSlider::setTextBoxOrientation (String type, int shouldShowTextBox)
 {
-    if (shouldShowTextBox > 0)
+    if (shouldShowTextBox == 1)
     {
         if(!shouldDisplayPopup)
             shouldDisplayPopup = false;
@@ -145,7 +147,6 @@ void CabbageSlider::setTextBoxOrientation (String type, bool shouldShowTextBox)
     else
     {
         slider.setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-        //shouldDisplayPopup=true;
     }
 }
 
@@ -174,7 +175,7 @@ void CabbageSlider::resized()
                 textLabel.setJustificationType(Justification::centred);
                 textLabel.setVisible(true);
 
-                if (shouldShowTextBox > 0)
+                if (shouldShowTextBox == 1)
                 {
                     textLabel.setBounds(0, 0, getWidth(), 20);
                     slider.setBounds(0, 20, getWidth(), getHeight() - 20);
@@ -188,7 +189,8 @@ void CabbageSlider::resized()
             else
                 slider.setBounds(0, 0, getWidth(), getHeight());
 
-            setTextBoxWidth();
+            if(shouldShowTextBox == 1)
+                setTextBoxWidth();
         }
 
         //else if vertical
@@ -200,7 +202,7 @@ void CabbageSlider::resized()
                 textLabel.setText(getText(), dontSendNotification);
                 textLabel.setVisible(true);
 
-                if (shouldShowTextBox > 0)
+                if (shouldShowTextBox == 1)
                 {
                     textLabel.setBounds(0, 1, getWidth(), 20);
                     slider.setBounds(0, 20, getWidth(), getHeight() - 20);
@@ -226,7 +228,7 @@ void CabbageSlider::resized()
                 textLabel.setText(getText(), dontSendNotification);
                 textLabel.setVisible(true);
 
-                if (shouldShowTextBox > 0)
+                if (shouldShowTextBox == 1)
                 {
                     textLabel.setBounds(0, 0, width, getHeight());
                     slider.setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());

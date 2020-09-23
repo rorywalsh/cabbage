@@ -89,8 +89,8 @@ class CabbageSlider
     CabbagePluginEditor* owner;
     ValueTree widgetData;
     Label textLabel;
-    float velocity, sliderIncrement, sliderSkew, min, max, value, shouldShowTextBox, trackerInnerRadius, trackerOuterRadius, trackerThickness;
-    int decimalPlaces;
+    float velocity = 0, sliderIncrement = 0, sliderSkew = 0, min = 0, max = 0, value = 0, shouldShowTextBox = 0, trackerInnerRadius = 0, trackerOuterRadius = 0, trackerThickness = 0;
+    int decimalPlaces = 0;
     String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
     bool shouldDisplayPopup = true;
     Slider slider;
@@ -121,7 +121,7 @@ public:
     void resized() override;
     void initialiseSlider (ValueTree wData, Slider& currentSlider);
 
-    void setTextBoxOrientation (String type, bool textBox);
+    void setTextBoxOrientation (String type, int textBox);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&) override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
