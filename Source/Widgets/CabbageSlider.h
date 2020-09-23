@@ -129,7 +129,10 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
     Slider& getSlider()
     {
-        return slider;
+        if(isFilmStripSlider)
+            return filmSlider;
+        else
+            return slider;
     };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)
