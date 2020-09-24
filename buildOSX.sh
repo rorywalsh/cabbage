@@ -26,9 +26,9 @@ sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 cd $AGENT_BUILDDIRECTORY
 git clone https://github.com/juce-framework/JUCE.git
 git checkout 5.4.7
+git branch
 touch JUCE/
 cd $AGENT_BUILDDIRECTORY/JUCE
-https://github.com/juce-framework/JUCE.git
 cd $AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/JuceLibraryCode
 sed -i '' "s/#define JUCER_ENABLE_GPL_MODE 1/#define JUCER_ENABLE_GPL_MODE 1/" AppConfig.h
 sed -i '' "s/#define JUCE_USE_DARK_SPLASH_SCREEN 1/#define JUCE_USE_DARK_SPLASH_SCREEN 0/" AppConfig.h
