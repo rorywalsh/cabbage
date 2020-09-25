@@ -30,23 +30,28 @@ class CabbagePluginEditor;
 class FilmStripSlider : public Slider
 {
 public:
-    FilmStripSlider(Image image, const int numFrames, const bool stripIsHorizontal)
+    FilmStripSlider(ValueTree cAttr, const int numFrames, const bool stripIsHorizontal)
         : Slider(),
         numFrames_(numFrames),
-        isHorizontal_(stripIsHorizontal),
-        filmStrip(image)
+        isHorizontal_(stripIsHorizontal)
     {
-        if (!filmStrip.isNull()) 
+
+        const File imageFile = File(CabbageWidgetData::getStringProp(cAttr, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(cAttr, CabbageIdentifierIds::filmstripimage));
+        if(imageFile.existsAsFile())
         {
-            setTextBoxStyle(NoTextBox, 0, 0, 0);
-            imageIsNull = false;
-            if (isHorizontal_) {
-                frameHeight = filmStrip.getHeight();
-                frameWidth = filmStrip.getWidth() / numFrames_;
-            }
-            else {
-                frameHeight = filmStrip.getHeight() / numFrames_;
-                frameWidth = filmStrip.getWidth();
+            filmStrip = ImageFileFormat::loadFrom(imageFile);
+            if (!filmStrip.isNull())
+            {
+                setTextBoxStyle(NoTextBox, 0, 0, 0);
+                imageIsNull = false;
+                if (isHorizontal_) {
+                    frameHeight = filmStrip.getHeight();
+                    frameWidth = filmStrip.getWidth() / numFrames_;
+                }
+                else {
+                    frameHeight = filmStrip.getHeight() / numFrames_;
+                    frameWidth = filmStrip.getWidth();
+                }
             }
         }
     }
@@ -68,7 +73,8 @@ public:
             }
         }
     }
-
+    
+    bool isFilmStripValid(){    return imageIsNull ? false : true; }
     int getFrameWidth() const { return frameWidth; }
     int getFrameHeight() const { return frameHeight; }
 
@@ -129,7 +135,7 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
     Slider& getSlider()
     {
-        if(isFilmStripSlider)
+        if(filmSlider.isFilmStripValid())
             return filmSlider;
         else
             return slider;

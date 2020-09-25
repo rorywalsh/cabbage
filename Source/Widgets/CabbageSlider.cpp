@@ -27,9 +27,9 @@ CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
       sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
       channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
 popupBubble (250), 
-filmSlider(ImageFileFormat::loadFrom(File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstripimage))),
-    CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::filmstripframes), CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstriporientation) == "vertical" ? false : true)
+filmSlider(wData, CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::filmstripframes), CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstriporientation) == "vertical" ? false : true)
 {
+
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 	widgetData.addListener (this);
     setLookAndFeelColours (widgetData);
@@ -146,106 +146,98 @@ void CabbageSlider::setTextBoxOrientation (String type, int shouldShowTextBox)
     }
     else
     {
-        slider.setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+        getSlider().setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     }
 }
 
 void CabbageSlider::setTextBoxWidth()
 {
     if (sliderType.contains ("horizontal"))
-        slider.setTextBoxStyle (Slider::TextBoxRight, false, jmin (55.f, getWidth()*.65f), 15);
+        getSlider().setTextBoxStyle (Slider::TextBoxRight, false, jmin (55.f, getWidth()*.65f), 15);
     else
-        slider.setTextBoxStyle (Slider::TextBoxBelow, false, jmin (55.f, getWidth()*.65f), 15);
+        getSlider().setTextBoxStyle (Slider::TextBoxBelow, false, jmin (55.f, getWidth()*.65f), 15);
 }
 
 void CabbageSlider::resized()
 {
-    if (isFilmStripSlider == true)
+    if (sliderType.contains("rotary"))
     {
-        filmSlider.setBounds(0, 0, getWidth(), getHeight());
+        if (getText().isNotEmpty())
+        {
+            textLabel.setText(getText(), dontSendNotification);
+            textLabel.setJustificationType(Justification::centred);
+            textLabel.setVisible(true);
+
+            if (shouldShowTextBox == 1)
+            {
+                textLabel.setBounds(0, 0, getWidth(), 20);
+                getSlider().setBounds(0, 20, getWidth(), getHeight() - 20);
+            }
+            else
+            {
+                textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
+                getSlider().setBounds(0, 0, getWidth(), getHeight() - 15);
+            }
+        }
+        else
+            getSlider().setBounds(0, 0, getWidth(), getHeight());
+
+        if(shouldShowTextBox == 1)
+            setTextBoxWidth();
     }
-    else
+
+    //else if vertical
+    else if (sliderType.contains("vertical"))
     {
-        if (sliderType.contains("rotary"))
+        if (getText().isNotEmpty())
         {
-            if (getText().isNotEmpty())
+            textLabel.setJustificationType(Justification::centred);
+            textLabel.setText(getText(), dontSendNotification);
+            textLabel.setVisible(true);
+
+            if (shouldShowTextBox == 1)
             {
-
-                textLabel.setText(getText(), dontSendNotification);
-                textLabel.setJustificationType(Justification::centred);
-                textLabel.setVisible(true);
-
-                if (shouldShowTextBox == 1)
-                {
-                    textLabel.setBounds(0, 0, getWidth(), 20);
-                    slider.setBounds(0, 20, getWidth(), getHeight() - 20);
-                }
-                else
-                {
-                    textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
-                    slider.setBounds(0, 0, getWidth(), getHeight() - 15);
-                }
-            }
-            else
-                slider.setBounds(0, 0, getWidth(), getHeight());
-
-            if(shouldShowTextBox == 1)
-                setTextBoxWidth();
-        }
-
-        //else if vertical
-        else if (sliderType.contains("vertical"))
-        {
-            if (getText().isNotEmpty())
-            {
-                textLabel.setJustificationType(Justification::centred);
-                textLabel.setText(getText(), dontSendNotification);
-                textLabel.setVisible(true);
-
-                if (shouldShowTextBox == 1)
-                {
-                    textLabel.setBounds(0, 1, getWidth(), 20);
-                    slider.setBounds(0, 20, getWidth(), getHeight() - 20);
-                }
-                else
-                {
-                    textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
-                    slider.setBounds(0, 0, getWidth(), getHeight() - 20);
-                }
+                textLabel.setBounds(0, 1, getWidth(), 20);
+                getSlider().setBounds(0, 20, getWidth(), getHeight() - 20);
             }
             else
             {
-                slider.setBounds(0, 0, getWidth(), getHeight());
+                textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
+                getSlider().setBounds(0, 0, getWidth(), getHeight() - 20);
             }
         }
-
-        //else if horizontal
         else
         {
-            if (getText().isNotEmpty())
-            {
-                const float width = textLabel.getFont().getStringWidthFloat(getText()) + 10.f;
-                textLabel.setText(getText(), dontSendNotification);
-                textLabel.setVisible(true);
+            getSlider().setBounds(0, 0, getWidth(), getHeight());
+        }
+    }
 
-                if (shouldShowTextBox == 1)
-                {
-                    textLabel.setBounds(0, 0, width, getHeight());
-                    slider.setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
-                }
-                else
-                {
-                    textLabel.setBounds(0, 0, width, getHeight());
-                    slider.setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
-                }
+    //else if horizontal
+    else
+    {
+        if (getText().isNotEmpty())
+        {
+            const float width = textLabel.getFont().getStringWidthFloat(getText()) + 10.f;
+            textLabel.setText(getText(), dontSendNotification);
+            textLabel.setVisible(true);
+
+            if (shouldShowTextBox == 1)
+            {
+                textLabel.setBounds(0, 0, width, getHeight());
+                getSlider().setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
             }
             else
-                slider.setBounds(0, 0, getWidth(), getHeight());
-
+            {
+                textLabel.setBounds(0, 0, width, getHeight());
+                getSlider().setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
+            }
         }
+        else
+            getSlider().setBounds(0, 0, getWidth(), getHeight());
 
-        slider.setValue(value, dontSendNotification);
     }
+
+    getSlider().setValue(value, dontSendNotification);
     
 }
 
@@ -261,16 +253,13 @@ void CabbageSlider::createPopupBubble()
 
 void CabbageSlider::showPopupBubble (int time)
 {
-    popupText = createPopupBubbleText(isFilmStripSlider ? filmSlider.getValue() : slider.getValue(),
+    popupText = createPopupBubbleText(getSlider().getValue(),
                                       decimalPlaces,
                                       channel,
                                       popupPrefix,
                                       popupPostfix);
 
-    if(isFilmStripSlider)
-        popupBubble.showAt(&filmSlider, AttributedString(popupText), time);
-    else
-        popupBubble.showAt (&slider, AttributedString (popupText), time);
+   popupBubble.showAt (&getSlider(), AttributedString (popupText), time);
 
 }
 
@@ -304,38 +293,38 @@ void CabbageSlider::setSliderVelocity (ValueTree wData)
 
     if (velocity > 0)
     {
-        slider.setVelocityModeParameters (velocity, 1, 0.0, true);
-        slider.setVelocityBasedMode (true);
+        getSlider().setVelocityModeParameters (velocity, 1, 0.0, true);
+        getSlider().setVelocityBasedMode (true);
     }
     else
-        slider.setVelocityBasedMode (false);
+        getSlider().setVelocityBasedMode (false);
 }
 
 void CabbageSlider::setLookAndFeelColours (ValueTree wData)
 {
     textLabel.setColour (Label::outlineColourId, Colours::transparentBlack);
-    slider.setColour (Slider::textBoxHighlightColourId, Colours::lime.withAlpha (.2f));
+    getSlider().setColour (Slider::textBoxHighlightColourId, Colours::lime.withAlpha (.2f));
 
-    slider.setColour (Slider::thumbColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
-    slider.setColour (Slider::trackColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)));
-    slider.setColour (Slider::rotarySliderOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
+    getSlider().setColour (Slider::thumbColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+    getSlider().setColour (Slider::trackColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)));
+    getSlider().setColour (Slider::rotarySliderOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
 
-    slider.setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+    getSlider().setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     textLabel.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)));
 
-    slider.setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
-    slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxcolour)));
-    slider.setColour (Slider::textBoxHighlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxcolour)).contrasting());
-    slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxoutlinecolour)));
+    getSlider().setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+    getSlider().setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxcolour)));
+    getSlider().setColour (Slider::textBoxHighlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxcolour)).contrasting());
+    getSlider().setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textboxoutlinecolour)));
 
-    slider.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
-    slider.setColour (Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
+    getSlider().setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
+    getSlider().setColour (Label::backgroundColourId, CabbageUtilities::getBackgroundSkin());
 
-    slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::markercolour));
+    getSlider().getProperties().set("markercolour", CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::markercolour));
     
-    slider.setColour (Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
-    slider.lookAndFeelChanged();
+    getSlider().setColour (Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
+    getSlider().lookAndFeelChanged();
 }
 
 //==============================================================================
@@ -344,7 +333,7 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
 
     if (prop == CabbageIdentifierIds::value)
     {
-        slider.setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), dontSendNotification);
+        getSlider().setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), dontSendNotification);
     }
     else
     {
@@ -352,11 +341,11 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
         textLabel.setVisible (getCurrentText (valueTree).isNotEmpty() ? true : false);
         shouldShowTextBox = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuetextbox);
         setTextBoxOrientation (sliderType, shouldShowTextBox);
-        slider.setTooltip (getCurrentPopupText (valueTree));
+        getSlider().setTooltip (getCurrentPopupText (valueTree));
         
-        slider.getProperties().set ("trackerthickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackerthickness));
-        slider.getProperties().set ("trackerinnerradius", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackerinsideradius));
-        slider.getProperties().set ("trackerouterradius", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackeroutsideradius));
+        getSlider().getProperties().set ("trackerthickness", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackerthickness));
+        getSlider().getProperties().set ("trackerinnerradius", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackerinsideradius));
+        getSlider().getProperties().set ("trackerouterradius", CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::trackeroutsideradius));
         
         handleCommonUpdates (this, valueTree);
         setLookAndFeelColours (valueTree);
