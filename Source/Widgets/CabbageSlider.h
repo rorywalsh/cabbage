@@ -56,23 +56,7 @@ public:
         }
     }
 
-    void paint(Graphics& g)
-    {
-        if (imageIsNull == false)
-        {
-            const float sliderPos = (float)valueToProportionOfLength(getValue());
-
-            int value = sliderPos * (numFrames_-1);
-            if (isHorizontal_) {
-                g.drawImage(filmStrip, 0, 0, getWidth(), getHeight(),
-                    value * frameWidth, 0, frameWidth, frameHeight);
-            }
-            else {
-                g.drawImage(filmStrip, 0, 0, getWidth(), getHeight(),
-                    0, value * frameHeight, frameWidth, frameHeight);
-            }
-        }
-    }
+    void paint(Graphics& g) override;
     
     bool isFilmStripValid(){    return imageIsNull ? false : true; }
     int getFrameWidth() const { return frameWidth; }

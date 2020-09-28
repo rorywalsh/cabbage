@@ -20,6 +20,27 @@
 #include "CabbageSlider.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
+
+void FilmStripSlider::paint(Graphics& g)
+{
+    if (imageIsNull == false)
+    {
+        const float sliderPos = (float)valueToProportionOfLength(getValue());
+
+        int value = sliderPos * (numFrames_ - 1);
+        if (isHorizontal_) {
+            g.drawImage(filmStrip, 0, 0, getWidth(), getHeight(),
+                value * frameWidth, 0, frameWidth, frameHeight);
+        }
+        else {
+            if (this->getSliderStyle() == Slider::SliderStyle::RotaryVerticalDrag) {
+                g.drawImage(filmStrip, getWidth() * .175f, getHeight() * .175f, getWidth() * .65f, getHeight() * .65f,
+                    0, value * frameHeight, frameWidth, frameHeight);
+            }
+            
+        }
+    }
+}
 CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     : owner (_owner),
       widgetData (wData),
@@ -170,17 +191,26 @@ void CabbageSlider::resized()
 
             if (shouldShowTextBox == 1)
             {
-                textLabel.setBounds(0, 0, getWidth(), 20);
-                getSlider().setBounds(0, 20, getWidth(), getHeight() - 20);
+                textLabel.setBounds(0, 0, getWidth(), getHeight()*.2f);
+                if (isFilmStripSlider)
+                    getSlider().setBounds(0, 0, getWidth(), getHeight());
+                else
+                    getSlider().setBounds(0, getHeight()*.2f, getWidth(), getHeight() - getHeight()*.2f);
             }
             else
             {
-                textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
-                getSlider().setBounds(0, 0, getWidth(), getHeight() - 15);
+                textLabel.setBounds(0, getHeight() - getHeight()*.2f, getWidth(), getHeight() * .2f);
+                if(isFilmStripSlider)
+                    getSlider().setBounds(-getWidth() * .1f, -getHeight()*.2f, getWidth() + getWidth() * .2f, getHeight()+ getHeight() * .2f);
+                else
+                    getSlider().setBounds(0, 0, getWidth(), getHeight() - getHeight() * .15f);
             }
         }
         else
-            getSlider().setBounds(0, 0, getWidth(), getHeight());
+            if (isFilmStripSlider)
+                getSlider().setBounds(-getWidth() * .2f, -getHeight() * .25f, getWidth() + getWidth() * .4f, getHeight() + getHeight() * .4f);
+            else
+                getSlider().setBounds(0, 0, getWidth(), getHeight());
 
         if(shouldShowTextBox == 1)
             setTextBoxWidth();
@@ -198,7 +228,10 @@ void CabbageSlider::resized()
             if (shouldShowTextBox == 1)
             {
                 textLabel.setBounds(0, 1, getWidth(), 20);
-                getSlider().setBounds(0, 20, getWidth(), getHeight() - 20);
+                if(isFilmStripSlider)
+                    getSlider().setBounds(0, -15, getWidth(), getHeight()+20);
+                else
+                    getSlider().setBounds(0, 20, getWidth(), getHeight() - 20);
             }
             else
             {
@@ -210,6 +243,9 @@ void CabbageSlider::resized()
         {
             getSlider().setBounds(0, 0, getWidth(), getHeight());
         }
+
+        if (shouldShowTextBox == 1)
+            setTextBoxWidth();
     }
 
     //else if horizontal
@@ -235,6 +271,8 @@ void CabbageSlider::resized()
         else
             getSlider().setBounds(0, 0, getWidth(), getHeight());
 
+        if (shouldShowTextBox == 1)
+            setTextBoxWidth();
     }
 
     getSlider().setValue(value, dontSendNotification);
