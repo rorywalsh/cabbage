@@ -33,11 +33,8 @@ void FilmStripSlider::paint(Graphics& g)
                 value * frameWidth, 0, frameWidth, frameHeight);
         }
         else {
-            if (this->getSliderStyle() == Slider::SliderStyle::RotaryVerticalDrag) {
-                g.drawImage(filmStrip, getWidth() * .175f, getHeight() * .175f, getWidth() * .65f, getHeight() * .65f,
-                    0, value * frameHeight, frameWidth, frameHeight);
-            }
-            
+            g.drawImage(filmStrip, getWidth() * .175f, getHeight() * .175f, getWidth() * .65f, getHeight() * .65f,
+                0, value * frameHeight, frameWidth, frameHeight);
         }
     }
 }
