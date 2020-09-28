@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.4.2"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.4.3"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -12,7 +12,7 @@
               jucerVersion="5.4.7" buildStandalone="1" enableIAA="0" displaySplashScreen="0"
               reportAppUsage="1" splashScreenColour="Dark" cppLanguageStandard="11"
               companyCopyright="" pluginFormats="buildAU,buildStandalone,buildVST,buildVST3"
-              pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginCharacteristicsValue="pluginWantsMidiIn,pluginProducesMidiOut"
               pluginRTASDisableBypass="0" pluginRTASDisableMultiMono="0" pluginAAXDisableBypass="0"
               pluginAAXDisableMultiMono="0">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
