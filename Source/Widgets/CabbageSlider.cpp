@@ -33,8 +33,21 @@ void FilmStripSlider::paint(Graphics& g)
                 value * frameWidth, 0, frameWidth, frameHeight);
         }
         else {
-            g.drawImage(filmStrip, getWidth() * .175f, getHeight() * .175f, getWidth() * .65f, getHeight() * .65f,
-                0, value * frameHeight, frameWidth, frameHeight);
+            if (getSliderStyle() == SliderStyle::RotaryVerticalDrag)
+            {
+                g.drawImage(filmStrip, getWidth() * .175f, getHeight() * .175f, getWidth() * .65f, getHeight() * .65f,
+                    0, value * frameHeight, frameWidth, frameHeight);
+            }
+            else if(getSliderStyle() == SliderStyle::LinearVertical)
+            {
+                g.drawImage(filmStrip, getWidth() * .175f, getHeight() * .16f, getWidth() * .65f, getHeight() * .75f,
+                    0, value * frameHeight, frameWidth, frameHeight);
+            }
+            else if (getSliderStyle() == SliderStyle::LinearHorizontal)
+            {
+                g.drawImage(filmStrip, getWidth()*.01f, getHeight() * .2f, getWidth() * .78f, getHeight() * .65f,
+                    0, value * frameHeight, frameWidth, frameHeight);
+            }
         }
     }
 }
@@ -224,21 +237,27 @@ void CabbageSlider::resized()
 
             if (shouldShowTextBox == 1)
             {
-                textLabel.setBounds(0, 1, getWidth(), 20);
+                textLabel.setBounds(0, 1, getWidth(), getHeight()* .1f);
                 if(isFilmStripSlider)
-                    getSlider().setBounds(0, -15, getWidth(), getHeight()+20);
+                    getSlider().setBounds(0, -+getHeight() / 13.0f, getWidth(), getHeight()+getHeight()/13.0f);
                 else
-                    getSlider().setBounds(0, 20, getWidth(), getHeight() - 20);
+                    getSlider().setBounds(0, getHeight() * .1f, getWidth(), getHeight() - getHeight()*.1f);
             }
             else
             {
-                textLabel.setBounds(0, getHeight() - 20, getWidth(), 20);
-                getSlider().setBounds(0, 0, getWidth(), getHeight() - 20);
+                textLabel.setBounds(0, getHeight() - getHeight() * .1f, getWidth(), getHeight()*.1f);
+                if (isFilmStripSlider)
+                    getSlider().setBounds(0, -getHeight() * .2f, getWidth(), getHeight()+ getHeight()*.2f);
+                else
+                    getSlider().setBounds(0, 0, getWidth(), getHeight() - getHeight() * .1f);
             }
         }
         else
         {
-            getSlider().setBounds(0, 0, getWidth(), getHeight());
+            if (isFilmStripSlider)
+                getSlider().setBounds(0, -getHeight() * .2f, getWidth(), getHeight()+ getHeight() / 3.332f);
+            else
+                getSlider().setBounds(0, 0, getWidth(), getHeight());
         }
 
         if (shouldShowTextBox == 1)
@@ -250,6 +269,7 @@ void CabbageSlider::resized()
     {
         if (getText().isNotEmpty())
         {
+            //h=60, w=300
             const float width = textLabel.getFont().getStringWidthFloat(getText()) + 10.f;
             textLabel.setText(getText(), dontSendNotification);
             textLabel.setVisible(true);
@@ -262,11 +282,20 @@ void CabbageSlider::resized()
             else
             {
                 textLabel.setBounds(0, 0, width, getHeight());
-                getSlider().setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
+                if (isFilmStripSlider)
+                    getSlider().setBounds(width - 3, 0, getWidth() + getWidth() / 4.27f - (width - 4), getHeight());
+                else
+                    getSlider().setBounds(width - 3, 0, getWidth() - (width - 4), getHeight());
             }
         }
         else
-            getSlider().setBounds(0, 0, getWidth(), getHeight());
+        {
+            if (isFilmStripSlider)
+                getSlider().setBounds(0, 0, getWidth()+ getWidth() / 3.75f, getHeight());
+            else
+                getSlider().setBounds(0, 0, getWidth(), getHeight());
+        }
+            
 
         if (shouldShowTextBox == 1)
             setTextBoxWidth();
