@@ -86,7 +86,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
             return getBoundsTextAsCabbageCode (getBounds (widgetData));
 
         case HashStringToInt("filmstrip"):
-            return getFilmStripTextAsCabbageCode(widgetData);
+            return getFilmStripTextAsCabbageCode(widgetData, "");
 
         case HashStringToInt ("type"):
             return getStringProp (widgetData, CabbageIdentifierIds::type);
@@ -236,13 +236,23 @@ String CabbageWidgetData::getBoundsTextAsCabbageCode (Rectangle<int> rect)
 }
 
 
-String CabbageWidgetData::getFilmStripTextAsCabbageCode(ValueTree widgetData)
+String CabbageWidgetData::getFilmStripTextAsCabbageCode(ValueTree widgetData, const String macroText)
 {
+    ValueTree tempData("tempTree");
+    const String type = getStringProp(widgetData, CabbageIdentifierIds::type);
+    setWidgetState(tempData, type + " " + macroText, -99);
+
     const String filmImage = getStringProp(widgetData, CabbageIdentifierIds::filmstripimage);
     const int numberOfFrames = getNumProp(widgetData, CabbageIdentifierIds::filmstripframes);
     const String orientation = getStringProp(widgetData, CabbageIdentifierIds::filmstriporientation);
-    const String filmStrip = "filmstrip(\"" + filmImage + "\", " + String(numberOfFrames) + ", \"" + orientation + "\")";
-    return filmStrip;
+
+    if (getStringProp(widgetData, CabbageIdentifierIds::filmstripimage) != filmImage)
+    {
+        const String filmStrip = "filmstrip(\"" + filmImage + "\", " + String(numberOfFrames) + ", \"" + orientation + "\")";
+        return filmStrip;
+    }
+
+    return String();
 }
 
 String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText)

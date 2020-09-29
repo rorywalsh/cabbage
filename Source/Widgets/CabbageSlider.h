@@ -62,6 +62,9 @@ public:
     int getFrameWidth() const { return frameWidth; }
     int getFrameHeight() const { return frameHeight; }
 
+
+    double proportionOfLengthToValue(double proportion) override;
+
 private:
     const int numFrames_;
     const bool isHorizontal_;

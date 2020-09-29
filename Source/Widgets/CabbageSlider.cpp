@@ -51,6 +51,18 @@ void FilmStripSlider::paint(Graphics& g)
         }
     }
 }
+
+double FilmStripSlider::proportionOfLengthToValue(double proportion)
+{
+    const int isTextBoxShowing = getProperties().getWithDefault("showTextBox", 0);
+    if (getSliderStyle() == SliderStyle::LinearVertical)
+        return jmap(proportion, 0.0, 1.0, -0.3, 1.3);
+    else if(getSliderStyle() == SliderStyle::LinearHorizontal)
+        return jmap(proportion, 0.0, 1.0, -0.3, isTextBoxShowing==1 ? 1.2 : 1.8);
+    else
+        return proportion;
+}
+
 CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     : owner (_owner),
       widgetData (wData),
@@ -99,6 +111,7 @@ filmSlider(wData, CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fil
         initialiseSlider(wData, filmSlider);
         filmSlider.setTextValueSuffix(postfix);
         setTextBoxOrientation(sliderType, shouldShowTextBox);
+        filmSlider.getProperties().set("showTextBox", shouldShowTextBox);
     }
         
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
@@ -291,10 +304,14 @@ void CabbageSlider::resized()
         else
         {
             if (isFilmStripSlider)
-                getSlider().setBounds(0, 0, getWidth()+ getWidth() / 3.75f, getHeight());
+                getSlider().setBounds(0, 0, getWidth() + getWidth() / 3.75f, getHeight());
             else
                 getSlider().setBounds(0, 0, getWidth(), getHeight());
         }
+
+
+        if (shouldShowTextBox == 1)
+            setTextBoxWidth();
             
 
         if (shouldShowTextBox == 1)
