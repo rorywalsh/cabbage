@@ -224,14 +224,20 @@ void CabbageSlider::resized()
             {
                 textLabel.setBounds(0, getHeight() - getHeight()*.2f, getWidth(), getHeight() * .2f);
                 if(isFilmStripSlider)
-                    getSlider().setBounds(-getWidth() * .1f, -getHeight()*.2f, getWidth() + getWidth() * .2f, getHeight()+ getHeight() * .2f);
+                    getSlider().setBounds(-getWidth() * .1f, -getHeight()*.1f, getWidth() + getWidth() * .2f, getHeight()+ getHeight() * .1f);
                 else
                     getSlider().setBounds(0, 0, getWidth(), getHeight() - getHeight() * .15f);
             }
         }
         else
             if (isFilmStripSlider)
-                getSlider().setBounds(-getWidth() * .2f, -getHeight() * .25f, getWidth() + getWidth() * .4f, getHeight() + getHeight() * .4f);
+            {
+                if (shouldShowTextBox)
+                    getSlider().setBounds(-getWidth() / 16.f, -getHeight() / 8.0f, getWidth()+ getWidth() / 8.0f, getHeight()+ getHeight() / 8.0f);
+                else
+                    getSlider().setBounds(-getWidth() / 8.0f, -getHeight() / 8.0f, getWidth() + getWidth() * .25f, getHeight() + getHeight() * .25f);
+            }
+               
             else
                 getSlider().setBounds(0, 0, getWidth(), getHeight());
 
@@ -268,7 +274,13 @@ void CabbageSlider::resized()
         else
         {
             if (isFilmStripSlider)
-                getSlider().setBounds(0, -getHeight() * .2f, getWidth(), getHeight()+ getHeight() / 3.332f);
+            {
+                if (shouldShowTextBox)
+                    getSlider().setBounds(0, -getHeight() / 5.71f, getWidth(), getHeight() + getHeight() / 5.71f);
+                else
+                    getSlider().setBounds(0, -getHeight() * .2f, getWidth(), getHeight() + getHeight() / 3.332f);
+            }
+               
             else
                 getSlider().setBounds(0, 0, getWidth(), getHeight());
         }
@@ -303,8 +315,14 @@ void CabbageSlider::resized()
         }
         else
         {
-            if (isFilmStripSlider)
-                getSlider().setBounds(0, 0, getWidth() + getWidth() / 3.75f, getHeight());
+            if (isFilmStripSlider) 
+            {
+                if (shouldShowTextBox)
+                    getSlider().setBounds(0, 0, getWidth(), getHeight());
+                else
+                    getSlider().setBounds(0, 0, getWidth() + getWidth() / 3.75f, getHeight());
+            }
+                
             else
                 getSlider().setBounds(0, 0, getWidth(), getHeight());
         }
