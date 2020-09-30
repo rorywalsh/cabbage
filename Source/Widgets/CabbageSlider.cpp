@@ -52,16 +52,6 @@ void FilmStripSlider::paint(Graphics& g)
     }
 }
 
-double FilmStripSlider::proportionOfLengthToValue(double proportion)
-{
-    const int isTextBoxShowing = getProperties().getWithDefault("showTextBox", 0);
-    if (getSliderStyle() == SliderStyle::LinearVertical)
-        return jmap(proportion, 0.0, 1.0, -0.3, 1.3);
-    else if(getSliderStyle() == SliderStyle::LinearHorizontal)
-        return jmap(proportion, 0.0, 1.0, -0.3, isTextBoxShowing==1 ? 1.2 : 1.8);
-    else
-        return proportion;
-}
 
 CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
     : owner (_owner),
@@ -112,6 +102,11 @@ filmSlider(wData, CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fil
         filmSlider.setTextValueSuffix(postfix);
         setTextBoxOrientation(sliderType, shouldShowTextBox);
         filmSlider.getProperties().set("showTextBox", shouldShowTextBox);
+        sliderIncrement = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::increment);
+        sliderSkew = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::sliderskew);
+        min = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::min);
+        max = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::max);
+        value = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::value);
     }
         
     prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
@@ -150,6 +145,7 @@ void CabbageSlider::initialiseSlider (ValueTree wData, Slider& currentSlider)
 
     currentSlider.setSkewFactor (sliderSkew);
     currentSlider.setRange (min, max, sliderIncrement);
+
 
     const String popup = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext);
     if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
@@ -336,7 +332,7 @@ void CabbageSlider::resized()
             setTextBoxWidth();
     }
 
-    getSlider().setValue(value, dontSendNotification);
+   getSlider().setValue(value, dontSendNotification);
     
 }
 

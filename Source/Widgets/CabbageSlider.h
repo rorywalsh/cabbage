@@ -35,7 +35,6 @@ public:
         numFrames_(numFrames),
         isHorizontal_(stripIsHorizontal)
     {
-
         const File imageFile = File(CabbageWidgetData::getStringProp(cAttr, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(cAttr, CabbageIdentifierIds::filmstripimage));
         if(imageFile.existsAsFile())
         {
@@ -56,16 +55,16 @@ public:
         }
     }
 
+
     void paint(Graphics& g) override;
     
     bool isFilmStripValid(){    return imageIsNull ? false : true; }
     int getFrameWidth() const { return frameWidth; }
     int getFrameHeight() const { return frameHeight; }
-
-
-    double proportionOfLengthToValue(double proportion) override;
+    
 
 private:
+    Label valueTextBox;
     const int numFrames_;
     const bool isHorizontal_;
     bool imageIsNull = true;
