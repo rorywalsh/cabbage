@@ -562,9 +562,10 @@ namespace CabbageIdentifierIds
 	static const Identifier file = "file";
 	static const Identifier filetype = "filetype";
 	static const Identifier fill = "fill";
+    static const Identifier filmStripRemoveFrom1 = "filmStripRemoveFrom1";
+    static const Identifier filmStripRemoveFrom2 = "filmStripRemoveFrom2";
     static const Identifier filmstripimage = "filmstripimage";
     static const Identifier filmstripframes = "filmstripframes";
-    static const Identifier filmstriporientation = "filmstriporientation";
 	static const Identifier fillcolour = "fillcolour";
 	static const Identifier fontcolour = "fontcolour";
 	static const Identifier fontstyle = "fontstyle";

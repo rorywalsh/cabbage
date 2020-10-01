@@ -244,12 +244,17 @@ String CabbageWidgetData::getFilmStripTextAsCabbageCode(ValueTree widgetData, co
 
     const String filmImage = getStringProp(widgetData, CabbageIdentifierIds::filmstripimage);
     const int numberOfFrames = getNumProp(widgetData, CabbageIdentifierIds::filmstripframes);
-    const String orientation = getStringProp(widgetData, CabbageIdentifierIds::filmstriporientation);
+    const float remove1 = getNumProp(widgetData, CabbageIdentifierIds::filmStripRemoveFrom1);
+    const float remove2 = getNumProp(widgetData, CabbageIdentifierIds::filmStripRemoveFrom2);
 
-    if (getStringProp(widgetData, CabbageIdentifierIds::filmstripimage) != filmImage)
+    if (getStringProp(tempData, CabbageIdentifierIds::filmstripimage) != filmImage)
     {
-        const String filmStrip = "filmstrip(\"" + filmImage + "\", " + String(numberOfFrames) + ", \"" + orientation + "\")";
-        return filmStrip;
+        if (getNumProp(tempData, CabbageIdentifierIds::filmStripRemoveFrom1) != remove1)
+        {
+            return "filmstrip(\"" + filmImage + "\", " + String(numberOfFrames) + ", " + String(remove1) + ", " + String(remove2) + ")";
+        }
+        else
+            return "filmstrip(\"" + filmImage + "\", " + String(numberOfFrames) + ")";
     }
 
     return String();

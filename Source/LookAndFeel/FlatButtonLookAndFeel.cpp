@@ -158,6 +158,33 @@ void FlatButtonLookAndFeel::drawDocumentWindowTitleBar (DocumentWindow& window, 
     g.drawText (window.getName(), textX, 0, textW, h, Justification::centredLeft, true);
 }
 
+
+//========= linear slider ================================================================================
+void FlatButtonLookAndFeel::drawLinearSlider(Graphics& g, int x, int y, int width, int height,
+    float sliderPos, float minSliderPos, float maxSliderPos,
+    const Slider::SliderStyle style, Slider& slider)
+{
+    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    if (filmStrip == 1)
+    {
+        g.fillAll(Colours::transparentWhite);
+    }
+    else
+    {
+        if (style == Slider::LinearBar || style == Slider::LinearBarVertical)
+        {
+            g.setColour(slider.findColour(Slider::thumbColourId));
+            g.fillRoundedRectangle(x, y, width, height, 3);
+        }
+        else
+        {
+            drawLinearSliderBackground(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, slider);
+            drawLinearSliderThumb(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, slider);
+        }
+    }
+    
+}
+
 //=========== Linear Slider Background ===========================================================================
 void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int y, int width, int height, float sliderPos,
     float minSliderPos,
@@ -405,78 +432,86 @@ void FlatButtonLookAndFeel::drawTwoValueThumb (Graphics& g, float x, float y, fl
 void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos,
     const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
-    const float radius = jmin (width / 2, height / 2) - 2.0f;
-    const float diameter = radius * 2.f;
-    const float centreX = x + width * 0.5f;
-    const float centreY = y + height * 0.5f;
-    const float rx = centreX - radius;
-    const float ry = centreY - radius;
-    const float rw = radius * 2.0f;
-    const float angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
-    const bool isMouseOver = slider.isMouseOverOrDragging() && slider.isEnabled();
-    Image image;
-    
-    const float innerRadiusProportion = slider.getProperties().getWithDefault ("trackerinnerradius", .7);
-    const float outerRadiusProportion = slider.getProperties().getWithDefault ("trackerouterradius", 1);
-    const float thumbThickness = abs(outerRadiusProportion - innerRadiusProportion) / 4.0f / 2.0f;
-    const float markerThickness = (float)(slider.getProperties().getWithDefault ("markerthickness", 1.0f)) * rw * thumbThickness;
-    const float markerStart = slider.getProperties().getWithDefault ("markerstart", 0.5);
-    const float markerEnd = slider.getProperties().getWithDefault ("markerend", 0.9);
-    const Colour trackerBgColour = Colour::fromString(slider.getProperties().getWithDefault ("trackerbgcolour", Colours::black.toString()).toString());
-    const Colour markerColour = Colour::fromString(slider.getProperties().getWithDefault ("markercolour", Colours::white.toString()).toString());
-
-    slider.setSliderStyle (Slider::RotaryVerticalDrag);
-
-    //tracker
-    g.setColour (slider.findColour (Slider::trackColourId).contrasting (isMouseOver ? 0.1f : 0.0f));
-        
-
+    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    if (filmStrip == 1)
     {
-        Path filledArc;
-        filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-        filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
-        g.fillPath (filledArc);
+        g.fillAll(Colours::transparentWhite);
     }
-
-    // Draw the slider arc background:
-    g.setColour (trackerBgColour);
-    Path bgArc;
-    bgArc.addPieSegment (rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
-    bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
-    g.fillPath (bgArc);
-
-    //outlinecolour
-    Colour outlineColour = slider.findColour (Slider::rotarySliderOutlineColourId);
-    g.setColour (outlineColour);
-
-    Path outlineArc;
-    outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
-    outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
-    outlineArc.closeSubPath();
-
-    g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
-        
-    Path newPolygon;
-    juce::Point<float> centre (centreX, centreY);
-
-    if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
+    else
     {
-        newPolygon.addPolygon (centre, 24.f, radius * innerRadiusProportion, 0.f);
-        newPolygon.applyTransform (AffineTransform::rotation (angle, centreX, centreY));
+        const float radius = jmin(width / 2, height / 2) - 2.0f;
+        const float diameter = radius * 2.f;
+        const float centreX = x + width * 0.5f;
+        const float centreY = y + height * 0.5f;
+        const float rx = centreX - radius;
+        const float ry = centreY - radius;
+        const float rw = radius * 2.0f;
+        const float angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+        const bool isMouseOver = slider.isMouseOverOrDragging() && slider.isEnabled();
+        Image image;
+
+        const float innerRadiusProportion = slider.getProperties().getWithDefault("trackerinnerradius", .7);
+        const float outerRadiusProportion = slider.getProperties().getWithDefault("trackerouterradius", 1);
+        const float thumbThickness = abs(outerRadiusProportion - innerRadiusProportion) / 4.0f / 2.0f;
+        const float markerThickness = (float)(slider.getProperties().getWithDefault("markerthickness", 1.0f)) * rw * thumbThickness;
+        const float markerStart = slider.getProperties().getWithDefault("markerstart", 0.5);
+        const float markerEnd = slider.getProperties().getWithDefault("markerend", 0.9);
+        const Colour trackerBgColour = Colour::fromString(slider.getProperties().getWithDefault("trackerbgcolour", Colours::black.toString()).toString());
+        const Colour markerColour = Colour::fromString(slider.getProperties().getWithDefault("markercolour", Colours::white.toString()).toString());
+
+        slider.setSliderStyle(Slider::RotaryVerticalDrag);
+
+        //tracker
+        g.setColour(slider.findColour(Slider::trackColourId).contrasting(isMouseOver ? 0.1f : 0.0f));
+
+
+        {
+            Path filledArc;
+            filledArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
+            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+            g.fillPath(filledArc);
+        }
+
+        // Draw the slider arc background:
+        g.setColour(trackerBgColour);
+        Path bgArc;
+        bgArc.addPieSegment(rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
+        bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        g.fillPath(bgArc);
+
+        //outlinecolour
+        Colour outlineColour = slider.findColour(Slider::rotarySliderOutlineColourId);
+        g.setColour(outlineColour);
+
+        Path outlineArc;
+        outlineArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
+        outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        outlineArc.closeSubPath();
+
+        g.strokePath(outlineArc, PathStrokeType(slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
+
+        Path newPolygon;
+        juce::Point<float> centre(centreX, centreY);
+
+        if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
+        {
+            newPolygon.addPolygon(centre, 24.f, radius * innerRadiusProportion, 0.f);
+            newPolygon.applyTransform(AffineTransform::rotation(angle, centreX, centreY));
+        }
+        else //Else just use a circle. This is clearer than a polygon when very small.
+            newPolygon.addEllipse(-radius * .2, -radius * .2, radius * .3f, radius * .3f);
+
+        Colour thumbColour = slider.findColour(Slider::thumbColourId).withAlpha(isMouseOver ? slider.findColour(Slider::thumbColourId).getFloatAlpha() : slider.findColour(Slider::thumbColourId).getFloatAlpha() * 0.9f);
+
+        g.setColour(thumbColour);
+        g.fillPath(newPolygon);
+
+        // Draw the thumb segment:
+        Path p;
+        g.setColour(markerColour.getAlpha() == 0 ? markerColour : markerColour.contrasting(isMouseOver ? 0.1f : 0.0f));
+        float thumbLength = radius * innerRadiusProportion * 0.95f;
+        p.addLineSegment(Line<float>(0.0f, -thumbLength * markerStart, 0.0f, -thumbLength * markerEnd), markerThickness);
+        PathStrokeType(markerThickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded).createStrokedPath(p, p);
+        g.fillPath(p, AffineTransform::rotation(angle).translated(centreX, centreY));
     }
-    else //Else just use a circle. This is clearer than a polygon when very small.
-        newPolygon.addEllipse (-radius * .2, -radius * .2, radius * .3f, radius * .3f);
-
-    Colour thumbColour = slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f);
-
-    g.setColour (thumbColour);
-    g.fillPath (newPolygon);
-
-    // Draw the thumb segment:
-    Path p;
-    g.setColour (markerColour.getAlpha() == 0 ? markerColour : markerColour.contrasting (isMouseOver ? 0.1f : 0.0f));
-    float thumbLength = radius * innerRadiusProportion * 0.95f;
-    p.addLineSegment (Line<float> (0.0f, -thumbLength * markerStart, 0.0f, -thumbLength * markerEnd), markerThickness);
-    PathStrokeType (markerThickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded).createStrokedPath (p, p);
-    g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
 }
