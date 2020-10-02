@@ -384,29 +384,33 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                 }
             }
             
-            String manu(JucePlugin_Manufacturer);
-            mFile.seekg (0, ios::end);
-            String manuName;
-            if (manu.length() < 16)
-                for (int y = manu.length(); y < 16; y++)
-                    manu.append (String (" "), 1);
-            //set manufacturer do this a few times in case the plugin ID appear in more than one place.
-            for (int r = 0; r < 10; r++)
+           if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
             {
-                mFile.seekg (0, ios::beg);
-                mFile.read ((char*)&buffer[0], file_size);
-                loc = cabbageFindPluginId (buffer, file_size, "CabbageAudio");
-                
-                if (loc < 0)
+                String manu(JucePlugin_Manufacturer);
+                mFile.seekg (0, ios::end);
+                String manuName;
+                if (manu.length() < 16)
+                    for (int y = manu.length(); y < 16; y++)
+                        manu.append (String (" "), 1);
+                //set manufacturer do this a few times in case the plugin ID appear in more than one place.
+                for (int r = 0; r < 10; r++)
                 {
-                    break;
-                }
-                else
-                {
-                    mFile.seekg (loc, ios::beg);
-                    mFile.write (manu.toUTF8(), 16);
+                    mFile.seekg (0, ios::beg);
+                    mFile.read ((char*)&buffer[0], file_size);
+                    loc = cabbageFindPluginId (buffer, file_size, "CabbageAudio");
+
+                    if (loc < 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        mFile.seekg (loc, ios::beg);
+                        mFile.write (manu.toUTF8(), 16);
+                    }
                 }
             }
+
             
             
             
