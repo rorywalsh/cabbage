@@ -760,7 +760,19 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 //    if(numSideChainChannels==0)
     if (mainInput.size() == 1 && mainOutput.size() == 1)
     {
+#if defined(Cabbage_IDE_Build)
         return true;
+#else
+        if (PluginHostType().isReaper())
+        {
+            // Return `false` to make Reaper test for layouts other than 1 in and 1 out.
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+#endif
     }
         
 
