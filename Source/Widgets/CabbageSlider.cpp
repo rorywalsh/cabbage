@@ -265,15 +265,17 @@ void CabbageSlider::resized()
             }
         }
         else
+        {
             if (isFilmStripSlider)
             {
                 if (shouldShowTextBox)
                     filmStripBounds.setBounds(getWidth() * .1f, 0, getWidth() - getWidth() * .195f, getHeight() - getHeight() * .195f);
                 else
-                    filmStripBounds.setBounds(getWidth() * .09f, getHeight()*.05f, getWidth() - getWidth() * .15f, getHeight() - getHeight() * .15f);
+                    filmStripBounds.setBounds(getWidth() * .09f, getHeight() * .05f, getWidth() - getWidth() * .15f, getHeight() - getHeight() * .15f);
             }
-               
+
             getSlider().setBounds(0, 0, getWidth(), getHeight());
+        }
 
         if(shouldShowTextBox == 1)
             setTextBoxWidth();
