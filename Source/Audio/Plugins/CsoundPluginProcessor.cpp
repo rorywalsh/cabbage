@@ -168,17 +168,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     }
     else
     {
-//#ifdef CabbagePro
-//
-//        const int csdNchnls = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls");
-//        const int csdNchnls_i = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "nchnls_i");
-//        numCsoundOutputChannels = csdNchnls > numCsoundOutputChannels ? numCsoundOutputChannels
-//#else
-//        numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
-//        numCsoundInputChannels = numCsoundOutputChannels;
-//        if (CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i") != -1)
-//            numCsoundInputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls_i");
-//#endif
         csoundParams->nchnls_override = numCsoundOutputChannels;
         csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
@@ -1129,6 +1118,7 @@ CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray (Str
 {
     for (int i = 0; i < signalArrays.size(); i++)
     {
+        const String test = signalArrays[i]->caption;
         if (signalArrays[i]->caption.isNotEmpty() && signalArrays[i]->caption.contains (variableName))
         {
             const String varName = signalArrays[i]->variableName;
@@ -1269,7 +1259,7 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
 // graphing functions...
 //===========================================================================================
 
-void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, const char* /*name*/)
+void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, const char* name)
 {
     CsoundPluginProcessor* ud = (CsoundPluginProcessor*) csoundGetHostData (csound);
     SignalDisplay* display = new SignalDisplay (String (windat->caption), (int)windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
@@ -1282,8 +1272,12 @@ void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, c
             addDisplay  = false;
     }
 
-    if (addDisplay){
-        const String variableName = String(windat->caption).substring(String(windat->caption).indexOf("signal ")+7, String(windat->caption).indexOf(":"));
+    if (addDisplay && !String(windat->caption).contains("ftable"))
+    {
+        const String name = String(windat->caption).substring(String(windat->caption).indexOf("signal ")+7);
+        const int posColon = String(name).indexOf(":");
+        const int posComma = String(name).indexOf(",");
+        const String variableName = name.substring(0, posColon<posComma ? posColon : posComma);
         display->variableName = variableName;
         ud->signalArrays.add (display);
         ud->updateSignalDisplay.set(variableName, false);
@@ -1297,7 +1291,9 @@ void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
     //only take all samples if dealing with fft, waveforms and lissajous curves can be drawn with less samples
     tablePoints = Array<float, CriticalSection> (&windat->fdata[0], windat->npts);
     ud->getSignalArray (windat->caption)->setPoints (tablePoints);
-    ud->updateSignalDisplay.set(ud->getSignalArray (windat->caption)->variableName, true);
+    const String test = ud->getSignalArray (windat->caption)->variableName;
+    if(ud->getSignalArray (windat->caption)->variableName.isNotEmpty())
+        ud->updateSignalDisplay.set(ud->getSignalArray (windat->caption)->variableName, true);
     
 }
 
