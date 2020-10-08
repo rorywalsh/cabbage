@@ -751,14 +751,28 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         if (mainInput.size() == 0 && mainOutput.size() == 2)
             return true;
 #else        
-        
+#if !defined(Cabbage_IDE_Build) && !defined(Cabbage_Lite)
         if (PluginHostType().isReaper())
         {
-            if((mainInput.size() == numCsoundInputChannels + numSideChainChannels) && mainOutput.size() == numCsoundOutputChannels)
-                return true;
+            if(numSideChainChannels > 0)
+            {
+                if ((mainInput.size() == numCsoundInputChannels - numSideChainChannels || mainInput.size() == mainOutput.size())
+                    && mainOutput.size() == numCsoundOutputChannels)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if(mainInput.size() == numCsoundInputChannels && mainOutput.size() == numCsoundOutputChannels)
+                    return true;
+            }
+            
         }
         else
+#endif
         {   //hack to get passed AU validation in logic
+            
         if((mainInput.size()> 0 && mainInput.size()<32) && (mainOutput.size()>0 && mainOutput.size()<32))
             return true;
         }
