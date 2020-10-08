@@ -37,8 +37,10 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
 {
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
     numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
+    CabbageUtilities::debug("Constructor - Requested input channels:", numCsoundInputChannels);
 #endif
 }
 
@@ -103,9 +105,11 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     // nhcnls and nchnls_i variables in Csound. But the host is king. If it requested a different
     // config, we must adhere to it.
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    CabbageUtilities::debug("SetupAndCompile - Requested output channels:", numCsoundOutputChannels);
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
     const int inputs = getBus(true, 0)->getNumberOfChannels();
     numCsoundInputChannels = inputs + numSideChainChannels;
+    CabbageUtilities::debug("SetupAndCompile - Requested input channels:", numCsoundInputChannels);
 #endif
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
@@ -682,16 +686,21 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         hostIsCubase = true;
 #endif
     
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     const int inputs = getBus(true, 0)->getNumberOfChannels();
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputs:", inputs);
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested input channels:", numCsoundInputChannels);
 #endif
     const int outputs = getBus(false, 0)->getNumberOfChannels();
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputs:", outputs);
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
 
     int sideChainChannels = 0;
     if (supportsSidechain)
     {
         numSideChainChannels = getBus(true, 0)->getNumberOfChannels();
     }
+    
     
     if((samplingRate != sampleRate)
        || hostRequestedMono
@@ -730,6 +739,9 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
     const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
     
+    CabbageUtilities::debug("MainOutputSize:", mainOutput.size());
+    CabbageUtilities::debug("MainInputSize:", mainInput.size());
+    
     if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
     {
 #if  JucePlugin_IsSynth
@@ -739,9 +751,17 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         if (mainInput.size() == 0 && mainOutput.size() == 2)
             return true;
 #else        
-        //hack to get passed AU validation in logic
+        
+        if (PluginHostType().isReaper())
+        {
+            if((mainInput.size() == numCsoundInputChannels + numSideChainChannels) && mainOutput.size() == numCsoundOutputChannels)
+                return true;
+        }
+        else
+        {   //hack to get passed AU validation in logic
         if((mainInput.size()> 0 && mainInput.size()<32) && (mainOutput.size()>0 && mainOutput.size()<32))
             return true;
+        }
 #endif
         return false;
     }
