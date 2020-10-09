@@ -304,7 +304,7 @@ void Soundfiler::setScrubberPos (double pos)
         if (pos < 0.5)
             setRange (visibleRange.movedToStartAt (0));
 
-        if (visibleRange.getEnd() <= thumbnail->getTotalLength())
+        if (visibleRange.getEnd() <= thumbnail->getTotalLength() && zoom != 0)
             setRange (visibleRange.movedToStartAt (jmax (0.0, pos - (visibleRange.getLength() / 2.0))));
 
     }
