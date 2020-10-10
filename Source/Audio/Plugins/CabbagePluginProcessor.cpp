@@ -1247,6 +1247,9 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 }
 
 void CabbagePluginProcessor::triggerCsoundEvents() {
+    if (!getCsound())
+        return;
+    
     for (int x = 0; x < matrixEventSequencers.size(); x++) {
         const ValueTree widgetData = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets,
                                                                                  matrixEventSequencers[x]->channel,
@@ -1339,6 +1342,9 @@ CabbageAudioParameter *CabbagePluginProcessor::getParameterForXYPad(String name)
 
 //==============================================================================
 void CabbagePluginProcessor::setCabbageParameter(String channel, float value) {
+    if (!getCsound())
+        return;
+    
     getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
 }
 
