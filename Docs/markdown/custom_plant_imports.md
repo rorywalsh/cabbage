@@ -50,7 +50,7 @@ Each widget in the imported plant will have "radioGroup" prepended to its channe
 
 
 ### cabbagecodescript
-Javascript code can be added to the *cabbagecodescript*. This script can be used to generate Cabbage code that will then be added to yur .csd file. This can be extremely useful if you are creating plants with lots of widgets. Use the Cabbage.print() method to write any JS strings as cabbagecode that will be read by Cabbage when the instrument loads. The code below is an example taken from the GridSequencer.xml file in the Cabbage/instructional examples folder.
+Javascript code can be added to the *cabbagecodescript*. This script can be used to generate Cabbage code that will then be added to your .csd file. This can be extremely useful if you are creating plants with lots of widgets. Use the Cabbage.print() method to write any JS strings as cabbagecode that will be read by Cabbage when the instrument loads. The code below is an example taken from the GridSequencer.xml file in the Cabbage/instructional examples folder.
 
 ``` javascript
 var channelNumber = 1;
