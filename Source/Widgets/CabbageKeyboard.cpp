@@ -43,7 +43,8 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, MidiKeyboardState& state)
 void CabbageKeyboard::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     setOrientation (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::kind) == "horizontal" ? MidiKeyboardComponent::horizontalKeyboard : MidiKeyboardComponent::verticalKeyboardFacingRight);
-
+    const int width = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::keywidth);
+    setKeyWidth(jmax(1, width));
     updateColours(valueTree);
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 

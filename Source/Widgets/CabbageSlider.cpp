@@ -79,6 +79,10 @@ popupBubble (250)
     setImgProperties(this->slider, wData, "sliderbg");
     filmStripValueBox.setEditable(true);
     filmStripValueBox.setJustificationType(Justification::centred);
+    prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valueprefix);
+    postfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valuepostfix);
+    popupPrefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popupprefix);
+    popupPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuppostfix);
     initialiseSlider(wData, slider);
     initFilmStrip(wData);
     setLookAndFeelColours(widgetData);
@@ -93,12 +97,7 @@ popupBubble (250)
     }
     slider.setTextValueSuffix(postfix);
       
-  
-    prefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
-    postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
-    popupPrefix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popupprefix);
-    popupPostfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuppostfix);
-    
+     
     slider.onValueChange = [this] {
         if (isFilmStripSlider) repaint(); 
         auto newValue = slider.getTextFromValue(slider.getValue());
