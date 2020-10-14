@@ -364,6 +364,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
 
+    csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csdFilePath.setAsCurrentWorkingDirectory();
 
 	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Linux) != 0)

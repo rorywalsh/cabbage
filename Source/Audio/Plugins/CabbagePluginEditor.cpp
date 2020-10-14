@@ -57,6 +57,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     resized();
 
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
+    processor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -66,6 +67,7 @@ CabbagePluginEditor::~CabbagePluginEditor()
     radioGroups.clear();
     radioComponents.clear();
     setLookAndFeel (nullptr);
+    processor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
 }
 
 void CabbagePluginEditor::refreshValueTreeListeners()
