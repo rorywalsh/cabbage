@@ -195,7 +195,7 @@ void CabbageEncoder::paint (Graphics& g)
         //g.drawEllipse(slider.reduced(getWidth()*.11).toFloat(), isMouseOver ? 1.5f : 1.f);
 
         Path newPolygon;
-        Point<float> centre (centreX, centreY);
+        juce::Point<float> centre (centreX, centreY);
 
         if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
         {

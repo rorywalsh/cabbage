@@ -57,6 +57,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     resized();
 
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
+    processor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -66,6 +67,7 @@ CabbagePluginEditor::~CabbagePluginEditor()
     radioGroups.clear();
     radioComponents.clear();
     setLookAndFeel (nullptr);
+    processor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
 }
 
 void CabbagePluginEditor::refreshValueTreeListeners()
@@ -206,7 +208,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     repaint();
 }
 //======================================================================================================
-void CabbagePluginEditor::addNewWidget (String widgetType, Point<int> position, bool isCustomPlant)
+void CabbagePluginEditor::addNewWidget (String widgetType, juce::Point<int> position, bool isCustomPlant)
 {
 
     if(isCustomPlant == false)
@@ -742,6 +744,10 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
 }
 void CabbagePluginEditor::sliderDragEnded(Slider* slider)
 {
+    // If the Csound pointer is null then the given slider is invalid and should not be used (its private pimpl pointer is null and will cause a crash).
+    if (!processor.getCsound())
+        return;
+    
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
     {
         if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
@@ -877,6 +883,9 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (ValueTree wData, Component
 //======================================================================================================
 void CabbagePluginEditor::updatefTableData (GenTable* table)
 {
+    if (!processor.getCsound())
+        return;
+    
     Array<double> pFields = table->getPfields();
 
     if ( table->genRoutine == 5 || table->genRoutine == 7 || table->genRoutine == 2)
@@ -944,13 +953,13 @@ void CabbagePluginEditor::updatefTableData (GenTable* table)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound (String channel, float value)
 {
-    if (csdCompiledWithoutError())
+    if (csdCompiledWithoutError() && processor.getCsound())
         processor.getCsound()->SetChannel (channel.getCharPointer(), value);
 }
 
 float CabbagePluginEditor::getChannelDataFromCsound (String channel)
 {
-    if (csdCompiledWithoutError())
+    if (csdCompiledWithoutError() && processor.getCsound())
         return processor.getCsound()->GetChannel (channel.getCharPointer());
     
     return 0;
@@ -958,13 +967,13 @@ float CabbagePluginEditor::getChannelDataFromCsound (String channel)
 
 void CabbagePluginEditor::sendChannelStringDataToCsound (String channel, String value)
 {
-    if (processor.csdCompiledWithoutError())
+    if (processor.csdCompiledWithoutError() && processor.getCsound())
         processor.getCsound()->SetChannel (channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
 void CabbagePluginEditor::sendScoreEventToCsound (String scoreEvent)
 {
-    if (processor.csdCompiledWithoutError())
+    if (processor.csdCompiledWithoutError() && processor.getCsound())
         processor.getCsound()->InputMessage(scoreEvent.toUTF8());
 }
 

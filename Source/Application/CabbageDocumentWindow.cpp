@@ -64,48 +64,66 @@ commandLineArgs (commandLineParams)
     setMenuBar (this, 18/*25*/);
     getMenuBarComponent()->setLookAndFeel (getContentComponent()->lookAndFeel.get());
     
+    auto exportedPlugin = false;
+    auto openingFile = false;
 
     if (commandLineArgs.isNotEmpty())
     {
-        
-        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
-            //hocus pocus for OSX. It seems to append some gibbrish to the command line flags
-            commandLineParams = commandLineParams.substring (0, commandLineParams.indexOf ("-") - 1);
-        
-        
-        if (commandLineParams.contains ("--export-VSTi"))
+        const auto commandLineParams = JUCEApplication::getCommandLineParameterArray();
+
+        String outputFileName = "";
+        if (commandLineParams.contains ("--destination"))
         {
-            String inputFileName = commandLineParams.substring (commandLineParams.indexOf ("--export-VSTi") + 13).trim().removeCharacters ("\"");
-            
-            if (File (inputFileName).existsAsFile())
+            const auto outputFileNameIndex = commandLineParams.indexOf ("--destination") + 1;
+            if (0 < outputFileNameIndex && outputFileNameIndex < commandLineParams.size())
             {
-                content->openFile (inputFileName);
-                pluginExporter.exportPlugin("VSTi", File (inputFileName), getPluginInfo (File (inputFileName), "id"));
-                JUCEApplicationBase::quit();
+                outputFileName = commandLineParams[outputFileNameIndex].trim().removeCharacters ("\"");
             }
-            
         }
-        else if (commandLineParams.contains ("--export-VST "))
+
+        const auto exportTypes = StringArray ("AU", "AUi", "VST", "VSTi", "VST3", "VST3i");
+        for (const auto &type : exportTypes)
         {
-            String inputFileName = commandLineParams.substring (commandLineParams.indexOf ("--export-VST") + 12).trim().removeCharacters ("\"");
-            
-            if (File (inputFileName).existsAsFile())
+            const auto param = "--export-" + type;
+            if (commandLineParams.contains (param))
             {
-                content->openFile (inputFileName);
-                pluginExporter.exportPlugin ("VST", File (inputFileName), getPluginInfo (File (inputFileName), "id"));
-                JUCEApplicationBase::quit();
+                String inputFileName = "";
+                const auto inputFileNameIndex = commandLineParams.indexOf (param) + 1;
+                if (0 < inputFileNameIndex && inputFileNameIndex < commandLineParams.size())
+                {
+                    inputFileName = commandLineParams[inputFileNameIndex].trim().removeCharacters ("\"");
+                    if (File (inputFileName).existsAsFile())
+                    {
+                        content->openFile (inputFileName, false, true);
+                        auto inputFile = File (inputFileName);
+                        auto id = getPluginInfo (inputFile, "id");
+                        auto promptForFilename = false;
+                        pluginExporter.exportPlugin (type, inputFile, id, outputFileName, promptForFilename);
+                        JUCEApplicationBase::quit();
+                        exportedPlugin = true;
+                        break;
+                    }
+                }
             }
-            
         }
-        else if (File::getCurrentWorkingDirectory().getChildFile (commandLineParams.trim().removeCharacters ("\"")).existsAsFile())
+        
+        if (!exportedPlugin && 0 < commandLineParams.size())
         {
-            String CSDFile = commandLineParams.trim().removeCharacters ("\"");;
-            content->openFile (CSDFile);
+            auto csdFile = commandLineParams[0].trim().removeCharacters ("\"");
+            if (File::getCurrentWorkingDirectory().getChildFile (csdFile).existsAsFile())
+            {
+#if JUCE_MAC
+                // CSD file will be opened in Cabbage::anotherInstanceStarted.
+#else
+                content->openFile (csdFile);
+#endif
+                openingFile = true;
+            }
         }
     }
     
     
-    else if (cabbageSettings->getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup") == 1)
+    if (!openingFile && cabbageSettings->getUserSettings()->getIntValue ("OpenMostRecentFileOnStartup") == 1)
     {
         const String lastOpenedFile = cabbageSettings->getUserSettings()->getValue ("MostRecentFile", "");
         cabbageSettings->updateRecentFilesList();
@@ -403,7 +421,7 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::copy);
     menu.addCommandItem (&commandManager, CommandIDs::paste);
     menu.addSeparator();
-    
+    menu.addCommandItem (&commandManager, CommandIDs::addCabbageSection);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::del);
     menu.addCommandItem (&commandManager, CommandIDs::selectAll);
@@ -539,6 +557,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::clearConsole,
         CommandIDs::toggleComments,
         CommandIDs::zoomIn,
+        CommandIDs::addCabbageSection,
         CommandIDs::zoomOut,
         CommandIDs::zoomInConsole,
         CommandIDs::zoomOutConsole,
@@ -642,6 +661,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::saveDocumentToRPi:
             result.setInfo ("Save Csound file to RPi", "Save a document to RPi", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+           
+        case CommandIDs::addCabbageSection:
+            result.setInfo ("Add Cabbage section", "Add a Cababge section", CommandCategories::edit, 0);
             break;
             
         case CommandIDs::saveDocumentAs:
@@ -1004,6 +1027,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->saveGraph (true);
             return true;
 
+        case CommandIDs::addCabbageSection:
+            getContentComponent()->addCabbageSection ();
+            return true;
+            
         case CommandIDs::buildNoConnect:
             if(cabbageSettings->getUserSettings()->getIntValue ("autoConnectNodes") == 1)
                 cabbageSettings->getUserSettings()->setValue("autoConnectNodes", 0);

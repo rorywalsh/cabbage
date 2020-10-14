@@ -45,12 +45,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "{#BuildDir}/Cabbage.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
+;Source: "{#BuildDir}/Cabbage.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 ;Source: "{#BuildDir}/CabbageCsoundCLI.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbageLite.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginEffect.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginSynth.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
-Source: "{#BuildDir}/CabbagePlugin.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
+;Source: "{#BuildDir}/CabbagePlugin.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginEffect.vst3"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginSynth.vst3"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/fmod_csoundL64.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;

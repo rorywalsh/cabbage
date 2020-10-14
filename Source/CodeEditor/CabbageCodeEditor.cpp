@@ -230,7 +230,7 @@ void CabbageCodeEditorComponent::timerCallback()
     if (isDebugModeEnabled() == true)
     {
         MouseInputSource mouse = Desktop::getInstance().getMainMouseSource();
-        Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
+        juce::Point<int> mousePos = getLocalPoint (nullptr, mouse.getScreenPosition()).toInt();
 
         CodeDocument::Position start, end;
         getDocument().findTokenContaining (getPositionAt (mousePos.x, mousePos.y), start, end);

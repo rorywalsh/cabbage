@@ -176,7 +176,7 @@ public:
 	//=============================================================================
 
     String createNewGenericNameForPresetFile();
-    void addNewWidget (String widgetType, Point<int> point, bool isPlant = false);
+    void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
     void refreshComboListBoxContents();
     void enableEditMode (bool enable);
@@ -257,7 +257,7 @@ public:
     }
     
     String changeMessage = "";
-    Point<int> customPlantPosition;
+    juce::Point<int> customPlantPosition;
 private:
 	  
     //---- main component that holds widgets -----
@@ -328,7 +328,7 @@ private:
     bool editModeEnabled = false;
     CabbagePluginProcessor& processor;
     String instrumentName;
-    Point<int> instrumentBounds;
+    juce::Point<int> instrumentBounds;
     SharedResourcePointer<TooltipWindow> tooltipWindow;
 
 

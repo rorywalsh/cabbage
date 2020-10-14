@@ -61,6 +61,10 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, CabbageIdentifierIds::surrogatelinenumber, -99);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
+    setProperty(widgetData, CabbageIdentifierIds::filmstripimage, "");
+    setProperty(widgetData, CabbageIdentifierIds::filmstripframes, 31);
+    setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom1, 0);
+    setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom2, 0);
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -376,9 +380,15 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 addFiles (strTokens, widgetData, "import");
                 break;
 
-            case HashStringToInt ("bundle"):
-                addFiles (strTokens, widgetData, "bundle");
+            case HashStringToInt("bundle"):
+                addFiles(strTokens, widgetData, "bundle");
                 break;
+
+            case HashStringToInt("filmstrip"):
+                setFilmStrip(strTokens, widgetData);
+                break;
+
+
 
             //=========== floats ===============================
             case HashStringToInt ("active"):
@@ -912,6 +922,15 @@ void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widget
 
 }
 
+void CabbageWidgetData::setFilmStrip(StringArray strTokens, ValueTree widgetData)
+{
+    const String type = getStringProp(widgetData, CabbageIdentifierIds::type);
+
+    setProperty(widgetData, CabbageIdentifierIds::filmstripimage, strTokens[0].trim());
+    setProperty(widgetData, CabbageIdentifierIds::filmstripframes, strTokens[1].trim());
+    setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom1, strTokens[2].trim());
+    setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom2, strTokens[3].trim());
+}
 
 void CabbageWidgetData::setShapes (StringArray strTokens, ValueTree widgetData)
 {

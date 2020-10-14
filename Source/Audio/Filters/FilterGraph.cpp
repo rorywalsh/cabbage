@@ -78,7 +78,7 @@ AudioProcessorGraph::Node::Ptr FilterGraph::getNodeForName (const String& name) 
     return nullptr;
 }
 
-void FilterGraph::addPlugin (const PluginDescription& desc, Point<double> pos)
+void FilterGraph::addPlugin (const PluginDescription& desc, juce::Point<double> pos)
 {
 	formatManager.createPluginInstanceAsync(desc,
 		graph.getSampleRate(),
@@ -91,7 +91,7 @@ void FilterGraph::addPlugin (const PluginDescription& desc, Point<double> pos)
 }
 
 void FilterGraph::addPluginCallback(std::unique_ptr<AudioPluginInstance> instance,
-	const String& error, Point<double> pos)
+	const String& error, juce::Point<double> pos)
 {
 	if (instance == nullptr)
 	{
@@ -115,7 +115,7 @@ void FilterGraph::addPluginCallback(std::unique_ptr<AudioPluginInstance> instanc
 	}
 }
 
-void FilterGraph::setNodePosition (NodeID nodeID, Point<double> pos)
+void FilterGraph::setNodePosition (NodeID nodeID, juce::Point<double> pos)
 {
     if (auto* n = graph.getNodeForId (nodeID))
     {
@@ -124,7 +124,7 @@ void FilterGraph::setNodePosition (NodeID nodeID, Point<double> pos)
     }
 }
 
-Point<double> FilterGraph::getNodePosition (NodeID nodeID) const
+juce::Point<double> FilterGraph::getNodePosition (NodeID nodeID) const
 {
     if (auto* n = graph.getNodeForId (nodeID))
         return { static_cast<double> (n->properties ["x"]),
@@ -409,7 +409,7 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 	//mod RW
 	else
 	{
-		const Point<double> pos(xml.getDoubleAttribute("x"), xml.getDoubleAttribute("y"));
+		const juce::Point<double> pos(xml.getDoubleAttribute("x"), xml.getDoubleAttribute("y"));
 		String pluginFile = currentFile.getParentDirectory().getChildFile(pd.fileOrIdentifier).getFullPathName();
         
         pd.fileOrIdentifier = pluginFile;

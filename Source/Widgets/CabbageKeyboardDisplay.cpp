@@ -333,13 +333,13 @@ float MidiKeyboardDisplay::getTotalKeyboardWidth() const noexcept
 	return getKeyPos(rangeEnd).getEnd();
 }
 
-int MidiKeyboardDisplay::getNoteAtPosition(Point<float> p)
+int MidiKeyboardDisplay::getNoteAtPosition(juce::Point<float> p)
 {
 	float v;
 	return xyToNote(p, v);
 }
 
-int MidiKeyboardDisplay::xyToNote(Point<float> pos, float& mousePositionVelocity)
+int MidiKeyboardDisplay::xyToNote(juce::Point<float> pos, float& mousePositionVelocity)
 {
 	if (!reallyContains(pos.toInt(), false))
 		return -1;
@@ -356,10 +356,10 @@ int MidiKeyboardDisplay::xyToNote(Point<float> pos, float& mousePositionVelocity
 			p = { getHeight() - p.x, p.y };
 	}
 
-	return remappedXYToNote(p + Point<float>(xOffset, 0), mousePositionVelocity);
+	return remappedXYToNote(p + juce::Point<float>(xOffset, 0), mousePositionVelocity);
 }
 
-int MidiKeyboardDisplay::remappedXYToNote(Point<float> pos, float& mousePositionVelocity) const
+int MidiKeyboardDisplay::remappedXYToNote(juce::Point<float> pos, float& mousePositionVelocity) const
 {
 	auto blackNoteLength = getBlackNoteLength();
 
@@ -762,7 +762,7 @@ void MidiKeyboardDisplay::updateNoteUnderMouse(const MouseEvent& e, bool isDown)
 	updateNoteUnderMouse(e.getEventRelativeTo(this).position, isDown, e.source.getIndex());
 }
 
-void MidiKeyboardDisplay::updateNoteUnderMouse(Point<float> pos, bool isDown, int fingerNum)
+void MidiKeyboardDisplay::updateNoteUnderMouse(juce::Point<float> pos, bool isDown, int fingerNum)
 {
 	float mousePositionVelocity = 0.0f;
 	auto newNote = xyToNote(pos, mousePositionVelocity);

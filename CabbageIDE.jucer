@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.4.0"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.4.11"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
-              splashScreenColour="Dark" cppLanguageStandard="17" companyCopyright="">
+              splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
@@ -419,7 +419,7 @@
         <CONFIGURATION isDebug="1" name="Debug" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib"/>
         <CONFIGURATION isDebug="0" name="Release" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
-                       libraryPath="C:\Program Files\Csound6_x64\lib" optimisation="1"/>
+                       libraryPath="C:\Program Files\Csound6_x64\lib"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra"/>

@@ -104,6 +104,7 @@ namespace CommandIDs
         showConsole                 = 0x612004,
         showPluginListEditor    = 0x612005,
         autoReloadFromDisk    = 0x612006,
+        addCabbageSection    = 0x612007,
 
         lastCommandIDEntry
     };
@@ -381,6 +382,7 @@ public:
         add ("textcolor");
         add ("fontstyle");
         add ("fontcolor");
+        add ("filmstrip");
         add ("arraysize");
         add ("increment");
         add ("namespace");
@@ -560,6 +562,10 @@ namespace CabbageIdentifierIds
 	static const Identifier file = "file";
 	static const Identifier filetype = "filetype";
 	static const Identifier fill = "fill";
+    static const Identifier filmStripRemoveFrom1 = "filmStripRemoveFrom1";
+    static const Identifier filmStripRemoveFrom2 = "filmStripRemoveFrom2";
+    static const Identifier filmstripimage = "filmstripimage";
+    static const Identifier filmstripframes = "filmstripframes";
 	static const Identifier fillcolour = "fillcolour";
 	static const Identifier fontcolour = "fontcolour";
 	static const Identifier fontstyle = "fontstyle";

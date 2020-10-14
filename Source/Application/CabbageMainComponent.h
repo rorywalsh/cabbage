@@ -76,7 +76,7 @@ public:
 	void paint(Graphics&) override;
 	void resized() override;
 	void resizeAllWindows(int height);
-	void createEditorForFilterGraphNode(Point<int> position);
+	void createEditorForFilterGraphNode(juce::Point<int> position);
 	void createFilterGraph();
 	void createCodeEditorForFile(File file);
 	void createNewProject();
@@ -89,7 +89,7 @@ public:
 	void launchSSHFileBrowser(String mode);
 	void enableEditMode();
     void enableAutoUpdateMode();
-	const File openFile(String filename = "", bool updateRecentFiles = true);
+	const File openFile(String filename = "", bool updateRecentFiles = true, bool exportingPlugin = false);
 	void closeDocument();
 	void showSettingsDialog();
 	void saveDocument(bool saveAs = false, bool recompile = true);
@@ -120,6 +120,7 @@ public:
 	void arrangeFileTabs();
 	void importTheme();
 	void exportTheme();
+    void addCabbageSection();
 
 	int getNumberOfFileTabs() { return fileTabs.size(); };
 	FileTab* getFileTab(int index) { return fileTabs[index]; };

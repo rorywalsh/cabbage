@@ -12,9 +12,9 @@ The vco2 opcode models a voltage controlled oscillator. It provides users with a
 ```
 ares vco2 kamp, kcps [, imode] [, kpw] [, kphs] [, inyx]
 ```
-**vco2** outputs an a-rate signal and accepts several different input argument. The types of input parameters are given by the first letter in their names. We see above that the kamp argument needs to be k-rate. Square brackets around an input argument means that argument is optional and can be left out. Although not seen above, whenever an input argument start with 'x', it can be an i, k or a-rate variable. 
+**vco2** outputs an a-rate signal and accepts several different input arguments. The types of input parameters are given by the first letter in their names. We see above that the kamp argument needs to be k-rate. Square brackets around an input argument mean that the argument is optional and can be left out. Although not seen above, whenever an input argument starts with 'x', it can be an i, k or a-rate variable. 
 
-*kamp* determines the amplitude of the signal, while *kcps* set the frequency of the signal. The default type of waveform created by a **vco2** is a sawtooth waveform. The simplest instrument that can be written to use a **vco2** is given below. The **out** opcode is used to output an a-rate signal as audio.
+*kamp* determines the amplitude of the signal, while *kcps* sets the frequency of the signal. The default type of waveform created by a **vco2** is a sawtooth waveform. The simplest instrument that can be written to use a **vco2** is given below. The **out** opcode is used to output an a-rate signal as audio.
 
 ```csharp
 instr 1
@@ -148,7 +148,7 @@ aOut vco2 iAmp, iFreq
 outs aOut*kEnv, aOut*kEnv
 endin
 ```
-Every time a user plays a note, the instrument will grab the current value of each slider and use that value to set its ADSR envelop. Note that the **chnget** opcodes listed above all operate at i-time only. This is important because the **madsr** opcode expects *i*-rate variable.  
+Every time a user plays a note, the instrument will grab the current value of each slider and use that value to set its ADSR envelope. Note that the **chnget** opcodes listed above all operate at i-time only. This is important because the **madsr** opcode expects an *i*-rate variable.  
 
 ### Low-pass me the Cabbage please...
 
@@ -157,7 +157,7 @@ ADSR envelopes are often used to control the cut-off frequency of low-pass filte
 ```csharp
 asig moogladder ain, kcf, kres
 ```
-Its first input argument is an a-rate variable. The next two arguments set the filter cut-off frequency and the amount of resonance to be added to the signal. Both of these can be k-rate variables, thus allowing them to be changed during the note. Cut-off and resonance controls can easily be added to our instrument. To do so we need to add two more sliders to our Cabbage section of code. We'll also need to add two more **chnget** opcodes and a **moogladder** to our Csound code. One thing to note about the cut-off slider is that it should be exponential. As the users increases the slider, it should increment in larger and larger steps. We can do this be setting the sliders *skew* value to .5. More details about this can be found in the slider widget reference page.  
+Its first input argument is an a-rate variable. The next two arguments set the filter cut-off frequency and the amount of resonance to be added to the signal. Both of these can be k-rate variables, thus allowing them to be changed during the note. Cut-off and resonance controls can easily be added to our instrument. To do so we need to add two more sliders to our Cabbage section of code. We'll also need to add two more **chnget** opcodes and a **moogladder** to our Csound code. One thing to note about the cut-off slider is that it should be exponential. As the user increases the slider, it should increment in larger and larger steps. We can do this be setting the sliders *skew* value to .5. More details about this can be found in the slider widget reference page.  
 
 ```csharp
 <Cabbage>
@@ -237,9 +237,9 @@ endin
 (...)
 ```
 
-The output of the LFO is multiplied by the value of *kCutOff*. The frequency of the LFO is set to 1 which means the cut-off frequency will move from *kCutOff* to 0, once every second. This will create a simple rhythmical effect. Of course it doesn't make much sense to have the frequency fixed at 1. Instead, it is better to give the user control over the frequency using another slider. Finally, an amplitude control slider will also be added, allowing users to control the over amplitude of their synth. 
+The output of the LFO is multiplied by the value of *kCutOff*. The frequency of the LFO is set to 1 which means the cut-off frequency will move from *kCutOff* to 0, once every second. This will create a simple rhythmical effect. Of course it doesn't make much sense to have the frequency fixed at 1. Instead, it is better to give the user control over the frequency using another slider. Finally, an amplitude control slider will also be added, allowing users to control the amplitude of their synth. 
 
-There are many further improvements that could be made to the simple instrument. For example, a second **vco2** could be added to create a detune effect which will add some depth to the synth's sound. One could also an ADSR to control the filter envelope, allowing the user an option to switch between modes. If you do end up with something special why not share it on the Cabbage recipes forum!  
+There are many further improvements that could be made to the simple instrument. For example, a second **vco2** could be added to create a detune effect which will add some depth to the synth's sound. One could also use an ADSR to control the filter envelope, allowing the user to switch between modes. If you do end up with something special why not share it on the Cabbage recipes forum!  
 
 ```csharp
 <Cabbage>

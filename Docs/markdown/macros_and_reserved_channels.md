@@ -82,6 +82,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **IS_A_PLUGIN** Returns 1 if the instrument is running as an audio plugin, and 0 if the instrument is running as a standalone. 
 
+**IS_EDITOR_OPEN** Returns 1 if the plugin editor window is currently open, or 0 if the user has closed it. 
+
 **WINDOWS** Returns 1 if Cabbage is running on a Windows machine
 
 **LINUX** Returns 1 if Cabbage is running on a Linux machine

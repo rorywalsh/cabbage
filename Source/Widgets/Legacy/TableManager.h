@@ -138,7 +138,7 @@ public:
     void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
     void setWaveform (AudioSampleBuffer buffer);
     void enableEditMode (StringArray pFields);
-    Point<int> tableTopAndHeight;
+    juce::Point<int> tableTopAndHeight;
     void setWaveform (Array<float, CriticalSection> buffer, bool updateRange = true);
     void createImage (String filename);
     void addTable (int sr, const Colour col, int gen, var ampRange);
@@ -371,7 +371,7 @@ public:
     int height, width;
     int x, y;
     void setColour (Colour icolour);
-    void setRelativePosition (Point<double> point);
+    void setRelativePosition (juce::Point<double> point);
 
     HandleViewer* getParentHandleViewer()
     {

@@ -1,25 +1,36 @@
-<Cabbage>
-form caption("Knobman Filmstrip Example") size(450, 180), colour(93, 93, 93), pluginid("KMSl")
+y <Cabbage>
+form caption("Filmstrips") size(1050, 400), pluginid("def1")
+groupbox bounds(6, 4, 207, 375) text("Rotary Sliders")
 
-image bounds(10, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent1")
-vslider bounds(10, 22, 27, 106) channel("vslider1") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(50, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent2")
-vslider bounds(50, 22, 32, 106) channel("vslider2") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(90, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent3")
-vslider bounds(90, 22, 32, 106) channel("vslider3") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(130, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent4")
-vslider bounds(130, 22, 32, 106) channel("vslider4") range(0, 1, 0, 1, 0.001) alpha(0)
+rslider bounds(18, 30, 80, 80), channel("gain1"), range(-60, 100, 15, .5, 0.01), text("Gain"), filmstrip("rSliderFilmStrip.png", 111, "vertical"), valuetextbox(1) 
+rslider bounds(118, 30, 80, 80), channel("gain2"), range(0, 10, 0, 1, 0.01), text("Gain"), valuetextbox(1)
+rslider bounds(18, 120, 80, 80), channel("gain3"), range(0, 1, 0.48, 1, 0.01), text("Gain"), filmstrip("rSliderFilmStrip.png", 111, "vertical")
+rslider bounds(118, 120, 80, 80), channel("gain4"), range(0, 1, 0.48, 1, 0.01), text("Gain") 
+rslider bounds(18, 210, 80, 80), channel("gain5"), range(0, 1, 0.48, 1, 0.01), filmstrip("rSliderFilmStrip.png", 111, "vertical")
+rslider bounds(118, 210, 80, 80), channel("gain6"), range(0, 1, 0.48, 1, 0.01) 
+rslider bounds(18, 290, 80, 80), channel("gain7"), range(0, 1, 0.48, 1, 0.01) filmstrip("rSliderFilmStrip.png", 111, "vertical"), valuetextbox(1) 
+rslider bounds(118, 290, 80, 80), channel("gain8"), range(0, 1, 0.48, 1, 0.01) valuetextbox(1)
 
-image bounds(324, 24, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent1")
-rslider bounds(324, 24, 50, 50) channel("rslider1") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(390, 24, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent2")
-rslider bounds(390, 24, 50, 50) channel("rslider2") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(324, 74, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent3")
-rslider bounds(324, 74, 50, 50) channel("rslider3") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(390, 74, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent4")
-rslider bounds(390, 74, 50, 50) channel("rslider4") range(0, 1, 0, 1, 0.001) alpha(0)
+groupbox bounds(216, 4, 500, 295) colour(88, 92, 95), text("Vertical Sliders")
+vslider bounds(228, 46, 60, 200) range(0, 10, 0, 1, 0.001), channel("vSlider1") text("Gain"), trackercolour(100, 100, 100, 255) valuetextbox(1)
+vslider bounds(288, 46, 60, 200) range(0, 10, 0, 1, 0.001), channel("vSlider2"), text("Gain"), valuetextbox(1), filmstrip("roland SH 101 knob.png", 31, .15, .3)
+vslider bounds(348, 46, 60, 200) range(0, 1, 0.364, 1, 0.001), channel("vSlider3"), text("Gain"), trackercolour(100,100,100)
+vslider bounds(408, 46, 60, 200) range(0, 10, 0, 1, 0.001), channel("vSlider4"), text("Gain"), filmstrip("roland SH 101 knob.png", 31, .05, .20)
+vslider bounds(468, 46, 60, 200) range(0, 1, 0.364, 1, 0.001), channel("vSlider5"), trackercolour(100,100,100)
+vslider bounds(528, 46, 60, 200) range(0, 1, 0, 1, 0.001) , channel("vSlider6") filmstrip("roland SH 101 knob.png", 31,  .05, .15)
+vslider bounds(588, 46, 60, 200) range(0, 1, 0.364, 1, 0.001), channel("vSlider7"), valuetextbox(1), trackercolour(100,100,100)
+vslider bounds(648, 46, 60, 200) range(0, 1, 0, 1, 0.001) , channel("vSlider8"), valuetextbox(1), filmstrip("roland SH 101 knob.png", 31, .05, .25)
 
-image bounds(190, 18, 120, 120) crop(0, 0, 128, 128), file("meter_black.png") identchannel("vuMeterIdent")
+groupbox bounds(720, 4, 320, 380) colour(100, 10, 10), text("Horizontal Sliders")
+hslider bounds(732, 20, 300, 60), channel("gain10"), range(0, 1, 0.364, 1, 0.001), text("Gain"), valuetextbox(1) 
+hslider bounds(732, 60, 300, 60), channel("gain11"), range(0, 1, 0, 1, 0.001), text("Gain"), valuetextbox(1), filmstrip("h_slider_mixer.png", 31, 0.1, .35)
+hslider bounds(732, 100, 300, 60), channel("gain12"), range(0, 1, 0.364, 1, 0.001), text("Gain")
+hslider bounds(732, 140, 300, 60), channel("gain13"), range(0, 1, 0, 1, 0.001), text("Gain"), filmstrip("h_slider_mixer.png", 31, .1, .2)
+hslider bounds(732, 200, 300, 60), channel("gain14"), range(0, 1, 0.364, 1, 0.001)
+hslider bounds(732, 240, 300, 60), channel("gain15"), range(0, 1, 0, 1, 0.001), filmstrip("h_slider_mixer.png", 31, .1, .22)
+hslider bounds(732, 280, 300, 60), channel("gain16"), range(0, 1, 0.364, 1, 0.001), valuetextbox(1) 
+hslider bounds(732, 320, 300, 60), channel("gain17"), range(0, 1, 0, 1, 0.001), valuetextbox(1), filmstrip("h_slider_mixer.png", 31, .1, .35)
+;
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -27,50 +38,23 @@ image bounds(190, 18, 120, 120) crop(0, 0, 128, 128), file("meter_black.png") id
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-;sr is set by the host
 ksmps = 32
 nchnls = 2
 0dbfs = 1
 
-;this file uses slider imges found 
-;http://www.g200kg.com/en/webknobman/gallery.php?m=p&p=987
-;http://www.g200kg.com/en/webknobman/gallery.php?m=p&p=970
-;http://www.g200kg.com/en/webknobman/gallery.php?m=p&p=54
-
-opcode filmStrip, 0,Skii
-	Sident, kPos, iWidth, iHeight xin 
-	if changed(kPos) == 1 then
-		SMessage sprintfk "crop(0, %d, %d, %d)", kPos, iWidth, iHeight
-		chnset SMessage, Sident
-	endif
-endop 
-
+;the following film strip sliders are included with teh Cabbage examples. 
+;https://www.g200kg.com/en/webknobman/gallery.php?m=p&p=1659
+;https://www.g200kg.com/en/webknobman/gallery.php?m=p&p=1044
+;https://www.g200kg.com/en/webknobman/index.html?f=slider_knobman2.knob&n=460
+;https://www.g200kg.com/en/webknobman/gallery.php?m=p&p=534
+;https://www.g200kg.com/en/webknobman/gallery.php?m=p&p=987
 instr 1
-kvSlider1 chnget "vslider1"
-kvSlider2 chnget "vslider2"
-kvSlider3 chnget "vslider3"
-kvSlider4 chnget "vslider4"
+kGain chnget "gain"
 
-krSlider1 chnget "rslider1"
-krSlider2 chnget "rslider2"
-krSlider3 chnget "rslider3"
-krSlider4 chnget "rslider4"
+a1 inch 1
+a2 inch 2
 
-
-filmStrip "sliderIdent1", int(kvSlider1*30)*107, 32, 107
-filmStrip "sliderIdent2", int(kvSlider2*30)*107, 32, 107
-filmStrip "sliderIdent3", int(kvSlider3*30)*107, 32, 107
-filmStrip "sliderIdent4", int(kvSlider4*30)*107, 32, 107
-
-filmStrip "rsliderIdent1", int(krSlider1*30)*110, 110, 110
-filmStrip "rsliderIdent2", int(krSlider2*30)*110, 110, 110
-filmStrip "rsliderIdent3", int(krSlider3*30)*110, 110, 110
-filmStrip "rsliderIdent4", int(krSlider4*30)*110, 110, 110
-
-kVuMeter randi 1, 5
-filmStrip "vuMeterIdent", int(abs(kVuMeter)*30)*128, 128, 128
-
-
+outs a1*kGain, a2*kGain
 endin
 
 </CsInstruments>
@@ -78,6 +62,6 @@ endin
 ;causes Csound to run for about 7000 years...
 f0 z
 ;starts instrument 1 and runs it for a week
-i1 0 [60*60*24*7] 
+
 </CsScore>
 </CsoundSynthesizer>

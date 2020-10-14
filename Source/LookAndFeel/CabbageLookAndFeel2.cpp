@@ -484,66 +484,57 @@ Image CabbageLookAndFeel2::drawToggleImage (float width, float height, bool isTo
 void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos,
                                             const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
-
-    const float radius = jmin (width / 2, height / 2) - 2.0f;
-    const float diameter = radius * 2.f;
-    const float centreX = x + width * 0.5f;
-    const float centreY = y + height * 0.5f;
-    const float rx = centreX - radius;
-    const float ry = centreY - radius;
-    const float rw = radius * 2.0f;
-    const float angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
-    const bool isMouseOver = slider.isMouseOverOrDragging() && slider.isEnabled();
-    bool useSliderBackgroundImg = false;
-    bool useSliderSVG = false;
-    Image image;
-    const File imgSlider (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgslider, "").toString());
-    const File imgSliderBackground (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgsliderbg, "").toString());
-
-    const float innerRadiusProportion = slider.getProperties().getWithDefault ("trackerinnerradius", .7);
-    const float outerRadiusProportion = slider.getProperties().getWithDefault ("trackerouterradius", 1);
-
-    //if valid background SVG file....
-    if (imgSliderBackground.existsAsFile() && imgSliderBackground.hasFileExtension (".csd") == false)
+    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    if (filmStrip == 1)
     {
-        if (imgSliderBackground.hasFileExtension ("png"))
-        {
-            image = ImageCache::getFromFile (imgSliderBackground);
-            image = image.rescaled (slider.getWidth(), slider.getHeight());
-            g.drawImage (image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
-        }
-        else if (imgSliderBackground.hasFileExtension ("svg"))
-        {
-            drawFromSVG (g, imgSliderBackground, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform());
-        }
-
-        useSliderBackgroundImg = true;
+        g.fillAll(Colours::transparentWhite);
     }
-
-    slider.setSliderStyle (Slider::RotaryVerticalDrag);
-
-    if (radius > 12.0f)
+    else
     {
+        const float radius = jmin (width / 2, height / 2) - 2.0f;
+        const float diameter = radius * 2.f;
+        const float centreX = x + width * 0.5f;
+        const float centreY = y + height * 0.5f;
+        const float rx = centreX - radius;
+        const float ry = centreY - radius;
+        const float rw = radius * 2.0f;
+        const float angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+        const bool isMouseOver = slider.isMouseOverOrDragging() && slider.isEnabled();
+        bool useSliderBackgroundImg = false;
+        bool useSliderSVG = false;
+        Image image;
+        const File imgSlider (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgslider, "").toString());
+        const File imgSliderBackground (slider.getProperties().getWithDefault (CabbageIdentifierIds::imgsliderbg, "").toString());
 
-        //tracker
-        g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver  ? slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
+        const float innerRadiusProportion = slider.getProperties().getWithDefault ("trackerinnerradius", .7);
+        const float outerRadiusProportion = slider.getProperties().getWithDefault ("trackerouterradius", 1);
+
+        //if valid background SVG file....
+        if (imgSliderBackground.existsAsFile() && imgSliderBackground.hasFileExtension (".csd") == false)
+        {
+            if (imgSliderBackground.hasFileExtension ("png"))
+            {
+                image = ImageCache::getFromFile (imgSliderBackground);
+                image = image.rescaled (slider.getWidth(), slider.getHeight());
+                g.drawImage (image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
+            }
+            else if (imgSliderBackground.hasFileExtension ("svg"))
+            {
+                drawFromSVG (g, imgSliderBackground, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform());
+            }
+
+            useSliderBackgroundImg = true;
+        }
+
+        slider.setSliderStyle (Slider::RotaryVerticalDrag);
+
+        if (radius > 12.0f)
+        {
+
+            //tracker
+            g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver  ? slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
 
      
-        {
-            Path filledArc;
-            filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
-            g.fillPath (filledArc);
-        }
-
-        if (imgSlider.existsAsFile() && imgSlider.hasFileExtension (".csd") == false)
-        {
-            if (slider.findColour (Slider::trackColourId).getAlpha() == 0)
-                g.setColour (Colours::transparentBlack);
-            else
-                g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver ?slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
-
-
             {
                 Path filledArc;
                 filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
@@ -551,91 +542,107 @@ void CabbageLookAndFeel2::drawRotarySlider (Graphics& g, int x, int y, int width
                 g.fillPath (filledArc);
             }
 
-            g.setOpacity (1.0);
-
-            if (imgSlider.hasFileExtension ("png"))
+            if (imgSlider.existsAsFile() && imgSlider.hasFileExtension (".csd") == false)
             {
-                image = ImageCache::getFromFile (imgSlider);
-                image = image.rescaled (slider.getWidth(), slider.getHeight());
-                std::unique_ptr<Drawable> drawable (Drawable::createFromImageFile (imgSlider));
-                drawable->setTransformToFit (Rectangle<float> (0, 0, slider.getWidth(), slider.getWidth()), RectanglePlacement::centred);
-                drawable->draw (g, 1.f, AffineTransform::rotation (angle,
-                                                                   slider.getWidth() / 2, slider.getWidth() / 2));
-                //g.drawImage(image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
+                if (slider.findColour (Slider::trackColourId).getAlpha() == 0)
+                    g.setColour (Colours::transparentBlack);
+                else
+                    g.setColour (slider.findColour (Slider::trackColourId).withAlpha (isMouseOver ?slider.findColour (Slider::trackColourId).getFloatAlpha() : slider.findColour (Slider::trackColourId).getFloatAlpha() * 0.9f));
+
+
+                {
+                    Path filledArc;
+                    filledArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
+                    filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
+                    g.fillPath (filledArc);
+                }
+
+                g.setOpacity (1.0);
+
+                if (imgSlider.hasFileExtension ("png"))
+                {
+                    image = ImageCache::getFromFile (imgSlider);
+                    image = image.rescaled (slider.getWidth(), slider.getHeight());
+                    std::unique_ptr<Drawable> drawable (Drawable::createFromImageFile (imgSlider));
+                    drawable->setTransformToFit (Rectangle<float> (0, 0, slider.getWidth(), slider.getWidth()), RectanglePlacement::centred);
+                    drawable->draw (g, 1.f, AffineTransform::rotation (angle,
+                                                                       slider.getWidth() / 2, slider.getWidth() / 2));
+                    //g.drawImage(image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
+                }
+                else if (imgSlider.hasFileExtension ("svg"))
+                {
+                    drawFromSVG (g, imgSlider, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform::rotation (angle,
+                                 slider.getWidth() / 2, slider.getWidth() / 2));
+                }
+
+                useSliderSVG = true;
             }
-            else if (imgSlider.hasFileExtension ("svg"))
+            else
+                useSliderSVG = false;
+
+
+            //outinecolour
+            if (!useSliderBackgroundImg)
             {
-                drawFromSVG (g, imgSlider, 0, 0, slider.getWidth(), slider.getHeight(), AffineTransform::rotation (angle,
-                             slider.getWidth() / 2, slider.getWidth() / 2));
+                g.setColour (slider.findColour (Slider::rotarySliderOutlineColourId));
+
+                Path outlineArc;
+                outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
+                outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
+                outlineArc.closeSubPath();
+
+                g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
             }
 
-            useSliderSVG = true;
+            if (!useSliderSVG)
+            {
+                Path newPolygon;
+                juce::Point<float> centre (centreX, centreY);
+
+                if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
+                {
+                    newPolygon.addPolygon (centre, 12.f, radius * innerRadiusProportion, 0.f);
+                    newPolygon.applyTransform (AffineTransform::rotation (angle,
+                                                                          centreX, centreY));
+                }
+                else //Else just use a circle. This is clearer than a polygon when very small.
+                    newPolygon.addEllipse (-radius * .2, -radius * .2, radius * .3f, radius * .3f);
+
+                g.setColour (slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f));
+
+                //g.setColour (slider.findColour (Slider::thumbColourId));
+
+                Colour thumbColour = slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f);
+                ColourGradient cg = ColourGradient (Colours::white.withAlpha(slider.findColour (Slider::thumbColourId).getFloatAlpha()), 0, 0, thumbColour, diameter * 0.6, diameter * 0.4, false);
+
+                if (slider.findColour (Slider::thumbColourId).getAlpha() != 0)
+                    g.setGradientFill (cg);
+                //else if (slider.findColour (Slider::thumbColourId).getAlpha() == 0)
+
+
+                g.fillPath (newPolygon);
+            }
         }
         else
-            useSliderSVG = false;
-
-
-        //outinecolour
-        if (!useSliderBackgroundImg)
         {
-            g.setColour (slider.findColour (Slider::rotarySliderOutlineColourId));
+            Path p;
+            g.setColour (slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? 1.0f : 0.7f));
+            p.addEllipse (-0.4f * rw, -0.4f * rw, rw * 0.8f, rw * 0.8f);
+            g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
 
-            Path outlineArc;
-            outlineArc.addPieSegment (rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
-            outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width/2.f, height/2.f));
-            outlineArc.closeSubPath();
+            //if (slider.isEnabled())
+            g.setColour (slider.findColour (Slider::rotarySliderOutlineColourId).withAlpha (isMouseOver ? 0.7f : 0.5f));
+            //else
+            //    g.setColour (Colour (0x80808080));
 
-            g.strokePath (outlineArc, PathStrokeType (slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
+            p.addEllipse (-0.4f * rw, -0.4f * rw, rw * 0.8f, rw * 0.8f);
+            PathStrokeType (rw * 0.1f).createStrokedPath (p, p);
+
+            p.addLineSegment (Line<float> (0.0f, 0.0f, 0.0f, -radius), rw * 0.1f);
+
+            g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
+
         }
-
-        if (!useSliderSVG)
-        {
-            Path newPolygon;
-            Point<float> centre (centreX, centreY);
-
-            if (diameter >= 25)   //If diameter is >= 40 then polygon has 12 steps
-            {
-                newPolygon.addPolygon (centre, 12.f, radius * innerRadiusProportion, 0.f);
-                newPolygon.applyTransform (AffineTransform::rotation (angle,
-                                                                      centreX, centreY));
-            }
-            else //Else just use a circle. This is clearer than a polygon when very small.
-                newPolygon.addEllipse (-radius * .2, -radius * .2, radius * .3f, radius * .3f);
-
-            g.setColour (slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f));
-
-            //g.setColour (slider.findColour (Slider::thumbColourId));
-
-            Colour thumbColour = slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? slider.findColour (Slider::thumbColourId).getFloatAlpha() : slider.findColour (Slider::thumbColourId).getFloatAlpha() * 0.9f);
-            ColourGradient cg = ColourGradient (Colours::white.withAlpha(slider.findColour (Slider::thumbColourId).getFloatAlpha()), 0, 0, thumbColour, diameter * 0.6, diameter * 0.4, false);
-
-            if (slider.findColour (Slider::thumbColourId).getAlpha() != 0)
-                g.setGradientFill (cg);
-            //else if (slider.findColour (Slider::thumbColourId).getAlpha() == 0)
-
-
-            g.fillPath (newPolygon);
-        }
-    }
-    else
-    {
-        Path p;
-        g.setColour (slider.findColour (Slider::thumbColourId).withAlpha (isMouseOver ? 1.0f : 0.7f));
-        p.addEllipse (-0.4f * rw, -0.4f * rw, rw * 0.8f, rw * 0.8f);
-        g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
-
-        //if (slider.isEnabled())
-        g.setColour (slider.findColour (Slider::rotarySliderOutlineColourId).withAlpha (isMouseOver ? 0.7f : 0.5f));
-        //else
-        //    g.setColour (Colour (0x80808080));
-
-        p.addEllipse (-0.4f * rw, -0.4f * rw, rw * 0.8f, rw * 0.8f);
-        PathStrokeType (rw * 0.1f).createStrokedPath (p, p);
-
-        p.addLineSegment (Line<float> (0.0f, 0.0f, 0.0f, -radius), rw * 0.1f);
-
-        g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
-
     }
 
 }

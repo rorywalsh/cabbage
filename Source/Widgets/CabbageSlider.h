@@ -26,6 +26,53 @@
 
 class CabbagePluginEditor;
 
+////https://forum.juce.com/t/skew-friendly-filmstrip-knob/15360
+//class FilmStripSlider : public Slider
+//{
+//public:
+//    FilmStripSlider(ValueTree cAttr, const int numFrames, const bool stripIsHorizontal)
+//        : Slider(),
+//        numFrames_(numFrames),
+//        isHorizontal_(stripIsHorizontal)
+//    {
+//        const File imageFile = File(CabbageWidgetData::getStringProp(cAttr, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(cAttr, CabbageIdentifierIds::filmstripimage));
+//        if(imageFile.existsAsFile())
+//        {
+//            filmStrip = ImageFileFormat::loadFrom(imageFile);
+//            if (!filmStrip.isNull())
+//            {
+//                setTextBoxStyle(NoTextBox, 0, 0, 0);
+//                imageIsNull = false;
+//                if (isHorizontal_) {
+//                    frameHeight = filmStrip.getHeight();
+//                    frameWidth = filmStrip.getWidth() / numFrames_;
+//                }
+//                else {
+//                    frameHeight = filmStrip.getHeight() / numFrames_;
+//                    frameWidth = filmStrip.getWidth();
+//                }
+//            }
+//        }
+//    }
+//
+//
+//    void paint(Graphics& g) override;
+//    
+//    bool isFilmStripValid(){    return imageIsNull ? false : true; }
+//    int getFrameWidth() const { return frameWidth; }
+//    int getFrameHeight() const { return frameHeight; }
+//    
+//
+//private:
+//    Label valueTextBox;
+//    const int numFrames_;
+//    const bool isHorizontal_;
+//    bool imageIsNull = true;
+//    Image filmStrip;
+//    int frameWidth = 32, frameHeight = 32;
+//};
+//
+
 class CabbageSlider
     : public Component,
       public ValueTree::Listener,
@@ -34,8 +81,9 @@ class CabbageSlider
     CabbagePluginEditor* owner;
     ValueTree widgetData;
     Label textLabel;
-    float velocity, sliderIncrement, sliderSkew, min, max, value, shouldShowTextBox, trackerInnerRadius, trackerOuterRadius, trackerThickness;
-    int decimalPlaces;
+    float velocity = 0, sliderIncrement = 0, sliderSkew = 0, min = 0, max = 0, value = 0, shouldShowTextBox = 0, trackerInnerRadius = 0, trackerOuterRadius = 0, trackerThickness = 0;
+    int decimalPlaces = 0;
+    float remove1 = 0, remove2 = 0;
     String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
     bool shouldDisplayPopup = true;
     Slider slider;
@@ -52,19 +100,28 @@ class CabbageSlider
     String postfix = "";
     String popupPrefix = "";
     String popupPostfix = "";
+    bool isFilmStripSlider = false;
 
     FlatButtonLookAndFeel flatLookAndFeel;
+    int numFrames = 31;
+    bool imageIsNull = true;
+    Image filmStrip;
+    int frameWidth = 32, frameHeight = 32;
+    Rectangle<float> filmStripBounds = {0, 0, 80, 80};
+    Label filmStripValueBox;
 
 public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageSlider();
+    void paint(Graphics& g) override;
 
+    void initFilmStrip(ValueTree wData);
     void setTextBoxWidth();
     void setSliderVelocity (ValueTree wData);
     void resized() override;
-    void initialiseSlider (ValueTree wData);
+    void initialiseSlider (ValueTree wData, Slider& currentSlider);
 
-    void setTextBoxOrientation (String type, bool textBox);
+    void setTextBoxOrientation (String type, int textBox);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&) override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
@@ -78,7 +135,5 @@ public:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)
 
 };
-
-
 
 #endif  // CABBAGESLIDER_H_INCLUDED
