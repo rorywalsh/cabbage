@@ -273,7 +273,7 @@
                        libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
                        enablePluginBinaryCopyStep="0"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
+                       isDebug="0" optimisation="1" targetName="CabbagePlugin" headerPath="C:\Program Files\Csound6_x64\include\csound&#10;C:\SDKs\ASIOSDK2.3.2\common"
                        libraryPath="C:\Program Files\Csound6_x64\lib" debugInformationFormat="ProgramDatabase"
                        enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
       </CONFIGURATIONS>
