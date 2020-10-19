@@ -31,7 +31,7 @@ class DemoCabbageWidget : public Component, public ValueTree::Listener, public C
 {
 public:
 
-    DemoCabbageWidget (ValueTree wData);
+    explicit DemoCabbageWidget (ValueTree wData);
     ~DemoCabbageWidget() {};
 
     //ValueTree::Listener virtual methods....
@@ -63,7 +63,7 @@ class CabbageMeter : public Component, public ValueTree::Listener, public Cabbag
     {
     public:
         Colour colour;
-        Overlay (Colour colour): Component(), colour (colour) {}
+        explicit Overlay (Colour colour): Component(), colour (colour) {}
         void paint (Graphics& g) {    g.fillAll (colour);  };
     };
 

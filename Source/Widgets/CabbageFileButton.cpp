@@ -178,12 +178,12 @@ String CabbageFileButton::returnValidPath (File fc)
 //===============================================================================
 void CabbageFileButton::setFile(ValueTree wData)
 {
-    const String file = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
-    const String relativePath = File(getCsdFile()).getParentDirectory().getChildFile(file).getFullPathName();
+    const String buttonFile = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+    const String relativePath = File(getCsdFile()).getParentDirectory().getChildFile(buttonFile).getFullPathName();
     if(File(relativePath).existsAsFile())
         owner->sendChannelStringDataToCsound(getChannel(), relativePath.replaceCharacters("\\", "/"));
     else
-        owner->sendChannelStringDataToCsound(getChannel(), file.replaceCharacters("\\", "/"));
+        owner->sendChannelStringDataToCsound(getChannel(), buttonFile.replaceCharacters("\\", "/"));
 }
 //===============================================================================
 void CabbageFileButton::setLookAndFeelColours (ValueTree wData)

@@ -56,15 +56,6 @@
 class CabbagePluginEditor;
 
 //==============================================================================
-__attribute__ ((unused)) static CabbagePluginEditor* getPluginEditor (Component* child)
-{
-    if (CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
-        return c;
-    else
-        return nullptr;
-}
-
-//==============================================================================
 class CabbagePluginEditor
     : public AudioProcessorEditor,
       public Button::Listener,
@@ -76,7 +67,7 @@ class CabbagePluginEditor
 	  public KeyListener
 {
 public:
-    CabbagePluginEditor (CabbagePluginProcessor&);
+    explicit CabbagePluginEditor (CabbagePluginProcessor&);
     ~CabbagePluginEditor();
 
     void createEditorInterface (ValueTree widgets);
@@ -164,13 +155,13 @@ public:
     //=============================================================================
 	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent) override
 	{
-		processor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
+        cabbageProcessor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
 		return false;
 	}
 
 	virtual bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override
 	{
-		processor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
+        cabbageProcessor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
 		return false;
 	}
 	//=============================================================================
@@ -199,9 +190,9 @@ public:
     //=============================================================================
     CabbageAudioParameter* getParameterForComponent (const String name);
     //=============================================================================
-    void setLastOpenedDirectory (const String lastOpenedDirectory)
+    void setLastOpenedDirectory (const String lastDirectory)
     {
-        this->lastOpenedDirectory = lastOpenedDirectory;
+        this->lastOpenedDirectory = lastDirectory;
     }
     const String getLastOpenedDirectory() const
     {
@@ -266,7 +257,7 @@ private:
         Colour colour;
         CabbagePluginEditor* owner;
     public:
-        MainComponent(CabbagePluginEditor* _owner) : Component(), owner(_owner)
+        explicit MainComponent(CabbagePluginEditor* _owner) : Component(), owner(_owner)
         {
             setOpaque (false);
         }
@@ -303,10 +294,10 @@ private:
 
         void paint(Graphics &g)
         {
-            Viewport* const viewport = findParentComponentOfClass<Viewport>(); //Get the parent viewport
-            if(viewport != nullptr) //Check for nullness
+            Viewport* const vp = findParentComponentOfClass<Viewport>(); //Get the parent viewport
+            if(vp != nullptr) //Check for nullness
             {
-                juce::Rectangle<int> viewRect(viewport->getViewPositionX(), viewport->getViewPositionY(), viewport->getViewWidth(), viewport->getViewHeight()); //Get the current displayed area in the viewport
+                juce::Rectangle<int> viewRect(vp->getViewPositionX(), vp->getViewPositionY(), vp->getViewWidth(), vp->getViewHeight()); //Get the current displayed area in the viewport
             }
         }
     };
@@ -326,7 +317,7 @@ private:
     int newlyAddedWidgetIndex = 10000;
 
     bool editModeEnabled = false;
-    CabbagePluginProcessor& processor;
+    CabbagePluginProcessor& cabbageProcessor;
     String instrumentName;
     juce::Point<int> instrumentBounds;
     SharedResourcePointer<TooltipWindow> tooltipWindow;

@@ -126,10 +126,10 @@ void CabbageSlider::paint(Graphics& g)
     {
         const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
 
-        int value = sliderPos * (numFrames - 1);
+        int sliderValue = sliderPos * (numFrames - 1);
 
         g.drawImage(filmStrip, filmStripBounds.getX(), filmStripBounds.getY(), filmStripBounds.getWidth(), filmStripBounds.getHeight(),
-                0, value * frameHeight, frameWidth, frameHeight);
+                0, sliderValue * frameHeight, frameWidth, frameHeight);
     }
 
 }
@@ -204,9 +204,9 @@ void CabbageSlider::initialiseSlider (ValueTree wData, Slider& currentSlider)
 
 }
 
-void CabbageSlider::setTextBoxOrientation (String type, int shouldShowTextBox)
+void CabbageSlider::setTextBoxOrientation (String type, int showTextBox)
 {
-    if (shouldShowTextBox == 1)
+    if (showTextBox == 1)
     {
         if(!shouldDisplayPopup)
             shouldDisplayPopup = false;

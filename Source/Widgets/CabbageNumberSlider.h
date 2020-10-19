@@ -35,7 +35,7 @@ public:
 	void setFontColour(Colour col) { fontColour = col; }
 	void setFontSize(int fS) { fontSize = fS; }
 
-	Label* createSliderTextBox(Slider& slider)
+	Label* createSliderTextBox(Slider& slider) override
 	{
 		auto l = new Label();
 
@@ -65,7 +65,7 @@ public:
 	//========= linear slider ================================================================================
 	void drawLinearSlider(Graphics& g, int x, int y, int width, int height,
 		float sliderPos, float minSliderPos, float maxSliderPos,
-		const Slider::SliderStyle style, Slider& slider)
+		const Slider::SliderStyle style, Slider& slider) override
 	{
 		g.setColour(slider.findColour(Slider::thumbColourId));
 		g.fillRoundedRectangle(x, y, width, height, 3);		
@@ -81,7 +81,7 @@ class CabbageNumberSlider : public Component, public ValueTree::Listener, public
 
 public:
 	SliderLookAndFeel sliderLookAndFeel;
-    CabbageNumberSlider (ValueTree wData);
+	explicit CabbageNumberSlider (ValueTree wData);
 	~CabbageNumberSlider() {
 		slider.setLookAndFeel(nullptr);
 

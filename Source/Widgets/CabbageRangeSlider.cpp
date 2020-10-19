@@ -102,10 +102,10 @@ void CabbageRangeSlider::setSliderValues (ValueTree wData)
     slider.setMinAndMaxValues (minValue, maxValue);
 }
 
-void CabbageRangeSlider::setCurrentValues (float min, float max)
+void CabbageRangeSlider::setCurrentValues (float newMin, float newMax)
 {
-    minValue = min;
-    maxValue = max;
+    minValue = newMax;
+    maxValue = newMax;
     CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::minvalue, minValue);
     CabbageWidgetData::setNumProp (widgetData, CabbageIdentifierIds::maxvalue, maxValue);
 }

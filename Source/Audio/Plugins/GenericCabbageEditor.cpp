@@ -31,30 +31,30 @@ GenericCabbageEditor::GenericCabbageEditor (AudioProcessor& parent)
 
     for (int i = 0; i < params.size(); ++i)
     {
-        if (const AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]))
+        if (const AudioParameterFloat* audioParam = dynamic_cast<AudioParameterFloat*> (params[i]))
         {
             Slider* aSlider;
-            paramSliders.add (aSlider = new Slider (param->name));
+            paramSliders.add (aSlider = new Slider (audioParam->name));
             aSlider->setTextBoxStyle (Slider::TextEntryBoxPosition::TextBoxRight, false, 100, 25);
-            aSlider->setRange (param->range.start, param->range.end);
+            aSlider->setRange (audioParam->range.start, audioParam->range.end);
             aSlider->setSliderStyle (Slider::LinearHorizontal);
-            aSlider->setValue (*param);
+            aSlider->setValue (*audioParam);
             aSlider->setColour (Slider::ColourIds::rotarySliderFillColourId, Colour (221, 147, 0));
             aSlider->addListener (this);
             addAndMakeVisible (aSlider);
 
             Label* aLabel;
-            paramLabels.add (aLabel = new Label (param->name, param->name));
+            paramLabels.add (aLabel = new Label (audioParam->name, audioParam->name));
             addAndMakeVisible (aLabel);
 
             controls.add (aSlider);  // [10]
         }
-        else if (const AudioParameterBool* param = dynamic_cast<AudioParameterBool*> (params[i])) // [11]
+        else if (const AudioParameterBool* audioParamBool = dynamic_cast<AudioParameterBool*> (params[i])) // [11]
         {
             ToggleButton* aButton;
 
-            paramToggles.add (aButton = new ToggleButton (param->name));
-            aButton->setToggleState (*param, dontSendNotification);
+            paramToggles.add (aButton = new ToggleButton (audioParamBool->name));
+            aButton->setToggleState (*audioParamBool, dontSendNotification);
 
             aButton->addListener (this);
             addAndMakeVisible (aButton);
