@@ -71,7 +71,8 @@ CabbagePluginEditor::~CabbagePluginEditor()
     radioGroups.clear();
     radioComponents.clear();
     setLookAndFeel (nullptr);
-    cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
+    if(cabbageProcessor.getCsound())
+    	cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
 }
 
 void CabbagePluginEditor::refreshValueTreeListeners()
