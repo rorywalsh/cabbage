@@ -28,11 +28,11 @@ class CabbagePluginEditor;
 
 class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
 {
-    int outlineThickness, lineThickness, corners, svgDebug;
-    String text, colour, fontColour, justification, outlineColour;
-    float rotate;
-    CabbagePluginEditor* owner;
-    File svgPath, svgFile;
+    int outlineThickness = 0, lineThickness = 0, corners = 0, svgDebug = 0;
+    String text = {}, colour = {}, fontColour = {}, justification = {}, outlineColour = {};
+    float rotate = 0.f;
+    CabbagePluginEditor* owner = {};
+    File svgPath = {}, svgFile = {};
     int isVisible = true;
 
 public:

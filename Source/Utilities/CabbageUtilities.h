@@ -514,7 +514,6 @@ public:
     {
         PopupMenu subMenu1, subMenu2;
         int noOfFiles = filesArray.size();
-        int fileCnt = 0;
 
         if (folders.size() > 0)
         {
@@ -527,7 +526,7 @@ public:
                 exampleFilesArray.sort();
                 filesArray.addArray (exampleFilesArray);
 
-                for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+                for (int fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
                 {
                     subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
                 }
@@ -547,7 +546,7 @@ public:
             exampleFilesArray.sort();
             filesArray.addArray (exampleFilesArray);
 
-            for (fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
+            for (int fileCnt = noOfFiles; fileCnt < filesArray.size(); fileCnt++)
             {
                 subMenu2.addItem (fileCnt + indexOffset, filesArray[fileCnt].getFileNameWithoutExtension());
             }
@@ -669,9 +668,6 @@ public:
         else if (x < 0)
             x = ceil (x * power - 0.5) / power;
 
-        if (x == -0)
-            x = 0;
-
         return x;
     }
 
@@ -684,9 +680,7 @@ public:
             return Justification::left;
         else
             return Justification::right;
-
-        return Justification::centred;
-    }
+    }  
 
     //===========================================================================================
     static Range<int> getCabbageSectionRange(String csdText)
@@ -713,7 +707,7 @@ public:
         
         for (int i = 0; i < linesize; i++) // let's find all the tokens in this line of code...
         {
-            while (i < linesize && code[i] != breakChar) // let's find the end of a token...
+            while (i < linesize && (char)code[i] != breakChar) // let's find the end of a token...
             {
                 if (code[i] == '\"')   // excuse anything in quotes..
                 {
@@ -1129,7 +1123,7 @@ public:
 		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
-        data->writeToFile (File (filePath), String());
+        data->writeTo (File (filePath));
     }
 
     //======= method for replacing the contents of an identifier with new values..

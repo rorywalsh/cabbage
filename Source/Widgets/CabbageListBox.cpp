@@ -84,8 +84,8 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
-        StringArray lines = StringArray::fromLines (file);
+        String listBoxFile = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
+        StringArray lines = StringArray::fromLines (listBoxFile);
 
         for (int i = 0; i < lines.size(); ++i)
         {
@@ -131,7 +131,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     }
     else
     {
-        const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
 		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
 			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
@@ -156,7 +156,6 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
 
     }
 
-    Justification justify (Justification::centred);
 
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align) == "left")
         justify = Justification::left;
@@ -176,12 +175,12 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         {
             if (isStringCombo == false)
             {
-                int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+                int listBoxValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
 
 //                if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
 //                    listBox.selectRow(value - 1, sendNotification);
 //                else
-                listBox.selectRow(value - 1);//, dontSendNotification);
+                listBox.selectRow(listBoxValue - 1);//, dontSendNotification);
             }
             else
             {

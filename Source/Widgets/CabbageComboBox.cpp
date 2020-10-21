@@ -107,8 +107,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        String file = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
-        StringArray lines = StringArray::fromLines (file);
+        String comboFile = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
+        StringArray lines = StringArray::fromLines (comboFile);
 
         for (int i = 0; i < lines.size(); ++i)
         {
@@ -121,7 +121,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
         PopupMenu subMenu;
-        std:vector<StringArray> menus;
+        vector<StringArray> menus;
         int menuIndex = -1;
         for( int i = 0 ; i < items.size(); i++)
         {
@@ -193,7 +193,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else
     {
         
-        const String workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
 
         if (workingDir.isNotEmpty())
             pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
@@ -270,12 +270,12 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         {
             if (isStringCombo == false)
             {
-                const int value = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+                const int comboValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
 
                 if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
-                    setSelectedItemIndex (value - 1, sendNotification);
+                    setSelectedItemIndex (comboValue - 1, sendNotification);
                 else
-                    setSelectedItemIndex (value - 1, dontSendNotification);
+                    setSelectedItemIndex (comboValue - 1, dontSendNotification);
             }
             else
             {

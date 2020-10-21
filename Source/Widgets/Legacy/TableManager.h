@@ -35,19 +35,19 @@ class TableManager : public Component,
     private ScrollBar::Listener,
     public ChangeListener
 {
-    double zoom;
-    int currentTableIndex;
+    double zoom = 0;
+    int currentTableIndex = 0;
     var tableConfigList;
-    int largestTable;
-    double scrubberPosition;
-    double scrubberFreq;
-    bool shouldShowTableButtons;
-    bool shouldShowZoomButtons;
-    int mainFooterHeight;
-    Colour gridColour;
-    Colour backgroundColour;
-    int tableIndex;
-    bool scrollbarEnabled;
+    int largestTable = 0;
+    double scrubberPosition = 0;
+    double scrubberFreq = 0;
+    bool shouldShowTableButtons = false;
+    bool shouldShowZoomButtons = false;
+    int mainFooterHeight = 0;
+    Colour gridColour = {};
+    Colour backgroundColour = {};
+    int tableIndex = 0;
+    bool scrollbarEnabled = false;
 
 public:
     TableManager();
@@ -145,29 +145,29 @@ public:
     static float ampToPixel (int height, Range<float> minMax, float sampleVal);
     static float pixelToAmp (int height, Range<float> minMax, float sampleVal);
     Array<double> getPfields();
-    String changeMessage;
-    Colour gridColour;
-    int tableNumber, tableSize, genRoutine, realGenRoutine;
+    String changeMessage = {};
+    Colour gridColour = {};
+    int tableNumber = 0, tableSize = 0, genRoutine = 0, realGenRoutine = 0;
     void setRange (Range<double> newRange, bool isScrolling = false);
-    Range<double> globalRange;
-    bool isTableOnTop;
+    Range<double> globalRange = {};
+    bool isTableOnTop = false;
     std::unique_ptr<ScrollBar> scrollbar;
     void resized() override;
-    Range<double> visibleRange;
-    bool drawGrid;
-    int scrollbarReduction;
+    Range<double> visibleRange = {};
+    bool drawGrid = false;
+    int scrollbarReduction = 0;
     void showScrollbar (bool show);
-    int mainFooterHeight, paintFooterHeight, zoomButtonsOffset;
+    int mainFooterHeight = 0, paintFooterHeight = 0, zoomButtonsOffset = 0;
 
     HandleViewer* getHandleViewer()
     {
         return handleViewer.get();
     }
 
-    double quantiseSpace;
+    double quantiseSpace = 0;
     void setAmpRanges (var ampRange);
     void setXPosition (double pos);
-    bool drawAsVUMeter;
+    bool drawAsVUMeter = false;
 
     HandleComponent* getCurrentHandle()
     {
@@ -223,58 +223,58 @@ public:
 
 private:
     void drawBackgroundGrid();
-    Image backgroundImage;
-    bool shouldFill;
-    float traceThickness;
-    bool paintCachedImage;
-    String coordinates;
-    double newRangeStart;
-    HandleComponent* currentHandle;
-    bool shouldScroll;
-    int normalised;
-    int imgCount;
-    Colour fillColour;
-    Colour backgroundColour;
-    float currentWidth;
-    double zoom;
-    bool showScroll;
-    double qsteps;
-    double numPixelsPerIndex;
-    ColourGradient gradient;
-    StringArray pFields;
+    Image backgroundImage = {};
+    bool shouldFill = false;
+    float traceThickness = 0.f;
+    bool paintCachedImage = false;
+    String coordinates = {};
+    double newRangeStart = 0.0;
+    HandleComponent* currentHandle = nullptr;
+    bool shouldScroll = false;
+    int normalised = 0;
+    int imgCount = 0;
+    Colour fillColour = {};
+    Colour backgroundColour = {};
+    float currentWidth = 0.f;
+    double zoom = 0.0;
+    bool showScroll = false;
+    double qsteps = 0.0;
+    double numPixelsPerIndex = 0.0;
+    ColourGradient gradient = {};
+    StringArray pFields = {};
     std::unique_ptr<DrawableRectangle> currentPositionMarker;
-    juce::Rectangle<int> thumbArea;
-    juce::Rectangle<int> handleViewerRect;
+    juce::Rectangle<int> thumbArea = {};
+    juce::Rectangle<int> handleViewerRect = {};
     void paint (Graphics& g)  override;
     void mouseDown (const MouseEvent& e)  override;
     void mouseUp (const MouseEvent& e)  override;
     void mouseEnter (const MouseEvent& e)  override;
     void mouseDrag (const MouseEvent& e)  override;
     void mouseExit (const MouseEvent& e)  override;
-    bool reDraw;
-    double scrubberPosition;
+    bool reDraw = false;
+    double scrubberPosition = 0.0;
     void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
     std::unique_ptr<HandleViewer> handleViewer;
     AudioFormatManager formatManager;
-    double sampleRate;
-    float regionWidth;
-    Image waveformImage;
+    double sampleRate = 44100;
+    float regionWidth = 0;
+    Image waveformImage = {};
     AudioThumbnailCache thumbnailCache;
     std::unique_ptr<AudioThumbnail> thumbnail;
     Colour tableColour, fontcolour;
-    int mouseDownX, mouseUpX;
-    juce::Rectangle<int> localBounds;
-    double loopLength;
-    double loopStart;
-    double currentPlayPosition;
-    bool drawWaveform;
+    int mouseDownX = 0, mouseUpX = 0;
+    juce::Rectangle<int> localBounds = {};
+    double loopLength = 0;
+    double loopStart = 0;
+    double currentPlayPosition = 0;
+    bool drawWaveform = false;
     ColourGradient vuGradient;
 
     const Image drawGridImage (bool redraw, double width = 0.0, double height = 0.0, double offset = 0.0);
 
     Array<float, CriticalSection> waveformBuffer;
-    double visibleLength, visibleStart, visibleEnd, maxAmp;
+    double visibleLength = 0, visibleStart = 0, visibleEnd = 0, maxAmp = 0;
     Range<float> minMax;
 
     Range<float> findMinMax (Array<float, CriticalSection> buffer)
@@ -306,11 +306,11 @@ public:
     ~HandleViewer();
     std::unique_ptr<TextButton> button1;
     std::unique_ptr<TextButton> button2;
-    void mouseDown (const MouseEvent& e);
-    void mouseDrag (const MouseEvent& e);
+    void mouseDown (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
     void positionHandle (const MouseEvent& e);
     void repaint (Graphics& g);
-    void resized();
+    void resized() override;
     void addHandle (double x, double y, double width, double height, Colour colour, bool status = false);
     void insertHandle (double x, double y, Colour colour);
     double getSnapYPosition (const double y);
@@ -322,12 +322,12 @@ public:
     OwnedArray<HandleComponent, CriticalSection> handles;
     void fixEdgePoints (int gen);
     void showHandles (bool show);
-    int handleIndex;
-    bool showingGrid;
-    double tableSize;
-    Range<float> minMax;
-    Colour colour;
-    int handleViewerGen;
+    int handleIndex = 0;
+    bool showingGrid = false;
+    double tableSize = 0.0;
+    Range<float> minMax = {};
+    Colour colour = {};
+    int handleViewerGen = 0;
 
     bool isShowingGrid()
     {

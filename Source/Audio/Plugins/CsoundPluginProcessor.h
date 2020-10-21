@@ -136,7 +136,7 @@ public:
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     int checkTable (int tableNum);
-    AudioPlayHead::CurrentPositionInfo hostInfo;
+    AudioPlayHead::CurrentPositionInfo hostInfo = {};
 
     class MatrixEventSequencer
     {
@@ -149,7 +149,7 @@ public:
             events[col]->set(row, data);
         }
 
-        MatrixEventSequencer(String csoundChannel):channel(csoundChannel){}
+        explicit MatrixEventSequencer(String csoundChannel):channel(csoundChannel){}
         ~MatrixEventSequencer(){ events.clear();}
 
     };
@@ -172,9 +172,9 @@ public:
     void addMacros (String csdText);
     const String getCsoundOutput();
 
-    void compileCsdFile (File csdFile)
+    void compileCsdFile (File csoundFile)
     {
-        csCompileResult = csound->Compile (const_cast<char*> (csdFile.getFullPathName().toUTF8().getAddress()));
+        csCompileResult = csound->Compile (const_cast<char*> (csoundFile.getFullPathName().toUTF8().getAddress()));
     }
 
     void compileCsdString (String csdFileText)
@@ -211,9 +211,9 @@ public:
     class SignalDisplay
     {
     public:
-        float yScale;
-        int windid, min , max, size;
-        String caption, variableName;
+        float yScale = 0.f;
+        int windid = 0, min = 0, max = 0, size = 0;
+        String caption = {}, variableName = {};
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
             yScale (_scale),
@@ -259,8 +259,8 @@ private:
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;
     int guiRefreshRate = 128;
-    MidiBuffer midiBuffer;
-    String csoundOutput;
+    MidiBuffer midiBuffer = {};
+    String csoundOutput = {};
     std::unique_ptr<CSOUND_PARAMS> csoundParams;
     int csCompileResult = -1;
     int numCsoundOutputChannels = 0;
@@ -274,7 +274,7 @@ private:
     int samplingRate = 44100;
     int csndIndex = 0;
     int csdKsmps = 0;
-    File csdFile , csdFilePath;
+    File csdFile = {}, csdFilePath = {};
     std::unique_ptr<Csound> csound;
     std::unique_ptr<FileLogger> fileLogger;
     int busIndex = 0;
