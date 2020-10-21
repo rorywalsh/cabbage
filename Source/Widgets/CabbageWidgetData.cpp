@@ -312,6 +312,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("kind"):
             case HashStringToInt ("file"):
             case HashStringToInt ("imgpath"):
+            case HashStringToInt ("opcodedir"):
             case HashStringToInt ("pluginid"):
             case HashStringToInt ("popuptext"):
             case HashStringToInt ("mode"):

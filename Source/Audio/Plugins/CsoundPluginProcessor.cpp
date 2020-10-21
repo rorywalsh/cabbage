@@ -100,6 +100,21 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 {
     
     csdFile = currentCsdFile;
+    
+    StringArray csdLines;
+    csdLines.addLines(csdFile.loadFileAsString());
+    for (auto line : csdLines)
+    {
+        ValueTree temp("temp");
+        CabbageWidgetData::setWidgetState(temp, line, 0);
+
+        if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+        {
+            const String opcodeDir = csdFile.getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
+            csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
+        }
+    }
+    
     CabbageUtilities::debug(csdFile.getFullPathName());
     
     // the host should respect the default inputs and outs, which are determined by the

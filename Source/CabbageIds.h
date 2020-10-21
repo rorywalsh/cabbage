@@ -375,6 +375,7 @@ public:
 		add ("keypressed");
         add ("scrollbars");
         add ("cellheight");
+        add ("opcodedir");
         add ("markerend");
         add ("menucolor");
         add ("cellwidth");
@@ -630,6 +631,7 @@ namespace CabbageIdentifierIds
 	static const Identifier keyreleased = "keyreleased";
 	static const Identifier oncolour = "oncolour";
 	static const Identifier onfontcolour = "onfontcolour";
+    static const Identifier opcodedir = "opcodedir";
 	static const Identifier orientation = "orientation";
 	static const Identifier outlinecolour = "outlinecolour";
 	static const Identifier outlinethickness = "outlinethickness";
