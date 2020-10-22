@@ -65,6 +65,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty(widgetData, CabbageIdentifierIds::filmstripframes, 31);
     setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom1, 0);
     setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom2, 0);
+    setProperty(widgetData, CabbageIdentifierIds::opcodedir, "");
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");

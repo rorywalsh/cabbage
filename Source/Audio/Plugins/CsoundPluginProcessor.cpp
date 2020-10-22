@@ -110,8 +110,11 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
         if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
         {
-            const String opcodeDir = csdFile.getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
-            csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
+            if(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir).isNotEmpty()) {
+                const String opcodeDir = csdFile.getParentDirectory().getChildFile(
+                        CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
+                csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
+            }
         }
     }
     
@@ -130,7 +133,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
-    Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
+    //Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
 	csound.reset (new Csound());
     
 	csdFilePath = filePath;
