@@ -845,7 +845,7 @@ void CsoundPluginProcessor::sendHostDataToCsound()
         {
             AudioPlayHead::CurrentPositionInfo hostPlayHeadInfo = {};
             
-            if (ph->getCurrentPosition (hostInfo))
+            if (ph->getCurrentPosition (hostPlayHeadInfo))
             {
                 csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostPlayHeadInfo.bpm);
                 csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostPlayHeadInfo.timeInSeconds);
