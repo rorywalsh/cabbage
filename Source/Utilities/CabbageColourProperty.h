@@ -68,17 +68,17 @@ public:
         return swatchColours;
     }
 
-    int getNumSwatches() const
+    int getNumSwatches() const override
     {
         return getColourSwatches().size();
     }
 
-    Colour getSwatchColour (int index) const
+    Colour getSwatchColour (int index) const override
     {
         return getColourSwatches()[index];
     }
 
-    void setSwatchColour (const int index, const Colour& newColour)
+    void setSwatchColour (const int index, const Colour& newColour) override
     {
         getColourSwatches().set (index, newColour);
     }
@@ -126,7 +126,7 @@ class ColourMultiPropertyComponent : public PropertyComponent, public ChangeList
     {
         Colour overlayColour;
     public:
-        OverlayComponent (String name): Component (name) {}
+        explicit OverlayComponent (String name): Component (name) {}
         void setColour (Colour colour) {  overlayColour = colour; repaint();}
         void paint (Graphics& g)  override {    g.fillAll (overlayColour);   }
     };

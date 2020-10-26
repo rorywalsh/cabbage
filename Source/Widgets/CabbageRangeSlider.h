@@ -31,7 +31,7 @@ class RangeSlider  : public Slider
 {
     CabbageRangeSlider* owner;
 public:
-    RangeSlider (CabbageRangeSlider* owner);
+    explicit RangeSlider (CabbageRangeSlider* owner);
 
     ~RangeSlider();
 

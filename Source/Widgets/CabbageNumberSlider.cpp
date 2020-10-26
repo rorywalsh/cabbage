@@ -64,12 +64,12 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     const float max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
     const float incr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     const float skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
-    const float value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+    const float defaultValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
 
     slider.setSkewFactor (skew);
 	
     slider.setRange (min, max, incr);
-    slider.setValue (value, sendNotification);
+    slider.setValue (defaultValue, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
 
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);

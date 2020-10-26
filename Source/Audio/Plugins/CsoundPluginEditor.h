@@ -30,7 +30,7 @@
 class CsoundPluginEditor  : public AudioProcessorEditor
 {
 public:
-    CsoundPluginEditor (CsoundPluginProcessor&);
+    explicit CsoundPluginEditor (CsoundPluginProcessor&);
     ~CsoundPluginEditor();
 
     //==============================================================================
@@ -39,7 +39,7 @@ public:
 
 private:
 
-    CsoundPluginProcessor& processor;
+    CsoundPluginProcessor& csoundProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CsoundPluginEditor)
 };

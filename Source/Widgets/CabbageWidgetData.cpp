@@ -65,6 +65,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty(widgetData, CabbageIdentifierIds::filmstripframes, 31);
     setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom1, 0);
     setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom2, 0);
+    setProperty(widgetData, CabbageIdentifierIds::opcodedir, "");
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -312,6 +313,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("kind"):
             case HashStringToInt ("file"):
             case HashStringToInt ("imgpath"):
+            case HashStringToInt ("opcodedir"):
             case HashStringToInt ("pluginid"):
             case HashStringToInt ("popuptext"):
             case HashStringToInt ("mode"):

@@ -74,10 +74,10 @@ void CabbageEncoder::createPopupBubble()
 
 void CabbageEncoder::labelTextChanged (Label* label)
 {
-    float value = jlimit (min, max, label->getText().getFloatValue());
+    float labelValue = jlimit (min, max, label->getText().getFloatValue());
     sliderPos = 0;
     currentEncValue = value;
-    valueLabel.setText (createValueText(value, 3, "", postfix), dontSendNotification);
+    valueLabel.setText (createValueText(labelValue, 3, "", postfix), dontSendNotification);
     owner->sendChannelDataToCsound (getChannel(), currentEncValue);
     showPopup();
 }
@@ -157,7 +157,7 @@ void CabbageEncoder::showPopup (int displayTime)
 {
     if (shouldDisplayPopup)
     {
-        String popupText = createPopupBubbleText(currentEncValue,
+        popupText = createPopupBubbleText(currentEncValue,
                                                  decimalPlaces,
                                                  getChannel(),
                                                  popupPrefix,

@@ -46,7 +46,7 @@ public:
 	@param state        the midi keyboard model that this component will represent
 	@param orientation  whether the keyboard is horizonal or vertical
 	*/
-	MidiKeyboardDisplay(Orientation orientation);
+	explicit MidiKeyboardDisplay(Orientation orientation);
 
 	/** Destructor. */
 	~MidiKeyboardDisplay();
@@ -338,7 +338,7 @@ class CabbageKeyboardDisplay : public MidiKeyboardDisplay, public ValueTree::Lis
 
 public:
 
-	CabbageKeyboardDisplay(ValueTree wData);
+	explicit CabbageKeyboardDisplay(ValueTree wData);
 	~CabbageKeyboardDisplay() {};
 
 	//VlaueTree::Listener virtual methods....

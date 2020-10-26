@@ -31,7 +31,7 @@ class CabbageTextBox : public TextEditor, public ValueTree::Listener, public Cab
     String filename;
 public:
 
-    CabbageTextBox (ValueTree wData);
+    explicit CabbageTextBox (ValueTree wData);
     ~CabbageTextBox() {};
 
     //ValueTree::Listener virtual methods....

@@ -35,6 +35,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSe
                                         ),
       csdFile (csdFile)
 {
+    hostInfo = {};
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
@@ -59,7 +60,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet
 	),
 	csdFile(csdFile)
 {
-	
+    hostInfo = {};
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
 
@@ -99,6 +100,24 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 {
     
     csdFile = currentCsdFile;
+    
+    StringArray csdLines;
+    csdLines.addLines(csdFile.loadFileAsString());
+    for (auto line : csdLines)
+    {
+        ValueTree temp("temp");
+        CabbageWidgetData::setWidgetState(temp, line, 0);
+
+        if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+        {
+            if(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir).isNotEmpty()) {
+                const String opcodeDir = csdFile.getParentDirectory().getChildFile(
+                        CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
+                csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
+            }
+        }
+    }
+    
     CabbageUtilities::debug(csdFile.getFullPathName());
     
     // the host should respect the default inputs and outs, which are determined by the
@@ -114,7 +133,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
-    Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%x", long(csound.get())));
+    //Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
 	csound.reset (new Csound());
     
 	csdFilePath = filePath;
@@ -226,9 +245,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 }
 
 
-void CsoundPluginProcessor::createFileLogger (File csdFile)
+void CsoundPluginProcessor::createFileLogger (File csoundFile)
 {
-    String logFileName = csdFile.getParentDirectory().getFullPathName() + String ("/") + csdFile.getFileNameWithoutExtension() + String ("_Log.txt");
+    String logFileName = csoundFile.getParentDirectory().getFullPathName() + String ("/") + csoundFile.getFileNameWithoutExtension() + String ("_Log.txt");
     fileLogger.reset (new FileLogger (File (logFileName), String ("Cabbage Log..")));
     Logger::setCurrentLogger (fileLogger.get());
 }
@@ -243,8 +262,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     }
     else
     {
-        Logger::writeToLog(String::formatted("csound = 0x%x", long(csound.get())));
-        Logger::writeToLog(String::formatted("handle = 0x%x", long(csound->GetCsound())));
+        Logger::writeToLog(String::formatted("csound = 0x%p", csound.get()));
+        Logger::writeToLog(String::formatted("handle = 0x%p", csound->GetCsound()));
     }
     
     if (!csdCompiledWithoutError())
@@ -824,18 +843,18 @@ void CsoundPluginProcessor::sendHostDataToCsound()
 //    {
         if (AudioPlayHead* const ph = getPlayHead())
         {
-            AudioPlayHead::CurrentPositionInfo hostInfo;
+            AudioPlayHead::CurrentPositionInfo hostPlayHeadInfo = {};
             
-            if (ph->getCurrentPosition (hostInfo))
+            if (ph->getCurrentPosition (hostPlayHeadInfo))
             {
-                csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
-                csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
-                csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), hostInfo.isPlaying);
-                csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), hostInfo.isRecording);
-                csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), hostInfo.ppqPosition);
-                csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), hostInfo.timeInSamples);
-                csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), hostInfo.timeSigDenominator);
-                csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
+                csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostPlayHeadInfo.bpm);
+                csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostPlayHeadInfo.timeInSeconds);
+                csound->SetChannel (CabbageIdentifierIds::isplaying.toUTF8(), hostPlayHeadInfo.isPlaying);
+                csound->SetChannel (CabbageIdentifierIds::isrecording.toUTF8(), hostPlayHeadInfo.isRecording);
+                csound->SetChannel (CabbageIdentifierIds::hostppqpos.toUTF8(), hostPlayHeadInfo.ppqPosition);
+                csound->SetChannel (CabbageIdentifierIds::timeinsamples.toUTF8(), hostPlayHeadInfo.timeInSamples);
+                csound->SetChannel (CabbageIdentifierIds::timeSigDenom.toUTF8(), hostPlayHeadInfo.timeSigDenominator);
+                csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostPlayHeadInfo.timeSigNumerator);
             }
         }
 //    }
@@ -1076,7 +1095,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 void CsoundPluginProcessor::breakpointCallback (CSOUND* csound, debug_bkpt_info_t* bkpt_info, void* userdata)
 {
 
-    CsoundPluginProcessor* ud = (CsoundPluginProcessor*) userdata;
+    CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*>(userdata);
     const String instrument = "Instrument" + String (bkpt_info->breakpointInstr->p1);
     debug_variable_t* vp = bkpt_info->instrVarList;
 
@@ -1181,7 +1200,7 @@ int CsoundPluginProcessor::OpenMidiInputDevice (CSOUND* csound, void** userData,
 int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
                                          unsigned char* mbuf, int nbytes)
 {
-    CsoundPluginProcessor* midiData = (CsoundPluginProcessor*)userData;
+    CsoundPluginProcessor* midiData = static_cast<CsoundPluginProcessor*>(userData);
 
     if (!userData)
     {
@@ -1243,7 +1262,7 @@ int CsoundPluginProcessor::OpenMidiOutputDevice (CSOUND* csound, void** userData
 int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
                                           const unsigned char* mbuf, int nbytes)
 {
-    CsoundPluginProcessor* userData = (CsoundPluginProcessor*)_userData;
+    CsoundPluginProcessor* userData = static_cast<CsoundPluginProcessor*>(_userData);
 
     if (!userData)
     {
@@ -1262,7 +1281,7 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
 
 void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, const char* name)
 {
-    CsoundPluginProcessor* ud = (CsoundPluginProcessor*) csoundGetHostData (csound);
+    CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*>(csoundGetHostData (csound));
     SignalDisplay* display = new SignalDisplay (String (windat->caption), (int)windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
 
     bool addDisplay = true;
@@ -1275,10 +1294,15 @@ void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, c
 
     if (addDisplay && !String(windat->caption).contains("ftable"))
     {
-        const String name = String(windat->caption).substring(String(windat->caption).indexOf("signal ")+7);
-        const int posColon = String(name).indexOf(":");
-        const int posComma = String(name).indexOf(",");
-        const String variableName = name.substring(0, posColon<posComma ? posColon : posComma);
+        const String captionName = String(windat->caption).substring(String(windat->caption).indexOf("signal ")+7);
+        const int posColon = String(captionName).indexOf(":");
+        const int posComma = String(captionName).indexOf(",");
+        String variableName = "";
+        if(posComma != -1)
+            variableName = captionName.substring(0, posComma);
+        else
+            variableName = captionName.substring(0, posColon);
+
         display->variableName = variableName;
         ud->signalArrays.add (display);
         ud->updateSignalDisplay.set(variableName, false);
@@ -1287,7 +1311,7 @@ void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, c
 
 void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
 {
-    CsoundPluginProcessor* ud = (CsoundPluginProcessor*) csoundGetHostData (csound);
+    CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*> (csoundGetHostData (csound));
     Array<float, CriticalSection> tablePoints;
     //only take all samples if dealing with fft, waveforms and lissajous curves can be drawn with less samples
     tablePoints = Array<float, CriticalSection> (&windat->fdata[0], windat->npts);

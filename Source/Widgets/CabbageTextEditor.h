@@ -32,10 +32,10 @@ public:
     class CustomTextEditor : public TextEditor //custom text editor with right-click popup menu
     {
     public:
-        CustomTextEditor (CabbageTextEditor* _owner): TextEditor (""), owner (_owner) {}
+        explicit CustomTextEditor (CabbageTextEditor* _owner): TextEditor (""), owner (_owner) {}
         ~CustomTextEditor() {}
 
-        void addPopupMenuItems (PopupMenu& menuToAddTo, const MouseEvent* mouseClickEvent)
+        void addPopupMenuItems (PopupMenu& menuToAddTo, const MouseEvent* mouseClickEvent) override
         {
             menuToAddTo.addItem (1, "Cut");
             menuToAddTo.addItem (2, "Copy");
@@ -45,7 +45,7 @@ public:
             menuToAddTo.addItem (5, "Send text");
         }
 
-        void performPopupMenuAction (int menuItemID)
+        void performPopupMenuAction (int menuItemID) override
         {
             if (menuItemID == 1)
                 cutToClipboard();

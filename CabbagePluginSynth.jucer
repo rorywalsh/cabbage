@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.0"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.3"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -235,9 +235,9 @@
         <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
-    <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="MACOSX=1" extraFrameworks="/Library/Frameworks/CsoundLib64"
-               vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK"
-               smallIcon="nMt6S5" bigIcon="nMt6S5">
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="MACOSX=1&#10;Cabbage_Plugin_Synth=1"
+               extraFrameworks="/Library/Frameworks/CsoundLib64" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK"
+               vst3Folder="~/SDKs/VST_SDK" smallIcon="nMt6S5" bigIcon="nMt6S5">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="CabbagePlugin"
                        headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"

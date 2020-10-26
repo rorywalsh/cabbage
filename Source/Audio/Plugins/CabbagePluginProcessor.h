@@ -38,7 +38,7 @@ public:
         CabbagePluginProcessor* owner;
     public:
 
-        CabbageJavaClass (CabbagePluginProcessor* owner): owner (owner)
+        explicit CabbageJavaClass (CabbagePluginProcessor* owner): owner (owner)
         {
             setMethod ("print", print);
         }
@@ -81,7 +81,7 @@ public:
     void createCabbageParameters();
     void updateWidgets (String csdText);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
-    void getMacros (StringArray& csdText);
+    void getMacros (const StringArray& csdText);
     void generateCabbageCodeFromJS (PlantImportStruct& importData, String text);
     void insertUDOCode (PlantImportStruct importData, StringArray& linesFromCsd);
     void insertPlantCode (StringArray& linesFromCsd);
