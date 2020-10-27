@@ -514,6 +514,7 @@ void CabbageSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identi
     if (prop == CabbageIdentifierIds::value)
     {
         getSlider().setValue (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value), dontSendNotification);
+        repaint();
     }
     else
     {
