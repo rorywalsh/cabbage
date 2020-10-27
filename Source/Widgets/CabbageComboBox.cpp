@@ -255,7 +255,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
     {
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
         const int index = combo->getSelectedItemIndex();
-        DBG(stringItems[index]);
+
 		if (fileType.isNotEmpty())
 		{
 			String test = folderFiles[index - 1].getFullPathName();
