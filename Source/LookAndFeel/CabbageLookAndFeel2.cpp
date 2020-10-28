@@ -938,14 +938,17 @@ void CabbageLookAndFeel2::drawLinearSliderThumb (Graphics& g, int x, int y, int 
         {
             g.setOpacity (1.0);
             Image image = ImageCache::getFromFile (imgSlider);
-            image = image.rescaled (slider.getWidth(), slider.getHeight());
+            //image = image.rescaled (slider.getWidth(), slider.getHeight());
 
             if (slider.isHorizontal())
-                g.drawImage (image, 0, sliderPos - width * .05, width, height, 0, 0, slider.getWidth(), slider.getHeight(), false);
+                g.drawImage (image, 0, sliderPos - width * .05, width, height, 0, 0, image.getWidth(), image.getHeight(), false);
             else
             {
                 sliderHeight = sliderRadius * 1.5f;
-                g.drawImage (image, 0, sliderPos - height * .05, width, sliderHeight, 0, 0, slider.getWidth(), slider.getHeight(), false);
+                //auto yPos = 
+                auto yPos = jmap((maxSliderPos - y) - (sliderPos - y), 0.f, maxSliderPos - y, height+y - (float)image.getHeight()+y, 0.f);
+                DBG(yPos);
+                g.drawImage (image, width/2 - image.getWidth()/2, yPos, image.getWidth(), image.getHeight(), 0, 0, image.getWidth(), image.getHeight(), false);
             }
 
             useImg = true;
