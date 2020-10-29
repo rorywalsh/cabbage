@@ -55,8 +55,8 @@ void ColourPropertyComponent::mouseDown (const MouseEvent& e)
         colourSelector->addChangeListener (this);
         colourSelector->setNameOfParent (name);
         colourSelector->setCurrentColour (colour);
-       // CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
-       // colour = colourSelector->getCurrentColour();
+        CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
+        colour = colourSelector->getCurrentColour();
 
     }
 }
