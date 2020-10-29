@@ -115,6 +115,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                         CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
                 csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
             }
+            if (CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::latency) == -1) {
+                preferredLatency = -1;
+            }
         }
     }
     
@@ -210,6 +213,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		csoundParams->ksmps_override = 32;
 
 	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
+
+    if(preferredLatency == -1)
+        csoundParams->ksmps_override = 1;
 
 	csound->SetParams(csoundParams.get());
     
@@ -728,7 +734,10 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
 
-	this->setLatencySamples(preferredLatency == 0 ? csound->GetKsmps() : preferredLatency);
+    if (preferredLatency == -1)
+        this->setLatencySamples(0);
+    else
+	    this->setLatencySamples(preferredLatency == 0 ? csound->GetKsmps() : preferredLatency);
 }
 
 void CsoundPluginProcessor::releaseResources()
@@ -896,6 +905,9 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type*& buffer
 		Type*& current_sample = buffer;
 		MYFLT sample = *current_sample * cs_scale;
 		CSspin[pos] = sample;
+        //if we want 0 latency, we have to fill Csound spin buffer before we call performKsmps()
+        if (preferredLatency == -1)
+            performCsoundKsmps();
 		*current_sample = (CSspout[pos] / cs_scale);
 		++current_sample;
 	}
@@ -996,7 +1008,9 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		{
 			if (csndIndex == csdKsmps)
 			{
-				performCsoundKsmps();
+                //don't call performKsmps here if we want 0 latency
+                if(preferredLatency != -1)
+				    performCsoundKsmps();
 				csndIndex = 0;
 			}
             
