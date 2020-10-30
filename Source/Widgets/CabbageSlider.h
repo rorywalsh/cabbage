@@ -88,6 +88,7 @@ class CabbageSlider
     bool shouldDisplayPopup = true;
     Slider slider;
     BubbleMessageComponent popupBubble;
+    Image sliderThumbImage;
 
     void mouseDrag (const MouseEvent& event) override;
     void mouseMove (const MouseEvent& event) override;
@@ -114,6 +115,8 @@ public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageSlider();
     void paint(Graphics& g) override;
+    void paintOverChildren(Graphics& g) override;
+
 
     void initFilmStrip(ValueTree wData);
     void setTextBoxWidth();

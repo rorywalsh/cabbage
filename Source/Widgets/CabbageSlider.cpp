@@ -77,6 +77,8 @@ popupBubble (250)
     slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
     setImgProperties(this->slider, wData, "slider");
     setImgProperties(this->slider, wData, "sliderbg");
+    
+    
     filmStripValueBox.setEditable(true);
     filmStripValueBox.setJustificationType(Justification::centred);
     prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valueprefix);
@@ -85,6 +87,13 @@ popupBubble (250)
     popupPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuppostfix);
     initialiseSlider(wData, slider);
     initFilmStrip(wData);
+
+
+    const File sliderImageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
+
+    if (!isFilmStripSlider && sliderImageFile.existsAsFile())
+        sliderThumbImage = ImageFileFormat::loadFrom(sliderImageFile);
+
     setLookAndFeelColours(widgetData);
     setTextBoxOrientation(sliderType, shouldShowTextBox);
     const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
@@ -99,7 +108,8 @@ popupBubble (250)
       
      
     slider.onValueChange = [this] {
-        if (isFilmStripSlider) repaint(); 
+        if (isFilmStripSlider || sliderThumbImage.isValid())
+            repaint();
         auto newValue = slider.getTextFromValue(slider.getValue());
         filmStripValueBox.setFont(25.f);
         filmStripValueBox.setText(newValue, dontSendNotification);
@@ -131,7 +141,19 @@ void CabbageSlider::paint(Graphics& g)
         g.drawImage(filmStrip, filmStripBounds.getX(), filmStripBounds.getY(), filmStripBounds.getWidth(), filmStripBounds.getHeight(),
                 0, sliderValue * frameHeight, frameWidth, frameHeight);
     }
+}
 
+void CabbageSlider::paintOverChildren(Graphics& g)
+{
+    if (sliderThumbImage.isValid())
+    {
+        const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
+
+        const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
+        
+        g.drawImage(sliderThumbImage, slider.getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos,
+            sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), 0, 0, sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), false);
+    }
 }
 
 void CabbageSlider::initFilmStrip(ValueTree wData)
@@ -299,7 +321,7 @@ void CabbageSlider::resized()
                     filmStripValueBox.setBounds(0, getHeight()-20, getWidth(), 20);
                     filmStripBounds.setBounds(0, getHeight()*.1f, getWidth(), getHeight() - getHeight() * .15f);
                     getSlider().setBounds(0, getHeight() * remove1, getWidth(), getHeight() - getHeight() * remove2);
-                }                    
+                }
                 else
                     getSlider().setBounds(0, getHeight() * .1f, getWidth(), getHeight() - getHeight()*.1f);
             }
@@ -311,7 +333,6 @@ void CabbageSlider::resized()
                     filmStripBounds.setBounds(0, 0, getWidth(), getHeight()*.9);
                     getSlider().setBounds(0, getHeight()*remove1, getWidth(), getHeight() - getHeight()*remove2);
                 }
-                    
                 else
                     getSlider().setBounds(0, 0, getWidth(), getHeight() - getHeight() * .1f);
             }
@@ -331,10 +352,12 @@ void CabbageSlider::resized()
                 {
                     filmStripBounds.setBounds(0, 0, getWidth(), getHeight());
                     getSlider().setBounds(0, getHeight() * .05f, getWidth(), getHeight() - getHeight() * remove2);
-                }
-                    
+                }                    
             }
-               
+            else if (sliderThumbImage.isValid())
+            {
+                getSlider().setBounds(0, sliderThumbImage.getHeight()/3, getWidth(), getHeight()- sliderThumbImage.getHeight()*.66f);
+            }
             else
                 getSlider().setBounds(0, 0, getWidth(), getHeight());
         }
