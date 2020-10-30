@@ -77,14 +77,29 @@ for dir in directories[0:3]:
 				if "(./plants.md)" in line:
 					line = line.replace("(./plants.md)", "(../plants/index.html)")
 
-				if "(./introduction.html)" in line:
-					line = line.replace("(./introduction.html)", "(../introduction/index.html)")
+				if "(./first_synth.md)" in line:
+					line = line.replace("(./first_synth.md)", "(../first_synth/index.html)")
+
+				if "(./using_cabbage.md)" in line:
+					line = line.replace("(./using_cabbage.md)", "(../using_cabbage/index.html)")
+
+				if "(./beginners.md)" in line:
+					line = line.replace("(./beginners.md)", "(../beginners/index.html)")
+
+				if "(./introduction.md)" in line:
+					line = line.replace("(./introduction.md)", "(../introduction/index.html)")
+
+				if "(./form.md)" in line:
+					line = line.replace("(./form.md)", "(../form/index.html)")
 
 				if "(./controlling.md)" in line:
 					line = line.replace("(./controlling.md)", "(../controlling/index.html)")
 
 				if "(./sliders.md)" in line:
 					line = line.replace("(./sliders.md)", "(../sliders/index.html)")
+
+				if "(./bundle.md)" in line:
+					line = line.replace("(./bundle.md)", "(../bundle/index.html)")	
 
 				if "{! " in line:
 					line = line.replace("{! ./markdown/Widgets/Properties/", "{% include_relative ")
