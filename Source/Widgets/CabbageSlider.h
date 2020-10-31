@@ -72,6 +72,27 @@ class CabbagePluginEditor;
 //    int frameWidth = 32, frameHeight = 32;
 //};
 //
+class CabbageSlider;
+
+class SliderThumb : public Component
+{
+public:
+    SliderThumb(CabbageSlider* slider) :Component(), owner(slider){}
+    void paint(Graphics& g) {
+        if (image.isValid())
+        {
+           g.drawImage(image, 0, 0,image.getWidth(), image.getHeight(), 0, 0, image.getWidth(), image.getHeight(), false);
+        }
+    }
+
+    void setThumbImage(Image img) { image = img; };
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseDown(const MouseEvent& e) override;
+    void move(double value, Range<double> range);
+    int yOffset = 0;
+    CabbageSlider* owner;
+    Image image;
+};
 
 class CabbageSlider
     : public Component,
@@ -110,7 +131,7 @@ class CabbageSlider
     int frameWidth = 32, frameHeight = 32;
     Rectangle<float> filmStripBounds = {0, 0, 80, 80};
     Label filmStripValueBox;
-
+    SliderThumb thumb;
 public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageSlider();

@@ -52,14 +52,38 @@
 //    }
 //}
 
+void SliderThumb::move(double value, Range<double> range)
+{
+    float pos = (value + abs(owner->getSlider().getMinimum())) / (range.getLength());
+    const auto yPos = jmap(pos, 1.f, 0.f, (float)owner->getY(), float(owner->getHeight() - owner->getY() - getHeight()));
+    setTopLeftPosition(getX(), yPos);
 
-CabbageSlider::CabbageSlider (ValueTree wData, CabbagePluginEditor* _owner)
-    : owner (_owner),
-      widgetData (wData),
+}
 
-      sliderType (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind)),
-      channel (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel)),
-popupBubble (250)
+
+void SliderThumb::mouseDrag(const MouseEvent& e)
+{
+    auto yPos = jlimit(owner->getY(), owner->getHeight()-owner->getY()-getHeight(), e.getEventRelativeTo(owner).getPosition().getY() + yOffset);
+    setTopLeftPosition(getX(), yPos);
+
+    const auto prop = jmap((float)yPos, (float)owner->getY(), (float)owner->getHeight() - owner->getY() - getHeight(), 1.f, 0.f);
+    const auto value = owner->getSlider().proportionOfLengthToValue(prop);
+    owner->getSlider().setValue(value);    
+}
+
+void SliderThumb::mouseDown(const MouseEvent& e)
+{
+    yOffset = getY() - e.getEventRelativeTo(owner).getPosition().getY();
+}
+
+CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
+    : owner(_owner),
+    widgetData(wData),
+
+    sliderType(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind)),
+    channel(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::channel)),
+    popupBubble(250),
+    thumb(this)
 {
 
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
@@ -67,6 +91,7 @@ popupBubble (250)
     addAndMakeVisible (textLabel);
 
     addAndMakeVisible(&slider);
+    addAndMakeVisible(thumb);
     slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness));
     slider.getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackerbgcolour));
@@ -91,8 +116,11 @@ popupBubble (250)
 
     const File sliderImageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
 
-    if (!isFilmStripSlider && sliderImageFile.existsAsFile())
+    if (!isFilmStripSlider && sliderImageFile.existsAsFile()) {
         sliderThumbImage = ImageFileFormat::loadFrom(sliderImageFile);
+        thumb.setThumbImage(sliderThumbImage);
+    }
+        
 
     setLookAndFeelColours(widgetData);
     setTextBoxOrientation(sliderType, shouldShowTextBox);
@@ -110,6 +138,8 @@ popupBubble (250)
     slider.onValueChange = [this] {
         if (isFilmStripSlider || sliderThumbImage.isValid())
             repaint();
+        thumb.move(slider.getValue(), slider.getRange());
+
         auto newValue = slider.getTextFromValue(slider.getValue());
         filmStripValueBox.setFont(25.f);
         filmStripValueBox.setText(newValue, dontSendNotification);
@@ -145,15 +175,15 @@ void CabbageSlider::paint(Graphics& g)
 
 void CabbageSlider::paintOverChildren(Graphics& g)
 {
-    if (sliderThumbImage.isValid())
-    {
-        const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
+    //if (sliderThumbImage.isValid())
+    //{
+    //    const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
 
-        const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
-        
-        g.drawImage(sliderThumbImage, slider.getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos,
-            sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), 0, 0, sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), false);
-    }
+    //    const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
+    //    
+    //    g.drawImage(sliderThumbImage, slider.getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos,
+    //        sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), 0, 0, sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), false);
+    //}
 }
 
 void CabbageSlider::initFilmStrip(ValueTree wData)
@@ -357,6 +387,11 @@ void CabbageSlider::resized()
             else if (sliderThumbImage.isValid())
             {
                 getSlider().setBounds(0, sliderThumbImage.getHeight()/3, getWidth(), getHeight()- sliderThumbImage.getHeight()*.66f);
+                const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
+
+                const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
+                thumb.setBounds(getWidth()/2 - sliderThumbImage.getWidth() / 2, pos, sliderThumbImage.getWidth(), sliderThumbImage.getHeight());
+              
             }
             else
                 getSlider().setBounds(0, 0, getWidth(), getHeight());
