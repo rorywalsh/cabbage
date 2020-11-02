@@ -115,10 +115,18 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 
 
     const File sliderImageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
+    const File sliderBackgroundFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg));
+    if (!isFilmStripSlider) {
+        if (sliderImageFile.existsAsFile())
+        {
+            sliderThumbImage = ImageFileFormat::loadFrom(sliderImageFile);
+            thumb.setThumbImage(sliderThumbImage);
+        }
+        if (sliderBackgroundFile.existsAsFile())
+        {
+            sliderBgImage = ImageFileFormat::loadFrom(sliderBackgroundFile);
+        }
 
-    if (!isFilmStripSlider && sliderImageFile.existsAsFile()) {
-        sliderThumbImage = ImageFileFormat::loadFrom(sliderImageFile);
-        thumb.setThumbImage(sliderThumbImage);
     }
         
 
@@ -171,19 +179,15 @@ void CabbageSlider::paint(Graphics& g)
         g.drawImage(filmStrip, filmStripBounds.getX(), filmStripBounds.getY(), filmStripBounds.getWidth(), filmStripBounds.getHeight(),
                 0, sliderValue * frameHeight, frameWidth, frameHeight);
     }
+    else if (sliderBgImage.isValid())
+    {
+        g.drawImage(sliderBgImage, slider.getWidth() / 2 - sliderBgImage.getWidth() / 2.f, slider.getY(), sliderBgImage.getWidth(), slider.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
+    }
 }
 
 void CabbageSlider::paintOverChildren(Graphics& g)
 {
-    //if (sliderThumbImage.isValid())
-    //{
-    //    const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
 
-    //    const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
-    //    
-    //    g.drawImage(sliderThumbImage, slider.getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos,
-    //        sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), 0, 0, sliderThumbImage.getWidth(), sliderThumbImage.getHeight(), false);
-    //}
 }
 
 void CabbageSlider::initFilmStrip(ValueTree wData)

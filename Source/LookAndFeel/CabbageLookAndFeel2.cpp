@@ -750,35 +750,13 @@ void CabbageLookAndFeel2::drawLinearSliderBackground(Graphics& g, int x, int y, 
     const float trackerThickness = slider.getProperties().getWithDefault("trackerthickness", .75);
     bool usingImg = false;
 
-    //const File imgSliderBackground(slider.getProperties().getWithDefault("imgsliderbg", "").toString());
+    const File imgSliderBackground(slider.getProperties().getWithDefault("imgsliderbg", "").toString());
 
-    ////if valid background SVG file....
-    //if (imgSliderBackground.existsAsFile() && imgSliderBackground.hasFileExtension("csd") == false)
-    //{
-    //    if (imgSliderBackground.hasFileExtension("png"))
-    //    {
-    //        Image image = ImageCache::getFromFile(imgSliderBackground);
-    //        image = image.rescaled(slider.getWidth(), slider.getHeight());
-
-    //        if (slider.isHorizontal())
-    //            g.drawImage(image, 0, 0, width * (1 + xOffset * 2), height, 0, 0, slider.getWidth(), slider.getHeight(), false);
-    //        else
-    //            g.drawImage(image, 0, height * .05, width, height + sliderRadius, 0, 0, slider.getWidth(), slider.getHeight(), false);
-
-    //        usingImg = true;
-    //    }
-    //    else if (imgSliderBackground.hasFileExtension("svg"))
-    //    {
-    //        if (slider.isVertical())
-    //            drawFromSVG(g, imgSliderBackground, 0, height * .05, width, height * 1.1, AffineTransform());
-    //        else
-    //            drawFromSVG(g, imgSliderBackground, 0, 0, width * 1.08, height, AffineTransform());
-
-    //        usingImg = true;
-    //    }
-    //}
-
-
+    //if valid background SVG file....
+    if (imgSliderBackground.existsAsFile() && imgSliderBackground.hasFileExtension("csd") == false)
+    {
+        return;
+    }
     Path indent;
 
     if (slider.isHorizontal())
@@ -930,48 +908,13 @@ void CabbageLookAndFeel2::drawLinearSliderThumb(Graphics& g, int x, int y, int w
     float sliderWidth, sliderHeight;
     bool useImg = false;
 
-    //const File imgSlider(slider.getProperties().getWithDefault("imgslider", "").toString());
+    const File imgSlider(slider.getProperties().getWithDefault("imgslider", "").toString());
 
-    //if (imgSlider.existsAsFile() && imgSlider.hasFileExtension("csd") == false)
-    //{
-    //    if (imgSlider.hasFileExtension("png"))
-    //    {
-    //        g.setOpacity(1.0);
-    //        Image image = ImageCache::getFromFile(imgSlider);
-    //        //image = image.rescaled (slider.getWidth(), slider.getHeight());
-
-    //        if (slider.isHorizontal())
-    //            g.drawImage(image, 0, sliderPos - width * .05, width, height, 0, 0, image.getWidth(), image.getHeight(), false);
-    //        else
-    //        {
-    //            sliderHeight = sliderRadius * 1.5f;
-    //            //auto yPos = 
-    //            auto yPos = jmap((maxSliderPos - y) - (sliderPos - y), 0.f, maxSliderPos - y, height + y - (float)image.getHeight() + y, 0.f);
-    //            DBG(yPos);
-    //            g.drawImage(image, width / 2 - image.getWidth() / 2, yPos, image.getWidth(), image.getHeight(), 0, 0, image.getWidth(), image.getHeight(), false);
-    //        }
-
-    //        useImg = true;
-    //    }
-    //    else if (imgSlider.hasFileExtension("svg"))
-    //    {
-    //        if (slider.isVertical())
-    //        {
-    //            sliderHeight = sliderRadius * 1.5f;
-    //            drawFromSVG(g, imgSlider, 0, sliderPos - height * .05, width, sliderHeight, AffineTransform());
-    //        }
-    //        else
-    //        {
-    //            sliderWidth = sliderRadius * 2.0f;
-    //            drawFromSVG(g, imgSlider, sliderPos - width * .05, 0, sliderWidth, height, AffineTransform());
-    //        }
-
-    //        useImg = true;
-    //    }
-    //}
-
-
-
+    if (imgSlider.existsAsFile() && imgSlider.hasFileExtension("csd") == false)
+    {
+        return;
+    }
+    
     if (!useImg)
     {
         Colour knobColour(LookAndFeelHelpers::createBaseColour(slider.findColour(Slider::thumbColourId),

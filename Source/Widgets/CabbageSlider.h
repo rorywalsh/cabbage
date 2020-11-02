@@ -109,7 +109,7 @@ class CabbageSlider
     bool shouldDisplayPopup = true;
     Slider slider;
     BubbleMessageComponent popupBubble;
-    Image sliderThumbImage;
+    Image sliderThumbImage, sliderBgImage;
 
     void mouseDrag (const MouseEvent& event) override;
     void mouseMove (const MouseEvent& event) override;
