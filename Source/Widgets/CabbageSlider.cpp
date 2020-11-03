@@ -181,7 +181,7 @@ void CabbageSlider::paint(Graphics& g)
     }
     else if (sliderBgImage.isValid())
     {
-        g.drawImage(sliderBgImage, slider.getWidth() / 2 - sliderBgImage.getWidth() / 2.f, slider.getY(), sliderBgImage.getWidth(), slider.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
+        g.drawImage(sliderBgImage, slider.getWidth() / 2 - sliderBgImage.getWidth() / 2.f, 0, sliderBgImage.getWidth(), getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
     }
 }
 
