@@ -359,7 +359,6 @@ void CabbageSlider::resized()
             {
                 getSlider().setBounds(0, sliderThumbImage.getHeight() / 3, getWidth(), getHeight() - sliderThumbImage.getHeight() * .66f);
                 const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
-
                 const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
                 thumb.setBounds(getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos, sliderThumbImage.getWidth(), sliderThumbImage.getHeight());
 
@@ -443,6 +442,8 @@ void CabbageSlider::resized()
     }
 
     getSlider().setValue(value, dontSendNotification);
+    if (sliderThumbImage.isValid())
+        thumb.move(value, slider.getRange());
 
 }
 
