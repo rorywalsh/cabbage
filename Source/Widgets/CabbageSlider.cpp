@@ -22,25 +22,32 @@
 
 void SliderThumb::move(double value, Range<double> range)
 {
-    float pos = (value + abs(owner->getSlider().getMinimum())) / (range.getLength());
-    const auto yPos = jmap(pos, 1.f, 0.f, (float)0, float(owner->getHeight() - getHeight()));
-    setTopLeftPosition(getX(), yPos);
+    if(isEnabled())
+    {
+        float pos = (value + abs(owner->getSlider().getMinimum())) / (range.getLength());
+        const auto yPos = jmap(pos, 1.f, 0.f, (float)0, float(owner->getHeight() - getHeight()));
+        setTopLeftPosition(getX(), yPos);
+    }
 }
 
 
 void SliderThumb::mouseDrag(const MouseEvent& e)
 {
-    auto yPos = jlimit(0.f, float(owner->getHeight() - getHeight()), float(e.getEventRelativeTo(owner).getPosition().getY()) + yOffset);
-    setTopLeftPosition(getX(), yPos);
+    if(isEnabled())
+    {
+        auto yPos = jlimit(0.f, float(owner->getHeight() - getHeight()), float(e.getEventRelativeTo(owner).getPosition().getY()) + yOffset);
+        setTopLeftPosition(getX(), yPos);
 
-    const auto prop = jmap((float)yPos, (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
-    const auto value = owner->getSlider().proportionOfLengthToValue(prop);
-    owner->getSlider().setValue(value);
+        const auto prop = jmap((float)yPos, (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
+        const auto value = owner->getSlider().proportionOfLengthToValue(prop);
+        owner->getSlider().setValue(value);
+    }
 }
 
 void SliderThumb::mouseDown(const MouseEvent& e)
 {
-    yOffset = getY() - e.getEventRelativeTo(owner).getPosition().getY();
+    if(isEnabled())
+        yOffset = getY() - e.getEventRelativeTo(owner).getPosition().getY();
 }
 
 CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
@@ -102,8 +109,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
     const String sliderImgBg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg);
     const String globalStyle = owner->globalStyle;
-    if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
-        && sliderImg.isEmpty() && sliderImgBg.isEmpty())
+    if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat")
     {
         slider.setLookAndFeel(&flatLookAndFeel);
     }
@@ -127,6 +133,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     textLabel.setVisible(false);
     initialiseCommonAttributes(this, wData);
     createPopupBubble();
+    
 }
 
 CabbageSlider::~CabbageSlider()
@@ -445,6 +452,10 @@ void CabbageSlider::resized()
     if (sliderThumbImage.isValid())
         thumb.move(value, slider.getRange());
 
+    if(getActive() == 0)
+    {
+        thumb.setEnabled(false);
+    }
 }
 
 void CabbageSlider::createPopupBubble()
