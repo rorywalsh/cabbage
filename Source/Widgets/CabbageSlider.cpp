@@ -24,7 +24,8 @@ void SliderThumb::move(double value, Range<double> range)
 {
     if(isEnabled())
     {
-        float pos = (value + abs(owner->getSlider().getMinimum())) / (range.getLength());
+        //float pos = (value + abs(owner->getSlider().getMinimum())) / (range.getLength());
+        float pos = owner->getSlider().valueToProportionOfLength(value);
         const auto yPos = jmap(pos, 1.f, 0.f, (float)0, float(owner->getHeight() - getHeight()));
         setTopLeftPosition(getX(), yPos);
     }
