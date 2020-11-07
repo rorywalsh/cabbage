@@ -110,7 +110,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
     const String sliderImgBg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg);
     const String globalStyle = owner->globalStyle;
-    if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat")
+    if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
+        && sliderImg.isEmpty() && sliderImgBg.isEmpty())
     {
         slider.setLookAndFeel(&flatLookAndFeel);
     }
