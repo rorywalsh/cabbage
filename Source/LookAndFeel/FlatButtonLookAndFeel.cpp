@@ -342,9 +342,9 @@ void FlatButtonLookAndFeel::drawLinearSliderThumb (Graphics& g, int x, int y, in
         }
         else
         {
-            kx = sliderPos;
+            kx = jmap(sliderPos, (float)x, float(x+width), float(x), (x+width)+sliderRadius);
             ky = y + height * 0.5f;
-            sliderWidth = sliderRadius * 1.25f;
+            sliderWidth = sliderRadius *1.25f;
             sliderHeight = sliderRadius * 2.0f;
         }
 

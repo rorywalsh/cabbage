@@ -20,9 +20,14 @@
 #include "CabbageSlider.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-void SliderThumb::move(double value, Range<double> range)
+SliderThumb::SliderThumb(CabbageSlider* slider) :Component(), owner(slider)
 {
-    float pos = (value + abs(owner->getSlider().getMinimum())) / (range.getLength());
+
+}
+
+void SliderThumb::move(double value, Range<double> sliderRange)
+{
+    float pos = (value + abs(owner->getSlider().getMinimum())) / (sliderRange.getLength());
     const auto yPos = jmap(pos, 1.f, 0.f, (float)0, float(owner->getHeight() - getHeight()));
     setTopLeftPosition(getX(), yPos);
 }
@@ -30,10 +35,15 @@ void SliderThumb::move(double value, Range<double> range)
 
 void SliderThumb::mouseDrag(const MouseEvent& e)
 {
-    auto yPos = jlimit(0.f, float(owner->getHeight() - getHeight()), float(e.getEventRelativeTo(owner).getPosition().getY()) + yOffset);
+
+    int yPos = jlimit(0.f, float(owner->getHeight() - getHeight()), float(e.getEventRelativeTo(owner).getPosition().getY()) + yOffset);
+    int multiple = ((float)owner->getHeight() - getHeight())* (owner->getSlider().getInterval()/ owner->getSlider().getRange().getLength());
+   
+    int remainder = yPos % multiple;
+    yPos = (yPos + multiple - remainder) - multiple;
     setTopLeftPosition(getX(), yPos);
 
-    const auto prop = jmap((float)yPos, (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
+    const auto prop = jmap(jlimit(0.f, (float)owner->getHeight() - getHeight(), (float)yPos), (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
     const auto value = owner->getSlider().proportionOfLengthToValue(prop);
     owner->getSlider().setValue(value);
 }
