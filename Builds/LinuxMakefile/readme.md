@@ -12,7 +12,7 @@ Requirements
 - Cabbage needs the VST SDK2 in order to build its plugins libraries.  
 
 - The following are dependencies you **may** need. It's probably best to skip this step for now and try building Cabbage. If you have any unmet dependencies you can simply ```sudo apt-get install``` any of the packages you may need from the following list. Your compiler output should specify what's missing. 
-
+```
 libfreetype6-dev 
 libx11-dev 
 libxinerama-dev 
@@ -28,13 +28,13 @@ libsndfile1-dev
 libjack-dev 
 libxrandr-dev 
 msttcorefonts 
-
+```
 - if you experience build issues relating to webkit, try installing the latest version using the commands below. 
 
-sudo add-apt-repository ppa:webkit-team/ppa
+```sudo add-apt-repository ppa:webkit-team/ppa
 sudo apt-get update
 sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
-
+```
 
 Compiling Cabbage
 =================
