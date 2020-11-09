@@ -20,7 +20,7 @@
 #include "CabbageSlider.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-SliderThumb::SliderThumb(CabbageSlider* slider) :Component(), owner(slider)
+void SliderThumb::move(double value, Range<double> range)
 {
     if(isEnabled())
     {

@@ -77,7 +77,7 @@ class CabbageSlider;
 class SliderThumb : public Component
 {
 public:
-    SliderThumb(CabbageSlider* slider);
+    SliderThumb(CabbageSlider* slider) : Component(), owner(slider) {};
     void paint(Graphics& g) {
         if (image.isValid())
         {
