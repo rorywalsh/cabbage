@@ -45,7 +45,7 @@ If any of these packages and programs are not in the directories outlined above,
 
 To build Cabbage run the following command from the cabbage/Builds/LinuxMakefile 
 
-./buildCabbage
+```./buildCabbage```
 
 If all goes well this should build Cabbage, and install it on your system. If you have an issues building please post to the Cabbage [forum](forum.cabbageaudio.com)
 
