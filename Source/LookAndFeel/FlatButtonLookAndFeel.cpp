@@ -306,7 +306,7 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
             }
             else
                 g.fillRoundedRectangle (ix, zeroPosProportional * height + sliderRadius,
-                    iw, sliderPos - sliderRadius - zeroPosProportional * height,
+                    iw, abs(sliderPos - sliderRadius - zeroPosProportional * height),
                     3.0f);
         }
     }

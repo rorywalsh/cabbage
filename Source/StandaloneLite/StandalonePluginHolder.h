@@ -80,7 +80,7 @@ public:
           channelConfiguration (channels),
           shouldMuteInput (! isInterAppAudioConnected())
     {
-       createPlugin (File ("/Users/walshr/Documents/Csoundfiles/MultiOut8.csd"));
+       createPlugin (File("/Csoundfiles/MultiOut8.csd"));
 
         auto inChannels = (channelConfiguration.size() > 0 ? channelConfiguration[0].numIns
                            : processor->getMainBusNumInputChannels());
