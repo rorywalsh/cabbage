@@ -31,21 +31,40 @@ void SliderThumb::move(double value, Range<double> range)
     }
 }
 
+void SliderThumb::mouseMove(const MouseEvent& e)
+{
+    if (isEnabled())
+    {
+        if (owner->shouldDisplayPopup)
+            owner->showPopupBubble(500);
+    }
+}
 
+void SliderThumb::mouseEnter(const MouseEvent& e)
+{
+    if (isEnabled())
+    {
+        if (owner->shouldDisplayPopup)
+            owner->showPopupBubble(500);
+    }
+}
 void SliderThumb::mouseDrag(const MouseEvent& e)
 {
     if(isEnabled())
     {
         int yPos = jlimit(0.f, float(owner->getHeight() - getHeight()), float(e.getEventRelativeTo(owner).getPosition().getY()) + yOffset);
-        int multiple = ((float)owner->getHeight() - getHeight())* (owner->getSlider().getInterval()/ owner->getSlider().getRange().getLength());
+        float multiple = ((float)owner->getHeight() - getHeight())* (owner->getSlider().getInterval()/ owner->getSlider().getRange().getLength());
     
-        int remainder = yPos % multiple;
+        int remainder = fmod(yPos, multiple);
         yPos = (yPos + multiple - remainder) - multiple;
         setTopLeftPosition(getX(), yPos);
 
         const auto prop = jmap(jlimit(0.f, (float)owner->getHeight() - getHeight(), (float)yPos), (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
         const auto value = owner->getSlider().proportionOfLengthToValue(prop);
         owner->getSlider().setValue(value);
+
+        if (owner->shouldDisplayPopup)
+            owner->showPopupBubble(500);
     }
 }
 

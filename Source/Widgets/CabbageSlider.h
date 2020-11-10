@@ -77,7 +77,10 @@ class CabbageSlider;
 class SliderThumb : public Component
 {
 public:
-    SliderThumb(CabbageSlider* slider) : Component(), owner(slider) {};
+    SliderThumb(CabbageSlider* slider) : Component(), owner(slider)
+    {
+    };
+
     void paint(Graphics& g) {
         if (image.isValid())
         {
@@ -88,6 +91,8 @@ public:
     void setThumbImage(Image img) { image = img; };
     void mouseDrag(const MouseEvent& e) override;
     void mouseDown(const MouseEvent& e) override;
+    void mouseMove(const MouseEvent& e) override;
+    void mouseEnter(const MouseEvent& e) override;
     void move(double value, Range<double> range);
     int yOffset = 0;
     CabbageSlider* owner;
@@ -106,7 +111,7 @@ class CabbageSlider
     int decimalPlaces = 0;
     float remove1 = 0, remove2 = 0;
     String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
-    bool shouldDisplayPopup = true;
+    
     Slider slider;
     BubbleMessageComponent popupBubble;
     Image sliderThumbImage, sliderBgImage;
@@ -116,7 +121,7 @@ class CabbageSlider
     void mouseEnter (const MouseEvent& event) override;
     void mouseExit (const MouseEvent& event) override;
     void createPopupBubble();
-    void showPopupBubble (int time);
+   
     void setLookAndFeelColours (ValueTree wData);
     String prefix = "";
     String postfix = "";
@@ -138,7 +143,7 @@ public:
     void paint(Graphics& g) override;
     void paintOverChildren(Graphics& g) override;
 
-
+    void showPopupBubble(int time);
     void initFilmStrip(ValueTree wData);
     void setTextBoxWidth();
     void setSliderVelocity (ValueTree wData);
@@ -156,6 +161,7 @@ public:
         return slider;
     };
 
+    bool shouldDisplayPopup = true;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)
 
 };
