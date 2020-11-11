@@ -94,7 +94,7 @@ public:
     void mouseMove(const MouseEvent& e) override;
     void mouseEnter(const MouseEvent& e) override;
     void move(double value, Range<double> range);
-    int yOffset = 0;
+    int yOffset = 0, xOffset = 0;
     CabbageSlider* owner;
     Image image;
 };

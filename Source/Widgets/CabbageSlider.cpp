@@ -24,10 +24,18 @@ void SliderThumb::move(double value, Range<double> range)
 {
     if(isEnabled())
     {
-        //float pos = (value + abs(owner->getSlider().getMinimum())) / (range.getLength());
-        float pos = owner->getSlider().valueToProportionOfLength(value);
-        const auto yPos = jmap(pos, 1.f, 0.f, (float)0, float(owner->getHeight() - getHeight()));
-        setTopLeftPosition(getX(), yPos);
+        if (owner->getSlider().getSliderStyle() == Slider::SliderStyle::LinearVertical) 
+        {
+            float pos = owner->getSlider().valueToProportionOfLength(value);
+            const auto yPos = jmap(pos, 1.f, 0.f, (float)0, float(owner->getHeight() - getHeight()));
+            setTopLeftPosition(getX(), yPos);
+        }
+        if (owner->getSlider().getSliderStyle() == Slider::SliderStyle::LinearHorizontal)
+        {
+            float pos = owner->getSlider().valueToProportionOfLength(value);
+            const auto xPos = jmap(pos, 0.f, 1.f, (float)0, float(owner->getWidth() - getWidth()));
+            setTopLeftPosition(xPos, getY());
+        }
     }
 }
 
@@ -46,23 +54,40 @@ void SliderThumb::mouseEnter(const MouseEvent& e)
     {
         if (owner->shouldDisplayPopup)
             owner->showPopupBubble(500);
+
     }
 }
 void SliderThumb::mouseDrag(const MouseEvent& e)
 {
     if(isEnabled())
     {
-        int yPos = jlimit(0.f, float(owner->getHeight() - getHeight()), float(e.getEventRelativeTo(owner).getPosition().getY()) + yOffset);
-        float multiple = ((float)owner->getHeight() - getHeight())* (owner->getSlider().getInterval()/ owner->getSlider().getRange().getLength());
-    
-        int remainder = fmod(yPos, multiple);
-        yPos = (yPos + multiple - remainder) - multiple;
-        setTopLeftPosition(getX(), yPos);
+        if (owner->getSlider().getSliderStyle() == Slider::SliderStyle::LinearVertical)
+        {
+            int yPos = jlimit(0.f, float(owner->getHeight() - getHeight()), float(e.getEventRelativeTo(owner).getPosition().getY()) + yOffset);
+            float multiple = ((float)owner->getHeight() - getHeight()) * (owner->getSlider().getInterval() / owner->getSlider().getRange().getLength());
 
-        const auto prop = jmap(jlimit(0.f, (float)owner->getHeight() - getHeight(), (float)yPos), (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
-        const auto value = owner->getSlider().proportionOfLengthToValue(prop);
-        owner->getSlider().setValue(value);
+            int remainder = fmod(yPos, multiple);
+            yPos = (yPos + multiple - remainder) - multiple;
+            setTopLeftPosition(getX(), yPos);
 
+            const auto prop = jmap(jlimit(0.f, (float)owner->getHeight() - getHeight(), (float)yPos), (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
+            const auto value = owner->getSlider().proportionOfLengthToValue(prop);
+            owner->getSlider().setValue(value);
+        }
+
+        if (owner->getSlider().getSliderStyle() == Slider::SliderStyle::LinearHorizontal)
+        {
+            int xPos = jlimit(0.f, float(owner->getWidth() - getWidth()), float(e.getEventRelativeTo(owner).getPosition().getX()) + xOffset);
+            float multiple = ((float)owner->getWidth() - getWidth()) * (owner->getSlider().getInterval() / owner->getSlider().getRange().getLength());
+
+            int remainder = fmod(xPos, multiple);
+            xPos = (xPos + multiple - remainder) - multiple;
+            setTopLeftPosition(xPos, getY());
+
+            const auto prop = jmap(jlimit(0.f, (float)owner->getWidth() - getWidth(), (float)xPos), (float)0, (float)owner->getWidth() - getWidth(), 0.f, 1.f);
+            const auto value = owner->getSlider().proportionOfLengthToValue(prop);
+            owner->getSlider().setValue(value);
+        }
         if (owner->shouldDisplayPopup)
             owner->showPopupBubble(500);
     }
@@ -70,14 +95,22 @@ void SliderThumb::mouseDrag(const MouseEvent& e)
 
 void SliderThumb::mouseDown(const MouseEvent& e)
 {
-    if(isEnabled())
-        yOffset = getY() - e.getEventRelativeTo(owner).getPosition().getY();
+    if (isEnabled())
+    {
+        if (owner->getSlider().getSliderStyle() == Slider::SliderStyle::LinearVertical)
+        {
+            yOffset = getY() - e.getEventRelativeTo(owner).getPosition().getY();
+        }
+        if (owner->getSlider().getSliderStyle() == Slider::SliderStyle::LinearHorizontal)
+        {
+            xOffset = getX() - e.getEventRelativeTo(owner).getPosition().getX();
+        }
+    }
 }
 
 CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     : owner(_owner),
     widgetData(wData),
-
     sliderType(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind)),
     channel(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::channel)),
     popupBubble(250),
@@ -180,7 +213,10 @@ void CabbageSlider::paint(Graphics& g)
     }
     else if (sliderBgImage.isValid())
     {
-        g.drawImage(sliderBgImage, slider.getWidth() / 2 - sliderBgImage.getWidth() / 2.f, slider.getY(), sliderBgImage.getWidth(), slider.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
+        if (sliderType.contains("vertical"))
+            g.drawImage(sliderBgImage, slider.getWidth() / 2 - sliderBgImage.getWidth() / 2.f, slider.getY(), sliderBgImage.getWidth(), slider.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
+        else if(sliderType.contains("horizontal"))
+            g.drawImage(sliderBgImage, 0, slider.getHeight() / 2.f - sliderBgImage.getHeight()/2.f, sliderBgImage.getWidth(), sliderBgImage.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
     }
 }
 
@@ -459,7 +495,14 @@ void CabbageSlider::resized()
                 }
 
             }
+            else if (sliderThumbImage.isValid())
+            {
+                getSlider().setBounds(0, 0, sliderThumbImage.getWidth() * .66f, getHeight());
+                const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
+                const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
+                thumb.setBounds(getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos, sliderThumbImage.getWidth(), sliderThumbImage.getHeight());
 
+            }
             else
                 getSlider().setBounds(0, 0, getWidth(), getHeight());
         }
