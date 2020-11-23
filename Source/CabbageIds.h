@@ -55,6 +55,7 @@ namespace CommandIDs
         exportAsVST3Effect       = 0x2000742,
         exportAsAUSynth         = 0x200177,
         exportAsAUEffect        = 0x200174,
+        exportAsFMODFxPlugin = 0x200075,
         exportAsFMODSoundPlugin = 0x200078,
         stopAudioGraph          = 0x200079,
         clearConsole            = 0x20007a,
