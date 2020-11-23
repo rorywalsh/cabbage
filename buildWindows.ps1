@@ -83,7 +83,7 @@ ls
 
 $start_time = Get-Date
 (New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll", "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csound64.dll")
-(New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll", "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csound64_fx.dll")
+(New-Object System.Net.WebClient).DownloadFile("https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll", "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csound64.dll")
 Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 # Invoke-WebRequest -UseBasicParsing "https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csoundL64.dll" -OutFile "D:\a\1\s\Builds\VisualStudio2017\x64\fmod_csoundL64.dll" 
