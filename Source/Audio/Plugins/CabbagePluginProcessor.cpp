@@ -905,6 +905,8 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) {
 	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
+    File file(csdFile.getParentDirectory().getFullPathName()+"/testSessionData.txt");
+    savePluginState("CABBAGE_PRESETS").writeTo(file);
 }
 
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) {

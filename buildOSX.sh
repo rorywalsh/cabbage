@@ -125,9 +125,11 @@ unzip -q CabbageRack-1.0.0-mac.zip
 ls
 cp -R CabbageRack Cabbage.app/Contents/CabbageRack
 ls Cabbage.app/Contents/
-curl -L -o fmod_csound.dylib 'https://github.com/rorywalsh/csoundfmod/releases/download/v1.1/fmod_csound.dylib'
+curl -L -o fmod_csound_fx.dylib 'https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib'
+curl -L -o fmod_csound.dylib 'https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib'
 ls
 cp fmod_csound.dylib Cabbage.app/Contents/fmod_csound.dylib
+cp fmod_csound_fx.dylib Cabbage.app/Contents/fmod_csound_fx.dylib
 ls Cabbage.app/Contents/
 zip -r CabbageOSX.zip Cabbage.app CabbageLite.app 
 
