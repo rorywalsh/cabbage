@@ -1336,8 +1336,9 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 
 //======================================================================================================
 CabbageAudioParameter* CabbagePluginProcessor::getParameterForXYPad(String name) {
-	for (auto param : getParameters()) {
+	for (auto param : getCabbageParameters()) {
 		if (CabbageAudioParameter * cabbageParam = dynamic_cast<CabbageAudioParameter*> (param)) {
+			DBG(cabbageParam->getWidgetName());
 			if (name == cabbageParam->getWidgetName())
 				return dynamic_cast<CabbageAudioParameter*> (cabbageParam);
 		}

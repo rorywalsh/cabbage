@@ -170,13 +170,14 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     }
     else
     {
-//        const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
-//        const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
-//        //setValues(xPos, maxY - yPos);
-//        juce::Point<float> pos (getValueAsPosition (juce::Point<float> (xPos, maxY - yPos)));
-//        //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
-//        ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
-//        repaint();
+        //need to add a flag to xypad to disable dragging if users want to set values manually
+        const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
+        const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
+        //setValues(xPos, maxY - yPos);
+        juce::Point<float> pos (getValueAsPosition (juce::Point<float> (xPos, maxY - yPos)));
+        //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
+        ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
+        repaint();
     }
 }
 
