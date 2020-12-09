@@ -613,8 +613,6 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
     getSlider().getProperties().set("markercolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::markercolour));
 
     getSlider().setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
-
-
     getSlider().lookAndFeelChanged();
 }
 
@@ -636,7 +634,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);
         shouldShowTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
         setTextBoxOrientation(sliderType, shouldShowTextBox);
-        getSlider().setTooltip(getCurrentPopupText(valueTree));
+        //getSlider().setTooltip(getCurrentPopupText(valueTree));
 
         getSlider().getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerthickness));
         getSlider().getProperties().set("trackerinnerradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerinsideradius));
@@ -645,7 +643,12 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         handleCommonUpdates(this, valueTree);
         setLookAndFeelColours(valueTree);
 
-        //resized();
+        const String popup = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+        if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
+            shouldDisplayPopup = false;
+        else
+            shouldDisplayPopup = true;
+
     }
 
 }
