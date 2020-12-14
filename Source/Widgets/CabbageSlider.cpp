@@ -634,7 +634,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);
         shouldShowTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
         setTextBoxOrientation(sliderType, shouldShowTextBox);
-        //getSlider().setTooltip(getCurrentPopupText(valueTree));
+        
 
         getSlider().getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerthickness));
         getSlider().getProperties().set("trackerinnerradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerinsideradius));
@@ -645,9 +645,16 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 
         const String popup = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
         if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
+        {
+            getSlider().setTooltip("");
             shouldDisplayPopup = false;
-        else
+        }
+        else 
+        {
             shouldDisplayPopup = true;
+            getSlider().setTooltip(getCurrentPopupText(valueTree));
+        }
+           
 
     }
 
