@@ -295,7 +295,7 @@ void CabbageXYPad::setValues (float x, float y, bool notify)
     yValueLabel.setText (createValueText(minY + (maxY - y), 3, yPrefix, yPostfix), dontSendNotification);
 }
 //========================================================================
-XYPadAutomator::XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam, AudioProcessor* _owner)
+XYPadAutomator::XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, AudioProcessor* _owner)
     : name (name), xParam (xParam), yParam (yParam), owner (_owner)
 {}
 
