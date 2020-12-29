@@ -101,6 +101,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
                     tableBuffer.setSize (channels, tableValues.size());
                     tableBuffer.addFrom (0, 0, tableValues.getRawDataPointer(), tableValues.size());
                     table.setWaveform (tableBuffer, tableNumber);
+                    table.setZoomFactor(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::zoom));
                 }
                 else
                 {

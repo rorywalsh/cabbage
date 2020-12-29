@@ -603,11 +603,11 @@ void CabbagePluginEditor::insertLight (ValueTree cabbageWidgetData)
     addMouseListenerAndSetVisibility (light, cabbageWidgetData);
 }
 //======================================================================================================
-CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const String name)
+CabbagePluginParameter* CabbagePluginEditor::getParameterForComponent (const String name)
 {
     for (auto param : cabbageProcessor.getCabbageParameters())
     {
-        if (CabbageAudioParameter* cabbageParam = dynamic_cast<CabbageAudioParameter*> (param))
+        if (CabbagePluginParameter* cabbageParam = dynamic_cast<CabbagePluginParameter*> (param))
         {
             if (name == cabbageParam->getWidgetName())
                 return cabbageParam;
@@ -620,7 +620,7 @@ CabbageAudioParameter* CabbagePluginEditor::getParameterForComponent (const Stri
 //======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
-    if (CabbageAudioParameter* param = getParameterForComponent (combo->getName()))
+    if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
     {
         param->beginChangeGesture();
 
@@ -697,7 +697,7 @@ void CabbagePluginEditor::buttonStateChanged(Button* button)
 
 void CabbagePluginEditor::toggleButtonState(Button* button, bool state)
 {
-	if (CabbageAudioParameter* param = getParameterForComponent(button->getName()))
+	if (CabbagePluginParameter* param = getParameterForComponent(button->getName()))
 	{
 		param->beginChangeGesture();
 		param->setValueNotifyingHost(state == true ? 1 : 0);
@@ -709,19 +709,19 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
 {
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
     {
-        if (CabbageAudioParameter* param = getParameterForComponent (slider->getName()))
+        if (CabbagePluginParameter* param = getParameterForComponent (slider->getName()))
         {
             param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getValue()));
         }
     }
     else
     {
-        if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_min"))
+        if (CabbagePluginParameter* param = getParameterForComponent (slider->getName() + "_min"))
         {
             param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getMinValue()));
         }
 
-        if (CabbageAudioParameter* param = getParameterForComponent (slider->getName() + "_max"))
+        if (CabbagePluginParameter* param = getParameterForComponent (slider->getName() + "_max"))
         {
             param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getMaxValue()));
         }
@@ -731,19 +731,19 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
 {
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
     {
-        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+        if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
             param->beginChangeGesture();
         }
     }
     else
     {
-        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_min"))
+        if (CabbagePluginParameter* param = getParameterForComponent(slider->getName() + "_min"))
         {
             param->beginChangeGesture();
         }
 
-        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_max"))
+        if (CabbagePluginParameter* param = getParameterForComponent(slider->getName() + "_max"))
         {
             param->beginChangeGesture();
         }
@@ -757,19 +757,19 @@ void CabbagePluginEditor::sliderDragEnded(Slider* slider)
     
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
     {
-        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName()))
+        if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
             param->endChangeGesture();
         }
     }
     else
     {
-        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_min"))
+        if (CabbagePluginParameter* param = getParameterForComponent(slider->getName() + "_min"))
         {
             param->endChangeGesture();
         }
 
-        if (CabbageAudioParameter* param = getParameterForComponent(slider->getName() + "_max"))
+        if (CabbagePluginParameter* param = getParameterForComponent(slider->getName() + "_max"))
         {
             param->endChangeGesture();
         }

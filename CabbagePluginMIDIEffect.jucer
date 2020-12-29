@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.9"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.11"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -302,7 +302,8 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0"/>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0"
+               JUCE_USE_FLAC="0" JUCE_USE_OGGVORBIS="0"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>

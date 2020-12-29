@@ -28,7 +28,7 @@
 #include "CabbageWidgetBase.h"
 
 class CabbagePluginEditor;
-class CabbageAudioParameter;
+class CabbagePluginParameter;
 class AudioProccessor;
 
 // Add any new custom widgets here to avoid having to edit makefiles and projects
@@ -126,7 +126,7 @@ public:
 class XYPadAutomator : public ChangeBroadcaster, public Timer
 {
     String name;
-    CabbageAudioParameter* xParam, *yParam;
+    CabbagePluginParameter* xParam, *yParam;
     float xValue = 0;
     float yValue = 0;
     float xValueIncrement = 1;
@@ -139,7 +139,7 @@ class XYPadAutomator : public ChangeBroadcaster, public Timer
     AudioProcessor* owner;
 
 public:
-    XYPadAutomator (String name, CabbageAudioParameter* xParam, CabbageAudioParameter* yParam, AudioProcessor* _owner);
+    XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, AudioProcessor* _owner);
 
     ~XYPadAutomator()
     {

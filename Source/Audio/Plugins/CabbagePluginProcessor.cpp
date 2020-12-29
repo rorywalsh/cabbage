@@ -705,7 +705,7 @@ void CabbagePluginProcessor::updateWidgets(String csdText) {
 	editor->updateLayoutEditorFrames();
 }
 
-void CabbagePluginProcessor::addCabbageParameter(std::unique_ptr<CabbageAudioParameter> parameter)
+void CabbagePluginProcessor::addCabbageParameter(std::unique_ptr<CabbagePluginParameter> parameter)
 {
 	if (parameter->getIsAutomatable()) {
 		addParameter(parameter->releaseHostParameter());
@@ -786,10 +786,10 @@ void CabbagePluginProcessor::createCabbageParameters()
 					}
 
 
-					auto xParam = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[0],
+					auto xParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[0],
 						name + "_x", minX, maxX, value, increment, 1, automatable,
 						xPrefix, xPostfix);
-					auto yParam = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[1],
+					auto yParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[1],
 						name + "_y", minY, maxY, value, increment, 1, automatable,
 						yPrefix, yPostfix);
 
@@ -815,9 +815,9 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::max);
 
-						auto minParam = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[0],
+						auto minParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[0],
 							name + "_min", min, max, minValue, increment, skew, automatable, prefix, postfix);
-						auto maxParam = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[1],
+						auto maxParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[1],
 							name + "_max", min, max, maxValue, increment, skew, automatable, prefix, postfix);
 
 						addCabbageParameter(std::move(minParam));
@@ -840,7 +840,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 							CabbageIdentifierIds::min);
 						const float max = numOfFiles == 0 ? 1 : numOfFiles;
 
-						auto param = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
 							min, max, value, 1, 1, automatable, "", "");
 						addCabbageParameter(std::move(param));
 					}
@@ -851,7 +851,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::comborange);
 
-						auto param = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
 							min, max, value, 1, 1, automatable, "", "");
 						addCabbageParameter(std::move(param));
 					}
@@ -869,7 +869,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::max) :
 						min + 1;
 
-					auto param = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+					auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
 						min, max, value, increment, skew, automatable, prefix, postfix);
 					addCabbageParameter(std::move(param));
 				}
@@ -883,7 +883,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 
 					if (channel.isNotEmpty())
 					{
-						auto param = std::make_unique<CabbageAudioParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
 							0, 1, value, 1, 1, automatable, prefix, postfix);
 						addCabbageParameter(std::move(param));
 					}
@@ -905,6 +905,8 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) {
 	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
+    File file(csdFile.getParentDirectory().getFullPathName()+"/testSessionData.txt");
+    savePluginState("CABBAGE_PRESETS").writeTo(file);
 }
 
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
@@ -1296,8 +1298,8 @@ void CabbagePluginProcessor::addXYAutomator(CabbageXYPad* xyPad, ValueTree wData
 
 	if (indexOfAutomator == -1) {
 		XYPadAutomator* xyAuto;
-		CabbageAudioParameter* xParameter = getParameterForXYPad(xyPad->getName() + "_x");
-		CabbageAudioParameter* yParameter = getParameterForXYPad(xyPad->getName() + "_y");
+		CabbagePluginParameter* xParameter = getParameterForXYPad(xyPad->getName() + "_x");
+		CabbagePluginParameter* yParameter = getParameterForXYPad(xyPad->getName() + "_y");
 
 		if (xParameter && yParameter) {
 			xyAutomators.add(xyAuto = new XYPadAutomator(xyPad->getName(), xParameter, yParameter, this));
@@ -1335,11 +1337,12 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 }
 
 //======================================================================================================
-CabbageAudioParameter* CabbagePluginProcessor::getParameterForXYPad(String name) {
-	for (auto param : getParameters()) {
-		if (CabbageAudioParameter * cabbageParam = dynamic_cast<CabbageAudioParameter*> (param)) {
+CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name) {
+	for (auto param : getCabbageParameters()) {
+		if (CabbagePluginParameter * cabbageParam = dynamic_cast<CabbagePluginParameter*> (param)) {
+			DBG(cabbageParam->getWidgetName());
 			if (name == cabbageParam->getWidgetName())
-				return dynamic_cast<CabbageAudioParameter*> (cabbageParam);
+				return dynamic_cast<CabbagePluginParameter*> (cabbageParam);
 		}
 	}
 

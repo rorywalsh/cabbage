@@ -216,7 +216,7 @@ void CabbageSlider::paint(Graphics& g)
         if (sliderType.contains("vertical"))
             g.drawImage(sliderBgImage, slider.getWidth() / 2 - sliderBgImage.getWidth() / 2.f, slider.getY(), sliderBgImage.getWidth(), slider.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
         else if(sliderType.contains("horizontal"))
-            g.drawImage(sliderBgImage, 0, slider.getHeight() / 2.f - sliderBgImage.getHeight()/2.f, sliderBgImage.getWidth(), sliderBgImage.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
+            g.drawImage(sliderBgImage, sliderThumbImage.getWidth() /2, slider.getHeight() / 2.f - sliderBgImage.getHeight()/2.f, slider.getWidth()*.95f, sliderBgImage.getHeight(), 0, 0, sliderBgImage.getWidth(), sliderBgImage.getHeight(), false);
     }
 }
 
@@ -497,10 +497,12 @@ void CabbageSlider::resized()
             }
             else if (sliderThumbImage.isValid())
             {
-                getSlider().setBounds(0, 0, sliderThumbImage.getWidth() * .66f, getHeight());
+                //getSlider().setBounds(0, sliderThumbImage.getHeight() / 3, getWidth(), getHeight() - sliderThumbImage.getHeight() * .66f);
+                getSlider().setBounds(sliderThumbImage.getWidth()*.33, 0, getWidth() - sliderThumbImage.getWidth()*.66, getHeight());
                 const float sliderPos = (float)slider.valueToProportionOfLength(slider.getValue());
                 const float pos = jmap(sliderPos, 1.f, 0.f, 0.f, float(getHeight() - sliderThumbImage.getHeight()));
-                thumb.setBounds(getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos, sliderThumbImage.getWidth(), sliderThumbImage.getHeight());
+               // thumb.setBounds(getWidth() / 2 - sliderThumbImage.getWidth() / 2, pos, sliderThumbImage.getWidth(), sliderThumbImage.getHeight());
+                thumb.setBounds(pos, getHeight() / 2 - sliderThumbImage.getHeight() / 2, sliderThumbImage.getWidth(), sliderThumbImage.getHeight());
 
             }
             else
@@ -611,8 +613,6 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
     getSlider().getProperties().set("markercolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::markercolour));
 
     getSlider().setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
-
-
     getSlider().lookAndFeelChanged();
 }
 
@@ -634,7 +634,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         textLabel.setVisible(getCurrentText(valueTree).isNotEmpty() ? true : false);
         shouldShowTextBox = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::valuetextbox);
         setTextBoxOrientation(sliderType, shouldShowTextBox);
-        getSlider().setTooltip(getCurrentPopupText(valueTree));
+        
 
         getSlider().getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerthickness));
         getSlider().getProperties().set("trackerinnerradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerinsideradius));
@@ -643,7 +643,19 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         handleCommonUpdates(this, valueTree);
         setLookAndFeelColours(valueTree);
 
-        //resized();
+        const String popup = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);
+        if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
+        {
+            getSlider().setTooltip("");
+            shouldDisplayPopup = false;
+        }
+        else 
+        {
+            shouldDisplayPopup = true;
+            getSlider().setTooltip(getCurrentPopupText(valueTree));
+        }
+           
+
     }
 
 }
