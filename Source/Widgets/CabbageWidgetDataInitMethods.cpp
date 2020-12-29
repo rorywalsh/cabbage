@@ -866,6 +866,7 @@ void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
 void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, "basetype", "layout");
+    setProperty (widgetData, CabbageIdentifierIds::base64, "");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 160);

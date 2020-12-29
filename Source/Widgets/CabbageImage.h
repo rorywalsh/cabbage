@@ -29,6 +29,7 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
 {
     String name, tooltipText, shape;
     File imgFile;
+    String imgBase64;
     CabbagePluginEditor* owner;
     float corners, cropx, cropy, cropwidth, cropheight;
     int lineThickness;

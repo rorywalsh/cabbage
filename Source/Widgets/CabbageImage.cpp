@@ -36,22 +36,22 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     isLineWidget (isLineWidget)
 {
     widgetData.addListener (this);
-	
-    String fileBase64 = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
-	if (fileBase64.isNotEmpty()) {
-		MemoryOutputStream out;
-		bool result = Base64::convertFromBase64(out, fileBase64);
-		if (result) 
-		{
-			img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
-		}
-		else
-		{
-			imgFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
-			if (File(imgFile).existsAsFile())
-				img = ImageFileFormat::loadFrom(imgFile);
-		}
-	}
+
+    imgFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file));
+    if(File(imgFile).existsAsFile()) 
+    {
+        img = ImageFileFormat::loadFrom(imgFile);
+    }
+
+    imgBase64 = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::base64);
+    if(imgBase64.isNotEmpty()) 
+    {
+        MemoryOutputStream out;
+        bool result = Base64::convertFromBase64(out, imgBase64);
+        if(result) 
+            img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
+
+    } 
 
 	this->setWantsKeyboardFocus (false);
     initialiseCommonAttributes (this, wData);
@@ -80,7 +80,13 @@ void CabbageImage::paint (Graphics& g)
         
         if (img.isValid())
         {
-            if (imgFile.hasFileExtension (".svg"))
+            if (imgBase64.isNotEmpty())
+            {
+                g.drawImage (img, 0, 0, getWidth(), getHeight(), cropx, cropy,
+                             cropwidth == 0 ? img.getWidth() : cropwidth,
+                             cropheight == 0 ? img.getHeight() : cropheight);
+            }
+            else if (imgFile.hasFileExtension (".svg"))
             {
                 CabbageLookAndFeel2::drawFromSVG (g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform());
             }
@@ -155,21 +161,19 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 
 void CabbageImage::updateImage(ValueTree& valueTree)
 {
-	String fileBase64 = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
-
-	if (fileBase64.isNotEmpty()) {
-		MemoryOutputStream out;
-		bool result = Base64::convertFromBase64(out, fileBase64);
-		if (result)
-		{
-			img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
-		}
-		else
-		{
-			imgFile = File(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file));
-			if (File(imgFile).existsAsFile())
-				img = ImageFileFormat::loadFrom(imgFile);
-		}
+    imgBase64 = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
+    if(imgBase64.isNotEmpty())
+    {
+        MemoryOutputStream out;
+        bool result = Base64::convertFromBase64(out, imgBase64);
+        if(result)
+            img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
+    }
+    else 
+    {
+		imgFile = File(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file));
+		if (File(imgFile).existsAsFile())
+			img = ImageFileFormat::loadFrom(imgFile);
 	}
 
 }

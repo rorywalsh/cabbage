@@ -310,6 +310,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
             //======== strings ===============================
+            case HashStringToInt ("base64"):
             case HashStringToInt ("kind"):
             case HashStringToInt ("file"):
             case HashStringToInt ("imgpath"):
