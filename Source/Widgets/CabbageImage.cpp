@@ -77,20 +77,19 @@ void CabbageImage::paint (Graphics& g)
     }
     else
     {
-        
-        if (img.isValid())
+       
+        if (imgFile.hasFileExtension (".svg"))
         {
-            if (imgFile.hasFileExtension (".svg"))
-            {
-                CabbageLookAndFeel2::drawFromSVG (g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform());
-            }
-            else
-            {
-                g.drawImage (img, 0, 0, getWidth(), getHeight(), cropx, cropy,
-                             cropwidth == 0 ? img.getWidth() : cropwidth,
-                             cropheight == 0 ? img.getHeight() : cropheight);
-            }
+            CabbageLookAndFeel2::drawFromSVG (g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform());
         }
+        else if (img.isValid())
+			
+        {
+            g.drawImage (img, 0, 0, getWidth(), getHeight(), cropx, cropy,
+                            cropwidth == 0 ? img.getWidth() : cropwidth,
+                            cropheight == 0 ? img.getHeight() : cropheight);
+        }
+        
         else
         {
             g.fillAll (Colours::transparentBlack);
