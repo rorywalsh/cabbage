@@ -42,17 +42,19 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     {
         img = ImageFileFormat::loadFrom(imgFile);
     }
-
-    imgBase64 = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::base64);
-    if(imgBase64.isNotEmpty()) 
+    else
     {
-        MemoryOutputStream out;
-        bool result = Base64::convertFromBase64(out, imgBase64);
-        if(result) 
-            img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
+        imgBase64 = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::base64);
+        if(imgBase64.isNotEmpty())
+        {
+            MemoryOutputStream out;
+            bool result = Base64::convertFromBase64(out, imgBase64);
+            if(result)
+                img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
 
-    } 
-
+        }
+    }
+    
 	this->setWantsKeyboardFocus (false);
     initialiseCommonAttributes (this, wData);
     
@@ -80,13 +82,7 @@ void CabbageImage::paint (Graphics& g)
         
         if (img.isValid())
         {
-            if (imgBase64.isNotEmpty())
-            {
-                g.drawImage (img, 0, 0, getWidth(), getHeight(), cropx, cropy,
-                             cropwidth == 0 ? img.getWidth() : cropwidth,
-                             cropheight == 0 ? img.getHeight() : cropheight);
-            }
-            else if (imgFile.hasFileExtension (".svg"))
+            if (imgFile.hasFileExtension (".svg"))
             {
                 CabbageLookAndFeel2::drawFromSVG (g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform());
             }
