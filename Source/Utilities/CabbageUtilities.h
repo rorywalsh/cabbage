@@ -679,6 +679,8 @@ public:
             return Justification::centred;
         else if (align == "left")
             return Justification::left;
+		else if (align == "top")
+			return Justification::centredTop;
         else
             return Justification::right;
     }  

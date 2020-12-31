@@ -542,6 +542,7 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::align, "centre");
     setProperty (widgetData, CabbageIdentifierIds::fontstyle, 1);
+	setProperty(widgetData, CabbageIdentifierIds::fontsize, 0);
     setProperty (widgetData, CabbageIdentifierIds::channel, "");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::corners, 3);

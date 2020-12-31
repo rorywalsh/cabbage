@@ -26,6 +26,7 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     fontstyle (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle)),
     owner (_owner),
     counter (0),
+	fontsize(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::fontsize)),
     text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
     colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
     fontcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
@@ -51,8 +52,16 @@ void CabbageLabel::paint (Graphics& g)
     Label tmp;
     g.setFont (getLookAndFeel().getLabelFont(tmp));
 
-    g.setFont (getHeight());
-    g.drawFittedText (text, 0, 0, jmax (1, getWidth()), jmax (1, getHeight()), textAlign, 1, 1);
+	if (fontsize == 0)
+	{
+		g.setFont(getHeight());
+		g.drawFittedText(text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, 1, 1);
+	}
+	else
+	{
+		g.setFont(fontsize);
+		g.drawText(text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, false);
+	}
 }
 
 void CabbageLabel::setText (String _text)
