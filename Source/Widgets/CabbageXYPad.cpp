@@ -331,8 +331,8 @@ void XYPadAutomator::timerCallback()
         yValueIncrement *= -1;
     }
 
-    if (owner->getActiveEditor() != nullptr) //only update GUI is editor is open
-        sendChangeMessage();
+    if (isPluginEditorOpen && xParam!=nullptr && yParam!=nullptr) //only update GUI is editor is open
+        sendSynchronousChangeMessage();
     else
     {
         xParam->setValue (xValue);
