@@ -1307,10 +1307,12 @@ void CabbagePluginProcessor::addXYAutomator(CabbageXYPad* xyPad, ValueTree wData
 			xyAuto->setYMin(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::miny));
 			xyAuto->setXMax(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxx));
 			xyAuto->setYMax(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::maxy));
-			//xyAuto->addChangeListener(xyPad);
+			xyAuto->removeAllChangeListeners();
+			xyAuto->addChangeListener(xyPad);
 		}
 	}
 	else {
+		xyAutomators[indexOfAutomator]->removeAllChangeListeners();
 		xyAutomators[indexOfAutomator]->addChangeListener(xyPad);
 	}
 }
