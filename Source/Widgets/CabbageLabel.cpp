@@ -49,8 +49,8 @@ void CabbageLabel::paint (Graphics& g)
     g.fillRoundedRectangle (getLocalBounds().toFloat(), corners);
     g.setColour (Colour::fromString (fontcolour));
     g.setFont (CabbageUtilities::getComponentFont (fontstyle));
-    Label tmp;
-    g.setFont (getLookAndFeel().getLabelFont(tmp));
+//    Label tmp;
+//    g.setFont (getLookAndFeel().getLabelFont(tmp).setStyleFlags(fontstyle));
 
 	if (fontsize == 0)
 	{
